@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- package name must be unique so suffix with "tests" so package loader doesn't ignore us -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.github.android.app.tests"
+          android:versionCode="1"
+          android:versionName="1.0">
+
+    <!-- We add an application tag here just so that we can indicate that
+         this package needs to link against the android.test library,
+         which is needed when building test cases. -->
+    <application android:debuggable="true">
+        <uses-library android:name="android.test.runner"/>
+    </application>
+
+    <!--
+    This declares that this app uses the instrumentation test runner targeting
+    the package of com.example.android.apis.  To run the tests use the command:
+    "adb shell am instrument -w com.example.android.apis.tests/android.test.InstrumentationTestRunner"
+    -->
+    <instrumentation android:name="android.test.InstrumentationTestRunner"
+                     android:targetPackage="com.github.android.app"
+                     android:label="GitHub for Android - Integration Tests"/>
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="10"/>
+</manifest>

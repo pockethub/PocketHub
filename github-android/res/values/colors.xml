@@ -1,0 +1,17 @@
+<resources>
+    <color name="background">#FFFFFFFF</color>
+    <color name="lightText">#D888</color>
+    <color name="textColor">#D333</color>
+    <color name="darkText">#333</color>
+    <color name="gitHubBlue">#4183C4</color>
+    <color name="blue_label">#4070B0</color>
+    <color name="addedText">#DDFFDD</color>
+    <color name="removedText">#FFDDDD</color>
+    <color name="repoListHeader">#FFFACD</color>
+
+    <color name="executionbar_background_start">#f0f0f0</color>
+    <color name="executionbar_background_end">#d0d0d0</color>
+
+    <color name="dashboard_background_start">#666666</color>
+    <color name="dashboard_background_end">#393939</color>
+</resources>

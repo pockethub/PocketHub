@@ -1,0 +1,7 @@
+<account-authenticator xmlns:android="http://schemas.android.com/apk/res/android"
+                       android:accountType="com.github"
+                       android:icon="@drawable/github_app_icon"
+                       android:smallIcon="@drawable/github_app_icon"
+                       android:label="@string/github_app_name"
+        />
+
