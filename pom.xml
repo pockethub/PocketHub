@@ -74,9 +74,11 @@
                     <version>3.0.0-alpha-12</version>
                     <extensions>true</extensions>
                     <configuration>
-                        <jvmArguments>
+                        <dex>
+                          <jvmArguments>
                             <jvmArgument>-Xmx512m</jvmArgument>
-                        </jvmArguments>
+                          </jvmArguments>
+                        </dex>
                         <sdk>
                             <platform>10</platform>
                         </sdk>

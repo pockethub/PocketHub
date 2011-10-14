@@ -3,10 +3,9 @@ package com.github.android.app;
 
 import android.os.Bundle;
 import android.util.Log;
-import com.github.android.app.sync.AccountAuthenticatorService;
 import roboguice.activity.RoboActivity;
 
-import static com.github.android.app.sync.AccountAuthenticatorService.addAccount;
+import static com.github.android.app.authenticator.AccountAuthenticatorService.addAccount;
 
 public class DashboardActivity extends RoboActivity {
     private static final String TAG = "DA";

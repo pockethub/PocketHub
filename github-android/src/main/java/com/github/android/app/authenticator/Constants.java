@@ -1,4 +1,4 @@
-package com.github.android.app.sync;
+package com.github.android.app.authenticator;
 
 public class Constants {
 

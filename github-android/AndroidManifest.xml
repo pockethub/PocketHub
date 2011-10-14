@@ -19,14 +19,25 @@
         </activity>
 
 
-        <service android:name=".sync.AccountAuthenticatorService"
+        <service android:name=".authenticator.AccountAuthenticatorService"
                  android:exported="true" android:process=":auth">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator"/>
             </intent-filter>
-            <meta-data android:name="android.accounts.AccountAuthenticator"
-                       android:resource="@xml/authenticator"/>
+            <meta-data android:name="android.accounts.AccountAuthenticator" android:resource="@xml/authenticator"/>
         </service>
+
+        <activity
+            android:name=".authenticator.GitHubAuthenticatorActivity"
+            android:label="@string/ui_activity_title"
+            android:theme="@android:style/Theme.Dialog"
+            android:excludeFromRecents="true"
+            >
+            <!--
+                No intent-filter here! This activity is only ever launched by
+                someone who explicitly knows the class name
+            -->
+        </activity>
 
         <service android:name=".sync.GitHubSyncAdapterService"
                  android:exported="true" android:process=":repos">
