@@ -1,4 +1,4 @@
-package com.github.android.app;
+package com.github.mobile.android;
 
 import android.app.Instrumentation;
 import android.content.Context;

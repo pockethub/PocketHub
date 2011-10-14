@@ -17,14 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.android.app;
+package com.github.mobile.android;
 
 import android.test.ActivityInstrumentationTestCase2;
 
 public class DashboardActivityTest extends ActivityInstrumentationTestCase2<DashboardActivity> {
 
 	public DashboardActivityTest() {
-		super("com.github.android.app",DashboardActivity.class);
+		super("com.github.mobile.android.app",DashboardActivity.class);
 	}
 
     public void testSomething() {

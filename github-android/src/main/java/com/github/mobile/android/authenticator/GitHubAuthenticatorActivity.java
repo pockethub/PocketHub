@@ -1,8 +1,7 @@
-package com.github.android.app.authenticator;
+package com.github.mobile.android.authenticator;
 
 
 import android.accounts.Account;
-import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -15,12 +14,9 @@ import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.TextView;
-import com.github.android.app.R;
-import com.google.inject.Inject;
+import com.github.mobile.android.R;
 import roboguice.activity.RoboAccountAuthenticatorActivity;
 import roboguice.inject.InjectView;
 import roboguice.util.RoboAsyncTask;
@@ -28,7 +24,7 @@ import roboguice.util.RoboAsyncTask;
 
 import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 import static android.text.TextUtils.isEmpty;
-import static com.github.android.app.authenticator.Constants.GITHUB_ACCOUNT_TYPE;
+import static com.github.mobile.android.authenticator.Constants.GITHUB_ACCOUNT_TYPE;
 
 public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivity {
     public static final String PARAM_CONFIRMCREDENTIALS = "confirmCredentials";

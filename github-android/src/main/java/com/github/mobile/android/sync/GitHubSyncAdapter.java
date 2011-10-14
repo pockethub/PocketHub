@@ -1,4 +1,4 @@
-package com.github.android.app.sync;
+package com.github.mobile.android.sync;
 
 import android.accounts.Account;
 import android.content.AbstractThreadedSyncAdapter;
@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import roboguice.inject.ContextScope;
 
 @Singleton
 class GitHubSyncAdapter extends AbstractThreadedSyncAdapter {

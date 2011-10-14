@@ -1,4 +1,4 @@
-package com.github.android.app.authenticator;
+package com.github.mobile.android.authenticator;
 
 import android.accounts.*;
 import android.app.Service;
@@ -12,7 +12,7 @@ import static android.accounts.AccountManager.ACTION_AUTHENTICATOR_INTENT;
 import static android.content.ContentResolver.addPeriodicSync;
 import static android.content.ContentResolver.setIsSyncable;
 import static android.content.ContentResolver.setSyncAutomatically;
-import static com.github.android.app.authenticator.Constants.*;
+import static com.github.mobile.android.authenticator.Constants.*;
 
 /**
  * Authenticator service that returns a subclass of AbstractAccountAuthenticator in onBind()

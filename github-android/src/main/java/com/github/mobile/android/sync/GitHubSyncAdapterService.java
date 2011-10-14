@@ -1,4 +1,4 @@
-package com.github.android.app.sync;
+package com.github.mobile.android.sync;
 
 import android.content.Intent;
 import android.os.IBinder;

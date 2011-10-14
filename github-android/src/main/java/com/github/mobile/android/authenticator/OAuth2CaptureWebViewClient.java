@@ -1,4 +1,4 @@
-package com.github.android.app.authenticator;
+package com.github.mobile.android.authenticator;
 
 import android.net.Uri;
 import android.util.Log;
