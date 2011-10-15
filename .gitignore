@@ -10,8 +10,6 @@ release.properties
 *.iws
 *.iml
 *.ipr
-.classpath
-.project
 .settings
 gen
 */seed.txt
