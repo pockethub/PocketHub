@@ -1,20 +1,31 @@
 package com.github.mobile.android;
 
+import static java.util.Arrays.asList;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.util.Log;
-import com.google.inject.Module;
-import roboguice.application.RoboApplication;
 
+import com.google.inject.Module;
+
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.List;
 
-import static java.util.Arrays.asList;
+import org.apache.commons.logging.LogFactory;
+
+import roboguice.application.RoboApplication;
 
 public class GitHubApplication extends RoboApplication {
 
 	public static final String TAG = "GHA";
 
 	public GitHubApplication() {
+		AccessController.doPrivileged(new PrivilegedAction<Object>() {
+			public Object run() {
+				return System.setProperty(LogFactory.class.getName(),
+						com.github.mobile.android.LogFactory.class.getName());
+			}
+		});
 	}
 
 	public GitHubApplication(Context context) {

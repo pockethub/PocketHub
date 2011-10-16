@@ -50,6 +50,11 @@
             <artifactId>guice-assisted-inject</artifactId>
             <version>2.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.mylyn.github</groupId>
+            <artifactId>org.eclipse.egit.github.core</artifactId>
+            <version>1.1.1</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

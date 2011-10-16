@@ -124,7 +124,7 @@
                             <lib>${rt.jar.path}</lib>
                             <lib>${jsse.jar.path}</lib>
                         </libs>
-                        <obfuscate>false</obfuscate>
+                        <obfuscate>true</obfuscate>
                         <addMavenDescriptor>false</addMavenDescriptor>
                         <proguardInclude>../proguard.cfg</proguardInclude>
                         <!-- sadly, relative to sub-modules -->
