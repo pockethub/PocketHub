@@ -11,8 +11,9 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.List;
 
-import roboguice.application.RoboApplication;
 import shade.org.apache.commons.logging.LogFactory;
+
+import roboguice.application.RoboApplication;
 
 public class GitHubApplication extends RoboApplication {
 

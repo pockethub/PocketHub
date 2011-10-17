@@ -17,6 +17,11 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.github.mobile.android.R;
+import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.User;
+import org.eclipse.egit.github.core.client.GitHubClient;
+import org.eclipse.egit.github.core.service.RepositoryService;
+import org.eclipse.egit.github.core.service.UserService;
 import roboguice.activity.RoboAccountAuthenticatorActivity;
 import roboguice.inject.InjectView;
 import roboguice.util.RoboAsyncTask;
@@ -39,7 +44,7 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
     @InjectView(R.id.username_edit) EditText mUsernameEdit;
     @InjectView(R.id.password_edit) EditText mPasswordEdit;
 
-    private Thread mAuthThread;
+    private RoboAsyncTask<User> authenticationTask;
     private String mAuthtoken;
     private String mAuthtokenType;
 
@@ -98,8 +103,8 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
         dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             public void onCancel(DialogInterface dialog) {
                 Log.i(TAG, "dialog cancel has been invoked");
-                if (mAuthThread != null) {
-                    mAuthThread.interrupt();
+                if (authenticationTask != null) {
+                    authenticationTask.cancel(true);
                     finish();
                 }
             }
@@ -114,6 +119,7 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
      * Specified by android:onClick="handleLogin" in the layout xml
      */
     public void handleLogin(View view) {
+        Log.d(TAG, "handleLogin hit on"+view);
         if (mRequestNewAccount) {
             mUsername = mUsernameEdit.getText().toString();
         }
@@ -122,19 +128,30 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
             mMessage.setText(getMessage());
         } else {
             showProgress();
-            new RoboAsyncTask<Boolean>() {
-                public Boolean call() throws Exception {
-                    return true; // this can take as long as it likes
+
+            authenticationTask = new RoboAsyncTask<User>() {
+                public User call() throws Exception {
+                    GitHubClient client = new GitHubClient();
+                    client.setCredentials(mUsername, mPassword);
+
+                    return new UserService(client).getUser();
                 }
 
-				public void onSuccess(Boolean b) {
-					onAuthenticationResult(b);
-				}
-            }.execute();
-            // Start authenticating...
-//            mAuthThread =
-//                NetworkUtilities.attemptAuth(mUsername, mPassword, mHandler,
-//                    AuthenticatorActivity.this);
+                @Override
+                protected void onException(Exception e) throws RuntimeException {
+                    mMessage.setText(e.getMessage());
+                }
+
+                public void onSuccess(User user) {
+                    onAuthenticationResult(true);
+                }
+
+                @Override
+                protected void onFinally() throws RuntimeException {
+                    hideProgress();
+                }
+            };
+            authenticationTask.execute();
         }
     }
 
@@ -202,8 +219,6 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
      */
     public void onAuthenticationResult(boolean result) {
         Log.i(TAG, "onAuthenticationResult(" + result + ")");
-        // Hide the progress dialog
-        hideProgress();
         if (result) {
             if (!mConfirmCredentials) {
                 finishLogin();
