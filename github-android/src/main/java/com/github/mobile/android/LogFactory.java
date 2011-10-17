@@ -7,13 +7,13 @@ import static android.util.Log.isLoggable;
 import static android.util.Log.v;
 import static android.util.Log.w;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogConfigurationException;
+import shade.org.apache.commons.logging.Log;
+import shade.org.apache.commons.logging.LogConfigurationException;
 
 /**
  * Log
  */
-public class LogFactory extends org.apache.commons.logging.LogFactory {
+public class LogFactory extends shade.org.apache.commons.logging.LogFactory {
 
 	private final String TAG = "GHLog";
 

@@ -12,6 +12,12 @@
 
     <packaging>apk</packaging>
     <name>GitHub for Android</name>
+    <repositories>
+        <repository>
+            <id>github-staging</id>
+            <url>https://oss.sonatype.org/content/repositories/comgithubgithub-313</url>
+        </repository>
+    </repositories>
     <dependencies>
 
         <dependency>
@@ -51,9 +57,9 @@
             <version>2.0</version>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.mylyn.github</groupId>
-            <artifactId>org.eclipse.egit.github.core</artifactId>
-            <version>1.1.1</version>
+            <groupId>com.github.github</groupId>
+            <artifactId>org.eclipse.egit.github.core.shaded</artifactId>
+            <version>1.1.2</version>
         </dependency>
     </dependencies>
     <build>
