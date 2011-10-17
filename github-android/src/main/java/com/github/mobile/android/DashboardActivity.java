@@ -14,12 +14,6 @@ public class DashboardActivity extends RoboActivity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard);
-
-		try {
-            addAccount(this);
-        } catch (Exception e) {
-            Log.w(TAG, "Unable to add account for syncing", e);
-        }
     }
 
 }

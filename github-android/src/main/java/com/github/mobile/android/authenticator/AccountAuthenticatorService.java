@@ -35,19 +35,6 @@ public class AccountAuthenticatorService extends Service {
         return sAccountAuthenticator;
     }
 
-    public static Bundle addAccount(Context ctx) {
-        Bundle result = null;
-        Account account = new Account(GITHUB_ACCOUNT_NAME, GITHUB_ACCOUNT_TYPE);
-        AccountManager am = AccountManager.get(ctx);
-        if (am.addAccountExplicitly(account, null, null)) {
-            result = new Bundle();
-            result.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
-            result.putString(AccountManager.KEY_ACCOUNT_TYPE, account.type);
-        }
-        configureSyncFor(account);
-        return result;
-    }
-
     private static void configureSyncFor(Account account) {
         Log.d(TAG, "Trying to configure account for sync...");
         setIsSyncable(account, GITHUB_PROVIDER_AUTHORITY, 1);
