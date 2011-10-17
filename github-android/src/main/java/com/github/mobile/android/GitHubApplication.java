@@ -11,29 +11,37 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.List;
 
-import org.apache.commons.logging.LogFactory;
-
 import roboguice.application.RoboApplication;
+import shade.org.apache.commons.logging.LogFactory;
 
 public class GitHubApplication extends RoboApplication {
 
-	public static final String TAG = "GHA";
+	private static final String TAG = "GHA";
 
 	public GitHubApplication() {
-		AccessController.doPrivileged(new PrivilegedAction<Object>() {
-			public Object run() {
-				return System.setProperty(LogFactory.class.getName(),
-						com.github.mobile.android.LogFactory.class.getName());
-			}
-		});
+		registerLog();
 	}
 
 	public GitHubApplication(Context context) {
+		registerLog();
 		attachBaseContext(context);
 	}
 
 	public GitHubApplication(Instrumentation instrumentation) {
+		registerLog();
 		attachBaseContext(instrumentation.getTargetContext());
+	}
+
+	/**
+	 * Registers a custom LogFactory that forwards to the Android Log class
+	 */
+	private void registerLog() {
+		AccessController.doPrivileged(new PrivilegedAction<String>() {
+			public String run() {
+				return System.setProperty(LogFactory.class.getName(),
+						com.github.mobile.android.LogFactory.class.getName());
+			}
+		});
 	}
 
 	protected void addApplicationModules(List<Module> modules) {

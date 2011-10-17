@@ -11,11 +11,12 @@ import shade.org.apache.commons.logging.Log;
 import shade.org.apache.commons.logging.LogConfigurationException;
 
 /**
- * Log
+ * Log factory class that provides a {@link Log} that forwards to the Android
+ * {@link android.util.Log}
  */
 public class LogFactory extends shade.org.apache.commons.logging.LogFactory {
 
-	private final String TAG = "GHLog";
+	private static final String TAG = "GHL";
 
 	private final Log log = new Log() {
 
@@ -100,7 +101,8 @@ public class LogFactory extends shade.org.apache.commons.logging.LogFactory {
 		return null;
 	}
 
-	public Log getInstance(@SuppressWarnings("rawtypes") Class clazz) throws LogConfigurationException {
+	public Log getInstance(@SuppressWarnings("rawtypes") Class clazz)
+			throws LogConfigurationException {
 		return log;
 	}
 
