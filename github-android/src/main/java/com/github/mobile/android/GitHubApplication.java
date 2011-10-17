@@ -11,23 +11,38 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.List;
 
+import roboguice.application.RoboApplication;
 import shade.org.apache.commons.logging.LogFactory;
 
-import roboguice.application.RoboApplication;
-
+/**
+ * Main GitHub application
+ */
 public class GitHubApplication extends RoboApplication {
 
 	private static final String TAG = "GHA";
 
+	/**
+	 * Create main application
+	 */
 	public GitHubApplication() {
 		registerLog();
 	}
 
+	/**
+	 * Create main application
+	 * 
+	 * @param context
+	 */
 	public GitHubApplication(Context context) {
 		registerLog();
 		attachBaseContext(context);
 	}
 
+	/**
+	 * Create main application
+	 * 
+	 * @param instrumentation
+	 */
 	public GitHubApplication(Instrumentation instrumentation) {
 		registerLog();
 		attachBaseContext(instrumentation.getTargetContext());
