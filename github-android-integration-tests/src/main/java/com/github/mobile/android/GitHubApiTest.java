@@ -11,7 +11,7 @@ public class GitHubApiTest extends AndroidTestCase {
 
     public void testRepoApi() throws Exception {
         RepositoryService service = new RepositoryService();
-    	for (Repository repo : service.getRepositories("defunkt")) {
+    	for (Repository repo : service.getRepositories("git")) {
             Log.d(TAG, repo.getName() + " Watchers: " + repo.getWatchers());
         }
     }
