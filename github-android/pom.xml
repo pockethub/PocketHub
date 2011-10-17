@@ -12,12 +12,6 @@
 
     <packaging>apk</packaging>
     <name>GitHub for Android</name>
-    <repositories>
-        <repository>
-            <id>github-staging</id>
-            <url>https://oss.sonatype.org/content/repositories/comgithubgithub-313</url>
-        </repository>
-    </repositories>
     <dependencies>
 
         <dependency>
