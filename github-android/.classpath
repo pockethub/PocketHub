@@ -3,6 +3,8 @@
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER"/>
+	<classpathentry kind="var" path="M2_REPO/com/google/inject/guice/2.0-no_aop/guice-2.0-no_aop.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/roboguice/roboguice/1.1.2/roboguice-1.1.2.jar" sourcepath="/M2_REPO/org/roboguice/roboguice/1.1.2/roboguice-1.1.2-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/github/github/org.eclipse.egit.github.core.shaded/1.1.2/org.eclipse.egit.github.core.shaded-1.1.2.jar" sourcepath="/M2_REPO/com/github/github/org.eclipse.egit.github.core.shaded/1.1.2/org.eclipse.egit.github.core.shaded-1.1.2-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
