@@ -3,6 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>github-android</artifactId>
+    <url>https://github.com/github/android</url>
 
     <parent>
         <version>0.01-SNAPSHOT</version>
@@ -71,6 +72,31 @@
 
 
     <profiles>
+    	<profile>
+		    <id>ci</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.github.github</groupId>
+						<artifactId>downloads-maven-plugin</artifactId>
+						<version>0.2</version>
+						<configuration>
+							<description>${project.name} ${project.version}</description>
+							<override>true</override>
+							<includeAttached>false</includeAttached>
+						</configuration>
+						<executions>
+							<execution>
+								<goals>
+									<goal>upload</goal>
+								</goals>
+								<phase>install</phase>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+    	</profile>
         <profile>
             <id>release</id>
             <!-- via this activation the profile is automatically used when the release is done with the maven release
