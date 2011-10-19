@@ -13,15 +13,16 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.github.mobile.android.IClientProvider;
 import com.github.mobile.android.R;
 import com.github.mobile.android.TextWatcherAdapter;
 import com.google.inject.Inject;
 
 import java.util.Collections;
 
+import com.google.inject.Provider;
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.GistFile;
+import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.GistService;
 
 import roboguice.activity.RoboActivity;
@@ -47,8 +48,7 @@ public class ShareGistActivity extends RoboActivity {
 	@InjectView(R.id.createGistButton)
 	private Button createButton;
 
-	@Inject
-	private IClientProvider provider;
+	@Inject Provider<GistService> gistServiceProvider;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -85,8 +85,6 @@ public class ShareGistActivity extends RoboActivity {
 		new RoboAsyncTask<Gist>() {
 
 			public Gist call() throws Exception {
-				GistService service = new GistService(
-						provider.createClient(ShareGistActivity.this));
 				Gist gist = new Gist();
 				gist.setDescription("Created from my Android device");
 				gist.setPublic(isPublic);
@@ -94,7 +92,7 @@ public class ShareGistActivity extends RoboActivity {
 				file.setContent(content);
 				file.setFilename(name);
 				gist.setFiles(Collections.singletonMap(name, file));
-				return service.createGist(gist);
+				return gistServiceProvider.get().createGist(gist);
 			}
 
 			protected void onSuccess(Gist gist) throws Exception {

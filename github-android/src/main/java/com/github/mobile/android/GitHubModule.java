@@ -3,12 +3,11 @@ package com.github.mobile.android;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
-import com.github.mobile.android.authenticator.AccountClientProvider;
 
-import com.github.mobile.android.authenticator.Constants;
 import com.google.inject.Provides;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
+import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.UserService;
 import roboguice.config.AbstractAndroidModule;
 
@@ -23,7 +22,6 @@ public class GitHubModule extends AbstractAndroidModule {
 
 	@Override
 	protected void configure() {
-		bind(IClientProvider.class).to(AccountClientProvider.class);
 	}
 
     @Provides AccountManager accountManager(Context context) {
@@ -48,6 +46,10 @@ public class GitHubModule extends AbstractAndroidModule {
 
     @Provides UserService userService(GitHubClient client) {
         return new UserService(client);
+    }
+
+    @Provides GistService gistService(GitHubClient client) {
+        return new GistService(client);
     }
 
     @Provides User currentUser(UserService userService) throws IOException {
