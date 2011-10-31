@@ -31,25 +31,21 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.roboguice</groupId>
-            <artifactId>roboguice</artifactId>
-            <version>1.1.2</version>
+          <groupId>com.google.inject</groupId>
+          <artifactId>guice</artifactId>
+          <version>3.0</version>
+          <classifier>no_aop</classifier>
+        </dependency>
+        <dependency>
+          <groupId>org.roboguice</groupId>
+          <artifactId>roboguice</artifactId>
+          <version>2.0b2</version>
         </dependency>
         <dependency>
             <groupId>com.pivotallabs</groupId>
             <artifactId>robolectric</artifactId>
             <version>1.0-RC1</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-            <version>2.0-no_aop</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.inject.extensions</groupId>
-            <artifactId>guice-assisted-inject</artifactId>
-            <version>2.0</version>
         </dependency>
         <dependency>
             <groupId>com.github.github</groupId>

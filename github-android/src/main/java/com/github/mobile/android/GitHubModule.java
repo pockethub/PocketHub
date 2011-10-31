@@ -3,20 +3,19 @@ package com.github.mobile.android;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
-
+import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.UserService;
-import roboguice.config.AbstractAndroidModule;
 
 import java.io.IOException;
 
 import static com.github.mobile.android.authenticator.Constants.GITHUB_ACCOUNT_TYPE;
 
 
-public class GitHubModule extends AbstractAndroidModule {
+public class GitHubModule extends AbstractModule {
 
 	private static final String TAG = "GHMod";
 

@@ -129,7 +129,7 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
         } else {
             showProgress();
 
-            authenticationTask = new RoboAsyncTask<User>() {
+            authenticationTask = new RoboAsyncTask<User>(this) {
                 public User call() throws Exception {
                     GitHubClient client = new GitHubClient();
                     client.setCredentials(mUsername, mPassword);

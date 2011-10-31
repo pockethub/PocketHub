@@ -82,7 +82,7 @@ public class ShareGistActivity extends RoboActivity {
 		final ProgressDialog progress = new ProgressDialog(this);
 		progress.setMessage("Creating Gist...");
 		progress.show();
-		new RoboAsyncTask<Gist>() {
+		new RoboAsyncTask<Gist>(this) {
 
 			public Gist call() throws Exception {
 				Gist gist = new Gist();
