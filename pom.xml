@@ -36,6 +36,11 @@
                 <version>${android.version}</version>
             </dependency>
             <dependency>
+                <groupId>android.support</groupId>
+                <artifactId>compatibility-v13</artifactId>
+                <version>r4</version>
+            </dependency>
+            <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>2.0</version>
