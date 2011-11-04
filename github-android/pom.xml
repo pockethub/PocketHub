@@ -37,9 +37,20 @@
           <classifier>no_aop</classifier>
         </dependency>
         <dependency>
-          <groupId>org.roboguice</groupId>
-          <artifactId>roboguice</artifactId>
-          <version>2.0b2</version>
+            <groupId>org.roboguice</groupId>
+            <artifactId>roboguice</artifactId>
+            <version>2.0b2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>android.support</groupId>
+                    <artifactId>compatibility-v13</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>android.support</groupId>
+            <artifactId>compatibility-v4</artifactId>
+            <version>r4</version>
         </dependency>
         <dependency>
             <groupId>com.pivotallabs</groupId>
