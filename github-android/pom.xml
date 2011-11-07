@@ -37,15 +37,9 @@
           <classifier>no_aop</classifier>
         </dependency>
         <dependency>
-            <groupId>org.roboguice</groupId>
+            <groupId>com.madgag</groupId>
             <artifactId>roboguice</artifactId>
-            <version>2.0b2</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>android.support</groupId>
-                    <artifactId>compatibility-v13</artifactId>
-                </exclusion>
-            </exclusions>
+            <version>2.0b1040</version>
         </dependency>
         <dependency>
             <groupId>android.support</groupId>

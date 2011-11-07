@@ -22,11 +22,7 @@ public class GitHubModule extends AbstractModule {
 	@Override
 	protected void configure() {
 	}
-
-    @Provides AccountManager accountManager(Context context) {
-        return AccountManager.get(context);
-    }
-
+	
     @Provides Account currentAccount(AccountManager accountManager) {
 		Account[] accounts = accountManager.getAccountsByType(GITHUB_ACCOUNT_TYPE);
 		if (accounts.length > 0) {
