@@ -7,7 +7,8 @@
             android:name=".GitHubApplication"
             android:theme="@style/Theme.App"
             android:icon="@drawable/github_app_icon"
-            android:label="@string/github_app_name">
+            android:label="@string/github_app_name"
+            android:hardwareAccelerated="true" >
         
         <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="10"/>
 
