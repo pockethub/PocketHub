@@ -73,4 +73,10 @@
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
     <uses-permission android:name="android.permission.READ_SYNC_STATS"/>
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+
+    <supports-screens android:smallScreens="true"
+                  android:normalScreens="true"
+                  android:largeScreens="true"
+                  android:xlargeScreens="true" />
+
 </manifest> 
