@@ -10,7 +10,7 @@
             android:label="@string/github_app_name"
             android:hardwareAccelerated="true" >
         
-        <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="10"/>
+        <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="14"/>
 
         <activity android:name="DashboardActivity">
             <intent-filter>

@@ -38,12 +38,6 @@
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-library</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>com.google.android</groupId>
-            <artifactId>android-test</artifactId>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
     <build>
         <plugins>

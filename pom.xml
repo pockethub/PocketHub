@@ -13,11 +13,11 @@
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <android.version>2.3.3</android.version>
+        <android.version>4.0_r1</android.version>
     </properties>
     <dependencies>
         <dependency>
-            <groupId>com.google.android</groupId>
+            <groupId>android</groupId>
             <artifactId>android</artifactId>
             <scope>provided</scope>
             <version>${android.version}</version>
@@ -29,11 +29,6 @@
                 <groupId>com.madgag</groupId>
                 <artifactId>org.eclipse.jgit</artifactId>
                 <version>1.0.99.0.7-UNOFFICIAL-ROBERTO-RELEASE</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.android</groupId>
-                <artifactId>android-test</artifactId>
-                <version>${android.version}</version>
             </dependency>
             <dependency>
                 <groupId>commons-io</groupId>
@@ -80,7 +75,7 @@
                           </jvmArguments>
                         </dex>
                         <sdk>
-                            <platform>10</platform>
+                            <platform>14</platform>
                         </sdk>
                         <emulator>
                             <avd>22</avd>
