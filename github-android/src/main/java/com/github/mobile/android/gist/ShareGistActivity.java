@@ -19,10 +19,8 @@ import com.google.inject.Inject;
 
 import java.util.Collections;
 
-import com.google.inject.Provider;
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.GistFile;
-import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.GistService;
 
 import roboguice.activity.RoboActivity;

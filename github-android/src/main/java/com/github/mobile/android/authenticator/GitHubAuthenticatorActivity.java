@@ -17,10 +17,10 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.github.mobile.android.R;
-import org.eclipse.egit.github.core.Repository;
+import com.google.inject.Inject;
+
 import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.RepositoryService;
+import org.eclipse.egit.github.core.client.HttpClient;
 import org.eclipse.egit.github.core.service.UserService;
 import roboguice.activity.RoboAccountAuthenticatorActivity;
 import roboguice.inject.InjectView;
@@ -43,6 +43,9 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
     @InjectView(R.id.message) TextView mMessage;
     @InjectView(R.id.username_edit) EditText mUsernameEdit;
     @InjectView(R.id.password_edit) EditText mPasswordEdit;
+
+	@Inject
+	private HttpClient<?> client;
 
     private RoboAsyncTask<User> authenticationTask;
     private String mAuthtoken;
@@ -131,7 +134,6 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
 
             authenticationTask = new RoboAsyncTask<User>(this) {
                 public User call() throws Exception {
-                    GitHubClient client = new GitHubClient();
                     client.setCredentials(mUsername, mPassword);
 
                     return new UserService(client).getUser();

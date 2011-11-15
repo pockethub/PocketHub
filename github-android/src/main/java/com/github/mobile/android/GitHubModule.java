@@ -2,11 +2,12 @@ package com.github.mobile.android;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.content.Context;
+
+import com.github.kevinsawicki.http.github.HttpRequestClient;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.client.GitHubClient;
+import org.eclipse.egit.github.core.client.HttpClient;
 import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.UserService;
 
@@ -31,19 +32,20 @@ public class GitHubModule extends AbstractModule {
         return null;
     }
 
-    @Provides GitHubClient gitHubClient(Account account, AccountManager accountManager) {
-        GitHubClient client = new GitHubClient();
-        if (account!=null) {
-            client.setCredentials(account.name, accountManager.getPassword(account));
-        }
-        return client;
-    }
+	@Provides
+	HttpClient<?> client(Account account, AccountManager accountManager) {
+		HttpClient<?> client = new HttpRequestClient();
+		if (account != null)
+			client.setCredentials(account.name,
+					accountManager.getPassword(account));
+		return client;
+	}
 
-    @Provides UserService userService(GitHubClient client) {
+    @Provides UserService userService(HttpClient<?> client) {
         return new UserService(client);
     }
 
-    @Provides GistService gistService(GitHubClient client) {
+    @Provides GistService gistService(HttpClient<?> client) {
         return new GistService(client);
     }
 

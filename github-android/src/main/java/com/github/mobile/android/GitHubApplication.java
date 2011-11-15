@@ -1,7 +1,6 @@
 package com.github.mobile.android;
 
 import static java.util.Arrays.asList;
-
 import android.app.Application;
 import android.app.Instrumentation;
 import android.content.Context;
@@ -9,11 +8,7 @@ import android.util.Log;
 
 import com.google.inject.Module;
 
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.List;
-
-import shade.org.apache.commons.logging.LogFactory;
 
 /**
  * Main GitHub application
@@ -26,7 +21,6 @@ public class GitHubApplication extends Application {
 	 * Create main application
 	 */
 	public GitHubApplication() {
-		registerLog();
 	}
 
 	/**
@@ -35,7 +29,6 @@ public class GitHubApplication extends Application {
 	 * @param context
 	 */
 	public GitHubApplication(Context context) {
-		registerLog();
 		attachBaseContext(context);
 	}
 
@@ -45,20 +38,7 @@ public class GitHubApplication extends Application {
 	 * @param instrumentation
 	 */
 	public GitHubApplication(Instrumentation instrumentation) {
-		registerLog();
 		attachBaseContext(instrumentation.getTargetContext());
-	}
-
-	/**
-	 * Registers a custom LogFactory that forwards to the Android Log class
-	 */
-	private void registerLog() {
-		AccessController.doPrivileged(new PrivilegedAction<String>() {
-			public String run() {
-				return System.setProperty(LogFactory.class.getName(),
-						com.github.mobile.android.LogFactory.class.getName());
-			}
-		});
 	}
 
 	protected void addApplicationModules(List<Module> modules) {
