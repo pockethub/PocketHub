@@ -14,15 +14,11 @@
     <packaging>apk</packaging>
     <name>GitHub for Android</name>
 
-	<!-- Temporary repositories until GitHub Java API updates are released -->
+	<!-- Temporary repository until GitHub Java API updates are released -->
 	<repositories>
 		<repository>
 			<id>oss-snapshots</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-		</repository>
-		<repository>
-			<id>oss-releases</id>
-			<url>https://oss.sonatype.org/content/repositories/releases/</url>
 		</repository>
 	</repositories>
     
