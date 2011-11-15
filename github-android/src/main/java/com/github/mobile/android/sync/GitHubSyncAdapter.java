@@ -9,8 +9,9 @@ import android.os.Bundle;
 import android.util.Log;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import roboguice.inject.ContextSingleton;
 
-@Singleton
+@ContextSingleton
 class GitHubSyncAdapter extends AbstractThreadedSyncAdapter {
     private static final String TAG = "SA";
 

@@ -26,6 +26,7 @@ import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.GistService;
 
 import roboguice.activity.RoboActivity;
+import roboguice.inject.ContextScopedProvider;
 import roboguice.inject.InjectView;
 import roboguice.util.RoboAsyncTask;
 
@@ -48,7 +49,7 @@ public class ShareGistActivity extends RoboActivity {
 	@InjectView(R.id.createGistButton)
 	private Button createButton;
 
-	@Inject Provider<GistService> gistServiceProvider;
+	@Inject ContextScopedProvider<GistService> gistServiceProvider;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -92,7 +93,7 @@ public class ShareGistActivity extends RoboActivity {
 				file.setContent(content);
 				file.setFilename(name);
 				gist.setFiles(Collections.singletonMap(name, file));
-				return gistServiceProvider.get().createGist(gist);
+				return gistServiceProvider.get(ShareGistActivity.this).createGist(gist);
 			}
 
 			protected void onSuccess(Gist gist) throws Exception {
