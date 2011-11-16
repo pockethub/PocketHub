@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="github_app_name">GitHub</string>
+    <string name="news">News</string>
+    <string name="pull_requests">Pull Requests</string>
+    <string name="issues">Issues</string>
 
         <!-- AuthenticatorActivity -->
 

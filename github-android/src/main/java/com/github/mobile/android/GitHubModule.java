@@ -9,6 +9,8 @@ import com.google.inject.Provides;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.HttpClient;
 import org.eclipse.egit.github.core.service.GistService;
+import org.eclipse.egit.github.core.service.IssueService;
+import org.eclipse.egit.github.core.service.PullRequestService;
 import org.eclipse.egit.github.core.service.UserService;
 
 import java.io.IOException;
@@ -40,6 +42,14 @@ public class GitHubModule extends AbstractModule {
 					accountManager.getPassword(account));
 		return client;
 	}
+
+    @Provides IssueService issueService(HttpClient<?> client) {
+        return new IssueService(client);
+    }
+
+    @Provides PullRequestService pullRequestService(HttpClient<?> client) {
+        return new PullRequestService(client);
+    }
 
     @Provides UserService userService(HttpClient<?> client) {
         return new UserService(client);
