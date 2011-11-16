@@ -55,7 +55,7 @@ public abstract class ListLoadingFragment<E> extends RoboListFragment
         }
     }
 
-	abstract ListAdapter adapterFor(List<E> items);
+	protected abstract ListAdapter adapterFor(List<E> items);
 
 	@Override
 	public void onLoaderReset(Loader<List<E>> listLoader) {
