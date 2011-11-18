@@ -39,7 +39,6 @@
         <activity
             android:name=".authenticator.GitHubAuthenticatorActivity"
             android:label="@string/ui_activity_title"
-            android:theme="@android:style/Theme.Dialog"
             android:excludeFromRecents="true"
             >
             <!--

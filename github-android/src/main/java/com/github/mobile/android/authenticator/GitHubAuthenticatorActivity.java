@@ -68,9 +68,6 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
 
     private String mUsername;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onCreate(Bundle icicle) {
         Log.i(TAG, "onCreate(" + icicle + ")");
@@ -83,12 +80,10 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
         mRequestNewAccount = mUsername == null;
         mConfirmCredentials = intent.getBooleanExtra(PARAM_CONFIRMCREDENTIALS, false);
 
-        Log.i(TAG, "    request new: " + mRequestNewAccount);
-        
-        requestWindowFeature(Window.FEATURE_LEFT_ICON);
+        Log.i(TAG, "request new: " + mRequestNewAccount);
+
         setContentView(R.layout.login_activity);
-        getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON,
-            android.R.drawable.ic_dialog_alert);
+
 
 //        mUsernameEdit.setText(mUsername);
 //        mMessage.setText(getMessage());
