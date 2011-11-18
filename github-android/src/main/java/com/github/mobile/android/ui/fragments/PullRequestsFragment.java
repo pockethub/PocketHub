@@ -33,7 +33,7 @@ public class PullRequestsFragment extends ListLoadingFragment<PullRequest> {
 	@Inject PullRequestService pullRequestService;
 
 	@Override
-	ListAdapter adapterFor(List<PullRequest> pullRequests) {
+	protected ListAdapter adapterFor(List<PullRequest> pullRequests) {
 		return new ViewHoldingListAdapter<PullRequest>(pullRequests, viewInflatorFor(getActivity(), issue_list_item), new ViewHolderFactory<PullRequest>() {
 			public ViewHolder<PullRequest> createViewHolderFor(View view) {
 				return new PullRequestViewHolder(view);

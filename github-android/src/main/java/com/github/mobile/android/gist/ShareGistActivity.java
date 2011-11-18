@@ -47,7 +47,8 @@ public class ShareGistActivity extends RoboActivity {
 	@InjectView(R.id.createGistButton)
 	private Button createButton;
 
-	@Inject ContextScopedProvider<GistService> gistServiceProvider;
+	@Inject
+	ContextScopedProvider<GistService> gistServiceProvider;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -91,7 +92,8 @@ public class ShareGistActivity extends RoboActivity {
 				file.setContent(content);
 				file.setFilename(name);
 				gist.setFiles(Collections.singletonMap(name, file));
-				return gistServiceProvider.get(ShareGistActivity.this).createGist(gist);
+				return gistServiceProvider.get(ShareGistActivity.this)
+						.createGist(gist);
 			}
 
 			protected void onSuccess(Gist gist) throws Exception {

@@ -30,7 +30,7 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
 	@Inject	IssueService issueService;
 
 	@Override
-	ListAdapter adapterFor(List<Issue> issues) {
+	protected ListAdapter adapterFor(List<Issue> issues) {
 		return new ViewHoldingListAdapter<Issue>(issues, viewInflatorFor(getActivity(), issue_list_item), new ViewHolderFactory<Issue>() {
 			public ViewHolder<Issue> createViewHolderFor(View view) {
 				return new IssueViewHolder(view);
