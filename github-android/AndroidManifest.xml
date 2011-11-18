@@ -3,6 +3,9 @@
           package="com.github.mobile.android"
           android:versionName="0.01"
           android:versionCode="0">
+
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="14"/>
+
     <application
             android:name=".GitHubApplication"
             android:theme="@style/Theme.App"
@@ -10,8 +13,6 @@
             android:label="@string/github_app_name"
             android:hardwareAccelerated="true" >
         
-        <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="14"/>
-
         <activity android:name="DashboardActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
