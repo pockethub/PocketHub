@@ -184,6 +184,9 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
                 @Override
                 protected void onException(Exception e) throws RuntimeException {
                     mMessage.setText(e.getMessage());
+                    if (e instanceof RequestException && ((RequestException) e).getStatus()==401) {
+                        passwordEdit.setText("");
+                    }
                 }
 
                 public void onSuccess(User user) {
