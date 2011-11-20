@@ -22,18 +22,16 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
     <ScrollView
-        android:layout_width="fill_parent"
         android:layout_height="0dip"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_width="match_parent">
         <LinearLayout
-            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_width="match_parent"
             android:orientation="vertical"
-            android:paddingTop="5dip"
-            android:paddingBottom="13dip"
-            android:paddingLeft="20dip"
-            android:paddingRight="20dip">
+            android:paddingLeft="14dip" android:paddingRight="14dip"
+            android:paddingTop="6dip" android:paddingBottom="6dip">
             <TextView
                 android:id="@+id/message"
                 android:textAppearance="?android:attr/textAppearanceSmall"
@@ -48,6 +46,8 @@
                 android:text="@string/login_activity_username_label" />
             <EditText
                 android:id="@+id/username_edit"
+                android:hint="@string/sign_in_username_field_hint"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:singleLine="true"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -73,6 +73,8 @@
                 android:text="@string/login_activity_password_label" />
             <EditText
                 android:id="@+id/password_edit"
+                android:hint="@string/sign_in_password_field_hint"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:singleLine="true"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -91,21 +93,17 @@
 
         </LinearLayout>
     </ScrollView>
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="#c6c3c6"
-        android:minHeight="54dip"
-        android:paddingTop="4dip"
-        android:paddingLeft="2dip"
-        android:paddingRight="2dip">
-        <Button
-            android:id="@+id/ok_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:minWidth="100dip"
-            android:text="@string/login_activity_ok_button"
-            android:onClick="handleLogin" />
-    </FrameLayout>
+    <RelativeLayout
+            style="@style/ExecutionBar"
+            android:gravity="right">
+        <Button android:id="@+id/ok_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:textSize="20dip"
+                android:padding="8dip"
+                android:text="@string/login_activity_ok_button"
+                android:onClick="handleLogin" />
+    </RelativeLayout>
 </LinearLayout>

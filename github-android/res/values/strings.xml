@@ -37,8 +37,11 @@
         name="login_activity_newaccount_text">Sign in to your Sample SyncAdapter account. </string>
 
     <!-- Button that takes the user to the "sign in" screen -->
-    <string
-        name="sign_in_button_label">Sign in</string>
+    <string name="sign_in_button_label">Sign in</string>
+
+    <string name="sign_in_username_field_hint">Username</string>
+    <string name="sign_in_password_field_hint">Password</string>
+
     <!-- Button for going to the previous screen or step -->
     <string
         name="back_button_label">Back</string>

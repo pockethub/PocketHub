@@ -11,9 +11,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.ContactsContract;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.github.mobile.android.R;
@@ -41,8 +43,9 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
 
     private AccountManager mAccountManager;
     @InjectView(R.id.message) TextView mMessage;
-    @InjectView(R.id.username_edit) EditText mUsernameEdit;
-    @InjectView(R.id.password_edit) EditText mPasswordEdit;
+    @InjectView(R.id.username_edit) EditText usernameEdit;
+    @InjectView(R.id.password_edit) EditText passwordEdit;
+    @InjectView(R.id.ok_button) Button okButton;
 
 	@Inject
 	private HttpClient<?> client;
@@ -84,9 +87,34 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
 
         setContentView(R.layout.login_activity);
 
+        TextWatcher watcher = validationTextWatcher();
+        usernameEdit.addTextChangedListener(watcher);
+        passwordEdit.addTextChangedListener(watcher);
 
-//        mUsernameEdit.setText(mUsername);
+//        usernameEdit.setText(mUsername);
 //        mMessage.setText(getMessage());
+    }
+
+    private TextWatcher validationTextWatcher() {
+        return new TextWatcher() {
+			public void onTextChanged(CharSequence text, int arg1, int arg2, int arg3) {}
+
+			public void beforeTextChanged(CharSequence text, int arg1, int arg2, int arg3) {}
+
+			public void afterTextChanged(Editable gitDirEditText) { updateUIWithValidation(); }
+
+		};
+    }
+
+    @Override
+    protected void onResume() {
+    	super.onResume();
+    	updateUIWithValidation();
+    }
+
+    private void updateUIWithValidation() {
+        boolean populated = (usernameEdit.length()>0) && (passwordEdit.length()>0);
+        okButton.setEnabled(populated);
     }
 
     /*
@@ -119,9 +147,9 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
     public void handleLogin(View view) {
         Log.d(TAG, "handleLogin hit on"+view);
         if (mRequestNewAccount) {
-            mUsername = mUsernameEdit.getText().toString();
+            mUsername = usernameEdit.getText().toString();
         }
-        mPassword = mPasswordEdit.getText().toString();
+        mPassword = passwordEdit.getText().toString();
         if (isEmpty(mUsername) || isEmpty(mPassword)) {
             mMessage.setText(getMessage());
         } else {

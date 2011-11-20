@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.App" parent="android:Theme.Light.NoTitleBar">
-        <item name="android:fadeScrollbars">true</item>
-    </style>
+    <style name="ExecutionBar">
+            <item name="android:layout_width">match_parent</item>
+            <item name="android:layout_height">wrap_content</item>
+            <item name="android:orientation">horizontal</item>
+            <!-- <item name="android:background">@drawable/executionbar_background</item> -->
+            <item name="android:paddingLeft">14dip</item>
+            <item name="android:paddingRight">14dip</item>
+            <item name="android:paddingTop">6dip</item>
+            <item name="android:paddingBottom">6dip</item>
+            <item name="android:baselineAligned">false</item>
+        </style>
 </resources>
