@@ -18,11 +18,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.github.mobile.android.R;
+import com.github.mobile.android.ui.validation.LeavingBlankTextFieldWarner;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.HttpClient;
+import org.eclipse.egit.github.core.client.RequestException;
 import org.eclipse.egit.github.core.service.UserService;
 import roboguice.activity.RoboAccountAuthenticatorActivity;
 import roboguice.inject.InjectView;
@@ -31,6 +34,7 @@ import roboguice.util.RoboAsyncTask;
 
 import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 import static android.text.TextUtils.isEmpty;
+import static android.widget.Toast.LENGTH_LONG;
 import static com.github.mobile.android.authenticator.Constants.GITHUB_ACCOUNT_TYPE;
 
 public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivity {
@@ -46,6 +50,9 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
     @InjectView(R.id.username_edit) EditText usernameEdit;
     @InjectView(R.id.password_edit) EditText passwordEdit;
     @InjectView(R.id.ok_button) Button okButton;
+    
+    @Inject LeavingBlankTextFieldWarner leavingBlankTextFieldWarner;
+    private TextWatcher watcher = validationTextWatcher();
 
 	@Inject
 	private HttpClient<?> client;
@@ -87,12 +94,16 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
 
         setContentView(R.layout.login_activity);
 
-        TextWatcher watcher = validationTextWatcher();
-        usernameEdit.addTextChangedListener(watcher);
-        passwordEdit.addTextChangedListener(watcher);
+        setNonBlankValidationFor(usernameEdit);
+        setNonBlankValidationFor(passwordEdit);
 
 //        usernameEdit.setText(mUsername);
 //        mMessage.setText(getMessage());
+    }
+
+    private void setNonBlankValidationFor(EditText editText) {
+        editText.addTextChangedListener(watcher);
+        editText.setOnFocusChangeListener(leavingBlankTextFieldWarner);
     }
 
     private TextWatcher validationTextWatcher() {
@@ -113,8 +124,16 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
     }
 
     private void updateUIWithValidation() {
-        boolean populated = (usernameEdit.length()>0) && (passwordEdit.length()>0);
+        boolean populated = populated(usernameEdit) && populated(passwordEdit);
         okButton.setEnabled(populated);
+    }
+
+    private boolean populated(EditText editText) {
+        return editText.length() > 0;
+//        if (!populated) {
+//            editText.setError(getString(R.string.blank_field_warning));
+//        }
+//        return populated;
     }
 
     /*

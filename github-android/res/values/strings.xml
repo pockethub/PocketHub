@@ -52,4 +52,6 @@
     <!-- Title string for Login activity-->
     <string
         name="ui_activity_title">Sign-in</string>
+
+    <string name="blank_field_warning">Please populate this field</string>
 </resources>
