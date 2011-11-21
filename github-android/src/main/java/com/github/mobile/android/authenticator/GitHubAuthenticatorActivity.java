@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.github.mobile.android.R;
+import com.github.mobile.android.TextWatcherAdapter;
 import com.github.mobile.android.ui.validation.LeavingBlankTextFieldWarner;
 import com.google.inject.Inject;
 
@@ -107,11 +108,7 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
     }
 
     private TextWatcher validationTextWatcher() {
-        return new TextWatcher() {
-			public void onTextChanged(CharSequence text, int arg1, int arg2, int arg3) {}
-
-			public void beforeTextChanged(CharSequence text, int arg1, int arg2, int arg3) {}
-
+        return new TextWatcherAdapter() {
 			public void afterTextChanged(Editable gitDirEditText) { updateUIWithValidation(); }
 
 		};
