@@ -46,6 +46,7 @@
                 someone who explicitly knows the class name
             -->
         </activity>
+        <activity android:name=".ui.WelcomeActivity" />
 
         <service android:name=".sync.GitHubSyncAdapterService"
                  android:exported="true" android:process=":repos">

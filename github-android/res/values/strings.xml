@@ -4,6 +4,7 @@
     <string name="news">News</string>
     <string name="pull_requests">Pull Requests</string>
     <string name="issues">Issues</string>
+    <string name="welcome">Welcome to GitHub!</string>
     <string name="gists">Gists</string>
 
         <!-- AuthenticatorActivity -->
