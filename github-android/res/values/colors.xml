@@ -1,6 +1,9 @@
 <resources>
     <color name="background">#FFFFFFFF</color>
     <color name="lightText">#D888</color>
+    <color name="listing">#888</color>
+    <color name="listing_repo">#999</color>
+    <color name="listing_comments">#BCBCBC</color>
     <color name="textColor">#D333</color>
     <color name="darkText">#333</color>
     <color name="gitHubBlue">#4183C4</color>

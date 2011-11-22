@@ -1,25 +1,38 @@
-package com.github.mobile.android.views;
+ package com.github.mobile.android.views;
 
+ import android.text.Html;
+import android.text.SpannableStringBuilder;
 import android.view.View;
-import android.widget.TextView;
-import com.madgag.android.listviews.ViewHolder;
-import org.eclipse.egit.github.core.Issue;
+ import android.widget.TextView;
+ import com.madgag.android.listviews.ViewHolder;
+ import org.eclipse.egit.github.core.Issue;
 
-import static android.text.format.DateUtils.getRelativeTimeSpanString;
-import static com.github.mobile.android.R.id.tv_list_item_date;
-import static com.github.mobile.android.R.id.tv_list_item_shortdesc;
+import static android.text.Html.fromHtml;
+ import static com.github.mobile.android.R.id.*;
+ import static com.github.mobile.android.util.Time.relativeTimeFor;
+import static org.eclipse.egit.github.core.RepositoryId.createFromUrl;
 
-public class IssueViewHolder implements ViewHolder<Issue> {
-	private final TextView createdAt, title;
+ public class IssueViewHolder implements ViewHolder<Issue> {
+
+    public static final String TAG = "IVH";
+    
+	private final TextView number, repo, title, creation, comments;
 
 	public IssueViewHolder(View v) {
-		createdAt = (TextView) v.findViewById(tv_list_item_date);
-        title = (TextView) v.findViewById(tv_list_item_shortdesc);
+        number = (TextView) v.findViewById(tv_issue_number);
+        number.setWidth((int) number.getPaint().measureText("#00"));
+		repo = (TextView) v.findViewById(tv_issue_repo_name);
+        title = (TextView) v.findViewById(tv_issue_title);
+        creation = (TextView) v.findViewById(tv_issue_creation);
+        comments = (TextView) v.findViewById(tv_issue_comments);
 	}
 
 	@Override
 	public void updateViewFor(Issue i) {
+        number.setText("#"+i.getNumber());
+        repo.setText(createFromUrl(i.getHtmlUrl()).getName()+" » ");
 		title.setText(i.getTitle());
-		createdAt.setText(getRelativeTimeSpanString(i.getCreatedAt().getTime()));
+		creation.setText(fromHtml("by <b>"+i.getUser().getLogin()+"</b> "+relativeTimeFor(i.getCreatedAt())));
+		comments.setText(i.getComments()+" comments");
 	}
 }

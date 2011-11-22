@@ -45,7 +45,7 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
 			public List<Issue> loadInBackground() {
 				Log.i(TAG, "started loadInBackground");
 				try {
-					return issueService.getIssues("rtyley","agit", Collections.<String, String>emptyMap());
+					return issueService.getIssues();
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}

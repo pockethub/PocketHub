@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListAdapter;
 import com.github.mobile.android.AsyncLoader;
+import com.github.mobile.android.R;
 import com.github.mobile.android.views.IssueViewHolder;
 import com.github.mobile.android.views.PullRequestViewHolder;
 import com.google.inject.Inject;
@@ -24,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.github.mobile.android.R.layout.issue_list_item;
+import static com.github.mobile.android.R.layout.pull_request_list_item;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 
 public class PullRequestsFragment extends ListLoadingFragment<PullRequest> {
@@ -34,7 +36,7 @@ public class PullRequestsFragment extends ListLoadingFragment<PullRequest> {
 
 	@Override
 	protected ListAdapter adapterFor(List<PullRequest> pullRequests) {
-		return new ViewHoldingListAdapter<PullRequest>(pullRequests, viewInflatorFor(getActivity(), issue_list_item), new ViewHolderFactory<PullRequest>() {
+		return new ViewHoldingListAdapter<PullRequest>(pullRequests, viewInflatorFor(getActivity(), pull_request_list_item), new ViewHolderFactory<PullRequest>() {
 			public ViewHolder<PullRequest> createViewHolderFor(View view) {
 				return new PullRequestViewHolder(view);
 			}
