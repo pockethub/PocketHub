@@ -1,19 +1,8 @@
 package com.github.mobile.android.authenticator;
 
-
 import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 import static android.text.TextUtils.isEmpty;
 import static com.github.mobile.android.authenticator.Constants.GITHUB_ACCOUNT_TYPE;
-
-import com.github.mobile.android.R;
-import com.github.mobile.android.TextWatcherAdapter;
-import com.github.mobile.android.ui.validation.LeavingBlankTextFieldWarner;
-import com.google.inject.Inject;
-import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.client.HttpClient;
-import org.eclipse.egit.github.core.client.RequestException;
-import org.eclipse.egit.github.core.service.UserService;
-
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Dialog;
@@ -31,6 +20,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.github.mobile.android.R;
+import com.github.mobile.android.TextWatcherAdapter;
+import com.github.mobile.android.ui.validation.LeavingBlankTextFieldWarner;
+import com.google.inject.Inject;
+
+import org.apache.http.client.HttpClient;
+import org.eclipse.egit.github.core.User;
+import org.eclipse.egit.github.core.client.RequestException;
+import org.eclipse.egit.github.core.service.UserService;
+
 import roboguice.activity.RoboAccountAuthenticatorActivity;
 import roboguice.inject.InjectView;
 import roboguice.util.RoboAsyncTask;
@@ -65,8 +65,8 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
     private String mAuthtokenType;
 
     /**
-     * If set we are just checking that the user knows their credentials; this
-     * doesn't cause the user's password to be changed on the device.
+     * If set we are just checking that the user knows their credentials; this doesn't cause the user's password to be
+     * changed on the device.
      */
     private Boolean mConfirmCredentials = false;
 
@@ -74,7 +74,6 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
      * for posting authentication attempts back to UI thread
      */
     private final Handler mHandler = new Handler();
-
 
     private String mPassword;
 
@@ -104,8 +103,8 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
         setNonBlankValidationFor(usernameEdit);
         setNonBlankValidationFor(passwordEdit);
 
-//        usernameEdit.setText(mUsername);
-//        mMessage.setText(getMessage());
+        // usernameEdit.setText(mUsername);
+        // mMessage.setText(getMessage());
     }
 
     private void setNonBlankValidationFor(EditText editText) {
@@ -135,10 +134,10 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
 
     private boolean populated(EditText editText) {
         return editText.length() > 0;
-//        if (!populated) {
-//            editText.setError(getString(R.string.blank_field_warning));
-//        }
-//        return populated;
+        // if (!populated) {
+        // editText.setError(getString(R.string.blank_field_warning));
+        // }
+        // return populated;
     }
 
     /*
@@ -163,8 +162,7 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
     }
 
     /**
-     * Handles onClick event on the Submit button. Sends username/password to
-     * the server for authentication.
+     * Handles onClick event on the Submit button. Sends username/password to the server for authentication.
      * <p/>
      * Specified by android:onClick="handleLogin" in the layout xml
      */
@@ -208,9 +206,8 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
     }
 
     /**
-     * Called when response is received from the server for confirm credentials
-     * request. See onAuthenticationResult(). Sets the
-     * AccountAuthenticatorResult which is sent back to the caller.
+     * Called when response is received from the server for confirm credentials request. See onAuthenticationResult().
+     * Sets the AccountAuthenticatorResult which is sent back to the caller.
      */
     protected void finishConfirmCredentials(boolean result) {
         Log.i(TAG, "finishConfirmCredentials()");
@@ -225,10 +222,9 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
     }
 
     /**
-     * Called when response is received from the server for authentication
-     * request. See onAuthenticationResult(). Sets the
-     * AccountAuthenticatorResult which is sent back to the caller. Also sets
-     * the authToken in AccountManager for this account.
+     * Called when response is received from the server for authentication request. See onAuthenticationResult(). Sets
+     * the AccountAuthenticatorResult which is sent back to the caller. Also sets the authToken in AccountManager for
+     * this account.
      */
 
     protected void finishLogin() {
@@ -238,8 +234,7 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
         if (mRequestNewAccount) {
             mAccountManager.addAccountExplicitly(account, mPassword, null);
             // Set contacts sync for this account.
-            ContentResolver.setSyncAutomatically(account,
-                    ContactsContract.AUTHORITY, true);
+            ContentResolver.setSyncAutomatically(account, ContactsContract.AUTHORITY, true);
         } else {
             mAccountManager.setPassword(account, mPassword);
         }
@@ -247,8 +242,7 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
         mAuthtoken = mPassword;
         intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, mUsername);
         intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, GITHUB_ACCOUNT_TYPE);
-        if (mAuthtokenType != null
-                && mAuthtokenType.equals(Constants.AUTHTOKEN_TYPE)) {
+        if (mAuthtokenType != null && mAuthtokenType.equals(Constants.AUTHTOKEN_TYPE)) {
             intent.putExtra(AccountManager.KEY_AUTHTOKEN, mAuthtoken);
         }
         setAccountAuthenticatorResult(intent.getExtras());
@@ -279,15 +273,15 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
             Log.e(TAG, "onAuthenticationResult: failed to authenticate");
             if (mRequestNewAccount) {
                 // "Please enter a valid username/password.
-//                mMessage
-//                    .setText(getText(R.string.login_activity_loginfail_text_both));
+                // mMessage
+                // .setText(getText(R.string.login_activity_loginfail_text_both));
                 mMessage.setText("Please enter a valid username/password.");
             } else {
                 // "Please enter a valid password." (Used when the
                 // account is already in the database but the password
                 // doesn't work.)
-//                mMessage
-//                    .setText(getText(R.string.login_activity_loginfail_text_pwonly));
+                // mMessage
+                // .setText(getText(R.string.login_activity_loginfail_text_pwonly));
                 mMessage.setText("Please enter a valid password.");
             }
         }
@@ -297,18 +291,18 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
      * Returns the message to be displayed at the top of the login dialog box.
      */
     private CharSequence getMessage() {
-//        getString(R.string.label);
-//        if (isEmpty(mUsername)) {
-//            // If no username, then we ask the user to log in using an
-//            // appropriate service.
-//            final CharSequence msg =
-//                getText(R.string.login_activity_newaccount_text);
-//            return msg;
-//        }
-//        if (isEmpty(mPassword)) {
-//            // We have an account but no password
-//            return getText(R.string.login_activity_loginfail_text_pwmissing);
-//        }
+        // getString(R.string.label);
+        // if (isEmpty(mUsername)) {
+        // // If no username, then we ask the user to log in using an
+        // // appropriate service.
+        // final CharSequence msg =
+        // getText(R.string.login_activity_newaccount_text);
+        // return msg;
+        // }
+        // if (isEmpty(mPassword)) {
+        // // We have an account but no password
+        // return getText(R.string.login_activity_loginfail_text_pwmissing);
+        // }
         return null;
     }
 

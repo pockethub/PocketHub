@@ -1,25 +1,21 @@
 package com.github.mobile.android.ui.fragments;
 
-
 import static com.github.mobile.android.R.layout.issue_list_item;
-import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
+import android.content.Loader;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ListAdapter;
 
 import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.views.IssueViewHolder;
 import com.google.inject.Inject;
-import com.madgag.android.listviews.ViewHolder;
-import com.madgag.android.listviews.ViewHolderFactory;
-import com.madgag.android.listviews.ViewHoldingListAdapter;
+
 import java.io.IOException;
 import java.util.List;
+
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.service.IssueService;
-
-import android.os.Bundle;
-import android.support.v4.content.Loader;
-import android.util.Log;
-import android.view.View;
-import android.widget.ListAdapter;
 
 public class IssuesFragment extends ListLoadingFragment<Issue> {
 
@@ -30,11 +26,12 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
 
     @Override
     protected ListAdapter adapterFor(List<Issue> issues) {
-        return new ViewHoldingListAdapter<Issue>(issues, viewInflatorFor(getActivity(), issue_list_item), new ViewHolderFactory<Issue>() {
-            public ViewHolder<Issue> createViewHolderFor(View view) {
-                return new IssueViewHolder(view);
-            }
-        });
+        return new ViewHoldingListAdapter<Issue>(issues, viewInflatorFor(getActivity(), issue_list_item),
+                new ViewHolderFactory<Issue>() {
+                    public ViewHolder<Issue> createViewHolderFor(View view) {
+                        return new IssueViewHolder(view);
+                    }
+                });
     }
 
     @Override

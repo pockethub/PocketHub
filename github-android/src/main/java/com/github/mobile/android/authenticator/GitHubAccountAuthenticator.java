@@ -1,7 +1,6 @@
 package com.github.mobile.android.authenticator;
 
 import static com.github.mobile.android.authenticator.Constants.AUTHTOKEN_TYPE;
-
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
@@ -20,19 +19,21 @@ class GitHubAccountAuthenticator extends AbstractAccountAuthenticator {
     }
 
     /*
-    *  The user has requested to add a new account to the system.  We return an intent that will launch our login screen if the user has not logged in yet,
-    *  otherwise our activity will just pass the user's credentials on to the account manager.
-    */
+     * The user has requested to add a new account to the system. We return an intent that will launch our login screen
+     * if the user has not logged in yet, otherwise our activity will just pass the user's credentials on to the account
+     * manager.
+     */
     @Override
-    public Bundle addAccount(AccountAuthenticatorResponse response, String accountType, String authTokenType, String[] requiredFeatures, Bundle options)
-            throws NetworkErrorException {
+    public Bundle addAccount(AccountAuthenticatorResponse response, String accountType, String authTokenType,
+            String[] requiredFeatures, Bundle options) throws NetworkErrorException {
         final Intent intent = new Intent(mContext, GitHubAuthenticatorActivity.class);
         intent.putExtra(GitHubAuthenticatorActivity.PARAM_AUTHTOKEN_TYPE, authTokenType);
         intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
         final Bundle bundle = new Bundle();
         bundle.putParcelable(AccountManager.KEY_INTENT, intent);
         return bundle;
-// Log.d(AccountAuthenticatorService.TAG, "addAccount " + accountType + " authTokenType=" + authTokenType);
+        // Log.d(AccountAuthenticatorService.TAG, "addAccount " + accountType +
+        // " authTokenType=" + authTokenType);
     }
 
     @Override
@@ -46,7 +47,8 @@ class GitHubAccountAuthenticator extends AbstractAccountAuthenticator {
     }
 
     @Override
-    public Bundle getAuthToken(AccountAuthenticatorResponse response, Account account, String authTokenType, Bundle options) throws NetworkErrorException {
+    public Bundle getAuthToken(AccountAuthenticatorResponse response, Account account, String authTokenType,
+            Bundle options) throws NetworkErrorException {
         return null;
     }
 
@@ -59,14 +61,16 @@ class GitHubAccountAuthenticator extends AbstractAccountAuthenticator {
     }
 
     @Override
-    public Bundle hasFeatures(AccountAuthenticatorResponse response, Account account, String[] features) throws NetworkErrorException {
+    public Bundle hasFeatures(AccountAuthenticatorResponse response, Account account, String[] features)
+            throws NetworkErrorException {
         final Bundle result = new Bundle();
         result.putBoolean(AccountManager.KEY_BOOLEAN_RESULT, false);
         return result;
     }
 
     @Override
-    public Bundle updateCredentials(AccountAuthenticatorResponse response, Account account, String authTokenType, Bundle options) {
+    public Bundle updateCredentials(AccountAuthenticatorResponse response, Account account, String authTokenType,
+            Bundle options) {
         return null;
     }
 }

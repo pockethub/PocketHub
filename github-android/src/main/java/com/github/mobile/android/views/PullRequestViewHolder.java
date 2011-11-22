@@ -6,12 +6,10 @@ import static com.github.mobile.android.R.id.tv_pull_request_submission;
 import static com.github.mobile.android.R.id.tv_pull_request_title;
 import static com.github.mobile.android.R.id.tv_pull_request_update_date;
 import static com.github.mobile.android.util.Time.relativeTimeFor;
-
-import com.madgag.android.listviews.ViewHolder;
-import org.eclipse.egit.github.core.PullRequest;
-
 import android.view.View;
 import android.widget.TextView;
+
+import org.eclipse.egit.github.core.PullRequest;
 
 public class PullRequestViewHolder implements ViewHolder<PullRequest> {
     private final TextView title, description, submission, updated, comments;

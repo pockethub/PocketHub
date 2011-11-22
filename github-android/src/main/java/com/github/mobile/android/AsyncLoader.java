@@ -16,17 +16,17 @@
 
 package com.github.mobile.android;
 
-
+import android.content.AsyncTaskLoader;
 import android.content.Context;
-import android.support.v4.content.AsyncTaskLoader;
 
 /**
- * Loader which extends AsyncTaskLoaders and handles caveats
- * as pointed out in http://code.google.com/p/android/issues/detail?id=14944.
+ * Loader which extends AsyncTaskLoaders and handles caveats as pointed out in
+ * http://code.google.com/p/android/issues/detail?id=14944.
  * <p/>
  * Based on CursorLoader.java in the Fragment compatibility package
  *
- * @param <D> data type
+ * @param <D>
+ *            data type
  * @author Alexander Blom (me@alexanderblom.se)
  */
 public abstract class AsyncLoader<D> extends AsyncTaskLoader<D> {
@@ -47,7 +47,6 @@ public abstract class AsyncLoader<D> extends AsyncTaskLoader<D> {
 
         super.deliverResult(data);
     }
-
 
     @Override
     protected void onStartLoading() {
@@ -75,6 +74,5 @@ public abstract class AsyncLoader<D> extends AsyncTaskLoader<D> {
 
         data = null;
     }
-
 
 }

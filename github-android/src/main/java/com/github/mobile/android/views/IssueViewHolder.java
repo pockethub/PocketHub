@@ -8,12 +8,10 @@ import static com.github.mobile.android.R.id.tv_issue_repo_name;
 import static com.github.mobile.android.R.id.tv_issue_title;
 import static com.github.mobile.android.util.Time.relativeTimeFor;
 import static org.eclipse.egit.github.core.RepositoryId.createFromUrl;
-
-import com.madgag.android.listviews.ViewHolder;
-import org.eclipse.egit.github.core.Issue;
-
 import android.view.View;
 import android.widget.TextView;
+
+import org.eclipse.egit.github.core.Issue;
 
 public class IssueViewHolder implements ViewHolder<Issue> {
 

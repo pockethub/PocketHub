@@ -1,9 +1,12 @@
 package com.github.mobile.android;
 
-
 import static com.github.mobile.android.R.string.gists;
 import static com.github.mobile.android.R.string.issues;
 import static com.github.mobile.android.R.string.pull_requests;
+import android.accounts.Account;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.TabHost;
 
 import com.github.mobile.android.gist.GistFragment;
 import com.github.mobile.android.ui.WelcomeActivity;
@@ -12,11 +15,6 @@ import com.github.mobile.android.ui.fragments.PullRequestsFragment;
 import com.github.mobile.android.ui.fragments.TabsAdapter;
 import com.google.inject.Inject;
 
-import android.accounts.Account;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.widget.TabHost;
 import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContextScopedProvider;
 

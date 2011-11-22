@@ -1,13 +1,5 @@
 package com.github.mobile.android.gist;
 
-import com.github.mobile.android.R;
-import com.github.mobile.android.TextWatcherAdapter;
-import com.google.inject.Inject;
-import java.util.Collections;
-import org.eclipse.egit.github.core.Gist;
-import org.eclipse.egit.github.core.GistFile;
-import org.eclipse.egit.github.core.service.GistService;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -20,6 +12,17 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.github.mobile.android.R;
+import com.github.mobile.android.TextWatcherAdapter;
+import com.google.inject.Inject;
+
+import java.util.Collections;
+
+import org.eclipse.egit.github.core.Gist;
+import org.eclipse.egit.github.core.GistFile;
+import org.eclipse.egit.github.core.service.GistService;
+
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContextScopedProvider;
 import roboguice.inject.InjectView;
@@ -89,22 +92,19 @@ public class ShareGistActivity extends RoboActivity {
                 file.setContent(content);
                 file.setFilename(name);
                 gist.setFiles(Collections.singletonMap(name, file));
-                return gistServiceProvider.get(ShareGistActivity.this)
-                        .createGist(gist);
+                return gistServiceProvider.get(ShareGistActivity.this).createGist(gist);
             }
 
             protected void onSuccess(Gist gist) throws Exception {
                 progress.cancel();
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(gist
-                        .getHtmlUrl())));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(gist.getHtmlUrl())));
                 finish();
             }
 
             protected void onException(Exception e) throws RuntimeException {
                 progress.cancel();
                 Log.e(TAG, e.getMessage(), e);
-                Toast.makeText(ShareGistActivity.this, e.getMessage(), 5000)
-                        .show();
+                Toast.makeText(ShareGistActivity.this, e.getMessage(), 5000).show();
             }
         }.execute();
     }

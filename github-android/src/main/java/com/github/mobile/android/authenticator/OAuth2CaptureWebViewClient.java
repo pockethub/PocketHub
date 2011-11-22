@@ -25,21 +25,21 @@ class OAuth2CaptureWebViewClient extends WebViewClient {
 
     public void onPageFinished(WebView view, String url) {
         Log.i(TAG, "Finished loading URL: " + url);
-//                if (progressBar.isShowing()) {
-//                    progressBar.dismiss();
-//                }
+        // if (progressBar.isShowing()) {
+        // progressBar.dismiss();
+        // }
     }
 
     public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
         Log.e(TAG, "Error: " + description);
         Toast.makeText(view.getContext(), "Oh no! " + description, Toast.LENGTH_SHORT).show();
-//                alertDialog.setTitle("Error");
-//                alertDialog.setMessage(description);
-//                alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        return;
-//                    }
-//                });
-//                alertDialog.show();
+        // alertDialog.setTitle("Error");
+        // alertDialog.setMessage(description);
+        // alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+        // public void onClick(DialogInterface dialog, int which) {
+        // return;
+        // }
+        // });
+        // alertDialog.show();
     }
 }

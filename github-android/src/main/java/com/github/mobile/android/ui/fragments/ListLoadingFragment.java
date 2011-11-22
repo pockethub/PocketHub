@@ -1,18 +1,17 @@
 package com.github.mobile.android.ui.fragments;
 
-
-import java.util.List;
-
+import android.app.LoaderManager;
+import android.content.Loader;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+
+import java.util.List;
+
 import roboguice.fragment.RoboListFragment;
 
-public abstract class ListLoadingFragment<E> extends RoboListFragment
-        implements LoaderManager.LoaderCallbacks<List<E>> {
+public abstract class ListLoadingFragment<E> extends RoboListFragment implements LoaderManager.LoaderCallbacks<List<E>> {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -23,7 +22,7 @@ public abstract class ListLoadingFragment<E> extends RoboListFragment
         // Start out with a progress indicator.
         setListShown(false);
 
-        // Prepare the loader.  Either re-connect with an existing one,
+        // Prepare the loader. Either re-connect with an existing one,
         // or start a new one.
         getLoaderManager().initLoader(0, null, this);
     }

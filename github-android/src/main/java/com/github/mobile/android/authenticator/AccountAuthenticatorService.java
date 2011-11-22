@@ -5,7 +5,6 @@ import static android.content.ContentResolver.addPeriodicSync;
 import static android.content.ContentResolver.setIsSyncable;
 import static android.content.ContentResolver.setSyncAutomatically;
 import static com.github.mobile.android.authenticator.Constants.GITHUB_PROVIDER_AUTHORITY;
-
 import android.accounts.Account;
 import android.app.Service;
 import android.content.Intent;

@@ -1,14 +1,14 @@
 package com.github.mobile.android;
 
 import static java.util.Arrays.asList;
-
-import com.google.inject.Module;
-import java.util.List;
-
 import android.app.Application;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.util.Log;
+
+import com.google.inject.Module;
+
+import java.util.List;
 
 /**
  * Main GitHub application

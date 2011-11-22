@@ -11,7 +11,6 @@ release.properties
 *.iws
 *.iml
 *.ipr
-.settings
 gen
 */seed.txt
 notes

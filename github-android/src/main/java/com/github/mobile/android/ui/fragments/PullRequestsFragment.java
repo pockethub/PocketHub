@@ -1,26 +1,22 @@
 package com.github.mobile.android.ui.fragments;
 
-
 import static com.github.mobile.android.R.layout.pull_request_list_item;
-import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
+import android.content.Loader;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ListAdapter;
 
 import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.views.PullRequestViewHolder;
 import com.google.inject.Inject;
-import com.madgag.android.listviews.ViewHolder;
-import com.madgag.android.listviews.ViewHolderFactory;
-import com.madgag.android.listviews.ViewHoldingListAdapter;
+
 import java.io.IOException;
 import java.util.List;
+
 import org.eclipse.egit.github.core.PullRequest;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.service.PullRequestService;
-
-import android.os.Bundle;
-import android.support.v4.content.Loader;
-import android.util.Log;
-import android.view.View;
-import android.widget.ListAdapter;
 
 public class PullRequestsFragment extends ListLoadingFragment<PullRequest> {
 
@@ -31,7 +27,8 @@ public class PullRequestsFragment extends ListLoadingFragment<PullRequest> {
 
     @Override
     protected ListAdapter adapterFor(List<PullRequest> pullRequests) {
-        return new ViewHoldingListAdapter<PullRequest>(pullRequests, viewInflatorFor(getActivity(), pull_request_list_item), new ViewHolderFactory<PullRequest>() {
+        return new ViewHoldingListAdapter<PullRequest>(pullRequests, viewInflatorFor(getActivity(),
+                pull_request_list_item), new ViewHolderFactory<PullRequest>() {
             public ViewHolder<PullRequest> createViewHolderFor(View view) {
                 return new PullRequestViewHolder(view);
             }

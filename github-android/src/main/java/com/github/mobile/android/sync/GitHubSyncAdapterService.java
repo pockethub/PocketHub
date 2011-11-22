@@ -1,9 +1,10 @@
 package com.github.mobile.android.sync;
 
-import com.google.inject.Inject;
-
 import android.content.Intent;
 import android.os.IBinder;
+
+import com.google.inject.Inject;
+
 import roboguice.inject.ContextScopedProvider;
 import roboguice.service.RoboService;
 
