@@ -11,6 +11,8 @@ import static org.eclipse.egit.github.core.RepositoryId.createFromUrl;
 import android.view.View;
 import android.widget.TextView;
 
+import com.madgag.android.listviews.ViewHolder;
+
 import org.eclipse.egit.github.core.Issue;
 
 public class IssueViewHolder implements ViewHolder<Issue> {

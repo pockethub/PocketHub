@@ -15,12 +15,17 @@
  */
 package com.github.mobile.android.ui.fragments;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TabHost;
+import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabWidget;
 
 import java.util.ArrayList;
@@ -33,8 +38,8 @@ import java.util.ArrayList;
  * listens to changes in tabs, and takes care of switch to the correct paged in the ViewPager whenever the selected tab
  * changes.
  */
-public class TabsAdapter extends FragmentPagerAdapter implements TabHost.OnTabChangeListener,
-        ViewPager.OnPageChangeListener {
+public class TabsAdapter extends FragmentPagerAdapter implements OnTabChangeListener,
+        OnPageChangeListener {
     private final Context mContext;
     private final TabHost mTabHost;
     private final ViewPager mViewPager;

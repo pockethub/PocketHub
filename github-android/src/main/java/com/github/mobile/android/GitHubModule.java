@@ -10,8 +10,8 @@ import com.google.inject.Provides;
 
 import java.io.IOException;
 
-import org.apache.http.client.HttpClient;
 import org.eclipse.egit.github.core.User;
+import org.eclipse.egit.github.core.client.HttpClient;
 import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.PullRequestService;

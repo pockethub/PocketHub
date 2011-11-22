@@ -26,8 +26,8 @@ import com.github.mobile.android.TextWatcherAdapter;
 import com.github.mobile.android.ui.validation.LeavingBlankTextFieldWarner;
 import com.google.inject.Inject;
 
-import org.apache.http.client.HttpClient;
 import org.eclipse.egit.github.core.User;
+import org.eclipse.egit.github.core.client.HttpClient;
 import org.eclipse.egit.github.core.client.RequestException;
 import org.eclipse.egit.github.core.service.UserService;
 

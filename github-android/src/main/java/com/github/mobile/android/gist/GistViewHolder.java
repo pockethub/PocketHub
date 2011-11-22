@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.mobile.android.R;
+import com.madgag.android.listviews.ViewHolder;
 
 import org.eclipse.egit.github.core.Gist;
 

@@ -1,8 +1,9 @@
 package com.github.mobile.android.ui.fragments;
 
 import static com.github.mobile.android.R.layout.issue_list_item;
-import android.content.Loader;
+import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.os.Bundle;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListAdapter;
@@ -10,6 +11,9 @@ import android.widget.ListAdapter;
 import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.views.IssueViewHolder;
 import com.google.inject.Inject;
+import com.madgag.android.listviews.ViewHolder;
+import com.madgag.android.listviews.ViewHolderFactory;
+import com.madgag.android.listviews.ViewHoldingListAdapter;
 
 import java.io.IOException;
 import java.util.List;

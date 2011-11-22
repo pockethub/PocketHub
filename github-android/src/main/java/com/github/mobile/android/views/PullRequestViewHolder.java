@@ -9,6 +9,8 @@ import static com.github.mobile.android.util.Time.relativeTimeFor;
 import android.view.View;
 import android.widget.TextView;
 
+import com.madgag.android.listviews.ViewHolder;
+
 import org.eclipse.egit.github.core.PullRequest;
 
 public class PullRequestViewHolder implements ViewHolder<PullRequest> {

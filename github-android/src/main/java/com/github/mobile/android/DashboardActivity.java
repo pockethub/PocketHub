@@ -6,6 +6,7 @@ import static com.github.mobile.android.R.string.pull_requests;
 import android.accounts.Account;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.widget.TabHost;
 
 import com.github.mobile.android.gist.GistFragment;
