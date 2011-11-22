@@ -21,19 +21,21 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/tv_pull_request_description"
-		android:text="[rtyley submitted to slapperwan/gh4a June 20, 2011]" />
+        android:background="@drawable/label_background"
+        android:singleLine="true"
+		android:text="rtyley submitted to slapperwan/gh4a June 20, 1490" />
 	<TextView
 		android:id="@+id/tv_pull_request_update_date"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/tv_pull_request_submission"
 		android:layout_alignBaseline="@id/tv_pull_request_submission"
-		android:text="Updated [August 5, 2011]" />
+		android:text="Updated August 05, 1871" />
 	<TextView
 		android:id="@+id/tv_pull_request_comments"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentRight="true"
 		android:layout_alignBaseline="@id/tv_pull_request_submission"
-		android:text="[10] comments" />
+		android:text="99 comments" />
 </RelativeLayout>
