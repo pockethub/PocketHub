@@ -70,9 +70,9 @@
                     <extensions>true</extensions>
                     <configuration>
                         <dex>
-                          <jvmArguments>
-                            <jvmArgument>-Xmx512m</jvmArgument>
-                          </jvmArguments>
+                            <jvmArguments>
+                                <jvmArgument>-Xmx512m</jvmArgument>
+                            </jvmArguments>
                         </dex>
                         <sdk>
                             <platform>13</platform>

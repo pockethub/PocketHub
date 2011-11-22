@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 class OAuth2CaptureWebViewClient extends WebViewClient {
     private static final String TAG = "OAuthWebViewClient";
-    private final String successRedirectUrl= "https://github.com/rtyley/agit";
+    private final String successRedirectUrl = "https://github.com/rtyley/agit";
 
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         Log.i(TAG, "Processing webview url click...");
@@ -16,7 +16,7 @@ class OAuth2CaptureWebViewClient extends WebViewClient {
         if (url.contains(successRedirectUrl)) {
             Uri uri = Uri.parse(url);
             String code = uri.getQueryParameter("code");
-            Log.i(TAG,"got code ="+code);
+            Log.i(TAG, "got code =" + code);
         } else {
             view.loadUrl(url);
         }
@@ -24,7 +24,7 @@ class OAuth2CaptureWebViewClient extends WebViewClient {
     }
 
     public void onPageFinished(WebView view, String url) {
-        Log.i(TAG, "Finished loading URL: " +url);
+        Log.i(TAG, "Finished loading URL: " + url);
 //                if (progressBar.isShowing()) {
 //                    progressBar.dismiss();
 //                }

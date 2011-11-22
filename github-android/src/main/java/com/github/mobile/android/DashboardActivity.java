@@ -1,30 +1,34 @@
 package com.github.mobile.android;
 
 
-import android.accounts.Account;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.widget.TabHost;
+import static com.github.mobile.android.R.string.gists;
+import static com.github.mobile.android.R.string.issues;
+import static com.github.mobile.android.R.string.pull_requests;
+
 import com.github.mobile.android.gist.GistFragment;
 import com.github.mobile.android.ui.WelcomeActivity;
 import com.github.mobile.android.ui.fragments.IssuesFragment;
 import com.github.mobile.android.ui.fragments.PullRequestsFragment;
 import com.github.mobile.android.ui.fragments.TabsAdapter;
 import com.google.inject.Inject;
+
+import android.accounts.Account;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.widget.TabHost;
 import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContextScopedProvider;
 
-import static com.github.mobile.android.R.string.*;
-
 public class DashboardActivity extends RoboFragmentActivity {
-	public static final String BUNDLE_KEY_TAB = "tab";
-	
-	private TabHost tabHost;
+    public static final String BUNDLE_KEY_TAB = "tab";
+
+    private TabHost tabHost;
     private ViewPager viewPager;
     private TabsAdapter tabsAdapter;
 
-    @Inject ContextScopedProvider<Account> currentAccountProvider;
+    @Inject
+    ContextScopedProvider<Account> currentAccountProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,16 +54,16 @@ public class DashboardActivity extends RoboFragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (currentAccountProvider.get(this)==null) {
+        if (currentAccountProvider.get(this) == null) {
             startActivityForResult(new Intent(this, WelcomeActivity.class), 0);
         }
     }
 
     private void addTab(String tag, int indicator, Class<?> clazz) {
-		tabsAdapter.addTab(tabHost.newTabSpec(tag).setIndicator(this.getResources().getString(indicator)), clazz, null);
-	}
+        tabsAdapter.addTab(tabHost.newTabSpec(tag).setIndicator(this.getResources().getString(indicator)), clazz, null);
+    }
 
-	@Override
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(BUNDLE_KEY_TAB, tabHost.getCurrentTabTag());

@@ -1,6 +1,19 @@
 package com.github.mobile.android.authenticator;
 
 
+import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
+import static android.text.TextUtils.isEmpty;
+import static com.github.mobile.android.authenticator.Constants.GITHUB_ACCOUNT_TYPE;
+
+import com.github.mobile.android.R;
+import com.github.mobile.android.TextWatcherAdapter;
+import com.github.mobile.android.ui.validation.LeavingBlankTextFieldWarner;
+import com.google.inject.Inject;
+import org.eclipse.egit.github.core.User;
+import org.eclipse.egit.github.core.client.HttpClient;
+import org.eclipse.egit.github.core.client.RequestException;
+import org.eclipse.egit.github.core.service.UserService;
+
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Dialog;
@@ -18,25 +31,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-import com.github.mobile.android.R;
-import com.github.mobile.android.TextWatcherAdapter;
-import com.github.mobile.android.ui.validation.LeavingBlankTextFieldWarner;
-import com.google.inject.Inject;
-
-import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.client.HttpClient;
-import org.eclipse.egit.github.core.client.RequestException;
-import org.eclipse.egit.github.core.service.UserService;
 import roboguice.activity.RoboAccountAuthenticatorActivity;
 import roboguice.inject.InjectView;
 import roboguice.util.RoboAsyncTask;
-
-
-import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
-import static android.text.TextUtils.isEmpty;
-import static android.widget.Toast.LENGTH_LONG;
-import static com.github.mobile.android.authenticator.Constants.GITHUB_ACCOUNT_TYPE;
 
 public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivity {
     public static final String PARAM_CONFIRMCREDENTIALS = "confirmCredentials";
@@ -47,16 +44,21 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
     private static final String TAG = "GHAuthenticatorActivity";
 
     private AccountManager mAccountManager;
-    @InjectView(R.id.message) TextView mMessage;
-    @InjectView(R.id.username_edit) EditText usernameEdit;
-    @InjectView(R.id.password_edit) EditText passwordEdit;
-    @InjectView(R.id.ok_button) Button okButton;
-    
-    @Inject LeavingBlankTextFieldWarner leavingBlankTextFieldWarner;
+    @InjectView(R.id.message)
+    TextView mMessage;
+    @InjectView(R.id.username_edit)
+    EditText usernameEdit;
+    @InjectView(R.id.password_edit)
+    EditText passwordEdit;
+    @InjectView(R.id.ok_button)
+    Button okButton;
+
+    @Inject
+    LeavingBlankTextFieldWarner leavingBlankTextFieldWarner;
     private TextWatcher watcher = validationTextWatcher();
 
-	@Inject
-	private HttpClient<?> client;
+    @Inject
+    private HttpClient<?> client;
 
     private RoboAsyncTask<User> authenticationTask;
     private String mAuthtoken;
@@ -68,13 +70,17 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
      */
     private Boolean mConfirmCredentials = false;
 
-    /** for posting authentication attempts back to UI thread */
+    /**
+     * for posting authentication attempts back to UI thread
+     */
     private final Handler mHandler = new Handler();
 
 
     private String mPassword;
 
-    /** Was the original caller asking for an entirely new account? */
+    /**
+     * Was the original caller asking for an entirely new account?
+     */
     protected boolean mRequestNewAccount = false;
 
     private String mUsername;
@@ -109,15 +115,17 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
 
     private TextWatcher validationTextWatcher() {
         return new TextWatcherAdapter() {
-			public void afterTextChanged(Editable gitDirEditText) { updateUIWithValidation(); }
+            public void afterTextChanged(Editable gitDirEditText) {
+                updateUIWithValidation();
+            }
 
-		};
+        };
     }
 
     @Override
     protected void onResume() {
-    	super.onResume();
-    	updateUIWithValidation();
+        super.onResume();
+        updateUIWithValidation();
     }
 
     private void updateUIWithValidation() {
@@ -157,11 +165,11 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
     /**
      * Handles onClick event on the Submit button. Sends username/password to
      * the server for authentication.
-     *
+     * <p/>
      * Specified by android:onClick="handleLogin" in the layout xml
      */
     public void handleLogin(View view) {
-        Log.d(TAG, "handleLogin hit on"+view);
+        Log.d(TAG, "handleLogin hit on" + view);
         if (mRequestNewAccount) {
             mUsername = usernameEdit.getText().toString();
         }
@@ -181,7 +189,7 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
                 @Override
                 protected void onException(Exception e) throws RuntimeException {
                     mMessage.setText(e.getMessage());
-                    if (e instanceof RequestException && ((RequestException) e).getStatus()==401) {
+                    if (e instanceof RequestException && ((RequestException) e).getStatus() == 401) {
                         passwordEdit.setText("");
                     }
                 }
@@ -203,7 +211,6 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
      * Called when response is received from the server for confirm credentials
      * request. See onAuthenticationResult(). Sets the
      * AccountAuthenticatorResult which is sent back to the caller.
-     *
      */
     protected void finishConfirmCredentials(boolean result) {
         Log.i(TAG, "finishConfirmCredentials()");
@@ -218,12 +225,10 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
     }
 
     /**
-     *
      * Called when response is received from the server for authentication
      * request. See onAuthenticationResult(). Sets the
      * AccountAuthenticatorResult which is sent back to the caller. Also sets
      * the authToken in AccountManager for this account.
-     *
      */
 
     protected void finishLogin() {
@@ -243,7 +248,7 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
         intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, mUsername);
         intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, GITHUB_ACCOUNT_TYPE);
         if (mAuthtokenType != null
-            && mAuthtokenType.equals(Constants.AUTHTOKEN_TYPE)) {
+                && mAuthtokenType.equals(Constants.AUTHTOKEN_TYPE)) {
             intent.putExtra(AccountManager.KEY_AUTHTOKEN, mAuthtoken);
         }
         setAccountAuthenticatorResult(intent.getExtras());
@@ -254,6 +259,7 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
     protected void hideProgress() {
         dismissDialog(0);
     }
+
     protected void showProgress() {
         showDialog(0);
     }
@@ -275,14 +281,14 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
                 // "Please enter a valid username/password.
 //                mMessage
 //                    .setText(getText(R.string.login_activity_loginfail_text_both));
-				mMessage.setText("Please enter a valid username/password.");
+                mMessage.setText("Please enter a valid username/password.");
             } else {
                 // "Please enter a valid password." (Used when the
                 // account is already in the database but the password
                 // doesn't work.)
 //                mMessage
 //                    .setText(getText(R.string.login_activity_loginfail_text_pwonly));
-				mMessage.setText("Please enter a valid password.");
+                mMessage.setText("Please enter a valid password.");
             }
         }
     }

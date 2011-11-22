@@ -11,8 +11,8 @@
             android:theme="@style/Theme.App"
             android:icon="@drawable/github_app_icon"
             android:label="@string/github_app_name"
-            android:hardwareAccelerated="true" >
-        
+            android:hardwareAccelerated="true">
+
         <activity android:name="DashboardActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -20,13 +20,13 @@
             </intent-filter>
         </activity>
 
-		<activity android:name=".gist.ShareGistActivity">
-			<intent-filter>
-				<action android:name="android.intent.action.SEND" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<data android:mimeType="text/plain" />
-			</intent-filter>
-		</activity>
+        <activity android:name=".gist.ShareGistActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+        </activity>
 
         <service android:name=".authenticator.AccountAuthenticatorService"
                  android:exported="true" android:process=":auth">
@@ -37,16 +37,16 @@
         </service>
 
         <activity
-            android:name=".authenticator.GitHubAuthenticatorActivity"
-            android:label="@string/ui_activity_title"
-            android:excludeFromRecents="true"
-            >
+                android:name=".authenticator.GitHubAuthenticatorActivity"
+                android:label="@string/ui_activity_title"
+                android:excludeFromRecents="true"
+                >
             <!--
                 No intent-filter here! This activity is only ever launched by
                 someone who explicitly knows the class name
             -->
         </activity>
-        <activity android:name=".ui.WelcomeActivity" />
+        <activity android:name=".ui.WelcomeActivity"/>
 
         <service android:name=".sync.GitHubSyncAdapterService"
                  android:exported="true" android:process=":repos">
@@ -77,8 +77,8 @@
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
 
     <supports-screens android:smallScreens="true"
-                  android:normalScreens="true"
-                  android:largeScreens="true"
-                  android:xlargeScreens="true" />
+                      android:normalScreens="true"
+                      android:largeScreens="true"
+                      android:xlargeScreens="true"/>
 
 </manifest> 

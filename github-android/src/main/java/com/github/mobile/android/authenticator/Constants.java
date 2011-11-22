@@ -2,7 +2,7 @@ package com.github.mobile.android.authenticator;
 
 public class Constants {
 
-	public static final String GITHUB_ACCOUNT_TYPE = "com.github";
+    public static final String GITHUB_ACCOUNT_TYPE = "com.github";
 
     public static final String GITHUB_ACCOUNT_NAME = "GitHub"; // Shouldn't vary with Locale: user might get multiple accounts
 

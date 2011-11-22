@@ -14,14 +14,14 @@
     <packaging>apk</packaging>
     <name>GitHub for Android</name>
 
-	<!-- Temporary repository until GitHub Java API updates are released -->
-	<repositories>
-		<repository>
-			<id>oss-snapshots</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-		</repository>
-	</repositories>
-    
+    <!-- Temporary repository until GitHub Java API updates are released -->
+    <repositories>
+        <repository>
+            <id>oss-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -39,10 +39,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-          <groupId>com.google.inject</groupId>
-          <artifactId>guice</artifactId>
-          <version>3.0</version>
-          <classifier>no_aop</classifier>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>3.0</version>
+            <classifier>no_aop</classifier>
         </dependency>
         <dependency>
             <groupId>com.madgag</groupId>
@@ -90,31 +90,31 @@
     </build>
 
     <profiles>
-    	<profile>
-		    <id>ci</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>com.github.github</groupId>
-						<artifactId>downloads-maven-plugin</artifactId>
-						<version>0.2</version>
-						<configuration>
-							<description>${project.name} ${project.version}</description>
-							<override>true</override>
-							<includeAttached>false</includeAttached>
-						</configuration>
-						<executions>
-							<execution>
-								<goals>
-									<goal>upload</goal>
-								</goals>
-								<phase>install</phase>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-    	</profile>
+        <profile>
+            <id>ci</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.github</groupId>
+                        <artifactId>downloads-maven-plugin</artifactId>
+                        <version>0.2</version>
+                        <configuration>
+                            <description>${project.name} ${project.version}</description>
+                            <override>true</override>
+                            <includeAttached>false</includeAttached>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>upload</goal>
+                                </goals>
+                                <phase>install</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
         <profile>
             <id>release</id>
             <!-- via this activation the profile is automatically used when the release is done with the maven release

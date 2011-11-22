@@ -1,5 +1,7 @@
 package com.github.mobile.android.sync;
 
+import com.google.inject.Inject;
+
 import android.accounts.Account;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
@@ -7,8 +9,6 @@ import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
 import android.util.Log;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import roboguice.inject.ContextSingleton;
 
 @ContextSingleton
@@ -22,7 +22,7 @@ class GitHubSyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
-		Log.d(TAG, "Really, I should be syncing stuff");
+        Log.d(TAG, "Really, I should be syncing stuff");
     }
 
     @Override

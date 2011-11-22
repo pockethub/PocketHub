@@ -1,17 +1,16 @@
 package com.github.mobile.android.ui.validation;
 
+import static com.github.mobile.android.R.string.blank_field_warning;
+
 import android.view.View;
 import android.widget.EditText;
-import com.github.mobile.android.R;
-import com.google.inject.Inject;
 import roboguice.inject.InjectResource;
-
-import static com.github.mobile.android.R.string.blank_field_warning;
 
 
 public class LeavingBlankTextFieldWarner implements View.OnFocusChangeListener {
 
-    @InjectResource(blank_field_warning) String warning;
+    @InjectResource(blank_field_warning)
+    String warning;
 
     @Override
     public void onFocusChange(View view, boolean hasFocus) {

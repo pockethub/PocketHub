@@ -1,11 +1,12 @@
 package com.github.mobile.android.ui;
 
+import com.github.mobile.android.R;
+import com.github.mobile.android.authenticator.GitHubAuthenticatorActivity;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import com.github.mobile.android.R;
-import com.github.mobile.android.authenticator.GitHubAuthenticatorActivity;
 
 public class WelcomeActivity extends Activity {
     @Override
