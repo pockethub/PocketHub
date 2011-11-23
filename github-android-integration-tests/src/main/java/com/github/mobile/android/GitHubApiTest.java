@@ -1,10 +1,10 @@
 package com.github.mobile.android;
 
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.service.RepositoryService;
-
 import android.test.AndroidTestCase;
 import android.util.Log;
+
+import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.service.RepositoryService;
 
 public class GitHubApiTest extends AndroidTestCase {
 

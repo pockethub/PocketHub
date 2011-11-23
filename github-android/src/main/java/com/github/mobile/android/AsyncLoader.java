@@ -25,8 +25,7 @@ import android.support.v4.content.AsyncTaskLoader;
  * <p/>
  * Based on CursorLoader.java in the Fragment compatibility package
  *
- * @param <D>
- *            data type
+ * @param <D> data type
  * @author Alexander Blom (me@alexanderblom.se)
  */
 public abstract class AsyncLoader<D> extends AsyncTaskLoader<D> {

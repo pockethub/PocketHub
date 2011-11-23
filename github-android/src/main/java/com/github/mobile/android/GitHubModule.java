@@ -30,7 +30,7 @@ public class GitHubModule extends AbstractModule {
         Account[] accounts = accountManager.getAccountsByType(GITHUB_ACCOUNT_TYPE);
         if (accounts.length > 0) {
             return accounts[0]; // at some point, support more than one github
-                                // account, ie vanilla and fi
+            // account, ie vanilla and fi
         }
         return null;
     }

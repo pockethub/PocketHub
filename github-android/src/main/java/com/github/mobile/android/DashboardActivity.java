@@ -59,7 +59,8 @@ public class DashboardActivity extends RoboFragmentActivity {
     }
 
     private void addTab(String tag, int indicator, Class<?> clazz) {
-        tabsAdapter.addTab(tabHost.newTabSpec(tag).setIndicator(this.getResources().getString(indicator)), clazz, null);
+        tabsAdapter.addTab(tabHost.newTabSpec(tag).setIndicator(this.getResources().getString(indicator)), clazz,
+                null);
     }
 
     @Override

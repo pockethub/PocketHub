@@ -20,12 +20,13 @@ class GitHubAccountAuthenticator extends AbstractAccountAuthenticator {
 
     /*
      * The user has requested to add a new account to the system. We return an intent that will launch our login screen
-     * if the user has not logged in yet, otherwise our activity will just pass the user's credentials on to the account
+     * if the user has not logged in yet, otherwise our activity will just pass the user's credentials on to the
+     * account
      * manager.
      */
     @Override
     public Bundle addAccount(AccountAuthenticatorResponse response, String accountType, String authTokenType,
-            String[] requiredFeatures, Bundle options) throws NetworkErrorException {
+                             String[] requiredFeatures, Bundle options) throws NetworkErrorException {
         final Intent intent = new Intent(mContext, GitHubAuthenticatorActivity.class);
         intent.putExtra(GitHubAuthenticatorActivity.PARAM_AUTHTOKEN_TYPE, authTokenType);
         intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
@@ -48,7 +49,7 @@ class GitHubAccountAuthenticator extends AbstractAccountAuthenticator {
 
     @Override
     public Bundle getAuthToken(AccountAuthenticatorResponse response, Account account, String authTokenType,
-            Bundle options) throws NetworkErrorException {
+                               Bundle options) throws NetworkErrorException {
         return null;
     }
 
@@ -70,7 +71,7 @@ class GitHubAccountAuthenticator extends AbstractAccountAuthenticator {
 
     @Override
     public Bundle updateCredentials(AccountAuthenticatorResponse response, Account account, String authTokenType,
-            Bundle options) {
+                                    Bundle options) {
         return null;
     }
 }

@@ -23,7 +23,7 @@ class GitHubSyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider,
-            SyncResult syncResult) {
+                              SyncResult syncResult) {
         Log.d(TAG, "Really, I should be syncing stuff");
     }
 
