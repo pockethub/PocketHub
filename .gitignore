@@ -10,7 +10,6 @@ temp-testng-customsuite.xml
 release.properties
 *.iws
 *.iml
-*.ipr
 gen
 */seed.txt
 notes
