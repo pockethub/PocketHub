@@ -37,5 +37,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignBaseline="@id/tv_pull_request_submission"
+            android:textColor="@color/listing_comments"
             android:text="99 comments"/>
 </RelativeLayout>

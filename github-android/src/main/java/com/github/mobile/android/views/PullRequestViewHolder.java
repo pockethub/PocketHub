@@ -31,9 +31,9 @@ public class PullRequestViewHolder implements ViewHolder<PullRequest> {
     public void updateViewFor(PullRequest pr) {
         title.setText(pr.getTitle());
         description.setText(pr.getBody());
-        submission.setText(relativeTimeFor(pr.getCreatedAt()));
         String repo = createFromUrl(pr.getHtmlUrl()).generateId();
-        updated.setText(pr.getUser().getLogin()+" submitted to "+repo +" "+relativeTimeFor(pr.getUpdatedAt()));
+        submission.setText(pr.getUser().getLogin()+" submitted to "+repo +" "+relativeTimeFor(pr.getCreatedAt()));
+        updated.setText(relativeTimeFor(pr.getUpdatedAt()));
         comments.setText(pr.getComments() + " comments");
     }
 }
