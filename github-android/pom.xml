@@ -45,9 +45,9 @@
             <classifier>no_aop</classifier>
         </dependency>
         <dependency>
-            <groupId>com.madgag</groupId>
+            <groupId>org.roboguice</groupId>
             <artifactId>roboguice</artifactId>
-            <version>2.0b1040</version>
+            <version>2.0b3</version>
         </dependency>
         <dependency>
             <groupId>android.support</groupId>
