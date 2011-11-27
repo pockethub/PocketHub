@@ -79,10 +79,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>com.pyx4me</groupId>
-                <artifactId>proguard-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
             </plugin>
@@ -185,11 +181,6 @@
                                     <file>${project.build.directory}/${project.artifactId}-signed-aligned.apk</file>
                                     <type>apk</type>
                                     <classifier>signed-aligned</classifier>
-                                </artifact>
-                                <artifact>
-                                    <file>${project.build.directory}/proguard_map.txt</file>
-                                    <type>map</type>
-                                    <classifier>release</classifier>
                                 </artifact>
                             </artifacts>
                         </configuration>
