@@ -1,43 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
                 android:padding="10dip">
     <TextView
             android:id="@+id/tv_pull_request_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:text="[Add 'Clone' menu option to the Repository viewer activity]"/>
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:text="Add cool feature of great importance to me and other wise folk"/>
     <TextView
             android:id="@+id/tv_pull_request_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_pull_request_title"
             android:singleLine="true"
-            android:text="[This change is enough to get the lines.py working on Ubuntu with Python 2.7.1, so long as python-tk is installed.]"/>
-    <TextView
-            android:id="@+id/tv_pull_request_submission"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_pull_request_description"
-            android:background="@drawable/label_background"
-            android:singleLine="true"
-            android:text="rtyley submitted to slapperwan/gh4a June 20, 1490"/>
-    <TextView
-            android:id="@+id/tv_pull_request_update_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/tv_pull_request_submission"
-            android:layout_alignBaseline="@id/tv_pull_request_submission"
-            android:text="Updated August 05, 1871"/>
-    <TextView
-            android:id="@+id/tv_pull_request_comments"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignBaseline="@id/tv_pull_request_submission"
-            android:textColor="@color/listing_comments"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="99 comments"/>
-</RelativeLayout>
+            android:text="This change makes the good times roll and leads to a 100% performance improvement"/>
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+	    <TextView
+	            android:id="@+id/tv_pull_request_submission"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:background="@drawable/label_background"
+	            android:singleLine="true"
+	            android:textSize="8sp"
+	            android:text="rtyley submitted to slapperwan/gh4a June 20, 1490"/>
+	    <TextView
+	            android:id="@+id/tv_pull_request_update_date"
+	            android:layout_width="0dp"
+	            android:layout_weight="0.3"
+	            android:layout_height="wrap_content"
+	            android:textSize="8sp"
+	            android:singleLine="true"
+                android:layout_marginLeft="3dp"
+	            android:text="Updated August 05, 1871"/>
+	  	<ImageView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:baselineAlignBottom="true"
+	            android:layout_marginLeft="3dp"
+	            android:src="@drawable/comment_icon"
+	        />
+	    <TextView
+	            android:id="@+id/tv_pull_request_comments"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:textColor="@color/listing_comments"
+                android:layout_marginLeft="2dp"
+	            android:text="99"/>
+    </LinearLayout>
+</LinearLayout>

@@ -32,7 +32,7 @@ public class PullRequestViewHolder implements ViewHolder<PullRequest> {
         String repo = createFromUrl(pr.getHtmlUrl()).generateId();
         submission.setText(pr.getUser().getLogin() + " submitted to " + repo + " " + relativeTimeFor(pr.getCreatedAt
                 ()));
-        updated.setText(relativeTimeFor(pr.getUpdatedAt()));
-        comments.setText(pr.getComments() + " comments");
+        updated.setText("Updated "+relativeTimeFor(pr.getUpdatedAt()));
+        comments.setText(""+pr.getComments());
     }
 }
