@@ -231,6 +231,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
   </component>
+  <component name="WebServicesPlugin" addRequiredLibraries="true" />
   <component name="libraryTable">
     <library name="Maven: android.support:compatibility-v4:r4">
       <CLASSES>
@@ -351,17 +352,6 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/com/madgag/android-viewholder-listviews/0.4/android-viewholder-listviews-0.4-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: com.madgag:roboguice:2.0b1040">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/madgag/roboguice/2.0b1040/roboguice-2.0b1040.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/com/madgag/roboguice/2.0b1040/roboguice-2.0b1040-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/madgag/roboguice/2.0b1040/roboguice-2.0b1040-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: com.pivotallabs:robolectric:1.0-RC1">
@@ -527,6 +517,17 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/org/objenesis/objenesis/1.0/objenesis-1.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.roboguice:roboguice:2.0b3">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/roboguice/roboguice/2.0b3/roboguice-2.0b3.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/roboguice/roboguice/2.0b3/roboguice-2.0b3-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/roboguice/roboguice/2.0b3/roboguice-2.0b3-sources.jar!/" />
       </SOURCES>
     </library>
   </component>
