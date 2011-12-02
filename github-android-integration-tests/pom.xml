@@ -14,26 +14,20 @@
     <packaging>apk</packaging>
     <name>Github-Android integration tests</name>
     <dependencies>
-
         <dependency>
             <groupId>com.github.github</groupId>
             <artifactId>github-android</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
             <type>apk</type>
         </dependency>
         <dependency>
             <groupId>com.github.github</groupId>
             <artifactId>github-android</artifactId>
             <version>${project.version}</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
             <type>jar</type>
         </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>1.7.2</version>
-        </dependency>
-
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-library</artifactId>
@@ -47,6 +41,10 @@
                 <configuration>
                     <extractDuplicates>true</extractDuplicates>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.pyx4me</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
