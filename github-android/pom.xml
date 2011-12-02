@@ -72,6 +72,10 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>com.pyx4me</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
             </plugin>
