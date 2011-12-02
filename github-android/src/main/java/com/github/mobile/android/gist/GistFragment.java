@@ -1,6 +1,6 @@
 package com.github.mobile.android.gist;
 
-import static com.github.mobile.android.R.layout.gist_list_item;
+import com.github.mobile.android.R.layout;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
@@ -15,6 +15,8 @@ import com.madgag.android.listviews.ViewHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Gist;
@@ -32,17 +34,25 @@ public class GistFragment extends ListLoadingFragment<Gist> {
         return new AsyncLoader<List<Gist>>(getActivity()) {
             @Override
             public List<Gist> loadInBackground() {
+                List<Gist> gists;
                 try {
-                    return service.getGists(service.getClient().getUser());
+                    gists = service.getGists(service.getClient().getUser());
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+                Collections.sort(gists, new Comparator<Gist>() {
+
+                    public int compare(Gist g1, Gist g2) {
+                        return g2.getCreatedAt().compareTo(g1.getCreatedAt());
+                    }
+                });
+                return gists;
             }
         };
     }
 
     protected ListAdapter adapterFor(List<Gist> items) {
-        return new ViewHoldingListAdapter<Gist>(items, viewInflatorFor(getActivity(), gist_list_item),
+        return new ViewHoldingListAdapter<Gist>(items, viewInflatorFor(getActivity(), layout.gist_list_item),
                 new ViewHolderFactory<Gist>() {
                     public ViewHolder<Gist> createViewHolderFor(View view) {
                         return new GistViewHolder(view);
