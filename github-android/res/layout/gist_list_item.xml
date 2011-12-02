@@ -1,14 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:padding="10dip">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="10dip" >
 
     <TextView
-            android:id="@+id/gv_list_item_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="7.5dip"
-            android:textStyle="italic"/>
+        android:id="@+id/tv_gist_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="#20567743"
+        android:textColor="@color/listing"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/tv_gist_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/tv_gist_id"
+        android:layout_toRightOf="@id/tv_gist_id"
+        android:paddingLeft="5dp"
+        android:singleLine="true"
+        android:text="Bind resource disposal to widget disposal"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_gist_creation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tv_gist_id"
+        android:layout_below="@id/tv_gist_id"
+        android:text="December 02, 2011"
+        android:textColor="@color/listing" />
+
+    <TextView
+        android:id="@+id/tv_gist_comments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/tv_gist_creation"
+        android:layout_alignParentRight="true"
+        android:text="3 comments"
+        android:paddingLeft="10dp"
+        android:textColor="@color/listing_comments" />
+    
+    <TextView
+        android:id="@+id/tv_gist_files"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/tv_gist_creation"
+        android:layout_toLeftOf="@id/tv_gist_comments"
+        android:text="1 file"
+        android:textColor="@color/listing_comments" />
 
 </RelativeLayout>
