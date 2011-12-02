@@ -1,18 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical" android:layout_width="match_parent"
-              android:layout_height="match_parent">
-    <EditText android:layout_width="match_parent" android:id="@+id/gistNameText"
-              android:layout_height="wrap_content" android:hint="File name">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/gistNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/gist_file_name_hint"
+            android:paddingRight="5dp" >
+        </EditText>
+
+        <CheckBox
+            android:id="@+id/publicCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/make_public" >
+        </CheckBox>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/gistContentText"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:hint="@string/gist_content_hint"
+        android:inputType="textMultiLine"
+        android:scrollbars="horizontal|vertical"
+        android:typeface="monospace" >
+
+        <requestFocus />
     </EditText>
-    <EditText android:layout_width="match_parent" android:id="@+id/gistContentText"
-              android:hint="Gist content" android:inputType="textMultiLine"
-              android:layout_height="wrap_content" android:layout_weight="1">
-        <requestFocus></requestFocus>
-    </EditText>
-    <CheckBox android:text="Publicly visible" android:id="@+id/publicCheck"
-              android:layout_width="wrap_content" android:layout_height="wrap_content"></CheckBox>
-    <Button android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/createGistButton"
-            android:text=" Create Gist"></Button>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingTop="5dp" >
+
+        <Button
+            android:id="@+id/createGistButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/gistContentText"
+            android:text="@string/create_gist" >
+        </Button>
+    </LinearLayout>
+
 </LinearLayout>

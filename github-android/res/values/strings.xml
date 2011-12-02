@@ -74,4 +74,18 @@
     <string name="single_file">1 file</string>
 
     <string name="multiple_files">%,d files</string>
+
+    <string name="record_gist_now">Record Gist Now</string>
+
+    <string name="creating_gist">Creating Gist...</string>
+
+    <string name="create">Create</string>
+    
+    <string name="create_gist">Create Gist</string>
+
+    <string name="gist_content_hint">Gist Content</string>
+
+    <string name="make_public">Make Public</string>
+
+    <string name="gist_file_name_hint">Gist File Name</string>
 </resources>

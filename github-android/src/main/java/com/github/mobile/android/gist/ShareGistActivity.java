@@ -1,5 +1,7 @@
 package com.github.mobile.android.gist;
 
+import static android.content.Intent.ACTION_VIEW;
+import static android.content.Intent.EXTRA_TEXT;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -14,6 +16,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.github.mobile.android.R;
+import com.github.mobile.android.R.id;
+import com.github.mobile.android.R.layout;
 import com.github.mobile.android.TextWatcherAdapter;
 import com.google.inject.Inject;
 
@@ -35,26 +39,27 @@ public class ShareGistActivity extends RoboActivity {
 
     private static final String TAG = "GHShare";
 
-    @InjectView(R.id.gistNameText)
+    @InjectView(id.gistNameText)
     private EditText nameText;
 
-    @InjectView(R.id.gistContentText)
+    @InjectView(id.gistContentText)
     private EditText contentText;
 
-    @InjectView(R.id.publicCheck)
+    @InjectView(id.publicCheck)
     private CheckBox publicCheckBox;
 
-    @InjectView(R.id.createGistButton)
+    @InjectView(id.createGistButton)
     private Button createButton;
 
     @Inject
     ContextScopedProvider<GistService> gistServiceProvider;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.share_gist);
+        setContentView(layout.share_gist);
 
-        String text = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+        String text = getIntent().getStringExtra(EXTRA_TEXT);
 
         if (text != null && text.length() > 0)
             contentText.setText(text);
@@ -80,13 +85,13 @@ public class ShareGistActivity extends RoboActivity {
         final String name = enteredName.length() > 0 ? enteredName : "file.txt";
         final String content = contentText.getText().toString();
         final ProgressDialog progress = new ProgressDialog(this);
-        progress.setMessage("Creating Gist...");
+        progress.setMessage(getString(R.string.creating_gist));
         progress.show();
         new RoboAsyncTask<Gist>(this) {
 
             public Gist call() throws Exception {
                 Gist gist = new Gist();
-                gist.setDescription("Created from my Android device");
+                gist.setDescription("Android created Gist");
                 gist.setPublic(isPublic);
                 GistFile file = new GistFile();
                 file.setContent(content);
@@ -97,7 +102,7 @@ public class ShareGistActivity extends RoboActivity {
 
             protected void onSuccess(Gist gist) throws Exception {
                 progress.cancel();
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(gist.getHtmlUrl())));
+                startActivity(new Intent(ACTION_VIEW, Uri.parse(gist.getHtmlUrl())));
                 finish();
             }
 
