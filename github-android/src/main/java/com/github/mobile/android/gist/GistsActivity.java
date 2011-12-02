@@ -21,6 +21,8 @@ import roboguice.inject.InjectView;
  */
 public class GistsActivity extends RoboFragment {
 
+    private static final int REQUEST_CREATE = 1;
+
     @Inject
     private Context context;
 
@@ -39,8 +41,17 @@ public class GistsActivity extends RoboFragment {
         createButton.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
-                startActivity(new Intent(context, ShareGistActivity.class));
+                startActivityForResult(new Intent(context, ShareGistActivity.class), REQUEST_CREATE);
             }
         });
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CREATE && ShareGistActivity.RESULT_CREATED == resultCode) {
+            GistFragment fragment = (GistFragment) getFragmentManager().findFragmentById(id.gist_list);
+            fragment.getLoaderManager().restartLoader(0, null, fragment);
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

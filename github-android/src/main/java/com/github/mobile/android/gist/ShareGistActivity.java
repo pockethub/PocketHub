@@ -1,10 +1,7 @@
 package com.github.mobile.android.gist;
 
-import static android.content.Intent.ACTION_VIEW;
 import static android.content.Intent.EXTRA_TEXT;
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
@@ -36,6 +33,11 @@ import roboguice.util.RoboAsyncTask;
  * Activity to share a text selection as a public or private Gist
  */
 public class ShareGistActivity extends RoboActivity {
+
+    /**
+     * Gist successfully created
+     */
+    public static final int RESULT_CREATED = 1;
 
     private static final String TAG = "GHShare";
 
@@ -102,7 +104,7 @@ public class ShareGistActivity extends RoboActivity {
 
             protected void onSuccess(Gist gist) throws Exception {
                 progress.cancel();
-                startActivity(new Intent(ACTION_VIEW, Uri.parse(gist.getHtmlUrl())));
+                setResult(RESULT_CREATED);
                 finish();
             }
 
