@@ -2,10 +2,12 @@ package com.github.mobile.android.gist;
 
 import com.github.mobile.android.R.layout;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
@@ -58,5 +60,12 @@ public class GistFragment extends ListLoadingFragment<Gist> {
                         return new GistViewHolder(view);
                     }
                 });
+    }
+
+    public void onListItemClick(ListView list, View view, int position, long id) {
+        Gist gist = (Gist) list.getItemAtPosition(position);
+        Intent intent = new Intent(getActivity(), ViewGistActivity.class);
+        intent.putExtra("gist", gist.getId());
+        startActivity(intent);
     }
 }

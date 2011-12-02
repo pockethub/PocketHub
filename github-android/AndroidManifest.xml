@@ -28,6 +28,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".gist.ViewGistActivity" />
+
         <service android:name=".authenticator.AccountAuthenticatorService"
                  android:exported="true" android:process=":auth">
             <intent-filter>
