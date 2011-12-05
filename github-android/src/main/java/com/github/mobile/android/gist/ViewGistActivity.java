@@ -3,6 +3,8 @@ package com.github.mobile.android.gist;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -26,6 +28,35 @@ import roboguice.util.RoboAsyncTask;
  * Activity to display an existing Gist
  */
 public class ViewGistActivity extends RoboActivity {
+
+    /**
+     * Intent key representing the id of the Gist to display
+     */
+    public static final String GIST_ID = "gist";
+
+    /**
+     * Create intent to view Gist
+     *
+     * @param context
+     * @param gist
+     * @return intent
+     */
+    public static final Intent createIntent(Context context, Gist gist) {
+        return createIntent(context, gist.getId());
+    }
+
+    /**
+     * Create intent to view Gist
+     *
+     * @param context
+     * @param gistId
+     * @return intent
+     */
+    public static final Intent createIntent(Context context, String gistId) {
+        Intent intent = new Intent(context, ViewGistActivity.class);
+        intent.putExtra(GIST_ID, gistId);
+        return intent;
+    }
 
     @InjectView(id.tv_gist_id)
     private TextView gistId;

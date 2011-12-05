@@ -92,4 +92,6 @@
     <string name="gist">Gist</string>
 
     <string name="loading_gist">Loading Gist...</string>
+
+    <string name="random_gist">Random Gist...</string>
 </resources>

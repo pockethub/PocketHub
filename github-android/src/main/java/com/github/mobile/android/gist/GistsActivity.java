@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.github.mobile.android.R;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.google.inject.Inject;
@@ -65,7 +66,7 @@ public class GistsActivity extends RoboFragment {
 
             public void onClick(View v) {
                 final ProgressDialog progress = new ProgressDialog(context);
-                progress.setMessage("Random Gist...");
+                progress.setMessage(getActivity().getString(R.string.random_gist));
                 progress.show();
                 new RoboAsyncTask<Gist>(context) {
 
@@ -82,9 +83,7 @@ public class GistsActivity extends RoboFragment {
 
                     protected void onSuccess(Gist gist) throws Exception {
                         progress.cancel();
-                        Intent intent = new Intent(context, ViewGistActivity.class);
-                        intent.putExtra("gist", gist.getId());
-                        startActivity(intent);
+                        startActivity(ViewGistActivity.createIntent(context, gist));
                     }
 
                     protected void onException(Exception e) throws RuntimeException {
