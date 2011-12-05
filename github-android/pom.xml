@@ -14,14 +14,6 @@
     <packaging>apk</packaging>
     <name>GitHub for Android</name>
 
-    <!-- Temporary repository until GitHub Java API updates are released -->
-    <repositories>
-        <repository>
-            <id>oss-snapshots</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -50,9 +42,16 @@
             <version>2.0b3</version>
         </dependency>
         <dependency>
-            <groupId>android.support</groupId>
-            <artifactId>compatibility-v4</artifactId>
-            <version>r4</version>
+            <groupId>com.actionbarsherlock</groupId>
+            <artifactId>library</artifactId>
+            <version>3.4.2</version>
+            <type>apklib</type>
+        </dependency>
+        <dependency>
+                <groupId>android.support</groupId>
+                <artifactId>compatibility-v4</artifactId>
+                <version>r4</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.pivotallabs</groupId>
@@ -78,6 +77,10 @@
     </dependencies>
     <build>
         <plugins>
+            <plugin>
+                <groupId>com.pyx4me</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
