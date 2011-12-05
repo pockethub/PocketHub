@@ -48,6 +48,12 @@
             <type>apklib</type>
         </dependency>
         <dependency>
+                <groupId>android.support</groupId>
+                <artifactId>compatibility-v4</artifactId>
+                <version>r4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.pivotallabs</groupId>
             <artifactId>robolectric</artifactId>
             <version>1.0-RC1</version>
