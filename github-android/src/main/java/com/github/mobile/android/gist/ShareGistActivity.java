@@ -2,6 +2,7 @@ package com.github.mobile.android.gist;
 
 import static android.content.Intent.EXTRA_TEXT;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
@@ -104,6 +105,9 @@ public class ShareGistActivity extends RoboActivity {
 
             protected void onSuccess(Gist gist) throws Exception {
                 progress.cancel();
+                Intent intent = new Intent(ShareGistActivity.this, ViewGistActivity.class);
+                intent.putExtra("gist", gist.getId());
+                startActivity(intent);
                 setResult(RESULT_CREATED);
                 finish();
             }
