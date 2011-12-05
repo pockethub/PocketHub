@@ -72,7 +72,7 @@ public class ViewGistActivity extends RoboActivity {
     private void displayGist(Gist gist) {
         gistId.setVisibility(VISIBLE);
         description.setVisibility(VISIBLE);
-        gistId.setText(string.gist + " " + gist.getId());
+        gistId.setText(getString(string.gist) + " " + gist.getId());
         description.setText(gist.getDescription());
         GistFile[] gistFiles = gist.getFiles().values().toArray(new GistFile[gist.getFiles().size()]);
         files.setAdapter(new GistFileListAdapter(gistFiles, getLayoutInflater()));
