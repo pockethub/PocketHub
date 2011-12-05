@@ -76,7 +76,7 @@ public class ViewGistActivity extends RoboActivity {
         gistId.setVisibility(INVISIBLE);
         description.setVisibility(INVISIBLE);
 
-        final String id = getIntent().getStringExtra("gist");
+        final String id = getIntent().getStringExtra(GIST_ID);
 
         final ProgressDialog progress = new ProgressDialog(this);
         progress.setMessage(getString(string.loading_gist));
