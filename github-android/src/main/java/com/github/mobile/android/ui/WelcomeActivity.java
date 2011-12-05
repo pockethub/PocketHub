@@ -8,9 +8,7 @@ import android.view.View;
 import com.github.mobile.android.R;
 import com.github.mobile.android.authenticator.GitHubAuthenticatorActivity;
 
-import roboguice.activity.RoboFragmentActivity;
-
-public class WelcomeActivity extends RoboFragmentActivity {
+public class WelcomeActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

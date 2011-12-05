@@ -8,7 +8,7 @@
 
     <application
             android:name=".GitHubApplication"
-            android:theme="@style/Theme.Sherlock.Light"
+            android:theme="@style/Theme.App"
             android:icon="@drawable/github_app_icon"
             android:label="@string/github_app_name"
             android:hardwareAccelerated="true">
