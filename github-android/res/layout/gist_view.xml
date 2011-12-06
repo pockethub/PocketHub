@@ -3,28 +3,76 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp" >
+    android:padding="5dp" >
 
     <TextView
         android:id="@+id/tv_gist_id"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:singleLine="true"
         android:text="Gist 1446823"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="2dp" >
+
+        <ImageView
+            android:id="@+id/iv_gravatar"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/github_app_icon" />
+
+        <TextView
+            android:id="@+id/tv_gist_author"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignTop="@id/iv_gravatar"
+            android:layout_toRightOf="@id/iv_gravatar"
+            android:paddingLeft="5dp"
+            android:singleLine="true"
+            android:text="hubot"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/tv_gist_created"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_gist_author"
+            android:layout_toRightOf="@id/iv_gravatar"
+            android:paddingLeft="5dp"
+            android:paddingTop="2dp"
+            android:singleLine="true"
+            android:text="November 02, 2011"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="italic" />
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/tv_gist_description"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingTop="10dp"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
         android:text="Bind widget disposal to resource disposal" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="Files:"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold" />
 
     <ExpandableListView
         android:id="@+id/elv_gist_files"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:paddingTop="10dp" >
+        android:paddingTop="5dp" >
     </ExpandableListView>
 
 </LinearLayout>

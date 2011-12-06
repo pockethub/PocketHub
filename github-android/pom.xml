@@ -75,6 +75,11 @@
             <artifactId>android-viewholder-listviews</artifactId>
             <version>0.4</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.kevinsawicki</groupId>
+            <artifactId>http-request</artifactId>
+            <version>0.3</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

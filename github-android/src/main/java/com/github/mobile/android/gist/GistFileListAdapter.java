@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 
 /**
@@ -62,8 +63,8 @@ public class GistFileListAdapter extends BaseExpandableListAdapter {
 
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView,
             ViewGroup parent) {
-        TextView view = (TextView) inflater.inflate(R.layout.gist_view_content_item, null);
-        view.setText(files[groupPosition].getContent());
+        HorizontalScrollView view = (HorizontalScrollView) inflater.inflate(R.layout.gist_view_content_item, null);
+        ((TextView) view.findViewById(R.id.tv_gist_content)).setText(files[groupPosition].getContent());
         return view;
     }
 
