@@ -25,7 +25,6 @@ public class SourceEditor {
 
         });
         view.getSettings().setJavaScriptEnabled(true);
-        view.getSettings().setBuiltInZoomControls(true);
         view.addJavascriptInterface(provider, "SourceProvider");
         view.loadUrl("file:///android_asset/source-editor.html");
         return view;
