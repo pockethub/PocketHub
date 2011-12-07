@@ -4,7 +4,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 /**
- * Utilities for displaying source code in a {@link WebViewClient}
+ * Utilities for displaying source code in a {@link WebView}
  */
 public class SourceEditor {
 
