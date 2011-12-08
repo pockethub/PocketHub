@@ -63,6 +63,6 @@ public class GistFragment extends ListLoadingFragment<Gist> {
 
     public void onListItemClick(ListView list, View view, int position, long id) {
         Gist gist = (Gist) list.getItemAtPosition(position);
-        startActivity(ViewGistActivity.createIntent(getActivity(), gist));
+        startActivity(ViewGistActivity.createIntent(getActivity(), gist.getId()));
     }
 }

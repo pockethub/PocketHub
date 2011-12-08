@@ -78,7 +78,7 @@ public class GistsActivity extends RoboFragment {
                         Collection<Gist> gists = service.pagePublicGists(randomPage, 1).next();
                         if (gists.isEmpty())
                             throw new IllegalArgumentException("No Gists found");
-                        return gists.iterator().next();
+                        return service.getGist(gists.iterator().next().getId());
                     }
 
                     protected void onSuccess(Gist gist) throws Exception {

@@ -5,7 +5,6 @@ import static android.view.View.VISIBLE;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.widget.ExpandableListView;
@@ -13,14 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.kevinsawicki.http.HttpRequest;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
-import com.github.mobile.android.util.Image;
+import com.github.mobile.android.util.Avatar;
 import com.google.inject.Inject;
-
-import java.io.File;
 
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.GistFile;
@@ -37,9 +33,14 @@ import roboguice.util.RoboAsyncTask;
 public class ViewGistActivity extends RoboActivity {
 
     /**
+     * Intent key representing the Gist to display
+     */
+    public static final String GIST = "gist";
+
+    /**
      * Intent key representing the id of the Gist to display
      */
-    public static final String GIST_ID = "gist";
+    public static final String GIST_ID = "gistId";
 
     /**
      * Create intent to view Gist
@@ -49,7 +50,9 @@ public class ViewGistActivity extends RoboActivity {
      * @return intent
      */
     public static final Intent createIntent(Context context, Gist gist) {
-        return createIntent(context, gist.getId());
+        Intent intent = new Intent(context, ViewGistActivity.class);
+        intent.putExtra(GIST, gist);
+        return intent;
     }
 
     /**
@@ -86,48 +89,48 @@ public class ViewGistActivity extends RoboActivity {
     @Inject
     private ContextScopedProvider<GistService> gistServiceProvider;
 
-    private File gravatarFile;
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.gist_view);
-        gistId.setVisibility(INVISIBLE);
-        created.setVisibility(INVISIBLE);
-        description.setVisibility(INVISIBLE);
-        author.setVisibility(INVISIBLE);
-        gravatar.setVisibility(INVISIBLE);
+        final Gist gist = (Gist) getIntent().getSerializableExtra(GIST);
+        if (gist == null) {
+            gistId.setVisibility(INVISIBLE);
+            created.setVisibility(INVISIBLE);
+            description.setVisibility(INVISIBLE);
+            author.setVisibility(INVISIBLE);
+            gravatar.setVisibility(INVISIBLE);
 
-        final String id = getIntent().getStringExtra(GIST_ID);
+            final String id = getIntent().getStringExtra(GIST_ID);
+            final ProgressDialog progress = new ProgressDialog(this);
+            progress.setMessage(getString(string.loading_gist));
+            progress.setIndeterminate(true);
+            progress.show();
+            new RoboAsyncTask<Gist>(this) {
 
-        final ProgressDialog progress = new ProgressDialog(this);
-        progress.setMessage(getString(string.loading_gist));
-        progress.setIndeterminate(true);
-        progress.show();
-        new RoboAsyncTask<Gist>(this) {
-
-            public Gist call() throws Exception {
-                Gist gist = gistServiceProvider.get(ViewGistActivity.this).getGist(id);
-                String url = gist.getUser().getAvatarUrl();
-                if (url != null) {
-                    gravatarFile = File.createTempFile(gist.getUser().getLogin(), ".jpg", getFilesDir());
-                    HttpRequest request = HttpRequest.get(url);
-                    if (request.ok())
-                        request.receive(gravatarFile);
-
+                public Gist call() throws Exception {
+                    Gist gist = gistServiceProvider.get(ViewGistActivity.this).getGist(id);
+                    updateGravatar(gist);
+                    return gist;
                 }
-                return gist;
-            }
 
-            protected void onSuccess(Gist gist) throws Exception {
-                progress.cancel();
-                displayGist(gist);
-            }
+                protected void onSuccess(Gist gist) throws Exception {
+                    progress.cancel();
+                    displayGist(gist);
+                }
 
-            protected void onException(Exception e) throws RuntimeException {
-                progress.cancel();
-                Toast.makeText(ViewGistActivity.this, e.getMessage(), 5000).show();
-            }
-        }.execute();
+                protected void onException(Exception e) throws RuntimeException {
+                    progress.cancel();
+                    Toast.makeText(ViewGistActivity.this, e.getMessage(), 5000).show();
+                }
+            }.execute();
+        } else {
+            displayGist(gist);
+            updateGravatar(gist);
+        }
+    }
+
+    private void updateGravatar(final Gist gist) {
+        Avatar.bind(this, gravatar, gist.getUser().getAvatarUrl());
     }
 
     private void displayGist(Gist gist) {
@@ -141,12 +144,6 @@ public class ViewGistActivity extends RoboActivity {
         gistId.setVisibility(VISIBLE);
         description.setVisibility(VISIBLE);
         created.setVisibility(VISIBLE);
-        if (gravatarFile != null && gravatarFile.exists() && gravatarFile.length() > 0) {
-            Bitmap bitmap = Image.getBitmap(gravatarFile);
-            if (bitmap != null)
-                gravatar.setImageBitmap(Image.roundCorners(bitmap));
-            gravatar.setVisibility(VISIBLE);
-        }
         GistFile[] gistFiles = gist.getFiles().values().toArray(new GistFile[gist.getFiles().size()]);
         files.setAdapter(new GistFileListAdapter(gistFiles, getLayoutInflater()));
     }
