@@ -124,6 +124,7 @@ public class ViewGistActivity extends RoboActivity {
 
                 protected void onSuccess(Gist gist) throws Exception {
                     progress.cancel();
+                    getIntent().putExtra(GIST, gist);
                     displayGist(gist);
                 }
 
