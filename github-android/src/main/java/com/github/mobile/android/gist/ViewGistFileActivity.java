@@ -1,0 +1,63 @@
+package com.github.mobile.android.gist;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.webkit.WebView;
+import android.widget.TextView;
+
+import com.github.mobile.android.R.id;
+import com.github.mobile.android.R.layout;
+import com.github.mobile.android.util.SourceEditor;
+
+import org.eclipse.egit.github.core.Gist;
+import org.eclipse.egit.github.core.GistFile;
+
+import roboguice.activity.RoboActivity;
+import roboguice.inject.InjectView;
+
+/**
+ * Activity to view a file in a Gist
+ */
+public class ViewGistFileActivity extends RoboActivity {
+
+    /**
+     * Create intent to show file
+     *
+     * @param context
+     * @param gist
+     * @param file
+     * @return intent
+     */
+    public static Intent createIntent(Context context, Gist gist, GistFile file) {
+        Intent intent = new Intent(context, ViewGistFileActivity.class);
+        intent.putExtra("gist", gist);
+        intent.putExtra("file", file);
+        return intent;
+    }
+
+    @InjectView(id.tv_gist_file_name)
+    private TextView gistFile;
+
+    @InjectView(id.tv_gist_id)
+    private TextView gistId;
+
+    @InjectView(id.wv_gist_content)
+    private WebView webView;
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(layout.gist_view_content_item);
+
+        final Gist gist = (Gist) getIntent().getSerializableExtra("gist");
+        final GistFile file = (GistFile) getIntent().getSerializableExtra("file");
+        gistFile.setText(file.getFilename());
+        gistId.setText("from Gist " + gist.getId());
+        SourceEditor.showSource(webView, new Object() {
+            public String toString() {
+                return file.getContent();
+            }
+        });
+    }
+
+}

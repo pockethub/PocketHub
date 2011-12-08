@@ -2,7 +2,7 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="5dp"
-    android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
-    android:paddingTop="5dp"
+    android:paddingBottom="3dp"
+    android:paddingLeft="10dp"
+    android:paddingTop="3dp"
     android:text="Main.cpp" />

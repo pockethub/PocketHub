@@ -2,20 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="5dp" >
+    android:background="#DDDDDD"
+    android:orientation="vertical" >
 
     <TextView
         android:id="@+id/tv_gist_id"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
         android:singleLine="true"
         android:text="Gist 1446823"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#000000" />
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
         android:paddingTop="2dp" >
 
         <ImageView
@@ -36,6 +41,7 @@
             android:singleLine="true"
             android:text="hubot"
             android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#000000"
             android:textStyle="italic" />
 
         <TextView
@@ -49,30 +55,53 @@
             android:singleLine="true"
             android:text="November 02, 2011"
             android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#000000"
             android:textStyle="italic" />
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#BBBBBB" >
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_gist_description"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
         android:paddingTop="5dp"
-        android:text="Bind widget disposal to resource disposal" />
+        android:text="Bind widget disposal to resource disposal"
+        android:textColor="#000000" />
 
-    <TextView
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:text="Files:"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="bold" />
+        android:background="#555555"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp" >
 
-    <ExpandableListView
-        android:id="@+id/elv_gist_files"
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#CCCCCC"
+            android:paddingBottom="2dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="2dp"
+            android:singleLine="true"
+            android:text="Files"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#111111"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lv_gist_files"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:paddingTop="5dp" >
-    </ExpandableListView>
+        android:layout_height="fill_parent" >
+    </ListView>
 
 </LinearLayout>

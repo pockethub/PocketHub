@@ -29,6 +29,8 @@
         </activity>
 
         <activity android:name=".gist.ViewGistActivity" />
+        
+        <activity android:name=".gist.ViewGistFileActivity" />
 
         <service android:name=".authenticator.AccountAuthenticatorService"
                  android:exported="true" android:process=":auth">

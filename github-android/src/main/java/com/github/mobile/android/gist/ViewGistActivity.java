@@ -7,8 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateUtils;
-import android.widget.ExpandableListView;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -83,8 +86,8 @@ public class ViewGistActivity extends RoboActivity {
     @InjectView(id.tv_gist_description)
     private TextView description;
 
-    @InjectView(id.elv_gist_files)
-    private ExpandableListView files;
+    @InjectView(id.lv_gist_files)
+    private ListView files;
 
     @Inject
     private ContextScopedProvider<GistService> gistServiceProvider;
@@ -133,7 +136,7 @@ public class ViewGistActivity extends RoboActivity {
         Avatar.bind(this, gravatar, gist.getUser().getAvatarUrl());
     }
 
-    private void displayGist(Gist gist) {
+    private void displayGist(final Gist gist) {
         gistId.setText(getString(string.gist) + " " + gist.getId());
         description.setText(gist.getDescription());
         created.setText(DateUtils.getRelativeTimeSpanString(gist.getCreatedAt().getTime()));
@@ -145,6 +148,13 @@ public class ViewGistActivity extends RoboActivity {
         description.setVisibility(VISIBLE);
         created.setVisibility(VISIBLE);
         GistFile[] gistFiles = gist.getFiles().values().toArray(new GistFile[gist.getFiles().size()]);
-        files.setAdapter(new GistFileListAdapter(gistFiles, getLayoutInflater()));
+        files.setAdapter(new GistFileListAdapter(this, gistFiles));
+        files.setOnItemClickListener(new OnItemClickListener() {
+
+            public void onItemClick(AdapterView<?> view, View arg1, int position, long id) {
+                GistFile file = (GistFile) view.getItemAtPosition(position);
+                startActivity(ViewGistFileActivity.createIntent(ViewGistActivity.this, gist, file));
+            }
+        });
     }
 }

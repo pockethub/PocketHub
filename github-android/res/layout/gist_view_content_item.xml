@@ -1,8 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<WebView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/wv_gist_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="5dp" >
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
 
-</WebView>
+    <TextView
+        android:id="@+id/tv_gist_file_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:text="Main.cpp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#000000" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_gist_id"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingLeft="20dp"
+        android:text="from Gist 1489902"
+        android:textColor="#111111"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textStyle="italic" >
+    </TextView>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#BBBBBB" >
+    </LinearLayout>
+
+    <WebView
+        android:id="@+id/wv_gist_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="10dp"
+        android:padding="5dp" >
+    </WebView>
+
+</LinearLayout>
