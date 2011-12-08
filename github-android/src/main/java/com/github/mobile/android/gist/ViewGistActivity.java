@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -138,7 +139,11 @@ public class ViewGistActivity extends RoboActivity {
 
     private void displayGist(final Gist gist) {
         gistId.setText(getString(string.gist) + " " + gist.getId());
-        description.setText(gist.getDescription());
+        String desc = gist.getDescription();
+        if (desc != null && desc.length() > 0)
+            description.setText(desc);
+        else
+            description.setText(Html.fromHtml("<i>No description</i>"));
         created.setText(DateUtils.getRelativeTimeSpanString(gist.getCreatedAt().getTime()));
         if (gist.getUser() != null) {
             author.setText(gist.getUser().getLogin());
