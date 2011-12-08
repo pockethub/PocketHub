@@ -127,8 +127,11 @@
 
     <ListView
         android:id="@+id/lv_gist_comments"
+        android:dividerHeight="5dp"
+        android:divider="#DDD"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp" >
     </ListView>
 
 </LinearLayout>

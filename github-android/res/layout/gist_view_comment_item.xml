@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="2dp"
-    android:background="#BBB"
+    android:background="#DDD"
     android:orientation="vertical"
     android:padding="2dp" >
 
@@ -12,7 +11,7 @@
         android:layout_height="fill_parent"
         android:background="#FFF"
         android:orientation="vertical"
-        android:padding="10dp" >
+        android:padding="5dp" >
 
         <TextView
             android:id="@+id/tv_gist_comment_body"
@@ -22,12 +21,21 @@
             android:textColor="#111" />
 
         <TextView
-            android:id="@+id/tv_gist_comment_details"
+            android:id="@+id/tv_gist_comment_author"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
             android:singleLine="true"
-            android:text="hubot commented just now"
+            android:text="hubot just now"
+            android:textColor="#888" />
+
+        <TextView
+            android:id="@+id/tv_gist_comment_date"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:singleLine="true"
+            android:text="3 minutes ago"
             android:textColor="#888" />
     </LinearLayout>
 

@@ -36,9 +36,10 @@ public class GistCommentListAdapter extends ArrayAdapter<Comment> {
         View commentRoot = activity.getLayoutInflater().inflate(layout.gist_view_comment_item, null);
         final TextView bodyView = (TextView) commentRoot.findViewById(id.tv_gist_comment_body);
         bodyView.setText(comment.getBody());
-        final TextView detailsView = (TextView) commentRoot.findViewById(id.tv_gist_comment_details);
-        detailsView.setText(getItem(position).getUser().getLogin() + " commented "
-                + DateUtils.getRelativeTimeSpanString(comment.getUpdatedAt().getTime()));
+        final TextView authorView = (TextView) commentRoot.findViewById(id.tv_gist_comment_author);
+        authorView.setText(comment.getUser().getLogin());
+        final TextView dateView = (TextView) commentRoot.findViewById(id.tv_gist_comment_date);
+        dateView.setText(DateUtils.getRelativeTimeSpanString(comment.getUpdatedAt().getTime()));
         return commentRoot;
     }
 
