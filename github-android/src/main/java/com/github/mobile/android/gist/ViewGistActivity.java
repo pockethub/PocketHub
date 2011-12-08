@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -118,9 +119,7 @@ public class ViewGistActivity extends RoboActivity {
             new RoboAsyncTask<Gist>(this) {
 
                 public Gist call() throws Exception {
-                    Gist gist = gistServiceProvider.get(ViewGistActivity.this).getGist(id);
-                    updateGravatar(gist);
-                    return gist;
+                    return gistServiceProvider.get(ViewGistActivity.this).getGist(id);
                 }
 
                 protected void onSuccess(Gist gist) throws Exception {
@@ -130,17 +129,12 @@ public class ViewGistActivity extends RoboActivity {
 
                 protected void onException(Exception e) throws RuntimeException {
                     progress.cancel();
+                    Log.d("GHVGA", e.getMessage(), e);
                     Toast.makeText(ViewGistActivity.this, e.getMessage(), 5000).show();
                 }
             }.execute();
-        } else {
+        } else
             displayGist(gist);
-            updateGravatar(gist);
-        }
-    }
-
-    private void updateGravatar(final Gist gist) {
-        Avatar.bind(this, gravatar, gist.getUser().getAvatarUrl());
     }
 
     private void loadComments(final Gist gist) {
@@ -162,6 +156,7 @@ public class ViewGistActivity extends RoboActivity {
     }
 
     private void displayGist(final Gist gist) {
+        Avatar.bind(this, gravatar, gist.getUser().getLogin(), gist.getUser().getAvatarUrl());
         gistId.setText(getString(string.gist) + " " + gist.getId());
         String desc = gist.getDescription();
         if (desc != null && desc.length() > 0)

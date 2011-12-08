@@ -43,7 +43,7 @@ public class GistCommentListAdapter extends ArrayAdapter<Comment> {
         final TextView dateView = (TextView) commentRoot.findViewById(id.tv_gist_comment_date);
         dateView.setText(DateUtils.getRelativeTimeSpanString(comment.getUpdatedAt().getTime()));
         final ImageView avatarView = (ImageView) commentRoot.findViewById(id.iv_gravatar);
-        Avatar.bind(activity, avatarView, comment.getUser().getAvatarUrl());
+        Avatar.bind(activity, avatarView, comment.getUser().getLogin(), comment.getUser().getAvatarUrl());
         return commentRoot;
     }
 
