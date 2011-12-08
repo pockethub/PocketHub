@@ -1,0 +1,45 @@
+package com.github.mobile.android.gist;
+
+import android.app.Activity;
+import android.text.format.DateUtils;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
+
+import com.github.mobile.android.R.id;
+import com.github.mobile.android.R.layout;
+
+import org.eclipse.egit.github.core.Comment;
+
+/**
+ * List adapter to render Gist comments
+ */
+public class GistCommentListAdapter extends ArrayAdapter<Comment> {
+
+    private final Activity activity;
+
+    /**
+     * Create adapter for files
+     *
+     * @param activity
+     * @param comments
+     */
+    public GistCommentListAdapter(Activity activity, Comment[] comments) {
+        super(activity, layout.gist_view_comment_item, comments);
+        this.activity = activity;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        Comment comment = getItem(position);
+        View commentRoot = activity.getLayoutInflater().inflate(layout.gist_view_comment_item, null);
+        final TextView bodyView = (TextView) commentRoot.findViewById(id.tv_gist_comment_body);
+        bodyView.setText(comment.getBody());
+        final TextView detailsView = (TextView) commentRoot.findViewById(id.tv_gist_comment_details);
+        detailsView.setText(getItem(position).getUser().getLogin() + " commented "
+                + DateUtils.getRelativeTimeSpanString(comment.getUpdatedAt().getTime()));
+        return commentRoot;
+    }
+
+}

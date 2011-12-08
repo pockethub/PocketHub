@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="2dp"
+    android:background="#BBB"
+    android:orientation="vertical"
+    android:padding="2dp" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#FFF"
+        android:orientation="vertical"
+        android:padding="10dp" >
+
+        <TextView
+            android:id="@+id/tv_gist_comment_body"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="This is a comment"
+            android:textColor="#111" />
+
+        <TextView
+            android:id="@+id/tv_gist_comment_details"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:singleLine="true"
+            android:text="hubot commented just now"
+            android:textColor="#888" />
+    </LinearLayout>
+
+</LinearLayout>

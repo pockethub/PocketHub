@@ -22,6 +22,9 @@ import com.github.mobile.android.R.string;
 import com.github.mobile.android.util.Avatar;
 import com.google.inject.Inject;
 
+import java.util.List;
+
+import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.GistFile;
 import org.eclipse.egit.github.core.service.GistService;
@@ -90,6 +93,9 @@ public class ViewGistActivity extends RoboActivity {
     @InjectView(id.lv_gist_files)
     private ListView files;
 
+    @InjectView(id.lv_gist_comments)
+    private ListView comments;
+
     @Inject
     private ContextScopedProvider<GistService> gistServiceProvider;
 
@@ -137,6 +143,24 @@ public class ViewGistActivity extends RoboActivity {
         Avatar.bind(this, gravatar, gist.getUser().getAvatarUrl());
     }
 
+    private void loadComments(final Gist gist) {
+        new RoboAsyncTask<List<Comment>>(this) {
+
+            public List<Comment> call() throws Exception {
+                return gistServiceProvider.get(ViewGistActivity.this).getComments(gist.getId());
+            }
+
+            protected void onSuccess(List<Comment> gistComments) throws Exception {
+                comments.setAdapter(new GistCommentListAdapter(ViewGistActivity.this, gistComments
+                        .toArray(new Comment[gistComments.size()])));
+            }
+
+            protected void onException(Exception e) throws RuntimeException {
+                Toast.makeText(ViewGistActivity.this, e.getMessage(), 5000).show();
+            }
+        }.execute();
+    }
+
     private void displayGist(final Gist gist) {
         gistId.setText(getString(string.gist) + " " + gist.getId());
         String desc = gist.getDescription();
@@ -161,5 +185,6 @@ public class ViewGistActivity extends RoboActivity {
                 startActivity(ViewGistFileActivity.createIntent(ViewGistActivity.this, gist, file));
             }
         });
+        loadComments(gist);
     }
 }

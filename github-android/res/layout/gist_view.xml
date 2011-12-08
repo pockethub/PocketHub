@@ -89,7 +89,7 @@
             android:layout_height="fill_parent"
             android:background="#CCCCCC"
             android:paddingBottom="2dp"
-            android:paddingLeft="10dp"
+            android:paddingLeft="5dp"
             android:paddingTop="2dp"
             android:singleLine="true"
             android:text="Files"
@@ -101,7 +101,34 @@
     <ListView
         android:id="@+id/lv_gist_files"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="wrap_content" >
+    </ListView>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#555555"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#CCCCCC"
+            android:paddingBottom="2dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="2dp"
+            android:singleLine="true"
+            android:text="Comments"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#111111"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lv_gist_comments"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
     </ListView>
 
 </LinearLayout>
