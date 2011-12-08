@@ -5,10 +5,12 @@ import android.text.format.DateUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.util.Avatar;
 
 import org.eclipse.egit.github.core.Comment;
 
@@ -40,6 +42,8 @@ public class GistCommentListAdapter extends ArrayAdapter<Comment> {
         authorView.setText(comment.getUser().getLogin());
         final TextView dateView = (TextView) commentRoot.findViewById(id.tv_gist_comment_date);
         dateView.setText(DateUtils.getRelativeTimeSpanString(comment.getUpdatedAt().getTime()));
+        final ImageView avatarView = (ImageView) commentRoot.findViewById(id.iv_gravatar);
+        Avatar.bind(activity, avatarView, comment.getUser().getAvatarUrl());
         return commentRoot;
     }
 

@@ -2,41 +2,50 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#DDD"
+    android:background="#e9eced"
     android:orientation="vertical"
-    android:padding="2dp" >
+    android:padding="10dp" >
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="#FFF"
-        android:orientation="vertical"
-        android:padding="5dp" >
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="3dp" >
 
-        <TextView
-            android:id="@+id/tv_gist_comment_body"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="This is a comment"
-            android:textColor="#111" />
+        <ImageView
+            android:id="@+id/iv_gravatar"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/github_app_icon" />
 
         <TextView
             android:id="@+id/tv_gist_comment_author"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:paddingLeft="5dp"
             android:singleLine="true"
-            android:text="hubot just now"
-            android:textColor="#888" />
+            android:text="hubot"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#838383"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_gist_comment_date"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:paddingLeft="5dp"
             android:singleLine="true"
             android:text="3 minutes ago"
-            android:textColor="#888" />
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#838383" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_gist_comment_body"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="This is a comment"
+        android:textColor="#404040" />
 
 </LinearLayout>

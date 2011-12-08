@@ -45,7 +45,7 @@ public class Avatar {
                     return;
                 Bitmap bitmap = Image.getBitmap(file);
                 if (bitmap != null) {
-                    view.setImageBitmap(Image.roundCorners(bitmap));
+                    view.setImageBitmap(Image.roundCorners(bitmap, 6));
                     view.setVisibility(VISIBLE);
                 }
             }
@@ -55,5 +55,4 @@ public class Avatar {
             }
         }.execute();
     }
-
 }

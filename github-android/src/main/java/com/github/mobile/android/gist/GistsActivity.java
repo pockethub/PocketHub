@@ -1,7 +1,9 @@
 package com.github.mobile.android.gist;
 
+import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.github.mobile.android.R;
@@ -42,6 +45,9 @@ public class GistsActivity extends RoboFragment {
 
     @InjectView(id.randomGistButton)
     private Button randomButton;
+
+    @InjectView(id.openGistButton)
+    private Button openButton;
 
     @Inject
     ContextScopedProvider<GistService> gistServiceProvider;
@@ -91,6 +97,28 @@ public class GistsActivity extends RoboFragment {
                         Toast.makeText(context, e.getMessage(), 5000).show();
                     }
                 }.execute();
+            }
+        });
+
+        openButton.setOnClickListener(new OnClickListener() {
+
+            public void onClick(View v) {
+                Builder prompt = new Builder(context);
+
+                prompt.setTitle("Open Gist");
+                prompt.setMessage("Enter id:");
+
+                final EditText id = new EditText(context);
+                prompt.setView(id);
+
+                prompt.setPositiveButton("Open", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String gistId = id.getText().toString();
+                        startActivity(ViewGistActivity.createIntent(context, gistId));
+
+                    }
+                });
+                prompt.show();
             }
         });
     }

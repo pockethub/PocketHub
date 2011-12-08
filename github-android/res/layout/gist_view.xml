@@ -2,69 +2,82 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#DDDDDD"
+    android:background="#f1f1f1"
     android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/tv_gist_id"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        android:paddingTop="5dp"
-        android:singleLine="true"
-        android:text="Gist 1446823"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#000000" />
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="5dp"
-        android:paddingLeft="5dp"
-        android:paddingTop="2dp" >
-
-        <ImageView
-            android:id="@+id/iv_gravatar"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_alignParentTop="true"
-            android:src="@drawable/github_app_icon" />
-
-        <TextView
-            android:id="@+id/tv_gist_author"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignTop="@id/iv_gravatar"
-            android:layout_toRightOf="@id/iv_gravatar"
-            android:paddingLeft="5dp"
-            android:singleLine="true"
-            android:text="hubot"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#000000"
-            android:textStyle="italic" />
-
-        <TextView
-            android:id="@+id/tv_gist_created"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_gist_author"
-            android:layout_toRightOf="@id/iv_gravatar"
-            android:paddingLeft="5dp"
-            android:paddingTop="2dp"
-            android:singleLine="true"
-            android:text="November 02, 2011"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#000000"
-            android:textStyle="italic" />
-    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="#BBBBBB" >
+        android:layout_height="wrap_content"
+        android:background="#dee1e2"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tv_gist_id"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:singleLine="true"
+            android:text="Gist 1446823"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#191919"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="2dp" >
+
+            <ImageView
+                android:id="@+id/iv_gravatar"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/github_app_icon" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/tv_gist_author"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignTop="@id/iv_gravatar"
+                    android:layout_toRightOf="@id/iv_gravatar"
+                    android:paddingLeft="5dp"
+                    android:singleLine="true"
+                    android:text="hubot"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="#8e8f8f"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_gist_created"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_gist_author"
+                    android:layout_toRightOf="@id/iv_gravatar"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="1dp"
+                    android:singleLine="true"
+                    android:text="November 02, 2011"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="#8e8f8f"
+                    android:textStyle="italic" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="3dp"
+        android:background="#535353" >
     </LinearLayout>
 
     <TextView
@@ -75,26 +88,26 @@
         android:paddingLeft="5dp"
         android:paddingTop="5dp"
         android:text="Bind widget disposal to resource disposal"
-        android:textColor="#000000" />
+        android:textColor="#191919" />
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#555555"
-        android:paddingBottom="2dp"
-        android:paddingTop="2dp" >
+        android:background="#535353"
+        android:paddingBottom="1dp"
+        android:paddingTop="1dp" >
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="#CCCCCC"
+            android:background="#dee1e2"
             android:paddingBottom="2dp"
             android:paddingLeft="5dp"
             android:paddingTop="2dp"
             android:singleLine="true"
             android:text="Files"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#111111"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#191919"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -107,31 +120,30 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#555555"
-        android:paddingBottom="2dp"
-        android:paddingTop="2dp" >
+        android:background="#535353"
+        android:paddingBottom="1dp"
+        android:paddingTop="1dp" >
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="#CCCCCC"
+            android:background="#dee1e2"
             android:paddingBottom="2dp"
             android:paddingLeft="5dp"
             android:paddingTop="2dp"
             android:singleLine="true"
             android:text="Comments"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#111111"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#191919"
             android:textStyle="bold" />
     </LinearLayout>
 
     <ListView
         android:id="@+id/lv_gist_comments"
-        android:dividerHeight="5dp"
-        android:divider="#DDD"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp" >
+        android:divider="#d6d9da"
+        android:dividerHeight="2dp" >
     </ListView>
 
 </LinearLayout>

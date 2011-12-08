@@ -21,6 +21,13 @@
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/randomGistButton"
             android:text="@string/create" />
+
+        <Button
+            android:id="@+id/openGistButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/createGistButton"
+            android:text="Open" />
     </RelativeLayout>
 
     <fragment
