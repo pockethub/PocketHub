@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e9eced"
+    android:background="@color/comment_background"
     android:orientation="vertical"
-    android:padding="10dp" >
+    android:padding="5dp" >
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -27,7 +27,7 @@
             android:singleLine="true"
             android:text="hubot"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#838383"
+            android:textColor="@color/item_text_color_light"
             android:textStyle="bold" />
 
         <TextView
@@ -38,7 +38,7 @@
             android:singleLine="true"
             android:text="3 minutes ago"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#838383" />
+            android:textColor="@color/item_text_color_light" />
     </LinearLayout>
 
     <TextView
@@ -46,6 +46,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="This is a comment"
-        android:textColor="#404040" />
+        android:textColor="@color/item_text_color" />
 
 </LinearLayout>

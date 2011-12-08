@@ -5,4 +5,5 @@
     android:paddingBottom="3dp"
     android:paddingLeft="5dp"
     android:paddingTop="3dp"
-    android:text="Main.cpp" />
+    android:text="Main.cpp"
+    android:textColor="@color/item_text_color" />

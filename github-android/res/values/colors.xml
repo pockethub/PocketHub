@@ -1,13 +1,11 @@
 <resources>
+
     <color name="background">#FFFFFFFF</color>
     <color name="lightText">#D888</color>
-
     <color name="listing">#888</color>
     <color name="listing_repo">#999</color>
     <color name="listing_comments">#BCBCBC</color>
-
     <color name="meta_label">#1222</color>
-
     <color name="textColor">#D333</color>
     <color name="darkText">#333</color>
     <color name="gitHubBlue">#4183C4</color>
@@ -15,10 +13,18 @@
     <color name="addedText">#DDFFDD</color>
     <color name="removedText">#FFDDDD</color>
     <color name="repoListHeader">#FFFACD</color>
-
     <color name="executionbar_background_start">#f0f0f0</color>
     <color name="executionbar_background_end">#d0d0d0</color>
-
     <color name="dashboard_background_start">#666666</color>
     <color name="dashboard_background_end">#393939</color>
+    <color name="item_background">#d9dcde</color>
+    <color name="item_text_color">#191919</color>
+    <color name="item_text_color_light">#636363</color>
+    <color name="item_separator1">#b8babb</color>
+    <color name="item_separator2">#e3e5e6</color>
+    <color name="item_separator3">#a6a8aa</color>
+    <color name="item_divider">#eaeaea</color>
+    <color name="drawer_text_color">#191919</color>
+    <color name="comment_background">#fff</color>
+
 </resources>

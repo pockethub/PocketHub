@@ -2,13 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f1f1f1"
+    android:background="@color/item_background"
     android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#dee1e2"
         android:orientation="vertical" >
 
         <TextView
@@ -20,7 +19,7 @@
             android:singleLine="true"
             android:text="Gist 1446823"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#191919"
+            android:textColor="@color/item_text_color"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -54,7 +53,7 @@
                     android:singleLine="true"
                     android:text="hubot"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="#8e8f8f"
+                    android:textColor="@color/item_text_color_light"
                     android:textStyle="bold" />
 
                 <TextView
@@ -68,7 +67,7 @@
                     android:singleLine="true"
                     android:text="November 02, 2011"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="#8e8f8f"
+                    android:textColor="@color/item_text_color_light"
                     android:textStyle="italic" />
             </LinearLayout>
         </LinearLayout>
@@ -76,8 +75,14 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="3dp"
-        android:background="#535353" >
+        android:layout_height="1px"
+        android:background="@color/item_separator1" >
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="@color/item_separator2" >
     </LinearLayout>
 
     <TextView
@@ -88,62 +93,96 @@
         android:paddingLeft="5dp"
         android:paddingTop="5dp"
         android:text="Bind widget disposal to resource disposal"
-        android:textColor="#191919" />
+        android:textColor="@color/item_text_color" />
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#535353"
-        android:paddingBottom="1dp"
-        android:paddingTop="1dp" >
+        android:background="@drawable/drawer_background"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/item_separator1" >
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/item_separator2" >
+        </LinearLayout>
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="#dee1e2"
             android:paddingBottom="2dp"
             android:paddingLeft="5dp"
             android:paddingTop="2dp"
             android:singleLine="true"
             android:text="Files"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#191919"
+            android:textColor="@color/drawer_text_color"
             android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/item_separator3" >
+        </LinearLayout>
     </LinearLayout>
 
     <ListView
         android:id="@+id/lv_gist_files"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:divider="@color/item_divider"
+        android:dividerHeight="1px" >
     </ListView>
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#535353"
-        android:paddingBottom="1dp"
-        android:paddingTop="1dp" >
+        android:background="@drawable/drawer_background"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/item_separator1" >
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/item_separator2" >
+        </LinearLayout>
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="#dee1e2"
             android:paddingBottom="2dp"
             android:paddingLeft="5dp"
             android:paddingTop="2dp"
             android:singleLine="true"
             android:text="Comments"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#191919"
+            android:textColor="@color/drawer_text_color"
             android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/item_separator3" >
+        </LinearLayout>
     </LinearLayout>
 
     <ListView
         android:id="@+id/lv_gist_comments"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:divider="#d6d9da"
-        android:dividerHeight="2dp" >
+        android:divider="@color/item_divider"
+        android:dividerHeight="1px" >
     </ListView>
 
 </LinearLayout>
