@@ -45,6 +45,7 @@
         android:id="@+id/tv_gist_comment_body"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:autoLink="all"
         android:text="This is a comment"
         android:textColor="@color/item_text_color" />
 

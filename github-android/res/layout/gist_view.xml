@@ -89,6 +89,7 @@
         android:id="@+id/tv_gist_description"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:autoLink="all"
         android:paddingBottom="5dp"
         android:paddingLeft="5dp"
         android:paddingTop="5dp"
