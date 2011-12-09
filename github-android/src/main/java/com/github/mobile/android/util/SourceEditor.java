@@ -9,6 +9,51 @@ import android.webkit.WebViewClient;
 public class SourceEditor {
 
     /**
+     * Does the source editor have a highlighter set to match the given file name extension?
+     *
+     * @param extension
+     * @return true if highlighting available, false otherwise
+     */
+    public static boolean isValid(String extension) {
+        return "actionscript3".equals(extension) //
+                || "applescript".equals(extension) //
+                || "as3".equals(extension) //
+                || "bash".equals(extension) //
+                || "c".equals(extension) //
+                || "cf".equals(extension) //
+                || "coldfusion".equals(extension) //
+                || "cpp".equals(extension) //
+                || "cs".equals(extension) //
+                || "css".equals(extension) //
+                || "delphi".equals(extension) //
+                || "diff".equals(extension) //
+                || "erl".equals(extension) //
+                || "erlang".equals(extension) //
+                || "groovy".equals(extension) //
+                || "html".equals(extension) //
+                || "java".equals(extension) //
+                || "js".equals(extension) //
+                || "pas".equals(extension) //
+                || "pascal".equals(extension) //
+                || "patch".equals(extension) //
+                || "pl".equals(extension) //
+                || "php".equals(extension) //
+                || "py".equals(extension) //
+                || "rb".equals(extension) //
+                || "sass".equals(extension) //
+                || "scala".equals(extension) //
+                || "scss".equals(extension) //
+                || "shell ".equals(extension) //
+                || "sql".equals(extension) //
+                || "txt".equals(extension) //
+                || "vb".equals(extension) //
+                || "vbnet".equals(extension) //
+                || "xhtml".equals(extension) //
+                || "xml".equals(extension) //
+                || "xslt".equals(extension);
+    }
+
+    /**
      * Bind {@link Object#toString()} to given {@link WebView}
      *
      * @param view
@@ -26,11 +71,15 @@ public class SourceEditor {
 
         });
         int suffix = name.lastIndexOf('.');
-        final String brush;
-        if (suffix != -1 && suffix + 2 < name.length())
-            brush = "brush: " + name.substring(suffix + 1) + ";";
-        else
-            brush = "";
+        String ext = null;
+        if (suffix != -1 && suffix + 2 < name.length()) {
+            ext = name.substring(suffix + 1);
+            if (!isValid(ext))
+                ext = null;
+        }
+        if (ext == null)
+            ext = "txt";
+        final String brush = "brush: " + ext + ";";
         view.getSettings().setJavaScriptEnabled(true);
         view.getSettings().setBuiltInZoomControls(true);
         view.addJavascriptInterface(new Object() {

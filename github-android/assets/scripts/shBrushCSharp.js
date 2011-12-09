@@ -55,7 +55,7 @@
 	};
 
 	Brush.prototype	= new SyntaxHighlighter.Highlighter();
-	Brush.aliases	= ['c#', 'c-sharp', 'csharp'];
+	Brush.aliases	= ['c#', 'c-sharp', 'csharp', 'cs'];
 
 	SyntaxHighlighter.brushes.CSharp = Brush;
 
