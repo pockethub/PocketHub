@@ -8,6 +8,8 @@ import com.github.mobile.android.R.string;
 import com.github.mobile.android.util.Time;
 import com.madgag.android.listviews.ViewHolder;
 
+import java.text.MessageFormat;
+
 import org.eclipse.egit.github.core.Gist;
 
 /**
@@ -48,10 +50,7 @@ public class GistViewHolder implements ViewHolder<Gist> {
         title.setText(gist.getDescription());
         created.setText(Time.relativeTimeFor(gist.getCreatedAt()));
 
-        if (gist.getComments() != 1)
-            comments.setText(comments.getContext().getString(string.multiple_comments, gist.getComments()));
-        else
-            comments.setText(string.single_comment);
+        comments.setText(MessageFormat.format("{0}", gist.getComments()));
 
         if (gist.getFiles().size() != 1)
             files.setText(files.getContext().getString(string.multiple_files, gist.getFiles().size()));

@@ -67,10 +67,6 @@
 
     <string name="blank_field_warning">Please populate this field</string>
 
-    <string name="multiple_comments">%,d comments</string>
-
-    <string name="single_comment">1 comment</string>
-
     <string name="single_file">1 file</string>
 
     <string name="multiple_files">%,d files</string>
