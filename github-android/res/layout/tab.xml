@@ -29,7 +29,7 @@
             android:singleLine="true"
             android:textStyle="bold"
             android:text="Tab"
-            android:textColor="@color/drawer_text_color" />
+            android:textColor="@color/tab_text_selector" />
     </LinearLayout>
 
 </LinearLayout>
