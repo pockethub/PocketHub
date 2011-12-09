@@ -10,7 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.widget.TabHost;
 
 import com.github.mobile.android.gist.GistFragment;
-import com.github.mobile.android.gist.GistsActivity;
 import com.github.mobile.android.ui.WelcomeActivity;
 import com.github.mobile.android.ui.fragments.IssuesFragment;
 import com.github.mobile.android.ui.fragments.PullRequestsFragment;
