@@ -53,7 +53,7 @@ public class ViewGistFileActivity extends RoboActivity {
         final GistFile file = (GistFile) getIntent().getSerializableExtra("file");
         gistFile.setText(file.getFilename());
         gistId.setText("from Gist " + gist.getId());
-        SourceEditor.showSource(webView, new Object() {
+        SourceEditor.showSource(webView, file.getFilename(), new Object() {
             public String toString() {
                 return file.getContent();
             }

@@ -1,18 +1,52 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<link href="prettify.css" type="text/css" rel="stylesheet" />
-<script type="text/javascript" src="prettify.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link type="text/css" rel="stylesheet" href="styles/shCoreDefault.css" />
 <style>
 body {
+	background: white;
 	padding: 0px;
 }
+
+* {
+	font-family: monospace;
+}
 </style>
+<script type="text/javascript" src="scripts/shCore.js"></script>
+<script type="text/javascript" src="scripts/shAutoloader.js"></script>
 </head>
-<body onload="prettyPrint()">
-<pre class="prettyprint">
+
+<body>
+	<script type="text/javascript">document.write(SourceProvider.toString());</script>
 <script type="text/javascript">
-	document.write(SourceProvider.toString());
+SyntaxHighlighter.autoloader(
+  'applescript            scripts/shBrushAppleScript.js',
+  'actionscript3 as3      scripts/shBrushAS3.js',
+  'bash shell             scripts/shBrushBash.js',
+  'coldfusion cf          scripts/shBrushColdFusion.js',
+  'cpp c                  scripts/shBrushCpp.js',
+  'c# c-sharp csharp      scripts/shBrushCSharp.js',
+  'css                    scripts/shBrushCss.js',
+  'delphi pascal          scripts/shBrushDelphi.js',
+  'diff patch pas         scripts/shBrushDiff.js',
+  'erl erlang             scripts/shBrushErlang.js',
+  'groovy                 scripts/shBrushGroovy.js',
+  'java                   scripts/shBrushJava.js',
+  'jfx javafx             scripts/shBrushJavaFX.js',
+  'js jscript javascript  scripts/shBrushJScript.js',
+  'perl pl                scripts/shBrushPerl.js',
+  'php                    scripts/shBrushPhp.js',
+  'text plain             scripts/shBrushPlain.js',
+  'py python              scripts/shBrushPython.js',
+  'ruby rails ror rb      scripts/shBrushRuby.js',
+  'sass scss              scripts/shBrushSass.js',
+  'scala                  scripts/shBrushScala.js',
+  'sql                    scripts/shBrushSql.js',
+  'vb vbnet               scripts/shBrushVb.js',
+  'xml xhtml xslt html    scripts/shBrushXml.js'
+);
+SyntaxHighlighter.all();
 </script>
-</pre>
 </body>
 </html>
