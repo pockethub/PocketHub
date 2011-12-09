@@ -23,7 +23,14 @@ import com.google.inject.Inject;
 import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContextScopedProvider;
 
+/**
+ * Main activity
+ */
 public class DashboardActivity extends RoboFragmentActivity {
+
+    /**
+     * Key to to track current tab
+     */
     public static final String BUNDLE_KEY_TAB = "tab";
 
     private TabHost tabHost;
