@@ -3,4 +3,15 @@
     <style name="Theme.App" parent="android:Theme.Light.NoTitleBar">
         <item name="android:fadeScrollbars">true</item>
     </style>
+     <style name="TabWidget">
+        <item name="android:textAppearance">@style/TabWidgetText</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:background">@color/item_background</item>
+    </style>
+
+    <style name="TabWidgetText">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/item_text_color</item>
+    </style>
 </resources>

@@ -26,5 +26,7 @@
     <color name="item_divider">#eaeaea</color>
     <color name="drawer_text_color">#191919</color>
     <color name="comment_background">#fff</color>
-
+    <color name="tab_separator">#EEE</color>
+    <color name="drawer_background_start">#d3d6d7</color>
+    <color name="drawer_background_end">#c0c3c5</color>
 </resources>
