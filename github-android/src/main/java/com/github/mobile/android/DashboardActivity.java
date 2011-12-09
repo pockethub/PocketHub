@@ -48,7 +48,6 @@ public class DashboardActivity extends RoboFragmentActivity {
         if (savedInstanceState != null) {
             tabHost.setCurrentTabByTag(savedInstanceState.getString(BUNDLE_KEY_TAB));
         }
-        tabHost.setCurrentTab(2);
     }
 
     @Override
