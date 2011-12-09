@@ -25,11 +25,15 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center|bottom"
-            android:padding="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:singleLine="true"
-            android:textStyle="bold"
             android:text="Tab"
-            android:textColor="@color/tab_text_selector" />
+            android:textColor="@color/tab_text_selector"
+            android:textStyle="bold" />
+
     </LinearLayout>
 
 </LinearLayout>
