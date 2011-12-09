@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.widget.TabHost;
 
+import com.github.mobile.android.gist.GistFragment;
 import com.github.mobile.android.gist.GistsActivity;
 import com.github.mobile.android.ui.WelcomeActivity;
 import com.github.mobile.android.ui.fragments.IssuesFragment;
@@ -43,7 +44,7 @@ public class DashboardActivity extends RoboFragmentActivity {
 
         addTab("issues", issues, IssuesFragment.class);
         addTab("pulls", pull_requests, PullRequestsFragment.class);
-        addTab("gists", gists, GistsActivity.class);
+        addTab("gists", gists, GistFragment.class);
 
         if (savedInstanceState != null) {
             tabHost.setCurrentTabByTag(savedInstanceState.getString(BUNDLE_KEY_TAB));
@@ -59,8 +60,7 @@ public class DashboardActivity extends RoboFragmentActivity {
     }
 
     private void addTab(String tag, int indicator, Class<?> clazz) {
-        tabsAdapter.addTab(tabHost.newTabSpec(tag).setIndicator(this.getResources().getString(indicator)), clazz,
-                null);
+        tabsAdapter.addTab(tabHost.newTabSpec(tag).setIndicator(this.getResources().getString(indicator)), clazz, null);
     }
 
     @Override

@@ -30,13 +30,10 @@
             android:text="Open" />
     </RelativeLayout>
 
-    <fragment
-        android:id="@+id/gist_list"
+    <ListView
+        android:id="@android:id/list"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:name="com.github.mobile.android.gist.GistFragment" >
-
-        <!-- Preview: layout=@layout/gist_list_item -->
-    </fragment>
+        android:layout_height="fill_parent" >
+    </ListView>
 
 </LinearLayout>
