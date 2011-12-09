@@ -4,6 +4,7 @@ import static com.github.mobile.android.authenticator.Constants.GITHUB_ACCOUNT_T
 import android.accounts.Account;
 import android.accounts.AccountManager;
 
+import com.github.kevinsawicki.http.HttpRequest;
 import com.github.kevinsawicki.http.github.HttpRequestClient;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -23,6 +24,7 @@ public class GitHubModule extends AbstractModule {
 
     @Override
     protected void configure() {
+        HttpRequest.keepAlive(false);
     }
 
     @Provides
