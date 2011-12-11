@@ -121,7 +121,7 @@
             android:paddingLeft="5dp"
             android:paddingTop="2dp"
             android:singleLine="true"
-            android:text="Files"
+            android:text="@string/files"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/drawer_text_color"
             android:textStyle="bold" />
@@ -166,7 +166,7 @@
             android:paddingLeft="5dp"
             android:paddingTop="2dp"
             android:singleLine="true"
-            android:text="Comments"
+            android:text="@string/comments"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/drawer_text_color"
             android:textStyle="bold" />

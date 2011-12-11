@@ -41,7 +41,7 @@
                 android:id="@+id/openGistButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Open" />
+                android:text="@string/open" />
 
             <Button
                 android:id="@+id/createGistButton"
@@ -53,7 +53,7 @@
                 android:id="@+id/randomGistButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Random" />
+                android:text="@string/random" />
         </LinearLayout>
 
         <LinearLayout

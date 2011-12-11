@@ -90,4 +90,12 @@
     <string name="loading_gist">Loading Gist...</string>
 
     <string name="random_gist">Random Gist...</string>
+
+    <string name="comments">Comments</string>
+
+    <string name="files">Files</string>
+
+    <string name="open">Open</string>
+
+    <string name="random">Random</string>
 </resources>
