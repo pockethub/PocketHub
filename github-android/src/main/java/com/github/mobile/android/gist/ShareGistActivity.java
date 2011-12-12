@@ -65,6 +65,8 @@ public class ShareGistActivity extends RoboActivity {
 
         if (text != null && text.length() > 0)
             contentText.setText(text);
+        else
+            createButton.setEnabled(false);
 
         contentText.addTextChangedListener(new TextWatcherAdapter() {
 
