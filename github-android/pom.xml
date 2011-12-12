@@ -37,15 +37,28 @@
             <classifier>no_aop</classifier>
         </dependency>
         <dependency>
-            <groupId>org.roboguice</groupId>
+            <groupId>com.madgag</groupId>
             <artifactId>roboguice</artifactId>
-            <version>2.0b3</version>
+            <version>1.99.0.4-UNOFFICIAL-ROBERTO-RELEASE</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>android.support</groupId>
+                    <artifactId>compatibility-v4</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.actionbarsherlock</groupId>
             <artifactId>library</artifactId>
             <version>3.4.2</version>
             <type>apklib</type>
+        </dependency>
+        <dependency>
+            <groupId>com.actionbarsherlock</groupId>
+            <artifactId>library</artifactId>
+            <version>3.4.2</version>
+            <type>jar</type>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.pivotallabs</groupId>
