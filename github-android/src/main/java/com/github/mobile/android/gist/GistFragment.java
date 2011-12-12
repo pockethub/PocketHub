@@ -40,7 +40,6 @@ import org.eclipse.egit.github.core.service.GistService;
 
 import roboguice.fragment.RoboListFragment;
 import roboguice.inject.ContextScopedProvider;
-import roboguice.inject.InjectView;
 import roboguice.util.RoboAsyncTask;
 
 /**
@@ -52,15 +51,6 @@ public class GistFragment extends RoboListFragment implements LoaderCallbacks<Li
 
     @Inject
     private Context context;
-
-    @InjectView(id.createGistButton)
-    private Button createButton;
-
-    @InjectView(id.randomGistButton)
-    private Button randomButton;
-
-    @InjectView(id.openGistButton)
-    private Button openButton;
 
     @Inject
     ContextScopedProvider<GistService> serviceProvider;
@@ -75,6 +65,7 @@ public class GistFragment extends RoboListFragment implements LoaderCallbacks<Li
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Button createButton = (Button) view.findViewById(id.createGistButton);
         createButton.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
@@ -82,6 +73,7 @@ public class GistFragment extends RoboListFragment implements LoaderCallbacks<Li
             }
         });
 
+        Button randomButton = (Button) view.findViewById(id.randomGistButton);
         randomButton.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
@@ -114,6 +106,7 @@ public class GistFragment extends RoboListFragment implements LoaderCallbacks<Li
             }
         });
 
+        Button openButton = (Button) view.findViewById(id.openGistButton);
         openButton.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
