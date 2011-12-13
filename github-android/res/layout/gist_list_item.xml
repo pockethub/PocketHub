@@ -2,15 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="10dip" >
+    android:padding="10dp" >
 
     <TextView
         android:id="@+id/tv_gist_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="#20567743"
-        android:textColor="@color/listing"
-        android:textSize="17sp" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/listing" />
 
     <TextView
         android:id="@+id/tv_gist_title"
@@ -21,7 +21,6 @@
         android:paddingLeft="5dp"
         android:singleLine="true"
         android:text="Bind resource disposal to widget disposal"
-        android:textSize="15sp"
         android:textStyle="bold" />
 
     <TextView
@@ -31,6 +30,7 @@
         android:layout_alignLeft="@id/tv_gist_id"
         android:layout_below="@id/tv_gist_id"
         android:text="December 02, 2011"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/listing" />
 
     <LinearLayout
@@ -46,6 +46,7 @@
             android:layout_height="wrap_content"
             android:paddingRight="10dp"
             android:text="1 file"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/listing_comments" />
 
         <ImageView
@@ -59,6 +60,7 @@
             android:layout_height="fill_parent"
             android:paddingLeft="3dp"
             android:text="3"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/listing_comments" />
     </LinearLayout>
 
