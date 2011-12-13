@@ -120,7 +120,7 @@ public class Avatar {
 
             protected void onFinally() throws RuntimeException {
                 helper.close();
-            };
+            }
         }.execute();
     }
 }
