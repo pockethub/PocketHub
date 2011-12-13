@@ -40,16 +40,13 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:paddingLeft="5dp" >
 
                 <TextView
                     android:id="@+id/tv_gist_author"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignTop="@id/iv_gravatar"
-                    android:layout_toRightOf="@id/iv_gravatar"
-                    android:paddingLeft="5dp"
                     android:singleLine="true"
                     android:text="hubot"
                     android:textAppearance="?android:attr/textAppearanceSmall"
@@ -60,9 +57,6 @@
                     android:id="@+id/tv_gist_created"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_gist_author"
-                    android:layout_toRightOf="@id/iv_gravatar"
-                    android:paddingLeft="5dp"
                     android:paddingTop="1dp"
                     android:singleLine="true"
                     android:text="November 02, 2011"
