@@ -43,7 +43,8 @@ public class GistViewHolder implements ViewHolder<Gist> {
     @Override
     public void updateViewFor(final Gist gist) {
         String id = gist.getId();
-        if (!gist.isPublic() && id.length() > 8)
+        String description = gist.getDescription();
+        if (!gist.isPublic() && description != null && description.length() > 0 && id.length() > 8)
             id = id.substring(0, 8) + "...";
         gistId.setText(id);
 
