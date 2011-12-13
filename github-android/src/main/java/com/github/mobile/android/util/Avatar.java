@@ -21,6 +21,8 @@ import roboguice.util.RoboAsyncTask;
  */
 public class Avatar {
 
+    private static final int RADIUS = 8;
+
     private static final String TAG = "GHAU";
 
     private static class AvatarDbHelper extends SQLiteOpenHelper {
@@ -89,7 +91,7 @@ public class Avatar {
         byte[] image = helper.getAvatar(login);
         if (image != null) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-            view.setImageBitmap(Image.roundCorners(bitmap, 6));
+            view.setImageBitmap(Image.roundCorners(bitmap, RADIUS));
             view.setVisibility(VISIBLE);
             helper.close();
             return;
@@ -110,7 +112,7 @@ public class Avatar {
                 if (image == null || image.length == 0)
                     return;
                 Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-                view.setImageBitmap(Image.roundCorners(bitmap, 6));
+                view.setImageBitmap(Image.roundCorners(bitmap, RADIUS));
                 view.setVisibility(VISIBLE);
             }
 
