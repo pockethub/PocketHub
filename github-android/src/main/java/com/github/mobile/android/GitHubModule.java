@@ -5,14 +5,13 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 
 import com.github.kevinsawicki.http.HttpRequest;
-import com.github.kevinsawicki.http.github.HttpRequestClient;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 
 import java.io.IOException;
 
 import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.client.HttpClient;
+import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.PullRequestService;
@@ -38,30 +37,30 @@ public class GitHubModule extends AbstractModule {
     }
 
     @Provides
-    HttpClient<?> client(Account account, AccountManager accountManager) {
-        HttpClient<?> client = new HttpRequestClient();
+    GitHubClient client(Account account, AccountManager accountManager) {
+        GitHubClient client = new GitHubClient();
         if (account != null)
             client.setCredentials(account.name, accountManager.getPassword(account));
         return client;
     }
 
     @Provides
-    IssueService issueService(HttpClient<?> client) {
+    IssueService issueService(GitHubClient client) {
         return new IssueService(client);
     }
 
     @Provides
-    PullRequestService pullRequestService(HttpClient<?> client) {
+    PullRequestService pullRequestService(GitHubClient client) {
         return new PullRequestService(client);
     }
 
     @Provides
-    UserService userService(HttpClient<?> client) {
+    UserService userService(GitHubClient client) {
         return new UserService(client);
     }
 
     @Provides
-    GistService gistService(HttpClient<?> client) {
+    GistService gistService(GitHubClient client) {
         return new GistService(client);
     }
 
