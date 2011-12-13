@@ -81,7 +81,7 @@
 
     <string name="gist_content_hint">puts \"Hello World!\"</string>
 
-    <string name="make_public">Make Public</string>
+    <string name="make_public">Public</string>
 
     <string name="gist_file_name_hint">file.txt</string>
 
