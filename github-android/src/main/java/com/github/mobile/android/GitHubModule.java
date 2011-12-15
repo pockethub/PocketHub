@@ -14,12 +14,14 @@ import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.IssueService;
+import org.eclipse.egit.github.core.service.OrganizationService;
 import org.eclipse.egit.github.core.service.PullRequestService;
 import org.eclipse.egit.github.core.service.UserService;
 
+/**
+ * Main module provide services and clients
+ */
 public class GitHubModule extends AbstractModule {
-
-    private static final String TAG = "GHMod";
 
     @Override
     protected void configure() {
@@ -62,6 +64,11 @@ public class GitHubModule extends AbstractModule {
     @Provides
     GistService gistService(GitHubClient client) {
         return new GistService(client);
+    }
+
+    @Provides
+    OrganizationService orgService(GitHubClient client) {
+        return new OrganizationService(client);
     }
 
     @Provides
