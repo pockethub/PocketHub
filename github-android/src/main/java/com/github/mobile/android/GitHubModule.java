@@ -16,6 +16,7 @@ import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.OrganizationService;
 import org.eclipse.egit.github.core.service.PullRequestService;
+import org.eclipse.egit.github.core.service.RepositoryService;
 import org.eclipse.egit.github.core.service.UserService;
 
 /**
@@ -69,6 +70,11 @@ public class GitHubModule extends AbstractModule {
     @Provides
     OrganizationService orgService(GitHubClient client) {
         return new OrganizationService(client);
+    }
+
+    @Provides
+    RepositoryService repoService(GitHubClient client) {
+        return new RepositoryService(client);
     }
 
     @Provides
