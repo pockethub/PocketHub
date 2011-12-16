@@ -13,7 +13,7 @@ import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
 import com.github.mobile.android.R.id;
-import com.github.mobile.android.gist.GistFragment;
+import com.github.mobile.android.gist.GistsActivity;
 import com.github.mobile.android.ui.WelcomeActivity;
 import com.github.mobile.android.ui.fragments.IssuesFragment;
 import com.github.mobile.android.ui.fragments.PullRequestsFragment;
@@ -54,7 +54,7 @@ public class DashboardActivity extends RoboFragmentActivity {
         tabHost.getTabWidget().setDividerDrawable(null);
         addTab("issues", issues, IssuesFragment.class);
         addTab("pulls", pull_requests, PullRequestsFragment.class);
-        addTab("gists", gists, GistFragment.class);
+        addTab("gists", gists, GistsActivity.class);
 
         if (savedInstanceState != null) {
             tabHost.setCurrentTabByTag(savedInstanceState.getString(BUNDLE_KEY_TAB));

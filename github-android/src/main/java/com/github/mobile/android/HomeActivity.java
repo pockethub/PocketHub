@@ -1,5 +1,7 @@
 package com.github.mobile.android;
 
+import android.accounts.Account;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +14,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.gist.GistsActivity;
 import com.github.mobile.android.repo.RepoBrowseActivity;
+import com.github.mobile.android.ui.WelcomeActivity;
 import com.github.mobile.android.util.Avatar;
 import com.google.inject.Inject;
 
@@ -28,6 +32,7 @@ import org.eclipse.egit.github.core.service.OrganizationService;
 import org.eclipse.egit.github.core.service.UserService;
 
 import roboguice.activity.RoboActivity;
+import roboguice.inject.ContextScopedProvider;
 import roboguice.inject.InjectView;
 import roboguice.util.RoboAsyncTask;
 
@@ -35,6 +40,8 @@ import roboguice.util.RoboAsyncTask;
  * Home screen activity
  */
 public class HomeActivity extends RoboActivity {
+
+    private static final int CODE_LOGIN = 1;
 
     private class LinksListAdapter extends ArrayAdapter<String> {
 
@@ -78,10 +85,13 @@ public class HomeActivity extends RoboActivity {
     private Map<String, Integer> linkViews = new LinkedHashMap<String, Integer>();
 
     @Inject
-    private OrganizationService orgService;
+    private ContextScopedProvider<Account> accountProvider;
 
     @Inject
-    private UserService userService;
+    private ContextScopedProvider<OrganizationService> orgService;
+
+    @Inject
+    private ContextScopedProvider<UserService> userService;
 
     @InjectView(R.id.lv_orgs)
     private ListView orgsList;
@@ -97,6 +107,19 @@ public class HomeActivity extends RoboActivity {
         linkViews.put("Gists", R.drawable.gist_icon);
 
         linksList.setAdapter(new LinksListAdapter(new ArrayList<String>(linkViews.keySet())));
+        linksList.setOnItemClickListener(new OnItemClickListener() {
+
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
+                switch (position) {
+                case 1:
+                    startActivity(new Intent(HomeActivity.this, GistsActivity.class));
+                    break;
+
+                default:
+                    break;
+                }
+            }
+        });
 
         orgsList.setOnItemClickListener(new OnItemClickListener() {
 
@@ -105,21 +128,23 @@ public class HomeActivity extends RoboActivity {
                 startActivity(RepoBrowseActivity.createIntent(HomeActivity.this, user));
             }
         });
-        loadOrgs();
+
+        if (accountProvider.get(this) != null)
+            loadOrgs();
     }
 
     private void loadOrgs() {
         new RoboAsyncTask<List<User>>(this) {
 
             public List<User> call() throws Exception {
-                List<User> orgs = new ArrayList<User>(orgService.getOrganizations());
+                List<User> orgs = new ArrayList<User>(orgService.get(HomeActivity.this).getOrganizations());
                 Collections.sort(orgs, new Comparator<User>() {
 
                     public int compare(User u1, User u2) {
                         return u1.getLogin().compareToIgnoreCase(u2.getLogin());
                     }
                 });
-                orgs.add(0, userService.getUser());
+                orgs.add(0, userService.get(HomeActivity.this).getUser());
                 return orgs;
             }
 
@@ -127,5 +152,19 @@ public class HomeActivity extends RoboActivity {
                 orgsList.setAdapter(new OrgListAdapter(orgs));
             };
         }.execute();
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (CODE_LOGIN == requestCode && resultCode == RESULT_OK)
+            loadOrgs();
+        else
+            super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (accountProvider.get(this) == null)
+            startActivityForResult(new Intent(this, WelcomeActivity.class), CODE_LOGIN);
     }
 }

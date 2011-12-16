@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@color/background"
     android:padding="10dp" >
 
     <TextView
@@ -21,6 +22,7 @@
         android:paddingLeft="5dp"
         android:singleLine="true"
         android:text="Bind resource disposal to widget disposal"
+        android:textColor="@color/item_text_color"
         android:textStyle="bold" />
 
     <TextView

@@ -14,6 +14,9 @@
             android:hardwareAccelerated="true">
 
         <activity android:name="DashboardActivity">
+        </activity>
+        
+        <activity android:name="HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -27,6 +30,10 @@
                 <data android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
+        
+        <activity android:name=".repo.RepoBrowseActivity" />
+        
+        <activity android:name=".gist.GistsActivity" />
 
         <activity android:name=".gist.ViewGistActivity" />
         

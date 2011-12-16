@@ -1,25 +1,20 @@
 package com.github.mobile.android.gist;
 
-import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
@@ -27,6 +22,7 @@ import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHolder;
 import com.madgag.android.listviews.ViewHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
+import com.madgag.android.listviews.ViewInflator;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -38,16 +34,20 @@ import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.service.GistService;
 
-import roboguice.fragment.RoboListFragment;
+import roboguice.activity.RoboActivity;
 import roboguice.inject.ContextScopedProvider;
+import roboguice.inject.InjectView;
 import roboguice.util.RoboAsyncTask;
 
 /**
- * Fragment to display Gists
+ * Activity to display a list of Gists
  */
-public class GistFragment extends RoboListFragment implements LoaderCallbacks<List<Gist>> {
+public class GistsActivity extends RoboActivity implements OnItemClickListener {
 
     private static final int REQUEST_CREATE = 1;
+
+    @InjectView(android.R.id.list)
+    private ListView gistsList;
 
     @Inject
     private Context context;
@@ -55,17 +55,14 @@ public class GistFragment extends RoboListFragment implements LoaderCallbacks<Li
     @Inject
     ContextScopedProvider<GistService> serviceProvider;
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (container == null)
-            return null;
-        return inflater.inflate(layout.gists, container, false);
-    }
-
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(layout.gists);
 
-        Button createButton = (Button) view.findViewById(id.createGistButton);
+        gistsList.setOnItemClickListener(this);
+
+        Button createButton = (Button) findViewById(id.createGistButton);
         createButton.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
@@ -73,12 +70,12 @@ public class GistFragment extends RoboListFragment implements LoaderCallbacks<Li
             }
         });
 
-        Button randomButton = (Button) view.findViewById(id.randomGistButton);
+        Button randomButton = (Button) findViewById(id.randomGistButton);
         randomButton.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
                 final ProgressDialog progress = new ProgressDialog(context);
-                progress.setMessage(getActivity().getString(R.string.random_gist));
+                progress.setMessage(getString(R.string.random_gist));
                 progress.show();
                 new RoboAsyncTask<Gist>(context) {
 
@@ -106,7 +103,7 @@ public class GistFragment extends RoboListFragment implements LoaderCallbacks<Li
             }
         });
 
-        Button openButton = (Button) view.findViewById(id.openGistButton);
+        Button openButton = (Button) findViewById(id.openGistButton);
         openButton.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
@@ -128,12 +125,14 @@ public class GistFragment extends RoboListFragment implements LoaderCallbacks<Li
                 prompt.show();
             }
         });
+
+        loadGists();
     }
 
-    public Loader<List<Gist>> onCreateLoader(int id, Bundle bundle) {
-        return new AsyncLoader<List<Gist>>(getActivity()) {
-            @Override
-            public List<Gist> loadInBackground() {
+    private void loadGists() {
+        new RoboAsyncTask<List<Gist>>(this) {
+
+            public List<Gist> call() throws Exception {
                 GistService service = serviceProvider.get(context);
                 List<Gist> gists;
                 try {
@@ -149,47 +148,29 @@ public class GistFragment extends RoboListFragment implements LoaderCallbacks<Li
                 });
                 return gists;
             }
-        };
-    }
 
-    /**
-     * Get adapter for gist list
-     *
-     * @param items
-     * @return list adapter
-     */
-    protected ListAdapter adapterFor(List<Gist> items) {
-        return new ViewHoldingListAdapter<Gist>(items, viewInflatorFor(getActivity(), layout.gist_list_item),
-                new ViewHolderFactory<Gist>() {
+            protected void onSuccess(List<Gist> gists) throws Exception {
+                gistsList.setAdapter(new ViewHoldingListAdapter<Gist>(gists, ViewInflator.viewInflatorFor(
+                        GistsActivity.this, layout.gist_list_item), new ViewHolderFactory<Gist>() {
+
                     public ViewHolder<Gist> createViewHolderFor(View view) {
                         return new GistViewHolder(view);
                     }
-                });
-    }
-
-    public void onListItemClick(ListView list, View view, int position, long id) {
-        Gist gist = (Gist) list.getItemAtPosition(position);
-        startActivity(ViewGistActivity.createIntent(getActivity(), gist.getId()));
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(0, null, this);
-    }
-
-    public void onLoadFinished(Loader<List<Gist>> loader, List<Gist> items) {
-        setListAdapter(adapterFor(items));
-    }
-
-    public void onLoaderReset(Loader<List<Gist>> arg0) {
+                }));
+            };
+        }.execute();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CREATE && ShareGistActivity.RESULT_CREATED == resultCode) {
-            getLoaderManager().restartLoader(0, null, this);
+            loadGists();
             return;
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void onItemClick(AdapterView<?> list, View view, int position, long id) {
+        Gist gist = (Gist) list.getItemAtPosition(position);
+        startActivity(ViewGistActivity.createIntent(this, gist.getId()));
     }
 }
