@@ -16,7 +16,6 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.util.Avatar;
 import com.google.inject.Inject;
 
-import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -62,9 +61,6 @@ public class RepoBrowseActivity extends RoboActivity {
                 ((TextView) view.findViewById(R.id.tv_repo_name)).setText(repo.getName());
             else
                 ((TextView) view.findViewById(R.id.tv_repo_name)).setText(repo.generateId());
-
-            ((TextView) view.findViewById(R.id.tv_repo_issue_count)).setText(MessageFormat.format("({0})",
-                    repo.getOpenIssues()));
             return view;
         }
     }

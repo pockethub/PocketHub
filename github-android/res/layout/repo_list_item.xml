@@ -11,21 +11,11 @@
 
     <TextView
         android:id="@+id/tv_repo_name"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:singleLine="true"
         android:text="github/hubot"
         android:textColor="@color/item_text_color" />
-
-    <TextView
-        android:id="@+id/tv_repo_issue_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:paddingLeft="5dp"
-        android:singleLine="true"
-        android:text="(3)"
-        android:textColor="@color/item_text_color_light" />
 
 </LinearLayout>
