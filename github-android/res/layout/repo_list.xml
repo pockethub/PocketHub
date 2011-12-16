@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/item_background"
+    android:orientation="vertical"
+    android:padding="10dp" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="5dp" >
+
+        <ImageView
+            android:id="@+id/iv_gravatar"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/gravatar_icon" />
+
+        <TextView
+            android:id="@+id/tv_org_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:singleLine="true"
+            android:text="account"
+            android:textColor="@color/item_text_color"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_orgs"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/outer_background" >
+
+        <ListView
+            android:id="@+id/lv_repos"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/inner_background"
+            android:divider="@color/item_divider"
+            android:dividerHeight="1dp"
+            android:fadingEdge="none"
+            android:fastScrollEnabled="true"
+            android:overScrollMode="never"
+            android:padding="5dp" >
+
+            <!-- Preview: listitem=@layout/repo_list_item -->
+        </ListView>
+    </LinearLayout>
+
+</LinearLayout>
