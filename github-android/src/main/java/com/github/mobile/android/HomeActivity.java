@@ -17,10 +17,11 @@ import com.github.mobile.android.util.Avatar;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.OrganizationService;
@@ -41,14 +42,15 @@ public class HomeActivity extends RoboActivity {
          * @param objects
          */
         public LinksListAdapter(List<String> objects) {
-            super(HomeActivity.this, R.layout.org_item, objects);
+            super(HomeActivity.this, R.layout.home_link_item, objects);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            final LinearLayout view = (LinearLayout) HomeActivity.this.getLayoutInflater().inflate(layout.org_item,
-                    null);
-            ((TextView) view.findViewById(R.id.tv_org_name)).setText(getItem(position));
+            final LinearLayout view = (LinearLayout) getLayoutInflater().inflate(layout.home_link_item, null);
+            String name = getItem(position);
+            ((TextView) view.findViewById(R.id.tv_home_link)).setText(name);
+            ((ImageView) view.findViewById(R.id.iv_home_link)).setBackgroundResource(linkViews.get(name));
             return view;
         }
     }
@@ -64,8 +66,7 @@ public class HomeActivity extends RoboActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            final LinearLayout view = (LinearLayout) HomeActivity.this.getLayoutInflater().inflate(layout.org_item,
-                    null);
+            final LinearLayout view = (LinearLayout) getLayoutInflater().inflate(layout.org_item, null);
             User user = getItem(position);
             ((TextView) view.findViewById(R.id.tv_org_name)).setText(user.getLogin());
             Avatar.bind(HomeActivity.this, ((ImageView) view.findViewById(R.id.iv_gravatar)), user.getLogin(),
@@ -73,6 +74,8 @@ public class HomeActivity extends RoboActivity {
             return view;
         }
     }
+
+    private Map<String, Integer> linkViews = new HashMap<String, Integer>();
 
     @Inject
     private OrganizationService orgService;
@@ -90,7 +93,8 @@ public class HomeActivity extends RoboActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
 
-        linksList.setAdapter(new LinksListAdapter(Arrays.asList("Gists")));
+        linkViews.put("Gists", R.drawable.gist_icon);
+        linksList.setAdapter(new LinksListAdapter(new ArrayList<String>(linkViews.keySet())));
 
         orgsList.setOnItemClickListener(new OnItemClickListener() {
 
