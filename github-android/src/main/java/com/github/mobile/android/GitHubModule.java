@@ -12,6 +12,8 @@ import java.io.IOException;
 
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
+import org.eclipse.egit.github.core.client.GitHubRequest;
+import org.eclipse.egit.github.core.client.PagedRequest;
 import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.OrganizationService;
@@ -64,7 +66,20 @@ public class GitHubModule extends AbstractModule {
 
     @Provides
     GistService gistService(GitHubClient client) {
-        return new GistService(client);
+        return new GistService(client) {
+
+            protected GitHubRequest createRequest() {
+                GitHubRequest request = super.createRequest();
+                request.setResponseContentType(ACCEPT_HTML);
+                return request;
+            }
+
+            protected <V> PagedRequest<V> createPagedRequest(int start, int size) {
+                PagedRequest<V> request = super.createPagedRequest(start, size);
+                request.setResponseContentType(ACCEPT_HTML);
+                return request;
+            }
+        };
     }
 
     @Provides
