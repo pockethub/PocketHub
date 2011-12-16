@@ -2,12 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
     android:orientation="horizontal"
-    android:paddingBottom="5dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="5dp"
-    android:paddingTop="5dp" >
+    android:padding="10dp" >
 
     <TextView
         android:id="@+id/tv_repo_name"
