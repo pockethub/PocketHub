@@ -17,6 +17,7 @@ import com.github.mobile.android.util.Avatar;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -33,6 +34,24 @@ import roboguice.util.RoboAsyncTask;
  * Home screen activity
  */
 public class HomeActivity extends RoboActivity {
+
+    private class LinksListAdapter extends ArrayAdapter<String> {
+
+        /**
+         * @param objects
+         */
+        public LinksListAdapter(List<String> objects) {
+            super(HomeActivity.this, R.layout.org_item, objects);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            final LinearLayout view = (LinearLayout) HomeActivity.this.getLayoutInflater().inflate(layout.org_item,
+                    null);
+            ((TextView) view.findViewById(R.id.tv_org_name)).setText(getItem(position));
+            return view;
+        }
+    }
 
     private class OrgListAdapter extends ArrayAdapter<User> {
 
@@ -61,18 +80,18 @@ public class HomeActivity extends RoboActivity {
     @Inject
     private UserService userService;
 
-    @InjectView(R.id.ll_progress)
-    private LinearLayout progress;
-
-    @InjectView(R.id.ll_orgs)
-    private LinearLayout orgsLayout;
-
     @InjectView(R.id.lv_orgs)
     private ListView orgsList;
+
+    @InjectView(R.id.lv_links)
+    private ListView linksList;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
+
+        linksList.setAdapter(new LinksListAdapter(Arrays.asList("Gists")));
+
         orgsList.setOnItemClickListener(new OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> view, View arg1, int position, long id) {
@@ -84,8 +103,6 @@ public class HomeActivity extends RoboActivity {
     }
 
     private void loadOrgs() {
-        progress.setVisibility(View.VISIBLE);
-        orgsLayout.setVisibility(View.GONE);
         new RoboAsyncTask<List<User>>(this) {
 
             public List<User> call() throws Exception {
@@ -102,8 +119,6 @@ public class HomeActivity extends RoboActivity {
 
             protected void onSuccess(List<User> orgs) throws Exception {
                 orgsList.setAdapter(new OrgListAdapter(orgs));
-                progress.setVisibility(View.GONE);
-                orgsLayout.setVisibility(View.VISIBLE);
             };
         }.execute();
     }
