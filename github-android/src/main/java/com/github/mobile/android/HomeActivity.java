@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -75,7 +76,7 @@ public class HomeActivity extends RoboActivity {
         }
     }
 
-    private Map<String, Integer> linkViews = new HashMap<String, Integer>();
+    private Map<String, Integer> linkViews = new LinkedHashMap<String, Integer>();
 
     @Inject
     private OrganizationService orgService;
@@ -93,7 +94,9 @@ public class HomeActivity extends RoboActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
 
+        linkViews.put("Dashboard", R.drawable.dashboard_icon);
         linkViews.put("Gists", R.drawable.gist_icon);
+
         linksList.setAdapter(new LinksListAdapter(new ArrayList<String>(linkViews.keySet())));
 
         orgsList.setOnItemClickListener(new OnItemClickListener() {
