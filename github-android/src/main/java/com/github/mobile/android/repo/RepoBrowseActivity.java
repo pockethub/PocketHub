@@ -99,7 +99,7 @@ public class RepoBrowseActivity extends RoboActivity {
                 Arrays.sort(repos, new Comparator<Repository>() {
 
                     public int compare(Repository r1, Repository r2) {
-                        return r2.getUpdatedAt().compareTo(r1.getUpdatedAt());
+                        return r1.getName().compareToIgnoreCase(r2.getName());
                     }
                 });
                 return repos;
