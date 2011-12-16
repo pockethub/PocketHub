@@ -2,7 +2,6 @@ package com.github.mobile.android.gist;
 
 import android.app.Activity;
 import android.text.Html;
-import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import android.widget.TextView;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.util.Avatar;
+import com.github.mobile.android.util.Time;
 
 import org.eclipse.egit.github.core.Comment;
 
@@ -44,7 +44,7 @@ public class GistCommentListAdapter extends ArrayAdapter<Comment> {
         final TextView authorView = (TextView) commentRoot.findViewById(id.tv_gist_comment_author);
         authorView.setText(comment.getUser().getLogin());
         final TextView dateView = (TextView) commentRoot.findViewById(id.tv_gist_comment_date);
-        dateView.setText(DateUtils.getRelativeTimeSpanString(comment.getUpdatedAt().getTime()));
+        dateView.setText(Time.relativeTimeFor(comment.getUpdatedAt()));
         final ImageView avatarView = (ImageView) commentRoot.findViewById(id.iv_gravatar);
         Avatar.bind(activity, avatarView, comment.getUser().getLogin(), comment.getUser().getAvatarUrl());
         return commentRoot;

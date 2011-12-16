@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,6 +20,7 @@ import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.util.Avatar;
+import com.github.mobile.android.util.Time;
 import com.google.inject.Inject;
 
 import java.util.List;
@@ -164,7 +164,7 @@ public class ViewGistActivity extends RoboActivity {
             description.setText(desc);
         else
             description.setText(Html.fromHtml("<i>No description</i>"));
-        created.setText(DateUtils.getRelativeTimeSpanString(gist.getCreatedAt().getTime()));
+        created.setText(Time.relativeTimeFor(gist.getCreatedAt()));
         if (gist.getUser() != null) {
             author.setText(gist.getUser().getLogin());
             author.setVisibility(VISIBLE);
