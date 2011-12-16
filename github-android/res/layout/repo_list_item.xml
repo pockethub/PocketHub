@@ -12,6 +12,7 @@
         android:layout_gravity="center_vertical"
         android:singleLine="true"
         android:text="github/hubot"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/item_text_color" />
 
 </LinearLayout>

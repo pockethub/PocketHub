@@ -27,6 +27,7 @@
             android:paddingLeft="10dp"
             android:singleLine="true"
             android:text="account"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/item_text_color"
             android:textStyle="bold" />
     </LinearLayout>
