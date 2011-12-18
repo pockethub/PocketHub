@@ -130,9 +130,6 @@ public class HomeActivity extends RoboActivity {
                 startActivity(RepoBrowseActivity.createIntent(HomeActivity.this, user));
             }
         });
-
-        if (accountProvider.get(this) != null)
-            loadOrgs();
     }
 
     private void loadOrgs() {
@@ -169,6 +166,8 @@ public class HomeActivity extends RoboActivity {
         if (accountProvider.get(this) == null) {
             Log.d(TAG, "No account currently available, starting Welcome activity");
             startActivityForResult(new Intent(this, WelcomeActivity.class), CODE_LOGIN);
+        } else {
+            loadOrgs();
         }
     }
 }
