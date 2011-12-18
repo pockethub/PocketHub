@@ -3,6 +3,7 @@ package com.github.mobile.android;
 import android.accounts.Account;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -41,6 +42,7 @@ import roboguice.util.RoboAsyncTask;
  */
 public class HomeActivity extends RoboActivity {
 
+    private static final String TAG = "HA";
     private static final int CODE_LOGIN = 1;
 
     private class LinksListAdapter extends ArrayAdapter<String> {
@@ -164,7 +166,9 @@ public class HomeActivity extends RoboActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (accountProvider.get(this) == null)
+        if (accountProvider.get(this) == null) {
+            Log.d(TAG, "No account currently available, starting Welcome activity");
             startActivityForResult(new Intent(this, WelcomeActivity.class), CODE_LOGIN);
+        }
     }
 }

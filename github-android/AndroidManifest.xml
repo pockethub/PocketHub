@@ -39,6 +39,16 @@
         
         <activity android:name=".gist.ViewGistFileActivity" />
 
+        <activity android:name=".authenticator.OAuthWebRedirectCaptureActivity"
+                  android:label="@string/github_oath2_sign_in">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:scheme="githubauth"/>
+            </intent-filter>
+        </activity>
+
         <service android:name=".authenticator.AccountAuthenticatorService"
                  android:exported="true" android:process=":auth">
             <intent-filter>
