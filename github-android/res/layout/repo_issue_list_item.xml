@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="10dp" >
+
+    <TextView
+        android:id="@+id/tv_issue_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="5dp"
+        android:text="#20"
+        android:textColor="@color/listing"
+        android:textSize="17sp"
+        android:typeface="monospace" />
+
+    <TextView
+        android:id="@+id/tv_issue_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/tv_issue_number"
+        android:layout_toRightOf="@id/tv_issue_number"
+        android:singleLine="true"
+        android:text="Thing crashes real bad when you blow your nose"
+        android:textColor="@color/item_text_color"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_issue_creation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tv_issue_title"
+        android:layout_below="@id/tv_issue_number"
+        android:text="by gitster August 05, 1871"
+        android:textColor="@color/listing" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/tv_issue_creation"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:src="@drawable/comment_icon" />
+
+        <TextView
+            android:id="@+id/tv_issue_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:paddingLeft="3dp"
+            android:text="3"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/listing_comments" />
+    </LinearLayout>
+
+</RelativeLayout>

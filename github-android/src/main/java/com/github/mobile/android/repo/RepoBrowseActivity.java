@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 
 import com.github.mobile.android.R;
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.issue.IssueBrowseActivity;
 import com.github.mobile.android.util.Avatar;
 import com.google.inject.Inject;
 
@@ -80,6 +83,16 @@ public class RepoBrowseActivity extends RoboActivity {
 
         ((TextView) findViewById(R.id.tv_org_name)).setText(user.getLogin());
         Avatar.bind(this, ((ImageView) findViewById(R.id.iv_gravatar)), user.getLogin(), user.getAvatarUrl());
+
+        repoList.setOnItemClickListener(new OnItemClickListener() {
+
+            public void onItemClick(AdapterView<?> view, View arg1, int position, long id) {
+                Repository repo = (Repository) view.getItemAtPosition(position);
+                Intent intent = new Intent(RepoBrowseActivity.this, IssueBrowseActivity.class);
+                intent.putExtra("repository", repo);
+                startActivity(intent);
+            }
+        });
 
         loadRepos();
     }

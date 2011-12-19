@@ -30,7 +30,9 @@
                 <data android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
-        
+
+        <activity android:name=".issue.IssueBrowseActivity" />
+
         <activity android:name=".repo.RepoBrowseActivity" />
         
         <activity android:name=".gist.GistsActivity" />
