@@ -13,7 +13,9 @@
 
     <packaging>apk</packaging>
     <name>GitHub for Android</name>
-
+    <properties>
+        <abs.version>3.5.0</abs.version>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -50,13 +52,13 @@
         <dependency>
             <groupId>com.actionbarsherlock</groupId>
             <artifactId>library</artifactId>
-            <version>3.4.2</version>
+            <version>${abs.version}</version>
             <type>apklib</type>
         </dependency>
         <dependency>
             <groupId>com.actionbarsherlock</groupId>
             <artifactId>library</artifactId>
-            <version>3.4.2</version>
+            <version>${abs.version}</version>
             <type>jar</type>
             <scope>provided</scope>
         </dependency>
