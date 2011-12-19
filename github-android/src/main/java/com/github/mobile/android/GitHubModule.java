@@ -1,6 +1,5 @@
 package com.github.mobile.android;
 
-import static com.github.mobile.android.authenticator.Constants.AUTHTOKEN_TYPE;
 import static com.github.mobile.android.authenticator.Constants.GITHUB_ACCOUNT_TYPE;
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -45,14 +44,8 @@ public class GitHubModule extends AbstractModule {
     @Provides
     GitHubClient client(Account account, AccountManager accountManager) {
         GitHubClient client = new GitHubClient();
-        if (account != null) {
-            String password = accountManager.getPassword(account);
-            if (password == null) {
-                client.setOAuth2Token(accountManager.peekAuthToken(account, AUTHTOKEN_TYPE));
-            } else {
-                client.setCredentials(account.name, password);
-            }
-        }
+        if (account != null)
+            client.setCredentials(account.name, accountManager.getPassword(account));
         return client;
     }
 

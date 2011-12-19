@@ -8,7 +8,6 @@
     <string name="gists">Gists</string>
 
     <!-- AuthenticatorActivity -->
-    <string name="github_oath2_sign_in">GitHub: OAuth Sign in</string>
 
     <!-- Label above username EditText -->
     <string

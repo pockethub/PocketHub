@@ -10,14 +10,12 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,7 +42,6 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
     public static final String PARAM_AUTHTOKEN_TYPE = "authtokenType";
 
     private static final String TAG = "GHAuthenticatorActivity";
-    
 
     private AccountManager mAccountManager;
     @InjectView(R.id.message)
@@ -86,30 +83,6 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
     protected boolean mRequestNewAccount = false;
 
     private String mUsername;
-
-    @Override
-    public boolean onCreateOptionsMenu(android.view.Menu menu) {
-        android.view.MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.auth, menu);
-        return true;
-    }
-    
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.useOAuth:
-            startActivity(launchOAuthBrowserIntent());
-            finish();
-        default:
-            return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private Intent launchOAuthBrowserIntent() {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(OAuth.AUTH_URL));
-        // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        return intent;
-    }
 
     @Override
     public void onCreate(Bundle icicle) {

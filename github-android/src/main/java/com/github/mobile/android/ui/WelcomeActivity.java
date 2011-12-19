@@ -1,28 +1,21 @@
 package com.github.mobile.android.ui;
 
-import android.accounts.Account;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.github.mobile.android.R;
 import com.github.mobile.android.authenticator.GitHubAuthenticatorActivity;
-import com.google.inject.Inject;
 
 import roboguice.activity.RoboFragmentActivity;
-import roboguice.inject.ContextScopedProvider;
 
 /**
  * Welcome activity that prompts to sign in
  */
 public class WelcomeActivity extends RoboFragmentActivity {
 
-    private static final String TAG = "WA";
     private static final int CODE_AUTH = 0;
 
-    @Inject ContextScopedProvider<Account> accountProvider;
-    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,15 +38,5 @@ public class WelcomeActivity extends RoboFragmentActivity {
      */
     public void signInClicked(View view) {
         startActivityForResult(new Intent(this, GitHubAuthenticatorActivity.class), CODE_AUTH);
-    }
-    
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Account account = accountProvider.get(this);
-        if (account != null) {
-            Log.d(TAG, "Closing Welcome activity, already have current account: "+account.name);
-            finish();
-        }
     }
 }
