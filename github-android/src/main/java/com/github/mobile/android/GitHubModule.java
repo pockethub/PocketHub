@@ -51,7 +51,20 @@ public class GitHubModule extends AbstractModule {
 
     @Provides
     IssueService issueService(GitHubClient client) {
-        return new IssueService(client);
+        return new IssueService(client) {
+
+            protected GitHubRequest createRequest() {
+                GitHubRequest request = super.createRequest();
+                request.setResponseContentType(ACCEPT_HTML);
+                return request;
+            }
+
+            protected <V> PagedRequest<V> createPagedRequest(int start, int size) {
+                PagedRequest<V> request = super.createPagedRequest(start, size);
+                request.setResponseContentType(ACCEPT_HTML);
+                return request;
+            }
+        };
     }
 
     @Provides
