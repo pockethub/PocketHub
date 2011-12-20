@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/iv_home_link"
-        android:layout_width="16px"
-        android:layout_height="16px"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
         android:layout_gravity="center_vertical" />
 
     <TextView
