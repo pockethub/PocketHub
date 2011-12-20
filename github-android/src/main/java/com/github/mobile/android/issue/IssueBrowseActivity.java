@@ -46,8 +46,7 @@ public class IssueBrowseActivity extends RoboActivity {
 
         final Repository repo = (Repository) getIntent().getSerializableExtra("repository");
         ((TextView) findViewById(id.tv_repo_name)).setText(repo.getName());
-        Avatar.bind(this, (ImageView) findViewById(id.iv_gravatar), repo.getOwner().getLogin(), repo.getOwner()
-                .getAvatarUrl());
+        Avatar.bind(this, (ImageView) findViewById(id.iv_gravatar), repo.getOwner());
         loadIssues(repo);
 
         issueList.setOnItemClickListener(new OnItemClickListener() {

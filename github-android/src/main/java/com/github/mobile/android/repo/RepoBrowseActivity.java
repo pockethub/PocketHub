@@ -82,7 +82,7 @@ public class RepoBrowseActivity extends RoboActivity {
         user = (User) getIntent().getSerializableExtra("user");
 
         ((TextView) findViewById(R.id.tv_org_name)).setText(user.getLogin());
-        Avatar.bind(this, ((ImageView) findViewById(R.id.iv_gravatar)), user.getLogin(), user.getAvatarUrl());
+        Avatar.bind(this, ((ImageView) findViewById(R.id.iv_gravatar)), user);
 
         repoList.setOnItemClickListener(new OnItemClickListener() {
 

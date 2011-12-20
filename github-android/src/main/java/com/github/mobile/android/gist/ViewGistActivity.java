@@ -19,9 +19,13 @@ import android.widget.Toast;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.comment.CommentViewHolder;
 import com.github.mobile.android.util.Avatar;
+import com.github.mobile.android.util.HttpImageGetter;
 import com.github.mobile.android.util.Time;
 import com.google.inject.Inject;
+import com.madgag.android.listviews.ViewHoldingListAdapter;
+import com.madgag.android.listviews.ViewInflator;
 
 import java.util.List;
 
@@ -97,11 +101,14 @@ public class ViewGistActivity extends RoboActivity {
     @InjectView(id.lv_gist_comments)
     private ListView comments;
 
+    private HttpImageGetter imageGetter;
+
     @Inject
     private ContextScopedProvider<GistService> gistServiceProvider;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        imageGetter = new HttpImageGetter(this);
         setContentView(layout.gist_view);
         final Gist gist = (Gist) getIntent().getSerializableExtra(GIST);
         if (gist == null) {
@@ -146,8 +153,9 @@ public class ViewGistActivity extends RoboActivity {
             }
 
             protected void onSuccess(List<Comment> gistComments) throws Exception {
-                comments.setAdapter(new GistCommentListAdapter(ViewGistActivity.this, gistComments
-                        .toArray(new Comment[gistComments.size()])));
+                comments.setAdapter(new ViewHoldingListAdapter<Comment>(gistComments, ViewInflator.viewInflatorFor(
+                        ViewGistActivity.this, layout.comment_view_item), CommentViewHolder.createFactory(
+                        ViewGistActivity.this, imageGetter)));
             }
 
             protected void onException(Exception e) throws RuntimeException {
@@ -157,7 +165,7 @@ public class ViewGistActivity extends RoboActivity {
     }
 
     private void displayGist(final Gist gist) {
-        Avatar.bind(this, gravatar, gist.getUser().getLogin(), gist.getUser().getAvatarUrl());
+        Avatar.bind(this, gravatar, gist.getUser());
         gistId.setText(getString(string.gist) + " " + gist.getId());
         String desc = gist.getDescription();
         if (desc != null && desc.length() > 0)

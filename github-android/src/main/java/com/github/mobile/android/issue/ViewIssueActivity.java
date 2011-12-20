@@ -1,21 +1,24 @@
 package com.github.mobile.android.issue;
 
+import android.R;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.comment.CommentViewHolder;
 import com.github.mobile.android.util.Avatar;
 import com.github.mobile.android.util.Html;
 import com.github.mobile.android.util.HttpImageGetter;
 import com.github.mobile.android.util.Time;
 import com.google.inject.Inject;
+import com.madgag.android.listviews.ViewHoldingListAdapter;
+import com.madgag.android.listviews.ViewInflator;
 
 import java.util.List;
 
@@ -56,8 +59,10 @@ public class ViewIssueActivity extends RoboActivity {
     @Inject
     private ContextScopedProvider<IssueService> service;
 
-    @InjectView(id.ll_issue_comments)
-    private LinearLayout comments;
+    @InjectView(R.id.list)
+    private ListView comments;
+
+    private IssueBodyViewHolder body;
 
     private HttpImageGetter imageGetter;
 
@@ -84,28 +89,15 @@ public class ViewIssueActivity extends RoboActivity {
 
             protected void onSuccess(Issue issue) throws Exception {
                 ((TextView) findViewById(id.tv_issue_title)).setText(issue.getTitle());
-                loadImages((TextView) findViewById(id.tv_issue_body), issue.getBodyHtml());
-                ((TextView) findViewById(id.tv_issue_body)).setText(Html.encode(issue.getBodyHtml()));
                 String reported = "<b>" + issue.getUser().getLogin() + "</b> "
                         + Time.relativeTimeFor(issue.getCreatedAt());
                 ((TextView) findViewById(id.tv_issue_creation)).setText(Html.encode(reported));
-                Avatar.bind(ViewIssueActivity.this, (ImageView) findViewById(id.iv_gravatar), issue.getUser()
-                        .getLogin(), issue.getUser().getAvatarUrl());
+                Avatar.bind(ViewIssueActivity.this, (ImageView) findViewById(id.iv_gravatar), issue.getUser());
+                View view = getLayoutInflater().inflate(layout.issue_view_body, null);
+                body = new IssueBodyViewHolder(ViewIssueActivity.this, imageGetter, view);
+                body.updateViewFor(issue);
+                comments.addHeaderView(view);
                 loadComments(repository, issue);
-            }
-        }.execute();
-    }
-
-    private void loadImages(final TextView view, final String html) {
-        view.setText(Html.encode(html));
-        new RoboAsyncTask<CharSequence>(this) {
-
-            public CharSequence call() throws Exception {
-                return Html.encode(html, imageGetter);
-            }
-
-            protected void onSuccess(CharSequence html) throws Exception {
-                view.setText(html);
             }
         }.execute();
     }
@@ -119,21 +111,9 @@ public class ViewIssueActivity extends RoboActivity {
             }
 
             protected void onSuccess(List<Comment> issueComments) throws Exception {
-                comments.removeAllViews();
-                for (Comment comment : issueComments) {
-                    View commentRoot = getLayoutInflater().inflate(layout.gist_view_comment_item, null);
-                    final TextView bodyView = (TextView) commentRoot.findViewById(id.tv_gist_comment_body);
-                    bodyView.setMovementMethod(LinkMovementMethod.getInstance());
-                    loadImages(bodyView, comment.getBodyHtml());
-                    final TextView authorView = (TextView) commentRoot.findViewById(id.tv_gist_comment_author);
-                    authorView.setText(comment.getUser().getLogin());
-                    final TextView dateView = (TextView) commentRoot.findViewById(id.tv_gist_comment_date);
-                    dateView.setText(Time.relativeTimeFor(comment.getUpdatedAt()));
-                    final ImageView avatarView = (ImageView) commentRoot.findViewById(id.iv_gravatar);
-                    Avatar.bind(ViewIssueActivity.this, avatarView, comment.getUser().getLogin(), comment.getUser()
-                            .getAvatarUrl());
-                    comments.addView(commentRoot);
-                }
+                comments.setAdapter(new ViewHoldingListAdapter<Comment>(issueComments, ViewInflator.viewInflatorFor(
+                        ViewIssueActivity.this, layout.comment_view_item), CommentViewHolder.createFactory(
+                        ViewIssueActivity.this, imageGetter)));
             }
         }.execute();
     }

@@ -14,6 +14,8 @@ import android.widget.ImageView;
 
 import com.github.kevinsawicki.http.HttpRequest;
 
+import org.eclipse.egit.github.core.User;
+
 import roboguice.util.RoboAsyncTask;
 
 /**
@@ -73,6 +75,17 @@ public class Avatar {
             values.put(COL_AVATAR, image);
             db.insert(TABLE_NAME, null, values);
         }
+    }
+
+    /**
+     * Bind view to user
+     *
+     * @param context
+     * @param view
+     * @param user
+     */
+    public static void bind(final Context context, final ImageView view, final User user) {
+        bind(context, view, user.getLogin(), user.getAvatarUrl());
     }
 
     /**

@@ -78,8 +78,7 @@ public class HomeActivity extends RoboActivity {
             final LinearLayout view = (LinearLayout) getLayoutInflater().inflate(layout.org_item, null);
             User user = getItem(position);
             ((TextView) view.findViewById(R.id.tv_org_name)).setText(user.getLogin());
-            Avatar.bind(HomeActivity.this, ((ImageView) view.findViewById(R.id.iv_gravatar)), user.getLogin(),
-                    user.getAvatarUrl());
+            Avatar.bind(HomeActivity.this, ((ImageView) view.findViewById(R.id.iv_gravatar)), user);
             return view;
         }
     }
