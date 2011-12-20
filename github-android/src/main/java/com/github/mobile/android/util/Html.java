@@ -30,8 +30,15 @@ public class Html {
         if (html.length() == 0)
             return html;
         // These add extra padding that should be styled explicitly
-        if (html.startsWith("<p>") && html.endsWith("</p>"))
-            html = html.substring(3, html.length() - 4);
+        html = html.replace("<p>", "");
+        html = html.replace("</p>", "<br>");
+        while (html.length() > 0)
+            if (html.startsWith("<br>"))
+                html = html.substring(4);
+            else if (html.endsWith("<br>"))
+                html = html.substring(0, html.length() - 4);
+            else
+                break;
         return android.text.Html.fromHtml(html, imageGetter, null);
     }
 }
