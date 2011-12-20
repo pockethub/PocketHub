@@ -1,7 +1,11 @@
 package com.github.mobile.android.issue;
 
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -45,6 +49,15 @@ public class IssueBrowseActivity extends RoboActivity {
         Avatar.bind(this, (ImageView) findViewById(id.iv_gravatar), repo.getOwner().getLogin(), repo.getOwner()
                 .getAvatarUrl());
         loadIssues(repo);
+
+        issueList.setOnItemClickListener(new OnItemClickListener() {
+
+            public void onItemClick(AdapterView<?> list, View view, int position, long id) {
+                Issue issue = (Issue) list.getItemAtPosition(position);
+                Intent intent = ViewIssueActivity.createIntent(IssueBrowseActivity.this, repo, issue);
+                startActivity(intent);
+            }
+        });
     }
 
     private void loadIssues(final Repository repo) {

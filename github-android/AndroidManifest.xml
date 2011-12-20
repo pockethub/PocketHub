@@ -31,6 +31,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".issue.ViewIssueActivity" />
+
         <activity android:name=".issue.IssueBrowseActivity" />
 
         <activity android:name=".repo.RepoBrowseActivity" />
