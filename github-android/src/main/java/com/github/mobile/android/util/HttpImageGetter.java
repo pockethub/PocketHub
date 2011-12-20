@@ -10,6 +10,7 @@ import android.view.Display;
 import android.view.WindowManager;
 
 import com.github.kevinsawicki.http.HttpRequest;
+import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,13 +42,18 @@ public class HttpImageGetter implements ImageGetter {
         try {
             output = File.createTempFile("image", ".jpg", dir);
             synchronized (this) {
-                HttpRequest.get(source).receive(output).disconnect();
+                HttpRequest request = HttpRequest.get(source);
+                if (!request.ok())
+                    return null;
+                request.receive(output).disconnect();
             }
             Bitmap bitmap = Image.getBitmap(output, width, Integer.MAX_VALUE);
             BitmapDrawable drawable = new BitmapDrawable(bitmap);
             drawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
             return drawable;
         } catch (IOException e) {
+            return null;
+        } catch (HttpRequestException e) {
             return null;
         } finally {
             if (output != null)
