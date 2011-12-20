@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.pivotallabs:robolectric:1.0-RC1">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/pivotallabs/robolectric/1.0-RC1/robolectric-1.0-RC1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/pivotallabs/robolectric/1.0-RC1/robolectric-1.0-RC1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/pivotallabs/robolectric/1.0-RC1/robolectric-1.0-RC1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

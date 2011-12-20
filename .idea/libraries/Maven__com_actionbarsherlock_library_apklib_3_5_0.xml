@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.actionbarsherlock:library:apklib:3.5.0">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/actionbarsherlock/library/3.5.0/library-3.5.0.apklib!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/actionbarsherlock/library/3.5.0/library-3.5.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/actionbarsherlock/library/3.5.0/library-3.5.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.madgag:roboguice:1.99.0.4-UNOFFICIAL-ROBERTO-RELEASE">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/madgag/roboguice/1.99.0.4-UNOFFICIAL-ROBERTO-RELEASE/roboguice-1.99.0.4-UNOFFICIAL-ROBERTO-RELEASE.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/madgag/roboguice/1.99.0.4-UNOFFICIAL-ROBERTO-RELEASE/roboguice-1.99.0.4-UNOFFICIAL-ROBERTO-RELEASE-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/madgag/roboguice/1.99.0.4-UNOFFICIAL-ROBERTO-RELEASE/roboguice-1.99.0.4-UNOFFICIAL-ROBERTO-RELEASE-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
