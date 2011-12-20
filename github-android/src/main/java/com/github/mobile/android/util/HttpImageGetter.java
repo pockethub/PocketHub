@@ -2,9 +2,12 @@ package com.github.mobile.android.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.Html.ImageGetter;
+import android.view.Display;
+import android.view.WindowManager;
 
 import com.github.kevinsawicki.http.HttpRequest;
 
@@ -18,6 +21,8 @@ public class HttpImageGetter implements ImageGetter {
 
     private final File dir;
 
+    private final int width;
+
     /**
      * Create image getter for context
      *
@@ -25,6 +30,10 @@ public class HttpImageGetter implements ImageGetter {
      */
     public HttpImageGetter(Context context) {
         dir = context.getCacheDir();
+        Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        Point point = new Point();
+        display.getSize(point);
+        width = point.x;
     }
 
     public Drawable getDrawable(String source) {
@@ -34,7 +43,7 @@ public class HttpImageGetter implements ImageGetter {
             synchronized (this) {
                 HttpRequest.get(source).receive(output).disconnect();
             }
-            Bitmap bitmap = Image.getBitmap(output);
+            Bitmap bitmap = Image.getBitmap(output, width, Integer.MAX_VALUE);
             BitmapDrawable drawable = new BitmapDrawable(bitmap);
             drawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
             return drawable;
