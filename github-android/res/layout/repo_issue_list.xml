@@ -65,6 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_issues_header"
+        android:fastScrollEnabled="true"
         android:background="@color/background" >
 
         <!-- Preview: listitem=@layout/repo_issue_list_item -->
