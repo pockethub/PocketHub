@@ -13,23 +13,21 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.github.mobile.android.AccountDataManager;
 import com.github.mobile.android.R;
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.RequestFuture;
 import com.github.mobile.android.issue.IssueBrowseActivity;
 import com.github.mobile.android.util.Avatar;
 import com.google.inject.Inject;
 
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.service.RepositoryService;
 
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
-import roboguice.util.RoboAsyncTask;
 
 /**
  * Activity for browsing repositories associated with a user
@@ -72,7 +70,7 @@ public class RepoBrowseActivity extends RoboActivity {
     private ListView repoList;
 
     @Inject
-    private RepositoryService repoService;
+    private AccountDataManager cache;
 
     private User user;
 
@@ -98,29 +96,12 @@ public class RepoBrowseActivity extends RoboActivity {
     }
 
     private void loadRepos() {
-        new RoboAsyncTask<Repository[]>(this) {
+        RequestFuture<List<Repository>> callback = new RequestFuture<List<Repository>>() {
 
-            public Repository[] call() throws Exception {
-                List<Repository> repoList;
-                if (!"User".equals(user.getType()))
-                    repoList = repoService.getOrgRepositories(user.getLogin());
-                else if (user.getLogin().equals(repoService.getClient().getUser()))
-                    repoList = repoService.getRepositories();
-                else
-                    repoList = repoService.getRepositories(user.getLogin());
-                Repository[] repos = repoList.toArray(new Repository[repoList.size()]);
-                Arrays.sort(repos, new Comparator<Repository>() {
-
-                    public int compare(Repository r1, Repository r2) {
-                        return r1.getName().compareToIgnoreCase(r2.getName());
-                    }
-                });
-                return repos;
+            public void success(List<Repository> repos) {
+                repoList.setAdapter(new RepoAdapter(repos.toArray(new Repository[repos.size()])));
             }
-
-            protected void onSuccess(Repository[] repos) throws Exception {
-                repoList.setAdapter(new RepoAdapter(repos));
-            }
-        }.execute();
+        };
+        cache.getRepos(user, callback);
     }
 }

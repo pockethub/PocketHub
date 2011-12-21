@@ -10,9 +10,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.github.mobile.android.AccountDataManager;
 import com.github.mobile.android.R;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.RequestFuture;
 import com.github.mobile.android.util.Avatar;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -27,7 +29,6 @@ import org.eclipse.egit.github.core.service.IssueService;
 
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
-import roboguice.util.RoboAsyncTask;
 
 /**
  * Activity for browsing a list of issues
@@ -38,7 +39,7 @@ public class IssueBrowseActivity extends RoboActivity {
     private ListView issueList;
 
     @Inject
-    private IssueService issueService;
+    private AccountDataManager cache;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,19 +61,16 @@ public class IssueBrowseActivity extends RoboActivity {
     }
 
     private void loadIssues(final Repository repo) {
-        new RoboAsyncTask<List<Issue>>(this) {
+        RequestFuture<List<Issue>> callback = new RequestFuture<List<Issue>>() {
 
-            public List<Issue> call() throws Exception {
-                Map<String, String> openFilter = new HashMap<String, String>();
-                openFilter.put(IssueService.FILTER_STATE, IssueService.STATE_OPEN);
-                openFilter.put(IssueService.FIELD_SORT, IssueService.SORT_UPDATED);
-                return issueService.getIssues(repo.getOwner().getLogin(), repo.getName(), openFilter);
-            }
-
-            protected void onSuccess(List<Issue> issues) throws Exception {
+            public void success(List<Issue> issues) {
                 issueList.setAdapter(new ViewHoldingListAdapter<Issue>(issues, viewInflatorFor(
                         IssueBrowseActivity.this, layout.repo_issue_list_item), RepoIssueViewHolder.FACTORY));
-            };
-        }.execute();
+            }
+        };
+        Map<String, String> filter = new HashMap<String, String>();
+        filter.put(IssueService.FILTER_STATE, IssueService.STATE_OPEN);
+        filter.put(IssueService.FIELD_SORT, IssueService.SORT_UPDATED);
+        cache.getIssues(repo, filter, callback);
     }
 }
