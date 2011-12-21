@@ -1,5 +1,6 @@
 package com.github.mobile.android.util;
 
+import static android.content.Context.WINDOW_SERVICE;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.github.kevinsawicki.http.HttpRequest;
 import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
+import com.github.mobile.android.R.drawable;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +24,17 @@ import roboguice.util.RoboAsyncTask;
  * Getter for an image
  */
 public class HttpImageGetter implements ImageGetter {
+
+    private class LoadingImageGetter implements ImageGetter {
+
+        public Drawable getDrawable(String source) {
+            Drawable image = context.getResources().getDrawable(drawable.image_loading_icon);
+            image.setBounds(0, 0, 48, 48);
+            return image;
+        }
+    }
+
+    private LoadingImageGetter loading = new LoadingImageGetter();
 
     private final Context context;
 
@@ -37,7 +50,7 @@ public class HttpImageGetter implements ImageGetter {
     public HttpImageGetter(Context context) {
         this.context = context;
         dir = context.getCacheDir();
-        Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        Display display = ((WindowManager) context.getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
         Point point = new Point();
         display.getSize(point);
         width = point.x;
@@ -51,7 +64,7 @@ public class HttpImageGetter implements ImageGetter {
      * @return this image getter
      */
     public HttpImageGetter bind(final TextView view, final String html) {
-        view.setText(Html.encode(html));
+        view.setText(Html.encode(html, loading));
         new RoboAsyncTask<CharSequence>(context) {
 
             public CharSequence call() throws Exception {
