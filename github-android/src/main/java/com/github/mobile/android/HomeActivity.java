@@ -22,20 +22,15 @@ import com.github.mobile.android.util.Avatar;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.service.OrganizationService;
-import org.eclipse.egit.github.core.service.UserService;
 
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContextScopedProvider;
 import roboguice.inject.InjectView;
-import roboguice.util.RoboAsyncTask;
 
 /**
  * Home screen activity
@@ -89,10 +84,7 @@ public class HomeActivity extends RoboActivity {
     private ContextScopedProvider<Account> accountProvider;
 
     @Inject
-    private ContextScopedProvider<OrganizationService> orgService;
-
-    @Inject
-    private ContextScopedProvider<UserService> userService;
+    private ContextScopedProvider<AccountDataManager> cache;
 
     @InjectView(R.id.lv_orgs)
     private ListView orgsList;
@@ -132,24 +124,12 @@ public class HomeActivity extends RoboActivity {
     }
 
     private void loadOrgs() {
-        new RoboAsyncTask<List<User>>(this) {
+        cache.get(this).getOrgs(new RequestFuture<List<User>>() {
 
-            public List<User> call() throws Exception {
-                List<User> orgs = new ArrayList<User>(orgService.get(HomeActivity.this).getOrganizations());
-                Collections.sort(orgs, new Comparator<User>() {
-
-                    public int compare(User u1, User u2) {
-                        return u1.getLogin().compareToIgnoreCase(u2.getLogin());
-                    }
-                });
-                orgs.add(0, userService.get(HomeActivity.this).getUser());
-                return orgs;
+            public void success(List<User> response) {
+                orgsList.setAdapter(new OrgListAdapter(response));
             }
-
-            protected void onSuccess(List<User> orgs) throws Exception {
-                orgsList.setAdapter(new OrgListAdapter(orgs));
-            };
-        }.execute();
+        });
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

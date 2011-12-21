@@ -3,11 +3,13 @@ package com.github.mobile.android;
 import static com.github.mobile.android.authenticator.Constants.GITHUB_ACCOUNT_TYPE;
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.content.Context;
 
 import com.github.kevinsawicki.http.HttpRequest;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.egit.github.core.User;
@@ -108,5 +110,12 @@ public class GitHubModule extends AbstractModule {
     @Provides
     User currentUser(UserService userService) throws IOException {
         return userService.getUser(); // actually, probably better to cache this
+    }
+
+    @Provides
+    AccountDataManager dataManager(Context context, UserService users, OrganizationService orgs,
+            RepositoryService repos, IssueService issues) {
+        File cache = new File(context.getFilesDir(), "cache");
+        return new AccountDataManager(context, cache, users, orgs, repos, issues);
     }
 }
