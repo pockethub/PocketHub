@@ -1,14 +1,20 @@
 package com.github.mobile.android.ui.fragments;
 
 import static com.github.mobile.android.R.layout.issue_list_item;
+import static com.github.mobile.android.issue.ViewIssueActivity.viewIssueIntentFor;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import com.github.mobile.android.AsyncLoader;
+import com.github.mobile.android.issue.IssueBrowseActivity;
+import com.github.mobile.android.issue.ViewIssueActivity;
 import com.github.mobile.android.views.IssueViewHolder;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHolder;
@@ -19,6 +25,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.service.IssueService;
 
 public class IssuesFragment extends ListLoadingFragment<Issue> {
@@ -38,6 +45,12 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
                 });
     }
 
+    @Override
+    public void onListItemClick(ListView list, View v, int position, long id) {
+        Issue issue = (Issue) list.getItemAtPosition(position);
+        startActivity(viewIssueIntentFor(issue));
+    }
+    
     @Override
     public Loader<List<Issue>> onCreateLoader(int i, Bundle bundle) {
         return new AsyncLoader<List<Issue>>(getActivity()) {

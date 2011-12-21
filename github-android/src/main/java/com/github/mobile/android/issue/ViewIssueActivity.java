@@ -1,7 +1,6 @@
 package com.github.mobile.android.issue;
 
 import android.R;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +12,7 @@ import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.comment.CommentViewHolder;
 import com.github.mobile.android.util.Avatar;
+import com.github.mobile.android.util.GitHubIntents;
 import com.github.mobile.android.util.Html;
 import com.github.mobile.android.util.HttpImageGetter;
 import com.github.mobile.android.util.Time;
@@ -24,36 +24,21 @@ import java.util.List;
 
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.service.IssueService;
 
-import roboguice.activity.RoboActivity;
+import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContextScopedProvider;
+import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
 import roboguice.util.RoboAsyncTask;
 
 /**
  * Activity to view a specific issue
  */
-public class ViewIssueActivity extends RoboActivity {
+public class ViewIssueActivity extends RoboFragmentActivity {
 
-    private static final String EXTRA_REPO = "repository";
-
-    private static final String EXTRA_ISSUE = "issue";
-
-    /**
-     * Create intent to show issue
-     *
-     * @param context
-     * @param repository
-     * @param issue
-     * @return intent
-     */
-    public static Intent createIntent(Context context, Repository repository, Issue issue) {
-        Intent intent = new Intent(context, ViewIssueActivity.class);
-        intent.putExtra(EXTRA_REPO, repository);
-        intent.putExtra(EXTRA_ISSUE, issue);
-        return intent;
+    public static Intent viewIssueIntentFor(Issue issue) {
+        return new GitHubIntents.Builder("repo.issue.VIEW").issue(issue).toIntent();
     }
 
     @Inject
@@ -64,6 +49,11 @@ public class ViewIssueActivity extends RoboActivity {
 
     private IssueBodyViewHolder body;
 
+    @InjectExtra(GitHubIntents.EXTRA_REPOSITORY) String repository;
+    @InjectExtra(GitHubIntents.EXTRA_REPOSITORY_OWNER) String repositoryOwner;
+    @InjectExtra(GitHubIntents.EXTRA_ISSUE_NUMBER) int issueNumber;
+
+
     private HttpImageGetter imageGetter;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,19 +62,17 @@ public class ViewIssueActivity extends RoboActivity {
 
         imageGetter = new HttpImageGetter(this);
 
-        Issue issue = (Issue) getIntent().getSerializableExtra(EXTRA_ISSUE);
-        Repository repo = (Repository) getIntent().getSerializableExtra(EXTRA_REPO);
+        ((TextView) findViewById(id.tv_issue_number)).setText("Issue #" + issueNumber);
 
-        ((TextView) findViewById(id.tv_issue_number)).setText("Issue #" + issue.getNumber());
-        loadIssue(repo, issue);
+        loadIssue();
     }
 
-    private void loadIssue(final Repository repository, final Issue issue) {
+    private void loadIssue() {
         new RoboAsyncTask<Issue>(this) {
 
             public Issue call() throws Exception {
-                return service.get(ViewIssueActivity.this).getIssue(repository.getOwner().getLogin(),
-                        repository.getName(), issue.getNumber());
+                return service.get(ViewIssueActivity.this).getIssue(repositoryOwner,
+                        repository, issueNumber);
             }
 
             protected void onSuccess(Issue issue) throws Exception {
@@ -97,17 +85,31 @@ public class ViewIssueActivity extends RoboActivity {
                 body = new IssueBodyViewHolder(ViewIssueActivity.this, imageGetter, view);
                 body.updateViewFor(issue);
                 comments.addHeaderView(view);
-                loadComments(repository, issue);
+                loadComments();
             }
         }.execute();
     }
 
-    private void loadComments(final Repository repository, final Issue issue) {
+    private void loadImages(final TextView view, final String html) {
+        view.setText(Html.encode(html));
+        new RoboAsyncTask<CharSequence>(this) {
+
+            public CharSequence call() throws Exception {
+                return Html.encode(html, imageGetter);
+            }
+
+            protected void onSuccess(CharSequence html) throws Exception {
+                view.setText(html);
+            }
+        }.execute();
+    }
+
+    private void loadComments() {
         new RoboAsyncTask<List<Comment>>(this) {
 
             public List<Comment> call() throws Exception {
-                return service.get(ViewIssueActivity.this).getComments(repository.getOwner().getLogin(),
-                        repository.getName(), issue.getNumber());
+                return service.get(ViewIssueActivity.this).getComments(repositoryOwner,
+                                        repository, issueNumber);
             }
 
             protected void onSuccess(List<Comment> issueComments) throws Exception {
@@ -117,4 +119,5 @@ public class ViewIssueActivity extends RoboActivity {
             }
         }.execute();
     }
+
 }

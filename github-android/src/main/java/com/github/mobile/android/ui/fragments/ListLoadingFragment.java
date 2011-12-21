@@ -27,11 +27,6 @@ public abstract class ListLoadingFragment<E> extends RoboListFragment implements
         getLoaderManager().initLoader(0, null, this);
     }
 
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        // Insert desired behavior here.
-    }
-
     public void onLoadFinished(Loader<List<E>> loader, List<E> items) {
         setListAdapter(adapterFor(items));
 
@@ -48,5 +43,11 @@ public abstract class ListLoadingFragment<E> extends RoboListFragment implements
     public void onLoaderReset(Loader<List<E>> listLoader) {
         // Clear the data in the adapter.
         // mAdapter.setData(null);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("DUMMY", 0); // https://groups.google.com/d/topic/actionbarsherlock/K0pPsiSKF7U/discussion
     }
 }
