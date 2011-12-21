@@ -3,7 +3,6 @@ package com.github.mobile.android.util;
 import static android.content.Context.WINDOW_SERVICE;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.Html.ImageGetter;
@@ -51,9 +50,7 @@ public class HttpImageGetter implements ImageGetter {
         this.context = context;
         dir = context.getCacheDir();
         Display display = ((WindowManager) context.getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
-        Point point = new Point();
-        display.getSize(point);
-        width = point.x;
+        width = display.getWidth();
     }
 
     /**
