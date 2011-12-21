@@ -20,9 +20,6 @@
             android:background="@drawable/inner_background"
             android:divider="@color/item_divider"
             android:dividerHeight="1dp"
-            android:fadingEdge="none"
-            android:fastScrollEnabled="true"
-            android:overScrollMode="never"
             android:padding="5dp" >
 
             <!-- Preview: listitem=@layout/org_item -->
@@ -42,9 +39,6 @@
             android:background="@drawable/inner_background"
             android:divider="@color/item_divider"
             android:dividerHeight="1dp"
-            android:fadingEdge="none"
-            android:fastScrollEnabled="true"
-            android:overScrollMode="never"
             android:padding="5dp" >
 
             <!-- Preview: listitem=@layout/org_item -->
