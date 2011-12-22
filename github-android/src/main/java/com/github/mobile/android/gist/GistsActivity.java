@@ -92,7 +92,7 @@ public class GistsActivity extends RoboActivity implements OnItemClickListener {
 
                     protected void onSuccess(Gist gist) throws Exception {
                         progress.cancel();
-                        startActivity(ViewGistActivity.createIntent(context, gist));
+                        startActivity(ViewGistActivity.createIntent(gist));
                     }
 
                     protected void onException(Exception e) throws RuntimeException {
@@ -118,7 +118,7 @@ public class GistsActivity extends RoboActivity implements OnItemClickListener {
                 prompt.setPositiveButton("Open", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String gistId = id.getText().toString();
-                        startActivity(ViewGistActivity.createIntent(context, gistId));
+                        startActivity(ViewGistActivity.createIntent(gistId));
 
                     }
                 });
@@ -171,6 +171,6 @@ public class GistsActivity extends RoboActivity implements OnItemClickListener {
 
     public void onItemClick(AdapterView<?> list, View view, int position, long id) {
         Gist gist = (Gist) list.getItemAtPosition(position);
-        startActivity(ViewGistActivity.createIntent(this, gist.getId()));
+        startActivity(ViewGistActivity.createIntent(gist.getId()));
     }
 }

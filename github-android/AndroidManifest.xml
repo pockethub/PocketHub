@@ -38,15 +38,35 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".issue.IssueBrowseActivity" />
+        <activity android:name=".issue.IssueBrowseActivity">
+            <intent-filter>
+                <action android:name="com.github.mobile.android.repo.issues.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
-        <activity android:name=".repo.RepoBrowseActivity" />
-        
+        <activity android:name=".repo.RepoBrowseActivity">
+            <intent-filter>
+                <action android:name="com.github.mobile.android.repos.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".gist.GistsActivity" />
 
-        <activity android:name=".gist.ViewGistActivity" />
-        
-        <activity android:name=".gist.ViewGistFileActivity" />
+        <activity android:name=".gist.ViewGistActivity">
+            <intent-filter>
+                <action android:name="com.github.mobile.android.gist.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".gist.ViewGistFileActivity">
+            <intent-filter>
+                <action android:name="com.github.mobile.android.gist.file.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <service android:name=".authenticator.AccountAuthenticatorService"
                  android:exported="true" android:process=":auth">

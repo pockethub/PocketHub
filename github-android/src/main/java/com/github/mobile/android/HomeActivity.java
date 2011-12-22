@@ -118,7 +118,7 @@ public class HomeActivity extends RoboActivity {
 
             public void onItemClick(AdapterView<?> view, View arg1, int position, long id) {
                 User user = (User) view.getItemAtPosition(position);
-                startActivity(RepoBrowseActivity.createIntent(HomeActivity.this, user));
+                startActivity(RepoBrowseActivity.createIntent(user));
             }
         });
     }

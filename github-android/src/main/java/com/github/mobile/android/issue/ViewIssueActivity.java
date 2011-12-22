@@ -49,7 +49,7 @@ public class ViewIssueActivity extends RoboFragmentActivity {
 
     private IssueBodyViewHolder body;
 
-    @InjectExtra(GitHubIntents.EXTRA_REPOSITORY) String repository;
+    @InjectExtra(GitHubIntents.EXTRA_REPOSITORY_NAME) String repository;
     @InjectExtra(GitHubIntents.EXTRA_REPOSITORY_OWNER) String repositoryOwner;
     @InjectExtra(GitHubIntents.EXTRA_ISSUE_NUMBER) int issueNumber;
 

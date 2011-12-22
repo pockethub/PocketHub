@@ -1,6 +1,7 @@
 package com.github.mobile.android.gist;
 
-import android.content.Context;
+import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST;
+import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST_FILE;
 import android.content.Intent;
 import android.os.Bundle;
 import android.webkit.WebView;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.github.mobile.android.util.SourceEditor;
 
 import org.eclipse.egit.github.core.Gist;
@@ -24,16 +26,12 @@ public class ViewGistFileActivity extends RoboActivity {
     /**
      * Create intent to show file
      *
-     * @param context
      * @param gist
      * @param file
      * @return intent
      */
-    public static Intent createIntent(Context context, Gist gist, GistFile file) {
-        Intent intent = new Intent(context, ViewGistFileActivity.class);
-        intent.putExtra("gist", gist);
-        intent.putExtra("file", file);
-        return intent;
+    public static Intent createIntent(Gist gist, GistFile file) {
+        return new Builder("gist.file.VIEW").add(EXTRA_GIST, gist).add(EXTRA_GIST_FILE, file).toIntent();
     }
 
     @InjectView(id.tv_gist_file_name)
@@ -49,8 +47,8 @@ public class ViewGistFileActivity extends RoboActivity {
         super.onCreate(savedInstanceState);
         setContentView(layout.gist_view_content_item);
 
-        final Gist gist = (Gist) getIntent().getSerializableExtra("gist");
-        final GistFile file = (GistFile) getIntent().getSerializableExtra("file");
+        final Gist gist = (Gist) getIntent().getSerializableExtra(EXTRA_GIST);
+        final GistFile file = (GistFile) getIntent().getSerializableExtra(EXTRA_GIST_FILE);
         gistFile.setText(file.getFilename());
         gistId.setText("from Gist " + gist.getId());
         SourceEditor.showSource(webView, file.getFilename(), new Object() {
@@ -59,5 +57,4 @@ public class ViewGistFileActivity extends RoboActivity {
             }
         });
     }
-
 }

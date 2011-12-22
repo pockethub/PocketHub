@@ -2,8 +2,9 @@ package com.github.mobile.android.gist;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
+import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST;
+import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST_ID;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
@@ -21,6 +22,7 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.comment.CommentViewHolder;
 import com.github.mobile.android.util.Avatar;
+import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.github.mobile.android.util.HttpImageGetter;
 import com.github.mobile.android.util.Time;
 import com.google.inject.Inject;
@@ -45,39 +47,23 @@ import roboguice.util.RoboAsyncTask;
 public class ViewGistActivity extends RoboActivity {
 
     /**
-     * Intent key representing the Gist to display
-     */
-    public static final String GIST = "gist";
-
-    /**
-     * Intent key representing the id of the Gist to display
-     */
-    public static final String GIST_ID = "gistId";
-
-    /**
      * Create intent to view Gist
      *
-     * @param context
      * @param gist
      * @return intent
      */
-    public static final Intent createIntent(Context context, Gist gist) {
-        Intent intent = new Intent(context, ViewGistActivity.class);
-        intent.putExtra(GIST, gist);
-        return intent;
+    public static final Intent createIntent(Gist gist) {
+        return new Builder("gist.VIEW").add(EXTRA_GIST, gist).toIntent();
     }
 
     /**
      * Create intent to view Gist
      *
-     * @param context
      * @param gistId
      * @return intent
      */
-    public static final Intent createIntent(Context context, String gistId) {
-        Intent intent = new Intent(context, ViewGistActivity.class);
-        intent.putExtra(GIST_ID, gistId);
-        return intent;
+    public static final Intent createIntent(String gistId) {
+        return new Builder("gist.VIEW").add(EXTRA_GIST_ID, gistId).toIntent();
     }
 
     @InjectView(id.tv_gist_id)
@@ -110,7 +96,7 @@ public class ViewGistActivity extends RoboActivity {
         super.onCreate(savedInstanceState);
         imageGetter = new HttpImageGetter(this);
         setContentView(layout.gist_view);
-        final Gist gist = (Gist) getIntent().getSerializableExtra(GIST);
+        final Gist gist = (Gist) getIntent().getSerializableExtra(EXTRA_GIST);
         if (gist == null) {
             gistId.setVisibility(INVISIBLE);
             created.setVisibility(INVISIBLE);
@@ -118,7 +104,7 @@ public class ViewGistActivity extends RoboActivity {
             author.setVisibility(INVISIBLE);
             gravatar.setVisibility(INVISIBLE);
 
-            final String id = getIntent().getStringExtra(GIST_ID);
+            final String id = getIntent().getStringExtra(EXTRA_GIST_ID);
             final ProgressDialog progress = new ProgressDialog(this);
             progress.setMessage(getString(string.loading_gist));
             progress.setIndeterminate(true);
@@ -131,7 +117,7 @@ public class ViewGistActivity extends RoboActivity {
 
                 protected void onSuccess(Gist gist) throws Exception {
                     progress.cancel();
-                    getIntent().putExtra(GIST, gist);
+                    getIntent().putExtra(EXTRA_GIST, gist);
                     displayGist(gist);
                 }
 
@@ -186,7 +172,7 @@ public class ViewGistActivity extends RoboActivity {
 
             public void onItemClick(AdapterView<?> view, View arg1, int position, long id) {
                 GistFile file = (GistFile) view.getItemAtPosition(position);
-                startActivity(ViewGistFileActivity.createIntent(ViewGistActivity.this, gist, file));
+                startActivity(ViewGistFileActivity.createIntent(gist, file));
             }
         });
         loadComments(gist);

@@ -1,6 +1,6 @@
 package com.github.mobile.android.repo;
 
-import android.content.Context;
+import static com.github.mobile.android.util.GitHubIntents.EXTRA_USER;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,11 +14,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.mobile.android.AccountDataManager;
-import com.github.mobile.android.R;
+import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.RequestFuture;
 import com.github.mobile.android.issue.IssueBrowseActivity;
 import com.github.mobile.android.util.Avatar;
+import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.google.inject.Inject;
 
 import java.util.List;
@@ -37,20 +38,17 @@ public class RepoBrowseActivity extends RoboActivity {
     /**
      * Create intent to show repositories for a user
      *
-     * @param context
      * @param user
      * @return intent
      */
-    public static Intent createIntent(Context context, User user) {
-        Intent intent = new Intent(context, RepoBrowseActivity.class);
-        intent.putExtra("user", user);
-        return intent;
+    public static Intent createIntent(User user) {
+        return new Builder("repos.VIEW").user(user).toIntent();
     }
 
     private class RepoAdapter extends ArrayAdapter<Repository> {
 
         public RepoAdapter(Repository[] objects) {
-            super(RepoBrowseActivity.this, R.layout.repo_list_item, objects);
+            super(RepoBrowseActivity.this, layout.repo_list_item, objects);
         }
 
         @Override
@@ -59,14 +57,14 @@ public class RepoBrowseActivity extends RoboActivity {
                     layout.repo_list_item, null);
             Repository repo = getItem(position);
             if (user.getLogin().equals(repo.getOwner().getLogin()))
-                ((TextView) view.findViewById(R.id.tv_repo_name)).setText(repo.getName());
+                ((TextView) view.findViewById(id.tv_repo_name)).setText(repo.getName());
             else
-                ((TextView) view.findViewById(R.id.tv_repo_name)).setText(repo.generateId());
+                ((TextView) view.findViewById(id.tv_repo_name)).setText(repo.generateId());
             return view;
         }
     }
 
-    @InjectView(R.id.lv_repos)
+    @InjectView(id.lv_repos)
     private ListView repoList;
 
     @Inject
@@ -76,19 +74,17 @@ public class RepoBrowseActivity extends RoboActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.repo_list);
-        user = (User) getIntent().getSerializableExtra("user");
+        setContentView(layout.repo_list);
+        user = (User) getIntent().getSerializableExtra(EXTRA_USER);
 
-        ((TextView) findViewById(R.id.tv_org_name)).setText(user.getLogin());
-        Avatar.bind(this, ((ImageView) findViewById(R.id.iv_gravatar)), user);
+        ((TextView) findViewById(id.tv_org_name)).setText(user.getLogin());
+        Avatar.bind(this, ((ImageView) findViewById(id.iv_gravatar)), user);
 
         repoList.setOnItemClickListener(new OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> view, View arg1, int position, long id) {
                 Repository repo = (Repository) view.getItemAtPosition(position);
-                Intent intent = new Intent(RepoBrowseActivity.this, IssueBrowseActivity.class);
-                intent.putExtra("repository", repo);
-                startActivity(intent);
+                startActivity(IssueBrowseActivity.createIntent(repo));
             }
         });
 

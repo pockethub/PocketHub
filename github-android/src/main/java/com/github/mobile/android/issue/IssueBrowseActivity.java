@@ -1,6 +1,7 @@
 package com.github.mobile.android.issue;
 
 import static com.github.mobile.android.issue.ViewIssueActivity.viewIssueIntentFor;
+import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.RequestFuture;
 import com.github.mobile.android.util.Avatar;
+import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
@@ -36,6 +38,16 @@ import roboguice.inject.InjectView;
  */
 public class IssueBrowseActivity extends RoboActivity {
 
+    /**
+     * Create intent to browse a repository's issues
+     *
+     * @param repository
+     * @return intent
+     */
+    public static Intent createIntent(Repository repository) {
+        return new Builder("repo.issues.VIEW").repo(repository).toIntent();
+    }
+
     @InjectView(android.R.id.list)
     private ListView issueList;
 
@@ -46,7 +58,7 @@ public class IssueBrowseActivity extends RoboActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.repo_issue_list);
 
-        final Repository repo = (Repository) getIntent().getSerializableExtra("repository");
+        final Repository repo = (Repository) getIntent().getSerializableExtra(EXTRA_REPOSITORY);
         ((TextView) findViewById(id.tv_repo_name)).setText(repo.getName());
         Avatar.bind(this, (ImageView) findViewById(id.iv_gravatar), repo.getOwner());
         loadIssues(repo);

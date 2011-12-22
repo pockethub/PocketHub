@@ -106,7 +106,7 @@ public class ShareGistActivity extends RoboActivity {
 
             protected void onSuccess(Gist gist) throws Exception {
                 progress.cancel();
-                startActivity(ViewGistActivity.createIntent(ShareGistActivity.this, gist));
+                startActivity(ViewGistActivity.createIntent(gist));
                 setResult(RESULT_CREATED);
                 finish();
             }
