@@ -13,6 +13,7 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.comment.CommentViewHolder;
 import com.github.mobile.android.util.Avatar;
 import com.github.mobile.android.util.GitHubIntents;
+import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.github.mobile.android.util.Html;
 import com.github.mobile.android.util.HttpImageGetter;
 import com.github.mobile.android.util.Time;
@@ -37,8 +38,14 @@ import roboguice.util.RoboAsyncTask;
  */
 public class ViewIssueActivity extends RoboFragmentActivity {
 
+    /**
+     * Create intent to view issue
+     *
+     * @param issue
+     * @return intent
+     */
     public static Intent viewIssueIntentFor(Issue issue) {
-        return new GitHubIntents.Builder("repo.issue.VIEW").issue(issue).toIntent();
+        return new Builder("repo.issue.VIEW").issue(issue).toIntent();
     }
 
     @Inject
@@ -49,10 +56,12 @@ public class ViewIssueActivity extends RoboFragmentActivity {
 
     private IssueBodyViewHolder body;
 
-    @InjectExtra(GitHubIntents.EXTRA_REPOSITORY_NAME) String repository;
-    @InjectExtra(GitHubIntents.EXTRA_REPOSITORY_OWNER) String repositoryOwner;
-    @InjectExtra(GitHubIntents.EXTRA_ISSUE_NUMBER) int issueNumber;
-
+    @InjectExtra(GitHubIntents.EXTRA_REPOSITORY_NAME)
+    String repository;
+    @InjectExtra(GitHubIntents.EXTRA_REPOSITORY_OWNER)
+    String repositoryOwner;
+    @InjectExtra(GitHubIntents.EXTRA_ISSUE_NUMBER)
+    int issueNumber;
 
     private HttpImageGetter imageGetter;
 
@@ -71,8 +80,7 @@ public class ViewIssueActivity extends RoboFragmentActivity {
         new RoboAsyncTask<Issue>(this) {
 
             public Issue call() throws Exception {
-                return service.get(ViewIssueActivity.this).getIssue(repositoryOwner,
-                        repository, issueNumber);
+                return service.get(ViewIssueActivity.this).getIssue(repositoryOwner, repository, issueNumber);
             }
 
             protected void onSuccess(Issue issue) throws Exception {
@@ -90,26 +98,11 @@ public class ViewIssueActivity extends RoboFragmentActivity {
         }.execute();
     }
 
-    private void loadImages(final TextView view, final String html) {
-        view.setText(Html.encode(html));
-        new RoboAsyncTask<CharSequence>(this) {
-
-            public CharSequence call() throws Exception {
-                return Html.encode(html, imageGetter);
-            }
-
-            protected void onSuccess(CharSequence html) throws Exception {
-                view.setText(html);
-            }
-        }.execute();
-    }
-
     private void loadComments() {
         new RoboAsyncTask<List<Comment>>(this) {
 
             public List<Comment> call() throws Exception {
-                return service.get(ViewIssueActivity.this).getComments(repositoryOwner,
-                                        repository, issueNumber);
+                return service.get(ViewIssueActivity.this).getComments(repositoryOwner, repository, issueNumber);
             }
 
             protected void onSuccess(List<Comment> issueComments) throws Exception {
@@ -119,5 +112,4 @@ public class ViewIssueActivity extends RoboFragmentActivity {
             }
         }.execute();
     }
-
 }
