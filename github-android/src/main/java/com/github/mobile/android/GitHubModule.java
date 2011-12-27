@@ -46,6 +46,7 @@ public class GitHubModule extends AbstractModule {
     @Provides
     GitHubClient client(Account account, AccountManager accountManager) {
         GitHubClient client = new GitHubClient();
+        client.setUserAgent("GitHubAndroid/1.0");
         if (account != null)
             client.setCredentials(account.name, accountManager.getPassword(account));
         return client;
