@@ -117,10 +117,8 @@ public class FilterIssuesActivity extends RoboActivity {
 
                     public List<Milestone> call() throws Exception {
                         List<Milestone> all = new LinkedList<Milestone>();
-                        all.addAll(milestones.getMilestones(repository.getOwner().getLogin(), repository.getName(),
-                                IssueService.STATE_OPEN));
-                        all.addAll(milestones.getMilestones(repository.getOwner().getLogin(), repository.getName(),
-                                IssueService.STATE_CLOSED));
+                        all.addAll(milestones.getMilestones(repository, IssueService.STATE_OPEN));
+                        all.addAll(milestones.getMilestones(repository, IssueService.STATE_CLOSED));
                         return all;
                     }
 
@@ -163,7 +161,7 @@ public class FilterIssuesActivity extends RoboActivity {
                 new RoboAsyncTask<List<Label>>(FilterIssuesActivity.this) {
 
                     public List<Label> call() throws Exception {
-                        return labels.getLabels(repository.getOwner().getLogin(), repository.getName());
+                        return labels.getLabels(repository);
                     }
 
                     protected void onSuccess(List<Label> all) throws Exception {
