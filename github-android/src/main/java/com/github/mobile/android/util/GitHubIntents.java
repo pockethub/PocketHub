@@ -68,6 +68,11 @@ public class GitHubIntents {
     public static final String EXTRA_USER = INTENT_EXTRA_PREFIX + "USER";
 
     /**
+     * Issue filter handle
+     */
+    public static final String EXTRA_ISSUE_FILTER = INTENT_EXTRA_PREFIX + "ISSUE_FILTER";
+
+    /**
      * Resolve the {@link RepositoryId} referenced by the given intent
      *
      * @param intent
