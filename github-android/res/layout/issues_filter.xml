@@ -69,9 +69,8 @@
 
                     <TextView
                         android:id="@+id/tv_assignee"
-                        android:layout_width="fill_parent"
                         android:hint="Anyone"
-                        android:paddingBottom="10dp"
+                        android:paddingBottom="20dp"
                         android:paddingLeft="20dp"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/item_text_color_light" />
@@ -81,7 +80,6 @@
 
                     <TextView
                         android:id="@+id/tv_milestone_label"
-                        android:paddingTop="10dp"
                         android:text="Milestone:"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/item_text_color"
@@ -92,7 +90,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:hint="None"
-                        android:paddingBottom="10dp"
+                        android:paddingBottom="20dp"
                         android:paddingLeft="20dp"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/item_text_color_light" />
@@ -102,7 +100,6 @@
 
                     <TextView
                         android:id="@+id/tv_labels_label"
-                        android:paddingTop="10dp"
                         android:text="Labels:"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/item_text_color"
