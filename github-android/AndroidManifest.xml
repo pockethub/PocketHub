@@ -59,6 +59,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".repo.RepoSearchActivity" />
+
         <activity android:name=".gist.GistsActivity" />
 
         <activity android:name=".gist.ViewGistActivity">

@@ -11,10 +11,13 @@ import com.google.inject.Provides;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
+import org.eclipse.egit.github.core.SearchRepository;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.client.GitHubRequest;
+import org.eclipse.egit.github.core.client.IGitHubConstants;
 import org.eclipse.egit.github.core.client.PagedRequest;
 import org.eclipse.egit.github.core.service.CollaboratorService;
 import org.eclipse.egit.github.core.service.GistService;
@@ -46,13 +49,16 @@ public class GitHubModule extends AbstractModule {
         return null;
     }
 
-    @Provides
-    GitHubClient client(Account account, AccountManager accountManager) {
-        GitHubClient client = new GitHubClient();
+    private GitHubClient configureClient(GitHubClient client, Account account, AccountManager manager) {
         client.setUserAgent("GitHubAndroid/1.0");
         if (account != null)
-            client.setCredentials(account.name, accountManager.getPassword(account));
+            client.setCredentials(account.name, manager.getPassword(account));
         return client;
+    }
+
+    @Provides
+    GitHubClient client(Account account, AccountManager accountManager) {
+        return configureClient(new GitHubClient(), account, accountManager);
     }
 
     @Provides
@@ -136,5 +142,18 @@ public class GitHubModule extends AbstractModule {
             RepositoryService repos, IssueService issues) {
         File cache = new File(context.getFilesDir(), "cache");
         return new AccountDataManager(context, cache, users, orgs, repos, issues);
+    }
+
+    @Provides
+    IRepositorySearch searchService(Account account, AccountManager accountManager) {
+        GitHubClient client = new GitHubClient(IGitHubConstants.HOST_API_V2);
+        configureClient(client, account, accountManager);
+        final RepositoryService service = new RepositoryService(client);
+        return new IRepositorySearch() {
+
+            public List<SearchRepository> search(String query) throws IOException {
+                return service.searchRepositories(query);
+            }
+        };
     }
 }

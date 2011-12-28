@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.gist.GistsActivity;
 import com.github.mobile.android.repo.RepoBrowseActivity;
+import com.github.mobile.android.repo.RepoSearchActivity;
 import com.github.mobile.android.ui.WelcomeActivity;
 import com.github.mobile.android.util.Avatar;
 import com.google.inject.Inject;
@@ -98,6 +99,7 @@ public class HomeActivity extends RoboActivity {
 
         linkViews.put("Dashboard", R.drawable.dashboard_icon);
         linkViews.put("Gists", R.drawable.gist_icon);
+        linkViews.put("Find Repos", R.drawable.search_icon);
 
         linksList.setAdapter(new LinksListAdapter(new ArrayList<String>(linkViews.keySet())));
         linksList.setOnItemClickListener(new OnItemClickListener() {
@@ -108,6 +110,8 @@ public class HomeActivity extends RoboActivity {
                     startActivity(new Intent(HomeActivity.this, GistsActivity.class));
                     break;
 
+                case 2:
+                    startActivity(new Intent(HomeActivity.this, RepoSearchActivity.class));
                 default:
                     break;
                 }
