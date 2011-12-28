@@ -19,6 +19,7 @@ import org.eclipse.egit.github.core.client.PagedRequest;
 import org.eclipse.egit.github.core.service.CollaboratorService;
 import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.IssueService;
+import org.eclipse.egit.github.core.service.LabelService;
 import org.eclipse.egit.github.core.service.MilestoneService;
 import org.eclipse.egit.github.core.service.OrganizationService;
 import org.eclipse.egit.github.core.service.PullRequestService;
@@ -123,6 +124,11 @@ public class GitHubModule extends AbstractModule {
     @Provides
     MilestoneService milestoneService(GitHubClient client) {
         return new MilestoneService(client);
+    }
+
+    @Provides
+    LabelService labelService(GitHubClient client) {
+        return new LabelService(client);
     }
 
     @Provides
