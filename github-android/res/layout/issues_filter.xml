@@ -154,6 +154,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Open"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/item_text_color" >
                 </CheckBox>
 
@@ -163,6 +164,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:text="Closed"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/item_text_color" >
                 </CheckBox>
             </LinearLayout>
