@@ -45,6 +45,13 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".issue.FilterIssuesActivity">
+            <intent-filter>
+                <action android:name="com.github.mobile.android.repo.issues.filter.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".repo.RepoBrowseActivity">
             <intent-filter>
                 <action android:name="com.github.mobile.android.repos.VIEW" />

@@ -6,8 +6,10 @@ import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -60,6 +62,7 @@ public class IssueBrowseActivity extends RoboActivity {
 
         final Repository repo = (Repository) getIntent().getSerializableExtra(EXTRA_REPOSITORY);
         ((TextView) findViewById(id.tv_repo_name)).setText(repo.getName());
+        ((TextView) findViewById(id.tv_owner_name)).setText(repo.getOwner().getLogin());
         Avatar.bind(this, (ImageView) findViewById(id.iv_gravatar), repo.getOwner());
         loadIssues(repo);
 
@@ -67,6 +70,13 @@ public class IssueBrowseActivity extends RoboActivity {
             public void onItemClick(AdapterView<?> list, View view, int position, long id) {
                 Issue issue = (Issue) list.getItemAtPosition(position);
                 startActivity(viewIssueIntentFor(issue));
+            }
+        });
+
+        ((Button) findViewById(id.b_filter)).setOnClickListener(new OnClickListener() {
+
+            public void onClick(View v) {
+                startActivity(FilterIssuesActivity.createIntent(repo));
             }
         });
     }

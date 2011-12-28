@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/item_background"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:padding="5dp"
+            android:singleLine="true"
+            android:text="Issues Filter"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/item_text_color" />
+
+        <Button
+            android:id="@+id/b_apply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Apply" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="@color/item_separator1" >
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="@color/item_separator2" >
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/item_background"
+        android:padding="10dp" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/outer_background" >
+
+            <TableLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/inner_background"
+                android:padding="10dp"
+                android:shrinkColumns="1" >
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/tv_assignee_label"
+                        android:text="Assigned:"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/item_text_color"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_assignee"
+                        android:layout_width="fill_parent"
+                        android:hint="Anyone"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="20dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/item_text_color_light" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/tv_milestone_label"
+                        android:paddingTop="10dp"
+                        android:text="Milestone:"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/item_text_color"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_milestone"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="None"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="20dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/item_text_color_light" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/tv_labels_label"
+                        android:paddingTop="10dp"
+                        android:text="Labels:"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/item_text_color"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_labels"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="None"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="20dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/item_text_color_light" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:text="Issue Status"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/item_text_color"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/item_background"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/outer_background"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/inner_background"
+                android:orientation="horizontal"
+                android:padding="2dp" >
+
+                <CheckBox
+                    android:id="@+id/cb_open"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Open"
+                    android:textColor="@color/item_text_color" >
+                </CheckBox>
+
+                <CheckBox
+                    android:id="@+id/cb_closed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Closed"
+                    android:textColor="@color/item_text_color" >
+                </CheckBox>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
