@@ -140,10 +140,6 @@ public class RepoBrowseActivity extends RoboActivity {
         new RequestWriter(getRecentReposFile(), VERSION_RECENT_REPOS).write(recentRepos);
     }
 
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
     private void loadRepos() {
         RequestFuture<List<Repository>> callback = new RequestFuture<List<Repository>>() {
 
