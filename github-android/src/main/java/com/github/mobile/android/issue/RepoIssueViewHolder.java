@@ -2,6 +2,7 @@ package com.github.mobile.android.issue;
 
 import static android.text.Html.fromHtml;
 import static com.github.mobile.android.util.Time.relativeTimeFor;
+import android.graphics.Paint;
 import android.view.View;
 import android.widget.TextView;
 
@@ -49,6 +50,8 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
     @Override
     public void updateViewFor(Issue i) {
         number.setText("#" + i.getNumber());
+        if (i.getClosedAt() != null)
+            number.setPaintFlags(number.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         title.setText(i.getTitle());
         creation.setText(fromHtml("by <b>" + i.getUser().getLogin() + "</b> " + relativeTimeFor(i.getCreatedAt())));
         comments.setText(Integer.toString(i.getComments()));
