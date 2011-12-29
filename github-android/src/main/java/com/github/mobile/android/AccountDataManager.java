@@ -210,7 +210,7 @@ public class AccountDataManager {
             public List<Issue> call() throws Exception {
                 StringBuilder filterId = new StringBuilder();
                 for (Entry<String, String> entry : filter.entrySet())
-                    filterId.append(entry.getKey()).append('=').append(entry.getKey()).append(',');
+                    filterId.append(entry.getKey()).append('=').append(entry.getValue()).append(',');
                 File cache = new File(folder, digest(filterId.toString()));
 
                 List<Issue> cached = read(cache);
