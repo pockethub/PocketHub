@@ -69,7 +69,7 @@ public class IssueBrowseActivity extends RoboFragmentActivity {
         setContentView(R.layout.repo_issue_list);
 
         ((TextView) findViewById(id.tv_repo_name)).setText(repo.getName());
-        ((TextView) findViewById(id.tv_owner_name)).setText(repo.getOwner().getLogin());
+        ((TextView) findViewById(id.tv_owner_name)).setText(repo.getOwner().getLogin() + " /");
         Avatar.bind(this, (ImageView) findViewById(id.iv_gravatar), repo.getOwner());
         loadIssues(repo, new IssueFilter().addState(IssueService.STATE_OPEN));
 

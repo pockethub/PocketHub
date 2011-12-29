@@ -1,69 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background" >
+    android:background="@color/background"
+    android:orientation="vertical" >
 
     <LinearLayout
         android:id="@+id/ll_issues_header"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:background="@color/item_background"
-        android:orientation="vertical" >
+        android:orientation="horizontal"
+        android:padding="10dp" >
+
+        <ImageView
+            android:id="@+id/iv_gravatar"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/gravatar_icon" />
+
+        <TextView
+            android:id="@+id/tv_owner_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="5dp"
+            android:singleLine="true"
+            android:text="github"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/item_text_color_light" />
 
         <TextView
             android:id="@+id/tv_repo_name"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="5dp"
+            android:paddingLeft="5dp"
             android:singleLine="true"
             android:text="hubot"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/item_text_color"
             android:textStyle="bold" />
+    </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="5dp"
-            android:paddingLeft="5dp" >
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="@color/item_separator1" >
+    </LinearLayout>
 
-            <ImageView
-                android:id="@+id/iv_gravatar"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/gravatar_icon" />
-
-            <TextView
-                android:id="@+id/tv_owner_name"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:paddingLeft="5dp"
-                android:singleLine="true"
-                android:text="github"
-                android:textColor="@color/item_text_color_light" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="@color/item_separator1" >
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="@color/item_separator2" >
-        </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="@color/item_separator2" >
     </LinearLayout>
 
     <ListView
         android:id="@android:id/list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_below="@id/ll_issues_header"
         android:background="@color/background"
         android:fastScrollEnabled="true" >
@@ -71,4 +65,4 @@
         <!-- Preview: listitem=@layout/repo_issue_list_item -->
     </ListView>
 
-</RelativeLayout>
+</LinearLayout>
