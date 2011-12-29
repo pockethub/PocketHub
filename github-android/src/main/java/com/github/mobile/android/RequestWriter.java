@@ -15,7 +15,7 @@ import java.util.zip.GZIPOutputStream;
  */
 public class RequestWriter {
 
-    private static final String TAG = "GHARW";
+    private static final String TAG = "GHRW";
 
     private final File handle;
 
