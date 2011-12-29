@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -113,16 +114,19 @@ public class IssueBrowseActivity extends RoboFragmentActivity {
     private void loadIssues(final Repository repo, IssueFilter filter) {
         final List<Issue> all = new ArrayList<Issue>();
         final Iterator<Map<String, String>> filters = filter.iterator();
-        RequestFuture<List<Issue>> callback = new RequestFuture<List<Issue>>() {
+        if (!filters.hasNext())
+            return;
+        final RequestFuture<List<Issue>> callback = new RequestFuture<List<Issue>>() {
 
             public void success(List<Issue> issues) {
                 all.addAll(issues);
-                if (!filters.hasNext())
+                if (filters.hasNext())
+                    cache.getIssues(repo, filters.next(), this);
+                else
                     issueList.setAdapter(new ViewHoldingListAdapter<Issue>(all, viewInflatorFor(
                             IssueBrowseActivity.this, layout.repo_issue_list_item), RepoIssueViewHolder.FACTORY));
             }
         };
-        while (filters.hasNext())
-            cache.getIssues(repo, filters.next(), callback);
+        cache.getIssues(repo, filters.next(), callback);
     }
 }
