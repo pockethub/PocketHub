@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
 import com.github.mobile.android.R.id;
@@ -19,7 +22,6 @@ import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -56,11 +58,7 @@ public class FilterIssuesActivity extends RoboActivity {
 
     private List<Milestone> allMilestones;
 
-    private Set<String> selectedLabels;
-
-    private String selectedAssignee;
-
-    private int selectedMilestone = -1;
+    private IssueFilter filter;
 
     /**
      * Create intent for creating an issue filter for the given repository
@@ -78,6 +76,12 @@ public class FilterIssuesActivity extends RoboActivity {
         setContentView(layout.issues_filter);
 
         final Repository repository = (Repository) getIntent().getSerializableExtra(GitHubIntents.EXTRA_REPOSITORY);
+
+        if (savedInstanceState != null)
+            filter = (IssueFilter) savedInstanceState.getSerializable(GitHubIntents.EXTRA_ISSUE_FILTER);
+
+        if (filter == null)
+            filter = new IssueFilter();
 
         OnClickListener assigneeListener = new OnClickListener() {
 
@@ -196,14 +200,78 @@ public class FilterIssuesActivity extends RoboActivity {
         ((Button) findViewById(id.b_apply)).setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
-                HashMap<String, String> filter = new HashMap<String, String>();
-
                 Intent intent = new Intent();
                 intent.putExtra(GitHubIntents.EXTRA_ISSUE_FILTER, filter);
                 setResult(RESULT_OK, intent);
                 finish();
             }
         });
+
+        updateAssignee();
+        updateMilestone();
+        updateLabels();
+        updateStates();
+
+        ((CheckBox) findViewById(id.cb_open)).setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked)
+                    filter.addState(IssueService.STATE_OPEN);
+                else
+                    filter.removeState(IssueService.STATE_OPEN);
+                updateStates();
+            }
+        });
+        ((CheckBox) findViewById(id.cb_closed)).setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked)
+                    filter.addState(IssueService.STATE_CLOSED);
+                else
+                    filter.removeState(IssueService.STATE_CLOSED);
+                updateStates();
+            }
+        });
+    }
+
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(GitHubIntents.EXTRA_ISSUE_FILTER, filter);
+    }
+
+    private void updateLabels() {
+        Set<String> selected = filter.getLabels();
+        if (selected == null)
+            ((TextView) findViewById(id.tv_labels)).setText("");
+        else if (selected.size() == 1)
+            ((TextView) findViewById(id.tv_labels)).setText(selected.iterator().next());
+        else if (!selected.isEmpty()) {
+            StringBuilder labelsLabel = new StringBuilder();
+            for (String label : selected)
+                labelsLabel.append(label).append(',').append(' ');
+            ((TextView) findViewById(id.tv_labels)).setText(labelsLabel.substring(0, labelsLabel.length() - 2));
+        }
+    }
+
+    private void updateMilestone() {
+        Milestone selected = filter.getMilestone();
+        if (selected != null)
+            ((TextView) findViewById(id.tv_milestone)).setText(selected.getTitle());
+        else
+            ((TextView) findViewById(id.tv_milestone)).setText("");
+    }
+
+    private void updateAssignee() {
+        String selected = filter.getAssignee();
+        if (selected != null)
+            ((TextView) findViewById(id.tv_assignee)).setText(selected);
+        else
+            ((TextView) findViewById(id.tv_assignee)).setText("");
+    }
+
+    private void updateStates() {
+        ((CheckBox) findViewById(id.cb_open)).setChecked(filter.containsState(IssueService.STATE_OPEN));
+        ((CheckBox) findViewById(id.cb_closed)).setChecked(filter.containsState(IssueService.STATE_CLOSED));
     }
 
     private void promptForLabels() {
@@ -211,6 +279,7 @@ public class FilterIssuesActivity extends RoboActivity {
         prompt.setTitle("Select Labels:");
         final String[] names = new String[allLabels.size()];
         final boolean[] checked = new boolean[names.length];
+        Set<String> selectedLabels = filter.getLabels();
         if (selectedLabels == null)
             for (int i = 0; i < names.length; i++)
                 names[i] = allLabels.get(i).getName();
@@ -235,23 +304,16 @@ public class FilterIssuesActivity extends RoboActivity {
 
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                selectedLabels = selected;
-                if (selected.size() == 1)
-                    ((TextView) findViewById(id.tv_labels)).setText(selected.iterator().next());
-                else if (!selected.isEmpty()) {
-                    StringBuilder labelsLabel = new StringBuilder();
-                    for (String label : selected)
-                        labelsLabel.append(label).append(',').append(' ');
-                    ((TextView) findViewById(id.tv_labels)).setText(labelsLabel.substring(0, labelsLabel.length() - 2));
-                }
+                filter.setLabels(selected);
+                updateLabels();
             }
         });
         prompt.setNegativeButton("Clear", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
-                selectedLabels = null;
-                ((TextView) findViewById(id.tv_labels)).setText("");
                 dialog.dismiss();
+                filter.setLabels(null);
+                updateLabels();
             }
         });
         prompt.show();
@@ -263,26 +325,31 @@ public class FilterIssuesActivity extends RoboActivity {
 
         final String[] names = new String[allMilestones.size()];
         int selected = -1;
-        for (int i = 0; i < names.length; i++) {
-            names[i] = allMilestones.get(i).getTitle();
-            if (selectedMilestone == allMilestones.get(i).getNumber())
-                selected = i;
-        }
+        Milestone milestone = filter.getMilestone();
+        if (milestone != null)
+            for (int i = 0; i < names.length; i++) {
+                names[i] = allMilestones.get(i).getTitle();
+                if (milestone.getNumber() == allMilestones.get(i).getNumber())
+                    selected = i;
+            }
+        else
+            for (int i = 0; i < names.length; i++)
+                names[i] = allMilestones.get(i).getTitle();
 
         prompt.setSingleChoiceItems(names, selected, new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
-                selectedMilestone = allMilestones.get(which).getNumber();
-                ((TextView) findViewById(id.tv_milestone)).setText(names[which]);
                 dialog.dismiss();
+                filter.setMilestone(allMilestones.get(which));
+                updateMilestone();
             }
         });
         prompt.setNegativeButton("Clear", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
-                selectedMilestone = -1;
-                ((TextView) findViewById(id.tv_milestone)).setText("");
                 dialog.dismiss();
+                filter.setMilestone(null);
+                updateMilestone();
             }
         });
         prompt.show();
@@ -296,24 +363,24 @@ public class FilterIssuesActivity extends RoboActivity {
         int selected = -1;
         for (int i = 0; i < logins.length; i++) {
             logins[i] = allCollaborators.get(i).getLogin();
-            if (logins[i].equals(selectedAssignee))
+            if (logins[i].equals(filter.getAssignee()))
                 selected = i;
         }
 
         prompt.setSingleChoiceItems(logins, selected, new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
-                selectedAssignee = logins[which];
-                ((TextView) findViewById(id.tv_assignee)).setText(selectedAssignee);
                 dialog.dismiss();
+                filter.setAssignee(logins[which]);
+                updateAssignee();
             }
         });
         prompt.setNegativeButton("Clear", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
-                selectedAssignee = null;
-                ((TextView) findViewById(id.tv_assignee)).setText("");
                 dialog.dismiss();
+                filter.setAssignee(null);
+                updateAssignee();
             }
         });
         prompt.show();
