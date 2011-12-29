@@ -65,66 +65,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_issues_header"
-        android:fastScrollEnabled="true"
-        android:background="@color/background" >
+        android:background="@color/background"
+        android:fastScrollEnabled="true" >
 
         <!-- Preview: listitem=@layout/repo_issue_list_item -->
     </ListView>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@android:id/list"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical" >
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="@color/item_separator1" >
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="@color/item_separator2" >
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="@color/item_background"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="2dp" >
-
-            <Button
-                android:id="@+id/b_create"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/create"
-                android:textColor="@color/item_text_color" />
-
-            <Button
-                android:id="@+id/b_filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Filter"
-                android:textColor="@color/item_text_color" />
-
-            <Button
-                android:id="@+id/b_star"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Star"
-                android:textColor="@color/item_text_color" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="@color/item_separator3" >
-        </LinearLayout>
-    </LinearLayout>
 
 </RelativeLayout>

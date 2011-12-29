@@ -108,4 +108,8 @@
     <string name="gist_content">Gist Content:</string>
 
     <string name="new_gist">New Gist</string>
+
+    <string name="filter">Filter</string>
+
+    <string name="bookmark">Bookmark</string>
 </resources>

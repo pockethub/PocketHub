@@ -5,11 +5,11 @@ import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.Menu;
+import android.support.v4.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -34,13 +34,14 @@ import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.service.IssueService;
 
-import roboguice.activity.RoboActivity;
+import roboguice.activity.RoboFragmentActivity;
+import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
 
 /**
  * Activity for browsing a list of issues
  */
-public class IssueBrowseActivity extends RoboActivity {
+public class IssueBrowseActivity extends RoboFragmentActivity {
 
     private static final int CODE_FILTER = 1;
 
@@ -60,11 +61,13 @@ public class IssueBrowseActivity extends RoboActivity {
     @Inject
     private AccountDataManager cache;
 
+    @InjectExtra(EXTRA_REPOSITORY)
+    private Repository repo;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.repo_issue_list);
 
-        final Repository repo = (Repository) getIntent().getSerializableExtra(EXTRA_REPOSITORY);
         ((TextView) findViewById(id.tv_repo_name)).setText(repo.getName());
         ((TextView) findViewById(id.tv_owner_name)).setText(repo.getOwner().getLogin());
         Avatar.bind(this, (ImageView) findViewById(id.iv_gravatar), repo.getOwner());
@@ -76,13 +79,27 @@ public class IssueBrowseActivity extends RoboActivity {
                 startActivity(viewIssueIntentFor(issue));
             }
         });
+    }
 
-        ((Button) findViewById(id.b_filter)).setOnClickListener(new OnClickListener() {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.issues, menu);
+        return true;
+    }
 
-            public void onClick(View v) {
-                startActivityForResult(FilterIssuesActivity.createIntent(repo), CODE_FILTER);
-            }
-        });
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.create_issue:
+            return true;
+        case R.id.filter_issues:
+            startActivityForResult(FilterIssuesActivity.createIntent(repo), CODE_FILTER);
+            return true;
+        case R.id.bookmark_filter:
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

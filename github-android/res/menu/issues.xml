@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/create_issue"
+        android:icon="@drawable/ic_action_create"
+        android:showAsAction="always"
+        android:title="@string/create">
+    </item>
+    <item
+        android:id="@+id/filter_issues"
+        android:icon="@drawable/ic_action_filter"
+        android:showAsAction="always"
+        android:title="@string/filter">
+    </item>
+    <item
+        android:id="@+id/bookmark_filter"
+        android:icon="@drawable/ic_action_bookmark"
+        android:showAsAction="always"
+        android:title="@string/bookmark">
+    </item>
+
+</menu>
