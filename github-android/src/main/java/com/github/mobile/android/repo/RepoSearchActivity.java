@@ -1,5 +1,8 @@
 package com.github.mobile.android.repo;
 
+import static android.content.Intent.ACTION_SEARCH;
+import android.app.SearchManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -54,6 +57,9 @@ public class RepoSearchActivity extends RoboActivity {
     @InjectView(id.lv_repos)
     private ListView repoList;
 
+    @InjectView(id.et_search)
+    private EditText searchEditText;
+
     @Inject
     private IRepositorySearch search;
 
@@ -64,7 +70,7 @@ public class RepoSearchActivity extends RoboActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.repo_search);
 
-        ((EditText) findViewById(R.id.et_search)).setOnEditorActionListener(new OnEditorActionListener() {
+        searchEditText.setOnEditorActionListener(new OnEditorActionListener() {
 
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (EditorInfo.IME_ACTION_SEARCH == actionId)
@@ -89,6 +95,23 @@ public class RepoSearchActivity extends RoboActivity {
                 }.execute();
             }
         });
+
+        handleIntent(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        // Get the intent, verify the action and get the query
+        if (ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            searchEditText.setText(query);
+            search(query);
+        }
     }
 
     private void search(final String query) {

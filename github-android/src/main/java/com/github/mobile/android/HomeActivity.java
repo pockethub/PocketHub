@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
 import android.util.Log;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,19 +19,16 @@ import android.widget.TextView;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.gist.GistsActivity;
 import com.github.mobile.android.repo.RepoBrowseActivity;
-import com.github.mobile.android.repo.RepoSearchActivity;
 import com.github.mobile.android.ui.WelcomeActivity;
 import com.github.mobile.android.util.Avatar;
 import com.google.inject.Inject;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.egit.github.core.User;
 
-import roboguice.activity.RoboActivity;
 import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContextScopedProvider;
 import roboguice.inject.InjectView;
@@ -88,7 +84,7 @@ public class HomeActivity extends RoboFragmentActivity {
                 startActivity(new Intent(HomeActivity.this, GistsActivity.class));
                 return true;
             case R.id.search:
-                startActivity(new Intent(HomeActivity.this, RepoSearchActivity.class));
+                onSearchRequested();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
