@@ -6,9 +6,10 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.Menu;
+import android.support.v4.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.R.menu;
 import com.github.mobile.android.util.GitHubIntents;
 import com.google.inject.Inject;
 
@@ -35,13 +37,13 @@ import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.LabelService;
 import org.eclipse.egit.github.core.service.MilestoneService;
 
-import roboguice.activity.RoboActivity;
+import roboguice.activity.RoboFragmentActivity;
 import roboguice.util.RoboAsyncTask;
 
 /**
  * Activity to create a persistent issues filter for a repository
  */
-public class FilterIssuesActivity extends RoboActivity {
+public class FilterIssuesActivity extends RoboFragmentActivity {
 
     @Inject
     private CollaboratorService collaborators;
@@ -197,16 +199,6 @@ public class FilterIssuesActivity extends RoboActivity {
         ((TextView) findViewById(id.tv_labels_label)).setOnClickListener(labelsListener);
         ((TextView) findViewById(id.tv_labels)).setOnClickListener(labelsListener);
 
-        ((Button) findViewById(id.b_apply)).setOnClickListener(new OnClickListener() {
-
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.putExtra(GitHubIntents.EXTRA_ISSUE_FILTER, filter);
-                setResult(RESULT_OK, intent);
-                finish();
-            }
-        });
-
         updateAssignee();
         updateMilestone();
         updateLabels();
@@ -232,6 +224,31 @@ public class FilterIssuesActivity extends RoboActivity {
                 updateStates();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu options) {
+        getMenuInflater().inflate(menu.issue_filter, options);
+        return true;
+    }
+
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.getItem(0).setEnabled(filter.isValid());
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case id.apply_filter:
+            Intent intent = new Intent();
+            intent.putExtra(GitHubIntents.EXTRA_ISSUE_FILTER, filter);
+            setResult(RESULT_OK, intent);
+            finish();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     protected void onSaveInstanceState(Bundle outState) {
@@ -272,6 +289,7 @@ public class FilterIssuesActivity extends RoboActivity {
     private void updateStates() {
         ((CheckBox) findViewById(id.cb_open)).setChecked(filter.containsState(IssueService.STATE_OPEN));
         ((CheckBox) findViewById(id.cb_closed)).setChecked(filter.containsState(IssueService.STATE_CLOSED));
+        invalidateOptionsMenu();
     }
 
     private void promptForLabels() {

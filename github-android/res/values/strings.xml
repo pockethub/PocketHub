@@ -112,4 +112,6 @@
     <string name="filter">Filter</string>
 
     <string name="bookmark">Bookmark</string>
+
+    <string name="apply">Apply</string>
 </resources>

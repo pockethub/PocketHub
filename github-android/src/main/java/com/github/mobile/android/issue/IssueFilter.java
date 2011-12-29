@@ -139,6 +139,15 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>> 
     }
 
     /**
+     * Is the filter valid?
+     *
+     * @return true if valid, false otherwise
+     */
+    public boolean isValid() {
+        return states != null && !states.isEmpty();
+    }
+
+    /**
      * @return assignee
      */
     public String getAssignee() {
