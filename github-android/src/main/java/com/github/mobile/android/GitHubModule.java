@@ -5,7 +5,6 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
 
-import com.github.kevinsawicki.http.HttpRequest;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 
@@ -36,7 +35,6 @@ public class GitHubModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        HttpRequest.keepAlive(false);
     }
 
     @Provides
