@@ -79,7 +79,7 @@ public class HomeActivity extends RoboFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.gists:
-                startActivity(new Intent(HomeActivity.this, GistsActivity.class));
+                startActivity(new Intent(this, GistsActivity.class));
                 return true;
             case R.id.search:
                 onSearchRequested();

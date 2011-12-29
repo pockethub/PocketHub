@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <searchable xmlns:android="http://schemas.android.com/apk/res/android"
             android:label="@string/github_app_name"
-            android:hint="@string/find_repos" >
+            android:hint="@string/find_repos"
+            android:searchSuggestAuthority="com.github.search.suggest.recent.repos"
+            android:searchSuggestSelection=" ?" >
+        >
 </searchable>

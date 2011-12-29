@@ -1,20 +1,23 @@
 package com.github.mobile.android.repo;
 
 import static android.content.Intent.ACTION_SEARCH;
+import static android.widget.Toast.LENGTH_LONG;
+import static com.github.mobile.android.repo.RepoSearchRecentSuggestionsProvider.clearRepoQueryHistory;
+import static com.github.mobile.android.repo.RepoSearchRecentSuggestionsProvider.saveRecentRepoQuery;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
+import android.support.v4.app.ActionBar;
+import android.support.v4.view.Menu;
+import android.support.v4.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
 import com.github.mobile.android.IRepositorySearch;
 import com.github.mobile.android.R;
@@ -29,14 +32,14 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.SearchRepository;
 import org.eclipse.egit.github.core.service.RepositoryService;
 
-import roboguice.activity.RoboActivity;
+import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.InjectView;
 import roboguice.util.RoboAsyncTask;
 
 /**
  * Activity to search repositories
  */
-public class RepoSearchActivity extends RoboActivity {
+public class RepoSearchActivity extends RoboFragmentActivity {
 
     private class RepoAdapter extends ArrayAdapter<SearchRepository> {
 
@@ -57,28 +60,37 @@ public class RepoSearchActivity extends RoboActivity {
     @InjectView(id.lv_repos)
     private ListView repoList;
 
-    @InjectView(id.et_search)
-    private EditText searchEditText;
-
     @Inject
     private IRepositorySearch search;
 
     @Inject
     private RepositoryService repos;
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.search:
+                onSearchRequested();
+                return true;
+            case R.id.clear_search_history:
+                clearRepoQueryHistory(this);
+                Toast.makeText(this, R.string.search_history_cleared, LENGTH_LONG).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.repo_search);
-
-        searchEditText.setOnEditorActionListener(new OnEditorActionListener() {
-
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (EditorInfo.IME_ACTION_SEARCH == actionId)
-                    search(v.getText().toString());
-                return false;
-            }
-        });
-
         repoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -106,15 +118,14 @@ public class RepoSearchActivity extends RoboActivity {
     }
 
     private void handleIntent(Intent intent) {
-        // Get the intent, verify the action and get the query
         if (ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            searchEditText.setText(query);
             search(query);
         }
     }
 
     private void search(final String query) {
+        saveRecentRepoQuery(this, query);
         new RoboAsyncTask<List<SearchRepository>>(this) {
 
             public List<SearchRepository> call() throws Exception {
@@ -122,6 +133,8 @@ public class RepoSearchActivity extends RoboActivity {
             }
 
             protected void onSuccess(List<SearchRepository> repos) throws Exception {
+                ActionBar actionBar = getSupportActionBar();
+                actionBar.setTitle("“" + query + "”");
                 repoList.setAdapter(new RepoAdapter(repos.toArray(new SearchRepository[repos.size()])));
             }
         }.execute();

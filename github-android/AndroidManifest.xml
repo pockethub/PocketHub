@@ -63,6 +63,7 @@
 
         <activity android:name=".repo.RepoSearchActivity"
                   android:launchMode="singleTop"
+                  android:label="@string/search_title"
                 >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH"/>
@@ -119,6 +120,9 @@
                   android:authorities="com.github.sync"
                   android:syncable="true"
                   android:label="GitHub"/>
+
+        <provider android:name=".repo.RepoSearchRecentSuggestionsProvider"
+                  android:authorities="com.github.search.suggest.recent.repos" />
 
     </application>
 
