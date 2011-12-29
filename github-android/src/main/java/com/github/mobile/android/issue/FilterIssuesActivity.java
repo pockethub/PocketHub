@@ -10,9 +10,9 @@ import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.github.mobile.android.R.id;
@@ -66,10 +66,12 @@ public class FilterIssuesActivity extends RoboFragmentActivity {
      * Create intent for creating an issue filter for the given repository
      *
      * @param repo
+     * @param filter
      * @return intent
      */
-    public static Intent createIntent(Repository repo) {
-        return new GitHubIntents.Builder("repo.issues.filter.VIEW").repo(repo).toIntent();
+    public static Intent createIntent(Repository repo, IssueFilter filter) {
+        return new GitHubIntents.Builder("repo.issues.filter.VIEW").repo(repo)
+                .add(GitHubIntents.EXTRA_ISSUE_FILTER, filter).toIntent();
     }
 
     @Override
@@ -83,7 +85,7 @@ public class FilterIssuesActivity extends RoboFragmentActivity {
             filter = (IssueFilter) savedInstanceState.getSerializable(GitHubIntents.EXTRA_ISSUE_FILTER);
 
         if (filter == null)
-            filter = new IssueFilter();
+            filter = ((IssueFilter) getIntent().getSerializableExtra(GitHubIntents.EXTRA_ISSUE_FILTER)).clone();
 
         OnClickListener assigneeListener = new OnClickListener() {
 
@@ -202,39 +204,46 @@ public class FilterIssuesActivity extends RoboFragmentActivity {
         updateAssignee();
         updateMilestone();
         updateLabels();
-        updateStates();
 
-        ((CheckBox) findViewById(id.cb_open)).setOnCheckedChangeListener(new OnCheckedChangeListener() {
+        RadioButton openButton = (RadioButton) findViewById(id.rb_open);
 
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked)
-                    filter.addState(IssueService.STATE_OPEN);
-                else
-                    filter.removeState(IssueService.STATE_OPEN);
-                updateStates();
-            }
-        });
-        ((CheckBox) findViewById(id.cb_closed)).setOnCheckedChangeListener(new OnCheckedChangeListener() {
+        openButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked)
-                    filter.addState(IssueService.STATE_CLOSED);
-                else
-                    filter.removeState(IssueService.STATE_CLOSED);
-                updateStates();
+                filter.setOpenOnly();
             }
         });
+
+        RadioButton closedButton = (RadioButton) findViewById(id.rb_open);
+
+        closedButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                filter.setClosedOnly();
+            }
+        });
+
+        RadioButton allButton = (RadioButton) findViewById(id.rb_all);
+
+        openButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                filter.setAll();
+            }
+        });
+
+        if (filter.isAll())
+            allButton.setChecked(true);
+        else if (filter.isClosedOnly())
+            closedButton.setChecked(true);
+        else if (filter.isOpenOnly())
+            openButton.setChecked(true);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
         getMenuInflater().inflate(menu.issue_filter, options);
         return true;
-    }
-
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.getItem(0).setEnabled(filter.isValid());
-        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -284,12 +293,6 @@ public class FilterIssuesActivity extends RoboFragmentActivity {
             ((TextView) findViewById(id.tv_assignee)).setText(selected);
         else
             ((TextView) findViewById(id.tv_assignee)).setText("");
-    }
-
-    private void updateStates() {
-        ((CheckBox) findViewById(id.cb_open)).setChecked(filter.containsState(IssueService.STATE_OPEN));
-        ((CheckBox) findViewById(id.cb_closed)).setChecked(filter.containsState(IssueService.STATE_CLOSED));
-        invalidateOptionsMenu();
     }
 
     private void promptForLabels() {

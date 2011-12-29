@@ -8,12 +8,15 @@ import static org.eclipse.egit.github.core.service.IssueService.FILTER_LABELS;
 import static org.eclipse.egit.github.core.service.IssueService.FILTER_MILESTONE;
 import static org.eclipse.egit.github.core.service.IssueService.FILTER_STATE;
 import static org.eclipse.egit.github.core.service.IssueService.SORT_CREATED;
+import static org.eclipse.egit.github.core.service.IssueService.STATE_CLOSED;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,7 +25,7 @@ import org.eclipse.egit.github.core.Milestone;
 /**
  * Issue filter containing at least one valid query
  */
-public class IssueFilter implements Serializable, Iterable<Map<String, String>> {
+public class IssueFilter implements Serializable, Iterable<Map<String, String>>, Cloneable {
 
     /** serialVersionUID */
     private static final long serialVersionUID = 7310646589186299063L;
@@ -33,7 +36,49 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>> 
 
     private String assignee;
 
-    private Set<String> states;
+    private boolean open;
+
+    private boolean closed;
+
+    /**
+     * Create filter
+     */
+    public IssueFilter() {
+        open = true;
+    }
+
+    /**
+     * Set all issues to be returned
+     *
+     * @return this filter
+     */
+    public IssueFilter setAll() {
+        open = true;
+        closed = true;
+        return this;
+    }
+
+    /**
+     * Set only closed issues to be returned
+     *
+     * @return this filter
+     */
+    public IssueFilter setClosedOnly() {
+        open = false;
+        closed = true;
+        return this;
+    }
+
+    /**
+     * Set only open issues to be returned
+     *
+     * @return this filter
+     */
+    public IssueFilter setOpenOnly() {
+        open = true;
+        closed = false;
+        return this;
+    }
 
     /**
      * Add label to filter
@@ -83,37 +128,6 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>> 
     }
 
     /**
-     * Add state to filter
-     *
-     * @param state
-     * @return this filter
-     */
-    public IssueFilter addState(String state) {
-        if (state == null || state.length() == 0)
-            return this;
-        if (states == null)
-            states = new HashSet<String>();
-        states.add(state);
-        return this;
-    }
-
-    /**
-     * @param states
-     * @return this filter
-     */
-    public IssueFilter setStates(Set<String> states) {
-        this.states = states;
-        return this;
-    }
-
-    /**
-     * @return states
-     */
-    public Set<String> getStates() {
-        return states;
-    }
-
-    /**
      * @param assignee
      * @return this filter
      */
@@ -123,36 +137,30 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>> 
     }
 
     /**
-     * Does this filter contain the given state?
+     * Are all issues returned?
      *
-     * @param state
-     * @return true if contains the state, false otherwise
+     * @return true if all ,false otherwise
      */
-    public boolean containsState(String state) {
-        if (state == null || state.length() == 0)
-            return false;
-        return states != null && states.contains(state);
+    public boolean isAll() {
+        return open && closed;
     }
 
     /**
-     * Remove state from filter
+     * Are only open issues returned?
      *
-     * @param state
-     * @return this filter
+     * @return true if open only, false otherwise
      */
-    public IssueFilter removeState(String state) {
-        if (state != null && state.length() != 0 && states != null)
-            states.remove(state);
-        return this;
+    public boolean isOpenOnly() {
+        return open && !closed;
     }
 
     /**
-     * Is the filter valid?
+     * Are only closed issues returned?
      *
-     * @return true if valid, false otherwise
+     * @return true if closed only, false otherwise
      */
-    public boolean isValid() {
-        return states != null && !states.isEmpty();
+    public boolean isClosedOnly() {
+        return !open && closed;
     }
 
     /**
@@ -163,8 +171,6 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>> 
     }
 
     public Iterator<Map<String, String>> iterator() {
-        if (states == null || states.isEmpty())
-            addState(STATE_OPEN);
 
         final Map<String, String> base = new HashMap<String, String>();
 
@@ -184,6 +190,11 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>> 
             base.put(FILTER_LABELS, labelsQuery.toString());
         }
 
+        List<String> states = new ArrayList<String>();
+        if (open)
+            states.add(STATE_OPEN);
+        if (closed)
+            states.add(STATE_CLOSED);
         final Iterator<String> statesIter = states.iterator();
         return new Iterator<Map<String, String>>() {
 
@@ -201,5 +212,49 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>> 
                 throw new UnsupportedOperationException();
             }
         };
+    }
+
+    /**
+     * Get display {@link CharSequence} representing this filter
+     *
+     * @return display
+     */
+    public CharSequence toDisplay() {
+        List<String> segments = new ArrayList<String>();
+        if (assignee != null)
+            segments.add("Assignee: " + assignee);
+
+        if (milestone != null)
+            segments.add("Milestone: " + milestone.getTitle());
+
+        if (labels != null && !labels.isEmpty()) {
+            StringBuilder builder = new StringBuilder("Labels: ");
+            builder.append("Labels: ");
+            for (String label : labels)
+                builder.append(label).append(',').append(' ');
+            builder.deleteCharAt(builder.length() - 1);
+            builder.deleteCharAt(builder.length() - 1);
+            segments.add(builder.toString());
+        }
+
+        if (segments.isEmpty())
+            return "";
+
+        StringBuilder all = new StringBuilder();
+        for (String segment : segments)
+            all.append(segment).append(',').append(' ');
+        all.deleteCharAt(all.length() - 1);
+        all.deleteCharAt(all.length() - 1);
+        return all;
+    }
+
+    @Override
+    public IssueFilter clone() {
+        try {
+            return (IssueFilter) super.clone();
+        } catch (CloneNotSupportedException e) {
+            // This should never happen since this class implements Cloneable
+            throw new IllegalArgumentException(e);
+        }
     }
 }

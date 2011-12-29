@@ -29,10 +29,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.service.IssueService;
 
 import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.InjectExtra;
@@ -64,6 +65,9 @@ public class IssueBrowseActivity extends RoboFragmentActivity {
     @InjectExtra(EXTRA_REPOSITORY)
     private Repository repo;
 
+    private IssueFilter filter;
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.repo_issue_list);
@@ -71,7 +75,12 @@ public class IssueBrowseActivity extends RoboFragmentActivity {
         ((TextView) findViewById(id.tv_repo_name)).setText(repo.getName());
         ((TextView) findViewById(id.tv_owner_name)).setText(repo.getOwner().getLogin() + " /");
         Avatar.bind(this, (ImageView) findViewById(id.iv_gravatar), repo.getOwner());
-        loadIssues(repo, new IssueFilter().addState(IssueService.STATE_OPEN));
+
+        if (savedInstanceState != null)
+            filter = (IssueFilter) savedInstanceState.getSerializable(GitHubIntents.EXTRA_ISSUE_FILTER);
+
+        if (filter == null)
+            filter = new IssueFilter();
 
         issueList.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> list, View view, int position, long id) {
@@ -79,6 +88,9 @@ public class IssueBrowseActivity extends RoboFragmentActivity {
                 startActivity(viewIssueIntentFor(issue));
             }
         });
+
+        updateFilterSummary();
+        loadIssues(repo);
     }
 
     @Override
@@ -88,12 +100,18 @@ public class IssueBrowseActivity extends RoboFragmentActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(GitHubIntents.EXTRA_ISSUE_FILTER, filter);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.create_issue:
             return true;
         case R.id.filter_issues:
-            startActivityForResult(FilterIssuesActivity.createIntent(repo), CODE_FILTER);
+            startActivityForResult(FilterIssuesActivity.createIntent(repo, filter), CODE_FILTER);
             return true;
         case R.id.bookmark_filter:
             return true;
@@ -102,16 +120,29 @@ public class IssueBrowseActivity extends RoboFragmentActivity {
         }
     }
 
+    private void updateFilterSummary() {
+        CharSequence display = filter.toDisplay();
+        TextView summary = (TextView) findViewById(id.tv_filter_summary);
+        if (display.length() > 0) {
+            summary.setText(display);
+            summary.setVisibility(View.VISIBLE);
+        } else
+            summary.setVisibility(View.GONE);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == CODE_FILTER && data != null) {
             Repository repo = (Repository) getIntent().getSerializableExtra(EXTRA_REPOSITORY);
-            loadIssues(repo, (IssueFilter) data.getSerializableExtra(GitHubIntents.EXTRA_ISSUE_FILTER));
+            filter = (IssueFilter) data.getSerializableExtra(GitHubIntents.EXTRA_ISSUE_FILTER);
+            updateFilterSummary();
+            loadIssues(repo);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void loadIssues(final Repository repo, IssueFilter filter) {
-        final List<Issue> all = new ArrayList<Issue>();
+    private void loadIssues(final Repository repo) {
+        final Set<Issue> all = new TreeSet<Issue>(new CreatedAtComparator());
         final Iterator<Map<String, String>> filters = filter.iterator();
         final RequestFuture<List<Issue>> callback = new RequestFuture<List<Issue>>() {
 
@@ -120,7 +151,7 @@ public class IssueBrowseActivity extends RoboFragmentActivity {
                 if (filters.hasNext())
                     cache.getIssues(repo, filters.next(), this);
                 else
-                    issueList.setAdapter(new ViewHoldingListAdapter<Issue>(all, viewInflatorFor(
+                    issueList.setAdapter(new ViewHoldingListAdapter<Issue>(new ArrayList<Issue>(all), viewInflatorFor(
                             IssueBrowseActivity.this, layout.repo_issue_list_item), RepoIssueViewHolder.FACTORY));
             }
         };

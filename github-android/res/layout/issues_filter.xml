@@ -8,8 +8,6 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
         android:padding="5dp"
         android:singleLine="true"
         android:text="Issues Filter"
@@ -130,32 +128,39 @@
             android:background="@drawable/outer_background"
             android:orientation="horizontal" >
 
-            <LinearLayout
+            <RadioGroup
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/inner_background"
                 android:orientation="horizontal"
                 android:padding="2dp" >
 
-                <CheckBox
-                    android:id="@+id/cb_open"
+                <RadioButton
+                    android:id="@+id/rb_open"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Open"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/item_text_color" >
-                </CheckBox>
+                    android:textColor="@color/item_text_color" />
 
-                <CheckBox
-                    android:id="@+id/cb_closed"
+                <RadioButton
+                    android:id="@+id/rb_closed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:text="Closed"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/item_text_color" >
-                </CheckBox>
-            </LinearLayout>
+                    android:textColor="@color/item_text_color" />
+
+                <RadioButton
+                    android:id="@+id/rb_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="All"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/item_text_color" />
+            </RadioGroup>
         </LinearLayout>
     </LinearLayout>
 
