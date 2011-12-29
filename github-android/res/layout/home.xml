@@ -7,26 +7,6 @@
     android:padding="10dp" >
 
     <LinearLayout
-        android:id="@+id/ll_links"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/outer_background" >
-
-        <ListView
-            android:id="@+id/lv_links"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="@drawable/inner_background"
-            android:divider="@color/item_divider"
-            android:dividerHeight="1dp"
-            android:padding="5dp" >
-
-            <!-- Preview: listitem=@layout/org_item -->
-        </ListView>
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/ll_orgs"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

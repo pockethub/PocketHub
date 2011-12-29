@@ -6,6 +6,7 @@
     <string name="issues">Issues</string>
     <string name="welcome">Welcome to GitHub!</string>
     <string name="gists">Gists</string>
+    <string name="find_repos">Find Repos</string>
 
     <!-- AuthenticatorActivity -->
 
