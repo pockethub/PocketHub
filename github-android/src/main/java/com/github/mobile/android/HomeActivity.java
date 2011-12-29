@@ -3,7 +3,10 @@ package com.github.mobile.android;
 import android.accounts.Account;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.Menu;
+import android.support.v4.view.MenuItem;
 import android.util.Log;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -30,35 +33,17 @@ import java.util.Map;
 import org.eclipse.egit.github.core.User;
 
 import roboguice.activity.RoboActivity;
+import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContextScopedProvider;
 import roboguice.inject.InjectView;
 
 /**
  * Home screen activity
  */
-public class HomeActivity extends RoboActivity {
+public class HomeActivity extends RoboFragmentActivity {
 
     private static final String TAG = "HA";
     private static final int CODE_LOGIN = 1;
-
-    private class LinksListAdapter extends ArrayAdapter<String> {
-
-        /**
-         * @param objects
-         */
-        public LinksListAdapter(List<String> objects) {
-            super(HomeActivity.this, R.layout.home_link_item, objects);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            final LinearLayout view = (LinearLayout) getLayoutInflater().inflate(layout.home_link_item, null);
-            String name = getItem(position);
-            ((TextView) view.findViewById(R.id.tv_home_link)).setText(name);
-            ((ImageView) view.findViewById(R.id.iv_home_link)).setBackgroundResource(linkViews.get(name));
-            return view;
-        }
-    }
 
     private class OrgListAdapter extends ArrayAdapter<User> {
 
@@ -90,34 +75,29 @@ public class HomeActivity extends RoboActivity {
     @InjectView(R.id.lv_orgs)
     private ListView orgsList;
 
-    @InjectView(R.id.lv_links)
-    private ListView linksList;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.welcome, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.gists:
+                startActivity(new Intent(HomeActivity.this, GistsActivity.class));
+                return true;
+            case R.id.search:
+                startActivity(new Intent(HomeActivity.this, RepoSearchActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
-
-        linkViews.put("Dashboard", R.drawable.dashboard_icon);
-        linkViews.put("Gists", R.drawable.gist_icon);
-        linkViews.put("Find Repos", R.drawable.search_icon);
-
-        linksList.setAdapter(new LinksListAdapter(new ArrayList<String>(linkViews.keySet())));
-        linksList.setOnItemClickListener(new OnItemClickListener() {
-
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
-                switch (position) {
-                case 1:
-                    startActivity(new Intent(HomeActivity.this, GistsActivity.class));
-                    break;
-
-                case 2:
-                    startActivity(new Intent(HomeActivity.this, RepoSearchActivity.class));
-                default:
-                    break;
-                }
-            }
-        });
-
         orgsList.setOnItemClickListener(new OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> view, View arg1, int position, long id) {
