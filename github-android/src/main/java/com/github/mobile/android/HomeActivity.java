@@ -71,11 +71,13 @@ public class HomeActivity extends RoboFragmentActivity {
     @InjectView(R.id.lv_orgs)
     private ListView orgsList;
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.welcome, menu);
         return true;
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.gists:
