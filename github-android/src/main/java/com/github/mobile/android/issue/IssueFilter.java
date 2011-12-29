@@ -173,6 +173,9 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>> 
 
         final Map<String, String> base = new HashMap<String, String>();
 
+        base.put(IssueService.FIELD_SORT, IssueService.SORT_CREATED);
+        base.put(IssueService.FIELD_DIRECTION, IssueService.DIRECTION_DESCENDING);
+
         if (assignee != null && assignee.length() > 0)
             base.put(IssueService.FILTER_ASSIGNEE, assignee);
 
