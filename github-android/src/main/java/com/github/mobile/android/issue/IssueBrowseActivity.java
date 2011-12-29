@@ -113,8 +113,6 @@ public class IssueBrowseActivity extends RoboFragmentActivity {
     private void loadIssues(final Repository repo, IssueFilter filter) {
         final List<Issue> all = new ArrayList<Issue>();
         final Iterator<Map<String, String>> filters = filter.iterator();
-        if (!filters.hasNext())
-            return;
         final RequestFuture<List<Issue>> callback = new RequestFuture<List<Issue>>() {
 
             public void success(List<Issue> issues) {

@@ -1,18 +1,26 @@
 package com.github.mobile.android.issue;
 
+import static org.eclipse.egit.github.core.service.IssueService.DIRECTION_DESCENDING;
+import static org.eclipse.egit.github.core.service.IssueService.FIELD_DIRECTION;
+import static org.eclipse.egit.github.core.service.IssueService.FIELD_SORT;
+import static org.eclipse.egit.github.core.service.IssueService.FILTER_ASSIGNEE;
+import static org.eclipse.egit.github.core.service.IssueService.FILTER_LABELS;
+import static org.eclipse.egit.github.core.service.IssueService.FILTER_MILESTONE;
+import static org.eclipse.egit.github.core.service.IssueService.FILTER_STATE;
+import static org.eclipse.egit.github.core.service.IssueService.SORT_CREATED;
+import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.eclipse.egit.github.core.Milestone;
-import org.eclipse.egit.github.core.service.IssueService;
 
 /**
- * Issue filter
+ * Issue filter containing at least one valid query
  */
 public class IssueFilter implements Serializable, Iterable<Map<String, String>> {
 
@@ -156,37 +164,24 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>> 
 
     public Iterator<Map<String, String>> iterator() {
         if (states == null || states.isEmpty())
-            return new Iterator<Map<String, String>>() {
-
-                public boolean hasNext() {
-                    return false;
-                }
-
-                public Map<String, String> next() {
-                    throw new NoSuchElementException();
-                }
-
-                public void remove() {
-                    throw new IllegalStateException();
-                }
-            };
+            addState(STATE_OPEN);
 
         final Map<String, String> base = new HashMap<String, String>();
 
-        base.put(IssueService.FIELD_SORT, IssueService.SORT_CREATED);
-        base.put(IssueService.FIELD_DIRECTION, IssueService.DIRECTION_DESCENDING);
+        base.put(FIELD_SORT, SORT_CREATED);
+        base.put(FIELD_DIRECTION, DIRECTION_DESCENDING);
 
         if (assignee != null && assignee.length() > 0)
-            base.put(IssueService.FILTER_ASSIGNEE, assignee);
+            base.put(FILTER_ASSIGNEE, assignee);
 
         if (milestone != null)
-            base.put(IssueService.FILTER_MILESTONE, Integer.toString(milestone.getNumber()));
+            base.put(FILTER_MILESTONE, Integer.toString(milestone.getNumber()));
 
         if (labels != null && !labels.isEmpty()) {
             StringBuilder labelsQuery = new StringBuilder();
             for (String label : labels)
                 labelsQuery.append(label).append(',');
-            base.put(IssueService.FILTER_LABELS, labelsQuery.toString());
+            base.put(FILTER_LABELS, labelsQuery.toString());
         }
 
         final Iterator<String> statesIter = states.iterator();
@@ -198,7 +193,7 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>> 
 
             public Map<String, String> next() {
                 HashMap<String, String> stateMap = new HashMap<String, String>(base);
-                stateMap.put(IssueService.FILTER_STATE, statesIter.next());
+                stateMap.put(FILTER_STATE, statesIter.next());
                 return stateMap;
             }
 
