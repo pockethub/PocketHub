@@ -109,7 +109,7 @@ public class AccountDataManager {
             Log.d(TAG,
                     MessageFormat.format("Cache hit to {0}, {1} ms to load {2} bytes", file.getName(),
                             (System.currentTimeMillis() - start), length));
-        return new RequestReader(file, FORMAT_VERSION).read();
+        return data;
     }
 
     /**
