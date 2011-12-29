@@ -43,7 +43,7 @@ public class SourceEditor {
                 || "sass".equals(extension) //
                 || "scala".equals(extension) //
                 || "scss".equals(extension) //
-                || "shell ".equals(extension) //
+                || "sh".equals(extension) //
                 || "sql".equals(extension) //
                 || "txt".equals(extension) //
                 || "vb".equals(extension) //

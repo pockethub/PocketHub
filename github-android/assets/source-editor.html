@@ -23,7 +23,7 @@ body {
 SyntaxHighlighter.autoloader(
   'applescript            scripts/shBrushAppleScript.js',
   'actionscript3 as3      scripts/shBrushAS3.js',
-  'bash shell             scripts/shBrushBash.js',
+  'bash sh                scripts/shBrushBash.js',
   'coldfusion cf          scripts/shBrushColdFusion.js',
   'cpp c                  scripts/shBrushCpp.js',
   'cs                     scripts/shBrushCSharp.js',
@@ -46,6 +46,7 @@ SyntaxHighlighter.autoloader(
   'vb vbnet               scripts/shBrushVb.js',
   'xml xhtml xslt html    scripts/shBrushXml.js'
 );
+SyntaxHighlighter.defaults['auto-links'] = false;
 SyntaxHighlighter.all();
 </script>
 </body>
