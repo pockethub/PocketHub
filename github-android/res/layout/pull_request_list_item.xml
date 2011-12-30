@@ -16,7 +16,6 @@
             android:id="@+id/tv_pull_request_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_pull_request_title"
             android:singleLine="true"
             android:text="This change makes the good times roll and leads to a 100% performance improvement"/>
     <LinearLayout 

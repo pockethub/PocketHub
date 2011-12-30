@@ -4,7 +4,9 @@
           package="com.github.mobile.android.tests"
           android:versionCode="1"
           android:versionName="1.0">
-
+          
+	<uses-sdk android:minSdkVersion="8" android:targetSdkVersion="14"/>
+	
     <!-- We add an application tag here just so that we can indicate that
          this package needs to link against the android.test library,
          which is needed when building test cases. -->
@@ -20,5 +22,5 @@
     <instrumentation android:name="android.test.InstrumentationTestRunner"
                      android:targetPackage="com.github.mobile.android"
                      android:label="GitHub for Android - Integration Tests"/>
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="10"/>
+    
 </manifest>

@@ -27,7 +27,6 @@
             android:layout_width="match_parent">
         <LinearLayout
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:paddingLeft="14dip" android:paddingRight="14dip"

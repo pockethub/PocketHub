@@ -7,7 +7,7 @@
     <string name="welcome">Welcome to GitHub!</string>
     <string name="gists">Gists</string>
     <string name="find_repos">Find Repos</string>
-    <string name="search_title">Search...</string>
+    <string name="search_title">Search…</string>
     <string name="clear_search_history">Clear History</string>
     <string name="search_history_cleared">Search history cleared</string>
 
@@ -77,7 +77,7 @@
 
     <string name="record_gist_now">Record Gist Now</string>
 
-    <string name="creating_gist">Creating Gist...</string>
+    <string name="creating_gist">Creating Gist…</string>
 
     <string name="create">Create</string>
     
@@ -91,9 +91,9 @@
 
     <string name="gist">Gist</string>
 
-    <string name="loading_gist">Loading Gist...</string>
+    <string name="loading_gist">Loading Gist…</string>
 
-    <string name="random_gist">Random Gist...</string>
+    <string name="random_gist">Random Gist…</string>
 
     <string name="comments">Comments</string>
 
