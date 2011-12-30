@@ -5,38 +5,17 @@
     android:background="@color/item_background"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="2dp" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:gravity="center_vertical"
-            android:paddingLeft="5dp"
-            android:singleLine="true"
-            android:text="@string/new_gist"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/item_text_color"
-            android:textStyle="bold" >
-        </TextView>
-
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical" >
-
-            <Button
-                android:id="@+id/createGistButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="@string/create_gist"
-                android:textAppearance="?android:attr/textAppearanceSmall" >
-            </Button>
-        </RelativeLayout>
-    </LinearLayout>
+        android:gravity="center_vertical"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:text="@string/new_gist"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/item_text_color"
+        android:textStyle="bold" >
+    </TextView>
 
     <LinearLayout
         android:layout_width="fill_parent"

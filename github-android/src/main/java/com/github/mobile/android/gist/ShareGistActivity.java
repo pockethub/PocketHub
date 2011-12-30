@@ -3,11 +3,10 @@ package com.github.mobile.android.gist;
 import static android.content.Intent.EXTRA_TEXT;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v4.view.Menu;
+import android.support.v4.view.MenuItem;
 import android.text.Editable;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -15,6 +14,7 @@ import android.widget.Toast;
 import com.github.mobile.android.R;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.R.menu;
 import com.github.mobile.android.TextWatcherAdapter;
 import com.google.inject.Inject;
 
@@ -24,7 +24,7 @@ import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.GistFile;
 import org.eclipse.egit.github.core.service.GistService;
 
-import roboguice.activity.RoboActivity;
+import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContextScopedProvider;
 import roboguice.inject.InjectView;
 import roboguice.util.RoboAsyncTask;
@@ -32,7 +32,7 @@ import roboguice.util.RoboAsyncTask;
 /**
  * Activity to share a text selection as a public or private Gist
  */
-public class ShareGistActivity extends RoboActivity {
+public class ShareGistActivity extends RoboFragmentActivity {
 
     /**
      * Gist successfully created
@@ -50,9 +50,6 @@ public class ShareGistActivity extends RoboActivity {
     @InjectView(id.publicCheck)
     private CheckBox publicCheckBox;
 
-    @InjectView(id.createGistButton)
-    private Button createButton;
-
     @Inject
     ContextScopedProvider<GistService> gistServiceProvider;
 
@@ -65,22 +62,36 @@ public class ShareGistActivity extends RoboActivity {
 
         if (text != null && text.length() > 0)
             contentText.setText(text);
-        else
-            createButton.setEnabled(false);
 
         contentText.addTextChangedListener(new TextWatcherAdapter() {
 
             public void afterTextChanged(Editable s) {
-                createButton.setEnabled(s.toString().length() > 0);
+                invalidateOptionsMenu();
             }
         });
+    }
 
-        createButton.setOnClickListener(new OnClickListener() {
+    @Override
+    public boolean onCreateOptionsMenu(Menu options) {
+        getMenuInflater().inflate(menu.gist_create, options);
+        return true;
+    }
 
-            public void onClick(View v) {
-                createGist();
-            }
-        });
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(id.gist_create).setEnabled(contentText.getText().toString().length() > 0);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case id.gist_create:
+            createGist();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     private void createGist() {
