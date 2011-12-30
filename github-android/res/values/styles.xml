@@ -13,10 +13,4 @@
         <item name="android:baselineAligned">false</item>
     </style>
 
-    <style name="Theme"></style>
-
-    <style name="Theme.Sherlock"></style>
-
-    <style name="Theme.Sherlock.Light"></style>
-
 </resources>
