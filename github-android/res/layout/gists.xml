@@ -36,13 +36,13 @@
         </LinearLayout>
     </LinearLayout>
 
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/ll_gists"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_below="@id/ll_gists_header"
         android:background="@color/background" >
-    </ListView>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"

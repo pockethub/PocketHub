@@ -12,4 +12,11 @@
         <item name="android:paddingBottom">6dip</item>
         <item name="android:baselineAligned">false</item>
     </style>
+
+    <style name="Theme"></style>
+
+    <style name="Theme.Sherlock"></style>
+
+    <style name="Theme.Sherlock.Light"></style>
+
 </resources>

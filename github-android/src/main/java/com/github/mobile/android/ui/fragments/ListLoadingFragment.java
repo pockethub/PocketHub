@@ -3,9 +3,7 @@ package com.github.mobile.android.ui.fragments;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
-import android.view.View;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 
 import java.util.List;
 
@@ -24,6 +22,13 @@ public abstract class ListLoadingFragment<E> extends RoboListFragment implements
 
         // Prepare the loader. Either re-connect with an existing one,
         // or start a new one.
+        refresh();
+    }
+
+    /**
+     * Refresh the fragment's list
+     */
+    public void refresh() {
         getLoaderManager().initLoader(0, null, this);
     }
 
