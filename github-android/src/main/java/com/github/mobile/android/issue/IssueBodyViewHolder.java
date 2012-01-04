@@ -17,22 +17,6 @@ import org.eclipse.egit.github.core.Issue;
 public class IssueBodyViewHolder extends MarkdownViewHolder<Issue> {
 
     /**
-     * Create factory
-     *
-     * @param context
-     * @param imageGetter
-     * @return view holder factory
-     */
-    public static ViewHolderFactory<Issue> createFactory(final Context context, final HttpImageGetter imageGetter) {
-        return new ViewHolderFactory<Issue>() {
-
-            public ViewHolder<Issue> createViewHolderFor(View view) {
-                return new IssueBodyViewHolder(context, imageGetter, view);
-            }
-        };
-    }
-
-    /**
      * @param context
      * @param imageGetter
      * @param view

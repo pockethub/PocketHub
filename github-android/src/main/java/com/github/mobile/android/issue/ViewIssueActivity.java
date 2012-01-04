@@ -1,5 +1,7 @@
 package com.github.mobile.android.issue;
 
+import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
+import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.R;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import com.github.mobile.android.util.Html;
 import com.github.mobile.android.util.HttpImageGetter;
 import com.github.mobile.android.util.Time;
 import com.google.inject.Inject;
+import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 import com.madgag.android.listviews.ViewInflator;
 
@@ -106,9 +109,9 @@ public class ViewIssueActivity extends RoboFragmentActivity {
             }
 
             protected void onSuccess(List<Comment> issueComments) throws Exception {
-                comments.setAdapter(new ViewHoldingListAdapter<Comment>(issueComments, ViewInflator.viewInflatorFor(
-                        ViewIssueActivity.this, layout.comment_view_item), CommentViewHolder.createFactory(
-                        ViewIssueActivity.this, imageGetter)));
+                comments.setAdapter(new ViewHoldingListAdapter<Comment>(issueComments, viewInflatorFor(
+                        ViewIssueActivity.this, layout.comment_view_item), reflectiveFactoryFor(CommentViewHolder
+                        .class, ViewIssueActivity.this, imageGetter)));
             }
         }.execute();
     }

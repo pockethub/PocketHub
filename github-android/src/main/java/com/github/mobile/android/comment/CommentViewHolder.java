@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.mobile.android.R;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.util.Avatar;
 import com.github.mobile.android.util.HttpImageGetter;
@@ -20,51 +21,34 @@ import org.eclipse.egit.github.core.Comment;
  */
 public class CommentViewHolder implements ViewHolder<Comment> {
 
-    /**
-     * Factory for creating view holder
-     *
-     * @param context
-     * @param imageGetter
-     * @return view holder
-     */
-    public static final ViewHolderFactory<Comment> createFactory(final Context context,
-            final HttpImageGetter imageGetter) {
-        return new ViewHolderFactory<Comment>() {
-
-            public ViewHolder<Comment> createViewHolderFor(View view) {
-                return new CommentViewHolder(context, imageGetter, view);
-            }
-        };
-    }
-
     private final Context context;
 
     private final HttpImageGetter imageGetter;
 
-    private final View view;
+    private final TextView authorView, dateView, bodyView;
+    private final ImageView avatarView;
 
     /**
      * Create a comment holder
      *
+     * @param view
      * @param context
      * @param imageGetter
-     * @param view
      */
-    public CommentViewHolder(Context context, HttpImageGetter imageGetter, View view) {
+    public CommentViewHolder(View view, Context context, HttpImageGetter imageGetter) {
         this.context = context;
         this.imageGetter = imageGetter;
-        this.view = view;
+        bodyView = (TextView) view.findViewById(id.tv_gist_comment_body);
+        bodyView.setMovementMethod(LinkMovementMethod.getInstance());
+        authorView = (TextView) view.findViewById(id.tv_gist_comment_author);
+        dateView = (TextView) view.findViewById(id.tv_gist_comment_date);
+        avatarView = (ImageView) view.findViewById(id.iv_gravatar);
     }
 
     public void updateViewFor(Comment comment) {
-        final TextView bodyView = (TextView) view.findViewById(id.tv_gist_comment_body);
-        bodyView.setMovementMethod(LinkMovementMethod.getInstance());
         imageGetter.bind(bodyView, comment.getBodyHtml());
-        final TextView authorView = (TextView) view.findViewById(id.tv_gist_comment_author);
         authorView.setText(comment.getUser().getLogin());
-        final TextView dateView = (TextView) view.findViewById(id.tv_gist_comment_date);
         dateView.setText(Time.relativeTimeFor(comment.getUpdatedAt()));
-        final ImageView avatarView = (ImageView) view.findViewById(id.iv_gravatar);
         Avatar.bind(context, avatarView, comment.getUser());
     }
 }

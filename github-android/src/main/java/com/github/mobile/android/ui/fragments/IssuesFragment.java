@@ -2,6 +2,7 @@ package com.github.mobile.android.ui.fragments;
 
 import static com.github.mobile.android.R.layout.issue_list_item;
 import static com.github.mobile.android.issue.ViewIssueActivity.viewIssueIntentFor;
+import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.github.mobile.android.issue.IssueBrowseActivity;
 import com.github.mobile.android.issue.ViewIssueActivity;
 import com.github.mobile.android.views.IssueViewHolder;
 import com.google.inject.Inject;
+import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHolder;
 import com.madgag.android.listviews.ViewHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -38,11 +40,7 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
     @Override
     protected ListAdapter adapterFor(List<Issue> issues) {
         return new ViewHoldingListAdapter<Issue>(issues, viewInflatorFor(getActivity(), issue_list_item),
-                new ViewHolderFactory<Issue>() {
-                    public ViewHolder<Issue> createViewHolderFor(View view) {
-                        return new IssueViewHolder(view);
-                    }
-                });
+                reflectiveFactoryFor(IssueViewHolder.class));
     }
 
     @Override

@@ -2,11 +2,13 @@ package com.github.mobile.android.issue;
 
 import static android.text.Html.fromHtml;
 import static com.github.mobile.android.util.Time.relativeTimeFor;
+import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
 import android.graphics.Paint;
 import android.view.View;
 import android.widget.TextView;
 
 import com.github.mobile.android.R.id;
+import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHolder;
 import com.madgag.android.listviews.ViewHolderFactory;
 
@@ -20,12 +22,7 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
     /**
      * Factory for creating view holder
      */
-    public static final ViewHolderFactory<Issue> FACTORY = new ViewHolderFactory<Issue>() {
-
-        public ViewHolder<Issue> createViewHolderFor(View view) {
-            return new RepoIssueViewHolder(view);
-        }
-    };
+    public static final ViewHolderFactory<Issue> FACTORY = reflectiveFactoryFor(RepoIssueViewHolder.class);
 
     private final TextView number;
 

@@ -1,5 +1,7 @@
 package com.github.mobile.android.issue;
 
+import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
+import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
@@ -11,6 +13,7 @@ import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.google.inject.Inject;
+import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHolder;
 import com.madgag.android.listviews.ViewHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -98,12 +101,7 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
 
     @Override
     protected ListAdapter adapterFor(List<Issue> items) {
-        return new ViewHoldingListAdapter<Issue>(items, ViewInflator.viewInflatorFor(getActivity(),
-                layout.repo_issue_list_item), new ViewHolderFactory<Issue>() {
-
-            public ViewHolder<Issue> createViewHolderFor(View view) {
-                return new RepoIssueViewHolder(view);
-            }
-        });
+        return new ViewHoldingListAdapter<Issue>(items, viewInflatorFor(getActivity(),
+                layout.repo_issue_list_item), reflectiveFactoryFor(RepoIssueViewHolder.class));
     }
 }

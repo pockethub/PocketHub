@@ -4,6 +4,7 @@ import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST_ID;
+import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -140,8 +141,8 @@ public class ViewGistActivity extends RoboActivity {
 
             protected void onSuccess(List<Comment> gistComments) throws Exception {
                 comments.setAdapter(new ViewHoldingListAdapter<Comment>(gistComments, ViewInflator.viewInflatorFor(
-                        ViewGistActivity.this, layout.comment_view_item), CommentViewHolder.createFactory(
-                        ViewGistActivity.this, imageGetter)));
+                        ViewGistActivity.this, layout.comment_view_item), reflectiveFactoryFor(CommentViewHolder
+                        .class, ViewGistActivity.this, imageGetter)));
             }
 
             protected void onException(Exception e) throws RuntimeException {

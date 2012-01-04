@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.madgag:android-viewholder-listviews:0.6">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/madgag/android-viewholder-listviews/0.6/android-viewholder-listviews-0.6.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/madgag/android-viewholder-listviews/0.6/android-viewholder-listviews-0.6-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/madgag/android-viewholder-listviews/0.6/android-viewholder-listviews-0.6-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

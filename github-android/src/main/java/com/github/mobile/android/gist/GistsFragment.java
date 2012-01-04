@@ -1,5 +1,7 @@
 package com.github.mobile.android.gist;
 
+import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
+import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
@@ -11,6 +13,7 @@ import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.google.inject.Inject;
+import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHolder;
 import com.madgag.android.listviews.ViewHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -78,12 +81,7 @@ public class GistsFragment extends ListLoadingFragment<Gist> {
 
     @Override
     protected ListAdapter adapterFor(List<Gist> items) {
-        return new ViewHoldingListAdapter<Gist>(items, ViewInflator.viewInflatorFor(getActivity(),
-                layout.gist_list_item), new ViewHolderFactory<Gist>() {
-
-            public ViewHolder<Gist> createViewHolderFor(View view) {
-                return new GistViewHolder(view);
-            }
-        });
+        return new ViewHoldingListAdapter<Gist>(items, viewInflatorFor(getActivity(), layout.gist_list_item),
+                reflectiveFactoryFor(GistViewHolder.class));
     }
 }
