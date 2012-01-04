@@ -22,8 +22,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="5dp"
-        android:paddingLeft="20dp"
-        android:text="from Gist 1489902"
+        android:paddingLeft="10dp"
+        android:text="Gist 1489902"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/item_text_color_light"
         android:textStyle="italic" >
