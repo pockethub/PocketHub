@@ -69,14 +69,11 @@
         android:background="@color/item_separator2" >
     </LinearLayout>
 
-    <ListView
+    <LinearLayout
         android:id="@android:id/list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/background"
-        android:fastScrollEnabled="true" >
-
-        <!-- Preview: listitem=@layout/repo_issue_list_item -->
-    </ListView>
+        android:background="@color/background" >
+    </LinearLayout>
 
 </LinearLayout>
