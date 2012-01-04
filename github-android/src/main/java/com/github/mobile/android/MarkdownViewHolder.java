@@ -25,30 +25,23 @@ public abstract class MarkdownViewHolder<V> implements ViewHolder<V> {
     protected final HttpImageGetter imageGetter;
 
     /**
-     * View
-     */
-    protected final View view;
-
-    /**
      * Create view holder
      *
      * @param context
      * @param imageGetter
-     * @param view
      */
-    public MarkdownViewHolder(Context context, HttpImageGetter imageGetter, View view) {
+    public MarkdownViewHolder(Context context, HttpImageGetter imageGetter) {
         this.context = context;
         this.imageGetter = imageGetter;
-        this.view = view;
     }
 
     /**
-     * Bind {@link TextView} at id to HTML
+     * Bind {@link TextView} to HTML
      *
-     * @param id
+     * @param textView
      * @param html
      */
-    protected void bindHtml(int id, String html) {
-        imageGetter.bind((TextView) view.findViewById(id), html);
+    protected void bindHtml(TextView textView, String html) {
+        imageGetter.bind(textView, html);
     }
 }
