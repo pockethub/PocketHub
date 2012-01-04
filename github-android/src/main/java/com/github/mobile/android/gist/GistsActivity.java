@@ -14,9 +14,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.github.mobile.android.R;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.R.menu;
+import com.github.mobile.android.R.string;
 import com.google.inject.Inject;
 
 import java.util.Collection;
@@ -54,12 +55,11 @@ public class GistsActivity extends RoboFragmentActivity implements OnItemClickLi
             gists.setClickListener(this);
             getSupportFragmentManager().beginTransaction().add(id.ll_gists, gists).commit();
         }
-
     }
 
     private void randomGist() {
         final ProgressDialog progress = new ProgressDialog(context);
-        progress.setMessage(getString(R.string.random_gist));
+        progress.setMessage(getString(string.random_gist));
         progress.show();
         new RoboAsyncTask<Gist>(context) {
 
@@ -106,21 +106,21 @@ public class GistsActivity extends RoboFragmentActivity implements OnItemClickLi
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.gists, menu);
+    public boolean onCreateOptionsMenu(Menu options) {
+        getMenuInflater().inflate(menu.gists, options);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.open_gist:
+        case id.open_gist:
             openGist();
             return true;
-        case R.id.random_gist:
+        case id.random_gist:
             randomGist();
             return true;
-        case R.id.create_gist:
+        case id.create_gist:
             startActivityForResult(new Intent(context, ShareGistActivity.class), REQUEST_CREATE);
             return true;
         default:
