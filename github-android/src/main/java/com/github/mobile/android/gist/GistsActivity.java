@@ -6,11 +6,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.Menu;
+import android.support.v4.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -49,76 +49,83 @@ public class GistsActivity extends RoboFragmentActivity implements OnItemClickLi
         super.onCreate(savedInstanceState);
         setContentView(layout.gists);
 
-        Button createButton = (Button) findViewById(id.createGistButton);
-        createButton.setOnClickListener(new OnClickListener() {
-
-            public void onClick(View v) {
-                startActivityForResult(new Intent(context, ShareGistActivity.class), REQUEST_CREATE);
-            }
-        });
-
-        Button randomButton = (Button) findViewById(id.randomGistButton);
-        randomButton.setOnClickListener(new OnClickListener() {
-
-            public void onClick(View v) {
-                final ProgressDialog progress = new ProgressDialog(context);
-                progress.setMessage(getString(R.string.random_gist));
-                progress.show();
-                new RoboAsyncTask<Gist>(context) {
-
-                    public Gist call() throws Exception {
-                        GistService service = serviceProvider.get(context);
-                        PageIterator<Gist> pages = service.pagePublicGists(1);
-                        pages.next();
-                        int randomPage = 1 + (int) (Math.random() * ((pages.getLastPage() - 1) + 1));
-                        Collection<Gist> gists = service.pagePublicGists(randomPage, 1).next();
-                        if (gists.isEmpty())
-                            throw new IllegalArgumentException("No Gists found");
-                        return service.getGist(gists.iterator().next().getId());
-                    }
-
-                    protected void onSuccess(Gist gist) throws Exception {
-                        progress.cancel();
-                        startActivity(ViewGistActivity.createIntent(gist));
-                    }
-
-                    protected void onException(Exception e) throws RuntimeException {
-                        progress.cancel();
-                        Toast.makeText(context, e.getMessage(), 5000).show();
-                    }
-                }.execute();
-            }
-        });
-
-        Button openButton = (Button) findViewById(id.openGistButton);
-        openButton.setOnClickListener(new OnClickListener() {
-
-            public void onClick(View v) {
-                Builder prompt = new Builder(context);
-
-                prompt.setTitle("Open Gist");
-                prompt.setMessage("Enter id:");
-
-                final EditText id = new EditText(context);
-                prompt.setView(id);
-
-                prompt.setPositiveButton("Open", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        String gistId = id.getText().toString();
-                        startActivity(ViewGistActivity.createIntent(gistId));
-
-                    }
-                });
-                prompt.show();
-            }
-        });
-
         if (getSupportFragmentManager().findFragmentById(id.ll_gists) == null) {
             gists = new GistsFragment();
             gists.setClickListener(this);
             getSupportFragmentManager().beginTransaction().add(id.ll_gists, gists).commit();
         }
 
+    }
+
+    private void randomGist() {
+        final ProgressDialog progress = new ProgressDialog(context);
+        progress.setMessage(getString(R.string.random_gist));
+        progress.show();
+        new RoboAsyncTask<Gist>(context) {
+
+            public Gist call() throws Exception {
+                GistService service = serviceProvider.get(context);
+                PageIterator<Gist> pages = service.pagePublicGists(1);
+                pages.next();
+                int randomPage = 1 + (int) (Math.random() * ((pages.getLastPage() - 1) + 1));
+                Collection<Gist> gists = service.pagePublicGists(randomPage, 1).next();
+                if (gists.isEmpty())
+                    throw new IllegalArgumentException("No Gists found");
+                return service.getGist(gists.iterator().next().getId());
+            }
+
+            protected void onSuccess(Gist gist) throws Exception {
+                progress.cancel();
+                startActivity(ViewGistActivity.createIntent(gist));
+            }
+
+            protected void onException(Exception e) throws RuntimeException {
+                progress.cancel();
+                Toast.makeText(context, e.getMessage(), 5000).show();
+            }
+        }.execute();
+    }
+
+    private void openGist() {
+        Builder prompt = new Builder(context);
+
+        prompt.setTitle("Open Gist");
+        prompt.setMessage("Enter id:");
+
+        final EditText id = new EditText(context);
+        prompt.setView(id);
+
+        prompt.setPositiveButton("Open", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String gistId = id.getText().toString();
+                startActivity(ViewGistActivity.createIntent(gistId));
+
+            }
+        });
+        prompt.show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.gists, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.open_gist:
+            openGist();
+            return true;
+        case R.id.random_gist:
+            randomGist();
+            return true;
+        case R.id.create_gist:
+            startActivityForResult(new Intent(context, ShareGistActivity.class), REQUEST_CREATE);
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

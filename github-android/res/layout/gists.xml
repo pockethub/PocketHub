@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:singleLine="true"
-            android:text="Gists"
+            android:text="My Gists"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/item_text_color"
             android:textStyle="bold" />
@@ -42,59 +42,6 @@
         android:layout_height="fill_parent"
         android:layout_below="@id/ll_gists_header"
         android:background="@color/background" >
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@android:id/list"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical" >
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="@color/item_separator1" >
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="@color/item_separator2" >
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="@color/item_background"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="2dp" >
-
-            <Button
-                android:id="@+id/openGistButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/open" />
-
-            <Button
-                android:id="@+id/createGistButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/create" />
-
-            <Button
-                android:id="@+id/randomGistButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/random" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="@color/item_separator3" >
-        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>
