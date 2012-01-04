@@ -17,4 +17,4 @@ logs
 gen-external-apklibs
 .idea/uiDesigner.xml
 .idea/workspace.xml
-
+.idea/misc.xml
