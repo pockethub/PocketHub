@@ -1,5 +1,6 @@
 package com.github.mobile.android.gist;
 
+import android.R;
 import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -50,10 +51,10 @@ public class GistsActivity extends RoboFragmentActivity implements OnItemClickLi
         super.onCreate(savedInstanceState);
         setContentView(layout.gists);
 
-        if (getSupportFragmentManager().findFragmentById(id.ll_gists) == null) {
+        if (getSupportFragmentManager().findFragmentById(R.id.list) == null) {
             gists = new GistsFragment();
             gists.setClickListener(this);
-            getSupportFragmentManager().beginTransaction().add(id.ll_gists, gists).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.list, gists).commit();
         }
     }
 
