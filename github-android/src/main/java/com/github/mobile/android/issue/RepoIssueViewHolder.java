@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.mobile.android.R.id;
-import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHolder;
 import com.madgag.android.listviews.ViewHolderFactory;
 

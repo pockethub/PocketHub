@@ -20,9 +20,7 @@ import com.github.mobile.android.util.Html;
 import com.github.mobile.android.util.HttpImageGetter;
 import com.github.mobile.android.util.Time;
 import com.google.inject.Inject;
-import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
-import com.madgag.android.listviews.ViewInflator;
 
 import java.util.List;
 

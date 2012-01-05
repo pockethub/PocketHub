@@ -6,13 +6,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.github.mobile.android.R;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.util.Avatar;
 import com.github.mobile.android.util.HttpImageGetter;
 import com.github.mobile.android.util.Time;
 import com.madgag.android.listviews.ViewHolder;
-import com.madgag.android.listviews.ViewHolderFactory;
 
 import org.eclipse.egit.github.core.Comment;
 

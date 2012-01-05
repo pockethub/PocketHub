@@ -13,11 +13,7 @@ import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.google.inject.Inject;
-import com.madgag.android.listviews.ReflectiveHolderFactory;
-import com.madgag.android.listviews.ViewHolder;
-import com.madgag.android.listviews.ViewHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
-import com.madgag.android.listviews.ViewInflator;
 
 import java.io.IOException;
 import java.util.Collections;
