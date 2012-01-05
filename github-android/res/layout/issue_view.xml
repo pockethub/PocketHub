@@ -17,7 +17,6 @@
             android:paddingLeft="5dp"
             android:paddingTop="5dp"
             android:singleLine="true"
-            android:text="Issue #8"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/item_text_color" />
 
@@ -46,7 +45,6 @@
                     android:id="@+id/tv_issue_title"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="NPE on v0.2.1"
                     android:textColor="@color/item_text_color"
                     android:textStyle="bold" />
 
@@ -56,11 +54,15 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="1dp"
                     android:singleLine="true"
-                    android:text="hubot opened this issue November 02, 2011"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/item_text_color_light" />
             </LinearLayout>
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_labels"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout

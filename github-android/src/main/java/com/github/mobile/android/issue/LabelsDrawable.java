@@ -40,7 +40,7 @@ public class LabelsDrawable extends PaintDrawable {
     public LabelsDrawable(final float textSize, final Collection<Label> labels) {
         this.textSize = textSize;
         this.labels = labels.toArray(new Label[labels.size()]);
-        Rect bounds = new Rect();
+        final Rect bounds = new Rect();
         bounds.right = PADDING_LEFT + PADDING_RIGHT;
         for (int i = 0; i < this.labels.length; i++)
             getSize(this.labels[i], i, bounds);
@@ -48,11 +48,11 @@ public class LabelsDrawable extends PaintDrawable {
         setBounds(bounds);
     }
 
-    private void getSize(Label label, int index, Rect out) {
+    private void getSize(final Label label, final int index, final Rect out) {
         getSize(label.getName().toUpperCase(), index, out);
     }
 
-    private void getSize(String name, int index, Rect out) {
+    private void getSize(final String name, final int index, final Rect out) {
         Paint p = getPaint();
         p.setTypeface(Typeface.DEFAULT_BOLD);
         p.setTextSize(textSize);
@@ -64,8 +64,8 @@ public class LabelsDrawable extends PaintDrawable {
         else
             width += FIN;
         float height = tBounds.height() + PADDING_TOP + PADDING_BOTTOM;
-        out.right += (int) Math.round(Math.ceil(width));
-        out.bottom = Math.max(out.bottom, (int) Math.round(Math.ceil(height)));
+        out.right += (int) Math.ceil(width);
+        out.bottom = Math.max(out.bottom, (int) Math.ceil(height));
     }
 
     @Override
@@ -82,9 +82,9 @@ public class LabelsDrawable extends PaintDrawable {
         String name = label.getName().toUpperCase();
         tBounds.setEmpty();
         getSize(name, 0, tBounds);
-        float width = tBounds.width();
-        float height = tBounds.height();
-        float quarter = height / 4;
+        int width = tBounds.width();
+        int height = tBounds.height();
+        int quarter = height / 4;
         Path path = new Path();
         path.moveTo(start, 0);
         path.lineTo(start + width, 0);
@@ -99,7 +99,7 @@ public class LabelsDrawable extends PaintDrawable {
         canvas.drawPath(path, paint);
         paint.setColor(Color.WHITE);
         canvas.drawText(name, start + PADDING_LEFT, height - PADDING_BOTTOM, paint);
-        start += (int) Math.round(Math.ceil(width));
+        start += width;
 
         for (int i = 1; i < labels.length; i++) {
             label = labels[i];
@@ -126,7 +126,7 @@ public class LabelsDrawable extends PaintDrawable {
             canvas.drawPath(path, paint);
             paint.setColor(Color.WHITE);
             canvas.drawText(name, start + PADDING_LEFT + FIN, height - PADDING_BOTTOM, paint);
-            start += (int) Math.round(Math.ceil(width));
+            start += width;
         }
 
         paint.setColor(original);

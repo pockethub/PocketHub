@@ -7,9 +7,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.github.mobile.android.R.color;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.comment.CommentViewHolder;
@@ -88,11 +91,22 @@ public class ViewIssueActivity extends RoboFragmentActivity {
                 ((TextView) findViewById(id.tv_issue_title)).setText(issue.getTitle());
                 String reported = "<b>" + issue.getUser().getLogin() + "</b> "
                         + Time.relativeTimeFor(issue.getCreatedAt());
-                ((TextView) findViewById(id.tv_issue_creation)).setText(Html.encode(reported));
+
+                TextView creation = (TextView) findViewById(id.tv_issue_creation);
+                creation.setText(Html.encode(reported));
                 Avatar.bind(ViewIssueActivity.this, (ImageView) findViewById(id.iv_gravatar), issue.getUser());
                 View view = getLayoutInflater().inflate(layout.issue_view_body, null);
                 body = new IssueBodyViewHolder(ViewIssueActivity.this, imageGetter, view);
                 body.updateViewFor(issue);
+
+                LinearLayout labels = (LinearLayout) findViewById(id.ll_labels);
+                if (!issue.getLabels().isEmpty()) {
+                    LabelsDrawable drawable = new LabelsDrawable(creation.getTextSize(), issue.getLabels());
+                    drawable.getPaint().setColor(getResources().getColor(color.item_background));
+                    labels.setBackgroundDrawable(drawable);
+                    LayoutParams params = new LayoutParams(drawable.getBounds().width(), drawable.getBounds().height());
+                    labels.setLayoutParams(params);
+                }
                 comments.addHeaderView(view);
                 loadComments();
             }
@@ -108,8 +122,8 @@ public class ViewIssueActivity extends RoboFragmentActivity {
 
             protected void onSuccess(List<Comment> issueComments) throws Exception {
                 comments.setAdapter(new ViewHoldingListAdapter<Comment>(issueComments, viewInflatorFor(
-                        ViewIssueActivity.this, layout.comment_view_item), reflectiveFactoryFor(CommentViewHolder
-                        .class, ViewIssueActivity.this, imageGetter)));
+                        ViewIssueActivity.this, layout.comment_view_item), reflectiveFactoryFor(
+                        CommentViewHolder.class, ViewIssueActivity.this, imageGetter)));
             }
         }.execute();
     }
