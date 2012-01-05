@@ -69,11 +69,12 @@ public class IssueBrowseActivity extends RoboFragmentActivity implements OnItemC
 
         updateFilterSummary();
 
-        if (getSupportFragmentManager().findFragmentById(R.id.list) == null) {
+        issues = (IssuesFragment) getSupportFragmentManager().findFragmentById(R.id.list);
+        if (issues == null) {
             issues = new IssuesFragment();
-            issues.setFilter(filter).setRepository(repo).setClickListener(this);
             getSupportFragmentManager().beginTransaction().add(R.id.list, issues).commit();
         }
+        issues.setFilter(filter).setRepository(repo).setClickListener(this);
     }
 
     @Override

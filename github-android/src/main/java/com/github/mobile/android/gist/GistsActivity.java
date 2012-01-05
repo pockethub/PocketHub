@@ -51,11 +51,12 @@ public class GistsActivity extends RoboFragmentActivity implements OnItemClickLi
         super.onCreate(savedInstanceState);
         setContentView(layout.gists);
 
-        if (getSupportFragmentManager().findFragmentById(R.id.list) == null) {
+        gists = (GistsFragment) getSupportFragmentManager().findFragmentById(R.id.list);
+        if (gists == null) {
             gists = new GistsFragment();
-            gists.setClickListener(this);
             getSupportFragmentManager().beginTransaction().add(R.id.list, gists).commit();
         }
+        gists.setClickListener(this);
     }
 
     private void randomGist() {
