@@ -2,7 +2,7 @@ package com.github.mobile.android.gist;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
-import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENT;
+import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENT_BODY;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST_ID;
 import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
@@ -158,7 +158,7 @@ public class ViewGistActivity extends RoboFragmentActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (RESULT_OK == resultCode && REQUEST_CODE_COMMENT == requestCode && data != null) {
-            String comment = data.getStringExtra(EXTRA_COMMENT);
+            String comment = data.getStringExtra(EXTRA_COMMENT_BODY);
             if (comment != null && comment.length() > 0) {
                 createComment(comment);
                 return;

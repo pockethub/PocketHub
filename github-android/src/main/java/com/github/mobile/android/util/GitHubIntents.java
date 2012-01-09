@@ -48,6 +48,11 @@ public class GitHubIntents {
     public static final String EXTRA_ISSUE_NUMBER = INTENT_EXTRA_PREFIX + "ISSUE_NUMBER";
 
     /**
+     * Issue handle
+     */
+    public static final String EXTRA_ISSUE = INTENT_EXTRA_PREFIX + "ISSUE";
+
+    /**
      * Gist id
      */
     public static final String EXTRA_GIST_ID = INTENT_EXTRA_PREFIX + "GIST_ID";
@@ -75,7 +80,12 @@ public class GitHubIntents {
     /**
      * Comment body
      */
-    public static final String EXTRA_COMMENT = INTENT_EXTRA_PREFIX + "COMMENT";
+    public static final String EXTRA_COMMENT_BODY = INTENT_EXTRA_PREFIX + "COMMENT_BODY";
+
+    /**
+     * Comments handle
+     */
+    public static final String EXTRA_COMMENTS = INTENT_EXTRA_PREFIX + "COMMENTS";
 
     /**
      * Resolve the {@link RepositoryId} referenced by the given intent

@@ -45,7 +45,7 @@ public class CreateCommentActivity extends RoboFragmentActivity {
         case id.apply:
             String comment = ((EditText) findViewById(id.et_comment)).getText().toString();
             Intent intent = new Intent();
-            intent.putExtra(GitHubIntents.EXTRA_COMMENT, comment);
+            intent.putExtra(GitHubIntents.EXTRA_COMMENT_BODY, comment);
             setResult(RESULT_OK, intent);
             finish();
             return true;
