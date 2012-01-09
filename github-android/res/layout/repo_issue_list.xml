@@ -29,7 +29,6 @@
             android:layout_gravity="center_vertical"
             android:paddingLeft="5dp"
             android:singleLine="true"
-            android:text="github"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/item_text_color_light" />
 
@@ -40,7 +39,6 @@
             android:layout_gravity="center_vertical"
             android:paddingLeft="5dp"
             android:singleLine="true"
-            android:text="hubot"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/item_text_color"
             android:textStyle="bold" />
