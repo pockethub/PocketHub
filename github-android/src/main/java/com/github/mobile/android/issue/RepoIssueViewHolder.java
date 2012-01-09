@@ -31,6 +31,8 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
 
     private final TextView comments;
 
+    private final int flags;
+
     /**
      * Create view holder
      *
@@ -38,6 +40,7 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
      */
     public RepoIssueViewHolder(View v) {
         number = (TextView) v.findViewById(id.tv_issue_number);
+        flags = number.getPaintFlags();
         title = (TextView) v.findViewById(id.tv_issue_title);
         creation = (TextView) v.findViewById(id.tv_issue_creation);
         comments = (TextView) v.findViewById(id.tv_issue_comments);
@@ -47,7 +50,9 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
     public void updateViewFor(Issue i) {
         number.setText("#" + i.getNumber());
         if (i.getClosedAt() != null)
-            number.setPaintFlags(number.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            number.setPaintFlags(flags | Paint.STRIKE_THRU_TEXT_FLAG);
+        else
+            number.setPaintFlags(flags);
         title.setText(i.getTitle());
         creation.setText(fromHtml("by <b>" + i.getUser().getLogin() + "</b> " + relativeTimeFor(i.getCreatedAt())));
         comments.setText(Integer.toString(i.getComments()));
