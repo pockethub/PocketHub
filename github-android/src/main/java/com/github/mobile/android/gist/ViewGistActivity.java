@@ -2,6 +2,7 @@ package com.github.mobile.android.gist;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
+import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENTS;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENT_BODY;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST_ID;
@@ -12,7 +13,6 @@ import android.os.Bundle;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -35,6 +35,7 @@ import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 import com.madgag.android.listviews.ViewInflator;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Comment;
@@ -44,6 +45,7 @@ import org.eclipse.egit.github.core.service.GistService;
 
 import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContextScopedProvider;
+import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
 import roboguice.util.RoboAsyncTask;
 
@@ -61,7 +63,7 @@ public class ViewGistActivity extends RoboFragmentActivity {
      * @return intent
      */
     public static final Intent createIntent(Gist gist) {
-        return new Builder("gist.VIEW").add(EXTRA_GIST, gist).toIntent();
+        return new Builder("gist.VIEW").add(EXTRA_GIST, gist).add(EXTRA_GIST_ID, gist.getId()).toIntent();
     }
 
     /**
@@ -75,7 +77,7 @@ public class ViewGistActivity extends RoboFragmentActivity {
     }
 
     @InjectView(id.tv_gist_id)
-    private TextView gistId;
+    private TextView gistIdText;
 
     @InjectView(id.iv_gravatar)
     private ImageView gravatar;
@@ -95,6 +97,9 @@ public class ViewGistActivity extends RoboFragmentActivity {
     @InjectView(id.lv_gist_comments)
     private ListView comments;
 
+    @InjectExtra(EXTRA_GIST_ID)
+    private String gistId;
+
     private HttpImageGetter imageGetter;
 
     @Inject
@@ -104,39 +109,19 @@ public class ViewGistActivity extends RoboFragmentActivity {
         super.onCreate(savedInstanceState);
         imageGetter = new HttpImageGetter(this);
         setContentView(layout.gist_view);
-        final Gist gist = (Gist) getIntent().getSerializableExtra(EXTRA_GIST);
-        if (gist == null) {
-            gistId.setVisibility(INVISIBLE);
-            created.setVisibility(INVISIBLE);
-            description.setVisibility(INVISIBLE);
-            author.setVisibility(INVISIBLE);
-            gravatar.setVisibility(INVISIBLE);
 
-            final String id = getIntent().getStringExtra(EXTRA_GIST_ID);
-            final ProgressDialog progress = new ProgressDialog(this);
-            progress.setMessage(getString(string.loading_gist));
-            progress.setIndeterminate(true);
-            progress.show();
-            new RoboAsyncTask<Gist>(this) {
+        gistIdText.setText(getString(string.gist) + " " + gistId);
 
-                public Gist call() throws Exception {
-                    return gistServiceProvider.get(ViewGistActivity.this).getGist(id);
-                }
+        loadGist(false);
+    }
 
-                protected void onSuccess(Gist gist) throws Exception {
-                    progress.cancel();
-                    getIntent().putExtra(EXTRA_GIST, gist);
-                    displayGist(gist);
-                }
+    private Gist getGist() {
+        return (Gist) getIntent().getSerializableExtra(EXTRA_GIST);
+    }
 
-                protected void onException(Exception e) throws RuntimeException {
-                    progress.cancel();
-                    Log.d("GHVGA", e.getMessage(), e);
-                    Toast.makeText(ViewGistActivity.this, e.getMessage(), 5000).show();
-                }
-            }.execute();
-        } else
-            displayGist(gist);
+    @SuppressWarnings("unchecked")
+    private List<Comment> getComments() {
+        return (List<Comment>) getIntent().getSerializableExtra(EXTRA_COMMENTS);
     }
 
     @Override
@@ -168,7 +153,6 @@ public class ViewGistActivity extends RoboFragmentActivity {
     }
 
     private void createComment(final String comment) {
-        final Gist gist = (Gist) getIntent().getSerializableExtra(EXTRA_GIST);
         final ProgressDialog progress = new ProgressDialog(this);
         progress.setMessage("Creating comment...");
         progress.setIndeterminate(true);
@@ -176,60 +160,96 @@ public class ViewGistActivity extends RoboFragmentActivity {
         new RoboAsyncTask<Comment>(this) {
 
             public Comment call() throws Exception {
-                return gistServiceProvider.get(ViewGistActivity.this).createComment(gist.getId(), comment);
+                return gistServiceProvider.get(ViewGistActivity.this).createComment(gistId, comment);
             }
 
             protected void onSuccess(Comment comment) throws Exception {
-                loadComments((Gist) getIntent().getSerializableExtra(EXTRA_GIST));
+                progress.dismiss();
+                loadComments(true);
             }
 
             protected void onException(Exception e) throws RuntimeException {
+                progress.dismiss();
                 Toast.makeText(ViewGistActivity.this, e.getMessage(), 5000).show();
             }
-
-            protected void onFinally() throws RuntimeException {
-                progress.dismiss();
-            };
         }.execute();
 
     }
 
-    private void loadComments(final Gist gist) {
-        new RoboAsyncTask<List<Comment>>(this) {
+    private void loadGist(boolean force) {
+        Gist current = getGist();
+        if (force || current == null) {
+            final ProgressDialog progress = new ProgressDialog(this);
+            progress.setMessage(getString(string.loading_gist));
+            progress.setIndeterminate(true);
+            progress.show();
+            new RoboAsyncTask<Gist>(this) {
 
-            public List<Comment> call() throws Exception {
-                return gistServiceProvider.get(ViewGistActivity.this).getComments(gist.getId());
-            }
+                public Gist call() throws Exception {
+                    return gistServiceProvider.get(ViewGistActivity.this).getGist(gistId);
+                }
 
-            protected void onSuccess(List<Comment> gistComments) throws Exception {
-                comments.setAdapter(new ViewHoldingListAdapter<Comment>(gistComments, ViewInflator.viewInflatorFor(
-                        ViewGistActivity.this, layout.comment_view_item), reflectiveFactoryFor(CommentViewHolder.class,
-                        ViewGistActivity.this, imageGetter)));
-            }
+                protected void onSuccess(Gist gist) throws Exception {
+                    getIntent().putExtra(EXTRA_GIST, gist);
+                    progress.cancel();
+                    displayGist(gist);
+                }
 
-            protected void onException(Exception e) throws RuntimeException {
-                Toast.makeText(ViewGistActivity.this, e.getMessage(), 5000).show();
-            }
-        }.execute();
+                protected void onException(Exception e) throws RuntimeException {
+                    progress.cancel();
+                    Toast.makeText(ViewGistActivity.this, e.getMessage(), 5000).show();
+                }
+
+            }.execute();
+        } else
+            displayGist(current);
+    }
+
+    private void loadComments(boolean force) {
+        List<Comment> current = getComments();
+        if (force || current == null)
+            new RoboAsyncTask<List<Comment>>(this) {
+
+                public List<Comment> call() throws Exception {
+                    return gistServiceProvider.get(ViewGistActivity.this).getComments(gistId);
+                }
+
+                protected void onSuccess(List<Comment> gistComments) throws Exception {
+                    getIntent().putExtra(EXTRA_COMMENTS, (Serializable) gistComments);
+                    displayComments(gistComments);
+                }
+
+                protected void onException(Exception e) throws RuntimeException {
+                    Toast.makeText(ViewGistActivity.this, e.getMessage(), 5000).show();
+                }
+            }.execute();
+        else
+            displayComments(current);
+    }
+
+    private void displayComments(List<Comment> gistComments) {
+        comments.setAdapter(new ViewHoldingListAdapter<Comment>(gistComments, ViewInflator.viewInflatorFor(
+                ViewGistActivity.this, layout.comment_view_item), reflectiveFactoryFor(CommentViewHolder.class,
+                ViewGistActivity.this, imageGetter)));
     }
 
     private void displayGist(final Gist gist) {
-        getIntent().putExtra(EXTRA_GIST, gist);
         Avatar.bind(this, gravatar, gist.getUser());
-        gistId.setText(getString(string.gist) + " " + gist.getId());
+
         String desc = gist.getDescription();
         if (desc != null && desc.length() > 0)
             description.setText(desc);
         else
             description.setText(Html.fromHtml("<i>No description</i>"));
+
         created.setText(Time.relativeTimeFor(gist.getCreatedAt()));
+
         if (gist.getUser() != null) {
             author.setText(gist.getUser().getLogin());
             author.setVisibility(VISIBLE);
-        }
-        gistId.setVisibility(VISIBLE);
-        description.setVisibility(VISIBLE);
-        created.setVisibility(VISIBLE);
+        } else
+            author.setVisibility(INVISIBLE);
+
         GistFile[] gistFiles = gist.getFiles().values().toArray(new GistFile[gist.getFiles().size()]);
         files.setAdapter(new GistFileListAdapter(this, gistFiles));
         files.setOnItemClickListener(new OnItemClickListener() {
@@ -239,6 +259,7 @@ public class ViewGistActivity extends RoboFragmentActivity {
                 startActivity(ViewGistFileActivity.createIntent(gist, file));
             }
         });
-        loadComments(gist);
+
+        loadComments(false);
     }
 }
