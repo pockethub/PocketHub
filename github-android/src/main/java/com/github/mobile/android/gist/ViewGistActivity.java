@@ -36,6 +36,7 @@ import com.madgag.android.listviews.ViewHoldingListAdapter;
 import com.madgag.android.listviews.ViewInflator;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Comment;
@@ -250,8 +251,9 @@ public class ViewGistActivity extends RoboFragmentActivity {
         } else
             author.setVisibility(INVISIBLE);
 
-        GistFile[] gistFiles = gist.getFiles().values().toArray(new GistFile[gist.getFiles().size()]);
-        files.setAdapter(new GistFileListAdapter(this, gistFiles));
+        files.setAdapter(new ViewHoldingListAdapter<GistFile>(new ArrayList<GistFile>(gist.getFiles().values()),
+                ViewInflator.viewInflatorFor(this, layout.gist_view_file_item),
+                reflectiveFactoryFor(GistFileViewHolder.class)));
         files.setOnItemClickListener(new OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> view, View arg1, int position, long id) {
