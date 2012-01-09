@@ -26,7 +26,7 @@ import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.service.IssueService;
 
 /**
- * Fragment to display a list of Gists
+ * Fragment to display a list of issues
  */
 public class IssuesFragment extends ListLoadingFragment<Issue> {
 
