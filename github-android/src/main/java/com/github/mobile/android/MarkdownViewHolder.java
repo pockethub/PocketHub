@@ -1,7 +1,6 @@
 package com.github.mobile.android;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.TextView;
 
 import com.github.mobile.android.util.HttpImageGetter;
