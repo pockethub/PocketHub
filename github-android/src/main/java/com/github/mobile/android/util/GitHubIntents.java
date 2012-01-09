@@ -73,6 +73,11 @@ public class GitHubIntents {
     public static final String EXTRA_ISSUE_FILTER = INTENT_EXTRA_PREFIX + "ISSUE_FILTER";
 
     /**
+     * Comment body
+     */
+    public static final String EXTRA_COMMENT = INTENT_EXTRA_PREFIX + "COMMENT";
+
+    /**
      * Resolve the {@link RepositoryId} referenced by the given intent
      *
      * @param intent

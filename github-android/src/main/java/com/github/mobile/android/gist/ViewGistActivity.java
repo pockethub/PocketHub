@@ -2,12 +2,15 @@ package com.github.mobile.android.gist;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
+import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENT;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST_ID;
 import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.Menu;
+import android.support.v4.view.MenuItem;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -20,8 +23,10 @@ import android.widget.Toast;
 
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.comment.CommentViewHolder;
+import com.github.mobile.android.comment.CreateCommentActivity;
 import com.github.mobile.android.util.Avatar;
 import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.github.mobile.android.util.HttpImageGetter;
@@ -37,7 +42,7 @@ import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.GistFile;
 import org.eclipse.egit.github.core.service.GistService;
 
-import roboguice.activity.RoboActivity;
+import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContextScopedProvider;
 import roboguice.inject.InjectView;
 import roboguice.util.RoboAsyncTask;
@@ -45,7 +50,9 @@ import roboguice.util.RoboAsyncTask;
 /**
  * Activity to display an existing Gist
  */
-public class ViewGistActivity extends RoboActivity {
+public class ViewGistActivity extends RoboFragmentActivity {
+
+    private static final int REQUEST_CODE_COMMENT = 1;
 
     /**
      * Create intent to view Gist
@@ -132,6 +139,61 @@ public class ViewGistActivity extends RoboActivity {
             displayGist(gist);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu options) {
+        getMenuInflater().inflate(menu.gist_view, options);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case id.gist_comment:
+            startActivityForResult(CreateCommentActivity.createIntent(), REQUEST_CODE_COMMENT);
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (RESULT_OK == resultCode && REQUEST_CODE_COMMENT == requestCode && data != null) {
+            String comment = data.getStringExtra(EXTRA_COMMENT);
+            if (comment != null && comment.length() > 0) {
+                createComment(comment);
+                return;
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void createComment(final String comment) {
+        final Gist gist = (Gist) getIntent().getSerializableExtra(EXTRA_GIST);
+        final ProgressDialog progress = new ProgressDialog(this);
+        progress.setMessage("Creating comment...");
+        progress.setIndeterminate(true);
+        progress.show();
+        new RoboAsyncTask<Comment>(this) {
+
+            public Comment call() throws Exception {
+                return gistServiceProvider.get(ViewGistActivity.this).createComment(gist.getId(), comment);
+            }
+
+            protected void onSuccess(Comment comment) throws Exception {
+                loadComments((Gist) getIntent().getSerializableExtra(EXTRA_GIST));
+            }
+
+            protected void onException(Exception e) throws RuntimeException {
+                Toast.makeText(ViewGistActivity.this, e.getMessage(), 5000).show();
+            }
+
+            protected void onFinally() throws RuntimeException {
+                progress.dismiss();
+            };
+        }.execute();
+
+    }
+
     private void loadComments(final Gist gist) {
         new RoboAsyncTask<List<Comment>>(this) {
 
@@ -141,8 +203,8 @@ public class ViewGistActivity extends RoboActivity {
 
             protected void onSuccess(List<Comment> gistComments) throws Exception {
                 comments.setAdapter(new ViewHoldingListAdapter<Comment>(gistComments, ViewInflator.viewInflatorFor(
-                        ViewGistActivity.this, layout.comment_view_item), reflectiveFactoryFor(CommentViewHolder
-                        .class, ViewGistActivity.this, imageGetter)));
+                        ViewGistActivity.this, layout.comment_view_item), reflectiveFactoryFor(CommentViewHolder.class,
+                        ViewGistActivity.this, imageGetter)));
             }
 
             protected void onException(Exception e) throws RuntimeException {
@@ -152,6 +214,7 @@ public class ViewGistActivity extends RoboActivity {
     }
 
     private void displayGist(final Gist gist) {
+        getIntent().putExtra(EXTRA_GIST, gist);
         Avatar.bind(this, gravatar, gist.getUser());
         gistId.setText(getString(string.gist) + " " + gist.getId());
         String desc = gist.getDescription();

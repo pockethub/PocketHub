@@ -105,6 +105,13 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".comment.CreateCommentActivity">
+			<intent-filter>
+				<action android:name="com.github.mobile.android.comment.create.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
+
         <service android:name=".authenticator.AccountAuthenticatorService"
                  android:exported="true" android:process=":auth">
             <intent-filter>

@@ -114,4 +114,6 @@
     <string name="bookmark">Bookmark</string>
 
     <string name="apply">Apply</string>
+    
+     <string name="comment">Comment</string>
 </resources>
