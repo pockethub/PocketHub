@@ -37,7 +37,7 @@ public class ShareGistActivity extends RoboFragmentActivity {
     /**
      * Gist successfully created
      */
-    public static final int RESULT_CREATED = 1;
+    public static final int RESULT_CREATED = RESULT_FIRST_USER;
 
     private static final String TAG = "GHShare";
 
