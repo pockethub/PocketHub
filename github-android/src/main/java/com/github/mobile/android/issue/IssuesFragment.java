@@ -128,7 +128,9 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
                 public void run() {
                     for (int i = 0; i < items.size(); i++)
                         if (target == items.get(i).getNumber()) {
-                            getListView().smoothScrollToPositionFromTop(i, 0);
+                            if (i + 1 < items.size())
+                                i++;
+                            getListView().smoothScrollToPosition(i++);
                             break;
                         }
                 }
