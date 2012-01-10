@@ -17,7 +17,6 @@
             android:paddingLeft="5dp"
             android:paddingTop="5dp"
             android:singleLine="true"
-            android:text="Gist 1446823"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/item_text_color"
             android:textStyle="bold" />
@@ -48,7 +47,6 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:text="hubot"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/item_text_color_light"
                     android:textStyle="bold" />
@@ -59,7 +57,6 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="1dp"
                     android:singleLine="true"
-                    android:text="November 02, 2011"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/item_text_color_light"
                     android:textStyle="italic" />
@@ -87,7 +84,6 @@
         android:paddingBottom="5dp"
         android:paddingLeft="5dp"
         android:paddingTop="5dp"
-        android:text="Bind widget disposal to resource disposal"
         android:textColor="@color/item_text_color" />
 
     <LinearLayout
