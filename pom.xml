@@ -76,14 +76,9 @@
                 <plugin>
                     <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                     <artifactId>android-maven-plugin</artifactId>
-                    <version>3.0.0</version>
+                    <version>3.0.2</version>
                     <extensions>true</extensions>
                     <configuration>
-                        <dex>
-                            <jvmArguments>
-                                <jvmArgument>-Xmx512m</jvmArgument>
-                            </jvmArguments>
-                        </dex>
                         <sdk>
                             <platform>13</platform>
                         </sdk>
