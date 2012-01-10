@@ -7,7 +7,10 @@ import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENT_BODY;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST_ID;
 import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.Menu;
@@ -42,6 +45,7 @@ import java.util.List;
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.GistFile;
+import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.GistService;
 
 import roboguice.activity.RoboFragmentActivity;
@@ -54,6 +58,11 @@ import roboguice.util.RoboAsyncTask;
  * Activity to display an existing Gist
  */
 public class ViewGistActivity extends RoboFragmentActivity {
+
+    /**
+     * Result if the Gist was deleted
+     */
+    public static final int RESULT_DELETED = RESULT_FIRST_USER;
 
     private static final int REQUEST_CODE_COMMENT = 1;
 
@@ -103,6 +112,8 @@ public class ViewGistActivity extends RoboFragmentActivity {
 
     private HttpImageGetter imageGetter;
 
+    private MenuItem deleteItem;
+
     @Inject
     private ContextScopedProvider<GistService> gistServiceProvider;
 
@@ -120,6 +131,16 @@ public class ViewGistActivity extends RoboFragmentActivity {
         return (Gist) getIntent().getSerializableExtra(EXTRA_GIST);
     }
 
+    private boolean isOwner() {
+        Gist gist = getGist();
+        if (gist == null)
+            return false;
+        User user = gist.getUser();
+        if (user == null)
+            return false;
+        return gistServiceProvider.get(this).getClient().getUser().equals(user.getLogin());
+    }
+
     @SuppressWarnings("unchecked")
     private List<Comment> getComments() {
         return (List<Comment>) getIntent().getSerializableExtra(EXTRA_COMMENTS);
@@ -128,6 +149,14 @@ public class ViewGistActivity extends RoboFragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
         getMenuInflater().inflate(menu.gist_view, options);
+        deleteItem = options.findItem(id.gist_delete);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        deleteItem.setEnabled(isOwner());
         return true;
     }
 
@@ -137,9 +166,46 @@ public class ViewGistActivity extends RoboFragmentActivity {
         case id.gist_comment:
             startActivityForResult(CreateCommentActivity.createIntent(), REQUEST_CODE_COMMENT);
             return true;
+        case id.gist_delete:
+            deleteGist();
         default:
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void deleteGist() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirm Delete");
+        builder.setMessage("Are you sure you want to delete this Gist?");
+        builder.setPositiveButton(android.R.string.yes, new OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int button) {
+                dialog.dismiss();
+                final ProgressDialog progress = new ProgressDialog(ViewGistActivity.this);
+                progress.setMessage("Deleting Gist...");
+                progress.show();
+                new RoboAsyncTask<Gist>(ViewGistActivity.this) {
+
+                    public Gist call() throws Exception {
+                        gistServiceProvider.get(getContext()).deleteGist(gistId);
+                        return null;
+                    }
+
+                    protected void onSuccess(Gist gist) throws Exception {
+                        progress.dismiss();
+                        setResult(RESULT_DELETED);
+                        finish();
+                    }
+
+                    protected void onException(Exception e) throws RuntimeException {
+                        progress.dismiss();
+                        Toast.makeText(getContext(), e.getMessage(), 5000).show();
+                    }
+                }.execute();
+            }
+        });
+        builder.setNegativeButton(android.R.string.no, null);
+        builder.show();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -192,6 +258,8 @@ public class ViewGistActivity extends RoboFragmentActivity {
 
                 protected void onSuccess(Gist gist) throws Exception {
                     getIntent().putExtra(EXTRA_GIST, gist);
+                    if (deleteItem != null)
+                        deleteItem.setEnabled(isOwner());
                     progress.cancel();
                     displayGist(gist);
                 }

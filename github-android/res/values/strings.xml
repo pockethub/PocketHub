@@ -116,4 +116,6 @@
     <string name="apply">Apply</string>
     
      <string name="comment">Comment</string>
+     
+     <string name="delete_ellipsis">Delete…</string>
 </resources>

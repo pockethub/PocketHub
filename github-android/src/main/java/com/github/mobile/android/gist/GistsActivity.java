@@ -38,6 +38,8 @@ public class GistsActivity extends RoboFragmentActivity implements OnItemClickLi
 
     private static final int REQUEST_CREATE = 1;
 
+    private static final int REQUEST_VIEW = REQUEST_CREATE + 1;
+
     @Inject
     private Context context;
 
@@ -99,9 +101,9 @@ public class GistsActivity extends RoboFragmentActivity implements OnItemClickLi
 
         prompt.setPositiveButton("Open", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.dismiss();
                 String gistId = id.getText().toString();
-                startActivity(ViewGistActivity.createIntent(gistId));
-
+                startActivityForResult(ViewGistActivity.createIntent(gistId), REQUEST_VIEW);
             }
         });
         prompt.show();
@@ -135,11 +137,15 @@ public class GistsActivity extends RoboFragmentActivity implements OnItemClickLi
             gists.refresh();
             return;
         }
+        if (requestCode == REQUEST_VIEW && ViewGistActivity.RESULT_DELETED == resultCode) {
+            gists.refresh();
+            return;
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void onItemClick(AdapterView<?> list, View view, int position, long id) {
         Gist gist = (Gist) list.getItemAtPosition(position);
-        startActivity(ViewGistActivity.createIntent(gist.getId()));
+        startActivityForResult(ViewGistActivity.createIntent(gist.getId()), REQUEST_VIEW);
     }
 }
