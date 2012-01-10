@@ -98,7 +98,9 @@ public class LabelsDrawable extends PaintDrawable {
         paint.setColor(Color.parseColor("#" + label.getColor()));
         canvas.drawPath(path, paint);
         paint.setColor(Color.WHITE);
+        paint.setShadowLayer(2, 0, 0, Color.BLACK);
         canvas.drawText(name, start + PADDING_LEFT, height - PADDING_BOTTOM, paint);
+        paint.setShadowLayer(0, 0, 0, Color.BLACK);
         start += width;
 
         for (int i = 1; i < labels.length; i++) {
@@ -125,7 +127,9 @@ public class LabelsDrawable extends PaintDrawable {
             paint.setColor(Color.parseColor("#" + label.getColor()));
             canvas.drawPath(path, paint);
             paint.setColor(Color.WHITE);
+            paint.setShadowLayer(2, 0, 0, Color.BLACK);
             canvas.drawText(name, start + PADDING_LEFT + FIN, height - PADDING_BOTTOM, paint);
+            paint.setShadowLayer(0, 0, 0, Color.BLACK);
             start += width;
         }
 
