@@ -114,6 +114,8 @@ public class ViewGistActivity extends RoboFragmentActivity {
 
     private MenuItem deleteItem;
 
+    private MenuItem refreshItem;
+
     @Inject
     private ContextScopedProvider<GistService> gistServiceProvider;
 
@@ -150,6 +152,7 @@ public class ViewGistActivity extends RoboFragmentActivity {
     public boolean onCreateOptionsMenu(Menu options) {
         getMenuInflater().inflate(menu.gist_view, options);
         deleteItem = options.findItem(id.gist_delete);
+        refreshItem = options.findItem(id.gist_refresh);
         return true;
     }
 
@@ -168,6 +171,8 @@ public class ViewGistActivity extends RoboFragmentActivity {
             return true;
         case id.gist_delete:
             deleteGist();
+        case id.gist_refresh:
+            loadGist(true);
         default:
             return super.onOptionsItemSelected(item);
         }
@@ -182,6 +187,7 @@ public class ViewGistActivity extends RoboFragmentActivity {
             public void onClick(DialogInterface dialog, int button) {
                 dialog.dismiss();
                 final ProgressDialog progress = new ProgressDialog(ViewGistActivity.this);
+                progress.setIndeterminate(true);
                 progress.setMessage("Deleting Gist...");
                 progress.show();
                 new RoboAsyncTask<Gist>(ViewGistActivity.this) {
@@ -243,13 +249,15 @@ public class ViewGistActivity extends RoboFragmentActivity {
 
     }
 
-    private void loadGist(boolean force) {
+    private void loadGist(final boolean force) {
         Gist current = getGist();
         if (force || current == null) {
             final ProgressDialog progress = new ProgressDialog(this);
             progress.setMessage(getString(string.loading_gist));
             progress.setIndeterminate(true);
             progress.show();
+            if (refreshItem != null)
+                refreshItem.setEnabled(false);
             new RoboAsyncTask<Gist>(this) {
 
                 public Gist call() throws Exception {
@@ -257,21 +265,19 @@ public class ViewGistActivity extends RoboFragmentActivity {
                 }
 
                 protected void onSuccess(Gist gist) throws Exception {
+                    progress.dismiss();
                     getIntent().putExtra(EXTRA_GIST, gist);
-                    if (deleteItem != null)
-                        deleteItem.setEnabled(isOwner());
-                    progress.cancel();
-                    displayGist(gist);
+                    displayGist(gist, force);
                 }
 
                 protected void onException(Exception e) throws RuntimeException {
-                    progress.cancel();
+                    progress.dismiss();
                     Toast.makeText(ViewGistActivity.this, e.getMessage(), 5000).show();
                 }
 
             }.execute();
         } else
-            displayGist(current);
+            displayGist(current, force);
     }
 
     private void loadComments(boolean force) {
@@ -302,7 +308,11 @@ public class ViewGistActivity extends RoboFragmentActivity {
                 ViewGistActivity.this, imageGetter)));
     }
 
-    private void displayGist(final Gist gist) {
+    private void displayGist(final Gist gist, boolean force) {
+        if (deleteItem != null)
+            deleteItem.setEnabled(isOwner());
+        if (refreshItem != null)
+            refreshItem.setEnabled(true);
         Avatar.bind(this, gravatar, gist.getUser());
 
         String desc = gist.getDescription();
@@ -330,6 +340,6 @@ public class ViewGistActivity extends RoboFragmentActivity {
             }
         });
 
-        loadComments(false);
+        loadComments(force);
     }
 }

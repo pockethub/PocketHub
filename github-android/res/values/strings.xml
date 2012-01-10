@@ -118,4 +118,6 @@
      <string name="comment">Comment</string>
      
      <string name="delete_ellipsis">Delete…</string>
+     
+     <string name="refresh">Refresh</string>
 </resources>

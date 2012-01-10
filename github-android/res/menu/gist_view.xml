@@ -2,13 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/gist_refresh"
+        android:icon="@drawable/ic_action_refresh"
+        android:showAsAction="ifRoom"
+        android:title="@string/refresh">
+    </item>
+    <item
         android:id="@+id/gist_comment"
         android:icon="@drawable/ic_action_create_comment"
         android:showAsAction="always"
         android:title="@string/comment">
     </item>
-    
-     <item
+    <item
         android:id="@+id/gist_delete"
         android:icon="@drawable/ic_action_delete"
         android:showAsAction="never"
