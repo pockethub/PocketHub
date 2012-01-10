@@ -14,7 +14,7 @@
     <packaging>apk</packaging>
     <name>GitHub for Android</name>
     <properties>
-        <abs.version>3.5.0</abs.version>
+        <abs.version>3.5.1</abs.version>
     </properties>
     <dependencies>
         <dependency>

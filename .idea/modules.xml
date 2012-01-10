@@ -5,7 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/github-android/github-android.iml" filepath="$PROJECT_DIR$/github-android/github-android.iml" />
       <module fileurl="file://$PROJECT_DIR$/github-android-integration-tests/github-android-integration-tests.iml" filepath="$PROJECT_DIR$/github-android-integration-tests/github-android-integration-tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/github-android-parent.iml" filepath="$PROJECT_DIR$/github-android-parent.iml" />
-      <module fileurl="file://$PROJECT_DIR$/github-android/gen-external-apklibs/~apklib-com.actionbarsherlock_library_3.5.0.iml" filepath="$PROJECT_DIR$/github-android/gen-external-apklibs/~apklib-com.actionbarsherlock_library_3.5.0.iml" />
+      <module fileurl="file://$PROJECT_DIR$/github-android-parent.iml" filepath="$PROJECT_DIR$/github-android-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/github-android/gen-external-apklibs/~apklib-com.actionbarsherlock_library_3.5.1.iml" filepath="$PROJECT_DIR$/github-android/gen-external-apklibs/~apklib-com.actionbarsherlock_library_3.5.1.iml" />
     </modules>
   </component>
 </project>

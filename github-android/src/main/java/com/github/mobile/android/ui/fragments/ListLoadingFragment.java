@@ -54,10 +54,4 @@ public abstract class ListLoadingFragment<E> extends RoboListFragment implements
         // Clear the data in the adapter.
         // mAdapter.setData(null);
     }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("DUMMY", 0); // https://groups.google.com/d/topic/actionbarsherlock/K0pPsiSKF7U/discussion
-    }
 }
