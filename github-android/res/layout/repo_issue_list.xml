@@ -42,16 +42,6 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/item_text_color"
             android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tv_issue_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:paddingLeft="10dp"
-            android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/item_text_color_light" />
     </LinearLayout>
 
     <TextView

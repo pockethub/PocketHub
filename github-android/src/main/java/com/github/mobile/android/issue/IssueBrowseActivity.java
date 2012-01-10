@@ -8,8 +8,6 @@ import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY;
 import android.R;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
 import android.view.View;
@@ -24,9 +22,6 @@ import com.github.mobile.android.R.menu;
 import com.github.mobile.android.util.Avatar;
 import com.github.mobile.android.util.GitHubIntents.Builder;
 
-import java.text.MessageFormat;
-import java.util.List;
-
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
 
@@ -36,8 +31,7 @@ import roboguice.inject.InjectExtra;
 /**
  * Activity for browsing a list of issues
  */
-public class IssueBrowseActivity extends RoboFragmentActivity implements OnItemClickListener,
-        LoaderCallbacks<List<Issue>> {
+public class IssueBrowseActivity extends RoboFragmentActivity implements OnItemClickListener {
 
     private static final int CODE_FILTER = 1;
 
@@ -80,7 +74,7 @@ public class IssueBrowseActivity extends RoboFragmentActivity implements OnItemC
             issues = new IssuesFragment();
             getSupportFragmentManager().beginTransaction().add(R.id.list, issues).commit();
         }
-        issues.setFilter(filter).setRepository(repo).setClickListener(this).setLoadListener(this);
+        issues.setFilter(filter).setRepository(repo).setClickListener(this);
     }
 
     @Override
@@ -134,19 +128,5 @@ public class IssueBrowseActivity extends RoboFragmentActivity implements OnItemC
     public void onItemClick(AdapterView<?> list, View view, int position, long id) {
         Issue issue = (Issue) list.getItemAtPosition(position);
         startActivity(viewIssueIntentFor(issue));
-    }
-
-    public Loader<List<Issue>> onCreateLoader(int arg0, Bundle arg1) {
-        return null;
-    }
-
-    public void onLoadFinished(Loader<List<Issue>> loader, List<Issue> issues) {
-        if (issues.size() != 1)
-            ((TextView) findViewById(id.tv_issue_count)).setText(MessageFormat.format("{0} issues", issues.size()));
-        else
-            ((TextView) findViewById(id.tv_issue_count)).setText("1 issue");
-    }
-
-    public void onLoaderReset(Loader<List<Issue>> loader) {
     }
 }
