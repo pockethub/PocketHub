@@ -29,19 +29,24 @@ public abstract class ListLoadingFragment<E> extends RoboListFragment implements
      * Refresh the fragment's list
      */
     public void refresh() {
-        getLoaderManager().initLoader(0, null, this);
+        getLoaderManager().restartLoader(0, null, this);
     }
 
     public void onLoadFinished(Loader<List<E>> loader, List<E> items) {
         setListAdapter(adapterFor(items));
 
-        if (isResumed()) {
+        if (isResumed())
             setListShown(true);
-        } else {
+        else
             setListShownNoAnimation(true);
-        }
     }
 
+    /**
+     * Create adapter for list of items
+     *
+     * @param items
+     * @return list adapter
+     */
     protected abstract ListAdapter adapterFor(List<E> items);
 
     @Override
