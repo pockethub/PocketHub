@@ -210,25 +210,28 @@ public class FilterIssuesActivity extends RoboFragmentActivity {
         openButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                filter.setOpenOnly();
+                if (isChecked)
+                    filter.setOpenOnly();
             }
         });
 
-        RadioButton closedButton = (RadioButton) findViewById(id.rb_open);
+        RadioButton closedButton = (RadioButton) findViewById(id.rb_closed);
 
         closedButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                filter.setClosedOnly();
+                if (isChecked)
+                    filter.setClosedOnly();
             }
         });
 
         RadioButton allButton = (RadioButton) findViewById(id.rb_all);
 
-        openButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+        allButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                filter.setAll();
+                if (isChecked)
+                    filter.setAll();
             }
         });
 
