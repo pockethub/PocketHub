@@ -1,5 +1,8 @@
 package com.github.mobile.android.issue;
 
+import static android.graphics.Color.BLACK;
+import static android.graphics.Color.WHITE;
+import static java.util.Locale.US;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -25,11 +28,13 @@ public class LabelsDrawable extends PaintDrawable {
 
     private static final int PADDING_BOTTOM = 10;
 
+    private static final int SIZE_SHADOW = 5;
+
     private static final int FIN = 8;
 
-    private final float textSize;
-
     private final Label[] labels;
+
+    private final int height;
 
     /**
      * Create drawable for labels
@@ -38,26 +43,28 @@ public class LabelsDrawable extends PaintDrawable {
      * @param labels
      */
     public LabelsDrawable(final float textSize, final Collection<Label> labels) {
-        this.textSize = textSize;
         this.labels = labels.toArray(new Label[labels.size()]);
+
+        Paint p = getPaint();
+        p.setTypeface(Typeface.DEFAULT_BOLD);
+        p.setTextSize(textSize);
+
         final Rect bounds = new Rect();
         bounds.right = PADDING_LEFT + PADDING_RIGHT;
         for (int i = 0; i < this.labels.length; i++)
             getSize(this.labels[i], i, bounds);
+        height = bounds.height();
         bounds.bottom += PADDING_BOTTOM;
         setBounds(bounds);
     }
 
     private void getSize(final Label label, final int index, final Rect out) {
-        getSize(label.getName().toUpperCase(), index, out);
+        getSize(label.getName().toUpperCase(US), index, out);
     }
 
     private void getSize(final String name, final int index, final Rect out) {
-        Paint p = getPaint();
-        p.setTypeface(Typeface.DEFAULT_BOLD);
-        p.setTextSize(textSize);
         Rect tBounds = new Rect();
-        p.getTextBounds(name, 0, name.length(), tBounds);
+        getPaint().getTextBounds(name, 0, name.length(), tBounds);
         float width = tBounds.width() + PADDING_LEFT + PADDING_RIGHT;
         if (index != 0)
             width += FIN * 2;
@@ -74,18 +81,15 @@ public class LabelsDrawable extends PaintDrawable {
         Paint paint = getPaint();
         int original = paint.getColor();
         int start = PADDING_LEFT;
-        paint.setTypeface(Typeface.DEFAULT_BOLD);
-        paint.setTextSize(textSize);
         Rect tBounds = new Rect();
 
         Label label = this.labels[0];
-        String name = label.getName().toUpperCase();
+        String name = label.getName().toUpperCase(US);
         tBounds.setEmpty();
         getSize(name, 0, tBounds);
         int width = tBounds.width();
-        int height = tBounds.height();
         int quarter = height / 4;
-        Path path = new Path();
+        final Path path = new Path();
         path.moveTo(start, 0);
         path.lineTo(start + width, 0);
         path.lineTo(start + width - FIN, quarter);
@@ -94,13 +98,15 @@ public class LabelsDrawable extends PaintDrawable {
         path.lineTo(start + width, height);
         path.lineTo(start, height);
         path.lineTo(start, 0);
-        path.close();
-        paint.setColor(Color.parseColor("#" + label.getColor()));
+
+        paint.setColor(Color.parseColor('#' + label.getColor()));
         canvas.drawPath(path, paint);
-        paint.setColor(Color.WHITE);
-        paint.setShadowLayer(2, 0, 0, Color.BLACK);
+
+        paint.setColor(WHITE);
+        paint.setShadowLayer(SIZE_SHADOW, 0, 0, BLACK);
         canvas.drawText(name, start + PADDING_LEFT, height - PADDING_BOTTOM, paint);
-        paint.setShadowLayer(0, 0, 0, Color.BLACK);
+        paint.clearShadowLayer();
+
         start += width;
 
         for (int i = 1; i < labels.length; i++) {
@@ -109,9 +115,8 @@ public class LabelsDrawable extends PaintDrawable {
             tBounds.setEmpty();
             getSize(name, i, tBounds);
             width = tBounds.width();
-            height = tBounds.height();
             quarter = height / 4;
-            path = new Path();
+            path.reset();
             path.moveTo(start + FIN, 0);
             path.lineTo(start + width, 0);
             path.lineTo(start + width - FIN, quarter);
@@ -123,13 +128,15 @@ public class LabelsDrawable extends PaintDrawable {
             path.lineTo(start + FIN, quarter * 2);
             path.lineTo(start, quarter);
             path.lineTo(start + FIN, 0);
-            path.close();
-            paint.setColor(Color.parseColor("#" + label.getColor()));
+
+            paint.setColor(Color.parseColor('#' + label.getColor()));
             canvas.drawPath(path, paint);
-            paint.setColor(Color.WHITE);
-            paint.setShadowLayer(2, 0, 0, Color.BLACK);
+
+            paint.setShadowLayer(SIZE_SHADOW, 0, 0, BLACK);
+            paint.setColor(WHITE);
             canvas.drawText(name, start + PADDING_LEFT + FIN, height - PADDING_BOTTOM, paint);
-            paint.setShadowLayer(0, 0, 0, Color.BLACK);
+            paint.clearShadowLayer();
+
             start += width;
         }
 
