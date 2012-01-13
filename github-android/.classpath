@@ -11,5 +11,6 @@
 	<classpathentry kind="var" path="M2_REPO/com/github/kevinsawicki/http-request/0.3/http-request-0.3.jar"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="var" path="M2_REPO/com/actionbarsherlock/library/3.5.0/library-3.5.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/google/guava/guava/11.0.1/guava-11.0.1.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
