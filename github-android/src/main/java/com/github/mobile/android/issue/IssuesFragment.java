@@ -94,19 +94,6 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setEmptyText("No Issues");
-        moreButton = new Button(getActivity());
-        moreButton.setText("Show More...");
-        moreButton.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-        moreButton.setOnClickListener(new OnClickListener() {
-
-            public void onClick(View v) {
-                moreButton.setText("Loading More Issues...");
-                pages++;
-                lastIssue = (Issue) getListView().getItemAtPosition(getListView().getCount() - 2);
-                refresh();
-            }
-        });
-        getListView().addFooterView(moreButton);
     }
 
     public void onLoaderReset(Loader<List<Issue>> listLoader) {
@@ -117,22 +104,43 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
     }
 
     public void onLoadFinished(Loader<List<Issue>> loader, final List<Issue> items) {
+        if (hasMore) {
+            if (moreButton == null) {
+                moreButton = new Button(getActivity());
+                moreButton.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+                moreButton.setOnClickListener(new OnClickListener() {
+
+                    public void onClick(View v) {
+                        moreButton.setText("Loading More Issues...");
+                        pages++;
+                        lastIssue = (Issue) getListView().getItemAtPosition(
+                                getListView().getCount() - getListView().getFooterViewsCount() - 1);
+                        refresh();
+                    }
+                });
+                getListView().addFooterView(moreButton);
+            }
+            moreButton.setText("Show More...");
+        } else {
+            getListView().removeFooterView(moreButton);
+            moreButton = null;
+        }
+
         super.onLoadFinished(loader, items);
 
-        moreButton.setVisibility(hasMore ? View.VISIBLE : View.GONE);
-        moreButton.setText("Show More...");
         if (lastIssue != null) {
             final int target = lastIssue.getNumber();
             getListView().post(new Runnable() {
 
                 public void run() {
-                    for (int i = 0; i < items.size(); i++)
-                        if (target == items.get(i).getNumber()) {
-                            if (i + 1 < items.size())
-                                i++;
-                            getListView().smoothScrollToPosition(i++);
-                            break;
+                    ListView view = getListView();
+                    for (int i = 0; i < view.getCount() - view.getFooterViewsCount(); i++) {
+                        Issue issue = (Issue) view.getItemAtPosition(i);
+                        if (target == issue.getNumber()) {
+                            view.setSelection(i);
+                            return;
                         }
+                    }
                 }
             });
         }
