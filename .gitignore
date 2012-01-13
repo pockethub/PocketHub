@@ -8,13 +8,9 @@ bin
 temp-testng-customsuite.xml
 **pom.xml.releaseBackup
 release.properties
-*.iws
-*.iml
 gen
 */seed.txt
 notes
 logs
 gen-external-apklibs
-.idea/uiDesigner.xml
-.idea/workspace.xml
-.idea/misc.xml
+.idea
