@@ -3,6 +3,7 @@ package com.github.mobile.android.gist;
 import android.view.View;
 import android.widget.TextView;
 
+import com.github.mobile.android.R;
 import com.madgag.android.listviews.ViewHolder;
 
 import org.eclipse.egit.github.core.GistFile;
@@ -20,10 +21,10 @@ public class GistFileViewHolder implements ViewHolder<GistFile> {
      * @param view
      */
     public GistFileViewHolder(final View view) {
-        nameText = (TextView) view;
+        nameText = (TextView) view.findViewById(R.id.tv_file);
     }
 
     public void updateViewFor(final GistFile file) {
-        nameText.setText("»   " + file.getFilename());
+        nameText.setText(file.getFilename());
     }
 }

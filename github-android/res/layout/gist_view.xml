@@ -5,64 +5,67 @@
     android:background="@color/item_background"
     android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id/tv_gist_id"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/item_text_color"
+        android:textStyle="bold" />
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="horizontal"
+        android:paddingLeft="5dp"
+        android:paddingTop="2dp" >
 
-        <TextView
-            android:id="@+id/tv_gist_id"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingTop="5dp"
-            android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/item_text_color"
-            android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/iv_gravatar"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/gravatar_icon" />
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="5dp"
-            android:paddingLeft="5dp"
-            android:paddingTop="2dp" >
+            android:orientation="vertical"
+            android:paddingLeft="5dp" >
 
-            <ImageView
-                android:id="@+id/iv_gravatar"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/gravatar_icon" />
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/tv_gist_author"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="5dp" >
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/item_text_color_light"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tv_gist_author"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/item_text_color_light"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_gist_created"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="1dp"
-                    android:singleLine="true"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/item_text_color_light"
-                    android:textStyle="italic" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/tv_gist_created"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="1dp"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/item_text_color_light"
+                android:textStyle="italic" />
         </LinearLayout>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_gist_description"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="all"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingTop="2dp"
+        android:textColor="@color/item_text_color" />
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -76,104 +79,12 @@
         android:background="@color/item_separator2" >
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_gist_description"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:autoLink="all"
-        android:paddingBottom="5dp"
-        android:paddingLeft="5dp"
-        android:paddingTop="5dp"
-        android:textColor="@color/item_text_color" />
-
     <LinearLayout
+        android:id="@android:id/list"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/drawer_background"
+        android:layout_height="fill_parent"
+        android:background="@color/background"
         android:orientation="vertical" >
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="@color/item_separator1" >
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="@color/item_separator2" >
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:paddingBottom="2dp"
-            android:paddingLeft="5dp"
-            android:paddingTop="2dp"
-            android:singleLine="true"
-            android:text="@string/files"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/drawer_text_color"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="@color/item_separator3" >
-        </LinearLayout>
     </LinearLayout>
-
-    <ListView
-        android:id="@+id/lv_gist_files"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:divider="@color/item_divider"
-        android:dividerHeight="1px" >
-    </ListView>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/drawer_background"
-        android:orientation="vertical" >
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="@color/item_separator1" >
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="@color/item_separator2" >
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:paddingBottom="2dp"
-            android:paddingLeft="5dp"
-            android:paddingTop="2dp"
-            android:singleLine="true"
-            android:text="@string/comments"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/drawer_text_color"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="@color/item_separator3" >
-        </LinearLayout>
-    </LinearLayout>
-
-    <ListView
-        android:id="@+id/lv_gist_comments"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:divider="@color/item_divider"
-        android:dividerHeight="1px" >
-    </ListView>
 
 </LinearLayout>

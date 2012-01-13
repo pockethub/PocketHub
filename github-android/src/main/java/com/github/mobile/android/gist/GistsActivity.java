@@ -146,6 +146,6 @@ public class GistsActivity extends RoboFragmentActivity implements OnItemClickLi
 
     public void onItemClick(AdapterView<?> list, View view, int position, long id) {
         Gist gist = (Gist) list.getItemAtPosition(position);
-        startActivityForResult(ViewGistActivity.createIntent(gist.getId()), REQUEST_VIEW);
+        startActivityForResult(ViewGistActivity.createIntent(gist), REQUEST_VIEW);
     }
 }

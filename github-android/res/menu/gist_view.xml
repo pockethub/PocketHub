@@ -4,7 +4,7 @@
     <item
         android:id="@+id/gist_refresh"
         android:icon="@drawable/ic_action_refresh"
-        android:showAsAction="ifRoom"
+        android:showAsAction="never"
         android:title="@string/refresh">
     </item>
     <item

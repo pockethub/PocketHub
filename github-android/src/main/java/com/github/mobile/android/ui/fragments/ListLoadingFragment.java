@@ -15,8 +15,6 @@ public abstract class ListLoadingFragment<E> extends RoboListFragment implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setEmptyText("No data");
-
         // Start out with a progress indicator.
         setListShown(false);
 
