@@ -1,9 +1,9 @@
 package com.github.mobile.android.issue;
 
+import static android.graphics.Paint.STRIKE_THRU_TEXT_FLAG;
 import static android.text.Html.fromHtml;
 import static com.github.mobile.android.util.Time.relativeTimeFor;
 import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
-import android.graphics.Paint;
 import android.view.View;
 import android.widget.TextView;
 
@@ -50,7 +50,7 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
     public void updateViewFor(Issue i) {
         number.setText("#" + i.getNumber());
         if (i.getClosedAt() != null)
-            number.setPaintFlags(flags | Paint.STRIKE_THRU_TEXT_FLAG);
+            number.setPaintFlags(flags | STRIKE_THRU_TEXT_FLAG);
         else
             number.setPaintFlags(flags);
         title.setText(i.getTitle());

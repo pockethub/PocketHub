@@ -1,5 +1,7 @@
 package com.github.mobile.android.gist;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENTS;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENT_BODY;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST;
@@ -13,7 +15,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
 import android.text.Html;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -237,13 +238,13 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
             getIntent().putExtra(EXTRA_GIST, gist);
             User user = gist.getUser();
             if (user != null) {
-                gravatar.setVisibility(View.VISIBLE);
+                gravatar.setVisibility(VISIBLE);
                 Avatar.bind(this, gravatar, user);
                 author.setText(user.getLogin());
-                author.setVisibility(View.VISIBLE);
+                author.setVisibility(VISIBLE);
             } else {
-                author.setVisibility(View.GONE);
-                gravatar.setVisibility(View.GONE);
+                author.setVisibility(GONE);
+                gravatar.setVisibility(GONE);
             }
 
             String desc = gist.getDescription();
@@ -251,15 +252,15 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
                 description.setText(desc);
             else
                 description.setText(Html.fromHtml("<i>No description</i>"));
-            description.setVisibility(View.VISIBLE);
+            description.setVisibility(VISIBLE);
 
             created.setText(Time.relativeTimeFor(gist.getCreatedAt()));
-            created.setVisibility(View.VISIBLE);
+            created.setVisibility(VISIBLE);
         } else {
-            gravatar.setVisibility(View.GONE);
-            author.setVisibility(View.GONE);
-            description.setVisibility(View.GONE);
-            created.setVisibility(View.GONE);
+            gravatar.setVisibility(GONE);
+            author.setVisibility(GONE);
+            description.setVisibility(GONE);
+            created.setVisibility(GONE);
         }
     }
 
