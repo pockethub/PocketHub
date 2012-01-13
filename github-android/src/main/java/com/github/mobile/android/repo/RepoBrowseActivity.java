@@ -1,6 +1,12 @@
 package com.github.mobile.android.repo;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_USER;
+import static com.google.common.collect.ImmutableList.copyOf;
+import static com.google.common.collect.Iterables.filter;
+import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
+import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -19,11 +25,18 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.RequestFuture;
 import com.github.mobile.android.RequestReader;
 import com.github.mobile.android.RequestWriter;
+import com.github.mobile.android.gist.GistViewHolder;
 import com.github.mobile.android.issue.IssueBrowseActivity;
 import com.github.mobile.android.util.Avatar;
 import com.github.mobile.android.util.GitHubIntents.Builder;
+import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import com.madgag.android.listviews.ViewHoldingListAdapter;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -57,22 +70,11 @@ public class RepoBrowseActivity extends RoboActivity {
         return new Builder("repos.VIEW").user(user).toIntent();
     }
 
-    private class RepoAdapter extends ArrayAdapter<Repository> {
+    private class RepoAdapter extends ViewHoldingListAdapter<Repository> {
 
-        public RepoAdapter(Repository[] objects) {
-            super(RepoBrowseActivity.this, layout.repo_list_item, objects);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            final LinearLayout view = (LinearLayout) RepoBrowseActivity.this.getLayoutInflater().inflate(
-                    layout.repo_list_item, null);
-            Repository repo = getItem(position);
-            if (user.getLogin().equals(repo.getOwner().getLogin()))
-                ((TextView) view.findViewById(id.tv_repo_name)).setText(repo.getName());
-            else
-                ((TextView) view.findViewById(id.tv_repo_name)).setText(repo.generateId());
-            return view;
+        public RepoAdapter(List<Repository> repos, User user) {
+            super(repos, viewInflatorFor(RepoBrowseActivity.this, layout.repo_list_item),
+                            reflectiveFactoryFor(RepoViewHolder.class, user));
         }
     }
 
@@ -104,7 +106,7 @@ public class RepoBrowseActivity extends RoboActivity {
         if (recentRepos == null)
             recentRepos = new LinkedList<String>();
         if (recentRepos.isEmpty())
-            recentArea.setVisibility(ViewGroup.GONE);
+            recentArea.setVisibility(GONE);
 
         OnItemClickListener repoClickListener = new OnItemClickListener() {
 
@@ -142,22 +144,18 @@ public class RepoBrowseActivity extends RoboActivity {
 
     private void loadRepos() {
         RequestFuture<List<Repository>> callback = new RequestFuture<List<Repository>>() {
-
             public void success(List<Repository> repos) {
                 if (!recentRepos.isEmpty()) {
-                    List<Repository> recent = new ArrayList<Repository>(recentRepos.size());
-                    for (Repository repo : repos) {
-                        if (recentRepos.contains(repo.generateId()))
-                            recent.add(repo);
-                        if (recent.size() == recentRepos.size())
-                            break;
-                    }
+                    List<Repository> recent = copyOf(filter(repos, new Predicate<Repository>() {
+                        public boolean apply(Repository repo) { return recentRepos.contains(repo.generateId()); }
+                    }));
+
                     if (!recent.isEmpty()) {
-                        recentList.setAdapter(new RepoAdapter(recent.toArray(new Repository[recent.size()])));
-                        recentArea.setVisibility(ViewGroup.VISIBLE);
+                        recentList.setAdapter(new RepoAdapter(recent, user));
+                        recentArea.setVisibility(VISIBLE);
                     }
                 }
-                repoList.setAdapter(new RepoAdapter(repos.toArray(new Repository[repos.size()])));
+                repoList.setAdapter(new RepoAdapter(repos, user));
             }
         };
         cache.getRepos(user, callback);
