@@ -5,10 +5,7 @@ import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENT_BODY;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST_ID;
 import android.R;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -21,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mobile.android.ConfirmDialogFragment;
+import com.github.mobile.android.DialogFragmentActivity;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
@@ -39,7 +38,6 @@ import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.GistService;
 
-import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContextScopedProvider;
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
@@ -48,7 +46,7 @@ import roboguice.util.RoboAsyncTask;
 /**
  * Activity to display an existing Gist
  */
-public class ViewGistActivity extends RoboFragmentActivity implements LoaderCallbacks<List<FullGist>> {
+public class ViewGistActivity extends DialogFragmentActivity implements LoaderCallbacks<List<FullGist>> {
 
     /**
      * Result if the Gist was deleted
@@ -56,6 +54,8 @@ public class ViewGistActivity extends RoboFragmentActivity implements LoaderCall
     public static final int RESULT_DELETED = RESULT_FIRST_USER;
 
     private static final int REQUEST_CODE_COMMENT = 1;
+
+    private static final int REQUEST_CONFIRM_DELETE = REQUEST_CODE_COMMENT + 1;
 
     /**
      * Create intent to view Gist
@@ -153,7 +153,8 @@ public class ViewGistActivity extends RoboFragmentActivity implements LoaderCall
             startActivityForResult(CreateCommentActivity.createIntent(), REQUEST_CODE_COMMENT);
             return true;
         case id.gist_delete:
-            deleteGist();
+            ConfirmDialogFragment.confirm(this, REQUEST_CONFIRM_DELETE, "Confirm Delete",
+                    "Are you sure you want to delete this Gist?");
         case id.gist_refresh:
             gistFragment.refresh();
         default:
@@ -161,40 +162,35 @@ public class ViewGistActivity extends RoboFragmentActivity implements LoaderCall
         }
     }
 
-    private void deleteGist() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Confirm Delete");
-        builder.setMessage("Are you sure you want to delete this Gist?");
-        builder.setPositiveButton(android.R.string.yes, new OnClickListener() {
+    @Override
+    public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
+        if (REQUEST_CONFIRM_DELETE == requestCode && RESULT_OK == resultCode) {
+            final ProgressDialog progress = new ProgressDialog(ViewGistActivity.this);
+            progress.setIndeterminate(true);
+            progress.setMessage("Deleting Gist...");
+            progress.show();
+            new RoboAsyncTask<Gist>(ViewGistActivity.this) {
 
-            public void onClick(DialogInterface dialog, int button) {
-                dialog.dismiss();
-                final ProgressDialog progress = new ProgressDialog(ViewGistActivity.this);
-                progress.setIndeterminate(true);
-                progress.setMessage("Deleting Gist...");
-                progress.show();
-                new RoboAsyncTask<Gist>(ViewGistActivity.this) {
+                public Gist call() throws Exception {
+                    gistServiceProvider.get(getContext()).deleteGist(gistId);
+                    return null;
+                }
 
-                    public Gist call() throws Exception {
-                        gistServiceProvider.get(getContext()).deleteGist(gistId);
-                        return null;
-                    }
+                protected void onSuccess(Gist gist) throws Exception {
+                    progress.dismiss();
+                    setResult(RESULT_DELETED);
+                    finish();
+                }
 
-                    protected void onSuccess(Gist gist) throws Exception {
-                        progress.dismiss();
-                        setResult(RESULT_DELETED);
-                        finish();
-                    }
+                protected void onException(Exception e) throws RuntimeException {
+                    progress.dismiss();
+                    Toast.makeText(getContext(), e.getMessage(), 5000).show();
+                }
+            }.execute();
+            return;
+        }
 
-                    protected void onException(Exception e) throws RuntimeException {
-                        progress.dismiss();
-                        Toast.makeText(getContext(), e.getMessage(), 5000).show();
-                    }
-                }.execute();
-            }
-        });
-        builder.setNegativeButton(android.R.string.no, null);
-        builder.show();
+        super.onDialogResult(requestCode, resultCode, arguments);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
