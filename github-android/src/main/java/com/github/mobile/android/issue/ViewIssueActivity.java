@@ -212,7 +212,7 @@ public class ViewIssueActivity extends RoboFragmentActivity {
         creation.setText(Html.encode(reported));
         Avatar.bind(ViewIssueActivity.this, (ImageView) findViewById(id.iv_gravatar), issue.getUser());
         View view = getLayoutInflater().inflate(layout.issue_view_body, null);
-        body = new IssueBodyViewHolder(ViewIssueActivity.this, imageGetter, view);
+        body = new IssueBodyViewHolder(imageGetter, view);
         body.updateViewFor(issue);
 
         LinearLayout labels = (LinearLayout) findViewById(id.ll_labels);

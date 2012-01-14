@@ -1,6 +1,5 @@
 package com.github.mobile.android;
 
-import android.content.Context;
 import android.widget.TextView;
 
 import com.github.mobile.android.util.HttpImageGetter;
@@ -14,11 +13,6 @@ import com.madgag.android.listviews.ViewHolder;
 public abstract class MarkdownViewHolder<V> implements ViewHolder<V> {
 
     /**
-     * Context
-     */
-    protected final Context context;
-
-    /**
      * Image getter
      */
     protected final HttpImageGetter imageGetter;
@@ -26,11 +20,9 @@ public abstract class MarkdownViewHolder<V> implements ViewHolder<V> {
     /**
      * Create view holder
      *
-     * @param context
      * @param imageGetter
      */
-    public MarkdownViewHolder(Context context, HttpImageGetter imageGetter) {
-        this.context = context;
+    public MarkdownViewHolder(HttpImageGetter imageGetter) {
         this.imageGetter = imageGetter;
     }
 
