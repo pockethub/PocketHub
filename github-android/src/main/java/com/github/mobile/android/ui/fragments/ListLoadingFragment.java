@@ -20,7 +20,7 @@ public abstract class ListLoadingFragment<E> extends RoboListFragment implements
 
         // Prepare the loader. Either re-connect with an existing one,
         // or start a new one.
-        refresh();
+        getLoaderManager().initLoader(0, null, this);
     }
 
     /**
