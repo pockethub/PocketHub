@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.github.mobile.android.R;
+import com.github.mobile.android.R.string;
 import com.github.mobile.android.TextWatcherAdapter;
 import com.github.mobile.android.ui.validation.LeavingBlankTextFieldWarner;
 import com.google.inject.Inject;
@@ -146,7 +147,7 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
     @Override
     protected Dialog onCreateDialog(int id) {
         final ProgressDialog dialog = new ProgressDialog(this);
-        // dialog.setMessage(getText(R.string.ui_activity_authenticating));
+        dialog.setMessage(getText(string.login_activity_authenticating));
         dialog.setIndeterminate(true);
         dialog.setCancelable(true);
         dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
