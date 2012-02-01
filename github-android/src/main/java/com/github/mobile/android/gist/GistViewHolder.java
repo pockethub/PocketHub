@@ -48,7 +48,7 @@ public class GistViewHolder implements ViewHolder<Gist> {
             id = id.substring(0, 8) + "...";
         gistId.setText(id);
 
-        title.setText(gist.getDescription());
+        title.setText(description);
         created.setText(Time.relativeTimeFor(gist.getCreatedAt()));
 
         comments.setText(MessageFormat.format("{0}", gist.getComments()));
