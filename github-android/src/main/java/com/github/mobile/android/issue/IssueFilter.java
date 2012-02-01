@@ -229,7 +229,6 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>>,
 
         if (labels != null && !labels.isEmpty()) {
             StringBuilder builder = new StringBuilder("Labels: ");
-            builder.append("Labels: ");
             for (String label : labels)
                 builder.append(label).append(',').append(' ');
             builder.deleteCharAt(builder.length() - 1);
