@@ -47,6 +47,7 @@ public class CommentViewHolder implements ViewHolder<Comment> {
         imageGetter.bind(bodyView, comment.getBodyHtml());
         authorView.setText(comment.getUser().getLogin());
         dateView.setText(Time.relativeTimeFor(comment.getUpdatedAt()));
+        avatarView.setBackgroundDrawable(null);
         Avatar.bind(context, avatarView, comment.getUser());
     }
 }
