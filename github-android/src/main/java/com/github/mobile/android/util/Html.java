@@ -31,7 +31,7 @@ public class Html {
             return html;
         // These add extra padding that should be styled explicitly
         html = html.replace("<p>", "");
-        html = html.replace("</p>", "<br>");
+        html = html.replace("</p>", "<br><br>");
         while (html.length() > 0)
             if (html.startsWith("<br>"))
                 html = html.substring(4);
