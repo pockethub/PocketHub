@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -157,36 +158,50 @@ public class AccountDataManager {
     }
 
     /**
+     * Get repositories for given {@link User}
+     * <p>
+     * This method may perform network I/O and should never be called on the UI-thread
+     *
+     * @see #getRepos(User, RequestFuture)
+     * @param user
+     * @return list of repositories
+     * @throws IOException
+     */
+    public List<Repository> getRepos(final User user) throws IOException {
+        final File folder = new File(root, user.getLogin());
+        final File cache = new File(folder, "repos.ser");
+        List<Repository> cached = read(cache);
+        if (cached != null)
+            return cached;
+
+        List<Repository> loaded;
+        if (!"User".equals(user.getType()))
+            loaded = repos.getOrgRepositories(user.getLogin());
+        else if (user.getLogin().equals(repos.getClient().getUser()))
+            loaded = repos.getRepositories();
+        else
+            loaded = repos.getRepositories(user.getLogin());
+        Collections.sort(loaded, new Comparator<Repository>() {
+
+            public int compare(Repository r1, Repository r2) {
+                return r1.getName().compareToIgnoreCase(r2.getName());
+            }
+        });
+        write(cache, loaded);
+        return loaded;
+    }
+
+    /**
      * Get repositories for user
      *
      * @param user
      * @param requestFuture
      */
     public void getRepos(final User user, final RequestFuture<List<Repository>> requestFuture) {
-        final File folder = new File(root, user.getLogin());
-        final File cache = new File(folder, "repos.ser");
         new RoboAsyncTask<List<Repository>>(context, EXECUTOR) {
 
             public List<Repository> call() throws Exception {
-                List<Repository> cached = read(cache);
-                if (cached != null)
-                    return cached;
-
-                List<Repository> loaded;
-                if (!"User".equals(user.getType()))
-                    loaded = repos.getOrgRepositories(user.getLogin());
-                else if (user.getLogin().equals(repos.getClient().getUser()))
-                    loaded = repos.getRepositories();
-                else
-                    loaded = repos.getRepositories(user.getLogin());
-                Collections.sort(loaded, new Comparator<Repository>() {
-
-                    public int compare(Repository r1, Repository r2) {
-                        return r1.getName().compareToIgnoreCase(r2.getName());
-                    }
-                });
-                write(cache, loaded);
-                return loaded;
+                return getRepos(user);
             }
 
             protected void onSuccess(List<Repository> repos) throws Exception {

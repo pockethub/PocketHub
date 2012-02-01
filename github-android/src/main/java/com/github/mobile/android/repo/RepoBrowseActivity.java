@@ -5,10 +5,11 @@ import static android.view.View.VISIBLE;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_USER;
 import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.collect.Iterables.filter;
-import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
-import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
+import android.R;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -17,18 +18,17 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.github.mobile.android.AccountDataManager;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
-import com.github.mobile.android.RequestFuture;
 import com.github.mobile.android.RequestReader;
 import com.github.mobile.android.RequestWriter;
 import com.github.mobile.android.issue.IssueBrowseActivity;
 import com.github.mobile.android.util.Avatar;
 import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.google.common.base.Predicate;
-import com.google.inject.Inject;
+import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
+import com.madgag.android.listviews.ViewInflator;
 
 import java.io.File;
 import java.util.Iterator;
@@ -38,13 +38,14 @@ import java.util.List;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
 
-import roboguice.activity.RoboActivity;
+import roboguice.activity.RoboFragmentActivity;
+import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
 
 /**
  * Activity for browsing repositories associated with a user
  */
-public class RepoBrowseActivity extends RoboActivity {
+public class RepoBrowseActivity extends RoboFragmentActivity implements LoaderCallbacks<List<Repository>> {
 
     private static final int VERSION_RECENT_REPOS = 1;
 
@@ -62,34 +63,23 @@ public class RepoBrowseActivity extends RoboActivity {
         return new Builder("repos.VIEW").user(user).toIntent();
     }
 
-    private class RepoAdapter extends ViewHoldingListAdapter<Repository> {
-
-        public RepoAdapter(List<Repository> repos, User user) {
-            super(repos, viewInflatorFor(RepoBrowseActivity.this, layout.repo_list_item),
-                            reflectiveFactoryFor(RepoViewHolder.class, user));
-        }
-    }
-
     @InjectView(id.ll_recent_repos)
     private LinearLayout recentArea;
 
     @InjectView(id.lv_recent_repos)
     private ListView recentList;
 
-    @InjectView(id.lv_repos)
-    private ListView repoList;
-
     private LinkedList<String> recentRepos;
 
-    @Inject
-    private AccountDataManager cache;
-
+    @InjectExtra(EXTRA_USER)
     private User user;
 
+    private RepoListFragment repoFragment;
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.repo_list);
-        user = (User) getIntent().getSerializableExtra(EXTRA_USER);
 
         ((TextView) findViewById(id.tv_org_name)).setText(user.getLogin());
         Avatar.bind(this, ((ImageView) findViewById(id.iv_gravatar)), user);
@@ -97,8 +87,7 @@ public class RepoBrowseActivity extends RoboActivity {
         recentRepos = new RequestReader(getRecentReposFile(), VERSION_RECENT_REPOS).read();
         if (recentRepos == null)
             recentRepos = new LinkedList<String>();
-        if (recentRepos.isEmpty())
-            recentArea.setVisibility(GONE);
+        recentArea.setVisibility(GONE);
 
         OnItemClickListener repoClickListener = new OnItemClickListener() {
 
@@ -117,39 +106,56 @@ public class RepoBrowseActivity extends RoboActivity {
         };
 
         recentList.setOnItemClickListener(repoClickListener);
-        repoList.setOnItemClickListener(repoClickListener);
+
+        repoFragment = (RepoListFragment) getSupportFragmentManager().findFragmentById(R.id.list);
+        if (repoFragment == null) {
+            repoFragment = new RepoListFragment();
+            getSupportFragmentManager().beginTransaction().add(R.id.list, repoFragment).commit();
+        }
+        repoFragment.setCallback(this);
     }
 
+    @Override
     protected void onResume() {
         super.onResume();
-        loadRepos();
+        repoFragment.refresh();
     }
 
     private File getRecentReposFile() {
         return getFileStreamPath(user.getLogin() + '_' + FILE_RECENT_REPOS);
     }
 
+    @Override
     protected void onStop() {
         super.onStop();
         new RequestWriter(getRecentReposFile(), VERSION_RECENT_REPOS).write(recentRepos);
     }
 
-    private void loadRepos() {
-        RequestFuture<List<Repository>> callback = new RequestFuture<List<Repository>>() {
-            public void success(List<Repository> repos) {
-                if (!recentRepos.isEmpty()) {
-                    List<Repository> recent = copyOf(filter(repos, new Predicate<Repository>() {
-                        public boolean apply(Repository repo) { return recentRepos.contains(repo.generateId()); }
-                    }));
+    @Override
+    public Loader<List<Repository>> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
 
-                    if (!recent.isEmpty()) {
-                        recentList.setAdapter(new RepoAdapter(recent, user));
-                        recentArea.setVisibility(VISIBLE);
-                    }
+    @Override
+    public void onLoadFinished(Loader<List<Repository>> loader, List<Repository> items) {
+        if (!recentRepos.isEmpty()) {
+            List<Repository> recent = copyOf(filter(items, new Predicate<Repository>() {
+                public boolean apply(Repository repo) {
+                    return recentRepos.contains(repo.generateId());
                 }
-                repoList.setAdapter(new RepoAdapter(repos, user));
+            }));
+
+            if (!recent.isEmpty()) {
+                recentList.setAdapter(new ViewHoldingListAdapter<Repository>(recent, ViewInflator.viewInflatorFor(this,
+                        layout.repo_list_item), ReflectiveHolderFactory
+                        .reflectiveFactoryFor(RepoViewHolder.class, user)));
+                recentArea.setVisibility(VISIBLE);
             }
-        };
-        cache.getRepos(user, callback);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Repository>> loader) {
+        // Intentionally left blank
     }
 }

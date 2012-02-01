@@ -85,18 +85,13 @@
         android:layout_height="fill_parent"
         android:background="@drawable/outer_background" >
 
-        <ListView
-            android:id="@+id/lv_repos"
+        <LinearLayout
+            android:id="@android:id/list"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:background="@drawable/inner_background"
-            android:divider="@color/item_divider"
-            android:dividerHeight="1dp"
-            android:fastScrollEnabled="true"
             android:padding="5dp" >
-
-            <!-- Preview: listitem=@layout/repo_list_item -->
-        </ListView>
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
