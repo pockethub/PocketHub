@@ -20,6 +20,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:paddingBottom="5dp"
         android:paddingLeft="5dp"
         android:paddingTop="2dp" >
 
@@ -37,35 +38,23 @@
             android:paddingLeft="5dp" >
 
             <TextView
-                android:id="@+id/tv_gist_author"
+                android:id="@+id/tv_gist_description"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/item_text_color_light"
+                android:autoLink="web"
+                android:textColor="@color/item_text_color"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tv_gist_created"
+                android:id="@+id/tv_gist_creation"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="1dp"
                 android:singleLine="true"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/item_text_color_light"
-                android:textStyle="italic" />
+                android:textColor="@color/item_text_color_light" />
         </LinearLayout>
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_gist_description"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:autoLink="all"
-        android:paddingBottom="5dp"
-        android:paddingLeft="5dp"
-        android:paddingTop="2dp"
-        android:textColor="@color/item_text_color" />
 
     <LinearLayout
         android:layout_width="fill_parent"

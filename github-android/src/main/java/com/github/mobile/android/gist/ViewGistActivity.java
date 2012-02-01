@@ -84,11 +84,8 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
     @InjectView(id.iv_gravatar)
     private ImageView gravatar;
 
-    @InjectView(id.tv_gist_created)
+    @InjectView(id.tv_gist_creation)
     private TextView created;
-
-    @InjectView(id.tv_gist_author)
-    private TextView author;
 
     @InjectView(id.tv_gist_description)
     private TextView description;
@@ -240,10 +237,11 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
             if (user != null) {
                 gravatar.setVisibility(VISIBLE);
                 Avatar.bind(this, gravatar, user);
-                author.setText(user.getLogin());
-                author.setVisibility(VISIBLE);
+                created.setText(Html.fromHtml("<b>" + user.getLogin() + "</b> "
+                        + Time.relativeTimeFor(gist.getCreatedAt())));
+                created.setVisibility(VISIBLE);
             } else {
-                author.setVisibility(GONE);
+                created.setVisibility(GONE);
                 gravatar.setVisibility(GONE);
             }
 
@@ -254,11 +252,9 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
                 description.setText(Html.fromHtml("<i>No description</i>"));
             description.setVisibility(VISIBLE);
 
-            created.setText(Time.relativeTimeFor(gist.getCreatedAt()));
             created.setVisibility(VISIBLE);
         } else {
             gravatar.setVisibility(GONE);
-            author.setVisibility(GONE);
             description.setVisibility(GONE);
             created.setVisibility(GONE);
         }
