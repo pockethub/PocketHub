@@ -3,13 +3,14 @@ package com.github.mobile.android.issue;
 import static android.graphics.Paint.STRIKE_THRU_TEXT_FLAG;
 import static android.text.Html.fromHtml;
 import static com.github.mobile.android.util.Time.relativeTimeFor;
-import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
+import android.graphics.Paint;
 import android.view.View;
 import android.widget.TextView;
 
 import com.github.mobile.android.R.id;
 import com.madgag.android.listviews.ViewHolder;
-import com.madgag.android.listviews.ViewHolderFactory;
+
+import java.util.Arrays;
 
 import org.eclipse.egit.github.core.Issue;
 
@@ -19,9 +20,17 @@ import org.eclipse.egit.github.core.Issue;
 public class RepoIssueViewHolder implements ViewHolder<Issue> {
 
     /**
-     * Factory for creating view holder
+     * Find the maximum number of digits in the given issue numbers
+     *
+     * @param issues
+     * @return max digits
      */
-    public static final ViewHolderFactory<Issue> FACTORY = reflectiveFactoryFor(RepoIssueViewHolder.class);
+    public static int computeMaxDigits(Iterable<Issue> issues) {
+        int max = 1;
+        for (Issue issue : issues)
+            max = Math.max(max, (int) Math.log10(issue.getNumber()) + 1);
+        return max;
+    }
 
     private final TextView number;
 
@@ -37,13 +46,23 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
      * Create view holder
      *
      * @param v
+     * @param maxNumberCount
      */
-    public RepoIssueViewHolder(View v) {
+    public RepoIssueViewHolder(View v, Integer maxNumberCount) {
         number = (TextView) v.findViewById(id.tv_issue_number);
         flags = number.getPaintFlags();
         title = (TextView) v.findViewById(id.tv_issue_title);
         creation = (TextView) v.findViewById(id.tv_issue_creation);
         comments = (TextView) v.findViewById(id.tv_issue_comments);
+
+        // Set number field to max number size
+        Paint paint = new Paint();
+        paint.setTypeface(number.getTypeface());
+        paint.setTextSize(number.getTextSize());
+        char[] text = new char[maxNumberCount + 1];
+        Arrays.fill(text, '0');
+        text[0] = '#';
+        number.getLayoutParams().width = Math.round(paint.measureText(text, 0, text.length));
     }
 
     @Override
@@ -57,5 +76,4 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
         creation.setText(fromHtml("by <b>" + i.getUser().getLogin() + "</b> " + relativeTimeFor(i.getCreatedAt())));
         comments.setText(Integer.toString(i.getComments()));
     }
-
 }

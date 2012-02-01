@@ -180,6 +180,6 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
     @Override
     protected ListAdapter adapterFor(List<Issue> items) {
         return new ViewHoldingListAdapter<Issue>(items, viewInflatorFor(getActivity(), layout.repo_issue_list_item),
-                reflectiveFactoryFor(RepoIssueViewHolder.class));
+                reflectiveFactoryFor(RepoIssueViewHolder.class, RepoIssueViewHolder.computeMaxDigits(items)));
     }
 }

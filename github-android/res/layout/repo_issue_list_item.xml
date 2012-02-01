@@ -8,10 +8,8 @@
         android:id="@+id/tv_issue_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingRight="5dp"
-        android:text="#20"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/listing"
-        android:textSize="17sp"
         android:typeface="monospace" />
 
     <TextView
@@ -20,10 +18,10 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/tv_issue_number"
         android:layout_toRightOf="@id/tv_issue_number"
+        android:paddingLeft="5dp"
         android:singleLine="true"
-        android:text="Thing crashes real bad when you blow your nose"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/item_text_color"
-        android:textSize="15sp"
         android:textStyle="bold" />
 
     <TextView
@@ -32,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/tv_issue_title"
         android:layout_below="@id/tv_issue_number"
-        android:text="by gitster August 05, 1871"
+        android:paddingLeft="5dp"
         android:textColor="@color/listing" />
 
     <LinearLayout
