@@ -32,6 +32,11 @@ public class Html {
         // These add extra padding that should be styled explicitly
         html = html.replace("<p>", "");
         html = html.replace("</p>", "<br><br>");
+
+        // Ensure list elements are one per line
+        html = html.replace("<li>", "");
+        html = html.replace("</li>", "<br>");
+
         while (html.length() > 0)
             if (html.startsWith("<br>"))
                 html = html.substring(4);
