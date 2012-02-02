@@ -28,6 +28,7 @@ import java.util.Map;
 
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.client.NoSuchPageException;
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.service.IssueService;
 
@@ -168,7 +169,11 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
                 for (Map<String, String> query : filter) {
                     PageIterator<Issue> issues = service.pageIssues(repository, query, 1, DEFAULT_SIZE);
                     for (int i = 0; i < pages && issues.hasNext(); i++)
-                        all.addAll(issues.next());
+                        try {
+                            all.addAll(issues.next());
+                        } catch (NoSuchPageException nspe) {
+                            break;
+                        }
                     hasMore |= issues.hasNext();
                 }
                 Collections.sort(all, new CreatedAtComparator());
