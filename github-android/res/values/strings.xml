@@ -133,4 +133,8 @@
      <string name="dasbhoard_mentioned">Mentioned</string>
 
      <string name="dashboard_issues_title">Issue Dashboard</string>
+     
+     <string name="bookmarks">Bookmarks</string>
+
+     <string name="filter_issues_title">Saved Issue Filters</string>
 </resources>

@@ -98,6 +98,8 @@
 
         <activity android:name=".gist.GistsActivity" />
 
+        <activity android:name=".issue.FilterBrowseActivity" />
+
         <activity android:name=".gist.ViewGistActivity">
             <intent-filter>
                 <action android:name="com.github.mobile.android.gist.VIEW" />

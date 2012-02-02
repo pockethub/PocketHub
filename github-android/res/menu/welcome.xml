@@ -8,6 +8,12 @@
         android:title="@string/gists">
     </item>
     <item
+        android:id="@+id/bookmarks"
+        android:icon="@drawable/ic_action_bookmark"
+        android:showAsAction="always"
+        android:title="@string/bookmarks">
+    </item>
+    <item
         android:id="@+id/gists"
         android:icon="@drawable/ic_action_gist"
         android:showAsAction="always"

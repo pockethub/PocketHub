@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.egit.github.core.Milestone;
+import org.eclipse.egit.github.core.Repository;
 
 /**
  * Issue filter containing at least one valid query
@@ -29,6 +30,8 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>>,
 
     /** serialVersionUID */
     private static final long serialVersionUID = 7310646589186299063L;
+
+    private final Repository repository;
 
     private Set<String> labels;
 
@@ -42,8 +45,11 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>>,
 
     /**
      * Create filter
+     *
+     * @param repository
      */
-    public IssueFilter() {
+    public IssueFilter(final Repository repository) {
+        this.repository = repository;
         open = true;
     }
 
@@ -109,6 +115,13 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>>,
      */
     public Set<String> getLabels() {
         return labels;
+    }
+
+    /**
+     * @return repository
+     */
+    public Repository getRepository() {
+        return repository;
     }
 
     /**
@@ -221,6 +234,13 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>>,
      */
     public CharSequence toDisplay() {
         List<String> segments = new ArrayList<String>();
+        if (open && closed)
+            segments.add("All issues");
+        else if (open)
+            segments.add("Open issues");
+        else if (closed)
+            segments.add("Closed issues");
+
         if (assignee != null)
             segments.add("Assignee: " + assignee);
 
@@ -245,6 +265,31 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>>,
         all.deleteCharAt(all.length() - 1);
         all.deleteCharAt(all.length() - 1);
         return all;
+    }
+
+    private boolean isEqual(Object a, Object b) {
+        if (a == null && b == null)
+            return true;
+        return a != null && a.equals(b);
+    }
+
+    private boolean isEqual(Milestone a, Milestone b) {
+        if (a == null && b == null)
+            return true;
+        return a != null && b != null && a.getNumber() == b.getNumber();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof IssueFilter))
+            return false;
+
+        IssueFilter other = (IssueFilter) o;
+        return open == other.open && closed == other.closed && isEqual(milestone, other.milestone)
+                && isEqual(assignee, other.assignee) && isEqual(repository, repository)
+                && isEqual(labels, other.labels);
     }
 
     @Override

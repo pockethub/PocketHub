@@ -1,7 +1,10 @@
 package com.github.mobile.android;
 
+import static org.eclipse.egit.github.core.User.TYPE_USER;
 import android.content.Context;
 import android.util.Log;
+
+import com.github.mobile.android.issue.IssueFilter;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,8 +15,10 @@ import java.security.NoSuchAlgorithmException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -175,7 +180,7 @@ public class AccountDataManager {
             return cached;
 
         List<Repository> loaded;
-        if (!"User".equals(user.getType()))
+        if (!TYPE_USER.equals(user.getType()))
             loaded = repos.getOrgRepositories(user.getLogin());
         else if (user.getLogin().equals(repos.getClient().getUser()))
             loaded = repos.getRepositories();
@@ -239,6 +244,79 @@ public class AccountDataManager {
 
             protected void onSuccess(List<Issue> repos) throws Exception {
                 requestFuture.success(repos);
+            };
+        }.execute();
+    }
+
+    /**
+     * Get bookmarked issue filters
+     * <p>
+     * This method may perform network I/O and should never be called on the UI-thread
+     *
+     * @return non-null but possibly empty collection of issue filters
+     */
+    public Collection<IssueFilter> getIssueFilters() {
+        final File cache = new File(root, "issue_filters.ser");
+        Collection<IssueFilter> cached = read(cache);
+        if (cached != null)
+            return cached;
+        return Collections.emptyList();
+    }
+
+    /**
+     * Get bookmarked issue filters
+     *
+     * @param requestFuture
+     */
+    public void getIssueFilters(final RequestFuture<Collection<IssueFilter>> requestFuture) {
+        new RoboAsyncTask<Collection<IssueFilter>>(context, EXECUTOR) {
+
+            public Collection<IssueFilter> call() throws Exception {
+                return getIssueFilters();
+            }
+
+            protected void onSuccess(Collection<IssueFilter> filters) throws Exception {
+                requestFuture.success(filters);
+            };
+        }.execute();
+    }
+
+    /**
+     * Add issue filter to store
+     * <p>
+     * This method may perform file I/O and should never be called on the UI-thread
+     *
+     * @param filter
+     */
+    public void addIssueFilter(IssueFilter filter) {
+        final File cache = new File(root, "issue_filters.ser");
+        Collection<IssueFilter> filters = read(cache);
+        if (filters == null)
+            filters = new HashSet<IssueFilter>();
+        if (filters.add(filter))
+            write(cache, filters);
+    }
+
+    /**
+     * Add issue filter to store
+     *
+     * @param filter
+     * @param requestFuture
+     */
+    public void addIssueFilter(final IssueFilter filter, final RequestFuture<IssueFilter> requestFuture) {
+        new RoboAsyncTask<IssueFilter>(context, EXECUTOR) {
+
+            public IssueFilter call() throws Exception {
+                addIssueFilter(filter);
+                return filter;
+            }
+
+            protected void onSuccess(IssueFilter filter) throws Exception {
+                requestFuture.success(filter);
+            };
+
+            protected void onException(Exception e) throws RuntimeException {
+                Log.d(TAG, "Exception adding issue filter", e);
             };
         }.execute();
     }

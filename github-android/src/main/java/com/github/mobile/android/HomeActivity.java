@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.gist.GistsActivity;
+import com.github.mobile.android.issue.FilterBrowseActivity;
 import com.github.mobile.android.issue.IssueDashboardActivity;
 import com.github.mobile.android.repo.RepoBrowseActivity;
 import com.github.mobile.android.ui.WelcomeActivity;
@@ -85,6 +86,9 @@ public class HomeActivity extends RoboFragmentActivity {
             return true;
         case R.id.search:
             onSearchRequested();
+            return true;
+        case R.id.bookmarks:
+            startActivity(new Intent(this, FilterBrowseActivity.class));
             return true;
         default:
             return super.onOptionsItemSelected(item);

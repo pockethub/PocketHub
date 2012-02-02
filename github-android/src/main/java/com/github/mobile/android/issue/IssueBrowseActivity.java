@@ -15,12 +15,16 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.github.mobile.android.AccountDataManager;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
+import com.github.mobile.android.RequestFuture;
 import com.github.mobile.android.util.Avatar;
 import com.github.mobile.android.util.GitHubIntents.Builder;
+import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
@@ -45,9 +49,23 @@ public class IssueBrowseActivity extends RoboFragmentActivity implements OnItemC
         return new Builder("repo.issues.VIEW").repo(repository).toIntent();
     }
 
+    /**
+     * Create intent to browse the filtered issues
+     *
+     * @param filter
+     * @return intent
+     */
+    public static Intent createIntent(IssueFilter filter) {
+        return new Builder("repo.issues.VIEW").repo(filter.getRepository()).add(EXTRA_ISSUE_FILTER, filter).toIntent();
+    }
+
     @InjectExtra(EXTRA_REPOSITORY)
     private Repository repo;
 
+    @Inject
+    private AccountDataManager cache;
+
+    @InjectExtra(value = EXTRA_ISSUE_FILTER, optional = true)
     private IssueFilter filter;
 
     private IssuesFragment issues;
@@ -61,11 +79,8 @@ public class IssueBrowseActivity extends RoboFragmentActivity implements OnItemC
         ((TextView) findViewById(id.tv_owner_name)).setText(repo.getOwner().getLogin() + " /");
         Avatar.bind(this, (ImageView) findViewById(id.iv_gravatar), repo.getOwner());
 
-        if (savedInstanceState != null)
-            filter = (IssueFilter) savedInstanceState.getSerializable(EXTRA_ISSUE_FILTER);
-
         if (filter == null)
-            filter = new IssueFilter();
+            filter = new IssueFilter(repo);
 
         updateFilterSummary();
 
@@ -98,6 +113,12 @@ public class IssueBrowseActivity extends RoboFragmentActivity implements OnItemC
             startActivityForResult(FilterIssuesActivity.createIntent(repo, filter), CODE_FILTER);
             return true;
         case id.bookmark_filter:
+            cache.addIssueFilter(filter, new RequestFuture<IssueFilter>() {
+
+                public void success(IssueFilter response) {
+                    Toast.makeText(IssueBrowseActivity.this, "Issue filter saved to bookmarks", 5000).show();
+                }
+            });
             return true;
         default:
             return super.onOptionsItemSelected(item);
