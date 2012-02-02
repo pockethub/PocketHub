@@ -1,5 +1,6 @@
 package com.github.mobile.android.issue;
 
+import static com.github.mobile.android.issue.DashboardIssueFragment.ARG_FILTER;
 import static org.eclipse.egit.github.core.service.IssueService.DIRECTION_DESCENDING;
 import static org.eclipse.egit.github.core.service.IssueService.FIELD_DIRECTION;
 import static org.eclipse.egit.github.core.service.IssueService.FIELD_FILTER;
@@ -14,52 +15,30 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.Loader;
-import android.util.Log;
-import android.view.View;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 
-import com.github.mobile.android.AsyncLoader;
-import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
-import com.github.mobile.android.ui.fragments.ListLoadingFragment;
-import com.madgag.android.listviews.ReflectiveHolderFactory;
-import com.madgag.android.listviews.ViewHoldingListAdapter;
-import com.madgag.android.listviews.ViewInflator;
 import com.viewpagerindicator.TitleProvider;
 
-import java.io.IOException;
-import java.util.Collections;
+import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.service.IssueService;
 
 /**
  * Pager adapter for the issues dashboard
  */
 public class IssueDashboardPagerAdapter extends FragmentPagerAdapter implements TitleProvider {
 
-    private static final String TAG = "ISPA";
-
     private final Context context;
-
-    private final IssueService service;
 
     /**
      * Create pager adapter
      *
      * @param context
-     * @param service
      * @param fragmentManager
      */
-    public IssueDashboardPagerAdapter(Context context, IssueService service, FragmentManager fragmentManager) {
+    public IssueDashboardPagerAdapter(Context context, FragmentManager fragmentManager) {
         super(fragmentManager);
         this.context = context;
-        this.service = service;
     }
 
     @Override
@@ -90,42 +69,11 @@ public class IssueDashboardPagerAdapter extends FragmentPagerAdapter implements 
         filterData.put(FIELD_FILTER, filter);
         filterData.put(FIELD_SORT, SORT_UPDATED);
         filterData.put(FIELD_DIRECTION, DIRECTION_DESCENDING);
-        return new ListLoadingFragment<Issue>() {
-
-            @Override
-            public void onActivityCreated(Bundle savedInstanceState) {
-                super.onActivityCreated(savedInstanceState);
-                getListView().setFastScrollEnabled(true);
-            }
-
-            @Override
-            public Loader<List<Issue>> onCreateLoader(int id, Bundle args) {
-                return new AsyncLoader<List<Issue>>(getActivity()) {
-
-                    public List<Issue> loadInBackground() {
-                        try {
-                            return service.getIssues(filterData);
-                        } catch (IOException e) {
-                            Log.d(TAG, "Exception getting issues", e);
-                        }
-                        return Collections.emptyList();
-                    }
-                };
-            }
-
-            @Override
-            protected ListAdapter adapterFor(List<Issue> items) {
-                return new ViewHoldingListAdapter<Issue>(items, ViewInflator.viewInflatorFor(context,
-                        layout.dashboard_issue_list_item), ReflectiveHolderFactory.reflectiveFactoryFor(
-                        DashboardIssueViewHolder.class, RepoIssueViewHolder.computeMaxDigits(items)));
-            }
-
-            @Override
-            public void onListItemClick(ListView l, View v, int position, long id) {
-                Issue issue = (Issue) l.getItemAtPosition(position);
-                startActivity(ViewIssueActivity.viewIssueIntentFor(issue));
-            }
-        };
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ARG_FILTER, (Serializable) filterData);
+        DashboardIssueFragment fragment = new DashboardIssueFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override

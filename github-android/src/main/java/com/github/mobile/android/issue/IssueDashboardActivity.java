@@ -5,10 +5,7 @@ import android.support.v4.view.ViewPager;
 
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
-import com.google.inject.Inject;
 import com.viewpagerindicator.TitlePageIndicator;
-
-import org.eclipse.egit.github.core.service.IssueService;
 
 import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.InjectView;
@@ -24,15 +21,12 @@ public class IssueDashboardActivity extends RoboFragmentActivity {
     @InjectView(id.vp_pages)
     private ViewPager pager;
 
-    @Inject
-    private IssueService service;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.issue_dashboard);
 
-        pager.setAdapter(new IssueDashboardPagerAdapter(getApplicationContext(), service, getSupportFragmentManager()));
+        pager.setAdapter(new IssueDashboardPagerAdapter(getApplicationContext(), getSupportFragmentManager()));
         indicator.setViewPager(pager);
     }
 }
