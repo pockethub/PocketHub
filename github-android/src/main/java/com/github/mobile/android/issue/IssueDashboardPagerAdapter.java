@@ -110,8 +110,8 @@ public class IssueDashboardPagerAdapter extends FragmentPagerAdapter implements 
             @Override
             protected ListAdapter adapterFor(List<Issue> items) {
                 return new ViewHoldingListAdapter<Issue>(items, ViewInflator.viewInflatorFor(context,
-                        layout.repo_issue_list_item), ReflectiveHolderFactory.reflectiveFactoryFor(
-                        RepoIssueViewHolder.class, RepoIssueViewHolder.computeMaxDigits(items)));
+                        layout.dashboard_issue_list_item), ReflectiveHolderFactory.reflectiveFactoryFor(
+                        DashboardIssueViewHolder.class, RepoIssueViewHolder.computeMaxDigits(items)));
             }
 
             @Override

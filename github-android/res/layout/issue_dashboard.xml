@@ -10,7 +10,7 @@
         android:id="@+id/tpi_header"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background"
+        android:background="@color/item_background"
         app:footerColor="@color/listing"
         app:selectedBold="false"
         app:selectedColor="@color/listing"
