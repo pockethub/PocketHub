@@ -131,4 +131,6 @@
      <string name="dasbhoard_created">Created</string>
 
      <string name="dasbhoard_mentioned">Mentioned</string>
+
+     <string name="dashboard_issues_title">Issue Dashboard</string>
 </resources>
