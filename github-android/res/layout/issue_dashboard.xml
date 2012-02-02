@@ -13,14 +13,13 @@
         android:background="@color/item_background"
         app:footerColor="@color/listing"
         app:selectedBold="false"
-        app:selectedColor="@color/listing"
+        app:selectedColor="@color/item_text_color_light"
         app:textColor="@color/listing" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_pages"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="fill_parent"
         android:background="@color/background" />
 
 </LinearLayout>
