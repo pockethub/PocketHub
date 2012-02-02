@@ -93,6 +93,12 @@ public class IssueDashboardPagerAdapter extends FragmentPagerAdapter implements 
         return new ListLoadingFragment<Issue>() {
 
             @Override
+            public void onActivityCreated(Bundle savedInstanceState) {
+                super.onActivityCreated(savedInstanceState);
+                getListView().setFastScrollEnabled(true);
+            }
+
+            @Override
             public Loader<List<Issue>> onCreateLoader(int id, Bundle args) {
                 return new AsyncLoader<List<Issue>>(getActivity()) {
 
