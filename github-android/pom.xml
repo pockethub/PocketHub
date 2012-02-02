@@ -63,6 +63,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+			<groupId>com.viewpagerindicator</groupId>
+			<artifactId>library</artifactId>
+			<version>2.2.2</version>
+			<type>apklib</type>
+		</dependency>
+        <dependency>
             <groupId>com.pivotallabs</groupId>
             <artifactId>robolectric</artifactId>
             <version>1.0-RC1</version>

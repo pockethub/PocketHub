@@ -18,14 +18,13 @@ import android.widget.TextView;
 
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.gist.GistsActivity;
+import com.github.mobile.android.issue.IssueDashboardActivity;
 import com.github.mobile.android.repo.RepoBrowseActivity;
 import com.github.mobile.android.ui.WelcomeActivity;
 import com.github.mobile.android.util.Avatar;
 import com.google.inject.Inject;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.egit.github.core.User;
 
@@ -60,8 +59,6 @@ public class HomeActivity extends RoboFragmentActivity {
         }
     }
 
-    private Map<String, Integer> linkViews = new LinkedHashMap<String, Integer>();
-
     @Inject
     private ContextScopedProvider<Account> accountProvider;
 
@@ -80,17 +77,21 @@ public class HomeActivity extends RoboFragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.gists:
-                startActivity(new Intent(this, GistsActivity.class));
-                return true;
-            case R.id.search:
-                onSearchRequested();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        case R.id.dashboard_issues:
+            startActivity(new Intent(this, IssueDashboardActivity.class));
+            return true;
+        case R.id.gists:
+            startActivity(new Intent(this, GistsActivity.class));
+            return true;
+        case R.id.search:
+            onSearchRequested();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
         }
     }
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
@@ -112,6 +113,7 @@ public class HomeActivity extends RoboFragmentActivity {
         });
     }
 
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (CODE_LOGIN == requestCode && resultCode == RESULT_OK)
             loadOrgs();

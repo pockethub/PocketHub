@@ -6,6 +6,7 @@
     <string name="issues">Issues</string>
     <string name="welcome">Welcome to GitHub!</string>
     <string name="gists">Gists</string>
+    <string name="dashboard_issues">Issues Dashboard</string>
     <string name="find_repos">Find Repos</string>
     <string name="search_title">Search…</string>
     <string name="clear_search_history">Clear History</string>
@@ -122,4 +123,12 @@
      <string name="delete_ellipsis">Delete…</string>
      
      <string name="refresh">Refresh</string>
+
+     <string name="dasbhoard_watched">Watched</string>
+
+     <string name="dasbhoard_assigned">Assigned</string>
+
+     <string name="dasbhoard_created">Created</string>
+
+     <string name="dasbhoard_mentioned">Mentioned</string>
 </resources>

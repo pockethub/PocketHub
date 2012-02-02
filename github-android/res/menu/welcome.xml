@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/gists"
-          android:showAsAction="ifRoom" android:title="@string/gists"
-          android:icon="@drawable/ic_action_gist"></item>
-    <item android:id="@+id/search"
-          android:showAsAction="ifRoom" android:title="@string/find_repos"
-          android:icon="@drawable/ic_action_search"></item>
-</menu>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
+    <item
+        android:id="@+id/dashboard_issues"
+        android:icon="@drawable/ic_action_dashboard"
+        android:showAsAction="always"
+        android:title="@string/gists">
+    </item>
+    <item
+        android:id="@+id/gists"
+        android:icon="@drawable/ic_action_gist"
+        android:showAsAction="always"
+        android:title="@string/gists">
+    </item>
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/ic_action_search"
+        android:showAsAction="always"
+        android:title="@string/find_repos">
+    </item>
+
+</menu>
