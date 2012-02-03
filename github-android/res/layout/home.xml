@@ -12,17 +12,15 @@
         android:layout_height="wrap_content"
         android:background="@drawable/outer_background" >
 
-        <ListView
-            android:id="@+id/lv_orgs"
+        <LinearLayout
+            android:id="@android:id/list"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:background="@drawable/inner_background"
             android:divider="@color/item_divider"
             android:dividerHeight="1dp"
             android:padding="5dp" >
-
-            <!-- Preview: listitem=@layout/org_item -->
-        </ListView>
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

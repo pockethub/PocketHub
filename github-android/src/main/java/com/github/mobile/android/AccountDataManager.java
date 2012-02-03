@@ -131,29 +131,42 @@ public class AccountDataManager {
     }
 
     /**
+     * Get orgs.
+     * <p>
+     * This method may perform file and/or network I/O and should never be called on the UI-thread
+     *
+     * @return list of users
+     * @throws IOException
+     */
+    public List<User> getOrgs() throws IOException {
+        final File cache = new File(root, "orgs.ser");
+        List<User> cached = read(cache);
+        if (cached != null)
+            return cached;
+
+        List<User> loaded = new ArrayList<User>(orgs.getOrganizations());
+        Collections.sort(loaded, new Comparator<User>() {
+
+            public int compare(User u1, User u2) {
+                return u1.getLogin().compareToIgnoreCase(u2.getLogin());
+            }
+        });
+        loaded.add(0, users.getUser());
+        write(cache, loaded);
+        return loaded;
+    }
+
+    /**
      * Get orgs
      *
      * @param requestFuture
      */
     public void getOrgs(final RequestFuture<List<User>> requestFuture) {
-        final File cache = new File(root, "orgs.ser");
+
         new RoboAsyncTask<List<User>>(context, EXECUTOR) {
 
             public List<User> call() throws Exception {
-                List<User> cached = read(cache);
-                if (cached != null)
-                    return cached;
-
-                List<User> loaded = new ArrayList<User>(orgs.getOrganizations());
-                Collections.sort(loaded, new Comparator<User>() {
-
-                    public int compare(User u1, User u2) {
-                        return u1.getLogin().compareToIgnoreCase(u2.getLogin());
-                    }
-                });
-                loaded.add(0, users.getUser());
-                write(cache, loaded);
-                return loaded;
+                return getOrgs();
             }
 
             protected void onSuccess(List<User> orgs) throws Exception {
