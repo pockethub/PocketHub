@@ -16,6 +16,8 @@ import com.madgag.android.listviews.ViewHoldingListAdapter;
 import com.madgag.android.listviews.ViewInflator;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -30,7 +32,18 @@ public class FilterListFragment extends ListLoadingFragment<IssueFilter> {
         return new AsyncLoader<List<IssueFilter>>(getActivity()) {
 
             public List<IssueFilter> loadInBackground() {
-                return new ArrayList<IssueFilter>(cache.getIssueFilters());
+                List<IssueFilter> filters = new ArrayList<IssueFilter>(cache.getIssueFilters());
+                Collections.sort(filters, new Comparator<IssueFilter>() {
+
+                    public int compare(IssueFilter lhs, IssueFilter rhs) {
+                        int compare = lhs.getRepository().generateId()
+                                .compareToIgnoreCase(rhs.getRepository().generateId());
+                        if (compare == 0)
+                            compare = lhs.toDisplay().toString().compareToIgnoreCase(rhs.toDisplay().toString());
+                        return compare;
+                    }
+                });
+                return filters;
             }
         };
     }
