@@ -26,6 +26,7 @@ import com.github.mobile.android.R.color;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
+import com.github.mobile.android.R.string;
 import com.github.mobile.android.comment.CommentViewHolder;
 import com.github.mobile.android.comment.CreateCommentActivity;
 import com.github.mobile.android.util.Avatar;
@@ -88,10 +89,9 @@ public class ViewIssueActivity extends RoboFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.issue_view);
+        setTitle(getString(string.issue_title) + issueNumber);
 
         imageGetter = new HttpImageGetter(this);
-
-        ((TextView) findViewById(id.tv_issue_number)).setText("Issue #" + issueNumber);
 
         loadIssue(false);
     }
