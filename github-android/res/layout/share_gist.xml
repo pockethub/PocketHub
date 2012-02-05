@@ -5,30 +5,6 @@
     android:background="@color/item_background"
     android:orientation="vertical" >
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:padding="5dp"
-        android:singleLine="true"
-        android:text="@string/new_gist"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/item_text_color"
-        android:textStyle="bold" >
-    </TextView>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="1px"
-        android:background="@color/item_separator1" >
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="1px"
-        android:background="@color/item_separator2" >
-    </LinearLayout>
-
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

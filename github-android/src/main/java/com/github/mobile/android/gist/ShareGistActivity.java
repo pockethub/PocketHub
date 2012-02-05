@@ -15,6 +15,7 @@ import com.github.mobile.android.R;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
+import com.github.mobile.android.R.string;
 import com.github.mobile.android.TextWatcherAdapter;
 import com.google.inject.Inject;
 
@@ -57,6 +58,7 @@ public class ShareGistActivity extends RoboFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.share_gist);
+        setTitle(string.new_gist);
 
         String text = getIntent().getStringExtra(EXTRA_TEXT);
 
