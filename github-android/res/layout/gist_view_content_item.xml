@@ -6,24 +6,10 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/tv_gist_file_name"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        android:text="Main.cpp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/item_text_color"
-        android:textStyle="bold" >
-    </TextView>
-
-    <TextView
         android:id="@+id/tv_gist_id"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="5dp"
-        android:paddingLeft="10dp"
-        android:text="Gist 1489902"
+        android:padding="5dp"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/item_text_color_light"
         android:textStyle="italic" >

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.R.string;
 import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.github.mobile.android.util.SourceEditor;
 
@@ -34,9 +35,6 @@ public class ViewGistFileActivity extends RoboActivity {
         return new Builder("gist.file.VIEW").add(EXTRA_GIST, gist).add(EXTRA_GIST_FILE, file).toIntent();
     }
 
-    @InjectView(id.tv_gist_file_name)
-    private TextView gistFile;
-
     @InjectView(id.tv_gist_id)
     private TextView gistId;
 
@@ -49,8 +47,10 @@ public class ViewGistFileActivity extends RoboActivity {
 
         final Gist gist = (Gist) getIntent().getSerializableExtra(EXTRA_GIST);
         final GistFile file = (GistFile) getIntent().getSerializableExtra(EXTRA_GIST_FILE);
-        gistFile.setText(file.getFilename());
-        gistId.setText("Gist " + gist.getId());
+
+        setTitle(file.getFilename());
+        gistId.setText(getString(string.gist) + " " + gist.getId());
+
         SourceEditor.showSource(webView, file.getFilename(), new Object() {
             public String toString() {
                 return file.getContent();
