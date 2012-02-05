@@ -137,4 +137,6 @@
      <string name="issue_filters">Issue Filters</string>
 
      <string name="filter_issues_title">Saved Issue Filters</string>
+
+     <string name="gists_title">My Gists</string>
 </resources>
