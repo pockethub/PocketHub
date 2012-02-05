@@ -6,13 +6,11 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/tv_gist_id"
+        android:id="@+id/tv_gist_description"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        android:paddingTop="5dp"
-        android:singleLine="true"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:autoLink="web"
+        android:padding="5dp"
         android:textColor="@color/item_text_color"
         android:textStyle="bold" />
 
@@ -22,7 +20,7 @@
         android:orientation="horizontal"
         android:paddingBottom="5dp"
         android:paddingLeft="5dp"
-        android:paddingTop="2dp" >
+        android:paddingRight="5dp" >
 
         <ImageView
             android:id="@+id/iv_gravatar"
@@ -31,29 +29,15 @@
             android:layout_gravity="center_vertical"
             android:src="@drawable/gravatar_icon" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_gist_creation"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="5dp" >
-
-            <TextView
-                android:id="@+id/tv_gist_description"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:autoLink="web"
-                android:textColor="@color/item_text_color"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_gist_creation"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="1dp"
-                android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/item_text_color_light" />
-        </LinearLayout>
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="5dp"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/item_text_color_light" />
     </LinearLayout>
 
     <LinearLayout

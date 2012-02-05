@@ -78,9 +78,6 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
         return new Builder("gist.VIEW").add(EXTRA_GIST_ID, gistId).toIntent();
     }
 
-    @InjectView(id.tv_gist_id)
-    private TextView gistIdText;
-
     @InjectView(id.iv_gravatar)
     private ImageView gravatar;
 
@@ -103,8 +100,7 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.gist_view);
-
-        gistIdText.setText(getString(string.gist) + " " + gistId);
+        setTitle(getString(string.gist) + " " + gistId);
 
         gistFragment = (GistFragment) getSupportFragmentManager().findFragmentById(R.id.list);
         if (gistFragment == null) {
