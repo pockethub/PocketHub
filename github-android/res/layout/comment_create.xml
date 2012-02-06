@@ -4,14 +4,14 @@
     android:layout_height="match_parent"
     android:background="@color/item_background"
     android:orientation="vertical"
-    android:padding="5dp" >
+    android:padding="10dp" >
 
     <EditText
         android:id="@+id/et_comment"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@color/background"
-        android:hint="Enter a comment"
+        android:hint="@string/comment_hint"
         android:inputType="textMultiLine"
         android:padding="10dp"
         android:scrollbars="horizontal|vertical"
