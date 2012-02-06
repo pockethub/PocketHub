@@ -1,5 +1,6 @@
 package com.github.mobile.android.comment;
 
+import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENT_BODY;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.Menu;
@@ -9,13 +10,16 @@ import android.widget.EditText;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
-import com.github.mobile.android.util.GitHubIntents;
+import com.github.mobile.android.R.string;
 import com.github.mobile.android.util.GitHubIntents.Builder;
+
+import org.eclipse.egit.github.core.Gist;
+import org.eclipse.egit.github.core.Issue;
 
 import roboguice.activity.RoboFragmentActivity;
 
 /**
- * Activity to create a comment
+ * Activity to create a comment on a {@link Gist} or {@link Issue}
  */
 public class CreateCommentActivity extends RoboFragmentActivity {
 
@@ -31,6 +35,7 @@ public class CreateCommentActivity extends RoboFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.comment_create);
+        setTitle(string.create_comment_title);
     }
 
     @Override
@@ -45,7 +50,7 @@ public class CreateCommentActivity extends RoboFragmentActivity {
         case id.apply:
             String comment = ((EditText) findViewById(id.et_comment)).getText().toString();
             Intent intent = new Intent();
-            intent.putExtra(GitHubIntents.EXTRA_COMMENT_BODY, comment);
+            intent.putExtra(EXTRA_COMMENT_BODY, comment);
             setResult(RESULT_OK, intent);
             finish();
             return true;
