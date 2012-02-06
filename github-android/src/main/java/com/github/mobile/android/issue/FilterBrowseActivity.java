@@ -15,7 +15,7 @@ public class FilterBrowseActivity extends RoboFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(getString(string.filter_issues_title));
+        setTitle(getString(string.saved_filters_title));
         setContentView(layout.issue_filter_list);
     }
 }
