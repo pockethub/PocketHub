@@ -147,4 +147,8 @@
      <string name="create_comment_title">Create Comment</string>
 
      <string name="comment_hint">Enter a comment</string>
+
+     <string name="show_more">Show More…</string>
+
+     <string name="loading_more_issues">Loading More Issues…</string>
 </resources>

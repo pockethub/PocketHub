@@ -4,23 +4,29 @@ import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.github.mobile.android.AsyncLoader;
+import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 import com.madgag.android.listviews.ViewInflator;
 
-import java.io.IOException;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.client.NoSuchPageException;
+import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.service.IssueService;
 
 /**
@@ -40,6 +46,18 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
 
     private Map<String, String> filterData;
 
+    private Issue lastIssue;
+
+    private boolean hasMore = true;
+
+    private View showMoreFooter;
+
+    private Button moreButton;
+
+    private Map<String, Issue> issues = new LinkedHashMap<String, Issue>();
+
+    private int page = 1;
+
     @SuppressWarnings("unchecked")
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -53,12 +71,18 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
         return new AsyncLoader<List<Issue>>(getActivity()) {
 
             public List<Issue> loadInBackground() {
+                hasMore = false;
+                PageIterator<Issue> iterator = service.pageIssues(filterData, page, -1);
                 try {
-                    return service.getIssues(filterData);
-                } catch (IOException e) {
+                    for (Issue issue : iterator.next())
+                        if (!issues.containsKey(issue.getUrl()))
+                            issues.put(issue.getUrl(), issue);
+                    page++;
+                } catch (NoSuchPageException e) {
                     Log.d(TAG, "Exception getting issues", e);
                 }
-                return Collections.emptyList();
+                hasMore |= iterator.hasNext();
+                return new ArrayList<Issue>(issues.values());
             }
         };
     }
@@ -74,5 +98,51 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
     public void onListItemClick(ListView l, View v, int position, long id) {
         Issue issue = (Issue) l.getItemAtPosition(position);
         startActivity(ViewIssueActivity.viewIssueIntentFor(issue));
+    }
+
+    public void onLoadFinished(Loader<List<Issue>> loader, List<Issue> items) {
+        if (hasMore) {
+            if (showMoreFooter == null) {
+                showMoreFooter = getActivity().getLayoutInflater().inflate(layout.show_more_item, null);
+                moreButton = (Button) showMoreFooter.findViewById(id.b_show_more);
+                moreButton.setOnClickListener(new OnClickListener() {
+
+                    public void onClick(View v) {
+                        moreButton.setText(getActivity().getString(string.loading_more_issues));
+                        moreButton.setEnabled(false);
+                        lastIssue = (Issue) getListView().getItemAtPosition(
+                                getListView().getCount() - getListView().getFooterViewsCount() - 1);
+                        refresh();
+                    }
+                });
+                getListView().addFooterView(showMoreFooter);
+            }
+            moreButton.setEnabled(true);
+            moreButton.setText(getActivity().getString(string.show_more));
+        } else {
+            getListView().removeFooterView(showMoreFooter);
+            showMoreFooter = null;
+        }
+
+        super.onLoadFinished(loader, items);
+
+        if (lastIssue != null) {
+            final int target = lastIssue.getNumber();
+            lastIssue = null;
+            getListView().post(new Runnable() {
+
+                public void run() {
+                    ListView view = getListView();
+                    for (int i = 0; i < view.getCount() - view.getFooterViewsCount(); i++) {
+                        Issue issue = (Issue) view.getItemAtPosition(i);
+                        if (target == issue.getNumber()) {
+                            view.setSelection(i);
+                            return;
+                        }
+                    }
+                }
+            });
+        }
+
     }
 }
