@@ -39,8 +39,6 @@ public class IssueFragment extends ListLoadingFragment<FullIssue> {
     @Inject
     private IssueService service;
 
-    private FullIssue fullIssue;
-
     private View bodyView;
 
     private HttpImageGetter imageGetter;
@@ -89,9 +87,7 @@ public class IssueFragment extends ListLoadingFragment<FullIssue> {
                         comments = service.getComments(repository, id);
                     else
                         comments = Collections.emptyList();
-                    FullIssue full = new FullIssue(issue, comments);
-                    fullIssue = full;
-                    return Collections.singletonList(full);
+                    return Collections.singletonList(new FullIssue(issue, comments));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
