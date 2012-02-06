@@ -17,6 +17,7 @@ import android.widget.ListView;
 
 import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -28,7 +29,6 @@ import java.util.Map;
 
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.client.NoSuchPageException;
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.service.IssueService;
 
@@ -36,8 +36,6 @@ import org.eclipse.egit.github.core.service.IssueService;
  * Fragment to display a list of issues
  */
 public class IssuesFragment extends ListLoadingFragment<Issue> {
-
-    private static final int DEFAULT_SIZE = 20;
 
     private OnItemClickListener clickListener;
 
@@ -48,15 +46,13 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
 
     private IRepositoryIdProvider repository;
 
-    private IssueFilter filter;
-
     private Issue lastIssue;
 
     private boolean hasMore = true;
 
     private Button moreButton;
 
-    private int pages = 1;
+    private final List<IssuePager> pagers = new ArrayList<IssuePager>();
 
     /**
      * @param repository
@@ -72,7 +68,14 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
      * @return this fragment
      */
     public IssuesFragment setFilter(IssueFilter filter) {
-        this.filter = filter;
+        pagers.clear();
+        for (final Map<String, String> query : filter)
+            pagers.add(new IssuePager() {
+
+                public PageIterator<Issue> createIterator(int page, int size) {
+                    return service.pageIssues(repository, query, page, size);
+                }
+            });
         return this;
     }
 
@@ -114,8 +117,8 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
                 moreButton.setOnClickListener(new OnClickListener() {
 
                     public void onClick(View v) {
-                        moreButton.setText("Loading More Issues...");
-                        pages++;
+                        moreButton.setText(getString(string.loading_more_issues));
+                        moreButton.setEnabled(false);
                         lastIssue = (Issue) getListView().getItemAtPosition(
                                 getListView().getCount() - getListView().getFooterViewsCount() - 1);
                         refresh();
@@ -123,7 +126,8 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
                 });
                 getListView().addFooterView(moreButton);
             }
-            moreButton.setText("Show More...");
+            moreButton.setEnabled(true);
+            moreButton.setText(getString(string.show_more));
         } else {
             getListView().removeFooterView(moreButton);
             moreButton = null;
@@ -166,15 +170,9 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
             public List<Issue> loadInBackground() {
                 hasMore = false;
                 final List<Issue> all = new ArrayList<Issue>();
-                for (Map<String, String> query : filter) {
-                    PageIterator<Issue> issues = service.pageIssues(repository, query, 1, DEFAULT_SIZE);
-                    for (int i = 0; i < pages && issues.hasNext(); i++)
-                        try {
-                            all.addAll(issues.next());
-                        } catch (NoSuchPageException nspe) {
-                            break;
-                        }
-                    hasMore |= issues.hasNext();
+                for (IssuePager pager : pagers) {
+                    hasMore |= pager.next();
+                    all.addAll(pager.getIssues());
                 }
                 Collections.sort(all, new CreatedAtComparator());
                 return all;

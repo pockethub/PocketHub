@@ -2,7 +2,6 @@ package com.github.mobile.android.issue;
 
 import android.os.Bundle;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -19,13 +18,10 @@ import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 import com.madgag.android.listviews.ViewInflator;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.client.NoSuchPageException;
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.service.IssueService;
 
@@ -38,8 +34,6 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
      * Filter data argument
      */
     public static final String ARG_FILTER = "filter";
-
-    private static final String TAG = "DIF";
 
     @Inject
     private IssueService service;
@@ -54,9 +48,12 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
 
     private Button moreButton;
 
-    private Map<String, Issue> issues = new LinkedHashMap<String, Issue>();
+    private IssuePager pager = new IssuePager() {
 
-    private int page = 1;
+        public PageIterator<Issue> createIterator(int page, int size) {
+            return service.pageIssues(filterData, page, size);
+        }
+    };
 
     @SuppressWarnings("unchecked")
     @Override
@@ -71,18 +68,8 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
         return new AsyncLoader<List<Issue>>(getActivity()) {
 
             public List<Issue> loadInBackground() {
-                hasMore = false;
-                PageIterator<Issue> iterator = service.pageIssues(filterData, page, -1);
-                try {
-                    for (Issue issue : iterator.next())
-                        if (!issues.containsKey(issue.getUrl()))
-                            issues.put(issue.getUrl(), issue);
-                    page++;
-                } catch (NoSuchPageException e) {
-                    Log.d(TAG, "Exception getting issues", e);
-                }
-                hasMore |= iterator.hasNext();
-                return new ArrayList<Issue>(issues.values());
+                hasMore = pager.next();
+                return pager.getIssues();
             }
         };
     }
