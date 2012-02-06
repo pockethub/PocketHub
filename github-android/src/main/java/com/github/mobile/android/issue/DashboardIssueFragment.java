@@ -108,7 +108,7 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
                 moreButton.setOnClickListener(new OnClickListener() {
 
                     public void onClick(View v) {
-                        moreButton.setText(getActivity().getString(string.loading_more_issues));
+                        moreButton.setText(getString(string.loading_more_issues));
                         moreButton.setEnabled(false);
                         lastIssue = (Issue) getListView().getItemAtPosition(
                                 getListView().getCount() - getListView().getFooterViewsCount() - 1);
@@ -118,7 +118,7 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
                 getListView().addFooterView(showMoreFooter);
             }
             moreButton.setEnabled(true);
-            moreButton.setText(getActivity().getString(string.show_more));
+            moreButton.setText(getString(string.show_more));
         } else {
             getListView().removeFooterView(showMoreFooter);
             showMoreFooter = null;
