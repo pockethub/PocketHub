@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
+import com.github.mobile.android.R.string;
 import com.github.mobile.android.util.GitHubIntents;
 import com.google.inject.Inject;
 
@@ -78,6 +79,7 @@ public class FilterIssuesActivity extends RoboFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.issues_filter);
+        setTitle(getString(string.filter_issues_title));
 
         final Repository repository = (Repository) getIntent().getSerializableExtra(GitHubIntents.EXTRA_REPOSITORY);
 

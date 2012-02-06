@@ -141,4 +141,6 @@
      <string name="gists_title">My Gists</string>
 
      <string name="issue_title">Issue #</string>
+
+     <string name="filter_issues_title">Issues Filter</string>
 </resources>
