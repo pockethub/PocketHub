@@ -55,11 +55,11 @@
         android:background="@color/item_separator2" >
     </LinearLayout>
 
-    <ListView
+    <LinearLayout
         android:id="@android:id/list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:dividerHeight="0px" >
-    </ListView>
+        android:background="@color/background" >
+    </LinearLayout>
 
 </LinearLayout>

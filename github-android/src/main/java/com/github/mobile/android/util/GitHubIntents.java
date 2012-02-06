@@ -143,7 +143,8 @@ public class GitHubIntents {
          * @return this builder
          */
         public Builder issue(Issue issue) {
-            return repo(createFromUrl(issue.getHtmlUrl())).add(EXTRA_ISSUE_NUMBER, issue.getNumber());
+            return repo(createFromUrl(issue.getHtmlUrl())).add(EXTRA_ISSUE, issue).add(EXTRA_ISSUE_NUMBER,
+                    issue.getNumber());
         }
 
         /**
