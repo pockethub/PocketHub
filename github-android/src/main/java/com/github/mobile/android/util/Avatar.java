@@ -13,6 +13,7 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.github.kevinsawicki.http.HttpRequest;
+import com.github.mobile.android.R.id;
 
 import org.eclipse.egit.github.core.User;
 
@@ -109,9 +110,15 @@ public class Avatar {
             helper.close();
             return;
         }
+
+        view.setTag(id.iv_gravatar, login);
+
         new RoboAsyncTask<byte[]>(context) {
 
             public byte[] call() throws Exception {
+                if (!login.equals(view.getTag(id.iv_gravatar)))
+                    return null;
+
                 HttpRequest request = HttpRequest.get(avatarUrl);
                 if (!request.ok())
                     return null;
@@ -124,6 +131,10 @@ public class Avatar {
             protected void onSuccess(byte[] image) throws Exception {
                 if (image == null || image.length == 0)
                     return;
+
+                if (!login.equals(view.getTag(id.iv_gravatar)))
+                    return;
+
                 Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
                 view.setImageBitmap(Image.roundCorners(bitmap, RADIUS));
                 view.setVisibility(VISIBLE);
