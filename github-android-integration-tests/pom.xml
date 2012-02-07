@@ -6,7 +6,7 @@
     <artifactId>github-android-integration-tests</artifactId>
 
     <parent>
-        <version>0.01-SNAPSHOT</version>
+        <version>1.0-SNAPSHOT</version>
         <groupId>com.github.github</groupId>
         <artifactId>github-android-parent</artifactId>
     </parent>
@@ -41,10 +41,6 @@
                 <configuration>
                     <extractDuplicates>true</extractDuplicates>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.pyx4me</groupId>
-                <artifactId>proguard-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

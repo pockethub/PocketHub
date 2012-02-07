@@ -6,7 +6,7 @@
     <url>https://github.com/github/android</url>
 
     <parent>
-        <version>0.01-SNAPSHOT</version>
+        <version>1.0-SNAPSHOT</version>
         <groupId>com.github.github</groupId>
         <artifactId>github-android-parent</artifactId>
     </parent>
@@ -92,10 +92,6 @@
     </dependencies>
     <build>
         <plugins>
-            <plugin>
-                <groupId>com.pyx4me</groupId>
-                <artifactId>proguard-maven-plugin</artifactId>
-            </plugin>
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
