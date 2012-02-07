@@ -3,24 +3,66 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/item_background"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:padding="10dp" >
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/item_background"
-        android:padding="10dp" >
+        android:layout_height="fill_parent"
+        android:background="@drawable/outer_background"
+        android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="@drawable/outer_background" >
+            android:background="@drawable/inner_background"
+            android:orientation="vertical"
+            android:padding="10dp" >
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="Issue Status:"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/item_text_color"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/rb_open"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Open"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/item_text_color_light" />
+
+                <RadioButton
+                    android:id="@+id/rb_closed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Closed"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/item_text_color_light" />
+
+                <RadioButton
+                    android:id="@+id/rb_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="All"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/item_text_color_light" />
+            </RadioGroup>
 
             <TableLayout
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="@drawable/inner_background"
-                android:padding="10dp"
+                android:layout_height="wrap_content"
                 android:shrinkColumns="1" >
 
                 <TableRow>
@@ -81,65 +123,6 @@
                         android:textColor="@color/item_text_color_light" />
                 </TableRow>
             </TableLayout>
-        </LinearLayout>
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:singleLine="true"
-        android:text="Issue Status"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/item_text_color"
-        android:textStyle="bold" />
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/item_background"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" >
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/outer_background"
-            android:orientation="horizontal" >
-
-            <RadioGroup
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/inner_background"
-                android:orientation="horizontal"
-                android:padding="2dp" >
-
-                <RadioButton
-                    android:id="@+id/rb_open"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Open"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/item_text_color" />
-
-                <RadioButton
-                    android:id="@+id/rb_closed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="Closed"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/item_text_color" />
-
-                <RadioButton
-                    android:id="@+id/rb_all"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="All"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/item_text_color" />
-            </RadioGroup>
         </LinearLayout>
     </LinearLayout>
 
