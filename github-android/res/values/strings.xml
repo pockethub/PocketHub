@@ -151,4 +151,6 @@
      <string name="show_more">Show More…</string>
 
      <string name="loading_more_issues">Loading More Issues…</string>
+
+     <string name="repositories_title">Repositories</string>
 </resources>

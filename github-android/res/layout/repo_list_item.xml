@@ -3,7 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:padding="5dp" >
+    android:padding="10dp" >
+
+    <TextView
+        android:id="@+id/tv_recent_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:paddingRight="10dp"
+        android:singleLine="true"
+        android:text="Recent"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/listing" />
 
     <TextView
         android:id="@+id/tv_repo_name"
@@ -11,7 +22,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:singleLine="true"
-        android:text="github/hubot"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/item_text_color" />
 
