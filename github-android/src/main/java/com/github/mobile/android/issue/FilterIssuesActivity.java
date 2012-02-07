@@ -20,6 +20,7 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.util.GitHubIntents;
+import com.google.common.base.Joiner;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public class FilterIssuesActivity extends RoboFragmentActivity {
             public void onClick(View v) {
                 if (allCollaborators == null) {
                     final ProgressDialog loader = new ProgressDialog(FilterIssuesActivity.this);
-                    loader.setMessage("Loading Users..");
+                    loader.setMessage("Loading Collaborators..");
                     loader.show();
                     new RoboAsyncTask<List<User>>(FilterIssuesActivity.this) {
 
@@ -276,12 +277,8 @@ public class FilterIssuesActivity extends RoboFragmentActivity {
             ((TextView) findViewById(id.tv_labels)).setText("");
         else if (selected.size() == 1)
             ((TextView) findViewById(id.tv_labels)).setText(selected.iterator().next());
-        else if (!selected.isEmpty()) {
-            StringBuilder labelsLabel = new StringBuilder();
-            for (String label : selected)
-                labelsLabel.append(label).append(',').append(' ');
-            ((TextView) findViewById(id.tv_labels)).setText(labelsLabel.substring(0, labelsLabel.length() - 2));
-        }
+        else if (!selected.isEmpty())
+            ((TextView) findViewById(id.tv_labels)).setText(Joiner.on(", ").join(selected));
     }
 
     private void updateMilestone() {
@@ -306,17 +303,19 @@ public class FilterIssuesActivity extends RoboFragmentActivity {
         final String[] names = new String[allLabels.size()];
         final boolean[] checked = new boolean[names.length];
         Set<String> selectedLabels = filter.getLabels();
+        final Set<String> selected = new TreeSet<String>();
         if (selectedLabels == null)
             for (int i = 0; i < names.length; i++)
                 names[i] = allLabels.get(i).getName();
-        else
+        else {
+            selected.addAll(selectedLabels);
             for (int i = 0; i < names.length; i++) {
                 names[i] = allLabels.get(i).getName();
                 if (selectedLabels.contains(names[i]))
                     checked[i] = true;
             }
+        }
 
-        final Set<String> selected = new TreeSet<String>();
         prompt.setMultiChoiceItems(names, checked, new OnMultiChoiceClickListener() {
 
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
