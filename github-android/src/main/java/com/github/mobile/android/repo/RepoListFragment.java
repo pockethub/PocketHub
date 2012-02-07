@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import com.github.mobile.android.AccountDataManager;
 import com.github.mobile.android.AsyncLoader;
@@ -34,6 +37,8 @@ public class RepoListFragment extends ListLoadingFragment<Repository> {
 
     private LoaderCallbacks<List<Repository>> callback;
 
+    private OnItemClickListener clickListener;
+
     @Inject
     private AccountDataManager cache;
 
@@ -47,10 +52,27 @@ public class RepoListFragment extends ListLoadingFragment<Repository> {
     }
 
     /**
-     * @param callback
+     * @param clickListener
+     * @return this fragment
      */
-    public void setCallback(LoaderCallbacks<List<Repository>> callback) {
+    public RepoListFragment setClickListener(OnItemClickListener clickListener) {
+        this.clickListener = clickListener;
+        return this;
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        if (clickListener != null)
+            clickListener.onItemClick(l, v, position, id);
+    }
+
+    /**
+     * @param callback
+     * @return this fragment
+     */
+    public RepoListFragment setCallback(LoaderCallbacks<List<Repository>> callback) {
         this.callback = callback;
+        return this;
     }
 
     @Override

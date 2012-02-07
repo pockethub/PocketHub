@@ -112,7 +112,7 @@ public class RepoBrowseActivity extends RoboFragmentActivity implements LoaderCa
             repoFragment = new RepoListFragment();
             getSupportFragmentManager().beginTransaction().add(R.id.list, repoFragment).commit();
         }
-        repoFragment.setCallback(this);
+        repoFragment.setCallback(this).setClickListener(repoClickListener);
     }
 
     @Override
