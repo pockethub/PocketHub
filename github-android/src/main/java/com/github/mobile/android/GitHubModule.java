@@ -136,10 +136,9 @@ public class GitHubModule extends AbstractModule {
     }
 
     @Provides
-    AccountDataManager dataManager(Context context, UserService users, OrganizationService orgs,
-            RepositoryService repos, IssueService issues) {
+    AccountDataManager dataManager(Context context, UserService users, OrganizationService orgs, RepositoryService repos) {
         File cache = new File(context.getFilesDir(), "cache");
-        return new AccountDataManager(context, cache, users, orgs, repos, issues);
+        return new AccountDataManager(context, cache, users, orgs, repos);
     }
 
     @Provides

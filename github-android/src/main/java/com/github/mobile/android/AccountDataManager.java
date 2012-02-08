@@ -1,35 +1,29 @@
 package com.github.mobile.android;
 
 import static org.eclipse.egit.github.core.User.TYPE_USER;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
 import com.github.mobile.android.issue.IssueFilter;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
-import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.OrganizationService;
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.eclipse.egit.github.core.service.UserService;
@@ -41,6 +35,31 @@ import roboguice.util.RoboAsyncTask;
  */
 public class AccountDataManager {
 
+    private static class CacheHelper extends SQLiteOpenHelper {
+
+        /**
+         * @param context
+         */
+        public CacheHelper(Context context) {
+            super(context, "cache.db", null, 1);
+        }
+
+        @Override
+        public void onCreate(final SQLiteDatabase db) {
+            db.execSQL("CREATE TABLE orgs (id INTEGER PRIMARY KEY);");
+            db.execSQL("CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT, avatarurl TEXT);");
+            db.execSQL("CREATE TABLE repos (id INTEGER PRIMARY KEY, orgId INTEGER, name TEXT, ownerId INTEGER);");
+        }
+
+        @Override
+        public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
+            db.execSQL("DROP TABLE IF EXISTS orgs");
+            db.execSQL("DROP TABLE IF EXISTS users");
+            db.execSQL("DROP TABLE IF EXISTS repos");
+            onCreate(db);
+        }
+    }
+
     private static final String TAG = "GHDM";
 
     private static final Executor EXECUTOR = Executors.newFixedThreadPool(10);
@@ -48,26 +67,7 @@ public class AccountDataManager {
     /**
      * Format version to bump if serialization format changes and cache should be ignored
      */
-    private static final int FORMAT_VERSION = 1;
-
-    private static String digest(String value) {
-        byte[] digested;
-        try {
-            digested = MessageDigest.getInstance("SHA-1").digest(value.getBytes("UTF-8"));
-        } catch (NoSuchAlgorithmException e) {
-            return null;
-        } catch (UnsupportedEncodingException e) {
-            return null;
-        }
-
-        String hashed = new BigInteger(1, digested).toString(16);
-        int padding = 40 - hashed.length();
-        if (padding == 0)
-            return hashed;
-        char[] zeros = new char[padding];
-        Arrays.fill(zeros, '0');
-        return new String(zeros) + hashed;
-    }
+    private static final int FORMAT_VERSION = 2;
 
     private final Context context;
 
@@ -76,8 +76,6 @@ public class AccountDataManager {
     private final OrganizationService orgs;
 
     private final RepositoryService repos;
-
-    private final IssueService issues;
 
     private final File root;
 
@@ -89,16 +87,14 @@ public class AccountDataManager {
      * @param users
      * @param orgs
      * @param repos
-     * @param issues
      */
-    public AccountDataManager(final Context context, final File root, UserService users, OrganizationService orgs,
-            RepositoryService repos, IssueService issues) {
+    public AccountDataManager(final Context context, final File root, final UserService users,
+            final OrganizationService orgs, final RepositoryService repos) {
         this.context = context;
         this.root = root;
         this.users = users;
         this.orgs = orgs;
         this.repos = repos;
-        this.issues = issues;
     }
 
     /**
@@ -131,7 +127,36 @@ public class AccountDataManager {
     }
 
     /**
-     * Get orgs.
+     * Query tables for columns
+     *
+     * @param helper
+     * @param tables
+     * @param columns
+     * @return cursor
+     */
+    protected Cursor query(SQLiteOpenHelper helper, String tables, String[] columns) {
+        return query(helper, tables, columns, null, null);
+    }
+
+    /**
+     * Query tables for columns
+     *
+     * @param helper
+     * @param tables
+     * @param columns
+     * @param selection
+     * @param selectionArgs
+     * @return cursor
+     */
+    protected Cursor query(SQLiteOpenHelper helper, String tables, String[] columns, String selection,
+            String[] selectionArgs) {
+        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+        builder.setTables(tables);
+        return builder.query(helper.getReadableDatabase(), columns, selection, selectionArgs, null, null, null);
+    }
+
+    /**
+     * Get organizations
      * <p>
      * This method may perform file and/or network I/O and should never be called on the UI-thread
      *
@@ -139,40 +164,50 @@ public class AccountDataManager {
      * @throws IOException
      */
     public List<User> getOrgs() throws IOException {
-        final File cache = new File(root, "orgs.ser");
-        List<User> cached = read(cache);
-        if (cached != null)
-            return cached;
-
-        List<User> loaded = new ArrayList<User>(orgs.getOrganizations());
-        Collections.sort(loaded, new Comparator<User>() {
-
-            public int compare(User u1, User u2) {
-                return u1.getLogin().compareToIgnoreCase(u2.getLogin());
-            }
-        });
-        loaded.add(0, users.getUser());
-        write(cache, loaded);
-        return loaded;
-    }
-
-    /**
-     * Get orgs
-     *
-     * @param requestFuture
-     */
-    public void getOrgs(final RequestFuture<List<User>> requestFuture) {
-
-        new RoboAsyncTask<List<User>>(context, EXECUTOR) {
-
-            public List<User> call() throws Exception {
-                return getOrgs();
+        SQLiteOpenHelper helper = new CacheHelper(context);
+        try {
+            Cursor cursor = query(helper, "orgs JOIN users ON (orgs.id = users.id)", //
+                    new String[] { "users.id", "users.name", "users.avatarurl" });
+            try {
+                if (cursor.moveToFirst()) {
+                    List<User> cached = new ArrayList<User>();
+                    do {
+                        User user = new User();
+                        user.setId(cursor.getInt(0));
+                        user.setLogin(cursor.getString(1));
+                        user.setAvatarUrl(cursor.getString(2));
+                        cached.add(user);
+                    } while (cursor.moveToNext());
+                    return cached;
+                }
+            } finally {
+                cursor.close();
             }
 
-            protected void onSuccess(List<User> orgs) throws Exception {
-                requestFuture.success(orgs);
-            };
-        }.execute();
+            List<User> loaded = new ArrayList<User>(orgs.getOrganizations());
+            loaded.add(0, users.getUser());
+
+            SQLiteDatabase db = helper.getWritableDatabase();
+            try {
+                db.beginTransaction();
+                db.delete("orgs", null, null);
+                for (User user : loaded) {
+                    ContentValues values = new ContentValues(3);
+                    values.put("id", user.getId());
+                    db.replace("orgs", null, values);
+                    values.put("name", user.getLogin());
+                    values.put("avatarurl", user.getAvatarUrl());
+                    db.replace("users", null, values);
+                }
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+                db.close();
+            }
+            return loaded;
+        } finally {
+            helper.close();
+        }
     }
 
     /**
@@ -180,85 +215,73 @@ public class AccountDataManager {
      * <p>
      * This method may perform network I/O and should never be called on the UI-thread
      *
-     * @see #getRepos(User, RequestFuture)
      * @param user
      * @return list of repositories
      * @throws IOException
      */
     public List<Repository> getRepos(final User user) throws IOException {
-        final File folder = new File(root, user.getLogin());
-        final File cache = new File(folder, "repos.ser");
-        List<Repository> cached = read(cache);
-        if (cached != null)
-            return cached;
-
-        List<Repository> loaded;
-        if (!TYPE_USER.equals(user.getType()))
-            loaded = repos.getOrgRepositories(user.getLogin());
-        else if (user.getLogin().equals(repos.getClient().getUser()))
-            loaded = repos.getRepositories();
-        else
-            loaded = repos.getRepositories(user.getLogin());
-        Collections.sort(loaded, new Comparator<Repository>() {
-
-            public int compare(Repository r1, Repository r2) {
-                return r1.getName().compareToIgnoreCase(r2.getName());
-            }
-        });
-        write(cache, loaded);
-        return loaded;
-    }
-
-    /**
-     * Get repositories for user
-     *
-     * @param user
-     * @param requestFuture
-     */
-    public void getRepos(final User user, final RequestFuture<List<Repository>> requestFuture) {
-        new RoboAsyncTask<List<Repository>>(context, EXECUTOR) {
-
-            public List<Repository> call() throws Exception {
-                return getRepos(user);
+        SQLiteOpenHelper helper = new CacheHelper(context);
+        try {
+            Cursor cursor = query(helper, "repos JOIN users ON (repos.ownerId = users.id)", //
+                    new String[] { "repos.id, repos.name", "users.id", "users.name", "users.avatarurl" }, //
+                    "repos.orgId=?", new String[] { Integer.toString(user.getId()) });
+            try {
+                if (cursor.moveToFirst()) {
+                    List<Repository> repos = new ArrayList<Repository>();
+                    do {
+                        Repository repo = new Repository();
+                        repo.setId(cursor.getLong(0));
+                        repo.setName(cursor.getString(1));
+                        User owner = new User();
+                        owner.setId(cursor.getInt(2));
+                        owner.setLogin(cursor.getString(3));
+                        owner.setAvatarUrl(cursor.getString(4));
+                        repo.setOwner(owner);
+                        repos.add(repo);
+                    } while (cursor.moveToNext());
+                    return repos;
+                }
+            } finally {
+                cursor.close();
             }
 
-            protected void onSuccess(List<Repository> repos) throws Exception {
-                requestFuture.success(repos);
-            };
-        }.execute();
-    }
+            List<Repository> loaded;
+            if (!TYPE_USER.equals(user.getType()))
+                loaded = repos.getOrgRepositories(user.getLogin());
+            else if (user.getLogin().equals(repos.getClient().getUser()))
+                loaded = repos.getRepositories();
+            else
+                loaded = repos.getRepositories(user.getLogin());
 
-    /**
-     * Get repositories for user
-     *
-     * @param repository
-     * @param filter
-     * @param requestFuture
-     */
-    public void getIssues(final IRepositoryIdProvider repository, final Map<String, String> filter,
-            final RequestFuture<List<Issue>> requestFuture) {
-        final File folder = new File(root, repository.generateId());
-        new RoboAsyncTask<List<Issue>>(context, EXECUTOR) {
+            SQLiteDatabase db = helper.getWritableDatabase();
+            try {
+                db.beginTransaction();
+                db.delete("repos", "orgId=?", new String[] { Integer.toString(user.getId()) });
+                for (Repository repo : loaded) {
+                    User owner = repo.getOwner();
 
-            public List<Issue> call() throws Exception {
-                StringBuilder filterId = new StringBuilder();
-                for (Entry<String, String> entry : filter.entrySet())
-                    filterId.append(entry.getKey()).append('=').append(entry.getValue()).append(',');
-                File cache = new File(folder, digest(filterId.toString()));
+                    ContentValues values = new ContentValues(3);
+                    values.put("name", repo.getName());
+                    values.put("orgId", user.getId());
+                    values.put("ownerId", owner.getId());
+                    db.replace("repos", null, values);
 
-                List<Issue> cached = read(cache);
-                if (cached != null)
-                    return cached;
-
-                List<Issue> loaded = issues.getIssues(repository, filter);
-                write(cache, loaded);
-                return loaded;
+                    values.clear();
+                    values.put("id", owner.getId());
+                    values.put("name", owner.getLogin());
+                    values.put("avatarurl", owner.getAvatarUrl());
+                    db.replace("users", null, values);
+                }
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+                db.close();
             }
 
-            protected void onSuccess(List<Issue> repos) throws Exception {
-                requestFuture.success(repos);
-            };
-        }.execute();
+            return loaded;
+        } finally {
+            helper.close();
+        }
     }
 
     /**

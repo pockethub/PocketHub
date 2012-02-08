@@ -113,7 +113,7 @@ public class RepoListFragment extends ListLoadingFragment<Repository> {
                             if (recent.contains(rId) && !recent.contains(lId))
                                 return 1;
 
-                            return lId.compareToIgnoreCase(rId);
+                            return lhs.getName().compareToIgnoreCase(rhs.getName());
                         }
                     });
                     return repos;

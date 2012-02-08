@@ -18,9 +18,11 @@ import com.madgag.android.listviews.ViewInflator;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.egit.github.core.User;
+import org.eclipse.egit.github.core.client.GitHubClient;
 
 /**
  * Fragment to load a list of GitHub organizations
@@ -32,12 +34,26 @@ public class OrgListFragment extends ListLoadingFragment<User> {
     @Inject
     private AccountDataManager cache;
 
+    @Inject
+    private GitHubClient client;
+
     public Loader<List<User>> onCreateLoader(int id, Bundle args) {
         return new AsyncLoader<List<User>>(getActivity()) {
 
             public List<User> loadInBackground() {
                 try {
-                    return cache.getOrgs();
+                    List<User> orgs = cache.getOrgs();
+                    Collections.sort(orgs, new Comparator<User>() {
+
+                        public int compare(User lhs, User rhs) {
+                            if (lhs.getLogin().equals(client.getUser()))
+                                return -1;
+                            if (rhs.getLogin().equals(client.getUser()))
+                                return 1;
+                            return lhs.getLogin().compareToIgnoreCase(rhs.getLogin());
+                        }
+                    });
+                    return orgs;
                 } catch (IOException e) {
                     Log.d(TAG, "Exception loading organizations", e);
                 }
