@@ -9,6 +9,12 @@ import java.util.List;
 
 import roboguice.fragment.RoboListFragment;
 
+/**
+ * List fragment to load homogeneous items
+ *
+ * @param <E>
+ *            item type
+ */
 public abstract class ListLoadingFragment<E> extends RoboListFragment implements LoaderCallbacks<List<E>> {
 
     @Override
@@ -27,7 +33,8 @@ public abstract class ListLoadingFragment<E> extends RoboListFragment implements
      * Refresh the fragment's list
      */
     public void refresh() {
-        getLoaderManager().restartLoader(0, null, this);
+        if (!getLoaderManager().hasRunningLoaders())
+            getLoaderManager().restartLoader(0, null, this);
     }
 
     public void onLoadFinished(Loader<List<E>> loader, List<E> items) {
