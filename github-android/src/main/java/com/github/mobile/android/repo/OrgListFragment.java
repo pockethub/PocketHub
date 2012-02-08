@@ -14,7 +14,6 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.github.mobile.android.util.AvatarHelper;
-import com.github.mobile.android.util.ErrorHelper;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -57,12 +56,7 @@ public class OrgListFragment extends ListLoadingFragment<User> implements Compar
                     if (Log.isLoggable(TAG, DEBUG))
                         Log.d(TAG, "Exception loading organizations", e);
 
-                    getActivity().runOnUiThread(new Runnable() {
-
-                        public void run() {
-                            ErrorHelper.show(getContext(), e, string.error_orgs_load);
-                        }
-                    });
+                    showError(e, string.error_orgs_load);
 
                     return Collections.emptyList();
                 }

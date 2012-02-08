@@ -11,6 +11,7 @@ import android.widget.ListView;
 
 import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -26,7 +27,7 @@ import org.eclipse.egit.github.core.service.GistService;
 /**
  * Fragment to display a list of Gists
  */
-public class GistsFragment extends ListLoadingFragment<Gist> {
+public class GistsFragment extends ListLoadingFragment<Gist> implements Comparator<Gist> {
 
     private OnItemClickListener clickListener;
 
@@ -44,7 +45,7 @@ public class GistsFragment extends ListLoadingFragment<Gist> {
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setEmptyText("No Gists");
+        setEmptyText(getString(string.no_gists));
     }
 
     @Override
@@ -58,19 +59,14 @@ public class GistsFragment extends ListLoadingFragment<Gist> {
         return new AsyncLoader<List<Gist>>(getActivity()) {
             @Override
             public List<Gist> loadInBackground() {
-                List<Gist> gists;
                 try {
-                    gists = service.getGists(service.getClient().getUser());
+                    List<Gist> gists = service.getGists(service.getClient().getUser());
+                    Collections.sort(gists, GistsFragment.this);
+                    return gists;
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    showError(e, string.error_gists_load);
+                    return Collections.emptyList();
                 }
-                Collections.sort(gists, new Comparator<Gist>() {
-
-                    public int compare(Gist g1, Gist g2) {
-                        return g2.getCreatedAt().compareTo(g1.getCreatedAt());
-                    }
-                });
-                return gists;
             }
         };
     }
@@ -79,5 +75,10 @@ public class GistsFragment extends ListLoadingFragment<Gist> {
     protected ListAdapter adapterFor(List<Gist> items) {
         return new ViewHoldingListAdapter<Gist>(items, viewInflatorFor(getActivity(), layout.gist_list_item),
                 reflectiveFactoryFor(GistViewHolder.class));
+    }
+
+    @Override
+    public int compare(final Gist g1, final Gist g2) {
+        return g2.getCreatedAt().compareTo(g1.getCreatedAt());
     }
 }

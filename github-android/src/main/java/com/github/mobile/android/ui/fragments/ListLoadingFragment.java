@@ -1,9 +1,12 @@
 package com.github.mobile.android.ui.fragments;
 
+import com.github.mobile.android.util.ErrorHelper;
+
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.widget.ListAdapter;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -58,5 +61,22 @@ public abstract class ListLoadingFragment<E> extends RoboListFragment implements
     public void onLoaderReset(Loader<List<E>> listLoader) {
         // Clear the data in the adapter.
         // mAdapter.setData(null);
+    }
+
+    /**
+     * Show exception using {@link ErrorHelper#show(android.content.Context, Exception, int)}
+     * <p>
+     * This method ensures the {@link Toast} is displayed on the UI thread and so it may be called from any thread
+     *
+     * @param e
+     * @param defaultMessage
+     */
+    protected void showError(final Exception e, final int defaultMessage) {
+        getActivity().runOnUiThread(new Runnable() {
+
+            public void run() {
+                ErrorHelper.show(getActivity(), e, defaultMessage);
+            }
+        });
     }
 }
