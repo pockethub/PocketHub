@@ -52,7 +52,7 @@ public class GistsActivity extends RoboFragmentActivity implements OnItemClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.gists);
-        setTitle(getString(string.gists_title));
+        setTitle(string.gists_title);
 
         gists = (GistsFragment) getSupportFragmentManager().findFragmentById(R.id.list);
         if (gists == null) {

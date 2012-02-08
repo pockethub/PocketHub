@@ -65,7 +65,7 @@ public class RepoBrowseActivity extends RoboFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.repo_list);
-        setTitle(getString(string.repositories_title));
+        setTitle(string.repositories_title);
 
         ((TextView) findViewById(id.tv_org_name)).setText(user.getLogin());
         avatarHelper.bind(((ImageView) findViewById(id.iv_gravatar)), user);

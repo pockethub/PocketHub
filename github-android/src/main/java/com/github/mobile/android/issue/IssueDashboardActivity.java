@@ -27,7 +27,7 @@ public class IssueDashboardActivity extends RoboFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(layout.issue_dashboard);
 
-        setTitle(getString(string.dashboard_issues_title));
+        setTitle(string.dashboard_issues_title);
 
         pager.setAdapter(new IssueDashboardPagerAdapter(getApplicationContext(), getSupportFragmentManager()));
         indicator.setViewPager(pager);

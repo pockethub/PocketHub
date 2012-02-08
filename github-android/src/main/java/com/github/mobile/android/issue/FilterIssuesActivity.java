@@ -80,7 +80,7 @@ public class FilterIssuesActivity extends RoboFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.issues_filter);
-        setTitle(getString(string.filter_issues_title));
+        setTitle(string.filter_issues_title);
 
         final Repository repository = (Repository) getIntent().getSerializableExtra(GitHubIntents.EXTRA_REPOSITORY);
 
