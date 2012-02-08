@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.github.mobile.android.AccountDataManager;
 import com.github.mobile.android.AsyncLoader;
@@ -15,6 +14,7 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.github.mobile.android.util.AvatarHelper;
+import com.github.mobile.android.util.ErrorHelper;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -53,16 +53,17 @@ public class OrgListFragment extends ListLoadingFragment<User> implements Compar
                     List<User> orgs = cache.getOrgs();
                     Collections.sort(orgs, OrgListFragment.this);
                     return orgs;
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     if (Log.isLoggable(TAG, DEBUG))
                         Log.d(TAG, "Exception loading organizations", e);
 
                     getActivity().runOnUiThread(new Runnable() {
 
                         public void run() {
-                            Toast.makeText(getContext(), getActivity().getString(string.error_orgs_load), 5000).show();
+                            ErrorHelper.show(getContext(), e, string.error_orgs_load);
                         }
                     });
+
                     return Collections.emptyList();
                 }
             }

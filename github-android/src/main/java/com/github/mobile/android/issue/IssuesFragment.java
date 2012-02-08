@@ -19,9 +19,11 @@ import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
+import com.github.mobile.android.util.ErrorHelper;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -168,8 +170,20 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
             public List<Issue> loadInBackground() {
                 hasMore = false;
                 final List<Issue> all = new ArrayList<Issue>();
+                boolean error = false;
                 for (IssuePager pager : pagers) {
-                    hasMore |= pager.next();
+                    try {
+                        if (!error)
+                            hasMore |= pager.next();
+                    } catch (final IOException e) {
+                        error = true;
+                        getActivity().runOnUiThread(new Runnable() {
+
+                            public void run() {
+                                ErrorHelper.show(getContext(), e, string.error_issues_load);
+                            }
+                        });
+                    }
                     all.addAll(pager.getIssues());
                 }
                 Collections.sort(all, new CreatedAtComparator());

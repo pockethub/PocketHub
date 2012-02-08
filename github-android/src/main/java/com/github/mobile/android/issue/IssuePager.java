@@ -1,7 +1,6 @@
 package com.github.mobile.android.issue;
 
-import android.util.Log;
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -15,8 +14,6 @@ import org.eclipse.egit.github.core.client.PageIterator;
  * Helper class for showing more and more pages of issues
  */
 public abstract class IssuePager {
-
-    private static final String TAG = "IP";
 
     /**
      * Next page to request
@@ -41,8 +38,9 @@ public abstract class IssuePager {
      * Get the next page of issues
      *
      * @return true if more pages
+     * @throws IOException
      */
-    public boolean next() {
+    public boolean next() throws IOException {
         PageIterator<Issue> iterator = createIterator(page, -1);
         try {
             for (Issue issue : iterator.next())
@@ -50,7 +48,7 @@ public abstract class IssuePager {
                     issues.put(issue.getUrl(), issue);
             page++;
         } catch (NoSuchPageException e) {
-            Log.d(TAG, "Exception getting issues", e);
+            throw e.getCause();
         }
         return iterator.hasNext();
     }

@@ -161,4 +161,6 @@
      <string name="no_repositories">No Repositories</string>
 
      <string name="no_issues">No Issues</string>
+
+     <string name="error_issues_load">Loading issues failed</string>
 </resources>

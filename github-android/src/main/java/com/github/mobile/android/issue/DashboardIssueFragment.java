@@ -13,11 +13,13 @@ import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
+import com.github.mobile.android.util.ErrorHelper;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 import com.madgag.android.listviews.ViewInflator;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -68,7 +70,16 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
         return new AsyncLoader<List<Issue>>(getActivity()) {
 
             public List<Issue> loadInBackground() {
-                hasMore = pager.next();
+                try {
+                    hasMore = pager.next();
+                } catch (final IOException e) {
+                    getActivity().runOnUiThread(new Runnable() {
+
+                        public void run() {
+                            ErrorHelper.show(getContext(), e, string.error_issues_load);
+                        }
+                    });
+                }
                 return pager.getIssues();
             }
         };
