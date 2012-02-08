@@ -14,6 +14,7 @@ import android.widget.ListView;
 import com.github.mobile.android.AccountDataManager;
 import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
@@ -53,7 +54,7 @@ public class RepoListFragment extends ListLoadingFragment<Repository> {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setEmptyText("No Repositories");
+        setEmptyText(getString(string.no_repositories));
     }
 
     /**

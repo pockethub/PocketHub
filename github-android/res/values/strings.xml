@@ -157,4 +157,8 @@
      <string name="error_orgs_load">Loading account &amp; organizations failed</string>
 
      <string name="no_filters">No Filters</string>
+
+     <string name="no_repositories">No Repositories</string>
+
+     <string name="no_issues">No Issues</string>
 </resources>

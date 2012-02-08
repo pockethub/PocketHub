@@ -99,7 +99,7 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setEmptyText("No Issues");
+        setEmptyText(getString(string.no_issues));
     }
 
     public void onLoaderReset(Loader<List<Issue>> listLoader) {
@@ -141,13 +141,11 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
 
                 public void run() {
                     ListView view = getListView();
-                    for (int i = 0; i < view.getCount() - view.getFooterViewsCount(); i++) {
-                        Issue issue = (Issue) view.getItemAtPosition(i);
-                        if (target == issue.getNumber()) {
+                    for (int i = 0; i < view.getCount() - view.getFooterViewsCount(); i++)
+                        if (target == ((Issue) view.getItemAtPosition(i)).getNumber()) {
                             view.setSelection(i);
                             return;
                         }
-                    }
                 }
             });
         }
