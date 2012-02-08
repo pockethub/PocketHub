@@ -155,4 +155,6 @@
      <string name="repositories_title">Repositories</string>
 
      <string name="error_orgs_load">Loading account &amp; organizations failed</string>
+
+     <string name="no_filters">No Filters</string>
 </resources>

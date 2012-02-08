@@ -9,6 +9,7 @@ import android.widget.ListView;
 import com.github.mobile.android.AccountDataManager;
 import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
@@ -28,6 +29,13 @@ public class FilterListFragment extends ListLoadingFragment<IssueFilter> {
     @Inject
     private AccountDataManager cache;
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setEmptyText(getString(string.no_filters));
+    }
+
+    @Override
     public Loader<List<IssueFilter>> onCreateLoader(int id, Bundle args) {
         return new AsyncLoader<List<IssueFilter>>(getActivity()) {
 
@@ -48,6 +56,7 @@ public class FilterListFragment extends ListLoadingFragment<IssueFilter> {
         };
     }
 
+    @Override
     protected ListAdapter adapterFor(List<IssueFilter> items) {
         return new ViewHoldingListAdapter<IssueFilter>(items, ViewInflator.viewInflatorFor(getActivity(),
                 layout.issue_filter_list_item),
