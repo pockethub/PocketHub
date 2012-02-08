@@ -14,6 +14,7 @@ import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.comment.CommentViewHolder;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
+import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.HttpImageGetter;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -45,6 +46,9 @@ public class GistFragment extends ListLoadingFragment<FullGist> {
     private List<View> fileHeaders = new ArrayList<View>();
 
     private HttpImageGetter imageGetter;
+
+    @Inject
+    private AvatarHelper avatarHelper;
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -112,7 +116,7 @@ public class GistFragment extends ListLoadingFragment<FullGist> {
             fileHeaders.add(fileView);
         }
         return new ViewHoldingListAdapter<Comment>(gist.getComments(), viewInflatorFor(getActivity(),
-                layout.comment_view_item), reflectiveFactoryFor(CommentViewHolder.class, getActivity(), imageGetter));
+                layout.comment_view_item), reflectiveFactoryFor(CommentViewHolder.class, avatarHelper, imageGetter));
     }
 
     public void onLoadFinished(Loader<List<FullGist>> loader, List<FullGist> items) {

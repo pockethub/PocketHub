@@ -25,7 +25,7 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.comment.CreateCommentActivity;
-import com.github.mobile.android.util.Avatar;
+import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.github.mobile.android.util.Html;
 import com.github.mobile.android.util.Time;
@@ -62,6 +62,9 @@ public class ViewIssueActivity extends RoboFragmentActivity implements LoaderCal
 
     @Inject
     private ContextScopedProvider<IssueService> service;
+
+    @Inject
+    private AvatarHelper avatarHelper;
 
     private IssueFragment issueFragment;
 
@@ -159,7 +162,7 @@ public class ViewIssueActivity extends RoboFragmentActivity implements LoaderCal
 
         TextView creation = (TextView) findViewById(id.tv_issue_creation);
         creation.setText(Html.encode(reported));
-        Avatar.bind(ViewIssueActivity.this, (ImageView) findViewById(id.iv_gravatar), issue.getUser());
+        avatarHelper.bind((ImageView) findViewById(id.iv_gravatar), issue.getUser());
 
         LinearLayout labels = (LinearLayout) findViewById(id.ll_labels);
         if (!issue.getLabels().isEmpty()) {

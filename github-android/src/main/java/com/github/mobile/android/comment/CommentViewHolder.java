@@ -1,13 +1,12 @@
 package com.github.mobile.android.comment;
 
-import android.content.Context;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mobile.android.R.id;
-import com.github.mobile.android.util.Avatar;
+import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.HttpImageGetter;
 import com.github.mobile.android.util.Time;
 import com.madgag.android.listviews.ViewHolder;
@@ -19,7 +18,7 @@ import org.eclipse.egit.github.core.Comment;
  */
 public class CommentViewHolder implements ViewHolder<Comment> {
 
-    private final Context context;
+    private final AvatarHelper avatarHelper;
 
     private final HttpImageGetter imageGetter;
 
@@ -30,11 +29,11 @@ public class CommentViewHolder implements ViewHolder<Comment> {
      * Create a comment holder
      *
      * @param view
-     * @param context
+     * @param avatarHelper
      * @param imageGetter
      */
-    public CommentViewHolder(View view, Context context, HttpImageGetter imageGetter) {
-        this.context = context;
+    public CommentViewHolder(View view, AvatarHelper avatarHelper, HttpImageGetter imageGetter) {
+        this.avatarHelper = avatarHelper;
         this.imageGetter = imageGetter;
         bodyView = (TextView) view.findViewById(id.tv_gist_comment_body);
         bodyView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -48,6 +47,6 @@ public class CommentViewHolder implements ViewHolder<Comment> {
         authorView.setText(comment.getUser().getLogin());
         dateView.setText(Time.relativeTimeFor(comment.getUpdatedAt()));
         avatarView.setBackgroundDrawable(null);
-        Avatar.bind(context, avatarView, comment.getUser());
+        avatarHelper.bind(avatarView, comment.getUser());
     }
 }

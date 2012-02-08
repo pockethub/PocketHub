@@ -10,6 +10,7 @@ import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.comment.CommentViewHolder;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
+import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.HttpImageGetter;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
@@ -42,6 +43,9 @@ public class IssueFragment extends ListLoadingFragment<FullIssue> {
     private View bodyView;
 
     private HttpImageGetter imageGetter;
+
+    @Inject
+    private AvatarHelper avatarHelper;
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -106,7 +110,7 @@ public class IssueFragment extends ListLoadingFragment<FullIssue> {
 
         return new ViewHoldingListAdapter<Comment>(issue.getComments(), ViewInflator.viewInflatorFor(getActivity(),
                 layout.comment_view_item), ReflectiveHolderFactory.reflectiveFactoryFor(CommentViewHolder.class,
-                getActivity(), imageGetter));
+                avatarHelper, imageGetter));
     }
 
     @Override

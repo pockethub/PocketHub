@@ -16,8 +16,9 @@ import com.github.mobile.android.R.string;
 import com.github.mobile.android.RequestReader;
 import com.github.mobile.android.RequestWriter;
 import com.github.mobile.android.issue.IssueBrowseActivity;
-import com.github.mobile.android.util.Avatar;
+import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
+import com.google.inject.Inject;
 
 import java.io.File;
 import java.util.Iterator;
@@ -55,6 +56,9 @@ public class RepoBrowseActivity extends RoboFragmentActivity {
     @InjectExtra(EXTRA_USER)
     private User user;
 
+    @Inject
+    private AvatarHelper avatarHelper;
+
     private RepoListFragment repoFragment;
 
     @Override
@@ -64,7 +68,7 @@ public class RepoBrowseActivity extends RoboFragmentActivity {
         setTitle(getString(string.repositories_title));
 
         ((TextView) findViewById(id.tv_org_name)).setText(user.getLogin());
-        Avatar.bind(this, ((ImageView) findViewById(id.iv_gravatar)), user);
+        avatarHelper.bind(((ImageView) findViewById(id.iv_gravatar)), user);
 
         recentRepos = new RequestReader(getRecentReposFile(), VERSION_RECENT_REPOS).read();
         if (recentRepos == null)

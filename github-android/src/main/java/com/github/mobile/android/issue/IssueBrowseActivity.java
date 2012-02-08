@@ -22,7 +22,7 @@ import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.RequestFuture;
-import com.github.mobile.android.util.Avatar;
+import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.google.inject.Inject;
 
@@ -65,6 +65,9 @@ public class IssueBrowseActivity extends RoboFragmentActivity implements OnItemC
     @Inject
     private AccountDataManager cache;
 
+    @Inject
+    private AvatarHelper avatarHelper;
+
     @InjectExtra(value = EXTRA_ISSUE_FILTER, optional = true)
     private IssueFilter filter;
 
@@ -77,7 +80,7 @@ public class IssueBrowseActivity extends RoboFragmentActivity implements OnItemC
 
         ((TextView) findViewById(id.tv_repo_name)).setText(repo.getName());
         ((TextView) findViewById(id.tv_owner_name)).setText(repo.getOwner().getLogin() + " /");
-        Avatar.bind(this, (ImageView) findViewById(id.iv_gravatar), repo.getOwner());
+        avatarHelper.bind((ImageView) findViewById(id.iv_gravatar), repo.getOwner());
 
         if (filter == null)
             filter = new IssueFilter(repo);

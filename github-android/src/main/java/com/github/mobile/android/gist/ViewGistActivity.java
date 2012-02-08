@@ -26,7 +26,7 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.comment.CreateCommentActivity;
-import com.github.mobile.android.util.Avatar;
+import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.github.mobile.android.util.Time;
 import com.google.inject.Inject;
@@ -89,6 +89,9 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
 
     @InjectExtra(EXTRA_GIST_ID)
     private String gistId;
+
+    @Inject
+    private AvatarHelper avatarHelper;
 
     private GistFragment gistFragment;
 
@@ -232,7 +235,7 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
             User user = gist.getUser();
             if (user != null) {
                 gravatar.setVisibility(VISIBLE);
-                Avatar.bind(this, gravatar, user);
+                avatarHelper.bind(gravatar, user);
                 created.setText(Html.fromHtml("<b>" + user.getLogin() + "</b> "
                         + Time.relativeTimeFor(gist.getCreatedAt())));
                 created.setVisibility(VISIBLE);

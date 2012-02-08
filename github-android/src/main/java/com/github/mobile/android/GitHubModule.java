@@ -5,6 +5,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
 
+import com.github.mobile.android.util.AvatarHelper;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 
@@ -139,6 +140,11 @@ public class GitHubModule extends AbstractModule {
     AccountDataManager dataManager(Context context, UserService users, OrganizationService orgs, RepositoryService repos) {
         File cache = new File(context.getFilesDir(), "cache");
         return new AccountDataManager(context, cache, users, orgs, repos);
+    }
+
+    @Provides
+    AvatarHelper avatarHelper(AccountDataManager cache) {
+        return new AvatarHelper(cache);
     }
 
     @Provides

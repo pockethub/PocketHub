@@ -14,6 +14,7 @@ import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
+import com.github.mobile.android.util.AvatarHelper;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -36,6 +37,9 @@ public class OrgListFragment extends ListLoadingFragment<User> implements Compar
 
     @Inject
     private AccountDataManager cache;
+
+    @Inject
+    private AvatarHelper avatarHelper;
 
     @Inject
     private GitHubClient client;
@@ -68,7 +72,7 @@ public class OrgListFragment extends ListLoadingFragment<User> implements Compar
     @Override
     protected ListAdapter adapterFor(List<User> items) {
         return new ViewHoldingListAdapter<User>(items, ViewInflator.viewInflatorFor(getActivity(), layout.org_item),
-                ReflectiveHolderFactory.reflectiveFactoryFor(OrgViewHolder.class, getActivity()));
+                ReflectiveHolderFactory.reflectiveFactoryFor(OrgViewHolder.class, avatarHelper));
     }
 
     @Override
