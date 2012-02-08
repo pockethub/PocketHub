@@ -21,6 +21,7 @@ import com.github.mobile.android.AccountDataManager;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
+import com.github.mobile.android.R.string;
 import com.github.mobile.android.RequestFuture;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
@@ -77,6 +78,7 @@ public class IssueBrowseActivity extends RoboFragmentActivity implements OnItemC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.repo_issue_list);
+        setTitle(string.Issues_title);
 
         ((TextView) findViewById(id.tv_repo_name)).setText(repo.getName());
         ((TextView) findViewById(id.tv_owner_name)).setText(repo.getOwner().getLogin() + " /");

@@ -167,4 +167,6 @@
      <string name="no_gists">No Gists</string>
 
      <string name="error_gists_load">Loading Gists failed</string>
+
+     <string name="Issues_title">Issues</string>
 </resources>
