@@ -2,6 +2,7 @@ package com.github.mobile.android.issue;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static android.widget.Toast.LENGTH_LONG;
 import static com.github.mobile.android.issue.ViewIssueActivity.viewIssueIntentFor;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_ISSUE_FILTER;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY;
@@ -121,7 +122,7 @@ public class IssueBrowseActivity extends RoboFragmentActivity implements OnItemC
             cache.addIssueFilter(filter, new RequestFuture<IssueFilter>() {
 
                 public void success(IssueFilter response) {
-                    Toast.makeText(IssueBrowseActivity.this, "Issue filter saved to bookmarks", 5000).show();
+                    Toast.makeText(IssueBrowseActivity.this, "Issue filter saved to bookmarks", LENGTH_LONG).show();
                 }
             });
             return true;

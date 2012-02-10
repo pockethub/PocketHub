@@ -1,5 +1,6 @@
 package com.github.mobile.android.util;
 
+import static android.widget.Toast.LENGTH_LONG;
 import android.content.Context;
 import android.widget.Toast;
 
@@ -9,11 +10,6 @@ import org.eclipse.egit.github.core.client.RequestException;
  * Helpers to display errors to the user
  */
 public class ErrorHelper {
-
-    /**
-     * Default duration to show {@link Toast}
-     */
-    public static final int DEFAULT_DURATION = 5000;
 
     /**
      * Show {@link Toast} for exception
@@ -28,7 +24,7 @@ public class ErrorHelper {
      * @param defaultMessage
      */
     public static void show(final Context context, final Exception e, final int defaultMessage) {
-        show(context, e, defaultMessage, DEFAULT_DURATION);
+        show(context, e, defaultMessage, LENGTH_LONG);
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.github.mobile.android.issue;
 
+import static android.widget.Toast.LENGTH_LONG;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENT_BODY;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_ISSUE;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_ISSUE_NUMBER;
@@ -146,7 +147,7 @@ public class ViewIssueActivity extends RoboFragmentActivity implements LoaderCal
             }
 
             protected void onException(Exception e) throws RuntimeException {
-                Toast.makeText(ViewIssueActivity.this, e.getMessage(), 5000).show();
+                Toast.makeText(ViewIssueActivity.this, e.getMessage(), LENGTH_LONG).show();
             }
 
             protected void onFinally() throws RuntimeException {
