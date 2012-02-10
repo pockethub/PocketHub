@@ -20,7 +20,7 @@ public class DashboardIssueViewHolder extends RepoIssueViewHolder {
      * @param v
      * @param maxNumberCount
      */
-    public DashboardIssueViewHolder(View v, Integer maxNumberCount) {
+    public DashboardIssueViewHolder(View v, int maxNumberCount) {
         super(v, maxNumberCount);
         repoText = (TextView) v.findViewById(id.tv_issue_repo_name);
     }

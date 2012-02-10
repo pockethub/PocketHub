@@ -48,7 +48,7 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
      * @param v
      * @param maxNumberCount
      */
-    public RepoIssueViewHolder(View v, Integer maxNumberCount) {
+    public RepoIssueViewHolder(View v, int maxNumberCount) {
         number = (TextView) v.findViewById(id.tv_issue_number);
         flags = number.getPaintFlags();
         title = (TextView) v.findViewById(id.tv_issue_title);

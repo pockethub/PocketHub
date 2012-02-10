@@ -82,7 +82,7 @@
         <dependency>
             <groupId>com.madgag</groupId>
             <artifactId>android-viewholder-listviews</artifactId>
-            <version>0.6</version>
+            <version>0.7</version>
         </dependency>
         <dependency>
             <groupId>com.github.kevinsawicki</groupId>
