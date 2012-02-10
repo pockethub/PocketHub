@@ -2,6 +2,7 @@ package com.github.mobile.android.ui.fragments;
 
 import com.github.mobile.android.util.ErrorHelper;
 
+import android.app.Application;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -72,10 +73,11 @@ public abstract class ListLoadingFragment<E> extends RoboListFragment implements
      * @param defaultMessage
      */
     protected void showError(final Exception e, final int defaultMessage) {
+        final Application application = getActivity().getApplication();
         getActivity().runOnUiThread(new Runnable() {
 
             public void run() {
-                ErrorHelper.show(getActivity(), e, defaultMessage);
+                ErrorHelper.show(application, e, defaultMessage);
             }
         });
     }
