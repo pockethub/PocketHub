@@ -73,23 +73,16 @@ public class RepoBrowseActivity extends RoboFragmentActivity {
         recentRepos = new RequestReader(getRecentReposFile(), VERSION_RECENT_REPOS).read();
         if (recentRepos == null)
             recentRepos = new LinkedHashSet<String>();
+        trimRecentRepos();
 
         OnItemClickListener repoClickListener = new OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> view, View arg1, int position, long id) {
                 Repository repo = (Repository) view.getItemAtPosition(position);
-                Iterator<String> iter = recentRepos.iterator();
                 String repoId = repo.generateId();
-                while (iter.hasNext())
-                    if (repoId.equals(iter.next()))
-                        iter.remove();
-                if (recentRepos.size() == MAX_RECENT_REPOS)
-                    while (iter.hasNext()) {
-                        iter.next();
-                        if (!iter.hasNext())
-                            iter.remove();
-                    }
-                recentRepos.add(repoId);
+                recentRepos.remove(repoId);
+                if (recentRepos.add(repoId))
+                    trimRecentRepos();
                 startActivity(IssueBrowseActivity.createIntent(repo));
             }
         };
@@ -100,6 +93,18 @@ public class RepoBrowseActivity extends RoboFragmentActivity {
             getSupportFragmentManager().beginTransaction().add(R.id.list, repoFragment).commit();
         }
         repoFragment.setRecent(recentRepos).setClickListener(repoClickListener);
+    }
+
+    private void trimRecentRepos() {
+        if (recentRepos.size() <= MAX_RECENT_REPOS)
+            return;
+
+        Iterator<String> iter = recentRepos.iterator();
+        while (iter.hasNext()) {
+            iter.next();
+            if (recentRepos.size() > MAX_RECENT_REPOS)
+                iter.remove();
+        }
     }
 
     @Override
