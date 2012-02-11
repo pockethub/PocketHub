@@ -1,5 +1,6 @@
 package com.github.mobile.android.gist;
 
+import static android.widget.Toast.LENGTH_LONG;
 import android.R;
 import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
@@ -86,7 +87,7 @@ public class GistsActivity extends RoboFragmentActivity implements OnItemClickLi
 
             protected void onException(Exception e) throws RuntimeException {
                 progress.cancel();
-                Toast.makeText(context, e.getMessage(), 5000).show();
+                Toast.makeText(context, e.getMessage(), LENGTH_LONG).show();
             }
         }.execute();
     }

@@ -1,6 +1,7 @@
 package com.github.mobile.android.gist;
 
 import static android.content.Intent.EXTRA_TEXT;
+import static android.widget.Toast.LENGTH_LONG;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.view.Menu;
@@ -127,7 +128,7 @@ public class ShareGistActivity extends RoboFragmentActivity {
             protected void onException(Exception e) throws RuntimeException {
                 progress.cancel();
                 Log.e(TAG, e.getMessage(), e);
-                Toast.makeText(ShareGistActivity.this, e.getMessage(), 5000).show();
+                Toast.makeText(ShareGistActivity.this, e.getMessage(), LENGTH_LONG).show();
             }
         }.execute();
     }

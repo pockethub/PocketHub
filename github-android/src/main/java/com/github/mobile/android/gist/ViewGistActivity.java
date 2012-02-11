@@ -2,6 +2,7 @@ package com.github.mobile.android.gist;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static android.widget.Toast.LENGTH_LONG;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENTS;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENT_BODY;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST;
@@ -181,7 +182,7 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
 
                 protected void onException(Exception e) throws RuntimeException {
                     progress.dismiss();
-                    Toast.makeText(getContext(), e.getMessage(), 5000).show();
+                    Toast.makeText(getContext(), e.getMessage(), LENGTH_LONG).show();
                 }
             }.execute();
             return;
@@ -219,7 +220,7 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
 
             protected void onException(Exception e) throws RuntimeException {
                 progress.dismiss();
-                Toast.makeText(ViewGistActivity.this, e.getMessage(), 5000).show();
+                Toast.makeText(ViewGistActivity.this, e.getMessage(), LENGTH_LONG).show();
             }
         }.execute();
 
