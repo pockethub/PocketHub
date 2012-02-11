@@ -1,5 +1,7 @@
 package com.github.mobile.android.issue;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -21,9 +23,26 @@ public abstract class IssuePager {
     protected int page = 1;
 
     /**
+     * Number of pages to request
+     */
+    protected int count = 1;
+
+    /**
      * All issues retrieved
      */
     protected final Map<String, Issue> issues = new LinkedHashMap<String, Issue>();
+
+    /**
+     * Reset the next page to be requested and clear the current issues
+     *
+     * @return this pager
+     */
+    public IssuePager reset() {
+        count = Math.max(1, page - 1);
+        page = 1;
+        issues.clear();
+        return this;
+    }
 
     /**
      * Get issues
@@ -41,11 +60,20 @@ public abstract class IssuePager {
      * @throws IOException
      */
     public boolean next() throws IOException {
+        Log.d("IP", "Page: " + page + " count: " + count);
         PageIterator<Issue> iterator = createIterator(page, -1);
         try {
-            for (Issue issue : iterator.next())
-                if (!issues.containsKey(issue.getUrl()))
-                    issues.put(issue.getUrl(), issue);
+            for (int i = 0; i < count && iterator.hasNext(); i++)
+                for (Issue issue : iterator.next())
+                    if (!issues.containsKey(issue.getUrl()))
+                        issues.put(issue.getUrl(), issue);
+
+            // Set page to count value if first call after call to reset()
+            if (count > 1) {
+                page = count;
+                count = 1;
+            }
+
             page++;
         } catch (NoSuchPageException e) {
             throw e.getCause();

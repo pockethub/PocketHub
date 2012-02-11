@@ -90,6 +90,20 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
     }
 
     @Override
+    public void refresh() {
+        pager.reset();
+        hasMore = true;
+        super.refresh();
+    }
+
+    /**
+     * Show more issues while retaining the current {@link IssuePager} state
+     */
+    private void showMore() {
+        super.refresh();
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
         inflater.inflate(menu.issue_dashboard, optionsMenu);
     }
@@ -130,7 +144,7 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
                         moreButton.setEnabled(false);
                         lastIssue = (Issue) getListView().getItemAtPosition(
                                 getListView().getCount() - getListView().getFooterViewsCount() - 1);
-                        refresh();
+                        showMore();
                     }
                 });
                 getListView().addFooterView(showMoreFooter);

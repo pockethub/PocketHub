@@ -4,13 +4,13 @@
     <item
         android:id="@+id/bookmark_filter"
         android:icon="@drawable/ic_action_bookmark"
-        android:showAsAction="always"
+        android:showAsAction="never"
         android:title="@string/bookmark">
     </item>
     <item
         android:id="@+id/filter_issues"
         android:icon="@drawable/ic_action_filter"
-        android:showAsAction="always"
+        android:showAsAction="never"
         android:title="@string/filter">
     </item>
     <item
@@ -18,6 +18,12 @@
         android:icon="@drawable/ic_action_create"
         android:showAsAction="always"
         android:title="@string/create">
+    </item>
+    <item
+        android:id="@+id/refresh"
+        android:icon="@drawable/ic_action_refresh"
+        android:showAsAction="always"
+        android:title="@string/refresh">
     </item>
 
 </menu>

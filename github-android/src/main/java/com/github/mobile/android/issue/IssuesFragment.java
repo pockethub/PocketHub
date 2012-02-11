@@ -110,6 +110,21 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
             loadListener.onLoaderReset(listLoader);
     }
 
+    @Override
+    public void refresh() {
+        for (IssuePager pager : pagers)
+            pager.reset();
+        hasMore = true;
+        super.refresh();
+    }
+
+    /**
+     * Show more issues while retaining the current {@link IssuePager} state
+     */
+    private void showMore() {
+        super.refresh();
+    }
+
     public void onLoadFinished(Loader<List<Issue>> loader, final List<Issue> items) {
         if (hasMore) {
             if (moreButton == null) {
@@ -122,7 +137,7 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
                         moreButton.setEnabled(false);
                         lastIssue = (Issue) getListView().getItemAtPosition(
                                 getListView().getCount() - getListView().getFooterViewsCount() - 1);
-                        refresh();
+                        showMore();
                     }
                 });
                 getListView().addFooterView(moreButton);

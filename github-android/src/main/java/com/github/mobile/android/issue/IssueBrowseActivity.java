@@ -126,6 +126,9 @@ public class IssueBrowseActivity extends RoboFragmentActivity implements OnItemC
                 }
             });
             return true;
+        case id.refresh:
+            issues.refresh();
+            return true;
         default:
             return super.onOptionsItemSelected(item);
         }
