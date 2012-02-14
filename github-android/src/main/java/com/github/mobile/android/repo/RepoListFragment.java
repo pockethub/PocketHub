@@ -120,6 +120,7 @@ public class RepoListFragment extends ListLoadingFragment<Repository> {
                     return repos;
                 } catch (IOException e) {
                     Log.d(TAG, "Error getting repositories", e);
+                    showError(e, string.error_repos_load);
                     return Collections.emptyList();
                 }
             }
