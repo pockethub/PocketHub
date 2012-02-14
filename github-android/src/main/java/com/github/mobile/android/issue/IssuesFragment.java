@@ -101,6 +101,7 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setEmptyText(getString(string.no_issues));
+        getListView().setFastScrollEnabled(true);
     }
 
     public void onLoaderReset(Loader<List<Issue>> listLoader) {

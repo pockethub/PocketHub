@@ -46,6 +46,7 @@ public class GistsFragment extends ListLoadingFragment<Gist> implements Comparat
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setEmptyText(getString(string.no_gists));
+        getListView().setFastScrollEnabled(true);
     }
 
     @Override

@@ -55,6 +55,7 @@ public class RepoListFragment extends ListLoadingFragment<Repository> {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setEmptyText(getString(string.no_repositories));
+        getListView().setFastScrollEnabled(true);
     }
 
     /**
