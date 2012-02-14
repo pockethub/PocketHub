@@ -82,7 +82,7 @@ public class IssueBrowseActivity extends RoboFragmentActivity implements OnItemC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.repo_issue_list);
-        setTitle(string.Issues_title);
+        setTitle(string.issues_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ((TextView) findViewById(id.tv_repo_name)).setText(repo.getName());
