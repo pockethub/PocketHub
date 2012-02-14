@@ -4,7 +4,7 @@
     <item
         android:id="@+id/open_gist"
         android:icon="@drawable/ic_action_open"
-        android:showAsAction="always"
+        android:showAsAction="never"
         android:title="@string/open">
     </item>
     <item
