@@ -1,5 +1,7 @@
 package com.github.mobile.android.issue;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static android.widget.Toast.LENGTH_LONG;
@@ -24,6 +26,7 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.RequestFuture;
+import com.github.mobile.android.repo.RepoBrowseActivity;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.google.inject.Inject;
@@ -80,6 +83,7 @@ public class IssueBrowseActivity extends RoboFragmentActivity implements OnItemC
         super.onCreate(savedInstanceState);
         setContentView(layout.repo_issue_list);
         setTitle(string.Issues_title);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ((TextView) findViewById(id.tv_repo_name)).setText(repo.getName());
         ((TextView) findViewById(id.tv_owner_name)).setText(repo.getOwner().getLogin() + " /");
@@ -128,6 +132,11 @@ public class IssueBrowseActivity extends RoboFragmentActivity implements OnItemC
             return true;
         case id.refresh:
             issues.refresh();
+            return true;
+        case android.R.id.home:
+            Intent intent = RepoBrowseActivity.createIntent(repo.getOwner());
+            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
             return true;
         default:
             return super.onOptionsItemSelected(item);

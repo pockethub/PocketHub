@@ -1,15 +1,19 @@
 package com.github.mobile.android.repo;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_USER;
 import android.R;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.mobile.android.HomeActivity;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
@@ -66,6 +70,7 @@ public class RepoBrowseActivity extends RoboFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(layout.repo_list);
         setTitle(string.repositories_title);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ((TextView) findViewById(id.tv_org_name)).setText(user.getLogin());
         avatarHelper.bind(((ImageView) findViewById(id.iv_gravatar)), user);
@@ -93,6 +98,18 @@ public class RepoBrowseActivity extends RoboFragmentActivity {
             getSupportFragmentManager().beginTransaction().add(R.id.list, repoFragment).commit();
         }
         repoFragment.setRecent(recentRepos).setClickListener(repoClickListener);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case android.R.id.home:
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     private void trimRecentRepos() {
