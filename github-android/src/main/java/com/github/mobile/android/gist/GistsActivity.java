@@ -129,6 +129,9 @@ public class GistsActivity extends RoboFragmentActivity implements OnItemClickLi
         case id.create_gist:
             startActivityForResult(new Intent(context, ShareGistActivity.class), REQUEST_CREATE);
             return true;
+        case id.refresh:
+            gists.refresh();
+            return true;
         default:
             return super.onOptionsItemSelected(item);
         }
