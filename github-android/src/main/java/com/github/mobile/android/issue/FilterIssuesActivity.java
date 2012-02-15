@@ -1,9 +1,5 @@
 package com.github.mobile.android.issue;
 
-import android.app.AlertDialog.Builder;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.Menu;
@@ -15,37 +11,40 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.github.mobile.android.DialogFragmentActivity;
+import com.github.mobile.android.MultiChoiceDialogFragment;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.SingleChoiceDialogFragment;
 import com.github.mobile.android.util.GitHubIntents;
 import com.google.common.base.Joiner;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.CollaboratorService;
-import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.LabelService;
 import org.eclipse.egit.github.core.service.MilestoneService;
-
-import roboguice.activity.RoboFragmentActivity;
-import roboguice.util.RoboAsyncTask;
 
 /**
  * Activity to create a persistent issues filter for a repository
  */
-public class FilterIssuesActivity extends RoboFragmentActivity {
+public class FilterIssuesActivity extends DialogFragmentActivity {
+
+    private static final int REQUEST_LABELS = 1;
+
+    private static final int REQUEST_MILESTONE = 2;
+
+    private static final int REQUEST_ASSIGNEE = 3;
 
     @Inject
     private CollaboratorService collaborators;
@@ -56,11 +55,11 @@ public class FilterIssuesActivity extends RoboFragmentActivity {
     @Inject
     private LabelService labels;
 
-    private List<Label> allLabels;
+    private LabelsDialog labelsDialog;
 
-    private List<User> allCollaborators;
+    private MilestoneDialog milestoneDialog;
 
-    private List<Milestone> allMilestones;
+    private AssigneeDialog assigneeDialog;
 
     private IssueFilter filter;
 
@@ -93,34 +92,10 @@ public class FilterIssuesActivity extends RoboFragmentActivity {
         OnClickListener assigneeListener = new OnClickListener() {
 
             public void onClick(View v) {
-                if (allCollaborators == null) {
-                    final ProgressDialog loader = new ProgressDialog(FilterIssuesActivity.this);
-                    loader.setMessage("Loading Collaborators..");
-                    loader.show();
-                    new RoboAsyncTask<List<User>>(FilterIssuesActivity.this) {
-
-                        public List<User> call() throws Exception {
-                            allCollaborators = collaborators.getCollaborators(repository);
-                            Collections.sort(allCollaborators, new Comparator<User>() {
-
-                                public int compare(User u1, User u2) {
-                                    return u1.getLogin().compareToIgnoreCase(u2.getLogin());
-                                }
-                            });
-                            return allCollaborators;
-                        }
-
-                        protected void onSuccess(List<User> users) throws Exception {
-                            loader.dismiss();
-                            promptForAssignee();
-                        }
-
-                        protected void onException(Exception e) throws RuntimeException {
-                            loader.dismiss();
-                        }
-                    }.execute();
-                } else
-                    promptForAssignee();
+                if (assigneeDialog == null)
+                    assigneeDialog = new AssigneeDialog(FilterIssuesActivity.this, REQUEST_ASSIGNEE, repository,
+                            collaborators);
+                assigneeDialog.show(filter.getAssignee());
             }
         };
 
@@ -130,37 +105,10 @@ public class FilterIssuesActivity extends RoboFragmentActivity {
         OnClickListener milestoneListener = new OnClickListener() {
 
             public void onClick(View v) {
-                if (allMilestones == null) {
-                    final ProgressDialog loader = new ProgressDialog(FilterIssuesActivity.this);
-                    loader.setMessage("Loading Milestones...");
-                    loader.show();
-                    new RoboAsyncTask<List<Milestone>>(FilterIssuesActivity.this) {
-
-                        public List<Milestone> call() throws Exception {
-                            List<Milestone> all = new ArrayList<Milestone>();
-                            all.addAll(milestones.getMilestones(repository, IssueService.STATE_OPEN));
-                            all.addAll(milestones.getMilestones(repository, IssueService.STATE_CLOSED));
-                            Collections.sort(all, new Comparator<Milestone>() {
-
-                                public int compare(Milestone m1, Milestone m2) {
-                                    return m1.getTitle().compareToIgnoreCase(m2.getTitle());
-                                }
-                            });
-                            allMilestones = all;
-                            return allMilestones;
-                        }
-
-                        protected void onSuccess(List<Milestone> all) throws Exception {
-                            loader.dismiss();
-                            promptForMilestone();
-                        }
-
-                        protected void onException(Exception e) throws RuntimeException {
-                            loader.dismiss();
-                        }
-                    }.execute();
-                } else
-                    promptForMilestone();
+                if (milestoneDialog == null)
+                    milestoneDialog = new MilestoneDialog(FilterIssuesActivity.this, REQUEST_MILESTONE, repository,
+                            milestones);
+                milestoneDialog.show(filter.getMilestone());
             }
         };
 
@@ -170,34 +118,16 @@ public class FilterIssuesActivity extends RoboFragmentActivity {
         OnClickListener labelsListener = new OnClickListener() {
 
             public void onClick(View v) {
-                if (allLabels == null) {
-                    final ProgressDialog loader = new ProgressDialog(FilterIssuesActivity.this);
-                    loader.setMessage("Loading Labels...");
-                    loader.show();
-                    new RoboAsyncTask<List<Label>>(FilterIssuesActivity.this) {
-
-                        public List<Label> call() throws Exception {
-                            allLabels = labels.getLabels(repository);
-                            Collections.sort(allLabels, new Comparator<Label>() {
-
-                                public int compare(Label l1, Label l2) {
-                                    return l1.getName().compareToIgnoreCase(l2.getName());
-                                }
-                            });
-                            return allLabels;
-                        }
-
-                        protected void onSuccess(List<Label> all) throws Exception {
-                            loader.dismiss();
-                            promptForLabels();
-                        }
-
-                        protected void onException(Exception e) throws RuntimeException {
-                            loader.dismiss();
-                        }
-                    }.execute();
+                if (labelsDialog == null)
+                    labelsDialog = new LabelsDialog(FilterIssuesActivity.this, REQUEST_LABELS, repository, labels);
+                Set<String> labelNames = filter.getLabels();
+                if (labelNames != null) {
+                    List<Label> filterLabels = new ArrayList<Label>(labelNames.size());
+                    for (String name : labelNames)
+                        filterLabels.add(new Label().setName(name));
+                    labelsDialog.show(filterLabels);
                 } else
-                    promptForLabels();
+                    labelsDialog.show(null);
             }
         };
 
@@ -297,117 +227,36 @@ public class FilterIssuesActivity extends RoboFragmentActivity {
             ((TextView) findViewById(id.tv_assignee)).setText("");
     }
 
-    private void promptForLabels() {
-        final Builder prompt = new Builder(FilterIssuesActivity.this);
-        prompt.setTitle("Select Labels:");
-        final String[] names = new String[allLabels.size()];
-        final boolean[] checked = new boolean[names.length];
-        Set<String> selectedLabels = filter.getLabels();
-        final Set<String> selected = new TreeSet<String>();
-        if (selectedLabels == null)
-            for (int i = 0; i < names.length; i++)
-                names[i] = allLabels.get(i).getName();
-        else {
-            selected.addAll(selectedLabels);
-            for (int i = 0; i < names.length; i++) {
-                names[i] = allLabels.get(i).getName();
-                if (selectedLabels.contains(names[i]))
-                    checked[i] = true;
-            }
-        }
+    public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
+        if (RESULT_OK != resultCode)
+            return;
 
-        prompt.setMultiChoiceItems(names, checked, new OnMultiChoiceClickListener() {
-
-            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                if (isChecked)
-                    selected.add(names[which]);
-                else
-                    selected.remove(names[which]);
-            }
-        });
-        prompt.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                filter.setLabels(selected);
-                updateLabels();
-            }
-        });
-        prompt.setNegativeButton("Clear", new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+        switch (requestCode) {
+        case REQUEST_LABELS:
+            String[] labels = arguments.getStringArray(MultiChoiceDialogFragment.ARG_SELECTED);
+            if (labels.length > 0)
+                filter.setLabels(new HashSet<String>(Arrays.asList(labels)));
+            else
                 filter.setLabels(null);
-                updateLabels();
-            }
-        });
-        prompt.show();
-    }
-
-    private void promptForMilestone() {
-        final Builder prompt = new Builder(FilterIssuesActivity.this);
-        prompt.setTitle("Select A Milestone:");
-
-        final String[] names = new String[allMilestones.size()];
-        int selected = -1;
-        Milestone milestone = filter.getMilestone();
-        if (milestone != null)
-            for (int i = 0; i < names.length; i++) {
-                names[i] = allMilestones.get(i).getTitle();
-                if (milestone.getNumber() == allMilestones.get(i).getNumber())
-                    selected = i;
-            }
-        else
-            for (int i = 0; i < names.length; i++)
-                names[i] = allMilestones.get(i).getTitle();
-
-        prompt.setSingleChoiceItems(names, selected, new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                filter.setMilestone(allMilestones.get(which));
-                updateMilestone();
-            }
-        });
-        prompt.setNegativeButton("Clear", new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+            updateLabels();
+            break;
+        case REQUEST_MILESTONE:
+            String milestone = arguments.getString(SingleChoiceDialogFragment.ARG_SELECTED);
+            if (milestone != null) {
+                for (Milestone candidate : milestoneDialog.getMilestones())
+                    if (milestone.equals(candidate.getTitle())) {
+                        filter.setMilestone(candidate);
+                        break;
+                    }
+            } else
                 filter.setMilestone(null);
-                updateMilestone();
-            }
-        });
-        prompt.show();
-    }
-
-    private void promptForAssignee() {
-        final Builder prompt = new Builder(FilterIssuesActivity.this);
-        prompt.setTitle("Select An Assignee:");
-
-        final String[] logins = new String[allCollaborators.size()];
-        int selected = -1;
-        for (int i = 0; i < logins.length; i++) {
-            logins[i] = allCollaborators.get(i).getLogin();
-            if (logins[i].equals(filter.getAssignee()))
-                selected = i;
+            updateMilestone();
+            break;
+        case REQUEST_ASSIGNEE:
+            String assignee = arguments.getString(SingleChoiceDialogFragment.ARG_SELECTED);
+            filter.setAssignee(assignee);
+            updateAssignee();
+            break;
         }
-
-        prompt.setSingleChoiceItems(logins, selected, new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                filter.setAssignee(logins[which]);
-                updateAssignee();
-            }
-        });
-        prompt.setNegativeButton("Clear", new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                filter.setAssignee(null);
-                updateAssignee();
-            }
-        });
-        prompt.show();
     }
 }
