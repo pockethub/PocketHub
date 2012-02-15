@@ -75,6 +75,7 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
      */
     public IssuesFragment setFilter(IssueFilter filter) {
         this.filter = filter;
+        pagers.clear();
         return this;
     }
 
@@ -94,20 +95,6 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
     public IssuesFragment setLoadListener(LoaderCallbacks<List<Issue>> loadListener) {
         this.loadListener = loadListener;
         return this;
-    }
-
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        pagers.clear();
-        if (filter != null)
-            for (final Map<String, String> query : filter)
-                pagers.add(new IssuePager(store) {
-
-                    public PageIterator<Issue> createIterator(int page, int size) {
-                        return service.pageIssues(repository, query, page, size);
-                    }
-                });
     }
 
     @Override
@@ -192,6 +179,16 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
 
     @Override
     public Loader<List<Issue>> onCreateLoader(int i, Bundle bundle) {
+        // Load pagers if needed
+        if (filter != null && pagers.isEmpty())
+            for (final Map<String, String> query : filter)
+                pagers.add(new IssuePager(store) {
+
+                    public PageIterator<Issue> createIterator(int page, int size) {
+                        return service.pageIssues(repository, query, page, size);
+                    }
+                });
+        final IssuePager[] loaderPagers = pagers.toArray(new IssuePager[pagers.size()]);
         return new AsyncLoader<List<Issue>>(getActivity()) {
 
             @Override
@@ -199,7 +196,7 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
                 hasMore = false;
                 final List<Issue> all = new ArrayList<Issue>();
                 boolean error = false;
-                for (IssuePager pager : pagers) {
+                for (IssuePager pager : loaderPagers) {
                     try {
                         if (!error)
                             hasMore |= pager.next();
