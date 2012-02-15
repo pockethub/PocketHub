@@ -1,8 +1,6 @@
 package com.github.mobile.android;
 
-import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
-import static android.content.DialogInterface.BUTTON_NEGATIVE;
 import static android.content.DialogInterface.BUTTON_NEUTRAL;
 import static android.content.DialogInterface.BUTTON_POSITIVE;
 import android.app.AlertDialog.Builder;
@@ -98,9 +96,6 @@ public class MultiChoiceDialogFragment extends DialogFragmentHelper implements O
             getWorkingSelection().clear();
         case BUTTON_POSITIVE:
             onResult(RESULT_OK);
-            break;
-        case BUTTON_NEGATIVE:
-            onResult(RESULT_CANCELED);
             break;
         default:
             break;
