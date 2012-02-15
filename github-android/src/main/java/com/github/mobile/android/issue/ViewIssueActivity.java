@@ -235,6 +235,14 @@ public class ViewIssueActivity extends DialogFragmentActivity implements LoaderC
             labels.setLayoutParams(params);
         } else
             labels.setVisibility(GONE);
+
+        LinearLayout milestones = (LinearLayout) findViewById(id.ll_milestone);
+        if (issue.getMilestone() != null) {
+            milestones.setVisibility(VISIBLE);
+            ((TextView) milestones.findViewById(id.tv_milestone)).setText(issue.getMilestone().getTitle());
+        } else
+            milestones.setVisibility(GONE);
+
     }
 
     public Loader<List<FullIssue>> onCreateLoader(int id, Bundle args) {
