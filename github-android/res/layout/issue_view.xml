@@ -5,21 +5,11 @@
     android:background="@drawable/grid_repeat"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/tv_issue_title"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:textColor="@color/item_text_color"
-        android:textStyle="bold" />
-
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingBottom="5dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp" >
+        android:padding="5dp" >
 
         <ImageView
             android:id="@+id/iv_gravatar"
@@ -29,6 +19,42 @@
 
         <TextView
             android:id="@+id/tv_issue_creation"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="5dp"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/item_text_color_light" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_issue_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textColor="@color/item_text_color"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/ll_assignee"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" >
+
+        <ImageView
+            android:id="@+id/iv_assignee_gravatar"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/gravatar_icon" />
+
+        <TextView
+            android:id="@+id/tv_assignee_name"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:gravity="center_vertical"

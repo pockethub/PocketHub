@@ -17,5 +17,10 @@
         android:showAsAction="never"
         android:title="@string/edit_milestone">
     </item>
+     <item
+        android:id="@+id/issue_assignee"
+        android:showAsAction="never"
+        android:title="@string/edit_assignee">
+    </item>
 
 </menu>

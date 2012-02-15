@@ -15,7 +15,6 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -44,6 +43,8 @@ import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.RepositoryId;
+import org.eclipse.egit.github.core.User;
+import org.eclipse.egit.github.core.service.CollaboratorService;
 import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.LabelService;
 import org.eclipse.egit.github.core.service.MilestoneService;
@@ -62,6 +63,8 @@ public class ViewIssueActivity extends DialogFragmentActivity implements LoaderC
     private static final int REQUEST_CODE_LABELS = 2;
 
     private static final int REQUEST_CODE_MILESTONE = 3;
+
+    private static final int REQUEST_CODE_ASSIGNEE = 4;
 
     /**
      * Create intent to view issue
@@ -86,6 +89,9 @@ public class ViewIssueActivity extends DialogFragmentActivity implements LoaderC
     private MilestoneService milestoneService;
 
     @Inject
+    private CollaboratorService collaboratorService;
+
+    @Inject
     private AvatarHelper avatarHelper;
 
     private IssueFragment issueFragment;
@@ -107,6 +113,8 @@ public class ViewIssueActivity extends DialogFragmentActivity implements LoaderC
 
     private MilestoneDialog milestoneDialog;
 
+    private AssigneeDialog assigneeDialog;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.issue_view);
@@ -118,6 +126,7 @@ public class ViewIssueActivity extends DialogFragmentActivity implements LoaderC
 
         labelsDialog = new LabelsDialog(this, REQUEST_CODE_LABELS, repositoryId, labelService);
         milestoneDialog = new MilestoneDialog(this, REQUEST_CODE_MILESTONE, repositoryId, milestoneService);
+        assigneeDialog = new AssigneeDialog(this, REQUEST_CODE_ASSIGNEE, repositoryId, collaboratorService);
 
         issueFragment = (IssueFragment) getSupportFragmentManager().findFragmentById(R.id.list);
         if (issueFragment == null) {
@@ -153,6 +162,11 @@ public class ViewIssueActivity extends DialogFragmentActivity implements LoaderC
             if (issue != null)
                 milestoneDialog.show(issue.getMilestone());
             return true;
+        case id.issue_assignee:
+            if (issue != null) {
+                User assignee = issue.getAssignee();
+                assigneeDialog.show(assignee != null ? assignee.getLogin() : null);
+            }
         default:
             return super.onOptionsItemSelected(item);
         }
@@ -201,6 +215,8 @@ public class ViewIssueActivity extends DialogFragmentActivity implements LoaderC
             editLabels(arguments.getStringArray(MultiChoiceDialogFragment.ARG_SELECTED));
         if (REQUEST_CODE_MILESTONE == requestCode && RESULT_OK == resultCode)
             editMilestone(arguments.getString(SingleChoiceDialogFragment.ARG_SELECTED));
+        if (REQUEST_CODE_ASSIGNEE == requestCode && RESULT_OK == resultCode)
+            editAssignee(arguments.getString(SingleChoiceDialogFragment.ARG_SELECTED));
     }
 
     private void editLabels(final String[] labels) {
@@ -242,8 +258,6 @@ public class ViewIssueActivity extends DialogFragmentActivity implements LoaderC
         else
             milestoneNumber = -1;
 
-        Log.d("TEST", "Updating milestone to: " + milestoneNumber);
-
         final ProgressDialog progress = new ProgressDialog(this);
         progress.setMessage("Updating milestone...");
         progress.setIndeterminate(true);
@@ -272,13 +286,53 @@ public class ViewIssueActivity extends DialogFragmentActivity implements LoaderC
         }.execute();
     }
 
+    private void editAssignee(final String user) {
+        final ProgressDialog progress = new ProgressDialog(this);
+        progress.setMessage("Updating assignee...");
+        progress.setIndeterminate(true);
+        progress.show();
+        new RoboAsyncTask<Issue>(this) {
+
+            public Issue call() throws Exception {
+                Issue editedIssue = new Issue();
+                editedIssue.setAssignee(new User().setLogin(user != null ? user : ""));
+                editedIssue.setNumber(issueNumber);
+                return store.editIssue(repositoryId, editedIssue);
+            }
+
+            protected void onSuccess(Issue updated) throws Exception {
+                issueFragment.updateIssue(updated);
+                displayIssue(updated);
+            }
+
+            protected void onException(Exception e) throws RuntimeException {
+                Toast.makeText(ViewIssueActivity.this, e.getMessage(), LENGTH_LONG).show();
+            }
+
+            protected void onFinally() throws RuntimeException {
+                progress.dismiss();
+            };
+        }.execute();
+    }
+
     private void displayIssue(Issue issue) {
         ((TextView) findViewById(id.tv_issue_title)).setText(issue.getTitle());
-        String reported = "<b>" + issue.getUser().getLogin() + "</b> " + Time.relativeTimeFor(issue.getCreatedAt());
+        String reported = "<b>" + issue.getUser().getLogin() + "</b> opened "
+                + Time.relativeTimeFor(issue.getCreatedAt());
 
         TextView creation = (TextView) findViewById(id.tv_issue_creation);
         creation.setText(Html.encode(reported));
         avatarHelper.bind((ImageView) findViewById(id.iv_gravatar), issue.getUser());
+
+        LinearLayout assigneeSection = (LinearLayout) findViewById(id.ll_assignee);
+        User assignee = issue.getAssignee();
+        if (assignee != null) {
+            assigneeSection.setVisibility(VISIBLE);
+            ((TextView) assigneeSection.findViewById(id.tv_assignee_name)).setText(Html.encode("<b>"
+                    + assignee.getLogin() + "</b> is assigned"));
+            avatarHelper.bind((ImageView) assigneeSection.findViewById(id.iv_assignee_gravatar), issue.getUser());
+        } else
+            assigneeSection.setVisibility(GONE);
 
         LinearLayout labels = (LinearLayout) findViewById(id.ll_labels);
         if (!issue.getLabels().isEmpty()) {

@@ -179,4 +179,6 @@
      <string name="milestone_prefix">Milestone:</string>
 
      <string name="edit_milestone">Edit Milestone</string>
+
+     <string name="edit_assignee">Edit Assignee</string>
 </resources>
