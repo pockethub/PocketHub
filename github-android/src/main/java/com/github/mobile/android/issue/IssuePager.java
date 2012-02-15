@@ -1,7 +1,5 @@
 package com.github.mobile.android.issue;
 
-import android.util.Log;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -30,7 +28,21 @@ public abstract class IssuePager {
     /**
      * All issues retrieved
      */
-    protected final Map<String, Issue> issues = new LinkedHashMap<String, Issue>();
+    protected final Map<Long, Issue> issues = new LinkedHashMap<Long, Issue>();
+
+    /**
+     * Store to add loaded issues to
+     */
+    protected final IssueStore store;
+
+    /**
+     * Create issue pager
+     *
+     * @param store
+     */
+    public IssuePager(final IssueStore store) {
+        this.store = store;
+    }
 
     /**
      * Reset the next page to be requested and clear the current issues
@@ -60,13 +72,14 @@ public abstract class IssuePager {
      * @throws IOException
      */
     public boolean next() throws IOException {
-        Log.d("IP", "Page: " + page + " count: " + count);
         PageIterator<Issue> iterator = createIterator(page, -1);
         try {
             for (int i = 0; i < count && iterator.hasNext(); i++)
-                for (Issue issue : iterator.next())
-                    if (!issues.containsKey(issue.getUrl()))
-                        issues.put(issue.getUrl(), issue);
+                for (Issue issue : iterator.next()) {
+                    issue = store.addIssue(issue);
+                    if (!issues.containsKey(issue.getId()))
+                        issues.put(issue.getId(), issue);
+                }
 
             // Set page to count value if first call after call to reset()
             if (count > 1) {

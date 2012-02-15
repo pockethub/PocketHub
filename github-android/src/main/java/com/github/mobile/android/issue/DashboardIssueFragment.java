@@ -43,6 +43,9 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
     @Inject
     private IssueService service;
 
+    @Inject
+    private IssueStore store;
+
     private Map<String, String> filterData;
 
     private Issue lastIssue;
@@ -53,7 +56,7 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
 
     private Button moreButton;
 
-    private IssuePager pager = new IssuePager() {
+    private IssuePager pager = new IssuePager(store) {
 
         public PageIterator<Issue> createIterator(int page, int size) {
             return service.pageIssues(filterData, page, size);

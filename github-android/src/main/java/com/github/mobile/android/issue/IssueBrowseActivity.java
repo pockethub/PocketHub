@@ -16,7 +16,9 @@ import android.support.v4.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,8 @@ import roboguice.inject.InjectExtra;
 public class IssueBrowseActivity extends RoboFragmentActivity implements OnItemClickListener {
 
     private static final int CODE_FILTER = 1;
+
+    private static final int CODE_VIEW = 2;
 
     /**
      * Create intent to browse a repository's issues
@@ -161,11 +165,16 @@ public class IssueBrowseActivity extends RoboFragmentActivity implements OnItemC
             issues.setFilter(filter);
             issues.refresh();
         }
+        if (requestCode == CODE_VIEW) {
+            ListAdapter adapter = issues.getListAdapter();
+            if (adapter instanceof BaseAdapter)
+                ((BaseAdapter) adapter).notifyDataSetChanged();
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void onItemClick(AdapterView<?> list, View view, int position, long id) {
         Issue issue = (Issue) list.getItemAtPosition(position);
-        startActivity(viewIssueIntentFor(issue));
+        startActivityForResult(viewIssueIntentFor(issue), CODE_VIEW);
     }
 }

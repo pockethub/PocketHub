@@ -45,6 +45,11 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
     @Inject
     private IssueService service;
 
+    @Inject
+    private IssueStore store;
+
+    private IssueFilter filter;
+
     private IRepositoryIdProvider repository;
 
     private Issue lastIssue;
@@ -69,14 +74,7 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
      * @return this fragment
      */
     public IssuesFragment setFilter(IssueFilter filter) {
-        pagers.clear();
-        for (final Map<String, String> query : filter)
-            pagers.add(new IssuePager() {
-
-                public PageIterator<Issue> createIterator(int page, int size) {
-                    return service.pageIssues(repository, query, page, size);
-                }
-            });
+        this.filter = filter;
         return this;
     }
 
@@ -98,6 +96,21 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
         return this;
     }
 
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        pagers.clear();
+        if (filter != null)
+            for (final Map<String, String> query : filter)
+                pagers.add(new IssuePager(store) {
+
+                    public PageIterator<Issue> createIterator(int page, int size) {
+                        return service.pageIssues(repository, query, page, size);
+                    }
+                });
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setEmptyText(getString(string.no_issues));

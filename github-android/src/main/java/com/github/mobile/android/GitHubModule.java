@@ -5,20 +5,21 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
 
+import com.github.mobile.android.issue.IssueStore;
 import com.github.mobile.android.util.AvatarHelper;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.net.HttpURLConnection;
 import java.util.List;
 
 import org.eclipse.egit.github.core.SearchRepository;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.client.GitHubRequest;
 import org.eclipse.egit.github.core.client.IGitHubConstants;
-import org.eclipse.egit.github.core.client.PagedRequest;
 import org.eclipse.egit.github.core.service.CollaboratorService;
 import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.IssueService;
@@ -33,6 +34,8 @@ import org.eclipse.egit.github.core.service.UserService;
  * Main module provide services and clients
  */
 public class GitHubModule extends AbstractModule {
+
+    private WeakReference<IssueStore> issues = null;
 
     @Override
     protected void configure() {
@@ -49,6 +52,7 @@ public class GitHubModule extends AbstractModule {
     }
 
     private GitHubClient configureClient(GitHubClient client, Account account, AccountManager manager) {
+        client.setSerializeNulls(false);
         client.setUserAgent("GitHubAndroid/1.0");
         if (account != null)
             client.setCredentials(account.name, manager.getPassword(account));
@@ -57,25 +61,18 @@ public class GitHubModule extends AbstractModule {
 
     @Provides
     GitHubClient client(Account account, AccountManager accountManager) {
-        return configureClient(new GitHubClient(), account, accountManager);
+        return configureClient(new GitHubClient() {
+            protected HttpURLConnection configureRequest(final HttpURLConnection request) {
+                super.configureRequest(request);
+                request.setRequestProperty(HEADER_ACCEPT, "application/vnd.github.beta.html+json");
+                return request;
+            }
+        }, account, accountManager);
     }
 
     @Provides
     IssueService issueService(GitHubClient client) {
-        return new IssueService(client) {
-
-            protected GitHubRequest createRequest() {
-                GitHubRequest request = super.createRequest();
-                request.setResponseContentType(ACCEPT_HTML);
-                return request;
-            }
-
-            protected <V> PagedRequest<V> createPagedRequest(int start, int size) {
-                PagedRequest<V> request = super.createPagedRequest(start, size);
-                request.setResponseContentType(ACCEPT_HTML);
-                return request;
-            }
-        };
+        return new IssueService(client);
     }
 
     @Provides
@@ -90,20 +87,7 @@ public class GitHubModule extends AbstractModule {
 
     @Provides
     GistService gistService(GitHubClient client) {
-        return new GistService(client) {
-
-            protected GitHubRequest createRequest() {
-                GitHubRequest request = super.createRequest();
-                request.setResponseContentType(ACCEPT_HTML);
-                return request;
-            }
-
-            protected <V> PagedRequest<V> createPagedRequest(int start, int size) {
-                PagedRequest<V> request = super.createPagedRequest(start, size);
-                request.setResponseContentType(ACCEPT_HTML);
-                return request;
-            }
-        };
+        return new GistService(client);
     }
 
     @Provides
@@ -158,5 +142,15 @@ public class GitHubModule extends AbstractModule {
                 return service.searchRepositories(query);
             }
         };
+    }
+
+    @Provides
+    IssueStore issueStore(IssueService service) {
+        IssueStore store = issues != null ? issues.get() : null;
+        if (store == null) {
+            store = new IssueStore(service);
+            issues = new WeakReference<IssueStore>(store);
+        }
+        return store;
     }
 }

@@ -171,4 +171,8 @@
      <string name="error_gists_load">Loading Gists failed</string>
 
      <string name="issues_title">Issues</string>
+
+     <string name="error_issue_load">Loading issue failed</string>
+
+     <string name="edit_labels">Edit Labels</string>
 </resources>

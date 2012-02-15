@@ -1,8 +1,10 @@
 package com.github.mobile.android.issue;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static android.widget.Toast.LENGTH_LONG;
+import static com.github.mobile.android.ConfirmDialogFragment.ARG_SELECTED;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENT_BODY;
-import static com.github.mobile.android.util.GitHubIntents.EXTRA_ISSUE;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_ISSUE_NUMBER;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY_NAME;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY_OWNER;
@@ -20,7 +22,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.mobile.android.R.color;
+import com.github.mobile.android.DialogFragmentActivity;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
@@ -32,14 +34,16 @@ import com.github.mobile.android.util.Html;
 import com.github.mobile.android.util.Time;
 import com.google.inject.Inject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.service.IssueService;
+import org.eclipse.egit.github.core.service.LabelService;
 
-import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContextScopedProvider;
 import roboguice.inject.InjectExtra;
 import roboguice.util.RoboAsyncTask;
@@ -47,9 +51,11 @@ import roboguice.util.RoboAsyncTask;
 /**
  * Activity to view a specific issue
  */
-public class ViewIssueActivity extends RoboFragmentActivity implements LoaderCallbacks<List<FullIssue>> {
+public class ViewIssueActivity extends DialogFragmentActivity implements LoaderCallbacks<List<FullIssue>> {
 
     private static final int REQUEST_CODE_COMMENT = 1;
+
+    private static final int REQUEST_CODE_LABELS = 2;
 
     /**
      * Create intent to view issue
@@ -65,9 +71,17 @@ public class ViewIssueActivity extends RoboFragmentActivity implements LoaderCal
     private ContextScopedProvider<IssueService> service;
 
     @Inject
+    private IssueStore store;
+
+    @Inject
+    private LabelService labelService;
+
+    @Inject
     private AvatarHelper avatarHelper;
 
     private IssueFragment issueFragment;
+
+    private RepositoryId repositoryId;
 
     @InjectExtra(EXTRA_REPOSITORY_NAME)
     private String repository;
@@ -75,26 +89,31 @@ public class ViewIssueActivity extends RoboFragmentActivity implements LoaderCal
     @InjectExtra(EXTRA_REPOSITORY_OWNER)
     private String repositoryOwner;
 
-    @InjectExtra(value = EXTRA_ISSUE_NUMBER, optional = true)
+    @InjectExtra(value = EXTRA_ISSUE_NUMBER)
     private int issueNumber;
 
-    @InjectExtra(value = EXTRA_ISSUE, optional = true)
     private Issue issue;
+
+    private LabelsDialog labelsDialog;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.issue_view);
         setTitle(getString(string.issue_title) + issueNumber);
 
-        if (issue != null)
-            issueNumber = issue.getNumber();
+        repositoryId = RepositoryId.create(repositoryOwner, repository);
+
+        issue = store.getIssue(repositoryId, issueNumber);
+
+        labelsDialog = new LabelsDialog(this, REQUEST_CODE_LABELS, repositoryId, labelService);
 
         issueFragment = (IssueFragment) getSupportFragmentManager().findFragmentById(R.id.list);
         if (issueFragment == null) {
             issueFragment = new IssueFragment();
             getSupportFragmentManager().beginTransaction().add(R.id.list, issueFragment).commit();
         }
-        issueFragment.setId(issueNumber).setRepository(new RepositoryId(repositoryOwner, repository));
+        issueFragment.setId(issueNumber).setRepository(new RepositoryId(repositoryOwner, repository))
+                .setLoadListener(this);
 
         if (issue != null)
             displayIssue(issue);
@@ -113,6 +132,10 @@ public class ViewIssueActivity extends RoboFragmentActivity implements LoaderCal
             // Don't allow commenting before issue loads
             if (issue != null)
                 startActivityForResult(CreateCommentActivity.createIntent(), REQUEST_CODE_COMMENT);
+            return true;
+        case id.issue_labels:
+            if (issue != null)
+                labelsDialog.show(issue.getLabels());
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -154,7 +177,44 @@ public class ViewIssueActivity extends RoboFragmentActivity implements LoaderCal
                 progress.dismiss();
             };
         }.execute();
+    }
 
+    @Override
+    public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
+        if (REQUEST_CODE_LABELS == requestCode && RESULT_OK == resultCode)
+            editLabels(arguments.getStringArray(ARG_SELECTED));
+    }
+
+    private void editLabels(final String[] labels) {
+        final ProgressDialog progress = new ProgressDialog(this);
+        progress.setMessage("Updating labels...");
+        progress.setIndeterminate(true);
+        progress.show();
+        new RoboAsyncTask<Issue>(this) {
+
+            public Issue call() throws Exception {
+                Issue editedIssue = new Issue();
+                editedIssue.setNumber(issueNumber);
+                List<Label> issueLabels = new ArrayList<Label>(labels.length);
+                for (String label : labels)
+                    issueLabels.add(new Label().setName(label));
+                editedIssue.setLabels(issueLabels);
+                return store.editIssue(repositoryId, editedIssue);
+            }
+
+            protected void onSuccess(Issue updated) throws Exception {
+                issueFragment.updateIssue(updated);
+                displayIssue(updated);
+            }
+
+            protected void onException(Exception e) throws RuntimeException {
+                Toast.makeText(ViewIssueActivity.this, e.getMessage(), LENGTH_LONG).show();
+            }
+
+            protected void onFinally() throws RuntimeException {
+                progress.dismiss();
+            };
+        }.execute();
     }
 
     private void displayIssue(Issue issue) {
@@ -167,12 +227,14 @@ public class ViewIssueActivity extends RoboFragmentActivity implements LoaderCal
 
         LinearLayout labels = (LinearLayout) findViewById(id.ll_labels);
         if (!issue.getLabels().isEmpty()) {
+            labels.setVisibility(VISIBLE);
             LabelsDrawable drawable = new LabelsDrawable(creation.getTextSize(), issue.getLabels());
-            drawable.getPaint().setColor(getResources().getColor(color.item_background));
+            drawable.getPaint().setColor(getResources().getColor(android.R.color.transparent));
             labels.setBackgroundDrawable(drawable);
             LayoutParams params = new LayoutParams(drawable.getBounds().width(), drawable.getBounds().height());
             labels.setLayoutParams(params);
-        }
+        } else
+            labels.setVisibility(GONE);
     }
 
     public Loader<List<FullIssue>> onCreateLoader(int id, Bundle args) {

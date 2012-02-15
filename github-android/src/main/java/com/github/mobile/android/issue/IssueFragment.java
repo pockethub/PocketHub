@@ -8,6 +8,7 @@ import android.widget.ListAdapter;
 
 import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.R.string;
 import com.github.mobile.android.comment.CommentViewHolder;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.github.mobile.android.util.AvatarHelper;
@@ -40,6 +41,9 @@ public class IssueFragment extends ListLoadingFragment<FullIssue> {
     @Inject
     private IssueService service;
 
+    @Inject
+    private IssueStore store;
+
     private View bodyView;
 
     private HttpImageGetter imageGetter;
@@ -58,6 +62,18 @@ public class IssueFragment extends ListLoadingFragment<FullIssue> {
      */
     public IssueFragment setId(int id) {
         this.id = id;
+        return this;
+    }
+
+    /**
+     * Update issue body area with latest values from issue
+     *
+     * @param issue
+     * @return this fragment
+     */
+    public IssueFragment updateIssue(final Issue issue) {
+        if (bodyView != null)
+            new IssueBodyViewHolder(imageGetter, bodyView).updateViewFor(issue);
         return this;
     }
 
@@ -85,7 +101,7 @@ public class IssueFragment extends ListLoadingFragment<FullIssue> {
             @Override
             public List<FullIssue> loadInBackground() {
                 try {
-                    Issue issue = service.getIssue(repository, id);
+                    Issue issue = store.refreshIssue(repository, id);
                     List<Comment> comments;
                     if (issue.getComments() > 0)
                         comments = service.getComments(repository, id);
@@ -93,7 +109,8 @@ public class IssueFragment extends ListLoadingFragment<FullIssue> {
                         comments = Collections.emptyList();
                     return Collections.singletonList(new FullIssue(issue, comments));
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    showError(e, string.error_issue_load);
+                    return Collections.emptyList();
                 }
             }
         };
@@ -101,14 +118,22 @@ public class IssueFragment extends ListLoadingFragment<FullIssue> {
 
     @Override
     protected ListAdapter adapterFor(List<FullIssue> items) {
+        if (items.isEmpty() && getListAdapter() != null)
+            return getListAdapter();
+
         if (bodyView != null)
             getListView().removeHeaderView(bodyView);
-        FullIssue issue = items.get(0);
-        bodyView = getActivity().getLayoutInflater().inflate(layout.issue_view_body, null);
-        new IssueBodyViewHolder(imageGetter, bodyView).updateViewFor(issue.getIssue());
-        getListView().addHeaderView(bodyView);
 
-        return new ViewHoldingListAdapter<Comment>(issue.getComments(), ViewInflator.viewInflatorFor(getActivity(),
+        Issue issue = !items.isEmpty() ? items.get(0).getIssue() : null;
+        List<Comment> comments = !items.isEmpty() ? items.get(0).getComments() : Collections.<Comment> emptyList();
+
+        if (issue != null) {
+            bodyView = getActivity().getLayoutInflater().inflate(layout.issue_view_body, null);
+            new IssueBodyViewHolder(imageGetter, bodyView).updateViewFor(issue);
+            getListView().addHeaderView(bodyView);
+        }
+
+        return new ViewHoldingListAdapter<Comment>(comments, ViewInflator.viewInflatorFor(getActivity(),
                 layout.comment_view_item), ReflectiveHolderFactory.reflectiveFactoryFor(CommentViewHolder.class,
                 avatarHelper, imageGetter));
     }
