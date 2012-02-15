@@ -56,17 +56,19 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
 
     private Button moreButton;
 
-    private IssuePager pager = new IssuePager(store) {
-
-        public PageIterator<Issue> createIterator(int page, int size) {
-            return service.pageIssues(filterData, page, size);
-        }
-    };
+    private IssuePager pager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        pager = new IssuePager(store) {
+
+            public PageIterator<Issue> createIterator(int page, int size) {
+                return service.pageIssues(filterData, page, size);
+            }
+        };
     }
 
     @SuppressWarnings("unchecked")
