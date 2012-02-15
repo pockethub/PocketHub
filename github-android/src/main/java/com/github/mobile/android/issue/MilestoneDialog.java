@@ -48,6 +48,15 @@ public class MilestoneDialog {
         this.service = service;
     }
 
+    /**
+     * Get milestones
+     *
+     * @return list of milestones
+     */
+    public List<Milestone> getMilestones() {
+        return repositoryMilestones;
+    }
+
     private void load(final Milestone selectedMilestone) {
         final ProgressDialog loader = new ProgressDialog(activity);
         loader.setMessage("Loading Milestones...");
