@@ -2,8 +2,8 @@ package com.github.mobile.android.issue;
 
 import android.app.ProgressDialog;
 
-import com.github.mobile.android.ConfirmDialogFragment;
 import com.github.mobile.android.DialogFragmentActivity;
+import com.github.mobile.android.MultiChoiceDialogFragment;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -102,6 +102,6 @@ public class LabelsDialog {
                     checked[i] = true;
             }
         }
-        ConfirmDialogFragment.confirm(activity, requestCode, "Select Labels: ", null, names, checked);
+        MultiChoiceDialogFragment.show(activity, requestCode, "Select Labels: ", null, names, checked);
     }
 }

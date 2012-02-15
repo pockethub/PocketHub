@@ -151,7 +151,7 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
             startActivityForResult(CreateCommentActivity.createIntent(), REQUEST_CODE_COMMENT);
             return true;
         case id.gist_delete:
-            ConfirmDialogFragment.confirm(this, REQUEST_CONFIRM_DELETE, "Confirm Delete",
+            ConfirmDialogFragment.show(this, REQUEST_CONFIRM_DELETE, "Confirm Delete",
                     "Are you sure you want to delete this Gist?");
         case id.gist_refresh:
             gistFragment.refresh();

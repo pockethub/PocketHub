@@ -177,4 +177,6 @@
      <string name="edit_labels">Edit Labels</string>
 
      <string name="milestone_prefix">Milestone:</string>
+
+     <string name="edit_milestone">Edit Milestone</string>
 </resources>

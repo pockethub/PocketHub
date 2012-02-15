@@ -3,7 +3,6 @@ package com.github.mobile.android.issue;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static android.widget.Toast.LENGTH_LONG;
-import static com.github.mobile.android.ConfirmDialogFragment.ARG_SELECTED;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENT_BODY;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_ISSUE_NUMBER;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY_NAME;
@@ -16,6 +15,7 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -23,10 +23,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mobile.android.DialogFragmentActivity;
+import com.github.mobile.android.MultiChoiceDialogFragment;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.SingleChoiceDialogFragment;
 import com.github.mobile.android.comment.CreateCommentActivity;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
@@ -40,9 +42,11 @@ import java.util.List;
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Label;
+import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.LabelService;
+import org.eclipse.egit.github.core.service.MilestoneService;
 
 import roboguice.inject.ContextScopedProvider;
 import roboguice.inject.InjectExtra;
@@ -56,6 +60,8 @@ public class ViewIssueActivity extends DialogFragmentActivity implements LoaderC
     private static final int REQUEST_CODE_COMMENT = 1;
 
     private static final int REQUEST_CODE_LABELS = 2;
+
+    private static final int REQUEST_CODE_MILESTONE = 3;
 
     /**
      * Create intent to view issue
@@ -77,6 +83,9 @@ public class ViewIssueActivity extends DialogFragmentActivity implements LoaderC
     private LabelService labelService;
 
     @Inject
+    private MilestoneService milestoneService;
+
+    @Inject
     private AvatarHelper avatarHelper;
 
     private IssueFragment issueFragment;
@@ -96,6 +105,8 @@ public class ViewIssueActivity extends DialogFragmentActivity implements LoaderC
 
     private LabelsDialog labelsDialog;
 
+    private MilestoneDialog milestoneDialog;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.issue_view);
@@ -106,6 +117,7 @@ public class ViewIssueActivity extends DialogFragmentActivity implements LoaderC
         issue = store.getIssue(repositoryId, issueNumber);
 
         labelsDialog = new LabelsDialog(this, REQUEST_CODE_LABELS, repositoryId, labelService);
+        milestoneDialog = new MilestoneDialog(this, REQUEST_CODE_MILESTONE, repositoryId, milestoneService);
 
         issueFragment = (IssueFragment) getSupportFragmentManager().findFragmentById(R.id.list);
         if (issueFragment == null) {
@@ -136,6 +148,10 @@ public class ViewIssueActivity extends DialogFragmentActivity implements LoaderC
         case id.issue_labels:
             if (issue != null)
                 labelsDialog.show(issue.getLabels());
+            return true;
+        case id.issue_milestone:
+            if (issue != null)
+                milestoneDialog.show(issue.getMilestone());
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -182,7 +198,9 @@ public class ViewIssueActivity extends DialogFragmentActivity implements LoaderC
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
         if (REQUEST_CODE_LABELS == requestCode && RESULT_OK == resultCode)
-            editLabels(arguments.getStringArray(ARG_SELECTED));
+            editLabels(arguments.getStringArray(MultiChoiceDialogFragment.ARG_SELECTED));
+        if (REQUEST_CODE_MILESTONE == requestCode && RESULT_OK == resultCode)
+            editMilestone(arguments.getString(SingleChoiceDialogFragment.ARG_SELECTED));
     }
 
     private void editLabels(final String[] labels) {
@@ -199,6 +217,43 @@ public class ViewIssueActivity extends DialogFragmentActivity implements LoaderC
                 for (String label : labels)
                     issueLabels.add(new Label().setName(label));
                 editedIssue.setLabels(issueLabels);
+                return store.editIssue(repositoryId, editedIssue);
+            }
+
+            protected void onSuccess(Issue updated) throws Exception {
+                issueFragment.updateIssue(updated);
+                displayIssue(updated);
+            }
+
+            protected void onException(Exception e) throws RuntimeException {
+                Toast.makeText(ViewIssueActivity.this, e.getMessage(), LENGTH_LONG).show();
+            }
+
+            protected void onFinally() throws RuntimeException {
+                progress.dismiss();
+            };
+        }.execute();
+    }
+
+    private void editMilestone(final String title) {
+        final int milestoneNumber;
+        if (title != null)
+            milestoneNumber = milestoneDialog.getMilestoneNumber(title);
+        else
+            milestoneNumber = -1;
+
+        Log.d("TEST", "Updating milestone to: " + milestoneNumber);
+
+        final ProgressDialog progress = new ProgressDialog(this);
+        progress.setMessage("Updating milestone...");
+        progress.setIndeterminate(true);
+        progress.show();
+        new RoboAsyncTask<Issue>(this) {
+
+            public Issue call() throws Exception {
+                Issue editedIssue = new Issue();
+                editedIssue.setNumber(issueNumber);
+                editedIssue.setMilestone(new Milestone().setNumber(milestoneNumber));
                 return store.editIssue(repositoryId, editedIssue);
             }
 
