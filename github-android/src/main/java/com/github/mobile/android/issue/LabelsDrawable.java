@@ -11,7 +11,9 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.PaintDrawable;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 
 import org.eclipse.egit.github.core.Label;
 
@@ -44,6 +46,12 @@ public class LabelsDrawable extends PaintDrawable {
      */
     public LabelsDrawable(final float textSize, final Collection<Label> labels) {
         this.labels = labels.toArray(new Label[labels.size()]);
+        Arrays.sort(this.labels, new Comparator<Label>() {
+
+            public int compare(Label lhs, Label rhs) {
+                return lhs.getName().compareToIgnoreCase(rhs.getName());
+            }
+        });
 
         Paint p = getPaint();
         p.setTypeface(Typeface.DEFAULT_BOLD);
