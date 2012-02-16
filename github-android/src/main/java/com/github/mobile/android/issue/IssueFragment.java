@@ -73,7 +73,7 @@ public class IssueFragment extends ListLoadingFragment<FullIssue> {
      */
     public IssueFragment updateIssue(final Issue issue) {
         if (bodyView != null)
-            new IssueBodyViewHolder(imageGetter, bodyView).updateViewFor(issue);
+            new IssueHeaderViewHolder(bodyView, imageGetter, avatarHelper, getResources()).updateViewFor(issue);
         return this;
     }
 
@@ -128,8 +128,8 @@ public class IssueFragment extends ListLoadingFragment<FullIssue> {
         List<Comment> comments = !items.isEmpty() ? items.get(0).getComments() : Collections.<Comment> emptyList();
 
         if (issue != null) {
-            bodyView = getActivity().getLayoutInflater().inflate(layout.issue_view_body, null);
-            new IssueBodyViewHolder(imageGetter, bodyView).updateViewFor(issue);
+            bodyView = getActivity().getLayoutInflater().inflate(layout.issue_header, null);
+            updateIssue(issue);
             getListView().addHeaderView(bodyView);
         }
 

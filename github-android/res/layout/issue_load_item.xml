@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/comment_background"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingBottom="10dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingTop="10dp" >
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:indeterminate="true"
+        android:indeterminateOnly="true" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:text="Loading Comments"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/item_text_color" />
+
+</LinearLayout>

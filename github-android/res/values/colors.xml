@@ -29,4 +29,9 @@
     <color name="tab_separator">#EEE</color>
     <color name="drawer_background_start">#d3d6d7</color>
     <color name="drawer_background_end">#c0c3c5</color>
+    <color name="issue_header_separator">#A3A4A4</color>
+    <color name="issue_header_start">#CDCDCD</color>
+    <color name="issue_header_end">#E5E6E6</color>
+    <color name="issue_title_background">#D9DCDE</color>
+
 </resources>

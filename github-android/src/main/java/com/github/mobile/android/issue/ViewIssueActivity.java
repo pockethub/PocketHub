@@ -1,24 +1,18 @@
 package com.github.mobile.android.issue;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 import static android.widget.Toast.LENGTH_LONG;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENT_BODY;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_ISSUE_NUMBER;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY_NAME;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY_OWNER;
-import android.R;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.github.mobile.android.DialogFragmentActivity;
@@ -28,14 +22,19 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.SingleChoiceDialogFragment;
+import com.github.mobile.android.comment.CommentViewHolder;
 import com.github.mobile.android.comment.CreateCommentActivity;
 import com.github.mobile.android.util.AvatarHelper;
+import com.github.mobile.android.util.ErrorHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
-import com.github.mobile.android.util.Html;
-import com.github.mobile.android.util.Time;
+import com.github.mobile.android.util.HttpImageGetter;
 import com.google.inject.Inject;
+import com.madgag.android.listviews.ReflectiveHolderFactory;
+import com.madgag.android.listviews.ViewHoldingListAdapter;
+import com.madgag.android.listviews.ViewInflator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Comment;
@@ -51,12 +50,13 @@ import org.eclipse.egit.github.core.service.MilestoneService;
 
 import roboguice.inject.ContextScopedProvider;
 import roboguice.inject.InjectExtra;
+import roboguice.inject.InjectView;
 import roboguice.util.RoboAsyncTask;
 
 /**
  * Activity to view a specific issue
  */
-public class ViewIssueActivity extends DialogFragmentActivity implements LoaderCallbacks<List<FullIssue>> {
+public class ViewIssueActivity extends DialogFragmentActivity {
 
     private static final int REQUEST_CODE_COMMENT = 1;
 
@@ -94,7 +94,7 @@ public class ViewIssueActivity extends DialogFragmentActivity implements LoaderC
     @Inject
     private AvatarHelper avatarHelper;
 
-    private IssueFragment issueFragment;
+    private HttpImageGetter imageGetter;
 
     private RepositoryId repositoryId;
 
@@ -115,6 +115,13 @@ public class ViewIssueActivity extends DialogFragmentActivity implements LoaderC
 
     private AssigneeDialog assigneeDialog;
 
+    @InjectView(android.R.id.list)
+    private ListView list;
+
+    private IssueHeaderViewHolder header;
+
+    private View loadingView;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.issue_view);
@@ -128,16 +135,44 @@ public class ViewIssueActivity extends DialogFragmentActivity implements LoaderC
         milestoneDialog = new MilestoneDialog(this, REQUEST_CODE_MILESTONE, repositoryId, milestoneService);
         assigneeDialog = new AssigneeDialog(this, REQUEST_CODE_ASSIGNEE, repositoryId, collaboratorService);
 
-        issueFragment = (IssueFragment) getSupportFragmentManager().findFragmentById(R.id.list);
-        if (issueFragment == null) {
-            issueFragment = new IssueFragment();
-            getSupportFragmentManager().beginTransaction().add(R.id.list, issueFragment).commit();
-        }
-        issueFragment.setId(issueNumber).setRepository(new RepositoryId(repositoryOwner, repository))
-                .setLoadListener(this);
-
+        imageGetter = new HttpImageGetter(this);
+        View headerView = getLayoutInflater().inflate(layout.issue_header, null);
+        header = new IssueHeaderViewHolder(headerView, imageGetter, avatarHelper, getResources());
         if (issue != null)
-            displayIssue(issue);
+            header.updateViewFor(issue);
+        list.addHeaderView(headerView);
+        loadingView = getLayoutInflater().inflate(layout.issue_load_item, null);
+        refreshIssue();
+    }
+
+    private void refreshIssue() {
+        list.addHeaderView(loadingView);
+        if (list.getAdapter() == null)
+            list.setAdapter(new ArrayAdapter<Comment>(this, layout.comment_view_item));
+        new RoboAsyncTask<FullIssue>(this) {
+
+            public FullIssue call() throws Exception {
+                Issue issue = store.refreshIssue(repositoryId, issueNumber);
+                List<Comment> comments;
+                if (issue.getComments() > 0)
+                    comments = service.get(getContext()).getComments(repositoryId, issueNumber);
+                else
+                    comments = Collections.emptyList();
+                return new FullIssue(issue, comments);
+            }
+
+            protected void onException(Exception e) throws RuntimeException {
+                ErrorHelper.show(getContext(), e, string.error_issue_load);
+            }
+
+            protected void onSuccess(FullIssue fullIssue) throws Exception {
+                list.removeHeaderView(loadingView);
+                header.updateViewFor(fullIssue.getIssue());
+                list.setAdapter(new ViewHoldingListAdapter<Comment>(fullIssue.getComments(), ViewInflator
+                        .viewInflatorFor(getContext(), layout.comment_view_item), ReflectiveHolderFactory
+                        .reflectiveFactoryFor(CommentViewHolder.class, avatarHelper, imageGetter)));
+            }
+        }.execute();
     }
 
     @Override
@@ -196,7 +231,7 @@ public class ViewIssueActivity extends DialogFragmentActivity implements LoaderC
             }
 
             protected void onSuccess(Comment comment) throws Exception {
-                issueFragment.refresh();
+                refreshIssue();
             }
 
             protected void onException(Exception e) throws RuntimeException {
@@ -237,8 +272,7 @@ public class ViewIssueActivity extends DialogFragmentActivity implements LoaderC
             }
 
             protected void onSuccess(Issue updated) throws Exception {
-                issueFragment.updateIssue(updated);
-                displayIssue(updated);
+                header.updateViewFor(updated);
             }
 
             protected void onException(Exception e) throws RuntimeException {
@@ -272,8 +306,7 @@ public class ViewIssueActivity extends DialogFragmentActivity implements LoaderC
             }
 
             protected void onSuccess(Issue updated) throws Exception {
-                issueFragment.updateIssue(updated);
-                displayIssue(updated);
+                header.updateViewFor(updated);
             }
 
             protected void onException(Exception e) throws RuntimeException {
@@ -301,8 +334,7 @@ public class ViewIssueActivity extends DialogFragmentActivity implements LoaderC
             }
 
             protected void onSuccess(Issue updated) throws Exception {
-                issueFragment.updateIssue(updated);
-                displayIssue(updated);
+                header.updateViewFor(updated);
             }
 
             protected void onException(Exception e) throws RuntimeException {
@@ -313,55 +345,5 @@ public class ViewIssueActivity extends DialogFragmentActivity implements LoaderC
                 progress.dismiss();
             };
         }.execute();
-    }
-
-    private void displayIssue(Issue issue) {
-        ((TextView) findViewById(id.tv_issue_title)).setText(issue.getTitle());
-        String reported = "<b>" + issue.getUser().getLogin() + "</b> opened "
-                + Time.relativeTimeFor(issue.getCreatedAt());
-
-        TextView creation = (TextView) findViewById(id.tv_issue_creation);
-        creation.setText(Html.encode(reported));
-        avatarHelper.bind((ImageView) findViewById(id.iv_gravatar), issue.getUser());
-
-        LinearLayout assigneeSection = (LinearLayout) findViewById(id.ll_assignee);
-        User assignee = issue.getAssignee();
-        if (assignee != null) {
-            assigneeSection.setVisibility(VISIBLE);
-            ((TextView) assigneeSection.findViewById(id.tv_assignee_name)).setText(Html.encode("<b>"
-                    + assignee.getLogin() + "</b> is assigned"));
-            avatarHelper.bind((ImageView) assigneeSection.findViewById(id.iv_assignee_gravatar), issue.getUser());
-        } else
-            assigneeSection.setVisibility(GONE);
-
-        LinearLayout labels = (LinearLayout) findViewById(id.ll_labels);
-        if (!issue.getLabels().isEmpty()) {
-            labels.setVisibility(VISIBLE);
-            LabelsDrawable drawable = new LabelsDrawable(creation.getTextSize(), issue.getLabels());
-            drawable.getPaint().setColor(getResources().getColor(android.R.color.transparent));
-            labels.setBackgroundDrawable(drawable);
-            LayoutParams params = new LayoutParams(drawable.getBounds().width(), drawable.getBounds().height());
-            labels.setLayoutParams(params);
-        } else
-            labels.setVisibility(GONE);
-
-        LinearLayout milestones = (LinearLayout) findViewById(id.ll_milestone);
-        if (issue.getMilestone() != null) {
-            milestones.setVisibility(VISIBLE);
-            ((TextView) milestones.findViewById(id.tv_milestone)).setText(issue.getMilestone().getTitle());
-        } else
-            milestones.setVisibility(GONE);
-
-    }
-
-    public Loader<List<FullIssue>> onCreateLoader(int id, Bundle args) {
-        return null;
-    }
-
-    public void onLoadFinished(Loader<List<FullIssue>> loader, List<FullIssue> data) {
-        displayIssue(data.get(0).getIssue());
-    }
-
-    public void onLoaderReset(Loader<List<FullIssue>> loader) {
     }
 }

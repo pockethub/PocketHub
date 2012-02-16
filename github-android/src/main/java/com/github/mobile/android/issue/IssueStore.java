@@ -1,9 +1,10 @@
 package com.github.mobile.android.issue;
 
 import java.io.IOException;
+import java.lang.ref.ReferenceQueue;
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.Issue;
@@ -17,7 +18,42 @@ public class IssueStore {
 
     private static class RepositoryIssues {
 
-        private final Map<Integer, Issue> issues = new WeakHashMap<Integer, Issue>();
+        private static class IssueReference extends WeakReference<Issue> {
+
+            private int number;
+
+            /**
+             * Create issue reference
+             *
+             * @param issue
+             * @param queue
+             */
+            public IssueReference(Issue issue, ReferenceQueue<? super Issue> queue) {
+                super(issue, queue);
+                number = issue.getNumber();
+            }
+        }
+
+        private final ReferenceQueue<Issue> queue = new ReferenceQueue<Issue>();
+
+        private final Map<Integer, IssueReference> issues = new HashMap<Integer, IssueReference>();
+
+        private void expungeEntries() {
+            IssueReference ref;
+            while ((ref = (IssueReference) queue.poll()) != null)
+                issues.remove(ref.number);
+        }
+
+        private Issue get(final int number) {
+            expungeEntries();
+            WeakReference<Issue> ref = issues.get(number);
+            return ref != null ? ref.get() : null;
+        }
+
+        private void put(Issue issue) {
+            expungeEntries();
+            issues.put(issue.getNumber(), new IssueReference(issue, queue));
+        }
     }
 
     private final Map<String, RepositoryIssues> repos = new HashMap<String, RepositoryIssues>();
@@ -42,7 +78,7 @@ public class IssueStore {
      */
     public Issue getIssue(IRepositoryIdProvider repository, int number) {
         RepositoryIssues repoIssues = repos.get(repository.generateId());
-        return repoIssues != null ? repoIssues.issues.get(number) : null;
+        return repoIssues != null ? repoIssues.get(number) : null;
     }
 
     /**
@@ -86,7 +122,7 @@ public class IssueStore {
                 repoIssues = new RepositoryIssues();
                 repos.put(repoId, repoIssues);
             }
-            repoIssues.issues.put(issue.getNumber(), issue);
+            repoIssues.put(issue);
             return issue;
         }
     }
