@@ -70,9 +70,9 @@ public class ViewIssueActivity extends DialogFragmentActivity {
 
     private static final int REQUEST_CODE_ASSIGNEE = 4;
 
-    private static final int REQUEST_CODE_REOPEN = 5;
+    private static final int REQUEST_CODE_CLOSE = 5;
 
-    private static final int REQUEST_CODE_CLOSE = 6;
+    private static final int REQUEST_CODE_REOPEN = 6;
 
     /**
      * Create intent to view issue
@@ -263,16 +263,26 @@ public class ViewIssueActivity extends DialogFragmentActivity {
 
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
-        if (REQUEST_CODE_LABELS == requestCode && RESULT_OK == resultCode)
+        if (RESULT_OK != resultCode)
+            return;
+
+        switch (requestCode) {
+        case REQUEST_CODE_LABELS:
             editLabels(arguments.getStringArray(MultiChoiceDialogFragment.ARG_SELECTED));
-        if (REQUEST_CODE_MILESTONE == requestCode && RESULT_OK == resultCode)
+            break;
+        case REQUEST_CODE_MILESTONE:
             editMilestone(arguments.getString(SingleChoiceDialogFragment.ARG_SELECTED));
-        if (REQUEST_CODE_ASSIGNEE == requestCode && RESULT_OK == resultCode)
+            break;
+        case REQUEST_CODE_ASSIGNEE:
             editAssignee(arguments.getString(SingleChoiceDialogFragment.ARG_SELECTED));
-        if (REQUEST_CODE_CLOSE == requestCode && RESULT_OK == resultCode)
+            break;
+        case REQUEST_CODE_CLOSE:
             editState(true);
-        if (REQUEST_CODE_REOPEN == requestCode && RESULT_OK == resultCode)
+            break;
+        case REQUEST_CODE_REOPEN:
             editState(false);
+            break;
+        }
     }
 
     private void confirmEditState(boolean close) {
