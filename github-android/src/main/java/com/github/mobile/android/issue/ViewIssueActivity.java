@@ -145,8 +145,23 @@ public class ViewIssueActivity extends DialogFragmentActivity {
 
         imageGetter = new HttpImageGetter(this);
         View headerView = getLayoutInflater().inflate(layout.issue_header, null);
-        View stateArea = headerView.findViewById(id.ll_state);
-        stateArea.setOnClickListener(new OnClickListener() {
+        headerView.findViewById(id.ll_milestone).setOnClickListener(new OnClickListener() {
+
+            public void onClick(View v) {
+                if (issue != null)
+                    milestoneDialog.show(issue.getMilestone());
+            }
+        });
+        headerView.findViewById(id.ll_assignee).setOnClickListener(new OnClickListener() {
+
+            public void onClick(View v) {
+                if (issue != null) {
+                    User assignee = issue.getAssignee();
+                    assigneeDialog.show(assignee != null ? assignee.getLogin() : null);
+                }
+            }
+        });
+        headerView.findViewById(id.ll_state).setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
                 if (issue != null)
