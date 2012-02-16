@@ -231,6 +231,18 @@ public class ViewIssueActivity extends DialogFragmentActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (issue != null) {
+            MenuItem stateItem = menu.findItem(id.issue_state);
+            if (STATE_OPEN.equals(issue.getState()))
+                stateItem.setTitle(string.close_issue);
+            else
+                stateItem.setTitle(string.reopen_issue);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case id.issue_comment:
@@ -251,6 +263,11 @@ public class ViewIssueActivity extends DialogFragmentActivity {
                 User assignee = issue.getAssignee();
                 assigneeDialog.show(assignee != null ? assignee.getLogin() : null);
             }
+            return true;
+        case id.issue_state:
+            if (issue != null)
+                confirmEditState(STATE_OPEN.equals(issue.getState()));
+            return true;
         default:
             return super.onOptionsItemSelected(item);
         }

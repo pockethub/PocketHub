@@ -17,10 +17,15 @@
         android:showAsAction="never"
         android:title="@string/edit_milestone">
     </item>
-     <item
+    <item
         android:id="@+id/issue_assignee"
         android:showAsAction="never"
         android:title="@string/edit_assignee">
+    </item>
+    <item
+        android:id="@+id/issue_state"
+        android:showAsAction="never"
+        android:title="@string/close_issue">
     </item>
 
 </menu>

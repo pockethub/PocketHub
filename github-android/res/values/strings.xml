@@ -181,4 +181,8 @@
      <string name="edit_milestone">Edit Milestone</string>
 
      <string name="edit_assignee">Edit Assignee</string>
+
+     <string name="close_issue">Close Issue</string>
+
+     <string name="reopen_issue">Reopen Issue</string>
 </resources>
