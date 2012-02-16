@@ -5,16 +5,20 @@ import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENT_BODY;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_ISSUE_NUMBER;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY_NAME;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY_OWNER;
+import static org.eclipse.egit.github.core.service.IssueService.STATE_CLOSED;
+import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.github.mobile.android.ConfirmDialogFragment;
 import com.github.mobile.android.DialogFragmentActivity;
 import com.github.mobile.android.MultiChoiceDialogFragment;
 import com.github.mobile.android.R.id;
@@ -65,6 +69,10 @@ public class ViewIssueActivity extends DialogFragmentActivity {
     private static final int REQUEST_CODE_MILESTONE = 3;
 
     private static final int REQUEST_CODE_ASSIGNEE = 4;
+
+    private static final int REQUEST_CODE_REOPEN = 5;
+
+    private static final int REQUEST_CODE_CLOSE = 6;
 
     /**
      * Create intent to view issue
@@ -137,6 +145,14 @@ public class ViewIssueActivity extends DialogFragmentActivity {
 
         imageGetter = new HttpImageGetter(this);
         View headerView = getLayoutInflater().inflate(layout.issue_header, null);
+        View stateArea = headerView.findViewById(id.ll_state);
+        stateArea.setOnClickListener(new OnClickListener() {
+
+            public void onClick(View v) {
+                if (issue != null)
+                    confirmEditState(STATE_OPEN.equals(issue.getState()));
+            }
+        });
         header = new IssueHeaderViewHolder(headerView, imageGetter, avatarHelper, getResources());
         if (issue != null)
             header.updateViewFor(issue);
@@ -166,6 +182,7 @@ public class ViewIssueActivity extends DialogFragmentActivity {
             }
 
             protected void onSuccess(FullIssue fullIssue) throws Exception {
+                issue = fullIssue.getIssue();
                 list.removeHeaderView(loadingView);
                 header.updateViewFor(fullIssue.getIssue());
                 list.setAdapter(new ViewHoldingListAdapter<Comment>(fullIssue.getComments(), ViewInflator
@@ -252,6 +269,51 @@ public class ViewIssueActivity extends DialogFragmentActivity {
             editMilestone(arguments.getString(SingleChoiceDialogFragment.ARG_SELECTED));
         if (REQUEST_CODE_ASSIGNEE == requestCode && RESULT_OK == resultCode)
             editAssignee(arguments.getString(SingleChoiceDialogFragment.ARG_SELECTED));
+        if (REQUEST_CODE_CLOSE == requestCode && RESULT_OK == resultCode)
+            editState(true);
+        if (REQUEST_CODE_REOPEN == requestCode && RESULT_OK == resultCode)
+            editState(false);
+    }
+
+    private void confirmEditState(boolean close) {
+        if (close)
+            ConfirmDialogFragment.show(this, REQUEST_CODE_CLOSE, null, "Are you sure you want to close this issue?");
+        else
+            ConfirmDialogFragment.show(this, REQUEST_CODE_REOPEN, null, "Are you sure you want to reopen this issue?");
+    }
+
+    private void editState(final boolean close) {
+        final ProgressDialog progress = new ProgressDialog(this);
+        if (close)
+            progress.setMessage("Closing issue...");
+        else
+            progress.setMessage("Reopening issue...");
+        progress.setIndeterminate(true);
+        progress.show();
+        new RoboAsyncTask<Issue>(this) {
+
+            public Issue call() throws Exception {
+                Issue editedIssue = new Issue();
+                editedIssue.setNumber(issueNumber);
+                if (close)
+                    editedIssue.setState(STATE_CLOSED);
+                else
+                    editedIssue.setState(STATE_OPEN);
+                return store.editIssue(repositoryId, editedIssue);
+            }
+
+            protected void onSuccess(Issue updated) throws Exception {
+                header.updateViewFor(updated);
+            }
+
+            protected void onException(Exception e) throws RuntimeException {
+                Toast.makeText(ViewIssueActivity.this, e.getMessage(), LENGTH_LONG).show();
+            }
+
+            protected void onFinally() throws RuntimeException {
+                progress.dismiss();
+            };
+        }.execute();
     }
 
     private void editLabels(final String[] labels) {
