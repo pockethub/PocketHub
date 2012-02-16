@@ -37,6 +37,7 @@ import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 import com.madgag.android.listviews.ViewInflator;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -61,6 +62,8 @@ import roboguice.util.RoboAsyncTask;
  * Activity to view a specific issue
  */
 public class ViewIssueActivity extends DialogFragmentActivity {
+
+    private static final String ARG_COMMENTS = "comments";
 
     private static final int REQUEST_CODE_COMMENT = 1;
 
@@ -117,6 +120,9 @@ public class ViewIssueActivity extends DialogFragmentActivity {
 
     private Issue issue;
 
+    @InjectExtra(value = ARG_COMMENTS, optional = true)
+    private List<Comment> comments;
+
     private LabelsDialog labelsDialog;
 
     private MilestoneDialog milestoneDialog;
@@ -169,11 +175,16 @@ public class ViewIssueActivity extends DialogFragmentActivity {
             }
         });
         header = new IssueHeaderViewHolder(headerView, imageGetter, avatarHelper, getResources());
-        if (issue != null)
-            header.updateViewFor(issue);
         list.addHeaderView(headerView);
         loadingView = getLayoutInflater().inflate(layout.issue_load_item, null);
-        refreshIssue();
+
+        if (issue != null && comments != null)
+            updateList(issue, comments);
+        else {
+            if (issue != null)
+                header.updateViewFor(issue);
+            refreshIssue();
+        }
     }
 
     private void refreshIssue() {
@@ -198,13 +209,19 @@ public class ViewIssueActivity extends DialogFragmentActivity {
 
             protected void onSuccess(FullIssue fullIssue) throws Exception {
                 issue = fullIssue.getIssue();
-                list.removeHeaderView(loadingView);
-                header.updateViewFor(fullIssue.getIssue());
-                list.setAdapter(new ViewHoldingListAdapter<Comment>(fullIssue.getComments(), ViewInflator
-                        .viewInflatorFor(getContext(), layout.comment_view_item), ReflectiveHolderFactory
-                        .reflectiveFactoryFor(CommentViewHolder.class, avatarHelper, imageGetter)));
+                comments = fullIssue.getComments();
+                getIntent().putExtra(ARG_COMMENTS, (Serializable) fullIssue.getComments());
+                updateList(fullIssue.getIssue(), fullIssue.getComments());
             }
         }.execute();
+    }
+
+    private void updateList(Issue issue, List<Comment> comments) {
+        list.removeHeaderView(loadingView);
+        header.updateViewFor(issue);
+        list.setAdapter(new ViewHoldingListAdapter<Comment>(comments, ViewInflator.viewInflatorFor(this,
+                layout.comment_view_item), ReflectiveHolderFactory.reflectiveFactoryFor(CommentViewHolder.class,
+                avatarHelper, imageGetter)));
     }
 
     @Override
