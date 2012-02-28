@@ -1,8 +1,13 @@
 package com.github.mobile.android.issue;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 
+import com.actionbarsherlock.view.MenuItem;
+import com.github.mobile.android.HomeActivity;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
@@ -26,10 +31,22 @@ public class IssueDashboardActivity extends RoboFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.issue_dashboard);
-
         setTitle(string.dashboard_issues_title);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         pager.setAdapter(new IssueDashboardPagerAdapter(getApplicationContext(), getSupportFragmentManager()));
         indicator.setViewPager(pager);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case android.R.id.home:
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
     }
 }

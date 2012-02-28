@@ -1,5 +1,7 @@
 package com.github.mobile.android.gist;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static android.widget.Toast.LENGTH_LONG;
 import android.R;
 import android.app.AlertDialog.Builder;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.mobile.android.HomeActivity;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
@@ -54,6 +57,7 @@ public class GistsActivity extends RoboFragmentActivity implements OnItemClickLi
         super.onCreate(savedInstanceState);
         setContentView(layout.gists);
         setTitle(string.gists_title);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         gists = (GistsFragment) getSupportFragmentManager().findFragmentById(R.id.list);
         if (gists == null) {
@@ -131,6 +135,11 @@ public class GistsActivity extends RoboFragmentActivity implements OnItemClickLi
             return true;
         case id.refresh:
             gists.refresh();
+            return true;
+        case android.R.id.home:
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
             return true;
         default:
             return super.onOptionsItemSelected(item);
