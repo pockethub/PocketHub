@@ -2,6 +2,7 @@ package com.github.mobile.android.ui.fragments;
 
 import com.github.mobile.android.util.ErrorHelper;
 
+import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -37,7 +38,7 @@ public abstract class ListLoadingFragment<E> extends RoboListFragment implements
      * Refresh the fragment's list
      */
     public void refresh() {
-        if (!getLoaderManager().hasRunningLoaders())
+        if (getActivity() != null && !getLoaderManager().hasRunningLoaders())
             getLoaderManager().restartLoader(0, null, this);
     }
 
@@ -60,8 +61,6 @@ public abstract class ListLoadingFragment<E> extends RoboListFragment implements
 
     @Override
     public void onLoaderReset(Loader<List<E>> listLoader) {
-        // Clear the data in the adapter.
-        // mAdapter.setData(null);
     }
 
     /**
@@ -73,8 +72,11 @@ public abstract class ListLoadingFragment<E> extends RoboListFragment implements
      * @param defaultMessage
      */
     protected void showError(final Exception e, final int defaultMessage) {
-        final Application application = getActivity().getApplication();
-        getActivity().runOnUiThread(new Runnable() {
+        final Activity activity = getActivity();
+        if (activity == null)
+            return;
+        final Application application = activity.getApplication();
+        activity.runOnUiThread(new Runnable() {
 
             public void run() {
                 ErrorHelper.show(application, e, defaultMessage);
