@@ -3,10 +3,10 @@ package com.github.mobile.android.comment;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENT_BODY;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.Menu;
-import android.support.v4.view.MenuItem;
 import android.widget.EditText;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
@@ -40,7 +40,7 @@ public class CreateCommentActivity extends RoboFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
-        getMenuInflater().inflate(menu.comment, options);
+        getSupportMenuInflater().inflate(menu.comment, options);
         return true;
     }
 

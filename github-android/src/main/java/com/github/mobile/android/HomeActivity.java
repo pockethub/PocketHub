@@ -4,10 +4,10 @@ import android.accounts.Account;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.Menu;
-import android.support.v4.view.MenuItem;
 import android.util.Log;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
@@ -35,7 +35,7 @@ public class HomeActivity extends RoboFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionMenu) {
-        getMenuInflater().inflate(menu.welcome, optionMenu);
+        getSupportMenuInflater().inflate(menu.welcome, optionMenu);
         return true;
     }
 

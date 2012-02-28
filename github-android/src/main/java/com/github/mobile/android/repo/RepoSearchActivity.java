@@ -7,9 +7,6 @@ import static com.github.mobile.android.repo.RepoSearchRecentSuggestionsProvider
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ActionBar;
-import android.support.v4.view.Menu;
-import android.support.v4.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -19,6 +16,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.IRepositorySearch;
 import com.github.mobile.android.R;
 import com.github.mobile.android.R.id;
@@ -69,7 +69,7 @@ public class RepoSearchActivity extends RoboFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.search, menu);
+        getSupportMenuInflater().inflate(R.menu.search, menu);
         return true;
     }
 

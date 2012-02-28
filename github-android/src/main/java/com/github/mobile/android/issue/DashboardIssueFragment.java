@@ -2,15 +2,15 @@ package com.github.mobile.android.issue;
 
 import android.os.Bundle;
 import android.support.v4.content.Loader;
-import android.support.v4.view.Menu;
-import android.support.v4.view.MenuItem;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;

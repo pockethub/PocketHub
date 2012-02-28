@@ -2,8 +2,6 @@ package com.github.mobile.android.issue;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.Menu;
-import android.support.v4.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CompoundButton;
@@ -11,6 +9,8 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.DialogFragmentActivity;
 import com.github.mobile.android.MultiChoiceDialogFragment;
 import com.github.mobile.android.R.id;
@@ -178,7 +178,7 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
-        getMenuInflater().inflate(menu.issue_filter, options);
+        getSupportMenuInflater().inflate(menu.issue_filter, options);
         return true;
     }
 

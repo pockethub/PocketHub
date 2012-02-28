@@ -4,14 +4,14 @@ import static android.content.Intent.EXTRA_TEXT;
 import static android.widget.Toast.LENGTH_LONG;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.v4.view.Menu;
-import android.support.v4.view.MenuItem;
 import android.text.Editable;
 import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.R;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
@@ -76,7 +76,7 @@ public class ShareGistActivity extends RoboFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
-        getMenuInflater().inflate(menu.gist_create, options);
+        getSupportMenuInflater().inflate(menu.gist_create, options);
         return true;
     }
 

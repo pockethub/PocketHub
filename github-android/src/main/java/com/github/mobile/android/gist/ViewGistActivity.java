@@ -13,13 +13,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
-import android.support.v4.view.Menu;
-import android.support.v4.view.MenuItem;
 import android.text.Html;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.ConfirmDialogFragment;
 import com.github.mobile.android.DialogFragmentActivity;
 import com.github.mobile.android.R.id;
@@ -132,7 +132,7 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
-        getMenuInflater().inflate(menu.gist_view, options);
+        getSupportMenuInflater().inflate(menu.gist_view, options);
         deleteItem = options.findItem(id.gist_delete);
         return true;
     }

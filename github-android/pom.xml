@@ -2,8 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>github-android</artifactId>
-    <url>https://github.com/github/android</url>
 
     <parent>
         <version>1.0-SNAPSHOT</version>
@@ -13,18 +11,26 @@
 
     <packaging>apk</packaging>
     <name>GitHub for Android</name>
+    <artifactId>github-android</artifactId>
+    <url>https://github.com/github/android</url>
+
     <properties>
-        <abs.version>3.5.1</abs.version>
+        <abs.version>4.0.0-RC1</abs.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>jakewharton</id>
+            <url>http://r.jakewharton.com/maven/release/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-library</artifactId>
-            <scope>test</scope>
+            <groupId>com.google.android</groupId>
+            <artifactId>android</artifactId>
+            <scope>provided</scope>
+            <version>${android.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -33,15 +39,20 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>11.0.2</version>
+        </dependency>
+        <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
             <version>3.0</version>
             <classifier>no_aop</classifier>
         </dependency>
         <dependency>
-            <groupId>com.madgag</groupId>
+            <groupId>org.roboguice</groupId>
             <artifactId>roboguice</artifactId>
-            <version>1.99.0.4-UNOFFICIAL-ROBERTO-RELEASE</version>
+            <version>2.0b3</version>
             <exclusions>
                 <exclusion>
                     <groupId>android.support</groupId>
@@ -63,17 +74,16 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.actionbarsherlock</groupId>
+            <artifactId>plugin-support-lib</artifactId>
+            <version>${abs.version}</version>
+        </dependency>
+        <dependency>
 			<groupId>com.viewpagerindicator</groupId>
 			<artifactId>library</artifactId>
 			<version>2.2.3</version>
 			<type>apklib</type>
 		</dependency>
-        <dependency>
-            <groupId>com.pivotallabs</groupId>
-            <artifactId>robolectric</artifactId>
-            <version>1.0-RC1</version>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.eclipse.mylyn.github</groupId>
             <artifactId>org.eclipse.egit.github.core</artifactId>
@@ -92,9 +102,17 @@
     </dependencies>
     <build>
         <plugins>
-            <plugin>
-                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+             <plugin>
+                <groupId>com.madgag</groupId>
                 <artifactId>android-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>

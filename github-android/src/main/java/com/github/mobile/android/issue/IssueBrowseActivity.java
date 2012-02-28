@@ -11,8 +11,6 @@ import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY;
 import android.R;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.Menu;
-import android.support.v4.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -22,6 +20,8 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.AccountDataManager;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
@@ -108,7 +108,7 @@ public class IssueBrowseActivity extends RoboFragmentActivity implements OnItemC
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
-        getMenuInflater().inflate(menu.issues, options);
+        getSupportMenuInflater().inflate(menu.issues, options);
         return true;
     }
 

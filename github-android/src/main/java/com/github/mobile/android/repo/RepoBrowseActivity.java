@@ -6,13 +6,13 @@ import static com.github.mobile.android.util.GitHubIntents.EXTRA_USER;
 import android.R;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.HomeActivity;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
