@@ -16,10 +16,6 @@
         <android.version>3.2_r1</android.version>
     </properties>
     <repositories>
-        <repository> <!-- Temporary repository until GitHub Java API updates are released -->
-            <id>oss-snapshots</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </repository>
         <repository>
             <id>jakewharton</id>
             <url>http://r.jakewharton.com/maven/release/</url>
