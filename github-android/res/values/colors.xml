@@ -33,5 +33,7 @@
     <color name="issue_header_start">#CDCDCD</color>
     <color name="issue_header_end">#E5E6E6</color>
     <color name="issue_title_background">#D9DCDE</color>
+    <color name="actionbar_background_end">#EAEAEA</color>
+    <color name="actionbar_background_start">#F9F9F9</color>
 
 </resources>
