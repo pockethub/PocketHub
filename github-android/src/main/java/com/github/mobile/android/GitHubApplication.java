@@ -1,6 +1,5 @@
 package com.github.mobile.android;
 
-import static java.util.Arrays.asList;
 import android.app.Application;
 import android.app.Instrumentation;
 import android.content.Context;
@@ -41,8 +40,13 @@ public class GitHubApplication extends Application {
         attachBaseContext(instrumentation.getTargetContext());
     }
 
+    /**
+     * Add modules
+     *
+     * @param modules
+     */
     protected void addApplicationModules(List<Module> modules) {
-        Log.i(TAG, "Adding application modules...");
-        modules.addAll(asList(new GitHubModule()));
+        Log.d(TAG, "Adding application modules...");
+        modules.add(new GitHubModule());
     }
 }
