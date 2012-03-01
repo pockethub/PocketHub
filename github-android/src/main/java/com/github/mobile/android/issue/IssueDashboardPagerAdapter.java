@@ -10,7 +10,7 @@ import static org.eclipse.egit.github.core.service.IssueService.FILTER_CREATED;
 import static org.eclipse.egit.github.core.service.IssueService.FILTER_MENTIONED;
 import static org.eclipse.egit.github.core.service.IssueService.FILTER_SUBSCRIBED;
 import static org.eclipse.egit.github.core.service.IssueService.SORT_UPDATED;
-import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -28,17 +28,17 @@ import java.util.Map;
  */
 public class IssueDashboardPagerAdapter extends FragmentPagerAdapter implements TitleProvider {
 
-    private final Context context;
+    private final Resources resources;
 
     /**
      * Create pager adapter
      *
-     * @param context
+     * @param resources
      * @param fragmentManager
      */
-    public IssueDashboardPagerAdapter(Context context, FragmentManager fragmentManager) {
+    public IssueDashboardPagerAdapter(Resources resources, FragmentManager fragmentManager) {
         super(fragmentManager);
-        this.context = context;
+        this.resources = resources;
     }
 
     @Override
@@ -80,13 +80,13 @@ public class IssueDashboardPagerAdapter extends FragmentPagerAdapter implements 
     public String getTitle(int position) {
         switch (position) {
         case 0:
-            return context.getResources().getString(string.dasbhoard_watched);
+            return resources.getString(string.dasbhoard_watched);
         case 1:
-            return context.getResources().getString(string.dasbhoard_assigned);
+            return resources.getString(string.dasbhoard_assigned);
         case 2:
-            return context.getResources().getString(string.dasbhoard_created);
+            return resources.getString(string.dasbhoard_created);
         case 3:
-            return context.getResources().getString(string.dasbhoard_mentioned);
+            return resources.getString(string.dasbhoard_mentioned);
         default:
             return null;
         }

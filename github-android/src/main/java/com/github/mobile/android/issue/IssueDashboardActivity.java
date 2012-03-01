@@ -34,7 +34,7 @@ public class IssueDashboardActivity extends RoboFragmentActivity {
         setTitle(string.dashboard_issues_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        pager.setAdapter(new IssueDashboardPagerAdapter(getApplicationContext(), getSupportFragmentManager()));
+        pager.setAdapter(new IssueDashboardPagerAdapter(getResources(), getSupportFragmentManager()));
         indicator.setViewPager(pager);
     }
 
