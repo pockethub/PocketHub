@@ -17,7 +17,6 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:background="@drawable/inner_background"
-            android:divider="@color/item_divider"
             android:dividerHeight="1dp"
             android:padding="5dp" >
         </LinearLayout>
