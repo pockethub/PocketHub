@@ -2,6 +2,7 @@ package com.github.mobile.android.gist;
 
 import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
+import static org.eclipse.egit.github.core.client.PagedRequest.PAGE_FIRST;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 
@@ -29,7 +30,7 @@ public class PublicGistsFragment extends GistsFragment {
             @Override
             public List<Gist> loadInBackground() {
                 try {
-                    Collection<Gist> publicGists = service.pagePublicGists().next();
+                    Collection<Gist> publicGists = service.pagePublicGists(PAGE_FIRST, -1).next();
                     List<Gist> gists = new ArrayList<Gist>(publicGists.size());
                     for (Gist gist : publicGists)
                         gists.add(store.addGist(gist));
