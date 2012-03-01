@@ -1,18 +1,13 @@
 package com.github.mobile.android.comment;
 
-import android.util.Log;
 import android.view.View;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.HtmlViewer;
-import com.github.mobile.android.util.HttpImageGetter;
 import com.github.mobile.android.util.Time;
 import com.madgag.android.listviews.ViewHolder;
 
