@@ -12,7 +12,6 @@ import com.github.mobile.android.R.string;
 import com.github.mobile.android.comment.CommentViewHolder;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.github.mobile.android.util.AvatarHelper;
-import com.github.mobile.android.util.HttpImageGetter;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -46,15 +45,8 @@ public class IssueFragment extends ListLoadingFragment<FullIssue> {
 
     private View bodyView;
 
-    private HttpImageGetter imageGetter;
-
     @Inject
     private AvatarHelper avatarHelper;
-
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        imageGetter = new HttpImageGetter(getActivity());
-    }
 
     /**
      * @param id
@@ -73,7 +65,7 @@ public class IssueFragment extends ListLoadingFragment<FullIssue> {
      */
     public IssueFragment updateIssue(final Issue issue) {
         if (bodyView != null)
-            new IssueHeaderViewHolder(bodyView, imageGetter, avatarHelper, getResources()).updateViewFor(issue);
+            new IssueHeaderViewHolder(bodyView, avatarHelper, getResources()).updateViewFor(issue);
         return this;
     }
 
@@ -135,7 +127,7 @@ public class IssueFragment extends ListLoadingFragment<FullIssue> {
 
         return new ViewHoldingListAdapter<Comment>(comments, ViewInflator.viewInflatorFor(getActivity(),
                 layout.comment_view_item), ReflectiveHolderFactory.reflectiveFactoryFor(CommentViewHolder.class,
-                avatarHelper, imageGetter));
+                avatarHelper));
     }
 
     @Override

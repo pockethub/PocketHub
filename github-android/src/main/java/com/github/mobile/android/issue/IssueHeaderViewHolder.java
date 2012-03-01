@@ -4,17 +4,18 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import android.content.res.Resources;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
-import com.github.mobile.android.MarkdownViewHolder;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.Html;
-import com.github.mobile.android.util.HttpImageGetter;
+import com.github.mobile.android.util.HtmlViewer;
 import com.github.mobile.android.util.Time;
+import com.madgag.android.listviews.ViewHolder;
 
 import java.util.Locale;
 
@@ -24,7 +25,7 @@ import org.eclipse.egit.github.core.User;
 /**
  * Holder for a issue minus the comments
  */
-public class IssueHeaderViewHolder extends MarkdownViewHolder<Issue> {
+public class IssueHeaderViewHolder implements ViewHolder<Issue> {
 
     private final AvatarHelper avatarHelper;
 
@@ -32,7 +33,7 @@ public class IssueHeaderViewHolder extends MarkdownViewHolder<Issue> {
 
     private final TextView titleText;
 
-    private final TextView bodyText;
+    private final HtmlViewer bodyViewer;
 
     private final TextView createdText;
 
@@ -49,16 +50,20 @@ public class IssueHeaderViewHolder extends MarkdownViewHolder<Issue> {
     private final TextView stateText;
 
     /**
+     * @return bodyViewer
+     */
+    public HtmlViewer getBodyViewer() {
+        return bodyViewer;
+    }
+
+    /**
      * Create issue header view holder
      *
      * @param view
-     * @param imageGetter
      * @param avatarHelper
      * @param resources
      */
-    public IssueHeaderViewHolder(final View view, final HttpImageGetter imageGetter, final AvatarHelper avatarHelper,
-            final Resources resources) {
-        super(imageGetter);
+    public IssueHeaderViewHolder(final View view, final AvatarHelper avatarHelper, final Resources resources) {
         this.avatarHelper = avatarHelper;
         this.resources = resources;
         titleText = (TextView) view.findViewById(id.tv_issue_title);
@@ -69,17 +74,17 @@ public class IssueHeaderViewHolder extends MarkdownViewHolder<Issue> {
         labelsArea = (LinearLayout) view.findViewById(id.ll_labels);
         milestoneText = (TextView) view.findViewById(id.tv_milestone);
         stateText = (TextView) view.findViewById(id.tv_state);
-        bodyText = (TextView) view.findViewById(id.tv_issue_body);
+        bodyViewer = new HtmlViewer((WebView) view.findViewById(id.wv_issue_body));
     }
 
     public void updateViewFor(Issue issue) {
         titleText.setText(issue.getTitle());
         String body = issue.getBodyHtml();
         if (body != null && body.length() > 0) {
-            bindHtml(bodyText, body);
-            bodyText.setVisibility(VISIBLE);
+            bodyViewer.setHtml(body);
+            bodyViewer.getView().setVisibility(VISIBLE);
         } else
-            bodyText.setVisibility(GONE);
+            bodyViewer.getView().setVisibility(GONE);
 
         String reported = "<b>" + issue.getUser().getLogin() + "</b> opened "
                 + Time.relativeTimeFor(issue.getCreatedAt());

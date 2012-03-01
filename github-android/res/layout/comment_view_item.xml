@@ -29,7 +29,6 @@
             android:layout_gravity="center_vertical"
             android:paddingLeft="5dp"
             android:singleLine="true"
-            android:text="hubot"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/item_text_color_light"
             android:textStyle="bold" />
@@ -41,16 +40,15 @@
             android:layout_gravity="center_vertical"
             android:paddingLeft="5dp"
             android:singleLine="true"
-            android:text="3 minutes ago"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/item_text_color_light" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_gist_comment_body"
+    <WebView
+        android:id="@+id/wv_gist_comment_body"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="This is a comment"
-        android:textColor="@color/item_text_color" />
+        android:layout_height="fill_parent"
+        android:padding="2dp" >
+    </WebView>
 
 </LinearLayout>

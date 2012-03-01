@@ -139,15 +139,13 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/tv_issue_body"
+    <WebView
+        android:id="@+id/wv_issue_body"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:autoLink="all"
+        android:layout_height="fill_parent"
         android:paddingBottom="10dp"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
-        android:paddingTop="5dp"
-        android:textColor="@color/item_text_color" />
+        android:paddingTop="5dp" />
 
 </LinearLayout>

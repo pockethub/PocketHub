@@ -31,7 +31,6 @@ import com.github.mobile.android.comment.CreateCommentActivity;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.ErrorHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
-import com.github.mobile.android.util.HttpImageGetter;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -105,8 +104,6 @@ public class ViewIssueActivity extends DialogFragmentActivity {
     @Inject
     private AvatarHelper avatarHelper;
 
-    private HttpImageGetter imageGetter;
-
     private RepositoryId repositoryId;
 
     @InjectExtra(EXTRA_REPOSITORY_NAME)
@@ -149,7 +146,6 @@ public class ViewIssueActivity extends DialogFragmentActivity {
         milestoneDialog = new MilestoneDialog(this, REQUEST_CODE_MILESTONE, repositoryId, milestoneService);
         assigneeDialog = new AssigneeDialog(this, REQUEST_CODE_ASSIGNEE, repositoryId, collaboratorService);
 
-        imageGetter = new HttpImageGetter(this);
         View headerView = getLayoutInflater().inflate(layout.issue_header, null);
         headerView.findViewById(id.ll_milestone).setOnClickListener(new OnClickListener() {
 
@@ -174,7 +170,8 @@ public class ViewIssueActivity extends DialogFragmentActivity {
                     confirmEditState(STATE_OPEN.equals(issue.getState()));
             }
         });
-        header = new IssueHeaderViewHolder(headerView, imageGetter, avatarHelper, getResources());
+        header = new IssueHeaderViewHolder(headerView, avatarHelper, getResources());
+        list.setFastScrollEnabled(true);
         list.addHeaderView(headerView);
         loadingView = getLayoutInflater().inflate(layout.issue_load_item, null);
 
@@ -221,7 +218,7 @@ public class ViewIssueActivity extends DialogFragmentActivity {
         header.updateViewFor(issue);
         list.setAdapter(new ViewHoldingListAdapter<Comment>(comments, ViewInflator.viewInflatorFor(this,
                 layout.comment_view_item), ReflectiveHolderFactory.reflectiveFactoryFor(CommentViewHolder.class,
-                avatarHelper, imageGetter)));
+                avatarHelper)));
     }
 
     @Override
