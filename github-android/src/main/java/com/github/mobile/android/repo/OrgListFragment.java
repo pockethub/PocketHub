@@ -1,14 +1,18 @@
 package com.github.mobile.android.repo;
 
 import static android.util.Log.DEBUG;
+import static com.actionbarsherlock.view.MenuItem.SHOW_AS_ACTION_NEVER;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.github.mobile.android.AccountDataManager;
 import com.github.mobile.android.AsyncLoader;
+import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
@@ -61,6 +65,12 @@ public class OrgListFragment extends ListLoadingFragment<User> implements Compar
                 }
             }
         };
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(optionsMenu, inflater);
+        optionsMenu.findItem(id.refresh).setShowAsAction(SHOW_AS_ACTION_NEVER);
     }
 
     @Override

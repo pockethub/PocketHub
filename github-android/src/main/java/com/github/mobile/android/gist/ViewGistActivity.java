@@ -152,8 +152,6 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
         case id.gist_delete:
             ConfirmDialogFragment.show(this, REQUEST_CONFIRM_DELETE, "Confirm Delete",
                     "Are you sure you want to delete this Gist?");
-        case id.gist_refresh:
-            gistFragment.refresh();
         default:
             return super.onOptionsItemSelected(item);
         }

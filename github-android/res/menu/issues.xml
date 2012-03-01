@@ -19,11 +19,5 @@
         android:showAsAction="always"
         android:title="@string/create">
     </item>
-    <item
-        android:id="@+id/refresh"
-        android:icon="@drawable/ic_action_refresh"
-        android:showAsAction="always"
-        android:title="@string/refresh">
-    </item>
 
 </menu>

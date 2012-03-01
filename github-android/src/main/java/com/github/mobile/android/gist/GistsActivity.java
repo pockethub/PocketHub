@@ -133,9 +133,6 @@ public class GistsActivity extends RoboFragmentActivity implements OnItemClickLi
         case id.create_gist:
             startActivityForResult(new Intent(context, ShareGistActivity.class), REQUEST_CREATE);
             return true;
-        case id.refresh:
-            gists.refresh();
-            return true;
         case android.R.id.home:
             Intent intent = new Intent(this, HomeActivity.class);
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);

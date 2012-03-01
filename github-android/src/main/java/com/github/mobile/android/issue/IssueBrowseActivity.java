@@ -134,9 +134,6 @@ public class IssueBrowseActivity extends RoboFragmentActivity implements OnItemC
                 }
             });
             return true;
-        case id.refresh:
-            issues.refresh();
-            return true;
         case android.R.id.home:
             Intent intent = RepoBrowseActivity.createIntent(repo.getOwner());
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);

@@ -7,13 +7,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
-import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.google.inject.Inject;
@@ -103,22 +99,6 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
      */
     private void showMore() {
         super.refresh();
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
-        inflater.inflate(menu.issue_dashboard, optionsMenu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case id.refresh:
-            refresh();
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
     }
 
     @Override

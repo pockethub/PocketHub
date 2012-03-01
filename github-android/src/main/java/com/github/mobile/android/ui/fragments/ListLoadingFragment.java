@@ -1,12 +1,23 @@
 package com.github.mobile.android.ui.fragments;
 
+import static android.view.animation.Animation.INFINITE;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.github.mobile.android.R.anim;
+import com.github.mobile.android.R.id;
+import com.github.mobile.android.R.layout;
+import com.github.mobile.android.R.menu;
 import com.github.mobile.android.util.ErrorHelper;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
@@ -22,6 +33,8 @@ import roboguice.fragment.RoboListFragment;
  */
 public abstract class ListLoadingFragment<E> extends RoboListFragment implements LoaderCallbacks<List<E>> {
 
+    private MenuItem refreshItem;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -34,12 +47,50 @@ public abstract class ListLoadingFragment<E> extends RoboListFragment implements
         getLoaderManager().initLoader(0, null, this);
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
+        inflater.inflate(menu.refresh, optionsMenu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case id.refresh:
+            refreshItem = item;
+            refresh();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
     /**
      * Refresh the fragment's list
      */
     public void refresh() {
-        if (getActivity() != null && !getLoaderManager().hasRunningLoaders())
-            getLoaderManager().restartLoader(0, null, this);
+        final Activity activity = getActivity();
+        if (activity == null)
+            return;
+        if (getLoaderManager().hasRunningLoaders())
+            return;
+
+        if (refreshItem != null) {
+            View refreshView = activity.getLayoutInflater().inflate(layout.refresh_action_view, null);
+
+            Animation rotation = AnimationUtils.loadAnimation(activity, anim.clockwise_refresh);
+            rotation.setRepeatCount(INFINITE);
+            refreshView.startAnimation(rotation);
+
+            refreshItem.setActionView(refreshView);
+        }
+
+        getLoaderManager().restartLoader(0, null, this);
     }
 
     public void onLoadFinished(Loader<List<E>> loader, List<E> items) {
@@ -54,6 +105,11 @@ public abstract class ListLoadingFragment<E> extends RoboListFragment implements
             setListShown(true);
         else
             setListShownNoAnimation(true);
+
+        if (refreshItem != null && refreshItem.getActionView() != null) {
+            refreshItem.getActionView().clearAnimation();
+            refreshItem.setActionView(null);
+        }
     }
 
     /**
