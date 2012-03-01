@@ -8,9 +8,9 @@
         android:id="@+id/tv_gist_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="#20567743"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/listing" />
+        android:textColor="@color/listing"
+        android:typeface="monospace" />
 
     <TextView
         android:id="@+id/tv_gist_title"
@@ -20,7 +20,6 @@
         android:layout_toRightOf="@id/tv_gist_id"
         android:paddingLeft="5dp"
         android:singleLine="true"
-        android:text="Bind resource disposal to widget disposal"
         android:textColor="@color/item_text_color"
         android:textStyle="bold" />
 
@@ -28,9 +27,9 @@
         android:id="@+id/tv_gist_creation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/tv_gist_id"
+        android:layout_alignLeft="@id/tv_gist_title"
         android:layout_below="@id/tv_gist_id"
-        android:text="December 02, 2011"
+        android:paddingLeft="5dp"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/listing" />
 

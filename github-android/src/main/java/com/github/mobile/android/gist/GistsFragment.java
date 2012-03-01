@@ -74,7 +74,7 @@ public class GistsFragment extends ListLoadingFragment<Gist> implements Comparat
     @Override
     protected ViewHoldingListAdapter<Gist> adapterFor(List<Gist> items) {
         return new ViewHoldingListAdapter<Gist>(items, viewInflatorFor(getActivity(), layout.gist_list_item),
-                reflectiveFactoryFor(GistViewHolder.class));
+                reflectiveFactoryFor(GistViewHolder.class, GistViewHolder.computeMaxDigits(items)));
     }
 
     @Override
