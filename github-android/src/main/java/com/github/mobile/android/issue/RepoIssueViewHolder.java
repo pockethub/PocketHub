@@ -2,9 +2,12 @@ package com.github.mobile.android.issue;
 
 import static android.graphics.Paint.STRIKE_THRU_TEXT_FLAG;
 import static android.text.Html.fromHtml;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.github.mobile.android.util.Time.relativeTimeFor;
 import android.graphics.Paint;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mobile.android.R.id;
@@ -40,6 +43,8 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
 
     private final TextView comments;
 
+    private final ImageView pullRequestIcon;
+
     private final int flags;
 
     /**
@@ -54,6 +59,7 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
         title = (TextView) v.findViewById(id.tv_issue_title);
         creation = (TextView) v.findViewById(id.tv_issue_creation);
         comments = (TextView) v.findViewById(id.tv_issue_comments);
+        pullRequestIcon = (ImageView) v.findViewById(id.iv_pull_request);
 
         // Set number field to max number size
         Paint paint = new Paint();
@@ -66,14 +72,21 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
     }
 
     @Override
-    public void updateViewFor(Issue i) {
-        number.setText("#" + i.getNumber());
-        if (i.getClosedAt() != null)
+    public void updateViewFor(Issue issue) {
+        number.setText("#" + issue.getNumber());
+        if (issue.getClosedAt() != null)
             number.setPaintFlags(flags | STRIKE_THRU_TEXT_FLAG);
         else
             number.setPaintFlags(flags);
-        title.setText(i.getTitle());
-        creation.setText(fromHtml("by <b>" + i.getUser().getLogin() + "</b> " + relativeTimeFor(i.getCreatedAt())));
-        comments.setText(Integer.toString(i.getComments()));
+
+        if (issue.getPullRequest().getHtmlUrl() != null)
+            pullRequestIcon.setVisibility(VISIBLE);
+        else
+            pullRequestIcon.setVisibility(GONE);
+
+        title.setText(issue.getTitle());
+        creation.setText(fromHtml("by <b>" + issue.getUser().getLogin() + "</b> "
+                + relativeTimeFor(issue.getCreatedAt())));
+        comments.setText(Integer.toString(issue.getComments()));
     }
 }

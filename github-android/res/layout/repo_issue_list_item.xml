@@ -8,6 +8,7 @@
         android:id="@+id/tv_issue_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingBottom="2dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/listing"
         android:typeface="monospace" />
@@ -39,6 +40,13 @@
         android:layout_alignBottom="@id/tv_issue_creation"
         android:layout_alignParentRight="true"
         android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/iv_pull_request"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:paddingRight="5dp"
+            android:src="@drawable/pull_request_icon" />
 
         <ImageView
             android:layout_width="wrap_content"
