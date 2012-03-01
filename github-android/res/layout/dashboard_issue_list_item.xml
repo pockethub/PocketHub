@@ -53,6 +53,14 @@
                 android:textColor="@color/listing" />
 
             <ImageView
+                android:id="@+id/iv_pull_request"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingRight="5dp"
+                android:src="@drawable/pull_request_icon" />
+
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
