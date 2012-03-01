@@ -45,7 +45,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingRight="10dp"
-            android:text="1 file"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/listing_comments" />
 
@@ -59,7 +58,6 @@
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:paddingLeft="3dp"
-            android:text="3"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/listing_comments" />
     </LinearLayout>
