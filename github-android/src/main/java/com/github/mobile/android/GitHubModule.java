@@ -5,6 +5,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
 
+import com.github.mobile.android.gist.GistStore;
 import com.github.mobile.android.issue.IssueStore;
 import com.github.mobile.android.util.AvatarHelper;
 import com.google.inject.AbstractModule;
@@ -35,7 +36,9 @@ import org.eclipse.egit.github.core.service.UserService;
  */
 public class GitHubModule extends AbstractModule {
 
-    private WeakReference<IssueStore> issues = null;
+    private WeakReference<IssueStore> issues;
+
+    private WeakReference<GistStore> gists;
 
     @Override
     protected void configure() {
@@ -150,6 +153,16 @@ public class GitHubModule extends AbstractModule {
         if (store == null) {
             store = new IssueStore(service);
             issues = new WeakReference<IssueStore>(store);
+        }
+        return store;
+    }
+
+    @Provides
+    GistStore gistStore(GistService service) {
+        GistStore store = gists != null ? gists.get() : null;
+        if (store == null) {
+            store = new GistStore(service);
+            gists = new WeakReference<GistStore>(store);
         }
         return store;
     }

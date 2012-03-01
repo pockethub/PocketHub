@@ -39,6 +39,9 @@ public class GistFragment extends ListLoadingFragment<Comment> {
     @Inject
     private GistService service;
 
+    @Inject
+    private GistStore store;
+
     private Gist gist;
 
     private List<View> fileHeaders = new ArrayList<View>();
@@ -76,7 +79,7 @@ public class GistFragment extends ListLoadingFragment<Comment> {
             @Override
             public List<Comment> loadInBackground() {
                 try {
-                    Gist gist = service.getGist(id);
+                    Gist gist = store.addGist(service.getGist(id));
                     List<Comment> comments;
                     if (gist.getComments() > 0)
                         comments = service.getComments(id);

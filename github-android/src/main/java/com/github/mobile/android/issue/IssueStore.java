@@ -1,8 +1,8 @@
 package com.github.mobile.android.issue;
 
+import com.github.mobile.android.ItemStore;
+
 import java.io.IOException;
-import java.lang.ref.ReferenceQueue;
-import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,49 +14,9 @@ import org.eclipse.egit.github.core.service.IssueService;
 /**
  * Store of loaded issues
  */
-public class IssueStore {
+public class IssueStore extends ItemStore {
 
-    private static class RepositoryIssues {
-
-        private static class IssueReference extends WeakReference<Issue> {
-
-            private int number;
-
-            /**
-             * Create issue reference
-             *
-             * @param issue
-             * @param queue
-             */
-            public IssueReference(Issue issue, ReferenceQueue<? super Issue> queue) {
-                super(issue, queue);
-                number = issue.getNumber();
-            }
-        }
-
-        private final ReferenceQueue<Issue> queue = new ReferenceQueue<Issue>();
-
-        private final Map<Integer, IssueReference> issues = new HashMap<Integer, IssueReference>();
-
-        private void expungeEntries() {
-            IssueReference ref;
-            while ((ref = (IssueReference) queue.poll()) != null)
-                issues.remove(ref.number);
-        }
-
-        private Issue get(final int number) {
-            expungeEntries();
-            WeakReference<Issue> ref = issues.get(number);
-            return ref != null ? ref.get() : null;
-        }
-
-        private void put(Issue issue) {
-            expungeEntries();
-            issues.put(issue.getNumber(), new IssueReference(issue, queue));
-        }
-    }
-
-    private final Map<String, RepositoryIssues> repos = new HashMap<String, RepositoryIssues>();
+    private final Map<String, ItemReferences<Issue>> repos = new HashMap<String, ItemReferences<Issue>>();
 
     private final IssueService service;
 
@@ -77,7 +37,7 @@ public class IssueStore {
      * @return issue or null if not in store
      */
     public Issue getIssue(IRepositoryIdProvider repository, int number) {
-        RepositoryIssues repoIssues = repos.get(repository.generateId());
+        ItemReferences<Issue> repoIssues = repos.get(repository.generateId());
         return repoIssues != null ? repoIssues.get(number) : null;
     }
 
@@ -117,12 +77,12 @@ public class IssueStore {
             return current;
         } else {
             String repoId = repository.generateId();
-            RepositoryIssues repoIssues = repos.get(repoId);
+            ItemReferences<Issue> repoIssues = repos.get(repoId);
             if (repoIssues == null) {
-                repoIssues = new RepositoryIssues();
+                repoIssues = new ItemReferences<Issue>();
                 repos.put(repoId, repoIssues);
             }
-            repoIssues.put(issue);
+            repoIssues.put(issue.getNumber(), issue);
             return issue;
         }
     }
@@ -140,7 +100,7 @@ public class IssueStore {
     }
 
     /**
-     * Refresh issue
+     * Edit issue
      *
      * @param repository
      * @param issue
