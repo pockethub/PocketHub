@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.github.mobile.android.AsyncLoader;
@@ -73,7 +72,7 @@ public class GistsFragment extends ListLoadingFragment<Gist> implements Comparat
     }
 
     @Override
-    protected ListAdapter adapterFor(List<Gist> items) {
+    protected ViewHoldingListAdapter<Gist> adapterFor(List<Gist> items) {
         return new ViewHoldingListAdapter<Gist>(items, viewInflatorFor(getActivity(), layout.gist_list_item),
                 reflectiveFactoryFor(GistViewHolder.class));
     }

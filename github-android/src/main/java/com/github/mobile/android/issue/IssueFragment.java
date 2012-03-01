@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.view.View;
-import android.widget.ListAdapter;
 
 import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.layout;
@@ -29,9 +28,9 @@ import org.eclipse.egit.github.core.service.IssueService;
 /**
  * Fragment to display a issue's description and comments
  */
-public class IssueFragment extends ListLoadingFragment<FullIssue> {
+public class IssueFragment extends ListLoadingFragment<Comment> {
 
-    private LoaderCallbacks<List<FullIssue>> loadListener;
+    private LoaderCallbacks<List<Comment>> loadListener;
 
     private IRepositoryIdProvider repository;
 
@@ -82,16 +81,16 @@ public class IssueFragment extends ListLoadingFragment<FullIssue> {
      * @param loadListener
      * @return this fragment
      */
-    public IssueFragment setLoadListener(LoaderCallbacks<List<FullIssue>> loadListener) {
+    public IssueFragment setLoadListener(LoaderCallbacks<List<Comment>> loadListener) {
         this.loadListener = loadListener;
         return this;
     }
 
     @Override
-    public Loader<List<FullIssue>> onCreateLoader(int i, Bundle bundle) {
-        return new AsyncLoader<List<FullIssue>>(getActivity()) {
+    public Loader<List<Comment>> onCreateLoader(int i, Bundle bundle) {
+        return new AsyncLoader<List<Comment>>(getActivity()) {
             @Override
-            public List<FullIssue> loadInBackground() {
+            public List<Comment> loadInBackground() {
                 try {
                     Issue issue = store.refreshIssue(repository, id);
                     List<Comment> comments;
@@ -99,46 +98,42 @@ public class IssueFragment extends ListLoadingFragment<FullIssue> {
                         comments = service.getComments(repository, id);
                     else
                         comments = Collections.emptyList();
-                    return Collections.singletonList(new FullIssue(issue, comments));
+                    return new FullIssue(issue, comments);
                 } catch (IOException e) {
                     showError(e, string.error_issue_load);
-                    return Collections.emptyList();
+                    return new FullIssue();
                 }
             }
         };
     }
 
     @Override
-    protected ListAdapter adapterFor(List<FullIssue> items) {
-        if (items.isEmpty() && getListAdapter() != null)
-            return getListAdapter();
+    protected ViewHoldingListAdapter<Comment> adapterFor(List<Comment> items) {
+        return new ViewHoldingListAdapter<Comment>(items, ViewInflator.viewInflatorFor(getActivity(),
+                layout.comment_view_item), ReflectiveHolderFactory.reflectiveFactoryFor(CommentViewHolder.class,
+                avatarHelper));
+    }
 
+    @Override
+    public void onLoadFinished(Loader<List<Comment>> loader, List<Comment> items) {
         if (bodyView != null)
             getListView().removeHeaderView(bodyView);
 
-        Issue issue = !items.isEmpty() ? items.get(0).getIssue() : null;
-        List<Comment> comments = !items.isEmpty() ? items.get(0).getComments() : Collections.<Comment> emptyList();
-
+        FullIssue fullIssue = (FullIssue) items;
+        Issue issue = fullIssue.getIssue();
         if (issue != null) {
             bodyView = getActivity().getLayoutInflater().inflate(layout.issue_header, null);
             updateIssue(issue);
             getListView().addHeaderView(bodyView);
         }
 
-        return new ViewHoldingListAdapter<Comment>(comments, ViewInflator.viewInflatorFor(getActivity(),
-                layout.comment_view_item), ReflectiveHolderFactory.reflectiveFactoryFor(CommentViewHolder.class,
-                avatarHelper));
-    }
-
-    @Override
-    public void onLoadFinished(Loader<List<FullIssue>> loader, List<FullIssue> items) {
         super.onLoadFinished(loader, items);
         if (loadListener != null)
             loadListener.onLoadFinished(loader, items);
     }
 
     @Override
-    public void onLoaderReset(Loader<List<FullIssue>> listLoader) {
+    public void onLoaderReset(Loader<List<Comment>> listLoader) {
         super.onLoaderReset(listLoader);
         if (loadListener != null)
             loadListener.onLoaderReset(listLoader);

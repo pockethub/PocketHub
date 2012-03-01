@@ -32,7 +32,6 @@ import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.github.mobile.android.util.Time;
 import com.google.inject.Inject;
 
-import java.io.Serializable;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Comment;
@@ -48,7 +47,7 @@ import roboguice.util.RoboAsyncTask;
 /**
  * Activity to display an existing Gist
  */
-public class ViewGistActivity extends DialogFragmentActivity implements LoaderCallbacks<List<FullGist>> {
+public class ViewGistActivity extends DialogFragmentActivity implements LoaderCallbacks<List<Comment>> {
 
     /**
      * Result if the Gist was deleted
@@ -226,7 +225,7 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
 
     }
 
-    public Loader<List<FullGist>> onCreateLoader(int arg0, Bundle arg1) {
+    public Loader<List<Comment>> onCreateLoader(int i, Bundle bundle) {
         return null;
     }
 
@@ -260,15 +259,13 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
         }
     }
 
-    public void onLoadFinished(Loader<List<FullGist>> loader, List<FullGist> gists) {
-        FullGist fullGist = gists.get(0);
+    public void onLoadFinished(Loader<List<Comment>> loader, List<Comment> gists) {
+        FullGist fullGist = (FullGist) gists;
         final Gist gist = fullGist.getGist();
         showGist(gist);
-        final List<Comment> gistComments = fullGist.getComments();
-        if (gistComments != null)
-            getIntent().putExtra(EXTRA_COMMENTS, (Serializable) gistComments);
+        getIntent().putExtra(EXTRA_COMMENTS, fullGist);
     }
 
-    public void onLoaderReset(Loader<List<FullGist>> loader) {
+    public void onLoaderReset(Loader<List<Comment>> loader) {
     }
 }

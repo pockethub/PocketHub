@@ -11,14 +11,12 @@ import org.eclipse.egit.github.core.GistFile;
 /**
  * Gist model with comments
  */
-public class FullGist implements Serializable {
+public class FullGist extends ArrayList<Comment> implements Serializable {
 
     /** serialVersionUID */
     private static final long serialVersionUID = -5966699489498437000L;
 
     private final Gist gist;
-
-    private final List<Comment> comments;
 
     /**
      * Create gist with comments
@@ -27,8 +25,15 @@ public class FullGist implements Serializable {
      * @param comments
      */
     public FullGist(final Gist gist, final List<Comment> comments) {
+        super(comments);
         this.gist = gist;
-        this.comments = comments;
+    }
+
+    /**
+     * Create empty gist
+     */
+    public FullGist() {
+        this.gist = null;
     }
 
     /**
@@ -36,13 +41,6 @@ public class FullGist implements Serializable {
      */
     public Gist getGist() {
         return gist;
-    }
-
-    /**
-     * @return comments
-     */
-    public List<Comment> getComments() {
-        return comments;
     }
 
     /**

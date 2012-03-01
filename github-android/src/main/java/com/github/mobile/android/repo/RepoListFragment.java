@@ -8,7 +8,6 @@ import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.github.mobile.android.AccountDataManager;
@@ -129,7 +128,7 @@ public class RepoListFragment extends ListLoadingFragment<Repository> {
     }
 
     @Override
-    protected ListAdapter adapterFor(List<Repository> items) {
+    protected ViewHoldingListAdapter<Repository> adapterFor(List<Repository> items) {
         return new ViewHoldingListAdapter<Repository>(items, viewInflatorFor(getActivity(), layout.repo_list_item),
                 ReflectiveHolderFactory.reflectiveFactoryFor(RepoViewHolder.class, user, recent));
     }

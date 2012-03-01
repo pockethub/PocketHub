@@ -1,14 +1,14 @@
 package com.github.mobile.android.ui.fragments;
 
-import com.github.mobile.android.util.ErrorHelper;
-
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
-import android.widget.ListAdapter;
 import android.widget.Toast;
+
+import com.github.mobile.android.util.ErrorHelper;
+import com.madgag.android.listviews.ViewHoldingListAdapter;
 
 import java.util.List;
 
@@ -43,7 +43,12 @@ public abstract class ListLoadingFragment<E> extends RoboListFragment implements
     }
 
     public void onLoadFinished(Loader<List<E>> loader, List<E> items) {
-        setListAdapter(adapterFor(items));
+        @SuppressWarnings("unchecked")
+        ViewHoldingListAdapter<E> adapter = (ViewHoldingListAdapter<E>) getListAdapter();
+        if (adapter == null)
+            setListAdapter(adapterFor(items));
+        else
+            adapter.setList(items);
 
         if (isResumed())
             setListShown(true);
@@ -57,7 +62,7 @@ public abstract class ListLoadingFragment<E> extends RoboListFragment implements
      * @param items
      * @return list adapter
      */
-    protected abstract ListAdapter adapterFor(List<E> items);
+    protected abstract ViewHoldingListAdapter<E> adapterFor(List<E> items);
 
     @Override
     public void onLoaderReset(Loader<List<E>> listLoader) {

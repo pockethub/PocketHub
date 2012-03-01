@@ -7,7 +7,6 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.github.mobile.android.AsyncLoader;
@@ -31,16 +30,16 @@ import org.eclipse.egit.github.core.service.GistService;
 /**
  * Fragment to display a Gist's files and comments
  */
-public class GistFragment extends ListLoadingFragment<FullGist> {
+public class GistFragment extends ListLoadingFragment<Comment> {
 
     private String id;
 
-    private LoaderCallbacks<List<FullGist>> loadListener;
+    private LoaderCallbacks<List<Comment>> loadListener;
 
     @Inject
     private GistService service;
 
-    private FullGist fullGist;
+    private Gist gist;
 
     private List<View> fileHeaders = new ArrayList<View>();
 
@@ -50,14 +49,14 @@ public class GistFragment extends ListLoadingFragment<FullGist> {
     public void onListItemClick(ListView l, View v, int position, long id) {
         Object item = l.getItemAtPosition(position);
         if (item instanceof GistFile)
-            startActivity(ViewGistFileActivity.createIntent(fullGist.getGist(), (GistFile) item));
+            startActivity(ViewGistFileActivity.createIntent(gist, (GistFile) item));
     }
 
     /**
      * @param loadListener
      * @return this fragment
      */
-    public GistFragment setLoadListener(LoaderCallbacks<List<FullGist>> loadListener) {
+    public GistFragment setLoadListener(LoaderCallbacks<List<Comment>> loadListener) {
         this.loadListener = loadListener;
         return this;
     }
@@ -72,10 +71,10 @@ public class GistFragment extends ListLoadingFragment<FullGist> {
     }
 
     @Override
-    public Loader<List<FullGist>> onCreateLoader(int i, Bundle bundle) {
-        return new AsyncLoader<List<FullGist>>(getActivity()) {
+    public Loader<List<Comment>> onCreateLoader(int i, Bundle bundle) {
+        return new AsyncLoader<List<Comment>>(getActivity()) {
             @Override
-            public List<FullGist> loadInBackground() {
+            public List<Comment> loadInBackground() {
                 try {
                     Gist gist = service.getGist(id);
                     List<Comment> comments;
@@ -83,19 +82,23 @@ public class GistFragment extends ListLoadingFragment<FullGist> {
                         comments = service.getComments(id);
                     else
                         comments = Collections.emptyList();
-                    FullGist full = new FullGist(gist, comments);
-                    fullGist = full;
-                    return Collections.singletonList(full);
+                    return new FullGist(gist, comments);
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    return new FullGist();
                 }
             }
         };
     }
 
     @Override
-    protected ListAdapter adapterFor(List<FullGist> items) {
-        FullGist gist = items.get(0);
+    protected ViewHoldingListAdapter<Comment> adapterFor(List<Comment> items) {
+        return new ViewHoldingListAdapter<Comment>(items, viewInflatorFor(getActivity(), layout.comment_view_item),
+                reflectiveFactoryFor(CommentViewHolder.class, avatarHelper));
+    }
+
+    public void onLoadFinished(Loader<List<Comment>> loader, List<Comment> items) {
+        FullGist gist = (FullGist) items;
+        this.gist = gist.getGist();
         ListView view = getListView();
         for (View header : fileHeaders)
             view.removeHeaderView(header);
@@ -107,17 +110,12 @@ public class GistFragment extends ListLoadingFragment<FullGist> {
             view.addHeaderView(fileView, file, true);
             fileHeaders.add(fileView);
         }
-        return new ViewHoldingListAdapter<Comment>(gist.getComments(), viewInflatorFor(getActivity(),
-                layout.comment_view_item), reflectiveFactoryFor(CommentViewHolder.class, avatarHelper));
-    }
-
-    public void onLoadFinished(Loader<List<FullGist>> loader, List<FullGist> items) {
         super.onLoadFinished(loader, items);
         if (loadListener != null)
             loadListener.onLoadFinished(loader, items);
     }
 
-    public void onLoaderReset(Loader<List<FullGist>> listLoader) {
+    public void onLoaderReset(Loader<List<Comment>> listLoader) {
         super.onLoaderReset(listLoader);
         if (loadListener != null)
             loadListener.onLoaderReset(listLoader);

@@ -32,7 +32,7 @@ public class PullRequestsFragment extends ListLoadingFragment<PullRequest> {
     PullRequestService pullRequestService;
 
     @Override
-    protected ListAdapter adapterFor(List<PullRequest> pullRequests) {
+    protected ViewHoldingListAdapter<PullRequest> adapterFor(List<PullRequest> pullRequests) {
         return new ViewHoldingListAdapter<PullRequest>(pullRequests, viewInflatorFor(getActivity(),
                 pull_request_list_item), reflectiveFactoryFor(PullRequestViewHolder.class));
     }

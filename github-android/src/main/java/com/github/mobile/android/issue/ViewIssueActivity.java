@@ -206,9 +206,9 @@ public class ViewIssueActivity extends DialogFragmentActivity {
 
             protected void onSuccess(FullIssue fullIssue) throws Exception {
                 issue = fullIssue.getIssue();
-                comments = fullIssue.getComments();
-                getIntent().putExtra(ARG_COMMENTS, (Serializable) fullIssue.getComments());
-                updateList(fullIssue.getIssue(), fullIssue.getComments());
+                comments = fullIssue;
+                getIntent().putExtra(ARG_COMMENTS, (Serializable) fullIssue);
+                updateList(fullIssue.getIssue(), fullIssue);
             }
         }.execute();
     }

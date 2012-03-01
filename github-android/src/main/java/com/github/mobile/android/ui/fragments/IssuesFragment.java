@@ -4,30 +4,21 @@ import static com.github.mobile.android.R.layout.issue_list_item;
 import static com.github.mobile.android.issue.ViewIssueActivity.viewIssueIntentFor;
 import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.github.mobile.android.AsyncLoader;
-import com.github.mobile.android.issue.IssueBrowseActivity;
-import com.github.mobile.android.issue.ViewIssueActivity;
 import com.github.mobile.android.views.IssueViewHolder;
 import com.google.inject.Inject;
-import com.madgag.android.listviews.ReflectiveHolderFactory;
-import com.madgag.android.listviews.ViewHolder;
-import com.madgag.android.listviews.ViewHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
 import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.service.IssueService;
 
 public class IssuesFragment extends ListLoadingFragment<Issue> {
@@ -38,7 +29,7 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
     IssueService issueService;
 
     @Override
-    protected ListAdapter adapterFor(List<Issue> issues) {
+    protected ViewHoldingListAdapter<Issue> adapterFor(List<Issue> issues) {
         return new ViewHoldingListAdapter<Issue>(issues, viewInflatorFor(getActivity(), issue_list_item),
                 reflectiveFactoryFor(IssueViewHolder.class));
     }
@@ -48,7 +39,7 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
         Issue issue = (Issue) list.getItemAtPosition(position);
         startActivity(viewIssueIntentFor(issue));
     }
-    
+
     @Override
     public Loader<List<Issue>> onCreateLoader(int i, Bundle bundle) {
         return new AsyncLoader<List<Issue>>(getActivity()) {

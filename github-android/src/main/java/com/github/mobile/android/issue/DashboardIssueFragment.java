@@ -5,7 +5,6 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.actionbarsherlock.view.Menu;
@@ -47,8 +46,6 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
     private IssueStore store;
 
     private Map<String, String> filterData;
-
-    private Issue lastIssue;
 
     private boolean hasMore = true;
 
@@ -125,7 +122,7 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
     }
 
     @Override
-    protected ListAdapter adapterFor(List<Issue> items) {
+    protected ViewHoldingListAdapter<Issue> adapterFor(List<Issue> items) {
         return new ViewHoldingListAdapter<Issue>(items, ViewInflator.viewInflatorFor(getActivity(),
                 layout.dashboard_issue_list_item), ReflectiveHolderFactory.reflectiveFactoryFor(
                 DashboardIssueViewHolder.class, RepoIssueViewHolder.computeMaxDigits(items)));
@@ -147,8 +144,6 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
                     public void onClick(View v) {
                         moreButton.setText(getString(string.loading_more_issues));
                         moreButton.setEnabled(false);
-                        lastIssue = (Issue) getListView().getItemAtPosition(
-                                getListView().getCount() - getListView().getFooterViewsCount() - 1);
                         showMore();
                     }
                 });
@@ -162,24 +157,5 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
         }
 
         super.onLoadFinished(loader, items);
-
-        if (lastIssue != null) {
-            final int target = lastIssue.getNumber();
-            lastIssue = null;
-            getListView().post(new Runnable() {
-
-                public void run() {
-                    ListView view = getListView();
-                    for (int i = 0; i < view.getCount() - view.getFooterViewsCount(); i++) {
-                        Issue issue = (Issue) view.getItemAtPosition(i);
-                        if (target == issue.getNumber()) {
-                            view.setSelection(i);
-                            return;
-                        }
-                    }
-                }
-            });
-        }
-
     }
 }

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.github.mobile.android.AccountDataManager;
@@ -65,7 +64,7 @@ public class OrgListFragment extends ListLoadingFragment<User> implements Compar
     }
 
     @Override
-    protected ListAdapter adapterFor(List<User> items) {
+    protected ViewHoldingListAdapter<User> adapterFor(List<User> items) {
         return new ViewHoldingListAdapter<User>(items, ViewInflator.viewInflatorFor(getActivity(), layout.org_item),
                 ReflectiveHolderFactory.reflectiveFactoryFor(OrgViewHolder.class, avatarHelper));
     }

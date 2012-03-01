@@ -12,7 +12,6 @@ import android.view.View.OnClickListener;
 import android.widget.AbsListView.LayoutParams;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.github.mobile.android.AsyncLoader;
@@ -51,8 +50,6 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
     private IssueFilter filter;
 
     private IRepositoryIdProvider repository;
-
-    private Issue lastIssue;
 
     private boolean hasMore = true;
 
@@ -136,8 +133,6 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
                     public void onClick(View v) {
                         moreButton.setText(getString(string.loading_more_issues));
                         moreButton.setEnabled(false);
-                        lastIssue = (Issue) getListView().getItemAtPosition(
-                                getListView().getCount() - getListView().getFooterViewsCount() - 1);
                         showMore();
                     }
                 });
@@ -151,21 +146,6 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
         }
 
         super.onLoadFinished(loader, items);
-
-        if (lastIssue != null) {
-            final int target = lastIssue.getNumber();
-            getListView().post(new Runnable() {
-
-                public void run() {
-                    ListView view = getListView();
-                    for (int i = 0; i < view.getCount() - view.getFooterViewsCount(); i++)
-                        if (target == ((Issue) view.getItemAtPosition(i)).getNumber()) {
-                            view.setSelection(i);
-                            return;
-                        }
-                }
-            });
-        }
 
         if (loadListener != null)
             loadListener.onLoadFinished(loader, items);
@@ -214,7 +194,7 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
     }
 
     @Override
-    protected ListAdapter adapterFor(List<Issue> items) {
+    protected ViewHoldingListAdapter<Issue> adapterFor(List<Issue> items) {
         return new ViewHoldingListAdapter<Issue>(items, viewInflatorFor(getActivity(), layout.repo_issue_list_item),
                 reflectiveFactoryFor(RepoIssueViewHolder.class, RepoIssueViewHolder.computeMaxDigits(items)));
     }

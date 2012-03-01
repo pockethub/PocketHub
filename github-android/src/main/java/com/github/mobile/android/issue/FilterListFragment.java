@@ -3,7 +3,6 @@ package com.github.mobile.android.issue;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.github.mobile.android.AccountDataManager;
@@ -57,7 +56,7 @@ public class FilterListFragment extends ListLoadingFragment<IssueFilter> {
     }
 
     @Override
-    protected ListAdapter adapterFor(List<IssueFilter> items) {
+    protected ViewHoldingListAdapter<IssueFilter> adapterFor(List<IssueFilter> items) {
         return new ViewHoldingListAdapter<IssueFilter>(items, ViewInflator.viewInflatorFor(getActivity(),
                 layout.issue_filter_list_item),
                 ReflectiveHolderFactory.reflectiveFactoryFor(IssueFilterViewHolder.class));
