@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.HeaderViewListAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,6 +27,7 @@ import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.RefreshAnimation;
 import com.github.mobile.android.SingleChoiceDialogFragment;
 import com.github.mobile.android.comment.CommentViewHolder;
 import com.github.mobile.android.comment.CreateCommentActivity;
@@ -106,6 +109,8 @@ public class ViewIssueActivity extends DialogFragmentActivity {
 
     private RepositoryId repositoryId;
 
+    private RefreshAnimation refreshAnimation = new RefreshAnimation();
+
     @InjectExtra(EXTRA_REPOSITORY_NAME)
     private String repository;
 
@@ -185,9 +190,10 @@ public class ViewIssueActivity extends DialogFragmentActivity {
     }
 
     private void refreshIssue() {
-        list.addHeaderView(loadingView);
-        if (list.getAdapter() == null)
+        if (list.getAdapter() == null) {
+            list.addHeaderView(loadingView);
             list.setAdapter(new ArrayAdapter<Comment>(this, layout.comment_view_item));
+        }
         new RoboAsyncTask<FullIssue>(this) {
 
             public FullIssue call() throws Exception {
@@ -210,15 +216,36 @@ public class ViewIssueActivity extends DialogFragmentActivity {
                 getIntent().putExtra(ARG_COMMENTS, (Serializable) fullIssue);
                 updateList(fullIssue.getIssue(), fullIssue);
             }
+
+            protected void onFinally() throws RuntimeException {
+                refreshAnimation.stop();
+            }
         }.execute();
     }
 
     private void updateList(Issue issue, List<Comment> comments) {
         list.removeHeaderView(loadingView);
         header.updateViewFor(issue);
-        list.setAdapter(new ViewHoldingListAdapter<Comment>(comments, ViewInflator.viewInflatorFor(this,
-                layout.comment_view_item), ReflectiveHolderFactory.reflectiveFactoryFor(CommentViewHolder.class,
-                avatarHelper)));
+
+        ViewHoldingListAdapter<Comment> adapter = getRootAdapter();
+        if (adapter != null)
+            adapter.setList(comments);
+        else
+            list.setAdapter(new ViewHoldingListAdapter<Comment>(comments, ViewInflator.viewInflatorFor(this,
+                    layout.comment_view_item), ReflectiveHolderFactory.reflectiveFactoryFor(CommentViewHolder.class,
+                    avatarHelper)));
+    }
+
+    @SuppressWarnings("unchecked")
+    private ViewHoldingListAdapter<Comment> getRootAdapter() {
+        ListAdapter adapter = list.getAdapter();
+        if (adapter == null)
+            return null;
+        adapter = ((HeaderViewListAdapter) adapter).getWrappedAdapter();
+        if (adapter instanceof ViewHoldingListAdapter<?>)
+            return (ViewHoldingListAdapter<Comment>) adapter;
+        else
+            return null;
     }
 
     @Override
@@ -241,30 +268,30 @@ public class ViewIssueActivity extends DialogFragmentActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Don't allow options before issue loads
+        if (issue == null)
+            return super.onOptionsItemSelected(item);
+
         switch (item.getItemId()) {
         case id.issue_comment:
-            // Don't allow commenting before issue loads
-            if (issue != null)
-                startActivityForResult(CreateCommentActivity.createIntent(), REQUEST_CODE_COMMENT);
+            startActivityForResult(CreateCommentActivity.createIntent(), REQUEST_CODE_COMMENT);
             return true;
         case id.issue_labels:
-            if (issue != null)
-                labelsDialog.show(issue.getLabels());
+            labelsDialog.show(issue.getLabels());
             return true;
         case id.issue_milestone:
-            if (issue != null)
-                milestoneDialog.show(issue.getMilestone());
+            milestoneDialog.show(issue.getMilestone());
             return true;
         case id.issue_assignee:
-            if (issue != null) {
-                User assignee = issue.getAssignee();
-                assigneeDialog.show(assignee != null ? assignee.getLogin() : null);
-            }
+            User assignee = issue.getAssignee();
+            assigneeDialog.show(assignee != null ? assignee.getLogin() : null);
             return true;
         case id.issue_state:
-            if (issue != null)
-                confirmEditState(STATE_OPEN.equals(issue.getState()));
+            confirmEditState(STATE_OPEN.equals(issue.getState()));
             return true;
+        case id.refresh:
+            refreshAnimation.setRefreshItem(item).start(this);
+            refreshIssue();
         default:
             return super.onOptionsItemSelected(item);
         }
