@@ -96,7 +96,7 @@ public class IssueHeaderViewHolder implements ViewHolder<Issue> {
         if (assignee != null) {
             assigneeText.setText(assignee.getLogin());
             assigneeAvatar.setVisibility(VISIBLE);
-            avatarHelper.bind(assigneeAvatar, issue.getUser());
+            avatarHelper.bind(assigneeAvatar, assignee);
         } else {
             assigneeAvatar.setVisibility(GONE);
             assigneeText.setText("Unassigned");
