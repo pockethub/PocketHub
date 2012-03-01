@@ -8,7 +8,7 @@ import com.github.mobile.android.R.string;
 import com.github.mobile.android.util.Time;
 import com.madgag.android.listviews.ViewHolder;
 
-import java.text.MessageFormat;
+import java.text.NumberFormat;
 
 import org.eclipse.egit.github.core.Gist;
 
@@ -16,6 +16,8 @@ import org.eclipse.egit.github.core.Gist;
  * View holder for a {@link Gist}
  */
 public class GistViewHolder implements ViewHolder<Gist> {
+
+    private static final NumberFormat NUMBER_FORMAT = NumberFormat.getIntegerInstance();
 
     private final TextView gistId;
 
@@ -51,7 +53,7 @@ public class GistViewHolder implements ViewHolder<Gist> {
         title.setText(description);
         created.setText(Time.relativeTimeFor(gist.getCreatedAt()));
 
-        comments.setText(MessageFormat.format("{0}", gist.getComments()));
+        comments.setText(NUMBER_FORMAT.format(gist.getComments()));
 
         if (gist.getFiles().size() != 1)
             files.setText(files.getContext().getString(string.multiple_files, gist.getFiles().size()));
