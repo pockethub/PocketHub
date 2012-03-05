@@ -1,6 +1,5 @@
 package com.github.mobile.android;
 
-import static org.eclipse.egit.github.core.User.TYPE_USER;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -255,12 +254,10 @@ public class AccountDataManager {
             }
 
             List<Repository> loaded;
-            if (!TYPE_USER.equals(user.getType()))
-                loaded = repos.getOrgRepositories(user.getLogin());
-            else if (user.getLogin().equals(repos.getClient().getUser()))
+            if (user.getLogin().equals(repos.getClient().getUser()))
                 loaded = repos.getRepositories();
             else
-                loaded = repos.getRepositories(user.getLogin());
+                loaded = repos.getOrgRepositories(user.getLogin());
 
             SQLiteDatabase db = helper.getWritableDatabase();
             try {
