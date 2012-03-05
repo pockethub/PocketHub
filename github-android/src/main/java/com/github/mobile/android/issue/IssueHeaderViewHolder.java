@@ -80,10 +80,9 @@ public class IssueHeaderViewHolder implements ViewHolder<Issue> {
     public void updateViewFor(Issue issue) {
         titleText.setText(issue.getTitle());
         String body = issue.getBodyHtml();
-        if (body != null && body.length() > 0) {
-            bodyViewer.setHtml(body);
-            bodyViewer.getView().setVisibility(VISIBLE);
-        } else
+        if (body != null && body.length() > 0)
+            bodyViewer.setHtml(body).getView().setVisibility(VISIBLE);
+        else
             bodyViewer.getView().setVisibility(GONE);
 
         String reported = "<b>" + issue.getUser().getLogin() + "</b> opened "
@@ -112,9 +111,9 @@ public class IssueHeaderViewHolder implements ViewHolder<Issue> {
         } else
             labelsArea.setVisibility(GONE);
 
-        if (issue.getMilestone() != null) {
+        if (issue.getMilestone() != null)
             milestoneText.setText(issue.getMilestone().getTitle());
-        } else
+        else
             milestoneText.setText("No milestone");
 
         String state = issue.getState();
