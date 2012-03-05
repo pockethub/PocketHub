@@ -88,7 +88,7 @@
 
     <string name="gist_content_hint">puts \"Hello World!\"</string>
 
-    <string name="make_public">Public</string>
+    <string name="make_public">Public Gist</string>
 
     <string name="gist_file_name_hint">file.txt</string>
 
@@ -106,9 +106,9 @@
 
     <string name="random">Random</string>
 
-    <string name="file_name">File Name:</string>
+    <string name="file_name">File Name</string>
 
-    <string name="gist_content">Gist Content:</string>
+    <string name="file_content">File Content</string>
 
     <string name="new_gist">New Gist</string>
 
@@ -191,4 +191,8 @@
      <string name="starred_gists_tab">Starred Gists</string>
 
      <string name="all_gists_tab">All Gists</string>
+
+     <string name="description">Description</string>
+
+     <string name="gist_description_hint">Android created Gist</string>
 </resources>

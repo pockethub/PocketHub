@@ -1,96 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/item_background"
-    android:orientation="vertical" >
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/item_background" >
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="5dp" >
+        android:orientation="vertical"
+        android:padding="5dp" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="5dp" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:paddingRight="5dp"
+                android:singleLine="true"
+                android:text="@string/description"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/item_text_color"
+                android:textStyle="bold" >
+            </TextView>
+
+            <CheckBox
+                android:id="@+id/publicCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/make_public"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/item_text_color" >
+            </CheckBox>
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/gistDescriptionText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_background"
+            android:hint="@string/gist_description_hint"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="@color/item_text_color"
+            android:textCursorDrawable="@drawable/edit_text_cursor" >
+        </EditText>
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:gravity="center_vertical"
-            android:paddingRight="5dp"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="10dp"
             android:singleLine="true"
             android:text="@string/file_name"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/item_text_color" >
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/item_text_color"
+            android:textStyle="bold" >
         </TextView>
 
         <EditText
             android:id="@+id/gistNameText"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:background="@drawable/edit_text_background"
             android:hint="@string/gist_file_name_hint"
-            android:textColor="@color/item_text_color" >
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="@color/item_text_color"
+            android:textCursorDrawable="@drawable/edit_text_cursor" >
         </EditText>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp" >
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:gravity="bottom"
             android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="10dp"
             android:singleLine="true"
-            android:text="@string/gist_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/item_text_color" >
+            android:text="@string/file_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/item_text_color"
+            android:textStyle="bold" >
         </TextView>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:gravity="bottom" >
-
-            <CheckBox
-                android:id="@+id/publicCheck"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="@string/make_public"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/item_text_color_light" >
-            </CheckBox>
-        </RelativeLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:background="@color/item_separator1"
-        android:padding="1px" >
 
         <EditText
             android:id="@+id/gistContentText"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="@color/background"
+            android:background="@drawable/edit_text_background"
             android:hint="@string/gist_content_hint"
             android:inputType="textMultiLine"
-            android:padding="5dp"
+            android:minLines="10"
+            android:padding="10dp"
             android:scrollbars="horizontal|vertical"
             android:textColor="@color/item_text_color"
+            android:textCursorDrawable="@drawable/edit_text_cursor"
             android:typeface="monospace" >
 
             <requestFocus />
         </EditText>
     </LinearLayout>
 
-</LinearLayout>
+</ScrollView>

@@ -34,5 +34,8 @@
     <color name="issue_title_background">#D9DCDE</color>
     <color name="actionbar_background_end">#EAEAEA</color>
     <color name="actionbar_background_start">#F9F9F9</color>
+    <color name="edit_text_background_start">#EFF6FF</color>
+    <color name="edit_text_background_end">#FBFDFF</color>
+    <color name="edit_test_cursor">#A6A6A6</color>
 
 </resources>

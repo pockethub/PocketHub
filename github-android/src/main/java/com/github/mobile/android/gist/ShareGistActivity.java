@@ -43,6 +43,9 @@ public class ShareGistActivity extends RoboFragmentActivity {
 
     private static final String TAG = "GHShare";
 
+    @InjectView(id.gistDescriptionText)
+    private EditText descriptionText;
+
     @InjectView(id.gistNameText)
     private EditText nameText;
 
@@ -99,7 +102,9 @@ public class ShareGistActivity extends RoboFragmentActivity {
 
     private void createGist() {
         final boolean isPublic = publicCheckBox.isChecked();
+        String enteredDescription = descriptionText.getText().toString().trim();
         String enteredName = nameText.getText().toString().trim();
+        final String description = enteredDescription.length() > 0 ? enteredDescription : "Android created Gist";
         final String name = enteredName.length() > 0 ? enteredName : "file.txt";
         final String content = contentText.getText().toString();
         final ProgressDialog progress = new ProgressDialog(this);
@@ -109,7 +114,7 @@ public class ShareGistActivity extends RoboFragmentActivity {
 
             public Gist call() throws Exception {
                 Gist gist = new Gist();
-                gist.setDescription("Android created Gist");
+                gist.setDescription(description);
                 gist.setPublic(isPublic);
                 GistFile file = new GistFile();
                 file.setContent(content);
