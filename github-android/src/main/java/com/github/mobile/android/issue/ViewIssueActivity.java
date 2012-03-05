@@ -175,6 +175,13 @@ public class ViewIssueActivity extends DialogFragmentActivity {
                     confirmEditState(STATE_OPEN.equals(issue.getState()));
             }
         });
+        headerView.findViewById(id.ll_labels).setOnClickListener(new OnClickListener() {
+
+            public void onClick(View v) {
+                if (issue != null)
+                    labelsDialog.show(issue.getLabels());
+            }
+        });
         header = new IssueHeaderViewHolder(headerView, avatarHelper, getResources());
         list.setFastScrollEnabled(true);
         list.addHeaderView(headerView);
