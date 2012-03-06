@@ -146,7 +146,7 @@
             android:background="@drawable/edit_text_background"
             android:gravity="top"
             android:inputType="textMultiLine"
-            android:minLines="10"
+            android:minLines="5"
             android:padding="10dp"
             android:scrollbars="horizontal|vertical"
             android:textColor="@color/item_text_color"
