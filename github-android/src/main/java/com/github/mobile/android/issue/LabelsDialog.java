@@ -1,15 +1,18 @@
 package com.github.mobile.android.issue;
 
+import static android.widget.Toast.LENGTH_LONG;
 import android.app.ProgressDialog;
+import android.widget.Toast;
 
 import com.github.mobile.android.DialogFragmentActivity;
 import com.github.mobile.android.MultiChoiceDialogFragment;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.Label;
@@ -24,7 +27,7 @@ public class LabelsDialog {
 
     private LabelService service;
 
-    private List<Label> repositoryLabels;
+    private Map<String, Label> labels;
 
     private final int requestCode;
 
@@ -55,13 +58,16 @@ public class LabelsDialog {
         new RoboAsyncTask<List<Label>>(activity) {
 
             public List<Label> call() throws Exception {
-                repositoryLabels = service.getLabels(repository);
-                Collections.sort(repositoryLabels, new Comparator<Label>() {
+                List<Label> repositoryLabels = service.getLabels(repository);
+                Map<String, Label> loadedLabels = new TreeMap<String, Label>(new Comparator<String>() {
 
-                    public int compare(Label l1, Label l2) {
-                        return l1.getName().compareToIgnoreCase(l2.getName());
+                    public int compare(String s1, String s2) {
+                        return s1.compareToIgnoreCase(s2);
                     }
                 });
+                for (Label label : repositoryLabels)
+                    loadedLabels.put(label.getName(), label);
+                labels = loadedLabels;
                 return repositoryLabels;
             }
 
@@ -71,9 +77,24 @@ public class LabelsDialog {
             }
 
             protected void onException(Exception e) throws RuntimeException {
+                Toast.makeText(activity, e.getMessage(), LENGTH_LONG).show();
                 loader.dismiss();
             }
         }.execute();
+    }
+
+    /**
+     * Get label with name
+     *
+     * @param name
+     * @return label or null if none with name
+     */
+    public Label getLabel(String name) {
+        if (labels == null)
+            return null;
+        if (name == null || name.length() == 0)
+            return null;
+        return labels.get(name);
     }
 
     /**
@@ -82,25 +103,20 @@ public class LabelsDialog {
      * @param selectedLabels
      */
     public void show(List<Label> selectedLabels) {
-        if (repositoryLabels == null) {
+        if (labels == null) {
             load(selectedLabels);
             return;
         }
 
-        final String[] names = new String[repositoryLabels.size()];
+        final String[] names = labels.keySet().toArray(new String[labels.size()]);
         final boolean[] checked = new boolean[names.length];
-        if (selectedLabels == null || selectedLabels.isEmpty())
-            for (int i = 0; i < names.length; i++)
-                names[i] = repositoryLabels.get(i).getName();
-        else {
+        if (selectedLabels != null && !selectedLabels.isEmpty()) {
             Set<String> selectedNames = new HashSet<String>();
             for (Label label : selectedLabels)
                 selectedNames.add(label.getName());
-            for (int i = 0; i < names.length; i++) {
-                names[i] = repositoryLabels.get(i).getName();
+            for (int i = 0; i < names.length; i++)
                 if (selectedNames.contains(names[i]))
                     checked[i] = true;
-            }
         }
         MultiChoiceDialogFragment.show(activity, requestCode, "Select Labels: ", null, names, checked);
     }

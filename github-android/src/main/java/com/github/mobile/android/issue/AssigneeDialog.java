@@ -1,13 +1,16 @@
 package com.github.mobile.android.issue;
 
+import static android.widget.Toast.LENGTH_LONG;
 import android.app.ProgressDialog;
+import android.widget.Toast;
 
 import com.github.mobile.android.DialogFragmentActivity;
 import com.github.mobile.android.SingleChoiceDialogFragment;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.User;
@@ -22,7 +25,7 @@ public class AssigneeDialog {
 
     private CollaboratorService service;
 
-    private List<User> collaborators;
+    private Map<String, User> collaborators;
 
     private final int requestCode;
 
@@ -53,14 +56,17 @@ public class AssigneeDialog {
         new RoboAsyncTask<List<User>>(activity) {
 
             public List<User> call() throws Exception {
-                collaborators = service.getCollaborators(repository);
-                Collections.sort(collaborators, new Comparator<User>() {
+                List<User> users = service.getCollaborators(repository);
+                Map<String, User> loadedCollaborators = new TreeMap<String, User>(new Comparator<String>() {
 
-                    public int compare(User u1, User u2) {
-                        return u1.getLogin().compareToIgnoreCase(u2.getLogin());
+                    public int compare(String s1, String s2) {
+                        return s1.compareToIgnoreCase(s2);
                     }
                 });
-                return collaborators;
+                for (User user : users)
+                    loadedCollaborators.put(user.getLogin(), user);
+                collaborators = loadedCollaborators;
+                return users;
             }
 
             protected void onSuccess(List<User> all) throws Exception {
@@ -69,9 +75,24 @@ public class AssigneeDialog {
             }
 
             protected void onException(Exception e) throws RuntimeException {
+                Toast.makeText(activity, e.getMessage(), LENGTH_LONG).show();
                 loader.dismiss();
             }
         }.execute();
+    }
+
+    /**
+     * Get collaborator with login
+     *
+     * @param login
+     * @return collaborator or null if none found with login
+     */
+    public User getCollaborator(String login) {
+        if (collaborators == null)
+            return null;
+        if (login == null || login.length() == 0)
+            return null;
+        return collaborators.get(login);
     }
 
     /**
@@ -85,17 +106,12 @@ public class AssigneeDialog {
             return;
         }
 
-        final String[] names = new String[collaborators.size()];
+        final String[] names = collaborators.keySet().toArray(new String[collaborators.size()]);
         int checked = -1;
-        if (selectedAssignee == null)
+        if (selectedAssignee != null)
             for (int i = 0; i < names.length; i++)
-                names[i] = collaborators.get(i).getLogin();
-        else
-            for (int i = 0; i < names.length; i++) {
-                names[i] = collaborators.get(i).getLogin();
                 if (selectedAssignee.equals(names[i]))
                     checked = i;
-            }
         SingleChoiceDialogFragment.show(activity, requestCode, "Select Assignee: ", null, names, checked);
     }
 }
