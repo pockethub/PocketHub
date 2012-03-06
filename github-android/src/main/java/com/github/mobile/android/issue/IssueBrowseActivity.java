@@ -35,6 +35,7 @@ import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.RepositoryId;
 
 import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.InjectExtra;
@@ -47,6 +48,8 @@ public class IssueBrowseActivity extends RoboFragmentActivity implements OnItemC
     private static final int CODE_FILTER = 1;
 
     private static final int CODE_VIEW = 2;
+
+    private static final int CODE_CREATE = 3;
 
     /**
      * Create intent to browse a repository's issues
@@ -122,6 +125,9 @@ public class IssueBrowseActivity extends RoboFragmentActivity implements OnItemC
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case id.create_issue:
+            startActivityForResult(
+                    CreateIssueActivity.createIntent(new RepositoryId(repo.getOwner().getLogin(), repo.getName())),
+                    CODE_CREATE);
             return true;
         case id.filter_issues:
             startActivityForResult(FilterIssuesActivity.createIntent(repo, filter), CODE_FILTER);
@@ -167,6 +173,8 @@ public class IssueBrowseActivity extends RoboFragmentActivity implements OnItemC
             if (adapter instanceof BaseAdapter)
                 ((BaseAdapter) adapter).notifyDataSetChanged();
         }
+        if (requestCode == CODE_CREATE && resultCode == CreateIssueActivity.RESULT_CREATED)
+            issues.refresh();
         super.onActivityResult(requestCode, resultCode, data);
     }
 

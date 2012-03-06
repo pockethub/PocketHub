@@ -195,4 +195,6 @@
      <string name="description">Description</string>
 
      <string name="gist_description_hint">Android created Gist</string>
+
+     <string name="title">Title</string>
 </resources>
