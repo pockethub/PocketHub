@@ -97,6 +97,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:background="@drawable/edit_text_background"
+            android:gravity="top"
             android:hint="@string/gist_content_hint"
             android:inputType="textMultiLine"
             android:minLines="10"
