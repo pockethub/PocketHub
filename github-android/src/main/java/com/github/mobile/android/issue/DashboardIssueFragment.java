@@ -12,6 +12,7 @@ import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
+import com.github.mobile.android.util.AvatarHelper;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -50,6 +51,9 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
     private Button moreButton;
 
     private IssuePager pager;
+
+    @Inject
+    private AvatarHelper avatarHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,7 +109,7 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
     protected ViewHoldingListAdapter<Issue> adapterFor(List<Issue> items) {
         return new ViewHoldingListAdapter<Issue>(items, ViewInflator.viewInflatorFor(getActivity(),
                 layout.dashboard_issue_list_item), ReflectiveHolderFactory.reflectiveFactoryFor(
-                DashboardIssueViewHolder.class, RepoIssueViewHolder.computeMaxDigits(items)));
+                DashboardIssueViewHolder.class, avatarHelper, RepoIssueViewHolder.computeMaxDigits(items)));
     }
 
     @Override

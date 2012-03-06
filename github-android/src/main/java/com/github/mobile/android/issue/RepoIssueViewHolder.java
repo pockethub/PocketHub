@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mobile.android.R.id;
+import com.github.mobile.android.util.AvatarHelper;
 import com.madgag.android.listviews.ViewHolder;
 
 import java.util.Arrays;
@@ -39,11 +40,15 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
 
     private final TextView title;
 
+    private final ImageView gravatar;
+
     private final TextView creation;
 
     private final TextView comments;
 
     private final ImageView pullRequestIcon;
+
+    private final AvatarHelper helper;
 
     private final int flags;
 
@@ -51,15 +56,19 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
      * Create view holder
      *
      * @param v
+     * @param helper
      * @param maxNumberCount
      */
-    public RepoIssueViewHolder(View v, int maxNumberCount) {
+    public RepoIssueViewHolder(View v, AvatarHelper helper, int maxNumberCount) {
         number = (TextView) v.findViewById(id.tv_issue_number);
         flags = number.getPaintFlags();
         title = (TextView) v.findViewById(id.tv_issue_title);
+        gravatar = (ImageView) v.findViewById(id.iv_gravatar);
         creation = (TextView) v.findViewById(id.tv_issue_creation);
         comments = (TextView) v.findViewById(id.tv_issue_comments);
         pullRequestIcon = (ImageView) v.findViewById(id.iv_pull_request);
+
+        this.helper = helper;
 
         // Set number field to max number size
         Paint paint = new Paint();
@@ -79,14 +88,15 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
         else
             number.setPaintFlags(flags);
 
+        helper.bind(gravatar, issue.getUser());
+
         if (issue.getPullRequest().getHtmlUrl() != null)
             pullRequestIcon.setVisibility(VISIBLE);
         else
             pullRequestIcon.setVisibility(GONE);
 
         title.setText(issue.getTitle());
-        creation.setText(fromHtml("by <b>" + issue.getUser().getLogin() + "</b> "
-                + relativeTimeFor(issue.getCreatedAt())));
+        creation.setText(fromHtml("<b>" + issue.getUser().getLogin() + "</b> " + relativeTimeFor(issue.getCreatedAt())));
         comments.setText(Integer.toString(issue.getComments()));
     }
 }

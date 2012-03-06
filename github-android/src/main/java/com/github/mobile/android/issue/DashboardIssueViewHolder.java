@@ -1,6 +1,7 @@
 package com.github.mobile.android.issue;
 
 import com.github.mobile.android.R.id;
+import com.github.mobile.android.util.AvatarHelper;
 
 import org.eclipse.egit.github.core.Issue;
 
@@ -18,16 +19,18 @@ public class DashboardIssueViewHolder extends RepoIssueViewHolder {
      * Create dashboard issue view holder
      *
      * @param v
+     * @param helper
      * @param maxNumberCount
      */
-    public DashboardIssueViewHolder(View v, int maxNumberCount) {
-        super(v, maxNumberCount);
+    public DashboardIssueViewHolder(View v, AvatarHelper helper, int maxNumberCount) {
+        super(v, helper, maxNumberCount);
         repoText = (TextView) v.findViewById(id.tv_issue_repo_name);
     }
 
     @Override
-    public void updateViewFor(Issue issue) {
+    public void updateViewFor(final Issue issue) {
         super.updateViewFor(issue);
+
         String[] segments = issue.getUrl().split("/");
         int length = segments.length;
         if (length >= 4)

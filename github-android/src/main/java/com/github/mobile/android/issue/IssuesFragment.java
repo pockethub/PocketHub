@@ -18,6 +18,7 @@ import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
+import com.github.mobile.android.util.AvatarHelper;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
@@ -56,6 +57,9 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
     private Button moreButton;
 
     private final List<IssuePager> pagers = new ArrayList<IssuePager>();
+
+    @Inject
+    private AvatarHelper avatarHelper;
 
     /**
      * @param repository
@@ -196,6 +200,7 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
     @Override
     protected ViewHoldingListAdapter<Issue> adapterFor(List<Issue> items) {
         return new ViewHoldingListAdapter<Issue>(items, viewInflatorFor(getActivity(), layout.repo_issue_list_item),
-                reflectiveFactoryFor(RepoIssueViewHolder.class, RepoIssueViewHolder.computeMaxDigits(items)));
+                reflectiveFactoryFor(RepoIssueViewHolder.class, avatarHelper,
+                        RepoIssueViewHolder.computeMaxDigits(items)));
     }
 }
