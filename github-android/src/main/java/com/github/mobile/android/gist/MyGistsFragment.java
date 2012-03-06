@@ -43,6 +43,7 @@ public class MyGistsFragment extends GistsFragment {
         };
     }
 
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CREATE && ShareGistActivity.RESULT_CREATED == resultCode) {
             refresh();
