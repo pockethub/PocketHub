@@ -2,13 +2,13 @@ package com.github.mobile.android.issue;
 
 import static android.graphics.Color.BLACK;
 import static android.graphics.Color.WHITE;
+import static android.graphics.Typeface.DEFAULT_BOLD;
 import static java.util.Locale.US;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.graphics.drawable.PaintDrawable;
 
 import java.util.Arrays;
@@ -54,7 +54,7 @@ public class LabelsDrawable extends PaintDrawable {
         });
 
         Paint p = getPaint();
-        p.setTypeface(Typeface.DEFAULT_BOLD);
+        p.setTypeface(DEFAULT_BOLD);
         p.setTextSize(textSize);
 
         final Rect bounds = new Rect();
