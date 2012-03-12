@@ -72,6 +72,9 @@ public class LabelsDialog {
             }
 
             protected void onSuccess(List<Label> all) throws Exception {
+                if (!loader.isShowing())
+                    return;
+
                 loader.dismiss();
                 show(selectedLabels);
             }

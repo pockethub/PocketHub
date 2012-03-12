@@ -70,6 +70,9 @@ public class AssigneeDialog {
             }
 
             protected void onSuccess(List<User> all) throws Exception {
+                if (!loader.isShowing())
+                    return;
+
                 loader.dismiss();
                 show(selectedAssignee);
             }

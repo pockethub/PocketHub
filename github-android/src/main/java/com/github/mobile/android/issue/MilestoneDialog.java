@@ -77,6 +77,9 @@ public class MilestoneDialog {
             }
 
             protected void onSuccess(List<Milestone> all) throws Exception {
+                if (!loader.isShowing())
+                    return;
+
                 loader.dismiss();
                 show(selectedMilestone);
             }
