@@ -14,6 +14,7 @@ import com.github.mobile.android.R.id;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.Html;
 import com.github.mobile.android.util.HtmlViewer;
+import com.github.mobile.android.util.ServiceHelper;
 import com.github.mobile.android.util.Time;
 import com.madgag.android.listviews.ViewHolder;
 
@@ -103,7 +104,8 @@ public class IssueHeaderViewHolder implements ViewHolder<Issue> {
 
         if (!issue.getLabels().isEmpty()) {
             labelsArea.setVisibility(VISIBLE);
-            LabelsDrawable drawable = new LabelsDrawable(createdText.getTextSize(), issue.getLabels());
+            LabelsDrawable drawable = new LabelsDrawable(createdText.getTextSize(), ServiceHelper
+                    .getDisplay(labelsArea).getWidth(), issue.getLabels());
             drawable.getPaint().setColor(resources.getColor(android.R.color.transparent));
             labelsArea.setBackgroundDrawable(drawable);
             LayoutParams params = new LayoutParams(drawable.getBounds().width(), drawable.getBounds().height());
