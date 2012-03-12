@@ -2,6 +2,7 @@ package com.github.mobile.android.issue;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENT_BODY;
+import static com.github.mobile.android.util.GitHubIntents.EXTRA_ISSUE;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_ISSUE_NUMBER;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY_NAME;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY_OWNER;
@@ -78,6 +79,8 @@ public class ViewIssueActivity extends DialogFragmentActivity {
     private static final int REQUEST_CODE_CLOSE = 5;
 
     private static final int REQUEST_CODE_REOPEN = 6;
+
+    private static final int REQUEST_CODE_EDIT = 7;
 
     /**
      * Create intent to view issue
@@ -299,6 +302,10 @@ public class ViewIssueActivity extends DialogFragmentActivity {
         case id.refresh:
             refreshAnimation.setRefreshItem(item).start(this);
             refreshIssue();
+            return true;
+        case id.issue_description:
+            startActivityForResult(EditIssueActivity.createIntent(issue), REQUEST_CODE_EDIT);
+            return true;
         default:
             return super.onOptionsItemSelected(item);
         }
@@ -312,6 +319,13 @@ public class ViewIssueActivity extends DialogFragmentActivity {
                 return;
             }
         }
+
+        if (RESULT_OK == resultCode && REQUEST_CODE_EDIT == requestCode && data != null) {
+            Issue editedIssue = (Issue) data.getSerializableExtra(EXTRA_ISSUE);
+            editBody(editedIssue.getTitle(), editedIssue.getBody());
+            return;
+        }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -481,6 +495,35 @@ public class ViewIssueActivity extends DialogFragmentActivity {
             public Issue call() throws Exception {
                 Issue editedIssue = new Issue();
                 editedIssue.setAssignee(new User().setLogin(user != null ? user : ""));
+                editedIssue.setNumber(issueNumber);
+                return store.editIssue(repositoryId, editedIssue);
+            }
+
+            protected void onSuccess(Issue updated) throws Exception {
+                header.updateViewFor(updated);
+            }
+
+            protected void onException(Exception e) throws RuntimeException {
+                Toast.makeText(ViewIssueActivity.this, e.getMessage(), LENGTH_LONG).show();
+            }
+
+            protected void onFinally() throws RuntimeException {
+                progress.dismiss();
+            };
+        }.execute();
+    }
+
+    private void editBody(final String title, final String body) {
+        final ProgressDialog progress = new ProgressDialog(this);
+        progress.setMessage("Updating title & description...");
+        progress.setIndeterminate(true);
+        progress.show();
+        new RoboAsyncTask<Issue>(this) {
+
+            public Issue call() throws Exception {
+                Issue editedIssue = new Issue();
+                editedIssue.setTitle(title);
+                editedIssue.setBody(body);
                 editedIssue.setNumber(issueNumber);
                 return store.editIssue(repositoryId, editedIssue);
             }

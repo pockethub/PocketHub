@@ -14,6 +14,11 @@
         android:title="@string/refresh">
     </item>
     <item
+        android:id="@+id/issue_description"
+        android:showAsAction="never"
+        android:title="@string/edit_description">
+    </item>
+    <item
         android:id="@+id/issue_labels"
         android:showAsAction="never"
         android:title="@string/edit_labels">

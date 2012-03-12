@@ -67,7 +67,7 @@ public class GitHubModule extends AbstractModule {
         return configureClient(new GitHubClient() {
             protected HttpURLConnection configureRequest(final HttpURLConnection request) {
                 super.configureRequest(request);
-                request.setRequestProperty(HEADER_ACCEPT, "application/vnd.github.beta.html+json");
+                request.setRequestProperty(HEADER_ACCEPT, "application/vnd.github.beta.full+json");
                 return request;
             }
         }, account, accountManager);

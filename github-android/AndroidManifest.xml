@@ -74,6 +74,13 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".issue.EditIssueActivity">
+            <intent-filter>
+                <action android:name="com.github.mobile.android.repo.issues.edit.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
         <activity android:name=".repo.RepoBrowseActivity">
             <intent-filter>
                 <action android:name="com.github.mobile.android.repos.VIEW"/>
