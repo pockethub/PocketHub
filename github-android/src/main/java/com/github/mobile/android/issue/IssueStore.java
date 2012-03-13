@@ -65,7 +65,6 @@ public class IssueStore extends ItemStore {
             current.setAssignee(issue.getAssignee());
             current.setBody(issue.getBody());
             current.setBodyHtml(issue.getBodyHtml());
-            current.setBodyText(issue.getBodyText());
             current.setClosedAt(issue.getClosedAt());
             current.setComments(issue.getComments());
             current.setLabels(issue.getLabels());
