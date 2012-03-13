@@ -85,7 +85,7 @@ public class GistFragment extends ListLoadingFragment<Comment> {
                         comments = service.getComments(id);
                     else
                         comments = Collections.emptyList();
-                    return new FullGist(gist, comments);
+                    return new FullGist(gist, service.isStarred(id), comments);
                 } catch (IOException e) {
                     return new FullGist();
                 }

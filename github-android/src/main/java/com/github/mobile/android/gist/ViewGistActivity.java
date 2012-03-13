@@ -90,12 +90,14 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
     @InjectExtra(EXTRA_GIST_ID)
     private String gistId;
 
+    private boolean starred;
+
+    private boolean loadFinished;
+
     @Inject
     private AvatarHelper avatarHelper;
 
     private GistFragment gistFragment;
-
-    private MenuItem deleteItem;
 
     @Inject
     private ContextScopedProvider<GistService> gistServiceProvider;
@@ -132,14 +134,20 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
         getSupportMenuInflater().inflate(menu.gist_view, options);
-        deleteItem = options.findItem(id.gist_delete);
         return true;
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        deleteItem.setEnabled(isOwner());
+        boolean owner = isOwner();
+        menu.findItem(id.gist_delete).setEnabled(owner);
+        MenuItem starItem = menu.findItem(id.gist_star);
+        starItem.setEnabled(loadFinished && !owner);
+        if (starred)
+            starItem.setTitle(string.unstar_gist);
+        else
+            starItem.setTitle(string.star_gist);
         return true;
     }
 
@@ -152,9 +160,48 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
         case id.gist_delete:
             ConfirmDialogFragment.show(this, REQUEST_CONFIRM_DELETE, "Confirm Delete",
                     "Are you sure you want to delete this Gist?");
+            return true;
+        case id.gist_star:
+            if (starred)
+                unstarGist();
+            else
+                starGist();
+            return true;
         default:
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void starGist() {
+        Toast.makeText(getApplication(), getString(string.starring_gist), LENGTH_LONG).show();
+        new RoboAsyncTask<Gist>(ViewGistActivity.this) {
+
+            public Gist call() throws Exception {
+                gistServiceProvider.get(getContext()).starGist(gistId);
+                starred = true;
+                return null;
+            }
+
+            protected void onException(Exception e) throws RuntimeException {
+                Toast.makeText(getApplication(), e.getMessage(), LENGTH_LONG).show();
+            }
+        }.execute();
+    }
+
+    private void unstarGist() {
+        Toast.makeText(getApplication(), getString(string.unstarring_gist), LENGTH_LONG).show();
+        new RoboAsyncTask<Gist>(ViewGistActivity.this) {
+
+            public Gist call() throws Exception {
+                gistServiceProvider.get(getContext()).unstarGist(gistId);
+                starred = false;
+                return null;
+            }
+
+            protected void onException(Exception e) throws RuntimeException {
+                Toast.makeText(getApplication(), e.getMessage(), LENGTH_LONG).show();
+            }
+        }.execute();
     }
 
     @Override
@@ -260,6 +307,8 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
     public void onLoadFinished(Loader<List<Comment>> loader, List<Comment> gists) {
         FullGist fullGist = (FullGist) gists;
         final Gist gist = fullGist.getGist();
+        starred = fullGist.isStarred();
+        loadFinished = true;
         showGist(gist);
         getIntent().putExtra(EXTRA_COMMENTS, fullGist);
     }

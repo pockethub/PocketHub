@@ -201,4 +201,12 @@
      <string name="edit_description">Edit Title/Description</string>
 
      <string name="update">Update</string>
+
+     <string name="star_gist">Star Gist</string>
+
+     <string name="starring_gist">Starring Gist…</string>
+
+     <string name="unstar_gist">Unstar Gist</string>
+
+     <string name="unstarring_gist">Unstarring Gist…</string>
 </resources>

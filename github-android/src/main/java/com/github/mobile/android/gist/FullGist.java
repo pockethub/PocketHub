@@ -18,14 +18,18 @@ public class FullGist extends ArrayList<Comment> implements Serializable {
 
     private final Gist gist;
 
+    private final boolean starred;
+
     /**
      * Create gist with comments
      *
      * @param gist
+     * @param starred
      * @param comments
      */
-    public FullGist(final Gist gist, final List<Comment> comments) {
+    public FullGist(final Gist gist, final boolean starred, final List<Comment> comments) {
         super(comments);
+        this.starred = starred;
         this.gist = gist;
     }
 
@@ -34,6 +38,14 @@ public class FullGist extends ArrayList<Comment> implements Serializable {
      */
     public FullGist() {
         this.gist = null;
+        this.starred = false;
+    }
+
+    /**
+     * @return starred
+     */
+    public boolean isStarred() {
+        return starred;
     }
 
     /**
