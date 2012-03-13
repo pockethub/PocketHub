@@ -24,6 +24,7 @@ import com.github.mobile.android.R;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.issue.IssueBrowseActivity;
+import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 
 import java.util.List;
@@ -32,14 +33,13 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.SearchRepository;
 import org.eclipse.egit.github.core.service.RepositoryService;
 
-import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.InjectView;
 import roboguice.util.RoboAsyncTask;
 
 /**
  * Activity to search repositories
  */
-public class RepoSearchActivity extends RoboFragmentActivity {
+public class RepoSearchActivity extends RoboSherlockFragmentActivity {
 
     private class RepoAdapter extends ArrayAdapter<SearchRepository> {
 

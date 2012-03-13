@@ -17,15 +17,15 @@ import com.github.mobile.android.issue.IssueDashboardActivity;
 import com.github.mobile.android.repo.OrgListFragment;
 import com.github.mobile.android.ui.WelcomeActivity;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
+import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 
-import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContextScopedProvider;
 
 /**
  * Home screen activity
  */
-public class HomeActivity extends RoboFragmentActivity {
+public class HomeActivity extends RoboSherlockFragmentActivity {
 
     private static final String TAG = "HA";
     private static final int CODE_LOGIN = 1;

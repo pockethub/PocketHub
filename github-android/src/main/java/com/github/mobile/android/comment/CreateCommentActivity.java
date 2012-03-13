@@ -12,16 +12,15 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.util.GitHubIntents.Builder;
+import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.Issue;
 
-import roboguice.activity.RoboFragmentActivity;
-
 /**
  * Activity to create a comment on a {@link Gist} or {@link Issue}
  */
-public class CreateCommentActivity extends RoboFragmentActivity {
+public class CreateCommentActivity extends RoboSherlockFragmentActivity {
 
     /**
      * Create intent to create a comment

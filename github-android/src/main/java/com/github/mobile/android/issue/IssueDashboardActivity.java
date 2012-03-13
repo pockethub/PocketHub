@@ -11,15 +11,15 @@ import com.github.mobile.android.HomeActivity;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
+import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.viewpagerindicator.TitlePageIndicator;
 
-import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.InjectView;
 
 /**
  * Dashboard activity for issues
  */
-public class IssueDashboardActivity extends RoboFragmentActivity {
+public class IssueDashboardActivity extends RoboSherlockFragmentActivity {
 
     @InjectView(id.tpi_header)
     private TitlePageIndicator indicator;

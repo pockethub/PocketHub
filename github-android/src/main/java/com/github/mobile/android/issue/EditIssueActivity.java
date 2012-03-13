@@ -12,17 +12,17 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.util.GitHubIntents.Builder;
+import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
 import org.eclipse.egit.github.core.Issue;
 
-import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
 
 /**
  * Activity to edit the title and description for an issue
  */
-public class EditIssueActivity extends RoboFragmentActivity {
+public class EditIssueActivity extends RoboSherlockFragmentActivity {
 
     @InjectView(id.et_issue_title)
     private EditText titleText;

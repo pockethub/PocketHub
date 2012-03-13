@@ -15,7 +15,7 @@
     <url>https://github.com/github/android</url>
 
     <properties>
-        <abs.version>4.0.0-RC1</abs.version>
+        <abs.version>4.0.0</abs.version>
     </properties>
 
     <repositories>
@@ -44,23 +44,6 @@
             <version>11.0.2</version>
         </dependency>
         <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-            <version>3.0</version>
-            <classifier>no_aop</classifier>
-        </dependency>
-        <dependency>
-            <groupId>org.roboguice</groupId>
-            <artifactId>roboguice</artifactId>
-            <version>2.0b3</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>android.support</groupId>
-                    <artifactId>compatibility-v4</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>com.actionbarsherlock</groupId>
             <artifactId>library</artifactId>
             <version>${abs.version}</version>
@@ -74,9 +57,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.actionbarsherlock</groupId>
-            <artifactId>plugin-support-lib</artifactId>
-            <version>${abs.version}</version>
+            <groupId>com.github.rtyley</groupId>
+            <artifactId>roboguice-sherlock</artifactId>
+            <version>1.0</version>
         </dependency>
         <dependency>
 			<groupId>com.viewpagerindicator</groupId>

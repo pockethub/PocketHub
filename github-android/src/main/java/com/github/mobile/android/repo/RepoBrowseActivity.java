@@ -22,6 +22,7 @@ import com.github.mobile.android.RequestWriter;
 import com.github.mobile.android.issue.IssueBrowseActivity;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
+import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 
 import java.io.File;
@@ -31,13 +32,12 @@ import java.util.LinkedHashSet;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
 
-import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.InjectExtra;
 
 /**
  * Activity for browsing repositories associated with a user
  */
-public class RepoBrowseActivity extends RoboFragmentActivity {
+public class RepoBrowseActivity extends RoboSherlockFragmentActivity {
 
     private static final int VERSION_RECENT_REPOS = 2;
 

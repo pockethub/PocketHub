@@ -2,12 +2,13 @@ package com.github.mobile.android;
 
 import android.app.Activity;
 import android.os.Bundle;
-import roboguice.activity.RoboFragmentActivity;
+
+import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
 /**
  * Activity that display dialogs
  */
-public abstract class DialogFragmentActivity extends RoboFragmentActivity {
+public abstract class DialogFragmentActivity extends RoboSherlockFragmentActivity {
 
     /**
      * Callback for a dialog finishing and delivering a result

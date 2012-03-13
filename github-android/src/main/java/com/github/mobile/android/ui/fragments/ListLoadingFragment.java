@@ -14,11 +14,10 @@ import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.RefreshAnimation;
 import com.github.mobile.android.util.ErrorHelper;
+import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockListFragment;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
 import java.util.List;
-
-import roboguice.fragment.RoboListFragment;
 
 /**
  * List fragment to load homogeneous items
@@ -26,7 +25,7 @@ import roboguice.fragment.RoboListFragment;
  * @param <E>
  *            item type
  */
-public abstract class ListLoadingFragment<E> extends RoboListFragment implements LoaderCallbacks<List<E>> {
+public abstract class ListLoadingFragment<E> extends RoboSherlockListFragment implements LoaderCallbacks<List<E>> {
 
     private RefreshAnimation refreshAnimation = new RefreshAnimation();
 

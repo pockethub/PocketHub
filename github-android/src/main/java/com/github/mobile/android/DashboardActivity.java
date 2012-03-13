@@ -18,15 +18,15 @@ import com.github.mobile.android.ui.WelcomeActivity;
 import com.github.mobile.android.ui.fragments.IssuesFragment;
 import com.github.mobile.android.ui.fragments.PullRequestsFragment;
 import com.github.mobile.android.ui.fragments.TabsAdapter;
+import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 
-import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContextScopedProvider;
 
 /**
  * Main activity
  */
-public class DashboardActivity extends RoboFragmentActivity {
+public class DashboardActivity extends RoboSherlockFragmentActivity {
 
     /**
      * Key to to track current tab

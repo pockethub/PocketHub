@@ -4,13 +4,12 @@ import android.os.Bundle;
 
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
-
-import roboguice.activity.RoboFragmentActivity;
+import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
 /**
  * Activity to browse a list of bookmarked {@link IssueFilter} items
  */
-public class FilterBrowseActivity extends RoboFragmentActivity {
+public class FilterBrowseActivity extends RoboSherlockFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

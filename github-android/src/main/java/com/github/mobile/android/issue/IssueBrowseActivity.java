@@ -31,19 +31,19 @@ import com.github.mobile.android.RequestFuture;
 import com.github.mobile.android.repo.RepoBrowseActivity;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
+import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryId;
 
-import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.InjectExtra;
 
 /**
  * Activity for browsing a list of issues
  */
-public class IssueBrowseActivity extends RoboFragmentActivity implements OnItemClickListener {
+public class IssueBrowseActivity extends RoboSherlockFragmentActivity implements OnItemClickListener {
 
     private static final int CODE_FILTER = 1;
 

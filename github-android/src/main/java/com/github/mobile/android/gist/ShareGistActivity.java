@@ -18,6 +18,7 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.TextWatcherAdapter;
+import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 
 import java.util.Collections;
@@ -26,7 +27,6 @@ import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.GistFile;
 import org.eclipse.egit.github.core.service.GistService;
 
-import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContextScopedProvider;
 import roboguice.inject.InjectView;
 import roboguice.util.RoboAsyncTask;
@@ -34,7 +34,7 @@ import roboguice.util.RoboAsyncTask;
 /**
  * Activity to share a text selection as a public or private Gist
  */
-public class ShareGistActivity extends RoboFragmentActivity {
+public class ShareGistActivity extends RoboSherlockFragmentActivity {
 
     /**
      * Gist successfully created

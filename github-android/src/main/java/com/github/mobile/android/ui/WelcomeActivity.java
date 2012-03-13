@@ -6,13 +6,12 @@ import android.view.View;
 
 import com.github.mobile.android.R;
 import com.github.mobile.android.authenticator.GitHubAuthenticatorActivity;
-
-import roboguice.activity.RoboFragmentActivity;
+import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
 /**
  * Welcome activity that prompts to sign in
  */
-public class WelcomeActivity extends RoboFragmentActivity {
+public class WelcomeActivity extends RoboSherlockFragmentActivity {
 
     private static final int CODE_AUTH = 0;
 
