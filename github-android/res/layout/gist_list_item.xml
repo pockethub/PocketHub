@@ -44,22 +44,28 @@
             android:id="@+id/tv_gist_files"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="10dp"
+            android:paddingRight="3dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/listing_comments" />
+            android:textColor="@color/listing" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:src="@drawable/comment_icon" />
+            android:src="@drawable/file_icon" />
 
         <TextView
             android:id="@+id/tv_gist_comments"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:paddingLeft="3dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="3dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/listing_comments" />
+            android:textColor="@color/listing" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:src="@drawable/comment_icon" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.mobile.android.R.id;
-import com.github.mobile.android.R.string;
 import com.github.mobile.android.util.Time;
 import com.madgag.android.listviews.ViewHolder;
 
@@ -88,11 +87,7 @@ public class GistViewHolder implements ViewHolder<Gist> {
 
         created.setText(Time.relativeTimeFor(gist.getCreatedAt()));
 
+        files.setText(NUMBER_FORMAT.format(gist.getFiles().size()));
         comments.setText(NUMBER_FORMAT.format(gist.getComments()));
-
-        if (gist.getFiles().size() != 1)
-            files.setText(files.getContext().getString(string.multiple_files, gist.getFiles().size()));
-        else
-            files.setText(string.single_file);
     }
 }
