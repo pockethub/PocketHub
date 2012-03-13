@@ -15,4 +15,5 @@ notes
 logs
 gen-external-apklibs
 .idea
+*.iml
 .DS_Store
