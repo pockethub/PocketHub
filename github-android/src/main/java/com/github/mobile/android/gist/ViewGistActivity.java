@@ -1,5 +1,7 @@
 package com.github.mobile.android.gist;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static android.widget.Toast.LENGTH_LONG;
@@ -106,6 +108,7 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
         super.onCreate(savedInstanceState);
         setContentView(layout.gist_view);
         setTitle(getString(string.gist) + " " + gistId);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         gistFragment = (GistFragment) getSupportFragmentManager().findFragmentById(R.id.list);
         if (gistFragment == null) {
@@ -166,6 +169,11 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
                 unstarGist();
             else
                 starGist();
+            return true;
+        case android.R.id.home:
+            Intent intent = new Intent(this, GistsActivity.class);
+            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
             return true;
         default:
             return super.onOptionsItemSelected(item);
