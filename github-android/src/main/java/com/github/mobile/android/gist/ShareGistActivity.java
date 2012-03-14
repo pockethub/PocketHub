@@ -5,6 +5,7 @@ import static android.widget.Toast.LENGTH_LONG;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -12,7 +13,6 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.github.mobile.android.R;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
@@ -41,7 +41,7 @@ public class ShareGistActivity extends RoboSherlockFragmentActivity {
      */
     public static final int RESULT_CREATED = RESULT_FIRST_USER;
 
-    private static final String TAG = "GHShare";
+    private static final String TAG = "SGA";
 
     @InjectView(id.gistDescriptionText)
     private EditText descriptionText;
@@ -66,7 +66,7 @@ public class ShareGistActivity extends RoboSherlockFragmentActivity {
 
         String text = getIntent().getStringExtra(EXTRA_TEXT);
 
-        if (text != null && text.length() > 0)
+        if (TextUtils.isEmpty(text))
             contentText.setText(text);
 
         contentText.addTextChangedListener(new TextWatcherAdapter() {
@@ -85,7 +85,7 @@ public class ShareGistActivity extends RoboSherlockFragmentActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(id.gist_create).setEnabled(contentText.getText().toString().length() > 0);
+        menu.findItem(id.gist_create).setEnabled(!TextUtils.isEmpty(contentText.getText()));
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -104,11 +104,12 @@ public class ShareGistActivity extends RoboSherlockFragmentActivity {
         final boolean isPublic = publicCheckBox.isChecked();
         String enteredDescription = descriptionText.getText().toString().trim();
         String enteredName = nameText.getText().toString().trim();
-        final String description = enteredDescription.length() > 0 ? enteredDescription : "Android created Gist";
-        final String name = enteredName.length() > 0 ? enteredName : "file.txt";
+        final String description = enteredDescription.length() > 0 ? enteredDescription
+                : getString(string.gist_description_hint);
+        final String name = enteredName.length() > 0 ? enteredName : getString(string.gist_file_name_hint);
         final String content = contentText.getText().toString();
         final ProgressDialog progress = new ProgressDialog(this);
-        progress.setMessage(getString(R.string.creating_gist));
+        progress.setMessage(getString(string.creating_gist));
         progress.show();
         new RoboAsyncTask<Gist>(this) {
 
@@ -116,10 +117,12 @@ public class ShareGistActivity extends RoboSherlockFragmentActivity {
                 Gist gist = new Gist();
                 gist.setDescription(description);
                 gist.setPublic(isPublic);
+
                 GistFile file = new GistFile();
                 file.setContent(content);
                 file.setFilename(name);
                 gist.setFiles(Collections.singletonMap(name, file));
+
                 return gistServiceProvider.get(ShareGistActivity.this).createGist(gist);
             }
 
@@ -132,8 +135,8 @@ public class ShareGistActivity extends RoboSherlockFragmentActivity {
 
             protected void onException(Exception e) throws RuntimeException {
                 progress.cancel();
-                Log.e(TAG, e.getMessage(), e);
-                Toast.makeText(ShareGistActivity.this, e.getMessage(), LENGTH_LONG).show();
+                Log.d(TAG, e.getMessage(), e);
+                Toast.makeText(getApplication(), e.getMessage(), LENGTH_LONG).show();
             }
         }.execute();
     }
