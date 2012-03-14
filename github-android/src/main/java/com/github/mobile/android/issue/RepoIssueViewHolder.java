@@ -88,6 +88,7 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
         else
             number.setPaintFlags(flags);
 
+        gravatar.setImageDrawable(null);
         helper.bind(gravatar, issue.getUser());
 
         if (issue.getPullRequest().getHtmlUrl() != null)
