@@ -10,6 +10,9 @@ import com.github.kevinsawicki.http.HttpRequest;
 import com.github.mobile.android.AccountDataManager;
 import com.github.mobile.android.R.id;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.eclipse.egit.github.core.User;
 
 import roboguice.util.RoboAsyncTask;
@@ -22,6 +25,8 @@ public class AvatarHelper {
     private static final int RADIUS = 8;
 
     private static final String TAG = "GHAU";
+
+    private final Map<String, Bitmap> loaded = new ConcurrentHashMap<String, Bitmap>();
 
     private final AccountDataManager cache;
 
@@ -45,23 +50,44 @@ public class AvatarHelper {
     }
 
     /**
+     * Create bitmap from raw image and set to view
+     *
+     * @param image
+     * @param view
+     * @param login
+     * @return this helper
+     */
+    protected AvatarHelper setImage(final byte[] image, final ImageView view, final String login) {
+        Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+        Bitmap rounded = Image.roundCorners(bitmap, RADIUS);
+        loaded.put(login, rounded);
+        view.setImageBitmap(rounded);
+        view.setVisibility(VISIBLE);
+        return this;
+    }
+
+    /**
      * Bind view to image at URL
      *
      * @param view
      * @param login
      * @param avatarUrl
+     * @return this helper
      */
-    public void bind(final ImageView view, final String login, final String avatarUrl) {
+    public AvatarHelper bind(final ImageView view, final String login, final String avatarUrl) {
         if (avatarUrl == null)
-            return;
+            return this;
+
+        Bitmap loadedImage = loaded.get(login);
+        if (loadedImage != null) {
+            view.setImageBitmap(loadedImage);
+            view.setVisibility(VISIBLE);
+            return this;
+        }
 
         byte[] image = cache.getAvatar(login);
-        if (image != null) {
-            Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-            view.setImageBitmap(Image.roundCorners(bitmap, RADIUS));
-            view.setVisibility(VISIBLE);
-            return;
-        }
+        if (image != null)
+            return setImage(image, view, login);
 
         view.setTag(id.iv_gravatar, login);
 
@@ -87,14 +113,14 @@ public class AvatarHelper {
                 if (!login.equals(view.getTag(id.iv_gravatar)))
                     return;
 
-                Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-                view.setImageBitmap(Image.roundCorners(bitmap, RADIUS));
-                view.setVisibility(VISIBLE);
+                setImage(image, view, login);
             }
 
             protected void onException(Exception e) throws RuntimeException {
                 Log.d(TAG, "Avatar load failed", e);
             }
         }.execute();
+
+        return this;
     }
 }
