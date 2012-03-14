@@ -24,11 +24,11 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.ConfirmDialogFragment;
 import com.github.mobile.android.DialogFragmentActivity;
-import com.github.mobile.android.RefreshAnimation;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.RefreshAnimation;
 import com.github.mobile.android.comment.CommentViewHolder;
 import com.github.mobile.android.comment.CreateCommentActivity;
 import com.github.mobile.android.util.AvatarHelper;
@@ -43,6 +43,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Gist;
@@ -123,6 +125,8 @@ public class ViewGistActivity extends DialogFragmentActivity implements OnItemCl
 
     @Inject
     private ContextScopedProvider<GistService> gistServiceProvider;
+
+    private Executor executor = Executors.newFixedThreadPool(1);
 
     private List<View> fileHeaders = new ArrayList<View>();
 
@@ -359,7 +363,8 @@ public class ViewGistActivity extends DialogFragmentActivity implements OnItemCl
             list.addHeaderView(loadingView, null, false);
             list.setAdapter(new ArrayAdapter<Comment>(this, layout.comment_view_item));
         }
-        new RoboAsyncTask<FullGist>(this) {
+
+        new RoboAsyncTask<FullGist>(this, executor) {
 
             public FullGist call() throws Exception {
                 Gist gist = store.refreshGist(gistId);
