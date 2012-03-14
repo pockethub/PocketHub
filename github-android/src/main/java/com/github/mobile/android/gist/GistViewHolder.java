@@ -121,7 +121,7 @@ public class GistViewHolder implements ViewHolder<Gist> {
         title.setText(description);
 
         if (avatarHelper != null) {
-            avatar.setBackgroundDrawable(null);
+            avatar.setImageDrawable(null);
             avatarHelper.bind(avatar, gist.getUser());
             created.setText(fromHtml("<b>" + gist.getUser().getLogin() + "</b> "
                     + Time.relativeTimeFor(gist.getCreatedAt())));
