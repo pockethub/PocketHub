@@ -20,7 +20,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/gravatar_icon" />
+            android:background="@drawable/gravatar_icon" />
 
         <TextView
             android:id="@+id/tv_gist_comment_author"
