@@ -24,6 +24,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.ConfirmDialogFragment;
 import com.github.mobile.android.DialogFragmentActivity;
+import com.github.mobile.android.RefreshAnimation;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
@@ -111,6 +112,8 @@ public class ViewGistActivity extends DialogFragmentActivity implements OnItemCl
 
     private View loadingView;
 
+    private RefreshAnimation refreshAnimation = new RefreshAnimation();
+
     private boolean starred;
 
     private boolean loadFinished;
@@ -196,6 +199,10 @@ public class ViewGistActivity extends DialogFragmentActivity implements OnItemCl
                 unstarGist();
             else
                 starGist();
+            return true;
+        case id.refresh:
+            refreshAnimation.setRefreshItem(item).start(this);
+            refreshGist();
             return true;
         case android.R.id.home:
             Intent intent = new Intent(this, GistsActivity.class);
@@ -379,6 +386,7 @@ public class ViewGistActivity extends DialogFragmentActivity implements OnItemCl
             }
 
             protected void onFinally() throws RuntimeException {
+                refreshAnimation.stop();
             }
         }.execute();
     }

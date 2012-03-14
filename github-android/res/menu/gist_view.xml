@@ -8,6 +8,12 @@
         android:title="@string/comment">
     </item>
     <item
+        android:id="@+id/refresh"
+        android:icon="@drawable/ic_action_refresh"
+        android:showAsAction="always"
+        android:title="@string/refresh">
+    </item>
+    <item
         android:id="@+id/gist_delete"
         android:icon="@drawable/ic_action_delete"
         android:showAsAction="never"
