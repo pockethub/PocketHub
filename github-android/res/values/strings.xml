@@ -168,6 +168,8 @@
 
      <string name="error_gist_load">Loading Gist failed</string>
 
+     <string name="error_gist_file_load">Loading Gist file content failed</string>
+
      <string name="no_gists">No Gists</string>
 
      <string name="error_gists_load">Loading Gists failed</string>
