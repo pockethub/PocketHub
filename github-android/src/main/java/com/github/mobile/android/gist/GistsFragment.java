@@ -11,11 +11,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
@@ -23,6 +25,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.HomeActivity;
 import com.github.mobile.android.R.id;
+import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
@@ -30,6 +33,8 @@ import com.google.inject.Inject;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.client.PageIterator;
@@ -66,6 +71,16 @@ public abstract class GistsFragment extends ListLoadingFragment<Gist> implements
      */
     @Inject
     protected GistStore store;
+
+    /**
+     * Gist id field
+     */
+    protected TextView gistId;
+
+    /**
+     * Width of id column of in Gist list
+     */
+    protected AtomicReference<Integer> idWidth = new AtomicReference<Integer>();
 
     private void randomGist() {
         final ProgressDialog progress = new ProgressDialog(context);
@@ -150,6 +165,8 @@ public abstract class GistsFragment extends ListLoadingFragment<Gist> implements
         super.onActivityCreated(savedInstanceState);
         setEmptyText(getString(string.no_gists));
         getListView().setFastScrollEnabled(true);
+        gistId = (TextView) getLayoutInflater(savedInstanceState).inflate(layout.gist_list_item, null).findViewById(
+                id.tv_gist_id);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -160,6 +177,17 @@ public abstract class GistsFragment extends ListLoadingFragment<Gist> implements
             return;
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void onLoadFinished(Loader<List<Gist>> loader, List<Gist> items) {
+        Exception exception = getException(loader);
+        if (exception != null) {
+            showError(exception, string.error_gists_load);
+            showList();
+            return;
+        }
+        idWidth.set(GistViewHolder.computeIdWidth(items, gistId));
+        super.onLoadFinished(loader, items);
     }
 
     @Override

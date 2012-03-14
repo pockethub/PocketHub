@@ -16,6 +16,7 @@ import com.madgag.android.listviews.ViewHolder;
 
 import java.text.NumberFormat;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.egit.github.core.Gist;
 
@@ -43,6 +44,23 @@ public class GistViewHolder implements ViewHolder<Gist> {
         return max;
     }
 
+    /**
+     * Measure the width of the given id field
+     *
+     * @param gists
+     * @param gistId
+     * @return id width
+     */
+    public static int computeIdWidth(final Iterable<Gist> gists, final TextView gistId) {
+        final int maxDigigts = computeMaxDigits(gists);
+        Paint paint = new Paint();
+        paint.setTypeface(gistId.getTypeface());
+        paint.setTextSize(gistId.getTextSize());
+        char[] text = new char[maxDigigts];
+        Arrays.fill(text, '0');
+        return Math.round(paint.measureText(text, 0, text.length));
+    }
+
     private static final NumberFormat NUMBER_FORMAT = NumberFormat.getIntegerInstance();
 
     private AvatarHelper avatarHelper;
@@ -59,14 +77,16 @@ public class GistViewHolder implements ViewHolder<Gist> {
 
     private final ImageView avatar;
 
+    private final AtomicReference<Integer> idWidth;
+
     /**
      * Create view holder for a {@link Gist}
      *
      * @param v
-     * @param maxNumberCount
+     * @param idWidth
      * @param avatarHelper
      */
-    public GistViewHolder(View v, int maxNumberCount, AvatarHelper avatarHelper) {
+    public GistViewHolder(View v, AtomicReference<Integer> idWidth, AvatarHelper avatarHelper) {
         gistId = (TextView) v.findViewById(id.tv_gist_id);
         title = (TextView) v.findViewById(id.tv_gist_title);
         created = (TextView) v.findViewById(id.tv_gist_creation);
@@ -74,14 +94,7 @@ public class GistViewHolder implements ViewHolder<Gist> {
         files = (TextView) v.findViewById(id.tv_gist_files);
         avatar = (ImageView) v.findViewById(id.iv_gravatar);
         this.avatarHelper = avatarHelper;
-
-        // Set number field to max number size
-        Paint paint = new Paint();
-        paint.setTypeface(gistId.getTypeface());
-        paint.setTextSize(gistId.getTextSize());
-        char[] text = new char[maxNumberCount];
-        Arrays.fill(text, '0');
-        gistId.getLayoutParams().width = Math.round(paint.measureText(text, 0, text.length));
+        this.idWidth = idWidth;
     }
 
     /**
@@ -90,12 +103,13 @@ public class GistViewHolder implements ViewHolder<Gist> {
      * @param v
      * @param maxNumberCount
      */
-    public GistViewHolder(View v, int maxNumberCount) {
+    public GistViewHolder(View v, AtomicReference<Integer> maxNumberCount) {
         this(v, maxNumberCount, null);
     }
 
     @Override
     public void updateViewFor(final Gist gist) {
+        gistId.getLayoutParams().width = idWidth.get();
         String id = gist.getId();
         CharSequence description = gist.getDescription();
         if (!gist.isPublic() && id.length() > PRIVATE_ID_LENGTH)

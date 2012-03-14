@@ -13,10 +13,12 @@ import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.RefreshAnimation;
+import com.github.mobile.android.ThrowableLoader;
 import com.github.mobile.android.util.ErrorHelper;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockListFragment;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,6 +30,11 @@ import java.util.List;
 public abstract class ListLoadingFragment<E> extends RoboSherlockListFragment implements LoaderCallbacks<List<E>> {
 
     private RefreshAnimation refreshAnimation = new RefreshAnimation();
+
+    /**
+     * List items provided to {@link #onLoadFinished(Loader, List)}
+     */
+    protected List<E> listItems = Collections.emptyList();
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -80,6 +87,7 @@ public abstract class ListLoadingFragment<E> extends RoboSherlockListFragment im
     }
 
     public void onLoadFinished(Loader<List<E>> loader, List<E> items) {
+        listItems = items;
         @SuppressWarnings("unchecked")
         ViewHoldingListAdapter<E> adapter = (ViewHoldingListAdapter<E>) getListAdapter();
         if (adapter == null)
@@ -87,6 +95,13 @@ public abstract class ListLoadingFragment<E> extends RoboSherlockListFragment im
         else
             adapter.setList(items);
 
+        showList();
+    }
+
+    /**
+     * Set the list to be shown and stop the refresh animation
+     */
+    protected void showList() {
         if (isResumed())
             setListShown(true);
         else
@@ -126,5 +141,18 @@ public abstract class ListLoadingFragment<E> extends RoboSherlockListFragment im
                 ErrorHelper.show(application, e, defaultMessage);
             }
         });
+    }
+
+    /**
+     * Get exception from loader if it provides one by being a {@link ThrowableLoader}
+     *
+     * @param loader
+     * @return exception or null if none provided
+     */
+    protected Exception getException(final Loader<List<E>> loader) {
+        if (loader instanceof ThrowableLoader)
+            return ((ThrowableLoader<List<E>>) loader).clearException();
+        else
+            return null;
     }
 }

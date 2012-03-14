@@ -6,9 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 
-import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.layout;
-import com.github.mobile.android.R.string;
+import com.github.mobile.android.ThrowableLoader;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
 import java.io.IOException;
@@ -25,20 +24,15 @@ public class MyGistsFragment extends GistsFragment {
 
     @Override
     public Loader<List<Gist>> onCreateLoader(int i, Bundle bundle) {
-        return new AsyncLoader<List<Gist>>(getActivity()) {
+        return new ThrowableLoader<List<Gist>>(getActivity(), listItems) {
             @Override
-            public List<Gist> loadInBackground() {
-                try {
-                    List<Gist> userGists = service.getGists(service.getClient().getUser());
-                    List<Gist> gists = new ArrayList<Gist>(userGists.size());
-                    for (Gist gist : userGists)
-                        gists.add(store.addGist(gist));
-                    Collections.sort(gists, MyGistsFragment.this);
-                    return gists;
-                } catch (IOException e) {
-                    showError(e, string.error_gists_load);
-                    return Collections.emptyList();
-                }
+            public List<Gist> loadData() throws IOException {
+                List<Gist> userGists = service.getGists(service.getClient().getUser());
+                List<Gist> gists = new ArrayList<Gist>(userGists.size());
+                for (Gist gist : userGists)
+                    gists.add(store.addGist(gist));
+                Collections.sort(gists, MyGistsFragment.this);
+                return gists;
             }
         };
     }
@@ -59,6 +53,6 @@ public class MyGistsFragment extends GistsFragment {
     @Override
     protected ViewHoldingListAdapter<Gist> adapterFor(List<Gist> items) {
         return new ViewHoldingListAdapter<Gist>(items, viewInflatorFor(getActivity(), layout.gist_list_item),
-                reflectiveFactoryFor(GistViewHolder.class, GistViewHolder.computeMaxDigits(items)));
+                reflectiveFactoryFor(GistViewHolder.class, idWidth));
     }
 }
