@@ -70,8 +70,7 @@ public class ViewGistFileActivity extends RoboSherlockFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case android.R.id.home:
-            Intent intent = new Intent(this, ViewGistActivity.class);
-            intent.putExtra(EXTRA_GIST, gist);
+            Intent intent = ViewGistActivity.createIntent(gist);
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             return true;
