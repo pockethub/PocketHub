@@ -2,48 +2,60 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="10dp" >
+    android:padding="5dp" >
 
     <TextView
         android:id="@+id/tv_gist_id"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/listing"
         android:typeface="monospace" />
 
     <TextView
         android:id="@+id/tv_gist_title"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/tv_gist_id"
         android:layout_toRightOf="@id/tv_gist_id"
-        android:paddingLeft="5dp"
+        android:paddingLeft="10dp"
         android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/item_text_color"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tv_gist_creation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/tv_gist_title"
-        android:layout_below="@id/tv_gist_id"
-        android:paddingLeft="5dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/listing" />
-
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/tv_gist_creation"
-        android:layout_alignParentRight="true"
-        android:orientation="horizontal" >
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignLeft="@id/tv_gist_title"
+        android:layout_below="@id/tv_gist_title"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp" >
+
+        <ImageView
+            android:id="@+id/iv_gravatar"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginRight="5dp" />
+
+        <TextView
+            android:id="@+id/tv_gist_creation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:textColor="@color/listing" />
 
         <TextView
             android:id="@+id/tv_gist_files"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
             android:paddingRight="3dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/listing" />
@@ -56,7 +68,7 @@
         <TextView
             android:id="@+id/tv_gist_comments"
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingRight="3dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -64,7 +76,7 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:src="@drawable/comment_icon" />
     </LinearLayout>
 

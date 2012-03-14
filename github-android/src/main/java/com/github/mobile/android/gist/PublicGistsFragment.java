@@ -9,6 +9,8 @@ import android.support.v4.content.Loader;
 import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.util.AvatarHelper;
+import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
 import java.util.ArrayList;
@@ -23,6 +25,9 @@ import org.eclipse.egit.github.core.client.NoSuchPageException;
  * Fragment to display a list of public Gists
  */
 public class PublicGistsFragment extends GistsFragment {
+
+    @Inject
+    private AvatarHelper avatarHelper;
 
     @Override
     public Loader<List<Gist>> onCreateLoader(int i, Bundle bundle) {
@@ -47,6 +52,6 @@ public class PublicGistsFragment extends GistsFragment {
     @Override
     protected ViewHoldingListAdapter<Gist> adapterFor(List<Gist> items) {
         return new ViewHoldingListAdapter<Gist>(items, viewInflatorFor(getActivity(), layout.gist_list_item),
-                reflectiveFactoryFor(GistViewHolder.class, GistViewHolder.computeMaxDigits(items)));
+                reflectiveFactoryFor(GistViewHolder.class, GistViewHolder.computeMaxDigits(items), avatarHelper));
     }
 }
