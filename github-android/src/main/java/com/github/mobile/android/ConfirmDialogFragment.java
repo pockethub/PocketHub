@@ -28,7 +28,23 @@ public class ConfirmDialogFragment extends DialogFragmentHelper implements OnCli
      */
     public static void show(final DialogFragmentActivity activity, final int requestCode, final String title,
             final String message) {
+        show(activity, requestCode, title, message, null);
+    }
+
+    /**
+     * Confirm message and deliver callback to given activity
+     *
+     * @param activity
+     * @param requestCode
+     * @param title
+     * @param message
+     * @param bundle
+     */
+    public static void show(final DialogFragmentActivity activity, final int requestCode, final String title,
+            final String message, final Bundle bundle) {
         Bundle arguments = createArguments(title, message, requestCode);
+        if (bundle != null)
+            arguments.putAll(bundle);
         show(activity, new ConfirmDialogFragment(), arguments, TAG);
     }
 

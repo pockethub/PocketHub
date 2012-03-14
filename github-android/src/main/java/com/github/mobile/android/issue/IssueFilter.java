@@ -13,6 +13,7 @@ import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -265,6 +266,12 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>>,
         all.deleteCharAt(all.length() - 1);
         all.deleteCharAt(all.length() - 1);
         return all;
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(new Object[] { open, closed, assignee, milestone, assignee,
+                repository != null ? repository.generateId() : null, labels });
     }
 
     private boolean isEqual(Object a, Object b) {

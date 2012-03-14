@@ -399,4 +399,42 @@ public class AccountDataManager {
             };
         }.execute();
     }
+
+    /**
+     * Add issue filter from store
+     * <p>
+     * This method may perform file I/O and should never be called on the UI-thread
+     *
+     * @param filter
+     */
+    public void removeIssueFilter(IssueFilter filter) {
+        final File cache = new File(root, "issue_filters.ser");
+        Collection<IssueFilter> filters = read(cache);
+        if (filters != null && filters.remove(filter))
+            write(cache, filters);
+    }
+
+    /**
+     * Remove issue filter from store
+     *
+     * @param filter
+     * @param requestFuture
+     */
+    public void removeIssueFilter(final IssueFilter filter, final RequestFuture<IssueFilter> requestFuture) {
+        new RoboAsyncTask<IssueFilter>(context, EXECUTOR) {
+
+            public IssueFilter call() throws Exception {
+                removeIssueFilter(filter);
+                return filter;
+            }
+
+            protected void onSuccess(IssueFilter filter) throws Exception {
+                requestFuture.success(filter);
+            };
+
+            protected void onException(Exception e) throws RuntimeException {
+                Log.d(TAG, "Exception removing issue filter", e);
+            };
+        }.execute();
+    }
 }
