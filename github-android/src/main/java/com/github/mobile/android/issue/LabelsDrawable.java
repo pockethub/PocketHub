@@ -38,9 +38,13 @@ public class LabelsDrawable extends PaintDrawable {
 
     private final int[] colors;
 
-    private final int[] rows;
+    private final float[] heights;
 
-    private final int rowHeight;
+    private final float[] widths;
+
+    private final float[] rows;
+
+    private float rowHeight;
 
     /**
      * Create drawable for labels
@@ -60,7 +64,9 @@ public class LabelsDrawable extends PaintDrawable {
 
         names = new String[sortedLabels.length];
         colors = new int[sortedLabels.length];
-        rows = new int[sortedLabels.length];
+        rows = new float[sortedLabels.length];
+        heights = new float[sortedLabels.length];
+        widths = new float[sortedLabels.length];
 
         for (int i = 0; i < sortedLabels.length; i++) {
             names[i] = sortedLabels[i].getName().toUpperCase(Locale.US);
@@ -71,16 +77,20 @@ public class LabelsDrawable extends PaintDrawable {
         p.setTypeface(DEFAULT_BOLD);
         p.setTextSize(textSize);
 
-        rowHeight = Math.round(textSize) + PADDING_TOP + PADDING_BOTTOM;
+        rowHeight = PADDING_TOP + PADDING_BOTTOM;
         int rowCount = 0;
 
         final Rect bounds = new Rect();
         bounds.right = maxWidth;
-        int availableRowSpace = maxWidth;
+        float availableRowSpace = maxWidth;
+        final Rect textBounds = new Rect();
         for (int i = 0; i < names.length; i++) {
-            int width = getSize(names[i], i);
-            if (availableRowSpace - width >= 0)
-                availableRowSpace -= width;
+            getSize(names[i], i, textBounds);
+            widths[i] = textBounds.width();
+            heights[i] = textBounds.height();
+            rowHeight = Math.max(rowHeight, heights[i] + PADDING_TOP + PADDING_BOTTOM);
+            if (availableRowSpace - widths[i] >= 0)
+                availableRowSpace -= widths[i];
             else {
                 rowCount++;
                 availableRowSpace = maxWidth;
@@ -89,20 +99,19 @@ public class LabelsDrawable extends PaintDrawable {
             if (rowCount > 0)
                 rows[i] += PADDING_BOTTOM;
         }
-        bounds.bottom = (rowCount + 1) * rowHeight + rowCount * PADDING_BOTTOM + PADDING_BOTTOM;
+        bounds.bottom = Math.round((rowCount + 1) * rowHeight + rowCount * PADDING_BOTTOM + PADDING_BOTTOM + 0.5F);
 
         setBounds(bounds);
     }
 
-    private int getSize(final String name, final int index) {
-        Rect tBounds = new Rect();
+    private void getSize(final String name, final int index, Rect tBounds) {
+        tBounds.setEmpty();
         getPaint().getTextBounds(name, 0, name.length(), tBounds);
-        float width = tBounds.width() + PADDING_LEFT + PADDING_RIGHT;
+        tBounds.right += PADDING_LEFT + PADDING_RIGHT;
         if (index != 0)
-            width += FIN * 2;
+            tBounds.right += FIN * 2;
         else
-            width += FIN;
-        return (int) Math.ceil(width);
+            tBounds.right += FIN;
     }
 
     @Override
@@ -112,9 +121,10 @@ public class LabelsDrawable extends PaintDrawable {
         int original = paint.getColor();
         int start = PADDING_LEFT;
 
-        int width = getSize(names[0], 0);
-        int height = rowHeight;
-        int quarter = rowHeight / 4;
+        float height = rows[0] + rowHeight;
+        float quarter = rowHeight / 4;
+        float width = widths[0];
+        float textOffset = (rowHeight - heights[0]) / 2;
         final Path path = new Path();
         path.moveTo(start, rows[0]);
         path.lineTo(start + width, rows[0]);
@@ -130,20 +140,23 @@ public class LabelsDrawable extends PaintDrawable {
 
         paint.setColor(WHITE);
         paint.setShadowLayer(SIZE_SHADOW, 0, 0, BLACK);
-        canvas.drawText(names[0], start + PADDING_LEFT, height - PADDING_BOTTOM, paint);
+        float textStart = height - textOffset;
+        canvas.drawText(names[0], start + PADDING_LEFT, textStart, paint);
         paint.clearShadowLayer();
 
         start += width;
 
-        int lastRow = rows[0];
+        float lastRow = rows[0];
 
         for (int i = 1; i < names.length; i++) {
-            int rowStart = rows[i];
+            float rowStart = rows[i];
             if (rowStart > lastRow)
                 start = PADDING_LEFT;
 
-            width = getSize(names[i], i);
+            width = widths[i];
             height = rowStart + rowHeight;
+            textOffset = (rowHeight - heights[i]) / 2;
+            textStart = height - textOffset;
             quarter = rowHeight / 4;
 
             path.reset();
@@ -164,7 +177,7 @@ public class LabelsDrawable extends PaintDrawable {
 
             paint.setShadowLayer(SIZE_SHADOW, 0, 0, BLACK);
             paint.setColor(WHITE);
-            canvas.drawText(names[i], start + PADDING_LEFT + FIN, height - PADDING_BOTTOM, paint);
+            canvas.drawText(names[i], start + PADDING_LEFT + FIN, textStart, paint);
             paint.clearShadowLayer();
 
             lastRow = rowStart;
