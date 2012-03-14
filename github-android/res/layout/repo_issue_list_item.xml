@@ -28,54 +28,48 @@
         android:textStyle="bold" />
 
     <LinearLayout
-        android:id="@+id/ll_lines"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_alignLeft="@id/tv_issue_title"
         android:layout_below="@id/tv_issue_title"
-        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingLeft="10dp"
         android:paddingTop="5dp" >
 
-        <LinearLayout
-            android:layout_width="fill_parent"
+        <ImageView
+            android:id="@+id/iv_gravatar"
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+
+        <TextView
+            android:id="@+id/tv_issue_creation"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
+            android:layout_weight="1"
+            android:paddingLeft="5dp"
+            android:singleLine="true"
+            android:textColor="@color/listing" />
 
-            <ImageView
-                android:id="@+id/iv_gravatar"
-                android:layout_width="24dp"
-                android:layout_height="24dp" />
+        <ImageView
+            android:id="@+id/iv_pull_request"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="5dp"
+            android:src="@drawable/pull_request_icon" />
 
-            <TextView
-                android:id="@+id/tv_issue_creation"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingLeft="5dp"
-                android:textColor="@color/listing" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/comment_icon" />
 
-            <ImageView
-                android:id="@+id/iv_pull_request"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="5dp"
-                android:src="@drawable/pull_request_icon" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/comment_icon" />
-
-            <TextView
-                android:id="@+id/tv_issue_comments"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="3dp"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/listing_comments" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_issue_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="3dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/listing_comments" />
     </LinearLayout>
 
 </RelativeLayout>
