@@ -6,13 +6,13 @@ import static org.eclipse.egit.github.core.client.PagedRequest.PAGE_FIRST;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 
-import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.layout;
-import com.github.mobile.android.R.string;
+import com.github.mobile.android.ThrowableLoader;
 import com.github.mobile.android.util.AvatarHelper;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -31,9 +31,9 @@ public class PublicGistsFragment extends GistsFragment {
 
     @Override
     public Loader<List<Gist>> onCreateLoader(int i, Bundle bundle) {
-        return new AsyncLoader<List<Gist>>(getActivity()) {
+        return new ThrowableLoader<List<Gist>>(getActivity(), listItems) {
             @Override
-            public List<Gist> loadInBackground() {
+            public List<Gist> loadData() throws IOException {
                 try {
                     Collection<Gist> publicGists = service.pagePublicGists(PAGE_FIRST, -1).next();
                     List<Gist> gists = new ArrayList<Gist>(publicGists.size());
@@ -42,8 +42,7 @@ public class PublicGistsFragment extends GistsFragment {
                     Collections.sort(gists, PublicGistsFragment.this);
                     return gists;
                 } catch (NoSuchPageException e) {
-                    showError(e.getCause(), string.error_gists_load);
-                    return Collections.emptyList();
+                    throw e.getCause();
                 }
             }
         };

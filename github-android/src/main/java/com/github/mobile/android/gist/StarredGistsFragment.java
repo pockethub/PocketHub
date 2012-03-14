@@ -5,9 +5,8 @@ import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 
-import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.layout;
-import com.github.mobile.android.R.string;
+import com.github.mobile.android.ThrowableLoader;
 import com.github.mobile.android.util.AvatarHelper;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -29,20 +28,16 @@ public class StarredGistsFragment extends GistsFragment {
 
     @Override
     public Loader<List<Gist>> onCreateLoader(int i, Bundle bundle) {
-        return new AsyncLoader<List<Gist>>(getActivity()) {
+        return new ThrowableLoader<List<Gist>>(getActivity(), listItems) {
             @Override
-            public List<Gist> loadInBackground() {
-                try {
-                    List<Gist> starred = service.getStarredGists();
-                    List<Gist> gists = new ArrayList<Gist>(starred.size());
-                    for (Gist gist : starred)
-                        gists.add(store.addGist(gist));
-                    Collections.sort(gists, StarredGistsFragment.this);
-                    return gists;
-                } catch (IOException e) {
-                    showError(e, string.error_gists_load);
-                    return Collections.emptyList();
-                }
+            public List<Gist> loadData() throws IOException {
+                List<Gist> starred = service.getStarredGists();
+                List<Gist> gists = new ArrayList<Gist>(starred.size());
+                for (Gist gist : starred)
+                    gists.add(store.addGist(gist));
+                Collections.sort(gists, StarredGistsFragment.this);
+                return gists;
+
             }
         };
     }
