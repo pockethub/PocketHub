@@ -2,21 +2,21 @@ package com.github.mobile.android.gist;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 import static android.widget.Toast.LENGTH_LONG;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENTS;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENT_BODY;
-import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST_ID;
-import android.R;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
-import android.text.Html;
-import android.widget.ImageView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.HeaderViewListAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,16 +28,24 @@ import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.comment.CommentViewHolder;
 import com.github.mobile.android.comment.CreateCommentActivity;
 import com.github.mobile.android.util.AvatarHelper;
+import com.github.mobile.android.util.ErrorHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
-import com.github.mobile.android.util.Time;
 import com.google.inject.Inject;
+import com.madgag.android.listviews.ReflectiveHolderFactory;
+import com.madgag.android.listviews.ViewHoldingListAdapter;
+import com.madgag.android.listviews.ViewInflator;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Gist;
+import org.eclipse.egit.github.core.GistFile;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.GistService;
 
@@ -49,7 +57,7 @@ import roboguice.util.RoboAsyncTask;
 /**
  * Activity to display an existing Gist
  */
-public class ViewGistActivity extends DialogFragmentActivity implements LoaderCallbacks<List<Comment>> {
+public class ViewGistActivity extends DialogFragmentActivity implements OnItemClickListener {
 
     /**
      * Result if the Gist was deleted
@@ -67,7 +75,7 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
      * @return intent
      */
     public static final Intent createIntent(Gist gist) {
-        return new Builder("gist.VIEW").add(EXTRA_GIST, gist).add(EXTRA_GIST_ID, gist.getId()).toIntent();
+        return createIntent(gist.getId());
     }
 
     /**
@@ -80,17 +88,28 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
         return new Builder("gist.VIEW").add(EXTRA_GIST_ID, gistId).toIntent();
     }
 
-    @InjectView(id.iv_gravatar)
-    private ImageView gravatar;
-
-    @InjectView(id.tv_gist_creation)
-    private TextView created;
-
-    @InjectView(id.tv_gist_description)
-    private TextView description;
-
     @InjectExtra(EXTRA_GIST_ID)
     private String gistId;
+
+    @InjectExtra(value = EXTRA_COMMENTS, optional = true)
+    private List<Comment> comments;
+
+    private Gist gist;
+
+    @InjectView(android.R.id.list)
+    private ListView list;
+
+    @Inject
+    private GistStore store;
+
+    @Inject
+    private ContextScopedProvider<GistService> service;
+
+    private View headerView;
+
+    private GistHeaderViewHolder headerHolder;
+
+    private View loadingView;
 
     private boolean starred;
 
@@ -99,10 +118,10 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
     @Inject
     private AvatarHelper avatarHelper;
 
-    private GistFragment gistFragment;
-
     @Inject
     private ContextScopedProvider<GistService> gistServiceProvider;
+
+    private List<View> fileHeaders = new ArrayList<View>();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,22 +129,30 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
         setTitle(getString(string.gist) + " " + gistId);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        gistFragment = (GistFragment) getSupportFragmentManager().findFragmentById(R.id.list);
-        if (gistFragment == null) {
-            gistFragment = new GistFragment();
-            getSupportFragmentManager().beginTransaction().add(R.id.list, gistFragment).commit();
+        list.setOnItemClickListener(this);
+        list.setFastScrollEnabled(true);
+
+        gist = store.getGist(gistId);
+
+        headerView = getLayoutInflater().inflate(layout.gist_header, null);
+        headerHolder = new GistHeaderViewHolder(headerView, avatarHelper);
+
+        loadingView = getLayoutInflater().inflate(layout.comment_load_item, null);
+
+        if (gist != null && comments != null)
+            updateList(gist, comments);
+        else {
+            if (gist != null) {
+                list.addHeaderView(headerView, null, false);
+                headerHolder.updateViewFor(gist);
+                updateFiles(gist);
+            } else
+                ((TextView) loadingView.findViewById(id.tv_loading)).setText("Loading Gist…");
+            refreshGist();
         }
-        gistFragment.setId(gistId).setLoadListener(this);
-
-        showGist(getGist());
-    }
-
-    private Gist getGist() {
-        return (Gist) getIntent().getSerializableExtra(EXTRA_GIST);
     }
 
     private boolean isOwner() {
-        Gist gist = getGist();
         if (gist == null)
             return false;
         User user = gist.getUser();
@@ -267,7 +294,7 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
 
             protected void onSuccess(Comment comment) throws Exception {
                 progress.dismiss();
-                gistFragment.refresh();
+                refreshGist();
             }
 
             protected void onException(Exception e) throws RuntimeException {
@@ -278,49 +305,87 @@ public class ViewGistActivity extends DialogFragmentActivity implements LoaderCa
 
     }
 
-    public Loader<List<Comment>> onCreateLoader(int i, Bundle bundle) {
-        return null;
-    }
-
-    private void showGist(final Gist gist) {
-        if (gist != null) {
-            getIntent().putExtra(EXTRA_GIST, gist);
-            User user = gist.getUser();
-            if (user != null) {
-                gravatar.setVisibility(VISIBLE);
-                avatarHelper.bind(gravatar, user);
-                created.setText(Html.fromHtml("<b>" + user.getLogin() + "</b> "
-                        + Time.relativeTimeFor(gist.getCreatedAt())));
-                created.setVisibility(VISIBLE);
-            } else {
-                created.setVisibility(GONE);
-                gravatar.setVisibility(GONE);
-            }
-
-            String desc = gist.getDescription();
-            if (desc != null && desc.length() > 0)
-                description.setText(desc);
-            else
-                description.setText(Html.fromHtml("<i>No description</i>"));
-            description.setVisibility(VISIBLE);
-
-            created.setVisibility(VISIBLE);
-        } else {
-            gravatar.setVisibility(GONE);
-            description.setVisibility(GONE);
-            created.setVisibility(GONE);
+    private void updateFiles(Gist gist) {
+        for (View header : fileHeaders)
+            list.removeHeaderView(header);
+        fileHeaders.clear();
+        LayoutInflater inflater = getLayoutInflater();
+        for (GistFile file : gist.getFiles().values()) {
+            View fileView = inflater.inflate(layout.gist_view_file_item, null);
+            new GistFileViewHolder(fileView).updateViewFor(file);
+            list.addHeaderView(fileView, file, true);
+            fileHeaders.add(fileView);
         }
     }
 
-    public void onLoadFinished(Loader<List<Comment>> loader, List<Comment> gists) {
-        FullGist fullGist = (FullGist) gists;
-        final Gist gist = fullGist.getGist();
-        starred = fullGist.isStarred();
-        loadFinished = true;
-        showGist(gist);
-        getIntent().putExtra(EXTRA_COMMENTS, fullGist);
+    private void updateList(Gist gist, List<Comment> comments) {
+        list.removeHeaderView(loadingView);
+        if (list.getHeaderViewsCount() - fileHeaders.size() == 0)
+            list.addHeaderView(headerView);
+        headerHolder.updateViewFor(gist);
+
+        updateFiles(gist);
+
+        ViewHoldingListAdapter<Comment> adapter = getRootAdapter();
+        if (adapter != null)
+            adapter.setList(comments);
+        else
+            list.setAdapter(new ViewHoldingListAdapter<Comment>(comments, ViewInflator.viewInflatorFor(this,
+                    layout.comment_view_item), ReflectiveHolderFactory.reflectiveFactoryFor(CommentViewHolder.class,
+                    avatarHelper)));
     }
 
-    public void onLoaderReset(Loader<List<Comment>> loader) {
+    @SuppressWarnings("unchecked")
+    private ViewHoldingListAdapter<Comment> getRootAdapter() {
+        ListAdapter adapter = list.getAdapter();
+        if (adapter == null)
+            return null;
+        adapter = ((HeaderViewListAdapter) adapter).getWrappedAdapter();
+        if (adapter instanceof ViewHoldingListAdapter<?>)
+            return (ViewHoldingListAdapter<Comment>) adapter;
+        else
+            return null;
+    }
+
+    private void refreshGist() {
+        if (list.getAdapter() == null) {
+            list.addHeaderView(loadingView, null, false);
+            list.setAdapter(new ArrayAdapter<Comment>(this, layout.comment_view_item));
+        }
+        new RoboAsyncTask<FullGist>(this) {
+
+            public FullGist call() throws Exception {
+                Gist gist = store.refreshGist(gistId);
+                GistService gistService = service.get(getContext());
+                List<Comment> comments;
+                if (gist.getComments() > 0)
+                    comments = gistService.getComments(gistId);
+                else
+                    comments = Collections.emptyList();
+                return new FullGist(gist, gistService.isStarred(gistId), comments);
+            }
+
+            protected void onException(Exception e) throws RuntimeException {
+                ErrorHelper.show(getApplication(), e, string.error_gist_load);
+            }
+
+            protected void onSuccess(FullGist fullGist) throws Exception {
+                starred = fullGist.isStarred();
+                loadFinished = true;
+                gist = fullGist.getGist();
+                comments = fullGist;
+                getIntent().putExtra(EXTRA_COMMENTS, (Serializable) fullGist);
+                updateList(fullGist.getGist(), fullGist);
+            }
+
+            protected void onFinally() throws RuntimeException {
+            }
+        }.execute();
+    }
+
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Object item = parent.getItemAtPosition(position);
+        if (item instanceof GistFile)
+            startActivity(ViewGistFileActivity.createIntent(gist, (GistFile) item));
     }
 }

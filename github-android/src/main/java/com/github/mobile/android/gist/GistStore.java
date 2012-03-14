@@ -62,7 +62,7 @@ public class GistStore extends ItemStore {
      * @return refreshed gist
      * @throws IOException
      */
-    public Gist refreshIssue(String id) throws IOException {
+    public Gist refreshGist(String id) throws IOException {
         return addGist(service.getGist(id));
     }
 

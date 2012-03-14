@@ -122,8 +122,7 @@ public abstract class GistsFragment extends ListLoadingFragment<Gist> implements
         prompt.setPositiveButton("Open", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 dialog.dismiss();
-                String gistId = id.getText().toString();
-                startActivityForResult(ViewGistActivity.createIntent(gistId), REQUEST_VIEW);
+                startActivityForResult(ViewGistActivity.createIntent(id.getText().toString().trim()), REQUEST_VIEW);
             }
         });
         prompt.show();
