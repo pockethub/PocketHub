@@ -9,7 +9,7 @@ import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.GistFile;
 
 /**
- * Gist model with comments
+ * Gist model with comments and starred status
  */
 public class FullGist extends ArrayList<Comment> implements Serializable {
 
