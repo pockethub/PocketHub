@@ -67,4 +67,10 @@ public class FilterListFragment extends ListLoadingFragment<IssueFilter> {
         IssueFilter filter = (IssueFilter) l.getItemAtPosition(position);
         startActivity(IssueBrowseActivity.createIntent(filter));
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refresh();
+    }
 }
