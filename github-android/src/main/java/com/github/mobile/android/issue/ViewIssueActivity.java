@@ -188,7 +188,7 @@ public class ViewIssueActivity extends DialogFragmentActivity {
         header = new IssueHeaderViewHolder(headerView, avatarHelper, getResources());
         list.setFastScrollEnabled(true);
         list.addHeaderView(headerView);
-        loadingView = getLayoutInflater().inflate(layout.issue_load_item, null);
+        loadingView = getLayoutInflater().inflate(layout.comment_load_item, null);
 
         if (issue != null && comments != null)
             updateList(issue, comments);
