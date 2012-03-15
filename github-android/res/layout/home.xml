@@ -3,23 +3,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/grid_repeat"
-    android:orientation="vertical"
-    android:padding="10dp" >
+    android:orientation="vertical" >
 
-    <LinearLayout
-        android:id="@+id/ll_orgs"
+    <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/outer_background" >
+        android:layout_gravity="center_vertical"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:singleLine="true"
+        android:text="@string/accounts_label"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/item_text_color"
+        android:textStyle="bold" />
 
-        <LinearLayout
-            android:id="@android:id/list"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="@drawable/inner_background"
-            android:dividerHeight="1dp"
-            android:padding="5dp" >
-        </LinearLayout>
-    </LinearLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2px"
+        android:background="@drawable/separator" />
+
+    <LinearLayout
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background" />
 
 </LinearLayout>

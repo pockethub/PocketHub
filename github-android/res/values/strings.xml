@@ -213,4 +213,6 @@
      <string name="unstar_gist">Unstar Gist</string>
 
      <string name="unstarring_gist">Unstarring Gist…</string>
+
+     <string name="accounts_label">Accounts</string>
 </resources>
