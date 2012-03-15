@@ -28,17 +28,10 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <LinearLayout
+    <View
         android:layout_width="fill_parent"
-        android:layout_height="1px"
-        android:background="@color/item_separator1" >
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="1px"
-        android:background="@color/item_separator2" >
-    </LinearLayout>
+        android:layout_height="2px"
+        android:background="@drawable/separator" />
 
     <LinearLayout
         android:id="@android:id/list"

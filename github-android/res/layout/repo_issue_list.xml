@@ -53,17 +53,10 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/item_text_color" />
 
-    <LinearLayout
+    <View
         android:layout_width="fill_parent"
-        android:layout_height="1px"
-        android:background="@color/item_separator1" >
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="1px"
-        android:background="@color/item_separator2" >
-    </LinearLayout>
+        android:layout_height="2px"
+        android:background="@drawable/separator" />
 
     <LinearLayout
         android:id="@android:id/list"

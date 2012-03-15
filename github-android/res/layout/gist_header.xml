@@ -40,16 +40,9 @@
             android:textColor="@color/item_text_color_light" />
     </LinearLayout>
 
-    <FrameLayout
+    <View
         android:layout_width="fill_parent"
-        android:layout_height="1px"
-        android:background="@color/item_separator1" >
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="1px"
-        android:background="@color/item_separator2" >
-    </FrameLayout>
+        android:layout_height="2px"
+        android:background="@drawable/separator" />
 
 </LinearLayout>
