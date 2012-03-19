@@ -164,7 +164,7 @@
                     </plugin>
                     <!-- the signed apk then needs to be zipaligned -->
                     <plugin>
-                        <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                        <groupId>com.madgag</groupId>
                         <artifactId>android-maven-plugin</artifactId>
                         <inherited>true</inherited>
                         <configuration>
