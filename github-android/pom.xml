@@ -176,6 +176,9 @@
                                 <outputApk>${project.build.directory}/${project.artifactId}-signed-aligned.apk
                                 </outputApk>
                             </zipalign>
+                            <manifest>
+                                <debuggable>false</debuggable>
+                            </manifest>
                         </configuration>
                         <executions>
                             <execution>

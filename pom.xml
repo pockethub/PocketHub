@@ -39,6 +39,7 @@
                             <versionName/>
                             <!-- defaults to Maven project version -->
                             <versionCodeUpdateFromVersion>true</versionCodeUpdateFromVersion>
+                            <debuggable>true</debuggable>
                         </manifest>
                     </configuration>
                     <executions>
