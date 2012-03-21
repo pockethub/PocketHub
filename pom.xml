@@ -10,8 +10,8 @@
     <name>Github Android app parent POM project</name>
 
     <modules>
-        <module>github-android</module>
-        <module>github-android-integration-tests</module>
+        <module>app</module>
+        <module>integration-tests</module>
     </modules>
 
     <properties>
