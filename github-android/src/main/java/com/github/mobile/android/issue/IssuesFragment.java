@@ -19,6 +19,7 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.github.mobile.android.util.AvatarHelper;
+import static com.google.common.collect.Lists.newArrayList;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
@@ -56,7 +57,7 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
 
     private Button moreButton;
 
-    private final List<IssuePager> pagers = new ArrayList<IssuePager>();
+    private final List<IssuePager> pagers = newArrayList();
 
     @Inject
     private AvatarHelper avatarHelper;
@@ -178,7 +179,7 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
             @Override
             public List<Issue> loadInBackground() {
                 hasMore = false;
-                final List<Issue> all = new ArrayList<Issue>();
+                final List<Issue> all = newArrayList();
                 boolean error = false;
                 for (IssuePager pager : loaderPagers) {
                     try {

@@ -15,6 +15,7 @@ import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
+import static com.google.common.collect.Lists.newArrayList;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -103,7 +104,7 @@ public class RepoListFragment extends ListLoadingFragment<Repository> {
 
             public List<Repository> loadInBackground() {
                 try {
-                    List<Repository> repos = new ArrayList<Repository>(cache.getRepos(user));
+                    List<Repository> repos = newArrayList(cache.getRepos(user));
                     Collections.sort(repos, new Comparator<Repository>() {
 
                         public int compare(Repository lhs, Repository rhs) {

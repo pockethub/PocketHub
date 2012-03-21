@@ -28,6 +28,8 @@ import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabWidget;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 import java.util.ArrayList;
 
 /**
@@ -43,7 +45,7 @@ public class TabsAdapter extends FragmentPagerAdapter implements OnTabChangeList
     private final Context mContext;
     private final TabHost mTabHost;
     private final ViewPager mViewPager;
-    private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
+    private final ArrayList<TabInfo> mTabs = newArrayList();
 
     static final class TabInfo {
         private final String tag;

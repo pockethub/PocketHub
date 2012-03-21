@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 
 import com.github.mobile.android.DialogFragmentActivity;
 import com.github.mobile.android.SingleChoiceDialogFragment;
+import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -64,7 +65,7 @@ public class MilestoneDialog {
         new RoboAsyncTask<List<Milestone>>(activity) {
 
             public List<Milestone> call() throws Exception {
-                repositoryMilestones = new ArrayList<Milestone>();
+                repositoryMilestones = newArrayList();
                 repositoryMilestones.addAll(service.getMilestones(repository, IssueService.STATE_OPEN));
                 repositoryMilestones.addAll(service.getMilestones(repository, IssueService.STATE_CLOSED));
                 Collections.sort(repositoryMilestones, new Comparator<Milestone>() {

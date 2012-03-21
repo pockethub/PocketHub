@@ -35,6 +35,7 @@ import com.github.mobile.android.comment.CreateCommentActivity;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.ErrorHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
+import static com.google.common.collect.Lists.newArrayList;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;

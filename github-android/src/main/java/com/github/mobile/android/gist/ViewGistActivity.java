@@ -34,6 +34,7 @@ import com.github.mobile.android.comment.CreateCommentActivity;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.ErrorHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
+import static com.google.common.collect.Lists.newArrayList;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -128,7 +129,7 @@ public class ViewGistActivity extends DialogFragmentActivity implements OnItemCl
 
     private Executor executor = Executors.newFixedThreadPool(1);
 
-    private List<View> fileHeaders = new ArrayList<View>();
+    private List<View> fileHeaders = newArrayList();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

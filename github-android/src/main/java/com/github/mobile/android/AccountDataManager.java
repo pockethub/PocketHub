@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
 import com.github.mobile.android.issue.IssueFilter;
+import static com.google.common.collect.Lists.newArrayList;
 
 import java.io.File;
 import java.io.IOException;
@@ -178,7 +179,7 @@ public class AccountDataManager {
                     new String[] { "users.id", "users.name", "users.avatarurl" });
             try {
                 if (cursor.moveToFirst()) {
-                    List<User> cached = new ArrayList<User>();
+                    List<User> cached = newArrayList();
                     do {
                         User user = new User();
                         user.setId(cursor.getInt(0));
@@ -192,7 +193,7 @@ public class AccountDataManager {
                 cursor.close();
             }
 
-            List<User> loaded = new ArrayList<User>(orgs.getOrganizations());
+            List<User> loaded = newArrayList(orgs.getOrganizations());
             loaded.add(0, users.getUser());
 
             SQLiteDatabase db = helper.getWritableDatabase();
@@ -235,7 +236,7 @@ public class AccountDataManager {
                     "repos.orgId=?", new String[] { Integer.toString(user.getId()) });
             try {
                 if (cursor.moveToFirst()) {
-                    List<Repository> repos = new ArrayList<Repository>();
+                    List<Repository> repos = newArrayList();
                     do {
                         Repository repo = new Repository();
                         repo.setId(cursor.getLong(0));

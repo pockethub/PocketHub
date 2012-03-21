@@ -11,6 +11,8 @@ import static org.eclipse.egit.github.core.service.IssueService.SORT_CREATED;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_CLOSED;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -204,7 +206,7 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>>,
             base.put(FILTER_LABELS, labelsQuery.toString());
         }
 
-        List<String> states = new ArrayList<String>();
+        List<String> states = newArrayList();
         if (open)
             states.add(STATE_OPEN);
         if (closed)
@@ -234,7 +236,7 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>>,
      * @return display
      */
     public CharSequence toDisplay() {
-        List<String> segments = new ArrayList<String>();
+        List<String> segments = newArrayList();
         if (open && closed)
             segments.add("All issues");
         else if (open)

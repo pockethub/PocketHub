@@ -10,6 +10,7 @@ import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
+import static com.google.common.collect.Lists.newArrayList;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -39,7 +40,7 @@ public class FilterListFragment extends ListLoadingFragment<IssueFilter> {
         return new AsyncLoader<List<IssueFilter>>(getActivity()) {
 
             public List<IssueFilter> loadInBackground() {
-                List<IssueFilter> filters = new ArrayList<IssueFilter>(cache.getIssueFilters());
+                List<IssueFilter> filters = newArrayList(cache.getIssueFilters());
                 Collections.sort(filters, new Comparator<IssueFilter>() {
 
                     public int compare(IssueFilter lhs, IssueFilter rhs) {

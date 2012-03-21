@@ -1,5 +1,7 @@
 package com.github.mobile.android.issue;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -62,7 +64,7 @@ public abstract class IssuePager {
      * @return issues
      */
     public List<Issue> getIssues() {
-        return new ArrayList<Issue>(issues.values());
+        return newArrayList(issues.values());
     }
 
     /**

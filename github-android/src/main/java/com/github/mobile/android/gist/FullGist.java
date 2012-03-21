@@ -1,5 +1,7 @@
 package com.github.mobile.android.gist;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +63,6 @@ public class FullGist extends ArrayList<Comment> implements Serializable {
      * @return list of files
      */
     public List<GistFile> getFiles() {
-        return new ArrayList<GistFile>(gist.getFiles().values());
+        return newArrayList(gist.getFiles().values());
     }
 }
