@@ -59,7 +59,12 @@
         <dependency>
             <groupId>com.github.rtyley</groupId>
             <artifactId>roboguice-sherlock</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.roboguice</groupId>
+            <artifactId>roboguice</artifactId>
+            <version>2.0-RC1</version>
         </dependency>
         <dependency>
 			<groupId>com.viewpagerindicator</groupId>
