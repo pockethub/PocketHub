@@ -1,16 +1,21 @@
 package com.github.mobile.android.issue;
 
 import static android.widget.Toast.LENGTH_LONG;
+import static com.github.mobile.android.util.Beam.objectFromBeamIntent;
+import static com.github.mobile.android.util.Beam.setBeamMessage;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENT_BODY;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_ISSUE;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_ISSUE_NUMBER;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY_NAME;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY_OWNER;
+import static org.eclipse.egit.github.core.RepositoryId.create;
+import static org.eclipse.egit.github.core.RepositoryId.createFromUrl;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_CLOSED;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -35,7 +40,6 @@ import com.github.mobile.android.comment.CreateCommentActivity;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.ErrorHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
-import static com.google.common.collect.Lists.newArrayList;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -113,15 +117,15 @@ public class ViewIssueActivity extends DialogFragmentActivity {
 
     private RepositoryId repositoryId;
 
-    private RefreshAnimation refreshAnimation = new RefreshAnimation();
-
-    @InjectExtra(EXTRA_REPOSITORY_NAME)
+    @InjectExtra(value = EXTRA_REPOSITORY_NAME, optional = true)
     private String repository;
 
-    @InjectExtra(EXTRA_REPOSITORY_OWNER)
+    private RefreshAnimation refreshAnimation = new RefreshAnimation();
+
+    @InjectExtra(value = EXTRA_REPOSITORY_OWNER, optional = true)
     private String repositoryOwner;
 
-    @InjectExtra(value = EXTRA_ISSUE_NUMBER)
+    @InjectExtra(value = EXTRA_ISSUE_NUMBER, optional = true)
     private int issueNumber;
 
     private Issue issue;
@@ -145,11 +149,6 @@ public class ViewIssueActivity extends DialogFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.issue_view);
-        setTitle(getString(string.issue_title) + issueNumber);
-
-        repositoryId = RepositoryId.create(repositoryOwner, repository);
-
-        issue = store.getIssue(repositoryId, issueNumber);
 
         labelsDialog = new LabelsDialog(this, REQUEST_CODE_LABELS, repositoryId, labelService);
         milestoneDialog = new MilestoneDialog(this, REQUEST_CODE_MILESTONE, repositoryId, milestoneService);
@@ -200,6 +199,36 @@ public class ViewIssueActivity extends DialogFragmentActivity {
         }
     }
 
+    @Override
+    public void onNewIntent(Intent intent) {
+        setIntent(intent);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Check to see that the Activity started due to an Android Beam
+        Intent i = getIntent();
+        Issue beamedIssue = objectFromBeamIntent(i, Issue.class);
+        if (beamedIssue != null) {
+            String url = beamedIssue.getHtmlUrl();
+            Log.d("VIA", "Received beamed url=" + url);
+            repositoryId = createFromUrl(url);
+            issueNumber = beamedIssue.getNumber();
+            repositoryOwner = repositoryId.getOwner();
+            repository = repositoryId.getName();
+        } else {
+            repositoryId = create(repositoryOwner, repository);
+
+            issue = store.getIssue(repositoryId, issueNumber);
+        }
+
+        setTitle(getString(string.issue_title) + issueNumber);
+
+        refreshIssue();
+
+    }
+
     private void refreshIssue() {
         if (list.getAdapter() == null) {
             list.addHeaderView(loadingView);
@@ -209,6 +238,7 @@ public class ViewIssueActivity extends DialogFragmentActivity {
 
             public FullIssue call() throws Exception {
                 Issue issue = store.refreshIssue(repositoryId, issueNumber);
+                setBeamMessage(ViewIssueActivity.this, "repo.issue", issue);
                 List<Comment> comments;
                 if (issue.getComments() > 0)
                     comments = service.get(getContext()).getComments(repositoryId, issueNumber);
