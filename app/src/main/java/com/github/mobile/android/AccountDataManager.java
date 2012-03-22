@@ -168,53 +168,68 @@ public class AccountDataManager {
      * <p>
      * This method may perform file and/or network I/O and should never be called on the UI-thread
      *
-     * @return list of users
+     * @return list of user and Orgs
      * @throws IOException
      */
     public List<User> getOrgs() throws IOException {
         SQLiteOpenHelper helper = new CacheHelper(context);
         try {
-            Cursor cursor = query(helper, "orgs JOIN users ON (orgs.id = users.id)", //
-                    new String[] { "users.id", "users.name", "users.avatarurl" });
-            try {
-                if (cursor.moveToFirst()) {
-                    List<User> cached = newArrayList();
-                    do {
-                        User user = new User();
-                        user.setId(cursor.getInt(0));
-                        user.setLogin(cursor.getString(1));
-                        user.setAvatarUrl(cursor.getString(2));
-                        cached.add(user);
-                    } while (cursor.moveToNext());
-                    return cached;
-                }
-            } finally {
-                cursor.close();
-            }
+            List<User> userAndOrgs = loadUserAndOrgsFromDB(helper);
 
-            List<User> loaded = newArrayList(orgs.getOrganizations());
-            loaded.add(0, users.getUser());
-
-            SQLiteDatabase db = helper.getWritableDatabase();
-            try {
-                db.beginTransaction();
-                db.delete("orgs", null, null);
-                for (User user : loaded) {
-                    ContentValues values = new ContentValues(3);
-                    values.put("id", user.getId());
-                    db.replace("orgs", null, values);
-                    values.put("name", user.getLogin());
-                    values.put("avatarurl", user.getAvatarUrl());
-                    db.replace("users", null, values);
-                }
-                db.setTransactionSuccessful();
-            } finally {
-                db.endTransaction();
-                db.close();
-            }
-            return loaded;
+            return userAndOrgs == null ? requestAndStoreUserAndOrgs(helper) : userAndOrgs;
         } finally {
             helper.close();
+        }
+    }
+
+    private List<User> loadUserAndOrgsFromDB(SQLiteOpenHelper helper) {
+        Cursor cursor = query(helper, "orgs JOIN users ON (orgs.id = users.id)",
+                new String[] { "users.id", "users.name", "users.avatarurl" });
+        try {
+            if (cursor.moveToFirst()) {
+                List<User> cached = newArrayList();
+                do {
+                    User user = new User();
+                    user.setId(cursor.getInt(0));
+                    user.setLogin(cursor.getString(1));
+                    user.setAvatarUrl(cursor.getString(2));
+                    cached.add(user);
+                } while (cursor.moveToNext());
+                return cached;
+            }
+        } finally {
+            cursor.close();
+        }
+        return null;
+    }
+
+    private List<User> requestAndStoreUserAndOrgs(SQLiteOpenHelper helper) throws IOException {
+        List<User> userAndOrgs = newArrayList(orgs.getOrganizations());
+        userAndOrgs.add(0, users.getUser());
+
+        updateDBWith(userAndOrgs, helper);
+        return userAndOrgs;
+    }
+
+    private void updateDBWith(Iterable<User> userAndOrgs, SQLiteOpenHelper helper) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        try {
+            db.beginTransaction();
+            db.delete("orgs", null, null);
+            for (User user : userAndOrgs) {
+                ContentValues values = new ContentValues(3);
+
+                values.put("id", user.getId());
+                db.replace("orgs", null, values);
+
+                values.put("name", user.getLogin());
+                values.put("avatarurl", user.getAvatarUrl());
+                db.replace("users", null, values);
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+            db.close();
         }
     }
 
@@ -230,63 +245,76 @@ public class AccountDataManager {
     public List<Repository> getRepos(final User user) throws IOException {
         SQLiteOpenHelper helper = new CacheHelper(context);
         try {
-            Cursor cursor = query(helper, "repos JOIN users ON (repos.ownerId = users.id)", //
-                    new String[] { "repos.id, repos.name", "users.id", "users.name", "users.avatarurl" }, //
-                    "repos.orgId=?", new String[] { Integer.toString(user.getId()) });
-            try {
-                if (cursor.moveToFirst()) {
-                    List<Repository> repos = newArrayList();
-                    do {
-                        Repository repo = new Repository();
-                        repo.setId(cursor.getLong(0));
-                        repo.setName(cursor.getString(1));
-                        User owner = new User();
-                        owner.setId(cursor.getInt(2));
-                        owner.setLogin(cursor.getString(3));
-                        owner.setAvatarUrl(cursor.getString(4));
-                        repo.setOwner(owner);
-                        repos.add(repo);
-                    } while (cursor.moveToNext());
-                    return repos;
-                }
-            } finally {
-                cursor.close();
-            }
+            List<Repository> repos = loadReposFromDB(user, helper);
 
-            List<Repository> loaded;
-            if (user.getLogin().equals(repos.getClient().getUser()))
-                loaded = repos.getRepositories();
-            else
-                loaded = repos.getOrgRepositories(user.getLogin());
-
-            SQLiteDatabase db = helper.getWritableDatabase();
-            try {
-                db.beginTransaction();
-                db.delete("repos", "orgId=?", new String[] { Integer.toString(user.getId()) });
-                for (Repository repo : loaded) {
-                    User owner = repo.getOwner();
-
-                    ContentValues values = new ContentValues(3);
-                    values.put("name", repo.getName());
-                    values.put("orgId", user.getId());
-                    values.put("ownerId", owner.getId());
-                    db.replace("repos", null, values);
-
-                    values.clear();
-                    values.put("id", owner.getId());
-                    values.put("name", owner.getLogin());
-                    values.put("avatarurl", owner.getAvatarUrl());
-                    db.replace("users", null, values);
-                }
-                db.setTransactionSuccessful();
-            } finally {
-                db.endTransaction();
-                db.close();
-            }
-
-            return loaded;
+            return repos == null ? requestAndStoreReposFor(user, helper) : repos;
         } finally {
             helper.close();
+        }
+    }
+
+    private List<Repository> loadReposFromDB(User user, SQLiteOpenHelper helper) {
+        Cursor cursor = query(helper, "repos JOIN users ON (repos.ownerId = users.id)", //
+                new String[] { "repos.id, repos.name", "users.id", "users.name", "users.avatarurl" }, //
+                "repos.orgId=?", new String[] { Integer.toString(user.getId()) });
+        try {
+            if (cursor.moveToFirst()) {
+                List<Repository> repos = newArrayList();
+                do {
+                    Repository repo = new Repository();
+                    repo.setId(cursor.getLong(0));
+                    repo.setName(cursor.getString(1));
+                    User owner = new User();
+                    owner.setId(cursor.getInt(2));
+                    owner.setLogin(cursor.getString(3));
+                    owner.setAvatarUrl(cursor.getString(4));
+                    repo.setOwner(owner);
+                    repos.add(repo);
+                } while (cursor.moveToNext());
+                return repos;
+            }
+        } finally {
+            cursor.close();
+        }
+        return null;
+    }
+
+    private List<Repository> requestAndStoreReposFor(User user, SQLiteOpenHelper helper) throws IOException {
+        List<Repository> loaded;
+        if (user.getLogin().equals(repos.getClient().getUser()))
+            loaded = repos.getRepositories();
+        else
+            loaded = repos.getOrgRepositories(user.getLogin());
+
+        updateDBWith(loaded, user, helper);
+
+        return loaded;
+    }
+
+    private void updateDBWith(List<Repository> repos, User org, SQLiteOpenHelper helper) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        try {
+            db.beginTransaction();
+            db.delete("repos", "orgId=?", new String[] { Integer.toString(org.getId()) });
+            for (Repository repo : repos) {
+                User owner = repo.getOwner();
+
+                ContentValues values = new ContentValues(3);
+                values.put("name", repo.getName());
+                values.put("orgId", org.getId());
+                values.put("ownerId", owner.getId());
+                db.replace("repos", null, values);
+
+                values.clear();
+                values.put("id", owner.getId());
+                values.put("name", owner.getLogin());
+                values.put("avatarurl", owner.getAvatarUrl());
+                db.replace("users", null, values);
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+            db.close();
         }
     }
 
