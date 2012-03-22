@@ -189,14 +189,6 @@ public class ViewIssueActivity extends DialogFragmentActivity {
         list.setFastScrollEnabled(true);
         list.addHeaderView(headerView);
         loadingView = getLayoutInflater().inflate(layout.comment_load_item, null);
-
-        if (issue != null && comments != null)
-            updateList(issue, comments);
-        else {
-            if (issue != null)
-                header.updateViewFor(issue);
-            refreshIssue();
-        }
     }
 
     @Override
@@ -217,16 +209,20 @@ public class ViewIssueActivity extends DialogFragmentActivity {
             issueNumber = beamedIssue.getNumber();
             repositoryOwner = repositoryId.getOwner();
             repository = repositoryId.getName();
+            refreshIssue();
         } else {
             repositoryId = create(repositoryOwner, repository);
-
             issue = store.getIssue(repositoryId, issueNumber);
+            if (issue != null && comments != null)
+                updateList(issue, comments);
+            else {
+                if (issue != null)
+                    header.updateViewFor(issue);
+                refreshIssue();
+            }
         }
 
         setTitle(getString(string.issue_title) + issueNumber);
-
-        refreshIssue();
-
     }
 
     private void refreshIssue() {
