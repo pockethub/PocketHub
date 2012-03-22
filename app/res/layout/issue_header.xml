@@ -37,11 +37,10 @@
             android:gravity="center"
             android:orientation="horizontal" >
 
-            <FrameLayout
+            <View
                 android:layout_width="1px"
                 android:layout_height="fill_parent"
-                android:background="@color/issue_header_separator" >
-            </FrameLayout>
+                android:background="@color/issue_header_separator" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -68,11 +67,10 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <FrameLayout
+            <View
                 android:layout_width="1px"
                 android:layout_height="fill_parent"
-                android:background="@color/issue_header_separator" >
-            </FrameLayout>
+                android:background="@color/issue_header_separator" />
         </LinearLayout>
 
         <LinearLayout
@@ -94,11 +92,10 @@
         </LinearLayout>
     </LinearLayout>
 
-    <FrameLayout
+    <View
         android:layout_width="fill_parent"
         android:layout_height="1px"
-        android:background="@color/issue_header_separator" >
-    </FrameLayout>
+        android:background="@color/issue_header_separator" />
 
     <TextView
         android:id="@+id/tv_issue_title"
