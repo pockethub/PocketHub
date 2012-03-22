@@ -27,12 +27,7 @@ public class MyGistsFragment extends GistsFragment {
         return new ThrowableLoader<List<Gist>>(getActivity(), listItems) {
             @Override
             public List<Gist> loadData() throws IOException {
-                List<Gist> userGists = service.getGists(service.getClient().getUser());
-                List<Gist> gists = new ArrayList<Gist>(userGists.size());
-                for (Gist gist : userGists)
-                    gists.add(store.addGist(gist));
-                Collections.sort(gists, MyGistsFragment.this);
-                return gists;
+                return storeAndSort(service.getGists(service.getClient().getUser()));
             }
         };
     }

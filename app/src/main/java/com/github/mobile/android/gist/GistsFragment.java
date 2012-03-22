@@ -5,6 +5,7 @@ import static android.app.Activity.RESULT_OK;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static android.widget.Toast.LENGTH_LONG;
+import static java.util.Collections.sort;
 import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -31,6 +32,7 @@ import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.google.inject.Inject;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -192,5 +194,13 @@ public abstract class GistsFragment extends ListLoadingFragment<Gist> implements
     @Override
     public int compare(final Gist g1, final Gist g2) {
         return g2.getCreatedAt().compareTo(g1.getCreatedAt());
+    }
+    
+    List<Gist> storeAndSort(Collection<Gist> gists) {
+        List<Gist> gistList = new ArrayList<Gist>(gists.size());
+        for (Gist gist : gists)
+            gistList.add(store.addGist(gist));
+        sort(gistList, this);
+        return gistList;
     }
 }

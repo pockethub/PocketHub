@@ -35,12 +35,7 @@ public class PublicGistsFragment extends GistsFragment {
             @Override
             public List<Gist> loadData() throws IOException {
                 try {
-                    Collection<Gist> publicGists = service.pagePublicGists(PAGE_FIRST, -1).next();
-                    List<Gist> gists = new ArrayList<Gist>(publicGists.size());
-                    for (Gist gist : publicGists)
-                        gists.add(store.addGist(gist));
-                    Collections.sort(gists, PublicGistsFragment.this);
-                    return gists;
+                    return storeAndSort(service.pagePublicGists(PAGE_FIRST, -1).next());
                 } catch (NoSuchPageException e) {
                     throw e.getCause();
                 }

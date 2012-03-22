@@ -31,13 +31,7 @@ public class StarredGistsFragment extends GistsFragment {
         return new ThrowableLoader<List<Gist>>(getActivity(), listItems) {
             @Override
             public List<Gist> loadData() throws IOException {
-                List<Gist> starred = service.getStarredGists();
-                List<Gist> gists = new ArrayList<Gist>(starred.size());
-                for (Gist gist : starred)
-                    gists.add(store.addGist(gist));
-                Collections.sort(gists, StarredGistsFragment.this);
-                return gists;
-
+                return storeAndSort(service.getStarredGists());
             }
         };
     }
