@@ -1,6 +1,6 @@
 package com.github.mobile.android.issue;
 
-import static android.view.ViewGroup.LayoutParams.FILL_PARENT;
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
@@ -131,7 +131,7 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
         if (hasMore) {
             if (moreButton == null) {
                 moreButton = new Button(getActivity());
-                moreButton.setLayoutParams(new LayoutParams(FILL_PARENT, WRAP_CONTENT));
+                moreButton.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
                 moreButton.setOnClickListener(new OnClickListener() {
 
                     public void onClick(View v) {
