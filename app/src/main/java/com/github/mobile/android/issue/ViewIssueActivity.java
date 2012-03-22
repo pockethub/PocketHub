@@ -152,10 +152,6 @@ public class ViewIssueActivity extends DialogFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(layout.issue_view);
 
-        labelsDialog = new LabelsDialog(this, REQUEST_CODE_LABELS, repositoryId, labelService);
-        milestoneDialog = new MilestoneDialog(this, REQUEST_CODE_MILESTONE, repositoryId, milestoneService);
-        assigneeDialog = new AssigneeDialog(this, REQUEST_CODE_ASSIGNEE, repositoryId, collaboratorService);
-
         View headerView = getLayoutInflater().inflate(layout.issue_header, null);
         headerView.findViewById(id.ll_milestone).setOnClickListener(new OnClickListener() {
 
@@ -223,6 +219,10 @@ public class ViewIssueActivity extends DialogFragmentActivity {
                 refreshIssue();
             }
         }
+
+        labelsDialog = new LabelsDialog(this, REQUEST_CODE_LABELS, repositoryId, labelService);
+        milestoneDialog = new MilestoneDialog(this, REQUEST_CODE_MILESTONE, repositoryId, milestoneService);
+        assigneeDialog = new AssigneeDialog(this, REQUEST_CODE_ASSIGNEE, repositoryId, collaboratorService);
 
         setTitle(getString(string.issue_title) + issueNumber);
     }
