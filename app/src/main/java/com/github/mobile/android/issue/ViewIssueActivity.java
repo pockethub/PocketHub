@@ -71,6 +71,8 @@ import roboguice.util.RoboAsyncTask;
  */
 public class ViewIssueActivity extends DialogFragmentActivity {
 
+    private static final String TAG = "VIA";
+
     private static final String ARG_COMMENTS = "comments";
 
     private static final int REQUEST_CODE_COMMENT = 1;
@@ -204,7 +206,7 @@ public class ViewIssueActivity extends DialogFragmentActivity {
         Issue beamedIssue = objectFromBeamIntent(i, Issue.class);
         if (beamedIssue != null) {
             String url = beamedIssue.getHtmlUrl();
-            Log.d("VIA", "Received beamed url=" + url);
+            Log.d(TAG, "Received beamed url=" + url);
             repositoryId = createFromUrl(url);
             issueNumber = beamedIssue.getNumber();
             repositoryOwner = repositoryId.getOwner();
@@ -244,6 +246,7 @@ public class ViewIssueActivity extends DialogFragmentActivity {
             }
 
             protected void onException(Exception e) throws RuntimeException {
+                Log.d(TAG, "Exception loading issue", e);
                 ErrorHelper.show(getContext(), e, string.error_issue_load);
             }
 
