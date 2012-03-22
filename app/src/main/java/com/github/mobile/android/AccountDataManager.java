@@ -1,5 +1,6 @@
 package com.github.mobile.android;
 
+import static com.google.common.collect.Lists.newArrayList;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -9,12 +10,10 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
 import com.github.mobile.android.issue.IssueFilter;
-import static com.google.common.collect.Lists.newArrayList;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;

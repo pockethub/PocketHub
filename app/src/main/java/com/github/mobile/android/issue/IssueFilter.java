@@ -1,5 +1,6 @@
 package com.github.mobile.android.issue;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static org.eclipse.egit.github.core.service.IssueService.DIRECTION_DESCENDING;
 import static org.eclipse.egit.github.core.service.IssueService.FIELD_DIRECTION;
 import static org.eclipse.egit.github.core.service.IssueService.FIELD_SORT;
@@ -11,10 +12,7 @@ import static org.eclipse.egit.github.core.service.IssueService.SORT_CREATED;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_CLOSED;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 
-import static com.google.common.collect.Lists.newArrayList;
-
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;

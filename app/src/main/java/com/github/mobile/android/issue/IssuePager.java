@@ -3,7 +3,6 @@ package com.github.mobile.android.issue;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;

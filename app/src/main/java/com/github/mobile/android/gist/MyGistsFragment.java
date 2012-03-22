@@ -8,7 +8,6 @@ import android.support.v4.content.Loader;
 
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.ThrowableLoader;
-import static com.google.common.collect.Lists.newArrayList;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
 import java.io.IOException;

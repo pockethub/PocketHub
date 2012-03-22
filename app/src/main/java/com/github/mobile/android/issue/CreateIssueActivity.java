@@ -24,7 +24,6 @@ import com.github.mobile.android.SingleChoiceDialogFragment;
 import com.github.mobile.android.TextWatcherAdapter;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
-import static com.google.common.collect.Lists.newArrayList;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;

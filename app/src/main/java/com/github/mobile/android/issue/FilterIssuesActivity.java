@@ -20,7 +20,6 @@ import com.github.mobile.android.R.string;
 import com.github.mobile.android.SingleChoiceDialogFragment;
 import com.github.mobile.android.util.GitHubIntents;
 import com.google.common.base.Joiner;
-import static com.google.common.collect.Lists.newArrayList;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;

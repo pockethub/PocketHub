@@ -2,6 +2,7 @@ package com.github.mobile.android.issue;
 
 import static android.view.ViewGroup.LayoutParams.FILL_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static com.google.common.collect.Lists.newArrayList;
 import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.os.Bundle;
@@ -19,12 +20,10 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.github.mobile.android.util.AvatarHelper;
-import static com.google.common.collect.Lists.newArrayList;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;

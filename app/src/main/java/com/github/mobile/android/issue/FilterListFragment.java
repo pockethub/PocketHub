@@ -1,5 +1,6 @@
 package com.github.mobile.android.issue;
 
+import static com.google.common.collect.Lists.newArrayList;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
@@ -10,13 +11,11 @@ import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
-import static com.google.common.collect.Lists.newArrayList;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 import com.madgag.android.listviews.ViewInflator;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
