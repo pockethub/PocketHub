@@ -3,6 +3,7 @@ package com.github.mobile.android.issue;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import android.content.res.Resources;
+import android.text.Html;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -12,7 +13,6 @@ import android.widget.TextView;
 
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.util.AvatarHelper;
-import com.github.mobile.android.util.Html;
 import com.github.mobile.android.util.HtmlViewer;
 import com.github.mobile.android.util.ServiceHelper;
 import com.github.mobile.android.util.Time;
@@ -89,7 +89,7 @@ public class IssueHeaderViewHolder implements ViewHolder<Issue> {
         String reported = "<b>" + issue.getUser().getLogin() + "</b> opened "
                 + Time.relativeTimeFor(issue.getCreatedAt());
 
-        createdText.setText(Html.encode(reported));
+        createdText.setText(Html.fromHtml(reported));
         avatarHelper.bind(creatorAvatar, issue.getUser());
 
         User assignee = issue.getAssignee();
