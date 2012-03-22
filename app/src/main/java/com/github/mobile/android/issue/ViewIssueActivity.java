@@ -148,6 +148,14 @@ public class ViewIssueActivity extends DialogFragmentActivity {
 
     private View loadingView;
 
+    private boolean destroyed = false;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        destroyed = true;
+    }
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.issue_view);
@@ -236,7 +244,8 @@ public class ViewIssueActivity extends DialogFragmentActivity {
 
             public FullIssue call() throws Exception {
                 Issue issue = store.refreshIssue(repositoryId, issueNumber);
-                setBeamMessage(ViewIssueActivity.this, "repo.issue", issue);
+                if (!destroyed)
+                    setBeamMessage(ViewIssueActivity.this, "repo.issue", issue);
                 List<Comment> comments;
                 if (issue.getComments() > 0)
                     comments = service.get(getContext()).getComments(repositoryId, issueNumber);
