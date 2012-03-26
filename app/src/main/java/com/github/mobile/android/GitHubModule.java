@@ -5,6 +5,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
 
+import com.github.mobile.android.authenticator.GitHubAccount;
 import com.github.mobile.android.gist.GistStore;
 import com.github.mobile.android.issue.IssueStore;
 import com.github.mobile.android.util.AvatarHelper;
@@ -18,16 +19,11 @@ import java.net.HttpURLConnection;
 import java.util.List;
 
 import org.eclipse.egit.github.core.SearchRepository;
-import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.client.IGitHubConstants;
-import org.eclipse.egit.github.core.service.CollaboratorService;
 import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.IssueService;
-import org.eclipse.egit.github.core.service.LabelService;
-import org.eclipse.egit.github.core.service.MilestoneService;
 import org.eclipse.egit.github.core.service.OrganizationService;
-import org.eclipse.egit.github.core.service.PullRequestService;
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.eclipse.egit.github.core.service.UserService;
 
@@ -42,6 +38,7 @@ public class GitHubModule extends AbstractModule {
 
     @Override
     protected void configure() {
+        install(new ServicesModule());
     }
 
     @Provides
@@ -54,73 +51,30 @@ public class GitHubModule extends AbstractModule {
         return null;
     }
 
-    private GitHubClient configureClient(GitHubClient client, Account account, AccountManager manager) {
+    @Provides
+    GitHubAccount currentAccount(Account account, AccountManager accountManager) {
+        String username = account.name;
+        String password = accountManager.getPassword(account);
+        return new GitHubAccount(username, password);
+    }
+
+    private GitHubClient configureClient(GitHubClient client, GitHubAccount ghAccount) {
         client.setSerializeNulls(false);
         client.setUserAgent("GitHubAndroid/1.0");
-        if (account != null)
-            client.setCredentials(account.name, manager.getPassword(account));
+        if (ghAccount != null)
+            client.setCredentials(ghAccount.username, ghAccount.password);
         return client;
     }
 
     @Provides
-    GitHubClient client(Account account, AccountManager accountManager) {
+    GitHubClient client(GitHubAccount gitHubAccount) {
         return configureClient(new GitHubClient() {
             protected HttpURLConnection configureRequest(final HttpURLConnection request) {
                 super.configureRequest(request);
                 request.setRequestProperty(HEADER_ACCEPT, "application/vnd.github.beta.full+json");
                 return request;
             }
-        }, account, accountManager);
-    }
-
-    @Provides
-    IssueService issueService(GitHubClient client) {
-        return new IssueService(client);
-    }
-
-    @Provides
-    PullRequestService pullRequestService(GitHubClient client) {
-        return new PullRequestService(client);
-    }
-
-    @Provides
-    UserService userService(GitHubClient client) {
-        return new UserService(client);
-    }
-
-    @Provides
-    GistService gistService(GitHubClient client) {
-        return new GistService(client);
-    }
-
-    @Provides
-    OrganizationService orgService(GitHubClient client) {
-        return new OrganizationService(client);
-    }
-
-    @Provides
-    RepositoryService repoService(GitHubClient client) {
-        return new RepositoryService(client);
-    }
-
-    @Provides
-    User currentUser(UserService userService) throws IOException {
-        return userService.getUser(); // actually, probably better to cache this
-    }
-
-    @Provides
-    CollaboratorService collaboratorService(GitHubClient client) {
-        return new CollaboratorService(client);
-    }
-
-    @Provides
-    MilestoneService milestoneService(GitHubClient client) {
-        return new MilestoneService(client);
-    }
-
-    @Provides
-    LabelService labelService(GitHubClient client) {
-        return new LabelService(client);
+        }, gitHubAccount);
     }
 
     @Provides
@@ -135,9 +89,9 @@ public class GitHubModule extends AbstractModule {
     }
 
     @Provides
-    IRepositorySearch searchService(Account account, AccountManager accountManager) {
+    IRepositorySearch searchService(GitHubAccount ghAccount) {
         GitHubClient client = new GitHubClient(IGitHubConstants.HOST_API_V2);
-        configureClient(client, account, accountManager);
+        configureClient(client, ghAccount);
         final RepositoryService service = new RepositoryService(client);
         return new IRepositorySearch() {
 
