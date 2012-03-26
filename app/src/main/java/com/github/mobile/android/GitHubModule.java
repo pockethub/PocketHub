@@ -8,9 +8,13 @@ import android.content.Context;
 import com.github.mobile.android.authenticator.GitHubAccount;
 import com.github.mobile.android.gist.GistStore;
 import com.github.mobile.android.issue.IssueStore;
+import com.github.mobile.android.persistence.AccountDataManager;
+import com.github.mobile.android.persistence.AllReposForUserOrOrg;
 import com.github.mobile.android.util.AvatarHelper;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.google.inject.name.Named;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,9 +27,7 @@ import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.client.IGitHubConstants;
 import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.IssueService;
-import org.eclipse.egit.github.core.service.OrganizationService;
 import org.eclipse.egit.github.core.service.RepositoryService;
-import org.eclipse.egit.github.core.service.UserService;
 
 /**
  * Main module provide services and clients
@@ -39,6 +41,7 @@ public class GitHubModule extends AbstractModule {
     @Override
     protected void configure() {
         install(new ServicesModule());
+        install(new FactoryModuleBuilder().build(AllReposForUserOrOrg.Factory.class));
     }
 
     @Provides
@@ -77,10 +80,9 @@ public class GitHubModule extends AbstractModule {
         }, gitHubAccount);
     }
 
-    @Provides
-    AccountDataManager dataManager(Context context, UserService users, OrganizationService orgs, RepositoryService repos) {
-        File cache = new File(context.getFilesDir(), "cache");
-        return new AccountDataManager(context, cache, users, orgs, repos);
+    @Provides @Named("cacheDir")
+    File cacheDir(Context context) {
+        return new File(context.getFilesDir(), "cache");
     }
 
     @Provides
