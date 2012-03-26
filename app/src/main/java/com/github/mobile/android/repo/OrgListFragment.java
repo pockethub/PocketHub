@@ -10,7 +10,7 @@ import android.widget.ListView;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
-import com.github.mobile.android.persistence.AccountDataManager;
+import com.github.mobile.android.AccountDataManager;
 import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;

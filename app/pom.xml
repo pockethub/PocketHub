@@ -67,17 +67,6 @@
             <version>2.0-RC1</version>
         </dependency>
         <dependency>
-            <groupId>com.google.inject.extensions</groupId>
-            <artifactId>guice-assistedinject</artifactId>
-            <version>3.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.inject</groupId>
-                    <artifactId>guice</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
 			<groupId>com.viewpagerindicator</groupId>
 			<artifactId>library</artifactId>
 			<version>2.2.3</version>

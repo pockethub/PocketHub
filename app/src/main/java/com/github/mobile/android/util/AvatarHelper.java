@@ -7,7 +7,7 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.github.kevinsawicki.http.HttpRequest;
-import com.github.mobile.android.persistence.AccountDataManager;
+import com.github.mobile.android.AccountDataManager;
 import com.github.mobile.android.R.id;
 
 import java.util.Map;
