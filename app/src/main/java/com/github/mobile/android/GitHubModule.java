@@ -53,6 +53,9 @@ public class GitHubModule extends AbstractModule {
 
     @Provides
     GitHubAccount currentAccount(Account account, AccountManager accountManager) {
+        if (account==null)
+            return null;
+
         String username = account.name;
         String password = accountManager.getPassword(account);
         return new GitHubAccount(username, password);
