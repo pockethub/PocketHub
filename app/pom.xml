@@ -15,15 +15,8 @@
     <url>https://github.com/github/android</url>
 
     <properties>
-        <abs.version>4.0.0</abs.version>
+        <abs.version>4.0.1</abs.version>
     </properties>
-
-    <repositories>
-        <repository>
-            <id>jakewharton</id>
-            <url>http://r.jakewharton.com/maven/release/</url>
-        </repository>
-    </repositories>
 
     <dependencies>
         <dependency>
