@@ -11,8 +11,8 @@ import android.view.View;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.github.mobile.android.AccountDataManager;
-import com.github.mobile.android.AsyncLoader;
+import com.github.mobile.android.guice.RoboAsyncLoader;
+import com.github.mobile.android.persistence.AccountDataManager;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
@@ -99,9 +99,9 @@ public class RepoListFragment extends ListLoadingFragment<Repository> {
 
     @Override
     public Loader<List<Repository>> onCreateLoader(int id, Bundle args) {
-        return new AsyncLoader<List<Repository>>(getActivity()) {
+        return new RoboAsyncLoader<List<Repository>>(getActivity()) {
 
-            public List<Repository> loadInBackground() {
+            public List<Repository> loadInBackgroundWithContextScope() {
                 try {
                     List<Repository> repos = newArrayList(cache.getRepos(user));
                     Collections.sort(repos, new Comparator<Repository>() {

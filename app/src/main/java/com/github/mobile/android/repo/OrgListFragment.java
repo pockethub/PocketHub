@@ -10,8 +10,8 @@ import android.widget.ListView;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
-import com.github.mobile.android.AccountDataManager;
-import com.github.mobile.android.AsyncLoader;
+import com.github.mobile.android.guice.RoboAsyncLoader;
+import com.github.mobile.android.persistence.AccountDataManager;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
@@ -48,9 +48,9 @@ public class OrgListFragment extends ListLoadingFragment<User> implements Compar
 
     @Override
     public Loader<List<User>> onCreateLoader(int id, Bundle args) {
-        return new AsyncLoader<List<User>>(getActivity()) {
+        return new RoboAsyncLoader<List<User>>(getActivity()) {
 
-            public List<User> loadInBackground() {
+            public List<User> loadInBackgroundWithContextScope() {
                 try {
                     List<User> orgs = cache.getOrgs();
                     Collections.sort(orgs, OrgListFragment.this);

@@ -5,12 +5,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 
-import com.github.mobile.android.AccountDataManager;
+import com.github.mobile.android.RequestFuture;
+import com.github.mobile.android.persistence.AccountDataManager;
 import com.github.mobile.android.ConfirmDialogFragment;
 import com.github.mobile.android.DialogFragmentActivity;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
-import com.github.mobile.android.RequestFuture;
 import com.google.inject.Inject;
 
 /**
