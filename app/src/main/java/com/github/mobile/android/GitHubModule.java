@@ -10,6 +10,7 @@ import com.github.mobile.android.gist.GistStore;
 import com.github.mobile.android.issue.IssueStore;
 import com.github.mobile.android.persistence.AccountDataManager;
 import com.github.mobile.android.persistence.AllReposForUserOrOrg;
+import com.github.mobile.android.sync.SyncCampaign;
 import com.github.mobile.android.util.AvatarHelper;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -41,6 +42,7 @@ public class GitHubModule extends AbstractModule {
     @Override
     protected void configure() {
         install(new ServicesModule());
+        install(new FactoryModuleBuilder().build(SyncCampaign.Factory.class));
         install(new FactoryModuleBuilder().build(AllReposForUserOrOrg.Factory.class));
     }
 
@@ -56,7 +58,7 @@ public class GitHubModule extends AbstractModule {
 
     @Provides
     GitHubAccount currentAccount(Account account, AccountManager accountManager) {
-        if (account==null)
+        if (account == null)
             return null;
 
         String username = account.name;
@@ -83,7 +85,8 @@ public class GitHubModule extends AbstractModule {
         }, gitHubAccount);
     }
 
-    @Provides @Named("cacheDir")
+    @Provides
+    @Named("cacheDir")
     File cacheDir(Context context) {
         return new File(context.getFilesDir(), "cache");
     }

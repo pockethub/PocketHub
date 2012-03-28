@@ -1,6 +1,5 @@
 package com.github.mobile.android.persistence;
 
-import static com.google.common.collect.Lists.newArrayList;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -73,12 +72,23 @@ public class AccountDataManager {
      */
     private static final int FORMAT_VERSION = 2;
 
-    private @Inject Context context;
-    private @Inject DBCache dbCache;
-    private @Inject AllReposForUserOrOrg.Factory allRepos;
-    private @Inject UserAndOrgs userAndOrgsResource;
+    private
+    @Inject
+    Context context;
+    private
+    @Inject
+    DBCache dbCache;
+    private
+    @Inject
+    AllReposForUserOrOrg.Factory allRepos;
+    private
+    @Inject
+    UserAndOrgs userAndOrgsResource;
 
-    private @Inject @Named("cacheDir") File root;
+    private
+    @Inject
+    @Named("cacheDir")
+    File root;
 
 
     /**
@@ -140,7 +150,7 @@ public class AccountDataManager {
      * @return cursor
      */
     protected Cursor query(SQLiteOpenHelper helper, String tables, String[] columns, String selection,
-            String[] selectionArgs) {
+                           String[] selectionArgs) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(tables);
         return builder.query(helper.getReadableDatabase(), columns, selection, selectionArgs, null, null, null);
@@ -148,7 +158,7 @@ public class AccountDataManager {
 
     /**
      * Get organizations
-     * <p>
+     * <p/>
      * This method may perform file and/or network I/O and should never be called on the UI-thread
      *
      * @return list of user and Orgs
@@ -160,7 +170,7 @@ public class AccountDataManager {
 
     /**
      * Get repositories for given {@link User}
-     * <p>
+     * <p/>
      * This method may perform network I/O and should never be called on the UI-thread
      *
      * @param user
@@ -210,7 +220,7 @@ public class AccountDataManager {
 
     /**
      * Get bookmarked issue filters
-     * <p>
+     * <p/>
      * This method may perform network I/O and should never be called on the UI-thread
      *
      * @return non-null but possibly empty collection of issue filters
@@ -237,13 +247,15 @@ public class AccountDataManager {
 
             protected void onSuccess(Collection<IssueFilter> filters) throws Exception {
                 requestFuture.success(filters);
-            };
+            }
+
+            ;
         }.execute();
     }
 
     /**
      * Add issue filter to store
-     * <p>
+     * <p/>
      * This method may perform file I/O and should never be called on the UI-thread
      *
      * @param filter
@@ -273,17 +285,21 @@ public class AccountDataManager {
 
             protected void onSuccess(IssueFilter filter) throws Exception {
                 requestFuture.success(filter);
-            };
+            }
+
+            ;
 
             protected void onException(Exception e) throws RuntimeException {
                 Log.d(TAG, "Exception adding issue filter", e);
-            };
+            }
+
+            ;
         }.execute();
     }
 
     /**
      * Add issue filter from store
-     * <p>
+     * <p/>
      * This method may perform file I/O and should never be called on the UI-thread
      *
      * @param filter
@@ -311,11 +327,15 @@ public class AccountDataManager {
 
             protected void onSuccess(IssueFilter filter) throws Exception {
                 requestFuture.success(filter);
-            };
+            }
+
+            ;
 
             protected void onException(Exception e) throws RuntimeException {
                 Log.d(TAG, "Exception removing issue filter", e);
-            };
+            }
+
+            ;
         }.execute();
     }
 }

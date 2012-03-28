@@ -1,18 +1,20 @@
 package com.github.mobile.android.authenticator;
 
 import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
+import static android.content.ContentResolver.addPeriodicSync;
+import static android.content.ContentResolver.setIsSyncable;
+import static android.content.ContentResolver.setSyncAutomatically;
 import static android.text.TextUtils.isEmpty;
 import static com.github.mobile.android.authenticator.Constants.GITHUB_ACCOUNT_TYPE;
+import static com.github.mobile.android.authenticator.Constants.GITHUB_PROVIDER_AUTHORITY;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -234,8 +236,8 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
 
         if (mRequestNewAccount) {
             mAccountManager.addAccountExplicitly(account, mPassword, null);
-            // Set contacts sync for this account.
-            ContentResolver.setSyncAutomatically(account, ContactsContract.AUTHORITY, true);
+
+            configureSyncFor(account);
         } else {
             mAccountManager.setPassword(account, mPassword);
         }
@@ -249,6 +251,13 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    private static void configureSyncFor(Account account) {
+        Log.d(TAG, "Trying to configure account for sync...");
+        setIsSyncable(account, GITHUB_PROVIDER_AUTHORITY, 1);
+        setSyncAutomatically(account, GITHUB_PROVIDER_AUTHORITY, true);
+        addPeriodicSync(account, GITHUB_PROVIDER_AUTHORITY, new Bundle(), (long) (15 * 60));
     }
 
     protected void hideProgress() {

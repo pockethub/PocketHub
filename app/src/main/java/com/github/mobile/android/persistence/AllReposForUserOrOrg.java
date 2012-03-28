@@ -19,7 +19,7 @@ public class AllReposForUserOrOrg implements PersistableResource<Repository> {
 
     public interface Factory {
         AllReposForUserOrOrg under(User userOrOrg);
-     }
+    }
 
     private final User userOrOrg;
     private final RepositoryService repos;
@@ -35,7 +35,8 @@ public class AllReposForUserOrOrg implements PersistableResource<Repository> {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables("repos JOIN users ON (repos.ownerId = users.id)");
         return builder.query(readableDatabase, new String[] { "repos.id, repos.name",
-                "users.id", "users.name", "users.avatarurl" }, "repos.orgId=?", new String[] { Integer.toString(userOrOrg
+                "users.id", "users.name", "users.avatarurl" }, "repos.orgId=?",
+                new String[] { Integer.toString(userOrOrg
                 .getId()) }, null, null, null);
     }
 
@@ -80,5 +81,10 @@ public class AllReposForUserOrOrg implements PersistableResource<Repository> {
             return repos.getRepositories();
         else
             return repos.getOrgRepositories(userOrOrg.getLogin());
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "[" + userOrOrg.getLogin() + "]";
     }
 }

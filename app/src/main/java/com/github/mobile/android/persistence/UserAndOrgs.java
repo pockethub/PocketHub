@@ -65,4 +65,9 @@ public class UserAndOrgs implements PersistableResource<User> {
         userAndOrgs.add(0, users.getUser());
         return userAndOrgs;
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
 }

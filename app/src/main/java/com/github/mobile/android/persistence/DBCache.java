@@ -4,6 +4,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -16,16 +17,20 @@ import java.util.List;
  * fresh data, as appropriate.
  */
 public class DBCache {
-    
+
     @Inject
     Provider<AccountDataManager.CacheHelper> helperProvider;
+    private static final String TAG = "DBCache";
 
     <E> List<E> loadOrRequest(PersistableResource<E> persistableResource) throws IOException {
         SQLiteOpenHelper helper = helperProvider.get();
         try {
             List<E> items = loadFromDB(helper, persistableResource);
-
-            return items == null ? requestAndStore(helper, persistableResource) : items;
+            if (items != null) {
+                Log.d(TAG, "CACHE HIT: Found " + items.size() + " items for " + persistableResource);
+                return items;
+            }
+            return requestAndStore(helper, persistableResource);
         } finally {
             helper.close();
         }
