@@ -11,8 +11,9 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@color/background"
+        android:gravity="top"
         android:hint="@string/comment_hint"
-        android:inputType="textMultiLine"
+        android:inputType="textMultiLine|textAutoCorrect"
         android:padding="10dp"
         android:scrollbars="horizontal|vertical"
         android:textColor="@color/item_text_color" >
