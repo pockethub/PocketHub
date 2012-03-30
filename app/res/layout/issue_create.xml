@@ -59,8 +59,7 @@
                     <ImageView
                         android:id="@+id/iv_assignee_gravatar"
                         android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@drawable/gravatar_icon" />
+                        android:layout_height="16dp" />
 
                     <TextView
                         android:id="@+id/tv_assignee_name"

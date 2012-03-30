@@ -4,18 +4,20 @@ import static com.github.mobile.android.authenticator.Constants.GITHUB_ACCOUNT_T
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.Environment;
 
 import com.github.mobile.android.authenticator.GitHubAccount;
 import com.github.mobile.android.gist.GistStore;
 import com.github.mobile.android.issue.IssueStore;
-import com.github.mobile.android.persistence.AccountDataManager;
 import com.github.mobile.android.persistence.AllReposForUserOrOrg;
 import com.github.mobile.android.sync.SyncCampaign;
-import com.github.mobile.android.util.AvatarHelper;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.name.Named;
+import com.madgag.android.lazydrawables.BitmapFileStore;
+import com.madgag.android.lazydrawables.ImageResourceStore;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +31,8 @@ import org.eclipse.egit.github.core.client.IGitHubConstants;
 import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.RepositoryService;
+
+import roboguice.inject.ContextSingleton;
 
 /**
  * Main module provide services and clients
@@ -91,9 +95,9 @@ public class GitHubModule extends AbstractModule {
         return new File(context.getFilesDir(), "cache");
     }
 
-    @Provides
-    AvatarHelper avatarHelper(AccountDataManager cache) {
-        return new AvatarHelper(cache);
+    @Provides @ContextSingleton @Named("gravatarStore")
+    ImageResourceStore<String, Bitmap> gravatarStore(Context context) {
+        return new BitmapFileStore<String>(new File(context.getCacheDir(),"gravatars"));
     }
 
     @Provides

@@ -12,8 +12,7 @@
         android:id="@+id/iv_gravatar"
         android:layout_width="28dp"
         android:layout_height="28dp"
-        android:layout_gravity="center_vertical"
-        android:src="@drawable/gravatar_icon" />
+        android:layout_gravity="center_vertical" />
 
     <TextView
         android:id="@+id/tv_org_name"

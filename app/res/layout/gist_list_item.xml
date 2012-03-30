@@ -41,8 +41,7 @@
             android:id="@+id/iv_gravatar"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginRight="5dp"
-            android:background="@drawable/gravatar_icon" />
+            android:layout_marginRight="5dp" />
 
         <TextView
             android:id="@+id/tv_gist_creation"

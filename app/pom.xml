@@ -91,6 +91,11 @@
             <artifactId>http-request</artifactId>
             <version>0.9.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.madgag</groupId>
+            <artifactId>lazy-drawables</artifactId>
+            <version>0.9</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

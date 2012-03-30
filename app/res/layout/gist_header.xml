@@ -26,8 +26,7 @@
             android:id="@+id/iv_gravatar"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/gravatar_icon" />
+            android:layout_gravity="center_vertical" />
 
         <TextView
             android:id="@+id/tv_gist_creation"

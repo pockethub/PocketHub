@@ -40,8 +40,7 @@
         <ImageView
             android:id="@+id/iv_gravatar"
             android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:background="@drawable/gravatar_icon" />
+            android:layout_height="24dp" />
 
         <TextView
             android:id="@+id/tv_issue_creation"
