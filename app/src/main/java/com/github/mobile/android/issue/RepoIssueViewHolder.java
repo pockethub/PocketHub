@@ -91,10 +91,7 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
         gravatar.setImageDrawable(null);
         helper.bind(gravatar, issue.getUser());
 
-        if (issue.getPullRequest().getHtmlUrl() != null)
-            pullRequestIcon.setVisibility(VISIBLE);
-        else
-            pullRequestIcon.setVisibility(GONE);
+        pullRequestIcon.setVisibility(issue.getPullRequest().getHtmlUrl() == null ? GONE : VISIBLE);
 
         title.setText(issue.getTitle());
         creation.setText(fromHtml("<b>" + issue.getUser().getLogin() + "</b> " + relativeTimeFor(issue.getCreatedAt())));
