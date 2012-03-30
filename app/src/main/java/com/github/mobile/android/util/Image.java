@@ -1,14 +1,14 @@
 package com.github.mobile.android.util;
 
+import static android.graphics.Color.WHITE;
+import static android.graphics.PorterDuff.Mode.DST_IN;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.util.Log;
@@ -162,52 +162,30 @@ public class Image {
     }
 
     /**
-     * Round the corners of a {@link Bitmap} using a radius of 10
-     *
-     * @param bitmap
-     * @return rounded corner bitmap
-     */
-    public static Bitmap roundCorners(final Bitmap bitmap) {
-        return roundCorners(bitmap, 10);
-    }
-
-    /**
      * Round the corners of a {@link Bitmap}
      *
-     * @param bitmap
+     * @param source
      * @param radius
      * @return rounded corner bitmap
      */
-    public static Bitmap roundCorners(final Bitmap bitmap, final int radius) {
-        return roundCorners(bitmap, radius, radius);
-    }
-
-    /**
-     * Round the corners of a {@link Bitmap}
-     *
-     * @param bitmap
-     * @param radiusX
-     * @param radiusY
-     * @return rounded corner bitmap
-     */
-    public static Bitmap roundCorners(final Bitmap bitmap, final int radiusX, final int radiusY) {
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
+    public static Bitmap roundCorners(final Bitmap source, final int radius) {
+        int width = source.getWidth();
+        int height = source.getHeight();
 
         Paint paint = new Paint();
         paint.setAntiAlias(true);
-        paint.setColor(Color.WHITE);
 
-        Bitmap clipped = Bitmap.createBitmap(width, height, Config.ARGB_8888);
-        Canvas canvas = new Canvas(clipped);
-        canvas.drawRoundRect(new RectF(0, 0, width, height), radiusX, radiusY, paint);
-        paint.setXfermode(new PorterDuffXfermode(Mode.DST_IN));
+        paint.setColor(WHITE);
+        Bitmap whiteRoundedRectangle = Bitmap.createBitmap(width, height, Config.ARGB_8888);
+        new Canvas(whiteRoundedRectangle).drawRoundRect(new RectF(0, 0, width, height), radius, radius, paint);
 
-        Bitmap rounded = Bitmap.createBitmap(width, height, Config.ARGB_8888);
-        canvas = new Canvas(rounded);
-        canvas.drawBitmap(bitmap, 0, 0, null);
-        canvas.drawBitmap(clipped, 0, 0, paint);
+        Bitmap output = Bitmap.createBitmap(width, height, Config.ARGB_8888);
+        Canvas outputCanvas = new Canvas(output);
+        outputCanvas.drawBitmap(source, 0, 0, null);
+        paint.setXfermode(new PorterDuffXfermode(DST_IN));
+        outputCanvas.drawBitmap(whiteRoundedRectangle, 0, 0, paint);
 
-        return rounded;
+        return output;
     }
+
 }
