@@ -5,7 +5,6 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.Environment;
 
 import com.github.mobile.android.authenticator.GitHubAccount;
 import com.github.mobile.android.gist.GistStore;

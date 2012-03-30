@@ -12,8 +12,6 @@ import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Gist;

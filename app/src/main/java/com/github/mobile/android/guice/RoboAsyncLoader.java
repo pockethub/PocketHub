@@ -17,7 +17,6 @@
 package com.github.mobile.android.guice;
 
 import android.content.Context;
-import android.support.v4.content.AsyncTaskLoader;
 
 import com.github.mobile.android.AsyncLoader;
 import com.google.inject.Inject;
@@ -27,10 +26,10 @@ import roboguice.inject.ContextScope;
 
 
 public abstract class RoboAsyncLoader<D> extends AsyncLoader<D> {
-    
+
     @Inject
     private ContextScope contextScope;
-    
+
     public RoboAsyncLoader(Context context) {
         super(context);
         RoboGuice.injectMembers(context, this);
