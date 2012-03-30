@@ -50,7 +50,6 @@ public class AccountDataManager {
             db.execSQL("CREATE TABLE orgs (id INTEGER PRIMARY KEY);");
             db.execSQL("CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT, avatarurl TEXT);");
             db.execSQL("CREATE TABLE repos (id INTEGER PRIMARY KEY, orgId INTEGER, name TEXT, ownerId INTEGER);");
-            db.execSQL("CREATE TABLE avatars (id TEXT PRIMARY KEY, avatar BLOB);");
         }
 
         @Override
@@ -63,7 +62,7 @@ public class AccountDataManager {
         }
     }
 
-    private static final String TAG = "GHDM";
+    private static final String TAG = "ADM";
 
     private static final Executor EXECUTOR = Executors.newFixedThreadPool(10);
 
@@ -179,43 +178,6 @@ public class AccountDataManager {
      */
     public List<Repository> getRepos(final User user) throws IOException {
         return dbCache.loadOrRequest(allRepos.under(user));
-    }
-
-    /**
-     * Get avatar for login
-     *
-     * @param login
-     * @return avatar blob
-     */
-    public byte[] getAvatar(final String login) {
-        SQLiteOpenHelper helper = new CacheHelper(context);
-        Cursor cursor = query(helper, "avatars", new String[] { "avatar" }, "id='" + login + "'", null);
-        try {
-            return cursor.moveToFirst() ? cursor.getBlob(0) : null;
-        } finally {
-            cursor.close();
-            helper.close();
-        }
-    }
-
-    /**
-     * Set avatar for login
-     *
-     * @param login
-     * @param image
-     */
-    public void setAvatar(final String login, final byte[] image) {
-        SQLiteOpenHelper helper = new CacheHelper(context);
-        SQLiteDatabase db = helper.getWritableDatabase();
-        try {
-            ContentValues values = new ContentValues(2);
-            values.put("id", login);
-            values.put("avatar", image);
-            db.replace("avatars", null, values);
-        } finally {
-            db.close();
-            helper.close();
-        }
     }
 
     /**
