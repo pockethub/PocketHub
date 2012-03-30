@@ -2,7 +2,7 @@ package com.github.mobile.android.util;
 
 import static android.graphics.Bitmap.createScaledBitmap;
 import static android.view.View.VISIBLE;
-import static com.github.mobile.android.util.Image.roundCorners;
+import static com.github.mobile.android.util.Image.roundCornersAndOverlayOnWhite;
 import static org.apache.commons.io.IOUtils.closeQuietly;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -88,7 +88,7 @@ public class AvatarHelper {
 
         public Drawable convert(Bitmap bitmap) {
             Bitmap scaledBitmap = createScaledBitmap(bitmap, sizeInPixels, sizeInPixels, true);
-            return new BitmapDrawable(resources, roundCorners(scaledBitmap, RADIUS));
+            return new BitmapDrawable(resources, roundCornersAndOverlayOnWhite(scaledBitmap, RADIUS));
         }
 
     }

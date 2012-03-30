@@ -162,13 +162,13 @@ public class Image {
     }
 
     /**
-     * Round the corners of a {@link Bitmap}
+     * Round the corners of a {@link Bitmap} and overlay it on a white background.
      *
      * @param source
      * @param radius
      * @return rounded corner bitmap
      */
-    public static Bitmap roundCorners(final Bitmap source, final int radius) {
+    public static Bitmap roundCornersAndOverlayOnWhite(final Bitmap source, final int radius) {
         int width = source.getWidth();
         int height = source.getHeight();
 
@@ -180,6 +180,7 @@ public class Image {
         new Canvas(whiteRoundedRectangle).drawRoundRect(new RectF(0, 0, width, height), radius, radius, paint);
 
         Bitmap output = Bitmap.createBitmap(width, height, Config.ARGB_8888);
+        output.eraseColor(WHITE); // GH avatars expect a white background https://github.com/github/android/issues/19
         Canvas outputCanvas = new Canvas(output);
         outputCanvas.drawBitmap(source, 0, 0, null);
         paint.setXfermode(new PorterDuffXfermode(DST_IN));
