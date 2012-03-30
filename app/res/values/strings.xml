@@ -84,7 +84,7 @@
 
     <string name="create">Create</string>
     
-    <string name="create_gist">Create</string>
+    <string name="create_gist">Create Gist</string>
 
     <string name="gist_content_hint">puts \"Hello World!\"</string>
 
@@ -101,6 +101,10 @@
     <string name="comments">Comments</string>
 
     <string name="files">Files</string>
+
+    <string name="open_gist">Open Gist</string>
+
+    <string name="open_random_gist">Open Random Gist</string>
 
     <string name="open">Open</string>
 

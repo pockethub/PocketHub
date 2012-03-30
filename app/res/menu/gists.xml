@@ -5,19 +5,19 @@
         android:id="@+id/open_gist"
         android:icon="@drawable/ic_action_open"
         android:showAsAction="never"
-        android:title="@string/open">
+        android:title="@string/open_gist">
     </item>
     <item
         android:id="@+id/random_gist"
         android:icon="@drawable/ic_action_random"
         android:showAsAction="always"
-        android:title="@string/random">
+        android:title="@string/open_random_gist">
     </item>
     <item
         android:id="@+id/create_gist"
         android:icon="@drawable/ic_action_create"
         android:showAsAction="always"
-        android:title="@string/create">
+        android:title="@string/create_gist">
     </item>
     <item
         android:id="@+id/refresh"
