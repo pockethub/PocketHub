@@ -1,13 +1,17 @@
 package com.github.mobile.android.issue;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 
+import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.ConfirmDialogFragment;
 import com.github.mobile.android.DialogFragmentActivity;
+import com.github.mobile.android.HomeActivity;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.RequestFuture;
@@ -41,6 +45,7 @@ public class FilterBrowseActivity extends DialogFragmentActivity implements OnIt
         super.onCreate(savedInstanceState);
         setTitle(string.saved_filters_title);
         setContentView(layout.issue_filter_list);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         FilterListFragment filterFragment = (FilterListFragment) getSupportFragmentManager().findFragmentById(
                 android.R.id.list);
@@ -59,6 +64,18 @@ public class FilterBrowseActivity extends DialogFragmentActivity implements OnIt
             return;
         }
         super.onDialogResult(requestCode, resultCode, arguments);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case android.R.id.home:
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
