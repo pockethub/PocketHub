@@ -247,4 +247,6 @@
      <string name="deleting_gist">Deleting Gist…</string>
 
      <string name="creating_comment">Creating comment…</string>
+
+     <string name="confirm_filter_delete_message">Are you sure you want to remove this saved issue filter?</string>
 </resources>

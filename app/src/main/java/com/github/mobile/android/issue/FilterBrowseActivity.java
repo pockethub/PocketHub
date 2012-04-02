@@ -82,8 +82,7 @@ public class FilterBrowseActivity extends DialogFragmentActivity implements OnIt
         IssueFilter filter = (IssueFilter) parent.getItemAtPosition(position);
         Bundle args = new Bundle();
         args.putSerializable(ARG_FILTER, filter);
-        ConfirmDialogFragment.show(this, REQUEST_DELETE, null,
-                "Are you sure you want to remove this saved issue filter?", args);
+        ConfirmDialogFragment.show(this, REQUEST_DELETE, null, getString(string.confirm_filter_delete_message), args);
         return true;
     }
 }
