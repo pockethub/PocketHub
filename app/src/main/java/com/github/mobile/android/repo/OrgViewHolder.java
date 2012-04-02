@@ -34,7 +34,7 @@ public class OrgViewHolder implements ViewHolder<User> {
     }
 
     @Override
-    public void updateViewFor(User user) {
+    public void updateViewFor(final User user) {
         nameText.setText(user.getLogin());
         avatarView.setBackgroundDrawable(null);
         avatarHelper.bind(avatarView, user);
