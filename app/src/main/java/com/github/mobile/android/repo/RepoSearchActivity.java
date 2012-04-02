@@ -1,6 +1,8 @@
 package com.github.mobile.android.repo;
 
 import static android.content.Intent.ACTION_SEARCH;
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static android.widget.Toast.LENGTH_LONG;
 import static com.github.mobile.android.repo.RepoSearchRecentSuggestionsProvider.clearRepoQueryHistory;
 import static com.github.mobile.android.repo.RepoSearchRecentSuggestionsProvider.saveRecentRepoQuery;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.mobile.android.HomeActivity;
 import com.github.mobile.android.IRepositorySearch;
 import com.github.mobile.android.R;
 import com.github.mobile.android.R.id;
@@ -84,6 +87,11 @@ public class RepoSearchActivity extends RoboSherlockFragmentActivity {
             clearRepoQueryHistory(this);
             Toast.makeText(this, string.search_history_cleared, LENGTH_LONG).show();
             return true;
+        case android.R.id.home:
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            return true;
         default:
             return super.onOptionsItemSelected(item);
         }
@@ -92,6 +100,7 @@ public class RepoSearchActivity extends RoboSherlockFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.repo_search);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         repoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
