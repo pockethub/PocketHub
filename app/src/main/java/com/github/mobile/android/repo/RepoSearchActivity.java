@@ -23,6 +23,8 @@ import com.github.mobile.android.IRepositorySearch;
 import com.github.mobile.android.R;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.R.menu;
+import com.github.mobile.android.R.string;
 import com.github.mobile.android.issue.IssueBrowseActivity;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
@@ -66,25 +68,24 @@ public class RepoSearchActivity extends RoboSherlockFragmentActivity {
     @Inject
     private RepositoryService repos;
 
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.search, menu);
+    public boolean onCreateOptionsMenu(Menu options) {
+        getSupportMenuInflater().inflate(menu.search, options);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.search:
-                onSearchRequested();
-                return true;
-            case R.id.clear_search_history:
-                clearRepoQueryHistory(this);
-                Toast.makeText(this, R.string.search_history_cleared, LENGTH_LONG).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        case id.search:
+            onSearchRequested();
+            return true;
+        case id.clear_search_history:
+            clearRepoQueryHistory(this);
+            Toast.makeText(this, string.search_history_cleared, LENGTH_LONG).show();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
         }
     }
 
