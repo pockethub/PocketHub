@@ -13,6 +13,7 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.github.kevinsawicki.http.HttpRequest;
+import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
 import com.github.mobile.android.R;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -104,11 +105,11 @@ public class AvatarHelper {
 
             InputStream is = null;
             try {
-                is = request.getConnection().getInputStream();
+                is = request.stream();
                 return BitmapFactory.decodeStream(new FlushedInputStream(is));
-            } catch (IOException ioe) {
-                Log.e(TAG, "Error downloading " + gravatarId, ioe);
-                throw new RuntimeException(ioe);
+            } catch (HttpRequestException hre) {
+                Log.e(TAG, "Error downloading " + gravatarId, hre);
+                throw hre;
             } finally {
                 closeQuietly(is);
             }
