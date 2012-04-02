@@ -10,12 +10,9 @@ import static com.github.mobile.android.repo.RepoSearchRecentSuggestionsProvider
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -30,6 +27,9 @@ import com.github.mobile.android.R.string;
 import com.github.mobile.android.issue.IssueBrowseActivity;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
+import com.madgag.android.listviews.ReflectiveHolderFactory;
+import com.madgag.android.listviews.ViewHoldingListAdapter;
+import com.madgag.android.listviews.ViewInflator;
 
 import java.util.List;
 
@@ -44,22 +44,6 @@ import roboguice.util.RoboAsyncTask;
  * Activity to search repositories
  */
 public class RepoSearchActivity extends RoboSherlockFragmentActivity {
-
-    private class RepoAdapter extends ArrayAdapter<SearchRepository> {
-
-        public RepoAdapter(SearchRepository[] objects) {
-            super(RepoSearchActivity.this, layout.repo_list_item, objects);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            final LinearLayout view = (LinearLayout) RepoSearchActivity.this.getLayoutInflater().inflate(
-                    layout.repo_list_item, null);
-            SearchRepository repo = getItem(position);
-            ((TextView) view.findViewById(id.tv_repo_name)).setText(repo.generateId());
-            return view;
-        }
-    }
 
     @InjectView(id.lv_repos)
     private ListView repoList;
@@ -133,6 +117,12 @@ public class RepoSearchActivity extends RoboSherlockFragmentActivity {
         }
     }
 
+    private ListAdapter createAdapter(final List<SearchRepository> repos) {
+        return new ViewHoldingListAdapter<SearchRepository>(repos, ViewInflator.viewInflatorFor(
+                RepoSearchActivity.this, layout.repo_list_item),
+                ReflectiveHolderFactory.reflectiveFactoryFor(SearchRepoViewHolder.class));
+    }
+
     private void search(final String query) {
         saveRecentRepoQuery(this, query);
         new RoboAsyncTask<List<SearchRepository>>(this) {
@@ -144,7 +134,7 @@ public class RepoSearchActivity extends RoboSherlockFragmentActivity {
             protected void onSuccess(List<SearchRepository> repos) throws Exception {
                 ActionBar actionBar = getSupportActionBar();
                 actionBar.setTitle("“" + query + "”");
-                repoList.setAdapter(new RepoAdapter(repos.toArray(new SearchRepository[repos.size()])));
+                repoList.setAdapter(createAdapter(repos));
             }
         }.execute();
     }
