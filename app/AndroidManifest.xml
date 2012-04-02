@@ -103,7 +103,12 @@
 
         <activity android:name=".gist.GistsActivity"/>
 
-        <activity android:name=".issue.FilterBrowseActivity"/>
+        <activity android:name=".issue.FilterBrowseActivity">
+             <intent-filter>
+                <action android:name="com.github.mobile.android.repo.issues.filters.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
 
         <activity android:name=".gist.ViewGistActivity">
             <intent-filter>
