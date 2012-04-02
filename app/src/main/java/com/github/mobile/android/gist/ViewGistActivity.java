@@ -154,7 +154,7 @@ public class ViewGistActivity extends DialogFragmentActivity implements OnItemCl
                 headerHolder.updateViewFor(gist);
                 updateFiles(gist);
             } else
-                ((TextView) loadingView.findViewById(id.tv_loading)).setText("Loading Gist…");
+                ((TextView) loadingView.findViewById(id.tv_loading)).setText(string.loading_gist);
             refreshGist();
         }
     }
@@ -195,8 +195,8 @@ public class ViewGistActivity extends DialogFragmentActivity implements OnItemCl
             startActivityForResult(CreateCommentActivity.createIntent(), REQUEST_CODE_COMMENT);
             return true;
         case id.gist_delete:
-            ConfirmDialogFragment.show(this, REQUEST_CONFIRM_DELETE, "Confirm Delete",
-                    "Are you sure you want to delete this Gist?");
+            ConfirmDialogFragment.show(this, REQUEST_CONFIRM_DELETE, getString(string.confirm_gist_delete_title),
+                    getString(string.confirm_gist_delete_message));
             return true;
         case id.gist_star:
             if (starred)
@@ -255,7 +255,7 @@ public class ViewGistActivity extends DialogFragmentActivity implements OnItemCl
         if (REQUEST_CONFIRM_DELETE == requestCode && RESULT_OK == resultCode) {
             final ProgressDialog progress = new ProgressDialog(ViewGistActivity.this);
             progress.setIndeterminate(true);
-            progress.setMessage("Deleting Gist...");
+            progress.setMessage(getString(string.deleting_gist));
             progress.show();
             new RoboAsyncTask<Gist>(ViewGistActivity.this) {
 
@@ -294,7 +294,7 @@ public class ViewGistActivity extends DialogFragmentActivity implements OnItemCl
 
     private void createComment(final String comment) {
         final ProgressDialog progress = new ProgressDialog(this);
-        progress.setMessage("Creating comment...");
+        progress.setMessage(getString(string.creating_comment));
         progress.setIndeterminate(true);
         progress.show();
         new RoboAsyncTask<Comment>(this) {

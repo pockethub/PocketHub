@@ -94,9 +94,11 @@ public abstract class GistsFragment extends ListLoadingFragment<Gist> implements
                 PageIterator<Gist> pages = service.pagePublicGists(1);
                 pages.next();
                 int randomPage = 1 + (int) (Math.random() * ((pages.getLastPage() - 1) + 1));
+
                 Collection<Gist> gists = service.pagePublicGists(randomPage, 1).next();
                 if (gists.isEmpty())
-                    throw new IllegalArgumentException("No Gists found");
+                    throw new IllegalArgumentException(getString(string.no_gists_found));
+
                 return service.getGist(gists.iterator().next().getId());
             }
 
@@ -115,13 +117,13 @@ public abstract class GistsFragment extends ListLoadingFragment<Gist> implements
     private void openGist() {
         Builder prompt = new Builder(context);
 
-        prompt.setTitle("Open Gist");
-        prompt.setMessage("Enter id:");
+        prompt.setTitle(getString(string.open_gist_title));
+        prompt.setMessage(getString(string.enter_id_message));
 
         final EditText id = new EditText(context);
         prompt.setView(id);
 
-        prompt.setPositiveButton("Open", new DialogInterface.OnClickListener() {
+        prompt.setPositiveButton(string.open, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 dialog.dismiss();
                 startActivityForResult(ViewGistActivity.createIntent(id.getText().toString().trim()), REQUEST_VIEW);
@@ -195,7 +197,7 @@ public abstract class GistsFragment extends ListLoadingFragment<Gist> implements
     public int compare(final Gist g1, final Gist g2) {
         return g2.getCreatedAt().compareTo(g1.getCreatedAt());
     }
-    
+
     List<Gist> storeAndSort(Collection<Gist> gists) {
         List<Gist> gistList = new ArrayList<Gist>(gists.size());
         for (Gist gist : gists)

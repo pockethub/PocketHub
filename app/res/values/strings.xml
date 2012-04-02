@@ -231,4 +231,20 @@
      <string name="no_milestone">No milestone</string>
 
      <string name="unassigned">Unassigned</string>
+
+     <string name="no_gists_found">No Gists found</string>
+
+     <string name="open_gist_title">Open Gist</string>
+
+     <string name="enter_id_message">Enter id:</string>
+
+     <string name="no_description">No description</string>
+
+     <string name="confirm_gist_delete_title">Confirm Delete</string>
+
+     <string name="confirm_gist_delete_message">Are you sure you want to delete this Gist?</string>
+
+     <string name="deleting_gist">Deleting Gist…</string>
+
+     <string name="creating_comment">Creating comment…</string>
 </resources>

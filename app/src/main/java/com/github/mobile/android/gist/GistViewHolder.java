@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mobile.android.R.id;
+import com.github.mobile.android.R.string;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.Time;
 import com.madgag.android.listviews.ViewHolder;
@@ -117,7 +118,7 @@ public class GistViewHolder implements ViewHolder<Gist> {
         gistId.setText(id);
 
         if (TextUtils.isEmpty(description))
-            description = Html.fromHtml("<i>No description</i>");
+            description = Html.fromHtml("<i>" + title.getContext().getString(string.no_description) + "</i>");
         title.setText(description);
 
         if (avatarHelper != null) {
