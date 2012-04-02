@@ -219,4 +219,6 @@
      <string name="unstarring_gist">Unstarring Gist…</string>
 
      <string name="accounts_label">Accounts</string>
+
+     <string name="search_matching">Matching “{0}”</string>
 </resources>

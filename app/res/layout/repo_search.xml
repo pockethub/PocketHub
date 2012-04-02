@@ -2,27 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/item_background"
-    android:orientation="vertical"
-    android:padding="10dp" >
+    android:background="@drawable/grid_repeat"
+    android:orientation="vertical" >
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/outer_background" >
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp" >
 
-        <ListView
-            android:id="@+id/lv_repos"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="@drawable/inner_background"
-            android:dividerHeight="1dp"
-            android:fastScrollEnabled="true"
-            android:padding="5dp" >
-
-            <!-- Preview: listitem=@layout/repo_list_item -->
-        </ListView>
+        <TextView
+            android:id="@+id/tv_query"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/item_text_color"
+            android:textStyle="bold" />
     </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2px"
+        android:background="@drawable/separator" />
+
+    <LinearLayout
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background" />
 
 </LinearLayout>

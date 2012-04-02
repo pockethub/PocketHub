@@ -7,52 +7,34 @@ import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static android.widget.Toast.LENGTH_LONG;
 import static com.github.mobile.android.repo.RepoSearchRecentSuggestionsProvider.clearRepoQueryHistory;
 import static com.github.mobile.android.repo.RepoSearchRecentSuggestionsProvider.saveRecentRepoQuery;
+import android.R;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.HomeActivity;
-import com.github.mobile.android.IRepositorySearch;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
-import com.github.mobile.android.issue.IssueBrowseActivity;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
-import com.google.inject.Inject;
-import com.madgag.android.listviews.ReflectiveHolderFactory;
-import com.madgag.android.listviews.ViewHoldingListAdapter;
-import com.madgag.android.listviews.ViewInflator;
 
-import java.util.List;
-
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.SearchRepository;
-import org.eclipse.egit.github.core.service.RepositoryService;
+import java.text.MessageFormat;
 
 import roboguice.inject.InjectView;
-import roboguice.util.RoboAsyncTask;
 
 /**
  * Activity to search repositories
  */
 public class RepoSearchActivity extends RoboSherlockFragmentActivity {
 
-    @InjectView(id.lv_repos)
-    private ListView repoList;
+    @InjectView(id.tv_query)
+    private TextView queryText;
 
-    @Inject
-    private IRepositorySearch search;
-
-    @Inject
-    private RepositoryService repos;
+    private SearchRepoListFragment repoFragment;
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
@@ -80,26 +62,19 @@ public class RepoSearchActivity extends RoboSherlockFragmentActivity {
         }
     }
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(layout.repo_search);
+        setTitle(string.repositories_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        repoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final SearchRepository result = (SearchRepository) parent.getItemAtPosition(position);
-                new RoboAsyncTask<Repository>(RepoSearchActivity.this) {
-
-                    public Repository call() throws Exception {
-                        return repos.getRepository(result);
-                    }
-
-                    protected void onSuccess(Repository repository) throws Exception {
-                        startActivity(IssueBrowseActivity.createIntent(repository));
-                    }
-                }.execute();
-            }
-        });
+        repoFragment = (SearchRepoListFragment) getSupportFragmentManager().findFragmentById(R.id.list);
+        if (repoFragment == null) {
+            repoFragment = new SearchRepoListFragment();
+            getSupportFragmentManager().beginTransaction().add(android.R.id.list, repoFragment).commit();
+        }
 
         handleIntent(getIntent());
     }
@@ -107,35 +82,19 @@ public class RepoSearchActivity extends RoboSherlockFragmentActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
+        repoFragment.setListShown(false);
         handleIntent(intent);
+        repoFragment.refresh();
     }
 
     private void handleIntent(Intent intent) {
-        if (ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(QUERY);
-            search(query);
-        }
-    }
-
-    private ListAdapter createAdapter(final List<SearchRepository> repos) {
-        return new ViewHoldingListAdapter<SearchRepository>(repos, ViewInflator.viewInflatorFor(
-                RepoSearchActivity.this, layout.repo_list_item),
-                ReflectiveHolderFactory.reflectiveFactoryFor(SearchRepoViewHolder.class));
+        if (ACTION_SEARCH.equals(intent.getAction()))
+            search(intent.getStringExtra(QUERY));
     }
 
     private void search(final String query) {
+        queryText.setText(MessageFormat.format(getString(string.search_matching), query));
         saveRecentRepoQuery(this, query);
-        new RoboAsyncTask<List<SearchRepository>>(this) {
-
-            public List<SearchRepository> call() throws Exception {
-                return search.search(query);
-            }
-
-            protected void onSuccess(List<SearchRepository> repos) throws Exception {
-                ActionBar actionBar = getSupportActionBar();
-                actionBar.setTitle("“" + query + "”");
-                repoList.setAdapter(createAdapter(repos));
-            }
-        }.execute();
+        repoFragment.setQuery(query);
     }
 }
