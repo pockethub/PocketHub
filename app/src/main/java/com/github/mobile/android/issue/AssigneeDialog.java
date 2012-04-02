@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.widget.Toast;
 
 import com.github.mobile.android.DialogFragmentActivity;
+import com.github.mobile.android.R.string;
 import com.github.mobile.android.SingleChoiceDialogFragment;
 
 import java.util.Comparator;
@@ -115,6 +116,7 @@ public class AssigneeDialog {
             for (int i = 0; i < names.length; i++)
                 if (selectedAssignee.equals(names[i]))
                     checked = i;
-        SingleChoiceDialogFragment.show(activity, requestCode, "Select Assignee: ", null, names, checked);
+        SingleChoiceDialogFragment.show(activity, requestCode, activity.getString(string.select_assignee), null, names,
+                checked);
     }
 }

@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.github.mobile.android.DialogFragmentActivity;
 import com.github.mobile.android.MultiChoiceDialogFragment;
+import com.github.mobile.android.R.string;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -121,6 +122,7 @@ public class LabelsDialog {
                 if (selectedNames.contains(names[i]))
                     checked[i] = true;
         }
-        MultiChoiceDialogFragment.show(activity, requestCode, "Select Labels: ", null, names, checked);
+        MultiChoiceDialogFragment.show(activity, requestCode, activity.getString(string.select_labels), null, names,
+                checked);
     }
 }

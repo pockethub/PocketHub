@@ -4,6 +4,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import android.app.ProgressDialog;
 
 import com.github.mobile.android.DialogFragmentActivity;
+import com.github.mobile.android.R.string;
 import com.github.mobile.android.SingleChoiceDialogFragment;
 
 import java.util.Collections;
@@ -112,7 +113,8 @@ public class MilestoneDialog {
                 if (selectedMilestone.getNumber() == repositoryMilestones.get(i).getNumber())
                     checked = i;
             }
-        SingleChoiceDialogFragment.show(activity, requestCode, "Select Milestone: ", null, names, checked);
+        SingleChoiceDialogFragment.show(activity, requestCode, activity.getString(string.select_milestone), null,
+                names, checked);
     }
 
     /**
