@@ -52,7 +52,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity {
             onSearchRequested();
             return true;
         case id.bookmarks:
-            startActivity(new Intent(this, FilterBrowseActivity.class));
+            startActivity(FilterBrowseActivity.createIntent());
             return true;
         default:
             return super.onOptionsItemSelected(item);

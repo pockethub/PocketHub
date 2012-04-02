@@ -1,22 +1,33 @@
 package com.github.mobile.android.issue;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 
-import com.github.mobile.android.RequestFuture;
-import com.github.mobile.android.persistence.AccountDataManager;
 import com.github.mobile.android.ConfirmDialogFragment;
 import com.github.mobile.android.DialogFragmentActivity;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.RequestFuture;
+import com.github.mobile.android.persistence.AccountDataManager;
+import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.google.inject.Inject;
 
 /**
  * Activity to browse a list of bookmarked {@link IssueFilter} items
  */
 public class FilterBrowseActivity extends DialogFragmentActivity implements OnItemLongClickListener {
+
+    /**
+     * Create intent to browse issue filters
+     *
+     * @return intent
+     */
+    public static Intent createIntent() {
+        return new Builder("repo.issues.filters.VIEW").toIntent();
+    }
 
     private static final String ARG_FILTER = "filter";
 

@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 
+import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.HomeActivity;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.viewpagerindicator.TitlePageIndicator;
@@ -38,8 +40,17 @@ public class IssueDashboardActivity extends RoboSherlockFragmentActivity {
         indicator.setViewPager(pager);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu options) {
+        getSupportMenuInflater().inflate(menu.issue_dashboard, options);
+        return true;
+    }
+
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+        case id.bookmarks:
+            startActivity(FilterBrowseActivity.createIntent());
+            return true;
         case android.R.id.home:
             Intent intent = new Intent(this, HomeActivity.class);
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
