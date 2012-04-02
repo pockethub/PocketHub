@@ -1,5 +1,7 @@
 package com.github.mobile.android.repo;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import android.view.View;
 import android.widget.TextView;
 
@@ -42,10 +44,7 @@ public class RepoViewHolder implements ViewHolder<Repository> {
     public void updateViewFor(final Repository repo) {
         String id = repo.generateId();
 
-        if (recentIds.contains(id))
-            recentLabel.setVisibility(View.VISIBLE);
-        else
-            recentLabel.setVisibility(View.GONE);
+        recentLabel.setVisibility(recentIds.contains(id) ? VISIBLE : GONE);
 
         repoName.setText(userLogin.equals(repo.getOwner().getLogin()) ? repo.getName() : id);
     }
