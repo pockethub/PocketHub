@@ -12,6 +12,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.github.mobile.android.R.id;
+import com.github.mobile.android.R.string;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.HtmlViewer;
 import com.github.mobile.android.util.ServiceHelper;
@@ -99,7 +100,7 @@ public class IssueHeaderViewHolder implements ViewHolder<Issue> {
             avatarHelper.bind(assigneeAvatar, assignee);
         } else {
             assigneeAvatar.setVisibility(GONE);
-            assigneeText.setText("Unassigned");
+            assigneeText.setText(assigneeText.getContext().getString(string.unassigned));
         }
 
         if (!issue.getLabels().isEmpty()) {
@@ -116,7 +117,7 @@ public class IssueHeaderViewHolder implements ViewHolder<Issue> {
         if (issue.getMilestone() != null)
             milestoneText.setText(issue.getMilestone().getTitle());
         else
-            milestoneText.setText("No milestone");
+            milestoneText.setText(milestoneText.getContext().getString(string.no_milestone));
 
         String state = issue.getState();
         if (state != null && state.length() > 0)

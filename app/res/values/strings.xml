@@ -227,4 +227,8 @@
      <string name="select_milestone">Select Milestone</string>
 
      <string name="select_labels">Select Labels</string>
+
+     <string name="no_milestone">No milestone</string>
+
+     <string name="unassigned">Unassigned</string>
 </resources>

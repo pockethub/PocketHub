@@ -10,6 +10,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.github.mobile.android.R.id;
+import com.github.mobile.android.R.string;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.ServiceHelper;
 import com.madgag.android.listviews.ViewHolder;
@@ -79,6 +80,6 @@ public class CreateIssueHeaderViewHolder implements ViewHolder<Issue> {
         if (issue.getMilestone() != null)
             milestoneText.setText(issue.getMilestone().getTitle());
         else
-            milestoneText.setText("No milestone");
+            milestoneText.setText(milestoneText.getContext().getString(string.no_milestone));
     }
 }
