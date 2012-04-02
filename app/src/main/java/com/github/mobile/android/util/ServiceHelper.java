@@ -37,7 +37,7 @@ public class ServiceHelper {
      * @param context
      * @return display
      */
-    public static int getWidth(final Context context) {
+    public static int getDisplayWidth(final Context context) {
         return getDisplay(context).getWidth();
     }
 
@@ -47,7 +47,7 @@ public class ServiceHelper {
      * @param view
      * @return display
      */
-    public static int getWidth(final View view) {
-        return getWidth(view.getContext());
+    public static int getDisplayWidth(final View view) {
+        return getDisplayWidth(view.getContext());
     }
 }

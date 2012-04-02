@@ -69,7 +69,7 @@ public class CreateIssueHeaderViewHolder implements ViewHolder<Issue> {
         if (labels != null && !labels.isEmpty()) {
             labelsArea.setVisibility(VISIBLE);
             LabelsDrawable drawable = new LabelsDrawable(assigneeText.getTextSize(),
-                    ServiceHelper.getWidth(labelsArea), issue.getLabels());
+                    ServiceHelper.getDisplayWidth(labelsArea), issue.getLabels());
             drawable.getPaint().setColor(resources.getColor(android.R.color.transparent));
             labelsArea.setBackgroundDrawable(drawable);
             LayoutParams params = new LayoutParams(drawable.getBounds().width(), drawable.getBounds().height());
