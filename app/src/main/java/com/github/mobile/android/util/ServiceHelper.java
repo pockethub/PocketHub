@@ -30,4 +30,24 @@ public class ServiceHelper {
     public static Display getDisplay(final View view) {
         return getDisplay(view.getContext());
     }
+
+    /**
+     * Get default display width
+     *
+     * @param context
+     * @return display
+     */
+    public static int getWidth(final Context context) {
+        return getDisplay(context).getWidth();
+    }
+
+    /**
+     * Get default display width
+     *
+     * @param view
+     * @return display
+     */
+    public static int getWidth(final View view) {
+        return getWidth(view.getContext());
+    }
 }

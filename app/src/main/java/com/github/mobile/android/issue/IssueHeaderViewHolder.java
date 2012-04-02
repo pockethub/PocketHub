@@ -104,8 +104,8 @@ public class IssueHeaderViewHolder implements ViewHolder<Issue> {
 
         if (!issue.getLabels().isEmpty()) {
             labelsArea.setVisibility(VISIBLE);
-            LabelsDrawable drawable = new LabelsDrawable(createdText.getTextSize(), ServiceHelper
-                    .getDisplay(labelsArea).getWidth(), issue.getLabels());
+            LabelsDrawable drawable = new LabelsDrawable(createdText.getTextSize(), ServiceHelper.getWidth(labelsArea),
+                    issue.getLabels());
             drawable.getPaint().setColor(resources.getColor(android.R.color.transparent));
             labelsArea.setBackgroundDrawable(drawable);
             LayoutParams params = new LayoutParams(drawable.getBounds().width(), drawable.getBounds().height());
