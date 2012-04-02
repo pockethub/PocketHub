@@ -23,7 +23,6 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.HomeActivity;
 import com.github.mobile.android.IRepositorySearch;
-import com.github.mobile.android.R;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
@@ -99,7 +98,7 @@ public class RepoSearchActivity extends RoboSherlockFragmentActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.repo_search);
+        setContentView(layout.repo_search);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         repoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
