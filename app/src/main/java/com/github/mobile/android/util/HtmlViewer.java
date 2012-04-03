@@ -1,5 +1,6 @@
 package com.github.mobile.android.util;
 
+import static android.content.Intent.ACTION_VIEW;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -89,7 +90,7 @@ public class HtmlViewer implements Runnable {
             issue.setHtmlUrl(url);
             context.startActivity(ViewIssueActivity.viewIssueIntentFor(issue));
         } else
-            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+            context.startActivity(new Intent(ACTION_VIEW, Uri.parse(url)));
     }
 
     /**
