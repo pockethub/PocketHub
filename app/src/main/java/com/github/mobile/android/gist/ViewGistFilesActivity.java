@@ -28,7 +28,7 @@ import roboguice.inject.InjectView;
 public class ViewGistFilesActivity extends RoboSherlockFragmentActivity {
 
     /**
-     * Create intent to show files with an initial selected filed
+     * Create intent to show files with an initial selected file
      *
      * @param gist
      * @param position
