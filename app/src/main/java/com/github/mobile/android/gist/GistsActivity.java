@@ -30,7 +30,7 @@ public class GistsActivity extends RoboSherlockFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(layout.gists);
+        setContentView(layout.pager_with_title);
         setTitle(getString(string.gists_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

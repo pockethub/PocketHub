@@ -32,7 +32,7 @@ public class IssueDashboardActivity extends RoboSherlockFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(layout.issue_dashboard);
+        setContentView(layout.pager_with_title);
         setTitle(string.dashboard_issues_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

@@ -57,7 +57,7 @@ public class ViewGistFilesActivity extends RoboSherlockFragmentActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(layout.gist_files);
+        setContentView(layout.pager_with_title);
         setTitle(getString(string.gist) + " " + gistId);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
