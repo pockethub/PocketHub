@@ -1,19 +1,35 @@
 package com.github.mobile.android.util;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.github.mobile.android.issue.ViewIssueActivity;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.eclipse.egit.github.core.Issue;
 
 /**
  * Helper to display an HTML block in a {@link WebView}
  */
 public class HtmlViewer implements Runnable {
 
+    private static final String REGEX_ISSUE = "https?://.+/[^/]+/[^/]+/issues/(issue/)?(\\d+)";
+
+    private static final Pattern PATTERN_ISSUE = Pattern.compile(REGEX_ISSUE);
+
     private static final String URL_PAGE = "file:///android_asset/html-viewer.html";
 
     private static final String URL_RELOAD = "javascript:reloadHtml()";
 
     private static final String URL_UPDATE_HEIGHT = "javascript:updateHeight()";
+
+    private final Matcher issueMatcher = PATTERN_ISSUE.matcher("");
 
     private boolean inLoad;
 
@@ -40,8 +56,10 @@ public class HtmlViewer implements Runnable {
                 if (url.equals(URL_PAGE)) {
                     view.loadUrl(url);
                     return false;
-                } else
+                } else {
+                    loadExternalUrl(view.getContext(), url);
                     return true;
+                }
             }
 
             public void onPageFinished(WebView view, String url) {
@@ -61,6 +79,17 @@ public class HtmlViewer implements Runnable {
         view.addJavascriptInterface(this, "HtmlViewer");
         view.loadUrl(URL_PAGE);
         scale = view.getScale();
+    }
+
+    private void loadExternalUrl(final Context context, final String url) {
+        issueMatcher.reset(url);
+        if (issueMatcher.matches()) {
+            Issue issue = new Issue();
+            issue.setNumber(Integer.parseInt(issueMatcher.group(2)));
+            issue.setHtmlUrl(url);
+            context.startActivity(ViewIssueActivity.viewIssueIntentFor(issue));
+        } else
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
     }
 
     /**
