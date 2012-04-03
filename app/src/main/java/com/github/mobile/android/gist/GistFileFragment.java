@@ -1,22 +1,19 @@
 package com.github.mobile.android.gist;
 
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
-import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST_FILE;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST_ID;
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.TextView;
 
-import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.util.ErrorHelper;
-import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.github.mobile.android.util.SourceEditor;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
+import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.google.inject.Inject;
 
 import java.io.IOException;
@@ -30,23 +27,9 @@ import roboguice.inject.InjectView;
 import roboguice.util.RoboAsyncTask;
 
 /**
- * Activity to view a file in a Gist
+ * Fragment to display the content of a file in a Gist
  */
-public class ViewGistFileActivity extends RoboSherlockFragmentActivity {
-
-    /**
-     * Create intent to show file
-     *
-     * @param gist
-     * @param file
-     * @return intent
-     */
-    public static Intent createIntent(Gist gist, GistFile file) {
-        return new Builder("gist.file.VIEW").add(EXTRA_GIST_ID, gist.getId()).add(EXTRA_GIST_FILE, file).toIntent();
-    }
-
-    @InjectView(id.tv_gist_id)
-    private TextView idText;
+public class GistFileFragment extends RoboSherlockFragment {
 
     @InjectView(id.wv_gist_content)
     private WebView webView;
@@ -54,7 +37,6 @@ public class ViewGistFileActivity extends RoboSherlockFragmentActivity {
     @InjectExtra(EXTRA_GIST_ID)
     private String gistId;
 
-    @InjectExtra(EXTRA_GIST_FILE)
     private GistFile file;
 
     private Gist gist;
@@ -62,26 +44,18 @@ public class ViewGistFileActivity extends RoboSherlockFragmentActivity {
     @Inject
     private GistStore store;
 
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(layout.gist_view_content_item);
-        setTitle(file.getFilename());
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        idText.setText(getString(string.gist) + " " + gistId);
+        file = (GistFile) getArguments().get(EXTRA_GIST_FILE);
         gist = store.getGist(gistId);
         if (gist == null)
             gist = new Gist().setId(gistId);
-
-        if (file.getContent() != null)
-            showSource();
-        else
-            loadSource();
-
     }
 
     private void loadSource() {
-        new RoboAsyncTask<GistFile>(this) {
+        new RoboAsyncTask<GistFile>(getActivity()) {
             public GistFile call() throws Exception {
                 gist = store.refreshGist(gistId);
                 Map<String, GistFile> files = gist.getFiles();
@@ -94,7 +68,7 @@ public class ViewGistFileActivity extends RoboSherlockFragmentActivity {
             }
 
             protected void onException(Exception e) throws RuntimeException {
-                ErrorHelper.show(getApplication(), e, string.error_gist_file_load);
+                ErrorHelper.show(getActivity().getApplicationContext(), e, string.error_gist_file_load);
             }
 
             protected void onSuccess(GistFile loadedFile) throws Exception {
@@ -102,7 +76,7 @@ public class ViewGistFileActivity extends RoboSherlockFragmentActivity {
                     return;
 
                 file = loadedFile;
-                getIntent().putExtra(EXTRA_GIST_FILE, file);
+                getArguments().putSerializable(EXTRA_GIST_FILE, file);
                 if (file.getContent() != null)
                     showSource();
             }
@@ -119,15 +93,17 @@ public class ViewGistFileActivity extends RoboSherlockFragmentActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case android.R.id.home:
-            Intent intent = ViewGistActivity.createIntent(gist);
-            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(layout.gist_view_content_item, null);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if (file.getContent() != null)
+            showSource();
+        else
+            loadSource();
     }
 }

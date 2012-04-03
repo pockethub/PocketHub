@@ -88,6 +88,11 @@ public class GitHubIntents {
     public static final String EXTRA_COMMENTS = INTENT_EXTRA_PREFIX + "COMMENTS";
 
     /**
+     * Integer position
+     */
+    public static final String EXTRA_POSITION = INTENT_EXTRA_PREFIX + "POSITION";
+
+    /**
      * Resolve the {@link RepositoryId} referenced by the given intent
      *
      * @param intent
