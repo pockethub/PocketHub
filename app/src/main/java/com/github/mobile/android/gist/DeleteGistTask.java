@@ -24,6 +24,9 @@ public class DeleteGistTask extends RoboAsyncTask<Gist> {
 
     private ProgressDialog progress;
 
+    @Inject
+    private ContextScopedProvider<GistService> serviceProvider;
+
     /**
      * Create task
      *
@@ -34,9 +37,6 @@ public class DeleteGistTask extends RoboAsyncTask<Gist> {
         super(context);
         id = gistId;
     }
-
-    @Inject
-    private ContextScopedProvider<GistService> serviceProvider;
 
     private void dismissProgress() {
         if (progress != null)
