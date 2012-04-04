@@ -246,13 +246,10 @@ public class AccountDataManager {
                 requestFuture.success(filter);
             }
 
-            ;
-
             protected void onException(Exception e) throws RuntimeException {
                 Log.d(TAG, "Exception adding issue filter", e);
             }
 
-            ;
         }.execute();
     }
 
