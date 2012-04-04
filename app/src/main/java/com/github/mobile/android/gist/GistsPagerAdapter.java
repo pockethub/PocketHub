@@ -6,35 +6,33 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import org.eclipse.egit.github.core.Gist;
-
 /**
  * Adapter to page through an array of Gists
  */
 public class GistsPagerAdapter extends FragmentPagerAdapter {
 
-    private final Gist[] gists;
+    private final String[] ids;
 
     /**
      * @param fm
-     * @param gists
+     * @param gistIds
      */
-    public GistsPagerAdapter(FragmentManager fm, Gist[] gists) {
+    public GistsPagerAdapter(FragmentManager fm, String[] gistIds) {
         super(fm);
-        this.gists = gists;
+        this.ids = gistIds;
     }
 
     @Override
     public Fragment getItem(int position) {
         Fragment fragment = new GistFragment();
         Bundle args = new Bundle();
-        args.putString(EXTRA_GIST_ID, gists[position].getId());
+        args.putString(EXTRA_GIST_ID, ids[position]);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public int getCount() {
-        return gists.length;
+        return ids.length;
     }
 }

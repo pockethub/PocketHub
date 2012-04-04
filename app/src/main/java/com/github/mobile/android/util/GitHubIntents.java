@@ -58,14 +58,14 @@ public class GitHubIntents {
     public static final String EXTRA_GIST_ID = INTENT_EXTRA_PREFIX + "GIST_ID";
 
     /**
+     * List of Gist ids
+     */
+    public static final String EXTRA_GIST_IDS = INTENT_EXTRA_PREFIX + "GIST_IDS";
+
+    /**
      * Gist handle
      */
     public static final String EXTRA_GIST = INTENT_EXTRA_PREFIX + "GIST";
-
-    /**
-     * Array of Gists handle
-     */
-    public static final String EXTRA_GISTS = INTENT_EXTRA_PREFIX + "GISTS";
 
     /**
      * Gist file handle
