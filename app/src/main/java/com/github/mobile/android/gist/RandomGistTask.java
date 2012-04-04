@@ -80,7 +80,7 @@ public class RandomGistTask extends RoboAsyncTask<Gist> {
         if (gists.isEmpty())
             throw new IllegalArgumentException(getContext().getString(string.no_gists_found));
 
-        return store.refreshGist(gists.iterator().next().getId());
+        return store.addGist(gists.iterator().next());
     }
 
     protected void onSuccess(Gist gist) throws Exception {
