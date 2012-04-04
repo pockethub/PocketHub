@@ -40,7 +40,7 @@ public class DeleteGistTask extends RoboAsyncTask<Gist> {
 
     private void dismissProgress() {
         if (progress != null)
-            progress.hide();
+            progress.dismiss();
     }
 
     /**
