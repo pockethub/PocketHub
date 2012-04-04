@@ -32,6 +32,7 @@ import com.github.mobile.android.R.string;
 import com.github.mobile.android.RefreshAnimation;
 import com.github.mobile.android.comment.CommentViewHolder;
 import com.github.mobile.android.comment.CreateCommentActivity;
+import com.github.mobile.android.core.gist.FullGist;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.ErrorHelper;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;

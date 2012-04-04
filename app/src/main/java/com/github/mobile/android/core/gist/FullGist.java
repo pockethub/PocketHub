@@ -1,4 +1,4 @@
-package com.github.mobile.android.gist;
+package com.github.mobile.android.core.gist;
 
 import static com.google.common.collect.Lists.newArrayList;
 
