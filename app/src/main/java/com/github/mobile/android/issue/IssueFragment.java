@@ -9,6 +9,7 @@ import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.comment.CommentViewHolder;
+import com.github.mobile.android.core.issue.FullIssue;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.github.mobile.android.util.AvatarHelper;
 import com.google.inject.Inject;

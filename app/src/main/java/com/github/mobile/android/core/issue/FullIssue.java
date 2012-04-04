@@ -1,4 +1,4 @@
-package com.github.mobile.android.issue;
+package com.github.mobile.android.core.issue;
 
 import java.io.Serializable;
 import java.util.ArrayList;

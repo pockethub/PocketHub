@@ -37,6 +37,7 @@ import com.github.mobile.android.RefreshAnimation;
 import com.github.mobile.android.SingleChoiceDialogFragment;
 import com.github.mobile.android.comment.CommentViewHolder;
 import com.github.mobile.android.comment.CreateCommentActivity;
+import com.github.mobile.android.core.issue.FullIssue;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.ErrorHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
