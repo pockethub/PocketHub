@@ -128,7 +128,7 @@ public class ShareGistActivity extends RoboSherlockFragmentActivity {
 
             protected void onSuccess(Gist gist) throws Exception {
                 progress.cancel();
-                startActivity(ViewGistActivity.createIntent(gist));
+                startActivity(ViewGistsActivity.createIntent(gist));
                 setResult(RESULT_CREATED);
                 finish();
             }

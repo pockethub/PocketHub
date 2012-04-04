@@ -4,10 +4,8 @@ import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
-import static android.widget.Toast.LENGTH_LONG;
 import static java.util.Collections.sort;
 import android.app.AlertDialog.Builder;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,7 +17,6 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -39,10 +36,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.egit.github.core.Gist;
-import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.service.GistService;
-
-import roboguice.util.RoboAsyncTask;
 
 /**
  * Fragment to display a list of Gists
@@ -85,33 +79,7 @@ public abstract class GistsFragment extends ListLoadingFragment<Gist> implements
     protected AtomicReference<Integer> idWidth = new AtomicReference<Integer>();
 
     private void randomGist() {
-        final ProgressDialog progress = new ProgressDialog(context);
-        progress.setMessage(getString(string.random_gist));
-        progress.show();
-        new RoboAsyncTask<Gist>(context) {
-
-            public Gist call() throws Exception {
-                PageIterator<Gist> pages = service.pagePublicGists(1);
-                pages.next();
-                int randomPage = 1 + (int) (Math.random() * ((pages.getLastPage() - 1) + 1));
-
-                Collection<Gist> gists = service.pagePublicGists(randomPage, 1).next();
-                if (gists.isEmpty())
-                    throw new IllegalArgumentException(getString(string.no_gists_found));
-
-                return service.getGist(gists.iterator().next().getId());
-            }
-
-            protected void onSuccess(Gist gist) throws Exception {
-                progress.cancel();
-                startActivity(ViewGistActivity.createIntent(gist));
-            }
-
-            protected void onException(Exception e) throws RuntimeException {
-                progress.cancel();
-                Toast.makeText(context, e.getMessage(), LENGTH_LONG).show();
-            }
-        }.execute();
+        new RandomGistTask(getActivity()).start();
     }
 
     private void openGist() {
@@ -126,7 +94,7 @@ public abstract class GistsFragment extends ListLoadingFragment<Gist> implements
         prompt.setPositiveButton(string.open, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 dialog.dismiss();
-                startActivityForResult(ViewGistActivity.createIntent(id.getText().toString().trim()), REQUEST_VIEW);
+                new OpenGistTask(getActivity(), id.getText().toString().trim()).start();
             }
         });
         prompt.show();
