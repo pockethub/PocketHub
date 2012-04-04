@@ -1,4 +1,4 @@
-package com.github.mobile.android.util;
+package com.github.mobile.android.core;
 
 import java.util.regex.Matcher;
 

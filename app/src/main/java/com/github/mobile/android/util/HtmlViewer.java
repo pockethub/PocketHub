@@ -8,6 +8,8 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.github.mobile.android.core.gist.GistUrlMatcher;
+import com.github.mobile.android.core.issue.IssueUrlMatcher;
 import com.github.mobile.android.gist.ViewGistsActivity;
 import com.github.mobile.android.issue.ViewIssueActivity;
 

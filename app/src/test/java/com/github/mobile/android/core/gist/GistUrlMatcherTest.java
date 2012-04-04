@@ -1,9 +1,9 @@
-package com.github.mobile.android.gist;
+package com.github.mobile.android.core.gist;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import com.github.mobile.android.util.GistUrlMatcher;
+import com.github.mobile.android.core.gist.GistUrlMatcher;
 
 import org.junit.Test;
 

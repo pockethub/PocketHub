@@ -1,4 +1,7 @@
-package com.github.mobile.android.util;
+package com.github.mobile.android.core.gist;
+
+
+import com.github.mobile.android.core.UrlMatcher;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
