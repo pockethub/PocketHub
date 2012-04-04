@@ -11,6 +11,7 @@ import com.github.mobile.android.RequestFuture;
 import com.github.mobile.android.RequestReader;
 import com.github.mobile.android.RequestWriter;
 import com.github.mobile.android.issue.IssueFilter;
+import com.github.mobile.android.persistence.AllReposForUserOrOrg.Factory;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
@@ -70,24 +71,21 @@ public class AccountDataManager {
      */
     private static final int FORMAT_VERSION = 2;
 
-    private
     @Inject
-    Context context;
-    private
-    @Inject
-    DBCache dbCache;
-    private
-    @Inject
-    AllReposForUserOrOrg.Factory allRepos;
-    private
-    @Inject
-    UserAndOrgs userAndOrgsResource;
+    private Context context;
 
-    private
+    @Inject
+    private DBCache dbCache;
+
+    @Inject
+    private Factory allRepos;
+
+    @Inject
+    private UserAndOrgs userAndOrgsResource;
+
     @Inject
     @Named("cacheDir")
-    File root;
-
+    private File root;
 
     /**
      * @return context
