@@ -2,7 +2,7 @@ package com.github.mobile.android.core.issue;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Issue;
@@ -23,7 +23,7 @@ public class FullIssue extends ArrayList<Comment> implements Serializable {
      * @param issue
      * @param comments
      */
-    public FullIssue(final Issue issue, final List<Comment> comments) {
+    public FullIssue(final Issue issue, final Collection<Comment> comments) {
         super(comments);
         this.issue = issue;
     }

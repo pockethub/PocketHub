@@ -4,6 +4,7 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Comment;
@@ -29,7 +30,7 @@ public class FullGist extends ArrayList<Comment> implements Serializable {
      * @param starred
      * @param comments
      */
-    public FullGist(final Gist gist, final boolean starred, final List<Comment> comments) {
+    public FullGist(final Gist gist, final boolean starred, final Collection<Comment> comments) {
         super(comments);
         this.starred = starred;
         this.gist = gist;
