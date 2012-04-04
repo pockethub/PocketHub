@@ -110,9 +110,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".gist.ViewGistActivity">
+        <activity android:name=".gist.ViewGistsActivity">
             <intent-filter>
-                <action android:name="com.github.mobile.android.gist.VIEW"/>
+                <action android:name="com.github.mobile.android.gists.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>

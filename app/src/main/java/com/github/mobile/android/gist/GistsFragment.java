@@ -160,8 +160,7 @@ public abstract class GistsFragment extends ListLoadingFragment<Gist> implements
     }
 
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Gist gist = (Gist) l.getItemAtPosition(position);
-        startActivityForResult(ViewGistActivity.createIntent(gist), REQUEST_VIEW);
+        startActivityForResult(ViewGistsActivity.createIntent(listItems, position), REQUEST_VIEW);
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {

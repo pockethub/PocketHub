@@ -1,5 +1,6 @@
 package com.github.mobile.android.gist;
 
+import static com.github.mobile.android.ResultCodes.GIST_DELETE;
 import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.content.Intent;
@@ -32,11 +33,11 @@ public class MyGistsFragment extends GistsFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CREATE && ShareGistActivity.RESULT_CREATED == resultCode) {
+        if (requestCode == REQUEST_CREATE && GIST_DELETE == resultCode) {
             refresh();
             return;
         }
-        if (requestCode == REQUEST_VIEW && ViewGistActivity.RESULT_DELETED == resultCode) {
+        if (requestCode == REQUEST_VIEW && GIST_DELETE == resultCode) {
             refresh();
             return;
         }

@@ -1,61 +1,40 @@
 package com.github.mobile.android.gist;
 
-import android.content.res.Resources;
+import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST_ID;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.github.mobile.android.R.string;
-import com.viewpagerindicator.TitleProvider;
+import org.eclipse.egit.github.core.Gist;
 
 /**
- * Pager adapter for different Gist queries
+ * Adapter to page through an array of Gists
  */
-public class GistsPagerAdapter extends FragmentPagerAdapter implements TitleProvider {
+public class GistsPagerAdapter extends FragmentPagerAdapter {
 
-    private final Resources resources;
+    private final Gist[] gists;
 
     /**
-     * Create pager adapter
-     *
-     * @param resources
-     * @param fragmentManager
+     * @param fm
+     * @param gists
      */
-    public GistsPagerAdapter(Resources resources, FragmentManager fragmentManager) {
-        super(fragmentManager);
-        this.resources = resources;
-    }
-
-    @Override
-    public int getCount() {
-        return 3;
+    public GistsPagerAdapter(FragmentManager fm, Gist[] gists) {
+        super(fm);
+        this.gists = gists;
     }
 
     @Override
     public Fragment getItem(int position) {
-        switch (position) {
-        case 0:
-            return new MyGistsFragment();
-        case 1:
-            return new StarredGistsFragment();
-        case 2:
-            return new PublicGistsFragment();
-        default:
-            return null;
-        }
+        Fragment fragment = new GistFragment();
+        Bundle args = new Bundle();
+        args.putString(EXTRA_GIST_ID, gists[position].getId());
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
-    public String getTitle(int position) {
-        switch (position) {
-        case 0:
-            return resources.getString(string.my_gists_tab);
-        case 1:
-            return resources.getString(string.starred_gists_tab);
-        case 2:
-            return resources.getString(string.all_gists_tab);
-        default:
-            return null;
-        }
+    public int getCount() {
+        return gists.length;
     }
 }

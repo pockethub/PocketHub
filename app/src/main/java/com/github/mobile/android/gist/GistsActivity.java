@@ -34,7 +34,7 @@ public class GistsActivity extends RoboSherlockFragmentActivity {
         setTitle(getString(string.gists_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        pager.setAdapter(new GistsPagerAdapter(getResources(), getSupportFragmentManager()));
+        pager.setAdapter(new GistQueriesPagerAdapter(getResources(), getSupportFragmentManager()));
         indicator.setViewPager(pager);
     }
 
