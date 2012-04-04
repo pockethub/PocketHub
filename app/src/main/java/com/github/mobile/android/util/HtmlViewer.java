@@ -10,9 +10,6 @@ import android.webkit.WebViewClient;
 
 import com.github.mobile.android.issue.ViewIssueActivity;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.eclipse.egit.github.core.Issue;
 
 /**
@@ -20,17 +17,13 @@ import org.eclipse.egit.github.core.Issue;
  */
 public class HtmlViewer implements Runnable {
 
-    private static final String REGEX_ISSUE = "https?://.+/[^/]+/[^/]+/issues/(issue/)?(\\d+)";
-
-    private static final Pattern PATTERN_ISSUE = Pattern.compile(REGEX_ISSUE);
-
     private static final String URL_PAGE = "file:///android_asset/html-viewer.html";
 
     private static final String URL_RELOAD = "javascript:reloadHtml()";
 
     private static final String URL_UPDATE_HEIGHT = "javascript:updateHeight()";
 
-    private final Matcher issueMatcher = PATTERN_ISSUE.matcher("");
+    private final IssueUrlMatcher issueMatcher = new IssueUrlMatcher();
 
     private boolean inLoad;
 
@@ -83,10 +76,10 @@ public class HtmlViewer implements Runnable {
     }
 
     private void loadExternalUrl(final Context context, final String url) {
-        issueMatcher.reset(url);
-        if (issueMatcher.matches()) {
+        int issueNumber = issueMatcher.getNumber(url);
+        if (issueNumber > 0) {
             Issue issue = new Issue();
-            issue.setNumber(Integer.parseInt(issueMatcher.group(2)));
+            issue.setNumber(issueNumber);
             issue.setHtmlUrl(url);
             context.startActivity(ViewIssueActivity.viewIssueIntentFor(issue));
         } else
