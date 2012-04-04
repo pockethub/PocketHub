@@ -8,8 +8,10 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.github.mobile.android.gist.ViewGistsActivity;
 import com.github.mobile.android.issue.ViewIssueActivity;
 
+import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.Issue;
 
 /**
@@ -24,6 +26,8 @@ public class HtmlViewer implements Runnable {
     private static final String URL_UPDATE_HEIGHT = "javascript:updateHeight()";
 
     private final IssueUrlMatcher issueMatcher = new IssueUrlMatcher();
+
+    private final GistUrlMatcher gistMatcher = new GistUrlMatcher();
 
     private boolean inLoad;
 
@@ -82,8 +86,17 @@ public class HtmlViewer implements Runnable {
             issue.setNumber(issueNumber);
             issue.setHtmlUrl(url);
             context.startActivity(ViewIssueActivity.viewIssueIntentFor(issue));
-        } else
-            context.startActivity(new Intent(ACTION_VIEW, Uri.parse(url)));
+            return;
+        }
+
+        String gistId = gistMatcher.getId(url);
+        if (gistId != null) {
+            Gist gist = new Gist().setId(gistId).setHtmlUrl(url);
+            context.startActivity(ViewGistsActivity.createIntent(gist));
+            return;
+        }
+
+        context.startActivity(new Intent(ACTION_VIEW, Uri.parse(url)));
     }
 
     /**

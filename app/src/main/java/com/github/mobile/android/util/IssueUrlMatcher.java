@@ -8,13 +8,13 @@ import java.util.regex.Pattern;
  * <p>
  * This class is not thread-safe
  */
-public class IssueUrlMatcher {
+public class IssueUrlMatcher extends UrlMatcher {
 
-    private static final String REGEX_ISSUE = "https?://.+/[^/]+/[^/]+/issues/(issue/)?(\\d+)";
+    private static final String REGEX = "https?://.+/[^/]+/[^/]+/issues/(issue/)?(\\d+)";
 
-    private static final Pattern PATTERN_ISSUE = Pattern.compile(REGEX_ISSUE);
+    private static final Pattern PATTERN = Pattern.compile(REGEX);
 
-    private final Matcher matcher = PATTERN_ISSUE.matcher("");
+    private final Matcher matcher = PATTERN.matcher("");
 
     /**
      * Get issue number from URL
@@ -23,10 +23,7 @@ public class IssueUrlMatcher {
      * @return issue number of -1 if the given URL is not to an issue
      */
     public int getNumber(final String url) {
-        if (url == null || url.length() == 0)
-            return -1;
-
-        if (!matcher.reset(url).matches())
+        if (!isMatch(url, matcher))
             return -1;
 
         try {
