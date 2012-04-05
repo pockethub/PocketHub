@@ -15,9 +15,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.async.AuthenticatedUserLoader;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.github.mobile.android.util.AvatarHelper;
 import com.google.inject.Inject;
@@ -173,10 +173,10 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
                     }
                 });
         final IssuePager[] loaderPagers = pagers.toArray(new IssuePager[pagers.size()]);
-        return new AsyncLoader<List<Issue>>(getActivity()) {
+        return new AuthenticatedUserLoader<List<Issue>>(getActivity()) {
 
             @Override
-            public List<Issue> loadInBackground() {
+            public List<Issue> load() {
                 hasMore = false;
                 final List<Issue> all = newArrayList();
                 boolean error = false;

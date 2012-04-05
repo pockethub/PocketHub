@@ -17,7 +17,7 @@ import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.CollaboratorService;
 
-import roboguice.util.RoboAsyncTask;
+import com.github.mobile.android.async.AuthenticatedUserTask;
 
 /**
  * Dialog helper to display a list of assignees to select one from
@@ -54,9 +54,9 @@ public class AssigneeDialog {
         final ProgressDialog loader = new ProgressDialog(activity);
         loader.setMessage("Loading Collaborators...");
         loader.show();
-        new RoboAsyncTask<List<User>>(activity) {
+        new AuthenticatedUserTask<List<User>>(activity) {
 
-            public List<User> call() throws Exception {
+            public List<User> run() throws Exception {
                 List<User> users = service.getCollaborators(repository);
                 Map<String, User> loadedCollaborators = new TreeMap<String, User>(new Comparator<String>() {
 

@@ -9,6 +9,7 @@ import com.github.mobile.android.IRepositorySearch;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ThrowableLoader;
+import com.github.mobile.android.async.AuthenticatedUserTask;
 import com.github.mobile.android.issue.IssueBrowseActivity;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.google.inject.Inject;
@@ -21,8 +22,6 @@ import java.util.List;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.SearchRepository;
 import org.eclipse.egit.github.core.service.RepositoryService;
-
-import roboguice.util.RoboAsyncTask;
 
 /**
  * Fragment to display a list of {@link Repository} instances
@@ -56,9 +55,9 @@ public class SearchRepoListFragment extends ListLoadingFragment<SearchRepository
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         final SearchRepository result = (SearchRepository) l.getItemAtPosition(position);
-        new RoboAsyncTask<Repository>(getActivity()) {
+        new AuthenticatedUserTask<Repository>(getActivity()) {
 
-            public Repository call() throws Exception {
+            public Repository run() throws Exception {
                 return repos.getRepository(result);
             }
 

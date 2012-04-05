@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
-import com.github.mobile.android.AsyncLoader;
+import com.github.mobile.android.async.AuthenticatedUserLoader;
 import com.github.mobile.android.views.IssueViewHolder;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -42,9 +42,9 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
 
     @Override
     public Loader<List<Issue>> onCreateLoader(int i, Bundle bundle) {
-        return new AsyncLoader<List<Issue>>(getActivity()) {
+        return new AuthenticatedUserLoader<List<Issue>>(getActivity()) {
             @Override
-            public List<Issue> loadInBackground() {
+            public List<Issue> load() {
                 Log.i(TAG, "started loadInBackground");
                 try {
                     return issueService.getIssues();

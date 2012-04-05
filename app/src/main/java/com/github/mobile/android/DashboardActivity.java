@@ -37,9 +37,6 @@ public class DashboardActivity extends RoboSherlockFragmentActivity {
     private ViewPager viewPager;
     private TabsAdapter tabsAdapter;
 
-    @Inject
-    ContextScopedProvider<Account> currentAccountProvider;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,14 +55,6 @@ public class DashboardActivity extends RoboSherlockFragmentActivity {
 
         if (savedInstanceState != null) {
             tabHost.setCurrentTabByTag(savedInstanceState.getString(BUNDLE_KEY_TAB));
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (currentAccountProvider.get(this) == null) {
-            startActivityForResult(new Intent(this, WelcomeActivity.class), 0);
         }
     }
 

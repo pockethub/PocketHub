@@ -7,10 +7,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.async.AuthenticatedUserLoader;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.github.mobile.android.util.AvatarHelper;
 import com.google.inject.Inject;
@@ -78,9 +78,9 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
 
     @Override
     public Loader<List<Issue>> onCreateLoader(int id, Bundle args) {
-        return new AsyncLoader<List<Issue>>(getActivity()) {
+        return new AuthenticatedUserLoader<List<Issue>>(getActivity()) {
 
-            public List<Issue> loadInBackground() {
+            public List<Issue> load() {
                 try {
                     hasMore = pager.next();
                 } catch (final IOException e) {

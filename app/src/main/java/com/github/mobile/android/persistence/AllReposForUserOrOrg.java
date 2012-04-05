@@ -5,7 +5,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 
+import com.github.mobile.android.authenticator.GitHubAccount;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
 import java.io.IOException;
@@ -23,11 +25,14 @@ public class AllReposForUserOrOrg implements PersistableResource<Repository> {
 
     private final User userOrOrg;
     private final RepositoryService repos;
+    private final Provider<GitHubAccount> gitHubAccountProvider;
 
     @Inject
-    public AllReposForUserOrOrg(@Assisted User userOrOrg, RepositoryService repos) {
+    public AllReposForUserOrOrg(@Assisted User userOrOrg, RepositoryService repos,
+                                Provider<GitHubAccount> gitHubAccountProvider) {
         this.userOrOrg = userOrOrg;
         this.repos = repos;
+        this.gitHubAccountProvider = gitHubAccountProvider;
     }
 
     @Override
@@ -77,10 +82,14 @@ public class AllReposForUserOrOrg implements PersistableResource<Repository> {
 
     @Override
     public List<Repository> request() throws IOException {
-        if (userOrOrg.getLogin().equals(repos.getClient().getUser()))
+        if (userOrOrgIsAuthenticatedUser())
             return repos.getRepositories();
         else
             return repos.getOrgRepositories(userOrOrg.getLogin());
+    }
+
+    private boolean userOrOrgIsAuthenticatedUser() {
+        return userOrOrg.getLogin().equals(gitHubAccountProvider.get().username);
     }
 
     @Override

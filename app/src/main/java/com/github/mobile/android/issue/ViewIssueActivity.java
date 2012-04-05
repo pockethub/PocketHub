@@ -65,7 +65,7 @@ import org.eclipse.egit.github.core.service.MilestoneService;
 import roboguice.inject.ContextScopedProvider;
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
-import roboguice.util.RoboAsyncTask;
+import com.github.mobile.android.async.AuthenticatedUserTask;
 
 /**
  * Activity to view a specific issue
@@ -241,9 +241,9 @@ public class ViewIssueActivity extends DialogFragmentActivity {
             list.addHeaderView(loadingView);
             list.setAdapter(new ArrayAdapter<Comment>(this, layout.comment_view_item));
         }
-        new RoboAsyncTask<FullIssue>(this) {
+        new AuthenticatedUserTask<FullIssue>(this) {
 
-            public FullIssue call() throws Exception {
+            public FullIssue run() throws Exception {
                 Issue issue = store.refreshIssue(repositoryId, issueNumber);
                 if (!destroyed)
                     setBeamMessage(ViewIssueActivity.this, "repo.issue", issue);
@@ -374,9 +374,9 @@ public class ViewIssueActivity extends DialogFragmentActivity {
         progress.setMessage("Creating comment...");
         progress.setIndeterminate(true);
         progress.show();
-        new RoboAsyncTask<Comment>(this) {
+        new AuthenticatedUserTask<Comment>(this) {
 
-            public Comment call() throws Exception {
+            public Comment run() throws Exception {
                 return service.get(ViewIssueActivity.this).createComment(repositoryOwner, repository, issueNumber,
                         comment);
             }
@@ -434,9 +434,9 @@ public class ViewIssueActivity extends DialogFragmentActivity {
             progress.setMessage("Reopening issue...");
         progress.setIndeterminate(true);
         progress.show();
-        new RoboAsyncTask<Issue>(this) {
+        new AuthenticatedUserTask<Issue>(this) {
 
-            public Issue call() throws Exception {
+            public Issue run() throws Exception {
                 Issue editedIssue = new Issue();
                 editedIssue.setNumber(issueNumber);
                 if (close)
@@ -465,9 +465,9 @@ public class ViewIssueActivity extends DialogFragmentActivity {
         progress.setMessage("Updating labels...");
         progress.setIndeterminate(true);
         progress.show();
-        new RoboAsyncTask<Issue>(this) {
+        new AuthenticatedUserTask<Issue>(this) {
 
-            public Issue call() throws Exception {
+            public Issue run() throws Exception {
                 Issue editedIssue = new Issue();
                 editedIssue.setNumber(issueNumber);
                 List<Label> issueLabels = new ArrayList<Label>(labels.length);
@@ -502,9 +502,9 @@ public class ViewIssueActivity extends DialogFragmentActivity {
         progress.setMessage("Updating milestone...");
         progress.setIndeterminate(true);
         progress.show();
-        new RoboAsyncTask<Issue>(this) {
+        new AuthenticatedUserTask<Issue>(this) {
 
-            public Issue call() throws Exception {
+            public Issue run() throws Exception {
                 Issue editedIssue = new Issue();
                 editedIssue.setNumber(issueNumber);
                 editedIssue.setMilestone(new Milestone().setNumber(milestoneNumber));
@@ -530,9 +530,9 @@ public class ViewIssueActivity extends DialogFragmentActivity {
         progress.setMessage("Updating assignee...");
         progress.setIndeterminate(true);
         progress.show();
-        new RoboAsyncTask<Issue>(this) {
+        new AuthenticatedUserTask<Issue>(this) {
 
-            public Issue call() throws Exception {
+            public Issue run() throws Exception {
                 Issue editedIssue = new Issue();
                 editedIssue.setAssignee(new User().setLogin(user != null ? user : ""));
                 editedIssue.setNumber(issueNumber);
@@ -558,9 +558,9 @@ public class ViewIssueActivity extends DialogFragmentActivity {
         progress.setMessage("Updating title & description...");
         progress.setIndeterminate(true);
         progress.show();
-        new RoboAsyncTask<Issue>(this) {
+        new AuthenticatedUserTask<Issue>(this) {
 
-            public Issue call() throws Exception {
+            public Issue run() throws Exception {
                 Issue editedIssue = new Issue();
                 editedIssue.setTitle(title);
                 editedIssue.setBody(body);
