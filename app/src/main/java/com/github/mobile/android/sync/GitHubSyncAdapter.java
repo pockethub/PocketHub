@@ -1,12 +1,15 @@
 package com.github.mobile.android.sync;
 
 import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.github.mobile.android.guice.GitHubAccountScope;
 import com.google.inject.Inject;
 
 import roboguice.inject.ContextScope;
@@ -17,6 +20,10 @@ class GitHubSyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Inject
     private ContextScope contextScope;
+
+    @Inject
+    private GitHubAccountScope gitHubAccountScope;
+
     @Inject
     private SyncCampaign.Factory syncCampaignFactory;
 
@@ -27,19 +34,21 @@ class GitHubSyncAdapter extends AbstractThreadedSyncAdapter {
         super(context, true);
     }
 
-    /**
-     * @param ignoredAccount - note this parameter is currently ignored, but we should be syncing *this* account
-     */
     @Override
-    public void onPerformSync(Account ignoredAccount, Bundle extras, String authority,
+    public void onPerformSync(Account account, Bundle extras, String authority,
                               ContentProviderClient provider, SyncResult syncResult) {
-        contextScope.enter(getContext());
+        gitHubAccountScope.enterWith(account, AccountManager.get(getContext()));
         try {
-            cancelAnyCurrentCampaign();
-            currentSyncCampaign = syncCampaignFactory.createCampaignFor(syncResult);
-            currentSyncCampaign.run();
+            contextScope.enter(getContext());
+            try {
+                cancelAnyCurrentCampaign();
+                currentSyncCampaign = syncCampaignFactory.createCampaignFor(syncResult);
+                currentSyncCampaign.run();
+            } finally {
+                contextScope.exit(getContext());
+            }
         } finally {
-            contextScope.exit(getContext());
+            gitHubAccountScope.exit();
         }
     }
 

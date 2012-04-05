@@ -18,6 +18,7 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.TextWatcherAdapter;
+import com.github.mobile.android.async.AuthenticatedUserTask;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 
@@ -29,7 +30,6 @@ import org.eclipse.egit.github.core.service.GistService;
 
 import roboguice.inject.ContextScopedProvider;
 import roboguice.inject.InjectView;
-import roboguice.util.RoboAsyncTask;
 
 /**
  * Activity to share a text selection as a public or private Gist
@@ -111,9 +111,9 @@ public class ShareGistActivity extends RoboSherlockFragmentActivity {
         final ProgressDialog progress = new ProgressDialog(this);
         progress.setMessage(getString(string.creating_gist));
         progress.show();
-        new RoboAsyncTask<Gist>(this) {
+        new AuthenticatedUserTask<Gist>(this) {
 
-            public Gist call() throws Exception {
+            public Gist run() throws Exception {
                 Gist gist = new Gist();
                 gist.setDescription(description);
                 gist.setPublic(isPublic);

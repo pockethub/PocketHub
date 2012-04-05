@@ -6,15 +6,10 @@ import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.util.Log;
-import android.view.View;
-import android.widget.ListAdapter;
 
-import com.github.mobile.android.AsyncLoader;
+import com.github.mobile.android.async.AuthenticatedUserLoader;
 import com.github.mobile.android.views.PullRequestViewHolder;
 import com.google.inject.Inject;
-import com.madgag.android.listviews.ReflectiveHolderFactory;
-import com.madgag.android.listviews.ViewHolder;
-import com.madgag.android.listviews.ViewHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
 import java.io.IOException;
@@ -39,9 +34,9 @@ public class PullRequestsFragment extends ListLoadingFragment<PullRequest> {
 
     @Override
     public Loader<List<PullRequest>> onCreateLoader(int i, Bundle bundle) {
-        return new AsyncLoader<List<PullRequest>>(getActivity()) {
+        return new AuthenticatedUserLoader<List<PullRequest>>(getActivity()) {
             @Override
-            public List<PullRequest> loadInBackground() {
+            public List<PullRequest> load() {
                 Log.i(TAG, "started loadInBackground");
                 try {
                     return pullRequestService.getPullRequests(RepositoryId.createFromId("rtyley/agit"), null);

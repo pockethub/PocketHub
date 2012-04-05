@@ -14,35 +14,50 @@
  * limitations under the License.
  */
 
-package com.github.mobile.android.guice;
+package com.github.mobile.android.async;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.github.mobile.android.AsyncLoader;
+import com.github.mobile.android.guice.GitHubAccountScope;
 import com.google.inject.Inject;
 
 import roboguice.RoboGuice;
 import roboguice.inject.ContextScope;
 
-
-public abstract class RoboAsyncLoader<D> extends AsyncLoader<D> {
+/**
+ * Enforces that user is logged in before work on the background thread commences.
+ */
+public abstract class AuthenticatedUserLoader<D> extends AsyncLoader<D> {
 
     @Inject
     private ContextScope contextScope;
 
-    public RoboAsyncLoader(Context context) {
+    @Inject
+    private GitHubAccountScope gitHubAccountScope;
+
+    @Inject
+    private Activity activity;
+
+    public AuthenticatedUserLoader(Context context) {
         super(context);
         RoboGuice.injectMembers(context, this);
     }
 
     public final D loadInBackground() {
-        contextScope.enter(getContext());
+        gitHubAccountScope.enterWith(activity);
         try {
-            return loadInBackgroundWithContextScope();
+            contextScope.enter(getContext());
+            try {
+                return load();
+            } finally {
+                contextScope.exit(getContext());
+            }
         } finally {
-            contextScope.exit(getContext());
+            gitHubAccountScope.exit();
         }
     }
 
-    public abstract D loadInBackgroundWithContextScope();
+    public abstract D load();
 }

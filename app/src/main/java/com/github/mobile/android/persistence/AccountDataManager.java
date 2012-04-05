@@ -28,7 +28,7 @@ import java.util.concurrent.Executors;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
 
-import roboguice.util.RoboAsyncTask;
+import com.github.mobile.android.async.AuthenticatedUserTask;
 
 /**
  * Manager cache for an account
@@ -198,9 +198,9 @@ public class AccountDataManager {
      * @param requestFuture
      */
     public void getIssueFilters(final RequestFuture<Collection<IssueFilter>> requestFuture) {
-        new RoboAsyncTask<Collection<IssueFilter>>(context, EXECUTOR) {
+        new AuthenticatedUserTask<Collection<IssueFilter>>(context, EXECUTOR) {
 
-            public Collection<IssueFilter> call() throws Exception {
+            public Collection<IssueFilter> run() throws Exception {
                 return getIssueFilters();
             }
 
@@ -235,9 +235,9 @@ public class AccountDataManager {
      * @param requestFuture
      */
     public void addIssueFilter(final IssueFilter filter, final RequestFuture<IssueFilter> requestFuture) {
-        new RoboAsyncTask<IssueFilter>(context, EXECUTOR) {
+        new AuthenticatedUserTask<IssueFilter>(context, EXECUTOR) {
 
-            public IssueFilter call() throws Exception {
+            public IssueFilter run() throws Exception {
                 addIssueFilter(filter);
                 return filter;
             }
@@ -274,9 +274,9 @@ public class AccountDataManager {
      * @param requestFuture
      */
     public void removeIssueFilter(final IssueFilter filter, final RequestFuture<IssueFilter> requestFuture) {
-        new RoboAsyncTask<IssueFilter>(context, EXECUTOR) {
+        new AuthenticatedUserTask<IssueFilter>(context, EXECUTOR) {
 
-            public IssueFilter call() throws Exception {
+            public IssueFilter run() throws Exception {
                 removeIssueFilter(filter);
                 return filter;
             }

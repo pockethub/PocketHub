@@ -42,7 +42,7 @@ import org.eclipse.egit.github.core.service.MilestoneService;
 
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
-import roboguice.util.RoboAsyncTask;
+import com.github.mobile.android.async.AuthenticatedUserTask;
 
 /**
  * Activity to create a new issue
@@ -237,9 +237,9 @@ public class CreateIssueActivity extends DialogFragmentActivity {
         progress.show();
         newIssue.setTitle(titleText.getText().toString());
         newIssue.setBody(bodyText.getText().toString());
-        new RoboAsyncTask<Issue>(this) {
+        new AuthenticatedUserTask<Issue>(this) {
 
-            public Issue call() throws Exception {
+            public Issue run() throws Exception {
                 return store.addIssue(service.createIssue(repoOwner, repoName, newIssue));
             }
 

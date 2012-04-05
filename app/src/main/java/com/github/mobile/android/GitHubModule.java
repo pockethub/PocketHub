@@ -1,17 +1,17 @@
 package com.github.mobile.android;
 
-import static com.github.mobile.android.authenticator.Constants.GITHUB_ACCOUNT_TYPE;
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.github.mobile.android.authenticator.GitHubAccount;
 import com.github.mobile.android.gist.GistStore;
+import com.github.mobile.android.guice.GitHubAccountScope;
+import com.github.mobile.android.util.LateAuthenticatedGitHubClient;
 import com.github.mobile.android.issue.IssueStore;
 import com.github.mobile.android.persistence.AllReposForUserOrOrg;
 import com.github.mobile.android.sync.SyncCampaign;
 import com.google.inject.AbstractModule;
+import com.google.inject.Provider;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.name.Named;
@@ -41,51 +41,32 @@ public class GitHubModule extends AbstractModule {
     private WeakReference<IssueStore> issues;
 
     private WeakReference<GistStore> gists;
+    private static final String TAG = "GH.GitHubModule";
 
     @Override
     protected void configure() {
         install(new ServicesModule());
         install(new FactoryModuleBuilder().build(SyncCampaign.Factory.class));
         install(new FactoryModuleBuilder().build(AllReposForUserOrOrg.Factory.class));
+        install(GitHubAccountScope.module());
     }
 
-    @Provides
-    Account currentAccount(AccountManager accountManager) {
-        Account[] accounts = accountManager.getAccountsByType(GITHUB_ACCOUNT_TYPE);
-        if (accounts.length > 0) {
-            return accounts[0]; // at some point, support more than one github
-            // account, ie vanilla and fi
-        }
-        return null;
-    }
-
-    @Provides
-    GitHubAccount currentAccount(Account account, AccountManager accountManager) {
-        if (account == null)
-            return null;
-
-        String username = account.name;
-        String password = accountManager.getPassword(account);
-        return new GitHubAccount(username, password);
-    }
-
-    private GitHubClient configureClient(GitHubClient client, GitHubAccount ghAccount) {
+    private GitHubClient configureClient(GitHubClient client) {
         client.setSerializeNulls(false);
         client.setUserAgent("GitHubAndroid/1.0");
-        if (ghAccount != null)
-            client.setCredentials(ghAccount.username, ghAccount.password);
         return client;
     }
 
     @Provides
-    GitHubClient client(GitHubAccount gitHubAccount) {
-        return configureClient(new GitHubClient() {
-            protected HttpURLConnection configureRequest(final HttpURLConnection request) {
+    GitHubClient client(Provider<GitHubAccount> gitHubAccountProvider) {
+        return configureClient(new LateAuthenticatedGitHubClient(gitHubAccountProvider) {
+            @Override
+            protected HttpURLConnection configureRequest(HttpURLConnection request) {
                 super.configureRequest(request);
                 request.setRequestProperty(HEADER_ACCEPT, "application/vnd.github.beta.full+json");
                 return request;
             }
-        }, gitHubAccount);
+        });
     }
 
     @Provides
@@ -100,10 +81,11 @@ public class GitHubModule extends AbstractModule {
     }
 
     @Provides
-    IRepositorySearch searchService(GitHubAccount ghAccount) {
-        GitHubClient client = new GitHubClient(IGitHubConstants.HOST_API_V2);
-        configureClient(client, ghAccount);
+    IRepositorySearch searchService(final Provider<GitHubAccount> ghAccountProvider, final Context context) {
+        GitHubClient client = configureClient(new LateAuthenticatedGitHubClient(IGitHubConstants.HOST_API_V2, ghAccountProvider));
+
         final RepositoryService service = new RepositoryService(client);
+
         return new IRepositorySearch() {
 
             public List<SearchRepository> search(String query) throws IOException {
@@ -131,4 +113,5 @@ public class GitHubModule extends AbstractModule {
         }
         return store;
     }
+
 }

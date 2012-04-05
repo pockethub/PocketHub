@@ -11,6 +11,7 @@ import android.webkit.WebView;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.async.AuthenticatedUserTask;
 import com.github.mobile.android.util.ErrorHelper;
 import com.github.mobile.android.util.SourceEditor;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
@@ -24,7 +25,6 @@ import org.eclipse.egit.github.core.GistFile;
 
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
-import roboguice.util.RoboAsyncTask;
 
 /**
  * Fragment to display the content of a file in a Gist
@@ -55,8 +55,8 @@ public class GistFileFragment extends RoboSherlockFragment {
     }
 
     private void loadSource() {
-        new RoboAsyncTask<GistFile>(getActivity()) {
-            public GistFile call() throws Exception {
+        new AuthenticatedUserTask<GistFile>(getActivity()) {
+            public GistFile run() throws Exception {
                 gist = store.refreshGist(gistId);
                 Map<String, GistFile> files = gist.getFiles();
                 if (files == null)

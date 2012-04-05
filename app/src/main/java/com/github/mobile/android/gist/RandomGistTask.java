@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.RequestCodes;
+import com.github.mobile.android.async.AuthenticatedUserTask;
 import com.google.inject.Inject;
 
 import java.util.Collection;
@@ -16,12 +17,11 @@ import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.service.GistService;
 
 import roboguice.inject.ContextScopedProvider;
-import roboguice.util.RoboAsyncTask;
 
 /**
  * Task to open a random Gist
  */
-public class RandomGistTask extends RoboAsyncTask<Gist> {
+public class RandomGistTask extends AuthenticatedUserTask<Gist> {
 
     private ProgressDialog progress;
 
@@ -61,7 +61,8 @@ public class RandomGistTask extends RoboAsyncTask<Gist> {
         execute();
     }
 
-    public Gist call() throws Exception {
+    @Override
+    protected Gist run() throws Exception {
         GistService service = serviceProvider.get(getContext());
         GistStore store = storeProvider.get(getContext());
 

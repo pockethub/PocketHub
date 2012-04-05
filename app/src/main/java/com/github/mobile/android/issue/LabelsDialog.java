@@ -19,7 +19,7 @@ import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.service.LabelService;
 
-import roboguice.util.RoboAsyncTask;
+import com.github.mobile.android.async.AuthenticatedUserTask;
 
 /**
  * Dialog helper to display a list of possibly selected issue labels
@@ -56,9 +56,9 @@ public class LabelsDialog {
         final ProgressDialog loader = new ProgressDialog(activity);
         loader.setMessage("Loading Labels...");
         loader.show();
-        new RoboAsyncTask<List<Label>>(activity) {
+        new AuthenticatedUserTask<List<Label>>(activity) {
 
-            public List<Label> call() throws Exception {
+            public List<Label> run() throws Exception {
                 List<Label> repositoryLabels = service.getLabels(repository);
                 Map<String, Label> loadedLabels = new TreeMap<String, Label>(new Comparator<String>() {
 

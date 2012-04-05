@@ -60,9 +60,6 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
     LeavingBlankTextFieldWarner leavingBlankTextFieldWarner;
     private TextWatcher watcher = validationTextWatcher();
 
-    @Inject
-    private GitHubClient client;
-
     private RoboAsyncTask<User> authenticationTask;
     private String mAuthtoken;
     private String mAuthtokenType;
@@ -182,6 +179,7 @@ public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivit
 
             authenticationTask = new RoboAsyncTask<User>(this) {
                 public User call() throws Exception {
+                    GitHubClient client = new GitHubClient();
                     client.setCredentials(mUsername, mPassword);
 
                     return new UserService(client).getUser();

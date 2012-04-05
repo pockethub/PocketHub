@@ -6,8 +6,8 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.mobile.android.async.AuthenticatedUserLoader;
 import com.github.mobile.android.persistence.AccountDataManager;
-import com.github.mobile.android.AsyncLoader;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
@@ -36,9 +36,9 @@ public class FilterListFragment extends ListLoadingFragment<IssueFilter> {
 
     @Override
     public Loader<List<IssueFilter>> onCreateLoader(int id, Bundle args) {
-        return new AsyncLoader<List<IssueFilter>>(getActivity()) {
+        return new AuthenticatedUserLoader<List<IssueFilter>>(getActivity()) {
 
-            public List<IssueFilter> loadInBackground() {
+            public List<IssueFilter> load() {
                 List<IssueFilter> filters = newArrayList(cache.getIssueFilters());
                 Collections.sort(filters, new Comparator<IssueFilter>() {
 

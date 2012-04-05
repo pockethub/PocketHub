@@ -16,7 +16,7 @@ import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.MilestoneService;
 
-import roboguice.util.RoboAsyncTask;
+import com.github.mobile.android.async.AuthenticatedUserTask;
 
 /**
  * Dialog helper to display a list of milestones to select one from
@@ -62,9 +62,9 @@ public class MilestoneDialog {
         final ProgressDialog loader = new ProgressDialog(activity);
         loader.setMessage("Loading Milestones...");
         loader.show();
-        new RoboAsyncTask<List<Milestone>>(activity) {
+        new AuthenticatedUserTask<List<Milestone>>(activity) {
 
-            public List<Milestone> call() throws Exception {
+            public List<Milestone> run() throws Exception {
                 repositoryMilestones = newArrayList();
                 repositoryMilestones.addAll(service.getMilestones(repository, IssueService.STATE_OPEN));
                 repositoryMilestones.addAll(service.getMilestones(repository, IssueService.STATE_CLOSED));

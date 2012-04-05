@@ -30,6 +30,7 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.RefreshAnimation;
+import com.github.mobile.android.async.AuthenticatedUserTask;
 import com.github.mobile.android.comment.CommentViewHolder;
 import com.github.mobile.android.comment.CreateCommentActivity;
 import com.github.mobile.android.core.gist.FullGist;
@@ -54,7 +55,6 @@ import org.eclipse.egit.github.core.service.GistService;
 
 import roboguice.inject.ContextScopedProvider;
 import roboguice.inject.InjectView;
-import roboguice.util.RoboAsyncTask;
 
 /**
  * Activity to display an existing Gist
@@ -210,9 +210,9 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
     private void starGist() {
         Toast.makeText(getActivity().getApplicationContext(), getString(string.starring_gist), LENGTH_LONG).show();
-        new RoboAsyncTask<Gist>(getActivity()) {
+        new AuthenticatedUserTask<Gist>(getActivity()) {
 
-            public Gist call() throws Exception {
+            public Gist run() throws Exception {
                 gistServiceProvider.get(getContext()).starGist(gistId);
                 starred = true;
                 return null;
@@ -226,9 +226,9 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
     private void unstarGist() {
         Toast.makeText(getActivity().getApplicationContext(), getString(string.unstarring_gist), LENGTH_LONG).show();
-        new RoboAsyncTask<Gist>(getActivity()) {
+        new AuthenticatedUserTask<Gist>(getActivity()) {
 
-            public Gist call() throws Exception {
+            public Gist run() throws Exception {
                 gistServiceProvider.get(getActivity()).unstarGist(gistId);
                 starred = false;
                 return null;
@@ -257,9 +257,9 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
         progress.setMessage(getString(string.creating_comment));
         progress.setIndeterminate(true);
         progress.show();
-        new RoboAsyncTask<Comment>(getActivity()) {
+        new AuthenticatedUserTask<Comment>(getActivity()) {
 
-            public Comment call() throws Exception {
+            public Comment run() throws Exception {
                 return gistServiceProvider.get(getActivity()).createComment(gistId, comment);
             }
 
@@ -314,9 +314,9 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
     }
 
     private void refreshGist() {
-        new RoboAsyncTask<FullGist>(getActivity(), executor) {
+        new AuthenticatedUserTask<FullGist>(getActivity(), executor) {
 
-            public FullGist call() throws Exception {
+            public FullGist run() throws Exception {
                 Gist gist = store.refreshGist(gistId);
                 GistService gistService = service.get(getContext());
                 List<Comment> comments;

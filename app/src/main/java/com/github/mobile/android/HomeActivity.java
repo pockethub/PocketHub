@@ -30,9 +30,6 @@ public class HomeActivity extends RoboSherlockFragmentActivity {
     private static final String TAG = "HA";
     private static final int CODE_LOGIN = 1;
 
-    @Inject
-    private ContextScopedProvider<Account> accountProvider;
-
     @Override
     public boolean onCreateOptionsMenu(Menu optionMenu) {
         getSupportMenuInflater().inflate(menu.welcome, optionMenu);
@@ -85,10 +82,6 @@ public class HomeActivity extends RoboSherlockFragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (accountProvider.get(this) == null) {
-            Log.d(TAG, "No account currently available, starting Welcome activity");
-            startActivityForResult(new Intent(this, WelcomeActivity.class), CODE_LOGIN);
-        } else
-            loadOrgs();
+        loadOrgs();
     }
 }

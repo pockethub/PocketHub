@@ -7,18 +7,18 @@ import android.app.ProgressDialog;
 import android.widget.Toast;
 
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.async.AuthenticatedUserTask;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.service.GistService;
 
 import roboguice.inject.ContextScopedProvider;
-import roboguice.util.RoboAsyncTask;
 
 /**
  * Async task to delete a Gist
  */
-public class DeleteGistTask extends RoboAsyncTask<Gist> {
+public class DeleteGistTask extends AuthenticatedUserTask<Gist> {
 
     private final String id;
 
@@ -60,7 +60,7 @@ public class DeleteGistTask extends RoboAsyncTask<Gist> {
     }
 
     @Override
-    public Gist call() throws Exception {
+    public Gist run() throws Exception {
         serviceProvider.get(getContext()).deleteGist(id);
         return null;
     }
