@@ -35,6 +35,7 @@ import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.RefreshAnimation;
 import com.github.mobile.android.SingleChoiceDialogFragment;
+import com.github.mobile.android.async.AuthenticatedUserTask;
 import com.github.mobile.android.comment.CommentViewHolder;
 import com.github.mobile.android.comment.CreateCommentActivity;
 import com.github.mobile.android.core.issue.FullIssue;
@@ -46,7 +47,6 @@ import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 import com.madgag.android.listviews.ViewInflator;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -65,7 +65,6 @@ import org.eclipse.egit.github.core.service.MilestoneService;
 import roboguice.inject.ContextScopedProvider;
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
-import com.github.mobile.android.async.AuthenticatedUserTask;
 
 /**
  * Activity to view a specific issue
@@ -263,7 +262,7 @@ public class ViewIssueActivity extends DialogFragmentActivity {
             protected void onSuccess(FullIssue fullIssue) throws Exception {
                 issue = fullIssue.getIssue();
                 comments = fullIssue;
-                getIntent().putExtra(ARG_COMMENTS, (Serializable) fullIssue);
+                getIntent().putExtra(ARG_COMMENTS, fullIssue);
                 updateList(fullIssue.getIssue(), fullIssue);
             }
 
