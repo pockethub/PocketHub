@@ -2,12 +2,14 @@ package com.github.mobile.android;
 
 import android.content.Context;
 
+import com.github.mobile.android.async.AuthenticatedUserLoader;
+
 /**
  * Loader that support throwing an exception when loading in the background
  *
  * @param <D>
  */
-public abstract class ThrowableLoader<D> extends AsyncLoader<D> {
+public abstract class ThrowableLoader<D> extends AuthenticatedUserLoader<D> {
 
     private final D data;
 
@@ -24,8 +26,7 @@ public abstract class ThrowableLoader<D> extends AsyncLoader<D> {
         this.data = data;
     }
 
-    @Override
-    public D loadInBackground() {
+    public D load() {
         exception = null;
         try {
             return loadData();

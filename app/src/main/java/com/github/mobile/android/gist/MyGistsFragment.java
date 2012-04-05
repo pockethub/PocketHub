@@ -8,7 +8,10 @@ import android.os.Bundle;
 import android.support.v4.content.Loader;
 
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.authenticator.GitHubAccount;
 import com.github.mobile.android.ThrowableLoader;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
 import java.io.IOException;
@@ -21,12 +24,15 @@ import org.eclipse.egit.github.core.Gist;
  */
 public class MyGistsFragment extends GistsFragment {
 
+    @Inject
+    private Provider<GitHubAccount> accountProvider;
+
     @Override
     public Loader<List<Gist>> onCreateLoader(int i, Bundle bundle) {
         return new ThrowableLoader<List<Gist>>(getActivity(), listItems) {
             @Override
             public List<Gist> loadData() throws IOException {
-                return storeAndSort(service.getGists(service.getClient().getUser()));
+                return storeAndSort(service.getGists(accountProvider.get().username));
             }
         };
     }

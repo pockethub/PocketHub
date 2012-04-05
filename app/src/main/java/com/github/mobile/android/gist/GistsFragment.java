@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
@@ -42,6 +43,8 @@ import org.eclipse.egit.github.core.service.GistService;
  * Fragment to display a list of Gists
  */
 public abstract class GistsFragment extends ListLoadingFragment<Gist> implements Comparator<Gist> {
+
+    private static final String TAG = "GistsFragment";
 
     /**
      * Create Gist request code
@@ -152,6 +155,7 @@ public abstract class GistsFragment extends ListLoadingFragment<Gist> implements
     public void onLoadFinished(Loader<List<Gist>> loader, List<Gist> items) {
         Exception exception = getException(loader);
         if (exception != null) {
+            Log.d(TAG, "Exception loading gists", exception);
             showError(exception, string.error_gists_load);
             showList();
             return;
