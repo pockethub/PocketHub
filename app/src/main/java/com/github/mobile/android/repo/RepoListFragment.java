@@ -4,24 +4,22 @@ import static com.github.mobile.android.util.GitHubIntents.EXTRA_USER;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.github.mobile.android.async.AuthenticatedUserLoader;
-import com.github.mobile.android.persistence.AccountDataManager;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.async.AuthenticatedUserLoader;
+import com.github.mobile.android.issue.IssueBrowseActivity;
+import com.github.mobile.android.persistence.AccountDataManager;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -38,11 +36,7 @@ public class RepoListFragment extends ListLoadingFragment<Repository> {
 
     private static final String TAG = "RLF";
 
-    private LoaderCallbacks<List<Repository>> callback;
-
-    private OnItemClickListener clickListener;
-
-    private Collection<String> recent;
+    private RecentReposHelper recent;
 
     @Inject
     private AccountDataManager cache;
@@ -51,50 +45,38 @@ public class RepoListFragment extends ListLoadingFragment<Repository> {
     private User user;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        recent = new RecentReposHelper(getActivity(), user);
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setEmptyText(getString(string.no_repositories));
         getListView().setFastScrollEnabled(true);
     }
 
-    /**
-     * @param recent
-     * @return this fragment
-     */
-    public RepoListFragment setRecent(Collection<String> recent) {
-        this.recent = recent;
-        return this;
-    }
-
-    /**
-     * @param clickListener
-     * @return this fragment
-     */
-    public RepoListFragment setClickListener(OnItemClickListener clickListener) {
-        this.clickListener = clickListener;
-        return this;
+    @Override
+    public void onListItemClick(ListView list, View v, int position, long id) {
+        Repository repo = (Repository) list.getItemAtPosition(position);
+        recent.add(repo);
+        startActivity(IssueBrowseActivity.createIntent(repo));
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        if (clickListener != null)
-            clickListener.onItemClick(l, v, position, id);
-    }
+    public void onResume() {
+        super.onResume();
 
-    /**
-     * @param callback
-     * @return this fragment
-     */
-    public RepoListFragment setCallback(LoaderCallbacks<List<Repository>> callback) {
-        this.callback = callback;
-        return this;
+        refresh();
     }
 
     @Override
-    public void onLoadFinished(Loader<List<Repository>> loader, List<Repository> items) {
-        super.onLoadFinished(loader, items);
-        if (callback != null)
-            callback.onLoadFinished(loader, items);
+    public void onStop() {
+        super.onStop();
+
+        recent.save();
     }
 
     @Override
@@ -103,7 +85,7 @@ public class RepoListFragment extends ListLoadingFragment<Repository> {
 
             public List<Repository> load() {
                 try {
-                    Log.d(TAG, "Going to load repos for "+user.getLogin());
+                    Log.d(TAG, "Going to load repos for " + user.getLogin());
                     List<Repository> repos = newArrayList(cache.getRepos(user));
                     Collections.sort(repos, new Comparator<Repository>() {
 

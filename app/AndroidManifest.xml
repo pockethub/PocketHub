@@ -87,13 +87,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".repo.RepoBrowseActivity">
-            <intent-filter>
-                <action android:name="com.github.mobile.android.repos.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-
         <activity android:label="@string/search_title" android:launchMode="singleTop" android:name=".repo.RepoSearchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH"/>
@@ -127,6 +120,13 @@
         <activity android:name=".comment.CreateCommentActivity">
 			<intent-filter>
 				<action android:name="com.github.mobile.android.comment.create.VIEW"/>
+				<category android:name="android.intent.category.DEFAULT"/>
+			</intent-filter>
+		</activity>
+
+        <activity android:name=".ui.user.UserViewActivity">
+			<intent-filter>
+				<action android:name="com.github.mobile.android.user.VIEW"/>
 				<category android:name="android.intent.category.DEFAULT"/>
 			</intent-filter>
 		</activity>

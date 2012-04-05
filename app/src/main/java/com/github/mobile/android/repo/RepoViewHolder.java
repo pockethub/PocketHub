@@ -8,8 +8,6 @@ import android.widget.TextView;
 import com.github.mobile.android.R.id;
 import com.madgag.android.listviews.ViewHolder;
 
-import java.util.Collection;
-
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
 
@@ -24,7 +22,7 @@ public class RepoViewHolder implements ViewHolder<Repository> {
 
     private final String userLogin;
 
-    private final Collection<String> recentIds;
+    private final RecentReposHelper recentIds;
 
     /**
      * Create repository view holder
@@ -33,7 +31,7 @@ public class RepoViewHolder implements ViewHolder<Repository> {
      * @param user
      * @param recentIds
      */
-    public RepoViewHolder(final View view, final User user, final Collection<String> recentIds) {
+    public RepoViewHolder(final View view, final User user, final RecentReposHelper recentIds) {
         this.userLogin = user.getLogin();
         repoName = (TextView) view.findViewById(id.tv_repo_name);
         recentLabel = (TextView) view.findViewById(id.tv_recent_label);

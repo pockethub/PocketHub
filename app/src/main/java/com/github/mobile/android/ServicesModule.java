@@ -8,6 +8,7 @@ import java.io.IOException;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.CollaboratorService;
+import org.eclipse.egit.github.core.service.EventService;
 import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.LabelService;
@@ -23,7 +24,8 @@ import org.eclipse.egit.github.core.service.UserService;
 public class ServicesModule extends AbstractModule {
 
     @Override
-    protected void configure() {}
+    protected void configure() {
+    }
 
     @Provides
     IssueService issueService(GitHubClient client) {
@@ -73,5 +75,10 @@ public class ServicesModule extends AbstractModule {
     @Provides
     LabelService labelService(GitHubClient client) {
         return new LabelService(client);
+    }
+
+    @Provides
+    EventService eventService(GitHubClient client) {
+        return new EventService(client);
     }
 }

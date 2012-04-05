@@ -11,12 +11,13 @@ import android.widget.ListView;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
-import com.github.mobile.android.async.AuthenticatedUserLoader;
-import com.github.mobile.android.persistence.AccountDataManager;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.async.AuthenticatedUserLoader;
+import com.github.mobile.android.persistence.AccountDataManager;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
+import com.github.mobile.android.ui.user.UserViewActivity;
 import com.github.mobile.android.util.AvatarHelper;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -46,7 +47,8 @@ public class OrgListFragment extends ListLoadingFragment<User> {
     @Override
     public Loader<List<User>> onCreateLoader(int id, Bundle args) {
         return new AuthenticatedUserLoader<List<User>>(getActivity()) {
-            @Inject Provider<UserComparator> userComparatorProvider;
+            @Inject
+            Provider<UserComparator> userComparatorProvider;
 
             public List<User> load() {
                 Log.d(TAG, "Going to load organizations");
@@ -81,7 +83,7 @@ public class OrgListFragment extends ListLoadingFragment<User> {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         User user = (User) l.getItemAtPosition(position);
-        startActivity(RepoBrowseActivity.createIntent(user));
+        startActivity(UserViewActivity.createIntent(user));
     }
 
 }
