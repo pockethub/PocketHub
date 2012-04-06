@@ -27,6 +27,7 @@ import com.github.mobile.android.R;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.TextWatcherAdapter;
 import com.github.mobile.android.ui.validation.LeavingBlankTextFieldWarner;
+import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockAccountAuthenticatorActivity;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.User;
@@ -38,7 +39,7 @@ import roboguice.activity.RoboAccountAuthenticatorActivity;
 import roboguice.inject.InjectView;
 import roboguice.util.RoboAsyncTask;
 
-public class GitHubAuthenticatorActivity extends RoboAccountAuthenticatorActivity {
+public class GitHubAuthenticatorActivity extends RoboSherlockAccountAuthenticatorActivity {
     public static final String PARAM_CONFIRMCREDENTIALS = "confirmCredentials";
     public static final String PARAM_PASSWORD = "password";
     public static final String PARAM_USERNAME = "username";
