@@ -45,7 +45,7 @@ public class UserNewsFragment extends ListLoadingFragment<Event> {
                     // Remove any events that can't be rendered
                     Iterator<Event> iter = events.iterator();
                     while (iter.hasNext())
-                        if (!NewsEventViewHolder.isValid(iter.next().getType()))
+                        if (!NewsEventViewHolder.isValid(iter.next()))
                             iter.remove();
                     return events;
                 } catch (NoSuchPageException e) {
