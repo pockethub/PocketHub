@@ -17,7 +17,6 @@ import org.eclipse.egit.github.core.event.CreatePayload;
 import org.eclipse.egit.github.core.event.DeletePayload;
 import org.eclipse.egit.github.core.event.Event;
 import org.eclipse.egit.github.core.event.FollowPayload;
-import org.eclipse.egit.github.core.event.ForkPayload;
 import org.eclipse.egit.github.core.event.GistPayload;
 import org.eclipse.egit.github.core.event.IssueCommentPayload;
 import org.eclipse.egit.github.core.event.IssuesPayload;
@@ -98,8 +97,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
             text = MessageFormat.format("{0} started following {1}", actor, ((FollowPayload) event.getPayload())
                     .getTarget().getLogin());
         else if ("ForkEvent".equals(type))
-            text = MessageFormat.format("{0} forked repository {1}", actor, ((ForkPayload) event.getPayload())
-                    .getForkee().generateId());
+            text = MessageFormat.format("{0} forked repository {1}", actor, repoName);
         else if ("GistEvent".equals(type)) {
             GistPayload payload = (GistPayload) event.getPayload();
             String action;
