@@ -40,7 +40,8 @@ public class UserNewsFragment extends ListLoadingFragment<Event> {
 
             public List<Event> loadData() throws Exception {
                 try {
-                    List<Event> events = new ArrayList<Event>(service.pageUserEvents(user.getLogin()).next());
+                    List<Event> events = new ArrayList<Event>(service.pageUserReceivedEvents(user.getLogin(), false)
+                            .next());
                     // Remove any events that can't be rendered
                     Iterator<Event> iter = events.iterator();
                     while (iter.hasNext())
