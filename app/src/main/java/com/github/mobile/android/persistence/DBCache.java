@@ -36,12 +36,10 @@ public class DBCache {
         }
     }
 
-    public <E> List<E> requestAndStore(PersistableResource<E> persistableResource) {
+    public <E> List<E> requestAndStore(PersistableResource<E> persistableResource) throws IOException {
         SQLiteOpenHelper helper = helperProvider.get();
         try {
             return requestAndStore(helper, persistableResource);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         } finally {
             helper.close();
         }

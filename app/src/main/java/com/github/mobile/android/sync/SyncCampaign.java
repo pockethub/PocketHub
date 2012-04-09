@@ -9,6 +9,7 @@ import com.github.mobile.android.persistence.UserAndOrgs;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.egit.github.core.User;
@@ -38,15 +39,29 @@ public class SyncCampaign implements Runnable {
     }
 
     public void run() {
-        List<User> usersAndOrgs = dbCache.requestAndStore(userAndOrgsResource);
+        List<User> usersAndOrgs;
+        try {
+            usersAndOrgs = dbCache.requestAndStore(userAndOrgsResource);
+            syncResult.stats.numUpdates++;
+        } catch (IOException e) {
+            syncResult.stats.numIoExceptions++;
+            Log.d(TAG, "Exception requesting users & orgs", e);
+            return;
+        }
+
         Log.d(TAG, "Found " + usersAndOrgs.size() + " users and orgs for sync");
         for (User userOrOrg : usersAndOrgs) {
             if (cancelled)
                 return;
 
             Log.d(TAG, "Syncing repos for " + userOrOrg.getLogin() + "...");
-            dbCache.requestAndStore(allRepos.under(userOrOrg));
-            syncResult.stats.numUpdates++;
+            try {
+                dbCache.requestAndStore(allRepos.under(userOrOrg));
+                syncResult.stats.numUpdates++;
+            } catch (IOException e) {
+                syncResult.stats.numIoExceptions++;
+                Log.d(TAG, "Exception requesting repositories", e);
+            }
         }
         Log.d(TAG, "...finished sync campaign");
     }
