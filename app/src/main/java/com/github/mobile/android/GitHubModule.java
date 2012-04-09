@@ -41,7 +41,6 @@ public class GitHubModule extends AbstractModule {
     private WeakReference<IssueStore> issues;
 
     private WeakReference<GistStore> gists;
-    private static final String TAG = "GH.GitHubModule";
 
     @Override
     protected void configure() {
