@@ -1,7 +1,5 @@
 package com.github.mobile.android.issue;
 
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
@@ -9,15 +7,15 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AbsListView.LayoutParams;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
-import com.github.mobile.android.async.AuthenticatedUserLoader;
+import com.github.mobile.android.ThrowableLoader;
+import com.github.mobile.android.ui.ResourceLoadingIndicator;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.github.mobile.android.util.AvatarHelper;
 import com.google.inject.Inject;
@@ -54,9 +52,9 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
 
     private boolean hasMore = true;
 
-    private Button moreButton;
-
     private final List<IssuePager> pagers = newArrayList();
+
+    private ResourceLoadingIndicator loadingIndicator;
 
     @Inject
     private AvatarHelper avatarHelper;
@@ -99,10 +97,36 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        loadingIndicator = new ResourceLoadingIndicator(getActivity(), string.loading_more_issues);
+        loadingIndicator.setList(getListView());
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         setEmptyText(getString(string.no_issues));
         getListView().setFastScrollEnabled(true);
+        getListView().setOnScrollListener(new OnScrollListener() {
+
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (!hasMore)
+                    return;
+                if (getLoaderManager().hasRunningLoaders())
+                    return;
+                int size = 0;
+                for (IssuePager pager : pagers)
+                    size += pager.size();
+                if (getListView().getLastVisiblePosition() >= size)
+                    showMore();
+            }
+        });
     }
 
     public void onLoaderReset(Loader<List<Issue>> listLoader) {
@@ -128,26 +152,10 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
     }
 
     public void onLoadFinished(Loader<List<Issue>> loader, final List<Issue> items) {
-        if (hasMore) {
-            if (moreButton == null) {
-                moreButton = new Button(getActivity());
-                moreButton.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
-                moreButton.setOnClickListener(new OnClickListener() {
-
-                    public void onClick(View v) {
-                        moreButton.setText(getString(string.loading_more_issues));
-                        moreButton.setEnabled(false);
-                        showMore();
-                    }
-                });
-                getListView().addFooterView(moreButton);
-            }
-            moreButton.setEnabled(true);
-            moreButton.setText(getString(string.show_more));
-        } else {
-            getListView().removeFooterView(moreButton);
-            moreButton = null;
-        }
+        if (hasMore)
+            loadingIndicator.showLoading();
+        else
+            loadingIndicator.setVisible(false);
 
         super.onLoadFinished(loader, items);
 
@@ -173,25 +181,18 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
                     }
                 });
         final IssuePager[] loaderPagers = pagers.toArray(new IssuePager[pagers.size()]);
-        return new AuthenticatedUserLoader<List<Issue>>(getActivity()) {
+        return new ThrowableLoader<List<Issue>>(getActivity(), listItems) {
 
             @Override
-            public List<Issue> load() {
-                hasMore = false;
+            public List<Issue> loadData() throws IOException {
+                boolean hasMore = false;
                 final List<Issue> all = newArrayList();
-                boolean error = false;
                 for (IssuePager pager : loaderPagers) {
-                    try {
-                        if (!error)
-                            hasMore |= pager.next();
-                    } catch (final IOException e) {
-                        if (!error)
-                            showError(e, string.error_issues_load);
-                        error = true;
-                    }
-                    all.addAll(pager.getIssues());
+                    hasMore |= pager.next();
+                    all.addAll(pager.getResources());
                 }
                 Collections.sort(all, new CreatedAtComparator());
+                IssuesFragment.this.hasMore = hasMore;
                 return all;
             }
         };

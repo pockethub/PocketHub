@@ -3,14 +3,14 @@ package com.github.mobile.android.issue;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 
-import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
-import com.github.mobile.android.async.AuthenticatedUserLoader;
+import com.github.mobile.android.ThrowableLoader;
+import com.github.mobile.android.ui.ResourceLoadingIndicator;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.github.mobile.android.util.AvatarHelper;
 import com.google.inject.Inject;
@@ -44,16 +44,12 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
 
     private Map<String, String> filterData;
 
-    private boolean hasMore = true;
-
-    private View showMoreFooter;
-
-    private Button moreButton;
-
     private IssuePager pager;
 
     @Inject
     private AvatarHelper avatarHelper;
+
+    private ResourceLoadingIndicator loadingIndicator;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,25 +64,44 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
         };
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        loadingIndicator = new ResourceLoadingIndicator(getActivity(), string.loading_issues);
+        loadingIndicator.setList(getListView());
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         filterData = (Map<String, String>) getArguments().getSerializable(ARG_FILTER);
         getListView().setFastScrollEnabled(true);
+        getListView().setOnScrollListener(new OnScrollListener() {
+
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (!pager.hasMore())
+                    return;
+                if (getLoaderManager().hasRunningLoaders())
+                    return;
+                if (getListView().getLastVisiblePosition() >= pager.size())
+                    showMore();
+            }
+        });
     }
 
     @Override
     public Loader<List<Issue>> onCreateLoader(int id, Bundle args) {
-        return new AuthenticatedUserLoader<List<Issue>>(getActivity()) {
+        return new ThrowableLoader<List<Issue>>(getActivity(), listItems) {
 
-            public List<Issue> load() {
-                try {
-                    hasMore = pager.next();
-                } catch (final IOException e) {
-                    showError(e, string.error_issues_load);
-                }
-                return pager.getIssues();
+            public List<Issue> loadData() throws IOException {
+                pager.next();
+                return pager.getResources();
             }
         };
     }
@@ -94,7 +109,6 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
     @Override
     public void refresh() {
         pager.reset();
-        hasMore = true;
         super.refresh();
     }
 
@@ -119,26 +133,10 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
     }
 
     public void onLoadFinished(Loader<List<Issue>> loader, List<Issue> items) {
-        if (hasMore) {
-            if (showMoreFooter == null) {
-                showMoreFooter = getActivity().getLayoutInflater().inflate(layout.show_more_item, null);
-                moreButton = (Button) showMoreFooter.findViewById(id.b_show_more);
-                moreButton.setOnClickListener(new OnClickListener() {
-
-                    public void onClick(View v) {
-                        moreButton.setText(getString(string.loading_more_issues));
-                        moreButton.setEnabled(false);
-                        showMore();
-                    }
-                });
-                getListView().addFooterView(showMoreFooter);
-            }
-            moreButton.setEnabled(true);
-            moreButton.setText(getString(string.show_more));
-        } else {
-            getListView().removeFooterView(showMoreFooter);
-            showMoreFooter = null;
-        }
+        if (pager.hasMore())
+            loadingIndicator.showLoading();
+        else
+            loadingIndicator.setVisible(false);
 
         super.onLoadFinished(loader, items);
     }
