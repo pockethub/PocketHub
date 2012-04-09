@@ -1,5 +1,22 @@
 package com.github.mobile.android.ui.user;
 
+import static org.eclipse.egit.github.core.event.Event.TYPE_COMMIT_COMMENT;
+import static org.eclipse.egit.github.core.event.Event.TYPE_CREATE;
+import static org.eclipse.egit.github.core.event.Event.TYPE_DELETE;
+import static org.eclipse.egit.github.core.event.Event.TYPE_DOWNLOAD;
+import static org.eclipse.egit.github.core.event.Event.TYPE_FOLLOW;
+import static org.eclipse.egit.github.core.event.Event.TYPE_FORK;
+import static org.eclipse.egit.github.core.event.Event.TYPE_FORK_APPLY;
+import static org.eclipse.egit.github.core.event.Event.TYPE_GIST;
+import static org.eclipse.egit.github.core.event.Event.TYPE_GOLLUM;
+import static org.eclipse.egit.github.core.event.Event.TYPE_ISSUES;
+import static org.eclipse.egit.github.core.event.Event.TYPE_ISSUE_COMMENT;
+import static org.eclipse.egit.github.core.event.Event.TYPE_MEMBER;
+import static org.eclipse.egit.github.core.event.Event.TYPE_PUBLIC;
+import static org.eclipse.egit.github.core.event.Event.TYPE_PULL_REQUEST;
+import static org.eclipse.egit.github.core.event.Event.TYPE_PUSH;
+import static org.eclipse.egit.github.core.event.Event.TYPE_TEAM_ADD;
+import static org.eclipse.egit.github.core.event.Event.TYPE_WATCH;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
@@ -49,23 +66,23 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         if (TextUtils.isEmpty(type))
             return false;
 
-        return "CommitCommentEvent".equals(type) //
-                || "CreateEvent".equals(type) //
-                || "DeleteEvent".equals(type) //
-                || "DownloadEvent".equals(type) //
-                || "FollowEvent".equals(type) //
-                || "ForkEvent".equals(type) //
-                || "ForkApplyEvent".equals(type) //
-                || "GistEvent".equals(type) //
-                || "GollumEvent".equals(type) //
-                || "IssueCommentEvent".equals(type) //
-                || "IssuesEvent".equals(type) //
-                || "MemberEvent".equals(type) //
-                || "PublicEvent".equals(type) //
-                || "PullRequestEvent".equals(type) //
-                || "PushEvent".equals(type) //
-                || "TeamAddEvent".equals(type) //
-                || "WatchEvent".equals(type);
+        return TYPE_COMMIT_COMMENT.equals(type) //
+                || TYPE_CREATE.equals(type) //
+                || TYPE_DELETE.equals(type) //
+                || TYPE_DOWNLOAD.equals(type) //
+                || TYPE_FOLLOW.equals(type) //
+                || TYPE_FORK.equals(type) //
+                || TYPE_FORK_APPLY.equals(type) //
+                || TYPE_GIST.equals(type) //
+                || TYPE_GOLLUM.equals(type) //
+                || TYPE_ISSUE_COMMENT.equals(type) //
+                || TYPE_ISSUES.equals(type) //
+                || TYPE_MEMBER.equals(type) //
+                || TYPE_PUBLIC.equals(type) //
+                || TYPE_PULL_REQUEST.equals(type) //
+                || TYPE_PUSH.equals(type) //
+                || TYPE_TEAM_ADD.equals(type) //
+                || TYPE_WATCH.equals(type);
     }
 
     private TextView eventText;
@@ -86,9 +103,9 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         String type = event.getType();
         String text = null;
 
-        if ("CommitCommentEvent".equals(type))
+        if (TYPE_COMMIT_COMMENT.equals(type))
             text = MessageFormat.format("{0} commented on commit on {1}", actor, repoName);
-        else if ("CreateEvent".equals(type)) {
+        else if (TYPE_CREATE.equals(type)) {
             CreatePayload payload = (CreatePayload) event.getPayload();
             String refType = payload.getRefType();
             String location;
@@ -97,18 +114,18 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
             else
                 location = "";
             text = MessageFormat.format("{0} created {1} {2}{3}", actor, refType, payload.getRef(), location);
-        } else if ("DeleteEvent".equals(type)) {
+        } else if (TYPE_DELETE.equals(type)) {
             DeletePayload payload = (DeletePayload) event.getPayload();
             String refType = payload.getRefType();
             text = MessageFormat.format("{0} deleted {1} {2} at {3}", actor, refType, payload.getRef(), repoName);
-        } else if ("DownloadEvent".equals(type))
+        } else if (TYPE_DOWNLOAD.equals(type))
             text = MessageFormat.format("{0} uploaded a file to {1}", actor, repoName);
-        else if ("FollowEvent".equals(type))
+        else if (TYPE_FOLLOW.equals(type))
             text = MessageFormat.format("{0} started following {1}", actor, ((FollowPayload) event.getPayload())
                     .getTarget().getLogin());
-        else if ("ForkEvent".equals(type))
+        else if (TYPE_FORK.equals(type))
             text = MessageFormat.format("{0} forked repository {1}", actor, repoName);
-        else if ("GistEvent".equals(type)) {
+        else if (TYPE_GIST.equals(type)) {
             GistPayload payload = (GistPayload) event.getPayload();
             String action;
             if ("create".equals(payload.getAction()))
@@ -118,34 +135,34 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
             else
                 action = payload.getAction();
             text = MessageFormat.format("{0} {1} Gist {2}", actor, action, payload.getGist().getId());
-        } else if ("GollumEvent".equals(type))
+        } else if (TYPE_GOLLUM.equals(type))
             text = MessageFormat.format("{0} updated the wiki in {1}", actor, repoName);
-        else if ("IssueCommentEvent".equals(type)) {
+        else if (TYPE_ISSUE_COMMENT.equals(type)) {
             Issue issue = ((IssueCommentPayload) event.getPayload()).getIssue();
             text = MessageFormat.format("{0} commented on issue {1} on {2}", actor,
                     Integer.toString(issue.getNumber()), repoName);
-        } else if ("IssuesEvent".equals(type)) {
+        } else if (TYPE_ISSUES.equals(type)) {
             IssuesPayload payload = (IssuesPayload) event.getPayload();
             text = MessageFormat.format("{0} {1} issue {2} on {3}", actor, payload.getAction(),
                     Integer.toString(payload.getIssue().getNumber()), repoName);
-        } else if ("MemberEvent".equals(type))
+        } else if (TYPE_MEMBER.equals(type))
             text = MessageFormat.format("{0} was added as a collaborator to {1}", actor, repoName);
-        else if ("PublicEvent".equals(type))
+        else if (TYPE_PUBLIC.equals(type))
             text = MessageFormat.format("{0} open sourced repository {1}", actor, repoName);
-        else if ("PullRequestEvent".equals(type)) {
+        else if (TYPE_PULL_REQUEST.equals(type)) {
             PullRequestPayload payload = (PullRequestPayload) event.getPayload();
             String action = payload.getAction();
-            if ("syncrhonize".equals(action))
+            if ("synchronize".equals(action))
                 action = "updated";
             text = MessageFormat.format("{0} {1} pull request {2} on {3}", actor, action,
                     Integer.toBinaryString(payload.getPullRequest().getNumber()), repoName);
-        } else if ("PushEvent".equals(type)) {
+        } else if (TYPE_PUSH.equals(type)) {
             PushPayload payload = (PushPayload) event.getPayload();
             String ref = payload.getRef();
             if (ref.startsWith("refs/heads/"))
                 ref = ref.substring(11);
             text = MessageFormat.format("{0} pushed to {1} at {2}", actor, ref, repoName);
-        } else if ("TeamAddEvent".equals(type)) {
+        } else if (TYPE_TEAM_ADD.equals(type)) {
             TeamAddPayload payload = (TeamAddPayload) event.getPayload();
             Team team = payload.getTeam();
             String teamName;
@@ -160,7 +177,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
             else
                 value = payload.getRepo().getName();
             text = MessageFormat.format("{0} added {1} to team{2}", actor, value, teamName);
-        } else if ("WatchEvent".equals(type))
+        } else if (TYPE_WATCH.equals(type))
             text = MessageFormat.format("{0} started watching {1}", actor, repoName);
 
         eventText.setText(Html.fromHtml(text + "  " + relativeTime));
