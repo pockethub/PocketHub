@@ -9,6 +9,7 @@
         android:id="@+id/tv_event"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/item_text_color" />
 
 </LinearLayout>
