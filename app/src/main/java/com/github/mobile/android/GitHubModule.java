@@ -74,9 +74,11 @@ public class GitHubModule extends AbstractModule {
         return new File(context.getFilesDir(), "cache");
     }
 
-    @Provides @ContextSingleton @Named("gravatarStore")
+    @Provides
+    @ContextSingleton
+    @Named("gravatarStore")
     ImageResourceStore<String, Bitmap> gravatarStore(Context context) {
-        return new BitmapFileStore<String>(new File(context.getCacheDir(),"gravatars"));
+        return new BitmapFileStore<String>(new File(context.getCacheDir(), "gravatars"));
     }
 
     @Provides
