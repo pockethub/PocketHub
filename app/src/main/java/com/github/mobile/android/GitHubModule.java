@@ -1,15 +1,16 @@
 package com.github.mobile.android;
 
+import static org.eclipse.egit.github.core.client.IGitHubConstants.HOST_API_V2;
 import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.github.mobile.android.authenticator.GitHubAccount;
 import com.github.mobile.android.gist.GistStore;
 import com.github.mobile.android.guice.GitHubAccountScope;
-import com.github.mobile.android.util.LateAuthenticatedGitHubClient;
 import com.github.mobile.android.issue.IssueStore;
 import com.github.mobile.android.persistence.AllReposForUserOrOrg;
 import com.github.mobile.android.sync.SyncCampaign;
+import com.github.mobile.android.util.LateAuthenticatedGitHubClient;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 import com.google.inject.Provides;
@@ -26,7 +27,6 @@ import java.util.List;
 
 import org.eclipse.egit.github.core.SearchRepository;
 import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.client.IGitHubConstants;
 import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.RepositoryService;
@@ -81,7 +81,7 @@ public class GitHubModule extends AbstractModule {
 
     @Provides
     IRepositorySearch searchService(final Provider<GitHubAccount> ghAccountProvider, final Context context) {
-        GitHubClient client = configureClient(new LateAuthenticatedGitHubClient(IGitHubConstants.HOST_API_V2, ghAccountProvider));
+        GitHubClient client = configureClient(new LateAuthenticatedGitHubClient(HOST_API_V2, ghAccountProvider));
 
         final RepositoryService service = new RepositoryService(client);
 
