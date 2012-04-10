@@ -97,8 +97,6 @@ public class MultiChoiceDialogFragment extends DialogFragmentHelper implements O
         case BUTTON_POSITIVE:
             onResult(RESULT_OK);
             break;
-        default:
-            break;
         }
     }
 

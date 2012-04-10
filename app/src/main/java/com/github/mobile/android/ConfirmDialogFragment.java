@@ -69,8 +69,6 @@ public class ConfirmDialogFragment extends DialogFragmentHelper implements OnCli
         case BUTTON_NEGATIVE:
             onResult(RESULT_CANCELED);
             break;
-        default:
-            break;
         }
     }
 }
