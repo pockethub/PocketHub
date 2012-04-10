@@ -1,6 +1,7 @@
 package com.github.mobile.android.ui.user;
 
 import static org.eclipse.egit.github.core.event.Event.TYPE_COMMIT_COMMENT;
+import static org.eclipse.egit.github.core.event.Event.TYPE_PULL_REQUEST_REVIEW_COMMENT;
 import static org.eclipse.egit.github.core.event.Event.TYPE_CREATE;
 import static org.eclipse.egit.github.core.event.Event.TYPE_DELETE;
 import static org.eclipse.egit.github.core.event.Event.TYPE_DOWNLOAD;
@@ -80,6 +81,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
                 || TYPE_MEMBER.equals(type) //
                 || TYPE_PUBLIC.equals(type) //
                 || TYPE_PULL_REQUEST.equals(type) //
+                || TYPE_PULL_REQUEST_REVIEW_COMMENT.equals(type) //
                 || TYPE_PUSH.equals(type) //
                 || TYPE_TEAM_ADD.equals(type) //
                 || TYPE_WATCH.equals(type);
@@ -157,7 +159,9 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
                 action = "updated";
             text = MessageFormat.format("{0} {1} pull request {2} on {3}", actor, action,
                     Integer.toBinaryString(payload.getPullRequest().getNumber()), repoName);
-        } else if (TYPE_PUSH.equals(type)) {
+        } else if (TYPE_PULL_REQUEST_REVIEW_COMMENT.equals(type))
+            text = MessageFormat.format("{0} commented on {1}", actor, repoName);
+        else if (TYPE_PUSH.equals(type)) {
             PushPayload payload = (PushPayload) event.getPayload();
             String ref = payload.getRef();
             if (ref.startsWith("refs/heads/"))
