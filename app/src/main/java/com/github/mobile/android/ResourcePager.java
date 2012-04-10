@@ -3,6 +3,7 @@ package com.github.mobile.android;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,10 +76,15 @@ public abstract class ResourcePager<E> {
      * @throws IOException
      */
     public boolean next() throws IOException {
+        boolean empytPage = false;
         PageIterator<E> iterator = createIterator(page, -1);
         try {
-            for (int i = 0; i < count && iterator.hasNext(); i++)
-                for (E resource : iterator.next()) {
+            for (int i = 0; i < count && iterator.hasNext(); i++) {
+                Collection<E> resourcePage = iterator.next();
+                empytPage = resourcePage.isEmpty();
+                if (empytPage)
+                    break;
+                for (E resource : resourcePage) {
                     resource = register(resource);
                     if (resource == null)
                         continue;
@@ -86,7 +92,7 @@ public abstract class ResourcePager<E> {
                     if (!resources.containsKey(id))
                         resources.put(id, resource);
                 }
-
+            }
             // Set page to count value if first call after call to reset()
             if (count > 1) {
                 page = count;
@@ -98,7 +104,7 @@ public abstract class ResourcePager<E> {
             hasMore = false;
             throw e.getCause();
         }
-        hasMore = iterator.hasNext();
+        hasMore = iterator.hasNext() && !empytPage;
         return hasMore;
     }
 
