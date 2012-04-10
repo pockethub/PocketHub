@@ -88,9 +88,7 @@ public abstract class ResourcePager<E> {
                     resource = register(resource);
                     if (resource == null)
                         continue;
-                    String id = getId(resource);
-                    if (!resources.containsKey(id))
-                        resources.put(id, resource);
+                    resources.put(getId(resource), resource);
                 }
             }
             // Set page to count value if first call after call to reset()
