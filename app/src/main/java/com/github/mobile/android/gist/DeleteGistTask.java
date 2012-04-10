@@ -1,7 +1,7 @@
 package com.github.mobile.android.gist;
 
+import static android.app.Activity.RESULT_OK;
 import static android.widget.Toast.LENGTH_LONG;
-import static com.github.mobile.android.ResultCodes.GIST_DELETE;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.widget.Toast;
@@ -70,7 +70,7 @@ public class DeleteGistTask extends AuthenticatedUserTask<Gist> {
         dismissProgress();
 
         Activity activity = (Activity) getContext();
-        activity.setResult(GIST_DELETE);
+        activity.setResult(RESULT_OK);
         activity.finish();
     }
 

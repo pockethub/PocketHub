@@ -1,6 +1,6 @@
 package com.github.mobile.android.gist;
 
-import static com.github.mobile.android.ResultCodes.GIST_DELETE;
+import static android.app.Activity.RESULT_OK;
 import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.content.Intent;
@@ -8,8 +8,8 @@ import android.os.Bundle;
 import android.support.v4.content.Loader;
 
 import com.github.mobile.android.R.layout;
-import com.github.mobile.android.authenticator.GitHubAccount;
 import com.github.mobile.android.ThrowableLoader;
+import com.github.mobile.android.authenticator.GitHubAccount;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -39,11 +39,11 @@ public class MyGistsFragment extends GistsFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CREATE && GIST_DELETE == resultCode) {
+        if (requestCode == REQUEST_CREATE && RESULT_OK == resultCode) {
             refresh();
             return;
         }
-        if (requestCode == REQUEST_VIEW && GIST_DELETE == resultCode) {
+        if (requestCode == REQUEST_VIEW && RESULT_OK == resultCode) {
             refresh();
             return;
         }
