@@ -95,6 +95,7 @@ public abstract class ResourcePager<E> {
 
             page++;
         } catch (NoSuchPageException e) {
+            hasMore = false;
             throw e.getCause();
         }
         hasMore = iterator.hasNext();
