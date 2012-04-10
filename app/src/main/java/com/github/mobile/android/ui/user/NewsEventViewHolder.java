@@ -108,12 +108,13 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         else if (TYPE_CREATE.equals(type)) {
             CreatePayload payload = (CreatePayload) event.getPayload();
             String refType = payload.getRefType();
-            String location;
+            String created;
             if (!"repository".equals(refType))
-                location = " at " + repoName;
+                created = payload.getRef() + " at " + repoName;
             else
-                location = "";
-            text = MessageFormat.format("{0} created {1} {2}{3}", actor, refType, payload.getRef(), location);
+                created = repoName.substring(repoName.indexOf('/') + 1);
+
+            text = MessageFormat.format("{0} created {1} {2}", actor, refType, created);
         } else if (TYPE_DELETE.equals(type)) {
             DeletePayload payload = (DeletePayload) event.getPayload();
             String refType = payload.getRefType();
