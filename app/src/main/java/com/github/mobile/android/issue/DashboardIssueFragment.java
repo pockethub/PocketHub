@@ -1,24 +1,19 @@
 package com.github.mobile.android.issue;
 
 import android.os.Bundle;
-import android.support.v4.content.Loader;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
-import com.github.mobile.android.ThrowableLoader;
-import com.github.mobile.android.ui.ResourceLoadingIndicator;
-import com.github.mobile.android.ui.fragments.ListLoadingFragment;
+import com.github.mobile.android.ResourcePager;
+import com.github.mobile.android.ui.PagedListFragment;
 import com.github.mobile.android.util.AvatarHelper;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 import com.madgag.android.listviews.ViewInflator;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +24,7 @@ import org.eclipse.egit.github.core.service.IssueService;
 /**
  * Dashboard issue list fragment
  */
-public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
+public class DashboardIssueFragment extends PagedListFragment<Issue> {
 
     /**
      * Filter data argument
@@ -44,32 +39,14 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
 
     private Map<String, String> filterData;
 
-    private IssuePager pager;
-
     @Inject
     private AvatarHelper avatarHelper;
-
-    private ResourceLoadingIndicator loadingIndicator;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        pager = new IssuePager(store) {
-
-            public PageIterator<Issue> createIterator(int page, int size) {
-                return service.pageIssues(filterData, page, size);
-            }
-        };
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        loadingIndicator = new ResourceLoadingIndicator(getActivity(), string.loading_issues);
-        loadingIndicator.setList(getListView());
     }
 
     @SuppressWarnings("unchecked")
@@ -79,44 +56,6 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
 
         filterData = (Map<String, String>) getArguments().getSerializable(ARG_FILTER);
         getListView().setFastScrollEnabled(true);
-        getListView().setOnScrollListener(new OnScrollListener() {
-
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-            }
-
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (!pager.hasMore())
-                    return;
-                if (getLoaderManager().hasRunningLoaders())
-                    return;
-                if (getListView().getLastVisiblePosition() >= pager.size())
-                    showMore();
-            }
-        });
-    }
-
-    @Override
-    public Loader<List<Issue>> onCreateLoader(int id, Bundle args) {
-        return new ThrowableLoader<List<Issue>>(getActivity(), listItems) {
-
-            public List<Issue> loadData() throws IOException {
-                pager.next();
-                return pager.getResources();
-            }
-        };
-    }
-
-    @Override
-    public void refresh() {
-        pager.reset();
-        super.refresh();
-    }
-
-    /**
-     * Show more issues while retaining the current {@link IssuePager} state
-     */
-    private void showMore() {
-        super.refresh();
     }
 
     @Override
@@ -132,12 +71,18 @@ public class DashboardIssueFragment extends ListLoadingFragment<Issue> {
         startActivity(ViewIssueActivity.viewIssueIntentFor(issue));
     }
 
-    public void onLoadFinished(Loader<List<Issue>> loader, List<Issue> items) {
-        if (pager.hasMore())
-            loadingIndicator.showLoading();
-        else
-            loadingIndicator.setVisible(false);
+    @Override
+    protected ResourcePager<Issue> createPager() {
+        return new IssuePager(store) {
 
-        super.onLoadFinished(loader, items);
+            public PageIterator<Issue> createIterator(int page, int size) {
+                return service.pageIssues(filterData, page, size);
+            }
+        };
+    }
+
+    @Override
+    protected int getLoadingMessage() {
+        return string.loading_issues;
     }
 }
