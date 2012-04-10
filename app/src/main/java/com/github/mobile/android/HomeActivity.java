@@ -1,10 +1,8 @@
 package com.github.mobile.android;
 
-import android.accounts.Account;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -15,19 +13,14 @@ import com.github.mobile.android.gist.GistsActivity;
 import com.github.mobile.android.issue.FilterBrowseActivity;
 import com.github.mobile.android.issue.IssueDashboardActivity;
 import com.github.mobile.android.repo.OrgListFragment;
-import com.github.mobile.android.ui.WelcomeActivity;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
-import com.google.inject.Inject;
-
-import roboguice.inject.ContextScopedProvider;
 
 /**
  * Home screen activity
  */
 public class HomeActivity extends RoboSherlockFragmentActivity {
 
-    private static final String TAG = "HA";
     private static final int CODE_LOGIN = 1;
 
     @Override
