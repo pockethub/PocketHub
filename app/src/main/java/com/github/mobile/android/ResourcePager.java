@@ -80,6 +80,8 @@ public abstract class ResourcePager<E> {
             for (int i = 0; i < count && iterator.hasNext(); i++)
                 for (E resource : iterator.next()) {
                     resource = register(resource);
+                    if (resource == null)
+                        continue;
                     String id = getId(resource);
                     if (!resources.containsKey(id))
                         resources.put(id, resource);
