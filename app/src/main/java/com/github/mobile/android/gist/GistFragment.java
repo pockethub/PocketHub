@@ -62,11 +62,6 @@ import roboguice.inject.InjectView;
  */
 public class GistFragment extends RoboSherlockFragment implements OnItemClickListener {
 
-    /**
-     * Result if the Gist was deleted
-     */
-    public static final int RESULT_DELETED = 1;
-
     private static final int REQUEST_CODE_COMMENT = 1;
 
     private String gistId;
