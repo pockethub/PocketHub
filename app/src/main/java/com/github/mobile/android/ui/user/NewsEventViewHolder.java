@@ -158,7 +158,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
             if ("synchronize".equals(action))
                 action = "updated";
             text = MessageFormat.format("{0} {1} pull request {2} on {3}", actor, action,
-                    Integer.toBinaryString(payload.getPullRequest().getNumber()), repoName);
+                    Integer.toString(payload.getPullRequest().getNumber()), repoName);
         } else if (TYPE_PULL_REQUEST_REVIEW_COMMENT.equals(type))
             text = MessageFormat.format("{0} commented on {1}", actor, repoName);
         else if (TYPE_PUSH.equals(type)) {
