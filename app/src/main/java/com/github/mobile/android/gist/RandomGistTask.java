@@ -1,12 +1,12 @@
 package com.github.mobile.android.gist;
 
 import static android.widget.Toast.LENGTH_LONG;
+import static com.github.mobile.android.RequestCodes.GIST_VIEW;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.widget.Toast;
 
 import com.github.mobile.android.R.string;
-import com.github.mobile.android.RequestCodes;
 import com.github.mobile.android.async.AuthenticatedUserTask;
 import com.google.inject.Inject;
 
@@ -87,7 +87,7 @@ public class RandomGistTask extends AuthenticatedUserTask<Gist> {
     protected void onSuccess(Gist gist) throws Exception {
         progress.cancel();
 
-        ((Activity) getContext()).startActivityForResult(ViewGistsActivity.createIntent(gist), RequestCodes.GIST_VIEW);
+        ((Activity) getContext()).startActivityForResult(ViewGistsActivity.createIntent(gist), GIST_VIEW);
     }
 
     protected void onException(Exception e) throws RuntimeException {

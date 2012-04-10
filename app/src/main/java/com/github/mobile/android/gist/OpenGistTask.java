@@ -1,12 +1,12 @@
 package com.github.mobile.android.gist;
 
 import static android.widget.Toast.LENGTH_LONG;
+import static com.github.mobile.android.RequestCodes.GIST_VIEW;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.widget.Toast;
 
 import com.github.mobile.android.R.string;
-import com.github.mobile.android.RequestCodes;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Gist;
@@ -67,7 +67,7 @@ public class OpenGistTask extends RoboAsyncTask<Gist> {
     protected void onSuccess(Gist gist) throws Exception {
         dismissProgress();
 
-        ((Activity) getContext()).startActivityForResult(ViewGistsActivity.createIntent(gist), RequestCodes.GIST_VIEW);
+        ((Activity) getContext()).startActivityForResult(ViewGistsActivity.createIntent(gist), GIST_VIEW);
     }
 
     @Override
