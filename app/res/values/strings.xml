@@ -251,4 +251,6 @@
      <string name="confirm_filter_delete_message">Are you sure you want to remove this saved issue filter?</string>
 
      <string name="loading_issues">Loading Issues…</string>
+
+     <string name="loading_news">Loading News…</string>
 </resources>
