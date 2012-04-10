@@ -1,6 +1,7 @@
 package com.github.mobile.android;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.github.mobile.android.async.AuthenticatedUserLoader;
 
@@ -10,6 +11,8 @@ import com.github.mobile.android.async.AuthenticatedUserLoader;
  * @param <D>
  */
 public abstract class ThrowableLoader<D> extends AuthenticatedUserLoader<D> {
+
+    private static final String TAG = "ThrowableLoader";
 
     private final D data;
 
@@ -31,6 +34,7 @@ public abstract class ThrowableLoader<D> extends AuthenticatedUserLoader<D> {
         try {
             return loadData();
         } catch (Exception e) {
+            Log.d(TAG, "Exception loading data", e);
             exception = e;
         }
         return data;
