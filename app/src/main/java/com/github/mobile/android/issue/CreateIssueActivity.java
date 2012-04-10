@@ -22,6 +22,7 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.SingleChoiceDialogFragment;
 import com.github.mobile.android.TextWatcherAdapter;
+import com.github.mobile.android.async.AuthenticatedUserTask;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.google.inject.Inject;
@@ -42,17 +43,11 @@ import org.eclipse.egit.github.core.service.MilestoneService;
 
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
-import com.github.mobile.android.async.AuthenticatedUserTask;
 
 /**
  * Activity to create a new issue
  */
 public class CreateIssueActivity extends DialogFragmentActivity {
-
-    /**
-     * Issue successfully created
-     */
-    public static final int RESULT_CREATED = RESULT_FIRST_USER;
 
     /**
      * Create intent to create an issue in the given {@link Repository}
@@ -245,8 +240,8 @@ public class CreateIssueActivity extends DialogFragmentActivity {
 
             protected void onSuccess(Issue issue) throws Exception {
                 progress.cancel();
-                startActivity(ViewIssueActivity.viewIssueIntentFor(issue));
-                setResult(RESULT_CREATED);
+                startActivity(ViewIssueActivity.createIntent(issue));
+                setResult(RESULT_OK);
                 finish();
             }
 

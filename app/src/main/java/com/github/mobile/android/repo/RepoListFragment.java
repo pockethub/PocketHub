@@ -12,9 +12,9 @@ import android.widget.ListView;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.async.AuthenticatedUserLoader;
-import com.github.mobile.android.issue.IssueBrowseActivity;
 import com.github.mobile.android.persistence.AccountDataManager;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
+import com.github.mobile.android.ui.repo.RepositoryViewActivity;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -62,7 +62,7 @@ public class RepoListFragment extends ListLoadingFragment<Repository> {
     public void onListItemClick(ListView list, View v, int position, long id) {
         Repository repo = (Repository) list.getItemAtPosition(position);
         recent.add(repo);
-        startActivity(IssueBrowseActivity.createIntent(repo));
+        startActivity(RepositoryViewActivity.createIntent(repo));
     }
 
     @Override

@@ -87,7 +87,7 @@ public class HtmlViewer implements Runnable {
             Issue issue = new Issue();
             issue.setNumber(issueNumber);
             issue.setHtmlUrl(url);
-            context.startActivity(ViewIssueActivity.viewIssueIntentFor(issue));
+            context.startActivity(ViewIssueActivity.createIntent(issue));
             return;
         }
 

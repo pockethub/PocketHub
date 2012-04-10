@@ -45,8 +45,8 @@ public class DashboardIssueFragment extends PagedListFragment<Issue> {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
 
+        setHasOptionsMenu(true);
     }
 
     @SuppressWarnings("unchecked")
@@ -68,7 +68,7 @@ public class DashboardIssueFragment extends PagedListFragment<Issue> {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Issue issue = (Issue) l.getItemAtPosition(position);
-        startActivity(ViewIssueActivity.viewIssueIntentFor(issue));
+        startActivity(ViewIssueActivity.createIntent(issue));
     }
 
     @Override

@@ -1,20 +1,39 @@
 package com.github.mobile.android.issue;
 
+import static android.app.Activity.RESULT_OK;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static android.widget.Toast.LENGTH_LONG;
+import static com.github.mobile.android.RequestCodes.ISSUE_CREATE;
+import static com.github.mobile.android.RequestCodes.ISSUE_FILTER_EDIT;
+import static com.github.mobile.android.RequestCodes.ISSUE_VIEW;
+import static com.github.mobile.android.util.GitHubIntents.EXTRA_ISSUE_FILTER;
+import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.actionbarsherlock.R.menu;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.RequestFuture;
 import com.github.mobile.android.ThrowableLoader;
+import com.github.mobile.android.persistence.AccountDataManager;
 import com.github.mobile.android.ui.ResourceLoadingIndicator;
 import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 import com.github.mobile.android.util.AvatarHelper;
@@ -26,19 +45,21 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.service.IssueService;
+
+import roboguice.inject.InjectExtra;
 
 /**
  * Fragment to display a list of issues
  */
 public class IssuesFragment extends ListLoadingFragment<Issue> {
 
-    private OnItemClickListener clickListener;
-
-    private LoaderCallbacks<List<Issue>> loadListener;
+    @Inject
+    private AccountDataManager cache;
 
     @Inject
     private IssueService service;
@@ -46,9 +67,11 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
     @Inject
     private IssueStore store;
 
+    @InjectExtra(value = EXTRA_ISSUE_FILTER, optional = true)
     private IssueFilter filter;
 
-    private IRepositoryIdProvider repository;
+    @InjectExtra(EXTRA_REPOSITORY)
+    private Repository repository;
 
     private boolean hasMore = true;
 
@@ -56,44 +79,19 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
 
     private ResourceLoadingIndicator loadingIndicator;
 
+    private TextView filterTextView;
+
     @Inject
     private AvatarHelper avatarHelper;
 
-    /**
-     * @param repository
-     * @return this fragment
-     */
-    public IssuesFragment setRepository(IRepositoryIdProvider repository) {
-        this.repository = repository;
-        return this;
-    }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    /**
-     * @param filter
-     * @return this fragment
-     */
-    public IssuesFragment setFilter(IssueFilter filter) {
-        this.filter = filter;
-        pagers.clear();
-        return this;
-    }
+        setHasOptionsMenu(true);
 
-    /**
-     * @param clickListener
-     * @return this fragment
-     */
-    public IssuesFragment setClickListener(OnItemClickListener clickListener) {
-        this.clickListener = clickListener;
-        return this;
-    }
-
-    /**
-     * @param loadListener
-     * @return this fragment
-     */
-    public IssuesFragment setLoadListener(LoaderCallbacks<List<Issue>> loadListener) {
-        this.loadListener = loadListener;
-        return this;
+        if (filter == null)
+            filter = new IssueFilter(repository);
     }
 
     @Override
@@ -102,6 +100,20 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
 
         loadingIndicator = new ResourceLoadingIndicator(getActivity(), string.loading_more_issues);
         loadingIndicator.setList(getListView());
+
+        View filterHeader = getLayoutInflater(savedInstanceState).inflate(layout.issue_filter_header, null);
+        filterTextView = (TextView) filterHeader.findViewById(id.tv_filter_summary);
+        getListView().addHeaderView(filterHeader, null, false);
+        updateFilterSummary();
+    }
+
+    private void updateFilterSummary() {
+        CharSequence display = filter.toDisplay();
+        if (display.length() > 0) {
+            filterTextView.setText(display);
+            filterTextView.setVisibility(VISIBLE);
+        } else
+            filterTextView.setVisibility(GONE);
     }
 
     @Override
@@ -129,13 +141,6 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
         });
     }
 
-    public void onLoaderReset(Loader<List<Issue>> listLoader) {
-        super.onLoaderReset(listLoader);
-
-        if (loadListener != null)
-            loadListener.onLoaderReset(listLoader);
-    }
-
     @Override
     public void refresh() {
         for (IssuePager pager : pagers)
@@ -151,6 +156,7 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
         super.refresh();
     }
 
+    @Override
     public void onLoadFinished(Loader<List<Issue>> loader, final List<Issue> items) {
         if (hasMore)
             loadingIndicator.showLoading();
@@ -158,15 +164,12 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
             loadingIndicator.setVisible(false);
 
         super.onLoadFinished(loader, items);
-
-        if (loadListener != null)
-            loadListener.onLoadFinished(loader, items);
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        if (clickListener != null)
-            clickListener.onItemClick(l, v, position, id);
+        Issue issue = (Issue) l.getItemAtPosition(position);
+        startActivityForResult(ViewIssueActivity.createIntent(issue), ISSUE_VIEW);
     }
 
     @Override
@@ -203,5 +206,58 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
         return new ViewHoldingListAdapter<Issue>(items, viewInflatorFor(getActivity(), layout.repo_issue_list_item),
                 reflectiveFactoryFor(RepoIssueViewHolder.class, avatarHelper,
                         RepoIssueViewHolder.computeMaxDigits(items)));
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
+        inflater.inflate(menu.issues, optionsMenu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case id.create_issue:
+            startActivityForResult(CreateIssueActivity.createIntent(new RepositoryId(repository.getOwner().getLogin(),
+                    repository.getName())), ISSUE_CREATE);
+            return true;
+        case id.filter_issues:
+            startActivityForResult(FilterIssuesActivity.createIntent(repository, filter), ISSUE_FILTER_EDIT);
+            return true;
+        case id.bookmark_filter:
+            cache.addIssueFilter(filter, new RequestFuture<IssueFilter>() {
+
+                public void success(IssueFilter response) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Issue filter saved to bookmarks",
+                            LENGTH_LONG).show();
+                }
+            });
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == ISSUE_FILTER_EDIT && data != null) {
+            IssueFilter newFilter = ((IssueFilter) data.getSerializableExtra(EXTRA_ISSUE_FILTER)).clone();
+            if (!filter.equals(newFilter)) {
+                filter = newFilter;
+                updateFilterSummary();
+                pagers.clear();
+                refresh();
+            }
+        }
+
+        if (requestCode == ISSUE_VIEW) {
+            ListAdapter adapter = getListAdapter();
+            if (adapter instanceof BaseAdapter)
+                ((BaseAdapter) adapter).notifyDataSetChanged();
+        }
+
+        if (requestCode == ISSUE_CREATE && resultCode == RESULT_OK)
+            refresh();
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

@@ -95,7 +95,7 @@ public class ViewIssueActivity extends DialogFragmentActivity {
      * @param issue
      * @return intent
      */
-    public static Intent viewIssueIntentFor(Issue issue) {
+    public static Intent createIntent(Issue issue) {
         return new Builder("repo.issue.VIEW").issue(issue).toIntent();
     }
 
