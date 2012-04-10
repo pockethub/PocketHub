@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
@@ -49,8 +50,10 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(layout.pager_with_title);
-        setTitle(repository.getName());
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(repository.getName());
+        actionBar.setSubtitle(repository.getOwner().getLogin());
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         pager.setAdapter(new RepositoryPagerAdapter(getSupportFragmentManager()));
         indicator.setViewPager(pager);
