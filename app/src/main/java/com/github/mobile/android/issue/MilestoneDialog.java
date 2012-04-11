@@ -1,11 +1,14 @@
 package com.github.mobile.android.issue;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static org.eclipse.egit.github.core.service.IssueService.STATE_CLOSED;
+import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 import android.app.ProgressDialog;
 
 import com.github.mobile.android.DialogFragmentActivity;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.SingleChoiceDialogFragment;
+import com.github.mobile.android.async.AuthenticatedUserTask;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -13,10 +16,7 @@ import java.util.List;
 
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.Milestone;
-import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.MilestoneService;
-
-import com.github.mobile.android.async.AuthenticatedUserTask;
 
 /**
  * Dialog helper to display a list of milestones to select one from
@@ -65,19 +65,20 @@ public class MilestoneDialog {
         new AuthenticatedUserTask<List<Milestone>>(activity) {
 
             public List<Milestone> run() throws Exception {
-                repositoryMilestones = newArrayList();
-                repositoryMilestones.addAll(service.getMilestones(repository, IssueService.STATE_OPEN));
-                repositoryMilestones.addAll(service.getMilestones(repository, IssueService.STATE_CLOSED));
+                List<Milestone> milestones = newArrayList();
+                milestones.addAll(service.getMilestones(repository, STATE_OPEN));
+                milestones.addAll(service.getMilestones(repository, STATE_CLOSED));
                 Collections.sort(repositoryMilestones, new Comparator<Milestone>() {
 
                     public int compare(Milestone m1, Milestone m2) {
                         return m1.getTitle().compareToIgnoreCase(m2.getTitle());
                     }
                 });
-                return repositoryMilestones;
+                return milestones;
             }
 
             protected void onSuccess(List<Milestone> all) throws Exception {
+                repositoryMilestones = all;
                 if (!loader.isShowing())
                     return;
 
