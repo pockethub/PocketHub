@@ -1,18 +1,21 @@
 package com.github.mobile.android.ui.issue;
 
+import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.github.mobile.android.RequestCodes.ISSUE_ASSIGNEE_UPDATE;
 import static com.github.mobile.android.RequestCodes.ISSUE_CLOSE;
+import static com.github.mobile.android.RequestCodes.ISSUE_EDIT;
 import static com.github.mobile.android.RequestCodes.ISSUE_LABELS_UPDATE;
 import static com.github.mobile.android.RequestCodes.ISSUE_MILESTONE_UPDATE;
 import static com.github.mobile.android.RequestCodes.ISSUE_REOPEN;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENTS;
+import static com.github.mobile.android.util.GitHubIntents.EXTRA_ISSUE;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_ISSUE_NUMBER;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY_NAME;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY_OWNER;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +39,7 @@ import com.github.mobile.android.SingleChoiceDialogFragment;
 import com.github.mobile.android.async.AuthenticatedUserTask;
 import com.github.mobile.android.comment.CommentViewHolder;
 import com.github.mobile.android.core.issue.FullIssue;
+import com.github.mobile.android.issue.EditIssueActivity;
 import com.github.mobile.android.issue.IssueHeaderViewHolder;
 import com.github.mobile.android.issue.IssueStore;
 import com.github.mobile.android.ui.DialogResultListener;
@@ -104,6 +108,8 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
     private EditStateTask stateTask;
 
+    private EditIssueTask bodyTask;
+
     @SuppressWarnings("unchecked")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,6 +150,14 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         };
 
         stateTask = new EditStateTask(dialogActivity, repositoryId, issueNumber) {
+            protected void onSuccess(Issue editedIssue) throws Exception {
+                super.onSuccess(editedIssue);
+
+                headerHolder.updateViewFor(editedIssue);
+            }
+        };
+
+        bodyTask = new EditIssueTask(dialogActivity, repositoryId, issueNumber) {
             protected void onSuccess(Issue editedIssue) throws Exception {
                 super.onSuccess(editedIssue);
 
@@ -287,7 +301,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
-        if (Activity.RESULT_OK != resultCode)
+        if (RESULT_OK != resultCode)
             return;
 
         switch (requestCode) {
@@ -314,6 +328,16 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         inflater.inflate(menu.issue_view, optionsMenu);
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (RESULT_OK == resultCode && ISSUE_EDIT == requestCode && data != null) {
+            Issue editedIssue = (Issue) data.getSerializableExtra(EXTRA_ISSUE);
+            bodyTask.edit(editedIssue.getTitle(), editedIssue.getBody());
+            return;
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Don't allow options before issue loads
@@ -333,6 +357,9 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             return true;
         case id.issue_state:
             stateTask.confirm(STATE_OPEN.equals(issue.getState()));
+            return true;
+        case id.issue_description:
+            startActivityForResult(EditIssueActivity.createIntent(issue), ISSUE_EDIT);
             return true;
         case id.refresh:
             refreshAnimation.setRefreshItem(item).start(getActivity());
