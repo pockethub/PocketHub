@@ -4,9 +4,9 @@ import static com.github.mobile.android.RequestCodes.ISSUE_ASSIGNEE_UPDATE;
 import android.app.ProgressDialog;
 
 import com.github.mobile.android.DialogFragmentActivity;
-import com.github.mobile.android.async.AuthenticatedUserTask;
 import com.github.mobile.android.issue.AssigneeDialog;
 import com.github.mobile.android.issue.IssueStore;
+import com.github.mobile.android.ui.ProgressDialogTask;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
@@ -17,15 +17,13 @@ import org.eclipse.egit.github.core.service.CollaboratorService;
 /**
  * Task to edit the assignee
  */
-public class EditAssigneeTask extends AuthenticatedUserTask<Issue> {
+public class EditAssigneeTask extends ProgressDialogTask<Issue> {
 
     @Inject
     private CollaboratorService service;
 
     @Inject
     private IssueStore store;
-
-    private ProgressDialog progress;
 
     private final AssigneeDialog assigneeDialog;
 
@@ -86,26 +84,5 @@ public class EditAssigneeTask extends AuthenticatedUserTask<Issue> {
         editedIssue.setAssignee(new User().setLogin(assignee != null ? assignee : ""));
         editedIssue.setNumber(issueNumber);
         return store.editIssue(repositoryId, editedIssue);
-    }
-
-    private void dismissProgress() {
-        if (progress != null)
-            progress.dismiss();
-    }
-
-    /**
-     * Sub-classes may override but should always call super to ensure the progress dialog is dismissed
-     */
-    @Override
-    protected void onSuccess(Issue issue) throws Exception {
-        dismissProgress();
-    }
-
-    /**
-     * Sub-classes may override but should always call super to ensure the progress dialog is dismissed
-     */
-    @Override
-    protected void onException(Exception e) throws RuntimeException {
-        dismissProgress();
     }
 }

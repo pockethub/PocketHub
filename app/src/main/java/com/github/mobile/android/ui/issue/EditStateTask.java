@@ -8,8 +8,8 @@ import android.app.ProgressDialog;
 
 import com.github.mobile.android.ConfirmDialogFragment;
 import com.github.mobile.android.DialogFragmentActivity;
-import com.github.mobile.android.async.AuthenticatedUserTask;
 import com.github.mobile.android.issue.IssueStore;
+import com.github.mobile.android.ui.ProgressDialogTask;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
@@ -18,14 +18,12 @@ import org.eclipse.egit.github.core.Issue;
 /**
  * Task to close or reopen an issue
  */
-public class EditStateTask extends AuthenticatedUserTask<Issue> {
+public class EditStateTask extends ProgressDialogTask<Issue> {
 
     @Inject
     private IssueStore store;
 
     private final IRepositoryIdProvider repositoryId;
-
-    private ProgressDialog progress;
 
     private final int issueNumber;
 
@@ -92,26 +90,5 @@ public class EditStateTask extends AuthenticatedUserTask<Issue> {
 
         execute();
         return this;
-    }
-
-    private void dismissProgress() {
-        if (progress != null)
-            progress.dismiss();
-    }
-
-    /**
-     * Sub-classes may override but should always call super to ensure the progress dialog is dismissed
-     */
-    @Override
-    protected void onSuccess(Issue issue) throws Exception {
-        dismissProgress();
-    }
-
-    /**
-     * Sub-classes may override but should always call super to ensure the progress dialog is dismissed
-     */
-    @Override
-    protected void onException(Exception e) throws RuntimeException {
-        dismissProgress();
     }
 }

@@ -4,9 +4,9 @@ import static com.github.mobile.android.RequestCodes.ISSUE_LABELS_UPDATE;
 import android.app.ProgressDialog;
 
 import com.github.mobile.android.DialogFragmentActivity;
-import com.github.mobile.android.async.AuthenticatedUserTask;
 import com.github.mobile.android.issue.IssueStore;
 import com.github.mobile.android.issue.LabelsDialog;
+import com.github.mobile.android.ui.ProgressDialogTask;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -20,15 +20,13 @@ import org.eclipse.egit.github.core.service.LabelService;
 /**
  * Task to edit labels
  */
-public class EditLabelsTask extends AuthenticatedUserTask<Issue> {
+public class EditLabelsTask extends ProgressDialogTask<Issue> {
 
     @Inject
     private IssueStore store;
 
     @Inject
     private LabelService service;
-
-    private ProgressDialog progress;
 
     private final LabelsDialog labelsDialog;
 
@@ -92,26 +90,5 @@ public class EditLabelsTask extends AuthenticatedUserTask<Issue> {
             issueLabels.add(new Label().setName(label));
         editedIssue.setLabels(issueLabels);
         return store.editIssue(repositoryId, editedIssue);
-    }
-
-    private void dismissProgress() {
-        if (progress != null)
-            progress.dismiss();
-    }
-
-    /**
-     * Sub-classes may override but should always call super to ensure the progress dialog is dismissed
-     */
-    @Override
-    protected void onSuccess(Issue issue) throws Exception {
-        dismissProgress();
-    }
-
-    /**
-     * Sub-classes may override but should always call super to ensure the progress dialog is dismissed
-     */
-    @Override
-    protected void onException(Exception e) throws RuntimeException {
-        dismissProgress();
     }
 }
