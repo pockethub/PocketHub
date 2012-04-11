@@ -47,7 +47,6 @@ public class IssuesPagerAdapter extends FragmentPagerAdapter {
         args.putString(EXTRA_REPOSITORY_OWNER, repo.getOwner());
         args.putInt(EXTRA_ISSUE_NUMBER, issues[position]);
         fragment.setArguments(args);
-        fragments.put(position, fragment);
         return fragment;
     }
 
@@ -56,6 +55,14 @@ public class IssuesPagerAdapter extends FragmentPagerAdapter {
         super.destroyItem(container, position, object);
 
         fragments.remove(position);
+    }
+
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        Object fragment = super.instantiateItem(container, position);
+        if (fragment instanceof IssueFragment)
+            fragments.put(position, (IssueFragment) fragment);
+        return fragment;
     }
 
     @Override
