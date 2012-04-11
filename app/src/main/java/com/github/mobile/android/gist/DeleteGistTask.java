@@ -7,7 +7,7 @@ import android.app.ProgressDialog;
 import android.widget.Toast;
 
 import com.github.mobile.android.R.string;
-import com.github.mobile.android.async.AuthenticatedUserTask;
+import com.github.mobile.android.ui.ProgressDialogTask;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Gist;
@@ -18,11 +18,9 @@ import roboguice.inject.ContextScopedProvider;
 /**
  * Async task to delete a Gist
  */
-public class DeleteGistTask extends AuthenticatedUserTask<Gist> {
+public class DeleteGistTask extends ProgressDialogTask<Gist> {
 
     private final String id;
-
-    private ProgressDialog progress;
 
     @Inject
     private ContextScopedProvider<GistService> serviceProvider;
@@ -38,19 +36,12 @@ public class DeleteGistTask extends AuthenticatedUserTask<Gist> {
         id = gistId;
     }
 
-    private void dismissProgress() {
-        if (progress != null)
-            progress.dismiss();
-    }
-
     /**
      * Execute the task with a progress dialog displaying.
      * <p>
      * This method must be called from the main thread.
      */
     public void start() {
-        dismissProgress();
-
         progress = new ProgressDialog(getContext());
         progress.setIndeterminate(true);
         progress.setMessage(getContext().getString(string.deleting_gist));
@@ -67,7 +58,7 @@ public class DeleteGistTask extends AuthenticatedUserTask<Gist> {
 
     @Override
     protected void onSuccess(Gist gist) throws Exception {
-        dismissProgress();
+        super.onSuccess(gist);
 
         Activity activity = (Activity) getContext();
         activity.setResult(RESULT_OK);
@@ -76,7 +67,7 @@ public class DeleteGistTask extends AuthenticatedUserTask<Gist> {
 
     @Override
     protected void onException(Exception e) throws RuntimeException {
-        dismissProgress();
+        super.onException(e);
 
         Toast.makeText(getContext(), e.getMessage(), LENGTH_LONG).show();
     }
