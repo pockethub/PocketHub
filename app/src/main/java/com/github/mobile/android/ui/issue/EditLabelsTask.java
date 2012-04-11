@@ -71,6 +71,8 @@ public class EditLabelsTask extends ProgressDialogTask<Issue> {
      * @return this task
      */
     public EditLabelsTask edit(String[] labels) {
+        dismissProgress();
+
         progress = new ProgressDialog(getContext());
         progress.setMessage("Updating labels...");
         progress.setIndeterminate(true);

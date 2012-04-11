@@ -81,6 +81,8 @@ public class EditMilestoneTask extends ProgressDialogTask<Issue> {
         else
             milestoneNumber = -1;
 
+        dismissProgress();
+
         progress = new ProgressDialog(getContext());
         progress.setMessage("Updating milestone...");
         progress.setIndeterminate(true);

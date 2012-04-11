@@ -78,6 +78,8 @@ public class EditStateTask extends ProgressDialogTask<Issue> {
      * @return this task
      */
     public EditStateTask edit(boolean close) {
+        dismissProgress();
+
         progress = new ProgressDialog(getContext());
         if (close)
             progress.setMessage("Closing issue...");

@@ -34,9 +34,14 @@ public abstract class ProgressDialogTask<E> extends AuthenticatedUserTask<E> {
         super(context, executor);
     }
 
-    private void dismissProgress() {
-        if (progress != null)
+    /**
+     * Dismiss and clear progress dialog field
+     */
+    protected void dismissProgress() {
+        if (progress != null) {
             progress.dismiss();
+            progress = null;
+        }
     }
 
     /**

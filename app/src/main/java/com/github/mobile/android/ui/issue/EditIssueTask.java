@@ -60,6 +60,8 @@ public class EditIssueTask extends ProgressDialogTask<Issue> {
         this.body = body;
         this.title = title;
 
+        dismissProgress();
+
         progress = new ProgressDialog(getContext());
         progress.setMessage("Updating issue...");
         progress.setIndeterminate(true);

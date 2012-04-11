@@ -68,6 +68,8 @@ public class EditAssigneeTask extends ProgressDialogTask<Issue> {
      * @return this task
      */
     public EditAssigneeTask edit(String user) {
+        dismissProgress();
+
         progress = new ProgressDialog(getContext());
         progress.setMessage("Updating assignee...");
         progress.setIndeterminate(true);

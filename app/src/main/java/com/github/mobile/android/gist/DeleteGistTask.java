@@ -42,6 +42,8 @@ public class DeleteGistTask extends ProgressDialogTask<Gist> {
      * This method must be called from the main thread.
      */
     public void start() {
+        dismissProgress();
+
         progress = new ProgressDialog(getContext());
         progress.setIndeterminate(true);
         progress.setMessage(getContext().getString(string.deleting_gist));
