@@ -11,7 +11,7 @@ import com.github.mobile.android.R.string;
 import com.github.mobile.android.ThrowableLoader;
 import com.github.mobile.android.async.AuthenticatedUserTask;
 import com.github.mobile.android.issue.IssueBrowseActivity;
-import com.github.mobile.android.ui.fragments.ListLoadingFragment;
+import com.github.mobile.android.ui.ListLoadingFragment;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;

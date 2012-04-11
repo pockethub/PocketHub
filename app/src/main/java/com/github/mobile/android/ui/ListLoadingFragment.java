@@ -1,4 +1,4 @@
-package com.github.mobile.android.ui.fragments;
+package com.github.mobile.android.ui;
 
 import android.app.Activity;
 import android.app.Application;

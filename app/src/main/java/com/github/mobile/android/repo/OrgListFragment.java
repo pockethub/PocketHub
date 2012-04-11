@@ -16,7 +16,7 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.async.AuthenticatedUserLoader;
 import com.github.mobile.android.persistence.AccountDataManager;
-import com.github.mobile.android.ui.fragments.ListLoadingFragment;
+import com.github.mobile.android.ui.ListLoadingFragment;
 import com.github.mobile.android.ui.user.UserViewActivity;
 import com.github.mobile.android.util.AvatarHelper;
 import com.google.inject.Inject;

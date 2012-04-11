@@ -13,7 +13,7 @@ import com.github.mobile.android.gist.GistsActivity;
 import com.github.mobile.android.issue.FilterBrowseActivity;
 import com.github.mobile.android.issue.IssueDashboardActivity;
 import com.github.mobile.android.repo.OrgListFragment;
-import com.github.mobile.android.ui.fragments.ListLoadingFragment;
+import com.github.mobile.android.ui.ListLoadingFragment;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
 /**

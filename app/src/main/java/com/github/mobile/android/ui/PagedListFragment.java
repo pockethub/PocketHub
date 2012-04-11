@@ -8,7 +8,6 @@ import android.widget.AbsListView.OnScrollListener;
 
 import com.github.mobile.android.ResourcePager;
 import com.github.mobile.android.ThrowableLoader;
-import com.github.mobile.android.ui.fragments.ListLoadingFragment;
 
 import java.io.IOException;
 import java.util.List;

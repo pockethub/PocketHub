@@ -27,7 +27,7 @@ import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
-import com.github.mobile.android.ui.fragments.ListLoadingFragment;
+import com.github.mobile.android.ui.ListLoadingFragment;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
