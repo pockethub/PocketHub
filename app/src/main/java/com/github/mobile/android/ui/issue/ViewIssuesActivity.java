@@ -1,7 +1,9 @@
 package com.github.mobile.android.ui.issue;
 
-import static com.github.mobile.android.util.GitHubIntents.EXTRA_ISSUES;
+import static com.github.mobile.android.util.GitHubIntents.EXTRA_ISSUE_NUMBERS;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_POSITION;
+import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORIES;
+import android.R.integer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -48,15 +50,24 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
      * @return intent
      */
     public static Intent createIntent(Collection<Issue> issues, int position) {
-        return new Builder("issues.VIEW").add(EXTRA_ISSUES, new ArrayList<Issue>(issues)).add(EXTRA_POSITION, position)
-                .toIntent();
+        ArrayList<Integer> numbers = new ArrayList<Integer>(issues.size());
+        ArrayList<RepositoryId> repos = new ArrayList<RepositoryId>(issues.size());
+        for (Issue issue : issues) {
+            numbers.add(issue.getNumber());
+            repos.add(RepositoryId.createFromUrl(issue.getHtmlUrl()));
+        }
+        return new Builder("issues.VIEW").add(EXTRA_ISSUE_NUMBERS, numbers).add(EXTRA_REPOSITORIES, repos)
+                .add(EXTRA_POSITION, position).toIntent();
     }
 
     @InjectView(id.vp_pages)
     private ViewPager pager;
 
-    @InjectExtra(EXTRA_ISSUES)
-    private ArrayList<Issue> issues;
+    @InjectExtra(EXTRA_ISSUE_NUMBERS)
+    private ArrayList<integer> issueIds;
+
+    @InjectExtra(EXTRA_REPOSITORIES)
+    private ArrayList<RepositoryId> repoIds;
 
     @InjectExtra(EXTRA_POSITION)
     private int initialPosition;
@@ -69,7 +80,8 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
 
         setContentView(layout.pager);
 
-        adapter = new IssuesPagerAdapter(getSupportFragmentManager(), issues.toArray(new Issue[issues.size()]));
+        adapter = new IssuesPagerAdapter(getSupportFragmentManager(),
+                repoIds.toArray(new RepositoryId[repoIds.size()]), issueIds.toArray(new Integer[issueIds.size()]));
         pager.setAdapter(adapter);
         pager.setOnPageChangeListener(this);
         pager.setCurrentItem(initialPosition);
@@ -81,14 +93,9 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
     }
 
     public void onPageSelected(int position) {
-        Issue issue = issues.get(position);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(getString(string.issue_title) + Integer.toString(issue.getNumber()));
-        RepositoryId repo = RepositoryId.createFromUrl(issue.getHtmlUrl());
-        if (repo != null)
-            actionBar.setSubtitle(repo.generateId());
-        else
-            actionBar.setSubtitle(null);
+        actionBar.setTitle(getString(string.issue_title) + issueIds.get(position));
+        actionBar.setSubtitle(repoIds.get(position).generateId());
     }
 
     public void onPageScrollStateChanged(int state) {

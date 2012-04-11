@@ -33,6 +33,11 @@ public class GitHubIntents {
     public static final String EXTRA_REPOSITORY = INTENT_EXTRA_PREFIX + "REPOSITORY";
 
     /**
+     * Repository ids collection handle
+     */
+    public static final String EXTRA_REPOSITORIES = INTENT_EXTRA_PREFIX + "REPOSITORIES";
+
+    /**
      * Repository name
      */
     public static final String EXTRA_REPOSITORY_NAME = INTENT_EXTRA_PREFIX + "REPOSITORY_NAME";
@@ -53,9 +58,9 @@ public class GitHubIntents {
     public static final String EXTRA_ISSUE = INTENT_EXTRA_PREFIX + "ISSUE";
 
     /**
-     * Issue collection handle
+     * Issue number collection handle
      */
-    public static final String EXTRA_ISSUES = INTENT_EXTRA_PREFIX + "ISSUES";
+    public static final String EXTRA_ISSUE_NUMBERS = INTENT_EXTRA_PREFIX + "ISSUES_NUMBERS";
 
     /**
      * Gist id

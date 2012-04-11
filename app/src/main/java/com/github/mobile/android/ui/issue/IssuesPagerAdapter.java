@@ -20,28 +20,32 @@ import org.eclipse.egit.github.core.RepositoryId;
  */
 public class IssuesPagerAdapter extends FragmentPagerAdapter {
 
-    private final Issue[] issues;
+    private final RepositoryId[] repos;
+
+    private final Integer[] issues;
 
     private final Map<Integer, IssueFragment> fragments = new HashMap<Integer, IssueFragment>();
 
     /**
      * @param fm
-     * @param issues
+     * @param repoIds
+     * @param issueNumbers
      */
-    public IssuesPagerAdapter(FragmentManager fm, Issue[] issues) {
+    public IssuesPagerAdapter(FragmentManager fm, RepositoryId[] repoIds, Integer[] issueNumbers) {
         super(fm);
-        this.issues = issues;
+
+        repos = repoIds;
+        issues = issueNumbers;
     }
 
     @Override
     public Fragment getItem(int position) {
         IssueFragment fragment = new IssueFragment();
         Bundle args = new Bundle();
-        Issue issue = issues[position];
-        RepositoryId repo = RepositoryId.createFromUrl(issue.getHtmlUrl());
+        RepositoryId repo = repos[position];
         args.putString(EXTRA_REPOSITORY_NAME, repo.getName());
         args.putString(EXTRA_REPOSITORY_OWNER, repo.getOwner());
-        args.putInt(EXTRA_ISSUE_NUMBER, issue.getNumber());
+        args.putInt(EXTRA_ISSUE_NUMBER, issues[position]);
         fragment.setArguments(args);
         fragments.put(position, fragment);
         return fragment;
