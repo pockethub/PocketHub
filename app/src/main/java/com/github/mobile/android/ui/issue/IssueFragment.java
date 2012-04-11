@@ -22,10 +22,14 @@ import android.widget.HeaderViewListAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.DialogFragmentActivity;
 import com.github.mobile.android.MultiChoiceDialogFragment;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.RefreshAnimation;
 import com.github.mobile.android.SingleChoiceDialogFragment;
@@ -103,6 +107,8 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
     @SuppressWarnings("unchecked")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
 
         Bundle args = getArguments();
         repositoryName = args.getString(EXTRA_REPOSITORY_NAME);
@@ -300,6 +306,40 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         case ISSUE_REOPEN:
             stateTask.edit(false);
             break;
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
+        inflater.inflate(menu.issue_view, optionsMenu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Don't allow options before issue loads
+        if (issue == null)
+            return super.onOptionsItemSelected(item);
+
+        switch (item.getItemId()) {
+        case id.issue_labels:
+            labelsTask.prompt(issue.getLabels());
+            return true;
+        case id.issue_milestone:
+            milestoneTask.prompt(issue.getMilestone());
+            return true;
+        case id.issue_assignee:
+            User assignee = issue.getAssignee();
+            assigneeTask.prompt(assignee != null ? assignee.getLogin() : null);
+            return true;
+        case id.issue_state:
+            stateTask.confirm(STATE_OPEN.equals(issue.getState()));
+            return true;
+        case id.refresh:
+            refreshAnimation.setRefreshItem(item).start(getActivity());
+            refreshIssue();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
         }
     }
 }
