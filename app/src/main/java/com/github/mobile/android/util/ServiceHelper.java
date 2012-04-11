@@ -37,6 +37,7 @@ public class ServiceHelper {
      * @param context
      * @return display
      */
+    @SuppressWarnings("deprecation")
     public static int getDisplayWidth(final Context context) {
         return getDisplay(context).getWidth();
     }
