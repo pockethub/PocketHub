@@ -133,6 +133,13 @@
 			</intent-filter>
 		</activity>
 
+        <activity android:name=".ui.issue.ViewIssuesActivity">
+            <intent-filter>
+                <action android:name="com.github.mobile.android.issues.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
         <service android:exported="true" android:name=".authenticator.AccountAuthenticatorService" android:process=":auth">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator"/>

@@ -53,6 +53,11 @@ public class GitHubIntents {
     public static final String EXTRA_ISSUE = INTENT_EXTRA_PREFIX + "ISSUE";
 
     /**
+     * Issue collection handle
+     */
+    public static final String EXTRA_ISSUES = INTENT_EXTRA_PREFIX + "ISSUES";
+
+    /**
      * Gist id
      */
     public static final String EXTRA_GIST_ID = INTENT_EXTRA_PREFIX + "GIST_ID";

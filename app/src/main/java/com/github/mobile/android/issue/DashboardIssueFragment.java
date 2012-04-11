@@ -8,6 +8,7 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ResourcePager;
 import com.github.mobile.android.ui.PagedListFragment;
+import com.github.mobile.android.ui.issue.ViewIssuesActivity;
 import com.github.mobile.android.util.AvatarHelper;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
@@ -67,8 +68,7 @@ public class DashboardIssueFragment extends PagedListFragment<Issue> {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Issue issue = (Issue) l.getItemAtPosition(position);
-        startActivity(ViewIssueActivity.createIntent(issue));
+        startActivity(ViewIssuesActivity.createIntent(listItems, position));
     }
 
     @Override
