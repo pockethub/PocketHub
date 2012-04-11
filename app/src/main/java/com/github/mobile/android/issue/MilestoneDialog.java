@@ -4,6 +4,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_CLOSED;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 import android.app.ProgressDialog;
+import android.util.Log;
 
 import com.github.mobile.android.DialogFragmentActivity;
 import com.github.mobile.android.R.string;
@@ -22,6 +23,8 @@ import org.eclipse.egit.github.core.service.MilestoneService;
  * Dialog helper to display a list of milestones to select one from
  */
 public class MilestoneDialog {
+
+    private static final String TAG = "MilestoneDialog";
 
     private MilestoneService service;
 
@@ -68,7 +71,7 @@ public class MilestoneDialog {
                 List<Milestone> milestones = newArrayList();
                 milestones.addAll(service.getMilestones(repository, STATE_OPEN));
                 milestones.addAll(service.getMilestones(repository, STATE_CLOSED));
-                Collections.sort(repositoryMilestones, new Comparator<Milestone>() {
+                Collections.sort(milestones, new Comparator<Milestone>() {
 
                     public int compare(Milestone m1, Milestone m2) {
                         return m1.getTitle().compareToIgnoreCase(m2.getTitle());
@@ -87,6 +90,11 @@ public class MilestoneDialog {
             }
 
             protected void onException(Exception e) throws RuntimeException {
+                Log.d(TAG, "Exception loading milestones", e);
+                loader.dismiss();
+            }
+
+            protected void onInterrupted(Exception e) {
                 loader.dismiss();
             }
         }.execute();
