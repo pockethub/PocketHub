@@ -49,7 +49,7 @@ public class ResourceLoadingIndicator {
      * @return this indicator
      */
     public ResourceLoadingIndicator setList(final ListView listView) {
-        listView.addFooterView(view);
+        listView.addFooterView(view, null, false);
         return this;
     }
 
