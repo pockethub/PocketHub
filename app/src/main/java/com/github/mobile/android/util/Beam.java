@@ -31,8 +31,8 @@ import org.eclipse.egit.github.core.client.GsonUtils;
  */
 public class Beam {
 
-    private final static Gson gson = GsonUtils.getGson();
-    private final static Charset PAYLOAD_CHARSET = Charset.forName(CHARSET_UTF8);
+    private static final Gson GSON = GsonUtils.getGson();
+    private static final Charset PAYLOAD_CHARSET = Charset.forName(CHARSET_UTF8);
     private static final String TAG = "BEAM";
 
     public static boolean isBeamApiAvailable() {
@@ -76,11 +76,11 @@ public class Beam {
         Parcelable[] rawMsgs = intent.getParcelableArrayExtra(EXTRA_NDEF_MESSAGES);
         NdefMessage msg = (NdefMessage) rawMsgs[0];
         String json = new String(msg.getRecords()[0].getPayload(), PAYLOAD_CHARSET);
-        return gson.fromJson(json, clazz);
+        return GSON.fromJson(json, clazz);
     }
 
     private static NdefMessage createNdefMessage(String typeStem, Object payloadObject) {
-        return (NdefMessage) createJsonNdefMessage(typeStem, gson.toJson(payloadObject));
+        return (NdefMessage) createJsonNdefMessage(typeStem, GSON.toJson(payloadObject));
     }
 
     public static Parcelable createJsonNdefMessage(String typeStem, String jsonString) {
