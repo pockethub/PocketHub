@@ -3,16 +3,15 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingBottom="10dp"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
-    android:paddingTop="10dp" >
+    android:padding="10dp" >
 
-    <ImageView
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_action_file" />
+    <TextView
+        android:id="@+id/tv_file_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\uf217"
+        android:textColor="@color/item_text_color_light"
+        android:textSize="28sp" />
 
     <TextView
         android:id="@+id/tv_file"
