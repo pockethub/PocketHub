@@ -42,14 +42,14 @@ public class AccountDataManager {
          */
         @Inject
         public CacheHelper(Context context) {
-            super(context, "cache.db", null, 1);
+            super(context, "cache.db", null, 2);
         }
 
         @Override
         public void onCreate(final SQLiteDatabase db) {
             db.execSQL("CREATE TABLE orgs (id INTEGER PRIMARY KEY);");
             db.execSQL("CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT, avatarurl TEXT);");
-            db.execSQL("CREATE TABLE repos (id INTEGER PRIMARY KEY, orgId INTEGER, name TEXT, ownerId INTEGER);");
+            db.execSQL("CREATE TABLE repos (id INTEGER PRIMARY KEY, orgId INTEGER, name TEXT, ownerId INTEGER, private INTEGER, fork INTEGER);");
         }
 
         @Override
@@ -57,7 +57,6 @@ public class AccountDataManager {
             db.execSQL("DROP TABLE IF EXISTS orgs");
             db.execSQL("DROP TABLE IF EXISTS users");
             db.execSQL("DROP TABLE IF EXISTS repos");
-            db.execSQL("DROP TABLE IF EXISTS avatars");
             onCreate(db);
         }
     }

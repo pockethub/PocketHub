@@ -39,10 +39,9 @@ public class AllReposForUserOrOrg implements PersistableResource<Repository> {
     public Cursor getCursor(SQLiteDatabase readableDatabase) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables("repos JOIN users ON (repos.ownerId = users.id)");
-        return builder.query(readableDatabase, new String[] { "repos.id, repos.name",
-                "users.id", "users.name", "users.avatarurl" }, "repos.orgId=?",
-                new String[] { Integer.toString(userOrOrg
-                .getId()) }, null, null, null);
+        return builder.query(readableDatabase, new String[] { "repos.id, repos.name", "users.id", "users.name",
+                "users.avatarurl", "repos.private", "repos.fork" }, "repos.orgId=?",
+                new String[] { Integer.toString(userOrOrg.getId()) }, null, null, null);
     }
 
     @Override
@@ -55,8 +54,11 @@ public class AllReposForUserOrOrg implements PersistableResource<Repository> {
         owner.setId(cursor.getInt(2));
         owner.setLogin(cursor.getString(3));
         owner.setAvatarUrl(cursor.getString(4));
-
         repo.setOwner(owner);
+
+        repo.setPrivate(cursor.getInt(5) == 1);
+        repo.setFork(cursor.getInt(6) == 1);
+
         return repo;
     }
 
@@ -66,10 +68,12 @@ public class AllReposForUserOrOrg implements PersistableResource<Repository> {
         for (Repository repo : repos) {
             User owner = repo.getOwner();
 
-            ContentValues values = new ContentValues(3);
+            ContentValues values = new ContentValues(5);
             values.put("name", repo.getName());
             values.put("orgId", userOrOrg.getId());
             values.put("ownerId", owner.getId());
+            values.put("private", repo.isPrivate() ? 1 : 0);
+            values.put("fork", repo.isFork() ? 1 : 0);
             db.replace("repos", null, values);
 
             values.clear();
