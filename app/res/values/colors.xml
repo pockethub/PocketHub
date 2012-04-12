@@ -1,33 +1,14 @@
 <resources>
 
-    <color name="background">#FFFFFFFF</color>
-    <color name="lightText">#D888</color>
-    <color name="listing">#888</color>
-    <color name="listing_repo">#999</color>
+    <color name="background">#FFFFFF</color>
+    <color name="listing">#888888</color>
     <color name="listing_comments">#BCBCBC</color>
-    <color name="meta_label">#1222</color>
-    <color name="textColor">#D333</color>
-    <color name="darkText">#333</color>
-    <color name="gitHubBlue">#4183C4</color>
-    <color name="blue_label">#4070B0</color>
-    <color name="addedText">#DDFFDD</color>
-    <color name="removedText">#FFDDDD</color>
-    <color name="repoListHeader">#FFFACD</color>
-    <color name="executionbar_background_start">#f0f0f0</color>
-    <color name="executionbar_background_end">#d0d0d0</color>
-    <color name="dashboard_background_start">#666666</color>
-    <color name="dashboard_background_end">#393939</color>
-    <color name="item_background">#d9dcde</color>
+    <color name="item_background">#D9DCDE</color>
     <color name="item_text_color">#191919</color>
     <color name="item_text_color_light">#636363</color>
-    <color name="item_separator1">#b8babb</color>
-    <color name="item_separator2">#e3e5e6</color>
-    <color name="item_separator3">#a6a8aa</color>
-    <color name="drawer_text_color">#191919</color>
-    <color name="comment_background">#fff</color>
-    <color name="tab_separator">#EEE</color>
-    <color name="drawer_background_start">#d3d6d7</color>
-    <color name="drawer_background_end">#c0c3c5</color>
+    <color name="item_separator1">#B8BABB</color>
+    <color name="item_separator2">#E3E5E6</color>
+    <color name="comment_background">#FFFFFF</color>
     <color name="issue_header_separator">#A3A4A4</color>
     <color name="issue_header_start">#CDCDCD</color>
     <color name="issue_header_end">#E5E6E6</color>
@@ -36,6 +17,6 @@
     <color name="actionbar_background_start">#F9F9F9</color>
     <color name="edit_text_background_start">#EFF6FF</color>
     <color name="edit_text_background_end">#FBFDFF</color>
-    <color name="edit_test_cursor">#A6A6A6</color>
+    <color name="edit_text_cursor">#A6A6A6</color>
 
 </resources>

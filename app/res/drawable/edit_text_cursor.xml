@@ -20,6 +20,6 @@
 
     <size android:width="1dp" />
 
-    <solid android:color="@color/edit_test_cursor" />
+    <solid android:color="@color/edit_text_cursor" />
 
 </shape>
