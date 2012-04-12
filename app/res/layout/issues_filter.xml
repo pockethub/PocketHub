@@ -2,119 +2,105 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/grid_repeat"
+    android:background="@color/background"
     android:orientation="vertical"
-    android:padding="10dp" >
+    android:padding="15dp" >
 
-    <LinearLayout
+    <TextView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@drawable/outer_background"
-        android:orientation="vertical" >
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="Issue Status:"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/item_text_color"
+        android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="@drawable/inner_background"
-            android:orientation="vertical"
-            android:padding="10dp" >
+    <RadioGroup
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp" >
+
+        <RadioButton
+            android:id="@+id/rb_open"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Open"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/item_text_color_light" />
+
+        <RadioButton
+            android:id="@+id/rb_closed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Closed"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/item_text_color_light" />
+    </RadioGroup>
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:shrinkColumns="1" >
+
+        <TableRow android:paddingBottom="10dp" >
 
             <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:text="Issue Status:"
+                android:id="@+id/tv_assignee_label"
+                android:text="Assigned:"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/item_text_color"
                 android:textStyle="bold" />
 
-            <RadioGroup
+            <TextView
+                android:id="@+id/tv_assignee"
+                android:hint="Anyone"
+                android:paddingBottom="20dp"
+                android:paddingLeft="20dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/item_text_color_light" />
+        </TableRow>
+
+        <TableRow android:paddingBottom="10dp" >
+
+            <TextView
+                android:id="@+id/tv_milestone_label"
+                android:text="Milestone:"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/item_text_color"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_milestone"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:hint="None"
+                android:paddingBottom="20dp"
+                android:paddingLeft="20dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/item_text_color_light" />
+        </TableRow>
 
-                <RadioButton
-                    android:id="@+id/rb_open"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Open"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/item_text_color_light" />
+        <TableRow android:paddingBottom="10dp" >
 
-                <RadioButton
-                    android:id="@+id/rb_closed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="Closed"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/item_text_color_light" />
-            </RadioGroup>
+            <TextView
+                android:id="@+id/tv_labels_label"
+                android:text="Labels:"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/item_text_color"
+                android:textStyle="bold" />
 
-            <TableLayout
+            <TextView
+                android:id="@+id/tv_labels"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:shrinkColumns="1" >
-
-                <TableRow>
-
-                    <TextView
-                        android:id="@+id/tv_assignee_label"
-                        android:text="Assigned:"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/item_text_color"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_assignee"
-                        android:hint="Anyone"
-                        android:paddingBottom="20dp"
-                        android:paddingLeft="20dp"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/item_text_color_light" />
-                </TableRow>
-
-                <TableRow>
-
-                    <TextView
-                        android:id="@+id/tv_milestone_label"
-                        android:text="Milestone:"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/item_text_color"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_milestone"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="None"
-                        android:paddingBottom="20dp"
-                        android:paddingLeft="20dp"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/item_text_color_light" />
-                </TableRow>
-
-                <TableRow>
-
-                    <TextView
-                        android:id="@+id/tv_labels_label"
-                        android:text="Labels:"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/item_text_color"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_labels"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="None"
-                        android:paddingBottom="10dp"
-                        android:paddingLeft="20dp"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/item_text_color_light" />
-                </TableRow>
-            </TableLayout>
-        </LinearLayout>
-    </LinearLayout>
+                android:hint="None"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/item_text_color_light" />
+        </TableRow>
+    </TableLayout>
 
 </LinearLayout>
