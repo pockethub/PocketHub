@@ -3,6 +3,7 @@ package com.github.mobile.android.gist;
 import static android.text.Html.fromHtml;
 import static android.view.View.GONE;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.Time;
+import com.github.mobile.android.util.TypefaceHelper;
 import com.madgag.android.listviews.ViewHolder;
 
 import java.text.NumberFormat;
@@ -94,6 +96,11 @@ public class GistViewHolder implements ViewHolder<Gist> {
         comments = (TextView) v.findViewById(id.tv_gist_comments);
         files = (TextView) v.findViewById(id.tv_gist_files);
         avatar = (ImageView) v.findViewById(id.iv_gravatar);
+
+        Typeface octocons = TypefaceHelper.getOctocons(v.getContext());
+        ((TextView) v.findViewById(id.tv_comment_icon)).setTypeface(octocons);
+        ((TextView) v.findViewById(id.tv_file_icon)).setTypeface(octocons);
+
         this.avatarHelper = avatarHelper;
         this.idWidth = idWidth;
     }

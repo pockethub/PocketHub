@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.util.AvatarHelper;
+import com.github.mobile.android.util.TypefaceHelper;
 import com.madgag.android.listviews.ViewHolder;
 
 import java.util.Arrays;
@@ -67,6 +68,8 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
         creation = (TextView) v.findViewById(id.tv_issue_creation);
         comments = (TextView) v.findViewById(id.tv_issue_comments);
         pullRequestIcon = (ImageView) v.findViewById(id.iv_pull_request);
+
+        ((TextView) v.findViewById(id.tv_comment_icon)).setTypeface(TypefaceHelper.getOctocons(v.getContext()));
 
         this.helper = helper;
 

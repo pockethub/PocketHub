@@ -2,6 +2,7 @@ package com.github.mobile.android.issue;
 
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.util.AvatarHelper;
+import com.github.mobile.android.util.TypefaceHelper;
 
 import org.eclipse.egit.github.core.Issue;
 
@@ -25,6 +26,7 @@ public class DashboardIssueViewHolder extends RepoIssueViewHolder {
     public DashboardIssueViewHolder(View v, AvatarHelper helper, int maxNumberCount) {
         super(v, helper, maxNumberCount);
         repoText = (TextView) v.findViewById(id.tv_issue_repo_name);
+        ((TextView) v.findViewById(id.tv_comment_icon)).setTypeface(TypefaceHelper.getOctocons(v.getContext()));
     }
 
     @Override

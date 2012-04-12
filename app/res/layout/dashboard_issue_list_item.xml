@@ -76,16 +76,22 @@
                 android:paddingRight="5dp"
                 android:src="@drawable/pull_request_icon" />
 
-            <ImageView
+            <TextView
+                android:id="@+id/tv_comment_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/comment_icon" />
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:text="\uf243"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/listing_comments" />
 
             <TextView
                 android:id="@+id/tv_issue_comments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="3dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/listing_comments" />
         </LinearLayout>

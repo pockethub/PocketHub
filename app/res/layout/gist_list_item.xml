@@ -52,32 +52,41 @@
             android:textColor="@color/listing" />
 
         <TextView
-            android:id="@+id/tv_gist_files"
+            android:id="@+id/tv_file_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingRight="3dp"
+            android:gravity="center_vertical"
+            android:text="\uf217"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/listing" />
 
-        <ImageView
+        <TextView
+            android:id="@+id/tv_gist_files"
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:src="@drawable/file_icon" />
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingLeft="5dp"
+            android:paddingRight="10dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/listing" />
+
+        <TextView
+            android:id="@+id/tv_comment_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="\uf243"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/listing" />
 
         <TextView
             android:id="@+id/tv_gist_comments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingRight="3dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="5dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/listing" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/comment_icon" />
     </LinearLayout>
 
 </RelativeLayout>
