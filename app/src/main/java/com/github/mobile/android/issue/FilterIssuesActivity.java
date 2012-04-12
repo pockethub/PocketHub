@@ -149,7 +149,7 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
 
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked)
-                    filter.setOpenOnly();
+                    filter.setOpen(true);
             }
         });
 
@@ -159,26 +159,14 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
 
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked)
-                    filter.setClosedOnly();
+                    filter.setOpen(false);
             }
         });
 
-        RadioButton allButton = (RadioButton) findViewById(id.rb_all);
-
-        allButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked)
-                    filter.setAll();
-            }
-        });
-
-        if (filter.isAll())
-            allButton.setChecked(true);
-        else if (filter.isClosedOnly())
-            closedButton.setChecked(true);
-        else if (filter.isOpenOnly())
+        if (filter.isOpen())
             openButton.setChecked(true);
+        else
+            closedButton.setChecked(true);
     }
 
     @Override

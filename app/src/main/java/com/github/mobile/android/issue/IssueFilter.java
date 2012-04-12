@@ -16,7 +16,6 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,7 +26,7 @@ import org.eclipse.egit.github.core.Repository;
 /**
  * Issue filter containing at least one valid query
  */
-public class IssueFilter implements Serializable, Iterable<Map<String, String>>, Cloneable {
+public class IssueFilter implements Serializable, Cloneable {
 
     /** serialVersionUID */
     private static final long serialVersionUID = 7310646589186299063L;
@@ -42,8 +41,6 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>>,
 
     private boolean open;
 
-    private boolean closed;
-
     /**
      * Create filter
      *
@@ -55,35 +52,14 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>>,
     }
 
     /**
-     * Set all issues to be returned
-     *
-     * @return this filter
-     */
-    public IssueFilter setAll() {
-        open = true;
-        closed = true;
-        return this;
-    }
-
-    /**
-     * Set only closed issues to be returned
-     *
-     * @return this filter
-     */
-    public IssueFilter setClosedOnly() {
-        open = false;
-        closed = true;
-        return this;
-    }
-
-    /**
      * Set only open issues to be returned
      *
+     * @param open
+     *            true for open issues, false for closed issues
      * @return this filter
      */
-    public IssueFilter setOpenOnly() {
-        open = true;
-        closed = false;
+    public IssueFilter setOpen(final boolean open) {
+        this.open = open;
         return this;
     }
 
@@ -151,30 +127,12 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>>,
     }
 
     /**
-     * Are all issues returned?
-     *
-     * @return true if all ,false otherwise
-     */
-    public boolean isAll() {
-        return open && closed;
-    }
-
-    /**
      * Are only open issues returned?
      *
-     * @return true if open only, false otherwise
+     * @return true if open only, false if closed only
      */
-    public boolean isOpenOnly() {
-        return open && !closed;
-    }
-
-    /**
-     * Are only closed issues returned?
-     *
-     * @return true if closed only, false otherwise
-     */
-    public boolean isClosedOnly() {
-        return !open && closed;
+    public boolean isOpen() {
+        return open;
     }
 
     /**
@@ -184,48 +142,35 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>>,
         return assignee;
     }
 
-    public Iterator<Map<String, String>> iterator() {
+    /**
+     * Create a map of all the request parameters represented by this filter
+     *
+     * @return non-null map of filter request parameters
+     */
+    public Map<String, String> toFilterMap() {
+        final Map<String, String> filter = new HashMap<String, String>();
 
-        final Map<String, String> base = new HashMap<String, String>();
-
-        base.put(FIELD_SORT, SORT_CREATED);
-        base.put(FIELD_DIRECTION, DIRECTION_DESCENDING);
+        filter.put(FIELD_SORT, SORT_CREATED);
+        filter.put(FIELD_DIRECTION, DIRECTION_DESCENDING);
 
         if (assignee != null && assignee.length() > 0)
-            base.put(FILTER_ASSIGNEE, assignee);
+            filter.put(FILTER_ASSIGNEE, assignee);
 
         if (milestone != null)
-            base.put(FILTER_MILESTONE, Integer.toString(milestone.getNumber()));
+            filter.put(FILTER_MILESTONE, Integer.toString(milestone.getNumber()));
 
         if (labels != null && !labels.isEmpty()) {
             StringBuilder labelsQuery = new StringBuilder();
             for (String label : labels)
                 labelsQuery.append(label).append(',');
-            base.put(FILTER_LABELS, labelsQuery.toString());
+            filter.put(FILTER_LABELS, labelsQuery.toString());
         }
 
-        List<String> states = newArrayList();
         if (open)
-            states.add(STATE_OPEN);
-        if (closed)
-            states.add(STATE_CLOSED);
-        final Iterator<String> statesIter = states.iterator();
-        return new Iterator<Map<String, String>>() {
-
-            public boolean hasNext() {
-                return statesIter.hasNext();
-            }
-
-            public Map<String, String> next() {
-                HashMap<String, String> stateMap = new HashMap<String, String>(base);
-                stateMap.put(FILTER_STATE, statesIter.next());
-                return stateMap;
-            }
-
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-        };
+            filter.put(FILTER_STATE, STATE_OPEN);
+        else
+            filter.put(FILTER_STATE, STATE_CLOSED);
+        return filter;
     }
 
     /**
@@ -235,11 +180,9 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>>,
      */
     public CharSequence toDisplay() {
         List<String> segments = newArrayList();
-        if (open && closed)
-            segments.add("All issues");
-        else if (open)
+        if (open)
             segments.add("Open issues");
-        else if (closed)
+        else
             segments.add("Closed issues");
 
         if (assignee != null)
@@ -270,7 +213,7 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>>,
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(new Object[] { open, closed, assignee, milestone, assignee,
+        return Arrays.hashCode(new Object[] { open, assignee, milestone, assignee,
                 repository != null ? repository.generateId() : null, labels });
     }
 
@@ -294,9 +237,8 @@ public class IssueFilter implements Serializable, Iterable<Map<String, String>>,
             return false;
 
         IssueFilter other = (IssueFilter) o;
-        return open == other.open && closed == other.closed && isEqual(milestone, other.milestone)
-                && isEqual(assignee, other.assignee) && isEqual(repository, repository)
-                && isEqual(labels, other.labels);
+        return open == other.open && isEqual(milestone, other.milestone) && isEqual(assignee, other.assignee)
+                && isEqual(repository, repository) && isEqual(labels, other.labels);
     }
 
     @Override

@@ -9,15 +9,11 @@ import static com.github.mobile.android.RequestCodes.ISSUE_FILTER_EDIT;
 import static com.github.mobile.android.RequestCodes.ISSUE_VIEW;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_ISSUE_FILTER;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY;
-import static com.google.common.collect.Lists.newArrayList;
 import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.Loader;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -32,18 +28,14 @@ import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.RequestFuture;
-import com.github.mobile.android.ThrowableLoader;
+import com.github.mobile.android.ResourcePager;
 import com.github.mobile.android.persistence.AccountDataManager;
-import com.github.mobile.android.ui.ListLoadingFragment;
-import com.github.mobile.android.ui.ResourceLoadingIndicator;
+import com.github.mobile.android.ui.PagedListFragment;
 import com.github.mobile.android.util.AvatarHelper;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
-import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
@@ -56,7 +48,7 @@ import roboguice.inject.InjectExtra;
 /**
  * Fragment to display a list of issues
  */
-public class IssuesFragment extends ListLoadingFragment<Issue> {
+public class IssuesFragment extends PagedListFragment<Issue> {
 
     @Inject
     private AccountDataManager cache;
@@ -72,12 +64,6 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
 
     @InjectExtra(EXTRA_REPOSITORY)
     private Repository repository;
-
-    private boolean hasMore = true;
-
-    private final List<IssuePager> pagers = newArrayList();
-
-    private ResourceLoadingIndicator loadingIndicator;
 
     private TextView filterTextView;
 
@@ -97,9 +83,6 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        loadingIndicator = new ResourceLoadingIndicator(getActivity(), string.loading_more_issues);
-        loadingIndicator.setList(getListView());
 
         View filterHeader = getLayoutInflater(savedInstanceState).inflate(layout.issue_filter_header, null);
         filterTextView = (TextView) filterHeader.findViewById(id.tv_filter_summary);
@@ -122,83 +105,12 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
 
         setEmptyText(getString(string.no_issues));
         getListView().setFastScrollEnabled(true);
-        getListView().setOnScrollListener(new OnScrollListener() {
-
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-            }
-
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (!hasMore)
-                    return;
-                if (getLoaderManager().hasRunningLoaders())
-                    return;
-                int size = 0;
-                for (IssuePager pager : pagers)
-                    size += pager.size();
-                if (getListView().getLastVisiblePosition() >= size)
-                    showMore();
-            }
-        });
-    }
-
-    @Override
-    public void refresh() {
-        for (IssuePager pager : pagers)
-            pager.reset();
-        hasMore = true;
-        super.refresh();
-    }
-
-    /**
-     * Show more issues while retaining the current {@link IssuePager} state
-     */
-    private void showMore() {
-        super.refresh();
-    }
-
-    @Override
-    public void onLoadFinished(Loader<List<Issue>> loader, final List<Issue> items) {
-        if (hasMore)
-            loadingIndicator.showLoading();
-        else
-            loadingIndicator.setVisible(false);
-
-        super.onLoadFinished(loader, items);
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Issue issue = (Issue) l.getItemAtPosition(position);
         startActivityForResult(ViewIssueActivity.createIntent(issue), ISSUE_VIEW);
-    }
-
-    @Override
-    public Loader<List<Issue>> onCreateLoader(int i, Bundle bundle) {
-        // Load pagers if needed
-        if (filter != null && pagers.isEmpty())
-            for (final Map<String, String> query : filter)
-                pagers.add(new IssuePager(store) {
-
-                    public PageIterator<Issue> createIterator(int page, int size) {
-                        return service.pageIssues(repository, query, page, size);
-                    }
-                });
-        final IssuePager[] loaderPagers = pagers.toArray(new IssuePager[pagers.size()]);
-        return new ThrowableLoader<List<Issue>>(getActivity(), listItems) {
-
-            @Override
-            public List<Issue> loadData() throws IOException {
-                boolean hasMore = false;
-                final List<Issue> all = newArrayList();
-                for (IssuePager pager : loaderPagers) {
-                    hasMore |= pager.next();
-                    all.addAll(pager.getResources());
-                }
-                Collections.sort(all, new CreatedAtComparator());
-                IssuesFragment.this.hasMore = hasMore;
-                return all;
-            }
-        };
     }
 
     @Override
@@ -244,7 +156,6 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
             if (!filter.equals(newFilter)) {
                 filter = newFilter;
                 updateFilterSummary();
-                pagers.clear();
                 refresh();
             }
         }
@@ -259,5 +170,20 @@ public class IssuesFragment extends ListLoadingFragment<Issue> {
             refresh();
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected ResourcePager<Issue> createPager() {
+        return new IssuePager(store) {
+
+            public PageIterator<Issue> createIterator(int page, int size) {
+                return service.pageIssues(repository, filter.toFilterMap(), page, size);
+            }
+        };
+    }
+
+    @Override
+    protected int getLoadingMessage() {
+        return string.loading_issues;
     }
 }
