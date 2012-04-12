@@ -1,5 +1,7 @@
 package com.github.mobile.android.issue;
 
+import static com.github.mobile.android.util.GitHubIntents.EXTRA_ISSUE_FILTER;
+import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -18,7 +20,7 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.SingleChoiceDialogFragment;
-import com.github.mobile.android.util.GitHubIntents;
+import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.google.common.base.Joiner;
 import com.google.inject.Inject;
 
@@ -71,8 +73,7 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
      * @return intent
      */
     public static Intent createIntent(Repository repo, IssueFilter filter) {
-        return new GitHubIntents.Builder("repo.issues.filter.VIEW").repo(repo)
-                .add(GitHubIntents.EXTRA_ISSUE_FILTER, filter).toIntent();
+        return new Builder("repo.issues.filter.VIEW").repo(repo).add(EXTRA_ISSUE_FILTER, filter).toIntent();
     }
 
     @Override
@@ -81,13 +82,13 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
         setContentView(layout.issues_filter);
         setTitle(string.filter_issues_title);
 
-        final Repository repository = (Repository) getIntent().getSerializableExtra(GitHubIntents.EXTRA_REPOSITORY);
+        final Repository repository = (Repository) getIntent().getSerializableExtra(EXTRA_REPOSITORY);
 
         if (savedInstanceState != null)
-            filter = (IssueFilter) savedInstanceState.getSerializable(GitHubIntents.EXTRA_ISSUE_FILTER);
+            filter = (IssueFilter) savedInstanceState.getSerializable(EXTRA_ISSUE_FILTER);
 
         if (filter == null)
-            filter = ((IssueFilter) getIntent().getSerializableExtra(GitHubIntents.EXTRA_ISSUE_FILTER)).clone();
+            filter = ((IssueFilter) getIntent().getSerializableExtra(EXTRA_ISSUE_FILTER)).clone();
 
         OnClickListener assigneeListener = new OnClickListener() {
 
@@ -187,7 +188,7 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
         switch (item.getItemId()) {
         case id.apply_filter:
             Intent intent = new Intent();
-            intent.putExtra(GitHubIntents.EXTRA_ISSUE_FILTER, filter);
+            intent.putExtra(EXTRA_ISSUE_FILTER, filter);
             setResult(RESULT_OK, intent);
             finish();
             return true;
@@ -198,7 +199,7 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
 
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(GitHubIntents.EXTRA_ISSUE_FILTER, filter);
+        outState.putSerializable(EXTRA_ISSUE_FILTER, filter);
     }
 
     private void updateLabels() {
