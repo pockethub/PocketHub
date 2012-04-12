@@ -4,13 +4,10 @@
     android:layout_height="match_parent"
     android:background="@color/comment_background"
     android:orientation="vertical"
-    android:paddingBottom="10dp"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
-    android:paddingTop="10dp" >
+    android:padding="10dp" >
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingBottom="3dp" >
@@ -22,18 +19,29 @@
             android:layout_gravity="center_vertical" />
 
         <TextView
-            android:id="@+id/tv_gist_comment_author"
+            android:id="@+id/tv_comment_icon"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:paddingLeft="5dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:singleLine="true"
+            android:text="\uf243"
+            android:textColor="@color/item_text_color_light"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_comment_author"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/item_text_color_light"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_gist_comment_date"
+            android:id="@+id/tv_comment_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -44,7 +52,7 @@
     </LinearLayout>
 
     <WebView
-        android:id="@+id/wv_gist_comment_body"
+        android:id="@+id/wv_comment_body"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:padding="2dp" >
