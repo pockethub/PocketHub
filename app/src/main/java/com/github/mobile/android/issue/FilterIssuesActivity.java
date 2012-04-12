@@ -11,6 +11,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.DialogFragmentActivity;
@@ -80,9 +81,12 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.issues_filter);
-        setTitle(string.filter_issues_title);
 
         final Repository repository = (Repository) getIntent().getSerializableExtra(EXTRA_REPOSITORY);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(string.filter_issues_title);
+        actionBar.setSubtitle(repository.generateId());
 
         if (savedInstanceState != null)
             filter = (IssueFilter) savedInstanceState.getSerializable(EXTRA_ISSUE_FILTER);
