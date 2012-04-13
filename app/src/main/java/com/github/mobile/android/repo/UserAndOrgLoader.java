@@ -25,7 +25,6 @@ public class UserAndOrgLoader extends AuthenticatedUserLoader<List<User>> {
 
     private static final String TAG = "GH.UAOL";
 
-
     private final Provider<UserComparator> userComparatorProvider;
 
     private final AccountDataManager accountDataManager;
