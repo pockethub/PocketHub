@@ -38,7 +38,7 @@ public abstract class AuthenticatedUserLoader<D> extends AsyncLoader<D> {
     private GitHubAccountScope gitHubAccountScope;
 
     @Inject
-    private Activity activity;
+    protected Activity activity;
 
     public AuthenticatedUserLoader(Context context) {
         super(context);

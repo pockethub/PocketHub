@@ -1,16 +1,18 @@
 package com.github.mobile.android.ui.user;
 
-import static com.github.mobile.android.util.GitHubIntents.EXTRA_USER;
+import static com.github.mobile.android.HomeActivity.OrgSelectionListener;
+import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
+import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
+import android.app.Activity;
 import android.os.Bundle;
 
+import com.github.mobile.android.HomeActivity;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ResourcePager;
 import com.github.mobile.android.ui.PagedListFragment;
 import com.google.inject.Inject;
-import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
-import com.madgag.android.listviews.ViewInflator;
 
 import java.util.List;
 
@@ -19,15 +21,12 @@ import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.event.Event;
 import org.eclipse.egit.github.core.service.EventService;
 
-import roboguice.inject.InjectExtra;
-
 /**
- * Fragment to display a news feed for a given user
+ * Fragment to display a news feed for a given user/org
  */
-public class UserNewsFragment extends PagedListFragment<Event> {
+public class UserNewsFragment extends PagedListFragment<Event> implements OrgSelectionListener {
 
-    @InjectExtra(EXTRA_USER)
-    private User user;
+    private User org;
 
     @Inject
     private EventService service;
@@ -40,9 +39,21 @@ public class UserNewsFragment extends PagedListFragment<Event> {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        ((HomeActivity) activity).registerOrgSelectionListener(this);
+    }
+
+    @Override
+    public void onOrgSelected(User org) {
+        this.org = org;
+        hideOldContentAndRefresh();
+    }
+
+    @Override
     protected ViewHoldingListAdapter<Event> adapterFor(List<Event> items) {
-        return new ViewHoldingListAdapter<Event>(items, ViewInflator.viewInflatorFor(getActivity(), layout.event_item),
-                ReflectiveHolderFactory.reflectiveFactoryFor(NewsEventViewHolder.class));
+        return new ViewHoldingListAdapter<Event>(items, viewInflatorFor(getActivity(), layout.event_item),
+            reflectiveFactoryFor(NewsEventViewHolder.class));
     }
 
     @Override
@@ -50,7 +61,7 @@ public class UserNewsFragment extends PagedListFragment<Event> {
         return new EventPager() {
 
             public PageIterator<Event> createIterator(int page, int size) {
-                return service.pageUserReceivedEvents(user.getLogin(), false, page, size);
+                return service.pageUserReceivedEvents(org.getLogin(), false, page, size);
             }
 
             protected Event register(Event resource) {
@@ -64,4 +75,5 @@ public class UserNewsFragment extends PagedListFragment<Event> {
     protected int getLoadingMessage() {
         return string.loading_news;
     }
+
 }

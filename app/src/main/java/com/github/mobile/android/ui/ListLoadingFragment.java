@@ -155,4 +155,9 @@ public abstract class ListLoadingFragment<E> extends RoboSherlockListFragment im
         else
             return null;
     }
+
+    protected void hideOldContentAndRefresh() {
+        setListShown(false);
+        refresh();
+    }
 }
