@@ -62,18 +62,18 @@ public class HomeActivity extends RoboSherlockFragmentActivity
     @Inject
     private Provider<UserComparator> userComparatorProvider;
 
-    private List<User> users = Collections.emptyList();
-    private ViewHoldingListAdapter<User> userOrOrgListAdapter;
-    private List<UserOrOrgSelectionListener> userOrOrgSelectionListeners = newArrayList();
+    private List<User> orgs = Collections.emptyList();
+    private ViewHoldingListAdapter<User> orgListAdapter;
+    private List<OrgSelectionListener> orgSelectionListeners = newArrayList();
 
     /**
      * Create intent for this activity
      *
-     * @param user
+     * @param org
      * @return intent
      */
-    public static Intent createIntent(User user) {
-        return new Builder("org.VIEW").add(EXTRA_USER, user).toIntent();
+    public static Intent createIntent(User org) {
+        return new Builder("org.VIEW").add(EXTRA_USER, org).toIntent();
     }
 
     private User org;
@@ -109,9 +109,8 @@ public class HomeActivity extends RoboSherlockFragmentActivity
                 userViewHolderFactory);
         ViewFactory<User> dropDownViewFactory = new ViewFactory<User>(viewInflatorFor(this,
                 layout.org_item_dropdown), userViewHolderFactory);
-        userOrOrgListAdapter = new ViewHoldingListAdapter<User>(users, selectedUserViewFactory, dropDownViewFactory);
-        getSupportActionBar().setListNavigationCallbacks(
-                userOrOrgListAdapter, this);
+        orgListAdapter = new ViewHoldingListAdapter<User>(orgs, selectedUserViewFactory, dropDownViewFactory);
+        getSupportActionBar().setListNavigationCallbacks(orgListAdapter, this);
 
         User org = (User) getIntent().getSerializableExtra(EXTRA_USER);
         if (org != null)
@@ -132,8 +131,8 @@ public class HomeActivity extends RoboSherlockFragmentActivity
             indicator.setViewPager(pager);
         }
 
-        for (UserOrOrgSelectionListener listener : userOrOrgSelectionListeners)
-            listener.onUserOrOrgSelected(org);
+        for (OrgSelectionListener listener : orgSelectionListeners)
+            listener.onOrgSelected(org);
     }
 
     @Override
@@ -165,7 +164,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity
 
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-        setOrg(users.get(itemPosition));
+        setOrg(orgs.get(itemPosition));
         return true;
     }
 
@@ -175,15 +174,15 @@ public class HomeActivity extends RoboSherlockFragmentActivity
     }
 
     @Override
-    public void onLoadFinished(Loader<List<User>> listLoader, List<User> users) {
-        this.users = users;
+    public void onLoadFinished(Loader<List<User>> listLoader, List<User> orgs) {
+        this.orgs = orgs;
 
-        userOrOrgListAdapter.setList(users);
+        orgListAdapter.setList(orgs);
         int sharedPreferencesOrgId = sharedPreferences.getInt(PREF_ORG_ID, -1);
         int targetOrgId = (org == null) ? sharedPreferencesOrgId : org.getId();
 
-        for (int i = 0; i < users.size(); ++i) {
-            User availableOrg = users.get(i);
+        for (int i = 0; i < orgs.size(); ++i) {
+            User availableOrg = orgs.get(i);
             if (availableOrg.getId() == targetOrgId) {
                 getSupportActionBar().setSelectedNavigationItem(i);
                 break;
@@ -195,17 +194,17 @@ public class HomeActivity extends RoboSherlockFragmentActivity
     public void onLoaderReset(Loader<List<User>> listLoader) {
     }
 
-    public void registerUserOrOrgListener(UserOrOrgSelectionListener listener) {
-        userOrOrgSelectionListeners.add(listener);
+    public void registerOrgSelectionListener(OrgSelectionListener listener) {
+        orgSelectionListeners.add(listener);
     }
 
-    public static interface UserOrOrgSelectionListener {
-        public void onUserOrOrgSelected(User userOrOrg);
+    public static interface OrgSelectionListener {
+        public void onOrgSelected(User org);
     }
 
-    public static void registerUserOrOrgSelectionListener(Activity activity, UserOrOrgSelectionListener listener) {
+    public static void registerOrgSelectionListener(Activity activity, OrgSelectionListener listener) {
         try {
-            ((HomeActivity) activity).registerUserOrOrgListener(listener);
+            ((HomeActivity) activity).registerOrgSelectionListener(listener);
         } catch (ClassCastException e) {
             activity.finish();
             throw new ClassCastException(activity.toString() + " must extend HomeActivity");

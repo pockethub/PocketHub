@@ -1,7 +1,7 @@
 package com.github.mobile.android.ui.user;
 
-import static com.github.mobile.android.HomeActivity.UserOrOrgSelectionListener;
-import static com.github.mobile.android.HomeActivity.registerUserOrOrgSelectionListener;
+import static com.github.mobile.android.HomeActivity.OrgSelectionListener;
+import static com.github.mobile.android.HomeActivity.registerOrgSelectionListener;
 import android.app.Activity;
 import android.os.Bundle;
 
@@ -23,11 +23,11 @@ import org.eclipse.egit.github.core.event.Event;
 import org.eclipse.egit.github.core.service.EventService;
 
 /**
- * Fragment to display a news feed for a given user
+ * Fragment to display a news feed for a given user/org
  */
-public class UserNewsFragment extends PagedListFragment<Event> implements UserOrOrgSelectionListener {
+public class UserNewsFragment extends PagedListFragment<Event> implements OrgSelectionListener {
 
-    private User user;
+    private User org;
 
     @Inject
     private EventService service;
@@ -42,12 +42,12 @@ public class UserNewsFragment extends PagedListFragment<Event> implements UserOr
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        registerUserOrOrgSelectionListener(activity, this);
+        registerOrgSelectionListener(activity, this);
     }
 
     @Override
-    public void onUserOrOrgSelected(User userOrOrg) {
-        user = userOrOrg;
+    public void onOrgSelected(User org) {
+        this.org = org;
         hideOldContentAndRefresh();
     }
 
@@ -62,7 +62,7 @@ public class UserNewsFragment extends PagedListFragment<Event> implements UserOr
         return new EventPager() {
 
             public PageIterator<Event> createIterator(int page, int size) {
-                return service.pageUserReceivedEvents(user.getLogin(), false, page, size);
+                return service.pageUserReceivedEvents(org.getLogin(), false, page, size);
             }
 
             protected Event register(Event resource) {
