@@ -7,7 +7,6 @@ import static com.github.mobile.android.util.GitHubIntents.EXTRA_USER;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -49,8 +48,8 @@ import roboguice.inject.InjectView;
 /**
  * Home screen activity
  */
-public class HomeActivity extends RoboSherlockFragmentActivity
-    implements OnNavigationListener, LoaderCallbacks<List<User>> {
+public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavigationListener,
+    LoaderCallbacks<List<User>> {
 
     private static final String TAG = "GH.UVA";
 
