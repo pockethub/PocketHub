@@ -27,9 +27,14 @@
           <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
         </XML>
         <codeStyleSettings language="JAVA">
+          <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />
           <option name="SPACE_WITHIN_ARRAY_INITIALIZER_BRACES" value="true" />
           <option name="SPACE_BEFORE_ARRAY_INITIALIZER_LBRACE" value="true" />
+          <option name="METHOD_PARAMETERS_WRAP" value="1" />
           <option name="WRAP_LONG_LINES" value="true" />
+          <indentOptions>
+            <option name="CONTINUATION_INDENT_SIZE" value="4" />
+          </indentOptions>
         </codeStyleSettings>
       </value>
     </option>
