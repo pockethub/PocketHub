@@ -9,6 +9,7 @@ import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFac
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -53,6 +54,8 @@ public class HomeActivity extends RoboSherlockFragmentActivity
 
     private static final String TAG = "GH.UVA";
 
+    public static final String PREF_ORG_ID = "orgId";
+
     @Inject
     private AccountDataManager accountDataManager;
 
@@ -87,6 +90,9 @@ public class HomeActivity extends RoboSherlockFragmentActivity
     @Inject
     private AvatarHelper avatarHelper;
 
+    @Inject
+    private SharedPreferences sharedPreferences;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -116,6 +122,10 @@ public class HomeActivity extends RoboSherlockFragmentActivity
         Log.d(TAG, "setOrg : " + org.getLogin());
 
         this.org = org;
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(PREF_ORG_ID, org.getId());
+        editor.commit();
 
         if (pager.getAdapter() == null) {
             pager.setAdapter(new UserPagerAdapter(getSupportFragmentManager()));
@@ -169,12 +179,16 @@ public class HomeActivity extends RoboSherlockFragmentActivity
         this.users = users;
 
         userOrOrgListAdapter.setList(users);
-        if (org != null)
-            for (int i = 0; i < users.size(); ++i)
-                if (org.getId() == users.get(i).getId()) {
-                    getSupportActionBar().setSelectedNavigationItem(i);
-                    break;
-                }
+        int sharedPreferencesOrgId = sharedPreferences.getInt(PREF_ORG_ID, -1);
+        int targetOrgId = (org == null) ? sharedPreferencesOrgId : org.getId();
+
+        for (int i = 0; i < users.size(); ++i) {
+            User availableOrg = users.get(i);
+            if (availableOrg.getId() == targetOrgId) {
+                getSupportActionBar().setSelectedNavigationItem(i);
+                break;
+            }
+        }
     }
 
     @Override
