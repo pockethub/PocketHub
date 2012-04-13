@@ -1,7 +1,6 @@
 package com.github.mobile.android.repo;
 
 import static com.github.mobile.android.HomeActivity.OrgSelectionListener;
-import static com.github.mobile.android.HomeActivity.registerOrgSelectionListener;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.app.Activity;
@@ -11,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.mobile.android.HomeActivity;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.async.AuthenticatedUserLoader;
@@ -51,7 +51,7 @@ public class RepoListFragment extends ListLoadingFragment<Repository> implements
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        registerOrgSelectionListener(activity, this);
+        ((HomeActivity) activity).registerOrgSelectionListener(this);
     }
 
     @Override

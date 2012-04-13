@@ -1,12 +1,12 @@
 package com.github.mobile.android.ui.user;
 
 import static com.github.mobile.android.HomeActivity.OrgSelectionListener;
-import static com.github.mobile.android.HomeActivity.registerOrgSelectionListener;
 import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.app.Activity;
 import android.os.Bundle;
 
+import com.github.mobile.android.HomeActivity;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ResourcePager;
@@ -41,7 +41,7 @@ public class UserNewsFragment extends PagedListFragment<Event> implements OrgSel
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        registerOrgSelectionListener(activity, this);
+        ((HomeActivity) activity).registerOrgSelectionListener(this);
     }
 
     @Override

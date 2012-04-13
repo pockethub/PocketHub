@@ -203,12 +203,4 @@ public class HomeActivity extends RoboSherlockFragmentActivity
         public void onOrgSelected(User org);
     }
 
-    public static void registerOrgSelectionListener(Activity activity, OrgSelectionListener listener) {
-        try {
-            ((HomeActivity) activity).registerOrgSelectionListener(listener);
-        } catch (ClassCastException e) {
-            activity.finish();
-            throw new ClassCastException(activity.toString() + " must extend HomeActivity");
-        }
-    }
 }
