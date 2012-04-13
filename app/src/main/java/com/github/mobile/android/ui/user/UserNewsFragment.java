@@ -5,7 +5,6 @@ import static com.github.mobile.android.HomeActivity.registerOrgSelectionListene
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.github.mobile.android.HomeActivity;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ResourcePager;

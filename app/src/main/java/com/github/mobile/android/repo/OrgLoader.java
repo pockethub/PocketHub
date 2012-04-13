@@ -8,20 +8,17 @@ import static java.util.Collections.sort;
 import android.app.Activity;
 import android.util.Log;
 
-import com.github.mobile.android.R;
 import com.github.mobile.android.async.AuthenticatedUserLoader;
 import com.github.mobile.android.persistence.AccountDataManager;
-import com.github.mobile.android.util.ToastUtil;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.egit.github.core.User;
 
-public class UserAndOrgLoader extends AuthenticatedUserLoader<List<User>> {
+public class OrgLoader extends AuthenticatedUserLoader<List<User>> {
 
     private static final String TAG = "GH.UAOL";
 
@@ -30,8 +27,8 @@ public class UserAndOrgLoader extends AuthenticatedUserLoader<List<User>> {
     private final AccountDataManager accountDataManager;
 
     @Inject
-    public UserAndOrgLoader(Activity activity, AccountDataManager accountDataManager,
-                            Provider<UserComparator> userComparatorProvider) {
+    public OrgLoader(Activity activity, AccountDataManager accountDataManager,
+                     Provider<UserComparator> userComparatorProvider) {
         super(activity);
         this.accountDataManager = accountDataManager;
         this.userComparatorProvider = userComparatorProvider;

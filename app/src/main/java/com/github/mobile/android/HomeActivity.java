@@ -25,8 +25,8 @@ import com.github.mobile.android.gist.GistsActivity;
 import com.github.mobile.android.issue.FilterBrowseActivity;
 import com.github.mobile.android.issue.IssueDashboardActivity;
 import com.github.mobile.android.persistence.AccountDataManager;
+import com.github.mobile.android.repo.OrgLoader;
 import com.github.mobile.android.repo.OrgViewHolder;
-import com.github.mobile.android.repo.UserAndOrgLoader;
 import com.github.mobile.android.repo.UserComparator;
 import com.github.mobile.android.ui.user.UserPagerAdapter;
 import com.github.mobile.android.util.AvatarHelper;
@@ -47,7 +47,7 @@ import org.eclipse.egit.github.core.User;
 import roboguice.inject.InjectView;
 
 /**
- * Activity to view a org's various pages
+ * Home screen activity
  */
 public class HomeActivity extends RoboSherlockFragmentActivity
         implements OnNavigationListener, LoaderCallbacks<List<User>> {
@@ -55,16 +55,6 @@ public class HomeActivity extends RoboSherlockFragmentActivity
     private static final String TAG = "GH.UVA";
 
     public static final String PREF_ORG_ID = "orgId";
-
-    @Inject
-    private AccountDataManager accountDataManager;
-
-    @Inject
-    private Provider<UserComparator> userComparatorProvider;
-
-    private List<User> orgs = Collections.emptyList();
-    private ViewHoldingListAdapter<User> orgListAdapter;
-    private List<OrgSelectionListener> orgSelectionListeners = newArrayList();
 
     /**
      * Create intent for this activity
@@ -76,6 +66,18 @@ public class HomeActivity extends RoboSherlockFragmentActivity
         return new Builder("org.VIEW").add(EXTRA_USER, org).toIntent();
     }
 
+    @Inject
+    private AccountDataManager accountDataManager;
+
+    @Inject
+    private Provider<UserComparator> userComparatorProvider;
+
+    private List<User> orgs = Collections.emptyList();
+    private ViewHoldingListAdapter<User> orgListAdapter;
+    private List<OrgSelectionListener> orgSelectionListeners = newArrayList();
+
+
+
     private User org;
 
     @InjectView(id.tpi_header)
@@ -85,7 +87,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity
     private ViewPager pager;
 
     @Inject
-    private UserAndOrgLoader userAndOrgLoader;
+    private OrgLoader orgLoader;
 
     @Inject
     private AvatarHelper avatarHelper;
@@ -170,7 +172,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity
 
     @Override
     public Loader<List<User>> onCreateLoader(int i, Bundle bundle) {
-        return new UserAndOrgLoader(this, accountDataManager, userComparatorProvider);
+        return new OrgLoader(this, accountDataManager, userComparatorProvider);
     }
 
     @Override
