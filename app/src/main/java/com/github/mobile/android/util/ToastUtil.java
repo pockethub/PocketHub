@@ -40,7 +40,7 @@ public class ToastUtil {
      * @param activity
      * @param message
      */
-    public static void toastOnUiThread(Activity activity, String message) {
+    public static void toastOnUiThread(Activity activity, final String message) {
         Log.d(TAG, "Will display toast : " + message);
         final Application application = activity.getApplication();
         activity.runOnUiThread(new Runnable() {
