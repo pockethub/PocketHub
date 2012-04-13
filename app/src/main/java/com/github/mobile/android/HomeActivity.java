@@ -50,7 +50,7 @@ import roboguice.inject.InjectView;
  * Home screen activity
  */
 public class HomeActivity extends RoboSherlockFragmentActivity
-        implements OnNavigationListener, LoaderCallbacks<List<User>> {
+    implements OnNavigationListener, LoaderCallbacks<List<User>> {
 
     private static final String TAG = "GH.UVA";
 
@@ -75,7 +75,6 @@ public class HomeActivity extends RoboSherlockFragmentActivity
     private List<User> orgs = Collections.emptyList();
     private ViewHoldingListAdapter<User> orgListAdapter;
     private List<OrgSelectionListener> orgSelectionListeners = newArrayList();
-
 
 
     private User org;
@@ -108,9 +107,9 @@ public class HomeActivity extends RoboSherlockFragmentActivity
         getSupportLoaderManager().initLoader(0, null, this);
         ViewHolderFactory<User> userViewHolderFactory = reflectiveFactoryFor(OrgViewHolder.class, avatarHelper);
         ViewFactory<User> selectedUserViewFactory = new ViewFactory<User>(viewInflatorFor(this, layout.org_item),
-                userViewHolderFactory);
+            userViewHolderFactory);
         ViewFactory<User> dropDownViewFactory = new ViewFactory<User>(viewInflatorFor(this,
-                layout.org_item_dropdown), userViewHolderFactory);
+            layout.org_item_dropdown), userViewHolderFactory);
         orgListAdapter = new ViewHoldingListAdapter<User>(orgs, selectedUserViewFactory, dropDownViewFactory);
         getSupportActionBar().setListNavigationCallbacks(orgListAdapter, this);
 

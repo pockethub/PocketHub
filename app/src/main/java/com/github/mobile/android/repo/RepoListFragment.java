@@ -125,7 +125,7 @@ public class RepoListFragment extends ListLoadingFragment<Repository> implements
     @Override
     protected ViewHoldingListAdapter<Repository> adapterFor(List<Repository> items) {
         return new ViewHoldingListAdapter<Repository>(items, viewInflatorFor(getActivity(), layout.repo_list_item),
-                ReflectiveHolderFactory.reflectiveFactoryFor(RepoViewHolder.class, org, recent));
+            ReflectiveHolderFactory.reflectiveFactoryFor(RepoViewHolder.class, org, recent));
     }
 
 }

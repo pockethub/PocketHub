@@ -28,7 +28,7 @@ public class OrgLoader extends AuthenticatedUserLoader<List<User>> {
 
     @Inject
     public OrgLoader(Activity activity, AccountDataManager accountDataManager,
-                     Provider<UserComparator> userComparatorProvider) {
+        Provider<UserComparator> userComparatorProvider) {
         super(activity);
         this.accountDataManager = accountDataManager;
         this.userComparatorProvider = userComparatorProvider;

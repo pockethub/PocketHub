@@ -2,6 +2,8 @@ package com.github.mobile.android.ui.user;
 
 import static com.github.mobile.android.HomeActivity.OrgSelectionListener;
 import static com.github.mobile.android.HomeActivity.registerOrgSelectionListener;
+import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
+import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.app.Activity;
 import android.os.Bundle;
 
@@ -10,9 +12,7 @@ import com.github.mobile.android.R.string;
 import com.github.mobile.android.ResourcePager;
 import com.github.mobile.android.ui.PagedListFragment;
 import com.google.inject.Inject;
-import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
-import com.madgag.android.listviews.ViewInflator;
 
 import java.util.List;
 
@@ -52,8 +52,8 @@ public class UserNewsFragment extends PagedListFragment<Event> implements OrgSel
 
     @Override
     protected ViewHoldingListAdapter<Event> adapterFor(List<Event> items) {
-        return new ViewHoldingListAdapter<Event>(items, ViewInflator.viewInflatorFor(getActivity(), layout.event_item),
-                ReflectiveHolderFactory.reflectiveFactoryFor(NewsEventViewHolder.class));
+        return new ViewHoldingListAdapter<Event>(items, viewInflatorFor(getActivity(), layout.event_item),
+            reflectiveFactoryFor(NewsEventViewHolder.class));
     }
 
     @Override
