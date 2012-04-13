@@ -119,13 +119,6 @@
 			</intent-filter>
 		</activity>
 
-        <activity android:name=".ui.user.UserViewActivity">
-			<intent-filter>
-				<action android:name="com.github.mobile.android.user.VIEW"/>
-				<category android:name="android.intent.category.DEFAULT"/>
-			</intent-filter>
-		</activity>
-
         <activity android:name=".ui.repo.RepositoryViewActivity">
 			<intent-filter>
 				<action android:name="com.github.mobile.android.repo.VIEW"/>

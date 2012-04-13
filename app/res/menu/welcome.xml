@@ -4,8 +4,8 @@
     <item
         android:id="@+id/dashboard_issues"
         android:icon="@drawable/ic_action_dashboard"
-        android:showAsAction="always"
-        android:title="@string/gists">
+        android:showAsAction="ifRoom"
+        android:title="@string/issues">
     </item>
     <item
         android:id="@+id/bookmarks"
@@ -16,7 +16,7 @@
     <item
         android:id="@+id/gists"
         android:icon="@drawable/ic_action_gist"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="@string/gists">
     </item>
     <item

@@ -1,14 +1,16 @@
 package com.github.mobile.android.repo;
 
-import static com.github.mobile.android.util.GitHubIntents.EXTRA_USER;
+import static com.github.mobile.android.HomeActivity.registerUserOrOrgSelectionListener;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.mobile.android.HomeActivity;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.async.AuthenticatedUserLoader;
@@ -27,12 +29,10 @@ import java.util.List;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
 
-import roboguice.inject.InjectExtra;
-
 /**
  * Fragment to display a list of {@link Repository} instances
  */
-public class RepoListFragment extends ListLoadingFragment<Repository> {
+public class RepoListFragment extends ListLoadingFragment<Repository> implements HomeActivity.UserOrOrgSelectionListener {
 
     private static final String TAG = "RLF";
 
@@ -41,14 +41,24 @@ public class RepoListFragment extends ListLoadingFragment<Repository> {
     @Inject
     private AccountDataManager cache;
 
-    @InjectExtra(EXTRA_USER)
     private User user;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        registerUserOrOrgSelectionListener(activity, this);
+    }
+
+    @Override
+    public void onUserOrOrgSelected(User userOrOrg) {
+        user = userOrOrg;
         recent = new RecentReposHelper(getActivity(), user);
+        hideOldContentAndRefresh();
     }
 
     @Override
@@ -84,6 +94,8 @@ public class RepoListFragment extends ListLoadingFragment<Repository> {
         return new AuthenticatedUserLoader<List<Repository>>(getActivity()) {
 
             public List<Repository> load() {
+                if (user == null)
+                    return Collections.emptyList();
                 try {
                     Log.d(TAG, "Going to load repos for " + user.getLogin());
                     List<Repository> repos = newArrayList(cache.getRepos(user));
@@ -115,4 +127,5 @@ public class RepoListFragment extends ListLoadingFragment<Repository> {
         return new ViewHoldingListAdapter<Repository>(items, viewInflatorFor(getActivity(), layout.repo_list_item),
                 ReflectiveHolderFactory.reflectiveFactoryFor(RepoViewHolder.class, user, recent));
     }
+
 }

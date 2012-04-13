@@ -11,7 +11,7 @@ import org.eclipse.egit.github.core.User;
  * Sorts users and orgs in alphabetical order by username, but overriding this
  * to put the currently authenticated user at the top of the list.
  */
-class UserComparator implements Comparator<User> {
+public class UserComparator implements Comparator<User> {
 
     private final String currentUserLogin;
 

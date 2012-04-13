@@ -11,7 +11,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
-import com.github.mobile.android.ui.user.UserViewActivity;
+import com.github.mobile.android.HomeActivity;
 import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.viewpagerindicator.TitlePageIndicator;
@@ -63,7 +63,7 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case android.R.id.home:
-            Intent intent = UserViewActivity.createIntent(repository.getOwner());
+            Intent intent = new Intent(this, HomeActivity.class);
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             return true;
