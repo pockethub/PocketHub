@@ -6,7 +6,7 @@ import android.os.Bundle;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ResourcePager;
-import com.github.mobile.android.ui.PagedListFragment;
+import com.github.mobile.android.ui.NewsFragment;
 import com.github.mobile.android.ui.user.EventPager;
 import com.github.mobile.android.ui.user.NewsEventViewHolder;
 import com.github.mobile.android.util.AvatarHelper;
@@ -28,7 +28,7 @@ import roboguice.inject.InjectExtra;
 /**
  * Fragment to display a news feed for a specific repository
  */
-public class RepositoryNewsFragment extends PagedListFragment<Event> {
+public class RepositoryNewsFragment extends NewsFragment {
 
     @Inject
     private ContextScopedProvider<EventService> serviceProvider;

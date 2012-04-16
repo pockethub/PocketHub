@@ -1,16 +1,16 @@
 package com.github.mobile.android.ui.user;
 
-import static com.github.mobile.android.HomeActivity.OrgSelectionListener;
 import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.app.Activity;
 import android.os.Bundle;
 
 import com.github.mobile.android.HomeActivity;
+import com.github.mobile.android.HomeActivity.OrgSelectionListener;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ResourcePager;
-import com.github.mobile.android.ui.PagedListFragment;
+import com.github.mobile.android.ui.NewsFragment;
 import com.github.mobile.android.util.AvatarHelper;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -25,7 +25,7 @@ import org.eclipse.egit.github.core.service.EventService;
 /**
  * Fragment to display a news feed for a given user/org
  */
-public class UserNewsFragment extends PagedListFragment<Event> implements OrgSelectionListener {
+public class UserNewsFragment extends NewsFragment implements OrgSelectionListener {
 
     private User org;
 
@@ -79,5 +79,4 @@ public class UserNewsFragment extends PagedListFragment<Event> implements OrgSel
     protected int getLoadingMessage() {
         return string.loading_news;
     }
-
 }
