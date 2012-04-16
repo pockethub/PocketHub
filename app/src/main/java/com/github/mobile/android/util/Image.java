@@ -168,7 +168,7 @@ public class Image {
      * @param radius
      * @return rounded corner bitmap
      */
-    public static Bitmap roundCornersAndOverlayOnWhite(final Bitmap source, final int radius) {
+    public static Bitmap roundCornersAndOverlayOnWhite(final Bitmap source, final float radius) {
         int width = source.getWidth();
         int height = source.getHeight();
 

@@ -38,13 +38,12 @@ import org.eclipse.egit.github.core.User;
  */
 public class AvatarHelper {
 
-    private static final int RADIUS = 8;
+    private static final float CORNER_RADIUS_IN_DIP = 3;
 
     private static final String TAG = "GHAU";
     private final static Pattern gravatarIdWithinUrl = Pattern.compile("/avatar/(\\p{XDigit}{32})");
 
-    @Inject
-    private Resources resources;
+    private final Resources resources;
 
     @Inject
     @Named("gravatarStore")
@@ -60,6 +59,15 @@ public class AvatarHelper {
                                     downloader, store, resources.getDrawable(R.drawable.gravatar_icon));
                         }
                     });
+
+    private final float cornerRadius;
+
+    @Inject
+    public AvatarHelper(Resources resources) {
+        this.resources = resources;
+        cornerRadius = CORNER_RADIUS_IN_DIP * resources.getDisplayMetrics().density;
+    }
+
 
     /**
      * Sets the image on the ImageView to the user's avatar.
@@ -89,7 +97,7 @@ public class AvatarHelper {
 
         public Drawable convert(Bitmap bitmap) {
             Bitmap scaledBitmap = createScaledBitmap(bitmap, sizeInPixels, sizeInPixels, true);
-            return new BitmapDrawable(resources, roundCornersAndOverlayOnWhite(scaledBitmap, RADIUS));
+            return new BitmapDrawable(resources, roundCornersAndOverlayOnWhite(scaledBitmap, cornerRadius));
         }
 
     }
