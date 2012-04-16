@@ -103,9 +103,8 @@ public class RecentReposHelper {
     }
 
     private void trimRecentRepos() {
-        while (recentRepos.size() > MAX_RECENT_REPOS) {
+        while (recentRepos.size() > MAX_RECENT_REPOS)
             recentRepos.removeLast();
-        }
     }
 
     private File getRecentReposFile() {
