@@ -91,18 +91,21 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
 
         setContentView(layout.pager_with_title);
 
+        getSupportLoaderManager().initLoader(0, null, this);
+
+        User org = (User) getIntent().getSerializableExtra(EXTRA_USER);
+        if (org != null)
+            setOrg(org);
+    }
+
+    private void configureActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setNavigationMode(NAVIGATION_MODE_LIST);
 
-        getSupportLoaderManager().initLoader(0, null, this);
         homeAdapter = new HomeDropdownListAdapter(this, orgs, avatarHelper);
         actionBar.setListNavigationCallbacks(homeAdapter, this);
-
-        User org = (User) getIntent().getSerializableExtra(EXTRA_USER);
-        if (org != null)
-            setOrg(org);
     }
 
     private void setOrg(User org) {
@@ -170,7 +173,11 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
     public void onLoadFinished(Loader<List<User>> listLoader, List<User> orgs) {
         this.orgs = orgs;
 
-        homeAdapter.setOrgs(orgs);
+        if (homeAdapter != null)
+            homeAdapter.setOrgs(orgs);
+        else
+            configureActionBar();
+
         int sharedPreferencesOrgId = sharedPreferences.getInt(PREF_ORG_ID, -1);
         int targetOrgId = org == null ? sharedPreferencesOrgId : org.getId();
 
