@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -67,7 +68,6 @@ public class AvatarHelper {
         this.resources = resources;
         cornerRadius = CORNER_RADIUS_IN_DIP * resources.getDisplayMetrics().density;
     }
-
 
     /**
      * Sets the image on the ImageView to the user's avatar.
@@ -168,6 +168,10 @@ public class AvatarHelper {
      * @return gravatar id for user
      */
     private static String gravatarIdFor(User user) {
+        String id = user.getGravatarId();
+        if (!TextUtils.isEmpty(id))
+            return id;
+
         String avatarUrl = user.getAvatarUrl();
 
         if (avatarUrl == null)

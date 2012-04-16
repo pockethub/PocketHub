@@ -1,7 +1,6 @@
 package com.github.mobile.android.ui.user;
 
 import static org.eclipse.egit.github.core.event.Event.TYPE_COMMIT_COMMENT;
-import static org.eclipse.egit.github.core.event.Event.TYPE_PULL_REQUEST_REVIEW_COMMENT;
 import static org.eclipse.egit.github.core.event.Event.TYPE_CREATE;
 import static org.eclipse.egit.github.core.event.Event.TYPE_DELETE;
 import static org.eclipse.egit.github.core.event.Event.TYPE_DOWNLOAD;
@@ -15,15 +14,18 @@ import static org.eclipse.egit.github.core.event.Event.TYPE_ISSUE_COMMENT;
 import static org.eclipse.egit.github.core.event.Event.TYPE_MEMBER;
 import static org.eclipse.egit.github.core.event.Event.TYPE_PUBLIC;
 import static org.eclipse.egit.github.core.event.Event.TYPE_PULL_REQUEST;
+import static org.eclipse.egit.github.core.event.Event.TYPE_PULL_REQUEST_REVIEW_COMMENT;
 import static org.eclipse.egit.github.core.event.Event.TYPE_PUSH;
 import static org.eclipse.egit.github.core.event.Event.TYPE_TEAM_ADD;
 import static org.eclipse.egit.github.core.event.Event.TYPE_WATCH;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mobile.android.R.id;
+import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.Time;
 import com.madgag.android.listviews.ViewHolder;
 
@@ -87,18 +89,30 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
                 || TYPE_WATCH.equals(type);
     }
 
-    private TextView eventText;
+    private final AvatarHelper avatarHelper;
+
+    private final ImageView avatarView;
+
+    private final TextView eventText;
+
+    private final TextView dateText;
 
     /**
      * Create view holder
      *
      * @param view
+     * @param avatarHelper
      */
-    public NewsEventViewHolder(final View view) {
+    public NewsEventViewHolder(final View view, final AvatarHelper avatarHelper) {
+        this.avatarHelper = avatarHelper;
+        avatarView = (ImageView) view.findViewById(id.iv_gravatar);
         eventText = (TextView) view.findViewById(id.tv_event);
+        dateText = (TextView) view.findViewById(id.tv_event_date);
     }
 
     public void updateViewFor(Event event) {
+        avatarHelper.bind(avatarView, event.getActor());
+
         String relativeTime = Time.relativeTimeFor(event.getCreatedAt()).toString();
         String actor = "<b>" + event.getActor().getLogin() + "</b>";
         String repoName = event.getRepo().getName();
@@ -185,6 +199,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         } else if (TYPE_WATCH.equals(type))
             text = MessageFormat.format("{0} started watching {1}", actor, repoName);
 
-        eventText.setText(Html.fromHtml(text + "  " + relativeTime));
+        eventText.setText(Html.fromHtml(text));
+        dateText.setText(relativeTime);
     }
 }

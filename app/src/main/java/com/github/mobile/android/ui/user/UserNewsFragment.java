@@ -11,6 +11,7 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ResourcePager;
 import com.github.mobile.android.ui.PagedListFragment;
+import com.github.mobile.android.util.AvatarHelper;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
@@ -30,6 +31,9 @@ public class UserNewsFragment extends PagedListFragment<Event> implements OrgSel
 
     @Inject
     private EventService service;
+
+    @Inject
+    private AvatarHelper avatarHelper;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -53,7 +57,7 @@ public class UserNewsFragment extends PagedListFragment<Event> implements OrgSel
     @Override
     protected ViewHoldingListAdapter<Event> adapterFor(List<Event> items) {
         return new ViewHoldingListAdapter<Event>(items, viewInflatorFor(getActivity(), layout.event_item),
-            reflectiveFactoryFor(NewsEventViewHolder.class));
+                reflectiveFactoryFor(NewsEventViewHolder.class, avatarHelper));
     }
 
     @Override

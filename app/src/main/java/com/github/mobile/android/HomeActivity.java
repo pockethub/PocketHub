@@ -46,7 +46,7 @@ import roboguice.inject.InjectView;
  * Home screen activity
  */
 public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavigationListener,
-    LoaderCallbacks<List<User>> {
+        LoaderCallbacks<List<User>> {
 
     private static final String TAG = "GH.UVA";
 

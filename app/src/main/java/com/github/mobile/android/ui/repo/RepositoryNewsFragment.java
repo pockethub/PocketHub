@@ -9,6 +9,7 @@ import com.github.mobile.android.ResourcePager;
 import com.github.mobile.android.ui.PagedListFragment;
 import com.github.mobile.android.ui.user.EventPager;
 import com.github.mobile.android.ui.user.NewsEventViewHolder;
+import com.github.mobile.android.util.AvatarHelper;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -35,6 +36,9 @@ public class RepositoryNewsFragment extends PagedListFragment<Event> {
     @InjectExtra(EXTRA_REPOSITORY)
     private Repository repo;
 
+    @Inject
+    private AvatarHelper avatarHelper;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -57,6 +61,6 @@ public class RepositoryNewsFragment extends PagedListFragment<Event> {
 
     protected ViewHoldingListAdapter<Event> adapterFor(List<Event> items) {
         return new ViewHoldingListAdapter<Event>(items, ViewInflator.viewInflatorFor(getActivity(), layout.event_item),
-                ReflectiveHolderFactory.reflectiveFactoryFor(NewsEventViewHolder.class));
+                ReflectiveHolderFactory.reflectiveFactoryFor(NewsEventViewHolder.class, avatarHelper));
     }
 }
