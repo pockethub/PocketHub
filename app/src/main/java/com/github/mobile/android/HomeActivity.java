@@ -1,12 +1,11 @@
 package com.github.mobile.android;
 
 import static com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_LIST;
-import static com.actionbarsherlock.app.ActionBar.OnNavigationListener;
-import static com.github.mobile.android.R.menu;
+import static com.github.mobile.android.HomeDropdownListAdapter.ACTION_DASHBOARD;
+import static com.github.mobile.android.HomeDropdownListAdapter.ACTION_FILTERS;
+import static com.github.mobile.android.HomeDropdownListAdapter.ACTION_GISTS;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_USER;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
-import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,16 +15,17 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.R.menu;
 import com.github.mobile.android.gist.GistsActivity;
 import com.github.mobile.android.issue.FilterBrowseActivity;
 import com.github.mobile.android.issue.IssueDashboardActivity;
 import com.github.mobile.android.persistence.AccountDataManager;
 import com.github.mobile.android.repo.OrgLoader;
-import com.github.mobile.android.repo.OrgViewHolder;
 import com.github.mobile.android.repo.UserComparator;
 import com.github.mobile.android.ui.user.UserPagerAdapter;
 import com.github.mobile.android.util.AvatarHelper;
@@ -33,9 +33,6 @@ import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.madgag.android.listviews.ViewFactory;
-import com.madgag.android.listviews.ViewHolderFactory;
-import com.madgag.android.listviews.ViewHoldingListAdapter;
 import com.viewpagerindicator.TitlePageIndicator;
 
 import java.util.Collections;
@@ -72,9 +69,8 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
     private Provider<UserComparator> userComparatorProvider;
 
     private List<User> orgs = Collections.emptyList();
-    private ViewHoldingListAdapter<User> orgListAdapter;
+    private HomeDropdownListAdapter homeAdapter;
     private List<OrgSelectionListener> orgSelectionListeners = newArrayList();
-
 
     private User org;
 
@@ -101,13 +97,8 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
         actionBar.setNavigationMode(NAVIGATION_MODE_LIST);
 
         getSupportLoaderManager().initLoader(0, null, this);
-        ViewHolderFactory<User> userViewHolderFactory = reflectiveFactoryFor(OrgViewHolder.class, avatarHelper);
-        ViewFactory<User> selectedUserViewFactory = new ViewFactory<User>(viewInflatorFor(this, layout.org_item),
-            userViewHolderFactory);
-        ViewFactory<User> dropDownViewFactory = new ViewFactory<User>(viewInflatorFor(this,
-            layout.org_item_dropdown), userViewHolderFactory);
-        orgListAdapter = new ViewHoldingListAdapter<User>(orgs, selectedUserViewFactory, dropDownViewFactory);
-        getSupportActionBar().setListNavigationCallbacks(orgListAdapter, this);
+        homeAdapter = new HomeDropdownListAdapter(this, orgs, avatarHelper);
+        actionBar.setListNavigationCallbacks(homeAdapter, this);
 
         User org = (User) getIntent().getSerializableExtra(EXTRA_USER);
         if (org != null)
@@ -134,7 +125,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionMenu) {
-        getSupportMenuInflater().inflate(menu.welcome, optionMenu);
+        getSupportMenuInflater().inflate(menu.home, optionMenu);
 
         return true;
     }
@@ -142,26 +133,31 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case id.dashboard_issues:
-                startActivity(new Intent(this, IssueDashboardActivity.class));
-                return true;
-            case id.gists:
-                startActivity(new Intent(this, GistsActivity.class));
-                return true;
-            case id.search:
-                onSearchRequested();
-                return true;
-            case id.bookmarks:
-                startActivity(FilterBrowseActivity.createIntent());
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        case id.search:
+            onSearchRequested();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
         }
     }
 
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-        setOrg(orgs.get(itemPosition));
+        if (homeAdapter.isOrgPosition(itemPosition)) {
+            homeAdapter.setSelected(itemPosition);
+            setOrg(orgs.get(itemPosition));
+        } else
+            switch (homeAdapter.getAction(itemPosition)) {
+            case ACTION_GISTS:
+                startActivity(new Intent(this, GistsActivity.class));
+                break;
+            case ACTION_DASHBOARD:
+                startActivity(new Intent(this, IssueDashboardActivity.class));
+                break;
+            case ACTION_FILTERS:
+                startActivity(FilterBrowseActivity.createIntent());
+                break;
+            }
         return true;
     }
 
@@ -174,7 +170,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
     public void onLoadFinished(Loader<List<User>> listLoader, List<User> orgs) {
         this.orgs = orgs;
 
-        orgListAdapter.setList(orgs);
+        homeAdapter.setOrgs(orgs);
         int sharedPreferencesOrgId = sharedPreferences.getInt(PREF_ORG_ID, -1);
         int targetOrgId = org == null ? sharedPreferencesOrgId : org.getId();
 

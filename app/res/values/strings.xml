@@ -253,4 +253,6 @@
      <string name="loading_issues">Loading Issues…</string>
 
      <string name="loading_news">Loading News…</string>
+
+     <string name="issue_dashboard">Issue Dashboard</string>
 </resources>

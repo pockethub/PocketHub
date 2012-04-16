@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/iv_gravatar"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
         android:layout_gravity="center_vertical" />
 
     <TextView
@@ -18,7 +18,7 @@
         android:layout_gravity="center_vertical"
         android:paddingLeft="12dp"
         android:singleLine="true"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/item_text_color" />
 
 </LinearLayout>
