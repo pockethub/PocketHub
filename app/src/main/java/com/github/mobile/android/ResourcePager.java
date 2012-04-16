@@ -76,13 +76,13 @@ public abstract class ResourcePager<E> {
      * @throws IOException
      */
     public boolean next() throws IOException {
-        boolean empytPage = false;
+        boolean emptyPage = false;
         PageIterator<E> iterator = createIterator(page, -1);
         try {
             for (int i = 0; i < count && iterator.hasNext(); i++) {
                 Collection<E> resourcePage = iterator.next();
-                empytPage = resourcePage.isEmpty();
-                if (empytPage)
+                emptyPage = resourcePage.isEmpty();
+                if (emptyPage)
                     break;
                 for (E resource : resourcePage) {
                     resource = register(resource);
@@ -102,7 +102,7 @@ public abstract class ResourcePager<E> {
             hasMore = false;
             throw e.getCause();
         }
-        hasMore = iterator.hasNext() && !empytPage;
+        hasMore = iterator.hasNext() && !emptyPage;
         return hasMore;
     }
 
