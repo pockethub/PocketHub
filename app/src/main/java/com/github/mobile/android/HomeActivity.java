@@ -85,9 +85,6 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
     private ViewPager pager;
 
     @Inject
-    private OrgLoader orgLoader;
-
-    @Inject
     private AvatarHelper avatarHelper;
 
     @Inject
