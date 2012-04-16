@@ -1,6 +1,7 @@
 package com.github.mobile.android.repo;
 
 import static com.github.mobile.android.HomeActivity.OrgSelectionListener;
+import static com.github.mobile.android.repo.RecentReposHelper.RecentRepos;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.app.Activity;
@@ -23,8 +24,8 @@ import com.madgag.android.listviews.ViewHoldingListAdapter;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
@@ -36,12 +37,13 @@ public class RepoListFragment extends ListLoadingFragment<Repository> implements
 
     private static final String TAG = "RLF";
 
-    private RecentReposHelper recent;
-
     @Inject
     private AccountDataManager cache;
 
     private User org;
+
+    private RecentReposHelper recentReposHelper;
+    private AtomicReference<RecentRepos> recentReposRef = new AtomicReference<RecentRepos>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,7 @@ public class RepoListFragment extends ListLoadingFragment<Repository> implements
     @Override
     public void onOrgSelected(User org) {
         this.org = org;
-        recent = new RecentReposHelper(getActivity(), org);
+        recentReposHelper = new RecentReposHelper(getActivity());
         hideOldContentAndRefresh();
     }
 
@@ -71,7 +73,7 @@ public class RepoListFragment extends ListLoadingFragment<Repository> implements
     @Override
     public void onListItemClick(ListView list, View v, int position, long id) {
         Repository repo = (Repository) list.getItemAtPosition(position);
-        recent.add(repo);
+        recentReposHelper.add(repo);
         startActivity(RepositoryViewActivity.createIntent(repo));
     }
 
@@ -86,7 +88,7 @@ public class RepoListFragment extends ListLoadingFragment<Repository> implements
     public void onStop() {
         super.onStop();
 
-        recent.save();
+        recentReposHelper.save();
     }
 
     @Override
@@ -98,21 +100,9 @@ public class RepoListFragment extends ListLoadingFragment<Repository> implements
                     return Collections.emptyList();
                 try {
                     Log.d(TAG, "Going to load repos for " + org.getLogin());
-                    List<Repository> repos = newArrayList(cache.getRepos(org));
-                    Collections.sort(repos, new Comparator<Repository>() {
-
-                        public int compare(Repository lhs, Repository rhs) {
-                            String lId = lhs.generateId();
-                            String rId = rhs.generateId();
-                            if (recent.contains(lId) && !recent.contains(rId))
-                                return -1;
-                            if (recent.contains(rId) && !recent.contains(lId))
-                                return 1;
-
-                            return lhs.getName().compareToIgnoreCase(rhs.getName());
-                        }
-                    });
-                    return repos;
+                    RecentRepos recentRepos = recentReposHelper.recentReposFrom(cache.getRepos(org), 5);
+                    recentReposRef.set(recentRepos);
+                    return recentRepos.fullRepoListHeadedByTopRecents;
                 } catch (IOException e) {
                     Log.d(TAG, "Error getting repositories", e);
                     showError(e, string.error_repos_load);
@@ -125,7 +115,7 @@ public class RepoListFragment extends ListLoadingFragment<Repository> implements
     @Override
     protected ViewHoldingListAdapter<Repository> adapterFor(List<Repository> items) {
         return new ViewHoldingListAdapter<Repository>(items, viewInflatorFor(getActivity(), layout.repo_list_item),
-            ReflectiveHolderFactory.reflectiveFactoryFor(RepoViewHolder.class, org, recent));
+            ReflectiveHolderFactory.reflectiveFactoryFor(RepoViewHolder.class, org, recentReposRef));
     }
 
 }
