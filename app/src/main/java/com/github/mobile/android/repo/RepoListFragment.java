@@ -2,7 +2,6 @@ package com.github.mobile.android.repo;
 
 import static com.github.mobile.android.HomeActivity.OrgSelectionListener;
 import static com.github.mobile.android.repo.RecentReposHelper.RecentRepos;
-import static com.google.common.collect.Lists.newArrayList;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.app.Activity;
 import android.os.Bundle;
