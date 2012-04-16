@@ -73,10 +73,12 @@ public abstract class PagedListFragment<E> extends ListLoadingFragment<E> implem
         };
     }
 
+    @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         // Intentionally left blank
     }
 
+    @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         if (!pager.hasMore())
             return;
@@ -99,6 +101,7 @@ public abstract class PagedListFragment<E> extends ListLoadingFragment<E> implem
         super.refresh();
     }
 
+    @Override
     public void onLoadFinished(Loader<List<E>> loader, List<E> items) {
         if (pager.hasMore())
             loadingIndicator.showLoading();
