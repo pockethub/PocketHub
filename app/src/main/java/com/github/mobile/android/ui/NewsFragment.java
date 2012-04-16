@@ -5,11 +5,14 @@ import android.widget.ListView;
 
 import com.github.mobile.android.core.gist.GistEventMatcher;
 import com.github.mobile.android.core.issue.IssueEventMatcher;
+import com.github.mobile.android.core.repo.RepositoryEventMatcher;
 import com.github.mobile.android.gist.ViewGistsActivity;
 import com.github.mobile.android.issue.ViewIssueActivity;
+import com.github.mobile.android.ui.repo.RepositoryViewActivity;
 
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.event.Event;
 
 /**
@@ -27,6 +30,11 @@ public abstract class NewsFragment extends PagedListFragment<Event> {
      */
     protected final GistEventMatcher gistMatcher = new GistEventMatcher();
 
+    /**
+     * Matcher for finding a {@link Repository} from an {@link Event}
+     */
+    protected final RepositoryEventMatcher repoMatcher = new RepositoryEventMatcher();
+
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Event event = (Event) l.getItemAtPosition(position);
@@ -37,5 +45,9 @@ public abstract class NewsFragment extends PagedListFragment<Event> {
         Gist gist = gistMatcher.getGist(event);
         if (gist != null)
             startActivity(ViewGistsActivity.createIntent(gist));
+
+        Repository repo = repoMatcher.getRepository(event);
+        if (repo != null)
+            startActivity(RepositoryViewActivity.createIntent(repo));
     }
 }
