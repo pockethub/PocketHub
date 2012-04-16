@@ -1,7 +1,5 @@
 package com.github.mobile.android.repo;
 
-import static com.github.mobile.android.HomeActivity.OrgSelectionListener;
-import static com.github.mobile.android.repo.RecentReposHelper.RecentRepos;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.app.Activity;
 import android.os.Bundle;
@@ -11,10 +9,12 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.github.mobile.android.HomeActivity;
+import com.github.mobile.android.HomeActivity.OrgSelectionListener;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.async.AuthenticatedUserLoader;
 import com.github.mobile.android.persistence.AccountDataManager;
+import com.github.mobile.android.repo.RecentReposHelper.RecentRepos;
 import com.github.mobile.android.ui.ListLoadingFragment;
 import com.github.mobile.android.ui.repo.RepositoryViewActivity;
 import com.google.inject.Inject;
@@ -36,6 +36,8 @@ public class RepoListFragment extends ListLoadingFragment<Repository> implements
 
     private static final String TAG = "RLF";
 
+    private static final String RECENT_REPOS = "recentRepos";
+
     @Inject
     private AccountDataManager cache;
 
@@ -47,14 +49,17 @@ public class RepoListFragment extends ListLoadingFragment<Repository> implements
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        recentReposHelper = new RecentReposHelper(activity);
         ((HomeActivity) activity).registerOrgSelectionListener(this);
     }
 
     @Override
     public void onOrgSelected(User org) {
+        int previousOrgId = this.org != null ? this.org.getId() : -1;
         this.org = org;
-        recentReposHelper = new RecentReposHelper(getActivity());
-        hideOldContentAndRefresh();
+        // Only hard refresh if view already created and org is changing
+        if (getView() != null && previousOrgId != org.getId())
+            hideOldContentAndRefresh();
     }
 
     @Override
@@ -62,6 +67,21 @@ public class RepoListFragment extends ListLoadingFragment<Repository> implements
         super.onActivityCreated(savedInstanceState);
         setEmptyText(getString(string.no_repositories));
         getListView().setFastScrollEnabled(true);
+
+        if (savedInstanceState != null) {
+            RecentRepos recentRepos = (RecentRepos) savedInstanceState.getSerializable(RECENT_REPOS);
+            if (recentRepos != null)
+                recentReposRef.set(recentRepos);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        RecentRepos recentRepos = recentReposRef.get();
+        if (recentRepos != null)
+            outState.putSerializable(RECENT_REPOS, recentRepos);
     }
 
     @Override

@@ -50,8 +50,11 @@ public class UserNewsFragment extends NewsFragment implements OrgSelectionListen
 
     @Override
     public void onOrgSelected(User org) {
+        int previousOrgId = this.org != null ? this.org.getId() : -1;
         this.org = org;
-        hideOldContentAndRefresh();
+        // Only hard refresh if view already created and org is changing
+        if (getView() != null && previousOrgId != org.getId())
+            hideOldContentAndRefresh();
     }
 
     @Override

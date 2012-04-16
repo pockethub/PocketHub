@@ -94,8 +94,18 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
         getSupportLoaderManager().initLoader(0, null, this);
 
         User org = (User) getIntent().getSerializableExtra(EXTRA_USER);
+        if (org == null && savedInstanceState != null)
+            org = (User) savedInstanceState.getSerializable(EXTRA_USER);
         if (org != null)
             setOrg(org);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (org != null)
+            outState.putSerializable(EXTRA_USER, org);
     }
 
     private void configureActionBar() {

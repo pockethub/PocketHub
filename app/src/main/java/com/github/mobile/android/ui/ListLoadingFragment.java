@@ -5,6 +5,7 @@ import android.app.Application;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
@@ -18,6 +19,8 @@ import com.github.mobile.android.util.ErrorHelper;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockListFragment;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
+import java.io.IOError;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 

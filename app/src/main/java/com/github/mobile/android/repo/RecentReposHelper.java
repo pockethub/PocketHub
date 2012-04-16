@@ -20,6 +20,7 @@ import com.google.common.base.Functions;
 import com.google.common.collect.Ordering;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -161,7 +162,9 @@ public class RecentReposHelper {
     /**
      * Value-object holding a sorted list of repos and the ids of the most recently-view repos.
      */
-    public static class RecentRepos {
+    public static class RecentRepos implements Serializable {
+        private static final long serialVersionUID = 5216432701122989971L;
+
         public final List<Repository> fullRepoListHeadedByTopRecents;
         public final LinkedHashSet<String> topRecentRepoIds;
 
