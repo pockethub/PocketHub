@@ -53,7 +53,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
 
     private static final String TAG = "GH.UVA";
 
-    public static final String PREF_ORG_ID = "orgId";
+    private static final String PREF_ORG_ID = "orgId";
 
     /**
      * Create intent for this activity
