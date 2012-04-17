@@ -15,7 +15,7 @@
     <url>https://github.com/github/android</url>
 
     <properties>
-        <abs.version>4.0.1</abs.version>
+        <abs.version>4.0.2</abs.version>
     </properties>
 
     <dependencies>
