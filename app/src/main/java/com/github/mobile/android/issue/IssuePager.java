@@ -29,7 +29,7 @@ public abstract class IssuePager extends ResourcePager<Issue> {
     }
 
     @Override
-    protected String getId(Issue resource) {
-        return Long.toString(resource.getId());
+    protected Object getId(Issue resource) {
+        return resource.getId();
     }
 }

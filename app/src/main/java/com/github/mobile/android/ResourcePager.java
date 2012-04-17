@@ -31,7 +31,7 @@ public abstract class ResourcePager<E> {
     /**
      * All resources retrieved
      */
-    protected final Map<String, E> resources = new LinkedHashMap<String, E>();
+    protected final Map<Object, E> resources = new LinkedHashMap<Object, E>();
 
     /**
      * Are more pages available?
@@ -133,7 +133,7 @@ public abstract class ResourcePager<E> {
      * @param resource
      * @return id
      */
-    protected abstract String getId(E resource);
+    protected abstract Object getId(E resource);
 
     /**
      * Create iterator to return given page and size

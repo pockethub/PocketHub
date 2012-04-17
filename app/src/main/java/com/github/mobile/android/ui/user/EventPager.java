@@ -10,7 +10,7 @@ import org.eclipse.egit.github.core.event.Event;
 public abstract class EventPager extends ResourcePager<Event> {
 
     @Override
-    protected String getId(Event resource) {
+    protected Object getId(Event resource) {
         return resource.getId();
     }
 }
