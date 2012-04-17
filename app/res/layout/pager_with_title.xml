@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/pager_title_background"
-        app:footerColor="@color/pager_title_text"
+        app:footerColor="@color/pager_footer"
         app:footerIndicatorHeight="4dp"
         app:footerIndicatorStyle="underline"
         app:footerLineHeight="4dp"

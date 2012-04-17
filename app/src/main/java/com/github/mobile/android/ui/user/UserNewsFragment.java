@@ -12,6 +12,7 @@ import com.github.mobile.android.R.string;
 import com.github.mobile.android.ResourcePager;
 import com.github.mobile.android.ui.NewsFragment;
 import com.github.mobile.android.util.AvatarHelper;
+import com.github.mobile.android.util.ListViewHelper;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
@@ -39,7 +40,7 @@ public class UserNewsFragment extends NewsFragment implements OrgSelectionListen
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getListView().setFastScrollEnabled(true);
+        ListViewHelper.configure(getActivity(), getListView(), true);
     }
 
     @Override

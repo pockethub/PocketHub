@@ -11,6 +11,7 @@ import com.github.mobile.android.persistence.AccountDataManager;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.ListLoadingFragment;
+import com.github.mobile.android.util.ListViewHelper;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -31,6 +32,7 @@ public class FilterListFragment extends ListLoadingFragment<IssueFilter> {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        ListViewHelper.configure(getActivity(), getListView(), true);
         setEmptyText(getString(string.no_filters));
     }
 

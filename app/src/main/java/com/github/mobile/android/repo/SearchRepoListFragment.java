@@ -12,6 +12,7 @@ import com.github.mobile.android.ThrowableLoader;
 import com.github.mobile.android.async.AuthenticatedUserTask;
 import com.github.mobile.android.ui.ListLoadingFragment;
 import com.github.mobile.android.ui.repo.RepositoryViewActivity;
+import com.github.mobile.android.util.ListViewHelper;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -40,7 +41,7 @@ public class SearchRepoListFragment extends ListLoadingFragment<SearchRepository
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setEmptyText(getString(string.no_repositories));
-        getListView().setFastScrollEnabled(true);
+        ListViewHelper.configure(getActivity(), getListView(), true);
     }
 
     /**

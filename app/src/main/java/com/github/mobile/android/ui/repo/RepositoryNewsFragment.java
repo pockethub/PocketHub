@@ -10,6 +10,7 @@ import com.github.mobile.android.ui.NewsFragment;
 import com.github.mobile.android.ui.user.EventPager;
 import com.github.mobile.android.ui.user.NewsEventViewHolder;
 import com.github.mobile.android.util.AvatarHelper;
+import com.github.mobile.android.util.ListViewHelper;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -43,7 +44,7 @@ public class RepositoryNewsFragment extends NewsFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getListView().setFastScrollEnabled(true);
+        ListViewHelper.configure(getActivity(), getListView(), true);
     }
 
     protected ResourcePager<Event> createPager() {

@@ -10,6 +10,7 @@ import com.github.mobile.android.ResourcePager;
 import com.github.mobile.android.ui.PagedListFragment;
 import com.github.mobile.android.ui.issue.ViewIssuesActivity;
 import com.github.mobile.android.util.AvatarHelper;
+import com.github.mobile.android.util.ListViewHelper;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -56,7 +57,7 @@ public class DashboardIssueFragment extends PagedListFragment<Issue> {
         super.onActivityCreated(savedInstanceState);
 
         filterData = (Map<String, String>) getArguments().getSerializable(ARG_FILTER);
-        getListView().setFastScrollEnabled(true);
+        ListViewHelper.configure(getActivity(), getListView(), true);
     }
 
     @Override

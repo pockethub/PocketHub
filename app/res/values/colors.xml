@@ -20,8 +20,11 @@
     <color name="pager_title_background_start">#1E5373</color>
     <color name="pager_title_text">#E0E6EA</color>
     <color name="pager_title_selected_text">#FFFFFF</color>
+    <color name="pager_footer">#8FB3C5</color>
     <color name="edit_text_background_start">#EFF6FF</color>
     <color name="edit_text_background_end">#FBFDFF</color>
     <color name="edit_text_cursor">#A6A6A6</color>
+    <color name="list_divider_top">#E7E7E7</color>
+    <color name="list_divider_bottom">#F5F3F2</color>
 
 </resources>

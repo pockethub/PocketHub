@@ -32,6 +32,7 @@ import com.github.mobile.android.ResourcePager;
 import com.github.mobile.android.persistence.AccountDataManager;
 import com.github.mobile.android.ui.PagedListFragment;
 import com.github.mobile.android.util.AvatarHelper;
+import com.github.mobile.android.util.ListViewHelper;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
@@ -104,7 +105,7 @@ public class IssuesFragment extends PagedListFragment<Issue> {
         super.onActivityCreated(savedInstanceState);
 
         setEmptyText(getString(string.no_issues));
-        getListView().setFastScrollEnabled(true);
+        ListViewHelper.configure(getActivity(), getListView(), true);
     }
 
     @Override

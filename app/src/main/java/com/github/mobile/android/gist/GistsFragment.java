@@ -28,6 +28,7 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.ListLoadingFragment;
+import com.github.mobile.android.util.ListViewHelper;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -137,7 +138,7 @@ public abstract class GistsFragment extends ListLoadingFragment<Gist> implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setEmptyText(getString(string.no_gists));
-        getListView().setFastScrollEnabled(true);
+        ListViewHelper.configure(getActivity(), getListView(), true);
         gistId = (TextView) getLayoutInflater(savedInstanceState).inflate(layout.gist_list_item, null).findViewById(
                 id.tv_gist_id);
     }
