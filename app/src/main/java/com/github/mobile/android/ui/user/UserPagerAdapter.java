@@ -3,20 +3,35 @@ package com.github.mobile.android.ui.user;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.view.ViewGroup;
 
 import com.github.mobile.android.repo.RepoListFragment;
 import com.viewpagerindicator.TitleProvider;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Pager adapter for a user's different views
  */
 public class UserPagerAdapter extends FragmentPagerAdapter implements TitleProvider {
 
+    private final boolean defaultUser;
+
+    private final FragmentManager fragmentManager;
+
+    private final Set<String> tags = new HashSet<String>();
+
     /**
      * @param fm
+     * @param defaultUser
      */
-    public UserPagerAdapter(FragmentManager fm) {
+    public UserPagerAdapter(final FragmentManager fm, final boolean defaultUser) {
         super(fm);
+
+        fragmentManager = fm;
+        this.defaultUser = defaultUser;
     }
 
     @Override
@@ -26,14 +41,43 @@ public class UserPagerAdapter extends FragmentPagerAdapter implements TitleProvi
             return new UserNewsFragment();
         case 1:
             return new RepoListFragment();
+        case 2:
+            return defaultUser ? new FollowersFragment() : new MembersFragment();
         default:
             return null;
         }
     }
 
+    /**
+     * This methods clears any fragments that may not apply to the newly selected org.
+     *
+     * @return this adapter
+     */
+    public UserPagerAdapter clearAdapter() {
+        if (tags.isEmpty())
+            return this;
+
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        for (String tag : tags) {
+            Fragment fragment = fragmentManager.findFragmentByTag(tag);
+            if (fragment != null)
+                transaction.remove(fragment);
+        }
+        transaction.commit();
+
+        return this;
+    }
+
+    public Object instantiateItem(ViewGroup container, int position) {
+        Object fragment = super.instantiateItem(container, position);
+        if (position == 2 && fragment instanceof Fragment)
+            tags.add(((Fragment) fragment).getTag());
+        return fragment;
+    }
+
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -43,6 +87,8 @@ public class UserPagerAdapter extends FragmentPagerAdapter implements TitleProvi
             return "News";
         case 1:
             return "Repos";
+        case 2:
+            return defaultUser ? "Followers" : "Members";
         default:
             return null;
         }

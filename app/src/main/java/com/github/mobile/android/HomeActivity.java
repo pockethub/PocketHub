@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 
@@ -33,6 +34,7 @@ import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.name.Named;
 import com.viewpagerindicator.TitlePageIndicator;
 
 import java.util.Collections;
@@ -68,8 +70,16 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
     @Inject
     private Provider<UserComparator> userComparatorProvider;
 
+    @Inject
+    @Named("accountUsername")
+    private String account;
+
+    private boolean isDefaultUser;
+
     private List<User> orgs = Collections.emptyList();
+
     private HomeDropdownListAdapter homeAdapter;
+
     private List<OrgSelectionListener> orgSelectionListeners = newArrayList();
 
     private User org;
@@ -86,6 +96,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
     @Inject
     private SharedPreferences sharedPreferences;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -121,16 +132,29 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
     private void setOrg(User org) {
         Log.d(TAG, "setOrg : " + org.getLogin());
 
-        this.org = org;
-
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(PREF_ORG_ID, org.getId());
         editor.commit();
 
-        if (pager.getAdapter() == null) {
-            pager.setAdapter(new UserPagerAdapter(getSupportFragmentManager()));
+        // Don't notify listeners or change pager if org hasn't changed
+        if (this.org != null && this.org.getId() == org.getId())
+            return;
+
+        this.org = org;
+
+        boolean isDefaultUser = isDefaultUser(org);
+        PagerAdapter pagerAdater = pager.getAdapter();
+        if (pagerAdater == null) {
+            pager.setAdapter(new UserPagerAdapter(getSupportFragmentManager(), isDefaultUser));
             indicator.setViewPager(pager);
+        } else if (this.isDefaultUser != isDefaultUser) {
+            int item = pager.getCurrentItem();
+            ((UserPagerAdapter) pagerAdater).clearAdapter();
+            pager.setAdapter(new UserPagerAdapter(getSupportFragmentManager(), isDefaultUser(org)));
+            indicator.setViewPager(pager);
+            pager.setCurrentItem(item, false);
         }
+        this.isDefaultUser = isDefaultUser;
 
         for (OrgSelectionListener listener : orgSelectionListeners)
             listener.onOrgSelected(org);
@@ -209,8 +233,13 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
     public void onLoaderReset(Loader<List<User>> listLoader) {
     }
 
-    public void registerOrgSelectionListener(OrgSelectionListener listener) {
+    private boolean isDefaultUser(final User org) {
+        return org != null && account != null && account.equals(org.getLogin());
+    }
+
+    public User registerOrgSelectionListener(OrgSelectionListener listener) {
         orgSelectionListeners.add(listener);
+        return org;
     }
 
     public static interface OrgSelectionListener {

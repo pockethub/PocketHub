@@ -255,4 +255,6 @@
      <string name="loading_news">Loading News…</string>
 
      <string name="issue_dashboard">Issue Dashboard</string>
+
+     <string name="loading_followers">Loading Followers…</string>
 </resources>
