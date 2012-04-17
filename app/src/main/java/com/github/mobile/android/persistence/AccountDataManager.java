@@ -169,11 +169,13 @@ public class AccountDataManager {
      * This method may perform network I/O and should never be called on the UI-thread
      *
      * @param user
+     * @param forceReload if true, cached data will not be returned
      * @return list of repositories
      * @throws IOException
      */
-    public List<Repository> getRepos(final User user) throws IOException {
-        return dbCache.loadOrRequest(allRepos.under(user));
+    public List<Repository> getRepos(final User user, boolean forceReload) throws IOException {
+        AllReposForUserOrOrg resource = allRepos.under(user);
+        return forceReload ? dbCache.requestAndStore(resource) : dbCache.loadOrRequest(resource);
     }
 
     /**

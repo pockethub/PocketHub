@@ -106,7 +106,8 @@ public class RepoListFragment extends ListLoadingFragment<Repository> implements
     }
 
     @Override
-    public Loader<List<Repository>> onCreateLoader(int id, Bundle args) {
+    public Loader<List<Repository>> onCreateLoader(int id, final Bundle args) {
+        Log.d(TAG, "Creating loader "+getClass());
         return new AuthenticatedUserLoader<List<Repository>>(getActivity()) {
 
             public List<Repository> load() {
@@ -114,7 +115,8 @@ public class RepoListFragment extends ListLoadingFragment<Repository> implements
                     return Collections.emptyList();
                 try {
                     Log.d(TAG, "Going to load repos for " + org.getLogin());
-                    RecentRepos recentRepos = recentReposHelper.recentReposFrom(cache.getRepos(org), 5);
+                    List<Repository> repos = cache.getRepos(org, isForcedReload(args));
+                    RecentRepos recentRepos = recentReposHelper.recentReposFrom(repos, 5);
                     recentReposRef.set(recentRepos);
                     return recentRepos.fullRepoListHeadedByTopRecents;
                 } catch (IOException e) {

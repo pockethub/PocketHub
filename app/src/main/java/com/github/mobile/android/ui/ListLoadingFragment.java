@@ -32,6 +32,8 @@ import java.util.List;
  */
 public abstract class ListLoadingFragment<E> extends RoboSherlockListFragment implements LoaderCallbacks<List<E>> {
 
+    private static final String FORCE_RELOAD = "force-reload";
+
     private RefreshAnimation refreshAnimation = new RefreshAnimation();
 
     /**
@@ -67,7 +69,7 @@ public abstract class ListLoadingFragment<E> extends RoboSherlockListFragment im
         switch (item.getItemId()) {
         case id.refresh:
             refreshAnimation.setRefreshItem(item);
-            refresh();
+            forceReload();
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -75,18 +77,39 @@ public abstract class ListLoadingFragment<E> extends RoboSherlockListFragment im
     }
 
     /**
+     * If the user explicitly hits the reload key, they don't want to see cached data. Calling this method means
+     * the loader will be passed a 'force-reload' parameter to indicate cached data shouldn't be used and a fresh
+     * request should be made.
+     */
+    protected void forceReload() {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(FORCE_RELOAD, true);
+        refresh(bundle);
+    }
+
+    /**
+     * @param args the args bundle passed to the loader by the LoaderManager
+     * @return true if the bundle indicates the user requested a forced reload of data
+     */
+    protected static boolean isForcedReload(Bundle args) {
+        return args == null ? false : args.getBoolean(FORCE_RELOAD, false);
+    }
+
+    /**
      * Refresh the fragment's list
      */
     public void refresh() {
+        refresh(null);
+    }
+
+    private void refresh(Bundle args) {
         final Activity activity = getActivity();
-        if (activity == null)
-            return;
-        if (getLoaderManager().hasRunningLoaders())
+        if (activity == null || getLoaderManager().hasRunningLoaders())
             return;
 
         refreshAnimation.start(activity);
 
-        getLoaderManager().restartLoader(0, null, this);
+        getLoaderManager().restartLoader(0, args, this);
     }
 
     public void onLoadFinished(Loader<List<E>> loader, List<E> items) {
