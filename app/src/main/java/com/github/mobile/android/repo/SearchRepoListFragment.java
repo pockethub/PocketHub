@@ -10,8 +10,8 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ThrowableLoader;
 import com.github.mobile.android.async.AuthenticatedUserTask;
-import com.github.mobile.android.issue.IssueBrowseActivity;
 import com.github.mobile.android.ui.ListLoadingFragment;
+import com.github.mobile.android.ui.repo.RepositoryViewActivity;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -62,7 +62,7 @@ public class SearchRepoListFragment extends ListLoadingFragment<SearchRepository
             }
 
             protected void onSuccess(Repository repository) throws Exception {
-                startActivity(IssueBrowseActivity.createIntent(repository));
+                startActivity(RepositoryViewActivity.createIntent(repository));
             }
         }.execute();
     }
