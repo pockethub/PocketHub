@@ -159,7 +159,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
         if (homeAdapter.isOrgPosition(itemPosition)) {
             homeAdapter.setSelected(itemPosition);
             setOrg(orgs.get(itemPosition));
-        } else
+        } else {
             switch (homeAdapter.getAction(itemPosition)) {
             case ACTION_GISTS:
                 startActivity(new Intent(this, GistsActivity.class));
@@ -171,6 +171,11 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
                 startActivity(FilterBrowseActivity.createIntent());
                 break;
             }
+            int orgSelected = homeAdapter.getSelected();
+            ActionBar actionBar = getSupportActionBar();
+            if (orgSelected < actionBar.getNavigationItemCount())
+                actionBar.setSelectedNavigationItem(orgSelected);
+        }
         return true;
     }
 
