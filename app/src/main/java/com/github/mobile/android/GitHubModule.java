@@ -4,7 +4,6 @@ import static com.github.mobile.android.authenticator.Constants.GITHUB_ACCOUNT_T
 import static org.eclipse.egit.github.core.client.IGitHubConstants.HOST_API_V2;
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.accounts.AccountsException;
 import android.content.Context;
 import android.graphics.Bitmap;
 
@@ -122,15 +121,7 @@ public class GitHubModule extends AbstractModule {
     @Provides
     @Named("accountUsername")
     String accountUsername(final Context context) {
-        final Account[] accounts;
-        try {
-            accounts = AccountManager.get(context).getAccountsByTypeAndFeatures(GITHUB_ACCOUNT_TYPE, null, null, null)
-                    .getResult();
-        } catch (AccountsException e) {
-            return null;
-        } catch (IOException e) {
-            return null;
-        }
+        final Account[] accounts = AccountManager.get(context).getAccountsByType(GITHUB_ACCOUNT_TYPE);
         return accounts.length > 0 ? accounts[0].name : null;
     }
 }

@@ -42,22 +42,24 @@ public class RepoListFragment extends ListLoadingFragment<Repository> implements
     @Inject
     private AccountDataManager cache;
 
-    private User org;
+    private final AtomicReference<User> org = new AtomicReference<User>();
 
     private RecentReposHelper recentReposHelper;
-    private AtomicReference<RecentRepos> recentReposRef = new AtomicReference<RecentRepos>();
+
+    private final AtomicReference<RecentRepos> recentReposRef = new AtomicReference<RecentRepos>();
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         recentReposHelper = new RecentReposHelper(activity);
-        ((HomeActivity) activity).registerOrgSelectionListener(this);
+        org.set(((HomeActivity) activity).registerOrgSelectionListener(this));
     }
 
     @Override
     public void onOrgSelected(User org) {
-        int previousOrgId = this.org != null ? this.org.getId() : -1;
-        this.org = org;
+        User previousOrg = this.org.get();
+        int previousOrgId = previousOrg != null ? previousOrg.getId() : -1;
+        this.org.set(org);
         // Only hard refresh if view already created and org is changing
         if (getView() != null && previousOrgId != org.getId())
             hideOldContentAndRefresh();
@@ -90,12 +92,6 @@ public class RepoListFragment extends ListLoadingFragment<Repository> implements
         Repository repo = (Repository) list.getItemAtPosition(position);
         recentReposHelper.add(repo);
         startActivity(RepositoryViewActivity.createIntent(repo));
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
         refresh();
     }
 
@@ -108,10 +104,11 @@ public class RepoListFragment extends ListLoadingFragment<Repository> implements
 
     @Override
     public Loader<List<Repository>> onCreateLoader(int id, final Bundle args) {
-        Log.d(TAG, "Creating loader "+getClass());
+        Log.d(TAG, "Creating loader " + getClass());
         return new AuthenticatedUserLoader<List<Repository>>(getActivity()) {
 
             public List<Repository> load() {
+                User org = RepoListFragment.this.org.get();
                 if (org == null)
                     return Collections.emptyList();
                 try {
