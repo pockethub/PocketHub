@@ -13,8 +13,13 @@
     <color name="issue_header_start">#CDCDCD</color>
     <color name="issue_header_end">#E5E6E6</color>
     <color name="issue_title_background">#D9DCDE</color>
-    <color name="actionbar_background_end">#EAEAEA</color>
-    <color name="actionbar_background_start">#F9F9F9</color>
+    <color name="actionbar_background_end">#282828</color>
+    <color name="actionbar_background_start">#515252</color>
+    <color name="actionbar_text">#F4F2F1</color>
+    <color name="pager_title_background_end">#286F99</color>
+    <color name="pager_title_background_start">#1E5373</color>
+    <color name="pager_title_text">#E0E6EA</color>
+    <color name="pager_title_selected_text">#FFFFFF</color>
     <color name="edit_text_background_start">#EFF6FF</color>
     <color name="edit_text_background_end">#FBFDFF</color>
     <color name="edit_text_cursor">#A6A6A6</color>

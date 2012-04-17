@@ -3,14 +3,12 @@
 
     <item
         android:id="@+id/open_gist"
-        android:icon="@drawable/ic_action_open"
         android:showAsAction="never"
         android:title="@string/open_gist">
     </item>
     <item
         android:id="@+id/random_gist"
-        android:icon="@drawable/ic_action_random"
-        android:showAsAction="always"
+        android:showAsAction="never"
         android:title="@string/open_random_gist">
     </item>
     <item

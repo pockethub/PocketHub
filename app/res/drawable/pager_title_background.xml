@@ -19,7 +19,7 @@
 
     <gradient
         android:angle="270"
-        android:endColor="@color/actionbar_background_end"
-        android:startColor="@color/actionbar_background_start" />
+        android:endColor="@color/pager_title_background_end"
+        android:startColor="@color/pager_title_background_start" />
 
 </shape>

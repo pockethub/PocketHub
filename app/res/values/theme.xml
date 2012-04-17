@@ -17,7 +17,7 @@
 
 <resources>
 
-    <style name="Theme.GitHub" parent="@style/Theme.Sherlock.Light">
+    <style name="Theme.GitHub" parent="@style/Theme.Sherlock">
         <item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>
         <item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>
     </style>
