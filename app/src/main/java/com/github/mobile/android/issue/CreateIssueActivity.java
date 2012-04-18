@@ -118,8 +118,7 @@ public class CreateIssueActivity extends DialogFragmentActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(string.new_issue);
         actionBar.setSubtitle(repo.generateId());
-        int avatarWidth = (int) Math.ceil(getResources().getDisplayMetrics().density * 28);
-        actionBar.setLogo(avatarHelper.getDrawable(repo.getOwner(), avatarWidth));
+        avatarHelper.bind(actionBar, repo.getOwner());
 
         labelsDialog = new LabelsDialog(this, REQUEST_CODE_LABELS, repo, labelService);
         milestoneDialog = new MilestoneDialog(this, REQUEST_CODE_MILESTONE, repo, milestoneService);

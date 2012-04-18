@@ -60,8 +60,7 @@ public class IssueBrowseActivity extends RoboSherlockFragmentActivity {
         actionBar.setTitle(repo.getName());
         actionBar.setSubtitle(repo.getOwner().getLogin());
         actionBar.setDisplayHomeAsUpEnabled(true);
-        int avatarWidth = (int) Math.ceil(getResources().getDisplayMetrics().density * 28);
-        actionBar.setLogo(avatarHelper.getDrawable(repo.getOwner(), avatarWidth));
+        avatarHelper.bind(actionBar, repo.getOwner());
 
         issues = (IssuesFragment) getSupportFragmentManager().findFragmentById(android.R.id.list);
         if (issues == null) {

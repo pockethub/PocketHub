@@ -59,8 +59,7 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
         actionBar.setTitle(repository.getName());
         actionBar.setSubtitle(repository.getOwner().getLogin());
         actionBar.setDisplayHomeAsUpEnabled(true);
-        int avatarWidth = (int) Math.ceil(getResources().getDisplayMetrics().density * 28);
-        actionBar.setLogo(avatarHelper.getDrawable(repository.getOwner(), avatarWidth));
+        avatarHelper.bind(actionBar, repository.getOwner());
 
         pager.setAdapter(new RepositoryPagerAdapter(getSupportFragmentManager()));
         indicator.setViewPager(pager);

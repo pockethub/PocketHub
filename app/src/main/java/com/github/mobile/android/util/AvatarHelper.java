@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
 import com.github.mobile.android.R;
@@ -41,6 +42,8 @@ public class AvatarHelper {
 
     private static final float CORNER_RADIUS_IN_DIP = 3;
 
+    private static final int LOGO_WIDTH = 28;
+
     private static final String TAG = "GHAU";
     private final static Pattern gravatarIdWithinUrl = Pattern.compile("/avatar/(\\p{XDigit}{32})");
 
@@ -63,10 +66,14 @@ public class AvatarHelper {
 
     private final float cornerRadius;
 
+    private final int logoWidth;
+
     @Inject
     public AvatarHelper(Resources resources) {
         this.resources = resources;
-        cornerRadius = CORNER_RADIUS_IN_DIP * resources.getDisplayMetrics().density;
+        float density = resources.getDisplayMetrics().density;
+        cornerRadius = CORNER_RADIUS_IN_DIP * density;
+        logoWidth = (int) Math.ceil(LOGO_WIDTH * density);
     }
 
     /**
@@ -85,6 +92,16 @@ public class AvatarHelper {
             view.setImageDrawable(getAvatar(gravatarId, view.getLayoutParams().width));
             view.setVisibility(VISIBLE);
         }
+    }
+
+    /**
+     * Sets the logo on the {@link ActionBar} to the user's avatar.
+     *
+     * @param actionBar
+     * @param user
+     */
+    public void bind(final ActionBar actionBar, final User user) {
+        actionBar.setLogo(getDrawable(user, logoWidth));
     }
 
     /**
