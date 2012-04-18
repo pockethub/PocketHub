@@ -48,7 +48,7 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
     private ViewPager pager;
 
     @Inject
-    private AvatarHelper helper;
+    private AvatarHelper avatarHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +60,7 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
         actionBar.setSubtitle(repository.getOwner().getLogin());
         actionBar.setDisplayHomeAsUpEnabled(true);
         int avatarWidth = (int) Math.ceil(getResources().getDisplayMetrics().density * 28);
-        actionBar.setLogo(helper.getDrawable(repository.getOwner(), avatarWidth));
+        actionBar.setLogo(avatarHelper.getDrawable(repository.getOwner(), avatarWidth));
 
         pager.setAdapter(new RepositoryPagerAdapter(getSupportFragmentManager()));
         indicator.setViewPager(pager);
