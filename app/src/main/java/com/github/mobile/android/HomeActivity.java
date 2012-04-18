@@ -5,6 +5,7 @@ import static com.github.mobile.android.HomeDropdownListAdapter.ACTION_DASHBOARD
 import static com.github.mobile.android.HomeDropdownListAdapter.ACTION_FILTERS;
 import static com.github.mobile.android.HomeDropdownListAdapter.ACTION_GISTS;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_USER;
+import static com.github.mobile.android.util.SharedPreferencesUtil.savePrefsFrom;
 import static com.google.common.collect.Lists.newArrayList;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -128,9 +129,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
     private void setOrg(User org) {
         Log.d(TAG, "setOrg : " + org.getLogin());
 
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(PREF_ORG_ID, org.getId());
-        editor.commit();
+        savePrefsFrom(sharedPreferences.edit().putInt(PREF_ORG_ID, org.getId()));
 
         // Don't notify listeners or change pager if org hasn't changed
         if (this.org != null && this.org.getId() == org.getId())
