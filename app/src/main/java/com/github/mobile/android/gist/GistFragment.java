@@ -216,7 +216,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
             }
 
             protected void onException(Exception e) throws RuntimeException {
-                Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), LENGTH_LONG).show();
+                Toast.makeText(getContext().getApplicationContext(), e.getMessage(), LENGTH_LONG).show();
             }
         }.execute();
     }
@@ -232,7 +232,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
             }
 
             protected void onException(Exception e) throws RuntimeException {
-                Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), LENGTH_LONG).show();
+                Toast.makeText(getContext().getApplicationContext(), e.getMessage(), LENGTH_LONG).show();
             }
         }.execute();
     }
@@ -267,7 +267,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
             protected void onException(Exception e) throws RuntimeException {
                 progress.dismiss();
-                Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), LENGTH_LONG).show();
+                Toast.makeText(getContext().getApplicationContext(), e.getMessage(), LENGTH_LONG).show();
             }
         }.execute();
 
