@@ -39,21 +39,21 @@ public abstract class ResourcePager<E> {
     protected boolean hasMore;
 
     /**
-     * Reset the number of the next page to be requested from {@link #next()}
-     *
-     * @return this pager
-     */
-    public ResourcePager<E> resetPage() {
-        page = 1;
-        return this;
-    }
-
-    /**
-     * Reset the next page to be requested and clear the current resources
+     * Reset the number of the next page to be requested from {@link #next()} and clear all stored state
      *
      * @return this pager
      */
     public ResourcePager<E> reset() {
+        page = 1;
+        return clear();
+    }
+
+    /**
+     * Clear all stored resources and have the next call to {@link #next()} load all previously loaded pages
+     *
+     * @return this pager
+     */
+    public ResourcePager<E> clear() {
         count = Math.max(1, page - 1);
         page = 1;
         resources.clear();

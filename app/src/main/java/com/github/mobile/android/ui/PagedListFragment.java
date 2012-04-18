@@ -90,7 +90,7 @@ public abstract class PagedListFragment<E> extends ListLoadingFragment<E> implem
 
     @Override
     protected void forceReload() {
-        pager.reset();
+        pager.clear();
         super.forceReload();
     }
 
@@ -113,7 +113,7 @@ public abstract class PagedListFragment<E> extends ListLoadingFragment<E> implem
 
     @Override
     protected void hideOldContentAndRefresh() {
-        pager.resetPage().reset();
+        pager.reset();
         super.hideOldContentAndRefresh();
     }
 }
