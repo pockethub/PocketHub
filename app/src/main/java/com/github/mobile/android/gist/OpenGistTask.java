@@ -4,27 +4,24 @@ import static android.widget.Toast.LENGTH_LONG;
 import static com.github.mobile.android.RequestCodes.GIST_VIEW;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.widget.Toast;
 
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.ui.ProgressDialogTask;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Gist;
 
-import roboguice.inject.ContextScopedProvider;
-import roboguice.util.RoboAsyncTask;
-
 /**
  * Task to load and open a Gist with an id
  */
-public class OpenGistTask extends RoboAsyncTask<Gist> {
+public class OpenGistTask extends ProgressDialogTask<Gist> {
 
     private final String id;
 
-    private ProgressDialog progress;
-
     @Inject
-    private ContextScopedProvider<GistStore> storeProvider;
+    private GistStore store;
 
     /**
      * Create task
@@ -34,12 +31,8 @@ public class OpenGistTask extends RoboAsyncTask<Gist> {
      */
     public OpenGistTask(final Activity context, final String gistId) {
         super(context);
-        id = gistId;
-    }
 
-    private void dismissProgress() {
-        if (progress != null)
-            progress.hide();
+        id = gistId;
     }
 
     /**
@@ -50,30 +43,31 @@ public class OpenGistTask extends RoboAsyncTask<Gist> {
     public void start() {
         dismissProgress();
 
-        progress = new ProgressDialog(getContext());
+        Context context = getContext();
+        progress = new ProgressDialog(context);
         progress.setIndeterminate(true);
-        progress.setMessage(getContext().getString(string.loading_gist));
+        progress.setMessage(context.getString(string.loading_gist));
         progress.show();
 
         execute();
     }
 
     @Override
-    public Gist call() throws Exception {
-        return storeProvider.get(getContext()).refreshGist(id);
-    }
-
-    @Override
     protected void onSuccess(Gist gist) throws Exception {
-        dismissProgress();
+        super.onSuccess(gist);
 
         ((Activity) getContext()).startActivityForResult(ViewGistsActivity.createIntent(gist), GIST_VIEW);
     }
 
     @Override
     protected void onException(Exception e) throws RuntimeException {
-        dismissProgress();
+        super.onException(e);
 
         Toast.makeText(getContext(), e.getMessage(), LENGTH_LONG).show();
+    }
+
+    @Override
+    protected Gist run() throws Exception {
+        return store.refreshGist(id);
     }
 }

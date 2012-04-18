@@ -2,6 +2,7 @@ package com.github.mobile.android.gist;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST_ID;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST_IDS;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_POSITION;
@@ -24,7 +25,7 @@ import com.google.inject.Inject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Gist;
@@ -46,7 +47,7 @@ public class ViewGistsActivity extends DialogFragmentActivity implements OnPageC
      * @return intent
      */
     public static Intent createIntent(Gist gist) {
-        return createIntent(Arrays.asList(gist), 0);
+        return new Builder("gists.VIEW").add(EXTRA_GIST, gist).add(EXTRA_POSITION, 0).toIntent();
     }
 
     /**
@@ -67,8 +68,11 @@ public class ViewGistsActivity extends DialogFragmentActivity implements OnPageC
     @InjectView(id.vp_pages)
     private ViewPager pager;
 
-    @InjectExtra(EXTRA_GIST_IDS)
+    @InjectExtra(value = EXTRA_GIST_IDS, optional = true)
     private List<String> gists;
+
+    @InjectExtra(value = EXTRA_GIST, optional = true)
+    private Gist gist;
 
     @InjectExtra(EXTRA_POSITION)
     private int initialPosition;
@@ -82,8 +86,21 @@ public class ViewGistsActivity extends DialogFragmentActivity implements OnPageC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(layout.pager);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // Support opening this activity with a single Gist that may be present in the intent but not currently present
+        // in the store
+        if (gists == null && gist != null) {
+            String id = gist.getId();
+            if (gist.getCreatedAt() != null) {
+                Gist stored = store.getGist(id);
+                if (stored == null)
+                    store.addGist(gist);
+            }
+            gists = Collections.singletonList(id);
+        }
 
         pager.setAdapter(new GistsPagerAdapter(getSupportFragmentManager(), gists.toArray(new String[gists.size()])));
         pager.setOnPageChangeListener(this);
