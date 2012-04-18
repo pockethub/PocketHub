@@ -8,16 +8,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 import com.viewpagerindicator.TitlePageIndicator;
 
 import org.eclipse.egit.github.core.Gist;
+import org.eclipse.egit.github.core.User;
 
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
@@ -55,13 +58,24 @@ public class ViewGistFilesActivity extends RoboSherlockFragmentActivity {
     @Inject
     private GistStore store;
 
+    @Inject
+    private AvatarHelper avatarHelper;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.pager_with_title);
-        setTitle(getString(string.gist) + " " + gistId);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         gist = store.getGist(gistId);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle(getString(string.gist) + " " + gistId);
+        User author = gist.getUser();
+        if (author != null) {
+            actionBar.setSubtitle(author.getLogin());
+            avatarHelper.bind(actionBar, author);
+        } else
+            actionBar.setSubtitle(string.anonymous);
 
         pager.setAdapter(new GistFilesPagerAdapter(getSupportFragmentManager(), gist));
         indicator.setViewPager(pager);
