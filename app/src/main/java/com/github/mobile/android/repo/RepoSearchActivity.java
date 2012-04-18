@@ -7,7 +7,6 @@ import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static android.widget.Toast.LENGTH_LONG;
 import static com.github.mobile.android.repo.RepoSearchRecentSuggestionsProvider.clearRepoQueryHistory;
 import static com.github.mobile.android.repo.RepoSearchRecentSuggestionsProvider.saveRecentRepoQuery;
-import android.R;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -70,7 +69,7 @@ public class RepoSearchActivity extends RoboSherlockFragmentActivity {
         setTitle(string.repositories_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        repoFragment = (SearchRepoListFragment) getSupportFragmentManager().findFragmentById(R.id.list);
+        repoFragment = (SearchRepoListFragment) getSupportFragmentManager().findFragmentById(android.R.id.list);
         if (repoFragment == null) {
             repoFragment = new SearchRepoListFragment();
             getSupportFragmentManager().beginTransaction().add(android.R.id.list, repoFragment).commit();
