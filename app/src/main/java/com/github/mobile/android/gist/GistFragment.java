@@ -325,7 +325,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
             }
 
             protected void onException(Exception e) throws RuntimeException {
-                ErrorHelper.show(getActivity().getApplicationContext(), e, string.error_gist_load);
+                ErrorHelper.show(getContext().getApplicationContext(), e, string.error_gist_load);
             }
 
             protected void onSuccess(FullGist fullGist) throws Exception {
