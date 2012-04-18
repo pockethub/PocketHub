@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.ConfirmDialogFragment;
 import com.github.mobile.android.DialogFragmentActivity;
@@ -16,6 +17,7 @@ import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.RequestFuture;
 import com.github.mobile.android.persistence.AccountDataManager;
+import com.github.mobile.android.util.AccountHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.google.inject.Inject;
 
@@ -43,9 +45,13 @@ public class FilterBrowseActivity extends DialogFragmentActivity implements OnIt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(string.saved_filters_title);
+
         setContentView(layout.issue_filter_list);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(string.saved_filters_title);
+        actionBar.setSubtitle(AccountHelper.getLogin(this));
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         FilterListFragment filterFragment = (FilterListFragment) getSupportFragmentManager().findFragmentById(
                 android.R.id.list);

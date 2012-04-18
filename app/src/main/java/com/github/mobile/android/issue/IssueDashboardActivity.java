@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.HomeActivity;
@@ -13,6 +14,7 @@ import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.util.AccountHelper;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.viewpagerindicator.TitlePageIndicator;
 
@@ -32,9 +34,13 @@ public class IssueDashboardActivity extends RoboSherlockFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(layout.pager_with_title);
-        setTitle(string.dashboard_issues_title);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(string.dashboard_issues_title);
+        actionBar.setSubtitle(AccountHelper.getLogin(this));
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         pager.setAdapter(new IssueDashboardPagerAdapter(getResources(), getSupportFragmentManager()));
         indicator.setViewPager(pager);
