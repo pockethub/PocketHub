@@ -194,11 +194,11 @@
 
      <string name="reopen_issue">Reopen Issue</string>
 
-     <string name="my_gists_tab">My Gists</string>
+     <string name="my_gists_tab">Mine</string>
 
-     <string name="starred_gists_tab">Starred Gists</string>
+     <string name="starred_gists_tab">Starred</string>
 
-     <string name="all_gists_tab">All Gists</string>
+     <string name="all_gists_tab">All</string>
 
      <string name="description">Description</string>
 
@@ -261,4 +261,6 @@
      <string name="new_issue">New Issue</string>
 
      <string name="anonymous">Anonymous</string>
+
+     <string name="loading_gists">Loading Gists</string>
 </resources>

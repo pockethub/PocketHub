@@ -1,6 +1,8 @@
 package com.github.mobile.android.gist;
 
 import static android.app.Activity.RESULT_OK;
+import static com.github.mobile.android.RequestCodes.GIST_CREATE;
+import static com.github.mobile.android.RequestCodes.GIST_VIEW;
 import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.content.Intent;
@@ -39,14 +41,11 @@ public class MyGistsFragment extends GistsFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CREATE && RESULT_OK == resultCode) {
+        if ((requestCode == GIST_CREATE || requestCode == GIST_VIEW) && RESULT_OK == resultCode) {
             refresh();
             return;
         }
-        if (requestCode == REQUEST_VIEW && RESULT_OK == resultCode) {
-            refresh();
-            return;
-        }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 

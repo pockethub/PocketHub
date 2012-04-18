@@ -58,5 +58,10 @@ public interface RequestCodes {
     /**
      * Request to create a comment
      */
-    int COMMENT_CREATE = 1;
+    int COMMENT_CREATE = 8;
+
+    /**
+     * Request to create a gist
+     */
+    int GIST_CREATE = 9;
 }
