@@ -1,9 +1,6 @@
 package com.github.mobile.android;
 
-import static com.github.mobile.android.authenticator.Constants.GITHUB_ACCOUNT_TYPE;
 import static org.eclipse.egit.github.core.client.IGitHubConstants.HOST_API_V2;
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 
@@ -116,12 +113,5 @@ public class GitHubModule extends AbstractModule {
             gists = new WeakReference<GistStore>(store);
         }
         return store;
-    }
-
-    @Provides
-    @Named("accountUsername")
-    String accountUsername(final Context context) {
-        final Account[] accounts = AccountManager.get(context).getAccountsByType(GITHUB_ACCOUNT_TYPE);
-        return accounts.length > 0 ? accounts[0].name : null;
     }
 }

@@ -34,11 +34,11 @@ import com.github.mobile.android.async.AuthenticatedUserTask;
 import com.github.mobile.android.comment.CommentViewHolder;
 import com.github.mobile.android.comment.CreateCommentActivity;
 import com.github.mobile.android.core.gist.FullGist;
+import com.github.mobile.android.util.AccountHelper;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.ErrorHelper;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 import com.madgag.android.listviews.ViewInflator;
@@ -96,10 +96,6 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
     @Inject
     private ContextScopedProvider<GistService> gistServiceProvider;
-
-    @Inject
-    @Named("accountUsername")
-    private String accountUsername;
 
     private Executor executor = Executors.newFixedThreadPool(1);
 
@@ -165,7 +161,8 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
         User user = gist.getUser();
         if (user == null)
             return false;
-        return accountUsername != null && accountUsername.equals(user.getLogin());
+        String login = AccountHelper.getLogin(getActivity());
+        return login != null && login.equals(user.getLogin());
     }
 
     @Override

@@ -29,12 +29,12 @@ import com.github.mobile.android.persistence.AccountDataManager;
 import com.github.mobile.android.repo.OrgLoader;
 import com.github.mobile.android.repo.UserComparator;
 import com.github.mobile.android.ui.user.UserPagerAdapter;
+import com.github.mobile.android.util.AccountHelper;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.google.inject.name.Named;
 import com.viewpagerindicator.TitlePageIndicator;
 
 import java.util.Collections;
@@ -69,10 +69,6 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
 
     @Inject
     private Provider<UserComparator> userComparatorProvider;
-
-    @Inject
-    @Named("accountUsername")
-    private String account;
 
     private boolean isDefaultUser;
 
@@ -234,7 +230,8 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
     }
 
     private boolean isDefaultUser(final User org) {
-        return org != null && account != null && account.equals(org.getLogin());
+        final String accountLogin = AccountHelper.getLogin(this);
+        return org != null && accountLogin != null && accountLogin.equals(org.getLogin());
     }
 
     public User registerOrgSelectionListener(OrgSelectionListener listener) {
