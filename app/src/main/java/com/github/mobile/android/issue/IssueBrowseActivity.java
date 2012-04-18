@@ -10,8 +10,10 @@ import android.os.Bundle;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
+import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Repository;
 
@@ -45,6 +47,9 @@ public class IssueBrowseActivity extends RoboSherlockFragmentActivity {
     @InjectExtra(EXTRA_REPOSITORY)
     private Repository repo;
 
+    @Inject
+    private AvatarHelper avatarHelper;
+
     private IssuesFragment issues;
 
     @Override
@@ -55,6 +60,8 @@ public class IssueBrowseActivity extends RoboSherlockFragmentActivity {
         actionBar.setTitle(repo.getName());
         actionBar.setSubtitle(repo.getOwner().getLogin());
         actionBar.setDisplayHomeAsUpEnabled(true);
+        int avatarWidth = (int) Math.ceil(getResources().getDisplayMetrics().density * 28);
+        actionBar.setLogo(avatarHelper.getDrawable(repo.getOwner(), avatarWidth));
 
         issues = (IssuesFragment) getSupportFragmentManager().findFragmentById(android.R.id.list);
         if (issues == null) {
