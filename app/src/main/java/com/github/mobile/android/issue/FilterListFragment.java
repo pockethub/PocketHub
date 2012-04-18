@@ -11,6 +11,7 @@ import com.github.mobile.android.persistence.AccountDataManager;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.ListLoadingFragment;
+import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.ListViewHelper;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
@@ -28,6 +29,9 @@ public class FilterListFragment extends ListLoadingFragment<IssueFilter> {
 
     @Inject
     private AccountDataManager cache;
+
+    @Inject
+    private AvatarHelper avatarHelper;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -60,8 +64,8 @@ public class FilterListFragment extends ListLoadingFragment<IssueFilter> {
     @Override
     protected ViewHoldingListAdapter<IssueFilter> adapterFor(List<IssueFilter> items) {
         return new ViewHoldingListAdapter<IssueFilter>(items, ViewInflator.viewInflatorFor(getActivity(),
-                layout.issue_filter_list_item),
-                ReflectiveHolderFactory.reflectiveFactoryFor(IssueFilterViewHolder.class));
+                layout.issue_filter_list_item), ReflectiveHolderFactory.reflectiveFactoryFor(
+                IssueFilterViewHolder.class, avatarHelper));
     }
 
     @Override
