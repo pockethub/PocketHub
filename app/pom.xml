@@ -79,7 +79,7 @@
         <dependency>
             <groupId>org.eclipse.mylyn.github</groupId>
             <artifactId>org.eclipse.egit.github.core</artifactId>
-            <version>1.3.5</version>
+            <version>1.3.6</version>
         </dependency>
         <dependency>
             <groupId>com.madgag</groupId>
