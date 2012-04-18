@@ -8,6 +8,8 @@ import android.webkit.WebViewClient;
  */
 public class SourceEditor {
 
+    private static final String URL_PAGE = "file:///android_asset/source-editor.html";
+
     /**
      * Does the source editor have a highlighter set to match the given file name extension?
      *
@@ -65,8 +67,13 @@ public class SourceEditor {
         view.setWebViewClient(new WebViewClient() {
 
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
+                if (url.equals(URL_PAGE)) {
+                    view.loadUrl(url);
+                    return false;
+                } else {
+                    HtmlViewer.loadExternalUrl(view.getContext(), url);
+                    return true;
+                }
             }
 
         });
@@ -89,7 +96,7 @@ public class SourceEditor {
             }
 
         }, "SourceProvider");
-        view.loadUrl("file:///android_asset/source-editor.html");
+        view.loadUrl(URL_PAGE);
         return view;
     }
 }

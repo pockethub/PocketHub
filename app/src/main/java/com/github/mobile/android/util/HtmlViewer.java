@@ -27,9 +27,35 @@ public class HtmlViewer implements Runnable {
 
     private static final String URL_UPDATE_HEIGHT = "javascript:updateHeight()";
 
-    private final IssueUrlMatcher issueMatcher = new IssueUrlMatcher();
+    private static final IssueUrlMatcher ISSUE_MATCHER = new IssueUrlMatcher();
 
-    private final GistUrlMatcher gistMatcher = new GistUrlMatcher();
+    private static final GistUrlMatcher GIST_MATCHER = new GistUrlMatcher();
+
+    /**
+     * Load URL selected taking into account links that can be opened internally in the app
+     *
+     * @param context
+     * @param url
+     */
+    public static void loadExternalUrl(final Context context, final String url) {
+        int issueNumber = ISSUE_MATCHER.getNumber(url);
+        if (issueNumber > 0) {
+            Issue issue = new Issue();
+            issue.setNumber(issueNumber);
+            issue.setHtmlUrl(url);
+            context.startActivity(ViewIssueActivity.createIntent(issue));
+            return;
+        }
+
+        String gistId = GIST_MATCHER.getId(url);
+        if (gistId != null) {
+            Gist gist = new Gist().setId(gistId).setHtmlUrl(url);
+            context.startActivity(ViewGistsActivity.createIntent(gist));
+            return;
+        }
+
+        context.startActivity(new Intent(ACTION_VIEW, Uri.parse(url)));
+    }
 
     private boolean inLoad;
 
@@ -79,26 +105,6 @@ public class HtmlViewer implements Runnable {
         view.addJavascriptInterface(this, "HtmlViewer");
         view.loadUrl(URL_PAGE);
         scale = view.getScale();
-    }
-
-    private void loadExternalUrl(final Context context, final String url) {
-        int issueNumber = issueMatcher.getNumber(url);
-        if (issueNumber > 0) {
-            Issue issue = new Issue();
-            issue.setNumber(issueNumber);
-            issue.setHtmlUrl(url);
-            context.startActivity(ViewIssueActivity.createIntent(issue));
-            return;
-        }
-
-        String gistId = gistMatcher.getId(url);
-        if (gistId != null) {
-            Gist gist = new Gist().setId(gistId).setHtmlUrl(url);
-            context.startActivity(ViewGistsActivity.createIntent(gist));
-            return;
-        }
-
-        context.startActivity(new Intent(ACTION_VIEW, Uri.parse(url)));
     }
 
     /**
