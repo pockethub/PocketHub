@@ -9,11 +9,13 @@ import android.support.v4.view.ViewPager;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.mobile.android.HomeActivity;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
-import com.github.mobile.android.HomeActivity;
+import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
+import com.google.inject.Inject;
 import com.viewpagerindicator.TitlePageIndicator;
 
 import org.eclipse.egit.github.core.Repository;
@@ -45,6 +47,9 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
     @InjectView(id.vp_pages)
     private ViewPager pager;
 
+    @Inject
+    private AvatarHelper helper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +59,8 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
         actionBar.setTitle(repository.getName());
         actionBar.setSubtitle(repository.getOwner().getLogin());
         actionBar.setDisplayHomeAsUpEnabled(true);
+        int avatarWidth = (int) Math.ceil(getResources().getDisplayMetrics().density * 28);
+        actionBar.setLogo(helper.getDrawable(repository.getOwner(), avatarWidth));
 
         pager.setAdapter(new RepositoryPagerAdapter(getSupportFragmentManager()));
         indicator.setViewPager(pager);

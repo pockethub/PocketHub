@@ -82,9 +82,25 @@ public class AvatarHelper {
         String gravatarId = gravatarIdFor(user);
 
         if (gravatarId != null) {
-            view.setImageDrawable(avatarLoaders.getUnchecked(view.getLayoutParams().width).get(gravatarId));
+            view.setImageDrawable(getAvatar(gravatarId, view.getLayoutParams().width));
             view.setVisibility(VISIBLE);
         }
+    }
+
+    /**
+     * Get avatar for user
+     *
+     * @param user
+     * @param width
+     * @return drawable
+     */
+    public Drawable getDrawable(final User user, final int width) {
+        String gravatarId = gravatarIdFor(user);
+        return gravatarId != null ? getAvatar(gravatarId, width) : null;
+    }
+
+    private Drawable getAvatar(final String gravatarId, final int width) {
+        return avatarLoaders.getUnchecked(width).get(gravatarId);
     }
 
     private class ScaledAndRoundedAvatarGenerator implements ImageProcessor<Bitmap> {
