@@ -115,7 +115,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
         View root = inflater.inflate(layout.gist_view, null);
 
         headerView = inflater.inflate(layout.gist_header, null);
-        headerHolder = new GistHeaderViewHolder(headerView, avatarHelper);
+        headerHolder = new GistHeaderViewHolder(headerView);
 
         loadingView = inflater.inflate(layout.comment_load_item, null);
 

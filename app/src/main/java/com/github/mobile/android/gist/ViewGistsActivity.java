@@ -10,13 +10,17 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.ConfirmDialogFragment;
 import com.github.mobile.android.DialogFragmentActivity;
+import com.github.mobile.android.R.drawable;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
+import com.google.inject.Inject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -69,6 +73,12 @@ public class ViewGistsActivity extends DialogFragmentActivity implements OnPageC
     @InjectExtra(EXTRA_POSITION)
     private int initialPosition;
 
+    @Inject
+    private GistStore store;
+
+    @Inject
+    private AvatarHelper avatarHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,7 +127,18 @@ public class ViewGistsActivity extends DialogFragmentActivity implements OnPageC
     }
 
     public void onPageSelected(int position) {
-        setTitle(getString(string.gist) + " " + gists.get(position));
+        ActionBar actionBar = getSupportActionBar();
+        String gistId = gists.get(position);
+        Gist gist = store.getGist(gistId);
+        if (gist != null && gist.getUser() != null) {
+            avatarHelper.bind(actionBar, gist.getUser());
+            actionBar.setSubtitle(gist.getUser().getLogin());
+        } else {
+            actionBar.setSubtitle("Anonymous");
+            actionBar.setLogo(null);
+            actionBar.setIcon(drawable.github_app_icon);
+        }
+        actionBar.setTitle(getString(string.gist) + ' ' + gistId);
     }
 
     public void onPageScrollStateChanged(int state) {
