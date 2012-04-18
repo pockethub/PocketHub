@@ -3,6 +3,7 @@ package com.github.mobile.android.gist;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static android.widget.Toast.LENGTH_LONG;
+import static com.github.mobile.android.RequestCodes.COMMENT_CREATE;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENTS;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENT_BODY;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST_ID;
@@ -64,8 +65,6 @@ import roboguice.inject.InjectView;
 public class GistFragment extends RoboSherlockFragment implements OnItemClickListener {
 
     private static final String TAG = "GistFragment";
-
-    private static final int REQUEST_CODE_COMMENT = 1;
 
     private String gistId;
 
@@ -191,7 +190,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case id.gist_comment:
-            startActivityForResult(CreateCommentActivity.createIntent(), REQUEST_CODE_COMMENT);
+            startActivityForResult(CreateCommentActivity.createIntent(), COMMENT_CREATE);
             return true;
         case id.gist_star:
             if (starred)
@@ -244,7 +243,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (Activity.RESULT_OK == resultCode && REQUEST_CODE_COMMENT == requestCode && data != null) {
+        if (Activity.RESULT_OK == resultCode && COMMENT_CREATE == requestCode && data != null) {
             String comment = data.getStringExtra(EXTRA_COMMENT_BODY);
             if (comment != null && comment.length() > 0) {
                 createComment(comment);
