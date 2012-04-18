@@ -397,7 +397,9 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             startActivityForResult(EditIssueActivity.createIntent(issue), ISSUE_EDIT);
             return true;
         case id.issue_comment:
-            startActivityForResult(CreateCommentActivity.createIntent(), COMMENT_CREATE);
+            String title = getString(string.issue_title) + issueNumber;
+            String subtitle = repositoryId.generateId();
+            startActivityForResult(CreateCommentActivity.createIntent(title, subtitle), COMMENT_CREATE);
             return true;
         case id.refresh:
             refreshAnimation.setRefreshItem(item).start(getActivity());

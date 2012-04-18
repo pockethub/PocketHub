@@ -159,7 +159,7 @@ public class ViewGistsActivity extends DialogFragmentActivity implements OnPageC
             actionBar.setLogo(null);
             actionBar.setIcon(drawable.github_app_icon);
         }
-        actionBar.setTitle(getString(string.gist) + ' ' + gistId);
+        actionBar.setTitle(getString(string.gist_title) + gistId);
     }
 
     public void onPageScrollStateChanged(int state) {

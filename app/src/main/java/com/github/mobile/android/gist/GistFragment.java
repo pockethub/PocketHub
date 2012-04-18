@@ -188,9 +188,15 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (gist == null)
+            return super.onOptionsItemSelected(item);
+
         switch (item.getItemId()) {
         case id.gist_comment:
-            startActivityForResult(CreateCommentActivity.createIntent(), COMMENT_CREATE);
+            String title = getString(string.gist_title) + gistId;
+            User user = gist.getUser();
+            String subtitle = user != null ? user.getLogin() : null;
+            startActivityForResult(CreateCommentActivity.createIntent(title, subtitle, user), COMMENT_CREATE);
             return true;
         case id.gist_star:
             if (starred)

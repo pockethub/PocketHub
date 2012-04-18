@@ -108,6 +108,16 @@ public class GitHubIntents {
     public static final String EXTRA_POSITION = INTENT_EXTRA_PREFIX + "POSITION";
 
     /**
+     * Action bar title
+     */
+    public static final String EXTRA_TITLE = INTENT_EXTRA_PREFIX + "TITLE";
+
+    /**
+     * Action bar subtitle
+     */
+    public static final String EXTRA_SUBTITLE = INTENT_EXTRA_PREFIX + "SUBTITLE";
+
+    /**
      * Resolve the {@link RepositoryId} referenced by the given intent
      *
      * @param intent
