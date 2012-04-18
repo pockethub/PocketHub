@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +62,8 @@ import roboguice.inject.InjectView;
  * Activity to display an existing Gist
  */
 public class GistFragment extends RoboSherlockFragment implements OnItemClickListener {
+
+    private static final String TAG = "GistFragment";
 
     private static final int REQUEST_CODE_COMMENT = 1;
 
@@ -216,6 +219,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
             }
 
             protected void onException(Exception e) throws RuntimeException {
+                Log.d(TAG, "Exception starring gist", e);
                 Toast.makeText(getContext().getApplicationContext(), e.getMessage(), LENGTH_LONG).show();
             }
         }.execute();
@@ -232,6 +236,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
             }
 
             protected void onException(Exception e) throws RuntimeException {
+                Log.d(TAG, "Exception unstarring gist", e);
                 Toast.makeText(getContext().getApplicationContext(), e.getMessage(), LENGTH_LONG).show();
             }
         }.execute();
@@ -267,6 +272,9 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
             protected void onException(Exception e) throws RuntimeException {
                 progress.dismiss();
+
+                Log.d(TAG, "Exception creating comment on gist", e);
+
                 Toast.makeText(getContext().getApplicationContext(), e.getMessage(), LENGTH_LONG).show();
             }
         }.execute();
@@ -325,6 +333,8 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
             }
 
             protected void onException(Exception e) throws RuntimeException {
+                Log.d(TAG, "Exception refreshing gist", e);
+
                 ErrorHelper.show(getContext().getApplicationContext(), e, string.error_gist_load);
             }
 
