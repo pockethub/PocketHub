@@ -259,4 +259,6 @@
      <string name="loading_followers">Loading Followers…</string>
 
      <string name="new_issue">New Issue</string>
+
+     <string name="anonymous">Anonymous</string>
 </resources>

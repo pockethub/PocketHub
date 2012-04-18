@@ -138,7 +138,7 @@ public class ViewGistsActivity extends DialogFragmentActivity implements OnPageC
             avatarHelper.bind(actionBar, gist.getUser());
             actionBar.setSubtitle(gist.getUser().getLogin());
         } else {
-            actionBar.setSubtitle("Anonymous");
+            actionBar.setSubtitle(string.anonymous);
             actionBar.setLogo(null);
             actionBar.setIcon(drawable.github_app_icon);
         }

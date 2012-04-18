@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.egit.github.core.Gist;
+import org.eclipse.egit.github.core.User;
 
 /**
  * View holder for a {@link Gist}
@@ -128,11 +129,10 @@ public class GistViewHolder implements ViewHolder<Gist> {
             description = Html.fromHtml("<i>" + title.getContext().getString(string.no_description) + "</i>");
         title.setText(description);
 
-        if (avatarHelper != null) {
-            avatar.setImageDrawable(null);
-            avatarHelper.bind(avatar, gist.getUser());
-            created.setText(fromHtml("<b>" + gist.getUser().getLogin() + "</b> "
-                    + Time.relativeTimeFor(gist.getCreatedAt())));
+        User user = gist.getUser();
+        if (avatarHelper != null && user != null) {
+            avatarHelper.bind(avatar, user);
+            created.setText(fromHtml("<b>" + user.getLogin() + "</b> " + Time.relativeTimeFor(gist.getCreatedAt())));
         } else {
             created.setText(Time.relativeTimeFor(gist.getCreatedAt()));
             avatar.setVisibility(GONE);
