@@ -1,5 +1,6 @@
 package com.github.mobile.android.gist;
 
+import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static android.widget.Toast.LENGTH_LONG;
@@ -8,7 +9,6 @@ import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENTS;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENT_BODY;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST_ID;
 import static com.google.common.collect.Lists.newArrayList;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -243,7 +243,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (Activity.RESULT_OK == resultCode && COMMENT_CREATE == requestCode && data != null) {
+        if (RESULT_OK == resultCode && COMMENT_CREATE == requestCode && data != null) {
             String comment = data.getStringExtra(EXTRA_COMMENT_BODY);
             if (comment != null && comment.length() > 0) {
                 createComment(comment);
