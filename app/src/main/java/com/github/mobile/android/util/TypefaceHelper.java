@@ -20,14 +20,17 @@ public class TypefaceHelper {
     }
 
     /**
-     * Set octocons typeface on given text view
+     * Set octocons typeface on given text view(s)
      *
-     * @param textView
-     * @return text view
+     * @param textViews
      */
-    public static TextView setOctocons(TextView textView) {
-        textView.setTypeface(getOctocons(textView.getContext()));
-        return textView;
+    public static void setOctocons(TextView... textViews) {
+        if (textViews == null || textViews.length == 0)
+            return;
+
+        Typeface typeface = getOctocons(textViews[0].getContext());
+        for (TextView textView : textViews)
+            textView.setTypeface(typeface);
     }
 
     /**

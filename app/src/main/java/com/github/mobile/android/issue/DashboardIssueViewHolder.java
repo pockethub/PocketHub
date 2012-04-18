@@ -26,7 +26,7 @@ public class DashboardIssueViewHolder extends RepoIssueViewHolder {
     public DashboardIssueViewHolder(View v, AvatarHelper helper, int maxNumberCount) {
         super(v, helper, maxNumberCount);
         repoText = (TextView) v.findViewById(id.tv_issue_repo_name);
-        ((TextView) v.findViewById(id.tv_comment_icon)).setTypeface(TypefaceHelper.getOctocons(v.getContext()));
+        TypefaceHelper.setOctocons((TextView) v.findViewById(id.tv_comment_icon));
     }
 
     @Override

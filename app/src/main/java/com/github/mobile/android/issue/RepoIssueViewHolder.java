@@ -47,7 +47,7 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
 
     private final TextView comments;
 
-    private final ImageView pullRequestIcon;
+    private final TextView pullRequestIcon;
 
     private final AvatarHelper helper;
 
@@ -67,9 +67,9 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
         gravatar = (ImageView) v.findViewById(id.iv_gravatar);
         creation = (TextView) v.findViewById(id.tv_issue_creation);
         comments = (TextView) v.findViewById(id.tv_issue_comments);
-        pullRequestIcon = (ImageView) v.findViewById(id.iv_pull_request);
 
-        ((TextView) v.findViewById(id.tv_comment_icon)).setTypeface(TypefaceHelper.getOctocons(v.getContext()));
+        pullRequestIcon = (TextView) v.findViewById(id.tv_pull_request_icon);
+        TypefaceHelper.setOctocons(pullRequestIcon, (TextView) v.findViewById(id.tv_comment_icon));
 
         this.helper = helper;
 

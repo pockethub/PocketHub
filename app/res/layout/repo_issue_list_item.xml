@@ -51,12 +51,16 @@
             android:singleLine="true"
             android:textColor="@color/listing" />
 
-        <ImageView
-            android:id="@+id/iv_pull_request"
+      <TextView
+            android:id="@+id/tv_pull_request_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:paddingRight="5dp"
-            android:src="@drawable/pull_request_icon" />
+            android:singleLine="true"
+            android:text="\uf234"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/listing_comments" />
 
         <TextView
             android:id="@+id/tv_comment_icon"
