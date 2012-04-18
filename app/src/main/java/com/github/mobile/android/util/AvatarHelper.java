@@ -160,9 +160,7 @@ public class AvatarHelper {
     }
 
     /**
-     * Allows us to key off the gravatar id rather than the entire avatar url, which is quite long
-     * <p/>
-     * https://github.com/eclipse/egit-github/pull/4
+     * Get a gravatar id for the given user
      *
      * @param user
      * @return gravatar id for user
