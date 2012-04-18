@@ -7,7 +7,6 @@ import java.util.Map;
 
 /**
  * Generic weak store of ids to items
- *
  */
 public abstract class ItemStore {
 
@@ -37,7 +36,7 @@ public abstract class ItemStore {
 
         private final ReferenceQueue<V> queue;
 
-        private final Map<Object, ItemReference<V>> items;;
+        private final Map<Object, ItemReference<V>> items;
 
         /**
          * Create reference store
