@@ -3,6 +3,8 @@ package com.github.mobile.android.ui.issue;
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static android.widget.Toast.LENGTH_LONG;
+import static com.github.mobile.android.RequestCodes.COMMENT_CREATE;
 import static com.github.mobile.android.RequestCodes.ISSUE_ASSIGNEE_UPDATE;
 import static com.github.mobile.android.RequestCodes.ISSUE_CLOSE;
 import static com.github.mobile.android.RequestCodes.ISSUE_EDIT;
@@ -10,6 +12,7 @@ import static com.github.mobile.android.RequestCodes.ISSUE_LABELS_UPDATE;
 import static com.github.mobile.android.RequestCodes.ISSUE_MILESTONE_UPDATE;
 import static com.github.mobile.android.RequestCodes.ISSUE_REOPEN;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENTS;
+import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENT_BODY;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_ISSUE;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_ISSUE_NUMBER;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY_NAME;
@@ -17,6 +20,8 @@ import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY_OWNE
 import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,6 +29,7 @@ import android.view.ViewGroup;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -38,6 +44,7 @@ import com.github.mobile.android.RefreshAnimation;
 import com.github.mobile.android.SingleChoiceDialogFragment;
 import com.github.mobile.android.async.AuthenticatedUserTask;
 import com.github.mobile.android.comment.CommentViewHolder;
+import com.github.mobile.android.comment.CreateCommentActivity;
 import com.github.mobile.android.core.issue.FullIssue;
 import com.github.mobile.android.issue.EditIssueActivity;
 import com.github.mobile.android.issue.IssueHeaderViewHolder;
@@ -67,6 +74,8 @@ import roboguice.inject.InjectView;
  * Fragment to display an issue
  */
 public class IssueFragment extends RoboSherlockFragment implements DialogResultListener {
+
+    private static final String TAG = "IssueFragment";
 
     @Inject
     private ContextScopedProvider<IssueService> service;
@@ -261,7 +270,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             }
 
             protected void onException(Exception e) throws RuntimeException {
-                ErrorHelper.show(getContext(), e, string.error_issue_load);
+                ErrorHelper.show(getContext().getApplicationContext(), e, string.error_issue_load);
             }
 
             protected void onSuccess(FullIssue fullIssue) throws Exception {
@@ -328,10 +337,36 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         inflater.inflate(menu.issue_view, optionsMenu);
     }
 
+    private void createComment(final String comment) {
+        new CreateCommentTask(getActivity(), repositoryId, issueNumber) {
+
+            @Override
+            protected void onSuccess(Comment comment) throws Exception {
+                super.onSuccess(comment);
+
+                if (getActivity() != null)
+                    refreshIssue();
+            }
+
+            protected void onException(Exception e) throws RuntimeException {
+                Log.d(TAG, "Exception creating comment", e);
+
+                Toast.makeText(getContext().getApplicationContext(), e.getMessage(), LENGTH_LONG).show();
+            }
+        }.create(comment);
+    }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (RESULT_OK == resultCode && ISSUE_EDIT == requestCode && data != null) {
             Issue editedIssue = (Issue) data.getSerializableExtra(EXTRA_ISSUE);
             bodyTask.edit(editedIssue.getTitle(), editedIssue.getBody());
+            return;
+        }
+
+        if (RESULT_OK == resultCode && COMMENT_CREATE == requestCode && data != null) {
+            String comment = data.getStringExtra(EXTRA_COMMENT_BODY);
+            if (!TextUtils.isEmpty(comment))
+                createComment(comment);
             return;
         }
 
@@ -360,6 +395,9 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             return true;
         case id.issue_description:
             startActivityForResult(EditIssueActivity.createIntent(issue), ISSUE_EDIT);
+            return true;
+        case id.issue_comment:
+            startActivityForResult(CreateCommentActivity.createIntent(), COMMENT_CREATE);
             return true;
         case id.refresh:
             refreshAnimation.setRefreshItem(item).start(getActivity());

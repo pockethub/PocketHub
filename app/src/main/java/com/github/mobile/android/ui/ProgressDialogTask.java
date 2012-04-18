@@ -59,4 +59,14 @@ public abstract class ProgressDialogTask<E> extends AuthenticatedUserTask<E> {
     protected void onException(Exception e) throws RuntimeException {
         dismissProgress();
     }
+
+    /**
+     * Get string from context resources
+     *
+     * @param resId
+     * @return string
+     */
+    protected String getString(int resId) {
+        return getContext().getString(resId);
+    }
 }
