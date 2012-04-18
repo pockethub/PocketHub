@@ -93,6 +93,6 @@ public class SearchRepoListFragment extends ListLoadingFragment<SearchRepository
     @Override
     protected ViewHoldingListAdapter<SearchRepository> adapterFor(List<SearchRepository> items) {
         return new ViewHoldingListAdapter<SearchRepository>(items, ViewInflator.viewInflatorFor(getActivity(),
-                layout.repo_list_item), ReflectiveHolderFactory.reflectiveFactoryFor(SearchRepoViewHolder.class));
+                layout.repo_search_list_item), ReflectiveHolderFactory.reflectiveFactoryFor(SearchRepoViewHolder.class));
     }
 }

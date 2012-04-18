@@ -220,7 +220,7 @@
 
      <string name="accounts_label">Accounts</string>
 
-     <string name="search_matching">Matching “{0}”</string>
+     <string name="search_matching">“{0}”</string>
 
      <string name="select_assignee">Select Assignee</string>
 

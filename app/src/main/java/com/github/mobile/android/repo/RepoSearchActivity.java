@@ -9,9 +9,9 @@ import static com.github.mobile.android.repo.RepoSearchRecentSuggestionsProvider
 import static com.github.mobile.android.repo.RepoSearchRecentSuggestionsProvider.saveRecentRepoQuery;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.HomeActivity;
@@ -23,15 +23,10 @@ import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmen
 
 import java.text.MessageFormat;
 
-import roboguice.inject.InjectView;
-
 /**
  * Activity to search repositories
  */
 public class RepoSearchActivity extends RoboSherlockFragmentActivity {
-
-    @InjectView(id.tv_query)
-    private TextView queryText;
 
     private SearchRepoListFragment repoFragment;
 
@@ -66,8 +61,9 @@ public class RepoSearchActivity extends RoboSherlockFragmentActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(layout.repo_search);
-        setTitle(string.repositories_title);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setSubtitle(string.repositories_title);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         repoFragment = (SearchRepoListFragment) getSupportFragmentManager().findFragmentById(android.R.id.list);
         if (repoFragment == null) {
@@ -92,7 +88,7 @@ public class RepoSearchActivity extends RoboSherlockFragmentActivity {
     }
 
     private void search(final String query) {
-        queryText.setText(MessageFormat.format(getString(string.search_matching), query));
+        getSupportActionBar().setTitle(MessageFormat.format(getString(string.search_matching), query));
         saveRecentRepoQuery(this, query);
         repoFragment.setQuery(query);
     }
