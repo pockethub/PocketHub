@@ -89,16 +89,16 @@ public abstract class PagedListFragment<E> extends ListLoadingFragment<E> implem
     }
 
     @Override
-    public void refresh() {
+    protected void forceReload() {
         pager.reset();
-        super.refresh();
+        super.forceReload();
     }
 
     /**
      * Show more events while retaining the current pager state
      */
     private void showMore() {
-        super.refresh();
+        refresh();
     }
 
     @Override
@@ -109,5 +109,11 @@ public abstract class PagedListFragment<E> extends ListLoadingFragment<E> implem
             loadingIndicator.setVisible(false);
 
         super.onLoadFinished(loader, items);
+    }
+
+    @Override
+    protected void hideOldContentAndRefresh() {
+        pager.resetPage().reset();
+        super.hideOldContentAndRefresh();
     }
 }

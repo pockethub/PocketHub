@@ -6,7 +6,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.mobile.android.R.id;
@@ -23,8 +22,6 @@ public class ResourceLoadingIndicator {
 
     private final TextView textView;
 
-    private final ProgressBar progressBar;
-
     private final int loadingResId;
 
     /**
@@ -38,7 +35,6 @@ public class ResourceLoadingIndicator {
         this.context = context;
         view = LayoutInflater.from(context).inflate(layout.load_item, null);
         textView = (TextView) view.findViewById(id.tv_loading);
-        progressBar = (ProgressBar) view.findViewById(id.pb_loading);
         this.loadingResId = loadingResId;
     }
 
@@ -71,7 +67,6 @@ public class ResourceLoadingIndicator {
      */
     public ResourceLoadingIndicator showLoading() {
         setVisible(true);
-        progressBar.setVisibility(VISIBLE);
         textView.setText(context.getString(loadingResId));
         return this;
     }

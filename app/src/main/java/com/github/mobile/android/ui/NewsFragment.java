@@ -1,14 +1,24 @@
 package com.github.mobile.android.ui;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.mobile.android.R.layout;
 import com.github.mobile.android.core.gist.GistEventMatcher;
 import com.github.mobile.android.core.issue.IssueEventMatcher;
 import com.github.mobile.android.core.repo.RepositoryEventMatcher;
 import com.github.mobile.android.gist.ViewGistsActivity;
 import com.github.mobile.android.issue.ViewIssueActivity;
 import com.github.mobile.android.ui.repo.RepositoryViewActivity;
+import com.github.mobile.android.ui.user.NewsEventViewHolder;
+import com.github.mobile.android.util.AvatarHelper;
+import com.google.inject.Inject;
+import com.madgag.android.listviews.ReflectiveHolderFactory;
+import com.madgag.android.listviews.ViewHoldingListAdapter;
+import com.madgag.android.listviews.ViewInflator;
+
+import java.util.List;
 
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.Issue;
@@ -35,6 +45,9 @@ public abstract class NewsFragment extends PagedListFragment<Event> {
      */
     protected final RepositoryEventMatcher repoMatcher = new RepositoryEventMatcher();
 
+    @Inject
+    private AvatarHelper avatarHelper;
+
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Event event = (Event) l.getItemAtPosition(position);
@@ -49,5 +62,18 @@ public abstract class NewsFragment extends PagedListFragment<Event> {
         Repository repo = repoMatcher.getRepository(event);
         if (repo != null)
             startActivity(RepositoryViewActivity.createIntent(repo));
+    }
+
+    @Override
+    protected ViewHoldingListAdapter<Event> adapterFor(List<Event> items) {
+        return new ViewHoldingListAdapter<Event>(items, ViewInflator.viewInflatorFor(getActivity(), layout.event_item),
+                ReflectiveHolderFactory.reflectiveFactoryFor(NewsEventViewHolder.class, avatarHelper)) {
+
+            @Override
+            public long getItemId(int i) {
+                String id = getItem(i).getId();
+                return !TextUtils.isEmpty(id) ? id.hashCode() : super.hashCode();
+            }
+        };
     }
 }

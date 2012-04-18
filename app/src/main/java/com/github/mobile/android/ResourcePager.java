@@ -39,6 +39,16 @@ public abstract class ResourcePager<E> {
     protected boolean hasMore;
 
     /**
+     * Reset the number of the next page to be requested from {@link #next()}
+     *
+     * @return this pager
+     */
+    public ResourcePager<E> resetPage() {
+        page = 1;
+        return this;
+    }
+
+    /**
      * Reset the next page to be requested and clear the current resources
      *
      * @return this pager

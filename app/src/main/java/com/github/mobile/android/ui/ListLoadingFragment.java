@@ -66,6 +66,7 @@ public abstract class ListLoadingFragment<E> extends RoboSherlockListFragment im
         switch (item.getItemId()) {
         case id.refresh:
             refreshAnimation.setRefreshItem(item);
+            refreshAnimation.start(getActivity());
             forceReload();
             return true;
         default:
@@ -103,8 +104,6 @@ public abstract class ListLoadingFragment<E> extends RoboSherlockListFragment im
         final Activity activity = getActivity();
         if (activity == null || getLoaderManager().hasRunningLoaders())
             return;
-
-        refreshAnimation.start(activity);
 
         getLoaderManager().restartLoader(0, args, this);
     }

@@ -1,22 +1,15 @@
 package com.github.mobile.android.ui.user;
 
-import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
-import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.app.Activity;
 import android.os.Bundle;
 
 import com.github.mobile.android.HomeActivity;
 import com.github.mobile.android.HomeActivity.OrgSelectionListener;
-import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ResourcePager;
 import com.github.mobile.android.ui.NewsFragment;
-import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.ListViewHelper;
 import com.google.inject.Inject;
-import com.madgag.android.listviews.ViewHoldingListAdapter;
-
-import java.util.List;
 
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.PageIterator;
@@ -33,9 +26,6 @@ public class UserNewsFragment extends NewsFragment implements OrgSelectionListen
     @Inject
     private EventService service;
 
-    @Inject
-    private AvatarHelper avatarHelper;
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -46,7 +36,7 @@ public class UserNewsFragment extends NewsFragment implements OrgSelectionListen
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        ((HomeActivity) activity).registerOrgSelectionListener(this);
+        org = ((HomeActivity) activity).registerOrgSelectionListener(this);
     }
 
     @Override
@@ -56,12 +46,6 @@ public class UserNewsFragment extends NewsFragment implements OrgSelectionListen
         // Only hard refresh if view already created and org is changing
         if (getView() != null && previousOrgId != org.getId())
             hideOldContentAndRefresh();
-    }
-
-    @Override
-    protected ViewHoldingListAdapter<Event> adapterFor(List<Event> items) {
-        return new ViewHoldingListAdapter<Event>(items, viewInflatorFor(getActivity(), layout.event_item),
-                reflectiveFactoryFor(NewsEventViewHolder.class, avatarHelper));
     }
 
     @Override

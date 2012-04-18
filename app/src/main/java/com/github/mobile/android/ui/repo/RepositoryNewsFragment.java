@@ -3,20 +3,12 @@ package com.github.mobile.android.ui.repo;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY;
 import android.os.Bundle;
 
-import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ResourcePager;
 import com.github.mobile.android.ui.NewsFragment;
 import com.github.mobile.android.ui.user.EventPager;
-import com.github.mobile.android.ui.user.NewsEventViewHolder;
-import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.ListViewHelper;
 import com.google.inject.Inject;
-import com.madgag.android.listviews.ReflectiveHolderFactory;
-import com.madgag.android.listviews.ViewHoldingListAdapter;
-import com.madgag.android.listviews.ViewInflator;
-
-import java.util.List;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.client.PageIterator;
@@ -37,9 +29,6 @@ public class RepositoryNewsFragment extends NewsFragment {
     @InjectExtra(EXTRA_REPOSITORY)
     private Repository repo;
 
-    @Inject
-    private AvatarHelper avatarHelper;
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -47,6 +36,7 @@ public class RepositoryNewsFragment extends NewsFragment {
         ListViewHelper.configure(getActivity(), getListView(), true);
     }
 
+    @Override
     protected ResourcePager<Event> createPager() {
         return new EventPager() {
 
@@ -56,12 +46,8 @@ public class RepositoryNewsFragment extends NewsFragment {
         };
     }
 
+    @Override
     protected int getLoadingMessage() {
         return string.loading_news;
-    }
-
-    protected ViewHoldingListAdapter<Event> adapterFor(List<Event> items) {
-        return new ViewHoldingListAdapter<Event>(items, ViewInflator.viewInflatorFor(getActivity(), layout.event_item),
-                ReflectiveHolderFactory.reflectiveFactoryFor(NewsEventViewHolder.class, avatarHelper));
     }
 }

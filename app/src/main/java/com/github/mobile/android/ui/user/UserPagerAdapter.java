@@ -70,7 +70,7 @@ public class UserPagerAdapter extends FragmentPagerAdapter implements TitleProvi
 
     public Object instantiateItem(ViewGroup container, int position) {
         Object fragment = super.instantiateItem(container, position);
-        if (position == 2 && fragment instanceof Fragment)
+        if (fragment instanceof Fragment)
             tags.add(((Fragment) fragment).getTag());
         return fragment;
     }
