@@ -130,7 +130,11 @@ public class ViewGistsActivity extends DialogFragmentActivity implements OnPageC
         ActionBar actionBar = getSupportActionBar();
         String gistId = gists.get(position);
         Gist gist = store.getGist(gistId);
-        if (gist != null && gist.getUser() != null) {
+        if (gist == null) {
+            actionBar.setSubtitle(null);
+            actionBar.setLogo(null);
+            actionBar.setIcon(drawable.github_app_icon);
+        } else if (gist.getUser() != null) {
             avatarHelper.bind(actionBar, gist.getUser());
             actionBar.setSubtitle(gist.getUser().getLogin());
         } else {
