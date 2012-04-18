@@ -1,25 +1,27 @@
 package com.github.mobile.android.repo;
 
+import static com.github.mobile.android.util.SharedPreferencesUtil.savePrefsFrom;
 import static com.google.common.base.Predicates.in;
 import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.limit;
 import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Lists.newLinkedList;
 import static com.google.common.collect.Maps.uniqueIndex;
 import static com.google.common.collect.Sets.difference;
 import static com.google.common.collect.Sets.newLinkedHashSet;
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
-import android.content.Context;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import com.github.mobile.android.RequestReader;
-import com.github.mobile.android.RequestWriter;
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.google.common.collect.Ordering;
+import com.google.inject.Inject;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -35,14 +37,16 @@ import org.eclipse.egit.github.core.Repository;
  */
 public class RecentReposHelper {
 
-    private static final String FILE_RECENT_REPOS = "recent_repos.ser";
-
     /**
      * The maximum number of recent repos to store - this is the total across all different orgs.
      */
     private static final int MAX_RECENT_REPOS = 20;
 
-    private static final int VERSION_RECENT_REPOS = 2;
+    private static final String PREF_RECENT_REPOS = "recentRepos";
+
+    private static final Joiner JOINER = Joiner.on(",");
+
+    private static final Splitter SPLITTER = Splitter.on(",");
 
     private static final Function<Repository, String> REPO_NAME = new Function<Repository, String>() {
         public String apply(Repository repo) {
@@ -58,77 +62,42 @@ public class RecentReposHelper {
 
     private static Ordering<Repository> REPO_NAME_ORDER = Ordering.from(CASE_INSENSITIVE_ORDER).onResultOf(REPO_NAME);
 
-    private final LinkedList<String> recentRepos;
+    private LinkedList<String> recentRepos;
 
-    private final Context context;
+    @Inject
+    private SharedPreferences sharedPreferences;
 
     /**
-     * Create helper scoped to given user
-     *
-     * @param context
+     * Load recent repos from store.
      */
-    public RecentReposHelper(final Context context) {
-        this.context = context;
-
-        LinkedList<String> loaded = new RequestReader(getRecentReposFile(), VERSION_RECENT_REPOS).read();
-        if (loaded == null)
-            loaded = new LinkedList<String>();
-        recentRepos = loaded;
-        trimRecentRepos();
+    public void load() {
+        recentRepos = newLinkedList(SPLITTER.split(sharedPreferences.getString(PREF_RECENT_REPOS, "")));
     }
 
     /**
-     * Add repository to recent list
+     * Load the recent-repo list, add the supplied repository to it's head and store the list.
+     * <p/>
+     * It's expected that this would be called just once for a Repo-viewing activity.
      *
      * @param repo
-     * @return this helper
      */
-    public RecentReposHelper add(final IRepositoryIdProvider repo) {
-        return repo != null ? add(repo.generateId()) : this;
-    }
+    public void storeRepoVisit(IRepositoryIdProvider repo) {
+        if (repo == null)
+            return;
 
-    /**
-     * Add id to recent list
-     *
-     * @param repoId
-     * @return this helper
-     */
-    public RecentReposHelper add(final String repoId) {
-        if (!TextUtils.isEmpty(repoId)) {
-            recentRepos.remove(repoId);
-            recentRepos.addFirst(repoId);
-            trimRecentRepos();
-        }
-        return this;
-    }
+        String repoId = repo.generateId();
 
-    private void trimRecentRepos() {
+        if (TextUtils.isEmpty(repoId))
+            return;
+
+        load();
+        recentRepos.remove(repoId);
+        recentRepos.addFirst(repoId);
+
         while (recentRepos.size() > MAX_RECENT_REPOS)
             recentRepos.removeLast();
-    }
 
-    private File getRecentReposFile() {
-        return context.getFileStreamPath(FILE_RECENT_REPOS);
-    }
-
-    /**
-     * Persist recent list
-     *
-     * @return this helper
-     */
-    public RecentReposHelper save() {
-        new RequestWriter(getRecentReposFile(), VERSION_RECENT_REPOS).write(recentRepos);
-        return this;
-    }
-
-    /**
-     * Is the given repository id contained in the recent list?
-     *
-     * @param repoId
-     * @return true if recent, false otherwise
-     */
-    public boolean contains(String repoId) {
-        return !TextUtils.isEmpty(repoId) && recentRepos.contains(repoId);
+        savePrefsFrom(sharedPreferences.edit().putString(PREF_RECENT_REPOS, JOINER.join(recentRepos)));
     }
 
     /**

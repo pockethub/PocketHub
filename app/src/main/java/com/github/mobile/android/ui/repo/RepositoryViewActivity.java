@@ -12,6 +12,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.HomeActivity;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
+import com.github.mobile.android.repo.RecentReposHelper;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
@@ -50,10 +51,14 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
     @Inject
     private AvatarHelper avatarHelper;
 
+    @Inject
+    private RecentReposHelper recentReposHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        recentReposHelper.storeRepoVisit(repository);
         setContentView(layout.pager_with_title);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(repository.getName());

@@ -44,6 +44,7 @@ public class RepoListFragment extends ListLoadingFragment<Repository> implements
 
     private final AtomicReference<User> org = new AtomicReference<User>();
 
+    @Inject
     private RecentReposHelper recentReposHelper;
 
     private final AtomicReference<RecentRepos> recentReposRef = new AtomicReference<RecentRepos>();
@@ -51,7 +52,6 @@ public class RepoListFragment extends ListLoadingFragment<Repository> implements
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        recentReposHelper = new RecentReposHelper(activity);
         org.set(((HomeActivity) activity).registerOrgSelectionListener(this));
     }
 
@@ -90,16 +90,15 @@ public class RepoListFragment extends ListLoadingFragment<Repository> implements
     @Override
     public void onListItemClick(ListView list, View v, int position, long id) {
         Repository repo = (Repository) list.getItemAtPosition(position);
-        recentReposHelper.add(repo);
         startActivity(RepositoryViewActivity.createIntent(repo));
-        refresh();
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onResume() {
+        super.onResume();
+        recentReposHelper.load();
 
-        recentReposHelper.save();
+        refresh();
     }
 
     @Override
