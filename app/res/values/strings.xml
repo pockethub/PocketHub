@@ -257,4 +257,6 @@
      <string name="issue_dashboard">Issue Dashboard</string>
 
      <string name="loading_followers">Loading Followers…</string>
+
+     <string name="new_issue">New Issue</string>
 </resources>

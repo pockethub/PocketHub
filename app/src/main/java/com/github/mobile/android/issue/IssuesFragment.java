@@ -40,7 +40,6 @@ import java.util.List;
 
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.service.IssueService;
 
@@ -130,8 +129,7 @@ public class IssuesFragment extends PagedListFragment<Issue> {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case id.create_issue:
-            startActivityForResult(CreateIssueActivity.createIntent(new RepositoryId(repository.getOwner().getLogin(),
-                    repository.getName())), ISSUE_CREATE);
+            startActivityForResult(CreateIssueActivity.createIntent(repository), ISSUE_CREATE);
             return true;
         case id.filter_issues:
             startActivityForResult(FilterIssuesActivity.createIntent(repository, filter), ISSUE_FILTER_EDIT);

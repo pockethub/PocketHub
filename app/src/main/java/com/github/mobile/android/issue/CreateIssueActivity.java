@@ -1,8 +1,7 @@
 package com.github.mobile.android.issue;
 
 import static android.widget.Toast.LENGTH_LONG;
-import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY_NAME;
-import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY_OWNER;
+import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.android.DialogFragmentActivity;
@@ -20,6 +20,7 @@ import com.github.mobile.android.MultiChoiceDialogFragment;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
+import com.github.mobile.android.R.string;
 import com.github.mobile.android.SingleChoiceDialogFragment;
 import com.github.mobile.android.TextWatcherAdapter;
 import com.github.mobile.android.async.AuthenticatedUserTask;
@@ -34,7 +35,6 @@ import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.CollaboratorService;
 import org.eclipse.egit.github.core.service.IssueService;
@@ -55,7 +55,7 @@ public class CreateIssueActivity extends DialogFragmentActivity {
      * @param repo
      * @return intent
      */
-    public static Intent createIntent(RepositoryId repo) {
+    public static Intent createIntent(Repository repo) {
         return new Builder("repo.issues.create.VIEW").repo(repo).toIntent();
     }
 
@@ -85,11 +85,8 @@ public class CreateIssueActivity extends DialogFragmentActivity {
     @Inject
     private CollaboratorService collaboratorService;
 
-    @InjectExtra(EXTRA_REPOSITORY_NAME)
-    private String repoName;
-
-    @InjectExtra(EXTRA_REPOSITORY_OWNER)
-    private String repoOwner;
+    @InjectExtra(EXTRA_REPOSITORY)
+    private Repository repo;
 
     private LabelsDialog labelsDialog;
 
@@ -117,13 +114,16 @@ public class CreateIssueActivity extends DialogFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.issue_create);
-        setTitle("New Issue");
 
-        RepositoryId repositoryId = new RepositoryId(repoOwner, repoName);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(string.new_issue);
+        actionBar.setSubtitle(repo.generateId());
+        int avatarWidth = (int) Math.ceil(getResources().getDisplayMetrics().density * 28);
+        actionBar.setLogo(avatarHelper.getDrawable(repo.getOwner(), avatarWidth));
 
-        labelsDialog = new LabelsDialog(this, REQUEST_CODE_LABELS, repositoryId, labelService);
-        milestoneDialog = new MilestoneDialog(this, REQUEST_CODE_MILESTONE, repositoryId, milestoneService);
-        assigneeDialog = new AssigneeDialog(this, REQUEST_CODE_ASSIGNEE, repositoryId, collaboratorService);
+        labelsDialog = new LabelsDialog(this, REQUEST_CODE_LABELS, repo, labelService);
+        milestoneDialog = new MilestoneDialog(this, REQUEST_CODE_MILESTONE, repo, milestoneService);
+        assigneeDialog = new AssigneeDialog(this, REQUEST_CODE_ASSIGNEE, repo, collaboratorService);
 
         View headerView = findViewById(id.ll_issue_header);
         headerView.findViewById(id.ll_milestone).setOnClickListener(new OnClickListener() {
@@ -235,7 +235,7 @@ public class CreateIssueActivity extends DialogFragmentActivity {
         new AuthenticatedUserTask<Issue>(this) {
 
             public Issue run() throws Exception {
-                return store.addIssue(service.createIssue(repoOwner, repoName, newIssue));
+                return store.addIssue(service.createIssue(repo, newIssue));
             }
 
             protected void onSuccess(Issue issue) throws Exception {
