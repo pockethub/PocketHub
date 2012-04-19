@@ -78,13 +78,6 @@
             <type>apklib</type>
         </dependency>
         <dependency>
-            <groupId>com.viewpagerindicator</groupId>
-            <artifactId>library</artifactId>
-            <version>${vpi.version}</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>org.eclipse.mylyn.github</groupId>
             <artifactId>org.eclipse.egit.github.core</artifactId>
             <version>1.3.6</version>
