@@ -16,6 +16,7 @@
 
     <properties>
         <abs.version>4.0.2</abs.version>
+        <vpi.version>2.2.3</vpi.version>
     </properties>
 
     <dependencies>
@@ -71,11 +72,18 @@
             </exclusions>
         </dependency>
         <dependency>
-			<groupId>com.viewpagerindicator</groupId>
-			<artifactId>library</artifactId>
-			<version>2.2.3</version>
-			<type>apklib</type>
-		</dependency>
+            <groupId>com.viewpagerindicator</groupId>
+            <artifactId>library</artifactId>
+            <version>${vpi.version}</version>
+            <type>apklib</type>
+        </dependency>
+        <dependency>
+            <groupId>com.viewpagerindicator</groupId>
+            <artifactId>library</artifactId>
+            <version>${vpi.version}</version>
+            <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>org.eclipse.mylyn.github</groupId>
             <artifactId>org.eclipse.egit.github.core</artifactId>
