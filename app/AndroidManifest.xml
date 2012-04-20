@@ -146,7 +146,6 @@
                 someone who explicitly knows the class name
             -->
         </activity>
-        <activity android:name=".ui.WelcomeActivity" android:configChanges="orientation|keyboardHidden|screenSize"/>
 
         <service android:exported="true" android:name=".sync.GitHubSyncAdapterService" android:process=":repos">
             <intent-filter>
