@@ -11,9 +11,9 @@
         android:layout_height="wrap_content"
         android:background="@drawable/pager_title_background"
         app:footerColor="@color/pager_footer"
-        app:footerIndicatorHeight="4dp"
-        app:footerIndicatorStyle="underline"
-        app:footerLineHeight="4dp"
+        app:footerIndicatorHeight="5dp"
+        app:footerIndicatorStyle="triangle"
+        app:footerLineHeight="0dp"
         app:selectedBold="true"
         app:selectedColor="@color/pager_title_selected_text"
         app:textColor="@color/pager_title_text" />

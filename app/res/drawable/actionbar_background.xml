@@ -14,12 +14,27 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
 
-<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item>
+        <shape android:shape="rectangle" >
+            <solid android:color="@color/actionbar_background_top" />
+        </shape>
+    </item>
+    <item android:top="1dp">
+        <shape android:shape="rectangle" >
+            <solid android:color="@color/actionbar_background_bottom" />
+        </shape>
+    </item>
+    <item
+        android:bottom="1dp"
+        android:top="1dp">
+        <shape>
+            <gradient
+                android:angle="270"
+                android:endColor="@color/actionbar_background_end"
+                android:startColor="@color/actionbar_background_start" />
+        </shape>
+    </item>
 
-    <gradient
-        android:angle="270"
-        android:endColor="@color/actionbar_background_end"
-        android:startColor="@color/actionbar_background_start" />
-
-</shape>
+</layer-list>
