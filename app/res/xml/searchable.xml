@@ -4,5 +4,4 @@
             android:hint="@string/find_repos"
             android:searchSuggestAuthority="com.github.search.suggest.recent.repos"
             android:searchSuggestSelection=" ?" >
-        >
 </searchable>
