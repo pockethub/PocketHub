@@ -1,12 +1,10 @@
 package com.github.mobile.android.guice;
 
-import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
-import static com.github.mobile.android.authenticator.Constants.GITHUB_ACCOUNT_TYPE;
+import static com.github.mobile.android.util.AccountHelper.demandCurrentAccount;
 import static com.google.common.base.Preconditions.checkState;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.github.mobile.android.authenticator.GitHubAccount;
@@ -46,13 +44,13 @@ public class GitHubAccountScope extends ScopeBase {
     private final ThreadLocal<GitHubAccount> currentAccount = new ThreadLocal<GitHubAccount>();
 
     private final Map<GitHubAccount, Map<Key<?>, Object>> repoScopeMaps = new MapMaker().
-            makeComputingMap(new Function<GitHubAccount, Map<Key<?>, Object>>() {
-                public Map<Key<?>, Object> apply(GitHubAccount account) {
-                    ConcurrentMap<Key<?>, Object> accountScopeMap = new MapMaker().makeMap();
-                    accountScopeMap.put(GITHUB_ACCOUNT_KEY, account);
-                    return accountScopeMap;
-                }
-            });
+        makeComputingMap(new Function<GitHubAccount, Map<Key<?>, Object>>() {
+            public Map<Key<?>, Object> apply(GitHubAccount account) {
+                ConcurrentMap<Key<?>, Object> accountScopeMap = new MapMaker().makeMap();
+                accountScopeMap.put(GITHUB_ACCOUNT_KEY, account);
+                return accountScopeMap;
+            }
+        });
 
     /**
      * Enters scope once we've ensured the user has a valid account.
@@ -91,28 +89,5 @@ public class GitHubAccountScope extends ScopeBase {
         return repoScopeMaps.get(account);
     }
 
-    private Account demandCurrentAccount(AccountManager accountManager, Activity activityUsedToStartLoginProcess) {
-        Account[] accounts;
-        Log.d(TAG, "Getting current account...");
-        try {
-            while ((accounts = accountManager.
-                    getAccountsByTypeAndFeatures(GITHUB_ACCOUNT_TYPE, null, null, null).getResult()).length == 0) {
-                Log.d(TAG, "Currently zero GitHub accounts... activity=" + activityUsedToStartLoginProcess);
-                if (activityUsedToStartLoginProcess == null)
-                    throw new RuntimeException("Can't create new GitHub account - no activity available");
 
-                Bundle result = accountManager.addAccount(GITHUB_ACCOUNT_TYPE, null, null, null,
-                        activityUsedToStartLoginProcess, null, null).getResult();
-
-                Log.i(TAG, "Added account " + result.getString(KEY_ACCOUNT_NAME));
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "Problem getting a Github account...", e);
-            throw new RuntimeException(e);
-        }
-
-        Account account = accounts[0];
-        Log.d(TAG, "Returning account " + account.name);
-        return account;
-    }
 }

@@ -50,6 +50,11 @@
             <scope>provided</scope>
             <type>jar</type>
         </dependency>
+        <dependency>
+            <groupId>com.github.rtyley</groupId>
+            <artifactId>android-screenshot-celebrity</artifactId>
+            <version>1.8</version>
+        </dependency>
     </dependencies>
     <build>
         <resources>
