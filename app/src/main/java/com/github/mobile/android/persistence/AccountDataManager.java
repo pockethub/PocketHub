@@ -10,6 +10,7 @@ import android.util.Log;
 import com.github.mobile.android.RequestFuture;
 import com.github.mobile.android.RequestReader;
 import com.github.mobile.android.RequestWriter;
+import com.github.mobile.android.async.AuthenticatedUserTask;
 import com.github.mobile.android.issue.IssueFilter;
 import com.github.mobile.android.persistence.AllReposForUserOrOrg.Factory;
 import com.google.inject.Inject;
@@ -27,8 +28,6 @@ import java.util.concurrent.Executors;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
-
-import com.github.mobile.android.async.AuthenticatedUserTask;
 
 /**
  * Manager cache for an account

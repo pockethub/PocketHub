@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.github.mobile.android.DialogFragmentActivity;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.SingleChoiceDialogFragment;
+import com.github.mobile.android.async.AuthenticatedUserTask;
 
 import java.util.Comparator;
 import java.util.List;
@@ -16,8 +17,6 @@ import java.util.TreeMap;
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.CollaboratorService;
-
-import com.github.mobile.android.async.AuthenticatedUserTask;
 
 /**
  * Dialog helper to display a list of assignees to select one from

@@ -3,8 +3,6 @@ package com.github.mobile.android.core.gist;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import com.github.mobile.android.core.gist.GistUrlMatcher;
-
 import org.junit.Test;
 
 /**

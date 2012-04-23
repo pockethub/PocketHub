@@ -7,7 +7,6 @@ import android.content.ContentProviderClient;
 import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.github.mobile.android.guice.GitHubAccountScope;
 import com.google.inject.Inject;

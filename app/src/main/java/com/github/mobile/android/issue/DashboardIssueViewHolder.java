@@ -1,13 +1,13 @@
 package com.github.mobile.android.issue;
 
+import android.view.View;
+import android.widget.TextView;
+
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.TypefaceHelper;
 
 import org.eclipse.egit.github.core.Issue;
-
-import android.view.View;
-import android.widget.TextView;
 
 /**
  * Dashboard issue view holder

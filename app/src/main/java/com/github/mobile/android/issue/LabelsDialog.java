@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.github.mobile.android.DialogFragmentActivity;
 import com.github.mobile.android.MultiChoiceDialogFragment;
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.async.AuthenticatedUserTask;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -18,8 +19,6 @@ import java.util.TreeMap;
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.service.LabelService;
-
-import com.github.mobile.android.async.AuthenticatedUserTask;
 
 /**
  * Dialog helper to display a list of possibly selected issue labels

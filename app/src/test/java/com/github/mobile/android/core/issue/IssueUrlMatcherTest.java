@@ -2,8 +2,6 @@ package com.github.mobile.android.core.issue;
 
 import static org.junit.Assert.assertEquals;
 
-import com.github.mobile.android.core.issue.IssueUrlMatcher;
-
 import org.junit.Test;
 
 /**

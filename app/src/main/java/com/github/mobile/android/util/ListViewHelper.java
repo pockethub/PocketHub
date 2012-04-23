@@ -1,9 +1,9 @@
 package com.github.mobile.android.util;
 
-import com.github.mobile.android.R.drawable;
-
 import android.content.Context;
 import android.widget.ListView;
+
+import com.github.mobile.android.R.drawable;
 
 /**
  * Helpers to configure a {@link ListView}

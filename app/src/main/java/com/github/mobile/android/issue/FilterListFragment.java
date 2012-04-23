@@ -6,10 +6,10 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
-import com.github.mobile.android.async.AuthenticatedUserLoader;
-import com.github.mobile.android.persistence.AccountDataManager;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.async.AuthenticatedUserLoader;
+import com.github.mobile.android.persistence.AccountDataManager;
 import com.github.mobile.android.ui.ListLoadingFragment;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.ListViewHelper;

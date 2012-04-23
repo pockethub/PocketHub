@@ -35,7 +35,6 @@ import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.client.RequestException;
 import org.eclipse.egit.github.core.service.UserService;
 
-import roboguice.activity.RoboAccountAuthenticatorActivity;
 import roboguice.inject.InjectView;
 import roboguice.util.RoboAsyncTask;
 
