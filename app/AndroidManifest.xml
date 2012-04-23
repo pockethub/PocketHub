@@ -3,7 +3,7 @@
     <!-- Note: This file will be auto-formatted by the build (specifically android:manifest-update goal) -->
 
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="14"/>
-    
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.NFC"/>
@@ -14,9 +14,9 @@
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
     <uses-permission android:name="android.permission.READ_SYNC_STATS"/>
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
-    
+
     <supports-screens android:largeScreens="true" android:normalScreens="true" android:smallScreens="true" android:xlargeScreens="true"/>
-    
+
     <application android:debuggable="true" android:hardwareAccelerated="true" android:icon="@drawable/github_app_icon" android:label="@string/github_app_name" android:theme="@style/Theme.GitHub">
 
         <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name="HomeActivity">
@@ -113,18 +113,18 @@
         </activity>
 
         <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".comment.CreateCommentActivity">
-			<intent-filter>
-				<action android:name="com.github.mobile.android.comment.create.VIEW"/>
-				<category android:name="android.intent.category.DEFAULT"/>
-			</intent-filter>
-		</activity>
+            <intent-filter>
+                <action android:name="com.github.mobile.android.comment.create.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
 
         <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.repo.RepositoryViewActivity">
-			<intent-filter>
-				<action android:name="com.github.mobile.android.repo.VIEW"/>
-				<category android:name="android.intent.category.DEFAULT"/>
-			</intent-filter>
-		</activity>
+            <intent-filter>
+                <action android:name="com.github.mobile.android.repo.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
 
         <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.ViewIssuesActivity">
             <intent-filter>

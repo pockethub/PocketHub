@@ -2,20 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="100" android:versionName="1.0-SNAPSHOT" package="com.github.mobile.android.tests">
     <!-- Note: This file will be auto-formatted by the build (specifically android:manifest-update goal) -->
 
-	<uses-sdk android:minSdkVersion="8" android:targetSdkVersion="14"/>
-	
-    <!-- We add an application tag here just so that we can indicate that
-         this package needs to link against the android.test library,
-         which is needed when building test cases. -->
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="14"/>
+
     <application android:debuggable="true">
         <uses-library android:name="android.test.runner"/>
     </application>
 
-    <!--
-    This declares that this app uses the instrumentation test runner targeting
-    the package of com.example.android.apis.  To run the tests use the command:
-    "adb shell am instrument -w com.example.android.apis.tests/android.test.InstrumentationTestRunner"
-    -->
     <instrumentation android:label="GitHub for Android - Integration Tests" android:name="android.test.InstrumentationTestRunner" android:targetPackage="com.github.mobile.android"/>
-    
+
 </manifest>
