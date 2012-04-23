@@ -4,8 +4,8 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import android.content.res.Resources;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.util.AvatarHelper;
-import com.github.mobile.android.util.HtmlViewer;
+import com.github.mobile.android.util.HttpImageGetter;
 import com.github.mobile.android.util.ServiceHelper;
 import com.github.mobile.android.util.Time;
 import com.madgag.android.listviews.ViewHolder;
@@ -31,11 +31,13 @@ public class IssueHeaderViewHolder implements ViewHolder<Issue> {
 
     private final AvatarHelper avatarHelper;
 
+    private final HttpImageGetter imageGetter;
+
     private final Resources resources;
 
     private final TextView titleText;
 
-    private final HtmlViewer bodyViewer;
+    private final TextView bodyText;
 
     private final TextView createdText;
 
@@ -52,22 +54,16 @@ public class IssueHeaderViewHolder implements ViewHolder<Issue> {
     private final TextView stateText;
 
     /**
-     * @return bodyViewer
-     */
-    public HtmlViewer getBodyViewer() {
-        return bodyViewer;
-    }
-
-    /**
      * Create issue header view holder
      *
      * @param view
      * @param avatarHelper
-     * @param resources
      */
-    public IssueHeaderViewHolder(final View view, final AvatarHelper avatarHelper, final Resources resources) {
+    public IssueHeaderViewHolder(final View view, final AvatarHelper avatarHelper) {
         this.avatarHelper = avatarHelper;
-        this.resources = resources;
+        this.resources = view.getResources();
+        this.imageGetter = new HttpImageGetter(view.getContext());
+
         titleText = (TextView) view.findViewById(id.tv_issue_title);
         createdText = (TextView) view.findViewById(id.tv_issue_creation);
         creatorAvatar = (ImageView) view.findViewById(id.iv_gravatar);
@@ -76,16 +72,13 @@ public class IssueHeaderViewHolder implements ViewHolder<Issue> {
         labelsArea = (LinearLayout) view.findViewById(id.ll_labels);
         milestoneText = (TextView) view.findViewById(id.tv_milestone);
         stateText = (TextView) view.findViewById(id.tv_state);
-        bodyViewer = new HtmlViewer((WebView) view.findViewById(id.wv_issue_body));
+        bodyText = (TextView) view.findViewById(id.tv_issue_body);
+        bodyText.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     public void updateViewFor(Issue issue) {
         titleText.setText(issue.getTitle());
-        String body = issue.getBodyHtml();
-        if (body != null && body.length() > 0)
-            bodyViewer.setHtml(body).getView().setVisibility(VISIBLE);
-        else
-            bodyViewer.getView().setVisibility(GONE);
+        imageGetter.bind(bodyText, issue.getBodyHtml(), issue.getId());
 
         String reported = "<b>" + issue.getUser().getLogin() + "</b> opened "
                 + Time.relativeTimeFor(issue.getCreatedAt());

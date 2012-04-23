@@ -1,7 +1,10 @@
 package com.github.mobile.android.util;
 
+import android.content.Intent;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.github.mobile.android.ui.UrlLauncher;
 
 /**
  * Utilities for displaying source code in a {@link WebView}
@@ -71,7 +74,8 @@ public class SourceEditor {
                     view.loadUrl(url);
                     return false;
                 } else {
-                    HtmlViewer.loadExternalUrl(view.getContext(), url);
+                    Intent intent = new UrlLauncher().create(url);
+                    view.getContext().startActivity(intent);
                     return true;
                 }
             }

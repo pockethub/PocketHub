@@ -19,6 +19,7 @@ import com.github.mobile.android.R.drawable;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.ui.UrlLauncher;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.google.inject.Inject;
@@ -82,6 +83,8 @@ public class ViewGistsActivity extends DialogFragmentActivity implements OnPageC
 
     @Inject
     private AvatarHelper avatarHelper;
+
+    private final UrlLauncher urlLauncher = new UrlLauncher();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,5 +167,14 @@ public class ViewGistsActivity extends DialogFragmentActivity implements OnPageC
 
     public void onPageScrollStateChanged(int state) {
         // Intentionally left blank
+    }
+
+    @Override
+    public void startActivity(Intent intent) {
+        Intent converted = urlLauncher.convert(intent);
+        if (converted != null)
+            super.startActivity(converted);
+        else
+            super.startActivity(intent);
     }
 }

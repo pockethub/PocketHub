@@ -39,6 +39,7 @@ import com.github.mobile.android.core.gist.FullGist;
 import com.github.mobile.android.util.AccountHelper;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.ErrorHelper;
+import com.github.mobile.android.util.HtmlFormatter;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
@@ -334,6 +335,8 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
                     comments = gistService.getComments(gistId);
                 else
                     comments = Collections.emptyList();
+                for (Comment comment : comments)
+                    comment.setBodyHtml(HtmlFormatter.format(comment.getBodyHtml()).toString());
                 return new FullGist(gist, gistService.isStarred(gistId), comments);
             }
 

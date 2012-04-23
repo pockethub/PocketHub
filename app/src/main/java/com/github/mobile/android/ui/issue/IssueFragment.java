@@ -52,6 +52,7 @@ import com.github.mobile.android.issue.IssueStore;
 import com.github.mobile.android.ui.DialogResultListener;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.ErrorHelper;
+import com.github.mobile.android.util.HtmlFormatter;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
@@ -252,7 +253,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             }
         });
 
-        headerHolder = new IssueHeaderViewHolder(headerView, avatarHelper, getResources());
+        headerHolder = new IssueHeaderViewHolder(headerView, avatarHelper);
         loadingView = inflater.inflate(layout.comment_load_item, null);
     }
 
@@ -266,10 +267,14 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
                     comments = service.get(getContext()).getComments(repositoryId, issueNumber);
                 else
                     comments = Collections.emptyList();
+                for (Comment comment : comments)
+                    comment.setBodyHtml(HtmlFormatter.format(comment.getBodyHtml()).toString());
                 return new FullIssue(issue, comments);
             }
 
             protected void onException(Exception e) throws RuntimeException {
+                Log.d(TAG, "Issue failed to load", e);
+
                 ErrorHelper.show(getContext().getApplicationContext(), e, string.error_issue_load);
             }
 

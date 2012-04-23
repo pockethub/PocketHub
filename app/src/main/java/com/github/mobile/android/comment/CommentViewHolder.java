@@ -1,13 +1,13 @@
 package com.github.mobile.android.comment;
 
+import android.text.method.LinkMovementMethod;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.util.AvatarHelper;
-import com.github.mobile.android.util.HtmlViewer;
+import com.github.mobile.android.util.HttpImageGetter;
 import com.github.mobile.android.util.Time;
 import com.github.mobile.android.util.TypefaceHelper;
 import com.madgag.android.listviews.ViewHolder;
@@ -25,9 +25,11 @@ public class CommentViewHolder implements ViewHolder<Comment> {
 
     private final TextView dateView;
 
-    private final HtmlViewer bodyViewer;
+    private final TextView bodyView;
 
     private final ImageView avatarView;
+
+    private HttpImageGetter imageGetter;
 
     /**
      * Create a comment holder
@@ -37,15 +39,18 @@ public class CommentViewHolder implements ViewHolder<Comment> {
      */
     public CommentViewHolder(View view, AvatarHelper avatarHelper) {
         this.avatarHelper = avatarHelper;
-        bodyViewer = new HtmlViewer((WebView) view.findViewById(id.wv_comment_body));
+        bodyView = (TextView) view.findViewById(id.tv_comment_body);
+        bodyView.setMovementMethod(LinkMovementMethod.getInstance());
         authorView = (TextView) view.findViewById(id.tv_comment_author);
         dateView = (TextView) view.findViewById(id.tv_comment_date);
         avatarView = (ImageView) view.findViewById(id.iv_gravatar);
+        imageGetter = new HttpImageGetter(view.getContext());
         ((TextView) view.findViewById(id.tv_comment_icon)).setTypeface(TypefaceHelper.getOctocons(view.getContext()));
     }
 
+    @Override
     public void updateViewFor(final Comment comment) {
-        bodyViewer.setHtml(comment.getBodyHtml());
+        imageGetter.bind(bodyView, comment.getBodyHtml(), comment.getId());
         authorView.setText(comment.getUser().getLogin());
         dateView.setText(Time.relativeTimeFor(comment.getUpdatedAt()));
         avatarView.setImageDrawable(null);

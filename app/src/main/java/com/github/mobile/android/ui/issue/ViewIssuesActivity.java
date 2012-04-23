@@ -14,6 +14,7 @@ import com.github.mobile.android.DialogFragmentActivity;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.ui.UrlLauncher;
 import com.github.mobile.android.util.GitHubIntents.Builder;
 
 import java.util.ArrayList;
@@ -74,6 +75,8 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
 
     private IssuesPagerAdapter adapter;
 
+    private final UrlLauncher urlLauncher = new UrlLauncher();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,5 +108,14 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
         adapter.onDialogResult(pager.getCurrentItem(), requestCode, resultCode, arguments);
+    }
+
+    @Override
+    public void startActivity(Intent intent) {
+        Intent converted = urlLauncher.convert(intent);
+        if (converted != null)
+            super.startActivity(converted);
+        else
+            super.startActivity(intent);
     }
 }

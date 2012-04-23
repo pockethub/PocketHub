@@ -191,7 +191,7 @@ public class ViewIssueActivity extends DialogFragmentActivity {
                     labelsDialog.show(issue.getLabels());
             }
         });
-        header = new IssueHeaderViewHolder(headerView, avatarHelper, getResources());
+        header = new IssueHeaderViewHolder(headerView, avatarHelper);
         list.setFastScrollEnabled(true);
         list.addHeaderView(headerView);
         loadingView = getLayoutInflater().inflate(layout.comment_load_item, null);

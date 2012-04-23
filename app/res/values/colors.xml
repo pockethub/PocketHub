@@ -30,5 +30,6 @@
     <color name="edit_text_cursor">#A6A6A6</color>
     <color name="list_divider_top">#E7E7E7</color>
     <color name="list_divider_bottom">#F5F3F2</color>
+    <color name="text_link">#4183C4</color>
 
 </resources>

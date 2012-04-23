@@ -51,11 +51,12 @@
             android:textColor="@color/item_text_color_light" />
     </LinearLayout>
 
-    <WebView
-        android:id="@+id/wv_comment_body"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:padding="2dp" >
-    </WebView>
+    <TextView
+        android:id="@+id/tv_comment_body"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="5dp"
+        android:textColor="@color/item_text_color"
+        android:textColorLink="@color/text_link" />
 
 </LinearLayout>

@@ -1,6 +1,7 @@
 package com.github.mobile.android.issue;
 
 import com.github.mobile.android.ItemStore;
+import com.github.mobile.android.util.HtmlFormatter;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -60,6 +61,7 @@ public class IssueStore extends ItemStore {
      * @return issue
      */
     public Issue addIssue(IRepositoryIdProvider repository, Issue issue) {
+        issue.setBodyHtml(HtmlFormatter.format(issue.getBodyHtml()).toString());
         Issue current = getIssue(repository, issue.getNumber());
         if (current != null) {
             current.setAssignee(issue.getAssignee());
