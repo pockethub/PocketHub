@@ -31,6 +31,12 @@ public class HtmlFormatter {
 
     private static final String BLOCKQUOTE_END = "</blockquote>";
 
+    private static final String SPACE = "&nbsp;";
+
+    private static final String PRE_START = "<pre>";
+
+    private static final String PRE_END = "</pre>";
+
     private static StringBuilder strip(final StringBuilder input, final String prefix, final String suffix) {
         int start = input.indexOf(prefix);
         while (start != -1) {
@@ -73,6 +79,46 @@ public class HtmlFormatter {
         return input;
     }
 
+    private static StringBuilder formatPres(final StringBuilder input) {
+        int start = input.indexOf(PRE_START);
+        int spaceAdvance = SPACE.length() - 1;
+        int breakAdvance = BREAK.length() - 1;
+        while (start != -1) {
+            int end = input.indexOf(PRE_END, start + PRE_START.length());
+            if (end == -1)
+                break;
+            for (int i = start; i < end; i++) {
+                switch (input.charAt(i)) {
+                case ' ':
+                    input.deleteCharAt(i);
+                    input.insert(i, SPACE);
+                    start += spaceAdvance;
+                    end += spaceAdvance;
+                    break;
+                case '\t':
+                    input.deleteCharAt(i);
+                    input.insert(i, SPACE);
+                    start += spaceAdvance;
+                    end += spaceAdvance;
+                    for (int j = 0; j < 3; j++) {
+                        input.insert(i, SPACE);
+                        start += spaceAdvance + 1;
+                        end += spaceAdvance + 1;
+                    }
+                    break;
+                case '\n':
+                    input.deleteCharAt(i);
+                    input.insert(i, BREAK);
+                    start += breakAdvance;
+                    end += breakAdvance;
+                    break;
+                }
+            }
+            start = input.indexOf(PRE_START, end + PRE_END.length());
+        }
+        return input;
+    }
+
     /**
      * Format given HTML string so it is ready to be presented in a text view
      *
@@ -99,6 +145,8 @@ public class HtmlFormatter {
         // Replace paragraphs with breaks
         replace(formatted, PARAGRAPH_START, BREAK);
         replace(formatted, PARAGRAPH_END, BREAK);
+
+        formatPres(formatted);
 
         // Remove e-mail div around actual body
         if (formatted.indexOf(EMAIL_START) == 0) {

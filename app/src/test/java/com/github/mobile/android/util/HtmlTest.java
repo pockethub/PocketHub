@@ -119,4 +119,71 @@ public class HtmlTest {
         assertNotNull(formatted);
         assertEquals("content", formatted.toString());
     }
+
+    /**
+     * Pre untouched
+     */
+    @Test
+    public void preWithNoWhitespace() {
+        String html = "a<pre>b</pre> c";
+        CharSequence formatted = HtmlFormatter.format(html);
+        assertNotNull(formatted);
+        assertEquals("a<pre>b</pre> c", formatted.toString());
+    }
+
+    /**
+     * Pre space escaped
+     */
+    @Test
+    public void preWithSpaces() {
+        String html = "a<pre> b</pre> c";
+        CharSequence formatted = HtmlFormatter.format(html);
+        assertNotNull(formatted);
+        assertEquals("a<pre>&nbsp;b</pre> c", formatted.toString());
+    }
+
+    /**
+     * Pre tab escaped
+     */
+    @Test
+    public void preWithTabs() {
+        String html = "a<pre>\tb</pre> c";
+        CharSequence formatted = HtmlFormatter.format(html);
+        assertNotNull(formatted);
+        assertEquals("a<pre>&nbsp;&nbsp;&nbsp;&nbsp;b</pre> c", formatted.toString());
+    }
+
+    /**
+     * Pre newline escaped
+     */
+    @Test
+    public void preWithNewline() {
+        String html = "a<pre>\nb</pre> c";
+        CharSequence formatted = HtmlFormatter.format(html);
+        assertNotNull(formatted);
+        assertEquals("a<pre><br>b</pre> c", formatted.toString());
+    }
+
+    /**
+     * Pre space, tab, and newline escaped
+     */
+    @Test
+    public void preWithAllWhitepsace() {
+        String html = "a<pre>\nb\tc </pre>d";
+        CharSequence formatted = HtmlFormatter.format(html);
+        assertNotNull(formatted);
+        assertEquals("a<pre><br>b&nbsp;&nbsp;&nbsp;&nbsp;c&nbsp;</pre>d", formatted.toString());
+    }
+
+    /**
+     * Multiple pre elements escaped
+     */
+    @Test
+    public void multiplePresEscaped() {
+        String html = "a<pre> c </pre>d<pre>\te\t</pre>";
+        CharSequence formatted = HtmlFormatter.format(html);
+        assertNotNull(formatted);
+        assertEquals("a<pre>&nbsp;c&nbsp;</pre>d<pre>&nbsp;&nbsp;&nbsp;&nbsp;e&nbsp;&nbsp;&nbsp;&nbsp;</pre>",
+                formatted.toString());
+    }
 }
