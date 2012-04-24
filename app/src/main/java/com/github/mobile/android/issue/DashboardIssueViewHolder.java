@@ -7,6 +7,8 @@ import com.github.mobile.android.R.id;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.TypefaceHelper;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.eclipse.egit.github.core.Issue;
 
 /**
@@ -21,10 +23,10 @@ public class DashboardIssueViewHolder extends RepoIssueViewHolder {
      *
      * @param v
      * @param helper
-     * @param maxNumberCount
+     * @param numberWidth
      */
-    public DashboardIssueViewHolder(View v, AvatarHelper helper, int maxNumberCount) {
-        super(v, helper, maxNumberCount);
+    public DashboardIssueViewHolder(View v, AvatarHelper helper, AtomicInteger numberWidth) {
+        super(v, helper, numberWidth);
         repoText = (TextView) v.findViewById(id.tv_issue_repo_name);
         TypefaceHelper.setOctocons((TextView) v.findViewById(id.tv_comment_icon));
     }

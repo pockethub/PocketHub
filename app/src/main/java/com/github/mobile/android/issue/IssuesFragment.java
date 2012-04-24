@@ -10,9 +10,9 @@ import static com.github.mobile.android.RequestCodes.ISSUE_VIEW;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_ISSUE_FILTER;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY;
 import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
-import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
@@ -35,8 +35,10 @@ import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.ListViewHelper;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
+import com.madgag.android.listviews.ViewInflator;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
@@ -69,6 +71,10 @@ public class IssuesFragment extends PagedListFragment<Issue> {
 
     @Inject
     private AvatarHelper avatarHelper;
+
+    private final AtomicInteger numberWidth = new AtomicInteger();
+
+    private TextView numberView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -115,9 +121,17 @@ public class IssuesFragment extends PagedListFragment<Issue> {
 
     @Override
     protected ViewHoldingListAdapter<Issue> adapterFor(List<Issue> items) {
-        return new ViewHoldingListAdapter<Issue>(items, viewInflatorFor(getActivity(), layout.repo_issue_list_item),
-                reflectiveFactoryFor(RepoIssueViewHolder.class, avatarHelper,
-                        RepoIssueViewHolder.computeMaxDigits(items)));
+        ViewInflator inflator = ViewInflator.viewInflatorFor(getActivity(), layout.repo_issue_list_item);
+        numberView = (TextView) inflator.createBlankView().findViewById(id.tv_issue_number);
+        return new ViewHoldingListAdapter<Issue>(items, inflator, reflectiveFactoryFor(RepoIssueViewHolder.class,
+                avatarHelper, numberWidth));
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Issue>> loader, List<Issue> items) {
+        numberWidth.set(RepoIssueViewHolder.measureNumberWidth(numberView, items));
+
+        super.onLoadFinished(loader, items);
     }
 
     @Override

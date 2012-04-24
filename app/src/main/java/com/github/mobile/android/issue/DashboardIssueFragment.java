@@ -1,9 +1,12 @@
 package com.github.mobile.android.issue;
 
 import android.os.Bundle;
+import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ResourcePager;
@@ -18,6 +21,7 @@ import com.madgag.android.listviews.ViewInflator;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.client.PageIterator;
@@ -44,6 +48,10 @@ public class DashboardIssueFragment extends PagedListFragment<Issue> {
     @Inject
     private AvatarHelper avatarHelper;
 
+    private final AtomicInteger numberWidth = new AtomicInteger();
+
+    private TextView numberView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,14 +70,22 @@ public class DashboardIssueFragment extends PagedListFragment<Issue> {
 
     @Override
     protected ViewHoldingListAdapter<Issue> adapterFor(List<Issue> items) {
-        return new ViewHoldingListAdapter<Issue>(items, ViewInflator.viewInflatorFor(getActivity(),
-                layout.dashboard_issue_list_item), ReflectiveHolderFactory.reflectiveFactoryFor(
-                DashboardIssueViewHolder.class, avatarHelper, RepoIssueViewHolder.computeMaxDigits(items)));
+        ViewInflator inflator = ViewInflator.viewInflatorFor(getActivity(), layout.dashboard_issue_list_item);
+        numberView = (TextView) inflator.createBlankView().findViewById(id.tv_issue_number);
+        return new ViewHoldingListAdapter<Issue>(items, inflator, ReflectiveHolderFactory.reflectiveFactoryFor(
+                DashboardIssueViewHolder.class, avatarHelper, numberWidth));
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         startActivity(ViewIssuesActivity.createIntent(listItems, position));
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Issue>> loader, List<Issue> items) {
+        numberWidth.set(RepoIssueViewHolder.measureNumberWidth(numberView, items));
+
+        super.onLoadFinished(loader, items);
     }
 
     @Override

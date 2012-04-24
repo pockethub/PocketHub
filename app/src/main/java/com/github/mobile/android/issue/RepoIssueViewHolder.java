@@ -16,6 +16,7 @@ import com.github.mobile.android.util.TypefaceHelper;
 import com.madgag.android.listviews.ViewHolder;
 
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.egit.github.core.Issue;
 
@@ -37,6 +38,24 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
         return max;
     }
 
+    /**
+     * Measure size of widest issue number in issues
+     *
+     * @param number
+     * @param issues
+     * @return number width
+     */
+    public static int measureNumberWidth(TextView number, Iterable<Issue> issues) {
+        int maxNumberCount = computeMaxDigits(issues);
+        Paint paint = new Paint();
+        paint.setTypeface(number.getTypeface());
+        paint.setTextSize(number.getTextSize());
+        char[] text = new char[maxNumberCount + 1];
+        Arrays.fill(text, '0');
+        text[0] = '#';
+        return Math.round(paint.measureText(text, 0, text.length));
+    }
+
     private final TextView number;
 
     private final TextView title;
@@ -53,14 +72,16 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
 
     private final int flags;
 
+    private final AtomicInteger numberWidth;
+
     /**
      * Create view holder
      *
      * @param v
      * @param helper
-     * @param maxNumberCount
+     * @param numberWidth
      */
-    public RepoIssueViewHolder(View v, AvatarHelper helper, int maxNumberCount) {
+    public RepoIssueViewHolder(View v, AvatarHelper helper, AtomicInteger numberWidth) {
         number = (TextView) v.findViewById(id.tv_issue_number);
         flags = number.getPaintFlags();
         title = (TextView) v.findViewById(id.tv_issue_title);
@@ -72,15 +93,7 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
         TypefaceHelper.setOctocons(pullRequestIcon, (TextView) v.findViewById(id.tv_comment_icon));
 
         this.helper = helper;
-
-        // Set number field to max number size
-        Paint paint = new Paint();
-        paint.setTypeface(number.getTypeface());
-        paint.setTextSize(number.getTextSize());
-        char[] text = new char[maxNumberCount + 1];
-        Arrays.fill(text, '0');
-        text[0] = '#';
-        number.getLayoutParams().width = Math.round(paint.measureText(text, 0, text.length));
+        this.numberWidth = numberWidth;
     }
 
     @Override
@@ -90,6 +103,7 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
             number.setPaintFlags(flags | STRIKE_THRU_TEXT_FLAG);
         else
             number.setPaintFlags(flags);
+        number.getLayoutParams().width = numberWidth.get();
 
         gravatar.setImageDrawable(null);
         helper.bind(gravatar, issue.getUser());
