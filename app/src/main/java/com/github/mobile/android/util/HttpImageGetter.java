@@ -71,10 +71,15 @@ public class HttpImageGetter implements ImageGetter {
         new RoboAsyncTask<CharSequence>(context) {
 
             public CharSequence call() throws Exception {
-                return Html.encode(html, HttpImageGetter.this);
+                if (html.indexOf("<img") != -1)
+                    return Html.encode(html, HttpImageGetter.this);
+                else
+                    return null;
             }
 
             protected void onSuccess(CharSequence html) throws Exception {
+                if (html == null)
+                    return;
                 if (!id.equals(view.getTag()))
                     return;
                 view.setText(html);
