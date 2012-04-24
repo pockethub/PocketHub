@@ -20,6 +20,7 @@
     <style name="Theme.GitHub" parent="@style/Theme.Sherlock">
         <item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>
         <item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>
+        <item name="android:windowBackground">@color/background</item>
     </style>
 
     <style name="Widget.Styled.ActionBar" parent="Widget.Sherlock.ActionBar.Solid">
