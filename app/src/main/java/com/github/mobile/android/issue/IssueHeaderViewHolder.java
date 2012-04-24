@@ -53,6 +53,8 @@ public class IssueHeaderViewHolder implements ViewHolder<Issue> {
 
     private final TextView stateText;
 
+    private String html;
+
     /**
      * Create issue header view holder
      *
@@ -78,7 +80,10 @@ public class IssueHeaderViewHolder implements ViewHolder<Issue> {
 
     public void updateViewFor(Issue issue) {
         titleText.setText(issue.getTitle());
-        imageGetter.bind(bodyText, issue.getBodyHtml(), issue.getId());
+        if (html == null || !html.equals(issue.getBodyHtml())) {
+            html = issue.getBodyHtml();
+            imageGetter.bind(bodyText, html, issue.getId());
+        }
 
         String reported = "<b>" + issue.getUser().getLogin() + "</b> opened "
                 + Time.relativeTimeFor(issue.getCreatedAt());
