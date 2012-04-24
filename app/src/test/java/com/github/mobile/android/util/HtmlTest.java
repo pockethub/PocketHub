@@ -33,6 +33,17 @@ public class HtmlTest {
     }
 
     /**
+     * Email div is transformed into block quote
+     */
+    @Test
+    public void emailQuoted() {
+        String html = "before <div class=\"email-quoted-reply\">quoted</div> after";
+        CharSequence formatted = HtmlFormatter.format(html);
+        assertNotNull(formatted);
+        assertEquals("before <blockquote>quoted</blockquote> after", formatted.toString());
+    }
+
+    /**
      * Leading break is removed
      */
     @Test

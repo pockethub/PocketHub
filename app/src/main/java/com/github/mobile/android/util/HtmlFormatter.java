@@ -27,6 +27,10 @@ public class HtmlFormatter {
 
     private static final String PARAGRAPH_END = "</p>";
 
+    private static final String BLOCKQUOTE_START = "<blockquote>";
+
+    private static final String BLOCKQUOTE_END = "</blockquote>";
+
     private static StringBuilder strip(final StringBuilder input, final String prefix, final String suffix) {
         int start = input.indexOf(prefix);
         while (start != -1) {
@@ -50,6 +54,25 @@ public class HtmlFormatter {
         return input;
     }
 
+    private static StringBuilder replace(final StringBuilder input, final String fromStart, final String fromEnd,
+            final String toStart, final String toEnd) {
+        int start = input.indexOf(fromStart);
+        while (start != -1) {
+
+            input.delete(start, start + fromStart.length());
+            input.insert(start, toStart);
+
+            int end = input.indexOf(fromEnd, start + toStart.length());
+            if (end != -1) {
+                input.delete(end, end + fromEnd.length());
+                input.insert(end, toEnd);
+            }
+
+            start = input.indexOf(fromStart);
+        }
+        return input;
+    }
+
     /**
      * Format given HTML string so it is ready to be presented in a text view
      *
@@ -67,8 +90,8 @@ public class HtmlFormatter {
         // Remove e-mail toggle link
         strip(formatted, TOGGLE_START, TOGGLE_END);
 
-        // Remove div with e-mail content
-        strip(formatted, REPLY_START, REPLY_END);
+        // Replace div with e-mail content with block quote
+        replace(formatted, REPLY_START, REPLY_END, BLOCKQUOTE_START, BLOCKQUOTE_END);
 
         // Remove hidden div
         strip(formatted, HIDDEN_REPLY_START, HIDDEN_REPLY_END);
