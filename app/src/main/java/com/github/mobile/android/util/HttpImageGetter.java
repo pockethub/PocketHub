@@ -83,6 +83,7 @@ public class HttpImageGetter implements ImageGetter {
                 if (!id.equals(view.getTag()))
                     return;
                 view.setText(html);
+                view.setTag(null);
             }
         }.execute();
         return this;
