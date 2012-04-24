@@ -53,6 +53,7 @@ public abstract class PagedListFragment<E> extends ListLoadingFragment<E> implem
 
         loadingIndicator = new ResourceLoadingIndicator(getActivity(), getLoadingMessage());
         loadingIndicator.setList(getListView());
+        setListAdapter(adapterFor(listItems));
     }
 
     @Override
