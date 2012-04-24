@@ -347,6 +347,9 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
             }
 
             protected void onSuccess(FullGist fullGist) throws Exception {
+                if (getActivity() == null)
+                    return;
+
                 starred = fullGist.isStarred();
                 loadFinished = true;
                 gist = fullGist.getGist();
