@@ -26,6 +26,8 @@ public class Html {
 
     private static final String TAG_CODE = "code";
 
+    private static final String TAG_PRE = "pre";
+
     private static final TagHandler TAG_HANDLER = new TagHandler() {
 
         private int indentLevel;
@@ -78,6 +80,11 @@ public class Html {
                     if (start != length)
                         output.setSpan(span, start, length, SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
+                return;
+            }
+
+            if (TAG_PRE.equalsIgnoreCase(tag)) {
+                output.append('\n');
                 return;
             }
         }
