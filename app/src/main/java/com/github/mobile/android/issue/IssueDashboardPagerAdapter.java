@@ -1,6 +1,6 @@
 package com.github.mobile.android.issue;
 
-import static com.github.mobile.android.issue.DashboardIssueFragment.ARG_FILTER;
+import static com.github.mobile.android.ui.issue.DashboardIssueFragment.ARG_FILTER;
 import static org.eclipse.egit.github.core.service.IssueService.DIRECTION_DESCENDING;
 import static org.eclipse.egit.github.core.service.IssueService.FIELD_DIRECTION;
 import static org.eclipse.egit.github.core.service.IssueService.FIELD_FILTER;
@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.ui.issue.DashboardIssueFragment;
 import com.viewpagerindicator.TitleProvider;
 
 import java.io.Serializable;
