@@ -156,6 +156,31 @@ public class HtmlFormatter {
     }
 
     /**
+     * Remove leading and trailing whitespace
+     *
+     * @param input
+     */
+    private static StringBuilder trim(final StringBuilder input) {
+        int length = input.length();
+        int breakLength = BREAK.length();
+
+        while (length > 0) {
+            if (input.indexOf(BREAK) == 0)
+                input.delete(0, breakLength);
+            else if (length >= breakLength && input.lastIndexOf(BREAK) == length - breakLength)
+                input.delete(length - breakLength, length);
+            else if (Character.isWhitespace(input.charAt(0)))
+                input.deleteCharAt(0);
+            else if (Character.isWhitespace(input.charAt(length - 1)))
+                input.deleteCharAt(length - 1);
+            else
+                break;
+            length = input.length();
+        }
+        return input;
+    }
+
+    /**
      * Format given HTML string so it is ready to be presented in a text view
      *
      * @param html
@@ -189,22 +214,7 @@ public class HtmlFormatter {
 
         formatEmailFragments(formatted);
 
-        // Trim trailing breaks and whitespace
-        int length = formatted.length();
-        int breakLength = BREAK.length();
-        while (length > 0) {
-            if (formatted.indexOf(BREAK) == 0)
-                formatted.delete(0, breakLength);
-            else if (length >= breakLength && formatted.lastIndexOf(BREAK) == length - breakLength)
-                formatted.delete(length - breakLength, length);
-            else if (Character.isWhitespace(formatted.charAt(0)))
-                formatted.deleteCharAt(0);
-            else if (Character.isWhitespace(formatted.charAt(length - 1)))
-                formatted.deleteCharAt(length - 1);
-            else
-                break;
-            length = formatted.length();
-        }
+        trim(formatted);
 
         return formatted;
     }
