@@ -26,7 +26,7 @@ public class TypefaceHelper {
     }
 
     /**
-     * Get width of number of digits with '#' prefix displayed in given view
+     * Get width of number of digits
      *
      * @param view
      * @param numberOfDigits
@@ -36,9 +36,8 @@ public class TypefaceHelper {
         Paint paint = new Paint();
         paint.setTypeface(view.getTypeface());
         paint.setTextSize(view.getTextSize());
-        char[] text = new char[numberOfDigits + 1];
+        char[] text = new char[numberOfDigits];
         Arrays.fill(text, '0');
-        text[0] = '#';
         return Math.round(paint.measureText(text, 0, text.length));
     }
 

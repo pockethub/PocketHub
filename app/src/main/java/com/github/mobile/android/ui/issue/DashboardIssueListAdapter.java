@@ -71,7 +71,7 @@ public class DashboardIssueListAdapter extends ItemListAdapter<Issue, DashboardI
 
     @Override
     protected void update(final DashboardIssueView view, final Issue issue) {
-        view.number.setText("#" + issue.getNumber());
+        view.number.setText(Integer.toString(issue.getNumber()));
         if (issue.getClosedAt() != null)
             view.number.setPaintFlags(view.numberPaintFlags | STRIKE_THRU_TEXT_FLAG);
         else
