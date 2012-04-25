@@ -7,7 +7,7 @@ import android.net.Uri;
 import com.github.mobile.android.core.gist.GistUrlMatcher;
 import com.github.mobile.android.core.issue.IssueUrlMatcher;
 import com.github.mobile.android.gist.ViewGistsActivity;
-import com.github.mobile.android.issue.ViewIssueActivity;
+import com.github.mobile.android.ui.issue.ViewIssuesActivity;
 
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.Issue;
@@ -43,7 +43,7 @@ public class UrlLauncher {
         Issue issue = new Issue();
         issue.setNumber(number);
         issue.setHtmlUrl(uri);
-        return ViewIssueActivity.createIntent(issue);
+        return ViewIssuesActivity.createIntent(issue);
     }
 
     private Intent createGistIntent(final String uri, final String id) {

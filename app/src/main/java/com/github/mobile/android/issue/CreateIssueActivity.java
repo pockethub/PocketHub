@@ -24,6 +24,7 @@ import com.github.mobile.android.R.string;
 import com.github.mobile.android.SingleChoiceDialogFragment;
 import com.github.mobile.android.TextWatcherAdapter;
 import com.github.mobile.android.async.AuthenticatedUserTask;
+import com.github.mobile.android.ui.issue.ViewIssuesActivity;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
 import com.google.inject.Inject;
@@ -239,7 +240,7 @@ public class CreateIssueActivity extends DialogFragmentActivity {
 
             protected void onSuccess(Issue issue) throws Exception {
                 progress.cancel();
-                startActivity(ViewIssueActivity.createIntent(issue));
+                startActivity(ViewIssuesActivity.createIntent(issue));
                 setResult(RESULT_OK);
                 finish();
             }

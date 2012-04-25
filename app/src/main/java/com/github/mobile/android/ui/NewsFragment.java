@@ -9,7 +9,7 @@ import com.github.mobile.android.core.gist.GistEventMatcher;
 import com.github.mobile.android.core.issue.IssueEventMatcher;
 import com.github.mobile.android.core.repo.RepositoryEventMatcher;
 import com.github.mobile.android.gist.ViewGistsActivity;
-import com.github.mobile.android.issue.ViewIssueActivity;
+import com.github.mobile.android.ui.issue.ViewIssuesActivity;
 import com.github.mobile.android.ui.repo.RepositoryViewActivity;
 import com.github.mobile.android.ui.user.NewsEventViewHolder;
 import com.github.mobile.android.util.AvatarHelper;
@@ -53,7 +53,7 @@ public abstract class NewsFragment extends PagedListFragment<Event> {
         Event event = (Event) l.getItemAtPosition(position);
         Issue issue = issueMatcher.getIssue(event);
         if (issue != null)
-            startActivity(ViewIssueActivity.createIntent(issue));
+            startActivity(ViewIssuesActivity.createIntent(issue));
 
         Gist gist = gistMatcher.getGist(event);
         if (gist != null)

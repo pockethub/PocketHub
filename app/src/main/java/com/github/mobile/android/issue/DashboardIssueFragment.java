@@ -78,7 +78,7 @@ public class DashboardIssueFragment extends PagedListFragment<Issue> {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        startActivity(ViewIssuesActivity.createIntent(listItems, position));
+        startActivity(ViewIssuesActivity.createIntent(listItems, position - l.getHeaderViewsCount()));
     }
 
     @Override

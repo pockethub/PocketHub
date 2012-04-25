@@ -31,6 +31,7 @@ import com.github.mobile.android.RequestFuture;
 import com.github.mobile.android.ResourcePager;
 import com.github.mobile.android.persistence.AccountDataManager;
 import com.github.mobile.android.ui.PagedListFragment;
+import com.github.mobile.android.ui.issue.ViewIssuesActivity;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.ListViewHelper;
 import com.google.inject.Inject;
@@ -115,8 +116,8 @@ public class IssuesFragment extends PagedListFragment<Issue> {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Issue issue = (Issue) l.getItemAtPosition(position);
-        startActivityForResult(ViewIssueActivity.createIntent(issue), ISSUE_VIEW);
+        startActivityForResult(ViewIssuesActivity.createIntent(listItems, position - l.getHeaderViewsCount()),
+                ISSUE_VIEW);
     }
 
     @Override
