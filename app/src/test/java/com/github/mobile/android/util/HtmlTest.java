@@ -44,6 +44,39 @@ public class HtmlTest {
     }
 
     /**
+     * Email fragment div is removed and newlines are replaced with br tags
+     */
+    @Test
+    public void emailFragment() {
+        String html = "before <div class=\"email-fragment\">in\nside</div> after";
+        CharSequence formatted = HtmlFormatter.format(html);
+        assertNotNull(formatted);
+        assertEquals("before in<br>side after", formatted.toString());
+    }
+
+    /**
+     * Email fragment div is removed and newlines are replaced with br tags
+     */
+    @Test
+    public void emailFragments() {
+        String html = "before <div class=\"email-fragment\">in\nside</div> after <div class=\"email-fragment\">out\nside</div>";
+        CharSequence formatted = HtmlFormatter.format(html);
+        assertNotNull(formatted);
+        assertEquals("before in<br>side after out<br>side", formatted.toString());
+    }
+
+    /**
+     * Email fragment div is removed and newlines are replaced with br tags
+     */
+    @Test
+    public void trailingEmailFragment() {
+        String html = "before <div class=\"email-fragment\">in\nside</div>";
+        CharSequence formatted = HtmlFormatter.format(html);
+        assertNotNull(formatted);
+        assertEquals("before in<br>side", formatted.toString());
+    }
+
+    /**
      * Leading break is removed
      */
     @Test

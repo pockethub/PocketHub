@@ -13,6 +13,10 @@ public class HtmlFormatter {
 
     private static final String REPLY_END = "</div>";
 
+    private static final String SIGNATURE_START = "<div class=\"email-signature-reply\">";
+
+    private static final String SIGNATURE_END = "</div>";
+
     private static final String EMAIL_START = "<div class=\"email-fragment\">";
 
     private static final String EMAIL_END = "</div>";
@@ -120,6 +124,38 @@ public class HtmlFormatter {
     }
 
     /**
+     * Remove email fragment 'div' tag and replace newlines with 'br' tags
+     *
+     * @param input
+     * @return input
+     */
+    private static StringBuilder formatEmailFragments(final StringBuilder input) {
+        int emailStart = input.indexOf(EMAIL_START);
+        int breakAdvance = BREAK.length() - 1;
+        while (emailStart != -1) {
+            int startLength = EMAIL_START.length();
+            int emailEnd = input.indexOf(EMAIL_END, emailStart + startLength);
+            if (emailEnd == -1)
+                break;
+
+            input.delete(emailEnd, emailEnd + EMAIL_END.length());
+            input.delete(emailStart, emailStart + startLength);
+
+            int fullEmail = emailEnd - startLength;
+            for (int i = emailStart; i < fullEmail; i++)
+                if (input.charAt(i) == '\n') {
+                    input.deleteCharAt(i);
+                    input.insert(i, BREAK);
+                    i += breakAdvance;
+                    fullEmail += breakAdvance;
+                }
+
+            emailStart = input.indexOf(EMAIL_START, fullEmail);
+        }
+        return input;
+    }
+
+    /**
      * Format given HTML string so it is ready to be presented in a text view
      *
      * @param html
@@ -136,6 +172,9 @@ public class HtmlFormatter {
         // Remove e-mail toggle link
         strip(formatted, TOGGLE_START, TOGGLE_END);
 
+        // Remove signature
+        strip(formatted, SIGNATURE_START, SIGNATURE_END);
+
         // Replace div with e-mail content with block quote
         replace(formatted, REPLY_START, REPLY_END, BLOCKQUOTE_START, BLOCKQUOTE_END);
 
@@ -148,22 +187,7 @@ public class HtmlFormatter {
 
         formatPres(formatted);
 
-        // Remove e-mail div around actual body
-        if (formatted.indexOf(EMAIL_START) == 0) {
-            int emailEnd = formatted.indexOf(EMAIL_END, EMAIL_START.length());
-            if (emailEnd != -1) {
-                formatted.delete(emailEnd, emailEnd + EMAIL_END.length());
-                formatted.delete(0, EMAIL_START.length());
-                int fullEmail = emailEnd - EMAIL_START.length();
-                for (int i = 0; i < fullEmail; i++)
-                    if (formatted.charAt(i) == '\n') {
-                        formatted.deleteCharAt(i);
-                        formatted.insert(i, BREAK);
-                        i += BREAK.length() - 1;
-                        fullEmail += BREAK.length() - 1;
-                    }
-            }
-        }
+        formatEmailFragments(formatted);
 
         // Trim trailing breaks and whitespace
         int length = formatted.length();
