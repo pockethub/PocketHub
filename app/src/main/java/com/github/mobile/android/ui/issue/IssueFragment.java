@@ -237,7 +237,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             }
         });
 
-        headerView.findViewById(id.ll_labels).setOnClickListener(new OnClickListener() {
+        headerView.findViewById(id.v_labels).setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
                 if (issue != null)

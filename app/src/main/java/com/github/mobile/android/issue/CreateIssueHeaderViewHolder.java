@@ -5,7 +5,6 @@ import static android.view.View.VISIBLE;
 import android.content.res.Resources;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
@@ -34,7 +33,7 @@ public class CreateIssueHeaderViewHolder implements ViewHolder<Issue> {
 
     private final ImageView assigneeAvatar;
 
-    private final LinearLayout labelsArea;
+    private final View labelsArea;
 
     private final TextView milestoneText;
 
@@ -50,7 +49,7 @@ public class CreateIssueHeaderViewHolder implements ViewHolder<Issue> {
         this.resources = resources;
         assigneeText = (TextView) view.findViewById(id.tv_assignee_name);
         assigneeAvatar = (ImageView) view.findViewById(id.iv_assignee_gravatar);
-        labelsArea = (LinearLayout) view.findViewById(id.ll_labels);
+        labelsArea = view.findViewById(id.v_labels);
         milestoneText = (TextView) view.findViewById(id.tv_milestone);
     }
 
@@ -68,8 +67,9 @@ public class CreateIssueHeaderViewHolder implements ViewHolder<Issue> {
         List<Label> labels = issue.getLabels();
         if (labels != null && !labels.isEmpty()) {
             labelsArea.setVisibility(VISIBLE);
-            LabelsDrawable drawable = new LabelsDrawable(assigneeText.getTextSize(),
-                    ServiceHelper.getDisplayWidth(labelsArea), issue.getLabels());
+            LabelsDrawable drawable = new LabelsDrawable(labelsArea.getPaddingLeft(), assigneeText.getTextSize(),
+                    ServiceHelper.getDisplayWidth(labelsArea) - labelsArea.getPaddingLeft()
+                            - labelsArea.getPaddingRight(), issue.getLabels());
             drawable.getPaint().setColor(resources.getColor(android.R.color.transparent));
             labelsArea.setBackgroundDrawable(drawable);
             LayoutParams params = new LayoutParams(drawable.getBounds().width(), drawable.getBounds().height());

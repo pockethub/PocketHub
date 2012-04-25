@@ -7,7 +7,6 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
@@ -47,7 +46,7 @@ public class IssueHeaderViewHolder implements ViewHolder<Issue> {
 
     private final ImageView assigneeAvatar;
 
-    private final LinearLayout labelsArea;
+    private final View labelsArea;
 
     private final TextView milestoneText;
 
@@ -71,7 +70,7 @@ public class IssueHeaderViewHolder implements ViewHolder<Issue> {
         creatorAvatar = (ImageView) view.findViewById(id.iv_gravatar);
         assigneeText = (TextView) view.findViewById(id.tv_assignee_name);
         assigneeAvatar = (ImageView) view.findViewById(id.iv_assignee_gravatar);
-        labelsArea = (LinearLayout) view.findViewById(id.ll_labels);
+        labelsArea = view.findViewById(id.v_labels);
         milestoneText = (TextView) view.findViewById(id.tv_milestone);
         stateText = (TextView) view.findViewById(id.tv_state);
         bodyText = (TextView) view.findViewById(id.tv_issue_body);
@@ -103,8 +102,9 @@ public class IssueHeaderViewHolder implements ViewHolder<Issue> {
 
         if (!issue.getLabels().isEmpty()) {
             labelsArea.setVisibility(VISIBLE);
-            LabelsDrawable drawable = new LabelsDrawable(createdText.getTextSize(),
-                    ServiceHelper.getDisplayWidth(labelsArea), issue.getLabels());
+            LabelsDrawable drawable = new LabelsDrawable(labelsArea.getPaddingLeft(), createdText.getTextSize(),
+                    ServiceHelper.getDisplayWidth(labelsArea) - labelsArea.getPaddingLeft()
+                            - labelsArea.getPaddingRight(), issue.getLabels());
             drawable.getPaint().setColor(resources.getColor(android.R.color.transparent));
             labelsArea.setBackgroundDrawable(drawable);
             LayoutParams params = new LayoutParams(drawable.getBounds().width(), drawable.getBounds().height());

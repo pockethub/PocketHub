@@ -3,6 +3,7 @@ package com.github.mobile.android.issue;
 import static android.graphics.Color.BLACK;
 import static android.graphics.Color.WHITE;
 import static android.graphics.Typeface.DEFAULT_BOLD;
+import static java.util.Locale.US;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,7 +14,6 @@ import android.graphics.drawable.PaintDrawable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Locale;
 
 import org.eclipse.egit.github.core.Label;
 
@@ -46,14 +46,20 @@ public class LabelsDrawable extends PaintDrawable {
 
     private float rowHeight;
 
+    private int rowStart;
+
     /**
      * Create drawable for labels
      *
+     * @param paddingLeft
      * @param textSize
      * @param maxWidth
      * @param labels
      */
-    public LabelsDrawable(final float textSize, final int maxWidth, final Collection<Label> labels) {
+    public LabelsDrawable(final int paddingLeft, final float textSize, final int maxWidth,
+            final Collection<Label> labels) {
+        rowStart = paddingLeft;
+
         Label[] sortedLabels = labels.toArray(new Label[labels.size()]);
         Arrays.sort(sortedLabels, new Comparator<Label>() {
 
@@ -69,7 +75,7 @@ public class LabelsDrawable extends PaintDrawable {
         widths = new float[sortedLabels.length];
 
         for (int i = 0; i < sortedLabels.length; i++) {
-            names[i] = sortedLabels[i].getName().toUpperCase(Locale.US);
+            names[i] = sortedLabels[i].getName().toUpperCase(US);
             colors[i] = Color.parseColor('#' + sortedLabels[i].getColor());
         }
 
@@ -99,7 +105,7 @@ public class LabelsDrawable extends PaintDrawable {
             if (rowCount > 0)
                 rows[i] += PADDING_BOTTOM;
         }
-        bounds.bottom = Math.round((rowCount + 1) * rowHeight + rowCount * PADDING_BOTTOM + PADDING_BOTTOM + 0.5F);
+        bounds.bottom = Math.round((rowCount + 1) * rowHeight + rowCount * PADDING_BOTTOM + 0.5F);
 
         setBounds(bounds);
     }
@@ -119,7 +125,7 @@ public class LabelsDrawable extends PaintDrawable {
         super.draw(canvas);
         Paint paint = getPaint();
         int original = paint.getColor();
-        int start = PADDING_LEFT;
+        int start = rowStart;
 
         float height = rows[0] + rowHeight;
         float quarter = rowHeight / 4;
@@ -151,7 +157,7 @@ public class LabelsDrawable extends PaintDrawable {
         for (int i = 1; i < names.length; i++) {
             float rowStart = rows[i];
             if (rowStart > lastRow)
-                start = PADDING_LEFT;
+                start = this.rowStart;
 
             width = widths[i];
             height = rowStart + rowHeight;

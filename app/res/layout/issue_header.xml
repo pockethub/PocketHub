@@ -6,7 +6,7 @@
     android:orientation="vertical" >
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/issue_header_background"
         android:orientation="horizontal" >
@@ -14,7 +14,7 @@
         <LinearLayout
             android:id="@+id/ll_milestone"
             android:layout_width="0dp"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:layout_weight="33"
             android:gravity="center"
             android:padding="10dp" >
@@ -32,19 +32,19 @@
         <LinearLayout
             android:id="@+id/ll_assignee"
             android:layout_width="0dp"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:layout_weight="34"
             android:gravity="center"
             android:orientation="horizontal" >
 
             <View
                 android:layout_width="1px"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:background="@color/issue_header_separator" />
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="horizontal"
@@ -58,7 +58,7 @@
                 <TextView
                     android:id="@+id/tv_assignee_name"
                     android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
+                    android:layout_height="match_parent"
                     android:paddingLeft="5dp"
                     android:singleLine="true"
                     android:textAppearance="?android:attr/textAppearanceSmall"
@@ -68,14 +68,14 @@
 
             <View
                 android:layout_width="1px"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:background="@color/issue_header_separator" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_state"
             android:layout_width="0dp"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:layout_weight="33"
             android:gravity="center"
             android:padding="10dp" >
@@ -92,26 +92,29 @@
     </LinearLayout>
 
     <View
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="@color/issue_header_separator" />
 
     <TextView
         android:id="@+id/tv_issue_title"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:paddingTop="5dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/item_text_color"
         android:textStyle="bold" />
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="5dp" >
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp" >
 
         <ImageView
             android:id="@+id/iv_gravatar"
@@ -120,8 +123,8 @@
 
         <TextView
             android:id="@+id/tv_issue_creation"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:paddingLeft="5dp"
             android:singleLine="true"
@@ -129,24 +132,26 @@
             android:textColor="@color/item_text_color_light" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_labels"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+    <View
+        android:id="@+id/v_labels"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
 
     <TextView
         android:id="@+id/tv_issue_body"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="10dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:paddingTop="5dp"
         android:textColor="@color/item_text_color"
         android:textColorLink="@color/text_link" />
 
     <View
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="2px"
         android:background="@drawable/separator" />
 
