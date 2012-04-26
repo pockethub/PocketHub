@@ -130,10 +130,10 @@ public class AvatarHelper {
 
         Bitmap bitmap = BitmapFactory.decodeFile(avatarFile.getAbsolutePath());
         if (bitmap != null)
-            bitmap = Image.roundCorners(bitmap, cornerRadius);
-        else
-            avatarFile.delete();
-        return bitmap;
+            return Image.roundCorners(bitmap, cornerRadius);
+
+        avatarFile.delete();
+        return null;
     }
 
     /**
@@ -142,7 +142,7 @@ public class AvatarHelper {
      * @param url
      * @param userId
      */
-    protected synchronized void fetchAvatar(final String url, final Integer userId) {
+    protected void fetchAvatar(final String url, final Integer userId) {
         HttpRequest request = HttpRequest.get(url);
         if (request.ok())
             request.receive(new File(avatarDir, userId.toString()));
@@ -177,8 +177,14 @@ public class AvatarHelper {
 
             @Override
             public Bitmap call() throws Exception {
-                fetchAvatar(avatarUrl, userId);
-                return getImage(user);
+                synchronized (AvatarHelper.this) {
+                    Bitmap image = getImage(user);
+                    if (image == null) {
+                        fetchAvatar(avatarUrl, userId);
+                        image = getImage(user);
+                    }
+                    return image;
+                }
             }
 
             @Override
@@ -230,8 +236,14 @@ public class AvatarHelper {
                 if (!userId.equals(view.getTag(id.iv_gravatar)))
                     return null;
 
-                fetchAvatar(avatarUrl, userId);
-                return getImage(user);
+                synchronized (AvatarHelper.this) {
+                    Bitmap image = getImage(user);
+                    if (image == null) {
+                        fetchAvatar(avatarUrl, userId);
+                        image = getImage(user);
+                    }
+                    return image;
+                }
             }
 
             @Override
