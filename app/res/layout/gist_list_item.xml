@@ -44,6 +44,15 @@
             android:layout_marginRight="5dp" />
 
         <TextView
+            android:id="@+id/tv_gist_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="5dp"
+            android:singleLine="true"
+            android:textColor="@color/listing"
+            android:textStyle="bold" />
+
+        <TextView
             android:id="@+id/tv_gist_creation"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

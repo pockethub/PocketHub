@@ -1,10 +1,7 @@
 package com.github.mobile.android.ui.gist;
 
-import static android.text.Html.fromHtml;
 import static android.view.View.GONE;
 import android.graphics.Paint;
-import android.text.Html;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -115,19 +112,22 @@ public class GistListAdapter extends ItemListAdapter<Gist, GistView> {
             id = id.substring(0, PRIVATE_ID_LENGTH) + "…";
         view.gistId.setText(id);
 
-        if (TextUtils.isEmpty(description))
-            description = Html.fromHtml("<i>" + view.title.getContext().getString(string.no_description) + "</i>");
         view.title.setText(description);
 
         User user = gist.getUser();
-        if (avatarHelper != null && user != null) {
+
+        if (user != null)
+            view.author.setText(user.getLogin());
+        else
+            view.author.setText(string.anonymous);
+
+        if (avatarHelper != null && user != null)
             avatarHelper.bind(view.avatar, user);
-            view.created
-                    .setText(fromHtml("<b>" + user.getLogin() + "</b> " + Time.relativeTimeFor(gist.getCreatedAt())));
-        } else {
-            view.created.setText(Time.relativeTimeFor(gist.getCreatedAt()));
+        else
             view.avatar.setVisibility(GONE);
-        }
+
+        view.created.setText(Time.relativeTimeFor(gist.getCreatedAt()));
+
         view.files.setText(NUMBER_FORMAT.format(gist.getFiles().size()));
         view.comments.setText(NUMBER_FORMAT.format(gist.getComments()));
     }
