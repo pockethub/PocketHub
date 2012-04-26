@@ -1,4 +1,4 @@
-package com.github.mobile.android.gist;
+package com.github.mobile.android.ui.gist;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -12,18 +12,18 @@ import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.github.mobile.android.R.id;
-import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
-import com.github.mobile.android.ui.PagedListFragment;
+import com.github.mobile.android.gist.GistStore;
+import com.github.mobile.android.gist.ViewGistsActivity;
+import com.github.mobile.android.ui.ItemListAdapter;
+import com.github.mobile.android.ui.ItemView;
+import com.github.mobile.android.ui.PagedItemFragment;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.ListViewHelper;
 import com.google.inject.Inject;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.service.GistService;
@@ -31,7 +31,7 @@ import org.eclipse.egit.github.core.service.GistService;
 /**
  * Fragment to display a list of Gists
  */
-public abstract class GistsFragment extends PagedListFragment<Gist> {
+public abstract class GistsFragment extends PagedItemFragment<Gist> {
 
     private static final String TAG = "GistsFragment";
 
@@ -53,28 +53,17 @@ public abstract class GistsFragment extends PagedListFragment<Gist> {
     @Inject
     protected GistStore store;
 
-    /**
-     * Gist id field
-     */
-    protected TextView gistId;
-
-    /**
-     * Width of id column of in Gist list
-     */
-    protected final AtomicReference<Integer> idWidth = new AtomicReference<Integer>();
-
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        startActivityForResult(ViewGistsActivity.createIntent(listItems, position), GIST_VIEW);
+        startActivityForResult(ViewGistsActivity.createIntent(items, position), GIST_VIEW);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         setEmptyText(getString(string.no_gists));
         ListViewHelper.configure(getActivity(), getListView(), true);
-        gistId = (TextView) getLayoutInflater(savedInstanceState).inflate(layout.gist_list_item, null).findViewById(
-                id.tv_gist_id);
     }
 
     @Override
@@ -99,8 +88,18 @@ public abstract class GistsFragment extends PagedListFragment<Gist> {
             showList();
             return;
         }
-        idWidth.set(GistViewHolder.computeIdWidth(items, gistId));
 
         super.onLoadFinished(loader, items);
+    }
+
+    @Override
+    protected int getLoadingMessage() {
+        return string.loading_gists;
+    }
+
+    @Override
+    protected ItemListAdapter<Gist, ? extends ItemView> createAdapter(List<Gist> items) {
+        return new GistListAdapter(avatarHelper, getActivity().getLayoutInflater(),
+                items.toArray(new Gist[items.size()]));
     }
 }

@@ -6,6 +6,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.ui.gist.MyGistsFragment;
+import com.github.mobile.android.ui.gist.PublicGistsFragment;
+import com.github.mobile.android.ui.gist.StarredGistsFragment;
 import com.viewpagerindicator.TitleProvider;
 
 /**

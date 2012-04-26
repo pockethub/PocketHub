@@ -1,19 +1,16 @@
-package com.github.mobile.android.gist;
+package com.github.mobile.android.ui.gist;
 
 import static android.app.Activity.RESULT_OK;
 import static com.github.mobile.android.RequestCodes.GIST_CREATE;
 import static com.github.mobile.android.RequestCodes.GIST_VIEW;
 import android.content.Intent;
 
-import com.github.mobile.android.R.layout;
-import com.github.mobile.android.R.string;
 import com.github.mobile.android.ResourcePager;
 import com.github.mobile.android.authenticator.GitHubAccount;
+import com.github.mobile.android.ui.ItemListAdapter;
+import com.github.mobile.android.ui.ItemView;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.madgag.android.listviews.ReflectiveHolderFactory;
-import com.madgag.android.listviews.ViewHoldingListAdapter;
-import com.madgag.android.listviews.ViewInflator;
 
 import java.util.List;
 
@@ -38,6 +35,7 @@ public class MyGistsFragment extends GistsFragment {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
     protected ResourcePager<Gist> createPager() {
         return new ResourcePager<Gist>() {
 
@@ -54,13 +52,7 @@ public class MyGistsFragment extends GistsFragment {
     }
 
     @Override
-    protected int getLoadingMessage() {
-        return string.loading_gists;
-    }
-
-    @Override
-    protected ViewHoldingListAdapter<Gist> adapterFor(List<Gist> items) {
-        return new ViewHoldingListAdapter<Gist>(items, ViewInflator.viewInflatorFor(getActivity(),
-                layout.gist_list_item), ReflectiveHolderFactory.reflectiveFactoryFor(GistViewHolder.class, idWidth));
+    protected ItemListAdapter<Gist, ? extends ItemView> createAdapter(List<Gist> items) {
+        return new GistListAdapter(null, getActivity().getLayoutInflater(), items.toArray(new Gist[items.size()]));
     }
 }
