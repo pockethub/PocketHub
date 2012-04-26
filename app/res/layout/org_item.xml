@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingLeft="10dp"
     android:paddingRight="5dp" >
@@ -9,15 +10,13 @@
     <ImageView
         android:id="@+id/iv_gravatar"
         android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:layout_gravity="center_vertical" />
+        android:layout_height="28dp" />
 
     <TextView
         android:id="@+id/tv_org_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:paddingLeft="12dp"
+        android:paddingLeft="5dp"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/actionbar_text" />
