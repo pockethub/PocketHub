@@ -18,42 +18,18 @@ import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ResourcePager;
-import com.github.mobile.android.ui.PagedListFragment;
-import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.ListViewHelper;
-import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.client.PageIterator;
-import org.eclipse.egit.github.core.service.GistService;
 
 /**
  * Fragment to display a list of public Gists
  */
-public class PublicGistsFragment extends PagedListFragment<Gist> {
-
-    @Inject
-    private AvatarHelper avatarHelper;
-
-    @Inject
-    private GistService service;
-
-    /**
-     * Gist id field
-     */
-    protected TextView gistId;
-
-    @Inject
-    private GistStore store;
-
-    /**
-     * Width of id column of in Gist list
-     */
-    protected final AtomicReference<Integer> idWidth = new AtomicReference<Integer>();
+public class PublicGistsFragment extends GistsFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {

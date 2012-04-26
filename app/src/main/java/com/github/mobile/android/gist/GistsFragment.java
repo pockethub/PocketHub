@@ -4,7 +4,6 @@ import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static com.github.mobile.android.RequestCodes.GIST_CREATE;
 import static com.github.mobile.android.RequestCodes.GIST_VIEW;
-import static java.util.Collections.sort;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
@@ -18,13 +17,11 @@ import android.widget.TextView;
 import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
-import com.github.mobile.android.ui.ListLoadingFragment;
+import com.github.mobile.android.ui.PagedListFragment;
+import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.ListViewHelper;
 import com.google.inject.Inject;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -34,9 +31,15 @@ import org.eclipse.egit.github.core.service.GistService;
 /**
  * Fragment to display a list of Gists
  */
-public abstract class GistsFragment extends ListLoadingFragment<Gist> implements Comparator<Gist> {
+public abstract class GistsFragment extends PagedListFragment<Gist> {
 
     private static final String TAG = "GistsFragment";
+
+    /**
+     * Avatar helper
+     */
+    @Inject
+    protected AvatarHelper avatarHelper;
 
     /**
      * Gist service
@@ -99,24 +102,5 @@ public abstract class GistsFragment extends ListLoadingFragment<Gist> implements
         idWidth.set(GistViewHolder.computeIdWidth(items, gistId));
 
         super.onLoadFinished(loader, items);
-    }
-
-    @Override
-    public int compare(final Gist g1, final Gist g2) {
-        return g2.getCreatedAt().compareTo(g1.getCreatedAt());
-    }
-
-    /**
-     * Store the given collections of Gists and return the same collection but sorted using {@link #compare(Gist, Gist)}
-     *
-     * @param gists
-     * @return non-null but possibly empty list of sorted gists
-     */
-    protected List<Gist> storeAndSort(Collection<Gist> gists) {
-        List<Gist> gistList = new ArrayList<Gist>(gists.size());
-        for (Gist gist : gists)
-            gistList.add(store.addGist(gist));
-        sort(gistList, this);
-        return gistList;
     }
 }

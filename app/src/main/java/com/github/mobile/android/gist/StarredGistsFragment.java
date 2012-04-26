@@ -1,42 +1,46 @@
 package com.github.mobile.android.gist;
 
-import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
-import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
-import android.os.Bundle;
-import android.support.v4.content.Loader;
-
 import com.github.mobile.android.R.layout;
-import com.github.mobile.android.ThrowableLoader;
-import com.github.mobile.android.util.AvatarHelper;
-import com.google.inject.Inject;
+import com.github.mobile.android.R.string;
+import com.github.mobile.android.ResourcePager;
+import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
+import com.madgag.android.listviews.ViewInflator;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Gist;
+import org.eclipse.egit.github.core.client.PageIterator;
 
 /**
  * Fragment to display a list of Gists
  */
 public class StarredGistsFragment extends GistsFragment {
 
-    @Inject
-    private AvatarHelper avatarHelper;
+    @Override
+    protected ViewHoldingListAdapter<Gist> adapterFor(List<Gist> items) {
+        return new ViewHoldingListAdapter<Gist>(items, ViewInflator.viewInflatorFor(getActivity(),
+                layout.gist_list_item), ReflectiveHolderFactory.reflectiveFactoryFor(GistViewHolder.class, idWidth,
+                avatarHelper));
+    }
 
     @Override
-    public Loader<List<Gist>> onCreateLoader(int i, Bundle bundle) {
-        return new ThrowableLoader<List<Gist>>(getActivity(), listItems) {
+    protected ResourcePager<Gist> createPager() {
+        return new ResourcePager<Gist>() {
+
             @Override
-            public List<Gist> loadData() throws IOException {
-                return storeAndSort(service.getStarredGists());
+            protected Object getId(Gist resource) {
+                return resource.getId();
+            }
+
+            @Override
+            public PageIterator<Gist> createIterator(int page, int size) {
+                return service.pageStarredGists(page, size);
             }
         };
     }
 
-    @Override
-    protected ViewHoldingListAdapter<Gist> adapterFor(List<Gist> items) {
-        return new ViewHoldingListAdapter<Gist>(items, viewInflatorFor(getActivity(), layout.gist_list_item),
-                reflectiveFactoryFor(GistViewHolder.class, idWidth, avatarHelper));
+    protected int getLoadingMessage() {
+        return string.loading_gists;
     }
 }
