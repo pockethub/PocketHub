@@ -37,7 +37,7 @@ public class AvatarHelper {
 
     private static final int LOGO_WIDTH = 28;
 
-    private static final int CACHE_SIZE = 50;
+    private static final int CACHE_SIZE = 75;
 
     private static abstract class FetchAvatarTask extends RoboAsyncTask<Bitmap> {
 
@@ -57,7 +57,7 @@ public class AvatarHelper {
 
     private final int logoWidth;
 
-    private final Map<Integer, Bitmap> loaded = new LinkedHashMap<Integer, Bitmap>(50, 1.0F) {
+    private final Map<Integer, Bitmap> loaded = new LinkedHashMap<Integer, Bitmap>(CACHE_SIZE, 1.0F) {
 
         private static final long serialVersionUID = -4191624209581976720L;
 
