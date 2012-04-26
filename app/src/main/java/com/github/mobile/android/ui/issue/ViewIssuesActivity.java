@@ -50,7 +50,7 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
      * @param position
      * @return intent
      */
-    public static Intent createIntent(Collection<Issue> issues, int position) {
+    public static Intent createIntent(Collection<? extends Issue> issues, int position) {
         ArrayList<Integer> numbers = new ArrayList<Integer>(issues.size());
         ArrayList<RepositoryId> repos = new ArrayList<RepositoryId>(issues.size());
         for (Issue issue : issues) {

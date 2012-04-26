@@ -16,11 +16,12 @@ import com.github.mobile.android.util.Time;
 import com.github.mobile.android.util.TypefaceHelper;
 
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.RepositoryIssue;
 
 /**
  * Adapter to display a list of dashboard issues
  */
-public class DashboardIssueListAdapter extends ItemListAdapter<Issue, DashboardIssueView> {
+public class DashboardIssueListAdapter extends ItemListAdapter<RepositoryIssue, DashboardIssueView> {
 
     private final AvatarHelper avatarHelper;
 
@@ -45,7 +46,7 @@ public class DashboardIssueListAdapter extends ItemListAdapter<Issue, DashboardI
      * @param inflater
      * @param elements
      */
-    public DashboardIssueListAdapter(AvatarHelper avatarHelper, LayoutInflater inflater, Issue[] elements) {
+    public DashboardIssueListAdapter(AvatarHelper avatarHelper, LayoutInflater inflater, RepositoryIssue[] elements) {
         super(layout.dashboard_issue_list_item, inflater);
 
         this.numberView = (TextView) inflater.inflate(layout.dashboard_issue_list_item, null).findViewById(
@@ -54,7 +55,7 @@ public class DashboardIssueListAdapter extends ItemListAdapter<Issue, DashboardI
     }
 
     @Override
-    public ItemListAdapter<Issue, DashboardIssueView> setItems(final Object[] items) {
+    public ItemListAdapter<RepositoryIssue, DashboardIssueView> setItems(final Object[] items) {
         int[] numbers = new int[items.length];
         for (int i = 0; i < numbers.length; i++)
             numbers[i] = ((Issue) items[i]).getNumber();
@@ -70,7 +71,7 @@ public class DashboardIssueListAdapter extends ItemListAdapter<Issue, DashboardI
     }
 
     @Override
-    protected void update(final DashboardIssueView view, final Issue issue) {
+    protected void update(final DashboardIssueView view, final RepositoryIssue issue) {
         view.number.setText(Integer.toString(issue.getNumber()));
         if (issue.getClosedAt() != null)
             view.number.setPaintFlags(view.numberPaintFlags | STRIKE_THRU_TEXT_FLAG);

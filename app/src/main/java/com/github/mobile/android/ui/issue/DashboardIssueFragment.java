@@ -6,7 +6,6 @@ import android.widget.ListView;
 
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ResourcePager;
-import com.github.mobile.android.issue.IssuePager;
 import com.github.mobile.android.issue.IssueStore;
 import com.github.mobile.android.ui.ItemListAdapter;
 import com.github.mobile.android.ui.ItemView;
@@ -18,14 +17,14 @@ import com.google.inject.Inject;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.RepositoryIssue;
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.service.IssueService;
 
 /**
  * Fragment to display a pageable list of dashboard issues
  */
-public class DashboardIssueFragment extends PagedItemFragment<Issue> {
+public class DashboardIssueFragment extends PagedItemFragment<RepositoryIssue> {
 
     /**
      * Filter data argument
@@ -65,10 +64,21 @@ public class DashboardIssueFragment extends PagedItemFragment<Issue> {
     }
 
     @Override
-    protected ResourcePager<Issue> createPager() {
-        return new IssuePager(store) {
+    protected ResourcePager<RepositoryIssue> createPager() {
+        return new ResourcePager<RepositoryIssue>() {
 
-            public PageIterator<Issue> createIterator(int page, int size) {
+            @Override
+            protected RepositoryIssue register(RepositoryIssue resource) {
+                return store.addIssue(resource);
+            }
+
+            @Override
+            protected Object getId(RepositoryIssue resource) {
+                return resource.getId();
+            }
+
+            @Override
+            public PageIterator<RepositoryIssue> createIterator(int page, int size) {
                 return service.pageIssues(filterData, page, size);
             }
         };
@@ -80,8 +90,8 @@ public class DashboardIssueFragment extends PagedItemFragment<Issue> {
     }
 
     @Override
-    protected ItemListAdapter<Issue, ? extends ItemView> createAdapter(List<Issue> items) {
+    protected ItemListAdapter<RepositoryIssue, ? extends ItemView> createAdapter(List<RepositoryIssue> items) {
         return new DashboardIssueListAdapter(avatarHelper, getActivity().getLayoutInflater(),
-                items.toArray(new Issue[items.size()]));
+                items.toArray(new RepositoryIssue[items.size()]));
     }
 }

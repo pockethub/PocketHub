@@ -10,6 +10,7 @@ import java.util.Map;
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.RepositoryId;
+import org.eclipse.egit.github.core.RepositoryIssue;
 import org.eclipse.egit.github.core.service.IssueService;
 
 /**
@@ -17,7 +18,7 @@ import org.eclipse.egit.github.core.service.IssueService;
  */
 public class IssueStore extends ItemStore {
 
-    private final Map<String, ItemReferences<Issue>> repos = new HashMap<String, ItemReferences<Issue>>();
+    private final Map<String, ItemReferences<RepositoryIssue>> repos = new HashMap<String, ItemReferences<RepositoryIssue>>();
 
     private final IssueService service;
 
@@ -37,8 +38,8 @@ public class IssueStore extends ItemStore {
      * @param number
      * @return issue or null if not in store
      */
-    public Issue getIssue(IRepositoryIdProvider repository, int number) {
-        ItemReferences<Issue> repoIssues = repos.get(repository.generateId());
+    public RepositoryIssue getIssue(IRepositoryIdProvider repository, int number) {
+        ItemReferences<RepositoryIssue> repoIssues = repos.get(repository.generateId());
         return repoIssues != null ? repoIssues.get(number) : null;
     }
 
@@ -48,9 +49,39 @@ public class IssueStore extends ItemStore {
      * @param issue
      * @return issue
      */
-    public Issue addIssue(Issue issue) {
-        RepositoryId repo = RepositoryId.createFromUrl(issue.getHtmlUrl());
+    public RepositoryIssue addIssue(Issue issue) {
+        IRepositoryIdProvider repo = null;
+        if (issue instanceof RepositoryIssue)
+            repo = ((RepositoryIssue) issue).getRepository();
+        if (repo == null)
+            repo = RepositoryId.createFromUrl(issue.getHtmlUrl());
         return addIssue(repo, issue);
+    }
+
+    private RepositoryIssue createRepositoryIssue(Issue issue) {
+        if (issue instanceof RepositoryIssue)
+            return (RepositoryIssue) issue;
+
+        RepositoryIssue repoIssue = new RepositoryIssue();
+        repoIssue.setAssignee(issue.getAssignee());
+        repoIssue.setBody(issue.getBody());
+        repoIssue.setBodyHtml(issue.getBodyHtml());
+        repoIssue.setBodyText(issue.getBodyText());
+        repoIssue.setClosedAt(issue.getClosedAt());
+        repoIssue.setComments(issue.getComments());
+        repoIssue.setCreatedAt(issue.getCreatedAt());
+        repoIssue.setHtmlUrl(issue.getHtmlUrl());
+        repoIssue.setId(issue.getId());
+        repoIssue.setLabels(issue.getLabels());
+        repoIssue.setMilestone(issue.getMilestone());
+        repoIssue.setNumber(issue.getNumber());
+        repoIssue.setPullRequest(issue.getPullRequest());
+        repoIssue.setState(issue.getState());
+        repoIssue.setTitle(issue.getTitle());
+        repoIssue.setUpdatedAt(issue.getUpdatedAt());
+        repoIssue.setUrl(issue.getUrl());
+        repoIssue.setUser(issue.getUser());
+        return repoIssue;
     }
 
     /**
@@ -60,9 +91,9 @@ public class IssueStore extends ItemStore {
      * @param issue
      * @return issue
      */
-    public Issue addIssue(IRepositoryIdProvider repository, Issue issue) {
+    public RepositoryIssue addIssue(IRepositoryIdProvider repository, Issue issue) {
         issue.setBodyHtml(HtmlFormatter.format(issue.getBodyHtml()).toString());
-        Issue current = getIssue(repository, issue.getNumber());
+        RepositoryIssue current = getIssue(repository, issue.getNumber());
         if (current != null) {
             current.setAssignee(issue.getAssignee());
             current.setBody(issue.getBody());
@@ -75,16 +106,19 @@ public class IssueStore extends ItemStore {
             current.setState(issue.getState());
             current.setTitle(issue.getTitle());
             current.setUpdatedAt(issue.getUpdatedAt());
+            if (issue instanceof RepositoryIssue)
+                current.setRepository(((RepositoryIssue) issue).getRepository());
             return current;
         } else {
             String repoId = repository.generateId();
-            ItemReferences<Issue> repoIssues = repos.get(repoId);
+            ItemReferences<RepositoryIssue> repoIssues = repos.get(repoId);
             if (repoIssues == null) {
-                repoIssues = new ItemReferences<Issue>();
+                repoIssues = new ItemReferences<RepositoryIssue>();
                 repos.put(repoId, repoIssues);
             }
-            repoIssues.put(issue.getNumber(), issue);
-            return issue;
+            RepositoryIssue repoIssue = createRepositoryIssue(issue);
+            repoIssues.put(issue.getNumber(), repoIssue);
+            return repoIssue;
         }
     }
 
@@ -96,7 +130,7 @@ public class IssueStore extends ItemStore {
      * @return refreshed issue
      * @throws IOException
      */
-    public Issue refreshIssue(IRepositoryIdProvider repository, int number) throws IOException {
+    public RepositoryIssue refreshIssue(IRepositoryIdProvider repository, int number) throws IOException {
         return addIssue(repository, service.getIssue(repository, number));
     }
 
@@ -108,7 +142,7 @@ public class IssueStore extends ItemStore {
      * @return edited issue
      * @throws IOException
      */
-    public Issue editIssue(IRepositoryIdProvider repository, Issue issue) throws IOException {
+    public RepositoryIssue editIssue(IRepositoryIdProvider repository, Issue issue) throws IOException {
         return addIssue(repository, service.editIssue(repository, issue));
     }
 }
