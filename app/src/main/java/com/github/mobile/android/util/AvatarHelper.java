@@ -33,7 +33,7 @@ public class AvatarHelper {
 
     private static final String TAG = "AvatarHelper";
 
-    private static final float CORNER_RADIUS_IN_DIP = 8;
+    private static final float CORNER_RADIUS_IN_DIP = 6;
 
     private static final int LOGO_WIDTH = 28;
 
