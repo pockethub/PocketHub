@@ -2,7 +2,6 @@ package com.github.mobile.android;
 
 import static org.eclipse.egit.github.core.client.IGitHubConstants.HOST_API_V2;
 import android.content.Context;
-import android.graphics.Bitmap;
 
 import com.github.mobile.android.authenticator.GitHubAccount;
 import com.github.mobile.android.gist.GistStore;
@@ -16,8 +15,6 @@ import com.google.inject.Provider;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.name.Named;
-import com.madgag.android.lazydrawables.BitmapFileStore;
-import com.madgag.android.lazydrawables.ImageResourceStore;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,8 +27,6 @@ import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.RepositoryService;
-
-import roboguice.inject.ContextSingleton;
 
 /**
  * Main module provide services and clients
@@ -72,13 +67,6 @@ public class GitHubModule extends AbstractModule {
     @Named("cacheDir")
     File cacheDir(Context context) {
         return new File(context.getFilesDir(), "cache");
-    }
-
-    @Provides
-    @ContextSingleton
-    @Named("gravatarStore")
-    ImageResourceStore<String, Bitmap> gravatarStore(Context context) {
-        return new BitmapFileStore<String>(new File(context.getCacheDir(), "gravatars"));
     }
 
     @Provides

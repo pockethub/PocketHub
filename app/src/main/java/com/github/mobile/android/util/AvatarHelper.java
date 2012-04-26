@@ -1,10 +1,7 @@
 package com.github.mobile.android.util;
 
-import static android.graphics.Bitmap.createScaledBitmap;
 import static android.view.View.VISIBLE;
-import static com.github.mobile.android.util.Image.roundCornersAndOverlayOnWhite;
-import static org.apache.commons.io.IOUtils.closeQuietly;
-import android.content.res.Resources;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -15,83 +12,146 @@ import android.widget.ImageView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.github.kevinsawicki.http.HttpRequest;
-import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
-import com.github.mobile.android.R;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
+import com.github.mobile.android.R.drawable;
+import com.github.mobile.android.R.id;
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
-import com.madgag.android.lazydrawables.ImageProcessor;
-import com.madgag.android.lazydrawables.ImageResourceDownloader;
-import com.madgag.android.lazydrawables.ImageResourceStore;
-import com.madgag.android.lazydrawables.ImageSession;
 
-import java.io.FilterInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.File;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import org.eclipse.egit.github.core.User;
+
+import roboguice.util.RoboAsyncTask;
 
 /**
  * Avatar utilities
  */
 public class AvatarHelper {
 
-    private static final float CORNER_RADIUS_IN_DIP = 3;
+    private static final String TAG = "AvatarHelper";
+
+    private static final float CORNER_RADIUS_IN_DIP = 8;
 
     private static final int LOGO_WIDTH = 28;
 
-    private static final String TAG = "GHAU";
-    private final static Pattern gravatarIdWithinUrl = Pattern.compile("/avatar/(\\p{XDigit}{32})");
+    private static final int CACHE_SIZE = 50;
 
-    private final Resources resources;
+    private static abstract class FetchAvatarTask extends RoboAsyncTask<Bitmap> {
 
-    @Inject
-    @Named("gravatarStore")
-    private ImageResourceStore<String, Bitmap> store;
+        private static final Executor EXECUTOR = Executors.newFixedThreadPool(2);
 
-    private final GravatarDownloader downloader = new GravatarDownloader();
+        private FetchAvatarTask(Context context) {
+            super(context, EXECUTOR);
+        }
 
-    private final LoadingCache<Integer, ImageSession<String, Bitmap>> avatarLoaders =
-            CacheBuilder.newBuilder().build(
-                    new CacheLoader<Integer, ImageSession<String, Bitmap>>() {
-                        public ImageSession<String, Bitmap> load(Integer imageSize) {
-                            return new ImageSession<String, Bitmap>(new ScaledAndRoundedAvatarGenerator(imageSize),
-                                    downloader, store, resources.getDrawable(R.drawable.gravatar_icon));
-                        }
-                    });
+        @Override
+        protected void onException(Exception e) throws RuntimeException {
+            Log.d(TAG, "Avatar load failed", e);
+        }
+    }
 
     private final float cornerRadius;
 
     private final int logoWidth;
 
+    private final Map<Integer, Bitmap> loaded = new LinkedHashMap<Integer, Bitmap>(50, 1.0F) {
+
+        private static final long serialVersionUID = -4191624209581976720L;
+
+        @Override
+        protected boolean removeEldestEntry(Entry<Integer, Bitmap> eldest) {
+            return size() >= CACHE_SIZE;
+        }
+    };
+
+    private final Context context;
+
+    private final File avatarDir;
+
+    private final Drawable loadingAvatar;
+
+    /**
+     * Create avatar helper
+     *
+     * @param context
+     */
     @Inject
-    public AvatarHelper(Resources resources) {
-        this.resources = resources;
-        float density = resources.getDisplayMetrics().density;
+    public AvatarHelper(final Context context) {
+        this.context = context;
+
+        loadingAvatar = context.getResources().getDrawable(drawable.gravatar_icon);
+
+        avatarDir = new File(context.getCacheDir(), "avatars/github.com");
+        if (!avatarDir.isDirectory())
+            avatarDir.mkdirs();
+
+        float density = context.getResources().getDisplayMetrics().density;
         cornerRadius = CORNER_RADIUS_IN_DIP * density;
         logoWidth = (int) Math.ceil(LOGO_WIDTH * density);
     }
 
     /**
-     * Sets the image on the ImageView to the user's avatar.
+     * Create bitmap from raw image and set to view
      *
-     * If the avatar is not immediately available, a holding 'octocat' avatar will be displayed,
-     * the image will update itself once the avatar has finished downloading.
-     *
+     * @param image
      * @param view
      * @param user
+     * @return this helper
      */
-    public void bind(final ImageView view, final User user) {
-        String gravatarId = gravatarIdFor(user);
+    protected AvatarHelper setImage(final Bitmap image, final ImageView view, final User user) {
+        if (!Integer.valueOf(user.getId()).equals(view.getTag(id.iv_gravatar)))
+            return this;
 
-        if (gravatarId != null) {
-            view.setImageDrawable(getAvatar(gravatarId, view.getLayoutParams().width));
+        view.setTag(id.iv_gravatar, null);
+
+        if (image != null) {
+            loaded.put(user.getId(), image);
+            view.setImageBitmap(image);
             view.setVisibility(VISIBLE);
         }
+
+        return this;
+    }
+
+    /**
+     * Get image for user
+     *
+     * @param user
+     * @return image
+     */
+    protected Bitmap getImage(final User user) {
+        File avatarFile = new File(avatarDir, Integer.toString(user.getId()));
+
+        if (avatarFile.exists() && avatarFile.length() > 0)
+            return BitmapFactory.decodeFile(avatarFile.getAbsolutePath());
+        else
+            return null;
+    }
+
+    /**
+     * Fetch avatar from URL
+     *
+     * @param url
+     * @param userId
+     * @return bitmap
+     */
+    protected synchronized Bitmap fetchAvatar(final String url, final Integer userId) {
+        HttpRequest request = HttpRequest.get(url);
+        if (!request.ok())
+            return null;
+
+        File avatarFile = new File(avatarDir, userId.toString());
+        request.receive(avatarFile);
+
+        if (!avatarFile.exists() || avatarFile.length() == 0)
+            return null;
+
+        Bitmap content = BitmapFactory.decodeFile(avatarFile.getAbsolutePath());
+        content = Image.roundCorners(content, cornerRadius);
+        return content;
     }
 
     /**
@@ -99,117 +159,100 @@ public class AvatarHelper {
      *
      * @param actionBar
      * @param user
+     * @return this helper
      */
-    public void bind(final ActionBar actionBar, final User user) {
-        actionBar.setLogo(getDrawable(user, logoWidth));
-    }
+    public AvatarHelper bind(final ActionBar actionBar, final User user) {
+        if (user == null)
+            return this;
 
-    /**
-     * Get avatar for user
-     *
-     * @param user
-     * @param width
-     * @return drawable
-     */
-    public Drawable getDrawable(final User user, final int width) {
-        String gravatarId = gravatarIdFor(user);
-        return gravatarId != null ? getAvatar(gravatarId, width) : null;
-    }
+        final String avatarUrl = user.getAvatarUrl();
+        if (TextUtils.isEmpty(avatarUrl))
+            return this;
 
-    private Drawable getAvatar(final String gravatarId, final int width) {
-        return avatarLoaders.getUnchecked(width).get(gravatarId);
-    }
+        final Integer userId = Integer.valueOf(user.getId());
 
-    private class ScaledAndRoundedAvatarGenerator implements ImageProcessor<Bitmap> {
-
-        private final int sizeInPixels;
-
-        public ScaledAndRoundedAvatarGenerator(int sizeInPixels) {
-            this.sizeInPixels = sizeInPixels;
+        Bitmap loadedImage = loaded.get(userId);
+        if (loadedImage != null) {
+            BitmapDrawable drawable = new BitmapDrawable(context.getResources(), loadedImage);
+            drawable.setBounds(0, 0, logoWidth, logoWidth);
+            actionBar.setLogo(drawable);
+            return this;
         }
 
-        public Drawable convert(Bitmap bitmap) {
-            Bitmap scaledBitmap = createScaledBitmap(bitmap, sizeInPixels, sizeInPixels, true);
-            return new BitmapDrawable(resources, roundCornersAndOverlayOnWhite(scaledBitmap, cornerRadius));
-        }
+        new FetchAvatarTask(context) {
 
-    }
-
-    private static class GravatarDownloader implements ImageResourceDownloader<String, Bitmap> {
-
-        public Bitmap get(String gravatarId) {
-            String avatarUrl = "https://secure.gravatar.com/avatar/" + gravatarId +
-                    "?s=128&d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-140.png";
-            HttpRequest request = HttpRequest.get(avatarUrl);
-            if (!request.ok())
-                return null;
-
-            InputStream is = null;
-            try {
-                is = request.stream();
-                return BitmapFactory.decodeStream(new FlushedInputStream(is));
-            } catch (HttpRequestException hre) {
-                Log.e(TAG, "Error downloading " + gravatarId, hre);
-                throw hre;
-            } finally {
-                closeQuietly(is);
+            @Override
+            public Bitmap call() throws Exception {
+                Bitmap bitmap = getImage(user);
+                if (bitmap != null)
+                    return bitmap;
+                else
+                    return fetchAvatar(avatarUrl, userId);
             }
-        }
 
-    }
-
-    /**
-     * An InputStream that skips the exact number of bytes provided, unless it reaches EOF. This is needed for
-     * older versions of BitmapFactory.decodeStream() which can not handle partial skips - this was fixed in the
-     * Android platform around 2010, but the precise version of Android the fix was applied to is not apparent.
-     * <p/>
-     * Taken from the android-imagedownloader project, licenced under Apache License, Version 2.0
-     * http://code.google.com/p/android-imagedownloader/source/browse/trunk/src/com/example/android/imagedownloader/ImageDownloader.java?spec=svn4&r=4#210
-     * <p/>
-     * See also http://android-developers.blogspot.co.uk/2010/07/multithreading-for-performance.html
-     */
-    private static class FlushedInputStream extends FilterInputStream {
-        public FlushedInputStream(InputStream inputStream) {
-            super(inputStream);
-        }
-
-        @Override
-        public long skip(long n) throws IOException {
-            long totalBytesSkipped = 0L;
-            while (totalBytesSkipped < n) {
-                long bytesSkipped = in.skip(n - totalBytesSkipped);
-                if (bytesSkipped == 0L) {
-                    int b = read();
-                    if (b < 0) {
-                        break;  // we reached EOF
-                    } else {
-                        bytesSkipped = 1; // we read one byte
-                    }
-                }
-                totalBytesSkipped += bytesSkipped;
+            @Override
+            protected void onSuccess(Bitmap image) throws Exception {
+                if (image != null)
+                    actionBar.setLogo(new BitmapDrawable(context.getResources(), image));
             }
-            return totalBytesSkipped;
-        }
+        }.execute();
+
+        return this;
     }
 
     /**
-     * Get a gravatar id for the given user
+     * Bind view to image at URL
      *
+     * @param view
      * @param user
-     * @return gravatar id for user
+     * @return this helper
      */
-    private static String gravatarIdFor(User user) {
-        String id = user.getGravatarId();
-        if (!TextUtils.isEmpty(id))
-            return id;
+    public AvatarHelper bind(final ImageView view, final User user) {
+        if (user == null) {
+            view.setImageDrawable(loadingAvatar);
+            return this;
+        }
 
-        String avatarUrl = user.getAvatarUrl();
+        final String avatarUrl = user.getAvatarUrl();
+        if (TextUtils.isEmpty(avatarUrl)) {
+            view.setImageDrawable(loadingAvatar);
+            return this;
+        }
 
-        if (avatarUrl == null)
-            return null;
+        final Integer userId = Integer.valueOf(user.getId());
 
-        Matcher matcher = gravatarIdWithinUrl.matcher(avatarUrl);
-        return matcher.find() ? matcher.group(1) : null;
+        Bitmap loadedImage = loaded.get(userId);
+        if (loadedImage != null) {
+            view.setImageBitmap(loadedImage);
+            view.setVisibility(VISIBLE);
+            view.setTag(id.iv_gravatar, null);
+            return this;
+        }
+
+        view.setImageDrawable(loadingAvatar);
+        view.setTag(id.iv_gravatar, userId);
+
+        new FetchAvatarTask(context) {
+
+            @Override
+            public Bitmap call() throws Exception {
+                if (!userId.equals(view.getTag(id.iv_gravatar)))
+                    return null;
+
+                Bitmap bitmap = getImage(user);
+                if (bitmap != null)
+                    return bitmap;
+                else
+                    return fetchAvatar(avatarUrl, userId);
+            }
+
+            @Override
+            protected void onSuccess(Bitmap image) throws Exception {
+                setImage(image, view, user);
+            }
+
+        }.execute();
+
+        return this;
     }
-
 }

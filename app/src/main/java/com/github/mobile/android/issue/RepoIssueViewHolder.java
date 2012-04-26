@@ -105,7 +105,6 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
             number.setPaintFlags(flags);
         number.getLayoutParams().width = numberWidth.get();
 
-        gravatar.setImageDrawable(null);
         helper.bind(gravatar, issue.getUser());
 
         pullRequestIcon.setVisibility(issue.getPullRequest().getHtmlUrl() == null ? GONE : VISIBLE);

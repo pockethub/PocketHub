@@ -79,7 +79,6 @@ public class DashboardIssueListAdapter extends ItemListAdapter<RepositoryIssue, 
             view.number.setPaintFlags(view.numberPaintFlags);
         view.number.getLayoutParams().width = numberWidth;
 
-        view.gravatar.setImageDrawable(null);
         avatarHelper.bind(view.gravatar, issue.getUser());
 
         String[] segments = issue.getUrl().split("/");

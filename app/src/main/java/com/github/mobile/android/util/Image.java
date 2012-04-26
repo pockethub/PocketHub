@@ -1,9 +1,9 @@
 package com.github.mobile.android.util;
 
+import static android.graphics.Bitmap.Config.ARGB_8888;
 import static android.graphics.Color.WHITE;
 import static android.graphics.PorterDuff.Mode.DST_IN;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
@@ -162,31 +162,31 @@ public class Image {
     }
 
     /**
-     * Round the corners of a {@link Bitmap} and overlay it on a white background.
+     * Round the corners of a {@link Bitmap}
      *
      * @param source
      * @param radius
      * @return rounded corner bitmap
      */
-    public static Bitmap roundCornersAndOverlayOnWhite(final Bitmap source, final float radius) {
+    public static Bitmap roundCorners(final Bitmap source, final float radius) {
         int width = source.getWidth();
         int height = source.getHeight();
 
         Paint paint = new Paint();
         paint.setAntiAlias(true);
-
         paint.setColor(WHITE);
-        Bitmap whiteRoundedRectangle = Bitmap.createBitmap(width, height, Config.ARGB_8888);
-        new Canvas(whiteRoundedRectangle).drawRoundRect(new RectF(0, 0, width, height), radius, radius, paint);
 
-        Bitmap output = Bitmap.createBitmap(width, height, Config.ARGB_8888);
-        output.eraseColor(WHITE); // GH avatars expect a white background https://github.com/github/android/issues/19
-        Canvas outputCanvas = new Canvas(output);
-        outputCanvas.drawBitmap(source, 0, 0, null);
+        Bitmap clipped = Bitmap.createBitmap(width, height, ARGB_8888);
+        Canvas canvas = new Canvas(clipped);
+        canvas.drawRoundRect(new RectF(0, 0, width, height), radius, radius, paint);
         paint.setXfermode(new PorterDuffXfermode(DST_IN));
-        outputCanvas.drawBitmap(whiteRoundedRectangle, 0, 0, paint);
 
-        return output;
+        Bitmap rounded = Bitmap.createBitmap(width, height, ARGB_8888);
+        canvas = new Canvas(rounded);
+        canvas.drawBitmap(source, 0, 0, null);
+        canvas.drawBitmap(clipped, 0, 0, paint);
+
+        return rounded;
     }
 
 }
