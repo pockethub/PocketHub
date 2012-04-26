@@ -125,10 +125,15 @@ public class AvatarHelper {
     protected Bitmap getImage(final User user) {
         File avatarFile = new File(avatarDir, Integer.toString(user.getId()));
 
-        if (avatarFile.exists() && avatarFile.length() > 0)
-            return BitmapFactory.decodeFile(avatarFile.getAbsolutePath());
-        else
+        if (!avatarFile.exists() || avatarFile.length() == 0)
             return null;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(avatarFile.getAbsolutePath());
+        if (bitmap != null)
+            bitmap = Image.roundCorners(bitmap, cornerRadius);
+        else
+            avatarFile.delete();
+        return bitmap;
     }
 
     /**
@@ -136,22 +141,11 @@ public class AvatarHelper {
      *
      * @param url
      * @param userId
-     * @return bitmap
      */
-    protected synchronized Bitmap fetchAvatar(final String url, final Integer userId) {
+    protected synchronized void fetchAvatar(final String url, final Integer userId) {
         HttpRequest request = HttpRequest.get(url);
-        if (!request.ok())
-            return null;
-
-        File avatarFile = new File(avatarDir, userId.toString());
-        request.receive(avatarFile);
-
-        if (!avatarFile.exists() || avatarFile.length() == 0)
-            return null;
-
-        Bitmap content = BitmapFactory.decodeFile(avatarFile.getAbsolutePath());
-        content = Image.roundCorners(content, cornerRadius);
-        return content;
+        if (request.ok())
+            request.receive(new File(avatarDir, userId.toString()));
     }
 
     /**
@@ -183,11 +177,8 @@ public class AvatarHelper {
 
             @Override
             public Bitmap call() throws Exception {
-                Bitmap bitmap = getImage(user);
-                if (bitmap != null)
-                    return bitmap;
-                else
-                    return fetchAvatar(avatarUrl, userId);
+                fetchAvatar(avatarUrl, userId);
+                return getImage(user);
             }
 
             @Override
@@ -239,11 +230,8 @@ public class AvatarHelper {
                 if (!userId.equals(view.getTag(id.iv_gravatar)))
                     return null;
 
-                Bitmap bitmap = getImage(user);
-                if (bitmap != null)
-                    return bitmap;
-                else
-                    return fetchAvatar(avatarUrl, userId);
+                fetchAvatar(avatarUrl, userId);
+                return getImage(user);
             }
 
             @Override
