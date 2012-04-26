@@ -62,7 +62,7 @@ public class AvatarHelper {
         private static final long serialVersionUID = -4191624209581976720L;
 
         @Override
-        protected boolean removeEldestEntry(Entry<Integer, Bitmap> eldest) {
+        protected boolean removeEldestEntry(Map.Entry<Integer, Bitmap> eldest) {
             return size() >= CACHE_SIZE;
         }
     };
