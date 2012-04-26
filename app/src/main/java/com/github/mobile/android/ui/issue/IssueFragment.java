@@ -257,7 +257,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         });
 
         headerHolder = new IssueHeaderViewHolder(headerView, avatarHelper);
-        loadingView = inflater.inflate(layout.comment_load_item, null);
+        loadingView = inflater.inflate(layout.load_item, null);
     }
 
     private void refreshIssue() {
