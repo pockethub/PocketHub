@@ -1,7 +1,7 @@
 package com.github.mobile.issue;
 
 import com.github.mobile.ItemStore;
-import com.github.mobile.util.HtmlFormatter;
+import com.github.mobile.util.HtmlUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -92,7 +92,7 @@ public class IssueStore extends ItemStore {
      * @return issue
      */
     public RepositoryIssue addIssue(IRepositoryIdProvider repository, Issue issue) {
-        issue.setBodyHtml(HtmlFormatter.format(issue.getBodyHtml()).toString());
+        issue.setBodyHtml(HtmlUtils.format(issue.getBodyHtml()).toString());
         RepositoryIssue current = getIssue(repository, issue.getNumber());
         if (current != null) {
             current.setAssignee(issue.getAssignee());

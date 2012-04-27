@@ -36,12 +36,12 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.DialogFragmentActivity;
 import com.github.mobile.MultiChoiceDialogFragment;
-import com.github.mobile.RefreshAnimation;
-import com.github.mobile.SingleChoiceDialogFragment;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
+import com.github.mobile.RefreshAnimation;
+import com.github.mobile.SingleChoiceDialogFragment;
 import com.github.mobile.async.AuthenticatedUserTask;
 import com.github.mobile.comment.CommentViewHolder;
 import com.github.mobile.comment.CreateCommentActivity;
@@ -51,7 +51,7 @@ import com.github.mobile.issue.IssueHeaderViewHolder;
 import com.github.mobile.issue.IssueStore;
 import com.github.mobile.ui.DialogResultListener;
 import com.github.mobile.util.AvatarUtils;
-import com.github.mobile.util.HtmlFormatter;
+import com.github.mobile.util.HtmlUtils;
 import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.google.inject.Inject;
@@ -270,7 +270,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
                 else
                     comments = Collections.emptyList();
                 for (Comment comment : comments)
-                    comment.setBodyHtml(HtmlFormatter.format(comment.getBodyHtml()).toString());
+                    comment.setBodyHtml(HtmlUtils.format(comment.getBodyHtml()).toString());
                 return new FullIssue(issue, comments);
             }
 

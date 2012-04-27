@@ -66,13 +66,13 @@ public class HttpImageGetter implements ImageGetter {
      * @return this image getter
      */
     public HttpImageGetter bind(final TextView view, final String html, final Object id) {
-        view.setText(Html.encode(html, loading));
+        view.setText(HtmlUtils.encode(html, loading));
         view.setTag(id);
         new RoboAsyncTask<CharSequence>(context) {
 
             public CharSequence call() throws Exception {
                 if (html.indexOf("<img") != -1)
-                    return Html.encode(html, HttpImageGetter.this);
+                    return HtmlUtils.encode(html, HttpImageGetter.this);
                 else
                     return null;
             }
