@@ -245,6 +245,8 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         builder.setSpan(new StyleSpan(BOLD), 0, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
 
         GistPayload payload = (GistPayload) event.getPayload();
+
+        builder.append(' ');
         String action = payload.getAction();
         if ("create".equals(action))
             builder.append("created");
