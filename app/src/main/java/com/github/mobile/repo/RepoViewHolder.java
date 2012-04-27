@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.github.mobile.R.id;
 import com.github.mobile.repo.RecentReposHelper.RecentRepos;
-import com.github.mobile.util.TypefaceHelper;
+import com.github.mobile.util.TypefaceUtils;
 import com.madgag.android.listviews.ViewHolder;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -41,7 +41,7 @@ public class RepoViewHolder implements ViewHolder<Repository> {
             final AtomicReference<RecentRepos> recentRepos) {
         this.org = org;
         repoIcon = (TextView) view.findViewById(id.tv_repo_icon);
-        repoIcon.setTypeface(TypefaceHelper.getOctocons(view.getContext()));
+        repoIcon.setTypeface(TypefaceUtils.getOctocons(view.getContext()));
         repoName = (TextView) view.findViewById(id.tv_repo_name);
         recentLabel = (TextView) view.findViewById(id.tv_recent_label);
         this.recentRepos = recentRepos;

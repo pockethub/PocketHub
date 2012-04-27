@@ -4,7 +4,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.mobile.R.id;
-import com.github.mobile.util.TypefaceHelper;
+import com.github.mobile.util.TypefaceUtils;
 import com.madgag.android.listviews.ViewHolder;
 
 import org.eclipse.egit.github.core.SearchRepository;
@@ -27,7 +27,7 @@ public class SearchRepoViewHolder implements ViewHolder<SearchRepository> {
      */
     public SearchRepoViewHolder(final View view) {
         repoIcon = (TextView) view.findViewById(id.tv_repo_icon);
-        TypefaceHelper.setOctocons(repoIcon);
+        TypefaceUtils.setOctocons(repoIcon);
         repoName = (TextView) view.findViewById(id.tv_repo_name);
         repoDescription = (TextView) view.findViewById(id.tv_repo_description);
     }

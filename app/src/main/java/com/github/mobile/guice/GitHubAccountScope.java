@@ -1,6 +1,6 @@
 package com.github.mobile.guice;
 
-import static com.github.mobile.util.AccountHelper.getAccount;
+import static com.github.mobile.util.AccountUtils.getAccount;
 import static com.google.common.base.Preconditions.checkState;
 import android.accounts.Account;
 import android.accounts.AccountManager;

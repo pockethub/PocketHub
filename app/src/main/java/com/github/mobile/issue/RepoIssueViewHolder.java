@@ -11,8 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mobile.R.id;
-import com.github.mobile.util.AvatarHelper;
-import com.github.mobile.util.TypefaceHelper;
+import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.TypefaceUtils;
 import com.madgag.android.listviews.ViewHolder;
 
 import java.util.Arrays;
@@ -68,7 +68,7 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
 
     private final TextView pullRequestIcon;
 
-    private final AvatarHelper helper;
+    private final AvatarUtils helper;
 
     private final int flags;
 
@@ -81,7 +81,7 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
      * @param helper
      * @param numberWidth
      */
-    public RepoIssueViewHolder(View v, AvatarHelper helper, AtomicInteger numberWidth) {
+    public RepoIssueViewHolder(View v, AvatarUtils helper, AtomicInteger numberWidth) {
         number = (TextView) v.findViewById(id.tv_issue_number);
         flags = number.getPaintFlags();
         title = (TextView) v.findViewById(id.tv_issue_title);
@@ -90,7 +90,7 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
         comments = (TextView) v.findViewById(id.tv_issue_comments);
 
         pullRequestIcon = (TextView) v.findViewById(id.tv_pull_request_icon);
-        TypefaceHelper.setOctocons(pullRequestIcon, (TextView) v.findViewById(id.tv_comment_icon));
+        TypefaceUtils.setOctocons(pullRequestIcon, (TextView) v.findViewById(id.tv_comment_icon));
 
         this.helper = helper;
         this.numberWidth = numberWidth;

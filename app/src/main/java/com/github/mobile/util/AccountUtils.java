@@ -18,7 +18,7 @@ import java.io.IOException;
 /**
  * Helpers for accessing {@link AccountManager}
  */
-public class AccountHelper {
+public class AccountUtils {
 
     private static final String TAG = "GH.AccountHelper";
 

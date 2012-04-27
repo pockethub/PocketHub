@@ -10,7 +10,7 @@ import android.os.Bundle;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R.layout;
-import com.github.mobile.util.AvatarHelper;
+import com.github.mobile.util.AvatarUtils;
 import com.github.mobile.util.GitHubIntents.Builder;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
@@ -48,7 +48,7 @@ public class IssueBrowseActivity extends RoboSherlockFragmentActivity {
     private Repository repo;
 
     @Inject
-    private AvatarHelper avatarHelper;
+    private AvatarUtils avatarHelper;
 
     private IssuesFragment issues;
 

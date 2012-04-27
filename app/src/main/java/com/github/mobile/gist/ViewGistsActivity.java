@@ -20,7 +20,7 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.ui.UrlLauncher;
-import com.github.mobile.util.AvatarHelper;
+import com.github.mobile.util.AvatarUtils;
 import com.github.mobile.util.GitHubIntents.Builder;
 import com.google.inject.Inject;
 
@@ -82,7 +82,7 @@ public class ViewGistsActivity extends DialogFragmentActivity implements OnPageC
     private GistStore store;
 
     @Inject
-    private AvatarHelper avatarHelper;
+    private AvatarUtils avatarHelper;
 
     private final UrlLauncher urlLauncher = new UrlLauncher();
 

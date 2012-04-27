@@ -11,7 +11,7 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.repo.OrgViewHolder;
-import com.github.mobile.util.AvatarHelper;
+import com.github.mobile.util.AvatarUtils;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewFactory;
 import com.madgag.android.listviews.ViewHolderFactory;
@@ -55,7 +55,7 @@ public class HomeDropdownListAdapter extends BaseAdapter {
      * @param orgs
      * @param avatarHelper
      */
-    public HomeDropdownListAdapter(final Context context, final List<User> orgs, final AvatarHelper avatarHelper) {
+    public HomeDropdownListAdapter(final Context context, final List<User> orgs, final AvatarUtils avatarHelper) {
         this.context = context;
 
         ViewHolderFactory<User> userViewHolderFactory = ReflectiveHolderFactory.reflectiveFactoryFor(

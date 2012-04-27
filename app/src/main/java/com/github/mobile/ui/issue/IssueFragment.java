@@ -50,7 +50,7 @@ import com.github.mobile.issue.EditIssueActivity;
 import com.github.mobile.issue.IssueHeaderViewHolder;
 import com.github.mobile.issue.IssueStore;
 import com.github.mobile.ui.DialogResultListener;
-import com.github.mobile.util.AvatarHelper;
+import com.github.mobile.util.AvatarUtils;
 import com.github.mobile.util.HtmlFormatter;
 import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
@@ -94,7 +94,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
     private Issue issue;
 
     @Inject
-    private AvatarHelper avatarHelper;
+    private AvatarUtils avatarHelper;
 
     @Inject
     private IssueStore store;

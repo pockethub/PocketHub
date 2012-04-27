@@ -10,7 +10,7 @@ import com.github.mobile.R.drawable;
  * <p>
  * Used for list views that aren't defined in local XML files and must be configured at runtime
  */
-public class ListViewHelper {
+public class ListViewUtils {
 
     /**
      * Configure list view

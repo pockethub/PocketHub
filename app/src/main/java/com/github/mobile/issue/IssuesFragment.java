@@ -30,8 +30,8 @@ import com.github.mobile.R.string;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.PagedListFragment;
 import com.github.mobile.ui.issue.ViewIssuesActivity;
-import com.github.mobile.util.AvatarHelper;
-import com.github.mobile.util.ListViewHelper;
+import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.ListViewUtils;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -70,7 +70,7 @@ public class IssuesFragment extends PagedListFragment<Issue> {
     private TextView filterTextView;
 
     @Inject
-    private AvatarHelper avatarHelper;
+    private AvatarUtils avatarHelper;
 
     private final AtomicInteger numberWidth = new AtomicInteger();
 
@@ -110,7 +110,7 @@ public class IssuesFragment extends PagedListFragment<Issue> {
         super.onActivityCreated(savedInstanceState);
 
         setEmptyText(getString(string.no_issues));
-        ListViewHelper.configure(getActivity(), getListView(), true);
+        ListViewUtils.configure(getActivity(), getListView(), true);
     }
 
     @Override

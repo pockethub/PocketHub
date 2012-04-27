@@ -8,7 +8,7 @@ import android.content.SharedPreferences.Editor;
 /**
  * Utility class for working with {@link SharedPreferences}
  */
-public class SharedPreferencesUtil {
+public class PreferenceUtils {
 
     private static boolean isEditorApplyAvailable() {
         return SDK_INT >= GINGERBREAD;

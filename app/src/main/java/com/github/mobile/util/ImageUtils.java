@@ -21,7 +21,7 @@ import java.io.RandomAccessFile;
 /**
  * Image utilities
  */
-public class Image {
+public class ImageUtils {
 
     private static final String TAG = "AUIU";
 

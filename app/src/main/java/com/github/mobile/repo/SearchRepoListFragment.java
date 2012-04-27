@@ -12,7 +12,7 @@ import com.github.mobile.R.string;
 import com.github.mobile.async.AuthenticatedUserTask;
 import com.github.mobile.ui.ListLoadingFragment;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
-import com.github.mobile.util.ListViewHelper;
+import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -41,7 +41,7 @@ public class SearchRepoListFragment extends ListLoadingFragment<SearchRepository
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setEmptyText(getString(string.no_repositories));
-        ListViewHelper.configure(getActivity(), getListView(), true);
+        ListViewUtils.configure(getActivity(), getListView(), true);
     }
 
     /**

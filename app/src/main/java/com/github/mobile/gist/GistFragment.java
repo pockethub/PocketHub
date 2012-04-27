@@ -35,8 +35,8 @@ import com.github.mobile.async.AuthenticatedUserTask;
 import com.github.mobile.comment.CommentViewHolder;
 import com.github.mobile.comment.CreateCommentActivity;
 import com.github.mobile.core.gist.FullGist;
-import com.github.mobile.util.AccountHelper;
-import com.github.mobile.util.AvatarHelper;
+import com.github.mobile.util.AccountUtils;
+import com.github.mobile.util.AvatarUtils;
 import com.github.mobile.util.HtmlFormatter;
 import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
@@ -94,7 +94,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
     private boolean loadFinished;
 
     @Inject
-    private AvatarHelper avatarHelper;
+    private AvatarUtils avatarHelper;
 
     @Inject
     private ContextScopedProvider<GistService> gistServiceProvider;
@@ -163,7 +163,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
         User user = gist.getUser();
         if (user == null)
             return false;
-        String login = AccountHelper.getLogin(getActivity());
+        String login = AccountUtils.getLogin(getActivity());
         return login != null && login.equals(user.getLogin());
     }
 

@@ -4,7 +4,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.mobile.R.id;
-import com.github.mobile.util.TypefaceHelper;
+import com.github.mobile.util.TypefaceUtils;
 import com.madgag.android.listviews.ViewHolder;
 
 import org.eclipse.egit.github.core.GistFile;
@@ -23,7 +23,7 @@ public class GistFileViewHolder implements ViewHolder<GistFile> {
      */
     public GistFileViewHolder(final View view) {
         nameText = (TextView) view.findViewById(id.tv_file);
-        ((TextView) view.findViewById(id.tv_file_icon)).setTypeface(TypefaceHelper.getOctocons(view.getContext()));
+        ((TextView) view.findViewById(id.tv_file_icon)).setTypeface(TypefaceUtils.getOctocons(view.getContext()));
     }
 
     public void updateViewFor(final GistFile file) {

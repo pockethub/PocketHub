@@ -2,22 +2,22 @@ package com.github.mobile.ui.user;
 
 import static android.graphics.Typeface.BOLD;
 import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
-import static com.github.mobile.util.TypefaceHelper.ICON_ADD_MEMBER;
-import static com.github.mobile.util.TypefaceHelper.ICON_COMMENT;
-import static com.github.mobile.util.TypefaceHelper.ICON_CREATE;
-import static com.github.mobile.util.TypefaceHelper.ICON_DELETE;
-import static com.github.mobile.util.TypefaceHelper.ICON_FOLLOW;
-import static com.github.mobile.util.TypefaceHelper.ICON_FORK;
-import static com.github.mobile.util.TypefaceHelper.ICON_GIST;
-import static com.github.mobile.util.TypefaceHelper.ICON_ISSUE_CLOSE;
-import static com.github.mobile.util.TypefaceHelper.ICON_ISSUE_COMMENT;
-import static com.github.mobile.util.TypefaceHelper.ICON_ISSUE_OPEN;
-import static com.github.mobile.util.TypefaceHelper.ICON_ISSUE_REOPEN;
-import static com.github.mobile.util.TypefaceHelper.ICON_PULL_REQUEST;
-import static com.github.mobile.util.TypefaceHelper.ICON_PUSH;
-import static com.github.mobile.util.TypefaceHelper.ICON_UPLOAD;
-import static com.github.mobile.util.TypefaceHelper.ICON_WATCH;
-import static com.github.mobile.util.TypefaceHelper.ICON_WIKI;
+import static com.github.mobile.util.TypefaceUtils.ICON_ADD_MEMBER;
+import static com.github.mobile.util.TypefaceUtils.ICON_COMMENT;
+import static com.github.mobile.util.TypefaceUtils.ICON_CREATE;
+import static com.github.mobile.util.TypefaceUtils.ICON_DELETE;
+import static com.github.mobile.util.TypefaceUtils.ICON_FOLLOW;
+import static com.github.mobile.util.TypefaceUtils.ICON_FORK;
+import static com.github.mobile.util.TypefaceUtils.ICON_GIST;
+import static com.github.mobile.util.TypefaceUtils.ICON_ISSUE_CLOSE;
+import static com.github.mobile.util.TypefaceUtils.ICON_ISSUE_COMMENT;
+import static com.github.mobile.util.TypefaceUtils.ICON_ISSUE_OPEN;
+import static com.github.mobile.util.TypefaceUtils.ICON_ISSUE_REOPEN;
+import static com.github.mobile.util.TypefaceUtils.ICON_PULL_REQUEST;
+import static com.github.mobile.util.TypefaceUtils.ICON_PUSH;
+import static com.github.mobile.util.TypefaceUtils.ICON_UPLOAD;
+import static com.github.mobile.util.TypefaceUtils.ICON_WATCH;
+import static com.github.mobile.util.TypefaceUtils.ICON_WIKI;
 import static org.eclipse.egit.github.core.event.Event.TYPE_COMMIT_COMMENT;
 import static org.eclipse.egit.github.core.event.Event.TYPE_CREATE;
 import static org.eclipse.egit.github.core.event.Event.TYPE_DELETE;
@@ -44,9 +44,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mobile.R.id;
-import com.github.mobile.util.AvatarHelper;
+import com.github.mobile.util.AvatarUtils;
 import com.github.mobile.util.TimeUtils;
-import com.github.mobile.util.TypefaceHelper;
+import com.github.mobile.util.TypefaceUtils;
 import com.madgag.android.listviews.ViewHolder;
 
 import org.eclipse.egit.github.core.Issue;
@@ -107,7 +107,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
                 || TYPE_WATCH.equals(type);
     }
 
-    private final AvatarHelper avatarHelper;
+    private final AvatarUtils avatarHelper;
 
     private final ImageView avatarView;
 
@@ -123,12 +123,12 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
      * @param view
      * @param avatarHelper
      */
-    public NewsEventViewHolder(final View view, final AvatarHelper avatarHelper) {
+    public NewsEventViewHolder(final View view, final AvatarUtils avatarHelper) {
         this.avatarHelper = avatarHelper;
         avatarView = (ImageView) view.findViewById(id.iv_gravatar);
         eventText = (TextView) view.findViewById(id.tv_event);
         iconText = (TextView) view.findViewById(id.tv_event_icon);
-        TypefaceHelper.setOctocons(iconText);
+        TypefaceUtils.setOctocons(iconText);
         dateText = (TextView) view.findViewById(id.tv_event_date);
     }
 

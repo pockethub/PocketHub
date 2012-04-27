@@ -20,8 +20,8 @@ import com.github.mobile.gist.ViewGistsActivity;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.PagedItemFragment;
-import com.github.mobile.util.AvatarHelper;
-import com.github.mobile.util.ListViewHelper;
+import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 
 import java.util.List;
@@ -56,7 +56,7 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
      * Avatar helper
      */
     @Inject
-    protected AvatarHelper avatarHelper;
+    protected AvatarUtils avatarHelper;
 
     /**
      * Gist service
@@ -80,7 +80,7 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
         super.onActivityCreated(savedInstanceState);
 
         setEmptyText(getString(string.no_gists));
-        ListViewHelper.configure(getActivity(), getListView(), true);
+        ListViewUtils.configure(getActivity(), getListView(), true);
     }
 
     @Override

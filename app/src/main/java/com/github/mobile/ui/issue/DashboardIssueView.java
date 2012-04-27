@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.github.mobile.R.id;
 import com.github.mobile.ui.ItemView;
-import com.github.mobile.util.TypefaceHelper;
+import com.github.mobile.util.TypefaceUtils;
 
 /**
  * View used to display a dashboard issue
@@ -74,6 +74,6 @@ public class DashboardIssueView extends ItemView {
         comments = (TextView) view.findViewById(id.tv_issue_comments);
 
         pullRequestIcon = (TextView) view.findViewById(id.tv_pull_request_icon);
-        TypefaceHelper.setOctocons(pullRequestIcon, (TextView) view.findViewById(id.tv_comment_icon));
+        TypefaceUtils.setOctocons(pullRequestIcon, (TextView) view.findViewById(id.tv_comment_icon));
     }
 }

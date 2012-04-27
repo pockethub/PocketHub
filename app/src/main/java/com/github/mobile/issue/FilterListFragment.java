@@ -11,8 +11,8 @@ import com.github.mobile.R.string;
 import com.github.mobile.async.AuthenticatedUserLoader;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.ListLoadingFragment;
-import com.github.mobile.util.AvatarHelper;
-import com.github.mobile.util.ListViewHelper;
+import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -31,12 +31,12 @@ public class FilterListFragment extends ListLoadingFragment<IssueFilter> {
     private AccountDataManager cache;
 
     @Inject
-    private AvatarHelper avatarHelper;
+    private AvatarUtils avatarHelper;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ListViewHelper.configure(getActivity(), getListView(), true);
+        ListViewUtils.configure(getActivity(), getListView(), true);
         setEmptyText(getString(string.no_filters));
     }
 

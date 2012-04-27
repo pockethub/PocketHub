@@ -17,7 +17,7 @@ import com.github.mobile.RequestFuture;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.persistence.AccountDataManager;
-import com.github.mobile.util.AccountHelper;
+import com.github.mobile.util.AccountUtils;
 import com.github.mobile.util.GitHubIntents.Builder;
 import com.google.inject.Inject;
 
@@ -50,7 +50,7 @@ public class FilterBrowseActivity extends DialogFragmentActivity implements OnIt
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(string.saved_filters_title);
-        actionBar.setSubtitle(AccountHelper.getLogin(this));
+        actionBar.setSubtitle(AccountUtils.getLogin(this));
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         FilterListFragment filterFragment = (FilterListFragment) getSupportFragmentManager().findFragmentById(

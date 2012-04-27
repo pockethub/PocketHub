@@ -53,7 +53,7 @@ public class HttpImageGetter implements ImageGetter {
     public HttpImageGetter(Context context) {
         this.context = context;
         dir = context.getCacheDir();
-        width = ServiceHelper.getDisplayWidth(context);
+        width = ServiceUtils.getDisplayWidth(context);
         loading = new LoadingImageGetter(context, 48);
     }
 
@@ -99,7 +99,7 @@ public class HttpImageGetter implements ImageGetter {
                     throw new IOException("Unexpected response code: " + request.code());
                 request.receive(output);
             }
-            Bitmap bitmap = Image.getBitmap(output, width, MAX_VALUE);
+            Bitmap bitmap = ImageUtils.getBitmap(output, width, MAX_VALUE);
             if (bitmap == null)
                 return loading.getDrawable(source);
 

@@ -10,7 +10,7 @@ import java.util.Arrays;
 /**
  * Helpers for dealing with custom typefaces and measuring text to display
  */
-public class TypefaceHelper {
+public class TypefaceUtils {
 
     /**
      * Fork icon

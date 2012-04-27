@@ -10,7 +10,7 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.ui.ItemListAdapter;
-import com.github.mobile.util.AvatarHelper;
+import com.github.mobile.util.AvatarUtils;
 import com.github.mobile.util.TimeUtils;
 
 import java.text.NumberFormat;
@@ -62,7 +62,7 @@ public class GistListAdapter extends ItemListAdapter<Gist, GistView> {
 
     private static final NumberFormat NUMBER_FORMAT = NumberFormat.getIntegerInstance();
 
-    private final AvatarHelper avatarHelper;
+    private final AvatarUtils avatarHelper;
 
     private int idWidth;
 
@@ -73,7 +73,7 @@ public class GistListAdapter extends ItemListAdapter<Gist, GistView> {
      * @param inflater
      * @param elements
      */
-    public GistListAdapter(AvatarHelper avatarHelper, LayoutInflater inflater, Gist[] elements) {
+    public GistListAdapter(AvatarUtils avatarHelper, LayoutInflater inflater, Gist[] elements) {
         super(layout.gist_list_item, inflater, elements);
 
         this.avatarHelper = avatarHelper;
@@ -92,7 +92,7 @@ public class GistListAdapter extends ItemListAdapter<Gist, GistView> {
      * @param avatarHelper
      * @param inflater
      */
-    public GistListAdapter(AvatarHelper avatarHelper, LayoutInflater inflater) {
+    public GistListAdapter(AvatarUtils avatarHelper, LayoutInflater inflater) {
         this(avatarHelper, inflater, null);
     }
 

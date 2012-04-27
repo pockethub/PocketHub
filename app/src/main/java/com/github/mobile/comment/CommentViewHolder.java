@@ -6,10 +6,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mobile.R.id;
-import com.github.mobile.util.AvatarHelper;
+import com.github.mobile.util.AvatarUtils;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.TimeUtils;
-import com.github.mobile.util.TypefaceHelper;
+import com.github.mobile.util.TypefaceUtils;
 import com.madgag.android.listviews.ViewHolder;
 
 import org.eclipse.egit.github.core.Comment;
@@ -19,7 +19,7 @@ import org.eclipse.egit.github.core.Comment;
  */
 public class CommentViewHolder implements ViewHolder<Comment> {
 
-    private final AvatarHelper avatarHelper;
+    private final AvatarUtils avatarHelper;
 
     private final TextView authorView;
 
@@ -37,7 +37,7 @@ public class CommentViewHolder implements ViewHolder<Comment> {
      * @param view
      * @param avatarHelper
      */
-    public CommentViewHolder(View view, AvatarHelper avatarHelper) {
+    public CommentViewHolder(View view, AvatarUtils avatarHelper) {
         this.avatarHelper = avatarHelper;
         bodyView = (TextView) view.findViewById(id.tv_comment_body);
         bodyView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -45,7 +45,7 @@ public class CommentViewHolder implements ViewHolder<Comment> {
         dateView = (TextView) view.findViewById(id.tv_comment_date);
         avatarView = (ImageView) view.findViewById(id.iv_gravatar);
         imageGetter = new HttpImageGetter(view.getContext());
-        ((TextView) view.findViewById(id.tv_comment_icon)).setTypeface(TypefaceHelper.getOctocons(view.getContext()));
+        ((TextView) view.findViewById(id.tv_comment_icon)).setTypeface(TypefaceUtils.getOctocons(view.getContext()));
     }
 
     @Override

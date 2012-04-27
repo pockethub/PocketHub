@@ -9,7 +9,7 @@ import android.view.WindowManager;
 /**
  * Helpers for dealing with system services
  */
-public class ServiceHelper {
+public class ServiceUtils {
 
     /**
      * Get default display

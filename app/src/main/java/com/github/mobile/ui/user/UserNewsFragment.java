@@ -8,7 +8,7 @@ import com.github.mobile.ResourcePager;
 import com.github.mobile.HomeActivity.OrgSelectionListener;
 import com.github.mobile.R.string;
 import com.github.mobile.ui.NewsFragment;
-import com.github.mobile.util.ListViewHelper;
+import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.User;
@@ -30,7 +30,7 @@ public class UserNewsFragment extends NewsFragment implements OrgSelectionListen
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ListViewHelper.configure(getActivity(), getListView(), true);
+        ListViewUtils.configure(getActivity(), getListView(), true);
     }
 
     @Override

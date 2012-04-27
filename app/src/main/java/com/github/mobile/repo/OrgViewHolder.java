@@ -5,7 +5,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mobile.R.id;
-import com.github.mobile.util.AvatarHelper;
+import com.github.mobile.util.AvatarUtils;
 import com.madgag.android.listviews.ViewHolder;
 
 import org.eclipse.egit.github.core.User;
@@ -15,7 +15,7 @@ import org.eclipse.egit.github.core.User;
  */
 public class OrgViewHolder implements ViewHolder<User> {
 
-    private final AvatarHelper avatarHelper;
+    private final AvatarUtils avatarHelper;
 
     private final TextView nameText;
 
@@ -27,7 +27,7 @@ public class OrgViewHolder implements ViewHolder<User> {
      * @param view
      * @param avatarHelper
      */
-    public OrgViewHolder(final View view, final AvatarHelper avatarHelper) {
+    public OrgViewHolder(final View view, final AvatarUtils avatarHelper) {
         this.avatarHelper = avatarHelper;
         nameText = (TextView) view.findViewById(id.tv_org_name);
         avatarView = (ImageView) view.findViewById(id.iv_gravatar);

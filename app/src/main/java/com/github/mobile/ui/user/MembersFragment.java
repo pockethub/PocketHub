@@ -10,8 +10,8 @@ import com.github.mobile.ThrowableLoader;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
 import com.github.mobile.ui.ItemView;
-import com.github.mobile.util.AvatarHelper;
-import com.github.mobile.util.ListViewHelper;
+import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class MembersFragment extends ItemListFragment<User> implements OrgSelect
     private OrganizationService service;
 
     @Inject
-    private AvatarHelper avatarHelper;
+    private AvatarUtils avatarHelper;
 
     @Override
     public void onAttach(Activity activity) {
@@ -43,7 +43,7 @@ public class MembersFragment extends ItemListFragment<User> implements OrgSelect
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ListViewHelper.configure(getActivity(), getListView(), true);
+        ListViewUtils.configure(getActivity(), getListView(), true);
     }
 
     @Override

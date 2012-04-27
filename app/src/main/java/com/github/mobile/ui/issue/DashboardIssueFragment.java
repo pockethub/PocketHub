@@ -10,8 +10,8 @@ import com.github.mobile.issue.IssueStore;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.PagedItemFragment;
-import com.github.mobile.util.AvatarHelper;
-import com.github.mobile.util.ListViewHelper;
+import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 
 import java.util.List;
@@ -38,7 +38,7 @@ public class DashboardIssueFragment extends PagedItemFragment<RepositoryIssue> {
     private IssueStore store;
 
     @Inject
-    private AvatarHelper avatarHelper;
+    private AvatarUtils avatarHelper;
 
     private Map<String, String> filterData;
 
@@ -55,7 +55,7 @@ public class DashboardIssueFragment extends PagedItemFragment<RepositoryIssue> {
         super.onActivityCreated(savedInstanceState);
 
         filterData = (Map<String, String>) getArguments().getSerializable(ARG_FILTER);
-        ListViewHelper.configure(getActivity(), getListView(), true);
+        ListViewUtils.configure(getActivity(), getListView(), true);
     }
 
     @Override

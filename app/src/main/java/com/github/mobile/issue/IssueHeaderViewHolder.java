@@ -12,9 +12,9 @@ import android.widget.TextView;
 
 import com.github.mobile.R.id;
 import com.github.mobile.R.string;
-import com.github.mobile.util.AvatarHelper;
+import com.github.mobile.util.AvatarUtils;
 import com.github.mobile.util.HttpImageGetter;
-import com.github.mobile.util.ServiceHelper;
+import com.github.mobile.util.ServiceUtils;
 import com.github.mobile.util.TimeUtils;
 import com.madgag.android.listviews.ViewHolder;
 
@@ -28,7 +28,7 @@ import org.eclipse.egit.github.core.User;
  */
 public class IssueHeaderViewHolder implements ViewHolder<Issue> {
 
-    private final AvatarHelper avatarHelper;
+    private final AvatarUtils avatarHelper;
 
     private final HttpImageGetter imageGetter;
 
@@ -60,7 +60,7 @@ public class IssueHeaderViewHolder implements ViewHolder<Issue> {
      * @param view
      * @param avatarHelper
      */
-    public IssueHeaderViewHolder(final View view, final AvatarHelper avatarHelper) {
+    public IssueHeaderViewHolder(final View view, final AvatarUtils avatarHelper) {
         this.avatarHelper = avatarHelper;
         this.resources = view.getResources();
         this.imageGetter = new HttpImageGetter(view.getContext());
@@ -103,7 +103,7 @@ public class IssueHeaderViewHolder implements ViewHolder<Issue> {
         if (!issue.getLabels().isEmpty()) {
             labelsArea.setVisibility(VISIBLE);
             LabelsDrawable drawable = new LabelsDrawable(labelsArea.getPaddingLeft(), createdText.getTextSize(),
-                    ServiceHelper.getDisplayWidth(labelsArea) - labelsArea.getPaddingLeft()
+                    ServiceUtils.getDisplayWidth(labelsArea) - labelsArea.getPaddingLeft()
                             - labelsArea.getPaddingRight(), issue.getLabels());
             drawable.getPaint().setColor(resources.getColor(android.R.color.transparent));
             labelsArea.setBackgroundDrawable(drawable);

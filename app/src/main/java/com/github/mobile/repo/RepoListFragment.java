@@ -17,7 +17,7 @@ import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.repo.RecentReposHelper.RecentRepos;
 import com.github.mobile.ui.ListLoadingFragment;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
-import com.github.mobile.util.ListViewHelper;
+import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -69,7 +69,7 @@ public class RepoListFragment extends ListLoadingFragment<Repository> implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setEmptyText(getString(string.no_repositories));
-        ListViewHelper.configure(getActivity(), getListView(), true);
+        ListViewUtils.configure(getActivity(), getListView(), true);
 
         if (savedInstanceState != null) {
             RecentRepos recentRepos = (RecentRepos) savedInstanceState.getSerializable(RECENT_REPOS);

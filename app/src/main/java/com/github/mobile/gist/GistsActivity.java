@@ -18,7 +18,7 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
-import com.github.mobile.util.AccountHelper;
+import com.github.mobile.util.AccountUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.viewpagerindicator.TitlePageIndicator;
 
@@ -43,7 +43,7 @@ public class GistsActivity extends RoboSherlockFragmentActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(string.gists_title);
-        actionBar.setSubtitle(AccountHelper.getLogin(this));
+        actionBar.setSubtitle(AccountUtils.getLogin(this));
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         pager.setAdapter(new GistQueriesPagerAdapter(getResources(), getSupportFragmentManager()));

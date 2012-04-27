@@ -5,7 +5,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mobile.R.id;
-import com.github.mobile.util.AvatarHelper;
+import com.github.mobile.util.AvatarUtils;
 import com.madgag.android.listviews.ViewHolder;
 
 /**
@@ -13,7 +13,7 @@ import com.madgag.android.listviews.ViewHolder;
  */
 public class IssueFilterViewHolder implements ViewHolder<IssueFilter> {
 
-    private final AvatarHelper avatarHelper;
+    private final AvatarUtils avatarHelper;
 
     private final ImageView avatarView;
 
@@ -27,7 +27,7 @@ public class IssueFilterViewHolder implements ViewHolder<IssueFilter> {
      * @param view
      * @param avatarHelper
      */
-    public IssueFilterViewHolder(final View view, final AvatarHelper avatarHelper) {
+    public IssueFilterViewHolder(final View view, final AvatarUtils avatarHelper) {
         this.avatarHelper = avatarHelper;
         avatarView = (ImageView) view.findViewById(id.iv_gravatar);
         repoText = (TextView) view.findViewById(id.tv_repo_name);

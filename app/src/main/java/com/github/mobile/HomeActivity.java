@@ -29,9 +29,9 @@ import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.repo.OrgLoader;
 import com.github.mobile.repo.UserComparator;
 import com.github.mobile.ui.user.UserPagerAdapter;
-import com.github.mobile.util.AccountHelper;
-import com.github.mobile.util.AvatarHelper;
-import com.github.mobile.util.SharedPreferencesUtil;
+import com.github.mobile.util.AccountUtils;
+import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.PreferenceUtils;
 import com.github.mobile.util.GitHubIntents.Builder;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
@@ -88,7 +88,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
     private ViewPager pager;
 
     @Inject
-    private AvatarHelper avatarHelper;
+    private AvatarUtils avatarHelper;
 
     @Inject
     private SharedPreferences sharedPreferences;
@@ -129,7 +129,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
     private void setOrg(User org) {
         Log.d(TAG, "setOrg : " + org.getLogin());
 
-        SharedPreferencesUtil.save(sharedPreferences.edit().putInt(PREF_ORG_ID, org.getId()));
+        PreferenceUtils.save(sharedPreferences.edit().putInt(PREF_ORG_ID, org.getId()));
 
         // Don't notify listeners or change pager if org hasn't changed
         if (this.org != null && this.org.getId() == org.getId())
@@ -229,7 +229,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
     }
 
     private boolean isDefaultUser(final User org) {
-        final String accountLogin = AccountHelper.getLogin(this);
+        final String accountLogin = AccountUtils.getLogin(this);
         return org != null && accountLogin != null && accountLogin.equals(org.getLogin());
     }
 

@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.github.mobile.R.id;
 import com.github.mobile.ui.ItemView;
-import com.github.mobile.util.TypefaceHelper;
+import com.github.mobile.util.TypefaceUtils;
 
 import org.eclipse.egit.github.core.Gist;
 
@@ -66,7 +66,7 @@ public class GistView extends ItemView {
         files = (TextView) view.findViewById(id.tv_gist_files);
         avatar = (ImageView) view.findViewById(id.iv_gravatar);
 
-        TypefaceHelper.setOctocons((TextView) view.findViewById(id.tv_comment_icon),
+        TypefaceUtils.setOctocons((TextView) view.findViewById(id.tv_comment_icon),
                 (TextView) view.findViewById(id.tv_file_icon));
     }
 }

@@ -4,8 +4,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.mobile.R.id;
-import com.github.mobile.util.AvatarHelper;
-import com.github.mobile.util.TypefaceHelper;
+import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.TypefaceUtils;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -25,10 +25,10 @@ public class DashboardIssueViewHolder extends RepoIssueViewHolder {
      * @param helper
      * @param numberWidth
      */
-    public DashboardIssueViewHolder(View v, AvatarHelper helper, AtomicInteger numberWidth) {
+    public DashboardIssueViewHolder(View v, AvatarUtils helper, AtomicInteger numberWidth) {
         super(v, helper, numberWidth);
         repoText = (TextView) v.findViewById(id.tv_issue_repo_name);
-        TypefaceHelper.setOctocons((TextView) v.findViewById(id.tv_comment_icon));
+        TypefaceUtils.setOctocons((TextView) v.findViewById(id.tv_comment_icon));
     }
 
     @Override

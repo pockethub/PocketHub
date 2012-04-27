@@ -22,7 +22,7 @@ import android.widget.TextView;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.ui.user.NewsEventViewHolder;
-import com.github.mobile.util.AvatarHelper;
+import com.github.mobile.util.AvatarUtils;
 
 import java.util.Date;
 
@@ -69,7 +69,7 @@ public class NewsEventTextTest extends AndroidTestCase {
 				null);
 		text = (TextView) view.findViewById(id.tv_event);
 		assertNotNull(text);
-		AvatarHelper helper = new AvatarHelper(mContext);
+		AvatarUtils helper = new AvatarUtils(mContext);
 		holder = new NewsEventViewHolder(view, helper);
 	}
 

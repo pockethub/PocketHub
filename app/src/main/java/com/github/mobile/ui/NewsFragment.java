@@ -12,7 +12,7 @@ import com.github.mobile.gist.ViewGistsActivity;
 import com.github.mobile.ui.issue.ViewIssuesActivity;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
 import com.github.mobile.ui.user.NewsEventViewHolder;
-import com.github.mobile.util.AvatarHelper;
+import com.github.mobile.util.AvatarUtils;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
@@ -46,7 +46,7 @@ public abstract class NewsFragment extends PagedListFragment<Event> {
     protected final RepositoryEventMatcher repoMatcher = new RepositoryEventMatcher();
 
     @Inject
-    private AvatarHelper avatarHelper;
+    private AvatarUtils avatarHelper;
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {

@@ -23,7 +23,7 @@ import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.async.AuthenticatedUserTask;
 import com.github.mobile.ui.issue.ViewIssuesActivity;
-import com.github.mobile.util.AvatarHelper;
+import com.github.mobile.util.AvatarUtils;
 import com.github.mobile.util.ToastUtils;
 import com.github.mobile.util.GitHubIntents.Builder;
 import com.google.inject.Inject;
@@ -68,7 +68,7 @@ public class CreateIssueActivity extends DialogFragmentActivity {
     private static final int REQUEST_CODE_ASSIGNEE = 3;
 
     @Inject
-    private AvatarHelper avatarHelper;
+    private AvatarUtils avatarHelper;
 
     @Inject
     private IssueService service;
