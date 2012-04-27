@@ -12,22 +12,11 @@ public class PublicGistsFragment extends GistsFragment {
 
     @Override
     protected ResourcePager<Gist> createPager() {
-        return new ResourcePager<Gist>() {
-
-            @Override
-            protected Object getId(Gist resource) {
-                return resource.getId();
-            }
+        return new GistPager() {
 
             @Override
             public PageIterator<Gist> createIterator(int page, int size) {
                 return service.pagePublicGists(page, size);
-            }
-
-            @Override
-            protected Gist register(Gist resource) {
-                store.addGist(resource);
-                return resource;
             }
         };
     }

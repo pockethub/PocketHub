@@ -13,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.github.mobile.android.ResourcePager;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.gist.GistStore;
 import com.github.mobile.android.gist.ViewGistsActivity;
@@ -34,6 +35,22 @@ import org.eclipse.egit.github.core.service.GistService;
 public abstract class GistsFragment extends PagedItemFragment<Gist> {
 
     private static final String TAG = "GistsFragment";
+
+    /**
+     * Pager over Gists
+     */
+    protected abstract class GistPager extends ResourcePager<Gist> {
+
+        @Override
+        protected Object getId(Gist resource) {
+            return resource.getId();
+        }
+
+        @Override
+        protected Gist register(Gist resource) {
+            return store.addGist(resource);
+        }
+    }
 
     /**
      * Avatar helper
