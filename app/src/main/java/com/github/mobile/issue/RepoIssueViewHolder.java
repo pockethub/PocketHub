@@ -4,7 +4,7 @@ import static android.graphics.Paint.STRIKE_THRU_TEXT_FLAG;
 import static android.text.Html.fromHtml;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.github.mobile.util.Time.relativeTimeFor;
+import static com.github.mobile.util.TimeUtils.getRelativeTime;
 import android.graphics.Paint;
 import android.view.View;
 import android.widget.ImageView;
@@ -110,7 +110,7 @@ public class RepoIssueViewHolder implements ViewHolder<Issue> {
         pullRequestIcon.setVisibility(issue.getPullRequest().getHtmlUrl() == null ? GONE : VISIBLE);
 
         title.setText(issue.getTitle());
-        creation.setText(fromHtml("<b>" + issue.getUser().getLogin() + "</b> " + relativeTimeFor(issue.getCreatedAt())));
+        creation.setText(fromHtml("<b>" + issue.getUser().getLogin() + "</b> " + getRelativeTime(issue.getCreatedAt())));
         comments.setText(Integer.toString(issue.getComments()));
     }
 }

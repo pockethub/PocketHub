@@ -15,7 +15,7 @@ import com.github.mobile.R.string;
 import com.github.mobile.util.AvatarHelper;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.ServiceHelper;
-import com.github.mobile.util.Time;
+import com.github.mobile.util.TimeUtils;
 import com.madgag.android.listviews.ViewHolder;
 
 import java.util.Locale;
@@ -85,7 +85,7 @@ public class IssueHeaderViewHolder implements ViewHolder<Issue> {
         }
 
         String reported = "<b>" + issue.getUser().getLogin() + "</b> opened "
-                + Time.relativeTimeFor(issue.getCreatedAt());
+                + TimeUtils.getRelativeTime(issue.getCreatedAt());
 
         createdText.setText(Html.fromHtml(reported));
         avatarHelper.bind(creatorAvatar, issue.getUser());

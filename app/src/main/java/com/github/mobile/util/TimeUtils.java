@@ -1,13 +1,13 @@
 package com.github.mobile.util;
 
-import static android.text.format.DateUtils.getRelativeTimeSpanString;
+import android.text.format.DateUtils;
 
 import java.util.Date;
 
 /**
  * Utilities for dealing with dates and times
  */
-public class Time {
+public class TimeUtils {
 
     /**
      * Get relative time for date
@@ -15,7 +15,7 @@ public class Time {
      * @param date
      * @return relative time
      */
-    public static CharSequence relativeTimeFor(Date date) {
-        return getRelativeTimeSpanString(date.getTime());
+    public static CharSequence getRelativeTime(final Date date) {
+        return DateUtils.getRelativeTimeSpanString(date.getTime());
     }
 }

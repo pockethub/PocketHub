@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.mobile.R.id;
-import com.github.mobile.util.Time;
+import com.github.mobile.util.TimeUtils;
 import com.madgag.android.listviews.ViewHolder;
 
 import java.util.Date;
@@ -50,14 +50,14 @@ public class GistHeaderViewHolder implements ViewHolder<Gist> {
     public void updateViewFor(Gist gist) {
         Date createdAt = gist.getCreatedAt();
         if (createdAt != null) {
-            created.setText("Created " + Time.relativeTimeFor(createdAt));
+            created.setText("Created " + TimeUtils.getRelativeTime(createdAt));
             created.setVisibility(VISIBLE);
         } else
             created.setVisibility(GONE);
 
         Date updatedAt = gist.getUpdatedAt();
         if (updatedAt != null && !updatedAt.equals(createdAt)) {
-            updated.setText("Updated " + Time.relativeTimeFor(updatedAt));
+            updated.setText("Updated " + TimeUtils.getRelativeTime(updatedAt));
             updated.setVisibility(VISIBLE);
         } else
             updated.setVisibility(GONE);

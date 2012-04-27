@@ -11,7 +11,7 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.util.AvatarHelper;
-import com.github.mobile.util.Time;
+import com.github.mobile.util.TimeUtils;
 import com.github.mobile.util.TypefaceHelper;
 
 import org.eclipse.egit.github.core.Issue;
@@ -91,7 +91,7 @@ public class DashboardIssueListAdapter extends ItemListAdapter<RepositoryIssue, 
 
         view.title.setText(issue.getTitle());
         view.user.setText(issue.getUser().getLogin());
-        view.creation.setText(Time.relativeTimeFor(issue.getCreatedAt()));
+        view.creation.setText(TimeUtils.getRelativeTime(issue.getCreatedAt()));
         view.comments.setText(Integer.toString(issue.getComments()));
     }
 

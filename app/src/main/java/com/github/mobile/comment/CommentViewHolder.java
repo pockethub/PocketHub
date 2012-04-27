@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.github.mobile.R.id;
 import com.github.mobile.util.AvatarHelper;
 import com.github.mobile.util.HttpImageGetter;
-import com.github.mobile.util.Time;
+import com.github.mobile.util.TimeUtils;
 import com.github.mobile.util.TypefaceHelper;
 import com.madgag.android.listviews.ViewHolder;
 
@@ -52,7 +52,7 @@ public class CommentViewHolder implements ViewHolder<Comment> {
     public void updateViewFor(final Comment comment) {
         imageGetter.bind(bodyView, comment.getBodyHtml(), comment.getId());
         authorView.setText(comment.getUser().getLogin());
-        dateView.setText(Time.relativeTimeFor(comment.getUpdatedAt()));
+        dateView.setText(TimeUtils.getRelativeTime(comment.getUpdatedAt()));
         avatarHelper.bind(avatarView, comment.getUser());
     }
 }

@@ -45,7 +45,7 @@ import android.widget.TextView;
 
 import com.github.mobile.R.id;
 import com.github.mobile.util.AvatarHelper;
-import com.github.mobile.util.Time;
+import com.github.mobile.util.TimeUtils;
 import com.github.mobile.util.TypefaceHelper;
 import com.madgag.android.listviews.ViewHolder;
 
@@ -534,6 +534,6 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
 
         iconText.setText(icon != ' ' ? Character.toString(icon) : null);
         eventText.setText(text);
-        dateText.setText(Time.relativeTimeFor(event.getCreatedAt()).toString());
+        dateText.setText(TimeUtils.getRelativeTime(event.getCreatedAt()).toString());
     }
 }

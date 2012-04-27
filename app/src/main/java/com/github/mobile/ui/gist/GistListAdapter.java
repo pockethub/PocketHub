@@ -11,7 +11,7 @@ import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.util.AvatarHelper;
-import com.github.mobile.util.Time;
+import com.github.mobile.util.TimeUtils;
 
 import java.text.NumberFormat;
 import java.util.Arrays;
@@ -126,7 +126,7 @@ public class GistListAdapter extends ItemListAdapter<Gist, GistView> {
         else
             view.avatar.setVisibility(GONE);
 
-        view.created.setText(Time.relativeTimeFor(gist.getCreatedAt()));
+        view.created.setText(TimeUtils.getRelativeTime(gist.getCreatedAt()));
 
         view.files.setText(NUMBER_FORMAT.format(gist.getFiles().size()));
         view.comments.setText(NUMBER_FORMAT.format(gist.getComments()));
