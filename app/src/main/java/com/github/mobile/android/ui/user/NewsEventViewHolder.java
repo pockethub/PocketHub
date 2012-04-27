@@ -401,7 +401,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         builder.append(' ');
         builder.append(action);
         builder.append(' ');
-        String issueNumber = "pull request " + payload.getPullRequest().getNumber();
+        String issueNumber = "pull request " + payload.getNumber();
         builder.append(issueNumber);
         builder.setSpan(new StyleSpan(BOLD), builder.length() - issueNumber.length(), builder.length(),
                 SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -447,7 +447,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         builder.setSpan(new StyleSpan(BOLD), 0, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
 
         TeamAddPayload payload = (TeamAddPayload) event.getPayload();
-        Team team = payload.getTeam();
+
         String value;
         User user = payload.getUser();
         if (user != null)
@@ -456,7 +456,10 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
             value = payload.getRepo().getName();
         builder.append(" added ");
         builder.append(value);
+
         builder.append(" to team");
+
+        Team team = payload.getTeam();
         String teamName = team != null ? team.getName() : null;
         if (teamName != null)
             builder.append(' ').append(teamName);
