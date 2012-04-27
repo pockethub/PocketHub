@@ -7,10 +7,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.SparseArray;
 import android.view.ViewGroup;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.RepositoryId;
@@ -24,7 +22,7 @@ public class IssuesPagerAdapter extends FragmentPagerAdapter {
 
     private final Integer[] issues;
 
-    private final Map<Integer, IssueFragment> fragments = new HashMap<Integer, IssueFragment>();
+    private final SparseArray<IssueFragment> fragments = new SparseArray<IssueFragment>();
 
     /**
      * @param fm
