@@ -396,6 +396,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         String action = payload.getAction();
         if ("synchronize".equals(action))
             action = "updated";
+        builder.append(' ');
         builder.append(action);
         builder.append(' ');
         String issueNumber = "pull request " + payload.getPullRequest().getNumber();
