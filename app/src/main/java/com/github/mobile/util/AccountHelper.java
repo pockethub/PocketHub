@@ -1,19 +1,19 @@
 package com.github.mobile.util;
 
 import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
-import static android.util.Log.*;
+import static android.util.Log.DEBUG;
 import static com.github.mobile.authenticator.Constants.GITHUB_ACCOUNT_TYPE;
-
-import java.io.IOException;
-
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.accounts.AccountManagerFuture;
 import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+
+import java.io.IOException;
 
 /**
  * Helpers for accessing {@link AccountManager}
@@ -33,31 +33,37 @@ public class AccountHelper {
         return accounts.length > 0 ? accounts[0].name : null;
     }
 
+    private static Account[] getAccounts(final AccountManager manager) throws OperationCanceledException,
+            AuthenticatorException, IOException {
+        final AccountManagerFuture<Account[]> future = manager.getAccountsByTypeAndFeatures(GITHUB_ACCOUNT_TYPE, null,
+                null, null);
+        final Account[] accounts = future.getResult();
+        return accounts != null ? accounts : new Account[0];
+    }
+
     /**
      * Get account used for authentication
      *
-     * @param accountManager
-     * @param activityUsedToStartLoginProcess
+     * @param manager
+     * @param activity
      * @return account
      */
-    public static Account getAccount(final AccountManager accountManager, final Activity activityUsedToStartLoginProcess) {
+    public static Account getAccount(final AccountManager manager, final Activity activity) {
         final boolean loggable = Log.isLoggable(TAG, DEBUG);
         if (loggable)
-            Log.d(TAG, "Getting current account...");
+            Log.d(TAG, "Getting account");
+
+        if (activity == null)
+            throw new RuntimeException("Can't create new GitHub account - no activity available");
 
         Account[] accounts;
         try {
-            while ((accounts = accountManager.getAccountsByTypeAndFeatures(GITHUB_ACCOUNT_TYPE, null, null, null)
-                    .getResult()).length == 0) {
-
+            while ((accounts = getAccounts(manager)).length == 0) {
                 if (loggable)
-                    Log.d(TAG, "No GitHub accounts for activity=" + activityUsedToStartLoginProcess);
+                    Log.d(TAG, "No GitHub accounts for activity=" + activity);
 
-                if (activityUsedToStartLoginProcess == null)
-                    throw new RuntimeException("Can't create new GitHub account - no activity available");
-
-                Bundle result = accountManager.addAccount(GITHUB_ACCOUNT_TYPE, null, null, null,
-                        activityUsedToStartLoginProcess, null, null).getResult();
+                Bundle result = manager.addAccount(GITHUB_ACCOUNT_TYPE, null, null, null, activity, null, null)
+                        .getResult();
 
                 if (loggable)
                     Log.d(TAG, "Added account " + result.getString(KEY_ACCOUNT_NAME));
