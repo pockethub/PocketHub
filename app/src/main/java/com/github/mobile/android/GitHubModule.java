@@ -9,7 +9,7 @@ import com.github.mobile.android.guice.GitHubAccountScope;
 import com.github.mobile.android.issue.IssueStore;
 import com.github.mobile.android.persistence.AllReposForUserOrOrg;
 import com.github.mobile.android.sync.SyncCampaign;
-import com.github.mobile.android.util.LateAuthenticatedGitHubClient;
+import com.github.mobile.android.util.AccountGitHubClient;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 import com.google.inject.Provides;
@@ -53,7 +53,7 @@ public class GitHubModule extends AbstractModule {
 
     @Provides
     GitHubClient client(Provider<GitHubAccount> gitHubAccountProvider) {
-        return configureClient(new LateAuthenticatedGitHubClient(gitHubAccountProvider) {
+        return configureClient(new AccountGitHubClient(gitHubAccountProvider) {
             @Override
             protected HttpURLConnection configureRequest(HttpURLConnection request) {
                 super.configureRequest(request);
@@ -71,7 +71,7 @@ public class GitHubModule extends AbstractModule {
 
     @Provides
     IRepositorySearch searchService(final Provider<GitHubAccount> ghAccountProvider, final Context context) {
-        GitHubClient client = configureClient(new LateAuthenticatedGitHubClient(HOST_API_V2, ghAccountProvider));
+        GitHubClient client = configureClient(new AccountGitHubClient(HOST_API_V2, ghAccountProvider));
 
         final RepositoryService service = new RepositoryService(client);
 
