@@ -14,13 +14,13 @@
     <item
         android:id="@+id/create_issue"
         android:icon="@drawable/ic_action_create"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="@string/create">
     </item>
     <item
         android:id="@+id/refresh"
         android:icon="@drawable/ic_action_refresh"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="@string/refresh">
     </item>
 
