@@ -45,8 +45,6 @@ public class Image {
     public static Bitmap getBitmap(final String imagePath, int sampleSize) {
         final Options options = new Options();
         options.inDither = false;
-        options.inPurgeable = true;
-        options.inInputShareable = true;
         options.inSampleSize = sampleSize;
 
         RandomAccessFile file = null;
