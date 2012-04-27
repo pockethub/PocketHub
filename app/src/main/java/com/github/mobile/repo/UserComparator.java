@@ -8,24 +8,30 @@ import java.util.Comparator;
 import org.eclipse.egit.github.core.User;
 
 /**
- * Sorts users and orgs in alphabetical order by username, but overriding this
- * to put the currently authenticated user at the top of the list.
+ * Sorts users and orgs in alphabetical order with special handling to put currently authenticated user first.
  */
 public class UserComparator implements Comparator<User> {
 
-    private final String currentUserLogin;
+    private final String login;
 
+    /**
+     * Create comparator for given account
+     *
+     * @param account
+     */
     @Inject
-    public UserComparator(GitHubAccount gitHubAccount) {
-        currentUserLogin = gitHubAccount.username;
+    public UserComparator(final GitHubAccount account) {
+        login = account.username;
     }
 
     @Override
-    public int compare(User lhs, User rhs) {
-        String lhsLogin = lhs.getLogin(), rhsLogin = rhs.getLogin();
-        if (lhsLogin.equals(currentUserLogin))
+    public int compare(final User lhs, final User rhs) {
+        final String lhsLogin = lhs.getLogin();
+        if (lhsLogin.equals(login))
             return -1;
-        if (rhsLogin.equals(currentUserLogin))
+
+        final String rhsLogin = rhs.getLogin();
+        if (rhsLogin.equals(login))
             return 1;
 
         return lhsLogin.compareToIgnoreCase(rhsLogin);
