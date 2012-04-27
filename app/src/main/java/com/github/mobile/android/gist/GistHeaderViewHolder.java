@@ -1,9 +1,12 @@
 package com.github.mobile.android.gist;
 
+import static android.graphics.Typeface.ITALIC;
+import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import android.text.Html;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.TextView;
 
@@ -19,6 +22,13 @@ import org.eclipse.egit.github.core.Gist;
  * Holder for a Gist header view
  */
 public class GistHeaderViewHolder implements ViewHolder<Gist> {
+
+    private static final SpannableStringBuilder NO_DESCRIPTION;
+
+    static {
+        NO_DESCRIPTION = new SpannableStringBuilder("No description");
+        NO_DESCRIPTION.setSpan(new StyleSpan(ITALIC), 0, NO_DESCRIPTION.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
 
     private final TextView created;
 
@@ -56,6 +66,6 @@ public class GistHeaderViewHolder implements ViewHolder<Gist> {
         if (!TextUtils.isEmpty(desc))
             description.setText(desc);
         else
-            description.setText(Html.fromHtml("<i>No description</i>"));
+            description.setText(NO_DESCRIPTION);
     }
 }
