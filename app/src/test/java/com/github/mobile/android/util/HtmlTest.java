@@ -3,6 +3,8 @@ package com.github.mobile.android.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import com.github.mobile.util.HtmlFormatter;
+
 import org.junit.Test;
 
 /**

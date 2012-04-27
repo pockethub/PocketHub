@@ -1,0 +1,94 @@
+/*
+ * Copyright 2012 GitHub Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.github.mobile.util;
+
+import static android.widget.Toast.LENGTH_LONG;
+import android.app.Activity;
+import android.app.Application;
+import android.text.TextUtils;
+import android.widget.Toast;
+
+import org.eclipse.egit.github.core.client.RequestException;
+
+/**
+ * Utilities for displaying toast notifications
+ */
+public class ToastUtil {
+
+    /**
+     * Show the given message in a {@link Toast}
+     * <p>
+     * This method may be called from any thread
+     *
+     * @param activity
+     * @param message
+     */
+    public static void show(Activity activity, final String message) {
+        if (activity == null)
+            return;
+
+        if (TextUtils.isEmpty(message))
+            return;
+
+        final Application application = activity.getApplication();
+        activity.runOnUiThread(new Runnable() {
+            public void run() {
+                Toast.makeText(application, message, LENGTH_LONG).show();
+            }
+        });
+    }
+
+    /**
+     * Show the message with the given resource id in a {@link Toast}
+     * <p>
+     * This method may be called from any thread
+     *
+     * @param activity
+     * @param resId
+     */
+    public static void show(final Activity activity, final int resId) {
+        if (activity == null)
+            return;
+
+        show(activity, activity.getString(resId));
+    }
+
+    /**
+     * Show {@link Toast} for exception
+     * <p>
+     * This given default message will be used if an message can not be derived from the given {@link Exception}
+     * <p>
+     * This method may be called from any thread
+     *
+     * @param activity
+     * @param e
+     * @param defaultMessage
+     */
+    public static void show(final Activity activity, final Exception e, final int defaultMessage) {
+        if (activity == null)
+            return;
+
+        String message = null;
+        if (e instanceof RequestException)
+            message = ((RequestException) e).formatErrors();
+
+        if (TextUtils.isEmpty(message))
+            message = activity.getString(defaultMessage);
+
+        show(activity, message);
+    }
+}
