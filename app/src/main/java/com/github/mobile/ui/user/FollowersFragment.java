@@ -2,16 +2,14 @@ package com.github.mobile.ui.user;
 
 import android.os.Bundle;
 
-import com.github.mobile.ResourcePager;
-import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
-import com.github.mobile.ui.PagedListFragment;
+import com.github.mobile.ResourcePager;
+import com.github.mobile.ui.ItemListAdapter;
+import com.github.mobile.ui.ItemView;
+import com.github.mobile.ui.PagedItemFragment;
 import com.github.mobile.util.AvatarHelper;
 import com.github.mobile.util.ListViewHelper;
 import com.google.inject.Inject;
-import com.madgag.android.listviews.ReflectiveHolderFactory;
-import com.madgag.android.listviews.ViewHoldingListAdapter;
-import com.madgag.android.listviews.ViewInflator;
 
 import java.util.List;
 
@@ -22,7 +20,7 @@ import org.eclipse.egit.github.core.service.UserService;
 /**
  * Fragment to display a list of followers
  */
-public class FollowersFragment extends PagedListFragment<User> {
+public class FollowersFragment extends PagedItemFragment<User> {
 
     @Inject
     private AvatarHelper avatarHelper;
@@ -56,10 +54,9 @@ public class FollowersFragment extends PagedListFragment<User> {
         return string.loading_followers;
     }
 
-    protected ViewHoldingListAdapter<User> adapterFor(List<User> items) {
-        return new ViewHoldingListAdapter<User>(items, ViewInflator.viewInflatorFor(getActivity(),
-                layout.user_list_item),
-                ReflectiveHolderFactory.reflectiveFactoryFor(UserViewHolder.class, avatarHelper));
+    @Override
+    protected ItemListAdapter<User, ? extends ItemView> createAdapter(List<User> items) {
+        User[] users = items.toArray(new User[items.size()]);
+        return new UserListAdapter(getActivity().getLayoutInflater(), users, avatarHelper);
     }
-
 }
