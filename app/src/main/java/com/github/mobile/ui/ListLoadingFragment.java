@@ -13,7 +13,7 @@ import com.github.mobile.RefreshAnimation;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.R.id;
 import com.github.mobile.R.menu;
-import com.github.mobile.util.ToastUtil;
+import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockListFragment;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
@@ -151,7 +151,7 @@ public abstract class ListLoadingFragment<E> extends RoboSherlockListFragment im
      * @param defaultMessage
      */
     protected void showError(final Exception e, final int defaultMessage) {
-        ToastUtil.show(getActivity(), e, defaultMessage);
+        ToastUtils.show(getActivity(), e, defaultMessage);
     }
 
     /**

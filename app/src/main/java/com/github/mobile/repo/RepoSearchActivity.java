@@ -17,7 +17,7 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
-import com.github.mobile.util.ToastUtil;
+import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
 import java.text.MessageFormat;
@@ -43,7 +43,7 @@ public class RepoSearchActivity extends RoboSherlockFragmentActivity {
             return true;
         case id.clear_search_history:
             clearRepoQueryHistory(this);
-            ToastUtil.show(this, string.search_history_cleared);
+            ToastUtils.show(this, string.search_history_cleared);
             return true;
         case android.R.id.home:
             Intent intent = new Intent(this, HomeActivity.class);

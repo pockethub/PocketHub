@@ -9,7 +9,7 @@ import android.util.Log;
 import com.github.mobile.R.string;
 import com.github.mobile.async.AuthenticatedUserLoader;
 import com.github.mobile.persistence.AccountDataManager;
-import com.github.mobile.util.ToastUtil;
+import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -44,7 +44,7 @@ public class OrgLoader extends AuthenticatedUserLoader<List<User>> {
             if (Log.isLoggable(TAG, WARN))
                 Log.w(TAG, "Exception loading organizations", e);
 
-            ToastUtil.show(activity, string.error_orgs_load);
+            ToastUtils.show(activity, string.error_orgs_load);
 
             return emptyList();
         }

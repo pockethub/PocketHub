@@ -6,7 +6,7 @@ import com.github.mobile.DialogFragmentActivity;
 import com.github.mobile.SingleChoiceDialogFragment;
 import com.github.mobile.R.string;
 import com.github.mobile.async.AuthenticatedUserTask;
-import com.github.mobile.util.ToastUtil;
+import com.github.mobile.util.ToastUtils;
 
 import java.util.Comparator;
 import java.util.List;
@@ -78,7 +78,7 @@ public class AssigneeDialog {
 
             protected void onException(Exception e) throws RuntimeException {
                 loader.dismiss();
-                ToastUtil.show(activity, e.getMessage());
+                ToastUtils.show(activity, e.getMessage());
             }
         }.execute();
     }

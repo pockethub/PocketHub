@@ -52,7 +52,7 @@ import com.github.mobile.issue.IssueStore;
 import com.github.mobile.ui.DialogResultListener;
 import com.github.mobile.util.AvatarHelper;
 import com.github.mobile.util.HtmlFormatter;
-import com.github.mobile.util.ToastUtil;
+import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
@@ -277,7 +277,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             protected void onException(Exception e) throws RuntimeException {
                 Log.d(TAG, "Issue failed to load", e);
 
-                ToastUtil.show(getActivity(), e, string.error_issue_load);
+                ToastUtils.show(getActivity(), e, string.error_issue_load);
             }
 
             protected void onSuccess(FullIssue fullIssue) throws Exception {
@@ -358,7 +358,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             protected void onException(Exception e) throws RuntimeException {
                 Log.d(TAG, "Exception creating comment", e);
 
-                ToastUtil.show((Activity) getContext(), e.getMessage());
+                ToastUtils.show((Activity) getContext(), e.getMessage());
             }
         }.create(comment);
     }

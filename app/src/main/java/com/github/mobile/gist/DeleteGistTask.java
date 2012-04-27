@@ -6,7 +6,7 @@ import android.app.ProgressDialog;
 
 import com.github.mobile.R.string;
 import com.github.mobile.ui.ProgressDialogTask;
-import com.github.mobile.util.ToastUtil;
+import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Gist;
@@ -70,6 +70,6 @@ public class DeleteGistTask extends ProgressDialogTask<Gist> {
     protected void onException(Exception e) throws RuntimeException {
         super.onException(e);
 
-        ToastUtil.show((Activity) getContext(), e.getMessage());
+        ToastUtils.show((Activity) getContext(), e.getMessage());
     }
 }

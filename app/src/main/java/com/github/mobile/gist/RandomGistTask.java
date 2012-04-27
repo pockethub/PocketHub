@@ -6,7 +6,7 @@ import android.app.ProgressDialog;
 
 import com.github.mobile.R.string;
 import com.github.mobile.async.AuthenticatedUserTask;
-import com.github.mobile.util.ToastUtil;
+import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 
 import java.util.Collection;
@@ -92,6 +92,6 @@ public class RandomGistTask extends AuthenticatedUserTask<Gist> {
     protected void onException(Exception e) throws RuntimeException {
         dismissProgress();
 
-        ToastUtil.show((Activity) getContext(), e.getMessage());
+        ToastUtils.show((Activity) getContext(), e.getMessage());
     }
 }

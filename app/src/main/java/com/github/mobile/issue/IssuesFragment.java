@@ -32,7 +32,7 @@ import com.github.mobile.ui.PagedListFragment;
 import com.github.mobile.ui.issue.ViewIssuesActivity;
 import com.github.mobile.util.AvatarHelper;
 import com.github.mobile.util.ListViewHelper;
-import com.github.mobile.util.ToastUtil;
+import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 import com.madgag.android.listviews.ViewInflator;
@@ -152,7 +152,7 @@ public class IssuesFragment extends PagedListFragment<Issue> {
             cache.addIssueFilter(filter, new RequestFuture<IssueFilter>() {
 
                 public void success(IssueFilter response) {
-                    ToastUtil.show(getActivity(), string.message_filter_saved);
+                    ToastUtils.show(getActivity(), string.message_filter_saved);
                 }
             });
             return true;

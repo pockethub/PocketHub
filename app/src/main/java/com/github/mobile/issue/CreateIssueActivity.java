@@ -24,7 +24,7 @@ import com.github.mobile.R.string;
 import com.github.mobile.async.AuthenticatedUserTask;
 import com.github.mobile.ui.issue.ViewIssuesActivity;
 import com.github.mobile.util.AvatarHelper;
-import com.github.mobile.util.ToastUtil;
+import com.github.mobile.util.ToastUtils;
 import com.github.mobile.util.GitHubIntents.Builder;
 import com.google.inject.Inject;
 
@@ -247,7 +247,7 @@ public class CreateIssueActivity extends DialogFragmentActivity {
             protected void onException(Exception e) throws RuntimeException {
                 progress.cancel();
                 Log.e(TAG, e.getMessage(), e);
-                ToastUtil.show(CreateIssueActivity.this, e.getMessage());
+                ToastUtils.show(CreateIssueActivity.this, e.getMessage());
             }
         }.execute();
     }

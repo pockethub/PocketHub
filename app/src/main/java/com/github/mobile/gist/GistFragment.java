@@ -38,7 +38,7 @@ import com.github.mobile.core.gist.FullGist;
 import com.github.mobile.util.AccountHelper;
 import com.github.mobile.util.AvatarHelper;
 import com.github.mobile.util.HtmlFormatter;
-import com.github.mobile.util.ToastUtil;
+import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
@@ -214,7 +214,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
     }
 
     private void starGist() {
-        ToastUtil.show(getActivity(), string.starring_gist);
+        ToastUtils.show(getActivity(), string.starring_gist);
         new AuthenticatedUserTask<Gist>(getActivity()) {
 
             public Gist run() throws Exception {
@@ -225,13 +225,13 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
             protected void onException(Exception e) throws RuntimeException {
                 Log.d(TAG, "Exception starring gist", e);
-                ToastUtil.show((Activity) getContext(), e.getMessage());
+                ToastUtils.show((Activity) getContext(), e.getMessage());
             }
         }.execute();
     }
 
     private void unstarGist() {
-        ToastUtil.show(getActivity(), string.unstarring_gist);
+        ToastUtils.show(getActivity(), string.unstarring_gist);
         new AuthenticatedUserTask<Gist>(getActivity()) {
 
             public Gist run() throws Exception {
@@ -242,7 +242,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
             protected void onException(Exception e) throws RuntimeException {
                 Log.d(TAG, "Exception unstarring gist", e);
-                ToastUtil.show((Activity) getContext(), e.getMessage());
+                ToastUtils.show((Activity) getContext(), e.getMessage());
             }
         }.execute();
     }
@@ -280,7 +280,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
                 Log.d(TAG, "Exception creating comment on gist", e);
 
-                ToastUtil.show((Activity) getContext(), e.getMessage());
+                ToastUtils.show((Activity) getContext(), e.getMessage());
             }
         }.execute();
 
@@ -342,7 +342,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
             protected void onException(Exception e) throws RuntimeException {
                 Log.d(TAG, "Exception refreshing gist", e);
 
-                ToastUtil.show(getActivity(), e, string.error_gist_load);
+                ToastUtils.show(getActivity(), e, string.error_gist_load);
             }
 
             protected void onSuccess(FullGist fullGist) throws Exception {

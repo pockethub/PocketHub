@@ -18,7 +18,7 @@ import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.async.AuthenticatedUserTask;
-import com.github.mobile.util.ToastUtil;
+import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 
@@ -136,7 +136,7 @@ public class ShareGistActivity extends RoboSherlockFragmentActivity {
             protected void onException(Exception e) throws RuntimeException {
                 progress.cancel();
                 Log.d(TAG, e.getMessage(), e);
-                ToastUtil.show((Activity) getContext(), e.getMessage());
+                ToastUtils.show((Activity) getContext(), e.getMessage());
             }
         }.execute();
     }

@@ -27,7 +27,7 @@ import org.eclipse.egit.github.core.client.RequestException;
 /**
  * Utilities for displaying toast notifications
  */
-public class ToastUtil {
+public class ToastUtils {
 
     /**
      * Show the given message in a {@link Toast}
