@@ -1,6 +1,6 @@
 package com.github.mobile.android.guice;
 
-import static com.github.mobile.android.util.AccountHelper.demandCurrentAccount;
+import static com.github.mobile.android.util.AccountHelper.getAccount;
 import static com.google.common.base.Preconditions.checkState;
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -57,7 +57,7 @@ public class GitHubAccountScope extends ScopeBase {
      */
     public void enterWith(Activity activityUsedToStartLoginProcess) {
         AccountManager accountManager = AccountManager.get(activityUsedToStartLoginProcess);
-        Account account = demandCurrentAccount(accountManager, activityUsedToStartLoginProcess);
+        Account account = getAccount(accountManager, activityUsedToStartLoginProcess);
         enterWith(account, accountManager);
     }
 
