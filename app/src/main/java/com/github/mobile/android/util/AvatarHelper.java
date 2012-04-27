@@ -1,9 +1,12 @@
 package com.github.mobile.android.util;
 
+import static android.graphics.Bitmap.CompressFormat.PNG;
+import static android.graphics.Bitmap.Config.ARGB_8888;
 import static android.view.View.VISIBLE;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
@@ -17,6 +20,8 @@ import com.github.mobile.android.R.id;
 import com.google.inject.Inject;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
@@ -128,12 +133,23 @@ public class AvatarHelper {
         if (!avatarFile.exists() || avatarFile.length() == 0)
             return null;
 
-        Bitmap bitmap = BitmapFactory.decodeFile(avatarFile.getAbsolutePath());
-        if (bitmap != null)
-            return Image.roundCorners(bitmap, cornerRadius);
+        Bitmap bitmap = decode(avatarFile);
+        if (bitmap == null)
+            avatarFile.delete();
+        return bitmap;
+    }
 
-        avatarFile.delete();
-        return null;
+    /**
+     * Decode file to bitmap
+     *
+     * @param file
+     * @return bitmap
+     */
+    protected Bitmap decode(final File file) {
+        Options options = new Options();
+        options.inDither = false;
+        options.inPreferredConfig = ARGB_8888;
+        return BitmapFactory.decodeFile(file.getAbsolutePath(), options);
     }
 
     /**
@@ -141,11 +157,49 @@ public class AvatarHelper {
      *
      * @param url
      * @param userId
+     * @return bitmap
      */
-    protected void fetchAvatar(final String url, final Integer userId) {
+    protected Bitmap fetchAvatar(final String url, final Integer userId) {
+        File rawAvatar = new File(avatarDir, userId.toString() + "-raw");
         HttpRequest request = HttpRequest.get(url);
         if (request.ok())
-            request.receive(new File(avatarDir, userId.toString()));
+            request.receive(rawAvatar);
+
+        if (!rawAvatar.exists() || rawAvatar.length() == 0)
+            return null;
+
+        Bitmap bitmap = decode(rawAvatar);
+        if (bitmap == null) {
+            rawAvatar.delete();
+            return null;
+        }
+
+        bitmap = Image.roundCorners(bitmap, cornerRadius);
+        if (bitmap == null) {
+            rawAvatar.delete();
+            return null;
+        }
+
+        File roundedAvatar = new File(avatarDir, userId.toString());
+        FileOutputStream output = null;
+        try {
+            output = new FileOutputStream(roundedAvatar);
+            if (bitmap.compress(PNG, 100, output))
+                return bitmap;
+            else
+                return null;
+        } catch (IOException e) {
+            Log.d(TAG, "Exception writing rounded avatar", e);
+            return null;
+        } finally {
+            if (output != null)
+                try {
+                    output.close();
+                } catch (IOException e) {
+                    // Ignored
+                }
+            rawAvatar.delete();
+        }
     }
 
     /**
@@ -179,10 +233,8 @@ public class AvatarHelper {
             public Bitmap call() throws Exception {
                 synchronized (AvatarHelper.this) {
                     Bitmap image = getImage(user);
-                    if (image == null) {
-                        fetchAvatar(avatarUrl, userId);
-                        image = getImage(user);
-                    }
+                    if (image == null)
+                        image = fetchAvatar(avatarUrl, userId);
                     return image;
                 }
             }
@@ -238,10 +290,8 @@ public class AvatarHelper {
 
                 synchronized (AvatarHelper.this) {
                     Bitmap image = getImage(user);
-                    if (image == null) {
-                        fetchAvatar(avatarUrl, userId);
-                        image = getImage(user);
-                    }
+                    if (image == null)
+                        image = fetchAvatar(avatarUrl, userId);
                     return image;
                 }
             }

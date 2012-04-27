@@ -186,6 +186,9 @@ public class Image {
         canvas.drawBitmap(source, 0, 0, null);
         canvas.drawBitmap(clipped, 0, 0, paint);
 
+        source.recycle();
+        clipped.recycle();
+
         return rounded;
     }
 
