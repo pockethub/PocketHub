@@ -1,5 +1,23 @@
 package com.github.mobile.android.ui.user;
 
+import static android.graphics.Typeface.BOLD;
+import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
+import static com.github.mobile.android.util.TypefaceHelper.ICON_ADD_MEMBER;
+import static com.github.mobile.android.util.TypefaceHelper.ICON_COMMENT;
+import static com.github.mobile.android.util.TypefaceHelper.ICON_CREATE;
+import static com.github.mobile.android.util.TypefaceHelper.ICON_DELETE;
+import static com.github.mobile.android.util.TypefaceHelper.ICON_FOLLOW;
+import static com.github.mobile.android.util.TypefaceHelper.ICON_FORK;
+import static com.github.mobile.android.util.TypefaceHelper.ICON_GIST;
+import static com.github.mobile.android.util.TypefaceHelper.ICON_ISSUE_CLOSE;
+import static com.github.mobile.android.util.TypefaceHelper.ICON_ISSUE_COMMENT;
+import static com.github.mobile.android.util.TypefaceHelper.ICON_ISSUE_OPEN;
+import static com.github.mobile.android.util.TypefaceHelper.ICON_ISSUE_REOPEN;
+import static com.github.mobile.android.util.TypefaceHelper.ICON_PULL_REQUEST;
+import static com.github.mobile.android.util.TypefaceHelper.ICON_PUSH;
+import static com.github.mobile.android.util.TypefaceHelper.ICON_UPLOAD;
+import static com.github.mobile.android.util.TypefaceHelper.ICON_WATCH;
+import static com.github.mobile.android.util.TypefaceHelper.ICON_WIKI;
 import static org.eclipse.egit.github.core.event.Event.TYPE_COMMIT_COMMENT;
 import static org.eclipse.egit.github.core.event.Event.TYPE_CREATE;
 import static org.eclipse.egit.github.core.event.Event.TYPE_DELETE;
@@ -18,8 +36,9 @@ import static org.eclipse.egit.github.core.event.Event.TYPE_PULL_REQUEST_REVIEW_
 import static org.eclipse.egit.github.core.event.Event.TYPE_PUSH;
 import static org.eclipse.egit.github.core.event.Event.TYPE_TEAM_ADD;
 import static org.eclipse.egit.github.core.event.Event.TYPE_WATCH;
-import android.text.Html;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,8 +48,6 @@ import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.Time;
 import com.github.mobile.android.util.TypefaceHelper;
 import com.madgag.android.listviews.ViewHolder;
-
-import java.text.MessageFormat;
 
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Team;
@@ -115,121 +132,401 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         dateText = (TextView) view.findViewById(id.tv_event_date);
     }
 
+    private CharSequence formatCommitComment(Event event) {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        builder.append(event.getActor().getLogin());
+        builder.setSpan(new StyleSpan(BOLD), 0, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        builder.append(" commented on commit on ");
+
+        String repoName = event.getRepo().getName();
+        builder.append(repoName);
+        builder.setSpan(new StyleSpan(BOLD), builder.length(), repoName.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return builder;
+    }
+
+    private CharSequence formatDownload(Event event) {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        builder.append(event.getActor().getLogin());
+        builder.setSpan(new StyleSpan(BOLD), 0, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        builder.append(" uploaded a file to ");
+
+        String repoName = event.getRepo().getName();
+        builder.append(repoName);
+        builder.setSpan(new StyleSpan(BOLD), builder.length() - repoName.length(), builder.length(),
+                SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return builder;
+    }
+
+    private CharSequence formatCreate(Event event) {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        builder.append(event.getActor().getLogin());
+        builder.setSpan(new StyleSpan(BOLD), 0, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        builder.append(" created ");
+        CreatePayload payload = (CreatePayload) event.getPayload();
+        String refType = payload.getRefType();
+        builder.append(refType);
+        builder.append(' ');
+        String repoName = event.getRepo().getName();
+        if (!"repository".equals(refType)) {
+            builder.append(payload.getRef());
+            builder.append(" at ");
+        } else
+            repoName = repoName.substring(repoName.indexOf('/') + 1);
+
+        builder.append(repoName);
+        builder.setSpan(new StyleSpan(BOLD), builder.length() - repoName.length(), builder.length(),
+                SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return builder;
+    }
+
+    private CharSequence formatDelete(Event event) {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        builder.append(event.getActor().getLogin());
+        builder.setSpan(new StyleSpan(BOLD), 0, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        DeletePayload payload = (DeletePayload) event.getPayload();
+        builder.append(" deleted ");
+        builder.append(payload.getRefType());
+        builder.append(' ');
+        builder.append(payload.getRef());
+        builder.append(' ');
+
+        String repoName = event.getRepo().getName();
+        builder.append(repoName);
+        builder.setSpan(new StyleSpan(BOLD), builder.length() - repoName.length(), builder.length(),
+                SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return builder;
+    }
+
+    private CharSequence formatFollow(Event event) {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        builder.append(event.getActor().getLogin());
+        builder.setSpan(new StyleSpan(BOLD), 0, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        builder.append(" started following ");
+        builder.append(((FollowPayload) event.getPayload()).getTarget().getLogin());
+
+        return builder;
+    }
+
+    private CharSequence formatFork(Event event) {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        builder.append(event.getActor().getLogin());
+        builder.setSpan(new StyleSpan(BOLD), 0, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        builder.append(" forked repository ");
+
+        String repoName = event.getRepo().getName();
+        builder.append(repoName);
+        builder.setSpan(new StyleSpan(BOLD), builder.length() - repoName.length(), builder.length(),
+                SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return builder;
+    }
+
+    private CharSequence formatGist(Event event) {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        builder.append(event.getActor().getLogin());
+        builder.setSpan(new StyleSpan(BOLD), 0, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        GistPayload payload = (GistPayload) event.getPayload();
+        String action = payload.getAction();
+        if ("create".equals(action))
+            builder.append("created");
+        else if ("update".equals(action))
+            builder.append("updated");
+        else
+            builder.append(action);
+        builder.append(" Gist ");
+        builder.append(payload.getGist().getId());
+
+        return builder;
+    }
+
+    private CharSequence formatWiki(Event event) {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        builder.append(event.getActor().getLogin());
+        builder.setSpan(new StyleSpan(BOLD), 0, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        builder.append(" updated the wiki in ");
+
+        String repoName = event.getRepo().getName();
+        builder.append(repoName);
+        builder.setSpan(new StyleSpan(BOLD), builder.length() - repoName.length(), builder.length(),
+                SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return builder;
+    }
+
+    private CharSequence formatIssueComment(Event event) {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        builder.append(event.getActor().getLogin());
+        builder.setSpan(new StyleSpan(BOLD), 0, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        builder.append(" commented on ");
+        Issue issue = ((IssueCommentPayload) event.getPayload()).getIssue();
+        String issueNumber = "issue " + issue.getNumber();
+        builder.append(issueNumber);
+        builder.setSpan(new StyleSpan(BOLD), builder.length() - issueNumber.length(), builder.length(),
+                SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.append(" on ");
+
+        String repoName = event.getRepo().getName();
+        builder.append(repoName);
+        builder.setSpan(new StyleSpan(BOLD), builder.length() - repoName.length(), builder.length(),
+                SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return builder;
+    }
+
+    private CharSequence formatIssues(Event event) {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        builder.append(event.getActor().getLogin());
+        builder.setSpan(new StyleSpan(BOLD), 0, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        IssuesPayload payload = (IssuesPayload) event.getPayload();
+        String action = payload.getAction();
+        builder.append(' ');
+        builder.append(action);
+        builder.append(' ');
+        String issueNumber = "issue " + payload.getIssue().getNumber();
+        builder.append(issueNumber);
+        builder.setSpan(new StyleSpan(BOLD), builder.length() - issueNumber.length(), builder.length(),
+                SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.append(" on ");
+
+        String repoName = event.getRepo().getName();
+        builder.append(repoName);
+        builder.setSpan(new StyleSpan(BOLD), builder.length() - repoName.length(), builder.length(),
+                SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return builder;
+    }
+
+    private CharSequence formatAddMember(Event event) {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        builder.append(event.getActor().getLogin());
+        builder.setSpan(new StyleSpan(BOLD), 0, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        builder.append(" was added as a collaborator to ");
+
+        String repoName = event.getRepo().getName();
+        builder.append(repoName);
+        builder.setSpan(new StyleSpan(BOLD), builder.length() - repoName.length(), builder.length(),
+                SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return builder;
+    }
+
+    private CharSequence formatPublic(Event event) {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        builder.append(event.getActor().getLogin());
+        builder.setSpan(new StyleSpan(BOLD), 0, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        builder.append(" open sourced repository ");
+
+        String repoName = event.getRepo().getName();
+        builder.append(repoName);
+        builder.setSpan(new StyleSpan(BOLD), builder.length() - repoName.length(), builder.length(),
+                SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return builder;
+    }
+
+    private CharSequence formatWatch(Event event) {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        builder.append(event.getActor().getLogin());
+        builder.setSpan(new StyleSpan(BOLD), 0, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        builder.append(" started watching ");
+
+        String repoName = event.getRepo().getName();
+        builder.append(repoName);
+        builder.setSpan(new StyleSpan(BOLD), builder.length() - repoName.length(), builder.length(),
+                SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return builder;
+    }
+
+    private CharSequence formatReviewComment(Event event) {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        builder.append(event.getActor().getLogin());
+        builder.setSpan(new StyleSpan(BOLD), 0, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        builder.append(" commented on ");
+
+        String repoName = event.getRepo().getName();
+        builder.append(repoName);
+        builder.setSpan(new StyleSpan(BOLD), builder.length() - repoName.length(), builder.length(),
+                SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return builder;
+    }
+
+    private CharSequence formatPullRequest(Event event) {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        String actor = event.getActor().getLogin();
+        builder.append(actor);
+        builder.setSpan(new StyleSpan(BOLD), 0, actor.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        PullRequestPayload payload = (PullRequestPayload) event.getPayload();
+        String action = payload.getAction();
+        if ("synchronize".equals(action))
+            action = "updated";
+        builder.append(action);
+        builder.append(' ');
+        String issueNumber = "pull request " + payload.getPullRequest().getNumber();
+        builder.append(issueNumber);
+        builder.setSpan(new StyleSpan(BOLD), builder.length() - issueNumber.length(), builder.length(),
+                SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.append(" on ");
+
+        String repoName = event.getRepo().getName();
+        builder.append(repoName);
+        builder.setSpan(new StyleSpan(BOLD), builder.length() - repoName.length(), builder.length(),
+                SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return builder;
+    }
+
+    private CharSequence formatPush(Event event) {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        String actor = event.getActor().getLogin();
+        builder.append(actor);
+        builder.setSpan(new StyleSpan(BOLD), 0, actor.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        builder.append(" pushed to ");
+        PushPayload payload = (PushPayload) event.getPayload();
+        String ref = payload.getRef();
+        if (ref.startsWith("refs/heads/"))
+            ref = ref.substring(11);
+        builder.append(ref);
+        builder.setSpan(new StyleSpan(BOLD), builder.length() - ref.length(), builder.length(),
+                SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.append(" at ");
+
+        String repoName = event.getRepo().getName();
+        builder.append(repoName);
+        builder.setSpan(new StyleSpan(BOLD), builder.length() - repoName.length(), builder.length(),
+                SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return builder;
+    }
+
+    private CharSequence formatTeamAdd(Event event) {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        builder.append(event.getActor().getLogin());
+        builder.setSpan(new StyleSpan(BOLD), 0, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        TeamAddPayload payload = (TeamAddPayload) event.getPayload();
+        Team team = payload.getTeam();
+        String value;
+        User user = payload.getUser();
+        if (user != null)
+            value = user.getLogin();
+        else
+            value = payload.getRepo().getName();
+        builder.append(" added ");
+        builder.append(value);
+        builder.append(" to team");
+        String teamName = team != null ? team.getName() : null;
+        if (teamName != null)
+            builder.append(' ').append(teamName);
+
+        return builder;
+    }
+
     public void updateViewFor(Event event) {
         avatarHelper.bind(avatarView, event.getActor());
 
-        String relativeTime = Time.relativeTimeFor(event.getCreatedAt()).toString();
-        String actor = "<b>" + event.getActor().getLogin() + "</b>";
-        String repoName = "<b>" + event.getRepo().getName() + "</b>";
+        CharSequence text = null;
+        char icon = ' ';
+
         String type = event.getType();
-        String text = null;
-        String icon = null;
-
         if (TYPE_COMMIT_COMMENT.equals(type)) {
-            icon = "\uf243";
-            text = MessageFormat.format("{0} commented on commit on {1}", actor, repoName);
+            icon = ICON_COMMENT;
+            text = formatCommitComment(event);
         } else if (TYPE_CREATE.equals(type)) {
-            icon = "\uf203";
-            CreatePayload payload = (CreatePayload) event.getPayload();
-            String refType = payload.getRefType();
-            String created;
-            if (!"repository".equals(refType))
-                created = payload.getRef() + " at " + repoName;
-            else
-                created = repoName.substring(repoName.indexOf('/') + 1);
-
-            text = MessageFormat.format("{0} created {1} {2}", actor, refType, created);
+            icon = ICON_CREATE;
+            text = formatCreate(event);
         } else if (TYPE_DELETE.equals(type)) {
-            icon = "\uf204";
-            DeletePayload payload = (DeletePayload) event.getPayload();
-            String refType = payload.getRefType();
-            text = MessageFormat.format("{0} deleted {1} {2} at {3}", actor, refType, payload.getRef(), repoName);
+            icon = ICON_DELETE;
+            text = formatDelete(event);
         } else if (TYPE_DOWNLOAD.equals(type)) {
-            icon = "\uf212";
-            text = MessageFormat.format("{0} uploaded a file to {1}", actor, repoName);
+            icon = ICON_UPLOAD;
+            text = formatDownload(event);
         } else if (TYPE_FOLLOW.equals(type)) {
-            icon = "\uf228";
-            text = MessageFormat.format("{0} started following {1}", actor, ((FollowPayload) event.getPayload())
-                    .getTarget().getLogin());
+            icon = ICON_FOLLOW;
+            text = formatFollow(event);
         } else if (TYPE_FORK.equals(type)) {
-            icon = "\uf202";
-            text = MessageFormat.format("{0} forked repository {1}", actor, repoName);
+            icon = ICON_FORK;
+            text = formatFork(event);
         } else if (TYPE_GIST.equals(type)) {
-            icon = "\uf214";
-            GistPayload payload = (GistPayload) event.getPayload();
-            String action;
-            if ("create".equals(payload.getAction()))
-                action = "created";
-            else if ("update".equals(payload.getAction()))
-                action = "updated";
-            else
-                action = payload.getAction();
-            text = MessageFormat.format("{0} {1} Gist {2}", actor, action, payload.getGist().getId());
+            icon = ICON_GIST;
+            text = formatGist(event);
         } else if (TYPE_GOLLUM.equals(type)) {
-            icon = "\uf207";
-            text = MessageFormat.format("{0} updated the wiki in {1}", actor, repoName);
+            icon = ICON_WIKI;
+            text = formatWiki(event);
         } else if (TYPE_ISSUE_COMMENT.equals(type)) {
-            icon = "\uf241";
-            Issue issue = ((IssueCommentPayload) event.getPayload()).getIssue();
-            text = MessageFormat.format("{0} commented on <b>issue {1}</b> on {2}", actor,
-                    Integer.toString(issue.getNumber()), repoName);
+            icon = ICON_ISSUE_COMMENT;
+            text = formatIssueComment(event);
         } else if (TYPE_ISSUES.equals(type)) {
-            IssuesPayload payload = (IssuesPayload) event.getPayload();
-            String action = payload.getAction();
+            String action = ((IssuesPayload) event.getPayload()).getAction();
             if ("opened".equals(action))
-                icon = "\uf238";
+                icon = ICON_ISSUE_OPEN;
             else if ("reopened".equals(action))
-                icon = "\uf239";
+                icon = ICON_ISSUE_REOPEN;
             else if ("closed".equals(action))
-                icon = "\uf240";
-            text = MessageFormat.format("{0} {1} <b>issue {2}</b> on {3}", actor, action,
-                    Integer.toString(payload.getIssue().getNumber()), repoName);
+                icon = ICON_ISSUE_CLOSE;
+            text = formatIssues(event);
         } else if (TYPE_MEMBER.equals(type)) {
-            icon = "\uf226";
-            text = MessageFormat.format("{0} was added as a collaborator to {1}", actor, repoName);
+            icon = ICON_ADD_MEMBER;
+            text = formatAddMember(event);
         } else if (TYPE_PUBLIC.equals(type))
-            text = MessageFormat.format("{0} open sourced repository {1}", actor, repoName);
+            text = formatPublic(event);
         else if (TYPE_PULL_REQUEST.equals(type)) {
-            icon = "\uf234";
-            PullRequestPayload payload = (PullRequestPayload) event.getPayload();
-            String action = payload.getAction();
-            if ("synchronize".equals(action))
-                action = "updated";
-            text = MessageFormat.format("{0} {1} <b>pull request {2}</b> on {3}", actor, action,
-                    Integer.toString(payload.getPullRequest().getNumber()), repoName);
+            icon = ICON_PULL_REQUEST;
+            text = formatPullRequest(event);
         } else if (TYPE_PULL_REQUEST_REVIEW_COMMENT.equals(type)) {
-            icon = "\uf243";
-            text = MessageFormat.format("{0} commented on {1}", actor, repoName);
+            icon = ICON_COMMENT;
+            text = formatReviewComment(event);
         } else if (TYPE_PUSH.equals(type)) {
-            icon = "\uf205";
-            PushPayload payload = (PushPayload) event.getPayload();
-            String ref = payload.getRef();
-            if (ref.startsWith("refs/heads/"))
-                ref = ref.substring(11);
-            text = MessageFormat.format("{0} pushed to <b>{1}</b> at {2}", actor, ref, repoName);
+            icon = ICON_PUSH;
+            text = formatPush(event);
         } else if (TYPE_TEAM_ADD.equals(type)) {
-            icon = "\uf226";
-            TeamAddPayload payload = (TeamAddPayload) event.getPayload();
-            Team team = payload.getTeam();
-            String teamName;
-            if (team != null)
-                teamName = " " + team.getName();
-            else
-                teamName = "";
-            String value;
-            User user = payload.getUser();
-            if (user != null)
-                value = user.getLogin();
-            else
-                value = payload.getRepo().getName();
-            text = MessageFormat.format("{0} added {1} to team{2}", actor, value, teamName);
+            icon = ICON_ADD_MEMBER;
+            text = formatTeamAdd(event);
         } else if (TYPE_WATCH.equals(type)) {
-            icon = "\uf229";
-            text = MessageFormat.format("{0} started watching {1}", actor, repoName);
+            icon = ICON_WATCH;
+            text = formatWatch(event);
         }
 
-        iconText.setText(icon);
-        eventText.setText(Html.fromHtml(text));
-        dateText.setText(relativeTime);
+        iconText.setText(icon != ' ' ? Character.toString(icon) : null);
+        eventText.setText(text);
+        dateText.setText(Time.relativeTimeFor(event.getCreatedAt()).toString());
     }
 }

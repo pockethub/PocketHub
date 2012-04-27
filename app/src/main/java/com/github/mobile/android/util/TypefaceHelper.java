@@ -13,6 +13,86 @@ import java.util.Arrays;
 public class TypefaceHelper {
 
     /**
+     * Fork icon
+     */
+    public static final char ICON_FORK = '\uf202';
+
+    /**
+     * Create icon
+     */
+    public static final char ICON_CREATE = '\uf203';
+
+    /**
+     * Delete icon
+     */
+    public static final char ICON_DELETE = '\uf204';
+
+    /**
+     * Push icon
+     */
+    public static final char ICON_PUSH = '\uf205';
+
+    /**
+     * Wiki icon
+     */
+    public static final char ICON_WIKI = '\uf207';
+
+    /**
+     * Upload icon
+     */
+    public static final char ICON_UPLOAD = '\uf212';
+
+    /**
+     * Gist icon
+     */
+    public static final char ICON_GIST = '\uf214';
+
+    /**
+     * Add member icon
+     */
+    public static final char ICON_ADD_MEMBER = '\uf226';
+
+    /**
+     * Follow icon
+     */
+    public static final char ICON_FOLLOW = '\uf228';
+
+    /**
+     * Watch icon
+     */
+    public static final char ICON_WATCH = '\uf229';
+
+    /**
+     * Pull request icon
+     */
+    public static final char ICON_PULL_REQUEST = '\uf234';
+
+    /**
+     * Issue open icon
+     */
+    public static final char ICON_ISSUE_OPEN = '\uf238';
+
+    /**
+     * Issue reopen icon
+     */
+    public static final char ICON_ISSUE_REOPEN = '\uf239';
+
+    /**
+     * Issue close icon
+     */
+    public static final char ICON_ISSUE_CLOSE = '\uf240';
+
+    /**
+     * Issue comment icon
+     */
+    public static final char ICON_ISSUE_COMMENT = '\uf241';
+
+    /**
+     * Comment icon
+     */
+    public static final char ICON_COMMENT = '\uf243';
+
+    /**
      * Find the maximum number of digits in the given numbers
      *
      * @param numbers
