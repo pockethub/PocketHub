@@ -40,11 +40,9 @@ public class AvatarHelper {
 
     private static final float CORNER_RADIUS_IN_DIP = 6;
 
-    private static final int LOGO_WIDTH = 28;
-
     private static final int CACHE_SIZE = 75;
 
-    private static abstract class FetchAvatarTask extends RoboAsyncTask<Bitmap> {
+    private static abstract class FetchAvatarTask extends RoboAsyncTask<BitmapDrawable> {
 
         private static final Executor EXECUTOR = Executors.newFixedThreadPool(2);
 
@@ -60,14 +58,12 @@ public class AvatarHelper {
 
     private final float cornerRadius;
 
-    private final int logoWidth;
-
-    private final Map<Integer, Bitmap> loaded = new LinkedHashMap<Integer, Bitmap>(CACHE_SIZE, 1.0F) {
+    private final Map<Integer, BitmapDrawable> loaded = new LinkedHashMap<Integer, BitmapDrawable>(CACHE_SIZE, 1.0F) {
 
         private static final long serialVersionUID = -4191624209581976720L;
 
         @Override
-        protected boolean removeEldestEntry(Map.Entry<Integer, Bitmap> eldest) {
+        protected boolean removeEldestEntry(Map.Entry<Integer, BitmapDrawable> eldest) {
             return size() >= CACHE_SIZE;
         }
     };
@@ -95,7 +91,6 @@ public class AvatarHelper {
 
         float density = context.getResources().getDisplayMetrics().density;
         cornerRadius = CORNER_RADIUS_IN_DIP * density;
-        logoWidth = (int) Math.ceil(LOGO_WIDTH * density);
     }
 
     /**
@@ -106,7 +101,7 @@ public class AvatarHelper {
      * @param user
      * @return this helper
      */
-    protected AvatarHelper setImage(final Bitmap image, final ImageView view, final User user) {
+    protected AvatarHelper setImage(final BitmapDrawable image, final ImageView view, final User user) {
         if (!Integer.valueOf(user.getId()).equals(view.getTag(id.iv_gravatar)))
             return this;
 
@@ -114,7 +109,7 @@ public class AvatarHelper {
 
         if (image != null) {
             loaded.put(user.getId(), image);
-            view.setImageBitmap(image);
+            view.setImageDrawable(image);
             view.setVisibility(VISIBLE);
         }
 
@@ -127,16 +122,19 @@ public class AvatarHelper {
      * @param user
      * @return image
      */
-    protected Bitmap getImage(final User user) {
+    protected BitmapDrawable getImage(final User user) {
         File avatarFile = new File(avatarDir, Integer.toString(user.getId()));
 
         if (!avatarFile.exists() || avatarFile.length() == 0)
             return null;
 
         Bitmap bitmap = decode(avatarFile);
-        if (bitmap == null)
+        if (bitmap != null)
+            return new BitmapDrawable(context.getResources(), bitmap);
+        else {
             avatarFile.delete();
-        return bitmap;
+            return null;
+        }
     }
 
     /**
@@ -159,7 +157,7 @@ public class AvatarHelper {
      * @param userId
      * @return bitmap
      */
-    protected Bitmap fetchAvatar(final String url, final Integer userId) {
+    protected BitmapDrawable fetchAvatar(final String url, final Integer userId) {
         File rawAvatar = new File(avatarDir, userId.toString() + "-raw");
         HttpRequest request = HttpRequest.get(url);
         if (request.ok())
@@ -185,7 +183,7 @@ public class AvatarHelper {
         try {
             output = new FileOutputStream(roundedAvatar);
             if (bitmap.compress(PNG, 100, output))
-                return bitmap;
+                return new BitmapDrawable(context.getResources(), bitmap);
             else
                 return null;
         } catch (IOException e) {
@@ -219,20 +217,18 @@ public class AvatarHelper {
 
         final Integer userId = Integer.valueOf(user.getId());
 
-        Bitmap loadedImage = loaded.get(userId);
+        BitmapDrawable loadedImage = loaded.get(userId);
         if (loadedImage != null) {
-            BitmapDrawable drawable = new BitmapDrawable(context.getResources(), loadedImage);
-            drawable.setBounds(0, 0, logoWidth, logoWidth);
-            actionBar.setLogo(drawable);
+            actionBar.setLogo(loadedImage);
             return this;
         }
 
         new FetchAvatarTask(context) {
 
             @Override
-            public Bitmap call() throws Exception {
+            public BitmapDrawable call() throws Exception {
                 synchronized (AvatarHelper.this) {
-                    Bitmap image = getImage(user);
+                    BitmapDrawable image = getImage(user);
                     if (image == null)
                         image = fetchAvatar(avatarUrl, userId);
                     return image;
@@ -240,9 +236,9 @@ public class AvatarHelper {
             }
 
             @Override
-            protected void onSuccess(Bitmap image) throws Exception {
+            protected void onSuccess(BitmapDrawable image) throws Exception {
                 if (image != null)
-                    actionBar.setLogo(new BitmapDrawable(context.getResources(), image));
+                    actionBar.setLogo(image);
             }
         }.execute();
 
@@ -270,9 +266,9 @@ public class AvatarHelper {
 
         final Integer userId = Integer.valueOf(user.getId());
 
-        Bitmap loadedImage = loaded.get(userId);
+        BitmapDrawable loadedImage = loaded.get(userId);
         if (loadedImage != null) {
-            view.setImageBitmap(loadedImage);
+            view.setImageDrawable(loadedImage);
             view.setVisibility(VISIBLE);
             view.setTag(id.iv_gravatar, null);
             return this;
@@ -284,12 +280,12 @@ public class AvatarHelper {
         new FetchAvatarTask(context) {
 
             @Override
-            public Bitmap call() throws Exception {
+            public BitmapDrawable call() throws Exception {
                 if (!userId.equals(view.getTag(id.iv_gravatar)))
                     return null;
 
                 synchronized (AvatarHelper.this) {
-                    Bitmap image = getImage(user);
+                    BitmapDrawable image = getImage(user);
                     if (image == null)
                         image = fetchAvatar(avatarUrl, userId);
                     return image;
@@ -297,7 +293,7 @@ public class AvatarHelper {
             }
 
             @Override
-            protected void onSuccess(Bitmap image) throws Exception {
+            protected void onSuccess(BitmapDrawable image) throws Exception {
                 setImage(image, view, user);
             }
 
