@@ -200,7 +200,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         builder.append(payload.getRefType());
         builder.append(' ');
         builder.append(payload.getRef());
-        builder.append(' ');
+        builder.append(" at ");
 
         String repoName = event.getRepo().getName();
         builder.append(repoName);
