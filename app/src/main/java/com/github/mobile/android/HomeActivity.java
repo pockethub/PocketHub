@@ -5,7 +5,6 @@ import static com.github.mobile.android.HomeDropdownListAdapter.ACTION_DASHBOARD
 import static com.github.mobile.android.HomeDropdownListAdapter.ACTION_FILTERS;
 import static com.github.mobile.android.HomeDropdownListAdapter.ACTION_GISTS;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_USER;
-import static com.github.mobile.android.util.SharedPreferencesUtil.savePrefsFrom;
 import static com.google.common.collect.Lists.newArrayList;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,6 +32,7 @@ import com.github.mobile.android.ui.user.UserPagerAdapter;
 import com.github.mobile.android.util.AccountHelper;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
+import com.github.mobile.android.util.SharedPreferencesUtil;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -129,7 +129,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
     private void setOrg(User org) {
         Log.d(TAG, "setOrg : " + org.getLogin());
 
-        savePrefsFrom(sharedPreferences.edit().putInt(PREF_ORG_ID, org.getId()));
+        SharedPreferencesUtil.save(sharedPreferences.edit().putInt(PREF_ORG_ID, org.getId()));
 
         // Don't notify listeners or change pager if org hasn't changed
         if (this.org != null && this.org.getId() == org.getId())

@@ -2,8 +2,12 @@ package com.github.mobile.android.util;
 
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.GINGERBREAD;
+import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+/**
+ * Utility class for working with {@link SharedPreferences}
+ */
 public class SharedPreferencesUtil {
 
     private static boolean isEditorApplyAvailable() {
@@ -11,16 +15,14 @@ public class SharedPreferencesUtil {
     }
 
     /**
-     * Uses the non-blocking apply() method on post-Froyo devices, otherwise
-     * use the older commit() method which blocks while doing IO.
+     * Save preferences in given editor
      *
      * @param editor
      */
-    public static void savePrefsFrom(Editor editor) {
-        if (isEditorApplyAvailable()) {
+    public static void save(Editor editor) {
+        if (isEditorApplyAvailable())
             editor.apply();
-        } else {
+        else
             editor.commit();
-        }
     }
 }
