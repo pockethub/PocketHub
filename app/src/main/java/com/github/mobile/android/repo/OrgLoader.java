@@ -1,15 +1,15 @@
 package com.github.mobile.android.repo;
 
 import static android.util.Log.WARN;
-import static com.github.mobile.android.R.string;
-import static com.github.mobile.android.util.ToastUtil.toastOnUiThread;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.sort;
 import android.app.Activity;
 import android.util.Log;
 
+import com.github.mobile.android.R.string;
 import com.github.mobile.android.async.AuthenticatedUserLoader;
 import com.github.mobile.android.persistence.AccountDataManager;
+import com.github.mobile.android.util.ToastUtil;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -28,7 +28,7 @@ public class OrgLoader extends AuthenticatedUserLoader<List<User>> {
 
     @Inject
     public OrgLoader(Activity activity, AccountDataManager accountDataManager,
-        Provider<UserComparator> userComparatorProvider) {
+            Provider<UserComparator> userComparatorProvider) {
         super(activity);
         this.accountDataManager = accountDataManager;
         this.userComparatorProvider = userComparatorProvider;
@@ -44,7 +44,7 @@ public class OrgLoader extends AuthenticatedUserLoader<List<User>> {
             if (Log.isLoggable(TAG, WARN))
                 Log.w(TAG, "Exception loading organizations", e);
 
-            toastOnUiThread(activity, string.error_orgs_load);
+            ToastUtil.show(activity, string.error_orgs_load);
 
             return emptyList();
         }

@@ -1,13 +1,12 @@
 package com.github.mobile.android.gist;
 
 import static android.app.Activity.RESULT_OK;
-import static android.widget.Toast.LENGTH_LONG;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.widget.Toast;
 
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.ui.ProgressDialogTask;
+import com.github.mobile.android.util.ToastUtil;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Gist;
@@ -71,6 +70,6 @@ public class DeleteGistTask extends ProgressDialogTask<Gist> {
     protected void onException(Exception e) throws RuntimeException {
         super.onException(e);
 
-        Toast.makeText(getContext(), e.getMessage(), LENGTH_LONG).show();
+        ToastUtil.show((Activity) getContext(), e.getMessage());
     }
 }

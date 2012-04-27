@@ -11,7 +11,6 @@
 package com.github.mobile.android.ui;
 
 import android.app.Activity;
-import android.app.Application;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -25,7 +24,7 @@ import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.RefreshAnimation;
 import com.github.mobile.android.ThrowableLoader;
-import com.github.mobile.android.util.ErrorHelper;
+import com.github.mobile.android.util.ToastUtil;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockListFragment;
 
 import java.util.Collections;
@@ -158,24 +157,13 @@ public abstract class ItemListFragment<E> extends RoboSherlockListFragment imple
     }
 
     /**
-     * Show exception using {@link ErrorHelper#show(android.content.Context, Exception, int)}
-     * <p>
-     * This method ensures the {@link Toast} is displayed on the UI thread and so it may be called from any thread
+     * Show exception in a {@link Toast}
      *
      * @param e
      * @param defaultMessage
      */
     protected void showError(final Exception e, final int defaultMessage) {
-        final Activity activity = getActivity();
-        if (activity == null)
-            return;
-        final Application application = activity.getApplication();
-        activity.runOnUiThread(new Runnable() {
-
-            public void run() {
-                ErrorHelper.show(application, e, defaultMessage);
-            }
-        });
+        ToastUtil.show(getActivity(), e, defaultMessage);
     }
 
     /**

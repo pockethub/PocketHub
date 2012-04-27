@@ -3,12 +3,12 @@ package com.github.mobile.android.gist;
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static android.widget.Toast.LENGTH_LONG;
 import static com.github.mobile.android.RequestCodes.COMMENT_CREATE;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENTS;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_COMMENT_BODY;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_GIST_ID;
 import static com.google.common.collect.Lists.newArrayList;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,7 +22,6 @@ import android.widget.HeaderViewListAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -38,8 +37,8 @@ import com.github.mobile.android.comment.CreateCommentActivity;
 import com.github.mobile.android.core.gist.FullGist;
 import com.github.mobile.android.util.AccountHelper;
 import com.github.mobile.android.util.AvatarHelper;
-import com.github.mobile.android.util.ErrorHelper;
 import com.github.mobile.android.util.HtmlFormatter;
+import com.github.mobile.android.util.ToastUtil;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
@@ -215,7 +214,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
     }
 
     private void starGist() {
-        Toast.makeText(getActivity().getApplicationContext(), getString(string.starring_gist), LENGTH_LONG).show();
+        ToastUtil.show(getActivity(), string.starring_gist);
         new AuthenticatedUserTask<Gist>(getActivity()) {
 
             public Gist run() throws Exception {
@@ -226,13 +225,13 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
             protected void onException(Exception e) throws RuntimeException {
                 Log.d(TAG, "Exception starring gist", e);
-                Toast.makeText(getContext().getApplicationContext(), e.getMessage(), LENGTH_LONG).show();
+                ToastUtil.show((Activity) getContext(), e.getMessage());
             }
         }.execute();
     }
 
     private void unstarGist() {
-        Toast.makeText(getActivity().getApplicationContext(), getString(string.unstarring_gist), LENGTH_LONG).show();
+        ToastUtil.show(getActivity(), string.unstarring_gist);
         new AuthenticatedUserTask<Gist>(getActivity()) {
 
             public Gist run() throws Exception {
@@ -243,7 +242,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
             protected void onException(Exception e) throws RuntimeException {
                 Log.d(TAG, "Exception unstarring gist", e);
-                Toast.makeText(getContext().getApplicationContext(), e.getMessage(), LENGTH_LONG).show();
+                ToastUtil.show((Activity) getContext(), e.getMessage());
             }
         }.execute();
     }
@@ -281,7 +280,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
                 Log.d(TAG, "Exception creating comment on gist", e);
 
-                Toast.makeText(getContext().getApplicationContext(), e.getMessage(), LENGTH_LONG).show();
+                ToastUtil.show((Activity) getContext(), e.getMessage());
             }
         }.execute();
 
@@ -343,7 +342,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
             protected void onException(Exception e) throws RuntimeException {
                 Log.d(TAG, "Exception refreshing gist", e);
 
-                ErrorHelper.show(getContext().getApplicationContext(), e, string.error_gist_load);
+                ToastUtil.show(getActivity(), e, string.error_gist_load);
             }
 
             protected void onSuccess(FullGist fullGist) throws Exception {

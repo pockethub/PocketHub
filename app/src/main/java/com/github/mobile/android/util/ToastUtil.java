@@ -19,29 +19,31 @@ package com.github.mobile.android.util;
 import static android.widget.Toast.LENGTH_LONG;
 import android.app.Activity;
 import android.app.Application;
-import android.util.Log;
+import android.text.TextUtils;
 import android.widget.Toast;
+
+import org.eclipse.egit.github.core.client.RequestException;
 
 /**
  * Utilities for displaying toast notifications
  */
 public class ToastUtil {
 
-    private static final String TAG = "ToastUtil";
-
     /**
-     * Shows a toast to the user - can be called from any thread, toast will be displayed using the UI-thread.
+     * Show the given message in a {@link Toast}
      * <p>
-     * The important thing about the delayed aspect of the UI-thread code used by this method is that it may actually
-     * run <em>after</em> the associated activity has been destroyed - so it can not keep a reference to the activity.
-     * Calling methods on a destroyed activity may throw exceptions, and keeping a reference to it is technically a
-     * short-term memory-leak: http://developer.android.com/resources/articles/avoiding-memory-leaks.html
+     * This method may be called from any thread
      *
      * @param activity
      * @param message
      */
-    public static void toastOnUiThread(Activity activity, final String message) {
-        Log.d(TAG, "Will display toast : " + message);
+    public static void show(Activity activity, final String message) {
+        if (activity == null)
+            return;
+
+        if (TextUtils.isEmpty(message))
+            return;
+
         final Application application = activity.getApplication();
         activity.runOnUiThread(new Runnable() {
             public void run() {
@@ -51,17 +53,42 @@ public class ToastUtil {
     }
 
     /**
-     * Shows a toast to the user - can be called from any thread, toast will be displayed using the UI-thread.
+     * Show the message with the given resource id in a {@link Toast}
      * <p>
-     * The important thing about the delayed aspect of the UI-thread code used by this method is that it may actually
-     * run <em>after</em> the associated activity has been destroyed - so it can not keep a reference to the activity.
-     * Calling methods on a destroyed activity may throw exceptions, and keeping a reference to it is technically a
-     * short-term memory-leak: http://developer.android.com/resources/articles/avoiding-memory-leaks.html
+     * This method may be called from any thread
      *
      * @param activity
      * @param resId
      */
-    public static void toastOnUiThread(Activity activity, int resId) {
-        toastOnUiThread(activity, activity.getString(resId));
+    public static void show(final Activity activity, final int resId) {
+        if (activity == null)
+            return;
+
+        show(activity, activity.getString(resId));
+    }
+
+    /**
+     * Show {@link Toast} for exception
+     * <p>
+     * This given default message will be used if an message can not be derived from the given {@link Exception}
+     * <p>
+     * This method may be called from any thread
+     *
+     * @param activity
+     * @param e
+     * @param defaultMessage
+     */
+    public static void show(final Activity activity, final Exception e, final int defaultMessage) {
+        if (activity == null)
+            return;
+
+        String message = null;
+        if (e instanceof RequestException)
+            message = ((RequestException) e).formatErrors();
+
+        if (TextUtils.isEmpty(message))
+            message = activity.getString(defaultMessage);
+
+        show(activity, message);
     }
 }

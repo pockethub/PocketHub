@@ -1,7 +1,6 @@
 package com.github.mobile.android.ui;
 
 import android.app.Activity;
-import android.app.Application;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -14,7 +13,7 @@ import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.RefreshAnimation;
 import com.github.mobile.android.ThrowableLoader;
-import com.github.mobile.android.util.ErrorHelper;
+import com.github.mobile.android.util.ToastUtil;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockListFragment;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 
@@ -75,9 +74,9 @@ public abstract class ListLoadingFragment<E> extends RoboSherlockListFragment im
     }
 
     /**
-     * If the user explicitly hits the reload key, they don't want to see cached data. Calling this method means
-     * the loader will be passed a 'force-reload' parameter to indicate cached data shouldn't be used and a fresh
-     * request should be made.
+     * If the user explicitly hits the reload key, they don't want to see cached data. Calling this method means the
+     * loader will be passed a 'force-reload' parameter to indicate cached data shouldn't be used and a fresh request
+     * should be made.
      */
     protected void forceReload() {
         Bundle bundle = new Bundle();
@@ -86,7 +85,8 @@ public abstract class ListLoadingFragment<E> extends RoboSherlockListFragment im
     }
 
     /**
-     * @param args the args bundle passed to the loader by the LoaderManager
+     * @param args
+     *            the args bundle passed to the loader by the LoaderManager
      * @return true if the bundle indicates the user requested a forced reload of data
      */
     protected static boolean isForcedReload(Bundle args) {
@@ -145,24 +145,13 @@ public abstract class ListLoadingFragment<E> extends RoboSherlockListFragment im
     }
 
     /**
-     * Show exception using {@link ErrorHelper#show(android.content.Context, Exception, int)}
-     * <p>
-     * This method ensures the {@link Toast} is displayed on the UI thread and so it may be called from any thread
+     * Show exception in a {@link Toast}
      *
      * @param e
      * @param defaultMessage
      */
     protected void showError(final Exception e, final int defaultMessage) {
-        final Activity activity = getActivity();
-        if (activity == null)
-            return;
-        final Application application = activity.getApplication();
-        activity.runOnUiThread(new Runnable() {
-
-            public void run() {
-                ErrorHelper.show(application, e, defaultMessage);
-            }
-        });
+        ToastUtil.show(getActivity(), e, defaultMessage);
     }
 
     /**

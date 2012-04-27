@@ -1,13 +1,12 @@
 package com.github.mobile.android.issue;
 
-import static android.widget.Toast.LENGTH_LONG;
 import android.app.ProgressDialog;
-import android.widget.Toast;
 
 import com.github.mobile.android.DialogFragmentActivity;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.SingleChoiceDialogFragment;
 import com.github.mobile.android.async.AuthenticatedUserTask;
+import com.github.mobile.android.util.ToastUtil;
 
 import java.util.Comparator;
 import java.util.List;
@@ -78,8 +77,8 @@ public class AssigneeDialog {
             }
 
             protected void onException(Exception e) throws RuntimeException {
-                Toast.makeText(activity, e.getMessage(), LENGTH_LONG).show();
                 loader.dismiss();
+                ToastUtil.show(activity, e.getMessage());
             }
         }.execute();
     }

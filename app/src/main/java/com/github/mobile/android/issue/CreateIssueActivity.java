@@ -1,6 +1,5 @@
 package com.github.mobile.android.issue;
 
-import static android.widget.Toast.LENGTH_LONG;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -10,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
@@ -27,6 +25,7 @@ import com.github.mobile.android.async.AuthenticatedUserTask;
 import com.github.mobile.android.ui.issue.ViewIssuesActivity;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.GitHubIntents.Builder;
+import com.github.mobile.android.util.ToastUtil;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -248,7 +247,7 @@ public class CreateIssueActivity extends DialogFragmentActivity {
             protected void onException(Exception e) throws RuntimeException {
                 progress.cancel();
                 Log.e(TAG, e.getMessage(), e);
-                Toast.makeText(CreateIssueActivity.this, e.getMessage(), LENGTH_LONG).show();
+                ToastUtil.show(CreateIssueActivity.this, e.getMessage());
             }
         }.execute();
     }

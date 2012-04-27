@@ -3,7 +3,6 @@ package com.github.mobile.android.issue;
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static android.widget.Toast.LENGTH_LONG;
 import static com.github.mobile.android.RequestCodes.ISSUE_CREATE;
 import static com.github.mobile.android.RequestCodes.ISSUE_FILTER_EDIT;
 import static com.github.mobile.android.RequestCodes.ISSUE_VIEW;
@@ -18,7 +17,6 @@ import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.R.menu;
 import com.actionbarsherlock.view.Menu;
@@ -34,6 +32,7 @@ import com.github.mobile.android.ui.PagedListFragment;
 import com.github.mobile.android.ui.issue.ViewIssuesActivity;
 import com.github.mobile.android.util.AvatarHelper;
 import com.github.mobile.android.util.ListViewHelper;
+import com.github.mobile.android.util.ToastUtil;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
 import com.madgag.android.listviews.ViewInflator;
@@ -153,8 +152,7 @@ public class IssuesFragment extends PagedListFragment<Issue> {
             cache.addIssueFilter(filter, new RequestFuture<IssueFilter>() {
 
                 public void success(IssueFilter response) {
-                    Toast.makeText(getActivity().getApplicationContext(), "Issue filter saved to bookmarks",
-                            LENGTH_LONG).show();
+                    ToastUtil.show(getActivity(), string.message_filter_saved);
                 }
             });
             return true;

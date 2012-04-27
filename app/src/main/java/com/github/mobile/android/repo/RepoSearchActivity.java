@@ -4,12 +4,10 @@ import static android.app.SearchManager.QUERY;
 import static android.content.Intent.ACTION_SEARCH;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
-import static android.widget.Toast.LENGTH_LONG;
 import static com.github.mobile.android.repo.RepoSearchRecentSuggestionsProvider.clearRepoQueryHistory;
 import static com.github.mobile.android.repo.RepoSearchRecentSuggestionsProvider.saveRecentRepoQuery;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
@@ -19,6 +17,7 @@ import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
+import com.github.mobile.android.util.ToastUtil;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
 import java.text.MessageFormat;
@@ -44,7 +43,7 @@ public class RepoSearchActivity extends RoboSherlockFragmentActivity {
             return true;
         case id.clear_search_history:
             clearRepoQueryHistory(this);
-            Toast.makeText(this, string.search_history_cleared, LENGTH_LONG).show();
+            ToastUtil.show(this, string.search_history_cleared);
             return true;
         case android.R.id.home:
             Intent intent = new Intent(this, HomeActivity.class);

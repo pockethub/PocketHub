@@ -3,7 +3,6 @@ package com.github.mobile.android.ui.issue;
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static android.widget.Toast.LENGTH_LONG;
 import static com.github.mobile.android.RequestCodes.COMMENT_CREATE;
 import static com.github.mobile.android.RequestCodes.ISSUE_ASSIGNEE_UPDATE;
 import static com.github.mobile.android.RequestCodes.ISSUE_CLOSE;
@@ -18,6 +17,7 @@ import static com.github.mobile.android.util.GitHubIntents.EXTRA_ISSUE_NUMBER;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY_NAME;
 import static com.github.mobile.android.util.GitHubIntents.EXTRA_REPOSITORY_OWNER;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -30,7 +30,6 @@ import android.widget.HeaderViewListAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -52,8 +51,8 @@ import com.github.mobile.android.issue.IssueHeaderViewHolder;
 import com.github.mobile.android.issue.IssueStore;
 import com.github.mobile.android.ui.DialogResultListener;
 import com.github.mobile.android.util.AvatarHelper;
-import com.github.mobile.android.util.ErrorHelper;
 import com.github.mobile.android.util.HtmlFormatter;
+import com.github.mobile.android.util.ToastUtil;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
@@ -278,7 +277,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             protected void onException(Exception e) throws RuntimeException {
                 Log.d(TAG, "Issue failed to load", e);
 
-                ErrorHelper.show(getContext().getApplicationContext(), e, string.error_issue_load);
+                ToastUtil.show(getActivity(), e, string.error_issue_load);
             }
 
             protected void onSuccess(FullIssue fullIssue) throws Exception {
@@ -359,7 +358,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             protected void onException(Exception e) throws RuntimeException {
                 Log.d(TAG, "Exception creating comment", e);
 
-                Toast.makeText(getContext().getApplicationContext(), e.getMessage(), LENGTH_LONG).show();
+                ToastUtil.show((Activity) getContext(), e.getMessage());
             }
         }.create(comment);
     }

@@ -1,7 +1,7 @@
 package com.github.mobile.android.gist;
 
 import static android.content.Intent.EXTRA_TEXT;
-import static android.widget.Toast.LENGTH_LONG;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -19,6 +18,7 @@ import com.github.mobile.android.R.menu;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.TextWatcherAdapter;
 import com.github.mobile.android.async.AuthenticatedUserTask;
+import com.github.mobile.android.util.ToastUtil;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 
@@ -136,7 +136,7 @@ public class ShareGistActivity extends RoboSherlockFragmentActivity {
             protected void onException(Exception e) throws RuntimeException {
                 progress.cancel();
                 Log.d(TAG, e.getMessage(), e);
-                Toast.makeText(getApplication(), e.getMessage(), LENGTH_LONG).show();
+                ToastUtil.show((Activity) getContext(), e.getMessage());
             }
         }.execute();
     }

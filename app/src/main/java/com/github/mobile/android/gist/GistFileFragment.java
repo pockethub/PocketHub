@@ -12,8 +12,8 @@ import com.github.mobile.android.R.id;
 import com.github.mobile.android.R.layout;
 import com.github.mobile.android.R.string;
 import com.github.mobile.android.async.AuthenticatedUserTask;
-import com.github.mobile.android.util.ErrorHelper;
 import com.github.mobile.android.util.SourceEditor;
+import com.github.mobile.android.util.ToastUtil;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.google.inject.Inject;
 
@@ -68,7 +68,7 @@ public class GistFileFragment extends RoboSherlockFragment {
             }
 
             protected void onException(Exception e) throws RuntimeException {
-                ErrorHelper.show(getActivity().getApplicationContext(), e, string.error_gist_file_load);
+                ToastUtil.show(getActivity(), e, string.error_gist_file_load);
             }
 
             protected void onSuccess(GistFile loadedFile) throws Exception {
