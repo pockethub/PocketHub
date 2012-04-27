@@ -1,7 +1,6 @@
 package com.github.mobile.android.ui.issue;
 
 import static android.graphics.Paint.STRIKE_THRU_TEXT_FLAG;
-import static android.text.Html.fromHtml;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import android.view.LayoutInflater;
@@ -91,8 +90,8 @@ public class DashboardIssueListAdapter extends ItemListAdapter<RepositoryIssue, 
         view.pullRequestIcon.setVisibility(issue.getPullRequest().getHtmlUrl() == null ? GONE : VISIBLE);
 
         view.title.setText(issue.getTitle());
-        view.creation.setText(fromHtml("<b>" + issue.getUser().getLogin() + "</b> "
-                + Time.relativeTimeFor(issue.getCreatedAt())));
+        view.user.setText(issue.getUser().getLogin());
+        view.creation.setText(Time.relativeTimeFor(issue.getCreatedAt()));
         view.comments.setText(Integer.toString(issue.getComments()));
     }
 

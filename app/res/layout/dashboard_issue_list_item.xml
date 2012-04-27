@@ -58,6 +58,14 @@
             android:layout_height="24dp" />
 
         <TextView
+            android:id="@+id/tv_issue_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:textColor="@color/listing"
+            android:textStyle="bold" />
+
+        <TextView
             android:id="@+id/tv_issue_creation"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
