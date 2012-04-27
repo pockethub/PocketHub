@@ -1,4 +1,4 @@
-package com.github.mobile.android.core.gist;
+package com.github.mobile.core.gist;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;

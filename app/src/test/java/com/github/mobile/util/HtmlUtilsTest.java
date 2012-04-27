@@ -1,4 +1,4 @@
-package com.github.mobile.android.util;
+package com.github.mobile.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

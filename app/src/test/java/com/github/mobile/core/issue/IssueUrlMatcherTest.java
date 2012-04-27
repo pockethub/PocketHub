@@ -1,4 +1,4 @@
-package com.github.mobile.android.core.issue;
+package com.github.mobile.core.issue;
 
 import static org.junit.Assert.assertEquals;
 
