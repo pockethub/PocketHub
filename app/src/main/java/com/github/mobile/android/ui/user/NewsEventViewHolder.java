@@ -142,7 +142,8 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
 
         String repoName = event.getRepo().getName();
         builder.append(repoName);
-        builder.setSpan(new StyleSpan(BOLD), builder.length(), repoName.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.setSpan(new StyleSpan(BOLD), builder.length() - repoName.length(), builder.length(),
+                SPAN_EXCLUSIVE_EXCLUSIVE);
 
         return builder;
     }
