@@ -54,7 +54,7 @@ public class AccountHelper {
             Log.d(TAG, "Getting account");
 
         if (activity == null)
-            throw new RuntimeException("Can't create new GitHub account - no activity available");
+            throw new IllegalArgumentException("Activity cannot be null");
 
         Account[] accounts;
         try {
