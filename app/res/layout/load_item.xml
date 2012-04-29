@@ -24,8 +24,9 @@
 
     <ProgressBar
         android:id="@+id/pb_loading"
+        style="@android:style/Widget.Holo.Light.ProgressBar.Small"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:indeterminate="true"
         android:indeterminateOnly="true" />
 
@@ -33,7 +34,7 @@
         android:id="@+id/tv_loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
+        android:paddingLeft="10dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/item_text_color" />
 
