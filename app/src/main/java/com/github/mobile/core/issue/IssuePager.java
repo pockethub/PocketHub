@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.issue;
+package com.github.mobile.core.issue;
 
-import com.github.mobile.ResourcePager;
-import com.github.mobile.core.issue.IssueStore;
+import com.github.mobile.core.ResourcePager;
 
 import org.eclipse.egit.github.core.Issue;
 

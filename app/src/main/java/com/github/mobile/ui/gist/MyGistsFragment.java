@@ -20,8 +20,9 @@ import static com.github.mobile.RequestCodes.GIST_CREATE;
 import static com.github.mobile.RequestCodes.GIST_VIEW;
 import android.content.Intent;
 
-import com.github.mobile.ResourcePager;
 import com.github.mobile.authenticator.GitHubAccount;
+import com.github.mobile.core.ResourcePager;
+import com.github.mobile.core.gist.GistPager;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemView;
 import com.google.inject.Inject;
@@ -52,7 +53,7 @@ public class MyGistsFragment extends GistsFragment {
 
     @Override
     protected ResourcePager<Gist> createPager() {
-        return new GistPager() {
+        return new GistPager(store) {
 
             @Override
             public PageIterator<Gist> createIterator(int page, int size) {

@@ -21,8 +21,8 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 
-import com.github.mobile.ResourcePager;
 import com.github.mobile.ThrowableLoader;
+import com.github.mobile.core.ResourcePager;
 
 import java.io.IOException;
 import java.util.List;

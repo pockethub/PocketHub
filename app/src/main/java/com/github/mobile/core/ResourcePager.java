@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile;
-
-import static com.google.common.collect.Lists.newArrayList;
+package com.github.mobile.core;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -91,7 +90,7 @@ public abstract class ResourcePager<E> {
      * @return resources
      */
     public List<E> getResources() {
-        return newArrayList(resources.values());
+        return new ArrayList<E>(resources.values());
     }
 
     /**

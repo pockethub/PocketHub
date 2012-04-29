@@ -18,8 +18,8 @@ package com.github.mobile.ui.repo;
 import static com.github.mobile.util.GitHubIntents.EXTRA_REPOSITORY;
 import android.os.Bundle;
 
-import com.github.mobile.ResourcePager;
 import com.github.mobile.R.string;
+import com.github.mobile.core.ResourcePager;
 import com.github.mobile.ui.NewsFragment;
 import com.github.mobile.ui.user.EventPager;
 import com.github.mobile.util.ListViewUtils;

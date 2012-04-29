@@ -19,8 +19,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-import com.github.mobile.ResourcePager;
 import com.github.mobile.R.string;
+import com.github.mobile.core.ResourcePager;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemView;
