@@ -13,46 +13,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.issue;
+package com.github.mobile.ui.issue;
 
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mobile.R.id;
-import com.github.mobile.util.AvatarUtils;
-import com.madgag.android.listviews.ViewHolder;
+import com.github.mobile.ui.ItemView;
 
 /**
- * View holder for an {@link IssueFilter}
+ * View of an issue filter
  */
-public class IssueFilterViewHolder implements ViewHolder<IssueFilter> {
+public class FilterItemView extends ItemView {
 
-    private final AvatarUtils avatarHelper;
+    /**
+     * Avatar image view
+     */
+    public final ImageView avatarView;
 
-    private final ImageView avatarView;
+    /**
+     * Repository text view
+     */
+    public final TextView repoText;
 
-    private final TextView repoText;
-
-    private final TextView filterText;
+    /**
+     * Filter label text view
+     */
+    public final TextView filterText;
 
     /**
      * Create holder for view
      *
      * @param view
-     * @param avatarHelper
      */
-    public IssueFilterViewHolder(final View view, final AvatarUtils avatarHelper) {
-        this.avatarHelper = avatarHelper;
+    public FilterItemView(final View view) {
+        super(view);
+
         avatarView = (ImageView) view.findViewById(id.iv_gravatar);
         repoText = (TextView) view.findViewById(id.tv_repo_name);
         filterText = (TextView) view.findViewById(id.tv_filter_summary);
-    }
-
-    @Override
-    public void updateViewFor(final IssueFilter item) {
-        avatarHelper.bind(avatarView, item.getRepository().getOwner());
-        repoText.setText(item.getRepository().generateId());
-        filterText.setText(item.toDisplay());
     }
 }

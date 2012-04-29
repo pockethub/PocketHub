@@ -36,6 +36,7 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
+import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.util.GitHubIntents.Builder;
 import com.google.common.base.Joiner;
 import com.google.inject.Inject;

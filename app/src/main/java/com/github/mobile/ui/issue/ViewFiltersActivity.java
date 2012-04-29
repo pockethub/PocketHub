@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.issue;
+package com.github.mobile.ui.issue;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -28,18 +28,19 @@ import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.ConfirmDialogFragment;
 import com.github.mobile.DialogFragmentActivity;
 import com.github.mobile.HomeActivity;
-import com.github.mobile.RequestFuture;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
+import com.github.mobile.RequestFuture;
+import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.util.AccountUtils;
 import com.github.mobile.util.GitHubIntents.Builder;
 import com.google.inject.Inject;
 
 /**
- * Activity to browse a list of bookmarked {@link IssueFilter} items
+ * Activity to display a list of saved {@link IssueFilter} objects
  */
-public class FilterBrowseActivity extends DialogFragmentActivity implements OnItemLongClickListener {
+public class ViewFiltersActivity extends DialogFragmentActivity implements OnItemLongClickListener {
 
     /**
      * Create intent to browse issue filters
@@ -73,6 +74,7 @@ public class FilterBrowseActivity extends DialogFragmentActivity implements OnIt
         filterFragment.getListView().setOnItemLongClickListener(this);
     }
 
+    @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
         if (requestCode == REQUEST_DELETE && resultCode == RESULT_OK) {
             IssueFilter filter = (IssueFilter) arguments.getSerializable(ARG_FILTER);
@@ -87,6 +89,7 @@ public class FilterBrowseActivity extends DialogFragmentActivity implements OnIt
         super.onDialogResult(requestCode, resultCode, arguments);
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case android.R.id.home:
@@ -99,6 +102,7 @@ public class FilterBrowseActivity extends DialogFragmentActivity implements OnIt
         }
     }
 
+    @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         IssueFilter filter = (IssueFilter) parent.getItemAtPosition(position);
         Bundle args = new Bundle();

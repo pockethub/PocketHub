@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.issue;
+package com.github.mobile.core.issue;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static org.eclipse.egit.github.core.service.IssueService.DIRECTION_DESCENDING;
 import static org.eclipse.egit.github.core.service.IssueService.FIELD_DIRECTION;
 import static org.eclipse.egit.github.core.service.IssueService.FIELD_SORT;
@@ -28,6 +27,7 @@ import static org.eclipse.egit.github.core.service.IssueService.STATE_CLOSED;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -194,7 +194,7 @@ public class IssueFilter implements Serializable, Cloneable {
      * @return display
      */
     public CharSequence toDisplay() {
-        List<String> segments = newArrayList();
+        List<String> segments = new ArrayList<String>();
         if (open)
             segments.add("Open issues");
         else

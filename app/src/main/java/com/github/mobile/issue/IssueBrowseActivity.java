@@ -25,6 +25,8 @@ import android.os.Bundle;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R.layout;
+import com.github.mobile.core.issue.IssueFilter;
+import com.github.mobile.ui.issue.ViewFiltersActivity;
 import com.github.mobile.util.AvatarUtils;
 import com.github.mobile.util.GitHubIntents.Builder;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
@@ -88,7 +90,7 @@ public class IssueBrowseActivity extends RoboSherlockFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case android.R.id.home:
-            Intent intent = FilterBrowseActivity.createIntent();
+            Intent intent = ViewFiltersActivity.createIntent();
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             return true;

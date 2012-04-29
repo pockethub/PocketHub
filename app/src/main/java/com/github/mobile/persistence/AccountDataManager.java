@@ -26,7 +26,7 @@ import com.github.mobile.RequestFuture;
 import com.github.mobile.RequestReader;
 import com.github.mobile.RequestWriter;
 import com.github.mobile.async.AuthenticatedUserTask;
-import com.github.mobile.issue.IssueFilter;
+import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.persistence.AllReposForUserOrOrg.Factory;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;

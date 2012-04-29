@@ -29,6 +29,7 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
+import com.github.mobile.ui.issue.ViewFiltersActivity;
 import com.github.mobile.util.AccountUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.viewpagerindicator.TitlePageIndicator;
@@ -70,7 +71,7 @@ public class IssueDashboardActivity extends RoboSherlockFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case id.bookmarks:
-            startActivity(FilterBrowseActivity.createIntent());
+            startActivity(ViewFiltersActivity.createIntent());
             return true;
         case android.R.id.home:
             Intent intent = new Intent(this, HomeActivity.class);

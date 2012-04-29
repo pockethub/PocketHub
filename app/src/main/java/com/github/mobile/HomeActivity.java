@@ -38,16 +38,16 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.gist.GistsActivity;
-import com.github.mobile.issue.FilterBrowseActivity;
 import com.github.mobile.issue.IssueDashboardActivity;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.repo.OrgLoader;
 import com.github.mobile.repo.UserComparator;
+import com.github.mobile.ui.issue.ViewFiltersActivity;
 import com.github.mobile.ui.user.UserPagerAdapter;
 import com.github.mobile.util.AccountUtils;
 import com.github.mobile.util.AvatarUtils;
-import com.github.mobile.util.PreferenceUtils;
 import com.github.mobile.util.GitHubIntents.Builder;
+import com.github.mobile.util.PreferenceUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -202,7 +202,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
                 startActivity(new Intent(this, IssueDashboardActivity.class));
                 break;
             case ACTION_FILTERS:
-                startActivity(FilterBrowseActivity.createIntent());
+                startActivity(ViewFiltersActivity.createIntent());
                 break;
             }
             int orgSelected = homeAdapter.getSelected();

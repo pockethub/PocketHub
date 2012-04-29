@@ -78,7 +78,7 @@
 
         <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".gist.GistsActivity"/>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".issue.FilterBrowseActivity">
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.ViewFiltersActivity">
              <intent-filter>
                 <action android:name="com.github.mobile.android.repo.issues.filters.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
