@@ -28,6 +28,8 @@ import roboguice.util.RoboAsyncTask;
 
 /**
  * Enforces that user is logged in before work on the background thread commences.
+ *
+ * @param <ResultT>
  */
 public abstract class AuthenticatedUserTask<ResultT> extends RoboAsyncTask<ResultT> {
 
@@ -40,11 +42,22 @@ public abstract class AuthenticatedUserTask<ResultT> extends RoboAsyncTask<Resul
     @Inject
     private Activity activity;
 
-    protected AuthenticatedUserTask(Context context) {
+    /**
+     * Create asynchronous task that ensures a valid account is present when executed
+     *
+     * @param context
+     */
+    protected AuthenticatedUserTask(final Context context) {
         super(context);
     }
 
-    public AuthenticatedUserTask(Context context, Executor executor) {
+    /**
+     * Create asynchronous task that ensures a valid account is present when executed
+     *
+     * @param context
+     * @param executor
+     */
+    public AuthenticatedUserTask(final Context context, final Executor executor) {
         super(context, executor);
     }
 
@@ -63,5 +76,11 @@ public abstract class AuthenticatedUserTask<ResultT> extends RoboAsyncTask<Resul
         }
     }
 
+    /**
+     * Execute task with an authenticated account
+     *
+     * @return result
+     * @throws Exception
+     */
     protected abstract ResultT run() throws Exception;
 }

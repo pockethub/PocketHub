@@ -27,6 +27,8 @@ import roboguice.inject.ContextScope;
 
 /**
  * Enforces that user is logged in before work on the background thread commences.
+ *
+ * @param <D>
  */
 public abstract class AuthenticatedUserLoader<D> extends AsyncLoader<D> {
 
@@ -36,14 +38,24 @@ public abstract class AuthenticatedUserLoader<D> extends AsyncLoader<D> {
     @Inject
     private GitHubAccountScope gitHubAccountScope;
 
+    /**
+     * Activity using this loader
+     */
     @Inject
     protected Activity activity;
 
-    public AuthenticatedUserLoader(Context context) {
+    /**
+     * Create loader for context
+     *
+     * @param context
+     */
+    public AuthenticatedUserLoader(final Context context) {
         super(context);
+
         RoboGuice.injectMembers(context, this);
     }
 
+    @Override
     public final D loadInBackground() {
         gitHubAccountScope.enterWith(activity);
         try {
@@ -58,5 +70,10 @@ public abstract class AuthenticatedUserLoader<D> extends AsyncLoader<D> {
         }
     }
 
+    /**
+     * Load data
+     *
+     * @return data
+     */
     public abstract D load();
 }
