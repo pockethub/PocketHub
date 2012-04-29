@@ -39,15 +39,6 @@ import roboguice.inject.InjectView;
  */
 public class EditIssueActivity extends RoboSherlockFragmentActivity {
 
-    @InjectView(id.et_issue_title)
-    private EditText titleText;
-
-    @InjectView(id.et_issue_body)
-    private EditText bodyText;
-
-    @InjectExtra(EXTRA_ISSUE)
-    private Issue issue;
-
     /**
      * Create intent to edit an issue
      *
@@ -58,9 +49,19 @@ public class EditIssueActivity extends RoboSherlockFragmentActivity {
         return new Builder("repo.issues.edit.VIEW").issue(issue).toIntent();
     }
 
+    @InjectView(id.et_issue_title)
+    private EditText titleText;
+
+    @InjectView(id.et_issue_body)
+    private EditText bodyText;
+
+    @InjectExtra(EXTRA_ISSUE)
+    private Issue issue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(layout.issue_edit);
         setTitle(getString(string.issue_title) + issue.getNumber());
 
@@ -68,11 +69,13 @@ public class EditIssueActivity extends RoboSherlockFragmentActivity {
         bodyText.setText(issue.getBody());
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu options) {
         getSupportMenuInflater().inflate(menu.issue_edit, options);
         return true;
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case id.issue_edit:
