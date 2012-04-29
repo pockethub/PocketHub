@@ -51,11 +51,6 @@ import roboguice.inject.InjectView;
  */
 public class ShareGistActivity extends RoboSherlockFragmentActivity {
 
-    /**
-     * Gist successfully created
-     */
-    public static final int RESULT_CREATED = RESULT_FIRST_USER;
-
     private static final String TAG = "SGA";
 
     @InjectView(id.gistDescriptionText)
@@ -144,7 +139,7 @@ public class ShareGistActivity extends RoboSherlockFragmentActivity {
             protected void onSuccess(Gist gist) throws Exception {
                 progress.cancel();
                 startActivity(ViewGistsActivity.createIntent(gist));
-                setResult(RESULT_CREATED);
+                setResult(RESULT_OK);
                 finish();
             }
 
