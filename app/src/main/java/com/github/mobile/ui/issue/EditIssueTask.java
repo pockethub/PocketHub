@@ -18,7 +18,7 @@ package com.github.mobile.ui.issue;
 import android.app.ProgressDialog;
 
 import com.github.mobile.DialogFragmentActivity;
-import com.github.mobile.issue.IssueStore;
+import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.google.inject.Inject;
 

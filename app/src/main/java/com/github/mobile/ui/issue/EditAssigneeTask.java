@@ -19,8 +19,8 @@ import static com.github.mobile.RequestCodes.ISSUE_ASSIGNEE_UPDATE;
 import android.app.ProgressDialog;
 
 import com.github.mobile.DialogFragmentActivity;
+import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.issue.AssigneeDialog;
-import com.github.mobile.issue.IssueStore;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.google.inject.Inject;
 

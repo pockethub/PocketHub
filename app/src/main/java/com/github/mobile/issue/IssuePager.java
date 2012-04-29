@@ -16,6 +16,7 @@
 package com.github.mobile.issue;
 
 import com.github.mobile.ResourcePager;
+import com.github.mobile.core.issue.IssueStore;
 
 import org.eclipse.egit.github.core.Issue;
 

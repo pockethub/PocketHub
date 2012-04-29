@@ -21,6 +21,7 @@ import android.app.ProgressDialog;
 
 import com.github.mobile.R.string;
 import com.github.mobile.async.AuthenticatedUserTask;
+import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 

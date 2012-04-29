@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.issue;
+package com.github.mobile.core.issue;
 
-import com.github.mobile.ItemStore;
+import com.github.mobile.core.ItemStore;
 import com.github.mobile.util.HtmlUtils;
 
 import java.io.IOException;

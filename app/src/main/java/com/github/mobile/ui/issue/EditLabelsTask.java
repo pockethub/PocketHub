@@ -19,7 +19,7 @@ import static com.github.mobile.RequestCodes.ISSUE_LABELS_UPDATE;
 import android.app.ProgressDialog;
 
 import com.github.mobile.DialogFragmentActivity;
-import com.github.mobile.issue.IssueStore;
+import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.issue.LabelsDialog;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.google.inject.Inject;

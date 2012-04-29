@@ -30,7 +30,7 @@ import android.widget.ListView;
 
 import com.github.mobile.ResourcePager;
 import com.github.mobile.R.string;
-import com.github.mobile.gist.GistStore;
+import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.gist.ViewGistsActivity;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemView;

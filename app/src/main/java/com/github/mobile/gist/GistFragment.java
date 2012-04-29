@@ -50,6 +50,7 @@ import com.github.mobile.async.AuthenticatedUserTask;
 import com.github.mobile.comment.CommentViewHolder;
 import com.github.mobile.comment.CreateCommentActivity;
 import com.github.mobile.core.gist.FullGist;
+import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.util.AccountUtils;
 import com.github.mobile.util.AvatarUtils;
 import com.github.mobile.util.HtmlUtils;

@@ -28,6 +28,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
+import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.util.AvatarUtils;
 import com.github.mobile.util.GitHubIntents.Builder;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;

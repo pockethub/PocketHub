@@ -34,6 +34,7 @@ import com.github.mobile.R.drawable;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
+import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.ui.UrlLauncher;
 import com.github.mobile.util.AvatarUtils;
 import com.github.mobile.util.GitHubIntents.Builder;
