@@ -26,6 +26,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -55,6 +56,7 @@ import com.github.mobile.util.AccountUtils;
 import com.github.mobile.util.AvatarUtils;
 import com.github.mobile.util.HtmlUtils;
 import com.github.mobile.util.ToastUtils;
+import com.github.mobile.util.TypefaceUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ReflectiveHolderFactory;
@@ -307,9 +309,12 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
             list.removeHeaderView(header);
         fileHeaders.clear();
         LayoutInflater inflater = getActivity().getLayoutInflater();
+        Typeface octocons = TypefaceUtils.getOctocons(getActivity());
         for (GistFile file : gist.getFiles().values()) {
             View fileView = inflater.inflate(layout.gist_view_file_item, null);
-            new GistFileViewHolder(fileView).updateViewFor(file);
+            TextView nameText = (TextView) fileView.findViewById(id.tv_file);
+            nameText.setText(file.getFilename());
+            ((TextView) fileView.findViewById(id.tv_file_icon)).setTypeface(octocons);
             list.addHeaderView(fileView, file, true);
             fileHeaders.add(fileView);
         }
