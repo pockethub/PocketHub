@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.issue;
+package com.github.mobile.ui.issue;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_CLOSED;
