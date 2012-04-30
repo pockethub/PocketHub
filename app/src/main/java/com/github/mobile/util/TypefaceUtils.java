@@ -28,6 +28,16 @@ import java.util.Arrays;
 public class TypefaceUtils {
 
     /**
+     * Private repository icon
+     */
+    public static final char ICON_PRIVATE = '\uf200';
+
+    /**
+     * Public repository icon
+     */
+    public static final char ICON_PUBLIC = '\uf201';
+
+    /**
      * Fork icon
      */
     public static final char ICON_FORK = '\uf202';

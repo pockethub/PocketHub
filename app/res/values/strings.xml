@@ -286,4 +286,6 @@
      <string name="loading_gists">Loading Gists</string>
 
      <string name="message_filter_saved">Issue filter saved to bookmarks</string>
+
+     <string name="recent">Recent</string>
 </resources>

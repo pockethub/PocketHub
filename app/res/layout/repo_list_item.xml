@@ -37,9 +37,10 @@
         android:layout_gravity="center_vertical"
         android:paddingRight="10dp"
         android:singleLine="true"
-        android:text="Recent"
+        android:text="@string/recent"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/listing" />
+        android:textColor="@color/listing"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_repo_name"

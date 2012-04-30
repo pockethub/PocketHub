@@ -15,7 +15,6 @@
  */
 package com.github.mobile.repo;
 
-import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
@@ -25,17 +24,16 @@ import android.widget.ListView;
 
 import com.github.mobile.HomeActivity;
 import com.github.mobile.HomeActivity.OrgSelectionListener;
-import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.async.AuthenticatedUserLoader;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.repo.RecentReposHelper.RecentRepos;
-import com.github.mobile.ui.ListLoadingFragment;
+import com.github.mobile.ui.ItemListAdapter;
+import com.github.mobile.ui.ItemListFragment;
+import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
 import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
-import com.madgag.android.listviews.ReflectiveHolderFactory;
-import com.madgag.android.listviews.ViewHoldingListAdapter;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -48,9 +46,9 @@ import org.eclipse.egit.github.core.User;
 /**
  * Fragment to display a list of {@link Repository} instances
  */
-public class RepoListFragment extends ListLoadingFragment<Repository> implements OrgSelectionListener {
+public class RepoListFragment extends ItemListFragment<Repository> implements OrgSelectionListener {
 
-    private static final String TAG = "RLF";
+    private static final String TAG = "RepoListFragment";
 
     private static final String RECENT_REPOS = "recentRepos";
 
@@ -77,7 +75,7 @@ public class RepoListFragment extends ListLoadingFragment<Repository> implements
         this.org.set(org);
         // Only hard refresh if view already created and org is changing
         if (getView() != null && previousOrgId != org.getId())
-            hideOldContentAndRefresh();
+            refreshWithProgress();
     }
 
     @Override
@@ -142,9 +140,8 @@ public class RepoListFragment extends ListLoadingFragment<Repository> implements
     }
 
     @Override
-    protected ViewHoldingListAdapter<Repository> adapterFor(List<Repository> items) {
-        return new ViewHoldingListAdapter<Repository>(items, viewInflatorFor(getActivity(), layout.repo_list_item),
-            ReflectiveHolderFactory.reflectiveFactoryFor(RepoViewHolder.class, org, recentReposRef));
+    protected ItemListAdapter<Repository, ? extends ItemView> createAdapter(List<Repository> items) {
+        return new RepositoryListAdapter(getActivity().getLayoutInflater(),
+                items.toArray(new Repository[items.size()]), org, recentReposRef);
     }
-
 }

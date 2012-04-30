@@ -21,17 +21,15 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.github.mobile.IRepositorySearch;
-import com.github.mobile.ThrowableLoader;
-import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
+import com.github.mobile.ThrowableLoader;
 import com.github.mobile.async.AuthenticatedUserTask;
-import com.github.mobile.ui.ListLoadingFragment;
+import com.github.mobile.ui.ItemListAdapter;
+import com.github.mobile.ui.ItemListFragment;
+import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
 import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
-import com.madgag.android.listviews.ReflectiveHolderFactory;
-import com.madgag.android.listviews.ViewHoldingListAdapter;
-import com.madgag.android.listviews.ViewInflator;
 
 import java.util.List;
 
@@ -42,7 +40,7 @@ import org.eclipse.egit.github.core.service.RepositoryService;
 /**
  * Fragment to display a list of {@link Repository} instances
  */
-public class SearchRepoListFragment extends ListLoadingFragment<SearchRepository> {
+public class SearchRepoListFragment extends ItemListFragment<SearchRepository> {
 
     @Inject
     private IRepositorySearch search;
@@ -85,7 +83,7 @@ public class SearchRepoListFragment extends ListLoadingFragment<SearchRepository
 
     @Override
     public Loader<List<SearchRepository>> onCreateLoader(int id, Bundle args) {
-        return new ThrowableLoader<List<SearchRepository>>(getActivity(), listItems) {
+        return new ThrowableLoader<List<SearchRepository>>(getActivity(), items) {
 
             public List<SearchRepository> loadData() throws Exception {
                 return search.search(query);
@@ -106,8 +104,9 @@ public class SearchRepoListFragment extends ListLoadingFragment<SearchRepository
     }
 
     @Override
-    protected ViewHoldingListAdapter<SearchRepository> adapterFor(List<SearchRepository> items) {
-        return new ViewHoldingListAdapter<SearchRepository>(items, ViewInflator.viewInflatorFor(getActivity(),
-                layout.repo_search_list_item), ReflectiveHolderFactory.reflectiveFactoryFor(SearchRepoViewHolder.class));
+    protected ItemListAdapter<SearchRepository, ? extends ItemView> createAdapter(List<SearchRepository> items) {
+        return new SearchRepositoryListAdapter(getActivity().getLayoutInflater(),
+                items.toArray(new SearchRepository[items.size()]));
+
     }
 }
