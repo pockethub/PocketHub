@@ -83,11 +83,6 @@
             <version>2.0-alpha-1</version>
         </dependency>
         <dependency>
-            <groupId>com.madgag</groupId>
-            <artifactId>android-viewholder-listviews</artifactId>
-            <version>0.7</version>
-        </dependency>
-        <dependency>
             <groupId>com.github.kevinsawicki</groupId>
             <artifactId>http-request</artifactId>
             <version>1.0</version>
