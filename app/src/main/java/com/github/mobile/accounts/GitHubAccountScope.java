@@ -13,16 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.guice;
+package com.github.mobile.accounts;
 
-import static com.github.mobile.util.AccountUtils.getAccount;
+import static com.github.mobile.accounts.AccountUtils.getAccount;
 import static com.google.common.base.Preconditions.checkState;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.util.Log;
 
-import com.github.mobile.core.GitHubAccount;
 import com.google.common.base.Function;
 import com.google.common.collect.MapMaker;
 import com.google.inject.AbstractModule;

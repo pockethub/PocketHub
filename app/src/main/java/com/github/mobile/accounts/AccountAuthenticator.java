@@ -13,43 +13,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.authenticator;
+package com.github.mobile.accounts;
 
-import static com.github.mobile.authenticator.Constants.AUTHTOKEN_TYPE;
+import static android.accounts.AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE;
+import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
+import static android.accounts.AccountManager.KEY_INTENT;
+import static com.github.mobile.accounts.AuthenticatorActivity.PARAM_AUTHTOKEN_TYPE;
+import static com.github.mobile.accounts.Constants.AUTH_TOKEN_TYPE;
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
-import android.accounts.AccountManager;
 import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-class GitHubAccountAuthenticator extends AbstractAccountAuthenticator {
-    private Context mContext;
+class AccountAuthenticator extends AbstractAccountAuthenticator {
 
-    public GitHubAccountAuthenticator(Context context) {
+    private Context context;
+
+    public AccountAuthenticator(final Context context) {
         super(context);
-        mContext = context;
+
+        this.context = context;
     }
 
-    /*
+    /**
      * The user has requested to add a new account to the system. We return an intent that will launch our login screen
-     * if the user has not logged in yet, otherwise our activity will just pass the user's credentials on to the
-     * account
+     * if the user has not logged in yet, otherwise our activity will just pass the user's credentials on to the account
      * manager.
      */
     @Override
-    public Bundle addAccount(AccountAuthenticatorResponse response, String accountType, String authTokenType,
-                             String[] requiredFeatures, Bundle options) throws NetworkErrorException {
-        final Intent intent = new Intent(mContext, GitHubAuthenticatorActivity.class);
-        intent.putExtra(GitHubAuthenticatorActivity.PARAM_AUTHTOKEN_TYPE, authTokenType);
-        intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
+    public Bundle addAccount(final AccountAuthenticatorResponse response, final String accountType,
+            final String authTokenType, String[] requiredFeatures, Bundle options) throws NetworkErrorException {
+        final Intent intent = new Intent(context, AuthenticatorActivity.class);
+        intent.putExtra(PARAM_AUTHTOKEN_TYPE, authTokenType);
+        intent.putExtra(KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
         final Bundle bundle = new Bundle();
-        bundle.putParcelable(AccountManager.KEY_INTENT, intent);
+        bundle.putParcelable(KEY_INTENT, intent);
         return bundle;
-        // Log.d(AccountAuthenticatorService.TAG, "addAccount " + accountType +
-        // " authTokenType=" + authTokenType);
     }
 
     @Override
@@ -64,15 +66,14 @@ class GitHubAccountAuthenticator extends AbstractAccountAuthenticator {
 
     @Override
     public Bundle getAuthToken(AccountAuthenticatorResponse response, Account account, String authTokenType,
-                               Bundle options) throws NetworkErrorException {
+            Bundle options) throws NetworkErrorException {
         return null;
     }
 
     @Override
     public String getAuthTokenLabel(String authTokenType) {
-        if (authTokenType.equals(AUTHTOKEN_TYPE)) {
-            return "FooBooHurrah";
-        }
+        if (authTokenType.equals(AUTH_TOKEN_TYPE))
+            return authTokenType;
         return null;
     }
 
@@ -80,13 +81,13 @@ class GitHubAccountAuthenticator extends AbstractAccountAuthenticator {
     public Bundle hasFeatures(AccountAuthenticatorResponse response, Account account, String[] features)
             throws NetworkErrorException {
         final Bundle result = new Bundle();
-        result.putBoolean(AccountManager.KEY_BOOLEAN_RESULT, false);
+        result.putBoolean(KEY_BOOLEAN_RESULT, false);
         return result;
     }
 
     @Override
     public Bundle updateCredentials(AccountAuthenticatorResponse response, Account account, String authTokenType,
-                                    Bundle options) {
+            Bundle options) {
         return null;
     }
 }

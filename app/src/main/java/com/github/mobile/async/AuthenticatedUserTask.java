@@ -18,7 +18,7 @@ package com.github.mobile.async;
 import android.app.Activity;
 import android.content.Context;
 
-import com.github.mobile.guice.GitHubAccountScope;
+import com.github.mobile.accounts.GitHubAccountScope;
 import com.google.inject.Inject;
 
 import java.util.concurrent.Executor;

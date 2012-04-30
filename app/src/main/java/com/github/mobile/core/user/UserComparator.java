@@ -15,7 +15,7 @@
  */
 package com.github.mobile.core.user;
 
-import com.github.mobile.core.GitHubAccount;
+import com.github.mobile.accounts.GitHubAccount;
 import com.google.inject.Inject;
 
 import java.util.Comparator;

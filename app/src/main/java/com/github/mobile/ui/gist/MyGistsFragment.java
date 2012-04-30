@@ -20,7 +20,7 @@ import static com.github.mobile.RequestCodes.GIST_CREATE;
 import static com.github.mobile.RequestCodes.GIST_VIEW;
 import android.content.Intent;
 
-import com.github.mobile.core.GitHubAccount;
+import com.github.mobile.accounts.GitHubAccount;
 import com.github.mobile.core.ResourcePager;
 import com.github.mobile.core.gist.GistPager;
 import com.github.mobile.ui.ItemListAdapter;

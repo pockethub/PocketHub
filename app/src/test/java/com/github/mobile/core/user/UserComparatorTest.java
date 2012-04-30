@@ -18,7 +18,7 @@ package com.github.mobile.core.user;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.github.mobile.core.GitHubAccount;
+import com.github.mobile.accounts.GitHubAccount;
 
 import org.eclipse.egit.github.core.User;
 import org.junit.Test;

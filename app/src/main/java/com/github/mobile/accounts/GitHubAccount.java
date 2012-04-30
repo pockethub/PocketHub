@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.core;
+package com.github.mobile.accounts;
 
 /**
  * GitHub account model

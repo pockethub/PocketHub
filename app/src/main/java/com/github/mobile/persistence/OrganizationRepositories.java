@@ -20,7 +20,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 
-import com.github.mobile.core.GitHubAccount;
+import com.github.mobile.accounts.GitHubAccount;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;

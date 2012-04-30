@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.util;
+package com.github.mobile.accounts;
 
 import static android.util.Log.DEBUG;
 import android.util.Log;
 
-import com.github.mobile.core.GitHubAccount;
 import com.google.inject.Provider;
 
 import java.net.HttpURLConnection;

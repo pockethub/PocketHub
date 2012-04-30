@@ -23,7 +23,7 @@ import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
 
-import com.github.mobile.guice.GitHubAccountScope;
+import com.github.mobile.accounts.GitHubAccountScope;
 import com.google.inject.Inject;
 
 import roboguice.inject.ContextScope;

@@ -18,13 +18,13 @@ package com.github.mobile;
 import static org.eclipse.egit.github.core.client.IGitHubConstants.HOST_API_V2;
 import android.content.Context;
 
-import com.github.mobile.core.GitHubAccount;
+import com.github.mobile.accounts.AccountGitHubClient;
+import com.github.mobile.accounts.GitHubAccount;
+import com.github.mobile.accounts.GitHubAccountScope;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.core.issue.IssueStore;
-import com.github.mobile.guice.GitHubAccountScope;
 import com.github.mobile.persistence.OrganizationRepositories;
 import com.github.mobile.sync.SyncCampaign;
-import com.github.mobile.util.AccountGitHubClient;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 import com.google.inject.Provides;

@@ -13,24 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.authenticator;
+package com.github.mobile.accounts;
 
+import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
+import static android.accounts.AccountManager.KEY_ACCOUNT_TYPE;
+import static android.accounts.AccountManager.KEY_AUTHTOKEN;
 import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
-import static android.content.ContentResolver.addPeriodicSync;
-import static android.content.ContentResolver.setIsSyncable;
-import static android.content.ContentResolver.setSyncAutomatically;
-import static android.text.TextUtils.isEmpty;
-import static com.github.mobile.authenticator.Constants.GITHUB_ACCOUNT_TYPE;
-import static com.github.mobile.authenticator.Constants.GITHUB_PROVIDER_AUTHORITY;
+import static com.github.mobile.accounts.Constants.AUTH_TOKEN_TYPE;
+import static com.github.mobile.accounts.Constants.GITHUB_ACCOUNT_TYPE;
+import static com.github.mobile.accounts.Constants.GITHUB_PROVIDER_AUTHORITY;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -38,9 +39,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.github.mobile.TextWatcherAdapter;
-import com.github.mobile.R;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
+import com.github.mobile.TextWatcherAdapter;
 import com.github.mobile.ui.validation.LeavingBlankTextFieldWarner;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockAccountAuthenticatorActivity;
 import com.google.inject.Inject;
@@ -53,73 +55,85 @@ import org.eclipse.egit.github.core.service.UserService;
 import roboguice.inject.InjectView;
 import roboguice.util.RoboAsyncTask;
 
-public class GitHubAuthenticatorActivity extends RoboSherlockAccountAuthenticatorActivity {
-    public static final String PARAM_CONFIRMCREDENTIALS = "confirmCredentials";
-    public static final String PARAM_PASSWORD = "password";
-    public static final String PARAM_USERNAME = "username";
+/**
+ * Activity to login
+ */
+public class AuthenticatorActivity extends RoboSherlockAccountAuthenticatorActivity {
+
+    /**
+     * Auth token type parameter
+     */
     public static final String PARAM_AUTHTOKEN_TYPE = "authtokenType";
+
+    private static final String PARAM_CONFIRMCREDENTIALS = "confirmCredentials";
+
+    private static final String PARAM_USERNAME = "username";
 
     private static final String TAG = "GHAuthenticatorActivity";
 
-    private AccountManager mAccountManager;
-    @InjectView(R.id.message)
-    TextView mMessage;
-    @InjectView(R.id.username_edit)
-    EditText usernameEdit;
-    @InjectView(R.id.password_edit)
-    EditText passwordEdit;
-    @InjectView(R.id.ok_button)
-    Button okButton;
+    private static void configureSyncFor(Account account) {
+        Log.d(TAG, "Trying to configure account for sync...");
+        ContentResolver.setIsSyncable(account, GITHUB_PROVIDER_AUTHORITY, 1);
+        ContentResolver.setSyncAutomatically(account, GITHUB_PROVIDER_AUTHORITY, true);
+        ContentResolver.addPeriodicSync(account, GITHUB_PROVIDER_AUTHORITY, new Bundle(), (long) (15 * 60));
+    }
+
+    private AccountManager accountManager;
+
+    @InjectView(id.message)
+    private TextView message;
+
+    @InjectView(id.username_edit)
+    private EditText usernameEdit;
+
+    @InjectView(id.password_edit)
+    private EditText passwordEdit;
+
+    @InjectView(id.ok_button)
+    private Button okButton;
 
     @Inject
-    LeavingBlankTextFieldWarner leavingBlankTextFieldWarner;
+    private LeavingBlankTextFieldWarner leavingBlankTextFieldWarner;
+
     private TextWatcher watcher = validationTextWatcher();
 
     private RoboAsyncTask<User> authenticationTask;
-    private String mAuthtoken;
-    private String mAuthtokenType;
+
+    private String authToken;
+
+    private String authTokenType;
 
     /**
      * If set we are just checking that the user knows their credentials; this doesn't cause the user's password to be
      * changed on the device.
      */
-    private Boolean mConfirmCredentials = false;
+    private Boolean confirmCredentials = false;
 
-    /**
-     * for posting authentication attempts back to UI thread
-     */
-    private final Handler mHandler = new Handler();
-
-    private String mPassword;
+    private String password;
 
     /**
      * Was the original caller asking for an entirely new account?
      */
-    protected boolean mRequestNewAccount = false;
+    protected boolean requestNewAccount = false;
 
-    private String mUsername;
+    private String username;
 
     @Override
     public void onCreate(Bundle icicle) {
-        Log.i(TAG, "onCreate(" + icicle + ")");
         super.onCreate(icicle);
-        mAccountManager = AccountManager.get(this);
-        Log.i(TAG, "loading data from Intent");
+
+        accountManager = AccountManager.get(this);
+
         final Intent intent = getIntent();
-        mUsername = intent.getStringExtra(PARAM_USERNAME);
-        mAuthtokenType = intent.getStringExtra(PARAM_AUTHTOKEN_TYPE);
-        mRequestNewAccount = mUsername == null;
-        mConfirmCredentials = intent.getBooleanExtra(PARAM_CONFIRMCREDENTIALS, false);
+        username = intent.getStringExtra(PARAM_USERNAME);
+        authTokenType = intent.getStringExtra(PARAM_AUTHTOKEN_TYPE);
+        requestNewAccount = username == null;
+        confirmCredentials = intent.getBooleanExtra(PARAM_CONFIRMCREDENTIALS, false);
 
-        Log.i(TAG, "request new: " + mRequestNewAccount);
-
-        setContentView(R.layout.login_activity);
+        setContentView(layout.login_activity);
 
         setNonBlankValidationFor(usernameEdit);
         setNonBlankValidationFor(passwordEdit);
-
-        // usernameEdit.setText(mUsername);
-        // mMessage.setText(getMessage());
     }
 
     private void setNonBlankValidationFor(EditText editText) {
@@ -129,16 +143,17 @@ public class GitHubAuthenticatorActivity extends RoboSherlockAccountAuthenticato
 
     private TextWatcher validationTextWatcher() {
         return new TextWatcherAdapter() {
+
             public void afterTextChanged(Editable gitDirEditText) {
                 updateUIWithValidation();
             }
-
         };
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
         updateUIWithValidation();
     }
 
@@ -149,15 +164,8 @@ public class GitHubAuthenticatorActivity extends RoboSherlockAccountAuthenticato
 
     private boolean populated(EditText editText) {
         return editText.length() > 0;
-        // if (!populated) {
-        // editText.setError(getString(R.string.blank_field_warning));
-        // }
-        // return populated;
     }
 
-    /*
-     * {@inheritDoc}
-     */
     @Override
     protected Dialog onCreateDialog(int id) {
         final ProgressDialog dialog = new ProgressDialog(this);
@@ -180,29 +188,30 @@ public class GitHubAuthenticatorActivity extends RoboSherlockAccountAuthenticato
      * Handles onClick event on the Submit button. Sends username/password to the server for authentication.
      * <p/>
      * Specified by android:onClick="handleLogin" in the layout xml
+     *
+     * @param view
      */
     public void handleLogin(View view) {
-        Log.d(TAG, "handleLogin hit on" + view);
-        if (mRequestNewAccount) {
-            mUsername = usernameEdit.getText().toString();
-        }
-        mPassword = passwordEdit.getText().toString();
-        if (isEmpty(mUsername) || isEmpty(mPassword)) {
-            mMessage.setText(getMessage());
+        if (requestNewAccount)
+            username = usernameEdit.getText().toString();
+        password = passwordEdit.getText().toString();
+
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
+            message.setText(getMessage());
         } else {
             showProgress();
 
             authenticationTask = new RoboAsyncTask<User>(this) {
                 public User call() throws Exception {
                     GitHubClient client = new GitHubClient();
-                    client.setCredentials(mUsername, mPassword);
+                    client.setCredentials(username, password);
 
                     return new UserService(client).getUser();
                 }
 
                 @Override
                 protected void onException(Exception e) throws RuntimeException {
-                    mMessage.setText(e.getMessage());
+                    message.setText(e.getMessage());
                     if (e instanceof RequestException && ((RequestException) e).getStatus() == 401) {
                         passwordEdit.setText("");
                     }
@@ -224,11 +233,13 @@ public class GitHubAuthenticatorActivity extends RoboSherlockAccountAuthenticato
     /**
      * Called when response is received from the server for confirm credentials request. See onAuthenticationResult().
      * Sets the AccountAuthenticatorResult which is sent back to the caller.
+     *
+     * @param result
      */
     protected void finishConfirmCredentials(boolean result) {
         Log.i(TAG, "finishConfirmCredentials()");
-        final Account account = new Account(mUsername, GITHUB_ACCOUNT_TYPE);
-        mAccountManager.setPassword(account, mPassword);
+        final Account account = new Account(username, GITHUB_ACCOUNT_TYPE);
+        accountManager.setPassword(account, password);
 
         final Intent intent = new Intent();
         intent.putExtra(KEY_BOOLEAN_RESULT, result);
@@ -244,69 +255,50 @@ public class GitHubAuthenticatorActivity extends RoboSherlockAccountAuthenticato
      */
 
     protected void finishLogin() {
-        Log.i(TAG, "finishLogin()");
-        final Account account = new Account(mUsername, GITHUB_ACCOUNT_TYPE);
+        final Account account = new Account(username, GITHUB_ACCOUNT_TYPE);
 
-        if (mRequestNewAccount) {
-            mAccountManager.addAccountExplicitly(account, mPassword, null);
+        if (requestNewAccount) {
+            accountManager.addAccountExplicitly(account, password, null);
 
             configureSyncFor(account);
         } else {
-            mAccountManager.setPassword(account, mPassword);
+            accountManager.setPassword(account, password);
         }
         final Intent intent = new Intent();
-        mAuthtoken = mPassword;
-        intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, mUsername);
-        intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, GITHUB_ACCOUNT_TYPE);
-        if (mAuthtokenType != null && mAuthtokenType.equals(Constants.AUTHTOKEN_TYPE)) {
-            intent.putExtra(AccountManager.KEY_AUTHTOKEN, mAuthtoken);
-        }
+        authToken = password;
+        intent.putExtra(KEY_ACCOUNT_NAME, username);
+        intent.putExtra(KEY_ACCOUNT_TYPE, GITHUB_ACCOUNT_TYPE);
+        if (authTokenType != null && authTokenType.equals(AUTH_TOKEN_TYPE))
+            intent.putExtra(KEY_AUTHTOKEN, authToken);
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
         finish();
     }
 
-    private static void configureSyncFor(Account account) {
-        Log.d(TAG, "Trying to configure account for sync...");
-        setIsSyncable(account, GITHUB_PROVIDER_AUTHORITY, 1);
-        setSyncAutomatically(account, GITHUB_PROVIDER_AUTHORITY, true);
-        addPeriodicSync(account, GITHUB_PROVIDER_AUTHORITY, new Bundle(), (long) (15 * 60));
-    }
-
-    protected void hideProgress() {
+    private void hideProgress() {
         dismissDialog(0);
     }
 
-    protected void showProgress() {
+    private void showProgress() {
         showDialog(0);
     }
 
     /**
      * Called when the authentication process completes (see attemptLogin()).
+     *
+     * @param result
      */
     public void onAuthenticationResult(boolean result) {
-        Log.i(TAG, "onAuthenticationResult(" + result + ")");
         if (result) {
-            if (!mConfirmCredentials) {
+            if (!confirmCredentials)
                 finishLogin();
-            } else {
+            else
                 finishConfirmCredentials(true);
-            }
         } else {
-            Log.e(TAG, "onAuthenticationResult: failed to authenticate");
-            if (mRequestNewAccount) {
-                // "Please enter a valid username/password.
-                // mMessage
-                // .setText(getText(R.string.login_activity_loginfail_text_both));
-                mMessage.setText("Please enter a valid username/password.");
-            } else {
-                // "Please enter a valid password." (Used when the
-                // account is already in the database but the password
-                // doesn't work.)
-                // mMessage
-                // .setText(getText(R.string.login_activity_loginfail_text_pwonly));
-                mMessage.setText("Please enter a valid password.");
-            }
+            if (requestNewAccount)
+                message.setText("Please enter a valid username/password.");
+            else
+                message.setText("Please enter a valid password.");
         }
     }
 
@@ -314,19 +306,6 @@ public class GitHubAuthenticatorActivity extends RoboSherlockAccountAuthenticato
      * Returns the message to be displayed at the top of the login dialog box.
      */
     private CharSequence getMessage() {
-        // getString(R.string.label);
-        // if (isEmpty(mUsername)) {
-        // // If no username, then we ask the user to log in using an
-        // // appropriate service.
-        // final CharSequence msg =
-        // getText(R.string.login_activity_newaccount_text);
-        // return msg;
-        // }
-        // if (isEmpty(mPassword)) {
-        // // We have an account but no password
-        // return getText(R.string.login_activity_loginfail_text_pwmissing);
-        // }
         return null;
     }
-
 }

@@ -13,16 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.authenticator;
+package com.github.mobile.accounts;
 
+/**
+ * Authentication constants
+ */
 public class Constants {
 
+    /**
+     * Account type
+     */
     public static final String GITHUB_ACCOUNT_TYPE = "com.github";
 
-    public static final String GITHUB_ACCOUNT_NAME = "GitHub"; // Shouldn't vary with Locale: user might get multiple
-    // accounts
+    /**
+     * Acccount name
+     */
+    public static final String GITHUB_ACCOUNT_NAME = "GitHub";
 
+    /**
+     * Provider authority
+     */
     public static final String GITHUB_PROVIDER_AUTHORITY = "com.github.sync";
 
-    public static final String AUTHTOKEN_TYPE = GITHUB_ACCOUNT_TYPE;
+    /**
+     * Auth token type
+     */
+    public static final String AUTH_TOKEN_TYPE = GITHUB_ACCOUNT_TYPE;
 }

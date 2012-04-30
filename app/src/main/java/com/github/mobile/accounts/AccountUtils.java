@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.util;
+package com.github.mobile.accounts;
 
 import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
 import static android.util.Log.DEBUG;
-import static com.github.mobile.authenticator.Constants.GITHUB_ACCOUNT_TYPE;
+import static com.github.mobile.accounts.Constants.GITHUB_ACCOUNT_TYPE;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerFuture;

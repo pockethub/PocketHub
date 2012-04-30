@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.authenticator;
+package com.github.mobile.accounts;
 
 import static android.accounts.AccountManager.ACTION_AUTHENTICATOR_INTENT;
 import android.app.Service;
@@ -24,21 +24,17 @@ import android.os.IBinder;
  * Authenticator service that returns a subclass of AbstractAccountAuthenticator in onBind()
  */
 public class AccountAuthenticatorService extends Service {
-    private static final String TAG = "AccountAuthenticatorService";
-    private static GitHubAccountAuthenticator sAccountAuthenticator = null;
 
-    public AccountAuthenticatorService() {
-        super();
-    }
+    private static AccountAuthenticator AUTHENTICATOR = null;
 
     public IBinder onBind(Intent intent) {
         return intent.getAction().equals(ACTION_AUTHENTICATOR_INTENT) ? getAuthenticator().getIBinder() : null;
     }
 
-    private GitHubAccountAuthenticator getAuthenticator() {
-        if (sAccountAuthenticator == null)
-            sAccountAuthenticator = new GitHubAccountAuthenticator(this);
-        return sAccountAuthenticator;
+    private AccountAuthenticator getAuthenticator() {
+        if (AUTHENTICATOR == null)
+            AUTHENTICATOR = new AccountAuthenticator(this);
+        return AUTHENTICATOR;
     }
 
 }

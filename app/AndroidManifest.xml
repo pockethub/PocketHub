@@ -120,14 +120,14 @@
             </intent-filter>
         </activity>
 
-        <service android:exported="true" android:name=".authenticator.AccountAuthenticatorService" android:process=":auth">
+        <service android:exported="true" android:name=".accounts.AccountAuthenticatorService" android:process=":auth">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator"/>
             </intent-filter>
             <meta-data android:name="android.accounts.AccountAuthenticator" android:resource="@xml/authenticator"/>
         </service>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:excludeFromRecents="true" android:label="@string/ui_activity_title" android:name=".authenticator.GitHubAuthenticatorActivity">
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:excludeFromRecents="true" android:label="@string/ui_activity_title" android:name=".accountss.AuthenticatorActivity">
             <!--
                 No intent-filter here! This activity is only ever launched by
                 someone who explicitly knows the class name

@@ -31,9 +31,9 @@ import com.github.mobile.HomeActivity;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.RequestFuture;
+import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.persistence.AccountDataManager;
-import com.github.mobile.util.AccountUtils;
 import com.github.mobile.util.GitHubIntents.Builder;
 import com.google.inject.Inject;
 
