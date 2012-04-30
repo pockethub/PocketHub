@@ -15,18 +15,18 @@
  */
 package com.github.mobile.ui.issue;
 
-import static com.github.mobile.util.GitHubIntents.EXTRA_ISSUE;
+import static com.github.mobile.Intents.EXTRA_ISSUE;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
-import com.github.mobile.util.GitHubIntents.Builder;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
 import org.eclipse.egit.github.core.Issue;

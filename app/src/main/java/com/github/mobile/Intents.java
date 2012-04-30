@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.util;
+package com.github.mobile;
 
 import static org.eclipse.egit.github.core.RepositoryId.createFromUrl;
 import android.content.Intent;
@@ -30,7 +30,7 @@ import org.eclipse.egit.github.core.User;
 /**
  * Helper for creating intents
  */
-public class GitHubIntents {
+public class Intents {
 
     /**
      * Prefix for all intents created

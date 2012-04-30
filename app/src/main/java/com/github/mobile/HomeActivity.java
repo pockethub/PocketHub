@@ -16,10 +16,10 @@
 package com.github.mobile;
 
 import static com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_LIST;
+import static com.github.mobile.Intents.EXTRA_USER;
 import static com.github.mobile.HomeDropdownListAdapter.ACTION_DASHBOARD;
 import static com.github.mobile.HomeDropdownListAdapter.ACTION_FILTERS;
 import static com.github.mobile.HomeDropdownListAdapter.ACTION_GISTS;
-import static com.github.mobile.util.GitHubIntents.EXTRA_USER;
 import static com.google.common.collect.Lists.newArrayList;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -34,6 +34,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
@@ -46,7 +47,6 @@ import com.github.mobile.ui.issue.ViewFiltersActivity;
 import com.github.mobile.ui.repo.OrgLoader;
 import com.github.mobile.ui.user.UserPagerAdapter;
 import com.github.mobile.util.AvatarUtils;
-import com.github.mobile.util.GitHubIntents.Builder;
 import com.github.mobile.util.PreferenceUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;

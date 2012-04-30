@@ -15,7 +15,7 @@
  */
 package com.github.mobile.ui.gist;
 
-import static com.github.mobile.util.GitHubIntents.EXTRA_GIST_FILE;
+import static com.github.mobile.Intents.EXTRA_GIST_FILE;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

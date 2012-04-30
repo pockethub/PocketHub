@@ -15,7 +15,7 @@
  */
 package com.github.mobile.ui.repo;
 
-import static com.github.mobile.util.GitHubIntents.EXTRA_REPOSITORY;
+import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import android.os.Bundle;
 
 import com.github.mobile.R.string;

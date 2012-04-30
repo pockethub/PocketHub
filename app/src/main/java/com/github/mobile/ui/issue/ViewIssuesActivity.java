@@ -15,9 +15,9 @@
  */
 package com.github.mobile.ui.issue;
 
-import static com.github.mobile.util.GitHubIntents.EXTRA_ISSUE_NUMBERS;
-import static com.github.mobile.util.GitHubIntents.EXTRA_POSITION;
-import static com.github.mobile.util.GitHubIntents.EXTRA_REPOSITORIES;
+import static com.github.mobile.Intents.EXTRA_ISSUE_NUMBERS;
+import static com.github.mobile.Intents.EXTRA_POSITION;
+import static com.github.mobile.Intents.EXTRA_REPOSITORIES;
 import android.R.integer;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,11 +26,11 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.github.mobile.DialogFragmentActivity;
+import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.ui.UrlLauncher;
-import com.github.mobile.util.GitHubIntents.Builder;
 
 import java.util.ArrayList;
 import java.util.Collection;

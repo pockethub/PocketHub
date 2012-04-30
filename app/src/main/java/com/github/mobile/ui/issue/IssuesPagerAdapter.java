@@ -15,9 +15,9 @@
  */
 package com.github.mobile.ui.issue;
 
-import static com.github.mobile.util.GitHubIntents.EXTRA_ISSUE_NUMBER;
-import static com.github.mobile.util.GitHubIntents.EXTRA_REPOSITORY_NAME;
-import static com.github.mobile.util.GitHubIntents.EXTRA_REPOSITORY_OWNER;
+import static com.github.mobile.Intents.EXTRA_ISSUE_NUMBER;
+import static com.github.mobile.Intents.EXTRA_REPOSITORY_NAME;
+import static com.github.mobile.Intents.EXTRA_REPOSITORY_OWNER;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

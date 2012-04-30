@@ -15,10 +15,10 @@
  */
 package com.github.mobile.ui.comment;
 
-import static com.github.mobile.util.GitHubIntents.EXTRA_COMMENT_BODY;
-import static com.github.mobile.util.GitHubIntents.EXTRA_SUBTITLE;
-import static com.github.mobile.util.GitHubIntents.EXTRA_TITLE;
-import static com.github.mobile.util.GitHubIntents.EXTRA_USER;
+import static com.github.mobile.Intents.EXTRA_COMMENT_BODY;
+import static com.github.mobile.Intents.EXTRA_SUBTITLE;
+import static com.github.mobile.Intents.EXTRA_TITLE;
+import static com.github.mobile.Intents.EXTRA_USER;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
@@ -26,12 +26,12 @@ import android.widget.EditText;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.util.AvatarUtils;
-import com.github.mobile.util.GitHubIntents.Builder;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 
