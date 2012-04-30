@@ -33,7 +33,7 @@ public class CommentListAdapter extends ItemListAdapter<Comment, CommentItemView
 
     private final AvatarUtils avatars;
 
-    private HttpImageGetter imageGetter;
+    private final HttpImageGetter imageGetter;
 
     /**
      * Create list adapter
