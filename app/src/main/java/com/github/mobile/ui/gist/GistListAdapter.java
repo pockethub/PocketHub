@@ -72,7 +72,7 @@ public class GistListAdapter extends ItemListAdapter<Gist, GistView> {
         paint.setTextSize(gistId.getTextSize());
         char[] text = new char[maxDigits];
         Arrays.fill(text, '0');
-        return Math.round(paint.measureText(text, 0, text.length));
+        return Math.round(paint.measureText(text, 0, text.length)) + gistId.getPaddingLeft() + gistId.getPaddingRight();
     }
 
     private static final NumberFormat NUMBER_FORMAT = NumberFormat.getIntegerInstance();
