@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
 import com.github.mobile.R.drawable;
+import com.google.inject.Inject;
 
 import java.io.File;
 import java.io.IOException;
@@ -65,6 +66,7 @@ public class HttpImageGetter implements ImageGetter {
      *
      * @param context
      */
+    @Inject
     public HttpImageGetter(Context context) {
         this.context = context;
         dir = context.getCacheDir();

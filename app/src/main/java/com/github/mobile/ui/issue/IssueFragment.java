@@ -35,13 +35,17 @@ import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.HeaderViewListAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -61,19 +65,22 @@ import com.github.mobile.async.AuthenticatedUserTask;
 import com.github.mobile.core.issue.FullIssue;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.issue.EditIssueActivity;
-import com.github.mobile.issue.IssueHeaderViewHolder;
+import com.github.mobile.issue.LabelsDrawable;
 import com.github.mobile.ui.DialogResultListener;
 import com.github.mobile.ui.comment.CommentListAdapter;
 import com.github.mobile.ui.comment.CreateCommentActivity;
 import com.github.mobile.util.AvatarUtils;
 import com.github.mobile.util.HtmlUtils;
 import com.github.mobile.util.HttpImageGetter;
+import com.github.mobile.util.ServiceUtils;
+import com.github.mobile.util.TimeUtils;
 import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.google.inject.Inject;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Issue;
@@ -110,14 +117,15 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
     private AvatarUtils avatarHelper;
 
     @Inject
+    private HttpImageGetter imageGetter;
+
+    @Inject
     private IssueStore store;
 
     @InjectView(android.R.id.list)
     private ListView list;
 
     private View headerView;
-
-    private IssueHeaderViewHolder headerHolder;
 
     private View loadingView;
 
@@ -132,6 +140,26 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
     private EditStateTask stateTask;
 
     private EditIssueTask bodyTask;
+
+    private TextView titleText;
+
+    private TextView bodyText;
+
+    private TextView createdText;
+
+    private ImageView creatorAvatar;
+
+    private TextView assigneeText;
+
+    private ImageView assigneeAvatar;
+
+    private View labelsArea;
+
+    private TextView milestoneText;
+
+    private TextView stateText;
+
+    private String html;
 
     @SuppressWarnings("unchecked")
     public void onCreate(Bundle savedInstanceState) {
@@ -152,7 +180,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             protected void onSuccess(Issue editedIssue) throws Exception {
                 super.onSuccess(editedIssue);
 
-                headerHolder.updateViewFor(editedIssue);
+                updateHeader(editedIssue);
             }
         };
 
@@ -160,7 +188,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             protected void onSuccess(Issue editedIssue) throws Exception {
                 super.onSuccess(editedIssue);
 
-                headerHolder.updateViewFor(editedIssue);
+                updateHeader(editedIssue);
             }
         };
 
@@ -168,7 +196,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             protected void onSuccess(Issue editedIssue) throws Exception {
                 super.onSuccess(editedIssue);
 
-                headerHolder.updateViewFor(editedIssue);
+                updateHeader(editedIssue);
             }
         };
 
@@ -176,7 +204,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             protected void onSuccess(Issue editedIssue) throws Exception {
                 super.onSuccess(editedIssue);
 
-                headerHolder.updateViewFor(editedIssue);
+                updateHeader(editedIssue);
             }
         };
 
@@ -184,7 +212,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             protected void onSuccess(Issue editedIssue) throws Exception {
                 super.onSuccess(editedIssue);
 
-                headerHolder.updateViewFor(editedIssue);
+                updateHeader(editedIssue);
             }
         };
     }
@@ -202,7 +230,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         loadingText.setText(string.loading_comments);
 
         if (issue != null)
-            headerHolder.updateViewFor(issue);
+            updateHeader(issue);
         else {
             loadingText.setText(string.loading_issue);
             headerView.setVisibility(GONE);
@@ -272,8 +300,66 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             }
         });
 
-        headerHolder = new IssueHeaderViewHolder(headerView, avatarHelper);
+        titleText = (TextView) headerView.findViewById(id.tv_issue_title);
+        createdText = (TextView) headerView.findViewById(id.tv_issue_creation);
+        creatorAvatar = (ImageView) headerView.findViewById(id.iv_gravatar);
+        assigneeText = (TextView) headerView.findViewById(id.tv_assignee_name);
+        assigneeAvatar = (ImageView) headerView.findViewById(id.iv_assignee_gravatar);
+        labelsArea = headerView.findViewById(id.v_labels);
+        milestoneText = (TextView) headerView.findViewById(id.tv_milestone);
+        stateText = (TextView) headerView.findViewById(id.tv_state);
+        bodyText = (TextView) headerView.findViewById(id.tv_issue_body);
+        bodyText.setMovementMethod(LinkMovementMethod.getInstance());
+
         loadingView = inflater.inflate(layout.load_item, null);
+    }
+
+    private void updateHeader(final Issue issue) {
+        titleText.setText(issue.getTitle());
+        if (html == null || !html.equals(issue.getBodyHtml())) {
+            html = issue.getBodyHtml();
+            imageGetter.bind(bodyText, html, issue.getId());
+        }
+
+        String reported = "<b>" + issue.getUser().getLogin() + "</b> opened "
+                + TimeUtils.getRelativeTime(issue.getCreatedAt());
+
+        createdText.setText(Html.fromHtml(reported));
+        avatarHelper.bind(creatorAvatar, issue.getUser());
+
+        User assignee = issue.getAssignee();
+        if (assignee != null) {
+            assigneeText.setText(assignee.getLogin());
+            assigneeAvatar.setVisibility(VISIBLE);
+            avatarHelper.bind(assigneeAvatar, assignee);
+        } else {
+            assigneeAvatar.setVisibility(GONE);
+            assigneeText.setText(assigneeText.getContext().getString(string.unassigned));
+        }
+
+        if (!issue.getLabels().isEmpty()) {
+            labelsArea.setVisibility(VISIBLE);
+            LabelsDrawable drawable = new LabelsDrawable(labelsArea.getPaddingLeft(), createdText.getTextSize(),
+                    ServiceUtils.getDisplayWidth(labelsArea) - labelsArea.getPaddingLeft()
+                            - labelsArea.getPaddingRight(), issue.getLabels());
+            drawable.getPaint().setColor(getResources().getColor(android.R.color.transparent));
+            labelsArea.setBackgroundDrawable(drawable);
+            LayoutParams params = new LayoutParams(drawable.getBounds().width(), drawable.getBounds().height());
+            labelsArea.setLayoutParams(params);
+        } else
+            labelsArea.setVisibility(GONE);
+
+        if (issue.getMilestone() != null)
+            milestoneText.setText(issue.getMilestone().getTitle());
+        else
+            milestoneText.setText(milestoneText.getContext().getString(string.no_milestone));
+
+        String state = issue.getState();
+        if (state != null && state.length() > 0)
+            state = state.substring(0, 1).toUpperCase(Locale.US) + state.substring(1);
+        else
+            state = "";
+        stateText.setText(state);
     }
 
     private void refreshIssue() {
@@ -313,7 +399,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
     private void updateList(Issue issue, List<Comment> comments) {
         list.removeHeaderView(loadingView);
         headerView.setVisibility(VISIBLE);
-        headerHolder.updateViewFor(issue);
+        updateHeader(issue);
 
         CommentListAdapter adapter = getRootAdapter();
         if (adapter != null)
