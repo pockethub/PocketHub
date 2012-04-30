@@ -17,7 +17,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/issue_title_background"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -40,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/item_text_color_light"
+                android:textColor="@color/item_text_color"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -77,7 +76,7 @@
                     android:paddingLeft="5dp"
                     android:singleLine="true"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/item_text_color_light"
+                    android:textColor="@color/item_text_color"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -101,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/item_text_color_light"
+                android:textColor="@color/item_text_color"
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>

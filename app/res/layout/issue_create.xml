@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/item_text_color_light"
+                    android:textColor="@color/item_text_color"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -83,7 +83,7 @@
                         android:paddingLeft="5dp"
                         android:singleLine="true"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/item_text_color_light"
+                        android:textColor="@color/item_text_color"
                         android:textStyle="bold" />
                 </LinearLayout>
 
