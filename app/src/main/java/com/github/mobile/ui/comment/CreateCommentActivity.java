@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.comment;
+package com.github.mobile.ui.comment;
 
 import static com.github.mobile.util.GitHubIntents.EXTRA_COMMENT_BODY;
 import static com.github.mobile.util.GitHubIntents.EXTRA_SUBTITLE;

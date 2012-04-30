@@ -53,23 +53,21 @@ import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.RefreshAnimation;
 import com.github.mobile.async.AuthenticatedUserTask;
-import com.github.mobile.comment.CommentViewHolder;
-import com.github.mobile.comment.CreateCommentActivity;
 import com.github.mobile.core.gist.FullGist;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.core.gist.StarGistTask;
 import com.github.mobile.core.gist.UnstarGistTask;
+import com.github.mobile.ui.comment.CommentListAdapter;
+import com.github.mobile.ui.comment.CreateCommentActivity;
 import com.github.mobile.util.AccountUtils;
 import com.github.mobile.util.AvatarUtils;
 import com.github.mobile.util.HtmlUtils;
+import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.TimeUtils;
 import com.github.mobile.util.ToastUtils;
 import com.github.mobile.util.TypefaceUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.google.inject.Inject;
-import com.madgag.android.listviews.ReflectiveHolderFactory;
-import com.madgag.android.listviews.ViewHoldingListAdapter;
-import com.madgag.android.listviews.ViewInflator;
 
 import java.util.Collections;
 import java.util.Date;
@@ -190,9 +188,10 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
         List<Comment> initialComments = comments;
         if (initialComments == null)
             initialComments = Collections.emptyList();
-        list.setAdapter(new ViewHoldingListAdapter<Comment>(initialComments, ViewInflator.viewInflatorFor(
-                getActivity(), layout.comment_view_item), ReflectiveHolderFactory.reflectiveFactoryFor(
-                CommentViewHolder.class, avatarHelper)));
+
+        Activity activity = getActivity();
+        list.setAdapter(new CommentListAdapter(activity.getLayoutInflater(), initialComments
+                .toArray(new Comment[initialComments.size()]), avatarHelper, new HttpImageGetter(activity)));
 
         if (gist != null && comments != null)
             updateList(gist, comments);
@@ -384,19 +383,18 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
         updateFiles(gist);
 
-        ViewHoldingListAdapter<Comment> adapter = getRootAdapter();
+        CommentListAdapter adapter = getRootAdapter();
         if (adapter != null)
-            adapter.setList(comments);
+            adapter.setItems(comments.toArray(new Comment[comments.size()]));
     }
 
-    @SuppressWarnings("unchecked")
-    private ViewHoldingListAdapter<Comment> getRootAdapter() {
+    private CommentListAdapter getRootAdapter() {
         ListAdapter adapter = list.getAdapter();
         if (adapter == null)
             return null;
         adapter = ((HeaderViewListAdapter) adapter).getWrappedAdapter();
-        if (adapter instanceof ViewHoldingListAdapter<?>)
-            return (ViewHoldingListAdapter<Comment>) adapter;
+        if (adapter instanceof CommentListAdapter)
+            return (CommentListAdapter) adapter;
         else
             return null;
     }

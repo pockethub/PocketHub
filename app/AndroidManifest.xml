@@ -99,7 +99,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".comment.CreateCommentActivity">
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.comment.CreateCommentActivity">
             <intent-filter>
                 <action android:name="com.github.mobile.android.comment.create.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
