@@ -50,7 +50,7 @@
                 android:singleLine="true"
                 android:text="@string/recent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/listing"
+                android:textColor="@color/item_text_color_light"
                 android:visibility="gone" />
 
             <TextView

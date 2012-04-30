@@ -106,7 +106,7 @@
             android:gravity="center_vertical"
             android:text="\uf243"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/listing" />
+            android:textColor="@color/item_text_color_light" />
 
         <TextView
             android:id="@+id/tv_gist_comments"

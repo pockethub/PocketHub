@@ -17,8 +17,6 @@
 <resources>
 
     <color name="background">#FFFFFF</color>
-    <color name="listing">#888888</color>
-    <color name="listing_comments">#BCBCBC</color>
     <color name="background_id">#E3E3E3</color>
     <color name="item_background">#D9DCDE</color>
     <color name="item_text_color">#1E1E1E</color>
