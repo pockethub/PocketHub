@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.repo;
+package com.github.mobile.core.user;
 
-import com.github.mobile.authenticator.GitHubAccount;
+import com.github.mobile.core.GitHubAccount;
 import com.google.inject.Inject;
 
 import java.util.Comparator;

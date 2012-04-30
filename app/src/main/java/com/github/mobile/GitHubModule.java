@@ -18,7 +18,7 @@ package com.github.mobile;
 import static org.eclipse.egit.github.core.client.IGitHubConstants.HOST_API_V2;
 import android.content.Context;
 
-import com.github.mobile.authenticator.GitHubAccount;
+import com.github.mobile.core.GitHubAccount;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.guice.GitHubAccountScope;

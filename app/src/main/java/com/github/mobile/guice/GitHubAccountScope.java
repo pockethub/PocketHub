@@ -22,7 +22,7 @@ import android.accounts.AccountManager;
 import android.app.Activity;
 import android.util.Log;
 
-import com.github.mobile.authenticator.GitHubAccount;
+import com.github.mobile.core.GitHubAccount;
 import com.google.common.base.Function;
 import com.google.common.collect.MapMaker;
 import com.google.inject.AbstractModule;

@@ -13,12 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.authenticator;
+package com.github.mobile.core;
 
+/**
+ * GitHub account model
+ */
 public class GitHubAccount {
+
+    /**
+     * Account username
+     */
     public final String username;
+
+    /**
+     * Account password
+     */
     public final String password;
 
+    /**
+     * Create account with username and password
+     *
+     * @param username
+     * @param password
+     */
     public GitHubAccount(String username, String password) {
         this.username = username;
         this.password = password;

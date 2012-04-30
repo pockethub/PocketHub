@@ -18,7 +18,7 @@ package com.github.mobile.util;
 import static android.util.Log.DEBUG;
 import android.util.Log;
 
-import com.github.mobile.authenticator.GitHubAccount;
+import com.github.mobile.core.GitHubAccount;
 import com.google.inject.Provider;
 
 import java.net.HttpURLConnection;
