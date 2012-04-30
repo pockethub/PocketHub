@@ -49,7 +49,7 @@ public class HomeDropdownListAdapter extends BaseAdapter {
             super(view);
 
             nameText = (TextView) view.findViewById(id.tv_org_name);
-            avatarView = (ImageView) view.findViewById(id.iv_gravatar);
+            avatarView = (ImageView) view.findViewById(id.iv_avatar);
         }
     }
 

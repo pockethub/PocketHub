@@ -26,7 +26,7 @@
         android:padding="10dp" >
 
         <ImageView
-            android:id="@+id/iv_gravatar"
+            android:id="@+id/iv_avatar"
             android:layout_width="28dp"
             android:layout_height="28dp" />
 

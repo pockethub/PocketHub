@@ -117,10 +117,10 @@ public class AvatarUtils {
      * @return this helper
      */
     protected AvatarUtils setImage(final BitmapDrawable image, final ImageView view, final User user) {
-        if (!Integer.valueOf(user.getId()).equals(view.getTag(id.iv_gravatar)))
+        if (!Integer.valueOf(user.getId()).equals(view.getTag(id.iv_avatar)))
             return this;
 
-        view.setTag(id.iv_gravatar, null);
+        view.setTag(id.iv_avatar, null);
 
         if (image != null) {
             loaded.put(user.getId(), image);
@@ -285,18 +285,18 @@ public class AvatarUtils {
         if (loadedImage != null) {
             view.setImageDrawable(loadedImage);
             view.setVisibility(VISIBLE);
-            view.setTag(id.iv_gravatar, null);
+            view.setTag(id.iv_avatar, null);
             return this;
         }
 
         view.setImageDrawable(loadingAvatar);
-        view.setTag(id.iv_gravatar, userId);
+        view.setTag(id.iv_avatar, userId);
 
         new FetchAvatarTask(context) {
 
             @Override
             public BitmapDrawable call() throws Exception {
-                if (!userId.equals(view.getTag(id.iv_gravatar)))
+                if (!userId.equals(view.getTag(id.iv_avatar)))
                     return null;
 
                 synchronized (AvatarUtils.this) {

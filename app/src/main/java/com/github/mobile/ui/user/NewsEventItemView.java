@@ -56,7 +56,7 @@ public class NewsEventItemView extends ItemView {
     public NewsEventItemView(View view) {
         super(view);
 
-        avatarView = (ImageView) view.findViewById(id.iv_gravatar);
+        avatarView = (ImageView) view.findViewById(id.iv_avatar);
         eventText = (TextView) view.findViewById(id.tv_event);
 
         iconText = (TextView) view.findViewById(id.tv_event_icon);

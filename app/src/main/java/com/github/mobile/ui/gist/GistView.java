@@ -79,7 +79,7 @@ public class GistView extends ItemView {
         created = (TextView) view.findViewById(id.tv_gist_creation);
         comments = (TextView) view.findViewById(id.tv_gist_comments);
         files = (TextView) view.findViewById(id.tv_gist_files);
-        avatar = (ImageView) view.findViewById(id.iv_gravatar);
+        avatar = (ImageView) view.findViewById(id.iv_avatar);
 
         TypefaceUtils.setOctocons((TextView) view.findViewById(id.tv_comment_icon),
                 (TextView) view.findViewById(id.tv_file_icon));

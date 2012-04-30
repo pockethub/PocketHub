@@ -60,7 +60,7 @@ public class CommentItemView extends ItemView {
 
         authorView = (TextView) view.findViewById(id.tv_comment_author);
         dateView = (TextView) view.findViewById(id.tv_comment_date);
-        avatarView = (ImageView) view.findViewById(id.iv_gravatar);
+        avatarView = (ImageView) view.findViewById(id.iv_avatar);
 
         TypefaceUtils.setOctocons((TextView) view.findViewById(id.tv_comment_icon));
     }

@@ -50,7 +50,7 @@ public class FilterItemView extends ItemView {
     public FilterItemView(final View view) {
         super(view);
 
-        avatarView = (ImageView) view.findViewById(id.iv_gravatar);
+        avatarView = (ImageView) view.findViewById(id.iv_avatar);
         repoText = (TextView) view.findViewById(id.tv_repo_name);
         filterText = (TextView) view.findViewById(id.tv_filter_summary);
     }

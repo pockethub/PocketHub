@@ -43,7 +43,7 @@ public class UserItemView extends ItemView {
     public UserItemView(final View view) {
         super(view);
 
-        avatarView = (ImageView) view.findViewById(id.iv_gravatar);
+        avatarView = (ImageView) view.findViewById(id.iv_avatar);
         loginText = (TextView) view.findViewById(id.tv_login);
     }
 }

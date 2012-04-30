@@ -79,7 +79,7 @@ public class RepositoryIssueItemView extends ItemView {
         number = (TextView) view.findViewById(id.tv_issue_number);
         numberPaintFlags = number.getPaintFlags();
         title = (TextView) view.findViewById(id.tv_issue_title);
-        avatar = (ImageView) view.findViewById(id.iv_gravatar);
+        avatar = (ImageView) view.findViewById(id.iv_avatar);
         user = (TextView) view.findViewById(id.tv_issue_user);
         creation = (TextView) view.findViewById(id.tv_issue_creation);
         comments = (TextView) view.findViewById(id.tv_issue_comments);

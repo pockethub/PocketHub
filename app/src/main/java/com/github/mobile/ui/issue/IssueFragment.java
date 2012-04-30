@@ -300,7 +300,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
         titleText = (TextView) headerView.findViewById(id.tv_issue_title);
         createdText = (TextView) headerView.findViewById(id.tv_issue_creation);
-        creatorAvatar = (ImageView) headerView.findViewById(id.iv_gravatar);
+        creatorAvatar = (ImageView) headerView.findViewById(id.iv_avatar);
         assigneeText = (TextView) headerView.findViewById(id.tv_assignee_name);
         assigneeAvatar = (ImageView) headerView.findViewById(id.iv_assignee_gravatar);
         labelsArea = headerView.findViewById(id.v_labels);
