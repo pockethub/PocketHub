@@ -120,7 +120,7 @@
             </intent-filter>
         </activity>
 
-        <service android:exported="true" android:name=".accounts.AccountAuthenticatorService" android:process=":auth">
+        <service android:name=".accounts.AccountAuthenticatorService" android:process=":auth">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator"/>
             </intent-filter>
@@ -134,7 +134,7 @@
             -->
         </activity>
 
-        <service android:exported="true" android:name=".sync.GitHubSyncAdapterService" android:process=":repos">
+        <service android:name=".sync.GitHubSyncAdapterService" android:process=":repos">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter"/>
             </intent-filter>
