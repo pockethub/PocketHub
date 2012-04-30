@@ -19,7 +19,7 @@
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
     <ScrollView
             android:layout_height="0dip"
@@ -48,7 +48,7 @@
                     android:hint="@string/sign_in_username_field_hint"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:singleLine="true"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minWidth="250dip"
                     android:scrollHorizontally="true"
@@ -75,7 +75,7 @@
                     android:hint="@string/sign_in_password_field_hint"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:singleLine="true"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minWidth="250dip"
                     android:scrollHorizontally="true"

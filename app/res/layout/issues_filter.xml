@@ -22,7 +22,7 @@
     android:padding="15dp" >
 
     <TextView
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:text="@string/section_issue_status"
@@ -31,7 +31,7 @@
         android:textStyle="bold" />
 
     <RadioGroup
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingBottom="10dp" >
@@ -55,7 +55,7 @@
     </RadioGroup>
 
     <TableLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:shrinkColumns="1" >
 
@@ -88,7 +88,7 @@
 
             <TextView
                 android:id="@+id/tv_milestone"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/milestone_none"
                 android:paddingBottom="20dp"
@@ -108,7 +108,7 @@
 
             <TextView
                 android:id="@+id/tv_labels"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/labels_none"
                 android:paddingBottom="10dp"

@@ -15,8 +15,8 @@
   limitations under the License.
 -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/item_background" >
 
     <LinearLayout
@@ -26,7 +26,7 @@
         android:padding="5dp" >
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingLeft="5dp" >
@@ -57,7 +57,7 @@
 
         <EditText
             android:id="@+id/gistDescriptionText"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_background"
             android:hint="@string/gist_description_hint"
@@ -83,7 +83,7 @@
 
         <EditText
             android:id="@+id/gistNameText"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_background"
             android:hint="@string/gist_file_name_hint"
@@ -94,7 +94,7 @@
         </EditText>
 
         <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="bottom"
             android:paddingBottom="5dp"
@@ -109,8 +109,8 @@
 
         <EditText
             android:id="@+id/gistContentText"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="@drawable/edit_text_background"
             android:gravity="top"
             android:hint="@string/gist_content_hint"
