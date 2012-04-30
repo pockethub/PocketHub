@@ -200,10 +200,13 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
         issue = store.getIssue(repositoryId, issueNumber);
 
+        TextView loadingText = (TextView) loadingView.findViewById(id.tv_loading);
+        loadingText.setText(string.loading_comments);
+
         if (issue != null)
             headerHolder.updateViewFor(issue);
         else {
-            ((TextView) loadingView.findViewById(id.tv_loading)).setText(string.loading_issue);
+            loadingText.setText(string.loading_issue);
             headerView.setVisibility(GONE);
         }
 
