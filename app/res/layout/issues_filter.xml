@@ -25,7 +25,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:singleLine="true"
-        android:text="Issue Status:"
+        android:text="@string/section_issue_status"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/item_text_color"
         android:textStyle="bold" />
@@ -40,7 +40,7 @@
             android:id="@+id/rb_open"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Open"
+            android:text="@string/status_open"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/item_text_color_light" />
 
@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="Closed"
+            android:text="@string/status_closed"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/item_text_color_light" />
     </RadioGroup>
@@ -63,14 +63,14 @@
 
             <TextView
                 android:id="@+id/tv_assignee_label"
-                android:text="Assigned:"
+                android:text="@string/section_issue_assigned"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/item_text_color"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_assignee"
-                android:hint="Anyone"
+                android:hint="@string/assignee_anyone"
                 android:paddingBottom="20dp"
                 android:paddingLeft="20dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
@@ -81,7 +81,7 @@
 
             <TextView
                 android:id="@+id/tv_milestone_label"
-                android:text="Milestone:"
+                android:text="@string/section_issue_milestone"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/item_text_color"
                 android:textStyle="bold" />
@@ -90,7 +90,7 @@
                 android:id="@+id/tv_milestone"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:hint="None"
+                android:hint="@string/milestone_none"
                 android:paddingBottom="20dp"
                 android:paddingLeft="20dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
@@ -101,7 +101,7 @@
 
             <TextView
                 android:id="@+id/tv_labels_label"
-                android:text="Labels:"
+                android:text="@string/section_issue_labels"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/item_text_color"
                 android:textStyle="bold" />
@@ -110,7 +110,7 @@
                 android:id="@+id/tv_labels"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:hint="None"
+                android:hint="@string/labels_none"
                 android:paddingBottom="10dp"
                 android:paddingLeft="20dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"

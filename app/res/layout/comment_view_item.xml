@@ -40,7 +40,7 @@
             android:gravity="center_vertical"
             android:paddingLeft="10dp"
             android:singleLine="true"
-            android:text="\uf243"
+            android:text="@string/icon_comment"
             android:textColor="@color/item_text_color_light"
             android:textSize="16sp" />
 

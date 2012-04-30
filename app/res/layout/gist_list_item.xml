@@ -85,7 +85,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:paddingLeft="5dp"
-            android:text="\uf217"
+            android:text="@string/icon_file"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/item_text_color_light" />
 
@@ -104,7 +104,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:text="\uf243"
+            android:text="@string/icon_comment"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/item_text_color_light" />
 

@@ -24,7 +24,7 @@
         android:id="@+id/tv_file_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="\uf217"
+        android:text="@string/icon_file"
         android:textColor="@color/item_text_color_light"
         android:textSize="28sp" />
 
