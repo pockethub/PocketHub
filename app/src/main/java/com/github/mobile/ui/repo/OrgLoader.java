@@ -22,7 +22,7 @@ import android.app.Activity;
 import android.util.Log;
 
 import com.github.mobile.R.string;
-import com.github.mobile.async.AuthenticatedUserLoader;
+import com.github.mobile.accounts.AuthenticatedUserLoader;
 import com.github.mobile.core.user.UserComparator;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.util.ToastUtils;

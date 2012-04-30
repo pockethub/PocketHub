@@ -18,7 +18,7 @@ package com.github.mobile.ui;
 import android.app.ProgressDialog;
 import android.content.Context;
 
-import com.github.mobile.async.AuthenticatedUserTask;
+import com.github.mobile.accounts.AuthenticatedUserTask;
 
 import java.util.concurrent.Executor;
 

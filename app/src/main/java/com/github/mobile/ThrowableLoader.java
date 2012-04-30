@@ -18,7 +18,7 @@ package com.github.mobile;
 import android.content.Context;
 import android.util.Log;
 
-import com.github.mobile.async.AuthenticatedUserLoader;
+import com.github.mobile.accounts.AuthenticatedUserLoader;
 
 /**
  * Loader that support throwing an exception when loading in the background

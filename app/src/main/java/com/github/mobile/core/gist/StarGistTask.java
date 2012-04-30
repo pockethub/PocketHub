@@ -18,7 +18,7 @@ package com.github.mobile.core.gist;
 import android.content.Context;
 import android.util.Log;
 
-import com.github.mobile.async.AuthenticatedUserTask;
+import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Gist;

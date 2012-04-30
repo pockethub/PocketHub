@@ -61,7 +61,7 @@ import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.RefreshAnimation;
 import com.github.mobile.SingleChoiceDialogFragment;
-import com.github.mobile.async.AuthenticatedUserTask;
+import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.core.issue.FullIssue;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.ui.DialogResultListener;

@@ -25,7 +25,7 @@ import android.widget.ListView;
 import com.github.mobile.HomeActivity;
 import com.github.mobile.HomeActivity.OrgSelectionListener;
 import com.github.mobile.R.string;
-import com.github.mobile.async.AuthenticatedUserLoader;
+import com.github.mobile.accounts.AuthenticatedUserLoader;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;

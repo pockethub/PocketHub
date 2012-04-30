@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.ui.validation;
+package com.github.mobile.accounts;
 
 import static com.github.mobile.R.string.blank_field_warning;
 import android.view.View;

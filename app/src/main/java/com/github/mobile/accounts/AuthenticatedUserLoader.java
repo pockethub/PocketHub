@@ -13,25 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.async;
+package com.github.mobile.accounts;
 
 import android.app.Activity;
 import android.content.Context;
 
-import com.github.mobile.accounts.AccountScope;
+import com.github.mobile.AsyncLoader;
 import com.google.inject.Inject;
 
-import java.util.concurrent.Executor;
-
+import roboguice.RoboGuice;
 import roboguice.inject.ContextScope;
-import roboguice.util.RoboAsyncTask;
 
 /**
  * Enforces that user is logged in before work on the background thread commences.
  *
- * @param <ResultT>
+ * @param <D>
  */
-public abstract class AuthenticatedUserTask<ResultT> extends RoboAsyncTask<ResultT> {
+public abstract class AuthenticatedUserLoader<D> extends AsyncLoader<D> {
 
     @Inject
     private ContextScope contextScope;
@@ -39,35 +37,30 @@ public abstract class AuthenticatedUserTask<ResultT> extends RoboAsyncTask<Resul
     @Inject
     private AccountScope gitHubAccountScope;
 
+    /**
+     * Activity using this loader
+     */
     @Inject
-    private Activity activity;
+    protected Activity activity;
 
     /**
-     * Create asynchronous task that ensures a valid account is present when executed
+     * Create loader for context
      *
      * @param context
      */
-    protected AuthenticatedUserTask(final Context context) {
+    public AuthenticatedUserLoader(final Context context) {
         super(context);
-    }
 
-    /**
-     * Create asynchronous task that ensures a valid account is present when executed
-     *
-     * @param context
-     * @param executor
-     */
-    public AuthenticatedUserTask(final Context context, final Executor executor) {
-        super(context, executor);
+        RoboGuice.injectMembers(context, this);
     }
 
     @Override
-    public final ResultT call() throws Exception {
+    public final D loadInBackground() {
         gitHubAccountScope.enterWith(activity);
         try {
             contextScope.enter(getContext());
             try {
-                return run();
+                return load();
             } finally {
                 contextScope.exit(getContext());
             }
@@ -77,10 +70,9 @@ public abstract class AuthenticatedUserTask<ResultT> extends RoboAsyncTask<Resul
     }
 
     /**
-     * Execute task with an authenticated account
+     * Load data
      *
-     * @return result
-     * @throws Exception
+     * @return data
      */
-    protected abstract ResultT run() throws Exception;
+    public abstract D load();
 }

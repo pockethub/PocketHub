@@ -24,7 +24,7 @@ import android.util.Log;
 import com.github.mobile.RequestFuture;
 import com.github.mobile.RequestReader;
 import com.github.mobile.RequestWriter;
-import com.github.mobile.async.AuthenticatedUserTask;
+import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.persistence.OrganizationRepositories.Factory;
 import com.google.inject.Inject;

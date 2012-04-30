@@ -26,7 +26,7 @@ import android.webkit.WebView;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
-import com.github.mobile.async.AuthenticatedUserTask;
+import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.util.SourceEditor;
 import com.github.mobile.util.ToastUtils;

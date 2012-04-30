@@ -24,7 +24,7 @@ import android.util.Log;
 import com.github.mobile.DialogFragmentActivity;
 import com.github.mobile.SingleChoiceDialogFragment;
 import com.github.mobile.R.string;
-import com.github.mobile.async.AuthenticatedUserTask;
+import com.github.mobile.accounts.AuthenticatedUserTask;
 
 import java.util.Collections;
 import java.util.Comparator;

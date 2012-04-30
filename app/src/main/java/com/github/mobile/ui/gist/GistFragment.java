@@ -53,7 +53,7 @@ import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.RefreshAnimation;
 import com.github.mobile.accounts.AccountUtils;
-import com.github.mobile.async.AuthenticatedUserTask;
+import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.core.gist.FullGist;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.core.gist.StarGistTask;
