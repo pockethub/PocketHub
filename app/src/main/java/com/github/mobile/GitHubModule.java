@@ -23,6 +23,7 @@ import com.github.mobile.accounts.GitHubAccount;
 import com.github.mobile.accounts.AccountScope;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.core.issue.IssueStore;
+import com.github.mobile.core.repo.IRepositorySearch;
 import com.github.mobile.persistence.OrganizationRepositories;
 import com.github.mobile.sync.SyncCampaign;
 import com.google.inject.AbstractModule;
