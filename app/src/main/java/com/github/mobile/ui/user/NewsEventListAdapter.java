@@ -271,11 +271,17 @@ public class NewsEventListAdapter extends ItemListAdapter<Event, NewsEventItemVi
         builder.setSpan(new StyleSpan(BOLD), 0, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
 
         builder.append(" commented on ");
+
         Issue issue = ((IssueCommentPayload) event.getPayload()).getIssue();
-        String issueNumber = "issue " + issue.getNumber();
-        builder.append(issueNumber);
-        builder.setSpan(new StyleSpan(BOLD), builder.length() - issueNumber.length(), builder.length(),
+        String number;
+        if (issue.getPullRequest() == null || issue.getPullRequest().getHtmlUrl() == null)
+            number = "issue " + issue.getNumber();
+        else
+            number = "pull request " + issue.getNumber();
+        builder.append(number);
+        builder.setSpan(new StyleSpan(BOLD), builder.length() - number.length(), builder.length(),
                 SPAN_EXCLUSIVE_EXCLUSIVE);
+
         builder.append(" on ");
 
         String repoName = event.getRepo().getName();

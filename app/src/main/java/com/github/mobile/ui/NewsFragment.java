@@ -62,7 +62,7 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
     public void onListItemClick(ListView l, View v, int position, long id) {
         Event event = (Event) l.getItemAtPosition(position);
         Issue issue = issueMatcher.getIssue(event);
-        if (issue != null)
+        if (issue != null && (issue.getPullRequest() == null || issue.getPullRequest().getHtmlUrl() == null))
             startActivity(ViewIssuesActivity.createIntent(issue));
 
         Gist gist = gistMatcher.getGist(event);
