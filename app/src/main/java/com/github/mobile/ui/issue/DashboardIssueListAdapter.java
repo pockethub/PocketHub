@@ -25,7 +25,7 @@ import android.widget.TextView;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.ui.ItemListAdapter;
-import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.TimeUtils;
 import com.github.mobile.util.TypefaceUtils;
 
@@ -37,7 +37,7 @@ import org.eclipse.egit.github.core.RepositoryIssue;
  */
 public class DashboardIssueListAdapter extends ItemListAdapter<RepositoryIssue, DashboardIssueView> {
 
-    private final AvatarUtils avatarHelper;
+    private final AvatarLoader avatarHelper;
 
     private int numberWidth;
 
@@ -49,7 +49,7 @@ public class DashboardIssueListAdapter extends ItemListAdapter<RepositoryIssue, 
      * @param avatarHelper
      * @param inflater
      */
-    public DashboardIssueListAdapter(AvatarUtils avatarHelper, LayoutInflater inflater) {
+    public DashboardIssueListAdapter(AvatarLoader avatarHelper, LayoutInflater inflater) {
         this(avatarHelper, inflater, null);
     }
 
@@ -60,7 +60,7 @@ public class DashboardIssueListAdapter extends ItemListAdapter<RepositoryIssue, 
      * @param inflater
      * @param elements
      */
-    public DashboardIssueListAdapter(AvatarUtils avatarHelper, LayoutInflater inflater, RepositoryIssue[] elements) {
+    public DashboardIssueListAdapter(AvatarLoader avatarHelper, LayoutInflater inflater, RepositoryIssue[] elements) {
         super(layout.dashboard_issue_list_item, inflater);
 
         this.numberView = (TextView) inflater.inflate(layout.dashboard_issue_list_item, null).findViewById(

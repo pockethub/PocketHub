@@ -21,14 +21,14 @@ import android.view.View;
 import com.github.mobile.R.layout;
 import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.ui.ItemListAdapter;
-import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.AvatarLoader;
 
 /**
  * Adapter to display a list of {@link IssueFilter} objects
  */
 public class FilterListAdapter extends ItemListAdapter<IssueFilter, FilterItemView> {
 
-    private final AvatarUtils avatars;
+    private final AvatarLoader avatars;
 
     /**
      * Create {@link IssueFilter} list adapter
@@ -37,7 +37,7 @@ public class FilterListAdapter extends ItemListAdapter<IssueFilter, FilterItemVi
      * @param elements
      * @param avatars
      */
-    public FilterListAdapter(LayoutInflater inflater, IssueFilter[] elements, AvatarUtils avatars) {
+    public FilterListAdapter(LayoutInflater inflater, IssueFilter[] elements, AvatarLoader avatars) {
         super(layout.issue_filter_list_item, inflater, elements);
 
         this.avatars = avatars;
@@ -49,7 +49,7 @@ public class FilterListAdapter extends ItemListAdapter<IssueFilter, FilterItemVi
      * @param inflater
      * @param avatars
      */
-    public FilterListAdapter(LayoutInflater inflater, AvatarUtils avatars) {
+    public FilterListAdapter(LayoutInflater inflater, AvatarLoader avatars) {
         this(inflater, null, avatars);
     }
 

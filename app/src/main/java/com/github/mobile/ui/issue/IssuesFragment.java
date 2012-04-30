@@ -47,7 +47,7 @@ import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.PagedItemFragment;
-import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ListViewUtils;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
@@ -84,7 +84,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     private TextView filterTextView;
 
     @Inject
-    private AvatarUtils avatarHelper;
+    private AvatarLoader avatarHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

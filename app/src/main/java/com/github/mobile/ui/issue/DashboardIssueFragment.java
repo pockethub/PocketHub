@@ -25,7 +25,7 @@ import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.PagedItemFragment;
-import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 
@@ -53,7 +53,7 @@ public class DashboardIssueFragment extends PagedItemFragment<RepositoryIssue> {
     private IssueStore store;
 
     @Inject
-    private AvatarUtils avatarHelper;
+    private AvatarLoader avatarHelper;
 
     private Map<String, String> filterData;
 

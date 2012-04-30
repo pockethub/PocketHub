@@ -46,7 +46,7 @@ import com.github.mobile.ui.issue.IssueDashboardActivity;
 import com.github.mobile.ui.issue.ViewFiltersActivity;
 import com.github.mobile.ui.repo.OrgLoader;
 import com.github.mobile.ui.user.UserPagerAdapter;
-import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.PreferenceUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
@@ -103,7 +103,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
     private ViewPager pager;
 
     @Inject
-    private AvatarUtils avatarHelper;
+    private AvatarLoader avatarHelper;
 
     @Inject
     private SharedPreferences sharedPreferences;

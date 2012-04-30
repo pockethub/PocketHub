@@ -19,7 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.github.mobile.ui.ItemListAdapter;
-import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.AvatarLoader;
 import com.viewpagerindicator.R.layout;
 
 import org.eclipse.egit.github.core.User;
@@ -29,7 +29,7 @@ import org.eclipse.egit.github.core.User;
  */
 public class UserListAdapter extends ItemListAdapter<User, UserItemView> {
 
-    private final AvatarUtils avatarHelper;
+    private final AvatarLoader avatarHelper;
 
     /**
      * Create user list adapter
@@ -38,7 +38,7 @@ public class UserListAdapter extends ItemListAdapter<User, UserItemView> {
      * @param elements
      * @param avatarHelper
      */
-    public UserListAdapter(final LayoutInflater inflater, final User[] elements, final AvatarUtils avatarHelper) {
+    public UserListAdapter(final LayoutInflater inflater, final User[] elements, final AvatarLoader avatarHelper) {
         super(layout.user_list_item, inflater, elements);
 
         this.avatarHelper = avatarHelper;
@@ -50,7 +50,7 @@ public class UserListAdapter extends ItemListAdapter<User, UserItemView> {
      * @param inflater
      * @param avatarHelper
      */
-    public UserListAdapter(final LayoutInflater inflater, final AvatarUtils avatarHelper) {
+    public UserListAdapter(final LayoutInflater inflater, final AvatarLoader avatarHelper) {
         this(inflater, null, avatarHelper);
     }
 

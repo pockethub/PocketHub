@@ -19,7 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.github.mobile.ui.ItemListAdapter;
-import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.TimeUtils;
 import com.viewpagerindicator.R.layout;
@@ -31,7 +31,7 @@ import org.eclipse.egit.github.core.Comment;
  */
 public class CommentListAdapter extends ItemListAdapter<Comment, CommentItemView> {
 
-    private final AvatarUtils avatars;
+    private final AvatarLoader avatars;
 
     private final HttpImageGetter imageGetter;
 
@@ -43,7 +43,7 @@ public class CommentListAdapter extends ItemListAdapter<Comment, CommentItemView
      * @param avatars
      * @param imageGetter
      */
-    public CommentListAdapter(LayoutInflater inflater, Comment[] elements, AvatarUtils avatars,
+    public CommentListAdapter(LayoutInflater inflater, Comment[] elements, AvatarLoader avatars,
             HttpImageGetter imageGetter) {
         super(layout.comment_view_item, inflater, elements);
 
@@ -58,7 +58,7 @@ public class CommentListAdapter extends ItemListAdapter<Comment, CommentItemView
      * @param avatars
      * @param imageGetter
      */
-    public CommentListAdapter(LayoutInflater inflater, AvatarUtils avatars, HttpImageGetter imageGetter) {
+    public CommentListAdapter(LayoutInflater inflater, AvatarLoader avatars, HttpImageGetter imageGetter) {
         this(inflater, null, avatars, imageGetter);
     }
 

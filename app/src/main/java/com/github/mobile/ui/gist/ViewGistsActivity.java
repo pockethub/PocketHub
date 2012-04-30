@@ -37,7 +37,7 @@ import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.ui.UrlLauncher;
-import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
 import java.io.Serializable;
@@ -98,7 +98,7 @@ public class ViewGistsActivity extends DialogFragmentActivity implements OnPageC
     private GistStore store;
 
     @Inject
-    private AvatarUtils avatarHelper;
+    private AvatarLoader avatarHelper;
 
     private final UrlLauncher urlLauncher = new UrlLauncher();
 

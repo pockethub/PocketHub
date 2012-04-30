@@ -31,7 +31,7 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
-import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.AvatarLoader;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 
@@ -84,7 +84,7 @@ public class CreateCommentActivity extends RoboSherlockFragmentActivity {
     }
 
     @Inject
-    private AvatarUtils avatarHelper;
+    private AvatarLoader avatarHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

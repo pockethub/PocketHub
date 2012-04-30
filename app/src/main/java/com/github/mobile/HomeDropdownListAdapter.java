@@ -28,7 +28,7 @@ import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemView;
-import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.AvatarLoader;
 
 import java.util.List;
 
@@ -55,9 +55,9 @@ public class HomeDropdownListAdapter extends BaseAdapter {
 
     private static class OrgListAdapter extends ItemListAdapter<User, OrgItemView> {
 
-        private final AvatarUtils avatars;
+        private final AvatarLoader avatars;
 
-        public OrgListAdapter(int viewId, LayoutInflater inflater, User[] elements, AvatarUtils avatars) {
+        public OrgListAdapter(int viewId, LayoutInflater inflater, User[] elements, AvatarLoader avatars) {
             super(viewId, inflater, elements);
 
             this.avatars = avatars;
@@ -105,7 +105,7 @@ public class HomeDropdownListAdapter extends BaseAdapter {
      * @param orgs
      * @param avatarHelper
      */
-    public HomeDropdownListAdapter(final Context context, final List<User> orgs, final AvatarUtils avatarHelper) {
+    public HomeDropdownListAdapter(final Context context, final List<User> orgs, final AvatarLoader avatarHelper) {
         this.context = context;
 
         LayoutInflater inflater = LayoutInflater.from(context);

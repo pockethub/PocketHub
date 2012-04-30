@@ -33,7 +33,7 @@ import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.PagedItemFragment;
-import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 
@@ -53,7 +53,7 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
      * Avatar helper
      */
     @Inject
-    protected AvatarUtils avatarHelper;
+    protected AvatarLoader avatarHelper;
 
     /**
      * Gist service

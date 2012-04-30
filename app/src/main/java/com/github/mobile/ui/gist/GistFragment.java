@@ -60,7 +60,7 @@ import com.github.mobile.core.gist.StarGistTask;
 import com.github.mobile.core.gist.UnstarGistTask;
 import com.github.mobile.ui.comment.CommentListAdapter;
 import com.github.mobile.ui.comment.CreateCommentActivity;
-import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HtmlUtils;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.TimeUtils;
@@ -130,7 +130,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
     private boolean loadFinished;
 
     @Inject
-    private AvatarUtils avatarHelper;
+    private AvatarLoader avatarHelper;
 
     @Inject
     private ContextScopedProvider<GistService> gistServiceProvider;

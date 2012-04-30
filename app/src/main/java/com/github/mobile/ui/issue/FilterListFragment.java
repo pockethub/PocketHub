@@ -13,7 +13,7 @@ import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
 import com.github.mobile.ui.ItemView;
-import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 
@@ -30,7 +30,7 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> {
     private AccountDataManager cache;
 
     @Inject
-    private AvatarUtils avatars;
+    private AvatarLoader avatars;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

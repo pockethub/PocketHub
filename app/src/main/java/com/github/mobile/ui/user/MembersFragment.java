@@ -25,7 +25,7 @@ import com.github.mobile.ThrowableLoader;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
 import com.github.mobile.ui.ItemView;
-import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 
@@ -45,7 +45,7 @@ public class MembersFragment extends ItemListFragment<User> implements OrgSelect
     private OrganizationService service;
 
     @Inject
-    private AvatarUtils avatarHelper;
+    private AvatarLoader avatarHelper;
 
     @Override
     public void onAttach(Activity activity) {

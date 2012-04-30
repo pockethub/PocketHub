@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import com.github.mobile.R.id;
 import com.github.mobile.ui.user.NewsEventListAdapter;
-import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.AvatarLoader;
 
 import java.util.Date;
 
@@ -65,7 +65,7 @@ public class NewsEventTextTest extends AndroidTestCase {
 		repo = new EventRepository().setName("user/repo");
 
 		adapter = new NewsEventListAdapter(LayoutInflater.from(mContext),
-				new AvatarUtils(mContext));
+				new AvatarLoader(mContext));
 	}
 
 	private Event createEvent(String type) {

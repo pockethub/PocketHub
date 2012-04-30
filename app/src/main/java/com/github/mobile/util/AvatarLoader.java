@@ -49,7 +49,7 @@ import roboguice.util.RoboAsyncTask;
 /**
  * Avatar utilities
  */
-public class AvatarUtils {
+public class AvatarLoader {
 
     private static final String TAG = "AvatarHelper";
 
@@ -95,7 +95,7 @@ public class AvatarUtils {
      * @param context
      */
     @Inject
-    public AvatarUtils(final Context context) {
+    public AvatarLoader(final Context context) {
         this.context = context;
 
         loadingAvatar = context.getResources().getDrawable(drawable.gravatar_icon);
@@ -116,7 +116,7 @@ public class AvatarUtils {
      * @param user
      * @return this helper
      */
-    protected AvatarUtils setImage(final BitmapDrawable image, final ImageView view, final User user) {
+    protected AvatarLoader setImage(final BitmapDrawable image, final ImageView view, final User user) {
         if (!Integer.valueOf(user.getId()).equals(view.getTag(id.iv_avatar)))
             return this;
 
@@ -222,7 +222,7 @@ public class AvatarUtils {
      * @param user
      * @return this helper
      */
-    public AvatarUtils bind(final ActionBar actionBar, final User user) {
+    public AvatarLoader bind(final ActionBar actionBar, final User user) {
         if (user == null)
             return this;
 
@@ -242,7 +242,7 @@ public class AvatarUtils {
 
             @Override
             public BitmapDrawable call() throws Exception {
-                synchronized (AvatarUtils.this) {
+                synchronized (AvatarLoader.this) {
                     BitmapDrawable image = getImage(user);
                     if (image == null)
                         image = fetchAvatar(avatarUrl, userId);
@@ -267,7 +267,7 @@ public class AvatarUtils {
      * @param user
      * @return this helper
      */
-    public AvatarUtils bind(final ImageView view, final User user) {
+    public AvatarLoader bind(final ImageView view, final User user) {
         if (user == null) {
             view.setImageDrawable(loadingAvatar);
             return this;
@@ -299,7 +299,7 @@ public class AvatarUtils {
                 if (!userId.equals(view.getTag(id.iv_avatar)))
                     return null;
 
-                synchronized (AvatarUtils.this) {
+                synchronized (AvatarLoader.this) {
                     BitmapDrawable image = getImage(user);
                     if (image == null)
                         image = fetchAvatar(avatarUrl, userId);

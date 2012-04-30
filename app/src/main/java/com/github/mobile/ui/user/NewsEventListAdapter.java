@@ -58,7 +58,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.github.mobile.ui.ItemListAdapter;
-import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.TimeUtils;
 import com.viewpagerindicator.R.layout;
 
@@ -461,7 +461,7 @@ public class NewsEventListAdapter extends ItemListAdapter<Event, NewsEventItemVi
         return builder;
     }
 
-    private final AvatarUtils avatars;
+    private final AvatarLoader avatars;
 
     /**
      * Create list adapter
@@ -470,7 +470,7 @@ public class NewsEventListAdapter extends ItemListAdapter<Event, NewsEventItemVi
      * @param elements
      * @param avatars
      */
-    public NewsEventListAdapter(LayoutInflater inflater, Event[] elements, AvatarUtils avatars) {
+    public NewsEventListAdapter(LayoutInflater inflater, Event[] elements, AvatarLoader avatars) {
         super(layout.event_item, inflater, elements);
 
         this.avatars = avatars;
@@ -482,7 +482,7 @@ public class NewsEventListAdapter extends ItemListAdapter<Event, NewsEventItemVi
      * @param inflater
      * @param avatars
      */
-    public NewsEventListAdapter(LayoutInflater inflater, AvatarUtils avatars) {
+    public NewsEventListAdapter(LayoutInflater inflater, AvatarLoader avatars) {
         this(inflater, null, avatars);
     }
 

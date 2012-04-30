@@ -24,7 +24,7 @@ import android.widget.TextView;
 
 import com.github.mobile.R.id;
 import com.github.mobile.ui.ItemListAdapter;
-import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.TimeUtils;
 import com.github.mobile.util.TypefaceUtils;
 import com.viewpagerindicator.R.layout;
@@ -36,7 +36,7 @@ import org.eclipse.egit.github.core.Issue;
  */
 public class RepositoryIssueListAdapter extends ItemListAdapter<Issue, RepositoryIssueItemView> {
 
-    private final AvatarUtils avatars;
+    private final AvatarLoader avatars;
 
     private final TextView numberView;
 
@@ -47,7 +47,7 @@ public class RepositoryIssueListAdapter extends ItemListAdapter<Issue, Repositor
      * @param elements
      * @param avatars
      */
-    public RepositoryIssueListAdapter(LayoutInflater inflater, Issue[] elements, AvatarUtils avatars) {
+    public RepositoryIssueListAdapter(LayoutInflater inflater, Issue[] elements, AvatarLoader avatars) {
         super(layout.repo_issue_list_item, inflater, elements);
 
         this.avatars = avatars;
@@ -62,7 +62,7 @@ public class RepositoryIssueListAdapter extends ItemListAdapter<Issue, Repositor
      * @param inflater
      * @param avatars
      */
-    public RepositoryIssueListAdapter(LayoutInflater inflater, AvatarUtils avatars) {
+    public RepositoryIssueListAdapter(LayoutInflater inflater, AvatarLoader avatars) {
         this(inflater, null, avatars);
     }
 

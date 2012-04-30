@@ -22,7 +22,7 @@ import com.github.mobile.core.ResourcePager;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.PagedItemFragment;
-import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 
@@ -38,7 +38,7 @@ import org.eclipse.egit.github.core.service.UserService;
 public class FollowersFragment extends PagedItemFragment<User> {
 
     @Inject
-    private AvatarUtils avatarHelper;
+    private AvatarLoader avatarHelper;
 
     @Inject
     private UserService userService;

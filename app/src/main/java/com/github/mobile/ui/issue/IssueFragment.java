@@ -67,7 +67,7 @@ import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.ui.DialogResultListener;
 import com.github.mobile.ui.comment.CommentListAdapter;
 import com.github.mobile.ui.comment.CreateCommentActivity;
-import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HtmlUtils;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.ServiceUtils;
@@ -112,7 +112,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
     private Issue issue;
 
     @Inject
-    private AvatarUtils avatarHelper;
+    private AvatarLoader avatarHelper;
 
     @Inject
     private HttpImageGetter imageGetter;

@@ -28,7 +28,7 @@ import com.github.mobile.HomeActivity;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
-import com.github.mobile.util.AvatarUtils;
+import com.github.mobile.util.AvatarLoader;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 import com.viewpagerindicator.TitlePageIndicator;
@@ -63,7 +63,7 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
     private ViewPager pager;
 
     @Inject
-    private AvatarUtils avatarHelper;
+    private AvatarLoader avatarHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
