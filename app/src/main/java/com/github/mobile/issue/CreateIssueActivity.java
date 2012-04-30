@@ -15,6 +15,8 @@
  */
 package com.github.mobile.issue;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.github.mobile.util.GitHubIntents.EXTRA_REPOSITORY;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -24,18 +26,21 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.DialogFragmentActivity;
 import com.github.mobile.MultiChoiceDialogFragment;
-import com.github.mobile.SingleChoiceDialogFragment;
-import com.github.mobile.TextWatcherAdapter;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
+import com.github.mobile.SingleChoiceDialogFragment;
+import com.github.mobile.TextWatcherAdapter;
 import com.github.mobile.async.AuthenticatedUserTask;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.ui.issue.AssigneeDialog;
@@ -43,8 +48,9 @@ import com.github.mobile.ui.issue.LabelsDialog;
 import com.github.mobile.ui.issue.MilestoneDialog;
 import com.github.mobile.ui.issue.ViewIssuesActivity;
 import com.github.mobile.util.AvatarUtils;
-import com.github.mobile.util.ToastUtils;
 import com.github.mobile.util.GitHubIntents.Builder;
+import com.github.mobile.util.ServiceUtils;
+import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -113,13 +119,23 @@ public class CreateIssueActivity extends DialogFragmentActivity {
 
     private AssigneeDialog assigneeDialog;
 
-    private CreateIssueHeaderViewHolder header;
-
     @InjectView(id.et_issue_title)
     private EditText titleText;
 
     @InjectView(id.et_issue_body)
     private EditText bodyText;
+
+    @InjectView(id.tv_assignee_name)
+    private TextView assigneeText;
+
+    @InjectView(id.iv_assignee_gravatar)
+    private ImageView assigneeAvatar;
+
+    @InjectView(id.v_labels)
+    private View labelsArea;
+
+    @InjectView(id.tv_milestone)
+    private TextView milestoneText;
 
     private final Issue newIssue = new Issue();
 
@@ -171,8 +187,37 @@ public class CreateIssueActivity extends DialogFragmentActivity {
             }
         });
 
-        header = new CreateIssueHeaderViewHolder(headerView, avatarHelper, getResources());
-        header.updateViewFor(newIssue);
+        updateHeader(newIssue);
+    }
+
+    private void updateHeader(Issue issue) {
+        User assignee = issue.getAssignee();
+        if (assignee != null) {
+            assigneeText.setText(assignee.getLogin());
+            assigneeAvatar.setVisibility(VISIBLE);
+            avatarHelper.bind(assigneeAvatar, assignee);
+        } else {
+            assigneeAvatar.setVisibility(GONE);
+            assigneeText.setText("Unassigned");
+        }
+
+        List<Label> labels = issue.getLabels();
+        if (labels != null && !labels.isEmpty()) {
+            labelsArea.setVisibility(VISIBLE);
+            LabelsDrawable drawable = new LabelsDrawable(labelsArea.getPaddingLeft(), assigneeText.getTextSize(),
+                    ServiceUtils.getDisplayWidth(labelsArea) - labelsArea.getPaddingLeft()
+                            - labelsArea.getPaddingRight(), issue.getLabels());
+            drawable.getPaint().setColor(getResources().getColor(android.R.color.transparent));
+            labelsArea.setBackgroundDrawable(drawable);
+            LayoutParams params = new LayoutParams(drawable.getBounds().width(), drawable.getBounds().height());
+            labelsArea.setLayoutParams(params);
+        } else
+            labelsArea.setVisibility(GONE);
+
+        if (issue.getMilestone() != null)
+            milestoneText.setText(issue.getMilestone().getTitle());
+        else
+            milestoneText.setText(milestoneText.getContext().getString(string.no_milestone));
     }
 
     @Override
@@ -196,7 +241,7 @@ public class CreateIssueActivity extends DialogFragmentActivity {
                 newIssue.setLabels(labels);
             } else
                 newIssue.setLabels(null);
-            header.updateViewFor(newIssue);
+            updateHeader(newIssue);
             break;
         case REQUEST_CODE_MILESTONE:
             String title = arguments.getString(SingleChoiceDialogFragment.ARG_SELECTED);
@@ -205,7 +250,7 @@ public class CreateIssueActivity extends DialogFragmentActivity {
                         milestoneDialog.getMilestoneNumber(title)));
             else
                 newIssue.setMilestone(null);
-            header.updateViewFor(newIssue);
+            updateHeader(newIssue);
             break;
         case REQUEST_CODE_ASSIGNEE:
             String login = arguments.getString(SingleChoiceDialogFragment.ARG_SELECTED);
@@ -217,7 +262,7 @@ public class CreateIssueActivity extends DialogFragmentActivity {
                 newIssue.setAssignee(assignee);
             } else
                 newIssue.setAssignee(null);
-            header.updateViewFor(newIssue);
+            updateHeader(newIssue);
             break;
         }
     }
