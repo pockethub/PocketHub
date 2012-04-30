@@ -18,34 +18,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="5dp"
-    android:paddingRight="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
     android:paddingTop="5dp" >
+
+    <ImageView
+        android:id="@+id/iv_gravatar"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="4dp" />
 
     <TextView
         android:id="@+id/tv_gist_id"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="@color/background_id"
-        android:gravity="right"
-        android:includeFontPadding="false"
-        android:paddingBottom="2dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="2dp"
-        android:paddingTop="2dp"
+        android:layout_toRightOf="@id/iv_gravatar"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/item_text_color"
-        android:typeface="monospace" />
+        android:textColor="@color/item_text_color_light" />
 
     <TextView
         android:id="@+id/tv_gist_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/tv_gist_id"
-        android:layout_toRightOf="@id/tv_gist_id"
-        android:paddingLeft="10dp"
+        android:layout_alignLeft="@id/tv_gist_id"
+        android:layout_below="@id/tv_gist_id"
+        android:paddingTop="5dp"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/item_text_color"
@@ -58,14 +60,7 @@
         android:layout_below="@id/tv_gist_title"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingLeft="10dp"
         android:paddingTop="5dp" >
-
-        <ImageView
-            android:id="@+id/iv_gravatar"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginRight="5dp" />
 
         <TextView
             android:id="@+id/tv_gist_author"
