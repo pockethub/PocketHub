@@ -19,7 +19,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.github.mobile.issue.IssuesFragment;
+import com.github.mobile.ui.issue.IssuesFragment;
 import com.viewpagerindicator.TitleProvider;
 
 /**

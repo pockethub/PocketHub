@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.issue;
+package com.github.mobile.ui.issue;
 
 import static com.github.mobile.util.GitHubIntents.EXTRA_ISSUE;
 import android.content.Intent;

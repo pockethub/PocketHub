@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.issue;
+package com.github.mobile.ui.issue;
 
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
@@ -47,8 +47,6 @@ import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.PagedItemFragment;
-import com.github.mobile.ui.issue.RepositoryIssueListAdapter;
-import com.github.mobile.ui.issue.ViewIssuesActivity;
 import com.github.mobile.util.AvatarUtils;
 import com.github.mobile.util.ListViewUtils;
 import com.github.mobile.util.ToastUtils;

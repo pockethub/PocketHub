@@ -21,7 +21,7 @@ import android.net.Uri;
 
 import com.github.mobile.core.gist.GistUrlMatcher;
 import com.github.mobile.core.issue.IssueUrlMatcher;
-import com.github.mobile.gist.ViewGistsActivity;
+import com.github.mobile.ui.gist.ViewGistsActivity;
 import com.github.mobile.ui.issue.ViewIssuesActivity;
 
 import org.eclipse.egit.github.core.Gist;

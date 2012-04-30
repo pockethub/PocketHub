@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.issue;
+package com.github.mobile.ui.issue;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -43,10 +43,6 @@ import com.github.mobile.SingleChoiceDialogFragment;
 import com.github.mobile.TextWatcherAdapter;
 import com.github.mobile.async.AuthenticatedUserTask;
 import com.github.mobile.core.issue.IssueStore;
-import com.github.mobile.ui.issue.AssigneeDialog;
-import com.github.mobile.ui.issue.LabelsDialog;
-import com.github.mobile.ui.issue.MilestoneDialog;
-import com.github.mobile.ui.issue.ViewIssuesActivity;
 import com.github.mobile.util.AvatarUtils;
 import com.github.mobile.util.GitHubIntents.Builder;
 import com.github.mobile.util.ServiceUtils;

@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.repo;
+package com.github.mobile.ui.repo;
 
 import static android.app.SearchManager.QUERY;
 import static android.content.Intent.ACTION_SEARCH;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
-import static com.github.mobile.repo.RepoSearchRecentSuggestionsProvider.clearRepoQueryHistory;
-import static com.github.mobile.repo.RepoSearchRecentSuggestionsProvider.saveRecentRepoQuery;
+import static com.github.mobile.ui.repo.RepoSearchRecentSuggestionsProvider.clearRepoQueryHistory;
+import static com.github.mobile.ui.repo.RepoSearchRecentSuggestionsProvider.saveRecentRepoQuery;
 import android.content.Intent;
 import android.os.Bundle;
 

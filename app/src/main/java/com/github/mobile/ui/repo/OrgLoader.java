@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.repo;
+package com.github.mobile.ui.repo;
 
 import static android.util.Log.WARN;
 import static java.util.Collections.emptyList;

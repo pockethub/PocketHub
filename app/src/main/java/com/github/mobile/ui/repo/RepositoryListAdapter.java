@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.repo;
+package com.github.mobile.ui.repo;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -23,8 +23,8 @@ import static com.github.mobile.util.TypefaceUtils.ICON_PUBLIC;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.github.mobile.repo.RecentReposHelper.RecentRepos;
 import com.github.mobile.ui.ItemListAdapter;
+import com.github.mobile.ui.repo.RecentReposHelper.RecentRepos;
 import com.viewpagerindicator.R.layout;
 
 import java.util.concurrent.atomic.AtomicReference;

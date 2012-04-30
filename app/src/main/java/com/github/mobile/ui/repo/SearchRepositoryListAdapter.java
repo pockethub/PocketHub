@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.repo;
+package com.github.mobile.ui.repo;
 
 import static com.github.mobile.util.TypefaceUtils.ICON_FORK;
 import static com.github.mobile.util.TypefaceUtils.ICON_PRIVATE;

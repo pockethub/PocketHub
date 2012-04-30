@@ -21,7 +21,7 @@ import android.widget.ListView;
 import com.github.mobile.core.gist.GistEventMatcher;
 import com.github.mobile.core.issue.IssueEventMatcher;
 import com.github.mobile.core.repo.RepositoryEventMatcher;
-import com.github.mobile.gist.ViewGistsActivity;
+import com.github.mobile.ui.gist.ViewGistsActivity;
 import com.github.mobile.ui.issue.ViewIssuesActivity;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
 import com.github.mobile.ui.user.NewsEventListAdapter;

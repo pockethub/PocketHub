@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.issue;
+package com.github.mobile.ui.issue;
 
 import static com.github.mobile.ui.issue.DashboardIssueFragment.ARG_FILTER;
 import static org.eclipse.egit.github.core.service.IssueService.DIRECTION_DESCENDING;
@@ -32,7 +32,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.github.mobile.R.string;
-import com.github.mobile.ui.issue.DashboardIssueFragment;
 import com.viewpagerindicator.TitleProvider;
 
 import java.io.Serializable;

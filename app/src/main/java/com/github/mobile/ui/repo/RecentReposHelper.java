@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.repo;
+package com.github.mobile.ui.repo;
 
 import static com.google.common.base.Predicates.in;
 import static com.google.common.collect.Iterables.concat;

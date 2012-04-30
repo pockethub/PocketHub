@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.gist;
+package com.github.mobile.ui.gist;
 
 import static android.app.Activity.RESULT_OK;
 import static android.graphics.Typeface.ITALIC;

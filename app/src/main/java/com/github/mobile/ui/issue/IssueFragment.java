@@ -64,8 +64,6 @@ import com.github.mobile.SingleChoiceDialogFragment;
 import com.github.mobile.async.AuthenticatedUserTask;
 import com.github.mobile.core.issue.FullIssue;
 import com.github.mobile.core.issue.IssueStore;
-import com.github.mobile.issue.EditIssueActivity;
-import com.github.mobile.issue.LabelsDrawable;
 import com.github.mobile.ui.DialogResultListener;
 import com.github.mobile.ui.comment.CommentListAdapter;
 import com.github.mobile.ui.comment.CreateCommentActivity;

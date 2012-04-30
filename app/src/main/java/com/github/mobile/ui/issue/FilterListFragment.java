@@ -9,7 +9,6 @@ import android.widget.ListView;
 import com.github.mobile.R.string;
 import com.github.mobile.async.AuthenticatedUserLoader;
 import com.github.mobile.core.issue.IssueFilter;
-import com.github.mobile.issue.IssueBrowseActivity;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;

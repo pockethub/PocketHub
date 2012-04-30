@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.gist;
+package com.github.mobile.ui.gist;
 
 import android.content.res.Resources;
 import android.support.v4.app.Fragment;
@@ -21,9 +21,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.github.mobile.R.string;
-import com.github.mobile.ui.gist.MyGistsFragment;
-import com.github.mobile.ui.gist.PublicGistsFragment;
-import com.github.mobile.ui.gist.StarredGistsFragment;
 import com.viewpagerindicator.TitleProvider;
 
 /**

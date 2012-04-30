@@ -13,30 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.gist;
+package com.github.mobile.ui.gist;
 
-import static com.github.mobile.RequestCodes.GIST_VIEW;
+import static android.app.Activity.RESULT_OK;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 
 import com.github.mobile.R.string;
-import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Gist;
+import org.eclipse.egit.github.core.service.GistService;
+
+import roboguice.inject.ContextScopedProvider;
 
 /**
- * Task to load and open a Gist with an id
+ * Async task to delete a Gist
  */
-public class OpenGistTask extends ProgressDialogTask<Gist> {
+public class DeleteGistTask extends ProgressDialogTask<Gist> {
 
     private final String id;
 
     @Inject
-    private GistStore store;
+    private ContextScopedProvider<GistService> serviceProvider;
 
     /**
      * Create task
@@ -44,9 +45,8 @@ public class OpenGistTask extends ProgressDialogTask<Gist> {
      * @param context
      * @param gistId
      */
-    public OpenGistTask(final Activity context, final String gistId) {
+    public DeleteGistTask(final Activity context, final String gistId) {
         super(context);
-
         id = gistId;
     }
 
@@ -58,20 +58,27 @@ public class OpenGistTask extends ProgressDialogTask<Gist> {
     public void start() {
         dismissProgress();
 
-        Context context = getContext();
-        progress = new ProgressDialog(context);
+        progress = new ProgressDialog(getContext());
         progress.setIndeterminate(true);
-        progress.setMessage(context.getString(string.loading_gist));
+        progress.setMessage(getContext().getString(string.deleting_gist));
         progress.show();
 
         execute();
     }
 
     @Override
+    public Gist run() throws Exception {
+        serviceProvider.get(getContext()).deleteGist(id);
+        return null;
+    }
+
+    @Override
     protected void onSuccess(Gist gist) throws Exception {
         super.onSuccess(gist);
 
-        ((Activity) getContext()).startActivityForResult(ViewGistsActivity.createIntent(gist), GIST_VIEW);
+        Activity activity = (Activity) getContext();
+        activity.setResult(RESULT_OK);
+        activity.finish();
     }
 
     @Override
@@ -79,10 +86,5 @@ public class OpenGistTask extends ProgressDialogTask<Gist> {
         super.onException(e);
 
         ToastUtils.show((Activity) getContext(), e.getMessage());
-    }
-
-    @Override
-    protected Gist run() throws Exception {
-        return store.refreshGist(id);
     }
 }

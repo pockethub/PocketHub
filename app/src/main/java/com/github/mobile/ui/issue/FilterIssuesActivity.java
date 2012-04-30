@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.issue;
+package com.github.mobile.ui.issue;
 
 import static com.github.mobile.util.GitHubIntents.EXTRA_ISSUE_FILTER;
 import static com.github.mobile.util.GitHubIntents.EXTRA_REPOSITORY;
@@ -37,9 +37,6 @@ import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.core.issue.IssueFilter;
-import com.github.mobile.ui.issue.AssigneeDialog;
-import com.github.mobile.ui.issue.LabelsDialog;
-import com.github.mobile.ui.issue.MilestoneDialog;
 import com.github.mobile.util.GitHubIntents.Builder;
 import com.google.common.base.Joiner;
 import com.google.inject.Inject;

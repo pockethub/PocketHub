@@ -21,7 +21,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.view.ViewGroup;
 
-import com.github.mobile.repo.RepoListFragment;
+import com.github.mobile.ui.repo.RepoListFragment;
 import com.viewpagerindicator.TitleProvider;
 
 import java.util.HashSet;

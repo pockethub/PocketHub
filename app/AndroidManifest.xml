@@ -23,10 +23,10 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <meta-data android:name="android.app.default_searchable" android:value=".repo.RepoSearchActivity"/>
+            <meta-data android:name="android.app.default_searchable" android:value=".ui.repo.RepoSearchActivity"/>
         </activity>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".gist.ShareGistActivity">
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.gist.ShareGistActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -34,49 +34,49 @@
             </intent-filter>
         </activity>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".issue.IssueBrowseActivity">
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.IssueBrowseActivity">
             <intent-filter>
                 <action android:name="com.github.mobile.android.repo.issues.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".issue.FilterIssuesActivity">
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.FilterIssuesActivity">
             <intent-filter>
                 <action android:name="com.github.mobile.android.repo.issues.filter.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".issue.IssueDashboardActivity">
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.IssueDashboardActivitytivity">
             <intent-filter>
                 <action android:name="com.github.mobile.android.repo.issues.dashboard.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".issue.CreateIssueActivity">
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.CreateIssueActivitytivity">
             <intent-filter>
                 <action android:name="com.github.mobile.android.repo.issues.create.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".issue.EditIssueActivity">
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.EditIssueActivity">
             <intent-filter>
                 <action android:name="com.github.mobile.android.repo.issues.edit.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:label="@string/search_title" android:launchMode="singleTop" android:name=".repo.RepoSearchActivity">
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:label="@string/search_title" android:launchMode="singleTop" android:name=".ui.repo.RepoSearchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH"/>
             </intent-filter>
             <meta-data android:name="android.app.searchable" android:resource="@xml/searchable"/>
         </activity>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".gist.GistsActivity"/>
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.gist.GistsActivity"/>
 
         <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.ViewFiltersActivity">
              <intent-filter>
@@ -85,14 +85,14 @@
             </intent-filter>
         </activity>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".gist.ViewGistsActivity">
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.gist.ViewGistsActivity">
             <intent-filter>
                 <action android:name="com.github.mobile.android.gists.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".gist.ViewGistFilesActivity">
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.gist.ViewGistFilesActivity">
             <intent-filter>
                 <action android:name="com.github.mobile.android.gist.files.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>

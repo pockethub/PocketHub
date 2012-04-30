@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.repo;
+package com.github.mobile.ui.repo;
 
 import android.os.Bundle;
 import android.support.v4.content.Loader;
@@ -27,7 +27,6 @@ import com.github.mobile.async.AuthenticatedUserTask;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
 import com.github.mobile.ui.ItemView;
-import com.github.mobile.ui.repo.RepositoryViewActivity;
 import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 
