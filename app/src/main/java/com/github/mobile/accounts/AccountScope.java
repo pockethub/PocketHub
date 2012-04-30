@@ -37,7 +37,7 @@ import java.util.concurrent.ConcurrentMap;
  * Custom Guice-scope that makes an authenticated GitHub account available,
  * by enforcing that the user is logged in before proceeding.
  */
-public class GitHubAccountScope extends ScopeBase {
+public class AccountScope extends ScopeBase {
 
     private final static String TAG = "GitHubAccountScope";
 
@@ -46,11 +46,11 @@ public class GitHubAccountScope extends ScopeBase {
     public static Module module() {
         return new AbstractModule() {
             public void configure() {
-                GitHubAccountScope scope = new GitHubAccountScope();
+                AccountScope scope = new AccountScope();
 
-                bind(GitHubAccountScope.class).toInstance(scope);
+                bind(AccountScope.class).toInstance(scope);
 
-                bind(GITHUB_ACCOUNT_KEY).toProvider(GitHubAccountScope.<GitHubAccount>seededKeyProvider()).in(scope);
+                bind(GITHUB_ACCOUNT_KEY).toProvider(AccountScope.<GitHubAccount>seededKeyProvider()).in(scope);
             }
         };
     }

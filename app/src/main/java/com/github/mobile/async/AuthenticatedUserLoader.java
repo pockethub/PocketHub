@@ -19,7 +19,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.github.mobile.AsyncLoader;
-import com.github.mobile.accounts.GitHubAccountScope;
+import com.github.mobile.accounts.AccountScope;
 import com.google.inject.Inject;
 
 import roboguice.RoboGuice;
@@ -36,7 +36,7 @@ public abstract class AuthenticatedUserLoader<D> extends AsyncLoader<D> {
     private ContextScope contextScope;
 
     @Inject
-    private GitHubAccountScope gitHubAccountScope;
+    private AccountScope gitHubAccountScope;
 
     /**
      * Activity using this loader

@@ -18,7 +18,7 @@ package com.github.mobile.async;
 import android.app.Activity;
 import android.content.Context;
 
-import com.github.mobile.accounts.GitHubAccountScope;
+import com.github.mobile.accounts.AccountScope;
 import com.google.inject.Inject;
 
 import java.util.concurrent.Executor;
@@ -37,7 +37,7 @@ public abstract class AuthenticatedUserTask<ResultT> extends RoboAsyncTask<Resul
     private ContextScope contextScope;
 
     @Inject
-    private GitHubAccountScope gitHubAccountScope;
+    private AccountScope gitHubAccountScope;
 
     @Inject
     private Activity activity;

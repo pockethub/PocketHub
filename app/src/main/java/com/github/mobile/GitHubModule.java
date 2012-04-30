@@ -20,7 +20,7 @@ import android.content.Context;
 
 import com.github.mobile.accounts.AccountGitHubClient;
 import com.github.mobile.accounts.GitHubAccount;
-import com.github.mobile.accounts.GitHubAccountScope;
+import com.github.mobile.accounts.AccountScope;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.persistence.OrganizationRepositories;
@@ -57,7 +57,7 @@ public class GitHubModule extends AbstractModule {
         install(new ServicesModule());
         install(new FactoryModuleBuilder().build(SyncCampaign.Factory.class));
         install(new FactoryModuleBuilder().build(OrganizationRepositories.Factory.class));
-        install(GitHubAccountScope.module());
+        install(AccountScope.module());
     }
 
     private GitHubClient configureClient(GitHubClient client) {

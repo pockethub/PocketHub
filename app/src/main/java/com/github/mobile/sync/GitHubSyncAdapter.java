@@ -23,7 +23,7 @@ import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
 
-import com.github.mobile.accounts.GitHubAccountScope;
+import com.github.mobile.accounts.AccountScope;
 import com.google.inject.Inject;
 
 import roboguice.inject.ContextScope;
@@ -36,7 +36,7 @@ class GitHubSyncAdapter extends AbstractThreadedSyncAdapter {
     private ContextScope contextScope;
 
     @Inject
-    private GitHubAccountScope gitHubAccountScope;
+    private AccountScope gitHubAccountScope;
 
     @Inject
     private SyncCampaign.Factory syncCampaignFactory;
