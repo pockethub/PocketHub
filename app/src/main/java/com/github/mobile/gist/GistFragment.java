@@ -16,6 +16,8 @@
 package com.github.mobile.gist;
 
 import static android.app.Activity.RESULT_OK;
+import static android.graphics.Typeface.ITALIC;
+import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.github.mobile.RequestCodes.COMMENT_CREATE;
@@ -28,6 +30,9 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +60,7 @@ import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.util.AccountUtils;
 import com.github.mobile.util.AvatarUtils;
 import com.github.mobile.util.HtmlUtils;
+import com.github.mobile.util.TimeUtils;
 import com.github.mobile.util.ToastUtils;
 import com.github.mobile.util.TypefaceUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
@@ -64,6 +70,7 @@ import com.madgag.android.listviews.ViewHoldingListAdapter;
 import com.madgag.android.listviews.ViewInflator;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -84,6 +91,13 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
     private static final String TAG = "GistFragment";
 
+    private static final SpannableStringBuilder NO_DESCRIPTION;
+
+    static {
+        NO_DESCRIPTION = new SpannableStringBuilder("No description");
+        NO_DESCRIPTION.setSpan(new StyleSpan(ITALIC), 0, NO_DESCRIPTION.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+
     private String gistId;
 
     private List<Comment> comments;
@@ -101,7 +115,11 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
     private View headerView;
 
-    private GistHeaderViewHolder headerHolder;
+    private TextView created;
+
+    private TextView updated;
+
+    private TextView description;
 
     private View loadingView;
 
@@ -131,11 +149,14 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
         comments = (List<Comment>) getArguments().getSerializable(EXTRA_COMMENTS);
     }
 
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(layout.gist_view, null);
 
         headerView = inflater.inflate(layout.gist_header, null);
-        headerHolder = new GistHeaderViewHolder(headerView);
+        created = (TextView) headerView.findViewById(id.tv_gist_creation);
+        updated = (TextView) headerView.findViewById(id.tv_gist_updated);
+        description = (TextView) headerView.findViewById(id.tv_gist_description);
 
         loadingView = inflater.inflate(layout.load_item, null);
         ((TextView) loadingView.findViewById(id.tv_loading)).setText(string.loading_comments);
@@ -143,6 +164,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
         return root;
     }
 
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -153,7 +175,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
         gist = store.getGist(gistId);
 
         if (gist != null) {
-            headerHolder.updateViewFor(gist);
+            updateHeader(gist);
             updateFiles(gist);
         } else {
             ((TextView) loadingView.findViewById(id.tv_loading)).setText(string.loading_gist);
@@ -184,6 +206,28 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
             return false;
         String login = AccountUtils.getLogin(getActivity());
         return login != null && login.equals(user.getLogin());
+    }
+
+    private void updateHeader(Gist gist) {
+        Date createdAt = gist.getCreatedAt();
+        if (createdAt != null) {
+            created.setText("Created " + TimeUtils.getRelativeTime(createdAt));
+            created.setVisibility(VISIBLE);
+        } else
+            created.setVisibility(GONE);
+
+        Date updatedAt = gist.getUpdatedAt();
+        if (updatedAt != null && !updatedAt.equals(createdAt)) {
+            updated.setText("Updated " + TimeUtils.getRelativeTime(updatedAt));
+            updated.setVisibility(VISIBLE);
+        } else
+            updated.setVisibility(GONE);
+
+        String desc = gist.getDescription();
+        if (!TextUtils.isEmpty(desc))
+            description.setText(desc);
+        else
+            description.setText(NO_DESCRIPTION);
     }
 
     @Override
@@ -323,8 +367,9 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
     private void updateList(Gist gist, List<Comment> comments) {
         list.removeHeaderView(loadingView);
+
         headerView.setVisibility(VISIBLE);
-        headerHolder.updateViewFor(gist);
+        updateHeader(gist);
 
         updateFiles(gist);
 
@@ -385,6 +430,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
         }.execute();
     }
 
+    @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Object item = parent.getItemAtPosition(position);
         if (item instanceof GistFile)
