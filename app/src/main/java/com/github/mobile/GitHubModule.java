@@ -22,7 +22,7 @@ import com.github.mobile.core.GitHubAccount;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.guice.GitHubAccountScope;
-import com.github.mobile.persistence.AllReposForUserOrOrg;
+import com.github.mobile.persistence.OrganizationRepositories;
 import com.github.mobile.sync.SyncCampaign;
 import com.github.mobile.util.AccountGitHubClient;
 import com.google.inject.AbstractModule;
@@ -56,7 +56,7 @@ public class GitHubModule extends AbstractModule {
     protected void configure() {
         install(new ServicesModule());
         install(new FactoryModuleBuilder().build(SyncCampaign.Factory.class));
-        install(new FactoryModuleBuilder().build(AllReposForUserOrOrg.Factory.class));
+        install(new FactoryModuleBuilder().build(OrganizationRepositories.Factory.class));
         install(GitHubAccountScope.module());
     }
 

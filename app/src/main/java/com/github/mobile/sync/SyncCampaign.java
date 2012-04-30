@@ -18,9 +18,9 @@ package com.github.mobile.sync;
 import android.content.SyncResult;
 import android.util.Log;
 
-import com.github.mobile.persistence.AllReposForUserOrOrg;
-import com.github.mobile.persistence.DBCache;
-import com.github.mobile.persistence.UserAndOrgs;
+import com.github.mobile.persistence.OrganizationRepositories;
+import com.github.mobile.persistence.DatabaseCache;
+import com.github.mobile.persistence.Organizations;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -37,13 +37,13 @@ public class SyncCampaign implements Runnable {
     private static final String TAG = "SyncCampaign";
 
     @Inject
-    private DBCache dbCache;
+    private DatabaseCache dbCache;
 
     @Inject
-    private AllReposForUserOrOrg.Factory allRepos;
+    private OrganizationRepositories.Factory allRepos;
 
     @Inject
-    private UserAndOrgs userAndOrgsResource;
+    private Organizations userAndOrgsResource;
 
     private final SyncResult syncResult;
     private boolean cancelled = false;

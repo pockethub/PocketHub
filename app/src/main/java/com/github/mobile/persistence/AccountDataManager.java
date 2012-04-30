@@ -17,7 +17,6 @@ package com.github.mobile.persistence;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
@@ -27,7 +26,7 @@ import com.github.mobile.RequestReader;
 import com.github.mobile.RequestWriter;
 import com.github.mobile.async.AuthenticatedUserTask;
 import com.github.mobile.core.issue.IssueFilter;
-import com.github.mobile.persistence.AllReposForUserOrOrg.Factory;
+import com.github.mobile.persistence.OrganizationRepositories.Factory;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
@@ -49,32 +48,6 @@ import org.eclipse.egit.github.core.User;
  */
 public class AccountDataManager {
 
-    public static class CacheHelper extends SQLiteOpenHelper {
-
-        /**
-         * @param context
-         */
-        @Inject
-        public CacheHelper(Context context) {
-            super(context, "cache.db", null, 2);
-        }
-
-        @Override
-        public void onCreate(final SQLiteDatabase db) {
-            db.execSQL("CREATE TABLE orgs (id INTEGER PRIMARY KEY);");
-            db.execSQL("CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT, avatarurl TEXT);");
-            db.execSQL("CREATE TABLE repos (id INTEGER PRIMARY KEY, orgId INTEGER, name TEXT, ownerId INTEGER, private INTEGER, fork INTEGER);");
-        }
-
-        @Override
-        public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
-            db.execSQL("DROP TABLE IF EXISTS orgs");
-            db.execSQL("DROP TABLE IF EXISTS users");
-            db.execSQL("DROP TABLE IF EXISTS repos");
-            onCreate(db);
-        }
-    }
-
     private static final String TAG = "ADM";
 
     private static final Executor EXECUTOR = Executors.newFixedThreadPool(10);
@@ -88,13 +61,13 @@ public class AccountDataManager {
     private Context context;
 
     @Inject
-    private DBCache dbCache;
+    private DatabaseCache dbCache;
 
     @Inject
     private Factory allRepos;
 
     @Inject
-    private UserAndOrgs userAndOrgsResource;
+    private Organizations userAndOrgsResource;
 
     @Inject
     @Named("cacheDir")
@@ -159,7 +132,7 @@ public class AccountDataManager {
      * @return cursor
      */
     protected Cursor query(SQLiteOpenHelper helper, String tables, String[] columns, String selection,
-                           String[] selectionArgs) {
+            String[] selectionArgs) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(tables);
         return builder.query(helper.getReadableDatabase(), columns, selection, selectionArgs, null, null, null);
@@ -183,12 +156,13 @@ public class AccountDataManager {
      * This method may perform network I/O and should never be called on the UI-thread
      *
      * @param user
-     * @param forceReload if true, cached data will not be returned
+     * @param forceReload
+     *            if true, cached data will not be returned
      * @return list of repositories
      * @throws IOException
      */
     public List<Repository> getRepos(final User user, boolean forceReload) throws IOException {
-        AllReposForUserOrOrg resource = allRepos.under(user);
+        OrganizationRepositories resource = allRepos.under(user);
         return forceReload ? dbCache.requestAndStore(resource) : dbCache.loadOrRequest(resource);
     }
 

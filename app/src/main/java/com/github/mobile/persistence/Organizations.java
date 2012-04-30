@@ -15,7 +15,6 @@
  */
 package com.github.mobile.persistence;
 
-import static com.google.common.collect.Lists.newArrayList;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,30 +23,40 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import com.google.inject.Inject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.OrganizationService;
 import org.eclipse.egit.github.core.service.UserService;
 
-public class UserAndOrgs implements PersistableResource<User> {
+/**
+ * Cache of organization under an account
+ */
+public class Organizations implements PersistableResource<User> {
 
-    private final UserService users;
+    private final UserService userService;
 
-    private final OrganizationService orgs;
+    private final OrganizationService orgService;
 
+    /**
+     * Create organizations cache with services to load from
+     *
+     * @param orgService
+     * @param userService
+     */
     @Inject
-    public UserAndOrgs(OrganizationService orgs, UserService users) {
-        this.orgs = orgs;
-        this.users = users;
+    public Organizations(OrganizationService orgService, UserService userService) {
+        this.orgService = orgService;
+        this.userService = userService;
     }
 
     @Override
     public Cursor getCursor(SQLiteDatabase readableDatabase) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables("orgs JOIN users ON (orgs.id = users.id)");
-        return builder.query(readableDatabase, new String[] { "users.id", "users.name", "users.avatarurl" },
-                null, null, null, null, null);
+        return builder.query(readableDatabase, new String[] { "users.id", "users.name", "users.avatarurl" }, null,
+                null, null, null, null);
     }
 
     @Override
@@ -60,9 +69,9 @@ public class UserAndOrgs implements PersistableResource<User> {
     }
 
     @Override
-    public void store(SQLiteDatabase db, List<User> userAndOrgs) {
+    public void store(SQLiteDatabase db, List<User> orgs) {
         db.delete("orgs", null, null);
-        for (User user : userAndOrgs) {
+        for (User user : orgs) {
             ContentValues values = new ContentValues(3);
 
             values.put("id", user.getId());
@@ -76,13 +85,8 @@ public class UserAndOrgs implements PersistableResource<User> {
 
     @Override
     public List<User> request() throws IOException {
-        List<User> userAndOrgs = newArrayList(orgs.getOrganizations());
-        userAndOrgs.add(0, users.getUser());
-        return userAndOrgs;
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName();
+        List<User> orgs = new ArrayList<User>(orgService.getOrganizations());
+        orgs.add(0, userService.getUser());
+        return orgs;
     }
 }

@@ -15,7 +15,6 @@
  */
 package com.github.mobile.persistence;
 
-import static com.google.common.collect.Lists.newArrayList;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -25,20 +24,28 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Given a PersistableResource, this class will take support loading/storing it's data or requesting fresh data, as
  * appropriate.
  */
-public class DBCache {
+public class DatabaseCache {
 
     private static final String TAG = "DBCache";
 
     @Inject
-    private Provider<AccountDataManager.CacheHelper> helperProvider;
+    private Provider<CacheHelper> helperProvider;
 
-    <E> List<E> loadOrRequest(PersistableResource<E> persistableResource) throws IOException {
+    /**
+     * Load or request given resources
+     *
+     * @param persistableResource
+     * @return resource
+     * @throws IOException
+     */
+    public <E> List<E> loadOrRequest(PersistableResource<E> persistableResource) throws IOException {
         SQLiteOpenHelper helper = helperProvider.get();
         try {
             List<E> items = loadFromDB(helper, persistableResource);
@@ -52,6 +59,13 @@ public class DBCache {
         }
     }
 
+    /**
+     * Request and store given resources
+     *
+     * @param persistableResource
+     * @return resources
+     * @throws IOException
+     */
     public <E> List<E> requestAndStore(PersistableResource<E> persistableResource) throws IOException {
         SQLiteOpenHelper helper = helperProvider.get();
         try {
@@ -83,7 +97,7 @@ public class DBCache {
         Cursor cursor = persistableResource.getCursor(helper.getReadableDatabase());
         try {
             if (cursor.moveToFirst()) {
-                List<E> cached = newArrayList();
+                List<E> cached = new ArrayList<E>();
                 do {
                     cached.add(persistableResource.loadFrom(cursor));
                 } while (cursor.moveToNext());
