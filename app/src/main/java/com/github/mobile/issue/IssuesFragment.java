@@ -186,7 +186,8 @@ public class IssuesFragment extends PagedListFragment<Issue> {
             if (!filter.equals(newFilter)) {
                 filter = newFilter;
                 updateFilterSummary();
-                refresh();
+                pager.reset();
+                hideOldContentAndRefresh();
             }
         }
 
