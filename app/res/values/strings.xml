@@ -15,277 +15,124 @@
   limitations under the License.
 -->
 <resources>
+
     <string name="github_app_name">GitHub</string>
     <string name="news">News</string>
     <string name="pull_requests">Pull Requests</string>
     <string name="issues">Issues</string>
-    <string name="welcome">Welcome to GitHub!</string>
     <string name="gists">Gists</string>
     <string name="dashboard_issues">Issues Dashboard</string>
     <string name="find_repos">Find Repos</string>
     <string name="search_title">Search…</string>
     <string name="clear_search_history">Clear History</string>
     <string name="search_history_cleared">Search history cleared</string>
-
-    <!-- AuthenticatorActivity -->
-
-    <!-- Label above username EditText -->
-    <string
-            name="login_activity_username_label">Username
-    </string>
-    <!-- Label above password EditText -->
-    <string
-            name="login_activity_password_label">Password
-    </string>
-    <!-- Button to sign in after entering username and password -->
-    <string
-            name="login_activity_ok_button">Sign in
-    </string>
-
+    <string name="login_activity_username_label">Username</string>
+    <string name="login_activity_password_label">Password</string>
+    <string name="login_activity_ok_button">Sign in</string>
     <string name="login_activity_authenticating">Signing in…</string>
-
-    <!-- Message shown in dialog if the username or password is invalid. -->
-    <string
-            name="login_activity_loginfail_text_both">The username or password isn\'t valid. A Sample SyncAdapter
-        account is
-        required. Please try again.
-    </string>
-    <!-- Message shown in dialog if the password is invalid -->
-    <string
-            name="login_activity_loginfail_text_pwonly">You entered the wrong password or your account has changed.
-        Please re-enter your password.
-    </string>
-    <!-- Message shown in dialog to prompt the user for their password -->
-    <string
-            name="login_activity_loginfail_text_pwmissing">Type the password for this account.
-    </string>
-    <!--
-        Message shown if the provided account doesn't support the current
-        activity.
-    -->
-    <string
-            name="login_activity_newaccount_text">Sign in to your Sample SyncAdapter account.
-    </string>
-
-    <!-- Button that takes the user to the "sign in" screen -->
     <string name="sign_in_button_label">Sign in</string>
-
     <string name="sign_in_username_field_hint">Username</string>
     <string name="sign_in_password_field_hint">Password</string>
-
-    <!-- Button for going to the previous screen or step -->
-    <string
-            name="back_button_label">Back
-    </string>
-    <!-- Button to cancel the current operation -->
-    <string
-            name="cancel_button_label">Cancel
-    </string>
-
-    <!-- Title string for Login activity-->
-    <string
-            name="ui_activity_title">Sign-in
-    </string>
-
+    <string name="ui_activity_title">Sign-in</string>
     <string name="blank_field_warning">Please populate this field</string>
-
     <string name="single_file">1 file</string>
-
     <string name="multiple_files">%,d files</string>
-
-    <string name="record_gist_now">Record Gist Now</string>
-
     <string name="creating_gist">Creating Gist…</string>
-
     <string name="create">Create</string>
-
     <string name="create_gist">Create Gist</string>
-
     <string name="gist_content_hint">puts \"Hello World!\"</string>
-
     <string name="make_public">Public Gist</string>
-
     <string name="gist_file_name_hint">file.txt</string>
-
     <string name="gist">Gist</string>
-
     <string name="loading_gist">Loading Gist…</string>
-
     <string name="random_gist">Random Gist…</string>
-
     <string name="comments">Comments</string>
-
     <string name="files">Files</string>
-
     <string name="open_gist">Open Gist</string>
-
     <string name="open_random_gist">Open Random Gist</string>
-
     <string name="open">Open</string>
-
     <string name="random">Random</string>
-
     <string name="file_name">File Name</string>
-
     <string name="file_content">File Content</string>
-
     <string name="new_gist">New Gist</string>
-
     <string name="filter">Filter</string>
-
     <string name="bookmark">Bookmark</string>
-
     <string name="apply">Apply</string>
-    
-     <string name="comment">Comment</string>
-     
-     <string name="delete_ellipsis">Delete…</string>
-     
-     <string name="refresh">Refresh</string>
+    <string name="comment">Comment</string>
+    <string name="delete_ellipsis">Delete…</string>
+    <string name="refresh">Refresh</string>
+    <string name="dasbhoard_watched">Watched</string>
+    <string name="dasbhoard_assigned">Assigned</string>
+    <string name="dasbhoard_created">Created</string>
+    <string name="dasbhoard_mentioned">Mentioned</string>
+    <string name="dashboard_issues_title">Issue Dashboard</string>
+    <string name="issue_filters">Issue Filters</string>
+    <string name="saved_filters_title">Saved Issue Filters</string>
+    <string name="gists_title">Gists</string>
+    <string name="issue_title">Issue #</string>
+    <string name="gist_title">Gist\u0020</string>
+    <string name="filter_issues_title">Filter Issues</string>
+    <string name="create_comment_title">Create Comment</string>
+    <string name="comment_hint">Enter a comment</string>
+    <string name="show_more">Show More…</string>
+    <string name="loading_more_issues">Loading More Issues…</string>
+    <string name="repositories_title">Repositories</string>
+    <string name="error_orgs_load">Loading account &amp; organizations failed</string>
+    <string name="no_filters">No Filters</string>
+    <string name="no_repositories">No Repositories</string>
+    <string name="no_issues">No Issues</string>
+    <string name="error_issues_load">Loading issues failed</string>
+    <string name="error_repos_load">Loading repositories failed</string>
+    <string name="error_gist_load">Loading Gist failed</string>
+    <string name="error_gist_file_load">Loading Gist file content failed</string>
+    <string name="no_gists">No Gists</string>
+    <string name="error_gists_load">Loading Gists failed</string>
+    <string name="issues_title">Issues</string>
+    <string name="error_issue_load">Loading issue failed</string>
+    <string name="edit_labels">Edit Labels</string>
+    <string name="milestone_prefix">Milestone:</string>
+    <string name="edit_milestone">Edit Milestone</string>
+    <string name="edit_assignee">Edit Assignee</string>
+    <string name="close_issue">Close Issue</string>
+    <string name="reopen_issue">Reopen Issue</string>
+    <string name="my_gists_tab">Mine</string>
+    <string name="starred_gists_tab">Starred</string>
+    <string name="all_gists_tab">All</string>
+    <string name="description">Description</string>
+    <string name="gist_description_hint">Android created Gist</string>
+    <string name="title">Title</string>
+    <string name="edit_description">Edit Title/Description</string>
+    <string name="update">Update</string>
+    <string name="star_gist">Star Gist</string>
+    <string name="starring_gist">Starring Gist…</string>
+    <string name="unstar_gist">Unstar Gist</string>
+    <string name="unstarring_gist">Unstarring Gist…</string>
+    <string name="accounts_label">Accounts</string>
+    <string name="search_matching">“{0}”</string>
+    <string name="select_assignee">Select Assignee</string>
+    <string name="select_milestone">Select Milestone</string>
+    <string name="select_labels">Select Labels</string>
+    <string name="no_milestone">No milestone</string>
+    <string name="unassigned">Unassigned</string>
+    <string name="no_gists_found">No Gists found</string>
+    <string name="open_gist_title">Open Gist</string>
+    <string name="enter_id_message">Enter id:</string>
+    <string name="no_description">No description</string>
+    <string name="confirm_gist_delete_title">Confirm Delete</string>
+    <string name="confirm_gist_delete_message">Are you sure you want to delete this Gist?</string>
+    <string name="deleting_gist">Deleting Gist…</string>
+    <string name="creating_comment">Creating comment…</string>
+    <string name="confirm_filter_delete_message">Are you sure you want to remove this saved issue filter?</string>
+    <string name="loading_issues">Loading Issues…</string>
+    <string name="loading_comments">Loading Comments…</string>
+    <string name="loading_issue">Loading Issue…</string>
+    <string name="loading_news">Loading News…</string>
+    <string name="issue_dashboard">Issue Dashboard</string>
+    <string name="loading_followers">Loading Followers…</string>
+    <string name="new_issue">New Issue</string>
+    <string name="anonymous">Anonymous</string>
+    <string name="loading_gists">Loading Gists</string>
+    <string name="message_filter_saved">Issue filter saved to bookmarks</string>
+    <string name="recent">Recent</string>
 
-     <string name="dasbhoard_watched">Watched</string>
-
-     <string name="dasbhoard_assigned">Assigned</string>
-
-     <string name="dasbhoard_created">Created</string>
-
-     <string name="dasbhoard_mentioned">Mentioned</string>
-
-     <string name="dashboard_issues_title">Issue Dashboard</string>
-
-     <string name="issue_filters">Issue Filters</string>
-
-     <string name="saved_filters_title">Saved Issue Filters</string>
-
-     <string name="gists_title">Gists</string>
-
-     <string name="issue_title">Issue #</string>
-
-     <string name="gist_title">Gist\u0020</string>
-
-     <string name="filter_issues_title">Filter Issues</string>
-
-     <string name="create_comment_title">Create Comment</string>
-
-     <string name="comment_hint">Enter a comment</string>
-
-     <string name="show_more">Show More…</string>
-
-     <string name="loading_more_issues">Loading More Issues…</string>
-
-     <string name="repositories_title">Repositories</string>
-
-     <string name="error_orgs_load">Loading account &amp; organizations failed</string>
-
-     <string name="no_filters">No Filters</string>
-
-     <string name="no_repositories">No Repositories</string>
-
-     <string name="no_issues">No Issues</string>
-
-     <string name="error_issues_load">Loading issues failed</string>
-
-     <string name="error_repos_load">Loading repositories failed</string>
-
-     <string name="error_gist_load">Loading Gist failed</string>
-
-     <string name="error_gist_file_load">Loading Gist file content failed</string>
-
-     <string name="no_gists">No Gists</string>
-
-     <string name="error_gists_load">Loading Gists failed</string>
-
-     <string name="issues_title">Issues</string>
-
-     <string name="error_issue_load">Loading issue failed</string>
-
-     <string name="edit_labels">Edit Labels</string>
-
-     <string name="milestone_prefix">Milestone:</string>
-
-     <string name="edit_milestone">Edit Milestone</string>
-
-     <string name="edit_assignee">Edit Assignee</string>
-
-     <string name="close_issue">Close Issue</string>
-
-     <string name="reopen_issue">Reopen Issue</string>
-
-     <string name="my_gists_tab">Mine</string>
-
-     <string name="starred_gists_tab">Starred</string>
-
-     <string name="all_gists_tab">All</string>
-
-     <string name="description">Description</string>
-
-     <string name="gist_description_hint">Android created Gist</string>
-
-     <string name="title">Title</string>
-
-     <string name="edit_description">Edit Title/Description</string>
-
-     <string name="update">Update</string>
-
-     <string name="star_gist">Star Gist</string>
-
-     <string name="starring_gist">Starring Gist…</string>
-
-     <string name="unstar_gist">Unstar Gist</string>
-
-     <string name="unstarring_gist">Unstarring Gist…</string>
-
-     <string name="accounts_label">Accounts</string>
-
-     <string name="search_matching">“{0}”</string>
-
-     <string name="select_assignee">Select Assignee</string>
-
-     <string name="select_milestone">Select Milestone</string>
-
-     <string name="select_labels">Select Labels</string>
-
-     <string name="no_milestone">No milestone</string>
-
-     <string name="unassigned">Unassigned</string>
-
-     <string name="no_gists_found">No Gists found</string>
-
-     <string name="open_gist_title">Open Gist</string>
-
-     <string name="enter_id_message">Enter id:</string>
-
-     <string name="no_description">No description</string>
-
-     <string name="confirm_gist_delete_title">Confirm Delete</string>
-
-     <string name="confirm_gist_delete_message">Are you sure you want to delete this Gist?</string>
-
-     <string name="deleting_gist">Deleting Gist…</string>
-
-     <string name="creating_comment">Creating comment…</string>
-
-     <string name="confirm_filter_delete_message">Are you sure you want to remove this saved issue filter?</string>
-
-     <string name="loading_issues">Loading Issues…</string>
-     
-     <string name="loading_comments">Loading Comments…</string>
-
-     <string name="loading_issue">Loading Issue…</string>
-
-     <string name="loading_news">Loading News…</string>
-
-     <string name="issue_dashboard">Issue Dashboard</string>
-
-     <string name="loading_followers">Loading Followers…</string>
-
-     <string name="new_issue">New Issue</string>
-
-     <string name="anonymous">Anonymous</string>
-
-     <string name="loading_gists">Loading Gists</string>
-
-     <string name="message_filter_saved">Issue filter saved to bookmarks</string>
-
-     <string name="recent">Recent</string>
 </resources>
