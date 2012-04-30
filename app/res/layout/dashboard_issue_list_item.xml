@@ -31,7 +31,7 @@
         android:gravity="right"
         android:includeFontPadding="false"
         android:paddingBottom="2dp"
-        android:paddingLeft="2dp"
+        android:paddingLeft="5dp"
         android:paddingRight="2dp"
         android:paddingTop="2dp"
         android:singleLine="true"
