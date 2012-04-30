@@ -71,7 +71,8 @@ public class RepositoryIssueListAdapter extends ItemListAdapter<Issue, Repositor
         for (int i = 0; i < numbers.length; i++)
             numbers[i] = ((Issue) items[i]).getNumber();
         int digits = TypefaceUtils.getMaxDigits(numbers);
-        numberWidth = TypefaceUtils.getWidth(numberView, digits);
+        numberWidth = TypefaceUtils.getWidth(numberView, digits) + numberView.getPaddingLeft()
+                + numberView.getPaddingRight();
     }
 
     @Override

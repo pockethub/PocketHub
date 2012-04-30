@@ -76,7 +76,8 @@ public class DashboardIssueListAdapter extends ItemListAdapter<RepositoryIssue, 
         for (int i = 0; i < numbers.length; i++)
             numbers[i] = ((Issue) items[i]).getNumber();
         int digits = TypefaceUtils.getMaxDigits(numbers);
-        numberWidth = TypefaceUtils.getWidth(numberView, digits);
+        numberWidth = TypefaceUtils.getWidth(numberView, digits) + numberView.getPaddingLeft()
+                + numberView.getPaddingRight();
     }
 
     @Override
@@ -100,7 +101,7 @@ public class DashboardIssueListAdapter extends ItemListAdapter<RepositoryIssue, 
             view.number.setPaintFlags(view.numberPaintFlags);
         view.number.getLayoutParams().width = numberWidth;
 
-        avatarHelper.bind(view.gravatar, issue.getUser());
+        avatarHelper.bind(view.avatar, issue.getUser());
 
         String[] segments = issue.getUrl().split("/");
         int length = segments.length;

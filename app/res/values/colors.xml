@@ -19,9 +19,10 @@
     <color name="background">#FFFFFF</color>
     <color name="listing">#888888</color>
     <color name="listing_comments">#BCBCBC</color>
+    <color name="background_id">#E3E3E3</color>
     <color name="item_background">#D9DCDE</color>
-    <color name="item_text_color">#191919</color>
-    <color name="item_text_color_light">#636363</color>
+    <color name="item_text_color">#1E1E1E</color>
+    <color name="item_text_color_light">#AEAEAE</color>
     <color name="item_separator1">#B8BABB</color>
     <color name="item_separator2">#E3E5E6</color>
     <color name="comment_background">#FFFFFF</color>

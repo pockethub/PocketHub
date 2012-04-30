@@ -17,7 +17,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp" >
+    android:paddingBottom="5dp"
+    android:paddingRight="5dp"
+    android:paddingTop="5dp" >
 
     <TextView
         android:id="@+id/tv_issue_number"
@@ -25,10 +27,16 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:background="@color/background_id"
         android:gravity="right"
+        android:includeFontPadding="false"
+        android:paddingBottom="2dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:paddingTop="2dp"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/listing"
+        android:textColor="@color/item_text_color"
         android:typeface="monospace" />
 
     <TextView
@@ -40,15 +48,14 @@
         android:paddingLeft="10dp"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/listing"
-        android:textStyle="italic" />
+        android:textColor="@color/item_text_color_light" />
 
     <TextView
         android:id="@+id/tv_issue_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/tv_issue_repo_name"
         android:layout_below="@id/tv_issue_repo_name"
+        android:layout_toRightOf="@id/tv_issue_number"
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
         android:singleLine="true"
@@ -78,7 +85,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="5dp"
             android:singleLine="true"
-            android:textColor="@color/listing"
+            android:textColor="@color/item_text_color_light"
             android:textStyle="bold" />
 
         <TextView
@@ -88,7 +95,7 @@
             android:layout_weight="1"
             android:paddingLeft="5dp"
             android:singleLine="true"
-            android:textColor="@color/listing" />
+            android:textColor="@color/item_text_color_light" />
 
         <TextView
             android:id="@+id/tv_pull_request_icon"
@@ -99,7 +106,7 @@
             android:singleLine="true"
             android:text="\uf214"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/listing_comments" />
+            android:textColor="@color/item_text_color_light" />
 
         <TextView
             android:id="@+id/tv_comment_icon"
@@ -109,7 +116,7 @@
             android:singleLine="true"
             android:text="\uf243"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/listing_comments" />
+            android:textColor="@color/item_text_color_light" />
 
         <TextView
             android:id="@+id/tv_issue_comments"
@@ -118,7 +125,7 @@
             android:gravity="center_vertical"
             android:paddingLeft="5dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/listing_comments" />
+            android:textColor="@color/item_text_color_light" />
     </LinearLayout>
 
 </RelativeLayout>

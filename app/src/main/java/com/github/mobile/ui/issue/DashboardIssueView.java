@@ -46,7 +46,7 @@ public class DashboardIssueView extends ItemView {
     /**
      * Issue opener avatar image view
      */
-    public final ImageView gravatar;
+    public final ImageView avatar;
 
     /**
      * Issue opener text view
@@ -83,7 +83,7 @@ public class DashboardIssueView extends ItemView {
         number = (TextView) view.findViewById(id.tv_issue_number);
         numberPaintFlags = number.getPaintFlags();
         title = (TextView) view.findViewById(id.tv_issue_title);
-        gravatar = (ImageView) view.findViewById(id.iv_gravatar);
+        avatar = (ImageView) view.findViewById(id.iv_gravatar);
         user = (TextView) view.findViewById(id.tv_issue_user);
         creation = (TextView) view.findViewById(id.tv_issue_creation);
         comments = (TextView) view.findViewById(id.tv_issue_comments);

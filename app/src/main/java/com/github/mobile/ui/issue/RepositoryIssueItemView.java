@@ -24,42 +24,42 @@ import com.github.mobile.ui.ItemView;
 import com.github.mobile.util.TypefaceUtils;
 
 /**
- * Item view for a repository issue
+ * View used to display a repository issue
  */
 public class RepositoryIssueItemView extends ItemView {
 
     /**
-     * Issue number text
+     * Issue number text view
      */
     public final TextView number;
 
     /**
-     * Issue title text
+     * Issue title text view
      */
     public final TextView title;
 
     /**
-     * Issue opener avatar
+     * Issue opener avatar image view
      */
     public final ImageView avatar;
 
     /**
-     * Issue opener login
+     * Issue opener text view
      */
     public final TextView user;
 
     /**
-     * Issue creation date text
+     * Creation time text view
      */
     public final TextView creation;
 
     /**
-     * Number of issue comments
+     * Number of comments text view
      */
     public final TextView comments;
 
     /**
-     * Icon for pull requests
+     * Pull request icon text view
      */
     public final TextView pullRequestIcon;
 
@@ -69,6 +69,8 @@ public class RepositoryIssueItemView extends ItemView {
     public final int numberPaintFlags;
 
     /**
+     * Create item view
+     *
      * @param view
      */
     public RepositoryIssueItemView(View view) {
