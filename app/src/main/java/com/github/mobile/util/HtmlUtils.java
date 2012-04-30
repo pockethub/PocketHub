@@ -59,7 +59,7 @@ public class HtmlUtils {
 
     private static final String EMAIL_END = "</div>";
 
-    private static final String HIDDEN_REPLY_START = "<div class=\"email-hidden-reply style=\" display:none>";
+    private static final String HIDDEN_REPLY_START = "<div class=\"email-hidden-reply\" style=\" display:none\">";
 
     private static final String HIDDEN_REPLY_END = "</div>";
 
