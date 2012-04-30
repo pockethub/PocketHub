@@ -14,18 +14,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/comment_background"
-    android:orientation="vertical" >
-
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:divider="@drawable/list_divider"
-        android:dividerHeight="2px" >
-    </ListView>
-
-</LinearLayout>
+    android:background="@color/background"
+    android:divider="@drawable/list_divider"
+    android:dividerHeight="2px" />
