@@ -127,7 +127,7 @@
             <meta-data android:name="android.accounts.AccountAuthenticator" android:resource="@xml/authenticator"/>
         </service>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:excludeFromRecents="true" android:label="@string/ui_activity_title" android:name=".accountss.AuthenticatorActivity">
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:excludeFromRecents="true" android:label="@string/ui_activity_title" android:name=".accounts.AuthenticatorActivity">
             <!--
                 No intent-filter here! This activity is only ever launched by
                 someone who explicitly knows the class name
