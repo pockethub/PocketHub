@@ -33,7 +33,7 @@ import java.util.List;
  */
 public class DatabaseCache {
 
-    private static final String TAG = "DBCache";
+    private static final String TAG = "DatabaseCache";
 
     @Inject
     private Provider<CacheHelper> helperProvider;
