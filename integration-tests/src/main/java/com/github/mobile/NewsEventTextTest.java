@@ -20,8 +20,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
-import com.github.mobile.ui.user.NewsEventViewHolder;
+import com.github.mobile.ui.user.NewsEventListAdapter;
 import com.github.mobile.util.AvatarUtils;
 
 import java.util.Date;
@@ -47,7 +46,7 @@ import org.eclipse.egit.github.core.event.TeamAddPayload;
  */
 public class NewsEventTextTest extends AndroidTestCase {
 
-	private NewsEventViewHolder holder;
+	private NewsEventListAdapter adapter;
 
 	private TextView text;
 
@@ -65,12 +64,8 @@ public class NewsEventTextTest extends AndroidTestCase {
 		actor = new User().setLogin("user");
 		repo = new EventRepository().setName("user/repo");
 
-		View view = LayoutInflater.from(mContext).inflate(layout.event_item,
-				null);
-		text = (TextView) view.findViewById(id.tv_event);
-		assertNotNull(text);
-		AvatarUtils helper = new AvatarUtils(mContext);
-		holder = new NewsEventViewHolder(view, helper);
+		adapter = new NewsEventListAdapter(LayoutInflater.from(mContext),
+				new AvatarUtils(mContext));
 	}
 
 	private Event createEvent(String type) {
@@ -88,12 +83,20 @@ public class NewsEventTextTest extends AndroidTestCase {
 		assertEquals(expected, actual.toString());
 	}
 
+	private void updateView(Event event) {
+		adapter.setItems(new Object[] { event });
+		View view = adapter.getView(0, null, null);
+		assertNotNull(view);
+		text = (TextView) view.findViewById(id.tv_event);
+		assertNotNull(text);
+	}
+
 	/**
 	 * Verify text of commit comment event
 	 */
 	public void testCommitCommentEvent() {
 		Event event = createEvent(TYPE_COMMIT_COMMENT);
-		holder.updateViewFor(event);
+		updateView(event);
 
 		CharSequence content = text.getText();
 		assertNotNull(content);
@@ -109,7 +112,7 @@ public class NewsEventTextTest extends AndroidTestCase {
 		CreatePayload payload = new CreatePayload();
 		payload.setRefType("repository");
 		event.setPayload(payload);
-		holder.updateViewFor(event);
+		updateView(event);
 
 		verify("user created repository repo");
 	}
@@ -123,7 +126,7 @@ public class NewsEventTextTest extends AndroidTestCase {
 		payload.setRefType("branch");
 		payload.setRef("b1");
 		event.setPayload(payload);
-		holder.updateViewFor(event);
+		updateView(event);
 
 		verify("user created branch b1 at user/repo");
 	}
@@ -137,7 +140,7 @@ public class NewsEventTextTest extends AndroidTestCase {
 		payload.setRefType("branch");
 		payload.setRef("b1");
 		event.setPayload(payload);
-		holder.updateViewFor(event);
+		updateView(event);
 
 		verify("user deleted branch b1 at user/repo");
 	}
@@ -150,7 +153,7 @@ public class NewsEventTextTest extends AndroidTestCase {
 		FollowPayload payload = new FollowPayload();
 		payload.setTarget(new User().setLogin("user2"));
 		event.setPayload(payload);
-		holder.updateViewFor(event);
+		updateView(event);
 
 		verify("user started following user2");
 	}
@@ -164,7 +167,7 @@ public class NewsEventTextTest extends AndroidTestCase {
 		payload.setAction("create");
 		payload.setGist(new Gist().setId("1"));
 		event.setPayload(payload);
-		holder.updateViewFor(event);
+		updateView(event);
 
 		verify("user created Gist 1");
 	}
@@ -174,7 +177,7 @@ public class NewsEventTextTest extends AndroidTestCase {
 	 */
 	public void testWiki() {
 		Event event = createEvent(TYPE_GOLLUM);
-		holder.updateViewFor(event);
+		updateView(event);
 
 		verify("user updated the wiki in user/repo");
 	}
@@ -187,7 +190,7 @@ public class NewsEventTextTest extends AndroidTestCase {
 		IssueCommentPayload payload = new IssueCommentPayload();
 		payload.setIssue(new Issue().setNumber(5));
 		event.setPayload(payload);
-		holder.updateViewFor(event);
+		updateView(event);
 
 		verify("user commented on issue 5 on user/repo");
 	}
@@ -201,7 +204,7 @@ public class NewsEventTextTest extends AndroidTestCase {
 		payload.setAction("closed");
 		payload.setIssue(new Issue().setNumber(8));
 		event.setPayload(payload);
-		holder.updateViewFor(event);
+		updateView(event);
 
 		verify("user closed issue 8 on user/repo");
 	}
@@ -211,7 +214,7 @@ public class NewsEventTextTest extends AndroidTestCase {
 	 */
 	public void testAddMember() {
 		Event event = createEvent(TYPE_MEMBER);
-		holder.updateViewFor(event);
+		updateView(event);
 
 		verify("user was added as a collaborator to user/repo");
 	}
@@ -221,7 +224,7 @@ public class NewsEventTextTest extends AndroidTestCase {
 	 */
 	public void testOpenSourced() {
 		Event event = createEvent(TYPE_PUBLIC);
-		holder.updateViewFor(event);
+		updateView(event);
 
 		verify("user open sourced repository user/repo");
 	}
@@ -231,7 +234,7 @@ public class NewsEventTextTest extends AndroidTestCase {
 	 */
 	public void testWatch() {
 		Event event = createEvent(TYPE_WATCH);
-		holder.updateViewFor(event);
+		updateView(event);
 
 		verify("user started watching user/repo");
 	}
@@ -245,7 +248,7 @@ public class NewsEventTextTest extends AndroidTestCase {
 		payload.setNumber(30);
 		payload.setAction("merged");
 		event.setPayload(payload);
-		holder.updateViewFor(event);
+		updateView(event);
 
 		verify("user merged pull request 30 on user/repo");
 	}
@@ -258,7 +261,7 @@ public class NewsEventTextTest extends AndroidTestCase {
 		PushPayload payload = new PushPayload();
 		payload.setRef("refs/heads/master");
 		event.setPayload(payload);
-		holder.updateViewFor(event);
+		updateView(event);
 
 		verify("user pushed to master at user/repo");
 	}
@@ -272,7 +275,7 @@ public class NewsEventTextTest extends AndroidTestCase {
 		payload.setTeam(new Team().setName("t1"));
 		payload.setUser(new User().setLogin("u2"));
 		event.setPayload(payload);
-		holder.updateViewFor(event);
+		updateView(event);
 
 		verify("user added u2 to team t1");
 	}

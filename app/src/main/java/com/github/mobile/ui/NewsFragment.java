@@ -15,23 +15,18 @@
  */
 package com.github.mobile.ui;
 
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 
-import com.github.mobile.R.layout;
 import com.github.mobile.core.gist.GistEventMatcher;
 import com.github.mobile.core.issue.IssueEventMatcher;
 import com.github.mobile.core.repo.RepositoryEventMatcher;
 import com.github.mobile.gist.ViewGistsActivity;
 import com.github.mobile.ui.issue.ViewIssuesActivity;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
-import com.github.mobile.ui.user.NewsEventViewHolder;
+import com.github.mobile.ui.user.NewsEventListAdapter;
 import com.github.mobile.util.AvatarUtils;
 import com.google.inject.Inject;
-import com.madgag.android.listviews.ReflectiveHolderFactory;
-import com.madgag.android.listviews.ViewHoldingListAdapter;
-import com.madgag.android.listviews.ViewInflator;
 
 import java.util.List;
 
@@ -43,7 +38,7 @@ import org.eclipse.egit.github.core.event.Event;
 /**
  * Base news fragment class with utilities for subclasses to built on
  */
-public abstract class NewsFragment extends PagedListFragment<Event> {
+public abstract class NewsFragment extends PagedItemFragment<Event> {
 
     /**
      * Matcher for finding an {@link Issue} from an {@link Event}
@@ -80,15 +75,8 @@ public abstract class NewsFragment extends PagedListFragment<Event> {
     }
 
     @Override
-    protected ViewHoldingListAdapter<Event> adapterFor(List<Event> items) {
-        return new ViewHoldingListAdapter<Event>(items, ViewInflator.viewInflatorFor(getActivity(), layout.event_item),
-                ReflectiveHolderFactory.reflectiveFactoryFor(NewsEventViewHolder.class, avatarHelper)) {
-
-            @Override
-            public long getItemId(int i) {
-                String id = getItem(i).getId();
-                return !TextUtils.isEmpty(id) ? id.hashCode() : super.hashCode();
-            }
-        };
+    protected ItemListAdapter<Event, ? extends ItemView> createAdapter(List<Event> items) {
+        return new NewsEventListAdapter(getActivity().getLayoutInflater(), items.toArray(new Event[items.size()]),
+                avatarHelper);
     }
 }

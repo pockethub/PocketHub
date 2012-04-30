@@ -60,21 +60,22 @@ public class UserNewsFragment extends NewsFragment implements OrgSelectionListen
         this.org = org;
         // Only hard refresh if view already created and org is changing
         if (getView() != null && previousOrgId != org.getId())
-            hideOldContentAndRefresh();
+            refreshWithProgress();
     }
 
     @Override
     protected ResourcePager<Event> createPager() {
         return new EventPager() {
 
+            @Override
             public PageIterator<Event> createIterator(int page, int size) {
                 return service.pageUserReceivedEvents(org.getLogin(), false, page, size);
             }
 
+            @Override
             protected Event register(Event resource) {
-                return NewsEventViewHolder.isValid(resource) ? resource : null;
+                return NewsEventListAdapter.isValid(resource) ? resource : null;
             }
-
         };
     }
 

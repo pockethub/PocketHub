@@ -54,15 +54,13 @@ import static org.eclipse.egit.github.core.event.Event.TYPE_WATCH;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.github.mobile.R.id;
+import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.util.AvatarUtils;
 import com.github.mobile.util.TimeUtils;
-import com.github.mobile.util.TypefaceUtils;
-import com.madgag.android.listviews.ViewHolder;
+import com.viewpagerindicator.R.layout;
 
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Team;
@@ -80,9 +78,9 @@ import org.eclipse.egit.github.core.event.PushPayload;
 import org.eclipse.egit.github.core.event.TeamAddPayload;
 
 /**
- * View holder for a rendered news event
+ * Adapter for a list of news events
  */
-public class NewsEventViewHolder implements ViewHolder<Event> {
+public class NewsEventListAdapter extends ItemListAdapter<Event, NewsEventItemView> {
 
     /**
      * Can the given event be rendered by this view holder?
@@ -122,32 +120,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
                 || TYPE_WATCH.equals(type);
     }
 
-    private final AvatarUtils avatarHelper;
-
-    private final ImageView avatarView;
-
-    private final TextView eventText;
-
-    private final TextView iconText;
-
-    private final TextView dateText;
-
-    /**
-     * Create view holder
-     *
-     * @param view
-     * @param avatarHelper
-     */
-    public NewsEventViewHolder(final View view, final AvatarUtils avatarHelper) {
-        this.avatarHelper = avatarHelper;
-        avatarView = (ImageView) view.findViewById(id.iv_gravatar);
-        eventText = (TextView) view.findViewById(id.tv_event);
-        iconText = (TextView) view.findViewById(id.tv_event_icon);
-        TypefaceUtils.setOctocons(iconText);
-        dateText = (TextView) view.findViewById(id.tv_event_date);
-    }
-
-    private CharSequence formatCommitComment(Event event) {
+    private static CharSequence formatCommitComment(Event event) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
         builder.append(event.getActor().getLogin());
@@ -163,7 +136,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         return builder;
     }
 
-    private CharSequence formatDownload(Event event) {
+    private static CharSequence formatDownload(Event event) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
         builder.append(event.getActor().getLogin());
@@ -179,7 +152,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         return builder;
     }
 
-    private CharSequence formatCreate(Event event) {
+    private static CharSequence formatCreate(Event event) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
         builder.append(event.getActor().getLogin());
@@ -204,7 +177,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         return builder;
     }
 
-    private CharSequence formatDelete(Event event) {
+    private static CharSequence formatDelete(Event event) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
         builder.append(event.getActor().getLogin());
@@ -225,7 +198,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         return builder;
     }
 
-    private CharSequence formatFollow(Event event) {
+    private static CharSequence formatFollow(Event event) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
         builder.append(event.getActor().getLogin());
@@ -237,7 +210,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         return builder;
     }
 
-    private CharSequence formatFork(Event event) {
+    private static CharSequence formatFork(Event event) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
         builder.append(event.getActor().getLogin());
@@ -253,7 +226,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         return builder;
     }
 
-    private CharSequence formatGist(Event event) {
+    private static CharSequence formatGist(Event event) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
         builder.append(event.getActor().getLogin());
@@ -275,7 +248,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         return builder;
     }
 
-    private CharSequence formatWiki(Event event) {
+    private static CharSequence formatWiki(Event event) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
         builder.append(event.getActor().getLogin());
@@ -291,7 +264,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         return builder;
     }
 
-    private CharSequence formatIssueComment(Event event) {
+    private static CharSequence formatIssueComment(Event event) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
         builder.append(event.getActor().getLogin());
@@ -313,7 +286,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         return builder;
     }
 
-    private CharSequence formatIssues(Event event) {
+    private static CharSequence formatIssues(Event event) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
         builder.append(event.getActor().getLogin());
@@ -338,7 +311,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         return builder;
     }
 
-    private CharSequence formatAddMember(Event event) {
+    private static CharSequence formatAddMember(Event event) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
         builder.append(event.getActor().getLogin());
@@ -354,7 +327,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         return builder;
     }
 
-    private CharSequence formatPublic(Event event) {
+    private static CharSequence formatPublic(Event event) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
         builder.append(event.getActor().getLogin());
@@ -370,7 +343,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         return builder;
     }
 
-    private CharSequence formatWatch(Event event) {
+    private static CharSequence formatWatch(Event event) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
         builder.append(event.getActor().getLogin());
@@ -386,7 +359,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         return builder;
     }
 
-    private CharSequence formatReviewComment(Event event) {
+    private static CharSequence formatReviewComment(Event event) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
         builder.append(event.getActor().getLogin());
@@ -402,7 +375,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         return builder;
     }
 
-    private CharSequence formatPullRequest(Event event) {
+    private static CharSequence formatPullRequest(Event event) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
         String actor = event.getActor().getLogin();
@@ -430,7 +403,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         return builder;
     }
 
-    private CharSequence formatPush(Event event) {
+    private static CharSequence formatPush(Event event) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
         String actor = event.getActor().getLogin();
@@ -455,7 +428,7 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         return builder;
     }
 
-    private CharSequence formatTeamAdd(Event event) {
+    private static CharSequence formatTeamAdd(Event event) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
         builder.append(event.getActor().getLogin());
@@ -482,8 +455,40 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
         return builder;
     }
 
-    public void updateViewFor(Event event) {
-        avatarHelper.bind(avatarView, event.getActor());
+    private final AvatarUtils avatars;
+
+    /**
+     * Create list adapter
+     *
+     * @param inflater
+     * @param elements
+     * @param avatars
+     */
+    public NewsEventListAdapter(LayoutInflater inflater, Event[] elements, AvatarUtils avatars) {
+        super(layout.event_item, inflater, elements);
+
+        this.avatars = avatars;
+    }
+
+    /**
+     * Create list adapter
+     *
+     * @param inflater
+     * @param avatars
+     */
+    public NewsEventListAdapter(LayoutInflater inflater, AvatarUtils avatars) {
+        this(inflater, null, avatars);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        String id = getItem(position).getId();
+        return !TextUtils.isEmpty(id) ? id.hashCode() : super.hashCode();
+    }
+
+    @Override
+    protected void update(final NewsEventItemView view, final Event event) {
+        avatars.bind(view.avatarView, event.getActor());
 
         CharSequence text = null;
         char icon = ' ';
@@ -547,8 +552,13 @@ public class NewsEventViewHolder implements ViewHolder<Event> {
             text = formatWatch(event);
         }
 
-        iconText.setText(icon != ' ' ? Character.toString(icon) : null);
-        eventText.setText(text);
-        dateText.setText(TimeUtils.getRelativeTime(event.getCreatedAt()).toString());
+        view.iconText.setText(icon != ' ' ? Character.toString(icon) : null);
+        view.eventText.setText(text);
+        view.dateText.setText(TimeUtils.getRelativeTime(event.getCreatedAt()).toString());
+    }
+
+    @Override
+    protected NewsEventItemView createView(final View view) {
+        return new NewsEventItemView(view);
     }
 }
