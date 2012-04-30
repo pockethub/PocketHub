@@ -48,14 +48,14 @@
             </intent-filter>
         </activity>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.IssueDashboardActivitytivity">
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.IssueDashboardActivity">
             <intent-filter>
                 <action android:name="com.github.mobile.android.repo.issues.dashboard.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.CreateIssueActivitytivity">
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.CreateIssueActivity">
             <intent-filter>
                 <action android:name="com.github.mobile.android.repo.issues.create.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
