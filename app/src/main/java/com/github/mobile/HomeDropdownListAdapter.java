@@ -20,18 +20,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
-import com.github.mobile.repo.OrgViewHolder;
+import com.github.mobile.ui.ItemListAdapter;
+import com.github.mobile.ui.ItemView;
 import com.github.mobile.util.AvatarUtils;
-import com.madgag.android.listviews.ReflectiveHolderFactory;
-import com.madgag.android.listviews.ViewFactory;
-import com.madgag.android.listviews.ViewHolderFactory;
-import com.madgag.android.listviews.ViewHoldingListAdapter;
-import com.madgag.android.listviews.ViewInflator;
 
 import java.util.List;
 
@@ -41,6 +38,42 @@ import org.eclipse.egit.github.core.User;
  * Dropdown list adapter to display orgs. and other context-related activity links
  */
 public class HomeDropdownListAdapter extends BaseAdapter {
+
+    private static class OrgItemView extends ItemView {
+
+        public final TextView nameText;
+
+        public final ImageView avatarView;
+
+        public OrgItemView(View view) {
+            super(view);
+
+            nameText = (TextView) view.findViewById(id.tv_org_name);
+            avatarView = (ImageView) view.findViewById(id.iv_gravatar);
+        }
+    }
+
+    private static class OrgListAdapter extends ItemListAdapter<User, OrgItemView> {
+
+        private final AvatarUtils avatars;
+
+        public OrgListAdapter(int viewId, LayoutInflater inflater, User[] elements, AvatarUtils avatars) {
+            super(viewId, inflater, elements);
+
+            this.avatars = avatars;
+        }
+
+        @Override
+        protected void update(OrgItemView view, User user) {
+            view.nameText.setText(user.getLogin());
+            avatars.bind(view.avatarView, user);
+        }
+
+        @Override
+        protected OrgItemView createView(View view) {
+            return new OrgItemView(view);
+        }
+    }
 
     /**
      * Action for Gists
@@ -61,7 +94,9 @@ public class HomeDropdownListAdapter extends BaseAdapter {
 
     private final Context context;
 
-    private final ViewHoldingListAdapter<User> orgAdapter;
+    private final OrgListAdapter listAdapter;
+
+    private final OrgListAdapter dropdownAdapter;
 
     /**
      * Create adapter with initial orgs
@@ -73,13 +108,11 @@ public class HomeDropdownListAdapter extends BaseAdapter {
     public HomeDropdownListAdapter(final Context context, final List<User> orgs, final AvatarUtils avatarHelper) {
         this.context = context;
 
-        ViewHolderFactory<User> userViewHolderFactory = ReflectiveHolderFactory.reflectiveFactoryFor(
-                OrgViewHolder.class, avatarHelper);
-        ViewFactory<User> selectedUserViewFactory = new ViewFactory<User>(ViewInflator.viewInflatorFor(context,
-                layout.org_item), userViewHolderFactory);
-        ViewFactory<User> dropDownViewFactory = new ViewFactory<User>(ViewInflator.viewInflatorFor(context,
-                layout.org_item_dropdown), userViewHolderFactory);
-        orgAdapter = new ViewHoldingListAdapter<User>(orgs, selectedUserViewFactory, dropDownViewFactory);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        User[] orgItems = orgs.toArray(new User[orgs.size()]);
+
+        listAdapter = new OrgListAdapter(layout.org_item, inflater, orgItems, avatarHelper);
+        dropdownAdapter = new OrgListAdapter(layout.org_item_dropdown, inflater, orgItems, avatarHelper);
     }
 
     /**
@@ -89,7 +122,7 @@ public class HomeDropdownListAdapter extends BaseAdapter {
      * @return true if org., false otherwise
      */
     public boolean isOrgPosition(final int position) {
-        return position < orgAdapter.getCount();
+        return position < listAdapter.getCount();
     }
 
     /**
@@ -99,7 +132,7 @@ public class HomeDropdownListAdapter extends BaseAdapter {
      * @return action id
      */
     public int getAction(final int position) {
-        return position - orgAdapter.getCount();
+        return position - listAdapter.getCount();
     }
 
     /**
@@ -109,7 +142,9 @@ public class HomeDropdownListAdapter extends BaseAdapter {
      * @return this adapter
      */
     public HomeDropdownListAdapter setOrgs(final List<User> orgs) {
-        orgAdapter.setList(orgs);
+        User[] orgItems = orgs.toArray(new User[orgs.size()]);
+        listAdapter.setItems(orgItems);
+        dropdownAdapter.setItems(orgItems);
         notifyDataSetChanged();
         return this;
     }
@@ -132,7 +167,7 @@ public class HomeDropdownListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return orgAdapter.getCount() > 0 ? orgAdapter.getCount() + 3 : 0;
+        return listAdapter.getCount() > 0 ? listAdapter.getCount() + 3 : 0;
     }
 
     @Override
@@ -145,7 +180,7 @@ public class HomeDropdownListAdapter extends BaseAdapter {
         case ACTION_FILTERS:
             return context.getString(string.issue_filters);
         default:
-            return orgAdapter.getItem(position);
+            return listAdapter.getItem(position);
         }
     }
 
@@ -157,7 +192,7 @@ public class HomeDropdownListAdapter extends BaseAdapter {
         case ACTION_FILTERS:
             return getItem(position).hashCode();
         default:
-            return orgAdapter.getItemId(position);
+            return listAdapter.getItemId(position);
         }
     }
 
@@ -167,9 +202,9 @@ public class HomeDropdownListAdapter extends BaseAdapter {
         case ACTION_GISTS:
         case ACTION_DASHBOARD:
         case ACTION_FILTERS:
-            return orgAdapter.getView(selected, null, parent);
+            return listAdapter.getView(selected, null, parent);
         default:
-            return orgAdapter.getView(position, null, parent);
+            return listAdapter.getView(position, null, parent);
         }
     }
 
@@ -184,7 +219,7 @@ public class HomeDropdownListAdapter extends BaseAdapter {
             ((TextView) root.findViewById(id.tv_item_name)).setText(item.toString());
             return root;
         default:
-            return orgAdapter.getDropDownView(position, null, parent);
+            return dropdownAdapter.getDropDownView(position, null, parent);
         }
     }
 
