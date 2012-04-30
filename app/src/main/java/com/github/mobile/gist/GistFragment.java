@@ -57,6 +57,8 @@ import com.github.mobile.comment.CommentViewHolder;
 import com.github.mobile.comment.CreateCommentActivity;
 import com.github.mobile.core.gist.FullGist;
 import com.github.mobile.core.gist.GistStore;
+import com.github.mobile.core.gist.StarGistTask;
+import com.github.mobile.core.gist.UnstarGistTask;
 import com.github.mobile.util.AccountUtils;
 import com.github.mobile.util.AvatarUtils;
 import com.github.mobile.util.HtmlUtils;
@@ -278,35 +280,44 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
     private void starGist() {
         ToastUtils.show(getActivity(), string.starring_gist);
-        new AuthenticatedUserTask<Gist>(getActivity()) {
 
-            public Gist run() throws Exception {
-                gistServiceProvider.get(getContext()).starGist(gistId);
+        new StarGistTask(getActivity(), gistId) {
+
+            @Override
+            protected void onSuccess(Gist gist) throws Exception {
+                super.onSuccess(gist);
+
                 starred = true;
-                return null;
             }
 
+            @Override
             protected void onException(Exception e) throws RuntimeException {
-                Log.d(TAG, "Exception starring gist", e);
+                super.onException(e);
+
                 ToastUtils.show((Activity) getContext(), e.getMessage());
             }
+
         }.execute();
     }
 
     private void unstarGist() {
         ToastUtils.show(getActivity(), string.unstarring_gist);
-        new AuthenticatedUserTask<Gist>(getActivity()) {
 
-            public Gist run() throws Exception {
-                gistServiceProvider.get(getActivity()).unstarGist(gistId);
+        new UnstarGistTask(getActivity(), gistId) {
+
+            @Override
+            protected void onSuccess(Gist gist) throws Exception {
+                super.onSuccess(gist);
+
                 starred = false;
-                return null;
             }
 
             protected void onException(Exception e) throws RuntimeException {
-                Log.d(TAG, "Exception unstarring gist", e);
+                super.onException(e);
+
                 ToastUtils.show((Activity) getContext(), e.getMessage());
             }
+
         }.execute();
     }
 
