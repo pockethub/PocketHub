@@ -61,6 +61,16 @@ public class RepositoryNewsFragment extends NewsFragment {
         };
     }
 
+    /**
+     * Start an activity to view the given repository
+     *
+     * @param repository
+     */
+    protected void viewRepository(Repository repository) {
+        if (repo.getId() != repository.getId())
+            super.viewRepository(repository);
+    }
+
     @Override
     protected int getLoadingMessage() {
         return string.loading_news;

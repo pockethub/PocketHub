@@ -71,7 +71,16 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
 
         Repository repo = repoMatcher.getRepository(event);
         if (repo != null)
-            startActivity(RepositoryViewActivity.createIntent(repo));
+            viewRepository(repo);
+    }
+
+    /**
+     * Start an activity to view the given repository
+     *
+     * @param repository
+     */
+    protected void viewRepository(Repository repository) {
+        startActivity(RepositoryViewActivity.createIntent(repository));
     }
 
     @Override
