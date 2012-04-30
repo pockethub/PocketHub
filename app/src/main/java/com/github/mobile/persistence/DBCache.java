@@ -28,14 +28,15 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Given a PersistableResource, this class will take support loading/storing it's data or requesting
- * fresh data, as appropriate.
+ * Given a PersistableResource, this class will take support loading/storing it's data or requesting fresh data, as
+ * appropriate.
  */
 public class DBCache {
 
-    @Inject
-    Provider<AccountDataManager.CacheHelper> helperProvider;
     private static final String TAG = "DBCache";
+
+    @Inject
+    private Provider<AccountDataManager.CacheHelper> helperProvider;
 
     <E> List<E> loadOrRequest(PersistableResource<E> persistableResource) throws IOException {
         SQLiteOpenHelper helper = helperProvider.get();
@@ -60,8 +61,8 @@ public class DBCache {
         }
     }
 
-    private <E> List<E> requestAndStore(SQLiteOpenHelper helper, PersistableResource<E> persistableResource) throws
-            IOException {
+    private <E> List<E> requestAndStore(SQLiteOpenHelper helper, PersistableResource<E> persistableResource)
+            throws IOException {
         List<E> items = persistableResource.request();
 
         SQLiteDatabase db = helper.getWritableDatabase();
