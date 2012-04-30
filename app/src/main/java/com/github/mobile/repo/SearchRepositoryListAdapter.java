@@ -29,7 +29,7 @@ import org.eclipse.egit.github.core.SearchRepository;
 /**
  * Adapter for a list of searched for repositories
  */
-public class SearchRepositoryListAdapter extends ItemListAdapter<SearchRepository, SearchRepositoryItemView> {
+public class SearchRepositoryListAdapter extends ItemListAdapter<SearchRepository, RepositoryItemView> {
 
     /**
      * Create list adapter for searched for repositories
@@ -38,7 +38,7 @@ public class SearchRepositoryListAdapter extends ItemListAdapter<SearchRepositor
      * @param elements
      */
     public SearchRepositoryListAdapter(LayoutInflater inflater, SearchRepository[] elements) {
-        super(layout.repo_search_list_item, inflater, elements);
+        super(layout.repo_issue_list_item, inflater, elements);
     }
 
     /**
@@ -52,7 +52,7 @@ public class SearchRepositoryListAdapter extends ItemListAdapter<SearchRepositor
     }
 
     @Override
-    protected void update(final SearchRepositoryItemView view, final SearchRepository repository) {
+    protected void update(final RepositoryItemView view, final SearchRepository repository) {
         if (repository.isPrivate())
             view.repoIcon.setText(Character.toString(ICON_PRIVATE));
         else if (repository.isFork())
@@ -65,7 +65,7 @@ public class SearchRepositoryListAdapter extends ItemListAdapter<SearchRepositor
     }
 
     @Override
-    protected SearchRepositoryItemView createView(View view) {
-        return new SearchRepositoryItemView(view);
+    protected RepositoryItemView createView(View view) {
+        return new RepositoryItemView(view);
     }
 }

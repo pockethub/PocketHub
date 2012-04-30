@@ -38,6 +38,11 @@ public class RepositoryItemView extends ItemView {
     public final TextView repoName;
 
     /**
+     * Repository description text
+     */
+    public final TextView repoDescription;
+
+    /**
      * Recently view label
      */
     public final TextView recentLabel;
@@ -51,6 +56,7 @@ public class RepositoryItemView extends ItemView {
         repoIcon = (TextView) view.findViewById(id.tv_repo_icon);
         TypefaceUtils.setOctocons(repoIcon);
         repoName = (TextView) view.findViewById(id.tv_repo_name);
+        repoDescription = (TextView) view.findViewById(id.tv_repo_description);
         recentLabel = (TextView) view.findViewById(id.tv_recent_label);
     }
 }

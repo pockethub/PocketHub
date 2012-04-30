@@ -30,25 +30,45 @@
         android:textColor="@color/item_text_color_light"
         android:textSize="28sp" />
 
-    <TextView
-        android:id="@+id/tv_recent_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:paddingRight="10dp"
-        android:singleLine="true"
-        android:text="@string/recent"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/listing"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/tv_repo_name"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:singleLine="true"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/item_text_color" />
+        android:gravity="center_vertical"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/tv_recent_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="10dp"
+                android:singleLine="true"
+                android:text="@string/recent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/listing"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_repo_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/item_text_color" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_repo_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/item_text_color_light" />
+    </LinearLayout>
 
 </LinearLayout>

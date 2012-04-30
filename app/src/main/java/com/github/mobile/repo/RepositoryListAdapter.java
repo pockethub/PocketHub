@@ -84,6 +84,8 @@ public class RepositoryListAdapter extends ItemListAdapter<Repository, Repositor
 
         view.repoName.setText(account.get().getLogin().equals(repository.getOwner().getLogin()) ? repository.getName()
                 : id);
+
+        view.repoDescription.setText(repository.getDescription());
     }
 
     @Override
