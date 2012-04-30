@@ -23,10 +23,8 @@ import static com.github.mobile.RequestCodes.ISSUE_FILTER_EDIT;
 import static com.github.mobile.RequestCodes.ISSUE_VIEW;
 import static com.github.mobile.util.GitHubIntents.EXTRA_ISSUE_FILTER;
 import static com.github.mobile.util.GitHubIntents.EXTRA_REPOSITORY;
-import static com.madgag.android.listviews.ReflectiveHolderFactory.reflectiveFactoryFor;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
@@ -37,26 +35,26 @@ import com.actionbarsherlock.R.menu;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.github.mobile.RequestFuture;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
+import com.github.mobile.RequestFuture;
 import com.github.mobile.core.ResourcePager;
 import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.core.issue.IssuePager;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.persistence.AccountDataManager;
-import com.github.mobile.ui.PagedListFragment;
+import com.github.mobile.ui.ItemListAdapter;
+import com.github.mobile.ui.ItemView;
+import com.github.mobile.ui.PagedItemFragment;
+import com.github.mobile.ui.issue.RepositoryIssueListAdapter;
 import com.github.mobile.ui.issue.ViewIssuesActivity;
 import com.github.mobile.util.AvatarUtils;
 import com.github.mobile.util.ListViewUtils;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
-import com.madgag.android.listviews.ViewHoldingListAdapter;
-import com.madgag.android.listviews.ViewInflator;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
@@ -68,7 +66,7 @@ import roboguice.inject.InjectExtra;
 /**
  * Fragment to display a list of issues
  */
-public class IssuesFragment extends PagedListFragment<Issue> {
+public class IssuesFragment extends PagedItemFragment<Issue> {
 
     @Inject
     private AccountDataManager cache;
@@ -89,10 +87,6 @@ public class IssuesFragment extends PagedListFragment<Issue> {
 
     @Inject
     private AvatarUtils avatarHelper;
-
-    private final AtomicInteger numberWidth = new AtomicInteger();
-
-    private TextView numberView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -133,23 +127,7 @@ public class IssuesFragment extends PagedListFragment<Issue> {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        startActivityForResult(ViewIssuesActivity.createIntent(listItems, position - l.getHeaderViewsCount()),
-                ISSUE_VIEW);
-    }
-
-    @Override
-    protected ViewHoldingListAdapter<Issue> adapterFor(List<Issue> items) {
-        ViewInflator inflator = ViewInflator.viewInflatorFor(getActivity(), layout.repo_issue_list_item);
-        numberView = (TextView) inflator.createBlankView().findViewById(id.tv_issue_number);
-        return new ViewHoldingListAdapter<Issue>(items, inflator, reflectiveFactoryFor(RepoIssueViewHolder.class,
-                avatarHelper, numberWidth));
-    }
-
-    @Override
-    public void onLoadFinished(Loader<List<Issue>> loader, List<Issue> items) {
-        numberWidth.set(RepoIssueViewHolder.measureNumberWidth(numberView, items));
-
-        super.onLoadFinished(loader, items);
+        startActivityForResult(ViewIssuesActivity.createIntent(items, position - l.getHeaderViewsCount()), ISSUE_VIEW);
     }
 
     @Override
@@ -187,7 +165,7 @@ public class IssuesFragment extends PagedListFragment<Issue> {
                 filter = newFilter;
                 updateFilterSummary();
                 pager.reset();
-                hideOldContentAndRefresh();
+                refreshWithProgress();
             }
         }
 
@@ -216,5 +194,10 @@ public class IssuesFragment extends PagedListFragment<Issue> {
     @Override
     protected int getLoadingMessage() {
         return string.loading_issues;
+    }
+
+    protected ItemListAdapter<Issue, ? extends ItemView> createAdapter(List<Issue> items) {
+        return new RepositoryIssueListAdapter(getActivity().getLayoutInflater(),
+                items.toArray(new Issue[items.size()]), avatarHelper);
     }
 }

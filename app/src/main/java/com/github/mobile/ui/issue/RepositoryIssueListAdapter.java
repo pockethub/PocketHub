@@ -23,52 +23,47 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.util.AvatarUtils;
 import com.github.mobile.util.TimeUtils;
 import com.github.mobile.util.TypefaceUtils;
+import com.viewpagerindicator.R.layout;
 
 import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.RepositoryIssue;
 
 /**
- * Adapter to display a list of dashboard issues
+ * Adapter for a list of {@link Issue} objects
  */
-public class DashboardIssueListAdapter extends ItemListAdapter<RepositoryIssue, DashboardIssueView> {
+public class RepositoryIssueListAdapter extends ItemListAdapter<Issue, RepositoryIssueItemView> {
 
-    private final AvatarUtils avatarHelper;
-
-    private int numberWidth;
+    private final AvatarUtils avatars;
 
     private final TextView numberView;
 
-    /**
-     * Create adapter
-     *
-     * @param avatarHelper
-     * @param inflater
-     */
-    public DashboardIssueListAdapter(AvatarUtils avatarHelper, LayoutInflater inflater) {
-        this(avatarHelper, inflater, null);
-    }
+    private int numberWidth;
 
     /**
-     * Create adapter
-     *
-     * @param avatarHelper
      * @param inflater
      * @param elements
+     * @param avatars
      */
-    public DashboardIssueListAdapter(AvatarUtils avatarHelper, LayoutInflater inflater, RepositoryIssue[] elements) {
-        super(layout.dashboard_issue_list_item, inflater);
+    public RepositoryIssueListAdapter(LayoutInflater inflater, Issue[] elements, AvatarUtils avatars) {
+        super(layout.repo_issue_list_item, inflater, elements);
 
-        this.numberView = (TextView) inflater.inflate(layout.dashboard_issue_list_item, null).findViewById(
+        this.avatars = avatars;
+        this.numberView = (TextView) inflater.inflate(layout.repo_issue_list_item, null).findViewById(
                 id.tv_issue_number);
-        this.avatarHelper = avatarHelper;
 
         if (elements != null)
             computeNumberWidth(elements);
+    }
+
+    /**
+     * @param inflater
+     * @param avatars
+     */
+    public RepositoryIssueListAdapter(LayoutInflater inflater, AvatarUtils avatars) {
+        this(inflater, null, avatars);
     }
 
     private void computeNumberWidth(final Object[] items) {
@@ -80,7 +75,7 @@ public class DashboardIssueListAdapter extends ItemListAdapter<RepositoryIssue, 
     }
 
     @Override
-    public ItemListAdapter<RepositoryIssue, DashboardIssueView> setItems(final Object[] items) {
+    public ItemListAdapter<Issue, RepositoryIssueItemView> setItems(final Object[] items) {
         computeNumberWidth(items);
 
         return super.setItems(items);
@@ -92,7 +87,7 @@ public class DashboardIssueListAdapter extends ItemListAdapter<RepositoryIssue, 
     }
 
     @Override
-    protected void update(final DashboardIssueView view, final RepositoryIssue issue) {
+    protected void update(RepositoryIssueItemView view, Issue issue) {
         view.number.setText(Integer.toString(issue.getNumber()));
         if (issue.getClosedAt() != null)
             view.number.setPaintFlags(view.numberPaintFlags | STRIKE_THRU_TEXT_FLAG);
@@ -100,14 +95,7 @@ public class DashboardIssueListAdapter extends ItemListAdapter<RepositoryIssue, 
             view.number.setPaintFlags(view.numberPaintFlags);
         view.number.getLayoutParams().width = numberWidth;
 
-        avatarHelper.bind(view.gravatar, issue.getUser());
-
-        String[] segments = issue.getUrl().split("/");
-        int length = segments.length;
-        if (length >= 4)
-            view.repoText.setText(segments[length - 4] + "/" + segments[length - 3]);
-        else
-            view.repoText.setText("");
+        avatars.bind(view.avatar, issue.getUser());
 
         view.pullRequestIcon.setVisibility(issue.getPullRequest().getHtmlUrl() == null ? GONE : VISIBLE);
 
@@ -118,7 +106,7 @@ public class DashboardIssueListAdapter extends ItemListAdapter<RepositoryIssue, 
     }
 
     @Override
-    protected DashboardIssueView createView(final View view) {
-        return new DashboardIssueView(view);
+    protected RepositoryIssueItemView createView(View view) {
+        return new RepositoryIssueItemView(view);
     }
 }
