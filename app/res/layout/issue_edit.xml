@@ -35,8 +35,7 @@
             android:text="@string/title"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/item_text_color"
-            android:textStyle="bold" >
-        </TextView>
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/et_issue_title"
@@ -65,8 +64,7 @@
             android:text="@string/description"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/item_text_color"
-            android:textStyle="bold" >
-        </TextView>
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/et_issue_body"
