@@ -26,6 +26,7 @@ import com.github.mobile.ui.NewsFragment;
 import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 
+import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.event.Event;
@@ -82,5 +83,13 @@ public class UserNewsFragment extends NewsFragment implements OrgSelectionListen
     @Override
     protected int getLoadingMessage() {
         return string.loading_news;
+    }
+
+    @Override
+    protected void viewRepository(Repository repository) {
+        User owner = repository.getOwner();
+        if (owner != null && org.getLogin().equals(owner.getLogin()))
+            repository.setOwner(org);
+        super.viewRepository(repository);
     }
 }
