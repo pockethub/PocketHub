@@ -395,9 +395,9 @@ public class NewsEventListAdapter extends ItemListAdapter<Event, NewsEventItemVi
         builder.append(' ');
         builder.append(action);
         builder.append(' ');
-        String issueNumber = "pull request " + payload.getNumber();
-        builder.append(issueNumber);
-        builder.setSpan(new StyleSpan(BOLD), builder.length() - issueNumber.length(), builder.length(),
+        String prNumber = "pull request " + payload.getNumber();
+        builder.append(prNumber);
+        builder.setSpan(new StyleSpan(BOLD), builder.length() - prNumber.length(), builder.length(),
                 SPAN_EXCLUSIVE_EXCLUSIVE);
         builder.append(" on ");
 
