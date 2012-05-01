@@ -21,20 +21,20 @@ import com.google.inject.Scope;
 
 import java.util.Map;
 
+/**
+ * Base scope class
+ */
 public abstract class ScopeBase implements Scope {
 
     private static final Provider<Object> SEEDED_KEY_PROVIDER = new Provider<Object>() {
         public Object get() {
-            throw new IllegalStateException(
-                    "If you got here then it means that"
-                            + " your code asked for scoped object which should have been"
-                            + " explicitly seeded in this scope, but was not.");
+            throw new IllegalStateException("Object not seeded in this scope");
         }
     };
 
     /**
-     * Returns a provider that always throws an exception complaining that the
-     * object in question must be seeded before it can be injected.
+     * Returns a provider that always throws an exception complaining that the object in question must be seeded before
+     * it can be injected.
      *
      * @return typed provider
      */
@@ -59,5 +59,11 @@ public abstract class ScopeBase implements Scope {
         };
     }
 
+    /**
+     * Get scoped object map
+     *
+     * @param key
+     * @return map
+     */
     protected abstract <T> Map<Key<?>, Object> getScopedObjectMap(Key<T> key);
 }

@@ -150,8 +150,10 @@ public class RecentReposHelper {
      * Find recently viewed repos amongst the list of supplied repos. The most recently viewed repos will head the
      * resulting list, ordered by recency, followed by the other repos in the supplied list.
      *
-     * @param fullRepoList the full set of repos that will be displayed
-     * @param numberOfTopRecentReposToShow the max num repos to show as 'recent' - prioritising the <em>most</em> recent
+     * @param fullRepoList
+     *            the full set of repos that will be displayed
+     * @param numberOfTopRecentReposToShow
+     *            the max num repos to show as 'recent' - prioritising the <em>most</em> recent
      * @return value-object with the full sorted list of repos (headed by recents), plus the ids of the recent repos
      */
     public RecentRepos recentReposFrom(List<Repository> fullRepoList, int numberOfTopRecentReposToShow) {
@@ -179,13 +181,25 @@ public class RecentReposHelper {
     public static class RecentRepos implements Serializable {
         private static final long serialVersionUID = 5216432701122989971L;
 
+        /**
+         * Repository list with recent ones at the beginning
+         */
         public final List<Repository> fullRepoListHeadedByTopRecents;
+
+        /**
+         * Set of recent repository ids
+         */
         public final LinkedHashSet<String> topRecentRepoIds;
 
+        /**
+         * Create recent repos container
+         *
+         * @param fullRepoListHeadedByTopRecents
+         * @param topRecentRepoIds
+         */
         public RecentRepos(List<Repository> fullRepoListHeadedByTopRecents, LinkedHashSet<String> topRecentRepoIds) {
             this.fullRepoListHeadedByTopRecents = fullRepoListHeadedByTopRecents;
             this.topRecentRepoIds = topRecentRepoIds;
         }
     }
-
 }
