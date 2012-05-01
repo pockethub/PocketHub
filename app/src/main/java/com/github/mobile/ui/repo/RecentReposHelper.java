@@ -59,7 +59,7 @@ public class RecentReposHelper {
 
     private static final int VERSION_RECENT_REPOS = 2;
 
-    public static final Function<Repository, String> REPO_NAME = new Function<Repository, String>() {
+    private static final Function<Repository, String> REPO_NAME = new Function<Repository, String>() {
         public String apply(Repository repo) {
             return repo.getName();
         }
