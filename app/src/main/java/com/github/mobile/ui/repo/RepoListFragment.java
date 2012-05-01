@@ -21,7 +21,6 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
-import com.github.mobile.HomeActivity;
 import com.github.mobile.R.string;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.persistence.AccountDataManager;
@@ -29,6 +28,8 @@ import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
 import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.repo.RecentReposHelper.RecentRepos;
+import com.github.mobile.ui.user.OrganizationSelectionListener;
+import com.github.mobile.ui.user.OrganizationSelectionProvider;
 import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 
@@ -42,9 +43,7 @@ import org.eclipse.egit.github.core.User;
 /**
  * Fragment to display a list of {@link Repository} instances
  */
-public class RepoListFragment extends ItemListFragment<Repository> implements OrgSelectionListener {
-
-    private static final String TAG = "RepoListFragment";
+public class RepoListFragment extends ItemListFragment<Repository> implements OrganizationSelectionListener {
 
     private static final String RECENT_REPOS = "recentRepos";
 
@@ -60,17 +59,18 @@ public class RepoListFragment extends ItemListFragment<Repository> implements Or
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+
         recentReposHelper = new RecentReposHelper(activity);
-        org.set(((HomeActivity) activity).registerOrgSelectionListener(this));
+        org.set(((OrganizationSelectionProvider) activity).addListener(this));
     }
 
     @Override
-    public void onOrgSelected(User org) {
-        User previousOrg = this.org.get();
+    public void onOrganizationSelected(final User organization) {
+        User previousOrg = org.get();
         int previousOrgId = previousOrg != null ? previousOrg.getId() : -1;
-        this.org.set(org);
+        org.set(organization);
         // Only hard refresh if view already created and org is changing
-        if (getView() != null && previousOrgId != org.getId())
+        if (getView() != null && previousOrgId != organization.getId())
             refreshWithProgress();
     }
 

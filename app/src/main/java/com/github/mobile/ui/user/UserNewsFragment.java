@@ -18,8 +18,6 @@ package com.github.mobile.ui.user;
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.github.mobile.HomeActivity;
-import com.github.mobile.HomeActivity.OrgSelectionListener;
 import com.github.mobile.R.string;
 import com.github.mobile.core.ResourcePager;
 import com.github.mobile.ui.NewsFragment;
@@ -35,7 +33,7 @@ import org.eclipse.egit.github.core.service.EventService;
 /**
  * Fragment to display a news feed for a given user/org
  */
-public class UserNewsFragment extends NewsFragment implements OrgSelectionListener {
+public class UserNewsFragment extends NewsFragment implements OrganizationSelectionListener {
 
     private User org;
 
@@ -52,16 +50,8 @@ public class UserNewsFragment extends NewsFragment implements OrgSelectionListen
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        org = ((HomeActivity) activity).registerOrgSelectionListener(this);
-    }
 
-    @Override
-    public void onOrgSelected(User org) {
-        int previousOrgId = this.org != null ? this.org.getId() : -1;
-        this.org = org;
-        // Only hard refresh if view already created and org is changing
-        if (getView() != null && previousOrgId != org.getId())
-            refreshWithProgress();
+        org = ((OrganizationSelectionProvider) activity).addListener(this);
     }
 
     @Override
@@ -91,5 +81,14 @@ public class UserNewsFragment extends NewsFragment implements OrgSelectionListen
         if (owner != null && org.getLogin().equals(owner.getLogin()))
             repository.setOwner(org);
         super.viewRepository(repository);
+    }
+
+    @Override
+    public void onOrganizationSelected(User organization) {
+        int previousOrgId = org != null ? org.getId() : -1;
+        org = organization;
+        // Only hard refresh if view already created and org is changing
+        if (getView() != null && previousOrgId != org.getId())
+            refreshWithProgress();
     }
 }

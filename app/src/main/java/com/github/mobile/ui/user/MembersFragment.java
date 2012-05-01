@@ -18,9 +18,9 @@ package com.github.mobile.ui.user;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
+import android.view.View;
+import android.widget.ListView;
 
-import com.github.mobile.HomeActivity;
-import com.github.mobile.HomeActivity.OrgSelectionListener;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
@@ -37,7 +37,7 @@ import org.eclipse.egit.github.core.service.OrganizationService;
 /**
  * Fragment to display the members of an org.
  */
-public class MembersFragment extends ItemListFragment<User> implements OrgSelectionListener {
+public class MembersFragment extends ItemListFragment<User> implements OrganizationSelectionListener {
 
     private User org;
 
@@ -51,7 +51,7 @@ public class MembersFragment extends ItemListFragment<User> implements OrgSelect
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        org = ((HomeActivity) activity).registerOrgSelectionListener(this);
+        org = ((OrganizationSelectionProvider) activity).addListener(this);
     }
 
     @Override
@@ -72,17 +72,23 @@ public class MembersFragment extends ItemListFragment<User> implements OrgSelect
     }
 
     @Override
-    public void onOrgSelected(User org) {
-        int previousOrgId = this.org != null ? this.org.getId() : -1;
-        this.org = org;
-        // Only hard refresh if view already created and org is changing
-        if (getView() != null && previousOrgId != org.getId())
-            refreshWithProgress();
-    }
-
-    @Override
     protected ItemListAdapter<User, ? extends ItemView> createAdapter(List<User> items) {
         User[] users = items.toArray(new User[items.size()]);
         return new UserListAdapter(getActivity().getLayoutInflater(), users, avatarHelper);
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        User user = (User) l.getItemAtPosition(position);
+        startActivity(UserViewActivity.createIntent(user));
+    }
+
+    @Override
+    public void onOrganizationSelected(User organization) {
+        int previousOrgId = org != null ? org.getId() : -1;
+        org = organization;
+        // Only hard refresh if view already created and org is changing
+        if (getView() != null && previousOrgId != org.getId())
+            refreshWithProgress();
     }
 }

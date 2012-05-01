@@ -16,11 +16,10 @@
 package com.github.mobile;
 
 import static com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_LIST;
-import static com.github.mobile.Intents.EXTRA_USER;
 import static com.github.mobile.HomeDropdownListAdapter.ACTION_DASHBOARD;
 import static com.github.mobile.HomeDropdownListAdapter.ACTION_FILTERS;
 import static com.github.mobile.HomeDropdownListAdapter.ACTION_GISTS;
-import static com.google.common.collect.Lists.newArrayList;
+import static com.github.mobile.Intents.EXTRA_USER;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -45,6 +44,8 @@ import com.github.mobile.ui.gist.GistsActivity;
 import com.github.mobile.ui.issue.IssueDashboardActivity;
 import com.github.mobile.ui.issue.ViewFiltersActivity;
 import com.github.mobile.ui.repo.OrganizationLoader;
+import com.github.mobile.ui.user.OrganizationSelectionListener;
+import com.github.mobile.ui.user.OrganizationSelectionProvider;
 import com.github.mobile.ui.user.UserPagerAdapter;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.PreferenceUtils;
@@ -54,7 +55,9 @@ import com.google.inject.Provider;
 import com.viewpagerindicator.TitlePageIndicator;
 
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.egit.github.core.User;
 
@@ -64,20 +67,7 @@ import roboguice.inject.InjectView;
  * Home screen activity
  */
 public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavigationListener,
-        LoaderCallbacks<List<User>> {
-
-    /**
-     * Callback interface when the selected organization changes
-     */
-    public static interface OrgSelectionListener {
-
-        /**
-         * Organization selection changed
-         *
-         * @param org
-         */
-        public void onOrgSelected(User org);
-    }
+        OrganizationSelectionProvider, LoaderCallbacks<List<User>> {
 
     private static final String TAG = "GH.UVA";
 
@@ -105,7 +95,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
 
     private HomeDropdownListAdapter homeAdapter;
 
-    private List<OrgSelectionListener> orgSelectionListeners = newArrayList();
+    private Set<OrganizationSelectionListener> orgSelectionListeners = new LinkedHashSet<OrganizationSelectionListener>();
 
     private User org;
 
@@ -179,8 +169,8 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
         }
         this.isDefaultUser = isDefaultUser;
 
-        for (OrgSelectionListener listener : orgSelectionListeners)
-            listener.onOrgSelected(org);
+        for (OrganizationSelectionListener listener : orgSelectionListeners)
+            listener.onOrganizationSelected(org);
     }
 
     @Override
@@ -259,14 +249,17 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
         return org != null && accountLogin != null && accountLogin.equals(org.getLogin());
     }
 
-    /**
-     * Register a listener to be notified when the organization selected changes
-     *
-     * @param listener
-     * @return the currently selected organization
-     */
-    public User registerOrgSelectionListener(OrgSelectionListener listener) {
-        orgSelectionListeners.add(listener);
+    @Override
+    public User addListener(OrganizationSelectionListener listener) {
+        if (listener != null)
+            orgSelectionListeners.add(listener);
         return org;
+    }
+
+    @Override
+    public OrganizationSelectionProvider removeListener(OrganizationSelectionListener listener) {
+        if (listener != null)
+            orgSelectionListeners.remove(listener);
+        return this;
     }
 }
