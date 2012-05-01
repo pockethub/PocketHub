@@ -18,14 +18,12 @@ package com.github.mobile.ui.repo;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
 import com.github.mobile.HomeActivity;
-import com.github.mobile.HomeActivity.OrgSelectionListener;
 import com.github.mobile.R.string;
-import com.github.mobile.accounts.AuthenticatedUserLoader;
+import com.github.mobile.ThrowableLoader;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
@@ -34,7 +32,6 @@ import com.github.mobile.ui.repo.RecentReposHelper.RecentRepos;
 import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -116,24 +113,18 @@ public class RepoListFragment extends ItemListFragment<Repository> implements Or
 
     @Override
     public Loader<List<Repository>> onCreateLoader(int id, final Bundle args) {
-        Log.d(TAG, "Creating loader " + getClass());
-        return new AuthenticatedUserLoader<List<Repository>>(getActivity()) {
+        return new ThrowableLoader<List<Repository>>(getActivity(), items) {
 
-            public List<Repository> load() {
+            @Override
+            public List<Repository> loadData() throws Exception {
                 User org = RepoListFragment.this.org.get();
                 if (org == null)
                     return Collections.emptyList();
-                try {
-                    Log.d(TAG, "Going to load repos for " + org.getLogin());
-                    List<Repository> repos = cache.getRepos(org, isForcedReload(args));
-                    RecentRepos recentRepos = recentReposHelper.recentReposFrom(repos, 5);
-                    recentReposRef.set(recentRepos);
-                    return recentRepos.fullRepoListHeadedByTopRecents;
-                } catch (IOException e) {
-                    Log.d(TAG, "Error getting repositories", e);
-                    showError(e, string.error_repos_load);
-                    return Collections.emptyList();
-                }
+
+                List<Repository> repos = cache.getRepos(org, isForcedReload(args));
+                RecentRepos recentRepos = recentReposHelper.recentReposFrom(repos, 5);
+                recentReposRef.set(recentRepos);
+                return recentRepos.fullRepoListHeadedByTopRecents;
             }
         };
     }
@@ -142,5 +133,17 @@ public class RepoListFragment extends ItemListFragment<Repository> implements Or
     protected ItemListAdapter<Repository, ? extends ItemView> createAdapter(List<Repository> items) {
         return new RepositoryListAdapter(getActivity().getLayoutInflater(),
                 items.toArray(new Repository[items.size()]), org, recentReposRef);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Repository>> loader, List<Repository> items) {
+        Exception exception = getException(loader);
+        if (exception != null) {
+            showError(exception, string.error_repos_load);
+            showList();
+            return;
+        }
+
+        super.onLoadFinished(loader, items);
     }
 }
