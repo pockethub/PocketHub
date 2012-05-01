@@ -38,10 +38,15 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class AccountScope extends ScopeBase {
 
-    private final static String TAG = "GitHubAccountScope";
+    private static final String TAG = "GitHubAccountScope";
 
-    private final static Key<GitHubAccount> GITHUB_ACCOUNT_KEY = Key.get(GitHubAccount.class);
+    private static final Key<GitHubAccount> GITHUB_ACCOUNT_KEY = Key.get(GitHubAccount.class);
 
+    /**
+     * Create new module with bings
+     *
+     * @return module
+     */
     public static Module module() {
         return new AbstractModule() {
             public void configure() {
@@ -56,6 +61,7 @@ public class AccountScope extends ScopeBase {
 
     private final ThreadLocal<GitHubAccount> currentAccount = new ThreadLocal<GitHubAccount>();
 
+    @SuppressWarnings("deprecation")
     private final Map<GitHubAccount, Map<Key<?>, Object>> repoScopeMaps = new MapMaker()
             .makeComputingMap(new Function<GitHubAccount, Map<Key<?>, Object>>() {
                 public Map<Key<?>, Object> apply(GitHubAccount account) {
@@ -67,6 +73,8 @@ public class AccountScope extends ScopeBase {
 
     /**
      * Enters scope once we've ensured the user has a valid account.
+     *
+     * @param activityUsedToStartLoginProcess
      */
     public void enterWith(Activity activityUsedToStartLoginProcess) {
         AccountManager accountManager = AccountManager.get(activityUsedToStartLoginProcess);
@@ -76,17 +84,28 @@ public class AccountScope extends ScopeBase {
 
     /**
      * Enters scope using a GitHubAccount derived from the supplied account
+     *
+     * @param account
+     * @param accountManager
      */
     public void enterWith(Account account, AccountManager accountManager) {
         enterWith(new GitHubAccount(account.name, accountManager.getPassword(account)));
     }
 
+    /**
+     * Enter scope with account
+     *
+     * @param account
+     */
     public void enterWith(GitHubAccount account) {
         Log.d(TAG, "entering scope with " + account);
         checkState(currentAccount.get() == null, "A scoping block is already in progress");
         currentAccount.set(account);
     }
 
+    /**
+     * Exit scope
+     */
     public void exit() {
         Log.d(TAG, "exiting scope");
         checkState(currentAccount.get() != null, "No scoping block in progress");
