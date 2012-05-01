@@ -29,11 +29,10 @@
     <string name="login_activity_username_label">Username</string>
     <string name="login_activity_password_label">Password</string>
     <string name="login_activity_ok_button">Sign in</string>
-    <string name="login_activity_authenticating">Signing in…</string>
+    <string name="login_activity_authenticating">Logging in…</string>
     <string name="sign_in_button_label">Sign in</string>
     <string name="sign_in_username_field_hint">Username</string>
     <string name="sign_in_password_field_hint">Password</string>
-    <string name="ui_activity_title">Sign-in</string>
     <string name="blank_field_warning">Please populate this field</string>
     <string name="single_file">1 file</string>
     <string name="multiple_files">%,d files</string>
@@ -146,5 +145,12 @@
     <string name="milestone_none">None</string>
     <string name="section_issue_labels">Labels:</string>
     <string name="labels_none">None</string>
+    <string name="log_in">Log in</string>
+    <string name="signup_link">New to GitHub? &lt;a href=\"https://github.com/plans\">Click here&lt;/a> to sign up</string>
+    <string name="connection_failed">Unable to connect to GitHub</string>
+    <string name="invalid_login_or_password">Please enter a valid login/password.</string>
+    <string name="invalid_password">Please enter a valid password.</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
 
 </resources>

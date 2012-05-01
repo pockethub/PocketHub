@@ -16,16 +16,18 @@
 -->
 <resources>
 
-    <style name="ExecutionBar">
+    <style name="LoginEditText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:orientation">horizontal</item>
-        <!-- <item name="android:background">@drawable/executionbar_background</item> -->
-        <item name="android:paddingLeft">14dip</item>
-        <item name="android:paddingRight">14dip</item>
-        <item name="android:paddingTop">6dip</item>
-        <item name="android:paddingBottom">6dip</item>
-        <item name="android:baselineAligned">false</item>
+        <item name="android:autoText">false</item>
+        <item name="android:capitalize">none</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textColor">@color/item_text_color</item>
+        <item name="android:textCursorDrawable">@drawable/edit_text_cursor</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:background">@drawable/edit_text_background</item>
     </style>
 
 </resources>

@@ -31,8 +31,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
+import android.text.Html;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -43,6 +44,7 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.TextWatcherAdapter;
+import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockAccountAuthenticatorActivity;
 import com.google.inject.Inject;
 
@@ -79,16 +81,13 @@ public class AuthenticatorActivity extends RoboSherlockAccountAuthenticatorActiv
 
     private AccountManager accountManager;
 
-    @InjectView(id.message)
-    private TextView message;
-
-    @InjectView(id.username_edit)
+    @InjectView(id.et_login)
     private EditText usernameEdit;
 
-    @InjectView(id.password_edit)
+    @InjectView(id.et_password)
     private EditText passwordEdit;
 
-    @InjectView(id.ok_button)
+    @InjectView(id.b_login)
     private Button okButton;
 
     @Inject
@@ -130,6 +129,10 @@ public class AuthenticatorActivity extends RoboSherlockAccountAuthenticatorActiv
         confirmCredentials = intent.getBooleanExtra(PARAM_CONFIRMCREDENTIALS, false);
 
         setContentView(layout.login_activity);
+
+        TextView signupText = (TextView) findViewById(id.tv_signup);
+        signupText.setMovementMethod(LinkMovementMethod.getInstance());
+        signupText.setText(Html.fromHtml(getString(string.signup_link)));
 
         setNonBlankValidationFor(usernameEdit);
         setNonBlankValidationFor(passwordEdit);
@@ -195,38 +198,34 @@ public class AuthenticatorActivity extends RoboSherlockAccountAuthenticatorActiv
             username = usernameEdit.getText().toString();
         password = passwordEdit.getText().toString();
 
-        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
-            message.setText(getMessage());
-        } else {
-            showProgress();
+        showProgress();
 
-            authenticationTask = new RoboAsyncTask<User>(this) {
-                public User call() throws Exception {
-                    GitHubClient client = new GitHubClient();
-                    client.setCredentials(username, password);
+        authenticationTask = new RoboAsyncTask<User>(this) {
+            public User call() throws Exception {
+                GitHubClient client = new GitHubClient();
+                client.setCredentials(username, password);
 
-                    return new UserService(client).getUser();
-                }
+                return new UserService(client).getUser();
+            }
 
-                @Override
-                protected void onException(Exception e) throws RuntimeException {
-                    message.setText(e.getMessage());
-                    if (e instanceof RequestException && ((RequestException) e).getStatus() == 401) {
-                        passwordEdit.setText("");
-                    }
-                }
+            @Override
+            protected void onException(Exception e) throws RuntimeException {
+                if (e instanceof RequestException && ((RequestException) e).getStatus() == 401)
+                    onAuthenticationResult(false);
+                else
+                    ToastUtils.show(AuthenticatorActivity.this, e, string.connection_failed);
+            }
 
-                public void onSuccess(User user) {
-                    onAuthenticationResult(true);
-                }
+            public void onSuccess(User user) {
+                onAuthenticationResult(true);
+            }
 
-                @Override
-                protected void onFinally() throws RuntimeException {
-                    hideProgress();
-                }
-            };
-            authenticationTask.execute();
-        }
+            @Override
+            protected void onFinally() throws RuntimeException {
+                hideProgress();
+            }
+        };
+        authenticationTask.execute();
     }
 
     /**
@@ -236,7 +235,6 @@ public class AuthenticatorActivity extends RoboSherlockAccountAuthenticatorActiv
      * @param result
      */
     protected void finishConfirmCredentials(boolean result) {
-        Log.i(TAG, "finishConfirmCredentials()");
         final Account account = new Account(username, GITHUB_ACCOUNT_TYPE);
         accountManager.setPassword(account, password);
 
@@ -258,11 +256,10 @@ public class AuthenticatorActivity extends RoboSherlockAccountAuthenticatorActiv
 
         if (requestNewAccount) {
             accountManager.addAccountExplicitly(account, password, null);
-
             configureSyncFor(account);
-        } else {
+        } else
             accountManager.setPassword(account, password);
-        }
+
         final Intent intent = new Intent();
         authToken = password;
         intent.putExtra(KEY_ACCOUNT_NAME, username);
@@ -295,16 +292,9 @@ public class AuthenticatorActivity extends RoboSherlockAccountAuthenticatorActiv
                 finishConfirmCredentials(true);
         } else {
             if (requestNewAccount)
-                message.setText("Please enter a valid username/password.");
+                ToastUtils.show(this, string.invalid_login_or_password);
             else
-                message.setText("Please enter a valid password.");
+                ToastUtils.show(this, string.invalid_password);
         }
-    }
-
-    /**
-     * Returns the message to be displayed at the top of the login dialog box.
-     */
-    private CharSequence getMessage() {
-        return null;
     }
 }
