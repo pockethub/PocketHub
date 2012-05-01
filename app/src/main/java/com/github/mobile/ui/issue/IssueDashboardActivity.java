@@ -24,12 +24,12 @@ import android.support.v4.view.ViewPager;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.github.mobile.HomeActivity;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.accounts.AccountUtils;
+import com.github.mobile.ui.user.HomeActivity;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.viewpagerindicator.TitlePageIndicator;
 

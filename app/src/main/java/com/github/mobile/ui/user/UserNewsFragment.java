@@ -33,12 +33,18 @@ import org.eclipse.egit.github.core.service.EventService;
 /**
  * Fragment to display a news feed for a given user/org
  */
-public class UserNewsFragment extends NewsFragment implements OrganizationSelectionListener {
+public abstract class UserNewsFragment extends NewsFragment implements OrganizationSelectionListener {
 
-    private User org;
+    /**
+     * Current organization/user
+     */
+    protected User org;
 
+    /**
+     * Event service
+     */
     @Inject
-    private EventService service;
+    protected EventService service;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

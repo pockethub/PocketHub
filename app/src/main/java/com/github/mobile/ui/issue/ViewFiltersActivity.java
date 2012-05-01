@@ -27,7 +27,6 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.ConfirmDialogFragment;
 import com.github.mobile.DialogFragmentActivity;
-import com.github.mobile.HomeActivity;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
@@ -35,6 +34,7 @@ import com.github.mobile.RequestFuture;
 import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.persistence.AccountDataManager;
+import com.github.mobile.ui.user.HomeActivity;
 import com.google.inject.Inject;
 
 /**

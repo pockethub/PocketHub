@@ -16,9 +16,11 @@
 package com.github.mobile.ui.user;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ListView;
 
 import com.github.mobile.R.string;
-import com.github.mobile.core.ResourcePager;
+import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.PagedItemFragment;
@@ -29,39 +31,30 @@ import com.google.inject.Inject;
 import java.util.List;
 
 import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.service.UserService;
 
 /**
  * Fragment to display a list of followers
  */
-public class FollowersFragment extends PagedItemFragment<User> {
+public abstract class FollowersFragment extends PagedItemFragment<User> {
 
+    /**
+     * Avatar loader
+     */
     @Inject
-    private AvatarLoader avatarHelper;
+    protected AvatarLoader avatarLoader;
 
+    /**
+     * User service
+     */
     @Inject
-    private UserService userService;
+    protected UserService userService;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         ListViewUtils.configure(getActivity(), getListView(), true);
-    }
-
-    @Override
-    protected ResourcePager<User> createPager() {
-        return new ResourcePager<User>() {
-
-            protected Object getId(User resource) {
-                return resource.getId();
-            }
-
-            public PageIterator<User> createIterator(int page, int size) {
-                return userService.pageFollowers(page, size);
-            }
-        };
     }
 
     @Override
@@ -72,6 +65,15 @@ public class FollowersFragment extends PagedItemFragment<User> {
     @Override
     protected ItemListAdapter<User, ? extends ItemView> createAdapter(List<User> items) {
         User[] users = items.toArray(new User[items.size()]);
-        return new UserListAdapter(getActivity().getLayoutInflater(), users, avatarHelper);
+        return new UserListAdapter(getActivity().getLayoutInflater(), users, avatarLoader);
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        User user = (User) l.getItemAtPosition(position);
+        if (AccountUtils.isUser(getActivity(), user))
+            startActivity(HomeActivity.createIntent());
+        else
+            startActivity(UserViewActivity.createIntent(user));
     }
 }

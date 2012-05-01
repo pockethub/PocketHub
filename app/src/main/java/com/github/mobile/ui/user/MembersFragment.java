@@ -18,8 +18,11 @@ package com.github.mobile.ui.user;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
+import android.view.View;
+import android.widget.ListView;
 
 import com.github.mobile.ThrowableLoader;
+import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
 import com.github.mobile.ui.ItemView;
@@ -82,5 +85,14 @@ public class MembersFragment extends ItemListFragment<User> implements Organizat
         // Only hard refresh if view already created and org is changing
         if (getView() != null && previousOrgId != org.getId())
             refreshWithProgress();
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        User user = (User) l.getItemAtPosition(position);
+        if (AccountUtils.isUser(getActivity(), user))
+            startActivity(HomeActivity.createIntent());
+        else
+            startActivity(UserViewActivity.createIntent(user));
     }
 }

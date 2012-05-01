@@ -13,48 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.ui.repo;
+package com.github.mobile.ui.user;
 
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
-import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
-import static com.github.mobile.Intents.EXTRA_REPOSITORY;
+import static com.github.mobile.Intents.EXTRA_USER;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
-import com.github.mobile.ui.user.HomeActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 import com.viewpagerindicator.TitlePageIndicator;
 
-import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.User;
 
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
 
 /**
- * Activity to view a repository
+ * Activity to view a user's various pages
  */
-public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
+public class UserViewActivity extends RoboSherlockFragmentActivity implements OrganizationSelectionProvider {
 
     /**
      * Create intent for this activity
      *
-     * @param repository
+     * @param user
      * @return intent
      */
-    public static Intent createIntent(Repository repository) {
-        return new Builder("repo.VIEW").repo(repository).toIntent();
+    public static Intent createIntent(User user) {
+        return new Builder("user.VIEW").user(user).toIntent();
     }
-
-    @InjectExtra(EXTRA_REPOSITORY)
-    private Repository repository;
 
     @InjectView(id.tpi_header)
     private TitlePageIndicator indicator;
@@ -65,31 +58,30 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
     @Inject
     private AvatarLoader avatarHelper;
 
+    @InjectExtra(EXTRA_USER)
+    private User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(layout.pager_with_title);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(repository.getName());
-        actionBar.setSubtitle(repository.getOwner().getLogin());
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        avatarHelper.bind(actionBar, repository.getOwner());
 
-        pager.setAdapter(new RepositoryPagerAdapter(getSupportFragmentManager()));
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(user.getLogin());
+        avatarHelper.bind(actionBar, user);
+
+        pager.setAdapter(new UserPagerAdapter(getSupportFragmentManager(), getResources()));
         indicator.setViewPager(pager);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case android.R.id.home:
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
+    public User addListener(OrganizationSelectionListener listener) {
+        return user;
+    }
+
+    @Override
+    public OrganizationSelectionProvider removeListener(OrganizationSelectionListener listener) {
+        return this;
     }
 }

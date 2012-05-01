@@ -18,7 +18,7 @@
 
     <application android:debuggable="true" android:hardwareAccelerated="true" android:icon="@drawable/github_app_icon" android:label="@string/github_app_name" android:theme="@style/Theme.GitHub">
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name="HomeActivity">
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.user.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -109,6 +109,13 @@
         <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.repo.RepositoryViewActivity">
             <intent-filter>
                 <action android:name="com.github.mobile.android.repo.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.user.UserViewActivity">
+            <intent-filter>
+                <action android:name="com.github.mobile.android.user.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>

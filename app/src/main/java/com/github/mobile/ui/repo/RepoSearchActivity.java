@@ -27,11 +27,11 @@ import android.os.Bundle;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.github.mobile.HomeActivity;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
+import com.github.mobile.ui.user.HomeActivity;
 import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 

@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile;
+package com.github.mobile.ui.user;
 
+import static android.content.Intent.ACTION_MAIN;
 import static com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_LIST;
 import static com.github.mobile.HomeDropdownListAdapter.ACTION_DASHBOARD;
 import static com.github.mobile.HomeDropdownListAdapter.ACTION_FILTERS;
@@ -33,7 +34,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.github.mobile.Intents.Builder;
+import com.github.mobile.HomeDropdownListAdapter;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
@@ -44,9 +45,6 @@ import com.github.mobile.ui.gist.GistsActivity;
 import com.github.mobile.ui.issue.IssueDashboardActivity;
 import com.github.mobile.ui.issue.ViewFiltersActivity;
 import com.github.mobile.ui.repo.OrganizationLoader;
-import com.github.mobile.ui.user.OrganizationSelectionListener;
-import com.github.mobile.ui.user.OrganizationSelectionProvider;
-import com.github.mobile.ui.user.UserPagerAdapter;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.PreferenceUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
@@ -76,11 +74,10 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
     /**
      * Create intent for this activity
      *
-     * @param org
      * @return intent
      */
-    public static Intent createIntent(User org) {
-        return new Builder("org.VIEW").add(EXTRA_USER, org).toIntent();
+    public static Intent createIntent() {
+        return new Intent(ACTION_MAIN);
     }
 
     @Inject
@@ -158,12 +155,12 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
         boolean isDefaultUser = isDefaultUser(org);
         PagerAdapter pagerAdater = pager.getAdapter();
         if (pagerAdater == null) {
-            pager.setAdapter(new UserPagerAdapter(getSupportFragmentManager(), isDefaultUser));
+            pager.setAdapter(new HomePagerAdapter(getSupportFragmentManager(), getResources(), isDefaultUser));
             indicator.setViewPager(pager);
         } else if (this.isDefaultUser != isDefaultUser) {
             int item = pager.getCurrentItem();
-            ((UserPagerAdapter) pagerAdater).clearAdapter();
-            pager.setAdapter(new UserPagerAdapter(getSupportFragmentManager(), isDefaultUser(org)));
+            ((HomePagerAdapter) pagerAdater).clearAdapter();
+            pager.setAdapter(new HomePagerAdapter(getSupportFragmentManager(), getResources(), isDefaultUser(org)));
             indicator.setViewPager(pager);
             pager.setCurrentItem(item, false);
         }

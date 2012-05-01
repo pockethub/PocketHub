@@ -30,12 +30,32 @@ import android.util.Log;
 
 import java.io.IOException;
 
+import org.eclipse.egit.github.core.User;
+
 /**
  * Helpers for accessing {@link AccountManager}
  */
 public class AccountUtils {
 
     private static final String TAG = "GH.AccountHelper";
+
+    /**
+     * Is the given user the owner of the default account?
+     *
+     * @param context
+     * @param user
+     * @return true if default account user, false otherwise
+     */
+    public static boolean isUser(final Context context, final User user) {
+        if (user == null)
+            return false;
+
+        String login = user.getLogin();
+        if (login == null)
+            return false;
+
+        return login.equals(getLogin(context));
+    }
 
     /**
      * Get login name of configured account

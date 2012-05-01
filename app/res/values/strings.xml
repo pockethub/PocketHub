@@ -124,6 +124,7 @@
     <string name="confirm_filter_delete_message">Are you sure you want to remove this saved issue filter?</string>
     <string name="loading_issues">Loading Issues…</string>
     <string name="loading_comments">Loading Comments…</string>
+    <string name="loading_repositories">Loading Repositories…</string>
     <string name="loading_issue">Loading Issue…</string>
     <string name="loading_news">Loading News…</string>
     <string name="issue_dashboard">Issue Dashboard</string>
@@ -152,5 +153,8 @@
     <string name="invalid_password">Please enter a valid password.</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
+    <string name="repos">Repos</string>
+    <string name="followers">Followers</string>
+    <string name="members">Members</string>
 
 </resources>

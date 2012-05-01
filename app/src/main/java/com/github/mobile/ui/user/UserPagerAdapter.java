@@ -15,79 +15,44 @@
  */
 package com.github.mobile.ui.user;
 
+import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
-import android.view.ViewGroup;
 
-import com.github.mobile.ui.repo.RepoListFragment;
+import com.github.mobile.R.string;
+import com.github.mobile.ui.repo.UserRepositoryListFragment;
 import com.viewpagerindicator.TitleProvider;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Pager adapter for a user's different views
  */
 public class UserPagerAdapter extends FragmentPagerAdapter implements TitleProvider {
 
-    private final boolean defaultUser;
-
-    private final FragmentManager fragmentManager;
-
-    private final Set<String> tags = new HashSet<String>();
+    private final Resources resources;
 
     /**
      * @param fm
-     * @param defaultUser
+     * @param resources
      */
-    public UserPagerAdapter(final FragmentManager fm, final boolean defaultUser) {
+    public UserPagerAdapter(final FragmentManager fm, Resources resources) {
         super(fm);
 
-        fragmentManager = fm;
-        this.defaultUser = defaultUser;
+        this.resources = resources;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
         case 0:
-            return new UserNewsFragment();
+            return new UserCreatedNewsFragment();
         case 1:
-            return new RepoListFragment();
+            return new UserRepositoryListFragment();
         case 2:
-            return defaultUser ? new FollowersFragment() : new MembersFragment();
+            return new UserFollowersFragment();
         default:
             return null;
         }
-    }
-
-    /**
-     * This methods clears any fragments that may not apply to the newly selected org.
-     *
-     * @return this adapter
-     */
-    public UserPagerAdapter clearAdapter() {
-        if (tags.isEmpty())
-            return this;
-
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        for (String tag : tags) {
-            Fragment fragment = fragmentManager.findFragmentByTag(tag);
-            if (fragment != null)
-                transaction.remove(fragment);
-        }
-        transaction.commit();
-
-        return this;
-    }
-
-    public Object instantiateItem(ViewGroup container, int position) {
-        Object fragment = super.instantiateItem(container, position);
-        if (fragment instanceof Fragment)
-            tags.add(((Fragment) fragment).getTag());
-        return fragment;
     }
 
     @Override
@@ -99,11 +64,11 @@ public class UserPagerAdapter extends FragmentPagerAdapter implements TitleProvi
     public String getTitle(int position) {
         switch (position) {
         case 0:
-            return "News";
+            return resources.getString(string.news);
         case 1:
-            return "Repos";
+            return resources.getString(string.repos);
         case 2:
-            return defaultUser ? "Followers" : "Members";
+            return resources.getString(string.followers);
         default:
             return null;
         }
