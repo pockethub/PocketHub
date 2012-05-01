@@ -57,11 +57,10 @@
                 android:gravity="center"
                 android:orientation="horizontal" >
 
-                <FrameLayout
+                <View
                     android:layout_width="1px"
                     android:layout_height="match_parent"
-                    android:background="@color/issue_header_separator" >
-                </FrameLayout>
+                    android:background="@color/issue_header_separator" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -87,20 +86,18 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <FrameLayout
+                <View
                     android:layout_width="1px"
                     android:layout_height="match_parent"
-                    android:background="@color/issue_header_separator" >
-                </FrameLayout>
+                    android:background="@color/issue_header_separator" />
             </LinearLayout>
         </LinearLayout>
 
-        <FrameLayout
+        <View
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginBottom="5dp"
-            android:background="@color/issue_header_separator" >
-        </FrameLayout>
+            android:background="@color/issue_header_separator" />
 
         <View
             android:id="@+id/v_labels"
