@@ -21,6 +21,7 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.mobile.R.string;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.ui.ItemListAdapter;
@@ -59,6 +60,7 @@ public class MembersFragment extends ItemListFragment<User> implements Organizat
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        setEmptyText(getString(string.no_members));
         ListViewUtils.configure(getActivity(), getListView(), true);
     }
 

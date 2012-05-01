@@ -54,6 +54,7 @@ public abstract class FollowersFragment extends PagedItemFragment<User> {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        setEmptyText(getString(string.no_followers));
         ListViewUtils.configure(getActivity(), getListView(), true);
     }
 
