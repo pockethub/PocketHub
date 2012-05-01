@@ -72,6 +72,7 @@ import com.google.inject.Inject;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -363,12 +364,17 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
         for (View header : fileHeaders)
             list.removeHeaderView(header);
         fileHeaders.clear();
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        Typeface octocons = TypefaceUtils.getOctocons(getActivity());
-        for (GistFile file : gist.getFiles().values()) {
+
+        Map<String, GistFile> files = gist.getFiles();
+        if (files == null || files.isEmpty())
+            return;
+
+        Activity activity = getActivity();
+        LayoutInflater inflater = activity.getLayoutInflater();
+        Typeface octocons = TypefaceUtils.getOctocons(activity);
+        for (GistFile file : files.values()) {
             View fileView = inflater.inflate(layout.gist_view_file_item, null);
-            TextView nameText = (TextView) fileView.findViewById(id.tv_file);
-            nameText.setText(file.getFilename());
+            ((TextView) fileView.findViewById(id.tv_file)).setText(file.getFilename());
             ((TextView) fileView.findViewById(id.tv_file_icon)).setTypeface(octocons);
             list.addHeaderView(fileView, file, true);
             fileHeaders.add(fileView);
