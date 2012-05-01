@@ -76,7 +76,7 @@ public class AuthenticatorActivity extends RoboSherlockAccountAuthenticatorActiv
         Log.d(TAG, "Trying to configure account for sync...");
         ContentResolver.setIsSyncable(account, GITHUB_PROVIDER_AUTHORITY, 1);
         ContentResolver.setSyncAutomatically(account, GITHUB_PROVIDER_AUTHORITY, true);
-        ContentResolver.addPeriodicSync(account, GITHUB_PROVIDER_AUTHORITY, new Bundle(), (long) (15 * 60));
+        ContentResolver.addPeriodicSync(account, GITHUB_PROVIDER_AUTHORITY, new Bundle(), 15L * 60L);
     }
 
     private AccountManager accountManager;
