@@ -18,8 +18,6 @@ package com.github.mobile.ui.user;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
-import android.view.View;
-import android.widget.ListView;
 
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.ui.ItemListAdapter;
@@ -75,12 +73,6 @@ public class MembersFragment extends ItemListFragment<User> implements Organizat
     protected ItemListAdapter<User, ? extends ItemView> createAdapter(List<User> items) {
         User[] users = items.toArray(new User[items.size()]);
         return new UserListAdapter(getActivity().getLayoutInflater(), users, avatarHelper);
-    }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        User user = (User) l.getItemAtPosition(position);
-        startActivity(UserViewActivity.createIntent(user));
     }
 
     @Override
