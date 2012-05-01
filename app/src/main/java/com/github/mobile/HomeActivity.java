@@ -66,6 +66,19 @@ import roboguice.inject.InjectView;
 public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavigationListener,
         LoaderCallbacks<List<User>> {
 
+    /**
+     * Callback interface when the selected organization changes
+     */
+    public static interface OrgSelectionListener {
+
+        /**
+         * Organization selection changed
+         *
+         * @param org
+         */
+        public void onOrgSelected(User org);
+    }
+
     private static final String TAG = "GH.UVA";
 
     private static final String PREF_ORG_ID = "orgId";
@@ -248,13 +261,14 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
         return org != null && accountLogin != null && accountLogin.equals(org.getLogin());
     }
 
+    /**
+     * Register a listener to be notified when the organization selected changes
+     *
+     * @param listener
+     * @return the currently selected organization
+     */
     public User registerOrgSelectionListener(OrgSelectionListener listener) {
         orgSelectionListeners.add(listener);
         return org;
     }
-
-    public static interface OrgSelectionListener {
-        public void onOrgSelected(User org);
-    }
-
 }
