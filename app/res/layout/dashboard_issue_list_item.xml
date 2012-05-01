@@ -23,21 +23,9 @@
 
     <TextView
         android:id="@+id/tv_issue_number"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        style="@style/IssueNumber"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:background="@color/background_id"
-        android:gravity="right"
-        android:includeFontPadding="false"
-        android:paddingBottom="2dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="2dp"
-        android:paddingTop="2dp"
-        android:singleLine="true"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/item_text_color"
-        android:typeface="monospace" />
+        android:layout_alignParentTop="true" />
 
     <TextView
         android:id="@+id/tv_issue_repo_name"
