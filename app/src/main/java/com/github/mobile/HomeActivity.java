@@ -44,7 +44,7 @@ import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.gist.GistsActivity;
 import com.github.mobile.ui.issue.IssueDashboardActivity;
 import com.github.mobile.ui.issue.ViewFiltersActivity;
-import com.github.mobile.ui.repo.OrgLoader;
+import com.github.mobile.ui.repo.OrganizationLoader;
 import com.github.mobile.ui.user.UserPagerAdapter;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.PreferenceUtils;
@@ -215,7 +215,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
 
     @Override
     public Loader<List<User>> onCreateLoader(int i, Bundle bundle) {
-        return new OrgLoader(this, accountDataManager, userComparatorProvider);
+        return new OrganizationLoader(this, accountDataManager, userComparatorProvider);
     }
 
     @Override

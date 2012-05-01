@@ -15,9 +15,6 @@
  */
 package com.github.mobile.ui.repo;
 
-import static android.util.Log.WARN;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.sort;
 import android.app.Activity;
 import android.util.Log;
 
@@ -30,11 +27,15 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.egit.github.core.User;
 
-public class OrgLoader extends AuthenticatedUserLoader<List<User>> {
+/**
+ * Load of a {@link List} or {@link User} organizations
+ */
+public class OrganizationLoader extends AuthenticatedUserLoader<List<User>> {
 
     private static final String TAG = "GH.UAOL";
 
@@ -42,27 +43,32 @@ public class OrgLoader extends AuthenticatedUserLoader<List<User>> {
 
     private final AccountDataManager accountDataManager;
 
+    /**
+     * Create organization loader
+     *
+     * @param activity
+     * @param accountDataManager
+     * @param userComparatorProvider
+     */
     @Inject
-    public OrgLoader(Activity activity, AccountDataManager accountDataManager,
+    public OrganizationLoader(Activity activity, AccountDataManager accountDataManager,
             Provider<UserComparator> userComparatorProvider) {
         super(activity);
         this.accountDataManager = accountDataManager;
         this.userComparatorProvider = userComparatorProvider;
     }
 
+    @Override
     public List<User> load() {
-        Log.d(TAG, "Going to load organizations");
+        List<User> orgs;
         try {
-            List<User> orgs = accountDataManager.getOrgs();
-            sort(orgs, userComparatorProvider.get());
-            return orgs;
+            orgs = accountDataManager.getOrgs();
         } catch (final IOException e) {
-            if (Log.isLoggable(TAG, WARN))
-                Log.w(TAG, "Exception loading organizations", e);
-
-            ToastUtils.show(activity, string.error_orgs_load);
-
-            return emptyList();
+            Log.e(TAG, "Exception loading organizations", e);
+            ToastUtils.show(activity, e, string.error_orgs_load);
+            return Collections.emptyList();
         }
+        Collections.sort(orgs, userComparatorProvider.get());
+        return orgs;
     }
 }
