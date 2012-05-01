@@ -30,7 +30,8 @@
         android:inputType="textMultiLine|textAutoCorrect"
         android:padding="10dp"
         android:scrollbars="horizontal|vertical"
-        android:textColor="@color/item_text_color" >
+        android:textColor="@color/item_text_color"
+        android:textCursorDrawable="@drawable/edit_text_cursor" >
 
         <requestFocus />
     </EditText>
