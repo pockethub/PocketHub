@@ -271,10 +271,12 @@ public class AuthenticatorActivity extends RoboSherlockAccountAuthenticatorActiv
         finish();
     }
 
+    @SuppressWarnings("deprecation")
     private void hideProgress() {
         dismissDialog(0);
     }
 
+    @SuppressWarnings("deprecation")
     private void showProgress() {
         showDialog(0);
     }
