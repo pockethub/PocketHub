@@ -21,7 +21,7 @@
             <solid android:color="@color/item_separator1" />
         </shape>
     </item>
-    <item android:top="1px">
+    <item android:top="1dp">
         <shape android:shape="rectangle" >
             <solid android:color="@color/item_separator2" />
         </shape>

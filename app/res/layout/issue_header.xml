@@ -164,9 +164,6 @@
         android:textColor="@color/item_text_color"
         android:textColorLink="@color/text_link" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2px"
-        android:background="@drawable/separator" />
+    <View style="@style/Separator" />
 
 </LinearLayout>

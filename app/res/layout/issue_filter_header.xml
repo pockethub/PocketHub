@@ -28,9 +28,6 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/item_text_color" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2px"
-        android:background="@drawable/separator" />
+    <View style="@style/Separator" />
 
 </LinearLayout>

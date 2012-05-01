@@ -55,4 +55,10 @@
         <item name="android:typeface">monospace</item>
     </style>
 
+    <style name="Separator">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">2dp</item>
+        <item name="android:background">@drawable/separator</item>
+    </style>
+
 </resources>
