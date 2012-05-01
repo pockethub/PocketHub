@@ -81,13 +81,11 @@
 
         <TextView
             android:id="@+id/tv_file_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/TextIcon"
             android:gravity="center_vertical"
             android:paddingLeft="5dp"
             android:text="@string/icon_file"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/item_text_color_light" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/tv_gist_files"
@@ -101,12 +99,10 @@
 
         <TextView
             android:id="@+id/tv_comment_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/TextIcon"
             android:gravity="center_vertical"
             android:text="@string/icon_comment"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/item_text_color_light" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/tv_gist_comments"

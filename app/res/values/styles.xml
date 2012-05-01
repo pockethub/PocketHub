@@ -30,4 +30,13 @@
         <item name="android:background">@drawable/edit_text_background</item>
     </style>
 
+    <style name="TextIcon">
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/item_text_color_light</item>
+    </style>
+
 </resources>

@@ -22,12 +22,8 @@
 
     <TextView
         android:id="@+id/tv_repo_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
+        style="@style/TextIcon"
         android:paddingRight="10dp"
-        android:singleLine="true"
-        android:textColor="@color/item_text_color_light"
         android:textSize="28sp" />
 
     <LinearLayout

@@ -99,24 +99,17 @@
 
         <TextView
             android:id="@+id/tv_pull_request_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            style="@style/TextIcon"
             android:paddingRight="5dp"
-            android:singleLine="true"
             android:text="@string/icon_pull_request"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/item_text_color_light" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/tv_comment_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/TextIcon"
             android:gravity="center_vertical"
-            android:singleLine="true"
             android:text="@string/icon_comment"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/item_text_color_light" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/tv_issue_comments"
