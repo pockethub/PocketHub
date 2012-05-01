@@ -20,7 +20,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 
-public class DummyProvider extends ContentProvider {
+/**
+ * Content provider adapter that does nothing
+ */
+public class ContentProviderAdapter extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {

@@ -24,56 +24,64 @@ import android.content.SyncResult;
 import android.os.Bundle;
 
 import com.github.mobile.accounts.AccountScope;
+import com.github.mobile.sync.SyncCampaign.Factory;
 import com.google.inject.Inject;
 
 import roboguice.inject.ContextScope;
 import roboguice.inject.ContextSingleton;
 
+/**
+ * Sync adapter
+ */
 @ContextSingleton
-class GitHubSyncAdapter extends AbstractThreadedSyncAdapter {
+public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Inject
     private ContextScope contextScope;
 
     @Inject
-    private AccountScope gitHubAccountScope;
+    private AccountScope accountScope;
 
     @Inject
-    private SyncCampaign.Factory syncCampaignFactory;
+    private Factory campaignFactory;
 
-    private SyncCampaign currentSyncCampaign = null;
+    private SyncCampaign campaign = null;
 
+    /**
+     * Create sync adapter for context
+     *
+     * @param context
+     */
     @Inject
-    public GitHubSyncAdapter(Context context) {
+    public SyncAdapter(final Context context) {
         super(context, true);
     }
 
     @Override
-    public void onPerformSync(Account account, Bundle extras, String authority,
-                              ContentProviderClient provider, SyncResult syncResult) {
-        gitHubAccountScope.enterWith(account, AccountManager.get(getContext()));
+    public void onPerformSync(final Account account, final Bundle extras, final String authority,
+            final ContentProviderClient provider, final SyncResult syncResult) {
+        accountScope.enterWith(account, AccountManager.get(getContext()));
         try {
             contextScope.enter(getContext());
             try {
-                cancelAnyCurrentCampaign();
-                currentSyncCampaign = syncCampaignFactory.createCampaignFor(syncResult);
-                currentSyncCampaign.run();
+                cancelCampaign();
+                campaign = campaignFactory.create(syncResult);
+                campaign.run();
             } finally {
                 contextScope.exit(getContext());
             }
         } finally {
-            gitHubAccountScope.exit();
+            accountScope.exit();
         }
     }
 
     @Override
     public void onSyncCanceled() {
-        cancelAnyCurrentCampaign();
+        cancelCampaign();
     }
 
-    private void cancelAnyCurrentCampaign() {
-        if (currentSyncCampaign != null)
-            currentSyncCampaign.cancel();
+    private void cancelCampaign() {
+        if (campaign != null)
+            campaign.cancel();
     }
-
 }

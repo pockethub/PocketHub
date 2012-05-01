@@ -134,14 +134,14 @@
             -->
         </activity>
 
-        <service android:exported="false" android:name=".sync.GitHubSyncAdapterService" android:process=":repos">
+        <service android:exported="false" android:name=".sync.SyncAdapterService" android:process=":repos">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter"/>
             </intent-filter>
             <meta-data android:name="android.content.SyncAdapter" android:resource="@xml/sync_adapter"/>
         </service>
 
-        <provider android:authorities="com.github.sync" android:label="GitHub" android:name=".sync.DummyProvider" android:syncable="true"/>
+        <provider android:authorities="com.github.sync" android:label="GitHub" android:name=".sync.ContentProviderAdapter" android:syncable="true"/>
 
         <provider android:authorities="com.github.search.suggest.recent.repos" android:name=".ui.repo.RepoSearchRecentSuggestionsProvider"/>
 

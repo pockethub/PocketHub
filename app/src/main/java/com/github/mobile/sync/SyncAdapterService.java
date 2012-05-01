@@ -23,10 +23,13 @@ import com.google.inject.Inject;
 import roboguice.inject.ContextScopedProvider;
 import roboguice.service.RoboService;
 
-public class GitHubSyncAdapterService extends RoboService {
+/**
+ * Sync adapter service
+ */
+public class SyncAdapterService extends RoboService {
 
     @Inject
-    ContextScopedProvider<GitHubSyncAdapter> syncAdapterProvider;
+    private ContextScopedProvider<SyncAdapter> syncAdapterProvider;
 
     @Override
     public IBinder onBind(Intent intent) {

@@ -18,8 +18,8 @@ package com.github.mobile.sync;
 import android.content.SyncResult;
 import android.util.Log;
 
-import com.github.mobile.persistence.OrganizationRepositories;
 import com.github.mobile.persistence.DatabaseCache;
+import com.github.mobile.persistence.OrganizationRepositories;
 import com.github.mobile.persistence.Organizations;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -30,11 +30,25 @@ import java.util.List;
 import org.eclipse.egit.github.core.User;
 
 /**
- * A cancellable Sync operation - aims to synchronize data
- * for a given account.
+ * A cancellable Sync operation - aims to synchronize data for a given account.
  */
 public class SyncCampaign implements Runnable {
+
     private static final String TAG = "SyncCampaign";
+
+    /**
+     * Factory to create campaign
+     */
+    public interface Factory {
+
+        /**
+         * Create campaign for result
+         *
+         * @param syncResult
+         * @return campaign
+         */
+        public SyncCampaign create(SyncResult syncResult);
+    }
 
     @Inject
     private DatabaseCache dbCache;
@@ -46,17 +60,23 @@ public class SyncCampaign implements Runnable {
     private Organizations userAndOrgsResource;
 
     private final SyncResult syncResult;
+
     private boolean cancelled = false;
 
+    /**
+     * Create campaign for result
+     *
+     * @param syncResult
+     */
     @Inject
     public SyncCampaign(@Assisted SyncResult syncResult) {
         this.syncResult = syncResult;
     }
 
     public void run() {
-        List<User> usersAndOrgs;
+        List<User> orgs;
         try {
-            usersAndOrgs = dbCache.requestAndStore(userAndOrgsResource);
+            orgs = dbCache.requestAndStore(userAndOrgsResource);
             syncResult.stats.numUpdates++;
         } catch (IOException e) {
             syncResult.stats.numIoExceptions++;
@@ -64,14 +84,14 @@ public class SyncCampaign implements Runnable {
             return;
         }
 
-        Log.d(TAG, "Found " + usersAndOrgs.size() + " users and orgs for sync");
-        for (User userOrOrg : usersAndOrgs) {
+        Log.d(TAG, "Found " + orgs.size() + " users and orgs for sync");
+        for (User org : orgs) {
             if (cancelled)
                 return;
 
-            Log.d(TAG, "Syncing repos for " + userOrOrg.getLogin() + "...");
+            Log.d(TAG, "Syncing repos for " + org.getLogin() + "...");
             try {
-                dbCache.requestAndStore(allRepos.under(userOrOrg));
+                dbCache.requestAndStore(allRepos.under(org));
                 syncResult.stats.numUpdates++;
             } catch (IOException e) {
                 syncResult.stats.numIoExceptions++;
@@ -81,12 +101,11 @@ public class SyncCampaign implements Runnable {
         Log.d(TAG, "...finished sync campaign");
     }
 
+    /**
+     * Cancel campaign
+     */
     public void cancel() {
         cancelled = true;
         Log.d(TAG, "Cancelled");
-    }
-
-    public interface Factory {
-        public SyncCampaign createCampaignFor(SyncResult syncResult);
     }
 }
