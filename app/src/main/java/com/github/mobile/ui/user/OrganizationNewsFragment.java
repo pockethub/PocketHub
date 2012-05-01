@@ -15,7 +15,6 @@
  */
 package com.github.mobile.ui.user;
 
-import com.github.mobile.R.string;
 import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.core.ResourcePager;
 
@@ -37,10 +36,5 @@ public class OrganizationNewsFragment extends UserNewsFragment {
                 return service.pageUserOrgEvents(account, org.getLogin(), page, size);
             }
         };
-    }
-
-    @Override
-    protected int getLoadingMessage() {
-        return string.loading_news;
     }
 }
