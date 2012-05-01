@@ -15,6 +15,7 @@
  */
 package com.github.mobile.ui;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
@@ -65,6 +66,13 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
      */
     @Inject
     protected EventService service;
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        setEmptyText(getString(string.no_news));
+    }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {

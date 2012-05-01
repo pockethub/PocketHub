@@ -158,5 +158,6 @@
     <string name="members">Members</string>
     <string name="no_followers">No Followers</string>
     <string name="no_members">No Members</string>
+    <string name="no_news">No News</string>
 
 </resources>
