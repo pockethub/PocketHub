@@ -32,10 +32,9 @@ import com.google.inject.OutOfScopeException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
-
 /**
- * Custom Guice-scope that makes an authenticated GitHub account available,
- * by enforcing that the user is logged in before proceeding.
+ * Custom Guice-scope that makes an authenticated GitHub account available, by enforcing that the user is logged in
+ * before proceeding.
  */
 public class AccountScope extends ScopeBase {
 
@@ -50,21 +49,21 @@ public class AccountScope extends ScopeBase {
 
                 bind(AccountScope.class).toInstance(scope);
 
-                bind(GITHUB_ACCOUNT_KEY).toProvider(AccountScope.<GitHubAccount>seededKeyProvider()).in(scope);
+                bind(GITHUB_ACCOUNT_KEY).toProvider(AccountScope.<GitHubAccount> seededKeyProvider()).in(scope);
             }
         };
     }
 
     private final ThreadLocal<GitHubAccount> currentAccount = new ThreadLocal<GitHubAccount>();
 
-    private final Map<GitHubAccount, Map<Key<?>, Object>> repoScopeMaps = new MapMaker().
-        makeComputingMap(new Function<GitHubAccount, Map<Key<?>, Object>>() {
-            public Map<Key<?>, Object> apply(GitHubAccount account) {
-                ConcurrentMap<Key<?>, Object> accountScopeMap = new MapMaker().makeMap();
-                accountScopeMap.put(GITHUB_ACCOUNT_KEY, account);
-                return accountScopeMap;
-            }
-        });
+    private final Map<GitHubAccount, Map<Key<?>, Object>> repoScopeMaps = new MapMaker()
+            .makeComputingMap(new Function<GitHubAccount, Map<Key<?>, Object>>() {
+                public Map<Key<?>, Object> apply(GitHubAccount account) {
+                    ConcurrentMap<Key<?>, Object> accountScopeMap = new MapMaker().makeMap();
+                    accountScopeMap.put(GITHUB_ACCOUNT_KEY, account);
+                    return accountScopeMap;
+                }
+            });
 
     /**
      * Enters scope once we've ensured the user has a valid account.
@@ -102,6 +101,4 @@ public class AccountScope extends ScopeBase {
         }
         return repoScopeMaps.get(account);
     }
-
-
 }
