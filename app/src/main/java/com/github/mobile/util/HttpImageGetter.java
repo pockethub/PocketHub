@@ -43,7 +43,7 @@ public class HttpImageGetter implements ImageGetter {
         private final Drawable image;
 
         private LoadingImageGetter(final Context context, final int size) {
-            int imageSize = Math.round(context.getResources().getDisplayMetrics().density * 48 + 0.5F);
+            int imageSize = Math.round(context.getResources().getDisplayMetrics().density * size + 0.5F);
             image = context.getResources().getDrawable(drawable.image_loading_icon);
             image.setBounds(0, 0, imageSize, imageSize);
         }
