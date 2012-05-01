@@ -243,13 +243,11 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
         int sharedPreferencesOrgId = sharedPreferences.getInt(PREF_ORG_ID, -1);
         int targetOrgId = org == null ? sharedPreferencesOrgId : org.getId();
 
-        for (int i = 0; i < orgs.size(); ++i) {
-            User availableOrg = orgs.get(i);
-            if (availableOrg.getId() == targetOrgId) {
+        for (int i = 0; i < orgs.size(); ++i)
+            if (orgs.get(i).getId() == targetOrgId) {
                 getSupportActionBar().setSelectedNavigationItem(i);
                 break;
             }
-        }
     }
 
     @Override
