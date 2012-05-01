@@ -95,7 +95,6 @@
         <TextView
             android:id="@+id/tv_comment_icon"
             style="@style/TextIcon"
-            android:gravity="center_vertical"
             android:text="@string/icon_comment"
             android:textSize="12sp" />
 
