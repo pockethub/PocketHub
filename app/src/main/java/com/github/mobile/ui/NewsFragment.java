@@ -18,6 +18,7 @@ package com.github.mobile.ui;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.mobile.R.string;
 import com.github.mobile.core.gist.GistEventMatcher;
 import com.github.mobile.core.issue.IssueEventMatcher;
 import com.github.mobile.core.repo.RepositoryEventMatcher;
@@ -34,6 +35,7 @@ import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.event.Event;
+import org.eclipse.egit.github.core.service.EventService;
 
 /**
  * Base news fragment class with utilities for subclasses to built on
@@ -57,6 +59,12 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
 
     @Inject
     private AvatarLoader avatarHelper;
+
+    /**
+     * Event service
+     */
+    @Inject
+    protected EventService service;
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
@@ -87,5 +95,10 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
     protected ItemListAdapter<Event, ? extends ItemView> createAdapter(List<Event> items) {
         return new NewsEventListAdapter(getActivity().getLayoutInflater(), items.toArray(new Event[items.size()]),
                 avatarHelper);
+    }
+
+    @Override
+    protected int getLoadingMessage() {
+        return string.loading_news;
     }
 }

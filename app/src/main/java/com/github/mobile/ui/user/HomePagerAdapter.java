@@ -59,7 +59,7 @@ public class HomePagerAdapter extends FragmentPagerAdapter implements TitleProvi
     public Fragment getItem(int position) {
         switch (position) {
         case 0:
-            return new UserReceivedNewsFragment();
+            return defaultUser ? new UserReceivedNewsFragment() : new OrganizationNewsFragment();
         case 1:
             return new RepoListFragment();
         case 2:

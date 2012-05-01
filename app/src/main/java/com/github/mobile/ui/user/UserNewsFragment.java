@@ -18,17 +18,11 @@ package com.github.mobile.ui.user;
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.github.mobile.R.string;
-import com.github.mobile.core.ResourcePager;
 import com.github.mobile.ui.NewsFragment;
 import com.github.mobile.util.ListViewUtils;
-import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.client.PageIterator;
-import org.eclipse.egit.github.core.event.Event;
-import org.eclipse.egit.github.core.service.EventService;
 
 /**
  * Fragment to display a news feed for a given user/org
@@ -39,12 +33,6 @@ public abstract class UserNewsFragment extends NewsFragment implements Organizat
      * Current organization/user
      */
     protected User org;
-
-    /**
-     * Event service
-     */
-    @Inject
-    protected EventService service;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -58,27 +46,6 @@ public abstract class UserNewsFragment extends NewsFragment implements Organizat
         super.onAttach(activity);
 
         org = ((OrganizationSelectionProvider) activity).addListener(this);
-    }
-
-    @Override
-    protected ResourcePager<Event> createPager() {
-        return new EventPager() {
-
-            @Override
-            public PageIterator<Event> createIterator(int page, int size) {
-                return service.pageUserReceivedEvents(org.getLogin(), false, page, size);
-            }
-
-            @Override
-            protected Event register(Event resource) {
-                return NewsEventListAdapter.isValid(resource) ? resource : null;
-            }
-        };
-    }
-
-    @Override
-    protected int getLoadingMessage() {
-        return string.loading_news;
     }
 
     @Override
