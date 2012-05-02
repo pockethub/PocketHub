@@ -86,6 +86,7 @@ public class ViewFiltersActivity extends DialogFragmentActivity implements OnIte
             });
             return;
         }
+
         super.onDialogResult(requestCode, resultCode, arguments);
     }
 
