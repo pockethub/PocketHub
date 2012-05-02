@@ -53,6 +53,7 @@ public class UserRepositoryListFragment extends PagedItemFragment<Repository> {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        setEmptyText(getString(string.no_repositories));
         ListViewUtils.configure(getActivity(), getListView(), true);
     }
 
