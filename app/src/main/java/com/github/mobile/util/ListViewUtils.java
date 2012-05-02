@@ -15,7 +15,10 @@
  */
 package com.github.mobile.util;
 
+import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import android.content.Context;
+import android.content.res.Resources;
+import android.util.TypedValue;
 import android.widget.ListView;
 
 import com.github.mobile.R.drawable;
@@ -28,6 +31,11 @@ import com.github.mobile.R.drawable;
 public class ListViewUtils {
 
     /**
+     * DP Height of the list divider
+     */
+    private static final int HEIGHT_DIVIDER = 2;
+
+    /**
      * Configure list view
      *
      * @param context
@@ -37,8 +45,11 @@ public class ListViewUtils {
      */
     public static ListView configure(final Context context, final ListView listView, final boolean fastScroll) {
         listView.setFastScrollEnabled(fastScroll);
-        listView.setDivider(context.getResources().getDrawable(drawable.list_divider));
-        listView.setDividerHeight(2);
+        Resources resources = context.getResources();
+        listView.setDivider(resources.getDrawable(drawable.list_divider));
+        int dividerHeight = (int) (TypedValue.applyDimension(COMPLEX_UNIT_DIP, HEIGHT_DIVIDER,
+                resources.getDisplayMetrics()) + 0.5F);
+        listView.setDividerHeight(dividerHeight);
         return listView;
     }
 }
