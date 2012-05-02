@@ -31,7 +31,7 @@ import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.service.IssueService;
 
 /**
- * Task to load and store and {@link Issue}
+ * Task to load and store an {@link Issue}
  */
 public class RefreshIssueTask extends AuthenticatedUserTask<FullIssue> {
 
