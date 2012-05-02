@@ -221,4 +221,15 @@ public class HtmlUtilsTest {
         assertEquals("a<pre>&nbsp;c&nbsp;</pre>d<pre>&nbsp;&nbsp;&nbsp;&nbsp;e&nbsp;&nbsp;&nbsp;&nbsp;</pre>",
                 formatted.toString());
     }
+
+    /**
+     * Single code element inside a pre element
+     */
+    @Test
+    public void formatPreCodeOnly() {
+        String html = "<pre><code>a\nb\nc\n</code></pre>";
+        CharSequence formatted = HtmlUtils.format(html);
+        assertNotNull(formatted);
+        assertEquals("<pre><code>a<br>b<br>c<br></code></pre>", formatted.toString());
+    }
 }
