@@ -150,13 +150,13 @@ public class HtmlUtils {
             }
 
             if (TAG_ROOT.equalsIgnoreCase(tag) && !opening) {
-                // Remove leading whitespace
-                while (output.length() > 0 && Character.isWhitespace(output.charAt(0)))
+                // Remove leading newlines
+                while (output.length() > 0 && output.charAt(0) == '\n')
                     output.delete(0, 1);
 
-                // Remove trailing whitespace
+                // Remove trailing newlines
                 int last = output.length() - 1;
-                while (last >= 0 && Character.isWhitespace(output.charAt(last))) {
+                while (last >= 0 && output.charAt(last) == '\n') {
                     output.delete(last, last + 1);
                     last = output.length() - 1;
                 }
