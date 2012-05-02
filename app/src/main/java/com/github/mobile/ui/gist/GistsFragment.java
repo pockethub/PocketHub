@@ -28,6 +28,8 @@ import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.actionbarsherlock.view.MenuItem;
+import com.github.mobile.R.id;
 import com.github.mobile.R.string;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.ui.ItemListAdapter;
@@ -78,6 +80,17 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
 
         setEmptyText(getString(string.no_gists));
         ListViewUtils.configure(getActivity(), getListView(), true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case id.create_gist:
+            startActivityForResult(new Intent(getActivity(), CreateGistActivity.class), GIST_CREATE);
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

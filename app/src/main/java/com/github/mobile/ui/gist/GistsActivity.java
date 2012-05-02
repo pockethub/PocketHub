@@ -17,7 +17,6 @@ package com.github.mobile.ui.gist;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
-import static com.github.mobile.RequestCodes.GIST_CREATE;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,18 +36,10 @@ import com.github.mobile.ui.user.HomeActivity;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.viewpagerindicator.TitlePageIndicator;
 
-import roboguice.inject.InjectView;
-
 /**
  * Activity to display view pagers of different Gist queries
  */
 public class GistsActivity extends RoboSherlockFragmentActivity {
-
-    @InjectView(id.tpi_header)
-    private TitlePageIndicator indicator;
-
-    @InjectView(id.vp_pages)
-    private ViewPager pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +52,9 @@ public class GistsActivity extends RoboSherlockFragmentActivity {
         actionBar.setSubtitle(AccountUtils.getLogin(this));
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        ViewPager pager = (ViewPager) findViewById(id.vp_pages);
         pager.setAdapter(new GistQueriesPagerAdapter(getResources(), getSupportFragmentManager()));
-        indicator.setViewPager(pager);
+        ((TitlePageIndicator) findViewById(id.tpi_header)).setViewPager(pager);
     }
 
     private void randomGist() {
@@ -93,6 +85,7 @@ public class GistsActivity extends RoboSherlockFragmentActivity {
         return true;
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case id.open_gist:
@@ -100,9 +93,6 @@ public class GistsActivity extends RoboSherlockFragmentActivity {
             return true;
         case id.random_gist:
             randomGist();
-            return true;
-        case id.create_gist:
-            startActivityForResult(new Intent(this, CreateGistActivity.class), GIST_CREATE);
             return true;
         case android.R.id.home:
             Intent intent = new Intent(this, HomeActivity.class);
