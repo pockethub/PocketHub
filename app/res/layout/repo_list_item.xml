@@ -22,9 +22,8 @@
 
     <TextView
         android:id="@+id/tv_repo_icon"
-        style="@style/TextIcon"
-        android:paddingRight="10dp"
-        android:textSize="28sp" />
+        style="@style/PrimaryIcon"
+        android:paddingRight="10dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

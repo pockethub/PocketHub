@@ -87,16 +87,14 @@
 
         <TextView
             android:id="@+id/tv_pull_request_icon"
-            style="@style/TextIcon"
+            style="@style/ListIcon"
             android:paddingRight="5dp"
-            android:text="@string/icon_pull_request"
-            android:textSize="12sp" />
+            android:text="@string/icon_pull_request" />
 
         <TextView
             android:id="@+id/tv_comment_icon"
-            style="@style/TextIcon"
-            android:text="@string/icon_comment"
-            android:textSize="12sp" />
+            style="@style/ListIcon"
+            android:text="@string/icon_comment" />
 
         <TextView
             android:id="@+id/tv_issue_comments"

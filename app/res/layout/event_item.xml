@@ -51,8 +51,7 @@
 
         <TextView
             android:id="@+id/tv_event_icon"
-            style="@style/TextIcon"
-            android:textSize="20sp" />
+            style="@style/EventIcon" />
 
         <TextView
             android:id="@+id/tv_event_date"

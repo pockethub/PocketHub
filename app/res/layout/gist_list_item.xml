@@ -81,11 +81,9 @@
 
         <TextView
             android:id="@+id/tv_file_icon"
-            style="@style/TextIcon"
-            android:gravity="center_vertical"
+            style="@style/ListIcon"
             android:paddingLeft="5dp"
-            android:text="@string/icon_file"
-            android:textSize="12sp" />
+            android:text="@string/icon_file" />
 
         <TextView
             android:id="@+id/tv_gist_files"
@@ -99,10 +97,8 @@
 
         <TextView
             android:id="@+id/tv_comment_icon"
-            style="@style/TextIcon"
-            android:gravity="center_vertical"
-            android:text="@string/icon_comment"
-            android:textSize="12sp" />
+            style="@style/ListIcon"
+            android:text="@string/icon_comment" />
 
         <TextView
             android:id="@+id/tv_gist_comments"
