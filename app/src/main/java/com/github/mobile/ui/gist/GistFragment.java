@@ -54,12 +54,12 @@ import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.core.gist.FullGist;
 import com.github.mobile.core.gist.GistStore;
+import com.github.mobile.core.gist.RefreshGistTask;
 import com.github.mobile.core.gist.StarGistTask;
 import com.github.mobile.core.gist.UnstarGistTask;
 import com.github.mobile.ui.comment.CommentListAdapter;
 import com.github.mobile.ui.comment.CreateCommentActivity;
 import com.github.mobile.util.AvatarLoader;
-import com.github.mobile.util.HtmlUtils;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.TimeUtils;
 import com.github.mobile.util.ToastUtils;
@@ -72,8 +72,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Gist;
@@ -110,9 +108,6 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
     @Inject
     private GistStore store;
 
-    @Inject
-    private ContextScopedProvider<GistService> service;
-
     private View headerView;
 
     private TextView created;
@@ -132,8 +127,6 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
     @Inject
     private ContextScopedProvider<GistService> gistServiceProvider;
-
-    private Executor executor = Executors.newFixedThreadPool(1);
 
     private List<View> fileHeaders = new ArrayList<View>();
 
@@ -405,28 +398,19 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
     }
 
     private void refreshGist() {
-        new AuthenticatedUserTask<FullGist>(getActivity(), executor) {
+        new RefreshGistTask(getActivity(), gistId) {
 
-            public FullGist run() throws Exception {
-                Gist gist = store.refreshGist(gistId);
-                GistService gistService = service.get(getContext());
-                List<Comment> comments;
-                if (gist.getComments() > 0)
-                    comments = gistService.getComments(gistId);
-                else
-                    comments = Collections.emptyList();
-                for (Comment comment : comments)
-                    comment.setBodyHtml(HtmlUtils.format(comment.getBodyHtml()).toString());
-                return new FullGist(gist, gistService.isStarred(gistId), comments);
-            }
-
+            @Override
             protected void onException(Exception e) throws RuntimeException {
-                Log.d(TAG, "Exception refreshing gist", e);
+                super.onException(e);
 
                 ToastUtils.show(getActivity(), e, string.error_gist_load);
             }
 
+            @Override
             protected void onSuccess(FullGist fullGist) throws Exception {
+                super.onSuccess(fullGist);
+
                 if (getActivity() == null)
                     return;
 
