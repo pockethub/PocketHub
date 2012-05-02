@@ -27,7 +27,6 @@ import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
 import com.github.mobile.ui.ItemView;
-import com.github.mobile.ui.repo.RecentReposHelper.RecentRepos;
 import com.github.mobile.ui.user.OrganizationSelectionListener;
 import com.github.mobile.ui.user.OrganizationSelectionProvider;
 import com.github.mobile.util.ListViewUtils;
@@ -45,23 +44,21 @@ import org.eclipse.egit.github.core.User;
  */
 public class RepoListFragment extends ItemListFragment<Repository> implements OrganizationSelectionListener {
 
-    private static final String RECENT_REPOS = "recentRepos";
-
     @Inject
     private AccountDataManager cache;
 
     private final AtomicReference<User> org = new AtomicReference<User>();
 
-    private RecentReposHelper recentReposHelper;
-
-    private final AtomicReference<RecentRepos> recentReposRef = new AtomicReference<RecentRepos>();
+    private final AtomicReference<RecentRepositories> recentRepos = new AtomicReference<RecentRepositories>();
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        recentReposHelper = new RecentReposHelper(activity);
-        org.set(((OrganizationSelectionProvider) activity).addListener(this));
+        User currentOrg = ((OrganizationSelectionProvider) activity).addListener(this);
+        org.set(currentOrg);
+        if (currentOrg != null)
+            recentRepos.set(new RecentRepositories(getActivity(), currentOrg));
     }
 
     @Override
@@ -70,8 +67,13 @@ public class RepoListFragment extends ItemListFragment<Repository> implements Or
         int previousOrgId = previousOrg != null ? previousOrg.getId() : -1;
         org.set(organization);
         // Only hard refresh if view already created and org is changing
-        if (getView() != null && previousOrgId != organization.getId())
+        if (getView() != null && previousOrgId != organization.getId()) {
+            RecentRepositories recent = recentRepos.get();
+            if (recent != null)
+                recent.saveAsync();
+            recentRepos.set(new RecentRepositories(getActivity(), organization));
             refreshWithProgress();
+        }
     }
 
     @Override
@@ -80,27 +82,14 @@ public class RepoListFragment extends ItemListFragment<Repository> implements Or
 
         setEmptyText(getString(string.no_repositories));
         ListViewUtils.configure(getActivity(), getListView(), true);
-
-        if (savedInstanceState != null) {
-            RecentRepos recentRepos = (RecentRepos) savedInstanceState.getSerializable(RECENT_REPOS);
-            if (recentRepos != null)
-                recentReposRef.set(recentRepos);
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        RecentRepos recentRepos = recentReposRef.get();
-        if (recentRepos != null)
-            outState.putSerializable(RECENT_REPOS, recentRepos);
     }
 
     @Override
     public void onListItemClick(ListView list, View v, int position, long id) {
         Repository repo = (Repository) list.getItemAtPosition(position);
-        recentReposHelper.add(repo);
+        RecentRepositories recent = recentRepos.get();
+        if (recent != null)
+            recent.add(repo);
         startActivity(RepositoryViewActivity.createIntent(repo));
         refresh();
     }
@@ -109,7 +98,9 @@ public class RepoListFragment extends ItemListFragment<Repository> implements Or
     public void onStop() {
         super.onStop();
 
-        recentReposHelper.save();
+        RecentRepositories recent = recentRepos.get();
+        if (recent != null)
+            recent.saveAsync();
     }
 
     @Override
@@ -122,10 +113,10 @@ public class RepoListFragment extends ItemListFragment<Repository> implements Or
                 if (org == null)
                     return Collections.emptyList();
 
+                RecentRepositories recent = recentRepos.get();
                 List<Repository> repos = cache.getRepos(org, isForcedReload(args));
-                RecentRepos recentRepos = recentReposHelper.recentReposFrom(repos, 5);
-                recentReposRef.set(recentRepos);
-                return recentRepos.fullRepoListHeadedByTopRecents;
+                Collections.sort(repos, recent);
+                return repos;
             }
         };
     }
@@ -133,7 +124,7 @@ public class RepoListFragment extends ItemListFragment<Repository> implements Or
     @Override
     protected ItemListAdapter<Repository, ? extends ItemView> createAdapter(List<Repository> items) {
         return new RepositoryListAdapter(getActivity().getLayoutInflater(),
-                items.toArray(new Repository[items.size()]), org, recentReposRef);
+                items.toArray(new Repository[items.size()]), org, recentRepos);
     }
 
     @Override

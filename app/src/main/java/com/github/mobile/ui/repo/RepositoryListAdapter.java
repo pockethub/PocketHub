@@ -24,7 +24,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.github.mobile.ui.ItemListAdapter;
-import com.github.mobile.ui.repo.RecentReposHelper.RecentRepos;
 import com.viewpagerindicator.R.layout;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -39,7 +38,7 @@ public class RepositoryListAdapter extends ItemListAdapter<Repository, Repositor
 
     private final AtomicReference<User> account;
 
-    private final AtomicReference<RecentRepos> recent;
+    private final AtomicReference<RecentRepositories> recent;
 
     /**
      * Create list adapter for repositories
@@ -50,7 +49,7 @@ public class RepositoryListAdapter extends ItemListAdapter<Repository, Repositor
      * @param recent
      */
     public RepositoryListAdapter(LayoutInflater inflater, Repository[] elements, AtomicReference<User> account,
-            AtomicReference<RecentRepos> recent) {
+            AtomicReference<RecentRepositories> recent) {
         super(layout.repo_list_item, inflater, elements);
 
         this.account = account;
@@ -65,7 +64,7 @@ public class RepositoryListAdapter extends ItemListAdapter<Repository, Repositor
      * @param recent
      */
     public RepositoryListAdapter(LayoutInflater inflater, AtomicReference<User> account,
-            AtomicReference<RecentRepos> recent) {
+            AtomicReference<RecentRepositories> recent) {
         this(inflater, null, account, recent);
     }
 
@@ -80,7 +79,7 @@ public class RepositoryListAdapter extends ItemListAdapter<Repository, Repositor
         else
             view.repoIcon.setText(Character.toString(ICON_PUBLIC));
 
-        view.recentLabel.setVisibility(recent.get().topRecentRepoIds.contains(id) ? VISIBLE : GONE);
+        view.recentLabel.setVisibility(recent.get().contains(id) ? VISIBLE : GONE);
 
         view.repoName.setText(account.get().getLogin().equals(repository.getOwner().getLogin()) ? repository.getName()
                 : id);
