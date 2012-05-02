@@ -16,12 +16,9 @@
 package com.github.mobile.ui.gist;
 
 import static android.content.Intent.EXTRA_TEXT;
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
@@ -32,26 +29,16 @@ import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.TextWatcherAdapter;
-import com.github.mobile.accounts.AuthenticatedUserTask;
-import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
-import com.google.inject.Inject;
-
-import java.util.Collections;
 
 import org.eclipse.egit.github.core.Gist;
-import org.eclipse.egit.github.core.GistFile;
-import org.eclipse.egit.github.core.service.GistService;
 
-import roboguice.inject.ContextScopedProvider;
 import roboguice.inject.InjectView;
 
 /**
  * Activity to share a text selection as a public or private Gist
  */
 public class CreateGistActivity extends RoboSherlockFragmentActivity {
-
-    private static final String TAG = "SGA";
 
     @InjectView(id.et_gist_description)
     private EditText descriptionText;
@@ -65,9 +52,6 @@ public class CreateGistActivity extends RoboSherlockFragmentActivity {
     @InjectView(id.cb_public)
     private CheckBox publicCheckBox;
 
-    @Inject
-    ContextScopedProvider<GistService> gistServiceProvider;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,12 +60,12 @@ public class CreateGistActivity extends RoboSherlockFragmentActivity {
         setTitle(string.new_gist);
 
         String text = getIntent().getStringExtra(EXTRA_TEXT);
-
         if (TextUtils.isEmpty(text))
             contentText.setText(text);
 
         contentText.addTextChangedListener(new TextWatcherAdapter() {
 
+            @Override
             public void afterTextChanged(Editable s) {
                 invalidateOptionsMenu();
             }
@@ -97,6 +81,7 @@ public class CreateGistActivity extends RoboSherlockFragmentActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.findItem(id.gist_create).setEnabled(!TextUtils.isEmpty(contentText.getText()));
+
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -113,42 +98,26 @@ public class CreateGistActivity extends RoboSherlockFragmentActivity {
 
     private void createGist() {
         final boolean isPublic = publicCheckBox.isChecked();
+
         String enteredDescription = descriptionText.getText().toString().trim();
-        String enteredName = nameText.getText().toString().trim();
         final String description = enteredDescription.length() > 0 ? enteredDescription
                 : getString(string.gist_description_hint);
+
+        String enteredName = nameText.getText().toString().trim();
         final String name = enteredName.length() > 0 ? enteredName : getString(string.gist_file_name_hint);
+
         final String content = contentText.getText().toString();
-        final ProgressDialog progress = new ProgressDialog(this);
-        progress.setMessage(getString(string.creating_gist));
-        progress.show();
-        new AuthenticatedUserTask<Gist>(this) {
 
-            public Gist run() throws Exception {
-                Gist gist = new Gist();
-                gist.setDescription(description);
-                gist.setPublic(isPublic);
+        new CreateGistTask(this, description, isPublic, name, content) {
 
-                GistFile file = new GistFile();
-                file.setContent(content);
-                file.setFilename(name);
-                gist.setFiles(Collections.singletonMap(name, file));
-
-                return gistServiceProvider.get(CreateGistActivity.this).createGist(gist);
-            }
-
+            @Override
             protected void onSuccess(Gist gist) throws Exception {
-                progress.cancel();
+                super.onSuccess(gist);
+
                 startActivity(ViewGistsActivity.createIntent(gist));
                 setResult(RESULT_OK);
                 finish();
             }
-
-            protected void onException(Exception e) throws RuntimeException {
-                progress.cancel();
-                Log.d(TAG, e.getMessage(), e);
-                ToastUtils.show((Activity) getContext(), e.getMessage());
-            }
-        }.execute();
+        }.create();
     }
 }

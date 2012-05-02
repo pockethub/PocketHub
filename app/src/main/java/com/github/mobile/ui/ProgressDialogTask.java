@@ -60,6 +60,27 @@ public abstract class ProgressDialogTask<E> extends AuthenticatedUserTask<E> {
     }
 
     /**
+     * Show indeterminate progress dialog with given message
+     *
+     * @param message
+     */
+    protected void showIndeterminate(final CharSequence message) {
+        progress = new ProgressDialog(getContext());
+        progress.setMessage(message);
+        progress.setIndeterminate(true);
+        progress.show();
+    }
+
+    /**
+     * Show indeterminate progress dialog with given message
+     *
+     * @param resId
+     */
+    protected void showIndeterminate(final int resId) {
+        showIndeterminate(getString(resId));
+    }
+
+    /**
      * Sub-classes may override but should always call super to ensure the progress dialog is dismissed
      */
     @Override
