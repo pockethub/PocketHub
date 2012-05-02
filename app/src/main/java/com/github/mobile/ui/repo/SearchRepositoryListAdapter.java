@@ -38,7 +38,7 @@ public class SearchRepositoryListAdapter extends ItemListAdapter<SearchRepositor
      * @param elements
      */
     public SearchRepositoryListAdapter(LayoutInflater inflater, SearchRepository[] elements) {
-        super(layout.repo_list_item, inflater, elements);
+        super(layout.repo_search_item, inflater, elements);
     }
 
     /**

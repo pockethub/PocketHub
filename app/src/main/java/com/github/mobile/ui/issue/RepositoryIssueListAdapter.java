@@ -48,11 +48,10 @@ public class RepositoryIssueListAdapter extends ItemListAdapter<Issue, Repositor
      * @param avatars
      */
     public RepositoryIssueListAdapter(LayoutInflater inflater, Issue[] elements, AvatarLoader avatars) {
-        super(layout.repo_issue_list_item, inflater, elements);
+        super(layout.repo_issue_item, inflater, elements);
 
         this.avatars = avatars;
-        this.numberView = (TextView) inflater.inflate(layout.repo_issue_list_item, null).findViewById(
-                id.tv_issue_number);
+        this.numberView = (TextView) inflater.inflate(layout.repo_issue_item, null).findViewById(id.tv_issue_number);
 
         if (elements != null)
             computeNumberWidth(elements);

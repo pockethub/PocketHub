@@ -61,9 +61,9 @@ public class DashboardIssueListAdapter extends ItemListAdapter<RepositoryIssue, 
      * @param elements
      */
     public DashboardIssueListAdapter(AvatarLoader avatarHelper, LayoutInflater inflater, RepositoryIssue[] elements) {
-        super(layout.dashboard_issue_list_item, inflater);
+        super(layout.dashboard_issue_item, inflater);
 
-        this.numberView = (TextView) inflater.inflate(layout.dashboard_issue_list_item, null).findViewById(
+        this.numberView = (TextView) inflater.inflate(layout.dashboard_issue_item, null).findViewById(
                 id.tv_issue_number);
         this.avatarHelper = avatarHelper;
 

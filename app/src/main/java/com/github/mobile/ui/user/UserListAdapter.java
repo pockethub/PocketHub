@@ -39,7 +39,7 @@ public class UserListAdapter extends ItemListAdapter<User, UserItemView> {
      * @param avatarHelper
      */
     public UserListAdapter(final LayoutInflater inflater, final User[] elements, final AvatarLoader avatarHelper) {
-        super(layout.user_list_item, inflater, elements);
+        super(layout.user_item, inflater, elements);
 
         this.avatarHelper = avatarHelper;
     }

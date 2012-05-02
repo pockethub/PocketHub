@@ -50,7 +50,7 @@ public class RepositoryListAdapter extends ItemListAdapter<Repository, Repositor
      */
     public RepositoryListAdapter(LayoutInflater inflater, Repository[] elements, AtomicReference<User> account,
             AtomicReference<RecentRepositories> recent) {
-        super(layout.repo_list_item, inflater, elements);
+        super(layout.repo_item, inflater, elements);
 
         this.account = account;
         this.recent = recent;

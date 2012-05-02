@@ -42,7 +42,7 @@ public class UserRepositoryListAdapter extends ItemListAdapter<Repository, Repos
      * @param user
      */
     public UserRepositoryListAdapter(LayoutInflater inflater, Repository[] elements, User user) {
-        super(layout.repo_list_item, inflater, elements);
+        super(layout.repo_item, inflater, elements);
 
         login = user.getLogin();
     }

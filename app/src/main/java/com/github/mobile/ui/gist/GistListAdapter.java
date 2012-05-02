@@ -45,7 +45,7 @@ public class GistListAdapter extends ItemListAdapter<Gist, GistView> {
      * @param elements
      */
     public GistListAdapter(AvatarLoader avatarHelper, LayoutInflater inflater, Gist[] elements) {
-        super(layout.gist_list_item, inflater, elements);
+        super(layout.gist_item, inflater, elements);
 
         this.avatarHelper = avatarHelper;
     }
