@@ -129,7 +129,7 @@ public class AuthenticatorActivity extends RoboSherlockAccountAuthenticatorActiv
         requestNewAccount = username == null;
         confirmCredentials = intent.getBooleanExtra(PARAM_CONFIRMCREDENTIALS, false);
 
-        setContentView(layout.login_activity);
+        setContentView(layout.login);
 
         TextView signupText = (TextView) findViewById(id.tv_signup);
         signupText.setMovementMethod(LinkMovementMethod.getInstance());
