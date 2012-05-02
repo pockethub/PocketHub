@@ -135,7 +135,8 @@ public class HtmlUtils {
             }
 
             if (TAG_PRE.equalsIgnoreCase(tag)) {
-                output.append('\n');
+                if (opening && output.length() > 0)
+                    output.append('\n');
                 return;
             }
         }
