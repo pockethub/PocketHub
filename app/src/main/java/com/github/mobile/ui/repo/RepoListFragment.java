@@ -114,7 +114,7 @@ public class RepoListFragment extends ItemListFragment<Repository> implements Or
                     return Collections.emptyList();
 
                 RecentRepositories recent = recentRepos.get();
-                List<Repository> repos = cache.getRepos(org, isForcedReload(args));
+                List<Repository> repos = cache.getRepos(org, isForceRefresh(args));
                 Collections.sort(repos, recent);
                 return repos;
             }

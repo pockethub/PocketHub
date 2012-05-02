@@ -44,7 +44,7 @@ public class MyGistsFragment extends GistsFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if ((requestCode == GIST_CREATE || requestCode == GIST_VIEW) && RESULT_OK == resultCode) {
-            forceReload();
+            forceRefresh();
             return;
         }
 

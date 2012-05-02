@@ -41,7 +41,7 @@ import java.util.List;
  */
 public abstract class ItemListFragment<E> extends RoboSherlockListFragment implements LoaderCallbacks<List<E>> {
 
-    private static final String FORCE_RELOAD = "force-reload";
+    private static final String FORCE_REFRESH = "forceRefresh";
 
     /**
      * List items provided to {@link #onLoadFinished(Loader, List)}
@@ -75,7 +75,7 @@ public abstract class ItemListFragment<E> extends RoboSherlockListFragment imple
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case id.refresh:
-            forceReload();
+            forceRefresh();
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -83,23 +83,21 @@ public abstract class ItemListFragment<E> extends RoboSherlockListFragment imple
     }
 
     /**
-     * If the user explicitly hits the reload key, they don't want to see cached data. Calling this method means the
-     * loader will be passed a 'force-reload' parameter to indicate cached data shouldn't be used and a fresh request
-     * should be made.
+     * Force a refresh of the items displayed ignoring any cached items
      */
-    protected void forceReload() {
+    protected void forceRefresh() {
         Bundle bundle = new Bundle();
-        bundle.putBoolean(FORCE_RELOAD, true);
+        bundle.putBoolean(FORCE_REFRESH, true);
         refresh(bundle);
     }
 
     /**
      * @param args
-     *            the args bundle passed to the loader by the LoaderManager
-     * @return true if the bundle indicates the user requested a forced reload of data
+     *            bundle passed to the loader by the LoaderManager
+     * @return true if the bundle indicates a requested forced refresh of the items
      */
-    protected static boolean isForcedReload(Bundle args) {
-        return args == null ? false : args.getBoolean(FORCE_RELOAD, false);
+    protected static boolean isForceRefresh(Bundle args) {
+        return args == null ? false : args.getBoolean(FORCE_REFRESH, false);
     }
 
     /**

@@ -105,10 +105,10 @@ public abstract class PagedItemFragment<E> extends ItemListFragment<E> implement
     }
 
     @Override
-    protected void forceReload() {
+    protected void forceRefresh() {
         pager.clear();
 
-        super.forceReload();
+        super.forceRefresh();
     }
 
     /**
