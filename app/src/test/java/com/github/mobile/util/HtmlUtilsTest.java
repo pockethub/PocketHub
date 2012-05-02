@@ -245,6 +245,6 @@ public class HtmlUtilsTest {
         String html = "<pre><code>a\nb\nc\n</code></pre>";
         CharSequence formatted = HtmlUtils.format(html);
         assertNotNull(formatted);
-        assertEquals("<pre><code>a<br>b<br>c<br></code></pre>", formatted.toString());
+        assertEquals("<pre><code>a<br>b<br>c</code></pre>", formatted.toString());
     }
 }

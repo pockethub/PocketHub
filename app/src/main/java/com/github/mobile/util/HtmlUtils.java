@@ -79,6 +79,10 @@ public class HtmlUtils {
 
     private static final String PRE_END = "</pre>";
 
+    private static final String CODE_START = "<code>";
+
+    private static final String CODE_END = "</code>";
+
     private static final TagHandler TAG_HANDLER = new TagHandler() {
 
         private int indentLevel;
@@ -224,12 +228,19 @@ public class HtmlUtils {
 
     private static StringBuilder formatPres(final StringBuilder input) {
         int start = input.indexOf(PRE_START);
-        int spaceAdvance = SPACE.length() - 1;
-        int breakAdvance = BREAK.length() - 1;
+        final int spaceAdvance = SPACE.length() - 1;
+        final int breakAdvance = BREAK.length() - 1;
         while (start != -1) {
             int end = input.indexOf(PRE_END, start + PRE_START.length());
             if (end == -1)
                 break;
+
+            // Skip over code element
+            if (input.indexOf(CODE_START, start) == start)
+                start += CODE_START.length();
+            if (input.indexOf(CODE_END, start) == end - CODE_END.length())
+                end -= CODE_END.length();
+
             for (int i = start; i < end; i++) {
                 switch (input.charAt(i)) {
                 case ' ':
@@ -251,9 +262,12 @@ public class HtmlUtils {
                     break;
                 case '\n':
                     input.deleteCharAt(i);
-                    input.insert(i, BREAK);
-                    start += breakAdvance;
-                    end += breakAdvance;
+                    // Ignore if last character is a newline
+                    if (i + 1 < end) {
+                        input.insert(i, BREAK);
+                        start += breakAdvance;
+                        end += breakAdvance;
+                    }
                     break;
                 }
             }
