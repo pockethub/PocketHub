@@ -56,7 +56,7 @@ public class CreateGistActivity extends RoboSherlockFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(layout.create_gist);
+        setContentView(layout.gist_create);
         setTitle(string.new_gist);
 
         String text = getIntent().getStringExtra(EXTRA_TEXT);
