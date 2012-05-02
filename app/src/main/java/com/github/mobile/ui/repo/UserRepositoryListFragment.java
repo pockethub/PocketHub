@@ -15,6 +15,7 @@
  */
 package com.github.mobile.ui.repo;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
@@ -24,6 +25,7 @@ import com.github.mobile.core.ResourcePager;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.PagedItemFragment;
+import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 
 import java.io.IOException;
@@ -46,6 +48,13 @@ public class UserRepositoryListFragment extends PagedItemFragment<Repository> {
 
     @InjectExtra(Intents.EXTRA_USER)
     private User user;
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        ListViewUtils.configure(getActivity(), getListView(), true);
+    }
 
     @Override
     protected ResourcePager<Repository> createPager() {
