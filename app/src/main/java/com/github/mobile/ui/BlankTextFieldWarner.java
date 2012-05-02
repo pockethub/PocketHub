@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.accounts;
+package com.github.mobile.ui;
 
 import static com.github.mobile.R.string.blank_field_warning;
 import android.view.View;
@@ -24,7 +24,7 @@ import roboguice.inject.InjectResource;
 /**
  * Helper to set error text when {@link EditText} is blank
  */
-public class LeavingBlankTextFieldWarner implements OnFocusChangeListener {
+public class BlankTextFieldWarner implements OnFocusChangeListener {
 
     @InjectResource(blank_field_warning)
     private String warning;

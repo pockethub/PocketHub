@@ -44,6 +44,7 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.TextWatcherAdapter;
+import com.github.mobile.ui.BlankTextFieldWarner;
 import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockAccountAuthenticatorActivity;
 import com.google.inject.Inject;
@@ -91,7 +92,7 @@ public class AuthenticatorActivity extends RoboSherlockAccountAuthenticatorActiv
     private Button okButton;
 
     @Inject
-    private LeavingBlankTextFieldWarner leavingBlankTextFieldWarner;
+    private BlankTextFieldWarner leavingBlankTextFieldWarner;
 
     private TextWatcher watcher = validationTextWatcher();
 
