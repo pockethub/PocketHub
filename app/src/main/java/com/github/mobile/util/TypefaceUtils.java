@@ -65,17 +65,17 @@ public class TypefaceUtils {
     /**
      * Upload icon
      */
-    public static final char ICON_UPLOAD = '\uf212';
+    public static final char ICON_UPLOAD = '\uf20C';
 
     /**
      * Gist icon
      */
-    public static final char ICON_GIST = '\uf214';
+    public static final char ICON_GIST = '\uf20E';
 
     /**
      * Add member icon
      */
-    public static final char ICON_ADD_MEMBER = '\uf226';
+    public static final char ICON_ADD_MEMBER = '\uf21A';
 
     /**
      * Follow icon
@@ -85,37 +85,37 @@ public class TypefaceUtils {
     /**
      * Watch icon
      */
-    public static final char ICON_WATCH = '\uf229';
+    public static final char ICON_WATCH = '\uf21D';
 
     /**
      * Pull request icon
      */
-    public static final char ICON_PULL_REQUEST = '\uf234';
+    public static final char ICON_PULL_REQUEST = '\uf222';
 
     /**
      * Issue open icon
      */
-    public static final char ICON_ISSUE_OPEN = '\uf238';
+    public static final char ICON_ISSUE_OPEN = '\uf226';
 
     /**
      * Issue reopen icon
      */
-    public static final char ICON_ISSUE_REOPEN = '\uf239';
+    public static final char ICON_ISSUE_REOPEN = '\uf227';
 
     /**
      * Issue close icon
      */
-    public static final char ICON_ISSUE_CLOSE = '\uf240';
+    public static final char ICON_ISSUE_CLOSE = '\uf228';
 
     /**
      * Issue comment icon
      */
-    public static final char ICON_ISSUE_COMMENT = '\uf241';
+    public static final char ICON_ISSUE_COMMENT = '\uf229';
 
     /**
      * Comment icon
      */
-    public static final char ICON_COMMENT = '\uf243';
+    public static final char ICON_COMMENT = '\uf22b';
 
     /**
      * Find the maximum number of digits in the given numbers
@@ -153,7 +153,7 @@ public class TypefaceUtils {
      * @return octicons typeface
      */
     public static Typeface getOcticons(final Context context) {
-        return getTypeface(context, "octocons-regular-webfont.ttf");
+        return getTypeface(context, "octicons-regular-webfont.ttf");
     }
 
     /**

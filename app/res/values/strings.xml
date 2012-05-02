@@ -134,9 +134,9 @@
     <string name="loading_gists">Loading Gists</string>
     <string name="message_filter_saved">Issue filter saved to bookmarks</string>
     <string name="recent">Recent</string>
-    <string name="icon_pull_request">\uf214</string>
-    <string name="icon_comment">\uf243</string>
-    <string name="icon_file">\uf217</string>
+    <string name="icon_pull_request">\uf20E</string>
+    <string name="icon_comment">\uf22B</string>
+    <string name="icon_file">\uf211</string>
     <string name="section_issue_status">Issue Status:</string>
     <string name="status_open">Open</string>
     <string name="status_closed">Closed</string>
