@@ -364,6 +364,8 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
             @Override
             protected void onSuccess(FullIssue fullIssue) throws Exception {
+                super.onSuccess(fullIssue);
+
                 issue = fullIssue.getIssue();
                 comments = fullIssue;
                 getArguments().putSerializable(EXTRA_COMMENTS, fullIssue);
