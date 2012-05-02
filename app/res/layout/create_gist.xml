@@ -55,14 +55,12 @@
 
         <EditText
             android:id="@+id/et_gist_description"
+            style="@style/EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/edit_text_background"
             android:hint="@string/gist_description_hint"
             android:padding="10dp"
-            android:singleLine="true"
-            android:textColor="@color/item_text_color"
-            android:textCursorDrawable="@drawable/edit_text_cursor" />
+            android:singleLine="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -79,14 +77,12 @@
 
         <EditText
             android:id="@+id/et_gist_name"
+            style="@style/EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/edit_text_background"
             android:hint="@string/gist_file_name_hint"
             android:padding="10dp"
-            android:singleLine="true"
-            android:textColor="@color/item_text_color"
-            android:textCursorDrawable="@drawable/edit_text_cursor" />
+            android:singleLine="true" />
 
         <TextView
             android:layout_width="match_parent"
@@ -103,17 +99,15 @@
 
         <EditText
             android:id="@+id/et_gist_content"
+            style="@style/EditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/edit_text_background"
             android:gravity="top"
             android:hint="@string/gist_content_hint"
             android:inputType="textMultiLine"
             android:minLines="10"
             android:padding="10dp"
             android:scrollbars="horizontal|vertical"
-            android:textColor="@color/item_text_color"
-            android:textCursorDrawable="@drawable/edit_text_cursor"
             android:typeface="monospace" >
 
             <requestFocus />

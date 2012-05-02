@@ -16,18 +16,22 @@
 -->
 <resources>
 
-    <style name="LoginEditText">
+    <style name="EditText">
+        <item name="android:textColor">@color/item_text_color</item>
+        <item name="android:textCursorDrawable">@drawable/edit_text_cursor</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@drawable/edit_text_background</item>
+    </style>
+
+    <style name="LoginEditText" parent="EditText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:autoText">false</item>
         <item name="android:capitalize">none</item>
         <item name="android:scrollHorizontally">true</item>
         <item name="android:singleLine">true</item>
-        <item name="android:padding">10dp</item>
-        <item name="android:textColor">@color/item_text_color</item>
-        <item name="android:textCursorDrawable">@drawable/edit_text_cursor</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:background">@drawable/edit_text_background</item>
+        <item name="android:padding">10dp</item>
     </style>
 
     <style name="TextIcon">

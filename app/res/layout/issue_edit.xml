@@ -39,16 +39,14 @@
 
         <EditText
             android:id="@+id/et_issue_title"
+            style="@style/EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:background="@drawable/edit_text_background"
             android:inputType="text"
             android:padding="10dp"
-            android:singleLine="true"
-            android:textColor="@color/item_text_color"
-            android:textCursorDrawable="@drawable/edit_text_cursor" >
+            android:singleLine="true" >
 
             <requestFocus />
         </EditText>
@@ -68,19 +66,17 @@
 
         <EditText
             android:id="@+id/et_issue_body"
+            style="@style/EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:background="@drawable/edit_text_background"
             android:gravity="top"
             android:inputType="textMultiLine"
             android:minLines="5"
             android:padding="10dp"
-            android:scrollbars="horizontal|vertical"
-            android:textColor="@color/item_text_color"
-            android:textCursorDrawable="@drawable/edit_text_cursor" >
+            android:scrollbars="horizontal|vertical" >
         </EditText>
     </LinearLayout>
 
