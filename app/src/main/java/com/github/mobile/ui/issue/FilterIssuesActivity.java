@@ -206,6 +206,7 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
         }
     }
 
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(EXTRA_ISSUE_FILTER, filter);
@@ -237,6 +238,7 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
             ((TextView) findViewById(id.tv_assignee)).setText("");
     }
 
+    @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
         if (RESULT_OK != resultCode)
             return;
