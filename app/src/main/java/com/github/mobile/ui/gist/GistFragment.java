@@ -180,8 +180,11 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
             headerView.setVisibility(GONE);
         }
 
-        if (gist == null || (gist.getComments() > 0 && comments == null))
+        if (gist == null || (gist.getComments() > 0 && comments == null)) {
+            if (gist == null || gist.getFiles() == null || gist.getFiles().isEmpty())
+                loadingView.findViewById(id.v_separator).setVisibility(GONE);
             list.addHeaderView(loadingView, null, false);
+        }
 
         List<Comment> initialComments = comments;
         if (initialComments == null)

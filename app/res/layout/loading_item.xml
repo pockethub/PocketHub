@@ -18,24 +18,34 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/comment_background"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:padding="10dp" >
+    android:orientation="vertical" >
 
-    <ProgressBar
-        android:id="@+id/pb_loading"
-        style="@android:style/Widget.Holo.Light.ProgressBar.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:indeterminateOnly="true" />
+    <View
+        android:id="@+id/v_separator"
+        style="@style/ListDivider" />
 
-    <TextView
-        android:id="@+id/tv_loading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:textColor="@color/item_text_color"
-        android:textSize="16sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp" >
+
+        <ProgressBar
+            android:id="@+id/pb_loading"
+            style="@android:style/Widget.Holo.Light.ProgressBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateOnly="true" />
+
+        <TextView
+            android:id="@+id/tv_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:textColor="@color/item_text_color"
+            android:textSize="16sp" />
+    </LinearLayout>
 
 </LinearLayout>

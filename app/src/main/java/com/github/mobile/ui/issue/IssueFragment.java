@@ -223,6 +223,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
         TextView loadingText = (TextView) loadingView.findViewById(id.tv_loading);
         loadingText.setText(string.loading_comments);
+        loadingView.findViewById(id.v_separator).setVisibility(GONE);
 
         if (issue != null)
             updateHeader(issue);
