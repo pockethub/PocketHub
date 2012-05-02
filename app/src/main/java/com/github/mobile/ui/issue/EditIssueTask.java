@@ -15,9 +15,8 @@
  */
 package com.github.mobile.ui.issue;
 
-import android.app.ProgressDialog;
-
 import com.github.mobile.DialogFragmentActivity;
+import com.github.mobile.R.string;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.google.inject.Inject;
@@ -76,11 +75,7 @@ public class EditIssueTask extends ProgressDialogTask<Issue> {
         this.title = title;
 
         dismissProgress();
-
-        progress = new ProgressDialog(getContext());
-        progress.setMessage("Updating issue...");
-        progress.setIndeterminate(true);
-        progress.show();
+        showIndeterminate(string.updating_issue);
 
         execute();
         return this;

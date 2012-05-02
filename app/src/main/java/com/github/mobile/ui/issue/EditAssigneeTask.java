@@ -16,9 +16,9 @@
 package com.github.mobile.ui.issue;
 
 import static com.github.mobile.RequestCodes.ISSUE_ASSIGNEE_UPDATE;
-import android.app.ProgressDialog;
 
 import com.github.mobile.DialogFragmentActivity;
+import com.github.mobile.R.string;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.google.inject.Inject;
@@ -83,11 +83,7 @@ public class EditAssigneeTask extends ProgressDialogTask<Issue> {
      */
     public EditAssigneeTask edit(String user) {
         dismissProgress();
-
-        progress = new ProgressDialog(getContext());
-        progress.setMessage("Updating assignee...");
-        progress.setIndeterminate(true);
-        progress.show();
+        showIndeterminate(string.updating_assignee);
 
         this.assignee = user;
 
@@ -95,6 +91,7 @@ public class EditAssigneeTask extends ProgressDialogTask<Issue> {
         return this;
     }
 
+    @Override
     protected Issue run() throws Exception {
         Issue editedIssue = new Issue();
         editedIssue.setAssignee(new User().setLogin(assignee != null ? assignee : ""));

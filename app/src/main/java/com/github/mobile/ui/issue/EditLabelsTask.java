@@ -16,9 +16,9 @@
 package com.github.mobile.ui.issue;
 
 import static com.github.mobile.RequestCodes.ISSUE_LABELS_UPDATE;
-import android.app.ProgressDialog;
 
 import com.github.mobile.DialogFragmentActivity;
+import com.github.mobile.R.string;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.google.inject.Inject;
@@ -86,11 +86,7 @@ public class EditLabelsTask extends ProgressDialogTask<Issue> {
      */
     public EditLabelsTask edit(String[] labels) {
         dismissProgress();
-
-        progress = new ProgressDialog(getContext());
-        progress.setMessage("Updating labels...");
-        progress.setIndeterminate(true);
-        progress.show();
+        showIndeterminate(string.updating_labels);
 
         this.labels = labels;
 
@@ -98,6 +94,7 @@ public class EditLabelsTask extends ProgressDialogTask<Issue> {
         return this;
     }
 
+    @Override
     public Issue run() throws Exception {
         Issue editedIssue = new Issue();
         editedIssue.setNumber(issueNumber);

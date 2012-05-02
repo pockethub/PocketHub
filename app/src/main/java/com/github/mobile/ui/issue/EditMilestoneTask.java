@@ -16,9 +16,9 @@
 package com.github.mobile.ui.issue;
 
 import static com.github.mobile.RequestCodes.ISSUE_MILESTONE_UPDATE;
-import android.app.ProgressDialog;
 
 import com.github.mobile.DialogFragmentActivity;
+import com.github.mobile.R.string;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.google.inject.Inject;
@@ -96,11 +96,7 @@ public class EditMilestoneTask extends ProgressDialogTask<Issue> {
             milestoneNumber = -1;
 
         dismissProgress();
-
-        progress = new ProgressDialog(getContext());
-        progress.setMessage("Updating milestone...");
-        progress.setIndeterminate(true);
-        progress.show();
+        showIndeterminate(string.updating_milestone);
 
         super.execute();
 

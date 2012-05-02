@@ -159,5 +159,11 @@
     <string name="no_followers">No Followers</string>
     <string name="no_members">No Members</string>
     <string name="no_news">No News</string>
+    <string name="updating_assignee">Updating Assignee…</string>
+    <string name="updating_issue">Updating Issue…</string>
+    <string name="updating_labels">Updating Labels…</string>
+    <string name="updating_milestone">Updating Milestone…</string>
+    <string name="closing_issue">Closing Issue…</string>
+    <string name="reopening_issue">Reopening Issue…</string>
 
 </resources>

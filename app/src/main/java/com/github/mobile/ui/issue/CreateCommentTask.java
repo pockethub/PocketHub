@@ -15,7 +15,6 @@
  */
 package com.github.mobile.ui.issue;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 
 import com.github.mobile.R.string;
@@ -69,11 +68,7 @@ public class CreateCommentTask extends ProgressDialogTask<Comment> {
         this.comment = comment;
 
         dismissProgress();
-
-        progress = new ProgressDialog(getContext());
-        progress.setMessage(getString(string.creating_comment));
-        progress.setIndeterminate(true);
-        progress.show();
+        showIndeterminate(string.creating_comment);
 
         execute();
         return this;

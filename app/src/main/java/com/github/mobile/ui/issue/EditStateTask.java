@@ -19,10 +19,10 @@ import static com.github.mobile.RequestCodes.ISSUE_CLOSE;
 import static com.github.mobile.RequestCodes.ISSUE_REOPEN;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_CLOSED;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
-import android.app.ProgressDialog;
 
 import com.github.mobile.ConfirmDialogFragment;
 import com.github.mobile.DialogFragmentActivity;
+import com.github.mobile.R.string;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.google.inject.Inject;
@@ -76,6 +76,7 @@ public class EditStateTask extends ProgressDialogTask<Issue> {
         return this;
     }
 
+    @Override
     protected Issue run() throws Exception {
         Issue editedIssue = new Issue();
         editedIssue.setNumber(issueNumber);
@@ -94,14 +95,10 @@ public class EditStateTask extends ProgressDialogTask<Issue> {
      */
     public EditStateTask edit(boolean close) {
         dismissProgress();
-
-        progress = new ProgressDialog(getContext());
         if (close)
-            progress.setMessage("Closing issue...");
+            showIndeterminate(string.closing_issue);
         else
-            progress.setMessage("Reopening issue...");
-        progress.setIndeterminate(true);
-        progress.show();
+            showIndeterminate(string.reopening_issue);
 
         this.close = close;
 

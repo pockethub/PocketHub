@@ -17,8 +17,6 @@ package com.github.mobile.ui.gist;
 
 import static com.github.mobile.RequestCodes.GIST_VIEW;
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
 
 import com.github.mobile.R.string;
 import com.github.mobile.core.gist.GistStore;
@@ -57,12 +55,7 @@ public class OpenGistTask extends ProgressDialogTask<Gist> {
      */
     public void start() {
         dismissProgress();
-
-        Context context = getContext();
-        progress = new ProgressDialog(context);
-        progress.setIndeterminate(true);
-        progress.setMessage(context.getString(string.loading_gist));
-        progress.show();
+        showIndeterminate(string.loading_gist);
 
         execute();
     }

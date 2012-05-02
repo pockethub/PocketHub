@@ -17,7 +17,6 @@ package com.github.mobile.ui.gist;
 
 import static android.app.Activity.RESULT_OK;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.util.Log;
 
 import com.github.mobile.R.string;
@@ -27,8 +26,6 @@ import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.service.GistService;
-
-import roboguice.inject.ContextScopedProvider;
 
 /**
  * Async task to delete a Gist
@@ -40,7 +37,7 @@ public class DeleteGistTask extends ProgressDialogTask<Gist> {
     private final String id;
 
     @Inject
-    private ContextScopedProvider<GistService> serviceProvider;
+    private GistService service;
 
     /**
      * Create task
@@ -50,6 +47,7 @@ public class DeleteGistTask extends ProgressDialogTask<Gist> {
      */
     public DeleteGistTask(final Activity context, final String gistId) {
         super(context);
+
         id = gistId;
     }
 
@@ -60,18 +58,14 @@ public class DeleteGistTask extends ProgressDialogTask<Gist> {
      */
     public void start() {
         dismissProgress();
-
-        progress = new ProgressDialog(getContext());
-        progress.setIndeterminate(true);
-        progress.setMessage(getContext().getString(string.deleting_gist));
-        progress.show();
+        showIndeterminate(string.deleting_gist);
 
         execute();
     }
 
     @Override
     public Gist run() throws Exception {
-        serviceProvider.get(getContext()).deleteGist(id);
+        service.deleteGist(id);
         return null;
     }
 
