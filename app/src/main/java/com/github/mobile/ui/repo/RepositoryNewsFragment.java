@@ -59,6 +59,7 @@ public class RepositoryNewsFragment extends NewsFragment {
      *
      * @param repository
      */
+    @Override
     protected void viewRepository(Repository repository) {
         if (repo.getId() != repository.getId())
             super.viewRepository(repository);
