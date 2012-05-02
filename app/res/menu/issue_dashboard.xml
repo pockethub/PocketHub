@@ -20,7 +20,6 @@
         android:id="@+id/bookmarks"
         android:icon="@drawable/ic_action_bookmark"
         android:showAsAction="ifRoom"
-        android:title="@string/issue_filters">
-    </item>
+        android:title="@string/issue_filters"/>
 
 </menu>

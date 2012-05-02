@@ -19,8 +19,7 @@
     <item
         android:id="@+id/apply"
         android:icon="@drawable/ic_action_apply"
-        android:showAsAction="always"
-        android:title="@string/apply">
-    </item>
+        android:showAsAction="ifRoom"
+        android:title="@string/apply"/>
 
 </menu>

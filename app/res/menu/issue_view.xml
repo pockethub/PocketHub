@@ -20,38 +20,31 @@
         android:id="@+id/issue_comment"
         android:icon="@drawable/ic_action_create_comment"
         android:showAsAction="ifRoom"
-        android:title="@string/comment">
-    </item>
+        android:title="@string/comment"/>
     <item
         android:id="@+id/refresh"
         android:icon="@drawable/ic_action_refresh"
-        android:showAsAction="ifRoom"
-        android:title="@string/refresh">
-    </item>
+        android:showAsAction="never"
+        android:title="@string/refresh"/>
     <item
         android:id="@+id/issue_description"
         android:showAsAction="never"
-        android:title="@string/edit_description">
-    </item>
+        android:title="@string/edit_description"/>
     <item
         android:id="@+id/issue_labels"
         android:showAsAction="never"
-        android:title="@string/edit_labels">
-    </item>
+        android:title="@string/edit_labels"/>
     <item
         android:id="@+id/issue_milestone"
         android:showAsAction="never"
-        android:title="@string/edit_milestone">
-    </item>
+        android:title="@string/edit_milestone"/>
     <item
         android:id="@+id/issue_assignee"
         android:showAsAction="never"
-        android:title="@string/edit_assignee">
-    </item>
+        android:title="@string/edit_assignee"/>
     <item
         android:id="@+id/issue_state"
         android:showAsAction="never"
-        android:title="@string/close_issue">
-    </item>
+        android:title="@string/close_issue"/>
 
 </menu>

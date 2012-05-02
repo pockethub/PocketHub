@@ -25,10 +25,9 @@ import android.widget.Toast;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.github.mobile.RefreshAnimation;
-import com.github.mobile.ThrowableLoader;
 import com.github.mobile.R.id;
 import com.github.mobile.R.menu;
+import com.github.mobile.ThrowableLoader;
 import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockListFragment;
 
@@ -43,8 +42,6 @@ import java.util.List;
 public abstract class ItemListFragment<E> extends RoboSherlockListFragment implements LoaderCallbacks<List<E>> {
 
     private static final String FORCE_RELOAD = "force-reload";
-
-    private RefreshAnimation refreshAnimation = new RefreshAnimation();
 
     /**
      * List items provided to {@link #onLoadFinished(Loader, List)}
@@ -78,8 +75,6 @@ public abstract class ItemListFragment<E> extends RoboSherlockListFragment imple
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case id.refresh:
-            refreshAnimation.setRefreshItem(item);
-            refreshAnimation.start(getActivity());
             forceReload();
             return true;
         default:
@@ -152,8 +147,6 @@ public abstract class ItemListFragment<E> extends RoboSherlockListFragment imple
             setListShown(true);
         else
             setListShownNoAnimation(true);
-
-        refreshAnimation.stop();
     }
 
     @Override

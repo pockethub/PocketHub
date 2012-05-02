@@ -51,7 +51,6 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
-import com.github.mobile.RefreshAnimation;
 import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.core.gist.FullGist;
@@ -123,8 +122,6 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
     private TextView description;
 
     private View loadingView;
-
-    private RefreshAnimation refreshAnimation = new RefreshAnimation();
 
     private boolean starred;
 
@@ -270,7 +267,6 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
                 starGist();
             return true;
         case id.refresh:
-            refreshAnimation.setRefreshItem(item).start(getActivity());
             refreshGist();
             return true;
         default:
@@ -439,9 +435,6 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
                 updateList(fullGist.getGist(), fullGist);
             }
 
-            protected void onFinally() throws RuntimeException {
-                refreshAnimation.stop();
-            }
         }.execute();
     }
 

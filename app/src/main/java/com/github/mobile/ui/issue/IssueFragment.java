@@ -59,7 +59,6 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
-import com.github.mobile.RefreshAnimation;
 import com.github.mobile.SingleChoiceDialogFragment;
 import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.core.issue.FullIssue;
@@ -126,8 +125,6 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
     private View headerView;
 
     private View loadingView;
-
-    private RefreshAnimation refreshAnimation = new RefreshAnimation();
 
     private EditMilestoneTask milestoneTask;
 
@@ -387,10 +384,6 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
                 getArguments().putSerializable(EXTRA_COMMENTS, fullIssue);
                 updateList(fullIssue.getIssue(), fullIssue);
             }
-
-            protected void onFinally() throws RuntimeException {
-                refreshAnimation.stop();
-            }
         }.execute();
     }
 
@@ -509,7 +502,6 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             startActivityForResult(CreateCommentActivity.createIntent(title, subtitle), COMMENT_CREATE);
             return true;
         case id.refresh:
-            refreshAnimation.setRefreshItem(item).start(getActivity());
             refreshIssue();
             return true;
         default:

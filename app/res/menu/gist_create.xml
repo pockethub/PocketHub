@@ -19,8 +19,7 @@
     <item
         android:id="@+id/gist_create"
         android:icon="@drawable/ic_action_apply"
-        android:showAsAction="always"
-        android:title="@string/create">
-    </item>
+        android:showAsAction="ifRoom"
+        android:title="@string/create"/>
 
 </menu>

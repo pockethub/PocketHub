@@ -20,22 +20,18 @@
         android:id="@+id/issue_create"
         android:icon="@drawable/ic_action_apply"
         android:showAsAction="ifRoom"
-        android:title="@string/create">
-    </item>
+        android:title="@string/create"/>
     <item
         android:id="@+id/issue_labels"
         android:showAsAction="never"
-        android:title="@string/edit_labels">
-    </item>
+        android:title="@string/edit_labels"/>
     <item
         android:id="@+id/issue_milestone"
         android:showAsAction="never"
-        android:title="@string/edit_milestone">
-    </item>
+        android:title="@string/edit_milestone"/>
     <item
         android:id="@+id/issue_assignee"
         android:showAsAction="never"
-        android:title="@string/edit_assignee">
-    </item>
+        android:title="@string/edit_assignee"/>
 
 </menu>

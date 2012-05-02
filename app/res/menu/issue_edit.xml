@@ -19,8 +19,7 @@
     <item
         android:id="@+id/issue_edit"
         android:icon="@drawable/ic_action_apply"
-        android:showAsAction="always"
-        android:title="@string/update">
-    </item>
+        android:showAsAction="ifRoom"
+        android:title="@string/update"/>
 
 </menu>

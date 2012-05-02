@@ -14,10 +14,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/search"
-          android:showAsAction="ifRoom" android:title="@string/find_repos"
-          android:icon="@drawable/ic_action_search"></item>
-    <item android:id="@+id/clear_search_history"
-          android:showAsAction="never" android:title="@string/clear_search_history"></item>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/ic_action_search"
+        android:showAsAction="ifRoom"
+        android:title="@string/find_repos"/>
+    <item
+        android:id="@+id/clear_search_history"
+        android:showAsAction="never"
+        android:title="@string/clear_search_history"/>
+
 </menu>
