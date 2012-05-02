@@ -30,12 +30,13 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
+import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
 
 /**
  * Model class for the repositories recently selected under an organization
  */
-public class RecentRepositories implements Comparator<IRepositoryIdProvider>, Serializable {
+public class RecentRepositories implements Comparator<Repository>, Serializable {
 
     /**
      * Number of repositories retained per organization
@@ -160,17 +161,14 @@ public class RecentRepositories implements Comparator<IRepositoryIdProvider>, Se
     }
 
     @Override
-    public int compare(final IRepositoryIdProvider lhs, final IRepositoryIdProvider rhs) {
-        String lId = lhs.generateId();
-        String rId = rhs.generateId();
-
-        boolean lRecent = contains(lId);
-        boolean rRecent = contains(rId);
+    public int compare(final Repository lhs, final Repository rhs) {
+        boolean lRecent = contains(lhs);
+        boolean rRecent = contains(rhs);
         if (lRecent && !rRecent)
             return -1;
         if (!lRecent && rRecent)
             return 1;
 
-        return CASE_INSENSITIVE_ORDER.compare(lId, rId);
+        return CASE_INSENSITIVE_ORDER.compare(lhs.getName(), rhs.getName());
     }
 }
