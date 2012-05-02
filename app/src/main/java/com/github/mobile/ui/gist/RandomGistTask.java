@@ -17,11 +17,11 @@ package com.github.mobile.ui.gist;
 
 import static com.github.mobile.RequestCodes.GIST_VIEW;
 import android.app.Activity;
-import android.app.ProgressDialog;
+import android.util.Log;
 
 import com.github.mobile.R.string;
-import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.core.gist.GistStore;
+import com.github.mobile.ui.ProgressDialogTask;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 
@@ -31,20 +31,18 @@ import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.service.GistService;
 
-import roboguice.inject.ContextScopedProvider;
-
 /**
  * Task to open a random Gist
  */
-public class RandomGistTask extends AuthenticatedUserTask<Gist> {
+public class RandomGistTask extends ProgressDialogTask<Gist> {
 
-    private ProgressDialog progress;
-
-    @Inject
-    private ContextScopedProvider<GistService> serviceProvider;
+    private static final String TAG = "RandomGistTask";
 
     @Inject
-    private ContextScopedProvider<GistStore> storeProvider;
+    private GistService service;
+
+    @Inject
+    private GistStore store;
 
     /**
      * Create task
@@ -55,11 +53,6 @@ public class RandomGistTask extends AuthenticatedUserTask<Gist> {
         super(context);
     }
 
-    private void dismissProgress() {
-        if (progress != null)
-            progress.dismiss();
-    }
-
     /**
      * Execute the task with a progress dialog displaying.
      * <p>
@@ -67,20 +60,13 @@ public class RandomGistTask extends AuthenticatedUserTask<Gist> {
      */
     public void start() {
         dismissProgress();
-
-        progress = new ProgressDialog(getContext());
-        progress.setIndeterminate(true);
-        progress.setMessage(getContext().getString(string.random_gist));
-        progress.show();
+        showIndeterminate(string.random_gist);
 
         execute();
     }
 
     @Override
     protected Gist run() throws Exception {
-        GistService service = serviceProvider.get(getContext());
-        GistStore store = storeProvider.get(getContext());
-
         PageIterator<Gist> pages = service.pagePublicGists(1);
         pages.next();
         int randomPage = 1 + (int) (Math.random() * ((pages.getLastPage() - 1) + 1));
@@ -99,15 +85,18 @@ public class RandomGistTask extends AuthenticatedUserTask<Gist> {
         return store.addGist(gists.iterator().next());
     }
 
+    @Override
     protected void onSuccess(Gist gist) throws Exception {
-        progress.cancel();
+        super.onSuccess(gist);
 
         ((Activity) getContext()).startActivityForResult(ViewGistsActivity.createIntent(gist), GIST_VIEW);
     }
 
+    @Override
     protected void onException(Exception e) throws RuntimeException {
-        dismissProgress();
+        super.onException(e);
 
+        Log.d(TAG, "Exception opening random Gist", e);
         ToastUtils.show((Activity) getContext(), e.getMessage());
     }
 }
