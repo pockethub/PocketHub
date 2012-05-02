@@ -31,6 +31,12 @@ import org.xml.sax.XMLReader;
  */
 public class HtmlUtils {
 
+    private static final String TAG_ROOT = "githubroot";
+
+    private static final String ROOT_START = '<' + TAG_ROOT + '>';
+
+    private static final String ROOT_END = "</" + TAG_ROOT + '>';
+
     private static final String TAG_DEL = "del";
 
     private static final String TAG_UL = "ul";
@@ -139,8 +145,21 @@ public class HtmlUtils {
             }
 
             if (TAG_PRE.equalsIgnoreCase(tag)) {
-                if (opening && output.length() > 0)
-                    output.append('\n');
+                output.append('\n');
+                return;
+            }
+
+            if (TAG_ROOT.equalsIgnoreCase(tag) && !opening) {
+                // Remove leading whitespace
+                while (output.length() > 0 && Character.isWhitespace(output.charAt(0)))
+                    output.delete(0, 1);
+
+                // Remove trailing whitespace
+                int last = output.length() - 1;
+                while (last >= 0 && Character.isWhitespace(output.charAt(last))) {
+                    output.delete(last, last + 1);
+                    last = output.length() - 1;
+                }
                 return;
             }
         }
@@ -368,6 +387,9 @@ public class HtmlUtils {
         formatEmailFragments(formatted);
 
         trim(formatted);
+
+        formatted.insert(0, ROOT_START);
+        formatted.append(ROOT_END);
 
         return formatted;
     }

@@ -18,8 +18,6 @@ package com.github.mobile.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import com.github.mobile.util.HtmlUtils;
-
 import org.junit.Test;
 
 /**
@@ -27,15 +25,19 @@ import org.junit.Test;
  */
 public class HtmlUtilsTest {
 
+    private String format(String html) {
+        CharSequence formatted = HtmlUtils.format(html);
+        assertNotNull(formatted);
+        return formatted.toString().replace("<githubroot>", "").replace("</githubroot>", "");
+    }
+
     /**
      * Single email toggle span is removed
      */
     @Test
     public void toggleRemoved() {
         String html = "before <span class=\"email-hidden-toggle\"><a href=\"#\">…</a></span>after";
-        CharSequence formatted = HtmlUtils.format(html);
-        assertNotNull(formatted);
-        assertEquals("before after", formatted.toString());
+        assertEquals("before after", format(html));
     }
 
     /**
@@ -44,9 +46,7 @@ public class HtmlUtilsTest {
     @Test
     public void togglesRemoved() {
         String html = "before <span class=\"email-hidden-toggle\"><a href=\"#\">…</a></span>after<span class=\"email-hidden-toggle\"><a href=\"#\">…</a></span>";
-        CharSequence formatted = HtmlUtils.format(html);
-        assertNotNull(formatted);
-        assertEquals("before after", formatted.toString());
+        assertEquals("before after", format(html));
     }
 
     /**
@@ -55,9 +55,7 @@ public class HtmlUtilsTest {
     @Test
     public void emailQuoted() {
         String html = "before <div class=\"email-quoted-reply\">quoted</div> after";
-        CharSequence formatted = HtmlUtils.format(html);
-        assertNotNull(formatted);
-        assertEquals("before <blockquote>quoted</blockquote> after", formatted.toString());
+        assertEquals("before <blockquote>quoted</blockquote> after", format(html));
     }
 
     /**
@@ -66,9 +64,7 @@ public class HtmlUtilsTest {
     @Test
     public void emailFragment() {
         String html = "before <div class=\"email-fragment\">in\nside</div> after";
-        CharSequence formatted = HtmlUtils.format(html);
-        assertNotNull(formatted);
-        assertEquals("before in<br>side after", formatted.toString());
+        assertEquals("before in<br>side after", format(html));
     }
 
     /**
@@ -77,9 +73,7 @@ public class HtmlUtilsTest {
     @Test
     public void emailFragments() {
         String html = "before <div class=\"email-fragment\">in\nside</div> after <div class=\"email-fragment\">out\nside</div>";
-        CharSequence formatted = HtmlUtils.format(html);
-        assertNotNull(formatted);
-        assertEquals("before in<br>side after out<br>side", formatted.toString());
+        assertEquals("before in<br>side after out<br>side", format(html));
     }
 
     /**
@@ -88,9 +82,7 @@ public class HtmlUtilsTest {
     @Test
     public void trailingEmailFragment() {
         String html = "before <div class=\"email-fragment\">in\nside</div>";
-        CharSequence formatted = HtmlUtils.format(html);
-        assertNotNull(formatted);
-        assertEquals("before in<br>side", formatted.toString());
+        assertEquals("before in<br>side", format(html));
     }
 
     /**
@@ -99,9 +91,7 @@ public class HtmlUtilsTest {
     @Test
     public void leadingBreak() {
         String html = "<br>content";
-        CharSequence formatted = HtmlUtils.format(html);
-        assertNotNull(formatted);
-        assertEquals("content", formatted.toString());
+        assertEquals("content", format(html));
     }
 
     /**
@@ -110,9 +100,7 @@ public class HtmlUtilsTest {
     @Test
     public void trailingBreak() {
         String html = "content<br>";
-        CharSequence formatted = HtmlUtils.format(html);
-        assertNotNull(formatted);
-        assertEquals("content", formatted.toString());
+        assertEquals("content", format(html));
     }
 
     /**
@@ -121,9 +109,7 @@ public class HtmlUtilsTest {
     @Test
     public void wrappedBreaks() {
         String html = "<br>content<br>";
-        CharSequence formatted = HtmlUtils.format(html);
-        assertNotNull(formatted);
-        assertEquals("content", formatted.toString());
+        assertEquals("content", format(html));
     }
 
     /**
@@ -132,9 +118,7 @@ public class HtmlUtilsTest {
     @Test
     public void wrappedParagraphs() {
         String html = "<p>content</p>";
-        CharSequence formatted = HtmlUtils.format(html);
-        assertNotNull(formatted);
-        assertEquals("content", formatted.toString());
+        assertEquals("content", format(html));
     }
 
     /**
@@ -143,9 +127,7 @@ public class HtmlUtilsTest {
     @Test
     public void leadingWhitespace() {
         String html = " content";
-        CharSequence formatted = HtmlUtils.format(html);
-        assertNotNull(formatted);
-        assertEquals("content", formatted.toString());
+        assertEquals("content", format(html));
     }
 
     /**
@@ -154,9 +136,7 @@ public class HtmlUtilsTest {
     @Test
     public void trailingWhitespace() {
         String html = "content ";
-        CharSequence formatted = HtmlUtils.format(html);
-        assertNotNull(formatted);
-        assertEquals("content", formatted.toString());
+        assertEquals("content", format(html));
     }
 
     /**
@@ -165,9 +145,7 @@ public class HtmlUtilsTest {
     @Test
     public void wrappedWhitetspace() {
         String html = " content ";
-        CharSequence formatted = HtmlUtils.format(html);
-        assertNotNull(formatted);
-        assertEquals("content", formatted.toString());
+        assertEquals("content", format(html));
     }
 
     /**
@@ -176,9 +154,7 @@ public class HtmlUtilsTest {
     @Test
     public void preWithNoWhitespace() {
         String html = "a<pre>b</pre> c";
-        CharSequence formatted = HtmlUtils.format(html);
-        assertNotNull(formatted);
-        assertEquals("a<pre>b</pre> c", formatted.toString());
+        assertEquals("a<pre>b</pre> c", format(html));
     }
 
     /**
@@ -187,9 +163,7 @@ public class HtmlUtilsTest {
     @Test
     public void preWithSpaces() {
         String html = "a<pre> b</pre> c";
-        CharSequence formatted = HtmlUtils.format(html);
-        assertNotNull(formatted);
-        assertEquals("a<pre>&nbsp;b</pre> c", formatted.toString());
+        assertEquals("a<pre>&nbsp;b</pre> c", format(html));
     }
 
     /**
@@ -198,9 +172,7 @@ public class HtmlUtilsTest {
     @Test
     public void preWithTabs() {
         String html = "a<pre>\tb</pre> c";
-        CharSequence formatted = HtmlUtils.format(html);
-        assertNotNull(formatted);
-        assertEquals("a<pre>&nbsp;&nbsp;&nbsp;&nbsp;b</pre> c", formatted.toString());
+        assertEquals("a<pre>&nbsp;&nbsp;&nbsp;&nbsp;b</pre> c", format(html));
     }
 
     /**
@@ -209,9 +181,7 @@ public class HtmlUtilsTest {
     @Test
     public void preWithNewline() {
         String html = "a<pre>\nb</pre> c";
-        CharSequence formatted = HtmlUtils.format(html);
-        assertNotNull(formatted);
-        assertEquals("a<pre><br>b</pre> c", formatted.toString());
+        assertEquals("a<pre><br>b</pre> c", format(html));
     }
 
     /**
@@ -220,9 +190,7 @@ public class HtmlUtilsTest {
     @Test
     public void preWithAllWhitepsace() {
         String html = "a<pre>\nb\tc </pre>d";
-        CharSequence formatted = HtmlUtils.format(html);
-        assertNotNull(formatted);
-        assertEquals("a<pre><br>b&nbsp;&nbsp;&nbsp;&nbsp;c&nbsp;</pre>d", formatted.toString());
+        assertEquals("a<pre><br>b&nbsp;&nbsp;&nbsp;&nbsp;c&nbsp;</pre>d", format(html));
     }
 
     /**
@@ -231,10 +199,8 @@ public class HtmlUtilsTest {
     @Test
     public void multiplePresEscaped() {
         String html = "a<pre> c </pre>d<pre>\te\t</pre>";
-        CharSequence formatted = HtmlUtils.format(html);
-        assertNotNull(formatted);
         assertEquals("a<pre>&nbsp;c&nbsp;</pre>d<pre>&nbsp;&nbsp;&nbsp;&nbsp;e&nbsp;&nbsp;&nbsp;&nbsp;</pre>",
-                formatted.toString());
+                format(html));
     }
 
     /**
@@ -243,8 +209,6 @@ public class HtmlUtilsTest {
     @Test
     public void formatPreCodeOnly() {
         String html = "<pre><code>a\nb\nc\n</code></pre>";
-        CharSequence formatted = HtmlUtils.format(html);
-        assertNotNull(formatted);
-        assertEquals("<pre><code>a<br>b<br>c</code></pre>", formatted.toString());
+        assertEquals("<pre><code>a<br>b<br>c</code></pre>", format(html));
     }
 }
