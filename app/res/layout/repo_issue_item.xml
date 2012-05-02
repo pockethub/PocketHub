@@ -53,8 +53,7 @@
 
         <ImageView
             android:id="@+id/iv_avatar"
-            android:layout_width="24dp"
-            android:layout_height="24dp" />
+            style="@style/AvatarMedium" />
 
         <TextView
             android:id="@+id/tv_issue_user"

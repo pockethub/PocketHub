@@ -24,14 +24,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingBottom="3dp" >
 
         <ImageView
             android:id="@+id/iv_avatar"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center_vertical" />
+            style="@style/AvatarMedium" />
 
         <TextView
             android:id="@+id/tv_comment_icon"
@@ -43,8 +42,7 @@
         <TextView
             android:id="@+id/tv_comment_author"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -55,7 +53,6 @@
             android:id="@+id/tv_comment_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
             android:paddingLeft="5dp"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceSmall"

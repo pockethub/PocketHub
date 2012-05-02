@@ -26,8 +26,7 @@
 
     <ImageView
         android:id="@+id/iv_avatar"
-        android:layout_width="28dp"
-        android:layout_height="28dp" />
+        style="@style/AvatarActionBar" />
 
     <TextView
         android:id="@+id/tv_org_name"

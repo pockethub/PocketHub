@@ -16,6 +16,30 @@
 -->
 <resources>
 
+    <style name="Avatar">
+        <item name="android:contentDescription">Avatar</item>
+    </style>
+
+    <style name="AvatarActionBar" parent="Avatar">
+        <item name="android:layout_width">28dp</item>
+        <item name="android:layout_height">28dp</item>
+    </style>
+
+    <style name="AvatarLarge" parent="Avatar">
+        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_height">32dp</item>
+    </style>
+
+    <style name="AvatarMedium" parent="Avatar">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+    </style>
+
+    <style name="AvatarSmall" parent="Avatar">
+        <item name="android:layout_width">16dp</item>
+        <item name="android:layout_height">16dp</item>
+    </style>
+
     <style name="ListView">
         <item name="android:dividerHeight">2dp</item>
         <item name="android:divider">@drawable/list_divider</item>
