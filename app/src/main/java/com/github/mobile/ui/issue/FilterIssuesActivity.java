@@ -19,6 +19,7 @@ import static com.github.mobile.Intents.EXTRA_ISSUE_FILTER;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CompoundButton;
@@ -30,15 +31,14 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.DialogFragmentActivity;
-import com.github.mobile.MultiChoiceDialogFragment;
-import com.github.mobile.SingleChoiceDialogFragment;
 import com.github.mobile.Intents.Builder;
+import com.github.mobile.MultiChoiceDialogFragment;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
+import com.github.mobile.SingleChoiceDialogFragment;
 import com.github.mobile.core.issue.IssueFilter;
-import com.google.common.base.Joiner;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -217,7 +217,7 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
         else if (selected.size() == 1)
             ((TextView) findViewById(id.tv_labels)).setText(selected.iterator().next());
         else if (!selected.isEmpty())
-            ((TextView) findViewById(id.tv_labels)).setText(Joiner.on(", ").join(selected));
+            ((TextView) findViewById(id.tv_labels)).setText(TextUtils.join(", ", selected));
     }
 
     private void updateMilestone() {
