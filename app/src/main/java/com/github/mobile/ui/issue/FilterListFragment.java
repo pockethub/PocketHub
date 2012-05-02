@@ -1,12 +1,13 @@
 package com.github.mobile.ui.issue;
 
+import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.mobile.AsyncLoader;
 import com.github.mobile.R.string;
-import com.github.mobile.accounts.AuthenticatedUserLoader;
 import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.ItemListAdapter;
@@ -24,7 +25,7 @@ import java.util.List;
 /**
  * Fragment to display a list of {@link IssueFilter} objects
  */
-public class FilterListFragment extends ItemListFragment<IssueFilter> {
+public class FilterListFragment extends ItemListFragment<IssueFilter> implements Comparator<IssueFilter> {
 
     @Inject
     private AccountDataManager cache;
@@ -42,20 +43,12 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> {
 
     @Override
     public Loader<List<IssueFilter>> onCreateLoader(int id, Bundle args) {
-        return new AuthenticatedUserLoader<List<IssueFilter>>(getActivity()) {
+        return new AsyncLoader<List<IssueFilter>>(getActivity()) {
 
-            public List<IssueFilter> load() {
+            @Override
+            public List<IssueFilter> loadInBackground() {
                 List<IssueFilter> filters = new ArrayList<IssueFilter>(cache.getIssueFilters());
-                Collections.sort(filters, new Comparator<IssueFilter>() {
-
-                    public int compare(IssueFilter lhs, IssueFilter rhs) {
-                        int compare = lhs.getRepository().generateId()
-                                .compareToIgnoreCase(rhs.getRepository().generateId());
-                        if (compare == 0)
-                            compare = lhs.toDisplay().toString().compareToIgnoreCase(rhs.toDisplay().toString());
-                        return compare;
-                    }
-                });
+                Collections.sort(filters, FilterListFragment.this);
                 return filters;
             }
         };
@@ -78,5 +71,14 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> {
     protected ItemListAdapter<IssueFilter, ? extends ItemView> createAdapter(List<IssueFilter> items) {
         return new FilterListAdapter(getActivity().getLayoutInflater(), items.toArray(new IssueFilter[items.size()]),
                 avatars);
+    }
+
+    @Override
+    public int compare(final IssueFilter lhs, final IssueFilter rhs) {
+        int compare = CASE_INSENSITIVE_ORDER
+                .compare(lhs.getRepository().generateId(), rhs.getRepository().generateId());
+        if (compare == 0)
+            compare = CASE_INSENSITIVE_ORDER.compare(lhs.toDisplay().toString(), rhs.toDisplay().toString());
+        return compare;
     }
 }
