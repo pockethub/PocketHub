@@ -306,7 +306,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         bodyText = (TextView) headerView.findViewById(id.tv_issue_body);
         bodyText.setMovementMethod(LinkMovementMethod.getInstance());
 
-        loadingView = inflater.inflate(layout.load_item, null);
+        loadingView = inflater.inflate(layout.loading_item, null);
     }
 
     private void updateHeader(final Issue issue) {

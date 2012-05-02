@@ -48,7 +48,7 @@ public class ResourceLoadingIndicator {
      */
     public ResourceLoadingIndicator(final Context context, final int loadingResId) {
         this.context = context;
-        view = LayoutInflater.from(context).inflate(layout.load_item, null);
+        view = LayoutInflater.from(context).inflate(layout.loading_item, null);
         textView = (TextView) view.findViewById(id.tv_loading);
         this.loadingResId = loadingResId;
     }
