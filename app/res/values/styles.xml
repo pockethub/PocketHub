@@ -44,7 +44,7 @@
     </style>
 
     <style name="EventIcon" parent="TextIcon">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">22sp</item>
     </style>
 
     <style name="PrimaryIcon" parent="TextIcon">
