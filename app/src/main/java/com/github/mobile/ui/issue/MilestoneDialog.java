@@ -15,7 +15,6 @@
  */
 package com.github.mobile.ui.issue;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_CLOSED;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 import android.app.ProgressDialog;
@@ -26,6 +25,7 @@ import com.github.mobile.SingleChoiceDialogFragment;
 import com.github.mobile.R.string;
 import com.github.mobile.accounts.AuthenticatedUserTask;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -83,7 +83,7 @@ public class MilestoneDialog {
         new AuthenticatedUserTask<List<Milestone>>(activity) {
 
             public List<Milestone> run() throws Exception {
-                List<Milestone> milestones = newArrayList();
+                List<Milestone> milestones = new ArrayList<Milestone>();
                 milestones.addAll(service.getMilestones(repository, STATE_OPEN));
                 milestones.addAll(service.getMilestones(repository, STATE_CLOSED));
                 Collections.sort(milestones, new Comparator<Milestone>() {

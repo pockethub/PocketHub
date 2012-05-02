@@ -24,7 +24,6 @@ import static com.github.mobile.Intents.EXTRA_COMMENTS;
 import static com.github.mobile.Intents.EXTRA_COMMENT_BODY;
 import static com.github.mobile.Intents.EXTRA_GIST_ID;
 import static com.github.mobile.RequestCodes.COMMENT_CREATE;
-import static com.google.common.collect.Lists.newArrayList;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -68,6 +67,7 @@ import com.github.mobile.util.TypefaceUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.google.inject.Inject;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -135,7 +135,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
     private Executor executor = Executors.newFixedThreadPool(1);
 
-    private List<View> fileHeaders = newArrayList();
+    private List<View> fileHeaders = new ArrayList<View>();
 
     @SuppressWarnings("unchecked")
     public void onCreate(Bundle savedInstanceState) {

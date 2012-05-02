@@ -1,6 +1,5 @@
 package com.github.mobile.ui.issue;
 
-import static com.google.common.collect.Lists.newArrayList;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
@@ -17,6 +16,7 @@ import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -45,7 +45,7 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> {
         return new AuthenticatedUserLoader<List<IssueFilter>>(getActivity()) {
 
             public List<IssueFilter> load() {
-                List<IssueFilter> filters = newArrayList(cache.getIssueFilters());
+                List<IssueFilter> filters = new ArrayList<IssueFilter>(cache.getIssueFilters());
                 Collections.sort(filters, new Comparator<IssueFilter>() {
 
                     public int compare(IssueFilter lhs, IssueFilter rhs) {
