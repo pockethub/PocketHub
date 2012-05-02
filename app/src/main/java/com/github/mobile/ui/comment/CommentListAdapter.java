@@ -45,7 +45,7 @@ public class CommentListAdapter extends ItemListAdapter<Comment, CommentItemView
      */
     public CommentListAdapter(LayoutInflater inflater, Comment[] elements, AvatarLoader avatars,
             HttpImageGetter imageGetter) {
-        super(layout.comment_view_item, inflater, elements);
+        super(layout.comment_item, inflater, elements);
 
         this.avatars = avatars;
         this.imageGetter = imageGetter;
