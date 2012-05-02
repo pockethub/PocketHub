@@ -367,11 +367,11 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
         Activity activity = getActivity();
         LayoutInflater inflater = activity.getLayoutInflater();
-        Typeface octocons = TypefaceUtils.getOctocons(activity);
+        Typeface octicons = TypefaceUtils.getOcticons(activity);
         for (GistFile file : files.values()) {
             View fileView = inflater.inflate(layout.gist_view_file_item, null);
             ((TextView) fileView.findViewById(id.tv_file)).setText(file.getFilename());
-            ((TextView) fileView.findViewById(id.tv_file_icon)).setTypeface(octocons);
+            ((TextView) fileView.findViewById(id.tv_file_icon)).setTypeface(octicons);
             list.addHeaderView(fileView, file, true);
             fileHeaders.add(fileView);
         }

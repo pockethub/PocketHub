@@ -54,7 +54,7 @@ public class RepositoryItemView extends ItemView {
         super(view);
 
         repoIcon = (TextView) view.findViewById(id.tv_repo_icon);
-        TypefaceUtils.setOctocons(repoIcon);
+        TypefaceUtils.setOcticons(repoIcon);
         repoName = (TextView) view.findViewById(id.tv_repo_name);
         repoDescription = (TextView) view.findViewById(id.tv_repo_description);
         recentLabel = (TextView) view.findViewById(id.tv_recent_label);

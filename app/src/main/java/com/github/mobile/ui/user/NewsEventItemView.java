@@ -60,7 +60,7 @@ public class NewsEventItemView extends ItemView {
         eventText = (TextView) view.findViewById(id.tv_event);
 
         iconText = (TextView) view.findViewById(id.tv_event_icon);
-        TypefaceUtils.setOctocons(iconText);
+        TypefaceUtils.setOcticons(iconText);
 
         dateText = (TextView) view.findViewById(id.tv_event_date);
     }

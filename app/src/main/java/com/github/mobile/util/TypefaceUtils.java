@@ -147,25 +147,25 @@ public class TypefaceUtils {
     }
 
     /**
-     * Get octocons typeface
+     * Get octicons typeface
      *
      * @param context
-     * @return octocons typeface
+     * @return octicons typeface
      */
-    public static Typeface getOctocons(Context context) {
+    public static Typeface getOcticons(final Context context) {
         return getTypeface(context, "octocons-regular-webfont.ttf");
     }
 
     /**
-     * Set octocons typeface on given text view(s)
+     * Set octicons typeface on given text view(s)
      *
      * @param textViews
      */
-    public static void setOctocons(TextView... textViews) {
+    public static void setOcticons(final TextView... textViews) {
         if (textViews == null || textViews.length == 0)
             return;
 
-        Typeface typeface = getOctocons(textViews[0].getContext());
+        Typeface typeface = getOcticons(textViews[0].getContext());
         for (TextView textView : textViews)
             textView.setTypeface(typeface);
     }
@@ -177,7 +177,7 @@ public class TypefaceUtils {
      * @param name
      * @return typeface
      */
-    public static Typeface getTypeface(Context context, String name) {
+    public static Typeface getTypeface(final Context context, final String name) {
         return Typeface.createFromAsset(context.getAssets(), name);
     }
 }
