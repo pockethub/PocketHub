@@ -15,12 +15,15 @@
  */
 package com.github.mobile.util;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static java.lang.Integer.MAX_VALUE;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.Html.ImageGetter;
+import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.github.kevinsawicki.http.HttpRequest;
@@ -83,22 +86,28 @@ public class HttpImageGetter implements ImageGetter {
      * @return this image getter
      */
     public HttpImageGetter bind(final TextView view, final String html, final Object id) {
-        view.setText(HtmlUtils.encode(html, loading));
+        CharSequence encoded = !TextUtils.isEmpty(html) ? HtmlUtils.encode(html, loading) : "";
+        view.setVisibility(encoded.length() > 0 ? VISIBLE : GONE);
+        view.setText(encoded);
+
+        // Use default encoding if no img tags
+        if (html.indexOf("<img") == -1)
+            return this;
+
         view.setTag(id);
         new RoboAsyncTask<CharSequence>(context) {
 
+            @Override
             public CharSequence call() throws Exception {
-                if (html.indexOf("<img") != -1)
-                    return HtmlUtils.encode(html, HttpImageGetter.this);
-                else
-                    return null;
+                return HtmlUtils.encode(html, HttpImageGetter.this);
             }
 
+            @Override
             protected void onSuccess(CharSequence html) throws Exception {
-                if (html == null)
-                    return;
                 if (!id.equals(view.getTag()))
                     return;
+
+                view.setVisibility(html.length() > 0 ? VISIBLE : GONE);
                 view.setText(html);
                 view.setTag(null);
             }
