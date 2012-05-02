@@ -76,4 +76,26 @@ public class RecentRepositoriesTest extends AndroidTestCase {
 		assertTrue(recent2.contains(id));
 	}
 
+	/**
+	 * Verify repositories are scoped to organization
+	 */
+	public void testScopedStorage() {
+		User org1 = new User().setId(20);
+		RecentRepositories recent1 = new RecentRepositories(getContext(), org1);
+		String id1 = "org1/repo";
+		recent1.add(id1);
+		assertTrue(recent1.contains(id1));
+
+		User org2 = new User().setId(40);
+		RecentRepositories recent2 = new RecentRepositories(getContext(), org2);
+		assertFalse(recent2.contains(id1));
+		String id2 = "org2/repo";
+		recent2.add(id2);
+		assertTrue(recent2.contains(id2));
+
+		recent2.save();
+		recent1 = new RecentRepositories(getContext(), org1);
+		assertFalse(recent1.contains(id2));
+	}
+
 }
