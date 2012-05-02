@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile;
+package com.github.mobile.ui.user;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -38,6 +38,21 @@ import org.eclipse.egit.github.core.User;
  * Dropdown list adapter to display orgs. and other context-related activity links
  */
 public class HomeDropdownListAdapter extends BaseAdapter {
+
+    /**
+     * Action for Gists
+     */
+    public static final int ACTION_GISTS = 0;
+
+    /**
+     * Action for the issues dashboard
+     */
+    public static final int ACTION_DASHBOARD = 1;
+
+    /**
+     * Action for issues filter
+     */
+    public static final int ACTION_FILTERS = 2;
 
     private static class OrgItemView extends ItemView {
 
@@ -75,21 +90,6 @@ public class HomeDropdownListAdapter extends BaseAdapter {
         }
     }
 
-    /**
-     * Action for Gists
-     */
-    public static final int ACTION_GISTS = 0;
-
-    /**
-     * Action for the issues dashboard
-     */
-    public static final int ACTION_DASHBOARD = 1;
-
-    /**
-     * Action for issues filter
-     */
-    public static final int ACTION_FILTERS = 2;
-
     private int selected;
 
     private final Context context;
@@ -112,7 +112,7 @@ public class HomeDropdownListAdapter extends BaseAdapter {
         User[] orgItems = orgs.toArray(new User[orgs.size()]);
 
         listAdapter = new OrgListAdapter(layout.org_item, inflater, orgItems, avatarHelper);
-        dropdownAdapter = new OrgListAdapter(layout.org_item_dropdown, inflater, orgItems, avatarHelper);
+        dropdownAdapter = new OrgListAdapter(layout.org_dropdown_item, inflater, orgItems, avatarHelper);
     }
 
     /**
@@ -215,12 +215,11 @@ public class HomeDropdownListAdapter extends BaseAdapter {
         case ACTION_DASHBOARD:
         case ACTION_FILTERS:
             Object item = getItem(position);
-            View root = LayoutInflater.from(context).inflate(layout.context_item_dropdown, null);
+            View root = LayoutInflater.from(context).inflate(layout.context_dropdown_item, null);
             ((TextView) root.findViewById(id.tv_item_name)).setText(item.toString());
             return root;
         default:
             return dropdownAdapter.getDropDownView(position, null, parent);
         }
     }
-
 }
