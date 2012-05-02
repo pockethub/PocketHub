@@ -62,12 +62,6 @@ public class RecentRepositories implements Comparator<IRepositoryIdProvider>, Se
      */
     public RecentRepositories(final Context context, final User organization) {
         file = getFile(context, organization);
-
-        LinkedHashSet<String> loaded = new RequestReader(file, VERSION).read();
-        if (loaded == null)
-            loaded = new LinkedHashSet<String>();
-
-        trim();
     }
 
     private void load() {
@@ -75,12 +69,10 @@ public class RecentRepositories implements Comparator<IRepositoryIdProvider>, Se
         if (loaded == null)
             loaded = new LinkedHashSet<String>();
         ids = loaded;
+        trim();
     }
 
     private void trim() {
-        if (ids == null)
-            return;
-
         Iterator<String> iterator = ids.iterator();
         while (iterator.hasNext() && ids.size() > MAX_SIZE) {
             iterator.next();
