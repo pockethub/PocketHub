@@ -16,6 +16,12 @@
 -->
 <resources>
 
+    <style name="ListView">
+        <item name="android:dividerHeight">2dp</item>
+        <item name="android:divider">@drawable/list_divider</item>
+        <item name="android:id">@android:id/list</item>
+    </style>
+
     <style name="EditText">
         <item name="android:textColor">@color/item_text_color</item>
         <item name="android:textCursorDrawable">@drawable/edit_text_cursor</item>
