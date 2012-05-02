@@ -114,6 +114,9 @@ public class HtmlUtils {
                     indentLevel++;
                 else
                     indentLevel--;
+
+                if (!opening && indentLevel == 0)
+                    output.append('\n');
                 return;
             }
 
@@ -123,8 +126,7 @@ public class HtmlUtils {
                     for (int i = 0; i < indentLevel * 2; i++)
                         output.append(' ');
                     output.append('\u2022').append(' ').append(' ');
-                } else
-                    output.append('\n');
+                }
                 return;
             }
 
