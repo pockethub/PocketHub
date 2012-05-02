@@ -96,6 +96,7 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(layout.issues_filter);
 
         final Repository repository = (Repository) getIntent().getSerializableExtra(EXTRA_REPOSITORY);
