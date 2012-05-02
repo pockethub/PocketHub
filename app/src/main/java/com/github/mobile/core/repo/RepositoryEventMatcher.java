@@ -64,6 +64,7 @@ public class RepositoryEventMatcher {
             return null;
 
         Repository full = new Repository();
+        full.setId(repo.getId());
         full.setName(id.substring(slash + 1));
         String login = id.substring(0, slash);
         // Use actor if it matches login parsed from repository id
