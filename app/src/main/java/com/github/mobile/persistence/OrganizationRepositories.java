@@ -105,8 +105,9 @@ public class OrganizationRepositories implements PersistableResource<Repository>
         db.delete("repos", "orgId=?", new String[] { Integer.toString(org.getId()) });
         for (Repository repo : repos) {
             User owner = repo.getOwner();
+            ContentValues values = new ContentValues(7);
 
-            ContentValues values = new ContentValues(6);
+            values.put("id", repo.getId());
             values.put("name", repo.getName());
             values.put("orgId", org.getId());
             values.put("ownerId", owner.getId());
