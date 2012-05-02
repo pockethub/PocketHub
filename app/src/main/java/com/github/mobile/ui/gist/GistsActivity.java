@@ -102,7 +102,7 @@ public class GistsActivity extends RoboSherlockFragmentActivity {
             randomGist();
             return true;
         case id.create_gist:
-            startActivityForResult(new Intent(this, ShareGistActivity.class), GIST_CREATE);
+            startActivityForResult(new Intent(this, CreateGistActivity.class), GIST_CREATE);
             return true;
         case android.R.id.home:
             Intent intent = new Intent(this, HomeActivity.class);

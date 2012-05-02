@@ -44,7 +44,7 @@
                 android:textStyle="bold" />
 
             <CheckBox
-                android:id="@+id/publicCheck"
+                android:id="@+id/cb_public"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -54,7 +54,7 @@
         </LinearLayout>
 
         <EditText
-            android:id="@+id/gistDescriptionText"
+            android:id="@+id/et_gist_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_background"
@@ -78,7 +78,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/gistNameText"
+            android:id="@+id/et_gist_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_background"
@@ -102,7 +102,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/gistContentText"
+            android:id="@+id/et_gist_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/edit_text_background"

@@ -27,11 +27,11 @@ import android.widget.EditText;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.github.mobile.TextWatcherAdapter;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
+import com.github.mobile.TextWatcherAdapter;
 import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
@@ -49,20 +49,20 @@ import roboguice.inject.InjectView;
 /**
  * Activity to share a text selection as a public or private Gist
  */
-public class ShareGistActivity extends RoboSherlockFragmentActivity {
+public class CreateGistActivity extends RoboSherlockFragmentActivity {
 
     private static final String TAG = "SGA";
 
-    @InjectView(id.gistDescriptionText)
+    @InjectView(id.et_gist_description)
     private EditText descriptionText;
 
-    @InjectView(id.gistNameText)
+    @InjectView(id.et_gist_name)
     private EditText nameText;
 
-    @InjectView(id.gistContentText)
+    @InjectView(id.et_gist_content)
     private EditText contentText;
 
-    @InjectView(id.publicCheck)
+    @InjectView(id.cb_public)
     private CheckBox publicCheckBox;
 
     @Inject
@@ -71,7 +71,8 @@ public class ShareGistActivity extends RoboSherlockFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(layout.share_gist);
+
+        setContentView(layout.create_gist);
         setTitle(string.new_gist);
 
         String text = getIntent().getStringExtra(EXTRA_TEXT);
@@ -133,7 +134,7 @@ public class ShareGistActivity extends RoboSherlockFragmentActivity {
                 file.setFilename(name);
                 gist.setFiles(Collections.singletonMap(name, file));
 
-                return gistServiceProvider.get(ShareGistActivity.this).createGist(gist);
+                return gistServiceProvider.get(CreateGistActivity.this).createGist(gist);
             }
 
             protected void onSuccess(Gist gist) throws Exception {

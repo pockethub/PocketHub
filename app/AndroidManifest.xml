@@ -26,7 +26,7 @@
             <meta-data android:name="android.app.default_searchable" android:value=".ui.repo.RepoSearchActivity"/>
         </activity>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.gist.ShareGistActivity">
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.gist.CreateGistActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
                 <category android:name="android.intent.category.DEFAULT"/>
