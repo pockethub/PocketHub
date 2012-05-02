@@ -60,14 +60,13 @@ import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.SingleChoiceDialogFragment;
-import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.core.issue.FullIssue;
 import com.github.mobile.core.issue.IssueStore;
+import com.github.mobile.core.issue.RefreshIssueTask;
 import com.github.mobile.ui.DialogResultListener;
 import com.github.mobile.ui.comment.CommentListAdapter;
 import com.github.mobile.ui.comment.CreateCommentActivity;
 import com.github.mobile.util.AvatarLoader;
-import com.github.mobile.util.HtmlUtils;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.ServiceUtils;
 import com.github.mobile.util.TimeUtils;
@@ -83,9 +82,7 @@ import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.service.IssueService;
 
-import roboguice.inject.ContextScopedProvider;
 import roboguice.inject.InjectView;
 
 /**
@@ -94,9 +91,6 @@ import roboguice.inject.InjectView;
 public class IssueFragment extends RoboSherlockFragment implements DialogResultListener {
 
     private static final String TAG = "IssueFragment";
-
-    @Inject
-    private ContextScopedProvider<IssueService> service;
 
     private String repositoryName;
 
@@ -359,26 +353,16 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
     }
 
     private void refreshIssue() {
-        new AuthenticatedUserTask<FullIssue>(getActivity()) {
+        new RefreshIssueTask(getActivity(), repositoryId, issueNumber) {
 
-            public FullIssue run() throws Exception {
-                Issue issue = store.refreshIssue(repositoryId, issueNumber);
-                List<Comment> comments;
-                if (issue.getComments() > 0)
-                    comments = service.get(getContext()).getComments(repositoryId, issueNumber);
-                else
-                    comments = Collections.emptyList();
-                for (Comment comment : comments)
-                    comment.setBodyHtml(HtmlUtils.format(comment.getBodyHtml()).toString());
-                return new FullIssue(issue, comments);
-            }
-
+            @Override
             protected void onException(Exception e) throws RuntimeException {
-                Log.d(TAG, "Issue failed to load", e);
+                super.onException(e);
 
                 ToastUtils.show(getActivity(), e, string.error_issue_load);
             }
 
+            @Override
             protected void onSuccess(FullIssue fullIssue) throws Exception {
                 issue = fullIssue.getIssue();
                 comments = fullIssue;
@@ -386,6 +370,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
                 updateList(fullIssue.getIssue(), fullIssue);
             }
         }.execute();
+
     }
 
     private void updateList(Issue issue, List<Comment> comments) {
