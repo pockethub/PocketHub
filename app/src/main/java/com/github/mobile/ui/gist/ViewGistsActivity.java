@@ -169,14 +169,14 @@ public class ViewGistsActivity extends DialogFragmentActivity implements OnPageC
         if (gist == null) {
             actionBar.setSubtitle(null);
             actionBar.setLogo(null);
-            actionBar.setIcon(drawable.github_app_icon);
+            actionBar.setIcon(drawable.app_icon);
         } else if (gist.getUser() != null) {
             avatarHelper.bind(actionBar, gist.getUser());
             actionBar.setSubtitle(gist.getUser().getLogin());
         } else {
             actionBar.setSubtitle(string.anonymous);
             actionBar.setLogo(null);
-            actionBar.setIcon(drawable.github_app_icon);
+            actionBar.setIcon(drawable.app_icon);
         }
         actionBar.setTitle(getString(string.gist_title) + gistId);
     }
