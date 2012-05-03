@@ -27,6 +27,7 @@ import android.view.View;
 import com.github.mobile.ui.ItemListAdapter;
 import com.viewpagerindicator.R.layout;
 
+import java.text.NumberFormat;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.egit.github.core.Repository;
@@ -36,6 +37,8 @@ import org.eclipse.egit.github.core.User;
  * Adapter for a list of repositories
  */
 public class RepositoryListAdapter extends ItemListAdapter<Repository, RecentRepositoryItemView> {
+
+    private static final NumberFormat FORMAT = NumberFormat.getIntegerInstance();
 
     private final AtomicReference<User> account;
 
@@ -90,6 +93,9 @@ public class RepositoryListAdapter extends ItemListAdapter<Repository, RecentRep
             view.repoDescription.setVisibility(VISIBLE);
         } else
             view.repoDescription.setVisibility(GONE);
+
+        view.watchers.setText(FORMAT.format(repository.getWatchers()));
+        view.forks.setText(FORMAT.format(repository.getForks()));
     }
 
     @Override

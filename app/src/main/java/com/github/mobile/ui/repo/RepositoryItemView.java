@@ -43,14 +43,29 @@ public class RepositoryItemView extends ItemView {
     public final TextView repoDescription;
 
     /**
+     * Number of watchers
+     */
+    public final TextView watchers;
+
+    /**
+     * Number of forks
+     */
+    public final TextView forks;
+
+    /**
      * @param view
      */
     public RepositoryItemView(final View view) {
         super(view);
 
         repoIcon = (TextView) view.findViewById(id.tv_repo_icon);
-        TypefaceUtils.setOcticons(repoIcon);
         repoName = (TextView) view.findViewById(id.tv_repo_name);
         repoDescription = (TextView) view.findViewById(id.tv_repo_description);
+
+        TypefaceUtils.setOcticons(repoIcon, (TextView) view.findViewById(id.tv_forks_icon),
+                (TextView) view.findViewById(id.tv_watchers_icon));
+
+        watchers = (TextView) view.findViewById(id.tv_watchers);
+        forks = (TextView) view.findViewById(id.tv_forks);
     }
 }

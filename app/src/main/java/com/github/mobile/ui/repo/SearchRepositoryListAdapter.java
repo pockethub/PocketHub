@@ -27,12 +27,16 @@ import android.view.View;
 import com.github.mobile.ui.ItemListAdapter;
 import com.viewpagerindicator.R.layout;
 
+import java.text.NumberFormat;
+
 import org.eclipse.egit.github.core.SearchRepository;
 
 /**
  * Adapter for a list of searched for repositories
  */
 public class SearchRepositoryListAdapter extends ItemListAdapter<SearchRepository, RepositoryItemView> {
+
+    private static final NumberFormat FORMAT = NumberFormat.getIntegerInstance();
 
     /**
      * Create list adapter for searched for repositories
@@ -71,6 +75,9 @@ public class SearchRepositoryListAdapter extends ItemListAdapter<SearchRepositor
             view.repoDescription.setVisibility(VISIBLE);
         } else
             view.repoDescription.setVisibility(GONE);
+
+        view.watchers.setText(FORMAT.format(repository.getWatchers()));
+        view.forks.setText(FORMAT.format(repository.getForks()));
     }
 
     @Override
