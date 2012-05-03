@@ -19,7 +19,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-import com.github.mobile.R.string;
 import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemView;
