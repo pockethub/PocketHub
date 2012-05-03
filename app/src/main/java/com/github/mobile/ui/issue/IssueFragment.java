@@ -241,8 +241,8 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
         if (issue != null && comments != null)
             updateList(issue, comments);
-
-        refreshIssue();
+        else
+            refreshIssue();
     }
 
     @Override

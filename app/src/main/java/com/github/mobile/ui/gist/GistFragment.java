@@ -189,8 +189,8 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
         if (gist != null && comments != null)
             updateList(gist, comments);
-
-        refreshGist();
+        else
+            refreshGist();
     }
 
     private boolean isOwner() {
