@@ -210,6 +210,8 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        html = null;
+
         list.setFastScrollEnabled(true);
         list.addHeaderView(headerView, null, false);
 
@@ -306,8 +308,10 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
     private void updateHeader(final Issue issue) {
         titleText.setText(issue.getTitle());
-        if (html == null || !html.equals(issue.getBodyHtml())) {
-            html = issue.getBodyHtml();
+
+        final String bodyHtml = issue.getBodyHtml();
+        if (html == null || !html.equals(bodyHtml)) {
+            html = bodyHtml;
             imageGetter.bind(bodyText, html, issue.getId());
         }
 
