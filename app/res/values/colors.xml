@@ -22,6 +22,7 @@
     <color name="item_background">#D9DCDE</color>
     <color name="item_text_color">#1E1E1E</color>
     <color name="item_text_color_light">#AEAEAE</color>
+    <color name="text_icon_color">#A8A8A8</color>
     <color name="item_separator1">#B8BABB</color>
     <color name="item_separator2">#E3E5E6</color>
     <color name="comment_background">#FFFFFF</color>
