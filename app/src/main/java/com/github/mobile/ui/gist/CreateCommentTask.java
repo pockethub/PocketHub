@@ -15,8 +15,8 @@
  */
 package com.github.mobile.ui.gist;
 
-import static android.app.Activity.RESULT_OK;
 import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 
 import com.github.mobile.R.string;
@@ -24,64 +24,60 @@ import com.github.mobile.ui.ProgressDialogTask;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 
+import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.service.GistService;
 
 /**
- * Async task to delete a Gist
+ * Task to comment on a {@link Gist}
  */
-public class DeleteGistTask extends ProgressDialogTask<Gist> {
+public class CreateCommentTask extends ProgressDialogTask<Comment> {
 
-    private static final String TAG = "DeleteGistTask";
-
-    private final String id;
+    private static final String TAG = "CreateCommentTask";
 
     @Inject
     private GistService service;
 
+    private final String id;
+
+    private final String comment;
+
     /**
-     * Create task
+     * Create task to create a comment
      *
      * @param context
      * @param gistId
+     * @param comment
      */
-    public DeleteGistTask(final Activity context, final String gistId) {
+    protected CreateCommentTask(Context context, String gistId, String comment) {
         super(context);
 
-        id = gistId;
+        this.id = gistId;
+        this.comment = comment;
     }
 
     /**
-     * Execute the task with a progress dialog displaying.
-     * <p>
-     * This method must be called from the main thread.
+     * Execute the task and create the comment
+     *
+     * @return this task
      */
-    public void start() {
-        showIndeterminate(string.deleting_gist);
-
+    public CreateCommentTask start() {
+        showIndeterminate(string.creating_comment);
         execute();
+        return this;
     }
 
     @Override
-    public Gist run() throws Exception {
-        service.deleteGist(id);
-        return null;
-    }
-
-    @Override
-    protected void onSuccess(Gist gist) throws Exception {
-        super.onSuccess(gist);
-
-        Activity activity = (Activity) getContext();
-        activity.setResult(RESULT_OK);
-        activity.finish();
+    public Comment run() throws Exception {
+        return service.createComment(id, comment);
     }
 
     @Override
     protected void onException(Exception e) throws RuntimeException {
         super.onException(e);
 
-        Log.d(TAG, "Exception deleting Gist", e);
+        Log.d(TAG, "Exception creating comment on gist", e);
+
         ToastUtils.show((Activity) getContext(), e.getMessage());
     }
 }

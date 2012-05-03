@@ -24,14 +24,12 @@ import static com.github.mobile.Intents.EXTRA_COMMENT_BODY;
 import static com.github.mobile.Intents.EXTRA_GIST_ID;
 import static com.github.mobile.RequestCodes.COMMENT_CREATE;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +48,6 @@ import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.accounts.AccountUtils;
-import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.core.gist.FullGist;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.core.gist.RefreshGistTask;
@@ -76,17 +73,13 @@ import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.GistFile;
 import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.service.GistService;
 
-import roboguice.inject.ContextScopedProvider;
 import roboguice.inject.InjectView;
 
 /**
  * Activity to display an existing Gist
  */
 public class GistFragment extends RoboSherlockFragment implements OnItemClickListener {
-
-    private static final String TAG = "GistFragment";
 
     private static final SpannableStringBuilder NO_DESCRIPTION;
 
@@ -123,9 +116,6 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
     @Inject
     private AvatarLoader avatarHelper;
-
-    @Inject
-    private ContextScopedProvider<GistService> gistServiceProvider;
 
     private List<View> fileHeaders = new ArrayList<View>();
 
@@ -323,33 +313,16 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
     }
 
     private void createComment(final String comment) {
-        final ProgressDialog progress = new ProgressDialog(getActivity());
-        progress.setMessage(getString(string.creating_comment));
-        progress.setIndeterminate(true);
-        progress.show();
-        new AuthenticatedUserTask<Comment>(getActivity()) {
-
-            @Override
-            public Comment run() throws Exception {
-                return gistServiceProvider.get(getActivity()).createComment(gistId, comment);
-            }
+        new CreateCommentTask(getActivity(), gistId, comment) {
 
             @Override
             protected void onSuccess(Comment comment) throws Exception {
-                progress.dismiss();
+                super.onSuccess(comment);
+
                 refreshGist();
             }
 
-            @Override
-            protected void onException(Exception e) throws RuntimeException {
-                progress.dismiss();
-
-                Log.d(TAG, "Exception creating comment on gist", e);
-
-                ToastUtils.show((Activity) getContext(), e.getMessage());
-            }
-        }.execute();
-
+        }.start();
     }
 
     private void updateFiles(Gist gist) {

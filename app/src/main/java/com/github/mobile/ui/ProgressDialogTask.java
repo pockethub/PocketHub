@@ -65,6 +65,8 @@ public abstract class ProgressDialogTask<E> extends AuthenticatedUserTask<E> {
      * @param message
      */
     protected void showIndeterminate(final CharSequence message) {
+        dismissProgress();
+
         progress = new ProgressDialog(getContext());
         progress.setMessage(message);
         progress.setIndeterminate(true);
