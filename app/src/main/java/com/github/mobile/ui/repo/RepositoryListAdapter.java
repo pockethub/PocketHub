@@ -35,7 +35,7 @@ import org.eclipse.egit.github.core.User;
 /**
  * Adapter for a list of repositories
  */
-public class RepositoryListAdapter extends ItemListAdapter<Repository, RepositoryItemView> {
+public class RepositoryListAdapter extends ItemListAdapter<Repository, RecentRepositoryItemView> {
 
     private final AtomicReference<User> account;
 
@@ -70,9 +70,7 @@ public class RepositoryListAdapter extends ItemListAdapter<Repository, Repositor
     }
 
     @Override
-    protected void update(final RepositoryItemView view, final Repository repository) {
-        String id = repository.generateId();
-
+    protected void update(final RecentRepositoryItemView view, final Repository repository) {
         if (repository.isPrivate())
             view.repoIcon.setText(Character.toString(ICON_PRIVATE));
         else if (repository.isFork())
@@ -80,6 +78,7 @@ public class RepositoryListAdapter extends ItemListAdapter<Repository, Repositor
         else
             view.repoIcon.setText(Character.toString(ICON_PUBLIC));
 
+        String id = repository.generateId();
         view.recentLabel.setVisibility(recent.get().contains(id) ? VISIBLE : GONE);
 
         view.repoName.setText(account.get().getLogin().equals(repository.getOwner().getLogin()) ? repository.getName()
@@ -94,7 +93,7 @@ public class RepositoryListAdapter extends ItemListAdapter<Repository, Repositor
     }
 
     @Override
-    protected RepositoryItemView createView(final View view) {
-        return new RepositoryItemView(view);
+    protected RecentRepositoryItemView createView(final View view) {
+        return new RecentRepositoryItemView(view);
     }
 }

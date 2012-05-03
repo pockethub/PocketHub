@@ -45,7 +45,7 @@ public class UserRepositoryListAdapter extends ItemListAdapter<Repository, Repos
      * @param user
      */
     public UserRepositoryListAdapter(LayoutInflater inflater, Repository[] elements, User user) {
-        super(layout.repo_item, inflater, elements);
+        super(layout.user_repo_item, inflater, elements);
 
         login = user.getLogin();
     }
@@ -62,8 +62,6 @@ public class UserRepositoryListAdapter extends ItemListAdapter<Repository, Repos
 
     @Override
     protected void update(final RepositoryItemView view, final Repository repository) {
-        String id = repository.generateId();
-
         if (repository.isPrivate())
             view.repoIcon.setText(Character.toString(ICON_PRIVATE));
         else if (repository.isFork())
@@ -71,7 +69,8 @@ public class UserRepositoryListAdapter extends ItemListAdapter<Repository, Repos
         else
             view.repoIcon.setText(Character.toString(ICON_PUBLIC));
 
-        view.repoName.setText(login.equals(repository.getOwner().getLogin()) ? repository.getName() : id);
+        view.repoName.setText(login.equals(repository.getOwner().getLogin()) ? repository.getName() : repository
+                .generateId());
 
         String description = repository.getDescription();
         if (!TextUtils.isEmpty(description)) {

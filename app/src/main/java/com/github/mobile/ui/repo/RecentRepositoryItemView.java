@@ -15,42 +15,29 @@
  */
 package com.github.mobile.ui.repo;
 
+import com.github.mobile.R.id;
+
 import android.view.View;
 import android.widget.TextView;
 
-import com.github.mobile.R.id;
-import com.github.mobile.ui.ItemView;
-import com.github.mobile.util.TypefaceUtils;
-
 /**
- * Item view for a repository
+ * Repository item view with a recent indicator
  */
-public class RepositoryItemView extends ItemView {
+public class RecentRepositoryItemView extends RepositoryItemView {
 
     /**
-     * Repository type icon
+     * Recently view label
      */
-    public final TextView repoIcon;
+    public final TextView recentLabel;
 
     /**
-     * Repository name text
-     */
-    public final TextView repoName;
-
-    /**
-     * Repository description text
-     */
-    public final TextView repoDescription;
-
-    /**
+     * Create item view
+     *
      * @param view
      */
-    public RepositoryItemView(final View view) {
+    public RecentRepositoryItemView(final View view) {
         super(view);
 
-        repoIcon = (TextView) view.findViewById(id.tv_repo_icon);
-        TypefaceUtils.setOcticons(repoIcon);
-        repoName = (TextView) view.findViewById(id.tv_repo_name);
-        repoDescription = (TextView) view.findViewById(id.tv_repo_description);
+        recentLabel = (TextView) view.findViewById(id.tv_recent_label);
     }
 }
