@@ -35,8 +35,6 @@ import com.github.mobile.ui.user.HomeActivity;
 import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
-import java.text.MessageFormat;
-
 /**
  * Activity to search repositories
  */
@@ -102,7 +100,7 @@ public class RepoSearchActivity extends RoboSherlockFragmentActivity {
     }
 
     private void search(final String query) {
-        getSupportActionBar().setTitle(MessageFormat.format(getString(string.search_matching), query));
+        getSupportActionBar().setTitle(query);
         saveRecentRepoQuery(this, query);
         repoFragment.setQuery(query);
     }
