@@ -18,7 +18,6 @@ package com.github.mobile.ui.issue;
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.github.mobile.Intents.EXTRA_COMMENTS;
 import static com.github.mobile.Intents.EXTRA_COMMENT_BODY;
 import static com.github.mobile.Intents.EXTRA_ISSUE;
 import static com.github.mobile.Intents.EXTRA_ISSUE_NUMBER;
@@ -150,7 +149,6 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
     private String html;
 
-    @SuppressWarnings("unchecked")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -161,7 +159,6 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         repositoryOwner = args.getString(EXTRA_REPOSITORY_OWNER);
         repositoryId = RepositoryId.create(repositoryOwner, repositoryName);
         issueNumber = args.getInt(EXTRA_ISSUE_NUMBER);
-        comments = (List<Comment>) args.getSerializable(EXTRA_COMMENTS);
 
         DialogFragmentActivity dialogActivity = (DialogFragmentActivity) getActivity();
 
@@ -357,6 +354,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
     }
 
     private void refreshIssue() {
+        Log.d("TEST", "Refresh called");
         new RefreshIssueTask(getActivity(), repositoryId, issueNumber) {
 
             @Override
@@ -372,7 +370,6 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
                 issue = fullIssue.getIssue();
                 comments = fullIssue;
-                getArguments().putSerializable(EXTRA_COMMENTS, fullIssue);
                 updateList(fullIssue.getIssue(), fullIssue);
             }
         }.execute();

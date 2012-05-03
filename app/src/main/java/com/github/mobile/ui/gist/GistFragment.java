@@ -20,7 +20,6 @@ import static android.graphics.Typeface.ITALIC;
 import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.github.mobile.Intents.EXTRA_COMMENTS;
 import static com.github.mobile.Intents.EXTRA_COMMENT_BODY;
 import static com.github.mobile.Intents.EXTRA_GIST_ID;
 import static com.github.mobile.RequestCodes.COMMENT_CREATE;
@@ -130,14 +129,12 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
     private List<View> fileHeaders = new ArrayList<View>();
 
-    @SuppressWarnings("unchecked")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
 
         gistId = getArguments().getString(EXTRA_GIST_ID);
-        comments = (List<Comment>) getArguments().getSerializable(EXTRA_COMMENTS);
     }
 
     @Override
@@ -418,7 +415,6 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
                 loadFinished = true;
                 gist = fullGist.getGist();
                 comments = fullGist;
-                getArguments().putSerializable(EXTRA_COMMENTS, fullGist);
                 updateList(fullGist.getGist(), fullGist);
             }
 
