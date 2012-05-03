@@ -45,10 +45,9 @@
         android:layout_below="@id/tv_issue_repo_name"
         android:layout_toRightOf="@id/tv_issue_number"
         android:paddingLeft="10dp"
-        android:paddingTop="5dp"
         android:singleLine="true"
-        android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/item_text_color"
+        android:textSize="15dp"
         android:textStyle="bold" />
 
     <LinearLayout
