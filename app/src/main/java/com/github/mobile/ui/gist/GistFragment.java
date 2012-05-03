@@ -329,15 +329,18 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
         progress.show();
         new AuthenticatedUserTask<Comment>(getActivity()) {
 
+            @Override
             public Comment run() throws Exception {
                 return gistServiceProvider.get(getActivity()).createComment(gistId, comment);
             }
 
+            @Override
             protected void onSuccess(Comment comment) throws Exception {
                 progress.dismiss();
                 refreshGist();
             }
 
+            @Override
             protected void onException(Exception e) throws RuntimeException {
                 progress.dismiss();
 

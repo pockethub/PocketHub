@@ -171,6 +171,8 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         };
 
         assigneeTask = new EditAssigneeTask(dialogActivity, repositoryId, issueNumber) {
+
+            @Override
             protected void onSuccess(Issue editedIssue) throws Exception {
                 super.onSuccess(editedIssue);
 
@@ -179,6 +181,8 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         };
 
         labelsTask = new EditLabelsTask(dialogActivity, repositoryId, issueNumber) {
+
+            @Override
             protected void onSuccess(Issue editedIssue) throws Exception {
                 super.onSuccess(editedIssue);
 
@@ -187,6 +191,8 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         };
 
         stateTask = new EditStateTask(dialogActivity, repositoryId, issueNumber) {
+
+            @Override
             protected void onSuccess(Issue editedIssue) throws Exception {
                 super.onSuccess(editedIssue);
 
@@ -195,6 +201,8 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         };
 
         bodyTask = new EditIssueTask(dialogActivity, repositoryId, issueNumber) {
+
+            @Override
             protected void onSuccess(Issue editedIssue) throws Exception {
                 super.onSuccess(editedIssue);
 
