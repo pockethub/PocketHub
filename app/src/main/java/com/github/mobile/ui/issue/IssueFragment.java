@@ -89,8 +89,6 @@ import roboguice.inject.InjectView;
  */
 public class IssueFragment extends RoboSherlockFragment implements DialogResultListener {
 
-    private static final String TAG = "IssueFragment";
-
     private String repositoryName;
 
     private String repositoryOwner;
@@ -443,12 +441,6 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
                 if (getActivity() != null)
                     refreshIssue();
-            }
-
-            protected void onException(Exception e) throws RuntimeException {
-                Log.d(TAG, "Exception creating comment", e);
-
-                ToastUtils.show((Activity) getContext(), e.getMessage());
             }
         }.create(comment);
     }

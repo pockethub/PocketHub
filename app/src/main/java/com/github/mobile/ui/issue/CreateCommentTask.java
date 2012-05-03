@@ -15,10 +15,13 @@
  */
 package com.github.mobile.ui.issue;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import com.github.mobile.R.string;
 import com.github.mobile.ui.ProgressDialogTask;
+import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Comment;
@@ -29,6 +32,8 @@ import org.eclipse.egit.github.core.service.IssueService;
  * Task to comment on an issue in a repository
  */
 public class CreateCommentTask extends ProgressDialogTask<Comment> {
+
+    private static final String TAG = "CreateCommentTask";
 
     private final IRepositoryIdProvider repository;
 
@@ -72,5 +77,14 @@ public class CreateCommentTask extends ProgressDialogTask<Comment> {
 
         execute();
         return this;
+    }
+
+    @Override
+    protected void onException(Exception e) throws RuntimeException {
+        super.onException(e);
+
+        Log.d(TAG, "Exception creating comment on issue", e);
+
+        ToastUtils.show((Activity) getContext(), e.getMessage());
     }
 }
