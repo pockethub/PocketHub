@@ -16,65 +16,23 @@
 package com.github.mobile.ui.user;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ListView;
 
 import com.github.mobile.R.string;
-import com.github.mobile.accounts.AccountUtils;
-import com.github.mobile.ui.ItemListAdapter;
-import com.github.mobile.ui.ItemView;
-import com.github.mobile.ui.PagedItemFragment;
-import com.github.mobile.util.AvatarLoader;
-import com.github.mobile.util.ListViewUtils;
-import com.google.inject.Inject;
-
-import java.util.List;
-
-import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.service.UserService;
 
 /**
  * Fragment to display a list of followers
  */
-public abstract class FollowersFragment extends PagedItemFragment<User> {
-
-    /**
-     * Avatar loader
-     */
-    @Inject
-    protected AvatarLoader avatarLoader;
-
-    /**
-     * User service
-     */
-    @Inject
-    protected UserService userService;
+public abstract class FollowersFragment extends PagedUserFragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         setEmptyText(getString(string.no_followers));
-        ListViewUtils.configure(getActivity(), getListView(), true);
     }
 
     @Override
     protected int getLoadingMessage() {
         return string.loading_followers;
-    }
-
-    @Override
-    protected ItemListAdapter<User, ? extends ItemView> createAdapter(List<User> items) {
-        User[] users = items.toArray(new User[items.size()]);
-        return new UserListAdapter(getActivity().getLayoutInflater(), users, avatarLoader);
-    }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        User user = (User) l.getItemAtPosition(position);
-        if (AccountUtils.isUser(getActivity(), user))
-            startActivity(HomeActivity.createIntent());
-        else
-            startActivity(UserViewActivity.createIntent(user));
     }
 }

@@ -129,6 +129,8 @@
     <string name="loading_news">Loading News…</string>
     <string name="issue_dashboard">Issue Dashboard</string>
     <string name="loading_followers">Loading Followers…</string>
+    <string name="loading_people">Loading People…</string>
+    <string name="no_people">No People</string>
     <string name="new_issue">New Issue</string>
     <string name="anonymous">Anonymous</string>
     <string name="loading_gists">Loading Gists</string>
@@ -155,6 +157,7 @@
     <string name="login">Login</string>
     <string name="repos">Repos</string>
     <string name="followers">Followers</string>
+    <string name="following">Following</string>
     <string name="members">Members</string>
     <string name="no_followers">No Followers</string>
     <string name="no_members">No Members</string>

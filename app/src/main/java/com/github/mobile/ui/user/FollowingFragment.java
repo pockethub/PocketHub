@@ -15,25 +15,24 @@
  */
 package com.github.mobile.ui.user;
 
-import com.github.mobile.core.ResourcePager;
-import com.github.mobile.core.user.UserPager;
+import android.os.Bundle;
 
-import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.client.PageIterator;
+import com.github.mobile.R.string;
 
 /**
- * Fragment to display a list of followers
+ * Fragment to display a list of users being followed
  */
-public class MyFollowersFragment extends FollowersFragment {
+public abstract class FollowingFragment extends PagedUserFragment {
 
     @Override
-    protected ResourcePager<User> createPager() {
-        return new UserPager() {
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-            @Override
-            public PageIterator<User> createIterator(int page, int size) {
-                return service.pageFollowers(page, size);
-            }
-        };
+        setEmptyText(getString(string.no_people));
+    }
+
+    @Override
+    protected int getLoadingMessage() {
+        return string.loading_people;
     }
 }

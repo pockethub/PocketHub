@@ -35,14 +35,14 @@ public class UserPagerAdapter extends FragmentPagerAdapter implements TitleProvi
      * @param fm
      * @param resources
      */
-    public UserPagerAdapter(final FragmentManager fm, Resources resources) {
+    public UserPagerAdapter(final FragmentManager fm, final Resources resources) {
         super(fm);
 
         this.resources = resources;
     }
 
     @Override
-    public Fragment getItem(int position) {
+    public Fragment getItem(final int position) {
         switch (position) {
         case 0:
             return new UserCreatedNewsFragment();
@@ -50,6 +50,8 @@ public class UserPagerAdapter extends FragmentPagerAdapter implements TitleProvi
             return new UserRepositoryListFragment();
         case 2:
             return new UserFollowersFragment();
+        case 3:
+            return new UserFollowingFragment();
         default:
             return null;
         }
@@ -57,11 +59,11 @@ public class UserPagerAdapter extends FragmentPagerAdapter implements TitleProvi
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 
     @Override
-    public String getTitle(int position) {
+    public String getTitle(final int position) {
         switch (position) {
         case 0:
             return resources.getString(string.news);
@@ -69,6 +71,8 @@ public class UserPagerAdapter extends FragmentPagerAdapter implements TitleProvi
             return resources.getString(string.repos);
         case 2:
             return resources.getString(string.followers);
+        case 3:
+            return resources.getString(string.following);
         default:
             return null;
         }

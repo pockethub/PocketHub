@@ -64,6 +64,8 @@ public class HomePagerAdapter extends FragmentPagerAdapter implements TitleProvi
             return new RepoListFragment();
         case 2:
             return defaultUser ? new MyFollowersFragment() : new MembersFragment();
+        case 3:
+            return new MyFollowingFragment();
         default:
             return null;
         }
@@ -98,7 +100,7 @@ public class HomePagerAdapter extends FragmentPagerAdapter implements TitleProvi
 
     @Override
     public int getCount() {
-        return 3;
+        return defaultUser ? 4 : 3;
     }
 
     @Override
@@ -110,6 +112,8 @@ public class HomePagerAdapter extends FragmentPagerAdapter implements TitleProvi
             return resources.getString(string.repos);
         case 2:
             return resources.getString(defaultUser ? string.followers : string.members);
+        case 3:
+            return resources.getString(string.following);
         default:
             return null;
         }

@@ -159,8 +159,12 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
         } else if (this.isDefaultUser != isDefaultUser) {
             int item = pager.getCurrentItem();
             ((HomePagerAdapter) pagerAdater).clearAdapter();
-            pager.setAdapter(new HomePagerAdapter(getSupportFragmentManager(), getResources(), isDefaultUser(org)));
+            HomePagerAdapter adapter = new HomePagerAdapter(getSupportFragmentManager(), getResources(),
+                    isDefaultUser(org));
+            pager.setAdapter(adapter);
             indicator.setViewPager(pager);
+            if (item >= adapter.getCount())
+                item = adapter.getCount() - 1;
             pager.setCurrentItem(item, false);
         }
         this.isDefaultUser = isDefaultUser;

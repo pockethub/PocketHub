@@ -19,6 +19,7 @@ import static com.github.mobile.Intents.EXTRA_USER;
 
 import com.github.mobile.core.ResourcePager;
 import com.github.mobile.core.user.UserPager;
+import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.PageIterator;
@@ -26,20 +27,20 @@ import org.eclipse.egit.github.core.client.PageIterator;
 import roboguice.inject.InjectExtra;
 
 /**
- * Fragment to display a list of followers
+ * Fragment to display the users being followed by a specific user
  */
-public class UserFollowersFragment extends FollowersFragment {
+public class UserFollowingFragment extends FollowingFragment {
 
     @InjectExtra(EXTRA_USER)
     private User user;
 
-    @Override
+    @Inject
     protected ResourcePager<User> createPager() {
         return new UserPager() {
 
             @Override
             public PageIterator<User> createIterator(int page, int size) {
-                return service.pageFollowers(user.getLogin(), page, size);
+                return service.pageFollowing(user.getLogin(), page, size);
             }
         };
     }

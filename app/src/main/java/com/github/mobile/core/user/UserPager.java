@@ -13,34 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.ui.user;
-
-import static com.github.mobile.Intents.EXTRA_USER;
+package com.github.mobile.core.user;
 
 import com.github.mobile.core.ResourcePager;
-import com.github.mobile.core.user.UserPager;
 
 import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.client.PageIterator;
-
-import roboguice.inject.InjectExtra;
 
 /**
- * Fragment to display a list of followers
+ * Pager over users
  */
-public class UserFollowersFragment extends FollowersFragment {
-
-    @InjectExtra(EXTRA_USER)
-    private User user;
+public abstract class UserPager extends ResourcePager<User> {
 
     @Override
-    protected ResourcePager<User> createPager() {
-        return new UserPager() {
-
-            @Override
-            public PageIterator<User> createIterator(int page, int size) {
-                return service.pageFollowers(user.getLogin(), page, size);
-            }
-        };
+    protected Object getId(User resource) {
+        return resource.getId();
     }
 }
