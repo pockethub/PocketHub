@@ -17,8 +17,8 @@ package com.github.mobile.core;
 
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Generic weak store of ids to items
@@ -58,7 +58,7 @@ public abstract class ItemStore {
          */
         public ItemReferences() {
             queue = new ReferenceQueue<V>();
-            items = new HashMap<Object, ItemReference<V>>();
+            items = new ConcurrentHashMap<Object, ItemReference<V>>();
         }
 
         @SuppressWarnings("rawtypes")
