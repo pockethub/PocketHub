@@ -24,8 +24,6 @@ import com.google.inject.Inject;
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.service.GistService;
 
-import roboguice.inject.ContextScopedProvider;
-
 /**
  * Task to star a {@link Gist}
  */
@@ -34,7 +32,7 @@ public class StarGistTask extends AuthenticatedUserTask<Gist> {
     private static final String TAG = "StarGistTask";
 
     @Inject
-    private ContextScopedProvider<GistService> serviceProvider;
+    private GistService service;
 
     private final String id;
 
@@ -52,12 +50,14 @@ public class StarGistTask extends AuthenticatedUserTask<Gist> {
 
     @Override
     public Gist run() throws Exception {
-        serviceProvider.get(getContext()).starGist(id);
+        service.starGist(id);
         return null;
     }
 
     @Override
     protected void onException(Exception e) throws RuntimeException {
+        super.onException(e);
+
         Log.d(TAG, "Exception starring gist", e);
     }
 }

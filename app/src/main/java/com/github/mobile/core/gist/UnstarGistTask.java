@@ -19,12 +19,9 @@ import android.content.Context;
 import android.util.Log;
 
 import com.github.mobile.accounts.AuthenticatedUserTask;
-import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.service.GistService;
-
-import roboguice.inject.ContextScopedProvider;
 
 /**
  * Task to unstar a {@link Gist}
@@ -33,8 +30,7 @@ public class UnstarGistTask extends AuthenticatedUserTask<Gist> {
 
     private static final String TAG = "UnstarGistTask";
 
-    @Inject
-    private ContextScopedProvider<GistService> serviceProvider;
+    private GistService service;
 
     private final String id;
 
@@ -52,12 +48,14 @@ public class UnstarGistTask extends AuthenticatedUserTask<Gist> {
 
     @Override
     public Gist run() throws Exception {
-        serviceProvider.get(getContext()).unstarGist(id);
+        service.unstarGist(id);
         return null;
     }
 
     @Override
     protected void onException(Exception e) throws RuntimeException {
+        super.onException(e);
+
         Log.d(TAG, "Exception unstarring gist", e);
     }
 }
