@@ -15,9 +15,12 @@
  */
 package com.github.mobile.ui.repo;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.github.mobile.util.TypefaceUtils.ICON_FORK;
 import static com.github.mobile.util.TypefaceUtils.ICON_PRIVATE;
 import static com.github.mobile.util.TypefaceUtils.ICON_PUBLIC;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -61,7 +64,13 @@ public class SearchRepositoryListAdapter extends ItemListAdapter<SearchRepositor
             view.repoIcon.setText(Character.toString(ICON_PUBLIC));
 
         view.repoName.setText(repository.generateId());
-        view.repoDescription.setText(repository.getDescription());
+
+        String description = repository.getDescription();
+        if (!TextUtils.isEmpty(description)) {
+            view.repoDescription.setText(repository.getDescription());
+            view.repoDescription.setVisibility(VISIBLE);
+        } else
+            view.repoDescription.setVisibility(GONE);
     }
 
     @Override

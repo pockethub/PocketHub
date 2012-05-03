@@ -20,6 +20,7 @@ import static android.view.View.VISIBLE;
 import static com.github.mobile.util.TypefaceUtils.ICON_FORK;
 import static com.github.mobile.util.TypefaceUtils.ICON_PRIVATE;
 import static com.github.mobile.util.TypefaceUtils.ICON_PUBLIC;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -84,7 +85,12 @@ public class RepositoryListAdapter extends ItemListAdapter<Repository, Repositor
         view.repoName.setText(account.get().getLogin().equals(repository.getOwner().getLogin()) ? repository.getName()
                 : id);
 
-        view.repoDescription.setText(repository.getDescription());
+        String description = repository.getDescription();
+        if (!TextUtils.isEmpty(description)) {
+            view.repoDescription.setText(repository.getDescription());
+            view.repoDescription.setVisibility(VISIBLE);
+        } else
+            view.repoDescription.setVisibility(GONE);
     }
 
     @Override
