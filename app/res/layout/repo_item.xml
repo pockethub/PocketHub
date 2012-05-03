@@ -20,7 +20,6 @@
     android:gravity="center_vertical"
     android:paddingBottom="5dp"
     android:paddingLeft="10dp"
-    android:paddingRight="10dp"
     android:paddingTop="5dp" >
 
     <TextView
@@ -44,23 +43,20 @@
             android:orientation="horizontal" >
 
             <TextView
-                android:id="@+id/tv_recent_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="10dp"
-                android:singleLine="true"
-                android:text="@string/recent"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/item_text_color_light"
-                android:visibility="gone" />
-
-            <TextView
                 android:id="@+id/tv_repo_name"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingRight="10dp"
                 android:singleLine="true"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/item_text_color" />
+
+            <TextView
+                android:id="@+id/tv_recent_label"
+                style="@style/RecentLabel"
+                android:text="@string/recent"
+                android:visibility="gone" />
         </LinearLayout>
 
         <TextView
@@ -68,6 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:paddingRight="10dp"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/item_text_color_light" />
@@ -76,7 +73,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:paddingRight="10dp" >
 
             <TextView
                 android:id="@+id/tv_watchers_icon"
