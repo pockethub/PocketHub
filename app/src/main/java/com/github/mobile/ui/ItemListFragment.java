@@ -44,6 +44,15 @@ public abstract class ItemListFragment<E> extends RoboSherlockListFragment imple
     private static final String FORCE_REFRESH = "forceRefresh";
 
     /**
+     * @param args
+     *            bundle passed to the loader by the LoaderManager
+     * @return true if the bundle indicates a requested forced refresh of the items
+     */
+    protected static boolean isForceRefresh(Bundle args) {
+        return args == null ? false : args.getBoolean(FORCE_REFRESH, false);
+    }
+
+    /**
      * List items provided to {@link #onLoadFinished(Loader, List)}
      */
     protected List<E> items = Collections.emptyList();
@@ -89,15 +98,6 @@ public abstract class ItemListFragment<E> extends RoboSherlockListFragment imple
         Bundle bundle = new Bundle();
         bundle.putBoolean(FORCE_REFRESH, true);
         refresh(bundle);
-    }
-
-    /**
-     * @param args
-     *            bundle passed to the loader by the LoaderManager
-     * @return true if the bundle indicates a requested forced refresh of the items
-     */
-    protected static boolean isForceRefresh(Bundle args) {
-        return args == null ? false : args.getBoolean(FORCE_REFRESH, false);
     }
 
     /**
