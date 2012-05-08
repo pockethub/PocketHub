@@ -15,8 +15,13 @@
  */
 package com.github.mobile.ui;
 
+import static android.content.Intent.ACTION_VIEW;
+import static org.eclipse.egit.github.core.event.Event.TYPE_DOWNLOAD;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 
@@ -33,9 +38,11 @@ import com.google.inject.Inject;
 
 import java.util.List;
 
+import org.eclipse.egit.github.core.Download;
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.event.DownloadPayload;
 import org.eclipse.egit.github.core.event.Event;
 import org.eclipse.egit.github.core.service.EventService;
 
@@ -78,6 +85,12 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Event event = (Event) l.getItemAtPosition(position);
+
+        if (TYPE_DOWNLOAD.equals(event.getType())) {
+            openDownload(event);
+            return;
+        }
+
         Issue issue = issueMatcher.getIssue(event);
         if (issue != null && (issue.getPullRequest() == null || issue.getPullRequest().getHtmlUrl() == null))
             startActivity(ViewIssuesActivity.createIntent(issue));
@@ -89,6 +102,18 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
         Repository repo = repoMatcher.getRepository(event);
         if (repo != null)
             viewRepository(repo);
+    }
+
+    private void openDownload(Event event) {
+        Download download = ((DownloadPayload) event.getPayload()).getDownload();
+        if (download == null)
+            return;
+
+        String url = download.getHtmlUrl();
+        if (TextUtils.isEmpty(url))
+            return;
+
+        startActivity(new Intent(ACTION_VIEW, Uri.parse(url)));
     }
 
     /**
