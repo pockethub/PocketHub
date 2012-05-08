@@ -22,7 +22,6 @@ import static com.github.mobile.RequestCodes.GIST_VIEW;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
@@ -48,8 +47,6 @@ import org.eclipse.egit.github.core.service.GistService;
  * Fragment to display a list of Gists
  */
 public abstract class GistsFragment extends PagedItemFragment<Gist> {
-
-    private static final String TAG = "GistsFragment";
 
     /**
      * Avatar helper
@@ -110,7 +107,6 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
     public void onLoadFinished(Loader<List<Gist>> loader, List<Gist> items) {
         Exception exception = getException(loader);
         if (exception != null) {
-            Log.d(TAG, "Exception loading gists", exception);
             showError(exception, string.error_gists_load);
             showList();
             return;
