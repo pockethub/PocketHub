@@ -92,12 +92,16 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
         }
 
         Issue issue = issueMatcher.getIssue(event);
-        if (issue != null && (issue.getPullRequest() == null || issue.getPullRequest().getHtmlUrl() == null))
+        if (issue != null && (issue.getPullRequest() == null || issue.getPullRequest().getHtmlUrl() == null)) {
             startActivity(ViewIssuesActivity.createIntent(issue));
+            return;
+        }
 
         Gist gist = gistMatcher.getGist(event);
-        if (gist != null)
+        if (gist != null) {
             startActivity(ViewGistsActivity.createIntent(gist));
+            return;
+        }
 
         Repository repo = repoMatcher.getRepository(event);
         if (repo != null)
