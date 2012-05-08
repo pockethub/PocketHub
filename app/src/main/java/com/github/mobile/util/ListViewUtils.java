@@ -40,11 +40,9 @@ public class ListViewUtils {
      *
      * @param context
      * @param listView
-     * @param fastScroll
      * @return specified list view
      */
-    public static ListView configure(final Context context, final ListView listView, final boolean fastScroll) {
-        listView.setFastScrollEnabled(fastScroll);
+    public static ListView configure(final Context context, final ListView listView) {
         Resources resources = context.getResources();
         listView.setDivider(resources.getDrawable(drawable.list_divider));
         int dividerHeight = (int) (TypedValue.applyDimension(COMPLEX_UNIT_DIP, HEIGHT_DIVIDER,

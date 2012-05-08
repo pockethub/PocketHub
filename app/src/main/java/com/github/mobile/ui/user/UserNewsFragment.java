@@ -16,10 +16,8 @@
 package com.github.mobile.ui.user;
 
 import android.app.Activity;
-import android.os.Bundle;
 
 import com.github.mobile.ui.NewsFragment;
-import com.github.mobile.util.ListViewUtils;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
@@ -33,13 +31,6 @@ public abstract class UserNewsFragment extends NewsFragment implements Organizat
      * Current organization/user
      */
     protected User org;
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        ListViewUtils.configure(getActivity(), getListView(), true);
-    }
 
     @Override
     public void onAttach(Activity activity) {

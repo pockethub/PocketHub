@@ -76,7 +76,7 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
         super.onActivityCreated(savedInstanceState);
 
         setEmptyText(getString(string.no_gists));
-        ListViewUtils.configure(getActivity(), getListView(), true);
+        ListViewUtils.configure(getActivity(), getListView());
     }
 
     @Override

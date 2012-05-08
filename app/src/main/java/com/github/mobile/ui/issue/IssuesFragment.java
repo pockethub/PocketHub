@@ -120,7 +120,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
         super.onActivityCreated(savedInstanceState);
 
         setEmptyText(getString(string.no_issues));
-        ListViewUtils.configure(getActivity(), getListView(), true);
+        ListViewUtils.configure(getActivity(), getListView());
     }
 
     @Override

@@ -85,7 +85,7 @@ public class RepoListFragment extends ItemListFragment<Repository> implements Or
         super.onActivityCreated(savedInstanceState);
 
         setEmptyText(getString(string.no_repositories));
-        ListViewUtils.configure(getActivity(), getListView(), true);
+        ListViewUtils.configure(getActivity(), getListView());
     }
 
     @Override

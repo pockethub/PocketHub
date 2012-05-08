@@ -52,8 +52,9 @@ public class SearchRepoListFragment extends ItemListFragment<SearchRepository> {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         setEmptyText(getString(string.no_repositories));
-        ListViewUtils.configure(getActivity(), getListView(), true);
+        ListViewUtils.configure(getActivity(), getListView());
     }
 
     /**

@@ -70,7 +70,7 @@ public class DashboardIssueFragment extends PagedItemFragment<RepositoryIssue> {
         super.onActivityCreated(savedInstanceState);
 
         filterData = (Map<String, String>) getArguments().getSerializable(ARG_FILTER);
-        ListViewUtils.configure(getActivity(), getListView(), true);
+        ListViewUtils.configure(getActivity(), getListView());
     }
 
     @Override

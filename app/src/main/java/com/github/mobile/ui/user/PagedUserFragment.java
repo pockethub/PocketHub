@@ -53,7 +53,7 @@ public abstract class PagedUserFragment extends PagedItemFragment<User> {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ListViewUtils.configure(getActivity(), getListView(), true);
+        ListViewUtils.configure(getActivity(), getListView());
     }
 
     @Override

@@ -37,7 +37,7 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ListViewUtils.configure(getActivity(), getListView(), true);
+        ListViewUtils.configure(getActivity(), getListView());
         setEmptyText(getString(string.no_filters));
     }
 

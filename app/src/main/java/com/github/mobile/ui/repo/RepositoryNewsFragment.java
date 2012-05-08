@@ -16,12 +16,10 @@
 package com.github.mobile.ui.repo;
 
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
-import android.os.Bundle;
 
 import com.github.mobile.core.ResourcePager;
 import com.github.mobile.ui.NewsFragment;
 import com.github.mobile.ui.user.EventPager;
-import com.github.mobile.util.ListViewUtils;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.client.PageIterator;
@@ -36,13 +34,6 @@ public class RepositoryNewsFragment extends NewsFragment {
 
     @InjectExtra(EXTRA_REPOSITORY)
     private Repository repo;
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        ListViewUtils.configure(getActivity(), getListView(), true);
-    }
 
     @Override
     protected ResourcePager<Event> createPager() {

@@ -61,7 +61,7 @@ public class MembersFragment extends ItemListFragment<User> implements Organizat
         super.onActivityCreated(savedInstanceState);
 
         setEmptyText(getString(string.no_members));
-        ListViewUtils.configure(getActivity(), getListView(), true);
+        ListViewUtils.configure(getActivity(), getListView());
     }
 
     @Override
