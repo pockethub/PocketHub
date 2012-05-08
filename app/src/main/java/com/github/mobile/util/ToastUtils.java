@@ -36,7 +36,7 @@ public class ToastUtils {
      * @param activity
      * @param message
      */
-    public static void show(Activity activity, final String message) {
+    public static void show(final Activity activity, final String message) {
         if (activity == null)
             return;
 
@@ -81,9 +81,11 @@ public class ToastUtils {
         if (activity == null)
             return;
 
-        String message = null;
+        String message;
         if (e instanceof RequestException)
             message = ((RequestException) e).formatErrors();
+        else
+            message = null;
 
         if (TextUtils.isEmpty(message))
             message = activity.getString(defaultMessage);
