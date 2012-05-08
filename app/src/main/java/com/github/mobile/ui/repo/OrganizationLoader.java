@@ -37,7 +37,7 @@ import org.eclipse.egit.github.core.User;
  */
 public class OrganizationLoader extends AuthenticatedUserLoader<List<User>> {
 
-    private static final String TAG = "GH.UAOL";
+    private static final String TAG = "OrganizationLoader";
 
     private final Provider<UserComparator> userComparatorProvider;
 
