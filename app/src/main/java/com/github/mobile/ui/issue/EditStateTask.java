@@ -20,10 +20,10 @@ import static com.github.mobile.RequestCodes.ISSUE_REOPEN;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_CLOSED;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 
-import com.github.mobile.ConfirmDialogFragment;
-import com.github.mobile.DialogFragmentActivity;
 import com.github.mobile.R.string;
 import com.github.mobile.core.issue.IssueStore;
+import com.github.mobile.ui.ConfirmDialogFragment;
+import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.google.inject.Inject;
 

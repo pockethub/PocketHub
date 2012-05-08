@@ -25,11 +25,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.github.mobile.DialogFragmentActivity;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
+import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.UrlLauncher;
 
 import java.util.ArrayList;

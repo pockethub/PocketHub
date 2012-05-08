@@ -13,22 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile;
+package com.github.mobile.ui;
 
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.os.Bundle;
+
+import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
 /**
- * Adapter for {@link TextWatcher} interface
+ * Activity that display dialogs
  */
-public class TextWatcherAdapter implements TextWatcher {
+public abstract class DialogFragmentActivity extends RoboSherlockFragmentActivity implements DialogResultListener {
 
-    public void afterTextChanged(Editable s) {
-    }
-
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-    }
-
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
+    @Override
+    public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
+        // Intentionally left blank
     }
 }

@@ -30,15 +30,15 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.github.mobile.DialogFragmentActivity;
 import com.github.mobile.Intents.Builder;
-import com.github.mobile.MultiChoiceDialogFragment;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
-import com.github.mobile.SingleChoiceDialogFragment;
 import com.github.mobile.core.issue.IssueFilter;
+import com.github.mobile.ui.DialogFragmentActivity;
+import com.github.mobile.ui.MultiChoiceDialogFragment;
+import com.github.mobile.ui.SingleChoiceDialogFragment;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;

@@ -28,7 +28,7 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
-import com.github.mobile.TextWatcherAdapter;
+import com.github.mobile.ui.TextWatcherAdapter;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
 import org.eclipse.egit.github.core.Gist;

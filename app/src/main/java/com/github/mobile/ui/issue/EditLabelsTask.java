@@ -17,9 +17,9 @@ package com.github.mobile.ui.issue;
 
 import static com.github.mobile.RequestCodes.ISSUE_LABELS_UPDATE;
 
-import com.github.mobile.DialogFragmentActivity;
 import com.github.mobile.R.string;
 import com.github.mobile.core.issue.IssueStore;
+import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.google.inject.Inject;
 

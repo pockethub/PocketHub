@@ -20,10 +20,10 @@ import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 import android.app.ProgressDialog;
 import android.util.Log;
 
-import com.github.mobile.DialogFragmentActivity;
-import com.github.mobile.SingleChoiceDialogFragment;
 import com.github.mobile.R.string;
 import com.github.mobile.accounts.AuthenticatedUserTask;
+import com.github.mobile.ui.DialogFragmentActivity;
+import com.github.mobile.ui.SingleChoiceDialogFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
