@@ -64,7 +64,7 @@
             <TextView
                 android:id="@+id/tv_watchers_icon"
                 style="@style/ListIcon"
-                android:text="\uf04E" />
+                android:text="@string/icon_watch" />
 
             <TextView
                 android:id="@+id/tv_watchers"
@@ -79,7 +79,7 @@
             <TextView
                 android:id="@+id/tv_forks_icon"
                 style="@style/ListIcon"
-                android:text="\uf020" />
+                android:text="@string/icon_fork" />
 
             <TextView
                 android:id="@+id/tv_forks"

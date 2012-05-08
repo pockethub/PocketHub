@@ -169,5 +169,7 @@
     <string name="updating_milestone">Updating Milestone…</string>
     <string name="closing_issue">Closing Issue…</string>
     <string name="reopening_issue">Reopening Issue…</string>
+    <string name="icon_watch">\uf04E</string>
+    <string name="icon_fork">\uf020</string>
 
 </resources>
