@@ -58,7 +58,7 @@ public class RepoListFragment extends ItemListFragment<Repository> implements Or
         User currentOrg = ((OrganizationSelectionProvider) activity).addListener(this);
         org.set(currentOrg);
         if (currentOrg != null)
-            recentRepos.set(new RecentRepositories(getActivity(), currentOrg));
+            recentRepos.set(new RecentRepositories(activity, currentOrg));
     }
 
     @Override
@@ -66,10 +66,15 @@ public class RepoListFragment extends ItemListFragment<Repository> implements Or
         User previousOrg = org.get();
         int previousOrgId = previousOrg != null ? previousOrg.getId() : -1;
         org.set(organization);
+
         RecentRepositories recent = recentRepos.get();
         if (recent != null)
             recent.saveAsync();
-        recentRepos.set(new RecentRepositories(getActivity(), organization));
+
+        Activity activity = getActivity();
+        if (activity != null && previousOrgId != organization.getId())
+            recentRepos.set(new RecentRepositories(activity, organization));
+
         // Only hard refresh if view already created and org is changing
         if (getView() != null && previousOrgId != organization.getId())
             refreshWithProgress();
