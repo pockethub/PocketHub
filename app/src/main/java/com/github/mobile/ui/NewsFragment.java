@@ -16,6 +16,7 @@
 package com.github.mobile.ui;
 
 import android.os.Bundle;
+import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
@@ -108,5 +109,16 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
     @Override
     protected int getLoadingMessage() {
         return string.loading_news;
+    }
+
+    public void onLoadFinished(Loader<List<Event>> loader, List<Event> items) {
+        Exception exception = getException(loader);
+        if (exception != null) {
+            showError(exception, string.error_news_load);
+            showList();
+            return;
+        }
+
+        super.onLoadFinished(loader, items);
     }
 }
