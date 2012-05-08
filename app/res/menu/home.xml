@@ -20,6 +20,6 @@
         android:id="@+id/search"
         android:icon="@drawable/ic_action_search"
         android:showAsAction="ifRoom"
-        android:title="@string/find_repos"/>
+        android:title="@string/find_repositories"/>
 
 </menu>

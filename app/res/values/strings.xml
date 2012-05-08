@@ -22,7 +22,7 @@
     <string name="issues">Issues</string>
     <string name="gists">Gists</string>
     <string name="dashboard_issues">Issues Dashboard</string>
-    <string name="find_repos">Find Repos</string>
+    <string name="find_repositories">Find Repositories</string>
     <string name="search_title">Search…</string>
     <string name="clear_search_history">Clear History</string>
     <string name="search_history_cleared">Search history cleared</string>
