@@ -63,11 +63,13 @@ import com.github.mobile.util.TimeUtils;
 import com.viewpagerindicator.R.layout;
 
 import org.eclipse.egit.github.core.Comment;
+import org.eclipse.egit.github.core.Download;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Team;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.event.CreatePayload;
 import org.eclipse.egit.github.core.event.DeletePayload;
+import org.eclipse.egit.github.core.event.DownloadPayload;
 import org.eclipse.egit.github.core.event.Event;
 import org.eclipse.egit.github.core.event.EventPayload;
 import org.eclipse.egit.github.core.event.FollowPayload;
@@ -171,6 +173,11 @@ public class NewsEventListAdapter extends ItemListAdapter<Event, NewsEventItemVi
         builder.append(repoName);
         builder.setSpan(new StyleSpan(BOLD), builder.length() - repoName.length(), builder.length(),
                 SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        DownloadPayload payload = (DownloadPayload) event.getPayload();
+        Download download = payload.getDownload();
+        if (download != null)
+            appendText(builder, download.getName());
 
         return builder;
     }
