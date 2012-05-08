@@ -101,10 +101,9 @@
     </style>
 
     <style name="ListLabel">
+        <item name="android:layout_height">2dp</item>
         <item name="android:layout_marginTop">1dp</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">2dp</item>
-        <item name="android:layout_marginBottom">1dp</item>
     </style>
 
     <style name="RecentLabel">
