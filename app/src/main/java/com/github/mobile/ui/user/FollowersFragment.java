@@ -16,8 +16,13 @@
 package com.github.mobile.ui.user;
 
 import android.os.Bundle;
+import android.support.v4.content.Loader;
 
 import com.github.mobile.R.string;
+
+import java.util.List;
+
+import org.eclipse.egit.github.core.User;
 
 /**
  * Fragment to display a list of followers
@@ -34,5 +39,17 @@ public abstract class FollowersFragment extends PagedUserFragment {
     @Override
     protected int getLoadingMessage() {
         return string.loading_followers;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<User>> loader, List<User> items) {
+        Exception exception = getException(loader);
+        if (exception != null) {
+            showError(exception, string.error_followers_load);
+            showList();
+            return;
+        }
+
+        super.onLoadFinished(loader, items);
     }
 }
