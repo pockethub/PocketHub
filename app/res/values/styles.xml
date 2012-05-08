@@ -61,7 +61,7 @@
     </style>
 
     <style name="TextIcon">
-        <item name="android:includeFontPadding">false</item>
+        <item name="android:includeFontPadding">true</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
