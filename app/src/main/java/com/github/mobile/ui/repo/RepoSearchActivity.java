@@ -74,7 +74,7 @@ public class RepoSearchActivity extends RoboSherlockFragmentActivity {
 
         setContentView(layout.repo_search);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setSubtitle(string.repositories_title);
+        actionBar.setSubtitle(string.repositories);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         repoFragment = (SearchRepoListFragment) getSupportFragmentManager().findFragmentById(android.R.id.list);

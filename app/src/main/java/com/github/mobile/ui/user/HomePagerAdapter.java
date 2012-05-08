@@ -109,7 +109,7 @@ public class HomePagerAdapter extends FragmentPagerAdapter implements TitleProvi
         case 0:
             return resources.getString(string.news);
         case 1:
-            return resources.getString(string.repos);
+            return resources.getString(string.repositories);
         case 2:
             return resources.getString(defaultUser ? string.followers : string.members);
         case 3:

@@ -75,7 +75,7 @@
     <string name="comment_hint">Enter a comment</string>
     <string name="show_more">Show More…</string>
     <string name="loading_more_issues">Loading More Issues…</string>
-    <string name="repositories_title">Repositories</string>
+    <string name="repositories">Repositories</string>
     <string name="error_orgs_load">Loading account &amp; organizations failed</string>
     <string name="no_filters">No Filters</string>
     <string name="no_repositories">No Repositories</string>
@@ -157,7 +157,6 @@
     <string name="invalid_password">Please enter a valid password.</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
-    <string name="repos">Repos</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
     <string name="members">Members</string>
