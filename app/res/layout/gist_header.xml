@@ -26,6 +26,7 @@
         android:autoLink="web"
         android:padding="5dp"
         android:textColor="@color/item_text_color"
+        android:textColorLink="@color/text_link"
         android:textStyle="bold" />
 
     <TextView
