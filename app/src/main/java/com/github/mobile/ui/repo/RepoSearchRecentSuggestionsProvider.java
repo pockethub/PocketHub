@@ -24,9 +24,9 @@ import android.provider.SearchRecentSuggestions;
  */
 public class RepoSearchRecentSuggestionsProvider extends SearchRecentSuggestionsProvider {
 
-    private final static String AUTHORITY = "com.github.search.suggest.recent.repos";
+    private static final String AUTHORITY = "com.github.search.suggest.recent.repos";
 
-    private final static int MODE = DATABASE_MODE_QUERIES;
+    private static final int MODE = DATABASE_MODE_QUERIES;
 
     /**
      * Save query to history
