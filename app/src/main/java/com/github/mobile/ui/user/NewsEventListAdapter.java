@@ -62,6 +62,7 @@ import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.TimeUtils;
 import com.viewpagerindicator.R.layout;
 
+import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Team;
 import org.eclipse.egit.github.core.User;
@@ -118,6 +119,28 @@ public class NewsEventListAdapter extends ItemListAdapter<Event, NewsEventItemVi
                 || TYPE_PUSH.equals(type) //
                 || TYPE_TEAM_ADD.equals(type) //
                 || TYPE_WATCH.equals(type);
+    }
+
+    private static final int MAX_TEXT = 80;
+
+    private static void appendComment(final SpannableStringBuilder builder, final Comment comment) {
+        if (comment == null)
+            return;
+        appendText(builder, comment.getBody());
+    }
+
+    private static void appendText(final SpannableStringBuilder builder, String text) {
+        if (text == null)
+            return;
+        text = text.trim();
+        if (text.length() == 0)
+            return;
+
+        builder.append('\n').append('\n');
+        if (text.length() < MAX_TEXT)
+            builder.append(text);
+        else
+            builder.append(text, 0, MAX_TEXT).append('…');
     }
 
     private static CharSequence formatCommitComment(Event event) {
@@ -272,7 +295,9 @@ public class NewsEventListAdapter extends ItemListAdapter<Event, NewsEventItemVi
 
         builder.append(" commented on ");
 
-        Issue issue = ((IssueCommentPayload) event.getPayload()).getIssue();
+        IssueCommentPayload payload = (IssueCommentPayload) event.getPayload();
+
+        Issue issue = payload.getIssue();
         String number;
         if (issue.getPullRequest() == null || issue.getPullRequest().getHtmlUrl() == null)
             number = "issue " + issue.getNumber();
@@ -289,6 +314,8 @@ public class NewsEventListAdapter extends ItemListAdapter<Event, NewsEventItemVi
         builder.setSpan(new StyleSpan(BOLD), builder.length() - repoName.length(), builder.length(),
                 SPAN_EXCLUSIVE_EXCLUSIVE);
 
+        appendComment(builder, payload.getComment());
+
         return builder;
     }
 
@@ -300,10 +327,11 @@ public class NewsEventListAdapter extends ItemListAdapter<Event, NewsEventItemVi
 
         IssuesPayload payload = (IssuesPayload) event.getPayload();
         String action = payload.getAction();
+        Issue issue = payload.getIssue();
         builder.append(' ');
         builder.append(action);
         builder.append(' ');
-        String issueNumber = "issue " + payload.getIssue().getNumber();
+        String issueNumber = "issue " + issue.getNumber();
         builder.append(issueNumber);
         builder.setSpan(new StyleSpan(BOLD), builder.length() - issueNumber.length(), builder.length(),
                 SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -313,6 +341,8 @@ public class NewsEventListAdapter extends ItemListAdapter<Event, NewsEventItemVi
         builder.append(repoName);
         builder.setSpan(new StyleSpan(BOLD), builder.length() - repoName.length(), builder.length(),
                 SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        appendText(builder, issue.getTitle());
 
         return builder;
     }
