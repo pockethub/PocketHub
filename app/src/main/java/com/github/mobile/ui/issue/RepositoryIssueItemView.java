@@ -64,6 +64,11 @@ public class RepositoryIssueItemView extends ItemView {
     public final TextView pullRequestIcon;
 
     /**
+     * Label stripes
+     */
+    public final View[] labels;
+
+    /**
      * Initial paint flags of {@link #number}
      */
     public final int numberPaintFlags;
@@ -86,5 +91,15 @@ public class RepositoryIssueItemView extends ItemView {
 
         pullRequestIcon = (TextView) view.findViewById(id.tv_pull_request_icon);
         TypefaceUtils.setOcticons(pullRequestIcon, (TextView) view.findViewById(id.tv_comment_icon));
+
+        labels = new View[8];
+        labels[0] = view.findViewById(id.v_label0);
+        labels[1] = view.findViewById(id.v_label1);
+        labels[2] = view.findViewById(id.v_label2);
+        labels[3] = view.findViewById(id.v_label3);
+        labels[4] = view.findViewById(id.v_label4);
+        labels[5] = view.findViewById(id.v_label5);
+        labels[6] = view.findViewById(id.v_label6);
+        labels[7] = view.findViewById(id.v_label7);
     }
 }

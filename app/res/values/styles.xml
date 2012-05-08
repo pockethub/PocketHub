@@ -100,6 +100,13 @@
         <item name="android:textColor">@color/item_text_color</item>
     </style>
 
+    <style name="ListLabel">
+        <item name="android:layout_marginTop">1dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">2dp</item>
+        <item name="android:layout_marginBottom">1dp</item>
+    </style>
+
     <style name="RecentLabel">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

@@ -21,18 +21,57 @@
     android:paddingRight="5dp"
     android:paddingTop="5dp" >
 
-    <TextView
-        android:id="@+id/tv_issue_number"
-        style="@style/IssueNumber"
+    <LinearLayout
+        android:id="@+id/ll_issue_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tv_issue_number"
+            style="@style/IssueNumber" />
+
+        <View
+            android:id="@+id/v_label0"
+            style="@style/ListLabel" />
+
+        <View
+            android:id="@+id/v_label1"
+            style="@style/ListLabel" />
+
+        <View
+            android:id="@+id/v_label2"
+            style="@style/ListLabel" />
+
+        <View
+            android:id="@+id/v_label3"
+            style="@style/ListLabel" />
+
+        <View
+            android:id="@+id/v_label4"
+            style="@style/ListLabel" />
+
+        <View
+            android:id="@+id/v_label5"
+            style="@style/ListLabel" />
+
+        <View
+            android:id="@+id/v_label6"
+            style="@style/ListLabel" />
+
+        <View
+            android:id="@+id/v_label7"
+            style="@style/ListLabel" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_issue_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/tv_issue_number"
-        android:layout_toRightOf="@id/tv_issue_number"
+        android:layout_alignBaseline="@id/ll_issue_number"
+        android:layout_toRightOf="@id/ll_issue_number"
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
         android:singleLine="true"

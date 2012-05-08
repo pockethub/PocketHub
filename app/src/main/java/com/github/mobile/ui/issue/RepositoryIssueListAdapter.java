@@ -18,6 +18,8 @@ package com.github.mobile.ui.issue;
 import static android.graphics.Paint.STRIKE_THRU_TEXT_FLAG;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -29,7 +31,10 @@ import com.github.mobile.util.TimeUtils;
 import com.github.mobile.util.TypefaceUtils;
 import com.viewpagerindicator.R.layout;
 
+import java.util.List;
+
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.Label;
 
 /**
  * Adapter for a list of {@link Issue} objects
@@ -103,6 +108,23 @@ public class RepositoryIssueListAdapter extends ItemListAdapter<Issue, Repositor
         view.user.setText(issue.getUser().getLogin());
         view.creation.setText(TimeUtils.getRelativeTime(issue.getCreatedAt()));
         view.comments.setText(Integer.toString(issue.getComments()));
+
+        List<Label> labels = issue.getLabels();
+        if (labels != null && !labels.isEmpty()) {
+            int size = Math.min(labels.size(), view.labels.length);
+            for (int i = 0; i < size; i++) {
+                String color = labels.get(i).getColor();
+                if (!TextUtils.isEmpty(color)) {
+                    view.labels[i].setBackgroundColor(Color.parseColor('#' + color));
+                    view.labels[i].setVisibility(VISIBLE);
+                } else
+                    view.labels[i].setVisibility(GONE);
+            }
+            for (int i = size; i < view.labels.length; i++)
+                view.labels[i].setVisibility(GONE);
+        } else
+            for (View label : view.labels)
+                label.setVisibility(GONE);
     }
 
     @Override
