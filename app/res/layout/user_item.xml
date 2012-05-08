@@ -23,7 +23,8 @@
 
     <ImageView
         android:id="@+id/iv_avatar"
-        style="@style/AvatarLarge" />
+        style="@style/AvatarLarge"
+        android:contentDescription="@string/avatar" />
 
     <TextView
         android:id="@+id/tv_login"

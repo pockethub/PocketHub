@@ -30,7 +30,8 @@
 
         <ImageView
             android:id="@+id/iv_avatar"
-            style="@style/AvatarMedium" />
+            style="@style/AvatarMedium"
+            android:contentDescription="@string/avatar" />
 
         <TextView
             android:id="@+id/tv_comment_icon"

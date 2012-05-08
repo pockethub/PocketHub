@@ -73,7 +73,8 @@
 
                     <ImageView
                         android:id="@+id/iv_assignee_gravatar"
-                        style="@style/AvatarSmall" />
+                        style="@style/AvatarSmall"
+                        android:contentDescription="@string/avatar" />
 
                     <TextView
                         android:id="@+id/tv_assignee_name"

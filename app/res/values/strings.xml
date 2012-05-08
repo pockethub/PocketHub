@@ -171,5 +171,6 @@
     <string name="reopening_issue">Reopening Issue…</string>
     <string name="icon_watch">\uf04E</string>
     <string name="icon_fork">\uf020</string>
+    <string name="avatar">Avatar</string>
 
 </resources>
