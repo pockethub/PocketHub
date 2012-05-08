@@ -17,7 +17,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="5dp"
+    android:paddingBottom="2dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingTop="5dp" >
@@ -46,7 +46,7 @@
         android:layout_below="@id/tv_event"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingTop="10dp" >
+        android:paddingTop="2dp" >
 
         <TextView
             android:id="@+id/tv_event_icon"
