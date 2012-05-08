@@ -17,7 +17,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="2dp"
+    android:paddingBottom="5dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingTop="5dp" >
@@ -40,28 +40,21 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/item_text_color" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/tv_event_icon"
+        style="@style/EventIcon"
+        android:layout_alignLeft="@id/tv_event"
+        android:layout_below="@id/tv_event" />
+
+    <TextView
+        android:id="@+id/tv_event_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/tv_event"
-        android:layout_below="@id/tv_event"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingTop="2dp" >
-
-        <TextView
-            android:id="@+id/tv_event_icon"
-            style="@style/EventIcon" />
-
-        <TextView
-            android:id="@+id/tv_event_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:paddingLeft="10dp"
-            android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/item_text_color_light" />
-    </LinearLayout>
+        android:layout_alignBottom="@id/tv_event_icon"
+        android:layout_toRightOf="@id/tv_event_icon"
+        android:paddingLeft="5dp"
+        android:singleLine="true"
+        android:textColor="@color/item_text_color_light"
+        android:textSize="14sp" />
 
 </RelativeLayout>

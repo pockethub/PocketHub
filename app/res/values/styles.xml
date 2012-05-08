@@ -61,8 +61,6 @@
     </style>
 
     <style name="TextIcon">
-        <item name="android:includeFontPadding">true</item>
-        <item name="android:gravity">center_vertical</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:singleLine">true</item>
@@ -75,6 +73,8 @@
 
     <style name="EventIcon" parent="TextIcon">
         <item name="android:textSize">22sp</item>
+        <item name="android:layout_height">26sp</item>
+        <item name="android:layout_width">26sp</item>
     </style>
 
     <style name="PrimaryIcon" parent="TextIcon">
