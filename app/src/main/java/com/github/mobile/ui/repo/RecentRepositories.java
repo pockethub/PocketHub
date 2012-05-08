@@ -115,14 +115,15 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
      * @return this recent list
      */
     public RecentRepositories saveAsync() {
-        new AsyncTask<Void, Void, Void>() {
+        if (ids != null)
+            new AsyncTask<Void, Void, Void>() {
 
-            @Override
-            protected Void doInBackground(Void... params) {
-                save();
-                return null;
-            }
-        }.execute();
+                @Override
+                protected Void doInBackground(Void... params) {
+                    save();
+                    return null;
+                }
+            }.execute();
         return this;
     }
 
@@ -132,7 +133,9 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
      * @return this recent list
      */
     public RecentRepositories save() {
-        new RequestWriter(file, VERSION).write(ids);
+        final LinkedHashSet<String> save = ids;
+        if (save != null)
+            new RequestWriter(file, VERSION).write(save);
         return this;
     }
 
