@@ -26,8 +26,6 @@ public class RepoSearchRecentSuggestionsProvider extends SearchRecentSuggestions
 
     private static final String AUTHORITY = "com.github.search.suggest.recent.repos";
 
-    private static final int MODE = DATABASE_MODE_QUERIES;
-
     /**
      * Save query to history
      *
@@ -48,13 +46,13 @@ public class RepoSearchRecentSuggestionsProvider extends SearchRecentSuggestions
     }
 
     private static SearchRecentSuggestions suggestions(Context context) {
-        return new SearchRecentSuggestions(context, AUTHORITY, MODE);
+        return new SearchRecentSuggestions(context, AUTHORITY, DATABASE_MODE_QUERIES);
     }
 
     /**
      * Create suggestions provider for searched for repository queries
      */
     public RepoSearchRecentSuggestionsProvider() {
-        setupSuggestions(AUTHORITY, MODE);
+        setupSuggestions(AUTHORITY, DATABASE_MODE_QUERIES);
     }
 }
