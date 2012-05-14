@@ -67,14 +67,13 @@
         android:id="@+id/tv_issue_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/ll_issue_number"
+        android:layout_alignTop="@id/ll_issue_number"
         android:layout_toRightOf="@id/ll_issue_number"
         android:paddingLeft="10dp"
-        android:paddingTop="5dp"
+        android:paddingTop="0dp"
         android:singleLine="true"
-        android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/item_text_color"
-        android:textStyle="bold" />
+        style="@style/ListTitleText" />
 
     <LinearLayout
         android:id="@+id/ll_lines"

@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/iv_avatar"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="15dp"
         android:textColor="@color/item_text_color" />
 
     <TextView

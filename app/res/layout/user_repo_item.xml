@@ -34,11 +34,11 @@
 
         <TextView
             android:id="@+id/tv_repo_name"
+            style="@style/ListTitleText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/item_text_color" />
 
         <TextView

@@ -40,7 +40,7 @@
     <color name="pager_title_background_start">#1F5D82</color>
     <color name="pager_title_text">#E0E6EA</color>
     <color name="pager_title_selected_text">#FFFFFF</color>
-    <color name="pager_footer">#9DCCE4</color>
+    <color name="pager_footer">#FFFFFF</color>
     <color name="edit_text_background_start">#EFF6FF</color>
     <color name="edit_text_background_end">#FBFDFF</color>
     <color name="edit_text_cursor">#A6A6A6</color>
