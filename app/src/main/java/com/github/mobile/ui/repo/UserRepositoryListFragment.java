@@ -28,7 +28,6 @@ import com.github.mobile.ui.PagedItemFragment;
 import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Repository;
@@ -68,12 +67,7 @@ public class UserRepositoryListFragment extends PagedItemFragment<Repository> {
 
             @Override
             public PageIterator<Repository> createIterator(int page, int size) {
-                try {
-                    return service.pageRepositories(user.getLogin(), page, size);
-                } catch (IOException ignored) {
-                    // TODO This is never actually thrown even though it is declared
-                    return null;
-                }
+                return service.pageRepositories(user.getLogin(), page, size);
             }
         };
     }
