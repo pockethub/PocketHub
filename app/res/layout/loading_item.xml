@@ -16,18 +16,18 @@
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/ListItem"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp" >
 
     <View
         android:id="@+id/v_separator"
         style="@style/ListDivider" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        style="@style/ListItem"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="10dp" >
+        android:orientation="horizontal" >
 
         <ProgressBar
             android:id="@+id/pb_loading"
