@@ -287,7 +287,7 @@ public class CreateIssueActivity extends DialogFragmentActivity {
     private void createIssue() {
         final ProgressDialog progress = new ProgressDialog(this);
         progress.setCancelable(false);
-        progress.setMessage("Creating Issue...");
+        progress.setMessage(getString(string.creating_issue));
         progress.show();
         newIssue.setTitle(titleText.getText().toString());
         newIssue.setBody(bodyText.getText().toString());

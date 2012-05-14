@@ -172,5 +172,6 @@
     <string name="icon_watch">\uf04E</string>
     <string name="icon_fork">\uf020</string>
     <string name="avatar">Avatar</string>
+    <string name="creating_issue">Creating Issue…</string>
 
 </resources>
