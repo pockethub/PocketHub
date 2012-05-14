@@ -32,6 +32,7 @@ import org.eclipse.egit.github.core.service.OrganizationService;
 import org.eclipse.egit.github.core.service.PullRequestService;
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.eclipse.egit.github.core.service.UserService;
+import org.eclipse.egit.github.core.service.WatcherService;
 
 /**
  * Provide GitHub-API related services
@@ -95,5 +96,10 @@ public class ServicesModule extends AbstractModule {
     @Provides
     EventService eventService(GitHubClient client) {
         return new EventService(client);
+    }
+
+    @Provides
+    WatcherService watcherService(GitHubClient client) {
+        return new WatcherService(client);
     }
 }
