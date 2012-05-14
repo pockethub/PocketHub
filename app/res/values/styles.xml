@@ -129,4 +129,8 @@
         <item name="android:background">@drawable/list_divider</item>
     </style>
 
+    <style name="ListTitleText">
+        <item name="android:textSize">18sp</item>
+    </style>
+
 </resources>
