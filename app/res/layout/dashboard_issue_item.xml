@@ -68,21 +68,23 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/ll_issue_number"
         android:layout_toRightOf="@id/ll_issue_number"
+        android:includeFontPadding="false"
         android:paddingLeft="10dp"
         android:singleLine="true"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/item_text_color_light" />
+        android:textColor="@color/item_text_color_light"
+        android:textSize="14dp" />
 
     <TextView
         android:id="@+id/tv_issue_title"
+        style="@style/ListTitleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_issue_repo_name"
         android:layout_toRightOf="@id/ll_issue_number"
+        android:includeFontPadding="false"
         android:paddingLeft="10dp"
         android:singleLine="true"
         android:textColor="@color/item_text_color"
-        android:textSize="15dp"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -92,9 +94,10 @@
         android:layout_alignLeft="@id/tv_issue_title"
         android:layout_below="@id/tv_issue_title"
         android:gravity="center_vertical"
+        android:includeFontPadding="false"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
-        android:paddingTop="5dp" >
+        android:paddingTop="2dp" >
 
         <ImageView
             android:id="@+id/iv_avatar"
