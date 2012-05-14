@@ -15,12 +15,7 @@
   limitations under the License.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="5dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="5dp" >
+    style="@style/ListItem" >
 
     <ImageView
         android:id="@+id/iv_avatar"
@@ -42,13 +37,13 @@
 
     <TextView
         android:id="@+id/tv_gist_title"
+        style="@style/ListTitleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/tv_gist_id"
         android:layout_below="@id/tv_gist_id"
         android:paddingTop="5dp"
         android:singleLine="true"
-        style="@style/ListTitleText"
         android:textColor="@color/item_text_color"
         android:textStyle="bold" />
 

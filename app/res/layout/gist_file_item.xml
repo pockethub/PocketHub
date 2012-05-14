@@ -15,11 +15,9 @@
   limitations under the License.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    style="@style/ListItem"
     android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:padding="10dp" >
+    android:orientation="horizontal" >
 
     <TextView
         android:id="@+id/tv_file_icon"

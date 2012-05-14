@@ -15,11 +15,9 @@
   limitations under the License.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    style="@style/ListItem"
     android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:padding="10dp" >
+    android:orientation="horizontal" >
 
     <ImageView
         android:id="@+id/iv_avatar"
