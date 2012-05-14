@@ -80,7 +80,7 @@ public class DashboardIssueListAdapter extends ItemListAdapter<RepositoryIssue, 
         int[] numbers = new int[items.length];
         for (int i = 0; i < numbers.length; i++)
             numbers[i] = ((Issue) items[i]).getNumber();
-        int digits = TypefaceUtils.getMaxDigits(numbers);
+        int digits = Math.max(TypefaceUtils.getMaxDigits(numbers), 4);
         numberWidth = TypefaceUtils.getWidth(numberView, digits) + numberView.getPaddingLeft()
                 + numberView.getPaddingRight();
     }
