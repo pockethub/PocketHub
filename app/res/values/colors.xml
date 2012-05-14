@@ -16,7 +16,7 @@
 -->
 <resources>
 
-    <color name="background">#FFFFFF</color>
+    <color name="background">#F9F9F9</color>
     <color name="background_id">#E3E3E3</color>
     <color name="background_login">#E3E3E3</color>
     <color name="item_background">#D9DCDE</color>
@@ -45,8 +45,8 @@
     <color name="edit_text_background_start">#EFF6FF</color>
     <color name="edit_text_background_end">#FBFDFF</color>
     <color name="edit_text_cursor">#A6A6A6</color>
-    <color name="list_divider_top">#E7E7E7</color>
-    <color name="list_divider_bottom">#F5F3F2</color>
+    <color name="list_divider_top">#E2E2E2</color>
+    <color name="list_divider_bottom">#FFFFFF</color>
     <color name="text_link">#4183C4</color>
     <color name="button_background_enabled_start">#0BA5DC</color>
     <color name="button_background_enabled_end">#0770A0</color>
