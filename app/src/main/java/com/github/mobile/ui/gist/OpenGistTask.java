@@ -17,6 +17,7 @@ package com.github.mobile.ui.gist;
 
 import static com.github.mobile.RequestCodes.GIST_VIEW;
 import android.app.Activity;
+import android.util.Log;
 
 import com.github.mobile.R.string;
 import com.github.mobile.core.gist.GistStore;
@@ -30,6 +31,8 @@ import org.eclipse.egit.github.core.Gist;
  * Task to load and open a Gist with an id
  */
 public class OpenGistTask extends ProgressDialogTask<Gist> {
+
+    private static final String TAG = "OpenGistTask";
 
     private final String id;
 
@@ -71,6 +74,7 @@ public class OpenGistTask extends ProgressDialogTask<Gist> {
     protected void onException(Exception e) throws RuntimeException {
         super.onException(e);
 
+        Log.d(TAG, "Exception opening Gist", e);
         ToastUtils.show((Activity) getContext(), e.getMessage());
     }
 
