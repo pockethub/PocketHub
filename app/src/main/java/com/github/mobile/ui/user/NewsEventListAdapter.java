@@ -142,7 +142,7 @@ public class NewsEventListAdapter extends ItemListAdapter<Event, NewsEventItemVi
         if (text.length() < MAX_TEXT)
             builder.append(text);
         else
-            builder.append(text, 0, MAX_TEXT).append('…');
+            builder.append(text, 0, MAX_TEXT).append('\u2026');
     }
 
     private static CharSequence formatCommitComment(Event event) {
