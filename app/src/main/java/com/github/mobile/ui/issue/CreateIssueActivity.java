@@ -22,7 +22,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -38,15 +37,12 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
-import com.github.mobile.accounts.AuthenticatedUserTask;
-import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.MultiChoiceDialogFragment;
 import com.github.mobile.ui.SingleChoiceDialogFragment;
 import com.github.mobile.ui.TextWatcherAdapter;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ServiceUtils;
-import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -58,7 +54,6 @@ import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.CollaboratorService;
-import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.LabelService;
 import org.eclipse.egit.github.core.service.MilestoneService;
 
@@ -80,8 +75,6 @@ public class CreateIssueActivity extends DialogFragmentActivity {
         return new Builder("repo.issues.create.VIEW").repo(repo).toIntent();
     }
 
-    private static final String TAG = "CIA";
-
     private static final int REQUEST_CODE_LABELS = 1;
 
     private static final int REQUEST_CODE_MILESTONE = 2;
@@ -90,12 +83,6 @@ public class CreateIssueActivity extends DialogFragmentActivity {
 
     @Inject
     private AvatarLoader avatarHelper;
-
-    @Inject
-    private IssueService service;
-
-    @Inject
-    private IssueStore store;
 
     @Inject
     private LabelService labelService;
@@ -291,24 +278,17 @@ public class CreateIssueActivity extends DialogFragmentActivity {
         progress.show();
         newIssue.setTitle(titleText.getText().toString());
         newIssue.setBody(bodyText.getText().toString());
-        new AuthenticatedUserTask<Issue>(this) {
+        new CreateIssueTask(this, repo, newIssue) {
 
-            public Issue run() throws Exception {
-                return store.addIssue(service.createIssue(repo, newIssue));
-            }
-
+            @Override
             protected void onSuccess(Issue issue) throws Exception {
-                progress.cancel();
+                super.onSuccess(issue);
+
                 startActivity(ViewIssuesActivity.createIntent(issue));
                 setResult(RESULT_OK);
                 finish();
             }
 
-            protected void onException(Exception e) throws RuntimeException {
-                progress.cancel();
-                Log.e(TAG, e.getMessage(), e);
-                ToastUtils.show(CreateIssueActivity.this, e.getMessage());
-            }
-        }.execute();
+        }.create();
     }
 }
