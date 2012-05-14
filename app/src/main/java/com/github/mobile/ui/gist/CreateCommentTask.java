@@ -16,7 +16,6 @@
 package com.github.mobile.ui.gist;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 
 import com.github.mobile.R.string;
@@ -45,12 +44,12 @@ public class CreateCommentTask extends ProgressDialogTask<Comment> {
     /**
      * Create task to create a comment
      *
-     * @param context
+     * @param activity
      * @param gistId
      * @param comment
      */
-    protected CreateCommentTask(Context context, String gistId, String comment) {
-        super(context);
+    protected CreateCommentTask(Activity activity, String gistId, String comment) {
+        super(activity);
 
         this.id = gistId;
         this.comment = comment;

@@ -16,7 +16,6 @@
 package com.github.mobile.ui.gist;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 
 import com.github.mobile.R.string;
@@ -51,14 +50,14 @@ public class CreateGistTask extends ProgressDialogTask<Gist> {
     /**
      * Create task that creates a {@link Gist}
      *
-     * @param context
+     * @param activity
      * @param description
      * @param isPublic
      * @param name
      * @param content
      */
-    public CreateGistTask(Context context, String description, boolean isPublic, String name, String content) {
-        super(context);
+    public CreateGistTask(Activity activity, String description, boolean isPublic, String name, String content) {
+        super(activity);
 
         this.description = description;
         this.isPublic = isPublic;
