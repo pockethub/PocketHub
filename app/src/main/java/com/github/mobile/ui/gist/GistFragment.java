@@ -196,14 +196,14 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
     private void updateHeader(Gist gist) {
         Date createdAt = gist.getCreatedAt();
         if (createdAt != null) {
-            created.setText("Created " + TimeUtils.getRelativeTime(createdAt));
+            created.setText(getString(string.prefix_created) + TimeUtils.getRelativeTime(createdAt));
             created.setVisibility(VISIBLE);
         } else
             created.setVisibility(GONE);
 
         Date updatedAt = gist.getUpdatedAt();
         if (updatedAt != null && !updatedAt.equals(createdAt)) {
-            updated.setText("Updated " + TimeUtils.getRelativeTime(updatedAt));
+            updated.setText(getString(string.updated_prefix) + TimeUtils.getRelativeTime(updatedAt));
             updated.setVisibility(VISIBLE);
         } else
             updated.setVisibility(GONE);
