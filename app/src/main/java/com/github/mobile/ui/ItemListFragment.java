@@ -15,11 +15,23 @@
  */
 package com.github.mobile.ui;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.HeaderViewListAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
@@ -29,7 +41,8 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.menu;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.util.ToastUtils;
-import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockListFragment;
+import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
+import com.viewpagerindicator.R.layout;
 
 import java.util.Collections;
 import java.util.List;
@@ -39,7 +52,7 @@ import java.util.List;
  *
  * @param <E>
  */
-public abstract class ItemListFragment<E> extends RoboSherlockListFragment implements LoaderCallbacks<List<E>> {
+public abstract class ItemListFragment<E> extends RoboSherlockFragment implements LoaderCallbacks<List<E>> {
 
     private static final String FORCE_REFRESH = "forceRefresh";
 
@@ -57,6 +70,21 @@ public abstract class ItemListFragment<E> extends RoboSherlockListFragment imple
      */
     protected List<E> items = Collections.emptyList();
 
+    /**
+     * List view
+     */
+    protected ListView listView;
+
+    /**
+     * Empty view
+     */
+    protected TextView emptyView;
+
+    /**
+     * Progress bar
+     */
+    protected ProgressBar progressBar;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -70,8 +98,33 @@ public abstract class ItemListFragment<E> extends RoboSherlockListFragment imple
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(layout.item_list, null);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        listView = (ListView) view.findViewById(android.R.id.list);
+        listView.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                onListItemClick((ListView) parent, view, position, id);
+            }
+        });
+        progressBar = (ProgressBar) view.findViewById(id.pb_loading);
+
+        emptyView = (TextView) view.findViewById(android.R.id.empty);
+        listView.setEmptyView(emptyView);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setHasOptionsMenu(true);
     }
 
@@ -117,14 +170,17 @@ public abstract class ItemListFragment<E> extends RoboSherlockListFragment imple
             manager.restartLoader(0, args, this);
     }
 
+    @SuppressWarnings("rawtypes")
     public void onLoadFinished(Loader<List<E>> loader, List<E> items) {
         this.items = items;
-        @SuppressWarnings("rawtypes")
-        ItemListAdapter adapter = (ItemListAdapter) getListAdapter();
-        if (adapter == null)
-            setListAdapter(createAdapter(this.items));
+
+        ListAdapter adapter = getListAdapter();
+        if (adapter instanceof HeaderViewListAdapter)
+            adapter = ((HeaderViewListAdapter) adapter).getWrappedAdapter();
+        if (adapter instanceof ItemListAdapter)
+            ((ItemListAdapter) adapter).setItems(items.toArray());
         else
-            adapter.setItems(this.items.toArray());
+            setListAdapter(createAdapter(this.items));
 
         showList();
     }
@@ -141,10 +197,7 @@ public abstract class ItemListFragment<E> extends RoboSherlockListFragment imple
      * Set the list to be shown and stop the refresh animation
      */
     protected void showList() {
-        if (isResumed())
-            setListShown(true);
-        else
-            setListShownNoAnimation(true);
+        setListShown(true);
     }
 
     @Override
@@ -181,5 +234,93 @@ public abstract class ItemListFragment<E> extends RoboSherlockListFragment imple
     protected void refreshWithProgress() {
         setListShown(false);
         refresh();
+    }
+
+    /**
+     * Get {@link ListView}
+     *
+     * @return listView
+     */
+    public ListView getListView() {
+        return listView;
+    }
+
+    /**
+     * Get list adapter
+     *
+     * @return list adapter
+     */
+    protected ListAdapter getListAdapter() {
+        return listView != null ? listView.getAdapter() : null;
+    }
+
+    /**
+     * Set list adapter to use on list view
+     *
+     * @param adapter
+     * @return this fragment
+     */
+    protected ItemListFragment<E> setListAdapter(final ListAdapter adapter) {
+        if (listView != null)
+            listView.setAdapter(adapter);
+        return this;
+    }
+
+    /**
+     * Set list shown or progress bar show
+     *
+     * @param shown
+     * @return this fragment
+     */
+    public ItemListFragment<E> setListShown(final boolean shown) {
+        if (shown) {
+            if (listView != null)
+                listView.setVisibility(VISIBLE);
+            if (progressBar != null)
+                progressBar.setVisibility(GONE);
+        } else {
+            if (listView != null)
+                listView.setVisibility(GONE);
+            if (progressBar != null)
+                progressBar.setVisibility(VISIBLE);
+            if (emptyView != null)
+                emptyView.setVisibility(GONE);
+        }
+        return this;
+    }
+
+    /**
+     * Set empty text on list fragment
+     *
+     * @param message
+     * @return this fragment
+     */
+    protected ItemListFragment<E> setEmptyText(final String message) {
+        if (emptyView != null)
+            emptyView.setText(message);
+        return this;
+    }
+
+    /**
+     * Set empty text on list fragment
+     *
+     * @param resId
+     * @return this fragment
+     */
+    protected ItemListFragment<E> setEmptyText(final int resId) {
+        if (emptyView != null)
+            emptyView.setText(resId);
+        return this;
+    }
+
+    /**
+     * Callback when a list view item is clicked
+     *
+     * @param l
+     * @param v
+     * @param position
+     * @param id
+     */
+    public void onListItemClick(ListView l, View v, int position, long id) {
     }
 }

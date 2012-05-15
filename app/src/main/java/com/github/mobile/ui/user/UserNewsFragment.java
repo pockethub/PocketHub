@@ -52,7 +52,7 @@ public abstract class UserNewsFragment extends NewsFragment implements Organizat
         int previousOrgId = org != null ? org.getId() : -1;
         org = organization;
         // Only hard refresh if view already created and org is changing
-        if (getView() != null && previousOrgId != org.getId())
+        if (previousOrgId != org.getId())
             refreshWithProgress();
     }
 }
