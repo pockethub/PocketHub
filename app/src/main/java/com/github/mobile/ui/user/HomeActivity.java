@@ -66,7 +66,7 @@ import roboguice.inject.InjectView;
 public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavigationListener,
         OrganizationSelectionProvider, LoaderCallbacks<List<User>> {
 
-    private static final String TAG = "GH.UVA";
+    private static final String TAG = "HomeActivity";
 
     private static final String PREF_ORG_ID = "orgId";
 
