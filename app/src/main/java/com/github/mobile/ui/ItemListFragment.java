@@ -86,6 +86,11 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
      */
     protected ProgressBar progressBar;
 
+    /**
+     * Is the list currently shown?
+     */
+    protected boolean listShown;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -267,32 +272,11 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
         return this;
     }
 
-    private void fadeIn(final View view) {
-        view.startAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in));
-    }
-
-    private void fadeOut(final View view) {
-        view.startAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out));
-    }
-
-    private void show(final View view, final boolean animate) {
-        if (view != null && view.getVisibility() != VISIBLE) {
-            if (animate)
-                fadeIn(view);
-            else
-                view.clearAnimation();
-            view.setVisibility(VISIBLE);
-        }
-    }
-
-    private void hide(final View view, final boolean animate) {
-        if (view != null && view.getVisibility() != GONE) {
-            if (animate)
-                fadeOut(view);
-            else
-                view.clearAnimation();
-            view.setVisibility(GONE);
-        }
+    private void fadeIn(final View view, final boolean animate) {
+        if (animate)
+            view.startAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in));
+        else
+            view.clearAnimation();
     }
 
     /**
@@ -316,14 +300,21 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
         if (getActivity() == null)
             return this;
 
+        if (!shown)
+            emptyView.setVisibility(GONE);
+
+        if (shown == listShown)
+            return this;
+
+        listShown = shown;
         if (shown) {
-            show(listView, animate);
-            hide(progressBar, animate);
+            progressBar.setVisibility(GONE);
+            fadeIn(listView, animate);
+            listView.setVisibility(VISIBLE);
         } else {
-            if (emptyView != null)
-                emptyView.setVisibility(GONE);
-            hide(listView, animate);
-            show(progressBar, animate);
+            listView.setVisibility(GONE);
+            fadeIn(progressBar, animate);
+            progressBar.setVisibility(VISIBLE);
         }
         return this;
     }
