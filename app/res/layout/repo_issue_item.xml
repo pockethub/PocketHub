@@ -18,50 +18,11 @@
     style="@style/ListItem"
     android:paddingLeft="0dp" >
 
-    <LinearLayout
+    <include
         android:id="@+id/ll_issue_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/tv_issue_number"
-            style="@style/IssueNumber" />
-
-        <View
-            android:id="@+id/v_label0"
-            style="@style/ListLabel" />
-
-        <View
-            android:id="@+id/v_label1"
-            style="@style/ListLabel" />
-
-        <View
-            android:id="@+id/v_label2"
-            style="@style/ListLabel" />
-
-        <View
-            android:id="@+id/v_label3"
-            style="@style/ListLabel" />
-
-        <View
-            android:id="@+id/v_label4"
-            style="@style/ListLabel" />
-
-        <View
-            android:id="@+id/v_label5"
-            style="@style/ListLabel" />
-
-        <View
-            android:id="@+id/v_label6"
-            style="@style/ListLabel" />
-
-        <View
-            android:id="@+id/v_label7"
-            style="@style/ListLabel" />
-    </LinearLayout>
+        layout="@layout/issue_number" />
 
     <TextView
         android:id="@+id/tv_issue_title"
