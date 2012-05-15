@@ -20,8 +20,6 @@
 
     <include
         android:id="@+id/ll_issue_number"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         layout="@layout/issue_number" />
 
     <TextView
