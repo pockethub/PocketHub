@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="5dp" >
+            android:paddingLeft="8dp" >
 
             <TextView
                 android:id="@+id/tv_comment_author"
