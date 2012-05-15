@@ -37,14 +37,12 @@
 
     <TextView
         android:id="@+id/tv_loading"
-        android:layout_width="wrap_content"
+        style="@style/ListSubtitleText"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/pb_loading"
-        android:includeFontPadding="false"
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
-        android:textColor="@color/item_text_color"
         android:textSize="18sp" />
 
 </RelativeLayout>

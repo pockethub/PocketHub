@@ -26,7 +26,7 @@
         android:singleLine="true"
         android:text="@string/section_issue_status"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/item_text_color"
+        android:textColor="@color/text"
         android:textStyle="bold" />
 
     <RadioGroup
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:text="@string/status_open"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/item_text_color_light" />
+            android:textColor="@color/text_light" />
 
         <RadioButton
             android:id="@+id/rb_closed"
@@ -50,7 +50,7 @@
             android:layout_marginLeft="10dp"
             android:text="@string/status_closed"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/item_text_color_light" />
+            android:textColor="@color/text_light" />
     </RadioGroup>
 
     <TableLayout
@@ -64,7 +64,7 @@
                 android:id="@+id/tv_assignee_label"
                 android:text="@string/section_issue_assigned"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/item_text_color"
+                android:textColor="@color/text"
                 android:textStyle="bold" />
 
             <TextView
@@ -73,7 +73,7 @@
                 android:paddingBottom="20dp"
                 android:paddingLeft="20dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/item_text_color_light" />
+                android:textColor="@color/text_light" />
         </TableRow>
 
         <TableRow android:paddingBottom="10dp" >
@@ -82,7 +82,7 @@
                 android:id="@+id/tv_milestone_label"
                 android:text="@string/section_issue_milestone"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/item_text_color"
+                android:textColor="@color/text"
                 android:textStyle="bold" />
 
             <TextView
@@ -93,7 +93,7 @@
                 android:paddingBottom="20dp"
                 android:paddingLeft="20dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/item_text_color_light" />
+                android:textColor="@color/text_light" />
         </TableRow>
 
         <TableRow android:paddingBottom="10dp" >
@@ -102,7 +102,7 @@
                 android:id="@+id/tv_labels_label"
                 android:text="@string/section_issue_labels"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/item_text_color"
+                android:textColor="@color/text"
                 android:textStyle="bold" />
 
             <TextView
@@ -113,7 +113,7 @@
                 android:paddingBottom="10dp"
                 android:paddingLeft="20dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/item_text_color_light" />
+                android:textColor="@color/text_light" />
         </TableRow>
     </TableLayout>
 

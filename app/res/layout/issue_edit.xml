@@ -34,7 +34,7 @@
             android:singleLine="true"
             android:text="@string/title"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/item_text_color"
+            android:textColor="@color/text"
             android:textStyle="bold" />
 
         <EditText
@@ -61,7 +61,7 @@
             android:singleLine="true"
             android:text="@string/description"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/item_text_color"
+            android:textColor="@color/text"
             android:textStyle="bold" />
 
         <EditText

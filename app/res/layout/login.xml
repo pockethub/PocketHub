@@ -27,7 +27,7 @@
         android:gravity="center"
         android:padding="5dp"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/item_text_color"
+        android:textColor="@color/text"
         android:textColorLink="@color/text_link" />
 
     <ScrollView
@@ -52,7 +52,7 @@
                 android:paddingRight="5dp"
                 android:text="@string/login"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/item_text_color" />
+                android:textColor="@color/text" />
 
             <EditText
                 android:id="@+id/et_login"
@@ -69,7 +69,7 @@
                 android:paddingTop="10dp"
                 android:text="@string/password"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/item_text_color" />
+                android:textColor="@color/text" />
 
             <EditText
                 android:id="@+id/et_password"
@@ -88,7 +88,7 @@
                 android:onClick="handleLogin"
                 android:padding="10dp"
                 android:text="@string/log_in"
-                android:textColor="@color/item_text_color"
+                android:textColor="@color/text"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </LinearLayout>

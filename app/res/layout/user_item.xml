@@ -26,11 +26,11 @@
 
     <TextView
         android:id="@+id/tv_login"
+        style="@style/ListTitleText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:includeFontPadding="true"
         android:paddingLeft="10dp"
         android:singleLine="true"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/item_text_color" />
+        android:textStyle="normal" />
 
 </LinearLayout>

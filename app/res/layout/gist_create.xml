@@ -40,7 +40,7 @@
                 android:singleLine="true"
                 android:text="@string/description"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/item_text_color"
+                android:textColor="@color/text"
                 android:textStyle="bold" />
 
             <CheckBox
@@ -50,7 +50,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/make_public"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/item_text_color" />
+                android:textColor="@color/text" />
         </LinearLayout>
 
         <EditText
@@ -72,7 +72,7 @@
             android:singleLine="true"
             android:text="@string/file_name"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/item_text_color"
+            android:textColor="@color/text"
             android:textStyle="bold" />
 
         <EditText
@@ -94,7 +94,7 @@
             android:singleLine="true"
             android:text="@string/file_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/item_text_color"
+            android:textColor="@color/text"
             android:textStyle="bold" />
 
         <EditText

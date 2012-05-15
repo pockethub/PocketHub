@@ -31,8 +31,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/iv_avatar"
-        android:textSize="15dp"
-        android:textColor="@color/item_text_color" />
+        android:textColor="@color/text"
+        android:textSize="15dp" />
 
     <TextView
         android:id="@+id/tv_event_icon"
@@ -42,13 +42,11 @@
 
     <TextView
         android:id="@+id/tv_event_date"
+        style="@style/ListSubtitleText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_alignBottom="@id/tv_event_icon"
         android:layout_toRightOf="@id/tv_event_icon"
         android:paddingLeft="5dp"
-        android:singleLine="true"
-        android:textColor="@color/item_text_color_light"
-        android:textSize="14sp" />
+        android:singleLine="true" />
 
 </RelativeLayout>

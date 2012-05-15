@@ -46,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/item_text_color"
+                    android:textColor="@color/text"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -83,7 +83,7 @@
                         android:paddingLeft="5dp"
                         android:singleLine="true"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/item_text_color"
+                        android:textColor="@color/text"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -117,7 +117,7 @@
             android:singleLine="true"
             android:text="@string/title"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/item_text_color"
+            android:textColor="@color/text"
             android:textStyle="bold" />
 
         <EditText
@@ -130,7 +130,7 @@
             android:inputType="text"
             android:padding="10dp"
             android:singleLine="true"
-            android:textColor="@color/item_text_color"
+            android:textColor="@color/text"
             android:textCursorDrawable="@drawable/edit_text_cursor" >
 
             <requestFocus />
@@ -146,7 +146,7 @@
             android:singleLine="true"
             android:text="@string/description"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/item_text_color"
+            android:textColor="@color/text"
             android:textStyle="bold" />
 
         <EditText
@@ -162,7 +162,7 @@
             android:minLines="5"
             android:padding="10dp"
             android:scrollbars="horizontal|vertical"
-            android:textColor="@color/item_text_color"
+            android:textColor="@color/text"
             android:textCursorDrawable="@drawable/edit_text_cursor" >
         </EditText>
     </LinearLayout>

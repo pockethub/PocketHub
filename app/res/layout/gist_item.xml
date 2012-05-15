@@ -28,18 +28,16 @@
 
     <TextView
         android:id="@+id/tv_gist_id"
+        style="@style/ListSubtitleText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/iv_avatar"
-        android:singleLine="true"
-        android:textColor="@color/item_text_color_light" />
+        android:singleLine="true" />
 
     <TextView
         android:id="@+id/tv_gist_title"
         style="@style/ListTitleText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_alignLeft="@id/tv_gist_id"
         android:layout_below="@id/tv_gist_id"
         android:paddingTop="5dp"
@@ -56,20 +54,17 @@
 
         <TextView
             android:id="@+id/tv_gist_author"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/ListSubtitleText"
             android:paddingRight="5dp"
             android:singleLine="true"
-            android:textColor="@color/item_text_color_light"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_gist_creation"
+            style="@style/ListSubtitleText"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:singleLine="true"
-            android:textColor="@color/item_text_color_light" />
+            android:singleLine="true" />
 
         <TextView
             android:id="@+id/tv_file_icon"
@@ -79,13 +74,10 @@
 
         <TextView
             android:id="@+id/tv_gist_files"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/ListSubtitleText"
             android:gravity="center_vertical"
             android:paddingLeft="5dp"
-            android:paddingRight="10dp"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/item_text_color_light" />
+            android:paddingRight="10dp" />
 
         <TextView
             android:id="@+id/tv_comment_icon"
@@ -94,12 +86,9 @@
 
         <TextView
             android:id="@+id/tv_gist_comments"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/ListSubtitleText"
             android:gravity="center_vertical"
-            android:paddingLeft="5dp"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/item_text_color_light" />
+            android:paddingLeft="5dp" />
     </LinearLayout>
 
 </RelativeLayout>

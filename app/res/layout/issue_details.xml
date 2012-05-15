@@ -23,21 +23,18 @@
 
     <TextView
         android:id="@+id/tv_issue_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/ListSubtitleText"
         android:paddingLeft="5dp"
         android:singleLine="true"
-        android:textColor="@color/item_text_color_light"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tv_issue_creation"
+        style="@style/ListSubtitleText"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:paddingLeft="5dp"
-        android:singleLine="true"
-        android:textColor="@color/item_text_color_light" />
+        android:singleLine="true" />
 
     <TextView
         android:id="@+id/tv_pull_request_icon"
@@ -52,11 +49,8 @@
 
     <TextView
         android:id="@+id/tv_issue_comments"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/ListSubtitleText"
         android:gravity="center_vertical"
-        android:paddingLeft="5dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/item_text_color_light" />
+        android:paddingLeft="5dp" />
 
 </merge>

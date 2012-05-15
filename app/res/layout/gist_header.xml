@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:autoLink="web"
         android:padding="5dp"
-        android:textColor="@color/item_text_color"
+        android:textColor="@color/text"
         android:textColorLink="@color/text_link"
         android:textStyle="bold" />
 
@@ -39,7 +39,7 @@
         android:paddingRight="5dp"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/item_text_color_light" />
+        android:textColor="@color/text" />
 
     <TextView
         android:id="@+id/tv_gist_updated"
@@ -51,7 +51,7 @@
         android:paddingRight="5dp"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/item_text_color_light" />
+        android:textColor="@color/text_light" />
 
     <View style="@style/Separator" />
 
