@@ -23,6 +23,7 @@ import static android.view.View.VISIBLE;
 import static com.github.mobile.Intents.EXTRA_COMMENT_BODY;
 import static com.github.mobile.Intents.EXTRA_GIST_ID;
 import static com.github.mobile.RequestCodes.COMMENT_CREATE;
+import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -64,7 +65,9 @@ import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragmen
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -326,6 +329,10 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
     }
 
     private void updateFiles(Gist gist) {
+        final Activity activity = getActivity();
+        if (activity == null)
+            return;
+
         for (View header : fileHeaders)
             list.removeHeaderView(header);
         fileHeaders.clear();
@@ -334,10 +341,17 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
         if (files == null || files.isEmpty())
             return;
 
-        Activity activity = getActivity();
-        LayoutInflater inflater = activity.getLayoutInflater();
-        Typeface octicons = TypefaceUtils.getOcticons(activity);
-        for (GistFile file : files.values()) {
+        final GistFile[] sortedFiles = files.values().toArray(new GistFile[files.size()]);
+        Arrays.sort(sortedFiles, new Comparator<GistFile>() {
+
+            public int compare(final GistFile lhs, final GistFile rhs) {
+                return CASE_INSENSITIVE_ORDER.compare(lhs.getFilename(), rhs.getFilename());
+            }
+        });
+
+        final LayoutInflater inflater = activity.getLayoutInflater();
+        final Typeface octicons = TypefaceUtils.getOcticons(activity);
+        for (GistFile file : sortedFiles) {
             View fileView = inflater.inflate(layout.gist_file_item, null);
             ((TextView) fileView.findViewById(id.tv_file)).setText(file.getFilename());
             ((TextView) fileView.findViewById(id.tv_file_icon)).setTypeface(octicons);
