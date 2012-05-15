@@ -64,7 +64,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:singleLine">true</item>
-        <item name="android:textColor">@color/text_icon</item>
+        <item name="android:textColor">@color/text_icon_selector</item>
     </style>
 
     <style name="ListIcon" parent="TextIcon">
@@ -131,27 +131,20 @@
         <item name="android:background">@drawable/list_divider</item>
     </style>
 
-    <style name="ShadowText">
-        <item name="android:shadowColor">@color/text_shadow</item>
-        <item name="android:shadowDx">1</item>
-        <item name="android:shadowDy">1</item>
-        <item name="android:shadowRadius">1</item>
-    </style>
-
-    <style name="ListTitleText" parent="ShadowText">
+    <style name="ListTitleText">
         <item name="android:textSize">17sp</item>
         <item name="android:paddingBottom">4dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:includeFontPadding">false</item>
-        <item name="android:textColor">@color/text</item>
+        <item name="android:textColor">@color/text_selector</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
     </style>
 
-    <style name="ListSubtitleText" parent="ShadowText">
+    <style name="ListSubtitleText">
         <item name="android:textSize">14sp</item>
         <item name="android:includeFontPadding">false</item>
-        <item name="android:textColor">@color/text_light</item>
+        <item name="android:textColor">@color/text_light_selector</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
     </style>
