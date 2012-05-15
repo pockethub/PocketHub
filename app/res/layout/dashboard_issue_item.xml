@@ -84,8 +84,7 @@
         android:layout_toRightOf="@id/ll_issue_number"
         android:includeFontPadding="false"
         android:paddingLeft="10dp"
-        android:singleLine="true"
-        android:textColor="@color/item_text_color" />
+        android:singleLine="true" />
 
     <LinearLayout
         android:id="@+id/ll_lines"

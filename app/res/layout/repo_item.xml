@@ -46,8 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingRight="10dp"
-                android:singleLine="true"
-                android:textColor="@color/item_text_color" />
+                android:singleLine="true" />
 
             <TextView
                 android:id="@+id/tv_recent_label"

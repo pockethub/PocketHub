@@ -43,9 +43,7 @@
         android:layout_alignLeft="@id/tv_gist_id"
         android:layout_below="@id/tv_gist_id"
         android:paddingTop="5dp"
-        android:singleLine="true"
-        android:textColor="@color/item_text_color"
-        android:textStyle="bold" />
+        android:singleLine="true" />
 
     <LinearLayout
         android:layout_width="match_parent"
