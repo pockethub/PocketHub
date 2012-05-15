@@ -45,10 +45,19 @@
         android:paddingLeft="10dp"
         android:singleLine="true" />
 
-    <include
+    <LinearLayout
         android:id="@+id/ll_lines"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignLeft="@id/tv_issue_title"
         android:layout_below="@id/tv_issue_title"
-        layout="@layout/issue_details" />
+        android:gravity="center_vertical"
+        android:includeFontPadding="false"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingTop="2dp" >
+
+        <include layout="@layout/issue_details" />
+    </LinearLayout>
 
 </RelativeLayout>

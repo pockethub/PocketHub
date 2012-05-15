@@ -14,14 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:includeFontPadding="false"
-    android:orientation="horizontal"
-    android:paddingLeft="10dp"
-    android:paddingTop="2dp" >
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <ImageView
         android:id="@+id/iv_avatar"
@@ -66,4 +59,4 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/item_text_color_light" />
 
-</LinearLayout>
+</merge>
