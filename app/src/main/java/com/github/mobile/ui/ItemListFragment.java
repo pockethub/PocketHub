@@ -25,6 +25,7 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.HeaderViewListAdapter;
@@ -194,10 +195,10 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
     protected abstract ItemListAdapter<E, ? extends ItemView> createAdapter(final List<E> items);
 
     /**
-     * Set the list to be shown and stop the refresh animation
+     * Set the list to be shown
      */
     protected void showList() {
-        setListShown(true);
+        setListShown(true, isResumed());
     }
 
     @Override
@@ -266,6 +267,14 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
         return this;
     }
 
+    private void fadeIn(final View view) {
+        view.startAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in));
+    }
+
+    private void fadeOut(final View view) {
+        view.startAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out));
+    }
+
     /**
      * Set list shown or progress bar show
      *
@@ -273,18 +282,52 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
      * @return this fragment
      */
     public ItemListFragment<E> setListShown(final boolean shown) {
+        return setListShown(shown, true);
+    }
+
+    /**
+     * Set list shown or progress bar show
+     *
+     * @param shown
+     * @param animate
+     * @return this fragment
+     */
+    public ItemListFragment<E> setListShown(final boolean shown, final boolean animate) {
+        if (getActivity() == null)
+            return this;
+
         if (shown) {
-            if (listView != null)
+            if (listView != null) {
+                if (animate)
+                    fadeIn(listView);
+                else
+                    listView.clearAnimation();
                 listView.setVisibility(VISIBLE);
-            if (progressBar != null)
+            }
+            if (progressBar != null) {
+                if (animate)
+                    fadeOut(progressBar);
+                else
+                    progressBar.clearAnimation();
                 progressBar.setVisibility(GONE);
+            }
         } else {
-            if (listView != null)
-                listView.setVisibility(GONE);
-            if (progressBar != null)
-                progressBar.setVisibility(VISIBLE);
             if (emptyView != null)
                 emptyView.setVisibility(GONE);
+            if (listView != null) {
+                if (animate)
+                    fadeOut(listView);
+                else
+                    listView.clearAnimation();
+                listView.setVisibility(GONE);
+            }
+            if (progressBar != null) {
+                if (animate)
+                    fadeIn(progressBar);
+                else
+                    progressBar.clearAnimation();
+                progressBar.setVisibility(VISIBLE);
+            }
         }
         return this;
     }
