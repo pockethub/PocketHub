@@ -35,59 +35,10 @@
         android:paddingTop="0dp"
         android:singleLine="true" />
 
-    <LinearLayout
+    <include
         android:id="@+id/ll_lines"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_alignLeft="@id/tv_issue_title"
         android:layout_below="@id/tv_issue_title"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp" >
-
-        <ImageView
-            android:id="@+id/iv_avatar"
-            style="@style/AvatarMedium"
-            android:contentDescription="@string/avatar" />
-
-        <TextView
-            android:id="@+id/tv_issue_user"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:singleLine="true"
-            android:textColor="@color/item_text_color_light"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tv_issue_creation"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingLeft="5dp"
-            android:singleLine="true"
-            android:textColor="@color/item_text_color_light" />
-
-        <TextView
-            android:id="@+id/tv_pull_request_icon"
-            style="@style/ListIcon"
-            android:paddingRight="5dp"
-            android:text="@string/icon_pull_request" />
-
-        <TextView
-            android:id="@+id/tv_comment_icon"
-            style="@style/ListIcon"
-            android:text="@string/icon_comment" />
-
-        <TextView
-            android:id="@+id/tv_issue_comments"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:paddingLeft="5dp"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/item_text_color_light" />
-    </LinearLayout>
+        layout="@layout/issue_details" />
 
 </RelativeLayout>
