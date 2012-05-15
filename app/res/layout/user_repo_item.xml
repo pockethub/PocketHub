@@ -24,66 +24,24 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" />
 
+    <TextView
+        android:id="@+id/tv_repo_name"
+        style="@style/ListTitleText"
+        android:layout_width="match_parent"
+        android:layout_alignTop="@id/tv_repo_icon"
+        android:layout_toRightOf="@id/tv_repo_icon"
+        android:paddingLeft="10dp"
+        android:singleLine="true" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/tv_repo_icon"
+        android:layout_alignLeft="@id/tv_repo_name"
+        android:layout_below="@id/tv_repo_name"
         android:orientation="vertical"
         android:paddingLeft="10dp" >
 
-        <TextView
-            android:id="@+id/tv_repo_name"
-            style="@style/ListTitleText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:singleLine="true" />
-
-        <TextView
-            android:id="@+id/tv_repo_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/item_text_color_light" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/tv_watchers_icon"
-                style="@style/ListIcon"
-                android:text="@string/icon_watch" />
-
-            <TextView
-                android:id="@+id/tv_watchers"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="10dp"
-                android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/item_text_color_light" />
-
-            <TextView
-                android:id="@+id/tv_forks_icon"
-                style="@style/ListIcon"
-                android:text="@string/icon_fork" />
-
-            <TextView
-                android:id="@+id/tv_forks"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="3dp"
-                android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/item_text_color_light" />
-        </LinearLayout>
+        <include layout="@layout/repo_details" />
     </LinearLayout>
 
 </RelativeLayout>
