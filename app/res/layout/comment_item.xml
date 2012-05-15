@@ -41,7 +41,7 @@
                 style="@style/ListTitleText"
                 android:paddingBottom="0dp"
                 android:singleLine="true"
-                android:textSize="14sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
