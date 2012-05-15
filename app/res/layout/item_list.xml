@@ -27,12 +27,10 @@
 
     <TextView
         android:id="@android:id/empty"
+        style="@style/ListSubtitleText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
         android:gravity="center"
-        android:textColor="@color/item_text_color_light"
-        android:textSize="16sp"
         android:visibility="gone" />
 
     <ProgressBar
