@@ -14,21 +14,24 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/ListItem"
-    android:gravity="center_vertical"
     android:orientation="horizontal" >
 
     <TextView
         android:id="@+id/tv_file_icon"
         style="@style/PrimaryIcon"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
         android:text="@string/icon_file" />
 
     <TextView
         android:id="@+id/tv_file"
         style="@style/ListTitleText"
         android:layout_width="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/tv_file_icon"
         android:paddingLeft="10dp"
         android:singleLine="true" />
 
-</LinearLayout>
+</RelativeLayout>

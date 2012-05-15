@@ -78,6 +78,8 @@
     </style>
 
     <style name="PrimaryIcon" parent="TextIcon">
+        <item name="android:layout_height">35dp</item>
+        <item name="android:layout_marginTop">-7dp</item>
         <item name="android:textSize">28dp</item>
     </style>
 
