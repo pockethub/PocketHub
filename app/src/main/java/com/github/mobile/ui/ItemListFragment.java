@@ -275,6 +275,26 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
         view.startAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out));
     }
 
+    private void show(final View view, final boolean animate) {
+        if (view != null && view.getVisibility() != VISIBLE) {
+            if (animate)
+                fadeIn(view);
+            else
+                view.clearAnimation();
+            view.setVisibility(VISIBLE);
+        }
+    }
+
+    private void hide(final View view, final boolean animate) {
+        if (view != null && view.getVisibility() != GONE) {
+            if (animate)
+                fadeOut(view);
+            else
+                view.clearAnimation();
+            view.setVisibility(GONE);
+        }
+    }
+
     /**
      * Set list shown or progress bar show
      *
@@ -297,37 +317,13 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
             return this;
 
         if (shown) {
-            if (listView != null) {
-                if (animate)
-                    fadeIn(listView);
-                else
-                    listView.clearAnimation();
-                listView.setVisibility(VISIBLE);
-            }
-            if (progressBar != null) {
-                if (animate)
-                    fadeOut(progressBar);
-                else
-                    progressBar.clearAnimation();
-                progressBar.setVisibility(GONE);
-            }
+            show(listView, animate);
+            hide(progressBar, animate);
         } else {
             if (emptyView != null)
                 emptyView.setVisibility(GONE);
-            if (listView != null) {
-                if (animate)
-                    fadeOut(listView);
-                else
-                    listView.clearAnimation();
-                listView.setVisibility(GONE);
-            }
-            if (progressBar != null) {
-                if (animate)
-                    fadeIn(progressBar);
-                else
-                    progressBar.clearAnimation();
-                progressBar.setVisibility(VISIBLE);
-            }
+            hide(listView, animate);
+            show(progressBar, animate);
         }
         return this;
     }
