@@ -36,7 +36,7 @@ public class UserCreatedNewsFragment extends UserNewsFragment {
 
             @Override
             protected Event register(Event resource) {
-                return NewsEventListAdapter.isValid(resource) ? resource : null;
+                return NewsListAdapter.isValid(resource) ? resource : null;
             }
         };
     }

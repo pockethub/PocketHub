@@ -26,7 +26,7 @@ import com.github.mobile.util.TypefaceUtils;
 /**
  * View of a news item
  */
-public class NewsEventItemView extends ItemView {
+public class NewsItemView extends ItemView {
 
     /**
      * Avatar image view
@@ -37,6 +37,11 @@ public class NewsEventItemView extends ItemView {
      * Event text view
      */
     public final TextView eventText;
+
+    /**
+     * Event details text view
+     */
+    public final TextView detailsText;
 
     /**
      * Event icon view
@@ -53,11 +58,12 @@ public class NewsEventItemView extends ItemView {
      *
      * @param view
      */
-    public NewsEventItemView(View view) {
+    public NewsItemView(View view) {
         super(view);
 
         avatarView = (ImageView) view.findViewById(id.iv_avatar);
         eventText = (TextView) view.findViewById(id.tv_event);
+        detailsText = (TextView) view.findViewById(id.tv_event_details);
 
         iconText = (TextView) view.findViewById(id.tv_event_icon);
         TypefaceUtils.setOcticons(iconText);

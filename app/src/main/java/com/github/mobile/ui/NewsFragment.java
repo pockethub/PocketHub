@@ -32,7 +32,7 @@ import com.github.mobile.core.repo.RepositoryEventMatcher;
 import com.github.mobile.ui.gist.ViewGistsActivity;
 import com.github.mobile.ui.issue.ViewIssuesActivity;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
-import com.github.mobile.ui.user.NewsEventListAdapter;
+import com.github.mobile.ui.user.NewsListAdapter;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
@@ -133,7 +133,7 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
 
     @Override
     protected ItemListAdapter<Event, ? extends ItemView> createAdapter(List<Event> items) {
-        return new NewsEventListAdapter(getActivity().getLayoutInflater(), items.toArray(new Event[items.size()]),
+        return new NewsListAdapter(getActivity().getLayoutInflater(), items.toArray(new Event[items.size()]),
                 avatarHelper);
     }
 
