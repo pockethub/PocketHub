@@ -150,7 +150,6 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
         super.onActivityCreated(savedInstanceState);
 
         list.setOnItemClickListener(this);
-        list.setFastScrollEnabled(true);
         list.addHeaderView(headerView, null, false);
 
         gist = store.getGist(gistId);
