@@ -146,4 +146,12 @@
         <item name="android:paddingBottom">5dp</item>
     </style>
 
+    <style name="Spinner">
+        <item name="android:background">@drawable/spinner_inner</item>
+        <item name="android:indeterminate">true</item>
+        <item name="android:indeterminateDrawable">@drawable/spinner</item>
+        <item name="android:indeterminateDuration">1000</item>
+        <item name="android:indeterminateOnly">true</item>
+    </style>
+
 </resources>

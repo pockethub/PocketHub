@@ -37,13 +37,9 @@
 
     <ProgressBar
         android:id="@+id/pb_loading"
+        style="@style/Spinner"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:layout_centerInParent="true"
-        android:background="@drawable/spinner_inner"
-        android:indeterminate="true"
-        android:indeterminateDrawable="@drawable/spinner"
-        android:indeterminateDuration="1000"
-        android:indeterminateOnly="true" />
+        android:layout_centerInParent="true" />
 
 </RelativeLayout>

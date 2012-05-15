@@ -27,17 +27,13 @@
 
     <ProgressBar
         android:id="@+id/pb_loading"
+        style="@style/Spinner"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/v_separator"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/spinner_inner"
-        android:indeterminate="true"
-        android:indeterminateDrawable="@drawable/spinner"
-        android:indeterminateDuration="1000"
-        android:indeterminateOnly="true" />
+        android:layout_marginTop="5dp" />
 
     <TextView
         android:id="@+id/tv_loading"
