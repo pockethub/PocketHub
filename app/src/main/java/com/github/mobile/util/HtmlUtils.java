@@ -169,18 +169,6 @@ public class HtmlUtils {
     };
 
     /**
-     * Get last span of given kind
-     *
-     * @param text
-     * @param kind
-     * @return span
-     */
-    private static Object getLast(final Spanned text, final Class<?> kind) {
-        Object[] spans = text.getSpans(0, text.length(), kind);
-        return spans.length > 0 ? spans[spans.length - 1] : null;
-    }
-
-    /**
      * Encode HTML
      *
      * @param html
@@ -202,6 +190,60 @@ public class HtmlUtils {
             return "";
 
         return android.text.Html.fromHtml(html, imageGetter, TAG_HANDLER);
+    }
+
+    /**
+     * Format given HTML string so it is ready to be presented in a text view
+     *
+     * @param html
+     * @return formatted HTML
+     */
+    public static final CharSequence format(final String html) {
+        if (html == null)
+            return "";
+        if (html.length() == 0)
+            return "";
+
+        StringBuilder formatted = new StringBuilder(html);
+
+        // Remove e-mail toggle link
+        strip(formatted, TOGGLE_START, TOGGLE_END);
+
+        // Remove signature
+        strip(formatted, SIGNATURE_START, SIGNATURE_END);
+
+        // Replace div with e-mail content with block quote
+        replace(formatted, REPLY_START, REPLY_END, BLOCKQUOTE_START, BLOCKQUOTE_END);
+
+        // Remove hidden div
+        strip(formatted, HIDDEN_REPLY_START, HIDDEN_REPLY_END);
+
+        // Replace paragraphs with breaks
+        replace(formatted, PARAGRAPH_START, BREAK);
+        replace(formatted, PARAGRAPH_END, BREAK);
+
+        formatPres(formatted);
+
+        formatEmailFragments(formatted);
+
+        trim(formatted);
+
+        formatted.insert(0, ROOT_START);
+        formatted.append(ROOT_END);
+
+        return formatted;
+    }
+
+    /**
+     * Get last span of given kind
+     *
+     * @param text
+     * @param kind
+     * @return span
+     */
+    private static Object getLast(final Spanned text, final Class<?> kind) {
+        Object[] spans = text.getSpans(0, text.length(), kind);
+        return spans.length > 0 ? spans[spans.length - 1] : null;
     }
 
     private static StringBuilder strip(final StringBuilder input, final String prefix, final String suffix) {
@@ -351,47 +393,5 @@ public class HtmlUtils {
             length = input.length();
         }
         return input;
-    }
-
-    /**
-     * Format given HTML string so it is ready to be presented in a text view
-     *
-     * @param html
-     * @return formatted HTML
-     */
-    public static final CharSequence format(final String html) {
-        if (html == null)
-            return "";
-        if (html.length() == 0)
-            return "";
-
-        StringBuilder formatted = new StringBuilder(html);
-
-        // Remove e-mail toggle link
-        strip(formatted, TOGGLE_START, TOGGLE_END);
-
-        // Remove signature
-        strip(formatted, SIGNATURE_START, SIGNATURE_END);
-
-        // Replace div with e-mail content with block quote
-        replace(formatted, REPLY_START, REPLY_END, BLOCKQUOTE_START, BLOCKQUOTE_END);
-
-        // Remove hidden div
-        strip(formatted, HIDDEN_REPLY_START, HIDDEN_REPLY_END);
-
-        // Replace paragraphs with breaks
-        replace(formatted, PARAGRAPH_START, BREAK);
-        replace(formatted, PARAGRAPH_END, BREAK);
-
-        formatPres(formatted);
-
-        formatEmailFragments(formatted);
-
-        trim(formatted);
-
-        formatted.insert(0, ROOT_START);
-        formatted.append(ROOT_END);
-
-        return formatted;
     }
 }
