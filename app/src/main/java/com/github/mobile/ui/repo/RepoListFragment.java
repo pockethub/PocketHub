@@ -29,7 +29,6 @@ import com.github.mobile.ui.ItemListFragment;
 import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.user.OrganizationSelectionListener;
 import com.github.mobile.ui.user.OrganizationSelectionProvider;
-import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 
 import java.util.Collections;
@@ -85,7 +84,6 @@ public class RepoListFragment extends ItemListFragment<Repository> implements Or
         super.onActivityCreated(savedInstanceState);
 
         setEmptyText(getString(string.no_repositories));
-        ListViewUtils.configure(getActivity(), getListView());
     }
 
     @Override

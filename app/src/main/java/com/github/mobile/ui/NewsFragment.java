@@ -34,7 +34,6 @@ import com.github.mobile.ui.issue.ViewIssuesActivity;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
 import com.github.mobile.ui.user.NewsListAdapter;
 import com.github.mobile.util.AvatarLoader;
-import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 
 import java.util.List;
@@ -81,7 +80,6 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
         super.onActivityCreated(savedInstanceState);
 
         setEmptyText(getString(string.no_news));
-        ListViewUtils.configure(getActivity(), getListView());
     }
 
     @Override

@@ -27,7 +27,6 @@ import com.github.mobile.core.repo.IRepositorySearch;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
 import com.github.mobile.ui.ItemView;
-import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 
 import java.util.List;
@@ -54,7 +53,6 @@ public class SearchRepoListFragment extends ItemListFragment<SearchRepository> {
         super.onActivityCreated(savedInstanceState);
 
         setEmptyText(getString(string.no_repositories));
-        ListViewUtils.configure(getActivity(), getListView());
     }
 
     /**

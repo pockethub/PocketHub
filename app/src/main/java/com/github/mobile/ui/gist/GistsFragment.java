@@ -35,7 +35,6 @@ import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.PagedItemFragment;
 import com.github.mobile.util.AvatarLoader;
-import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 
 import java.util.List;
@@ -76,7 +75,6 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
         super.onActivityCreated(savedInstanceState);
 
         setEmptyText(getString(string.no_gists));
-        ListViewUtils.configure(getActivity(), getListView());
     }
 
     @Override

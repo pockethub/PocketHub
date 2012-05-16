@@ -26,7 +26,6 @@ import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.PagedItemFragment;
 import com.github.mobile.util.AvatarLoader;
-import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 
 import java.util.List;
@@ -70,7 +69,6 @@ public class DashboardIssueFragment extends PagedItemFragment<RepositoryIssue> {
         super.onActivityCreated(savedInstanceState);
 
         filterData = (Map<String, String>) getArguments().getSerializable(ARG_FILTER);
-        ListViewUtils.configure(getActivity(), getListView());
     }
 
     @Override

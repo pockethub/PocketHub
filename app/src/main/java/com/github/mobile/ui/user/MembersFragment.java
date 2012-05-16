@@ -28,7 +28,6 @@ import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
 import com.github.mobile.ui.ItemView;
 import com.github.mobile.util.AvatarLoader;
-import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 
 import java.util.List;
@@ -61,7 +60,6 @@ public class MembersFragment extends ItemListFragment<User> implements Organizat
         super.onActivityCreated(savedInstanceState);
 
         setEmptyText(getString(string.no_members));
-        ListViewUtils.configure(getActivity(), getListView());
     }
 
     @Override

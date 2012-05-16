@@ -48,7 +48,6 @@ import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.PagedItemFragment;
 import com.github.mobile.util.AvatarLoader;
-import com.github.mobile.util.ListViewUtils;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 
@@ -120,7 +119,6 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
         super.onActivityCreated(savedInstanceState);
 
         setEmptyText(getString(string.no_issues));
-        ListViewUtils.configure(getActivity(), getListView());
     }
 
     @Override

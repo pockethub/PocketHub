@@ -14,7 +14,6 @@ import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
 import com.github.mobile.ui.ItemView;
 import com.github.mobile.util.AvatarLoader;
-import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -37,7 +36,6 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ListViewUtils.configure(getActivity(), getListView());
         setEmptyText(getString(string.no_filters));
     }
 

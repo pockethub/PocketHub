@@ -25,7 +25,6 @@ import com.github.mobile.core.ResourcePager;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.PagedItemFragment;
-import com.github.mobile.util.ListViewUtils;
 import com.google.inject.Inject;
 
 import java.util.List;
@@ -53,7 +52,6 @@ public class UserRepositoryListFragment extends PagedItemFragment<Repository> {
         super.onActivityCreated(savedInstanceState);
 
         setEmptyText(getString(string.no_repositories));
-        ListViewUtils.configure(getActivity(), getListView());
     }
 
     @Override
