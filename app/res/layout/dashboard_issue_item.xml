@@ -28,7 +28,6 @@
         android:layout_width="match_parent"
         android:layout_alignBaseline="@id/ll_issue_number"
         android:layout_toRightOf="@id/ll_issue_number"
-        android:includeFontPadding="false"
         android:paddingLeft="10dp"
         android:singleLine="true" />
 
@@ -38,7 +37,6 @@
         android:layout_width="match_parent"
         android:layout_below="@id/tv_issue_repo_name"
         android:layout_toRightOf="@id/ll_issue_number"
-        android:includeFontPadding="false"
         android:paddingLeft="10dp"
         android:singleLine="true" />
 
