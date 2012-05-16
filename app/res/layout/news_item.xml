@@ -27,22 +27,21 @@
 
     <TextView
         android:id="@+id/tv_event"
+        style="@style/ListTitleText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/iv_avatar"
-        android:textColor="@color/text"
         android:textSize="15dp" />
 
     <TextView
         android:id="@+id/tv_event_details"
+        style="@style/ListTitleText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_alignLeft="@id/tv_event"
         android:layout_below="@id/tv_event"
         android:paddingBottom="1dp"
         android:paddingTop="2dp"
-        android:textColor="@color/text_news_details"
+        android:textColor="@color/text_news_details_selector"
         android:textSize="15dp" />
 
     <TextView
