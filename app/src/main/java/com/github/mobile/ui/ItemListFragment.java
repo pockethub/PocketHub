@@ -105,8 +105,7 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(layout.item_list, null);
-        return view;
+        return inflater.inflate(layout.item_list, null);
     }
 
     @Override
