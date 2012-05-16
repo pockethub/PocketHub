@@ -125,8 +125,6 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
                 || TYPE_WATCH.equals(type);
     }
 
-    private static final int MAX_TEXT = 80;
-
     private static void appendComment(final SpannableStringBuilder details, final Comment comment) {
         if (comment == null)
             return;
@@ -140,10 +138,7 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         if (text.length() == 0)
             return;
 
-        if (text.length() < MAX_TEXT)
-            details.append(text);
-        else
-            details.append(text, 0, MAX_TEXT).append('\u2026');
+        details.append(text);
     }
 
     private static void formatCommitComment(Event event, SpannableStringBuilder main, SpannableStringBuilder details) {

@@ -40,6 +40,7 @@
         android:layout_width="match_parent"
         android:layout_alignLeft="@id/tv_event"
         android:layout_below="@id/tv_event"
+        android:maxLines="3"
         android:paddingBottom="1dp"
         android:paddingTop="2dp"
         android:textColor="@color/text_news_details_selector"
