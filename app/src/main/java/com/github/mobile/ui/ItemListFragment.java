@@ -271,11 +271,25 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
         return this;
     }
 
-    private void fadeIn(final View view, final boolean animate) {
-        if (animate)
-            view.startAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in));
-        else
-            view.clearAnimation();
+    private ItemListFragment<E> fadeIn(final View view, final boolean animate) {
+        if (view != null)
+            if (animate)
+                view.startAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in));
+            else
+                view.clearAnimation();
+        return this;
+    }
+
+    private ItemListFragment<E> show(final View view) {
+        if (view != null)
+            view.setVisibility(VISIBLE);
+        return this;
+    }
+
+    private ItemListFragment<E> hide(final View view) {
+        if (view != null)
+            view.setVisibility(GONE);
+        return this;
     }
 
     /**
@@ -300,21 +314,16 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
             return this;
 
         if (!shown)
-            emptyView.setVisibility(GONE);
+            hide(emptyView);
 
         if (shown == listShown)
             return this;
 
         listShown = shown;
-        if (shown) {
-            progressBar.setVisibility(GONE);
-            fadeIn(listView, animate);
-            listView.setVisibility(VISIBLE);
-        } else {
-            listView.setVisibility(GONE);
-            fadeIn(progressBar, animate);
-            progressBar.setVisibility(VISIBLE);
-        }
+        if (shown)
+            hide(progressBar).fadeIn(listView, animate).show(listView);
+        else
+            hide(listView).fadeIn(progressBar, animate).show(progressBar);
         return this;
     }
 
