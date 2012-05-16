@@ -15,8 +15,6 @@
  */
 package com.github.mobile.ui;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +30,10 @@ import com.github.mobile.R.layout;
 public class ResourceLoadingIndicator {
 
     private final Context context;
+
+    private ListView listView;
+
+    private boolean showing;
 
     private final View view;
 
@@ -60,7 +62,9 @@ public class ResourceLoadingIndicator {
      * @return this indicator
      */
     public ResourceLoadingIndicator setList(final ListView listView) {
+        this.listView = listView;
         listView.addFooterView(view, null, false);
+        showing = true;
         return this;
     }
 
@@ -70,8 +74,13 @@ public class ResourceLoadingIndicator {
      * @param visible
      * @return this indicator
      */
-    public ResourceLoadingIndicator setVisible(boolean visible) {
-        view.setVisibility(visible ? VISIBLE : GONE);
+    public ResourceLoadingIndicator setVisible(final boolean visible) {
+        if (showing != visible && listView != null)
+            if (visible)
+                listView.addFooterView(view, null, false);
+            else
+                listView.removeFooterView(view);
+        showing = visible;
         return this;
     }
 
