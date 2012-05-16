@@ -17,44 +17,26 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/ListItem"
     android:gravity="center_vertical"
-    android:paddingRight="0dp" >
+    android:paddingLeft="0dp" >
 
     <TextView
         android:id="@+id/tv_repo_icon"
         style="@style/PrimaryIcon"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp" />
 
-    <LinearLayout
-        android:id="@+id/ll_repo_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/tv_repo_icon"
-        android:layout_toRightOf="@id/tv_repo_icon"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp" >
-
-        <TextView
-            android:id="@+id/tv_repo_name"
-            style="@style/ListTitleText"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:paddingRight="10dp"
-            android:singleLine="true" />
-
-        <TextView
-            android:id="@+id/tv_recent_label"
-            style="@style/RecentLabel"
-            android:text="@string/recent"
-            android:visibility="gone" />
-    </LinearLayout>
+    <View
+        android:id="@+id/v_recent_label"
+        style="@style/RecentLabel"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignLeft="@id/ll_repo_name"
-        android:layout_below="@id/ll_repo_name"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/tv_repo_icon"
         android:orientation="vertical"
         android:paddingLeft="10dp" >
 

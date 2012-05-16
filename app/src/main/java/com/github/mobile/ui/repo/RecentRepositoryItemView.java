@@ -15,10 +15,9 @@
  */
 package com.github.mobile.ui.repo;
 
-import com.github.mobile.R.id;
-
 import android.view.View;
-import android.widget.TextView;
+
+import com.github.mobile.R.id;
 
 /**
  * Repository item view with a recent indicator
@@ -28,7 +27,7 @@ public class RecentRepositoryItemView extends RepositoryItemView {
     /**
      * Recently view label
      */
-    public final TextView recentLabel;
+    public final View recentLabel;
 
     /**
      * Create item view
@@ -38,6 +37,6 @@ public class RecentRepositoryItemView extends RepositoryItemView {
     public RecentRepositoryItemView(final View view) {
         super(view);
 
-        recentLabel = (TextView) view.findViewById(id.tv_recent_label);
+        recentLabel = view.findViewById(id.v_recent_label);
     }
 }

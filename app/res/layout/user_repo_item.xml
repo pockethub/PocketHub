@@ -24,20 +24,11 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" />
 
-    <TextView
-        android:id="@+id/tv_repo_name"
-        style="@style/ListTitleText"
-        android:layout_width="match_parent"
-        android:layout_alignTop="@id/tv_repo_icon"
-        android:layout_toRightOf="@id/tv_repo_icon"
-        android:paddingLeft="10dp"
-        android:singleLine="true" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignLeft="@id/tv_repo_name"
-        android:layout_below="@id/tv_repo_name"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/tv_repo_icon"
         android:orientation="vertical"
         android:paddingLeft="10dp" >
 

@@ -19,16 +19,18 @@
     <TextView
         android:id="@+id/tv_repo_description"
         style="@style/ListSubtitleText"
-        android:layout_width="match_parent"
-        android:paddingRight="10dp"
+        android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/tv_repo_name"
+        style="@style/ListTitleText"
         android:singleLine="true" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingRight="10dp" >
+        android:orientation="horizontal" >
 
         <TextView
             android:id="@+id/tv_watchers_icon"

@@ -23,6 +23,8 @@
     <color name="comment_outer">#C7C7C7</color>
     <color name="comment_inner">#FFFFFF</color>
     <color name="item_background">#D9DCDE</color>
+    <color name="recent_background">#FFFE8B</color>
+    <color name="recent_border">#C3C16A</color>
     <color name="text">#1E1E1E</color>
     <color name="text_light">#AEAEAE</color>
     <color name="text_icon">#A8A8A8</color>
