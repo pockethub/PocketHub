@@ -22,7 +22,6 @@
     <color name="background_comment">#F8F8F8</color>
     <color name="comment_outer">#C7C7C7</color>
     <color name="comment_inner">#FFFFFF</color>
-    <color name="item_background">#D9DCDE</color>
     <color name="recent_background">#FFFE8B</color>
     <color name="recent_border">#C3C16A</color>
     <color name="text">#1E1E1E</color>
