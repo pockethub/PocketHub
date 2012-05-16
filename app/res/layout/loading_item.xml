@@ -17,7 +17,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/ListItem"
     android:paddingLeft="0dp"
-    android:paddingRight="0dp" >
+    android:paddingRight="0dp"
+    android:paddingTop="0dp" >
 
     <View
         android:id="@+id/v_separator"
