@@ -223,9 +223,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         loadingText.setText(string.loading_comments);
         loadingView.findViewById(id.v_separator).setVisibility(GONE);
 
-        if (issue != null)
-            updateHeader(issue);
-        else {
+        if (issue == null) {
             loadingText.setText(string.loading_issue);
             headerView.setVisibility(GONE);
         }
@@ -243,8 +241,11 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
         if (issue != null && comments != null)
             updateList(issue, comments);
-        else
+        else {
+            if (issue != null)
+                updateHeader(issue);
             refreshIssue();
+        }
     }
 
     @Override
