@@ -72,6 +72,11 @@ public class CommentListAdapter extends ItemListAdapter<Comment, CommentItemView
     }
 
     @Override
+    public long getItemId(final int position) {
+        return getItem(position).getId();
+    }
+
+    @Override
     protected CommentItemView createView(final View view) {
         return new CommentItemView(view);
     }
