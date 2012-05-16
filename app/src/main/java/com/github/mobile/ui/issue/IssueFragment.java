@@ -37,7 +37,6 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -356,7 +355,6 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
     }
 
     private void refreshIssue() {
-        Log.d("TEST", "Refresh called");
         new RefreshIssueTask(getActivity(), repositoryId, issueNumber) {
 
             @Override
