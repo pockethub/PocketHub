@@ -33,6 +33,8 @@ import com.google.inject.Inject;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import roboguice.util.RoboAsyncTask;
 
@@ -64,6 +66,10 @@ public class HttpImageGetter implements ImageGetter {
 
     private final int width;
 
+    private final Map<Object, CharSequence> rawHtmlCache = new HashMap<Object, CharSequence>();
+
+    private final Map<Object, CharSequence> fullHtmlCache = new HashMap<Object, CharSequence>();
+
     /**
      * Create image getter for context
      *
@@ -77,6 +83,23 @@ public class HttpImageGetter implements ImageGetter {
         loading = new LoadingImageGetter(context, 48);
     }
 
+    private HttpImageGetter show(final TextView view, final CharSequence html) {
+        if (TextUtils.isEmpty(html))
+            return hide(view);
+
+        view.setText(html);
+        view.setVisibility(VISIBLE);
+        view.setTag(null);
+        return this;
+    }
+
+    private HttpImageGetter hide(final TextView view) {
+        view.setText(null);
+        view.setVisibility(GONE);
+        view.setTag(null);
+        return this;
+    }
+
     /**
      * Bind text view to HTML string
      *
@@ -86,16 +109,28 @@ public class HttpImageGetter implements ImageGetter {
      * @return this image getter
      */
     public HttpImageGetter bind(final TextView view, final String html, final Object id) {
-        CharSequence encoded = !TextUtils.isEmpty(html) ? HtmlUtils.encode(html, loading) : "";
-        view.setVisibility(encoded.length() > 0 ? VISIBLE : GONE);
-        view.setText(encoded);
+        if (TextUtils.isEmpty(html))
+            return hide(view);
 
-        // Use default encoding if no img tags
-        if (html.indexOf("<img") == -1) {
-            view.setTag(null);
-            return this;
+        CharSequence encoded = fullHtmlCache.get(id);
+        if (encoded != null)
+            return show(view, encoded);
+
+        encoded = rawHtmlCache.get(id);
+        if (encoded == null) {
+            encoded = HtmlUtils.encode(html, loading);
+            // Use default encoding if no img tags
+            if (html.indexOf("<img") == -1) {
+                fullHtmlCache.put(id, encoded);
+                return show(view, encoded);
+            } else
+                rawHtmlCache.put(id, encoded);
         }
 
+        if (TextUtils.isEmpty(encoded))
+            return hide(view);
+
+        show(view, encoded);
         view.setTag(id);
         new RoboAsyncTask<CharSequence>(context) {
 
@@ -106,12 +141,11 @@ public class HttpImageGetter implements ImageGetter {
 
             @Override
             protected void onSuccess(final CharSequence html) throws Exception {
-                if (!id.equals(view.getTag()))
-                    return;
+                rawHtmlCache.remove(id);
+                fullHtmlCache.put(id, html);
 
-                view.setVisibility(html.length() > 0 ? VISIBLE : GONE);
-                view.setText(html);
-                view.setTag(null);
+                if (id.equals(view.getTag()))
+                    show(view, html);
             }
         }.execute();
         return this;

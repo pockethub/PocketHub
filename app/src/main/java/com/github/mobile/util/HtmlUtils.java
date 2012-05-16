@@ -21,6 +21,7 @@ import android.text.Editable;
 import android.text.Html.ImageGetter;
 import android.text.Html.TagHandler;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.StrikethroughSpan;
 import android.text.style.TypefaceSpan;
 
@@ -185,7 +186,7 @@ public class HtmlUtils {
      * @param html
      * @return html
      */
-    public static CharSequence encode(String html) {
+    public static CharSequence encode(final String html) {
         return encode(html, null);
     }
 
@@ -197,10 +198,8 @@ public class HtmlUtils {
      * @return html
      */
     public static CharSequence encode(final String html, final ImageGetter imageGetter) {
-        if (html == null)
+        if (TextUtils.isEmpty(html))
             return "";
-        if (html.length() == 0)
-            return html;
 
         return android.text.Html.fromHtml(html, imageGetter, TAG_HANDLER);
     }
