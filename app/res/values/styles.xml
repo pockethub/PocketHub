@@ -42,6 +42,12 @@
         <item name="android:id">@android:id/list</item>
     </style>
 
+    <style name="CommentListView" parent="ListView">
+        <item name="android:dividerHeight">5dp</item>
+        <item name="android:divider">@null</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
     <style name="EditText">
         <item name="android:textColor">@color/text</item>
         <item name="android:textCursorDrawable">@drawable/edit_text_cursor</item>
@@ -121,8 +127,8 @@
 
     <style name="Separator">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">2dp</item>
-        <item name="android:background">@drawable/separator</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/separator</item>
     </style>
 
     <style name="ListDivider">
@@ -150,8 +156,8 @@
     </style>
 
     <style name="ListItem">
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:paddingLeft">5dp</item>
         <item name="android:paddingRight">5dp</item>
         <item name="android:paddingTop">5dp</item>

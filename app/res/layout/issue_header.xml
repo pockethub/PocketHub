@@ -20,151 +20,105 @@
     android:orientation="vertical" >
 
     <LinearLayout
+        android:id="@+id/ll_milestone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/issue_header_background"
-        android:baselineAligned="false"
-        android:orientation="horizontal" >
+        android:background="@drawable/inset_background"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp" >
 
-        <LinearLayout
-            android:id="@+id/ll_milestone"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="33"
-            android:gravity="center"
-            android:padding="10dp" >
+        <TextView
+            style="@style/ListSubtitleText"
+            android:singleLine="true"
+            android:text="@string/milestone_prefix"
+            android:textColor="@color/text" />
 
-            <TextView
-                android:id="@+id/tv_milestone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/text"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_assignee"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="34"
-            android:gravity="center"
-            android:orientation="horizontal" >
-
-            <View
-                android:layout_width="1px"
-                android:layout_height="match_parent"
-                android:background="@color/issue_header_separator" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="10dp" >
-
-                <ImageView
-                    android:id="@+id/iv_assignee_gravatar"
-                    style="@style/AvatarSmall"
-                    android:contentDescription="@string/avatar" />
-
-                <TextView
-                    android:id="@+id/tv_assignee_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:paddingLeft="5dp"
-                    android:singleLine="true"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/text"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="1px"
-                android:layout_height="match_parent"
-                android:background="@color/issue_header_separator" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_state"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="33"
-            android:gravity="center"
-            android:padding="10dp" >
-
-            <TextView
-                android:id="@+id/tv_state"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/text"
-                android:textStyle="bold" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_milestone"
+            style="@style/ListSubtitleText"
+            android:paddingLeft="5dp"
+            android:singleLine="true"
+            android:textColor="@color/text"
+            android:textStyle="bold" />
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/issue_header_separator" />
-
-    <TextView
-        android:id="@+id/tv_issue_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="5dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/text"
-        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingBottom="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         android:paddingTop="5dp" >
 
         <ImageView
             android:id="@+id/iv_avatar"
-            style="@style/AvatarLarge"
+            style="@style/AvatarMedium"
             android:contentDescription="@string/avatar" />
 
         <TextView
             android:id="@+id/tv_issue_creation"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
+            style="@style/ListSubtitleText"
             android:paddingLeft="5dp"
-            android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/text_light" />
+            android:singleLine="true" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_issue_title"
+        style="@style/ListTitleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp" />
 
     <View
         android:id="@+id/v_labels"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        style="@style/Separator"
+        android:layout_marginTop="10dp" />
+
+    <LinearLayout
+        android:id="@+id/ll_assignee"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp" >
+
+        <ImageView
+            android:id="@+id/iv_assignee_gravatar"
+            style="@style/AvatarMedium"
+            android:contentDescription="@string/avatar" />
+
+        <TextView
+            android:id="@+id/tv_assignee_name"
+            style="@style/ListSubtitleText"
+            android:paddingLeft="5dp"
+            android:singleLine="true"
+            android:textColor="@color/text"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_assignee_label"
+            style="@style/ListSubtitleText"
+            android:paddingLeft="5dp"
+            android:singleLine="true"
+            android:textColor="@color/text" />
+    </LinearLayout>
+
+    <View style="@style/Separator" />
 
     <TextView
         android:id="@+id/tv_issue_body"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
         android:paddingTop="5dp"
         android:textColor="@color/text"
         android:textColorLink="@color/text_link" />
-
-    <View style="@style/Separator" />
 
 </LinearLayout>

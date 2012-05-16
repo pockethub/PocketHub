@@ -16,7 +16,10 @@
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/ListItem"
-    android:orientation="vertical" >
+    android:background="@drawable/inset_background"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp" >
 
     <LinearLayout
         android:layout_width="match_parent"

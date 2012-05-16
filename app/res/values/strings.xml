@@ -114,7 +114,8 @@
     <string name="select_milestone">Select Milestone</string>
     <string name="select_labels">Select Labels</string>
     <string name="no_milestone">No milestone</string>
-    <string name="unassigned">Unassigned</string>
+    <string name="unassigned">No one is assigned</string>
+     <string name="assigned">is assigned</string>
     <string name="no_gists_found">No Gists found</string>
     <string name="open_gist_title">Open Gist</string>
     <string name="enter_id_message">Enter id:</string>

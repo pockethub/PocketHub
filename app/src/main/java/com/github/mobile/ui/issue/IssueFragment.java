@@ -137,13 +137,15 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
     private TextView assigneeText;
 
+    private TextView assigneeLabel;
+
     private ImageView assigneeAvatar;
 
     private View labelsArea;
 
-    private TextView milestoneText;
+    private View milestoneArea;
 
-    private TextView stateText;
+    private TextView milestoneText;
 
     private String html;
 
@@ -215,7 +217,6 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
         html = null;
 
-        list.setFastScrollEnabled(true);
         list.addHeaderView(headerView, null, false);
 
         issue = store.getIssue(repositoryId, issueNumber);
@@ -261,7 +262,21 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
         headerView = inflater.inflate(layout.issue_header, null);
 
-        headerView.findViewById(id.ll_milestone).setOnClickListener(new OnClickListener() {
+        titleText = (TextView) headerView.findViewById(id.tv_issue_title);
+        createdText = (TextView) headerView.findViewById(id.tv_issue_creation);
+        creatorAvatar = (ImageView) headerView.findViewById(id.iv_avatar);
+        assigneeText = (TextView) headerView.findViewById(id.tv_assignee_name);
+        assigneeLabel = (TextView) headerView.findViewById(id.tv_assignee_label);
+        assigneeAvatar = (ImageView) headerView.findViewById(id.iv_assignee_gravatar);
+        labelsArea = headerView.findViewById(id.v_labels);
+        milestoneArea = headerView.findViewById(id.ll_milestone);
+        milestoneText = (TextView) headerView.findViewById(id.tv_milestone);
+        bodyText = (TextView) headerView.findViewById(id.tv_issue_body);
+        bodyText.setMovementMethod(LinkMovementMethod.getInstance());
+
+        loadingView = inflater.inflate(layout.loading_item, null);
+
+        milestoneArea.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
                 if (issue != null)
@@ -279,34 +294,13 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             }
         });
 
-        headerView.findViewById(id.v_labels).setOnClickListener(new OnClickListener() {
+        labelsArea.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
                 if (issue != null)
                     labelsTask.prompt(issue.getLabels());
             }
         });
-
-        headerView.findViewById(id.ll_state).setOnClickListener(new OnClickListener() {
-
-            public void onClick(View v) {
-                if (issue != null)
-                    stateTask.confirm(STATE_OPEN.equals(issue.getState()));
-            }
-        });
-
-        titleText = (TextView) headerView.findViewById(id.tv_issue_title);
-        createdText = (TextView) headerView.findViewById(id.tv_issue_creation);
-        creatorAvatar = (ImageView) headerView.findViewById(id.iv_avatar);
-        assigneeText = (TextView) headerView.findViewById(id.tv_assignee_name);
-        assigneeAvatar = (ImageView) headerView.findViewById(id.iv_assignee_gravatar);
-        labelsArea = headerView.findViewById(id.v_labels);
-        milestoneText = (TextView) headerView.findViewById(id.tv_milestone);
-        stateText = (TextView) headerView.findViewById(id.tv_state);
-        bodyText = (TextView) headerView.findViewById(id.tv_issue_body);
-        bodyText.setMovementMethod(LinkMovementMethod.getInstance());
-
-        loadingView = inflater.inflate(layout.loading_item, null);
     }
 
     private void updateHeader(final Issue issue) {
@@ -327,11 +321,14 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         User assignee = issue.getAssignee();
         if (assignee != null) {
             assigneeText.setText(assignee.getLogin());
+            assigneeText.setVisibility(VISIBLE);
+            assigneeLabel.setText(string.assigned);
             assigneeAvatar.setVisibility(VISIBLE);
             avatarHelper.bind(assigneeAvatar, assignee);
         } else {
             assigneeAvatar.setVisibility(GONE);
-            assigneeText.setText(assigneeText.getContext().getString(string.unassigned));
+            assigneeText.setVisibility(GONE);
+            assigneeLabel.setText(string.unassigned);
         }
 
         if (!issue.getLabels().isEmpty()) {
@@ -346,17 +343,18 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         } else
             labelsArea.setVisibility(GONE);
 
-        if (issue.getMilestone() != null)
+        if (issue.getMilestone() != null) {
             milestoneText.setText(issue.getMilestone().getTitle());
-        else
-            milestoneText.setText(milestoneText.getContext().getString(string.no_milestone));
+            milestoneArea.setVisibility(VISIBLE);
+        } else
+            milestoneArea.setVisibility(GONE);
 
         String state = issue.getState();
         if (state != null && state.length() > 0)
             state = state.substring(0, 1).toUpperCase(Locale.US) + state.substring(1);
         else
             state = "";
-        stateText.setText(state);
+        // stateText.setText(state);
     }
 
     private void refreshIssue() {
