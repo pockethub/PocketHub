@@ -15,13 +15,20 @@
  */
 package com.github.mobile.util;
 
+import static android.graphics.Paint.Style.FILL;
 import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 import static android.text.Spanned.SPAN_MARK_MARK;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.text.Editable;
 import android.text.Html.ImageGetter;
 import android.text.Html.TagHandler;
+import android.text.Layout;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.LeadingMarginSpan;
+import android.text.style.QuoteSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.TypefaceSpan;
 
@@ -31,6 +38,34 @@ import org.xml.sax.XMLReader;
  * HTML Utilities
  */
 public class HtmlUtils {
+
+    private static class ReplySpan implements LeadingMarginSpan {
+
+        private final int color;
+
+        public ReplySpan() {
+            color = 0xffDDDDDD;
+        }
+
+        @Override
+        public int getLeadingMargin(boolean first) {
+            return 18;
+        }
+
+        public void drawLeadingMargin(Canvas c, Paint p, int x, int dir, int top, int baseline, int bottom,
+                CharSequence text, int start, int end, boolean first, Layout layout) {
+            final Style style = p.getStyle();
+            final int color = p.getColor();
+
+            p.setStyle(FILL);
+            p.setColor(this.color);
+
+            c.drawRect(x, top, x + dir * 6, bottom, p);
+
+            p.setStyle(style);
+            p.setColor(color);
+        }
+    }
 
     private static final String TAG_ROOT = "githubroot";
 
@@ -162,6 +197,14 @@ public class HtmlUtils {
                 while (last >= 0 && output.charAt(last) == '\n') {
                     output.delete(last, last + 1);
                     last = output.length() - 1;
+                }
+
+                QuoteSpan[] quoteSpans = output.getSpans(0, output.length(), QuoteSpan.class);
+                for (QuoteSpan span : quoteSpans) {
+                    int start = output.getSpanStart(span);
+                    int end = output.getSpanEnd(span);
+                    output.removeSpan(span);
+                    output.setSpan(new ReplySpan(), start, end, SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
                 return;
             }
