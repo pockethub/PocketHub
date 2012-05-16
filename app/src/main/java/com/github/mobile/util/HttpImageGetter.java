@@ -91,8 +91,10 @@ public class HttpImageGetter implements ImageGetter {
         view.setText(encoded);
 
         // Use default encoding if no img tags
-        if (html.indexOf("<img") == -1)
+        if (html.indexOf("<img") == -1) {
+            view.setTag(null);
             return this;
+        }
 
         view.setTag(id);
         new RoboAsyncTask<CharSequence>(context) {
@@ -103,7 +105,7 @@ public class HttpImageGetter implements ImageGetter {
             }
 
             @Override
-            protected void onSuccess(CharSequence html) throws Exception {
+            protected void onSuccess(final CharSequence html) throws Exception {
                 if (!id.equals(view.getTag()))
                     return;
 
