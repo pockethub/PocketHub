@@ -60,7 +60,7 @@ public class CreateGistActivity extends RoboSherlockFragmentActivity {
         setTitle(string.new_gist);
 
         String text = getIntent().getStringExtra(EXTRA_TEXT);
-        if (TextUtils.isEmpty(text))
+        if (!TextUtils.isEmpty(text))
             contentText.setText(text);
 
         contentText.addTextChangedListener(new TextWatcherAdapter() {
