@@ -15,16 +15,25 @@
  */
 package com.github.mobile.ui.issue;
 
-import static android.graphics.Color.BLACK;
 import static android.graphics.Color.WHITE;
+import static android.graphics.Paint.Style.FILL;
+import static android.graphics.Paint.Style.STROKE;
 import static android.graphics.Typeface.DEFAULT_BOLD;
+import static android.util.TypedValue.COMPLEX_UNIT_DIP;
+import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import static java.util.Locale.US;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.PaintDrawable;
+import android.util.TypedValue;
+import android.view.View;
+
+import com.github.mobile.R.color;
+import com.github.mobile.util.ServiceUtils;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -41,13 +50,21 @@ public class LabelsDrawable extends PaintDrawable {
 
     private static final int PADDING_RIGHT = 10;
 
-    private static final int PADDING_TOP = 10;
+    private static final int PADDING_TOP = 8;
 
-    private static final int PADDING_BOTTOM = 10;
+    private static final int PADDING_BOTTOM = 8;
 
-    private static final int SIZE_SHADOW = 3;
+    private static final int SPACING = 8;
 
-    private static final int FIN = 8;
+    private static final int SHADOW_WIDTH = 2;
+
+    private static final int CORNERS = 2;
+
+    private static final int BORDER = 1;
+
+    private static float getPixels(final Resources resources, final int dp) {
+        return TypedValue.applyDimension(COMPLEX_UNIT_DIP, dp, resources.getDisplayMetrics());
+    }
 
     private final String[] names;
 
@@ -63,23 +80,53 @@ public class LabelsDrawable extends PaintDrawable {
 
     private int rowStart;
 
+    private final int borderColor;
+
+    private final float paddingLeft;
+
+    private final float paddingRight;
+
+    private final float paddingTop;
+
+    private final float paddingBottom;
+
+    private final float shadowWidth;
+
+    private final float border;
+
+    private final float corners;
+
+    private final float spacing;
+
     /**
      * Create drawable for labels
      *
-     * @param paddingLeft
+     * @param resources
+     * @param view
      * @param textSize
-     * @param maxWidth
      * @param labels
      */
-    public LabelsDrawable(final int paddingLeft, final float textSize, final int maxWidth,
+    public LabelsDrawable(final Resources resources, final View view, final float textSize,
             final Collection<Label> labels) {
-        rowStart = paddingLeft;
+        borderColor = resources.getColor(color.label_border);
+        paddingTop = getPixels(resources, PADDING_TOP);
+        paddingLeft = getPixels(resources, PADDING_LEFT);
+        paddingRight = getPixels(resources, PADDING_RIGHT);
+        paddingBottom = getPixels(resources, PADDING_BOTTOM);
+        shadowWidth = getPixels(resources, SHADOW_WIDTH);
+        corners = getPixels(resources, CORNERS);
+        border = getPixels(resources, BORDER);
+        spacing = getPixels(resources, SPACING);
+
+        final int maxWidth = ServiceUtils.getDisplayWidth(view) - view.getPaddingLeft() - view.getPaddingRight();
+
+        rowStart = view.getPaddingLeft();
 
         Label[] sortedLabels = labels.toArray(new Label[labels.size()]);
         Arrays.sort(sortedLabels, new Comparator<Label>() {
 
             public int compare(Label lhs, Label rhs) {
-                return lhs.getName().compareToIgnoreCase(rhs.getName());
+                return CASE_INSENSITIVE_ORDER.compare(lhs.getName(), rhs.getName());
             }
         });
 
@@ -98,7 +145,7 @@ public class LabelsDrawable extends PaintDrawable {
         p.setTypeface(DEFAULT_BOLD);
         p.setTextSize(textSize);
 
-        rowHeight = PADDING_TOP + PADDING_BOTTOM;
+        rowHeight = paddingTop + paddingBottom;
         int rowCount = 0;
 
         final Rect bounds = new Rect();
@@ -109,18 +156,18 @@ public class LabelsDrawable extends PaintDrawable {
             getSize(names[i], i, textBounds);
             widths[i] = textBounds.width();
             heights[i] = textBounds.height();
-            rowHeight = Math.max(rowHeight, heights[i] + PADDING_TOP + PADDING_BOTTOM);
-            if (availableRowSpace - widths[i] >= 0)
-                availableRowSpace -= widths[i];
-            else {
+            rowHeight = Math.max(rowHeight, heights[i] + paddingTop + paddingBottom);
+            availableRowSpace -= widths[i];
+            availableRowSpace -= spacing;
+            if (availableRowSpace < 0) {
                 rowCount++;
                 availableRowSpace = maxWidth;
             }
             rows[i] = rowHeight * rowCount;
             if (rowCount > 0)
-                rows[i] += PADDING_BOTTOM;
+                rows[i] += spacing;
         }
-        bounds.bottom = Math.round((rowCount + 1) * rowHeight + rowCount * PADDING_BOTTOM + 0.5F);
+        bounds.bottom = Math.round((rowCount + 1) * rowHeight + rowCount * paddingBottom + 0.5F);
 
         setBounds(bounds);
     }
@@ -128,81 +175,50 @@ public class LabelsDrawable extends PaintDrawable {
     private void getSize(final String name, final int index, Rect tBounds) {
         tBounds.setEmpty();
         getPaint().getTextBounds(name, 0, name.length(), tBounds);
-        tBounds.right += PADDING_LEFT + PADDING_RIGHT;
-        if (index != 0)
-            tBounds.right += FIN * 2;
-        else
-            tBounds.right += FIN;
+        tBounds.right += paddingLeft + paddingRight;
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    public void draw(final Canvas canvas) {
         super.draw(canvas);
-        Paint paint = getPaint();
-        int original = paint.getColor();
-        int start = rowStart;
 
-        float height = rows[0] + rowHeight;
-        float quarter = rowHeight / 4;
-        float width = widths[0];
-        float textOffset = (rowHeight - heights[0]) / 2;
-        final Path path = new Path();
-        path.moveTo(start, rows[0]);
-        path.lineTo(start + width, rows[0]);
-        path.lineTo(start + width - FIN, quarter);
-        path.lineTo(start + width, quarter * 2);
-        path.lineTo(start + width - FIN, quarter * 3);
-        path.lineTo(start + width, height);
-        path.lineTo(start, height);
-        path.lineTo(start, rows[0]);
+        final Paint paint = getPaint();
+        final int original = paint.getColor();
 
-        paint.setColor(colors[0]);
-        canvas.drawPath(path, paint);
+        final RectF rect = new RectF();
+        float lastRow = -1F;
+        float start = -1F;
+        float rowStart = -1F;
 
-        paint.setColor(WHITE);
-        paint.setShadowLayer(SIZE_SHADOW, 0, 0, BLACK);
-        float textStart = height - textOffset;
-        canvas.drawText(names[0], start + PADDING_LEFT, textStart, paint);
-        paint.clearShadowLayer();
-
-        start += width;
-
-        float lastRow = rows[0];
-
-        for (int i = 1; i < names.length; i++) {
-            float rowStart = rows[i];
+        for (int i = 0; i < names.length; i++) {
+            rowStart = rows[i];
             if (rowStart > lastRow)
                 start = this.rowStart;
 
-            width = widths[i];
-            height = rowStart + rowHeight;
-            textOffset = (rowHeight - heights[i]) / 2;
-            textStart = height - textOffset;
-            quarter = rowHeight / 4;
+            rect.left = start;
+            rect.right = start + widths[i];
+            rect.top = rowStart;
+            rect.bottom = rowStart + rowHeight;
 
-            path.reset();
-            path.moveTo(start + FIN, rowStart);
-            path.lineTo(start + width, rowStart);
-            path.lineTo(start + width - FIN, rowStart + quarter);
-            path.lineTo(start + width, rowStart + quarter * 2);
-            path.lineTo(start + width - FIN, rowStart + quarter * 3);
-            path.lineTo(start + width, height);
-            path.lineTo(start + FIN, height);
-            path.lineTo(start, rowStart + quarter * 3);
-            path.lineTo(start + FIN, rowStart + quarter * 2);
-            path.lineTo(start, rowStart + quarter);
-            path.lineTo(start + FIN, rowStart);
-
+            paint.setStyle(FILL);
             paint.setColor(colors[i]);
-            canvas.drawPath(path, paint);
+            canvas.drawRoundRect(rect, corners + 1, corners + 1, paint);
 
-            paint.setShadowLayer(SIZE_SHADOW, 0, 0, BLACK);
+            paint.setStyle(STROKE);
+            paint.setColor(borderColor);
+            rect.top += border / 2;
+            rect.left += border / 2;
+            paint.setStrokeWidth(border);
+            canvas.drawRoundRect(rect, corners, corners, paint);
+
+            paint.setStyle(FILL);
             paint.setColor(WHITE);
-            canvas.drawText(names[i], start + PADDING_LEFT + FIN, textStart, paint);
+            paint.setShadowLayer(shadowWidth, 0, 0, Color.BLACK);
+            canvas.drawText(names[i], start + paddingLeft, rect.bottom - ((rowHeight - heights[i]) / 2), paint);
             paint.clearShadowLayer();
 
             lastRow = rowStart;
-            start += width;
+            start = rect.right + spacing;
         }
 
         paint.setColor(original);

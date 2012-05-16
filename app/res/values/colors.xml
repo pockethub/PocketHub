@@ -58,5 +58,6 @@
     <color name="text_inverted">#FFFFFF</color>
     <color name="text_news_details">#666666</color>
     <color name="separator">#E5E5E5</color>
+    <color name="label_border">#BBBBBB</color>
 
 </resources>

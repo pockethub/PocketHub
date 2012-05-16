@@ -67,7 +67,6 @@ import com.github.mobile.ui.comment.CommentListAdapter;
 import com.github.mobile.ui.comment.CreateCommentActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
-import com.github.mobile.util.ServiceUtils;
 import com.github.mobile.util.TimeUtils;
 import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
@@ -333,9 +332,8 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
         if (!issue.getLabels().isEmpty()) {
             labelsArea.setVisibility(VISIBLE);
-            LabelsDrawable drawable = new LabelsDrawable(labelsArea.getPaddingLeft(), createdText.getTextSize(),
-                    ServiceUtils.getDisplayWidth(labelsArea) - labelsArea.getPaddingLeft()
-                            - labelsArea.getPaddingRight(), issue.getLabels());
+            LabelsDrawable drawable = new LabelsDrawable(getResources(), labelsArea, createdText.getTextSize(),
+                    issue.getLabels());
             drawable.getPaint().setColor(getResources().getColor(android.R.color.transparent));
             labelsArea.setBackgroundDrawable(drawable);
             LayoutParams params = new LayoutParams(drawable.getBounds().width(), drawable.getBounds().height());

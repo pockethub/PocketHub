@@ -42,7 +42,6 @@ import com.github.mobile.ui.MultiChoiceDialogFragment;
 import com.github.mobile.ui.SingleChoiceDialogFragment;
 import com.github.mobile.ui.TextWatcherAdapter;
 import com.github.mobile.util.AvatarLoader;
-import com.github.mobile.util.ServiceUtils;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -187,9 +186,8 @@ public class CreateIssueActivity extends DialogFragmentActivity {
         List<Label> labels = issue.getLabels();
         if (labels != null && !labels.isEmpty()) {
             labelsArea.setVisibility(VISIBLE);
-            LabelsDrawable drawable = new LabelsDrawable(labelsArea.getPaddingLeft(), assigneeText.getTextSize(),
-                    ServiceUtils.getDisplayWidth(labelsArea) - labelsArea.getPaddingLeft()
-                            - labelsArea.getPaddingRight(), issue.getLabels());
+            LabelsDrawable drawable = new LabelsDrawable(getResources(), labelsArea, assigneeText.getTextSize(),
+                    issue.getLabels());
             drawable.getPaint().setColor(getResources().getColor(android.R.color.transparent));
             labelsArea.setBackgroundDrawable(drawable);
             LayoutParams params = new LayoutParams(drawable.getBounds().width(), drawable.getBounds().height());
