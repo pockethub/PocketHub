@@ -24,6 +24,7 @@
     <TextView
         android:id="@+id/tv_repo_name"
         style="@style/ListTitleText"
+        android:paddingTop="5dp"
         android:singleLine="true" />
 
     <LinearLayout
