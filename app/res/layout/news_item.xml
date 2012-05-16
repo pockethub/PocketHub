@@ -43,7 +43,8 @@
         android:paddingBottom="1dp"
         android:paddingTop="2dp"
         android:textColor="@color/text_news_details_selector"
-        android:textSize="15dp" />
+        android:textSize="15dp"
+        android:textStyle="normal" />
 
     <TextView
         android:id="@+id/tv_event_icon"
