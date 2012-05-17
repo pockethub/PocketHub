@@ -63,7 +63,7 @@ public class CommentListAdapter extends ItemListAdapter<Comment, CommentItemView
     }
 
     @Override
-    protected void update(final CommentItemView view, final Comment comment) {
+    protected void update(final int position, final CommentItemView view, final Comment comment) {
         imageGetter.bind(view.bodyView, comment.getBodyHtml(), comment.getId());
         avatars.bind(view.avatarView, comment.getUser());
 

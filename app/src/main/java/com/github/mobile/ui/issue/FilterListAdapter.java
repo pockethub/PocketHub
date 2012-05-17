@@ -54,7 +54,7 @@ public class FilterListAdapter extends ItemListAdapter<IssueFilter, FilterItemVi
     }
 
     @Override
-    protected void update(final FilterItemView view, final IssueFilter filter) {
+    protected void update(final int position, final FilterItemView view, final IssueFilter filter) {
         avatars.bind(view.avatarView, filter.getRepository().getOwner());
         view.repoText.setText(filter.getRepository().generateId());
         view.filterText.setText(filter.toDisplay());

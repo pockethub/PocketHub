@@ -54,7 +54,7 @@ public class UserRepositoryListAdapter extends RepositoryListAdapter<Repository,
     }
 
     @Override
-    protected void update(final RepositoryItemView view, final Repository repository) {
+    protected void update(final int position, final RepositoryItemView view, final Repository repository) {
         view.repoName.setText(login.equals(repository.getOwner().getLogin()) ? repository.getName() : repository
                 .generateId());
 

@@ -92,7 +92,7 @@ public class RepositoryIssueListAdapter extends ItemListAdapter<Issue, Repositor
     }
 
     @Override
-    protected void update(RepositoryIssueItemView view, Issue issue) {
+    protected void update(final int position, final RepositoryIssueItemView view, final Issue issue) {
         view.number.setText(Integer.toString(issue.getNumber()));
         if (issue.getClosedAt() != null)
             view.number.setPaintFlags(view.numberPaintFlags | STRIKE_THRU_TEXT_FLAG);

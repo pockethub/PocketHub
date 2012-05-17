@@ -49,7 +49,7 @@ public class SearchRepositoryListAdapter extends RepositoryListAdapter<SearchRep
     }
 
     @Override
-    protected void update(final RepositoryItemView view, final SearchRepository repository) {
+    protected void update(final int position, final RepositoryItemView view, final SearchRepository repository) {
         view.repoName.setText(repository.generateId());
 
         updateDetails(view, repository.getDescription(), repository.getLanguage(), repository.getWatchers(),

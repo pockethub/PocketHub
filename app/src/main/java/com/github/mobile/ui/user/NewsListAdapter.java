@@ -440,7 +440,7 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
     }
 
     @Override
-    protected void update(final NewsItemView view, final Event event) {
+    protected void update(final int position, final NewsItemView view, final Event event) {
         avatars.bind(view.avatarView, event.getActor());
 
         SpannableStringBuilder main = new SpannableStringBuilder();

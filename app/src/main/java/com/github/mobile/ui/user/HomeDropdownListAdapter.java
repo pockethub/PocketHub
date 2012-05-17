@@ -80,7 +80,7 @@ public class HomeDropdownListAdapter extends BaseAdapter {
         }
 
         @Override
-        protected void update(final OrgItemView view, final User user) {
+        protected void update(final int position, final OrgItemView view, final User user) {
             view.nameText.setText(user.getLogin());
             avatars.bind(view.avatarView, user);
         }

@@ -59,7 +59,7 @@ public class GistListAdapter extends ItemListAdapter<Gist, GistView> {
     }
 
     @Override
-    protected void update(final GistView view, final Gist gist) {
+    protected void update(final int position, final GistView view, final Gist gist) {
         view.gistId.setText(gist.getId());
 
         String description = gist.getDescription();

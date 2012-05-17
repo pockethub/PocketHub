@@ -55,7 +55,7 @@ public class UserListAdapter extends ItemListAdapter<User, UserItemView> {
     }
 
     @Override
-    protected void update(final UserItemView view, final User user) {
+    protected void update(final int position, final UserItemView view, final User user) {
         avatarHelper.bind(view.avatarView, user);
         view.loginText.setText(user.getLogin());
     }

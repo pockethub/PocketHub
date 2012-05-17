@@ -104,10 +104,11 @@ public abstract class ItemListAdapter<I, V extends ItemView> extends BaseAdapter
     /**
      * Update view to display item
      *
+     * @param position
      * @param view
      * @param item
      */
-    protected abstract void update(V view, I item);
+    protected abstract void update(int position, V view, I item);
 
     /**
      * Create empty item view
@@ -125,7 +126,7 @@ public abstract class ItemListAdapter<I, V extends ItemView> extends BaseAdapter
             view = createView(convertView);
             convertView.setTag(view);
         }
-        update(view, getItem(position));
+        update(position, view, getItem(position));
         return convertView;
     }
 }

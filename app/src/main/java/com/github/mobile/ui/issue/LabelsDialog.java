@@ -21,10 +21,10 @@ import android.util.Log;
 
 import com.github.mobile.R.string;
 import com.github.mobile.ui.DialogFragmentActivity;
-import com.github.mobile.ui.MultiChoiceDialogFragment;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.github.mobile.util.ToastUtils;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -131,17 +131,17 @@ public class LabelsDialog {
             return;
         }
 
-        final String[] names = labels.keySet().toArray(new String[labels.size()]);
-        final boolean[] checked = new boolean[names.length];
+        final ArrayList<Label> names = new ArrayList<Label>(labels.values());
+        final boolean[] checked = new boolean[names.size()];
         if (selectedLabels != null && !selectedLabels.isEmpty()) {
             Set<String> selectedNames = new HashSet<String>();
             for (Label label : selectedLabels)
                 selectedNames.add(label.getName());
-            for (int i = 0; i < names.length; i++)
-                if (selectedNames.contains(names[i]))
+            for (int i = 0; i < checked.length; i++)
+                if (selectedNames.contains(names.get(i).getName()))
                     checked[i] = true;
         }
-        MultiChoiceDialogFragment.show(activity, requestCode, activity.getString(string.select_labels), null, names,
-                checked);
+        LabelsDialogFragment
+                .show(activity, requestCode, activity.getString(string.select_labels), null, names, checked);
     }
 }
