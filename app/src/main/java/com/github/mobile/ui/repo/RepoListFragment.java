@@ -125,8 +125,8 @@ public class RepoListFragment extends ItemListFragment<Repository> implements Or
 
     @Override
     protected ItemListAdapter<Repository, ? extends ItemView> createAdapter(List<Repository> items) {
-        return new RepositoryListAdapter(getActivity().getLayoutInflater(),
-                items.toArray(new Repository[items.size()]), org, recentRepos);
+        return new DefaultRepositoryListAdapter(getActivity().getLayoutInflater(), items.toArray(new Repository[items
+                .size()]), org, recentRepos);
     }
 
     @Override

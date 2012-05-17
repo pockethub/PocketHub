@@ -22,96 +22,82 @@ import static com.github.mobile.util.TypefaceUtils.ICON_PRIVATE;
 import static com.github.mobile.util.TypefaceUtils.ICON_PUBLIC;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.View;
 
 import com.github.mobile.ui.ItemListAdapter;
-import com.viewpagerindicator.R.layout;
+import com.github.mobile.ui.ItemView;
 
 import java.text.NumberFormat;
-import java.util.concurrent.atomic.AtomicReference;
-
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.User;
 
 /**
  * Adapter for a list of repositories
+ *
+ * @param <I>
+ *            item class
+ * @param <V>
+ *            view class
  */
-public class RepositoryListAdapter extends ItemListAdapter<Repository, RecentRepositoryItemView> {
-
-    private static final NumberFormat FORMAT = NumberFormat.getIntegerInstance();
-
-    private final AtomicReference<User> account;
-
-    private final AtomicReference<RecentRepositories> recent;
+public abstract class RepositoryListAdapter<I, V extends ItemView> extends ItemListAdapter<I, V> {
 
     /**
-     * Create list adapter for repositories
+     * Number formatter
+     */
+    protected static final NumberFormat FORMAT = NumberFormat.getIntegerInstance();
+
+    /**
+     * Create list adapter
      *
+     * @param viewId
      * @param inflater
      * @param elements
-     * @param account
-     * @param recent
      */
-    public RepositoryListAdapter(LayoutInflater inflater, Repository[] elements, AtomicReference<User> account,
-            AtomicReference<RecentRepositories> recent) {
-        super(layout.repo_item, inflater, elements);
-
-        this.account = account;
-        this.recent = recent;
+    public RepositoryListAdapter(int viewId, LayoutInflater inflater, I[] elements) {
+        super(viewId, inflater, elements);
     }
 
     /**
-     * Create list adapter for repositories
+     * Create list adapter
      *
+     * @param viewId
      * @param inflater
-     * @param account
-     * @param recent
      */
-    public RepositoryListAdapter(LayoutInflater inflater, AtomicReference<User> account,
-            AtomicReference<RecentRepositories> recent) {
-        this(inflater, null, account, recent);
+    public RepositoryListAdapter(int viewId, LayoutInflater inflater) {
+        super(viewId, inflater);
     }
 
-    @Override
-    protected void update(final RecentRepositoryItemView view, final Repository repository) {
-        if (repository.isPrivate())
+    /**
+     * Update repository details
+     *
+     * @param view
+     * @param description
+     * @param language
+     * @param watchers
+     * @param forks
+     * @param isPrivate
+     * @param isFork
+     */
+    protected void updateDetails(final RepositoryItemView view, final String description, final String language,
+            final int watchers, final int forks, final boolean isPrivate, final boolean isFork) {
+        if (isPrivate)
             view.repoIcon.setText(Character.toString(ICON_PRIVATE));
-        else if (repository.isFork())
+        else if (isFork)
             view.repoIcon.setText(Character.toString(ICON_FORK));
         else
             view.repoIcon.setText(Character.toString(ICON_PUBLIC));
 
-        String id = repository.generateId();
-        view.recentLabel.setVisibility(recent.get().contains(id) ? VISIBLE : GONE);
-
-        view.repoName.setText(account.get().getLogin().equals(repository.getOwner().getLogin()) ? repository.getName()
-                : id);
-
-        String description = repository.getDescription();
         if (!TextUtils.isEmpty(description)) {
-            view.repoDescription.setText(repository.getDescription());
+            view.repoDescription.setText(description);
             view.repoDescription.setVisibility(VISIBLE);
         } else
             view.repoDescription.setVisibility(GONE);
 
-        String language = repository.getLanguage();
         if (TextUtils.isEmpty(language))
             view.language.setVisibility(GONE);
         else {
             view.language.setText(language);
             view.language.setVisibility(VISIBLE);
         }
-        view.watchers.setText(FORMAT.format(repository.getWatchers()));
-        view.forks.setText(FORMAT.format(repository.getForks()));
-    }
 
-    @Override
-    protected RecentRepositoryItemView createView(final View view) {
-        return new RecentRepositoryItemView(view);
-    }
-
-    @Override
-    public long getItemId(final int position) {
-        return getItem(position).getId();
+        view.watchers.setText(FORMAT.format(watchers));
+        view.forks.setText(FORMAT.format(forks));
     }
 }

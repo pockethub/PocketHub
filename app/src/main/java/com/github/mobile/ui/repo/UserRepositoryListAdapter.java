@@ -15,19 +15,10 @@
  */
 package com.github.mobile.ui.repo;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static com.github.mobile.util.TypefaceUtils.ICON_FORK;
-import static com.github.mobile.util.TypefaceUtils.ICON_PRIVATE;
-import static com.github.mobile.util.TypefaceUtils.ICON_PUBLIC;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.github.mobile.ui.ItemListAdapter;
 import com.viewpagerindicator.R.layout;
-
-import java.text.NumberFormat;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
@@ -35,9 +26,7 @@ import org.eclipse.egit.github.core.User;
 /**
  * Adapter for a list of repositories
  */
-public class UserRepositoryListAdapter extends ItemListAdapter<Repository, RepositoryItemView> {
-
-    private static final NumberFormat FORMAT = NumberFormat.getIntegerInstance();
+public class UserRepositoryListAdapter extends RepositoryListAdapter<Repository, RepositoryItemView> {
 
     private final String login;
 
@@ -66,32 +55,11 @@ public class UserRepositoryListAdapter extends ItemListAdapter<Repository, Repos
 
     @Override
     protected void update(final RepositoryItemView view, final Repository repository) {
-        if (repository.isPrivate())
-            view.repoIcon.setText(Character.toString(ICON_PRIVATE));
-        else if (repository.isFork())
-            view.repoIcon.setText(Character.toString(ICON_FORK));
-        else
-            view.repoIcon.setText(Character.toString(ICON_PUBLIC));
-
         view.repoName.setText(login.equals(repository.getOwner().getLogin()) ? repository.getName() : repository
                 .generateId());
 
-        String description = repository.getDescription();
-        if (!TextUtils.isEmpty(description)) {
-            view.repoDescription.setText(repository.getDescription());
-            view.repoDescription.setVisibility(VISIBLE);
-        } else
-            view.repoDescription.setVisibility(GONE);
-
-        String language = repository.getLanguage();
-        if (TextUtils.isEmpty(language))
-            view.language.setVisibility(GONE);
-        else {
-            view.language.setText(language);
-            view.language.setVisibility(VISIBLE);
-        }
-        view.watchers.setText(FORMAT.format(repository.getWatchers()));
-        view.forks.setText(FORMAT.format(repository.getForks()));
+        updateDetails(view, repository.getDescription(), repository.getLanguage(), repository.getWatchers(),
+                repository.getForks(), repository.isPrivate(), repository.isFork());
     }
 
     @Override
