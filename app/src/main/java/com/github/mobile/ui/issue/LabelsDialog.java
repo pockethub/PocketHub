@@ -16,6 +16,7 @@
 package com.github.mobile.ui.issue;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.github.mobile.R.string;
@@ -114,7 +115,7 @@ public class LabelsDialog {
     public Label getLabel(String name) {
         if (labels == null)
             return null;
-        if (name == null || name.length() == 0)
+        if (TextUtils.isEmpty(name))
             return null;
         return labels.get(name);
     }
