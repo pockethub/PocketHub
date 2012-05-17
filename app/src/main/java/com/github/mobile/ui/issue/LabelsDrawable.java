@@ -15,6 +15,7 @@
  */
 package com.github.mobile.ui.issue;
 
+import static android.graphics.Color.BLACK;
 import static android.graphics.Color.WHITE;
 import static android.graphics.Paint.Style.FILL;
 import static android.graphics.Paint.Style.STROKE;
@@ -213,7 +214,7 @@ public class LabelsDrawable extends PaintDrawable {
 
             paint.setStyle(FILL);
             paint.setColor(WHITE);
-            paint.setShadowLayer(shadowWidth, 0, 0, Color.BLACK);
+            paint.setShadowLayer(shadowWidth, 0, 0, BLACK);
             canvas.drawText(names[i], start + paddingLeft, rect.bottom - ((rowHeight - heights[i]) / 2), paint);
             paint.clearShadowLayer();
 
