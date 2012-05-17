@@ -64,5 +64,6 @@
     <color name="milestone_opened_end">#DCDCDC</color>
     <color name="milestone_closed_start">#6AA811</color>
     <color name="milestone_closed_end">#6EB807</color>
+    <color name="repo_description">#666666</color>
 
 </resources>
