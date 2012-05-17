@@ -23,7 +23,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="0dp"
         android:contentDescription="@string/avatar" />
 
     <TextView
@@ -32,6 +32,7 @@
         android:layout_width="match_parent"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/iv_avatar"
+        android:paddingBottom="0dp"
         android:singleLine="true" />
 
     <TextView
@@ -40,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_alignLeft="@id/tv_gist_id"
         android:layout_below="@id/tv_gist_id"
-        android:paddingTop="5dp"
+        android:paddingTop="0dp"
         android:singleLine="true" />
 
     <LinearLayout
@@ -50,7 +51,7 @@
         android:layout_below="@id/tv_gist_title"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingTop="5dp" >
+        android:paddingTop="3dp" >
 
         <TextView
             android:id="@+id/tv_gist_author"
