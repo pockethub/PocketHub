@@ -17,14 +17,13 @@ package com.github.mobile.ui;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.DialogInterface.BUTTON_NEUTRAL;
-
-import com.github.mobile.R.string;
-
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+
+import com.github.mobile.R.string;
 
 /**
  * Helper to display a single choice dialog
