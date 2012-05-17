@@ -178,5 +178,6 @@
     <string name="updated_prefix">updated\u0020</string>
     <string name="loading_collaborators">Loading Collaborators…</string>
     <string name="clear">Clear</string>
+     <string name="error_assignee_update">Updating assignee failed</string>
 
 </resources>
