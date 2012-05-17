@@ -17,6 +17,9 @@ package com.github.mobile.ui;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.DialogInterface.BUTTON_NEUTRAL;
+
+import com.github.mobile.R.string;
+
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -66,7 +69,7 @@ public class SingleChoiceDialogFragment extends DialogFragmentHelper implements 
         builder.setOnCancelListener(this);
         int selected = arguments.getInt(ARG_SELECTED_CHOICE);
         if (selected > -1)
-            builder.setNeutralButton("Clear", this);
+            builder.setNeutralButton(string.clear, this);
         builder.setSingleChoiceItems(arguments.getStringArray(ARG_CHOICES), selected, this);
 
         return builder.create();
