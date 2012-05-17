@@ -38,7 +38,7 @@ import org.eclipse.egit.github.core.service.RepositoryService;
 /**
  * Fragment to display a list of {@link Repository} instances
  */
-public class SearchRepoListFragment extends ItemListFragment<SearchRepository> {
+public class SearchRepositoryListFragment extends ItemListFragment<SearchRepository> {
 
     @Inject
     private IRepositorySearch search;
@@ -59,7 +59,7 @@ public class SearchRepoListFragment extends ItemListFragment<SearchRepository> {
      * @param query
      * @return this fragment
      */
-    public SearchRepoListFragment setQuery(final String query) {
+    public SearchRepositoryListFragment setQuery(final String query) {
         this.query = query;
         return this;
     }

@@ -21,7 +21,7 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <meta-data android:name="android.app.default_searchable" android:value=".ui.repo.RepoSearchActivity"/>
+            <meta-data android:name="android.app.default_searchable" android:value=".ui.repo.RepositorySearchActivity"/>
         </activity>
 
         <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.gist.CreateGistActivity">
@@ -67,7 +67,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:label="@string/search_title" android:launchMode="singleTop" android:name=".ui.repo.RepoSearchActivity">
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:label="@string/search_title" android:launchMode="singleTop" android:name=".ui.repo.RepositorySearchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH"/>
             </intent-filter>
@@ -148,7 +148,7 @@
 
         <provider android:authorities="com.github.sync" android:label="GitHub" android:name=".sync.ContentProviderAdapter" android:syncable="true"/>
 
-        <provider android:authorities="com.github.search.suggest.recent.repos" android:name=".ui.repo.RepoSearchRecentSuggestionsProvider"/>
+        <provider android:authorities="com.github.search.suggest.recent.repos" android:name=".ui.repo.RepositorySearchSuggestionsProvider"/>
 
     </application>
 

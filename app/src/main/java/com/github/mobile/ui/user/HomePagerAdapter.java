@@ -23,7 +23,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.ViewGroup;
 
 import com.github.mobile.R.string;
-import com.github.mobile.ui.repo.RepoListFragment;
+import com.github.mobile.ui.repo.RepositoryListFragment;
 import com.viewpagerindicator.TitleProvider;
 
 import java.util.HashSet;
@@ -61,7 +61,7 @@ public class HomePagerAdapter extends FragmentPagerAdapter implements TitleProvi
         case 0:
             return defaultUser ? new UserReceivedNewsFragment() : new OrganizationNewsFragment();
         case 1:
-            return new RepoListFragment();
+            return new RepositoryListFragment();
         case 2:
             return defaultUser ? new MyFollowersFragment() : new MembersFragment();
         case 3:

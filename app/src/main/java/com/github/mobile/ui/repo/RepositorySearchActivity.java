@@ -19,8 +19,8 @@ import static android.app.SearchManager.QUERY;
 import static android.content.Intent.ACTION_SEARCH;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
-import static com.github.mobile.ui.repo.RepoSearchRecentSuggestionsProvider.clearRepoQueryHistory;
-import static com.github.mobile.ui.repo.RepoSearchRecentSuggestionsProvider.saveRecentRepoQuery;
+import static com.github.mobile.ui.repo.RepositorySearchSuggestionsProvider.clearRepoQueryHistory;
+import static com.github.mobile.ui.repo.RepositorySearchSuggestionsProvider.saveRecentRepoQuery;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -38,9 +38,9 @@ import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmen
 /**
  * Activity to search repositories
  */
-public class RepoSearchActivity extends RoboSherlockFragmentActivity {
+public class RepositorySearchActivity extends RoboSherlockFragmentActivity {
 
-    private SearchRepoListFragment repoFragment;
+    private SearchRepositoryListFragment repoFragment;
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
@@ -77,9 +77,9 @@ public class RepoSearchActivity extends RoboSherlockFragmentActivity {
         actionBar.setSubtitle(string.repositories);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        repoFragment = (SearchRepoListFragment) getSupportFragmentManager().findFragmentById(android.R.id.list);
+        repoFragment = (SearchRepositoryListFragment) getSupportFragmentManager().findFragmentById(android.R.id.list);
         if (repoFragment == null) {
-            repoFragment = new SearchRepoListFragment();
+            repoFragment = new SearchRepositoryListFragment();
             getSupportFragmentManager().beginTransaction().add(android.R.id.list, repoFragment).commit();
         }
 

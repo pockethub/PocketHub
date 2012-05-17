@@ -41,7 +41,7 @@ import org.eclipse.egit.github.core.User;
 /**
  * Fragment to display a list of {@link Repository} instances
  */
-public class RepoListFragment extends ItemListFragment<Repository> implements OrganizationSelectionListener {
+public class RepositoryListFragment extends ItemListFragment<Repository> implements OrganizationSelectionListener {
 
     @Inject
     private AccountDataManager cache;
@@ -111,7 +111,7 @@ public class RepoListFragment extends ItemListFragment<Repository> implements Or
 
             @Override
             public List<Repository> loadData() throws Exception {
-                User org = RepoListFragment.this.org.get();
+                User org = RepositoryListFragment.this.org.get();
                 if (org == null)
                     return Collections.emptyList();
 
