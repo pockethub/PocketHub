@@ -42,15 +42,15 @@ public class LabelsDialog {
 
     private static final String TAG = "LabelsDialog";
 
-    private LabelService service;
-
-    private Map<String, Label> labels;
+    private final LabelService service;
 
     private final int requestCode;
 
     private final DialogFragmentActivity activity;
 
     private final IRepositoryIdProvider repository;
+
+    private Map<String, Label> labels;
 
     /**
      * Create dialog helper to display labels
