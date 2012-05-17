@@ -16,17 +16,6 @@
 -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <TextView
-        android:id="@+id/tv_repo_description"
-        style="@style/ListSubtitleText"
-        android:singleLine="true" />
-
-    <TextView
-        android:id="@+id/tv_repo_name"
-        style="@style/ListTitleText"
-        android:paddingTop="5dp"
-        android:singleLine="true" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -61,5 +50,15 @@
             android:paddingLeft="3dp"
             android:singleLine="true" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_repo_name"
+        style="@style/ListTitleText"
+        android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/tv_repo_description"
+        style="@style/ListSubtitleText"
+        android:singleLine="true" />
 
 </merge>
