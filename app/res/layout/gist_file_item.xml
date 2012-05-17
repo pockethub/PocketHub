@@ -15,8 +15,7 @@
   limitations under the License.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItem"
-    android:orientation="horizontal" >
+    style="@style/ListItem" >
 
     <TextView
         android:id="@+id/tv_file_icon"
