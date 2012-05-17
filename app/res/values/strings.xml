@@ -176,5 +176,6 @@
     <string name="creating_issue">Creating Issue…</string>
     <string name="prefix_created">created\u0020</string>
     <string name="updated_prefix">updated\u0020</string>
+    <string name="loading_collaborators">Loading Collaborators…</string>
 
 </resources>

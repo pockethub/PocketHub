@@ -65,7 +65,7 @@ public class AssigneeDialog {
 
     private void load(final String selectedAssignee) {
         final ProgressDialog loader = new ProgressDialog(activity);
-        loader.setMessage("Loading Collaborators...");
+        loader.setMessage(activity.getString(string.loading_collaborators));
         loader.show();
         new AuthenticatedUserTask<List<User>>(activity) {
 
