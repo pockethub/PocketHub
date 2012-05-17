@@ -85,10 +85,9 @@ public class OrganizationRepositories implements PersistableResource<Repository>
     public Cursor getCursor(SQLiteDatabase readableDatabase) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables("repos JOIN users ON (repos.ownerId = users.id)");
-        return builder.query(readableDatabase,
-                new String[] { "repos.id, repos.name", "users.id", "users.name", "users.avatarurl", "repos.private",
-                        "repos.fork", "repos.description", "repos.forks", "repos.watchers" }, "repos.orgId=?",
-                new String[] { Integer.toString(org.getId()) }, null, null, null);
+        return builder.query(readableDatabase, new String[] { "repos.id, repos.name", "users.id", "users.name",
+                "users.avatarurl", "repos.private", "repos.fork", "repos.description", "repos.forks", "repos.watchers",
+                "repos.language" }, "repos.orgId=?", new String[] { Integer.toString(org.getId()) }, null, null, null);
     }
 
     @Override
@@ -108,6 +107,7 @@ public class OrganizationRepositories implements PersistableResource<Repository>
         repo.setDescription(cursor.getString(7));
         repo.setForks(cursor.getInt(8));
         repo.setWatchers(cursor.getInt(9));
+        repo.setLanguage(cursor.getString(10));
 
         return repo;
     }
@@ -117,7 +117,7 @@ public class OrganizationRepositories implements PersistableResource<Repository>
         db.delete("repos", "orgId=?", new String[] { Integer.toString(org.getId()) });
         for (Repository repo : repos) {
             User owner = repo.getOwner();
-            ContentValues values = new ContentValues(9);
+            ContentValues values = new ContentValues(10);
 
             values.put("id", repo.getId());
             values.put("name", repo.getName());
@@ -128,6 +128,7 @@ public class OrganizationRepositories implements PersistableResource<Repository>
             values.put("description", repo.getDescription());
             values.put("forks", repo.getForks());
             values.put("watchers", repo.getWatchers());
+            values.put("language", repo.getLanguage());
             db.replace("repos", null, values);
 
             values.clear();

@@ -83,6 +83,13 @@ public class UserRepositoryListAdapter extends ItemListAdapter<Repository, Repos
         } else
             view.repoDescription.setVisibility(GONE);
 
+        String language = repository.getLanguage();
+        if (TextUtils.isEmpty(language))
+            view.language.setVisibility(GONE);
+        else {
+            view.language.setText(language);
+            view.language.setVisibility(VISIBLE);
+        }
         view.watchers.setText(FORMAT.format(repository.getWatchers()));
         view.forks.setText(FORMAT.format(repository.getForks()));
     }

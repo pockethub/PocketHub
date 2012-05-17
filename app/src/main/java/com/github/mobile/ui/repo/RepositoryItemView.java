@@ -53,6 +53,11 @@ public class RepositoryItemView extends ItemView {
     public final TextView forks;
 
     /**
+     * Primary language in repository
+     */
+    public final TextView language;
+
+    /**
      * @param view
      */
     public RepositoryItemView(final View view) {
@@ -65,6 +70,7 @@ public class RepositoryItemView extends ItemView {
         TypefaceUtils.setOcticons(repoIcon, (TextView) view.findViewById(id.tv_forks_icon),
                 (TextView) view.findViewById(id.tv_watchers_icon));
 
+        language = (TextView) view.findViewById(id.tv_language);
         watchers = (TextView) view.findViewById(id.tv_watchers);
         forks = (TextView) view.findViewById(id.tv_forks);
     }
