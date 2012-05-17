@@ -75,6 +75,7 @@
 
     <style name="ListIcon" parent="TextIcon">
         <item name="android:textSize">14dp</item>
+        <item name="android:layout_marginTop">-4dp</item>
     </style>
 
     <style name="EventIcon" parent="TextIcon">
