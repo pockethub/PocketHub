@@ -434,9 +434,9 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
     }
 
     @Override
-    public long getItemId(int position) {
-        String id = getItem(position).getId();
-        return !TextUtils.isEmpty(id) ? id.hashCode() : super.hashCode();
+    public long getItemId(final int position) {
+        final String id = getItem(position).getId();
+        return !TextUtils.isEmpty(id) ? id.hashCode() : super.getItemId(position);
     }
 
     @Override

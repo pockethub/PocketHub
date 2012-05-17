@@ -72,21 +72,27 @@ public class HomeDropdownListAdapter extends BaseAdapter {
 
         private final AvatarLoader avatars;
 
-        public OrgListAdapter(int viewId, LayoutInflater inflater, User[] elements, AvatarLoader avatars) {
+        public OrgListAdapter(final int viewId, final LayoutInflater inflater, final User[] elements,
+                final AvatarLoader avatars) {
             super(viewId, inflater, elements);
 
             this.avatars = avatars;
         }
 
         @Override
-        protected void update(OrgItemView view, User user) {
+        protected void update(final OrgItemView view, final User user) {
             view.nameText.setText(user.getLogin());
             avatars.bind(view.avatarView, user);
         }
 
         @Override
-        protected OrgItemView createView(View view) {
+        protected OrgItemView createView(final View view) {
             return new OrgItemView(view);
+        }
+
+        @Override
+        public long getItemId(final int position) {
+            return getItem(position).getId();
         }
     }
 

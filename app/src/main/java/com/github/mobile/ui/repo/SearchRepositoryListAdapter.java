@@ -84,4 +84,10 @@ public class SearchRepositoryListAdapter extends ItemListAdapter<SearchRepositor
     protected RepositoryItemView createView(View view) {
         return new RepositoryItemView(view);
     }
+
+    @Override
+    public long getItemId(final int position) {
+        final String id = getItem(position).getId();
+        return !TextUtils.isEmpty(id) ? id.hashCode() : super.getItemId(position);
+    }
 }

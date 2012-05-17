@@ -91,4 +91,9 @@ public class UserRepositoryListAdapter extends ItemListAdapter<Repository, Repos
     protected RepositoryItemView createView(final View view) {
         return new RepositoryItemView(view);
     }
+
+    @Override
+    public long getItemId(final int position) {
+        return getItem(position).getId();
+    }
 }

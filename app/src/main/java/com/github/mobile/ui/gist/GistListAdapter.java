@@ -84,7 +84,13 @@ public class GistListAdapter extends ItemListAdapter<Gist, GistView> {
     }
 
     @Override
-    protected GistView createView(View view) {
+    protected GistView createView(final View view) {
         return new GistView(view);
+    }
+
+    @Override
+    public long getItemId(final int position) {
+        final String id = getItem(position).getId();
+        return !TextUtils.isEmpty(id) ? id.hashCode() : super.getItemId(position);
     }
 }

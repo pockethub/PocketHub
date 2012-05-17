@@ -64,4 +64,9 @@ public class UserListAdapter extends ItemListAdapter<User, UserItemView> {
     protected UserItemView createView(final View view) {
         return new UserItemView(view);
     }
+
+    @Override
+    public long getItemId(final int position) {
+        return getItem(position).getId();
+    }
 }

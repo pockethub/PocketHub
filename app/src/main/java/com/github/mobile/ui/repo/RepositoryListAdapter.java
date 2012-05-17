@@ -102,4 +102,9 @@ public class RepositoryListAdapter extends ItemListAdapter<Repository, RecentRep
     protected RecentRepositoryItemView createView(final View view) {
         return new RecentRepositoryItemView(view);
     }
+
+    @Override
+    public long getItemId(final int position) {
+        return getItem(position).getId();
+    }
 }
