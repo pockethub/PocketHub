@@ -17,6 +17,8 @@ package com.github.mobile.ui.issue;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
+import android.util.Log;
+
 import com.github.mobile.R.string;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.ProgressDialogTask;
@@ -35,6 +37,8 @@ import org.eclipse.egit.github.core.service.CollaboratorService;
  * Dialog helper to display a list of assignees to select one from
  */
 public class AssigneeDialog {
+
+    private static final String TAG = "AssigneeDialog";
 
     private CollaboratorService service;
 
@@ -86,6 +90,7 @@ public class AssigneeDialog {
             protected void onException(Exception e) throws RuntimeException {
                 super.onException(e);
 
+                Log.d(TAG, "Exception loading collaborators", e);
                 ToastUtils.show(activity, e, string.error_collaborators_load);
             }
 
