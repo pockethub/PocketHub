@@ -103,9 +103,6 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
     private AvatarLoader avatarHelper;
 
     @Inject
-    private HttpImageGetter imageGetter;
-
-    @Inject
     private IssueStore store;
 
     @InjectView(android.R.id.list)
@@ -145,7 +142,9 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
     private TextView milestoneText;
 
-    private String html;
+    private HttpImageGetter bodyImageGetter;
+
+    private HttpImageGetter commentImageGetter;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -213,7 +212,8 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        html = null;
+        bodyImageGetter = new HttpImageGetter(getActivity());
+        commentImageGetter = new HttpImageGetter(getActivity());
 
         list.addHeaderView(headerView, null, false);
 
@@ -237,7 +237,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
         Activity activity = getActivity();
         list.setAdapter(new CommentListAdapter(activity.getLayoutInflater(), initialComments
-                .toArray(new Comment[initialComments.size()]), avatarHelper, new HttpImageGetter(activity)));
+                .toArray(new Comment[initialComments.size()]), avatarHelper, commentImageGetter));
 
         if (issue != null && comments != null)
             updateList(issue, comments);
@@ -305,11 +305,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
     private void updateHeader(final Issue issue) {
         titleText.setText(issue.getTitle());
 
-        final String bodyHtml = issue.getBodyHtml();
-        if (html == null || !html.equals(bodyHtml)) {
-            html = bodyHtml;
-            imageGetter.bind(bodyText, html, issue.getId());
-        }
+        bodyImageGetter.bind(bodyText, issue.getBodyHtml(), issue.getId());
 
         String reported = "<b>" + issue.getUser().getLogin() + "</b> opened "
                 + TimeUtils.getRelativeTime(issue.getCreatedAt());
@@ -352,11 +348,10 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             state = state.substring(0, 1).toUpperCase(Locale.US) + state.substring(1);
         else
             state = "";
-        // stateText.setText(state);
     }
 
     private void refreshIssue() {
-        new RefreshIssueTask(getActivity(), repositoryId, issueNumber) {
+        new RefreshIssueTask(getActivity(), repositoryId, issueNumber, bodyImageGetter, commentImageGetter) {
 
             @Override
             protected void onException(Exception e) throws RuntimeException {

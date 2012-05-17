@@ -20,6 +20,7 @@ import android.util.Log;
 
 import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.util.HtmlUtils;
+import com.github.mobile.util.HttpImageGetter;
 import com.google.inject.Inject;
 
 import java.util.Collections;
@@ -44,16 +45,20 @@ public class RefreshGistTask extends AuthenticatedUserTask<FullGist> {
 
     private final String id;
 
+    private final HttpImageGetter imageGetter;
+
     /**
      * Create task to refresh the given {@link Gist}
      *
      * @param context
      * @param gistId
+     * @param imageGetter
      */
-    public RefreshGistTask(Context context, String gistId) {
+    public RefreshGistTask(Context context, String gistId, HttpImageGetter imageGetter) {
         super(context);
 
         id = gistId;
+        this.imageGetter = imageGetter;
     }
 
     @Override
@@ -64,8 +69,11 @@ public class RefreshGistTask extends AuthenticatedUserTask<FullGist> {
             comments = service.getComments(id);
         else
             comments = Collections.emptyList();
-        for (Comment comment : comments)
-            comment.setBodyHtml(HtmlUtils.format(comment.getBodyHtml()).toString());
+        for (Comment comment : comments) {
+            String formatted = HtmlUtils.format(comment.getBodyHtml()).toString();
+            comment.setBodyHtml(formatted);
+            imageGetter.encode(comment, formatted);
+        }
         return new FullGist(gist, service.isStarred(id), comments);
     }
 

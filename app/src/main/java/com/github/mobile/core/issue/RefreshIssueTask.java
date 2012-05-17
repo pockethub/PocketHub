@@ -20,6 +20,7 @@ import android.util.Log;
 
 import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.util.HtmlUtils;
+import com.github.mobile.util.HttpImageGetter;
 import com.google.inject.Inject;
 
 import java.util.Collections;
@@ -47,30 +48,43 @@ public class RefreshIssueTask extends AuthenticatedUserTask<FullIssue> {
 
     private final int issueNumber;
 
+    private final HttpImageGetter bodyImageGetter;
+
+    private final HttpImageGetter commentImageGetter;
+
     /**
      * Create task to refresh given issue
      *
      * @param context
      * @param repositoryId
      * @param issueNumber
+     * @param bodyImageGetter
+     * @param commentImageGetter
      */
-    public RefreshIssueTask(Context context, IRepositoryIdProvider repositoryId, int issueNumber) {
+    public RefreshIssueTask(Context context, IRepositoryIdProvider repositoryId, int issueNumber,
+            HttpImageGetter bodyImageGetter, HttpImageGetter commentImageGetter) {
         super(context);
 
         this.repositoryId = repositoryId;
         this.issueNumber = issueNumber;
+        this.bodyImageGetter = bodyImageGetter;
+        this.commentImageGetter = commentImageGetter;
     }
 
     @Override
     public FullIssue run() throws Exception {
         Issue issue = store.refreshIssue(repositoryId, issueNumber);
+        bodyImageGetter.encode(issue.getId(), issue.getBodyHtml());
         List<Comment> comments;
         if (issue.getComments() > 0)
             comments = service.getComments(repositoryId, issueNumber);
         else
             comments = Collections.emptyList();
-        for (Comment comment : comments)
-            comment.setBodyHtml(HtmlUtils.format(comment.getBodyHtml()).toString());
+        for (Comment comment : comments) {
+            String formatted = HtmlUtils.format(comment.getBodyHtml()).toString();
+            comment.setBodyHtml(formatted);
+            commentImageGetter.encode(comment.getId(), formatted);
+        }
         return new FullIssue(issue, comments);
     }
 

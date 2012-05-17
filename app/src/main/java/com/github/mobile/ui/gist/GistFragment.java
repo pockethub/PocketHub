@@ -103,6 +103,9 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
     @Inject
     private GistStore store;
 
+    @Inject
+    private HttpImageGetter imageGetter;
+
     private View headerView;
 
     private TextView created;
@@ -384,7 +387,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
     }
 
     private void refreshGist() {
-        new RefreshGistTask(getActivity(), gistId) {
+        new RefreshGistTask(getActivity(), gistId, imageGetter) {
 
             @Override
             protected void onException(Exception e) throws RuntimeException {

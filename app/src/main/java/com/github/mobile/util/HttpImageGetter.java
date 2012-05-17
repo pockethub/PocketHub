@@ -58,6 +58,10 @@ public class HttpImageGetter implements ImageGetter {
         }
     }
 
+    private static boolean containsImages(final String html) {
+        return html.indexOf("<img") != -1;
+    }
+
     private final LoadingImageGetter loading;
 
     private final Context context;
@@ -101,6 +105,28 @@ public class HttpImageGetter implements ImageGetter {
     }
 
     /**
+     * Encode given HTML string and map it to the given id
+     *
+     * @param id
+     * @param html
+     * @return this image getter
+     */
+    public HttpImageGetter encode(final Object id, final String html) {
+        if (TextUtils.isEmpty(html))
+            return this;
+
+        CharSequence encoded = HtmlUtils.encode(html, loading);
+        // Use default encoding if no img tags
+        if (containsImages(html))
+            rawHtmlCache.put(id, encoded);
+        else {
+            rawHtmlCache.remove(id);
+            fullHtmlCache.put(id, encoded);
+        }
+        return this;
+    }
+
+    /**
      * Bind text view to HTML string
      *
      * @param view
@@ -119,12 +145,13 @@ public class HttpImageGetter implements ImageGetter {
         encoded = rawHtmlCache.get(id);
         if (encoded == null) {
             encoded = HtmlUtils.encode(html, loading);
-            // Use default encoding if no img tags
-            if (html.indexOf("<img") == -1) {
+            if (containsImages(html))
+                rawHtmlCache.put(id, encoded);
+            else {
+                rawHtmlCache.remove(id);
                 fullHtmlCache.put(id, encoded);
                 return show(view, encoded);
-            } else
-                rawHtmlCache.put(id, encoded);
+            }
         }
 
         if (TextUtils.isEmpty(encoded))
