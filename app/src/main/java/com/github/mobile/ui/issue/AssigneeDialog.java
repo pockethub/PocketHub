@@ -16,15 +16,14 @@
 package com.github.mobile.ui.issue;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
-
 import android.util.Log;
 
 import com.github.mobile.R.string;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.ProgressDialogTask;
-import com.github.mobile.ui.SingleChoiceDialogFragment;
 import com.github.mobile.util.ToastUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -129,13 +128,13 @@ public class AssigneeDialog {
             return;
         }
 
-        final String[] names = collaborators.keySet().toArray(new String[collaborators.size()]);
+        final ArrayList<User> users = new ArrayList<User>(collaborators.values());
         int checked = -1;
         if (selectedAssignee != null)
-            for (int i = 0; i < names.length; i++)
-                if (selectedAssignee.equals(names[i]))
+            for (int i = 0; i < users.size(); i++)
+                if (selectedAssignee.equals(users.get(i).getLogin()))
                     checked = i;
-        SingleChoiceDialogFragment.show(activity, requestCode, activity.getString(string.select_assignee), null, names,
+        AssigneeDialogFragment.show(activity, requestCode, activity.getString(string.select_assignee), null, users,
                 checked);
     }
 }

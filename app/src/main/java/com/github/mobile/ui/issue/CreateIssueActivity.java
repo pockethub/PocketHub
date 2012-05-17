@@ -38,7 +38,6 @@ import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.ui.DialogFragmentActivity;
-import com.github.mobile.ui.MultiChoiceDialogFragment;
 import com.github.mobile.ui.SingleChoiceDialogFragment;
 import com.github.mobile.ui.TextWatcherAdapter;
 import com.github.mobile.util.AvatarLoader;
@@ -214,7 +213,7 @@ public class CreateIssueActivity extends DialogFragmentActivity {
 
         switch (requestCode) {
         case REQUEST_CODE_LABELS:
-            String[] labelNames = arguments.getStringArray(MultiChoiceDialogFragment.ARG_SELECTED);
+            String[] labelNames = arguments.getStringArray(LabelsDialogFragment.ARG_SELECTED);
             if (labelNames != null && labelNames.length > 0) {
                 List<Label> labels = new ArrayList<Label>(labelNames.length);
                 for (String name : labelNames)
@@ -234,7 +233,7 @@ public class CreateIssueActivity extends DialogFragmentActivity {
             updateHeader(newIssue);
             break;
         case REQUEST_CODE_ASSIGNEE:
-            String login = arguments.getString(SingleChoiceDialogFragment.ARG_SELECTED);
+            String login = arguments.getString(AssigneeDialogFragment.ARG_SELECTED);
 
             if (login != null) {
                 User assignee = assigneeDialog.getCollaborator(login);

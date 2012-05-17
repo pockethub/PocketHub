@@ -414,7 +414,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             milestoneTask.edit(arguments.getString(SingleChoiceDialogFragment.ARG_SELECTED));
             break;
         case ISSUE_ASSIGNEE_UPDATE:
-            assigneeTask.edit(arguments.getString(SingleChoiceDialogFragment.ARG_SELECTED));
+            assigneeTask.edit(arguments.getString(AssigneeDialogFragment.ARG_SELECTED));
             break;
         case ISSUE_LABELS_UPDATE:
             labelsTask.edit(arguments.getStringArray(LabelsDialogFragment.ARG_SELECTED));
