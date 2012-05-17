@@ -59,5 +59,10 @@
     <color name="text_news_details">#666666</color>
     <color name="separator">#E5E5E5</color>
     <color name="label_border">#BBBBBB</color>
+    <color name="milestone_border">#ABABAB</color>
+    <color name="milestone_opened_start">#BEBEBE</color>
+    <color name="milestone_opened_end">#DCDCDC</color>
+    <color name="milestone_closed_start">#6AA811</color>
+    <color name="milestone_closed_end">#6EB807</color>
 
 </resources>

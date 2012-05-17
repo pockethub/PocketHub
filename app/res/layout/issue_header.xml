@@ -25,22 +25,32 @@
         android:layout_height="wrap_content"
         android:background="@drawable/inset_background"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="10dp" >
 
-        <TextView
-            style="@style/ListSubtitleText"
-            android:singleLine="true"
-            android:text="@string/milestone_prefix"
-            android:textColor="@color/text" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp" >
 
-        <TextView
-            android:id="@+id/tv_milestone"
-            style="@style/ListSubtitleText"
-            android:paddingLeft="5dp"
-            android:singleLine="true"
-            android:textColor="@color/text"
-            android:textStyle="bold" />
+            <TextView
+                style="@style/ListSubtitleText"
+                android:singleLine="true"
+                android:text="@string/milestone_prefix"
+                android:textColor="@color/text" />
+
+            <TextView
+                android:id="@+id/tv_milestone"
+                style="@style/ListSubtitleText"
+                android:paddingLeft="5dp"
+                android:singleLine="true"
+                android:textColor="@color/text"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <include layout="@layout/milestone" />
     </LinearLayout>
 
     <LinearLayout

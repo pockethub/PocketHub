@@ -77,6 +77,7 @@ import java.util.Locale;
 
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.User;
 
@@ -139,6 +140,8 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
     private View labelsArea;
 
     private View milestoneArea;
+
+    private View milestoneProgressArea;
 
     private TextView milestoneText;
 
@@ -270,6 +273,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         labelsArea = headerView.findViewById(id.v_labels);
         milestoneArea = headerView.findViewById(id.ll_milestone);
         milestoneText = (TextView) headerView.findViewById(id.tv_milestone);
+        milestoneProgressArea = (View) headerView.findViewById(id.v_closed);
         bodyText = (TextView) headerView.findViewById(id.tv_issue_body);
         bodyText.setMovementMethod(LinkMovementMethod.getInstance());
 
@@ -338,7 +342,15 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             labelsArea.setVisibility(GONE);
 
         if (issue.getMilestone() != null) {
-            milestoneText.setText(issue.getMilestone().getTitle());
+            Milestone milestone = issue.getMilestone();
+            milestoneText.setText(milestone.getTitle());
+            float closed = milestone.getClosedIssues();
+            float total = closed + milestone.getOpenIssues();
+            if (total > 0) {
+                ((LayoutParams) milestoneProgressArea.getLayoutParams()).weight = closed / total;
+                milestoneProgressArea.setVisibility(VISIBLE);
+            } else
+                milestoneProgressArea.setVisibility(GONE);
             milestoneArea.setVisibility(VISIBLE);
         } else
             milestoneArea.setVisibility(GONE);
