@@ -15,7 +15,7 @@
  */
 package com.github.mobile.ui;
 
-import android.app.ProgressDialog;
+import android.app.AlertDialog;
 import android.content.Context;
 
 import com.github.mobile.accounts.AuthenticatedUserTask;
@@ -32,7 +32,7 @@ public abstract class ProgressDialogTask<E> extends AuthenticatedUserTask<E> {
     /**
      * Progress dialog last displayed
      */
-    protected ProgressDialog progress;
+    protected AlertDialog progress;
 
     /**
      * @param context
@@ -67,9 +67,7 @@ public abstract class ProgressDialogTask<E> extends AuthenticatedUserTask<E> {
     protected void showIndeterminate(final CharSequence message) {
         dismissProgress();
 
-        progress = new ProgressDialog(getContext());
-        progress.setMessage(message);
-        progress.setIndeterminate(true);
+        progress = new LightProgressDialog(getContext(), message);
         progress.show();
     }
 
@@ -79,7 +77,10 @@ public abstract class ProgressDialogTask<E> extends AuthenticatedUserTask<E> {
      * @param resId
      */
     protected void showIndeterminate(final int resId) {
-        showIndeterminate(getString(resId));
+        dismissProgress();
+
+        progress = new LightProgressDialog(getContext(), resId);
+        progress.show();
     }
 
     /**

@@ -14,16 +14,21 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<rotate xmlns:android="http://schemas.android.com/apk/res/android"
-    android:fromDegrees="0"
-    android:interpolator="@android:anim/linear_interpolator"
-    android:pivotX="50%"
-    android:pivotY="50%"
-    android:toDegrees="360" >
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <bitmap
-        android:antialias="true"
-        android:filter="true"
-        android:src="@drawable/spinner_outer" />
+    <item android:drawable="@drawable/spinner_inner"/>
+    <item>
+        <rotate
+            android:fromDegrees="0"
+            android:interpolator="@android:anim/linear_interpolator"
+            android:pivotX="50%"
+            android:pivotY="50%"
+            android:toDegrees="360" >
+            <bitmap
+                android:antialias="true"
+                android:filter="true"
+                android:src="@drawable/spinner_outer" />
+        </rotate>
+    </item>
 
-</rotate>
+</layer-list>
