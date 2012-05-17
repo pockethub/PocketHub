@@ -15,15 +15,14 @@
  */
 package com.github.mobile.ui.issue;
 
-import android.app.ProgressDialog;
+import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
 import com.github.mobile.R.string;
-import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.ui.DialogFragmentActivity;
+import com.github.mobile.ui.ProgressDialogTask;
 import com.github.mobile.ui.SingleChoiceDialogFragment;
 import com.github.mobile.util.ToastUtils;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -64,36 +63,38 @@ public class AssigneeDialog {
     }
 
     private void load(final String selectedAssignee) {
-        final ProgressDialog loader = new ProgressDialog(activity);
-        loader.setMessage(activity.getString(string.loading_collaborators));
-        loader.show();
-        new AuthenticatedUserTask<List<User>>(activity) {
+        new ProgressDialogTask<List<User>>(activity) {
 
+            @Override
             public List<User> run() throws Exception {
                 List<User> users = service.getCollaborators(repository);
-                Map<String, User> loadedCollaborators = new TreeMap<String, User>(new Comparator<String>() {
-
-                    public int compare(String s1, String s2) {
-                        return s1.compareToIgnoreCase(s2);
-                    }
-                });
+                Map<String, User> loadedCollaborators = new TreeMap<String, User>(CASE_INSENSITIVE_ORDER);
                 for (User user : users)
                     loadedCollaborators.put(user.getLogin(), user);
                 collaborators = loadedCollaborators;
                 return users;
             }
 
+            @Override
             protected void onSuccess(List<User> all) throws Exception {
-                if (!loader.isShowing())
-                    return;
+                super.onSuccess(all);
 
-                loader.dismiss();
                 show(selectedAssignee);
             }
 
+            @Override
             protected void onException(Exception e) throws RuntimeException {
-                loader.dismiss();
+                super.onException(e);
+
                 ToastUtils.show(activity, e.getMessage());
+            }
+
+            @Override
+            public void execute() {
+                dismissProgress();
+                showIndeterminate(string.loading_collaborators);
+
+                super.execute();
             }
         }.execute();
     }
