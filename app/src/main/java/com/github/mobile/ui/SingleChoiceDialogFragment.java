@@ -59,6 +59,7 @@ public class SingleChoiceDialogFragment extends DialogFragmentHelper implements 
         show(activity, new SingleChoiceDialogFragment(), arguments, TAG);
     }
 
+    @Override
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
         final Builder builder = new Builder(getActivity());
         Bundle arguments = getArguments();

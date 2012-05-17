@@ -66,6 +66,7 @@ public class MultiChoiceDialogFragment extends DialogFragmentHelper implements O
         show(activity, new MultiChoiceDialogFragment(), arguments, TAG);
     }
 
+    @Override
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
         final Builder builder = new Builder(getActivity());
         Bundle arguments = getArguments();
