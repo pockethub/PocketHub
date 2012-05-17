@@ -15,15 +15,16 @@
  */
 package com.github.mobile.ui.issue;
 
+import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_CLOSED;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
-import android.app.ProgressDialog;
 import android.util.Log;
 
 import com.github.mobile.R.string;
-import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.ui.DialogFragmentActivity;
+import com.github.mobile.ui.ProgressDialogTask;
 import com.github.mobile.ui.SingleChoiceDialogFragment;
+import com.github.mobile.util.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -77,11 +78,9 @@ public class MilestoneDialog {
     }
 
     private void load(final Milestone selectedMilestone) {
-        final ProgressDialog loader = new ProgressDialog(activity);
-        loader.setMessage("Loading Milestones...");
-        loader.show();
-        new AuthenticatedUserTask<List<Milestone>>(activity) {
+        new ProgressDialogTask<List<Milestone>>(activity) {
 
+            @Override
             public List<Milestone> run() throws Exception {
                 List<Milestone> milestones = new ArrayList<Milestone>();
                 milestones.addAll(service.getMilestones(repository, STATE_OPEN));
@@ -89,28 +88,34 @@ public class MilestoneDialog {
                 Collections.sort(milestones, new Comparator<Milestone>() {
 
                     public int compare(Milestone m1, Milestone m2) {
-                        return m1.getTitle().compareToIgnoreCase(m2.getTitle());
+                        return CASE_INSENSITIVE_ORDER.compare(m1.getTitle(), m2.getTitle());
                     }
                 });
                 return milestones;
             }
 
+            @Override
             protected void onSuccess(List<Milestone> all) throws Exception {
-                repositoryMilestones = all;
-                if (!loader.isShowing())
-                    return;
+                super.onSuccess(all);
 
-                loader.dismiss();
+                repositoryMilestones = all;
                 show(selectedMilestone);
             }
 
+            @Override
             protected void onException(Exception e) throws RuntimeException {
+                super.onException(e);
+
                 Log.d(TAG, "Exception loading milestones", e);
-                loader.dismiss();
+                ToastUtils.show(activity, e, string.error_milestones_load);
             }
 
-            protected void onInterrupted(Exception e) {
-                loader.dismiss();
+            @Override
+            public void execute() {
+                dismissProgress();
+                showIndeterminate(string.loading_milestones);
+
+                super.execute();
             }
         }.execute();
     }

@@ -115,7 +115,7 @@
     <string name="select_labels">Select Labels</string>
     <string name="no_milestone">No milestone</string>
     <string name="unassigned">No one is assigned</string>
-     <string name="assigned">is assigned</string>
+    <string name="assigned">is assigned</string>
     <string name="no_gists_found">No Gists found</string>
     <string name="open_gist_title">Open Gist</string>
     <string name="enter_id_message">Enter id:</string>
@@ -178,6 +178,8 @@
     <string name="updated_prefix">updated\u0020</string>
     <string name="loading_collaborators">Loading Collaborators…</string>
     <string name="clear">Clear</string>
-     <string name="error_collaborators_load">Loading collaborators failed</string>
+    <string name="error_collaborators_load">Loading collaborators failed</string>
+    <string name="error_milestones_load">Loading milestones failed</string>
+    <string name="loading_milestones">Loading Milestones…</string>
 
 </resources>
