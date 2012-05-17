@@ -86,7 +86,7 @@ public class AssigneeDialog {
             protected void onException(Exception e) throws RuntimeException {
                 super.onException(e);
 
-                ToastUtils.show(activity, e, string.error_assignee_update);
+                ToastUtils.show(activity, e, string.error_collaborators_load);
             }
 
             @Override
