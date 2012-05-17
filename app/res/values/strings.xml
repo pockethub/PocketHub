@@ -181,5 +181,7 @@
     <string name="error_collaborators_load">Loading collaborators failed</string>
     <string name="error_milestones_load">Loading milestones failed</string>
     <string name="loading_milestones">Loading Milestones…</string>
+    <string name="error_labels_load">Loading labels failed</string>
+    <string name="loading_labels">Loading Labels…</string>
 
 </resources>

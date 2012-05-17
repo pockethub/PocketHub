@@ -15,15 +15,15 @@
  */
 package com.github.mobile.ui.issue;
 
-import android.app.ProgressDialog;
+import static java.lang.String.CASE_INSENSITIVE_ORDER;
+import android.util.Log;
 
 import com.github.mobile.R.string;
-import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.MultiChoiceDialogFragment;
+import com.github.mobile.ui.ProgressDialogTask;
 import com.github.mobile.util.ToastUtils;
 
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +38,8 @@ import org.eclipse.egit.github.core.service.LabelService;
  * Dialog helper to display a list of possibly selected issue labels
  */
 public class LabelsDialog {
+
+    private static final String TAG = "LabelsDialog";
 
     private LabelService service;
 
@@ -66,36 +68,39 @@ public class LabelsDialog {
     }
 
     private void load(final List<Label> selectedLabels) {
-        final ProgressDialog loader = new ProgressDialog(activity);
-        loader.setMessage("Loading Labels...");
-        loader.show();
-        new AuthenticatedUserTask<List<Label>>(activity) {
+        new ProgressDialogTask<List<Label>>(activity) {
 
+            @Override
             public List<Label> run() throws Exception {
                 List<Label> repositoryLabels = service.getLabels(repository);
-                Map<String, Label> loadedLabels = new TreeMap<String, Label>(new Comparator<String>() {
-
-                    public int compare(String s1, String s2) {
-                        return s1.compareToIgnoreCase(s2);
-                    }
-                });
+                Map<String, Label> loadedLabels = new TreeMap<String, Label>(CASE_INSENSITIVE_ORDER);
                 for (Label label : repositoryLabels)
                     loadedLabels.put(label.getName(), label);
                 labels = loadedLabels;
                 return repositoryLabels;
             }
 
+            @Override
             protected void onSuccess(List<Label> all) throws Exception {
-                if (!loader.isShowing())
-                    return;
+                super.onSuccess(all);
 
-                loader.dismiss();
                 show(selectedLabels);
             }
 
+            @Override
             protected void onException(Exception e) throws RuntimeException {
-                loader.dismiss();
-                ToastUtils.show(activity, e.getMessage());
+                super.onException(e);
+
+                Log.d(TAG, "Exception loading labels", e);
+                ToastUtils.show(activity, e, string.error_labels_load);
+            }
+
+            @Override
+            public void execute() {
+                dismissProgress();
+                showIndeterminate(string.loading_labels);
+
+                super.execute();
             }
         }.execute();
     }
