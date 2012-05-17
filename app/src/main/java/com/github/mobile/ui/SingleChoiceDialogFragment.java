@@ -64,8 +64,10 @@ public class SingleChoiceDialogFragment extends DialogFragmentHelper implements 
         builder.setMessage(getMessage());
         builder.setCancelable(true);
         builder.setOnCancelListener(this);
-        builder.setNeutralButton("Clear", this);
-        builder.setSingleChoiceItems(arguments.getStringArray(ARG_CHOICES), arguments.getInt(ARG_SELECTED_CHOICE), this);
+        int selected = arguments.getInt(ARG_SELECTED_CHOICE);
+        if (selected > -1)
+            builder.setNeutralButton("Clear", this);
+        builder.setSingleChoiceItems(arguments.getStringArray(ARG_CHOICES), selected, this);
 
         return builder.create();
     }
