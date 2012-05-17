@@ -37,6 +37,7 @@
         style="@style/ListTitleText"
         android:paddingBottom="0dp"
         android:paddingLeft="10dp"
-        android:paddingTop="0dp" />
+        android:paddingTop="0dp"
+        android:textStyle="normal" />
 
 </LinearLayout>
