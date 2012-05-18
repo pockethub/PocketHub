@@ -44,6 +44,7 @@ import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Team;
 import org.eclipse.egit.github.core.User;
+import org.eclipse.egit.github.core.event.CommitCommentPayload;
 import org.eclipse.egit.github.core.event.CreatePayload;
 import org.eclipse.egit.github.core.event.DeletePayload;
 import org.eclipse.egit.github.core.event.Event;
@@ -111,6 +112,7 @@ public class NewsEventTextTest extends AndroidTestCase {
 	 */
 	public void testCommitCommentEvent() {
 		Event event = createEvent(TYPE_COMMIT_COMMENT);
+		event.setPayload(new CommitCommentPayload());
 		updateView(event);
 
 		CharSequence content = text.getText();
