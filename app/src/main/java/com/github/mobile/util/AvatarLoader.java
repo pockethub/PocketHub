@@ -59,7 +59,7 @@ public class AvatarLoader {
 
     private static abstract class FetchAvatarTask extends RoboAsyncTask<BitmapDrawable> {
 
-        private static final Executor EXECUTOR = Executors.newFixedThreadPool(2);
+        private static final Executor EXECUTOR = Executors.newFixedThreadPool(1);
 
         private FetchAvatarTask(Context context) {
             super(context, EXECUTOR);
@@ -117,16 +117,10 @@ public class AvatarLoader {
      * @return this helper
      */
     protected AvatarLoader setImage(final BitmapDrawable image, final ImageView view, final User user) {
-        if (!Integer.valueOf(user.getId()).equals(view.getTag(id.iv_avatar)))
-            return this;
-
         view.setTag(id.iv_avatar, null);
-
-        if (image != null) {
-            loaded.put(user.getId(), image);
-            view.setImageDrawable(image);
-            view.setVisibility(VISIBLE);
-        }
+        loaded.put(user.getId(), image);
+        view.setImageDrawable(image);
+        view.setVisibility(VISIBLE);
 
         return this;
     }
@@ -242,18 +236,16 @@ public class AvatarLoader {
 
             @Override
             public BitmapDrawable call() throws Exception {
-                synchronized (AvatarLoader.this) {
-                    BitmapDrawable image = getImage(user);
-                    if (image == null)
-                        image = fetchAvatar(avatarUrl, userId);
+                final BitmapDrawable image = getImage(user);
+                if (image != null)
                     return image;
-                }
+                else
+                    return fetchAvatar(avatarUrl, userId);
             }
 
             @Override
             protected void onSuccess(BitmapDrawable image) throws Exception {
-                if (image != null)
-                    actionBar.setLogo(image);
+                actionBar.setLogo(image);
             }
         }.execute();
 
@@ -299,17 +291,17 @@ public class AvatarLoader {
                 if (!userId.equals(view.getTag(id.iv_avatar)))
                     return null;
 
-                synchronized (AvatarLoader.this) {
-                    BitmapDrawable image = getImage(user);
-                    if (image == null)
-                        image = fetchAvatar(avatarUrl, userId);
+                final BitmapDrawable image = getImage(user);
+                if (image != null)
                     return image;
-                }
+                else
+                    return fetchAvatar(avatarUrl, userId);
             }
 
             @Override
             protected void onSuccess(BitmapDrawable image) throws Exception {
-                setImage(image, view, user);
+                if (image != null && userId.equals(view.getTag(id.iv_avatar)))
+                    setImage(image, view, user);
             }
 
         }.execute();
