@@ -51,7 +51,7 @@ import roboguice.util.RoboAsyncTask;
  */
 public class AvatarLoader {
 
-    private static final String TAG = "AvatarHelper";
+    private static final String TAG = "AvatarLoader";
 
     private static final float CORNER_RADIUS_IN_DIP = 6;
 
