@@ -24,11 +24,14 @@ import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.github.mobile.R.string;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.DialogFragmentHelper;
 import com.github.mobile.ui.ItemListAdapter;
@@ -128,15 +131,23 @@ public class AssigneeDialogFragment extends DialogFragmentHelper implements OnCl
         Activity activity = getActivity();
         Bundle arguments = getArguments();
 
-        LightAlertDialog dialog = new LightAlertDialog(activity);
+        final LightAlertDialog dialog = new LightAlertDialog(activity);
         dialog.setTitle(getTitle());
         dialog.setMessage(getMessage());
         dialog.setCancelable(true);
         dialog.setOnCancelListener(this);
+        dialog.setButton(BUTTON_NEUTRAL, activity.getString(string.clear), this);
 
         LayoutInflater inflater = activity.getLayoutInflater();
 
         ListView view = (ListView) inflater.inflate(layout.list_view, null);
+        view.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                onClick(dialog, position);
+            }
+        });
 
         ArrayList<User> choices = getChoices();
         int selected = arguments.getInt(ARG_SELECTED_CHOICE);
@@ -163,9 +174,8 @@ public class AssigneeDialogFragment extends DialogFragmentHelper implements OnCl
             onResult(RESULT_OK);
             break;
         default:
-            getArguments().putString(ARG_SELECTED, getArguments().getStringArray(ARG_CHOICES)[which]);
+            getArguments().putString(ARG_SELECTED, getChoices().get(which).getLogin());
             onResult(RESULT_OK);
-            break;
         }
     }
 }
