@@ -82,6 +82,7 @@ import org.eclipse.egit.github.core.event.GistPayload;
 import org.eclipse.egit.github.core.event.IssueCommentPayload;
 import org.eclipse.egit.github.core.event.IssuesPayload;
 import org.eclipse.egit.github.core.event.PullRequestPayload;
+import org.eclipse.egit.github.core.event.PullRequestReviewCommentPayload;
 import org.eclipse.egit.github.core.event.PushPayload;
 import org.eclipse.egit.github.core.event.TeamAddPayload;
 
@@ -133,6 +134,22 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
             appendText(details, comment.getBody());
     }
 
+    private static void appendCommitComment(final SpannableStringBuilder details, final CommitComment comment) {
+        if (comment == null)
+            return;
+
+        String id = comment.getCommitId();
+        if (!TextUtils.isEmpty(id)) {
+            if (id.length() > 10)
+                id = id.substring(0, 10);
+            appendText(details, "Comment in");
+            details.append(' ');
+            appendSpan(id, new TypefaceSpan("monospace"), details);
+            details.append(':').append('\n');
+        }
+        appendComment(details, comment);
+    }
+
     private static void appendText(final SpannableStringBuilder details, String text) {
         if (text == null)
             return;
@@ -143,43 +160,34 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         details.append(text);
     }
 
+    private static SpannableStringBuilder appendSpan(final String text, final Object span,
+            final SpannableStringBuilder builder) {
+        if (TextUtils.isEmpty(text))
+            return builder;
+
+        builder.append(text);
+        final int length = builder.length();
+        builder.setSpan(span, length - text.length(), length, SPAN_EXCLUSIVE_EXCLUSIVE);
+        return builder;
+    }
+
     private static void formatCommitComment(Event event, SpannableStringBuilder main, SpannableStringBuilder details) {
-        main.append(event.getActor().getLogin());
-        main.setSpan(new StyleSpan(BOLD), 0, main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getActor().getLogin(), new StyleSpan(BOLD), main);
 
-        main.append(" commented on commit on ");
+        main.append(" commented on ");
 
-        String repoName = event.getRepo().getName();
-        main.append(repoName);
-        main.setSpan(new StyleSpan(BOLD), main.length() - repoName.length(), main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getRepo().getName(), new StyleSpan(BOLD), main);
 
         CommitCommentPayload payload = (CommitCommentPayload) event.getPayload();
-        CommitComment comment = payload.getComment();
-        if (comment != null) {
-            String id = comment.getCommitId();
-            if (!TextUtils.isEmpty(id)) {
-                if (id.length() > 10)
-                    id = id.substring(0, 10);
-                appendText(details, "Comment in");
-                details.append(' ');
-                details.append(id);
-                details.setSpan(new TypefaceSpan("monospace"), details.length() - id.length(), details.length(),
-                        SPAN_EXCLUSIVE_EXCLUSIVE);
-                details.append(':').append('\n');
-            }
-        }
-        appendComment(details, comment);
+        appendCommitComment(details, payload.getComment());
     }
 
     private static void formatDownload(Event event, SpannableStringBuilder main, SpannableStringBuilder details) {
-        main.append(event.getActor().getLogin());
-        main.setSpan(new StyleSpan(BOLD), 0, main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getActor().getLogin(), new StyleSpan(BOLD), main);
 
         main.append(" uploaded a file to ");
 
-        String repoName = event.getRepo().getName();
-        main.append(repoName);
-        main.setSpan(new StyleSpan(BOLD), main.length() - repoName.length(), main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getRepo().getName(), new StyleSpan(BOLD), main);
 
         DownloadPayload payload = (DownloadPayload) event.getPayload();
         Download download = payload.getDownload();
@@ -188,8 +196,7 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
     }
 
     private static void formatCreate(Event event, SpannableStringBuilder main, SpannableStringBuilder details) {
-        main.append(event.getActor().getLogin());
-        main.setSpan(new StyleSpan(BOLD), 0, main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getActor().getLogin(), new StyleSpan(BOLD), main);
 
         main.append(" created ");
         CreatePayload payload = (CreatePayload) event.getPayload();
@@ -203,13 +210,11 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         } else
             repoName = repoName.substring(repoName.indexOf('/') + 1);
 
-        main.append(repoName);
-        main.setSpan(new StyleSpan(BOLD), main.length() - repoName.length(), main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(repoName, new StyleSpan(BOLD), main);
     }
 
     private static void formatDelete(Event event, SpannableStringBuilder main, SpannableStringBuilder details) {
-        main.append(event.getActor().getLogin());
-        main.setSpan(new StyleSpan(BOLD), 0, main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getActor().getLogin(), new StyleSpan(BOLD), main);
 
         DeletePayload payload = (DeletePayload) event.getPayload();
         main.append(" deleted ");
@@ -218,33 +223,26 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         main.append(payload.getRef());
         main.append(" at ");
 
-        String repoName = event.getRepo().getName();
-        main.append(repoName);
-        main.setSpan(new StyleSpan(BOLD), main.length() - repoName.length(), main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getRepo().getName(), new StyleSpan(BOLD), main);
     }
 
     private static void formatFollow(Event event, SpannableStringBuilder main, SpannableStringBuilder details) {
-        main.append(event.getActor().getLogin());
-        main.setSpan(new StyleSpan(BOLD), 0, main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getActor().getLogin(), new StyleSpan(BOLD), main);
 
         main.append(" started following ");
         main.append(((FollowPayload) event.getPayload()).getTarget().getLogin());
     }
 
     private static void formatFork(Event event, SpannableStringBuilder main, SpannableStringBuilder details) {
-        main.append(event.getActor().getLogin());
-        main.setSpan(new StyleSpan(BOLD), 0, main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getActor().getLogin(), new StyleSpan(BOLD), main);
 
         main.append(" forked repository ");
 
-        String repoName = event.getRepo().getName();
-        main.append(repoName);
-        main.setSpan(new StyleSpan(BOLD), main.length() - repoName.length(), main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getRepo().getName(), new StyleSpan(BOLD), main);
     }
 
     private static void formatGist(Event event, SpannableStringBuilder main, SpannableStringBuilder details) {
-        main.append(event.getActor().getLogin());
-        main.setSpan(new StyleSpan(BOLD), 0, main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getActor().getLogin(), new StyleSpan(BOLD), main);
 
         GistPayload payload = (GistPayload) event.getPayload();
 
@@ -261,19 +259,15 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
     }
 
     private static void formatWiki(Event event, SpannableStringBuilder main, SpannableStringBuilder details) {
-        main.append(event.getActor().getLogin());
-        main.setSpan(new StyleSpan(BOLD), 0, main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getActor().getLogin(), new StyleSpan(BOLD), main);
 
         main.append(" updated the wiki in ");
 
-        String repoName = event.getRepo().getName();
-        main.append(repoName);
-        main.setSpan(new StyleSpan(BOLD), main.length() - repoName.length(), main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getRepo().getName(), new StyleSpan(BOLD), main);
     }
 
     private static void formatIssueComment(Event event, SpannableStringBuilder main, SpannableStringBuilder details) {
-        main.append(event.getActor().getLogin());
-        main.setSpan(new StyleSpan(BOLD), 0, main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getActor().getLogin(), new StyleSpan(BOLD), main);
 
         main.append(" commented on ");
 
@@ -290,16 +284,13 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
 
         main.append(" on ");
 
-        String repoName = event.getRepo().getName();
-        main.append(repoName);
-        main.setSpan(new StyleSpan(BOLD), main.length() - repoName.length(), main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getRepo().getName(), new StyleSpan(BOLD), main);
 
         appendComment(details, payload.getComment());
     }
 
     private static void formatIssues(Event event, SpannableStringBuilder main, SpannableStringBuilder details) {
-        main.append(event.getActor().getLogin());
-        main.setSpan(new StyleSpan(BOLD), 0, main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getActor().getLogin(), new StyleSpan(BOLD), main);
 
         IssuesPayload payload = (IssuesPayload) event.getPayload();
         String action = payload.getAction();
@@ -312,27 +303,21 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         main.setSpan(new StyleSpan(BOLD), main.length() - issueNumber.length(), main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
         main.append(" on ");
 
-        String repoName = event.getRepo().getName();
-        main.append(repoName);
-        main.setSpan(new StyleSpan(BOLD), main.length() - repoName.length(), main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getRepo().getName(), new StyleSpan(BOLD), main);
 
         appendText(details, issue.getTitle());
     }
 
     private static void formatAddMember(Event event, SpannableStringBuilder main, SpannableStringBuilder details) {
-        main.append(event.getActor().getLogin());
-        main.setSpan(new StyleSpan(BOLD), 0, main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getActor().getLogin(), new StyleSpan(BOLD), main);
 
         main.append(" was added as a collaborator to ");
 
-        String repoName = event.getRepo().getName();
-        main.append(repoName);
-        main.setSpan(new StyleSpan(BOLD), main.length() - repoName.length(), main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getRepo().getName(), new StyleSpan(BOLD), main);
     }
 
     private static void formatPublic(Event event, SpannableStringBuilder main, SpannableStringBuilder details) {
-        main.append(event.getActor().getLogin());
-        main.setSpan(new StyleSpan(BOLD), 0, main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getActor().getLogin(), new StyleSpan(BOLD), main);
 
         main.append(" open sourced repository ");
 
@@ -342,31 +327,26 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
     }
 
     private static void formatWatch(Event event, SpannableStringBuilder main, SpannableStringBuilder details) {
-        main.append(event.getActor().getLogin());
-        main.setSpan(new StyleSpan(BOLD), 0, main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getActor().getLogin(), new StyleSpan(BOLD), main);
 
         main.append(" started watching ");
 
-        String repoName = event.getRepo().getName();
-        main.append(repoName);
-        main.setSpan(new StyleSpan(BOLD), main.length() - repoName.length(), main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getRepo().getName(), new StyleSpan(BOLD), main);
     }
 
     private static void formatReviewComment(Event event, SpannableStringBuilder main, SpannableStringBuilder details) {
-        main.append(event.getActor().getLogin());
-        main.setSpan(new StyleSpan(BOLD), 0, main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getActor().getLogin(), new StyleSpan(BOLD), main);
 
         main.append(" commented on ");
 
-        String repoName = event.getRepo().getName();
-        main.append(repoName);
-        main.setSpan(new StyleSpan(BOLD), main.length() - repoName.length(), main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getRepo().getName(), new StyleSpan(BOLD), main);
+
+        PullRequestReviewCommentPayload payload = (PullRequestReviewCommentPayload) event.getPayload();
+        appendCommitComment(details, payload.getComment());
     }
 
     private static void formatPullRequest(Event event, SpannableStringBuilder main, SpannableStringBuilder details) {
-        String actor = event.getActor().getLogin();
-        main.append(actor);
-        main.setSpan(new StyleSpan(BOLD), 0, actor.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getActor().getLogin(), new StyleSpan(BOLD), main);
 
         PullRequestPayload payload = (PullRequestPayload) event.getPayload();
         String action = payload.getAction();
@@ -380,15 +360,11 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         main.setSpan(new StyleSpan(BOLD), main.length() - prNumber.length(), main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
         main.append(" on ");
 
-        String repoName = event.getRepo().getName();
-        main.append(repoName);
-        main.setSpan(new StyleSpan(BOLD), main.length() - repoName.length(), main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getRepo().getName(), new StyleSpan(BOLD), main);
     }
 
     private static void formatPush(Event event, SpannableStringBuilder main, SpannableStringBuilder details) {
-        String actor = event.getActor().getLogin();
-        main.append(actor);
-        main.setSpan(new StyleSpan(BOLD), 0, actor.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getActor().getLogin(), new StyleSpan(BOLD), main);
 
         main.append(" pushed to ");
         PushPayload payload = (PushPayload) event.getPayload();
@@ -399,14 +375,11 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         main.setSpan(new StyleSpan(BOLD), main.length() - ref.length(), main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
         main.append(" at ");
 
-        String repoName = event.getRepo().getName();
-        main.append(repoName);
-        main.setSpan(new StyleSpan(BOLD), main.length() - repoName.length(), main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getRepo().getName(), new StyleSpan(BOLD), main);
     }
 
     private static void formatTeamAdd(Event event, SpannableStringBuilder main, SpannableStringBuilder details) {
-        main.append(event.getActor().getLogin());
-        main.setSpan(new StyleSpan(BOLD), 0, main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        appendSpan(event.getActor().getLogin(), new StyleSpan(BOLD), main);
 
         TeamAddPayload payload = (TeamAddPayload) event.getPayload();
 

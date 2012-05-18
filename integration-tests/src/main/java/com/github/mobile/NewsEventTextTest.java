@@ -115,8 +115,7 @@ public class NewsEventTextTest extends AndroidTestCase {
 
 		CharSequence content = text.getText();
 		assertNotNull(content);
-		assertEquals("user commented on commit on user/repo",
-				content.toString());
+		assertEquals("user commented on user/repo", content.toString());
 	}
 
 	/**
