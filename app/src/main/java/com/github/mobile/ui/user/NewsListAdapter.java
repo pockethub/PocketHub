@@ -56,6 +56,7 @@ import static org.eclipse.egit.github.core.event.Event.TYPE_WATCH;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
+import android.text.style.TypefaceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -65,10 +66,12 @@ import com.github.mobile.util.TimeUtils;
 import com.viewpagerindicator.R.layout;
 
 import org.eclipse.egit.github.core.Comment;
+import org.eclipse.egit.github.core.CommitComment;
 import org.eclipse.egit.github.core.Download;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Team;
 import org.eclipse.egit.github.core.User;
+import org.eclipse.egit.github.core.event.CommitCommentPayload;
 import org.eclipse.egit.github.core.event.CreatePayload;
 import org.eclipse.egit.github.core.event.DeletePayload;
 import org.eclipse.egit.github.core.event.DownloadPayload;
@@ -126,9 +129,8 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
     }
 
     private static void appendComment(final SpannableStringBuilder details, final Comment comment) {
-        if (comment == null)
-            return;
-        appendText(details, comment.getBody());
+        if (comment != null)
+            appendText(details, comment.getBody());
     }
 
     private static void appendText(final SpannableStringBuilder details, String text) {
@@ -150,6 +152,23 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         String repoName = event.getRepo().getName();
         main.append(repoName);
         main.setSpan(new StyleSpan(BOLD), main.length() - repoName.length(), main.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        CommitCommentPayload payload = (CommitCommentPayload) event.getPayload();
+        CommitComment comment = payload.getComment();
+        if (comment != null) {
+            String id = comment.getCommitId();
+            if (!TextUtils.isEmpty(id)) {
+                if (id.length() > 10)
+                    id = id.substring(0, 10);
+                appendText(details, "Comment in");
+                details.append(' ');
+                details.append(id);
+                details.setSpan(new TypefaceSpan("monospace"), details.length() - id.length(), details.length(),
+                        SPAN_EXCLUSIVE_EXCLUSIVE);
+                details.append(':').append('\n');
+            }
+        }
+        appendComment(details, comment);
     }
 
     private static void formatDownload(Event event, SpannableStringBuilder main, SpannableStringBuilder details) {
