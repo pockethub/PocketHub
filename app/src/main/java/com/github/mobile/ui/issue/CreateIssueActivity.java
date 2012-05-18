@@ -223,15 +223,7 @@ public class CreateIssueActivity extends DialogFragmentActivity {
             updateHeader(newIssue);
             break;
         case REQUEST_CODE_ASSIGNEE:
-            String login = arguments.getString(AssigneeDialogFragment.ARG_SELECTED);
-
-            if (login != null) {
-                User assignee = assigneeDialog.getCollaborator(login);
-                if (assignee == null)
-                    assignee = new User().setLogin(login);
-                newIssue.setAssignee(assignee);
-            } else
-                newIssue.setAssignee(null);
+            newIssue.setAssignee(AssigneeDialogFragment.getSelected(arguments));
             updateHeader(newIssue);
             break;
         }

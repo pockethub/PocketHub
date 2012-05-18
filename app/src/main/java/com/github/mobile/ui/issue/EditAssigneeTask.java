@@ -45,7 +45,7 @@ public class EditAssigneeTask extends ProgressDialogTask<Issue> {
 
     private final int issueNumber;
 
-    private String assignee;
+    private User assignee;
 
     /**
      * Create task to edit a milestone
@@ -81,7 +81,7 @@ public class EditAssigneeTask extends ProgressDialogTask<Issue> {
      * @param user
      * @return this task
      */
-    public EditAssigneeTask edit(String user) {
+    public EditAssigneeTask edit(User user) {
         dismissProgress();
         showIndeterminate(string.updating_assignee);
 
@@ -94,7 +94,10 @@ public class EditAssigneeTask extends ProgressDialogTask<Issue> {
     @Override
     protected Issue run() throws Exception {
         Issue editedIssue = new Issue();
-        editedIssue.setAssignee(new User().setLogin(assignee != null ? assignee : ""));
+        if (assignee != null)
+            editedIssue.setAssignee(assignee);
+        else
+            editedIssue.setAssignee(new User().setLogin(""));
         editedIssue.setNumber(issueNumber);
         return store.editIssue(repositoryId, editedIssue);
     }
