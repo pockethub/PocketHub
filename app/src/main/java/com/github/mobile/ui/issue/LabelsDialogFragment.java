@@ -46,7 +46,6 @@ import com.viewpagerindicator.R.layout;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 
 import org.eclipse.egit.github.core.Label;
 
@@ -121,6 +120,17 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements OnClic
     }
 
     /**
+     * Get selected labels from result bundle
+     *
+     * @param arguments
+     * @return selected labels
+     */
+    @SuppressWarnings("unchecked")
+    public static ArrayList<Label> getSelected(Bundle arguments) {
+        return (ArrayList<Label>) arguments.getSerializable(ARG_SELECTED);
+    }
+
+    /**
      * Confirm message and deliver callback to given activity
      *
      * @param activity
@@ -178,13 +188,13 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements OnClic
     @Override
     protected void onResult(int resultCode) {
         Bundle arguments = getArguments();
-        List<String> selected = new ArrayList<String>();
+        ArrayList<Label> selected = new ArrayList<Label>();
         boolean[] selectedChoices = arguments.getBooleanArray(ARG_SELECTED_CHOICES);
         ArrayList<Label> choices = getChoices();
         for (int i = 0; i < selectedChoices.length; i++)
             if (selectedChoices[i])
-                selected.add(choices.get(i).getName());
-        arguments.putStringArray(ARG_SELECTED, selected.toArray(new String[selected.size()]));
+                selected.add(choices.get(i));
+        arguments.putSerializable(ARG_SELECTED, selected);
 
         super.onResult(resultCode);
     }

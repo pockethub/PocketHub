@@ -15,6 +15,7 @@
  */
 package com.github.mobile.core.issue;
 
+import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import static org.eclipse.egit.github.core.service.IssueService.DIRECTION_DESCENDING;
 import static org.eclipse.egit.github.core.service.IssueService.FIELD_DIRECTION;
 import static org.eclipse.egit.github.core.service.IssueService.FIELD_SORT;
@@ -29,30 +30,34 @@ import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
+import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.User;
 
 /**
  * Issue filter containing at least one valid query
  */
-public class IssueFilter implements Serializable, Cloneable {
+public class IssueFilter implements Serializable, Cloneable, Comparator<Label> {
 
     /** serialVersionUID */
     private static final long serialVersionUID = 7310646589186299063L;
 
     private final Repository repository;
 
-    private Set<String> labels;
+    private Set<Label> labels;
 
     private Milestone milestone;
 
-    private String assignee;
+    private User assignee;
 
     private boolean open;
 
@@ -84,11 +89,11 @@ public class IssueFilter implements Serializable, Cloneable {
      * @param label
      * @return this filter
      */
-    public IssueFilter addLabel(String label) {
-        if (label == null || label.length() == 0)
+    public IssueFilter addLabel(Label label) {
+        if (label == null)
             return this;
         if (labels == null)
-            labels = new HashSet<String>();
+            labels = new TreeSet<Label>(this);
         labels.add(label);
         return this;
     }
@@ -97,15 +102,22 @@ public class IssueFilter implements Serializable, Cloneable {
      * @param labels
      * @return this filter
      */
-    public IssueFilter setLabels(Set<String> labels) {
-        this.labels = labels;
+    public IssueFilter setLabels(Collection<Label> labels) {
+        if (labels != null && !labels.isEmpty()) {
+            if (this.labels == null)
+                this.labels = new TreeSet<Label>(this);
+            else
+                this.labels.clear();
+            this.labels.addAll(labels);
+        } else
+            this.labels = null;
         return this;
     }
 
     /**
      * @return labels
      */
-    public Set<String> getLabels() {
+    public Set<Label> getLabels() {
         return labels;
     }
 
@@ -136,7 +148,7 @@ public class IssueFilter implements Serializable, Cloneable {
      * @param assignee
      * @return this filter
      */
-    public IssueFilter setAssignee(String assignee) {
+    public IssueFilter setAssignee(User assignee) {
         this.assignee = assignee;
         return this;
     }
@@ -153,7 +165,7 @@ public class IssueFilter implements Serializable, Cloneable {
     /**
      * @return assignee
      */
-    public String getAssignee() {
+    public User getAssignee() {
         return assignee;
     }
 
@@ -168,16 +180,16 @@ public class IssueFilter implements Serializable, Cloneable {
         filter.put(FIELD_SORT, SORT_CREATED);
         filter.put(FIELD_DIRECTION, DIRECTION_DESCENDING);
 
-        if (assignee != null && assignee.length() > 0)
-            filter.put(FILTER_ASSIGNEE, assignee);
+        if (assignee != null)
+            filter.put(FILTER_ASSIGNEE, assignee.getLogin());
 
         if (milestone != null)
             filter.put(FILTER_MILESTONE, Integer.toString(milestone.getNumber()));
 
         if (labels != null && !labels.isEmpty()) {
             StringBuilder labelsQuery = new StringBuilder();
-            for (String label : labels)
-                labelsQuery.append(label).append(',');
+            for (Label label : labels)
+                labelsQuery.append(label.getName()).append(',');
             filter.put(FILTER_LABELS, labelsQuery.toString());
         }
 
@@ -201,15 +213,15 @@ public class IssueFilter implements Serializable, Cloneable {
             segments.add("Closed issues");
 
         if (assignee != null)
-            segments.add("Assignee: " + assignee);
+            segments.add("Assignee: " + assignee.getLogin());
 
         if (milestone != null)
             segments.add("Milestone: " + milestone.getTitle());
 
         if (labels != null && !labels.isEmpty()) {
             StringBuilder builder = new StringBuilder("Labels: ");
-            for (String label : labels)
-                builder.append(label).append(',').append(' ');
+            for (Label label : labels)
+                builder.append(label.getName()).append(',').append(' ');
             builder.deleteCharAt(builder.length() - 1);
             builder.deleteCharAt(builder.length() - 1);
             segments.add(builder.toString());
@@ -244,6 +256,12 @@ public class IssueFilter implements Serializable, Cloneable {
         return a != null && b != null && a.getNumber() == b.getNumber();
     }
 
+    private boolean isEqual(User a, User b) {
+        if (a == null && b == null)
+            return true;
+        return a != null && b != null && a.getId() == b.getId();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -264,5 +282,10 @@ public class IssueFilter implements Serializable, Cloneable {
             // This should never happen since this class implements Cloneable
             throw new IllegalArgumentException(e);
         }
+    }
+
+    @Override
+    public int compare(Label lhs, Label rhs) {
+        return CASE_INSENSITIVE_ORDER.compare(lhs.getName(), rhs.getName());
     }
 }

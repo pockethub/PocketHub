@@ -183,5 +183,7 @@
     <string name="loading_milestones">Loading Milestones…</string>
     <string name="error_labels_load">Loading labels failed</string>
     <string name="loading_labels">Loading Labels…</string>
+    <string name="open_issues">Open Issues</string>
+    <string name="closed_issues">Closed Issues</string>
 
 </resources>

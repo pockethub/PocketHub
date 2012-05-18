@@ -100,7 +100,7 @@
         android:paddingTop="5dp" >
 
         <ImageView
-            android:id="@+id/iv_assignee_gravatar"
+            android:id="@+id/iv_assignee_avatar"
             style="@style/AvatarMedium"
             android:contentDescription="@string/avatar" />
 

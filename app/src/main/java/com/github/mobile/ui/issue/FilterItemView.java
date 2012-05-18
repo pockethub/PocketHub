@@ -28,9 +28,19 @@ import com.github.mobile.ui.ItemView;
 public class FilterItemView extends ItemView {
 
     /**
-     * Avatar image view
+     * Avatar of repository owner
      */
     public final ImageView avatarView;
+
+    /**
+     * Avatar of assignee
+     */
+    public final ImageView assigneeAvatarView;
+
+    /**
+     * Assignee area
+     */
+    public final View assigneeArea;
 
     /**
      * Repository text view
@@ -38,9 +48,24 @@ public class FilterItemView extends ItemView {
     public final TextView repoText;
 
     /**
-     * Filter label text view
+     * Filter state text view
      */
-    public final TextView filterText;
+    public final TextView stateText;
+
+    /**
+     * Filter labels text view
+     */
+    public final TextView labelsText;
+
+    /**
+     * Filter milestone text view
+     */
+    public final TextView milestoneText;
+
+    /**
+     * Filter assignee text view
+     */
+    public final TextView assigneeText;
 
     /**
      * Create holder for view
@@ -52,6 +77,11 @@ public class FilterItemView extends ItemView {
 
         avatarView = (ImageView) view.findViewById(id.iv_avatar);
         repoText = (TextView) view.findViewById(id.tv_repo_name);
-        filterText = (TextView) view.findViewById(id.tv_filter_summary);
+        stateText = (TextView) view.findViewById(id.tv_filter_state);
+        labelsText = (TextView) view.findViewById(id.tv_filter_labels);
+        milestoneText = (TextView) view.findViewById(id.tv_filter_milestone);
+        assigneeArea = view.findViewById(id.ll_assignee);
+        assigneeText = (TextView) view.findViewById(id.tv_filter_assignee);
+        assigneeAvatarView = (ImageView)view.findViewById(id.iv_assignee_avatar);
     }
 }

@@ -37,19 +37,15 @@ import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.ui.DialogFragmentActivity;
-import com.github.mobile.ui.MultiChoiceDialogFragment;
 import com.github.mobile.ui.SingleChoiceDialogFragment;
 import com.google.inject.Inject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.CollaboratorService;
 import org.eclipse.egit.github.core.service.LabelService;
 import org.eclipse.egit.github.core.service.MilestoneService;
@@ -142,13 +138,10 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
             public void onClick(View v) {
                 if (labelsDialog == null)
                     labelsDialog = new LabelsDialog(FilterIssuesActivity.this, REQUEST_LABELS, repository, labels);
-                Set<String> labelNames = filter.getLabels();
-                if (labelNames != null) {
-                    List<Label> filterLabels = new ArrayList<Label>(labelNames.size());
-                    for (String name : labelNames)
-                        filterLabels.add(new Label().setName(name));
-                    labelsDialog.show(filterLabels);
-                } else
+                Set<Label> labels = filter.getLabels();
+                if (labels != null)
+                    labelsDialog.show(labels);
+                else
                     labelsDialog.show(null);
             }
         };
@@ -213,11 +206,11 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
     }
 
     private void updateLabels() {
-        Set<String> selected = filter.getLabels();
+        Set<Label> selected = filter.getLabels();
         if (selected == null)
             ((TextView) findViewById(id.tv_labels)).setText("");
         else if (selected.size() == 1)
-            ((TextView) findViewById(id.tv_labels)).setText(selected.iterator().next());
+            ((TextView) findViewById(id.tv_labels)).setText(selected.iterator().next().getName());
         else if (!selected.isEmpty())
             ((TextView) findViewById(id.tv_labels)).setText(TextUtils.join(", ", selected));
     }
@@ -231,9 +224,9 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
     }
 
     private void updateAssignee() {
-        String selected = filter.getAssignee();
+        User selected = filter.getAssignee();
         if (selected != null)
-            ((TextView) findViewById(id.tv_assignee)).setText(selected);
+            ((TextView) findViewById(id.tv_assignee)).setText(selected.getLogin());
         else
             ((TextView) findViewById(id.tv_assignee)).setText("");
     }
@@ -245,11 +238,7 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
 
         switch (requestCode) {
         case REQUEST_LABELS:
-            String[] labels = arguments.getStringArray(MultiChoiceDialogFragment.ARG_SELECTED);
-            if (labels.length > 0)
-                filter.setLabels(new HashSet<String>(Arrays.asList(labels)));
-            else
-                filter.setLabels(null);
+            filter.setLabels(LabelsDialogFragment.getSelected(arguments));
             updateLabels();
             break;
         case REQUEST_MILESTONE:
@@ -265,8 +254,7 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
             updateMilestone();
             break;
         case REQUEST_ASSIGNEE:
-            String assignee = arguments.getString(SingleChoiceDialogFragment.ARG_SELECTED);
-            filter.setAssignee(assignee);
+            filter.setAssignee(AssigneeDialogFragment.getSelected(arguments));
             updateAssignee();
             break;
         }

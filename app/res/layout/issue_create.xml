@@ -71,7 +71,7 @@
                     android:padding="10dp" >
 
                     <ImageView
-                        android:id="@+id/iv_assignee_gravatar"
+                        android:id="@+id/iv_assignee_avatar"
                         style="@style/AvatarSmall"
                         android:contentDescription="@string/avatar" />
 

@@ -55,7 +55,7 @@ public class AccountDataManager {
     /**
      * Format version to bump if serialization format changes and cache should be ignored
      */
-    private static final int FORMAT_VERSION = 2;
+    private static final int FORMAT_VERSION = 4;
 
     @Inject
     private Context context;

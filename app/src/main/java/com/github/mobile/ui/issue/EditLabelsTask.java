@@ -23,7 +23,7 @@ import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.google.inject.Inject;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
@@ -48,7 +48,7 @@ public class EditLabelsTask extends ProgressDialogTask<Issue> {
 
     private final int issueNumber;
 
-    private String[] labels;
+    private Label[] labels;
 
     /**
      * Create task to edit labels
@@ -84,7 +84,7 @@ public class EditLabelsTask extends ProgressDialogTask<Issue> {
      * @param labels
      * @return this task
      */
-    public EditLabelsTask edit(String[] labels) {
+    public EditLabelsTask edit(Label[] labels) {
         dismissProgress();
         showIndeterminate(string.updating_labels);
 
@@ -98,10 +98,8 @@ public class EditLabelsTask extends ProgressDialogTask<Issue> {
     public Issue run() throws Exception {
         Issue editedIssue = new Issue();
         editedIssue.setNumber(issueNumber);
-        List<Label> issueLabels = new ArrayList<Label>(labels.length);
-        for (String label : labels)
-            issueLabels.add(new Label().setName(label));
-        editedIssue.setLabels(issueLabels);
+        if (labels != null && labels.length > 0)
+            editedIssue.setLabels(Arrays.asList(labels));
         return store.editIssue(repositoryId, editedIssue);
     }
 }

@@ -15,7 +15,8 @@
   limitations under the License.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItem" >
+    style="@style/ListItem"
+    android:orientation="horizontal" >
 
     <ImageView
         android:id="@+id/iv_avatar"
@@ -26,21 +27,60 @@
         android:layout_marginTop="4dp"
         android:contentDescription="@string/avatar" />
 
-    <TextView
-        android:id="@+id/tv_repo_name"
-        style="@style/ListSubtitleText"
-        android:layout_width="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/iv_avatar"
-        android:singleLine="true" />
-
-    <TextView
-        android:id="@+id/tv_filter_summary"
-        style="@style/ListTitleText"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignLeft="@id/tv_repo_name"
-        android:layout_below="@id/tv_repo_name"
-        android:paddingTop="2dp" />
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/iv_avatar"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tv_repo_name"
+            style="@style/ListSubtitleText"
+            android:singleLine="true" />
+
+        <TextView
+            android:id="@+id/tv_filter_state"
+            style="@style/ListTitleText"
+            android:singleLine="true" />
+
+        <LinearLayout
+            android:id="@+id/ll_assignee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingBottom="2dp" >
+
+            <ImageView
+                android:id="@+id/iv_assignee_avatar"
+                style="@style/AvatarMedium"
+                android:contentDescription="@string/avatar" />
+
+            <TextView
+                android:id="@+id/tv_filter_assignee"
+                style="@style/ListSubtitleText"
+                android:paddingLeft="5dp"
+                android:singleLine="true"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/ListSubtitleText"
+                android:paddingLeft="5dp"
+                android:singleLine="true"
+                android:text="@string/assigned" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_filter_labels"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_filter_milestone"
+            style="@style/ListSubtitleText"
+            android:paddingTop="2dp"
+            android:singleLine="true"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </RelativeLayout>

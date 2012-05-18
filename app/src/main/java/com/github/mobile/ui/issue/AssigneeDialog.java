@@ -65,7 +65,7 @@ public class AssigneeDialog {
         this.service = service;
     }
 
-    private void load(final String selectedAssignee) {
+    private void load(final User selectedAssignee) {
         new ProgressDialogTask<List<User>>(activity) {
 
             @Override
@@ -122,7 +122,7 @@ public class AssigneeDialog {
      *
      * @param selectedAssignee
      */
-    public void show(String selectedAssignee) {
+    public void show(User selectedAssignee) {
         if (collaborators == null) {
             load(selectedAssignee);
             return;
@@ -132,7 +132,7 @@ public class AssigneeDialog {
         int checked = -1;
         if (selectedAssignee != null)
             for (int i = 0; i < users.size(); i++)
-                if (selectedAssignee.equals(users.get(i).getLogin()))
+                if (selectedAssignee.getLogin().equals(users.get(i).getLogin()))
                     checked = i;
         AssigneeDialogFragment.show(activity, requestCode, activity.getString(string.select_assignee), null, users,
                 checked);

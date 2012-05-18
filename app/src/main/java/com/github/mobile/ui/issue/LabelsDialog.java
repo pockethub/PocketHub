@@ -25,6 +25,7 @@ import com.github.mobile.ui.ProgressDialogTask;
 import com.github.mobile.util.ToastUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +69,7 @@ public class LabelsDialog {
         this.service = service;
     }
 
-    private void load(final List<Label> selectedLabels) {
+    private void load(final Collection<Label> selectedLabels) {
         new ProgressDialogTask<List<Label>>(activity) {
 
             @Override
@@ -125,7 +126,7 @@ public class LabelsDialog {
      *
      * @param selectedLabels
      */
-    public void show(List<Label> selectedLabels) {
+    public void show(Collection<Label> selectedLabels) {
         if (labels == null) {
             load(selectedLabels);
             return;

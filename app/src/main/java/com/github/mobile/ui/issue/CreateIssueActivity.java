@@ -108,7 +108,7 @@ public class CreateIssueActivity extends DialogFragmentActivity {
     @InjectView(id.tv_assignee_name)
     private TextView assigneeText;
 
-    @InjectView(id.iv_assignee_gravatar)
+    @InjectView(id.iv_assignee_avatar)
     private ImageView assigneeAvatar;
 
     @InjectView(id.tv_labels)
@@ -149,8 +149,7 @@ public class CreateIssueActivity extends DialogFragmentActivity {
         headerView.findViewById(id.ll_assignee).setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
-                User assignee = newIssue.getAssignee();
-                assigneeDialog.show(assignee != null ? assignee.getLogin() : null);
+                assigneeDialog.show(newIssue.getAssignee());
             }
         });
         headerView.findViewById(id.tv_labels).setOnClickListener(new OnClickListener() {
@@ -207,13 +206,10 @@ public class CreateIssueActivity extends DialogFragmentActivity {
 
         switch (requestCode) {
         case REQUEST_CODE_LABELS:
-            String[] labelNames = arguments.getStringArray(LabelsDialogFragment.ARG_SELECTED);
-            if (labelNames != null && labelNames.length > 0) {
-                List<Label> labels = new ArrayList<Label>(labelNames.length);
-                for (String name : labelNames)
-                    labels.add(labelsDialog.getLabel(name));
+            ArrayList<Label> labels = LabelsDialogFragment.getSelected(arguments);
+            if (labels != null && !labels.isEmpty())
                 newIssue.setLabels(labels);
-            } else
+            else
                 newIssue.setLabels(null);
             updateHeader(newIssue);
             break;
@@ -254,8 +250,7 @@ public class CreateIssueActivity extends DialogFragmentActivity {
             milestoneDialog.show(newIssue.getMilestone());
             return true;
         case id.issue_assignee:
-            User assignee = newIssue.getAssignee();
-            assigneeDialog.show(assignee != null ? assignee.getLogin() : null);
+            assigneeDialog.show(newIssue.getAssignee());
             return true;
         default:
             return super.onOptionsItemSelected(item);

@@ -106,6 +106,16 @@ public class AssigneeDialogFragment extends DialogFragmentHelper implements OnCl
     }
 
     /**
+     * Get selected user from results bundle
+     *
+     * @param arguments
+     * @return user
+     */
+    public static User getSelected(Bundle arguments) {
+        return (User) arguments.getSerializable(ARG_SELECTED);
+    }
+
+    /**
      * Confirm message and deliver callback to given activity
      *
      * @param activity
@@ -174,7 +184,7 @@ public class AssigneeDialogFragment extends DialogFragmentHelper implements OnCl
             onResult(RESULT_OK);
             break;
         default:
-            getArguments().putString(ARG_SELECTED, getChoices().get(which).getLogin());
+            getArguments().putSerializable(ARG_SELECTED, getChoices().get(which));
             onResult(RESULT_OK);
         }
     }

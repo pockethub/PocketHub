@@ -70,6 +70,7 @@ import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.google.inject.Inject;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -269,7 +270,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         creatorAvatar = (ImageView) headerView.findViewById(id.iv_avatar);
         assigneeText = (TextView) headerView.findViewById(id.tv_assignee_name);
         assigneeLabel = (TextView) headerView.findViewById(id.tv_assignee_label);
-        assigneeAvatar = (ImageView) headerView.findViewById(id.iv_assignee_gravatar);
+        assigneeAvatar = (ImageView) headerView.findViewById(id.iv_assignee_avatar);
         labelsArea = (TextView) headerView.findViewById(id.tv_labels);
         milestoneArea = headerView.findViewById(id.ll_milestone);
         milestoneText = (TextView) headerView.findViewById(id.tv_milestone);
@@ -290,10 +291,8 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         headerView.findViewById(id.ll_assignee).setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
-                if (issue != null) {
-                    User assignee = issue.getAssignee();
-                    assigneeTask.prompt(assignee != null ? assignee.getLogin() : null);
-                }
+                if (issue != null)
+                    assigneeTask.prompt(issue.getAssignee());
             }
         });
 
@@ -414,7 +413,11 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             assigneeTask.edit(arguments.getString(AssigneeDialogFragment.ARG_SELECTED));
             break;
         case ISSUE_LABELS_UPDATE:
-            labelsTask.edit(arguments.getStringArray(LabelsDialogFragment.ARG_SELECTED));
+            ArrayList<Label> labels = LabelsDialogFragment.getSelected(arguments);
+            if (labels != null && !labels.isEmpty())
+                labelsTask.edit(labels.toArray(new Label[labels.size()]));
+            else
+                labelsTask.edit(null);
             break;
         case ISSUE_CLOSE:
             stateTask.edit(true);
@@ -474,8 +477,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             milestoneTask.prompt(issue.getMilestone());
             return true;
         case id.issue_assignee:
-            User assignee = issue.getAssignee();
-            assigneeTask.prompt(assignee != null ? assignee.getLogin() : null);
+            assigneeTask.prompt(issue.getAssignee());
             return true;
         case id.issue_state:
             stateTask.confirm(STATE_OPEN.equals(issue.getState()));

@@ -70,7 +70,7 @@ public class EditAssigneeTask extends ProgressDialogTask<Issue> {
      *            current assignee
      * @return this task
      */
-    public EditAssigneeTask prompt(String assignee) {
+    public EditAssigneeTask prompt(User assignee) {
         assigneeDialog.show(assignee);
         return this;
     }

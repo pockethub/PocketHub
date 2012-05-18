@@ -15,13 +15,22 @@
  */
 package com.github.mobile.ui.issue;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.github.mobile.R.layout;
+import com.github.mobile.R.string;
 import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.util.AvatarLoader;
+
+import java.util.Collection;
+
+import org.eclipse.egit.github.core.Label;
+import org.eclipse.egit.github.core.Milestone;
+import org.eclipse.egit.github.core.User;
 
 /**
  * Adapter to display a list of {@link IssueFilter} objects
@@ -57,7 +66,31 @@ public class FilterListAdapter extends ItemListAdapter<IssueFilter, FilterItemVi
     protected void update(final int position, final FilterItemView view, final IssueFilter filter) {
         avatars.bind(view.avatarView, filter.getRepository().getOwner());
         view.repoText.setText(filter.getRepository().generateId());
-        view.filterText.setText(filter.toDisplay());
+        if (filter.isOpen())
+            view.stateText.setText(string.open_issues);
+        else
+            view.stateText.setText(string.closed_issues);
+
+        Collection<Label> labels = filter.getLabels();
+        if (labels != null && !labels.isEmpty()) {
+            view.labelsText.setText(LabelDrawableSpan.create(view.labelsText, labels));
+            view.labelsText.setVisibility(VISIBLE);
+        } else
+            view.labelsText.setVisibility(GONE);
+
+        Milestone milestone = filter.getMilestone();
+        if (milestone != null)
+            view.milestoneText.setText(milestone.getTitle());
+        else
+            view.milestoneText.setVisibility(GONE);
+
+        User assignee = filter.getAssignee();
+        if (assignee != null) {
+            avatars.bind(view.assigneeAvatarView, assignee);
+            view.assigneeText.setText(assignee.getLogin());
+            view.assigneeArea.setVisibility(VISIBLE);
+        } else
+            view.assigneeArea.setVisibility(GONE);
     }
 
     @Override
