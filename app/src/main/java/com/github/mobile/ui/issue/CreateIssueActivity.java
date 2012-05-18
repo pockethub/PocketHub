@@ -26,7 +26,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -112,8 +111,8 @@ public class CreateIssueActivity extends DialogFragmentActivity {
     @InjectView(id.iv_assignee_gravatar)
     private ImageView assigneeAvatar;
 
-    @InjectView(id.v_labels)
-    private View labelsArea;
+    @InjectView(id.tv_labels)
+    private TextView labelsArea;
 
     @InjectView(id.tv_milestone)
     private TextView milestoneText;
@@ -154,7 +153,7 @@ public class CreateIssueActivity extends DialogFragmentActivity {
                 assigneeDialog.show(assignee != null ? assignee.getLogin() : null);
             }
         });
-        headerView.findViewById(id.v_labels).setOnClickListener(new OnClickListener() {
+        headerView.findViewById(id.tv_labels).setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
                 labelsDialog.show(newIssue.getLabels());
@@ -184,13 +183,8 @@ public class CreateIssueActivity extends DialogFragmentActivity {
 
         List<Label> labels = issue.getLabels();
         if (labels != null && !labels.isEmpty()) {
+            labelsArea.setText(LabelDrawableSpan.create(labelsArea, labels));
             labelsArea.setVisibility(VISIBLE);
-            LabelsDrawable drawable = new LabelsDrawable(getResources(), labelsArea, assigneeText.getTextSize(),
-                    issue.getLabels());
-            drawable.getPaint().setColor(getResources().getColor(android.R.color.transparent));
-            labelsArea.setBackgroundDrawable(drawable);
-            LayoutParams params = new LayoutParams(drawable.getBounds().width(), drawable.getBounds().height());
-            labelsArea.setLayoutParams(params);
         } else
             labelsArea.setVisibility(GONE);
 

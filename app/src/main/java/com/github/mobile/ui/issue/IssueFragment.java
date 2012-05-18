@@ -76,6 +76,7 @@ import java.util.Locale;
 
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.User;
@@ -136,7 +137,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
     private ImageView assigneeAvatar;
 
-    private View labelsArea;
+    private TextView labelsArea;
 
     private View milestoneArea;
 
@@ -269,7 +270,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         assigneeText = (TextView) headerView.findViewById(id.tv_assignee_name);
         assigneeLabel = (TextView) headerView.findViewById(id.tv_assignee_label);
         assigneeAvatar = (ImageView) headerView.findViewById(id.iv_assignee_gravatar);
-        labelsArea = headerView.findViewById(id.v_labels);
+        labelsArea = (TextView) headerView.findViewById(id.tv_labels);
         milestoneArea = headerView.findViewById(id.ll_milestone);
         milestoneText = (TextView) headerView.findViewById(id.tv_milestone);
         milestoneProgressArea = (View) headerView.findViewById(id.v_closed);
@@ -329,14 +330,10 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             assigneeLabel.setText(string.unassigned);
         }
 
-        if (!issue.getLabels().isEmpty()) {
+        List<Label> labels = issue.getLabels();
+        if (labels != null && !labels.isEmpty()) {
+            labelsArea.setText(LabelDrawableSpan.create(labelsArea, labels));
             labelsArea.setVisibility(VISIBLE);
-            LabelsDrawable drawable = new LabelsDrawable(getResources(), labelsArea, createdText.getTextSize(),
-                    issue.getLabels());
-            drawable.getPaint().setColor(getResources().getColor(android.R.color.transparent));
-            labelsArea.setBackgroundDrawable(drawable);
-            LayoutParams params = new LayoutParams(drawable.getBounds().width(), drawable.getBounds().height());
-            labelsArea.setLayoutParams(params);
         } else
             labelsArea.setVisibility(GONE);
 
