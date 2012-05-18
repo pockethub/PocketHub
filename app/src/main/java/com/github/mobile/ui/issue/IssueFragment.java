@@ -252,7 +252,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(layout.issue_view, null);
+        return inflater.inflate(layout.comment_list_view, null);
     }
 
     @Override
