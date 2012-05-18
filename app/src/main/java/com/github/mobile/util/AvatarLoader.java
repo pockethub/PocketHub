@@ -17,7 +17,6 @@ package com.github.mobile.util;
 
 import static android.graphics.Bitmap.CompressFormat.PNG;
 import static android.graphics.Bitmap.Config.ARGB_8888;
-import static android.view.View.VISIBLE;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -106,23 +105,6 @@ public class AvatarLoader {
 
         float density = context.getResources().getDisplayMetrics().density;
         cornerRadius = CORNER_RADIUS_IN_DIP * density;
-    }
-
-    /**
-     * Create bitmap from raw image and set to view
-     *
-     * @param image
-     * @param view
-     * @param user
-     * @return this helper
-     */
-    protected AvatarLoader setImage(final BitmapDrawable image, final ImageView view, final User user) {
-        view.setTag(id.iv_avatar, null);
-        loaded.put(user.getId(), image);
-        view.setImageDrawable(image);
-        view.setVisibility(VISIBLE);
-
-        return this;
     }
 
     /**
@@ -252,6 +234,16 @@ public class AvatarLoader {
         return this;
     }
 
+    private AvatarLoader setImage(final Drawable image, final ImageView view) {
+        return setImage(image, view, null);
+    }
+
+    private AvatarLoader setImage(final Drawable image, final ImageView view, Object tag) {
+        view.setImageDrawable(image);
+        view.setTag(id.iv_avatar, tag);
+        return this;
+    }
+
     /**
      * Bind view to image at URL
      *
@@ -260,29 +252,20 @@ public class AvatarLoader {
      * @return this helper
      */
     public AvatarLoader bind(final ImageView view, final User user) {
-        if (user == null) {
-            view.setImageDrawable(loadingAvatar);
-            return this;
-        }
+        if (user == null)
+            return setImage(loadingAvatar, view);
 
         final String avatarUrl = user.getAvatarUrl();
-        if (TextUtils.isEmpty(avatarUrl)) {
-            view.setImageDrawable(loadingAvatar);
-            return this;
-        }
+        if (TextUtils.isEmpty(avatarUrl))
+            return setImage(loadingAvatar, view);
 
         final Integer userId = Integer.valueOf(user.getId());
 
         BitmapDrawable loadedImage = loaded.get(userId);
-        if (loadedImage != null) {
-            view.setImageDrawable(loadedImage);
-            view.setVisibility(VISIBLE);
-            view.setTag(id.iv_avatar, null);
-            return this;
-        }
+        if (loadedImage != null)
+            return setImage(loadedImage, view);
 
-        view.setImageDrawable(loadingAvatar);
-        view.setTag(id.iv_avatar, userId);
+        setImage(loadingAvatar, view, userId);
 
         new FetchAvatarTask(context) {
 
@@ -299,9 +282,12 @@ public class AvatarLoader {
             }
 
             @Override
-            protected void onSuccess(BitmapDrawable image) throws Exception {
-                if (image != null && userId.equals(view.getTag(id.iv_avatar)))
-                    setImage(image, view, user);
+            protected void onSuccess(final BitmapDrawable image) throws Exception {
+                if (image == null)
+                    return;
+                loaded.put(userId, image);
+                if (userId.equals(view.getTag(id.iv_avatar)))
+                    setImage(image, view);
             }
 
         }.execute();
