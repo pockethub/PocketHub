@@ -179,12 +179,13 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
         final Label[] sortedLabels = labels.toArray(new Label[labels.size()]);
         Arrays.sort(sortedLabels, new Comparator<Label>() {
 
-            public int compare(Label lhs, Label rhs) {
+            @Override
+            public int compare(final Label lhs, final Label rhs) {
                 return CASE_INSENSITIVE_ORDER.compare(lhs.getName(), rhs.getName());
             }
         });
 
-        SpannableStringBuilder builder = new SpannableStringBuilder();
+        final SpannableStringBuilder builder = new SpannableStringBuilder();
         for (int i = 0; i < sortedLabels.length; i++) {
             builder.append('\uFFFC');
             builder.setSpan(new LabelDrawableSpan(view.getResources(), view.getTextSize(), sortedLabels[i]),
