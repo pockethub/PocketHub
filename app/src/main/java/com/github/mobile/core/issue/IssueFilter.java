@@ -240,8 +240,9 @@ public class IssueFilter implements Serializable, Cloneable, Comparator<Label> {
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(new Object[] { open, assignee, milestone, assignee,
-                repository != null ? repository.generateId() : null, labels });
+        return Arrays.hashCode(new Object[] { open, assignee != null ? assignee.getId() : null,
+                milestone != null ? milestone.getNumber() : null, assignee != null ? assignee.getId() : null,
+                repository != null ? repository.getId() : null, labels });
     }
 
     private boolean isEqual(Object a, Object b) {
@@ -259,6 +260,10 @@ public class IssueFilter implements Serializable, Cloneable, Comparator<Label> {
     private boolean isEqual(User a, User b) {
         if (a == null && b == null)
             return true;
+        return a != null && b != null && a.getId() == b.getId();
+    }
+
+    private boolean isEqual(Repository a, Repository b) {
         return a != null && b != null && a.getId() == b.getId();
     }
 
