@@ -108,7 +108,8 @@ public class ViewFiltersActivity extends DialogFragmentActivity implements OnIte
         IssueFilter filter = (IssueFilter) parent.getItemAtPosition(position);
         Bundle args = new Bundle();
         args.putSerializable(ARG_FILTER, filter);
-        ConfirmDialogFragment.show(this, REQUEST_DELETE, null, getString(string.confirm_filter_delete_message), args);
+        ConfirmDialogFragment.show(this, REQUEST_DELETE, getString(string.confirm_filter_delete_title),
+                getString(string.confirm_filter_delete_message), args);
         return true;
     }
 }
