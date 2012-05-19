@@ -34,7 +34,6 @@ import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -61,11 +60,11 @@ import com.github.mobile.core.issue.RefreshIssueTask;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.DialogResultListener;
 import com.github.mobile.ui.SingleChoiceDialogFragment;
+import com.github.mobile.ui.StyledText;
 import com.github.mobile.ui.comment.CommentListAdapter;
 import com.github.mobile.ui.comment.CreateCommentActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
-import com.github.mobile.util.TimeUtils;
 import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.google.inject.Inject;
@@ -310,10 +309,11 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
         bodyImageGetter.bind(bodyText, issue.getBodyHtml(), issue.getId());
 
-        String reported = "<b>" + issue.getUser().getLogin() + "</b> opened "
-                + TimeUtils.getRelativeTime(issue.getCreatedAt());
-
-        createdText.setText(Html.fromHtml(reported));
+        StyledText text = new StyledText();
+        text.bold(issue.getUser().getLogin());
+        text.append(" opened ");
+        text.append(issue.getCreatedAt());
+        createdText.setText(text);
         avatarHelper.bind(creatorAvatar, issue.getUser());
 
         User assignee = issue.getAssignee();
