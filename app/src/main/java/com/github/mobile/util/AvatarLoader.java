@@ -40,6 +40,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.egit.github.core.User;
 
@@ -199,6 +200,21 @@ public class AvatarLoader {
      * @return this helper
      */
     public AvatarLoader bind(final ActionBar actionBar, final User user) {
+        return bind(actionBar, new AtomicReference<User>(user));
+    }
+
+    /**
+     * Sets the logo on the {@link ActionBar} to the user's avatar.
+     *
+     * @param actionBar
+     * @param userReference
+     * @return this helper
+     */
+    public AvatarLoader bind(final ActionBar actionBar, final AtomicReference<User> userReference) {
+        if (userReference == null)
+            return this;
+
+        final User user = userReference.get();
         if (user == null)
             return this;
 
@@ -227,7 +243,9 @@ public class AvatarLoader {
 
             @Override
             protected void onSuccess(BitmapDrawable image) throws Exception {
-                actionBar.setLogo(image);
+                final User current = userReference.get();
+                if (current != null && userId.equals(current.getId()))
+                    actionBar.setLogo(image);
             }
         }.execute();
 

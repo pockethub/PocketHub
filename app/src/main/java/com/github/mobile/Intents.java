@@ -19,6 +19,7 @@ import static org.eclipse.egit.github.core.RepositoryId.createFromUrl;
 import android.content.Intent;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.GistFile;
@@ -101,6 +102,11 @@ public class Intents {
      * User handle
      */
     public static final String EXTRA_USER = INTENT_EXTRA_PREFIX + "USER";
+
+    /**
+     * {@link ArrayList} handle of {@link User} objects
+     */
+    public static final String EXTRA_USERS = INTENT_EXTRA_PREFIX + "USERS";
 
     /**
      * Issue filter handle

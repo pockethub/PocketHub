@@ -19,6 +19,7 @@ import static com.github.mobile.Intents.EXTRA_ISSUE_NUMBERS;
 import static com.github.mobile.Intents.EXTRA_POSITION;
 import static com.github.mobile.Intents.EXTRA_REPOSITORIES;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
+import static com.github.mobile.Intents.EXTRA_USERS;
 import android.R.integer;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,10 +39,13 @@ import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryId;
+import org.eclipse.egit.github.core.RepositoryIssue;
+import org.eclipse.egit.github.core.User;
 
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
@@ -87,14 +91,38 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
      * @return intent
      */
     public static Intent createIntent(Collection<? extends Issue> issues, int position) {
-        ArrayList<Integer> numbers = new ArrayList<Integer>(issues.size());
-        ArrayList<RepositoryId> repos = new ArrayList<RepositoryId>(issues.size());
+        final int count = issues.size();
+        ArrayList<Integer> numbers = new ArrayList<Integer>(count);
+        ArrayList<RepositoryId> repos = new ArrayList<RepositoryId>(count);
+        ArrayList<User> owners = new ArrayList<User>(count);
+        boolean hasOwners = false;
         for (Issue issue : issues) {
             numbers.add(issue.getNumber());
             repos.add(RepositoryId.createFromUrl(issue.getHtmlUrl()));
+            User owner = getOwner(issue);
+            if (owner != null)
+                hasOwners = true;
+            owners.add(owner);
         }
-        return new Builder("issues.VIEW").add(EXTRA_ISSUE_NUMBERS, numbers).add(EXTRA_REPOSITORIES, repos)
-                .add(EXTRA_POSITION, position).toIntent();
+
+        Builder builder = new Builder("issues.VIEW");
+        builder.add(EXTRA_ISSUE_NUMBERS, numbers);
+        builder.add(EXTRA_REPOSITORIES, repos);
+        builder.add(EXTRA_POSITION, position);
+        if (hasOwners)
+            builder.add(EXTRA_USERS, owners);
+        return builder.toIntent();
+    }
+
+    private static User getOwner(Issue issue) {
+        if (!(issue instanceof RepositoryIssue))
+            return null;
+
+        Repository repo = ((RepositoryIssue) issue).getRepository();
+        if (repo != null)
+            return repo.getOwner();
+        else
+            return null;
     }
 
     @InjectView(id.vp_pages)
@@ -106,6 +134,9 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
     @InjectExtra(value = EXTRA_REPOSITORIES, optional = true)
     private ArrayList<RepositoryId> repoIds;
 
+    @InjectExtra(value = EXTRA_USERS, optional = true)
+    private ArrayList<User> users;
+
     @InjectExtra(value = EXTRA_REPOSITORY, optional = true)
     private Repository repo;
 
@@ -114,6 +145,8 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
 
     @Inject
     private AvatarLoader avatars;
+
+    private AtomicReference<User> user = new AtomicReference<User>();
 
     private IssuesPagerAdapter adapter;
 
@@ -140,7 +173,8 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
         if (repo != null) {
             ActionBar actionBar = getSupportActionBar();
             actionBar.setSubtitle(repo.generateId());
-            avatars.bind(actionBar, repo.getOwner());
+            user.set(repo.getOwner());
+            avatars.bind(actionBar, user);
         }
     }
 
@@ -151,8 +185,14 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
     public void onPageSelected(int position) {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getString(string.issue_title) + issueIds.get(position));
-        if (repo == null && repoIds != null)
-            actionBar.setSubtitle(repoIds.get(position).generateId());
+        if (repo == null) {
+            if (repoIds != null)
+                actionBar.setSubtitle(repoIds.get(position).generateId());
+            if (users != null) {
+                user.set(users.get(position));
+                avatars.bind(actionBar, user);
+            }
+        }
     }
 
     public void onPageScrollStateChanged(int state) {
