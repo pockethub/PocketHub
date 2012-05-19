@@ -74,7 +74,7 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setEmptyText(getString(string.no_gists));
+        setEmptyText(string.no_gists);
     }
 
     @Override

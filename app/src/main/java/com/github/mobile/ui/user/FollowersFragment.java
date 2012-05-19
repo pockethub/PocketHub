@@ -33,7 +33,7 @@ public abstract class FollowersFragment extends PagedUserFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setEmptyText(getString(string.no_followers));
+        setEmptyText(string.no_followers);
     }
 
     @Override

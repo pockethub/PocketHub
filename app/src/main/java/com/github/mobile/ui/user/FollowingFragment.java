@@ -33,7 +33,7 @@ public abstract class FollowingFragment extends PagedUserFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setEmptyText(getString(string.no_people));
+        setEmptyText(string.no_people);
     }
 
     @Override

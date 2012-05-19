@@ -51,7 +51,7 @@ public class UserRepositoryListFragment extends PagedItemFragment<Repository> {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setEmptyText(getString(string.no_repositories));
+        setEmptyText(string.no_repositories);
     }
 
     @Override

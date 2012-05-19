@@ -79,7 +79,7 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setEmptyText(getString(string.no_news));
+        setEmptyText(string.no_news);
     }
 
     @Override

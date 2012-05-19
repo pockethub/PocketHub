@@ -118,7 +118,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setEmptyText(getString(string.no_issues));
+        setEmptyText(string.no_issues);
     }
 
     @Override

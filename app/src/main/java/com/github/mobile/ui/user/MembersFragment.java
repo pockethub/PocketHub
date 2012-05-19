@@ -59,7 +59,7 @@ public class MembersFragment extends ItemListFragment<User> implements Organizat
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setEmptyText(getString(string.no_members));
+        setEmptyText(string.no_members);
     }
 
     @Override
