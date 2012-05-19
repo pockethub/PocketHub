@@ -19,8 +19,6 @@ import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static android.content.DialogInterface.BUTTON_NEGATIVE;
 import static android.content.DialogInterface.BUTTON_POSITIVE;
-import android.R.string;
-import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -64,14 +62,14 @@ public class ConfirmDialogFragment extends DialogFragmentHelper implements OnCli
     }
 
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
-        final Builder builder = new Builder(getActivity());
-        builder.setTitle(getTitle());
-        builder.setMessage(getMessage());
-        builder.setPositiveButton(string.yes, this);
-        builder.setNegativeButton(string.no, this);
-        builder.setCancelable(true);
-        builder.setOnCancelListener(this);
-        return builder.create();
+        LightAlertDialog dialog = new LightAlertDialog(getActivity());
+        dialog.setTitle(getTitle());
+        dialog.setMessage(getMessage());
+        dialog.setButton(BUTTON_POSITIVE, getResources().getString(android.R.string.yes), this);
+        dialog.setButton(BUTTON_NEGATIVE, getResources().getString(android.R.string.no), this);
+        dialog.setCancelable(true);
+        dialog.setOnCancelListener(this);
+        return dialog;
     }
 
     @Override
