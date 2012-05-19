@@ -185,5 +185,6 @@
     <string name="loading_labels">Loading Labels…</string>
     <string name="open_issues">Open Issues</string>
     <string name="closed_issues">Closed Issues</string>
+    <string name="confirm_filter_delete_title">Remove Issue Filter</string>
 
 </resources>
