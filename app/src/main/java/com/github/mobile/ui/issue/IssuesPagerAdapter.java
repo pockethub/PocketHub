@@ -26,12 +26,15 @@ import android.util.SparseArray;
 import android.view.ViewGroup;
 
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryId;
 
 /**
  * Adapter to page through an {@link Issue} array
  */
 public class IssuesPagerAdapter extends FragmentPagerAdapter {
+
+    private final Repository repo;
 
     private final RepositoryId[] repos;
 
@@ -48,6 +51,20 @@ public class IssuesPagerAdapter extends FragmentPagerAdapter {
         super(fm);
 
         repos = repoIds;
+        repo = null;
+        issues = issueNumbers;
+    }
+
+    /**
+     * @param fm
+     * @param repository
+     * @param issueNumbers
+     */
+    public IssuesPagerAdapter(FragmentManager fm, Repository repository, Integer[] issueNumbers) {
+        super(fm);
+
+        repos = null;
+        repo = repository;
         issues = issueNumbers;
     }
 
@@ -55,9 +72,14 @@ public class IssuesPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         IssueFragment fragment = new IssueFragment();
         Bundle args = new Bundle();
-        RepositoryId repo = repos[position];
-        args.putString(EXTRA_REPOSITORY_NAME, repo.getName());
-        args.putString(EXTRA_REPOSITORY_OWNER, repo.getOwner());
+        if (repo != null) {
+            args.putString(EXTRA_REPOSITORY_NAME, repo.getName());
+            args.putString(EXTRA_REPOSITORY_OWNER, repo.getOwner().getLogin());
+        } else {
+            RepositoryId repo = repos[position];
+            args.putString(EXTRA_REPOSITORY_NAME, repo.getName());
+            args.putString(EXTRA_REPOSITORY_OWNER, repo.getOwner());
+        }
         args.putInt(EXTRA_ISSUE_NUMBER, issues[position]);
         fragment.setArguments(args);
         return fragment;

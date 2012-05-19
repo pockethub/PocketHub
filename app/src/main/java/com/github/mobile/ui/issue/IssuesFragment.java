@@ -123,7 +123,8 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        startActivityForResult(ViewIssuesActivity.createIntent(items, position - l.getHeaderViewsCount()), ISSUE_VIEW);
+        startActivityForResult(ViewIssuesActivity.createIntent(items, repository, position - l.getHeaderViewsCount()),
+                ISSUE_VIEW);
     }
 
     @Override

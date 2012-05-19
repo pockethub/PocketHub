@@ -18,6 +18,7 @@ package com.github.mobile.ui.issue;
 import static com.github.mobile.Intents.EXTRA_ISSUE_NUMBERS;
 import static com.github.mobile.Intents.EXTRA_POSITION;
 import static com.github.mobile.Intents.EXTRA_REPOSITORIES;
+import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import android.R.integer;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,11 +32,15 @@ import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.UrlLauncher;
+import com.github.mobile.util.AvatarLoader;
+import com.google.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryId;
 
 import roboguice.inject.InjectExtra;
@@ -53,9 +58,25 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
      * @return intent
      */
     public static Intent createIntent(Issue issue) {
-        ArrayList<Issue> list = new ArrayList<Issue>(1);
+        List<Issue> list = new ArrayList<Issue>(1);
         list.add(issue);
         return createIntent(list, 0);
+    }
+
+    /**
+     * Create an intent to show issues with an initial selected issue
+     *
+     * @param issues
+     * @param repository
+     * @param position
+     * @return intent
+     */
+    public static Intent createIntent(Collection<? extends Issue> issues, Repository repository, int position) {
+        ArrayList<Integer> numbers = new ArrayList<Integer>(issues.size());
+        for (Issue issue : issues)
+            numbers.add(issue.getNumber());
+        return new Builder("issues.VIEW").add(EXTRA_ISSUE_NUMBERS, numbers).add(EXTRA_REPOSITORY, repository)
+                .add(EXTRA_POSITION, position).toIntent();
     }
 
     /**
@@ -82,11 +103,17 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
     @InjectExtra(EXTRA_ISSUE_NUMBERS)
     private ArrayList<integer> issueIds;
 
-    @InjectExtra(EXTRA_REPOSITORIES)
+    @InjectExtra(value = EXTRA_REPOSITORIES, optional = true)
     private ArrayList<RepositoryId> repoIds;
+
+    @InjectExtra(value = EXTRA_REPOSITORY, optional = true)
+    private Repository repo;
 
     @InjectExtra(EXTRA_POSITION)
     private int initialPosition;
+
+    @Inject
+    private AvatarLoader avatars;
 
     private IssuesPagerAdapter adapter;
 
@@ -98,12 +125,23 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
 
         setContentView(layout.pager);
 
-        adapter = new IssuesPagerAdapter(getSupportFragmentManager(),
-                repoIds.toArray(new RepositoryId[repoIds.size()]), issueIds.toArray(new Integer[issueIds.size()]));
+        Integer[] numbers = issueIds.toArray(new Integer[issueIds.size()]);
+        if (repo != null)
+            adapter = new IssuesPagerAdapter(getSupportFragmentManager(), repo, numbers);
+        else
+            adapter = new IssuesPagerAdapter(getSupportFragmentManager(), repoIds.toArray(new RepositoryId[repoIds
+                    .size()]), numbers);
         pager.setAdapter(adapter);
+
         pager.setOnPageChangeListener(this);
         pager.setCurrentItem(initialPosition);
         onPageSelected(initialPosition);
+
+        if (repo != null) {
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setSubtitle(repo.generateId());
+            avatars.bind(actionBar, repo.getOwner());
+        }
     }
 
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -113,7 +151,8 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
     public void onPageSelected(int position) {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getString(string.issue_title) + issueIds.get(position));
-        actionBar.setSubtitle(repoIds.get(position).generateId());
+        if (repo == null && repoIds != null)
+            actionBar.setSubtitle(repoIds.get(position).generateId());
     }
 
     public void onPageScrollStateChanged(int state) {
