@@ -26,8 +26,8 @@ import android.widget.TextView;
 
 import com.github.mobile.R.id;
 import com.github.mobile.ui.ItemListAdapter;
+import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
-import com.github.mobile.util.TimeUtils;
 import com.github.mobile.util.TypefaceUtils;
 import com.viewpagerindicator.R.layout;
 
@@ -105,8 +105,13 @@ public class RepositoryIssueListAdapter extends ItemListAdapter<Issue, Repositor
         view.pullRequestIcon.setVisibility(issue.getPullRequest().getHtmlUrl() == null ? GONE : VISIBLE);
 
         view.title.setText(issue.getTitle());
-        view.user.setText(issue.getUser().getLogin());
-        view.creation.setText(TimeUtils.getRelativeTime(issue.getCreatedAt()));
+
+        StyledText reporterText = new StyledText();
+        reporterText.bold(issue.getUser().getLogin());
+        reporterText.append(' ');
+        reporterText.append(issue.getCreatedAt());
+        view.reporter.setText(reporterText);
+
         view.comments.setText(Integer.toString(issue.getComments()));
 
         List<Label> labels = issue.getLabels();

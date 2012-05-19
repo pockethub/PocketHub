@@ -22,13 +22,6 @@
         android:contentDescription="@string/avatar" />
 
     <TextView
-        android:id="@+id/tv_issue_user"
-        style="@style/ListSubtitleText"
-        android:paddingLeft="5dp"
-        android:singleLine="true"
-        android:textStyle="bold" />
-
-    <TextView
         android:id="@+id/tv_issue_creation"
         style="@style/ListSubtitleText"
         android:layout_width="0dp"

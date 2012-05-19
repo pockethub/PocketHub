@@ -49,14 +49,9 @@ public class DashboardIssueView extends ItemView {
     public final ImageView avatar;
 
     /**
-     * Issue opener text view
+     * Issue reporter text view
      */
-    public final TextView user;
-
-    /**
-     * Creation time text view
-     */
-    public final TextView creation;
+    public final TextView reporter;
 
     /**
      * Number of comments text view
@@ -89,8 +84,7 @@ public class DashboardIssueView extends ItemView {
         numberPaintFlags = number.getPaintFlags();
         title = (TextView) view.findViewById(id.tv_issue_title);
         avatar = (ImageView) view.findViewById(id.iv_avatar);
-        user = (TextView) view.findViewById(id.tv_issue_user);
-        creation = (TextView) view.findViewById(id.tv_issue_creation);
+        reporter = (TextView) view.findViewById(id.tv_issue_creation);
         comments = (TextView) view.findViewById(id.tv_issue_comments);
 
         pullRequestIcon = (TextView) view.findViewById(id.tv_pull_request_icon);
