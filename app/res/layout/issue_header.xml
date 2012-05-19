@@ -84,20 +84,17 @@
     <TextView
         android:id="@+id/tv_labels"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <View
-        style="@style/Separator"
-        android:layout_marginTop="10dp" />
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp " />
 
     <LinearLayout
         android:id="@+id/ll_assignee"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/inset_background"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp" >
+        android:padding="10dp" >
 
         <ImageView
             android:id="@+id/iv_assignee_avatar"
@@ -119,8 +116,6 @@
             android:singleLine="true"
             android:textColor="@color/text" />
     </LinearLayout>
-
-    <View style="@style/Separator" />
 
     <TextView
         android:id="@+id/tv_issue_body"
