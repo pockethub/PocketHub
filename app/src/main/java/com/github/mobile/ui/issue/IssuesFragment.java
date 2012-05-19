@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -51,10 +52,14 @@ import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.Label;
+import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.service.IssueService;
 
@@ -80,7 +85,17 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     @InjectExtra(EXTRA_REPOSITORY)
     private Repository repository;
 
-    private TextView filterTextView;
+    private TextView state;
+
+    private ImageView assigneeAvatar;
+
+    private View assigneeArea;
+
+    private TextView assignee;
+
+    private TextView labels;
+
+    private TextView milestone;
 
     @Inject
     private AvatarLoader avatarHelper;
@@ -100,18 +115,43 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
         super.onViewCreated(view, savedInstanceState);
 
         View filterHeader = getLayoutInflater(savedInstanceState).inflate(layout.issue_filter_header, null);
-        filterTextView = (TextView) filterHeader.findViewById(id.tv_filter_summary);
+        state = (TextView) filterHeader.findViewById(id.tv_filter_state);
+        labels = (TextView) filterHeader.findViewById(id.tv_filter_labels);
+        milestone = (TextView) filterHeader.findViewById(id.tv_filter_milestone);
+        assigneeArea = filterHeader.findViewById(id.ll_assignee);
+        assignee = (TextView) filterHeader.findViewById(id.tv_filter_assignee);
+        assigneeAvatar = (ImageView) filterHeader.findViewById(id.iv_assignee_avatar);
         getListView().addHeaderView(filterHeader, null, false);
         updateFilterSummary();
     }
 
     private void updateFilterSummary() {
-        CharSequence display = filter.toDisplay();
-        if (display.length() > 0) {
-            filterTextView.setText(display);
-            filterTextView.setVisibility(VISIBLE);
+        if (filter.isOpen())
+            state.setText(string.open_issues);
+        else
+            state.setText(string.closed_issues);
+
+        Collection<Label> filterLabels = filter.getLabels();
+        if (filterLabels != null && !filterLabels.isEmpty()) {
+            labels.setText(LabelDrawableSpan.create(labels, filterLabels));
+            labels.setVisibility(VISIBLE);
         } else
-            filterTextView.setVisibility(GONE);
+            labels.setVisibility(GONE);
+
+        Milestone filterMilestone = filter.getMilestone();
+        if (filterMilestone != null) {
+            milestone.setText(filterMilestone.getTitle());
+            milestone.setVisibility(VISIBLE);
+        } else
+            milestone.setVisibility(GONE);
+
+        User user = filter.getAssignee();
+        if (user != null) {
+            avatarHelper.bind(assigneeAvatar, user);
+            assignee.setText(user.getLogin());
+            assigneeArea.setVisibility(VISIBLE);
+        } else
+            assigneeArea.setVisibility(GONE);
     }
 
     @Override

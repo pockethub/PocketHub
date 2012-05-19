@@ -79,9 +79,10 @@ public class FilterListAdapter extends ItemListAdapter<IssueFilter, FilterItemVi
             view.labelsText.setVisibility(GONE);
 
         Milestone milestone = filter.getMilestone();
-        if (milestone != null)
+        if (milestone != null) {
             view.milestoneText.setText(milestone.getTitle());
-        else
+            view.milestoneText.setVisibility(VISIBLE);
+        } else
             view.milestoneText.setVisibility(GONE);
 
         User assignee = filter.getAssignee();

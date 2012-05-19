@@ -15,17 +15,19 @@
   limitations under the License.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/tv_filter_summary"
-        style="@style/ListTitleText"
-        android:layout_width="match_parent"
-        android:padding="10dp"
-        android:textStyle="normal" />
+    <LinearLayout
+        style="@style/ListItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
-    <View style="@style/Separator" />
+        <include layout="@layout/issue_filter_details" />
+    </LinearLayout>
+
+    <View style="@style/ListDivider" />
 
 </LinearLayout>
