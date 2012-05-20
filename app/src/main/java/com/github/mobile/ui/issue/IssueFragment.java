@@ -331,7 +331,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
         List<Label> labels = issue.getLabels();
         if (labels != null && !labels.isEmpty()) {
-            labelsArea.setText(LabelDrawableSpan.create(labelsArea, labels));
+            LabelDrawableSpan.setText(labelsArea, labels);
             labelsArea.setVisibility(VISIBLE);
         } else
             labelsArea.setVisibility(GONE);

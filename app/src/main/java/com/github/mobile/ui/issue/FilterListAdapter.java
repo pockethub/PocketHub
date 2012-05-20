@@ -73,7 +73,7 @@ public class FilterListAdapter extends ItemListAdapter<IssueFilter, FilterItemVi
 
         Collection<Label> labels = filter.getLabels();
         if (labels != null && !labels.isEmpty()) {
-            view.labelsText.setText(LabelDrawableSpan.create(view.labelsText, labels));
+            LabelDrawableSpan.setText(view.labelsText, labels);
             view.labelsText.setVisibility(VISIBLE);
         } else
             view.labelsText.setVisibility(GONE);

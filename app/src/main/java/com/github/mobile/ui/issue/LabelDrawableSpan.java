@@ -16,7 +16,6 @@ import static android.graphics.Paint.Style.FILL;
 import static android.graphics.Paint.Style.STROKE;
 import static android.graphics.Typeface.DEFAULT_BOLD;
 import static android.graphics.Typeface.MONOSPACE;
-import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import static java.util.Locale.US;
@@ -28,12 +27,12 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
-import android.text.SpannableStringBuilder;
 import android.text.style.DynamicDrawableSpan;
 import android.util.TypedValue;
 import android.widget.TextView;
 
 import com.github.mobile.R.color;
+import com.github.mobile.ui.StyledText;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -169,13 +168,12 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
     }
 
     /**
-     * Create {@link CharSequence} with spans for each label
+     * Set text on view to be given labels
      *
      * @param view
      * @param labels
-     * @return char sequence
      */
-    public static CharSequence create(final TextView view, final Collection<Label> labels) {
+    public static void setText(final TextView view, final Collection<Label> labels) {
         final Label[] sortedLabels = labels.toArray(new Label[labels.size()]);
         Arrays.sort(sortedLabels, new Comparator<Label>() {
 
@@ -185,15 +183,25 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
             }
         });
 
-        final SpannableStringBuilder builder = new SpannableStringBuilder();
+        final StyledText text = new StyledText();
         for (int i = 0; i < sortedLabels.length; i++) {
-            builder.append('\uFFFC');
-            builder.setSpan(new LabelDrawableSpan(view.getResources(), view.getTextSize(), sortedLabels[i]),
-                    builder.length() - 1, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+            text.append('\uFFFC', new LabelDrawableSpan(view.getResources(), view.getTextSize(), sortedLabels[i]));
             if (i + 1 < sortedLabels.length)
-                builder.append(' ');
+                text.append(' ');
         }
-        return builder;
+        view.setText(text);
+    }
+
+    /**
+     * Set text on view to be given label
+     *
+     * @param view
+     * @param label
+     */
+    public static void setText(final TextView view, Label label) {
+        StyledText text = new StyledText();
+        text.append('\uFFFC', new LabelDrawableSpan(view.getResources(), view.getTextSize(), label));
+        view.setText(text);
     }
 
     private final Resources resources;

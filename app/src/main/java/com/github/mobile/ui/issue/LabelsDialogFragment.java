@@ -23,8 +23,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.graphics.Color;
-import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,19 +63,9 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements OnClic
 
     private static final String TAG = "multi_choice_dialog";
 
-    private static class LabelDrawable extends PaintDrawable {
-
-        public LabelDrawable(Label label) {
-            super(Color.parseColor('#' + label.getColor()));
-            setCornerRadius(6);
-        }
-    }
-
     private static class LabelItemView extends ItemView {
 
         public final TextView name;
-
-        public final View color;
 
         public final CheckBox checked;
 
@@ -85,7 +73,6 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements OnClic
             super(view);
 
             name = (TextView) view.findViewById(id.tv_label_name);
-            color = view.findViewById(id.v_label_color);
             checked = (CheckBox) view.findViewById(id.cb_selected);
         }
     }
@@ -102,8 +89,7 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements OnClic
 
         @Override
         protected void update(final int position, final LabelItemView view, final Label item) {
-            view.name.setText(item.getName());
-            view.color.setBackgroundDrawable(new LabelDrawable(item));
+            LabelDrawableSpan.setText(view.name, item);
             view.checked.setChecked(selected[position]);
         }
 

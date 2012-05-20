@@ -133,7 +133,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
         Collection<Label> filterLabels = filter.getLabels();
         if (filterLabels != null && !filterLabels.isEmpty()) {
-            labels.setText(LabelDrawableSpan.create(labels, filterLabels));
+            LabelDrawableSpan.setText(labels, filterLabels);
             labels.setVisibility(VISIBLE);
         } else
             labels.setVisibility(GONE);

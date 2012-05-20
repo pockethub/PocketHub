@@ -27,11 +27,6 @@
         android:focusable="false"
         android:focusableInTouchMode="false" />
 
-    <View
-        android:id="@+id/v_label_color"
-        android:layout_width="32dp"
-        android:layout_height="32dp" />
-
     <TextView
         android:id="@+id/tv_label_name"
         style="@style/ListTitleText"

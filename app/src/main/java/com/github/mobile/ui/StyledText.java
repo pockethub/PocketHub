@@ -16,15 +16,14 @@
 package com.github.mobile.ui;
 
 import static android.graphics.Typeface.BOLD;
-
-import com.github.mobile.util.TimeUtils;
-
-import java.util.Date;
-
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
+
+import com.github.mobile.util.TimeUtils;
+
+import java.util.Date;
 
 /**
  * Helpers on top of {@link SpannableStringBuilder}
@@ -44,6 +43,20 @@ public class StyledText extends SpannableStringBuilder {
             final int length = length();
             setSpan(span, length - text.length(), length, SPAN_EXCLUSIVE_EXCLUSIVE);
         }
+        return this;
+    }
+
+    /**
+     * Append text and span to end of this text
+     *
+     * @param text
+     * @param span
+     * @return this text
+     */
+    public StyledText append(final char text, final Object span) {
+        append(text);
+        final int length = length();
+        setSpan(span, length - 1, length, SPAN_EXCLUSIVE_EXCLUSIVE);
         return this;
     }
 
