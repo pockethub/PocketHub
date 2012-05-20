@@ -191,7 +191,7 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         } else
             repoName = repoName.substring(repoName.indexOf('/') + 1);
 
-        main.bold(event.getRepo().getName());
+        main.bold(repoName);
     }
 
     private static void formatDelete(Event event, StyledText main, StyledText details) {
