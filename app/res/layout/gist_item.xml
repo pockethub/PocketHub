@@ -56,13 +56,6 @@
         <TextView
             android:id="@+id/tv_gist_author"
             style="@style/ListSubtitleText"
-            android:paddingRight="5dp"
-            android:singleLine="true"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tv_gist_creation"
-            style="@style/ListSubtitleText"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:singleLine="true" />

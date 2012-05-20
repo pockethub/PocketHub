@@ -22,8 +22,8 @@ import android.view.View;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.ui.ItemListAdapter;
+import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
-import com.github.mobile.util.TimeUtils;
 
 import java.text.NumberFormat;
 
@@ -69,15 +69,16 @@ public class GistListAdapter extends ItemListAdapter<Gist, GistView> {
             view.title.setText(string.no_description);
 
         User user = gist.getUser();
-
-        if (user != null)
-            view.author.setText(user.getLogin());
-        else
-            view.author.setText(string.anonymous);
-
         avatarHelper.bind(view.avatar, user);
 
-        view.created.setText(TimeUtils.getRelativeTime(gist.getCreatedAt()));
+        StyledText authorText = new StyledText();
+        if (user != null)
+            authorText.bold(user.getLogin());
+        else
+            authorText.bold(view.author.getResources().getString(string.anonymous));
+        authorText.append(' ');
+        authorText.append(gist.getCreatedAt());
+        view.author.setText(authorText);
 
         view.files.setText(NUMBER_FORMAT.format(gist.getFiles().size()));
         view.comments.setText(NUMBER_FORMAT.format(gist.getComments()));

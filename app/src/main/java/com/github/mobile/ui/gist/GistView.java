@@ -46,11 +46,6 @@ public class GistView extends ItemView {
     public final TextView author;
 
     /**
-     * Created date text view
-     */
-    public final TextView created;
-
-    /**
      * Number of comments text view
      */
     public final TextView comments;
@@ -76,7 +71,6 @@ public class GistView extends ItemView {
         gistId = (TextView) view.findViewById(id.tv_gist_id);
         title = (TextView) view.findViewById(id.tv_gist_title);
         author = (TextView) view.findViewById(id.tv_gist_author);
-        created = (TextView) view.findViewById(id.tv_gist_creation);
         comments = (TextView) view.findViewById(id.tv_gist_comments);
         files = (TextView) view.findViewById(id.tv_gist_files);
         avatar = (ImageView) view.findViewById(id.iv_avatar);
