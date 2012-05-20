@@ -24,6 +24,7 @@ import java.util.Date;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
+import android.text.style.TypefaceSpan;
 
 /**
  * Helpers on top of {@link SpannableStringBuilder}
@@ -52,8 +53,18 @@ public class StyledText extends SpannableStringBuilder {
      * @param text
      * @return this text
      */
-    public StyledText bold(CharSequence text) {
+    public StyledText bold(final CharSequence text) {
         return append(text, new StyleSpan(BOLD));
+    }
+
+    /**
+     * Append text in monospace typeface
+     *
+     * @param text
+     * @return this text
+     */
+    public StyledText monospace(final CharSequence text) {
+        return append(text, new TypefaceSpan("monospace"));
     }
 
     /**
@@ -62,7 +73,7 @@ public class StyledText extends SpannableStringBuilder {
      * @param date
      * @return this text
      */
-    public StyledText append(Date date) {
+    public StyledText append(final Date date) {
         append(TimeUtils.getRelativeTime(date));
         return this;
     }
