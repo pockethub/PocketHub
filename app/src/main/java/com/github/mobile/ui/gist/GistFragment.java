@@ -54,11 +54,11 @@ import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.core.gist.RefreshGistTask;
 import com.github.mobile.core.gist.StarGistTask;
 import com.github.mobile.core.gist.UnstarGistTask;
+import com.github.mobile.ui.StyledText;
 import com.github.mobile.ui.comment.CommentListAdapter;
 import com.github.mobile.ui.comment.CreateCommentActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
-import com.github.mobile.util.TimeUtils;
 import com.github.mobile.util.ToastUtils;
 import com.github.mobile.util.TypefaceUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
@@ -198,14 +198,20 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
     private void updateHeader(Gist gist) {
         Date createdAt = gist.getCreatedAt();
         if (createdAt != null) {
-            created.setText(getString(string.prefix_created) + TimeUtils.getRelativeTime(createdAt));
+            StyledText text = new StyledText();
+            text.append(getString(string.prefix_created));
+            text.append(createdAt);
+            created.setText(text);
             created.setVisibility(VISIBLE);
         } else
             created.setVisibility(GONE);
 
         Date updatedAt = gist.getUpdatedAt();
         if (updatedAt != null && !updatedAt.equals(createdAt)) {
-            updated.setText(getString(string.updated_prefix) + TimeUtils.getRelativeTime(updatedAt));
+            StyledText text = new StyledText();
+            text.append(getString(string.updated_prefix));
+            text.append(updatedAt);
+            updated.setText(text);
             updated.setVisibility(VISIBLE);
         } else
             updated.setVisibility(GONE);
