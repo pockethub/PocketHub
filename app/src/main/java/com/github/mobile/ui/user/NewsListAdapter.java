@@ -459,13 +459,20 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
             formatWatch(event, main, details);
         }
 
-        view.iconText.setText(icon != ' ' ? Character.toString(icon) : null);
+        if (icon != ' ') {
+            view.iconText.setText(Character.toString(icon));
+            view.iconText.setVisibility(VISIBLE);
+        } else
+            view.iconText.setVisibility(GONE);
+
         view.eventText.setText(main);
-        if (details.length() > 0) {
-            view.detailsText.setVisibility(VISIBLE);
+
+        if (!TextUtils.isEmpty(details)) {
             view.detailsText.setText(details);
+            view.detailsText.setVisibility(VISIBLE);
         } else
             view.detailsText.setVisibility(GONE);
+
         view.dateText.setText(TimeUtils.getRelativeTime(event.getCreatedAt()));
     }
 
