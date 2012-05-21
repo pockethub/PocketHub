@@ -26,7 +26,7 @@
         android:title="@string/open_random_gist"/>
     <item
         android:id="@+id/create_gist"
-        android:icon="@drawable/ic_action_create"
+        android:icon="@drawable/action_create"
         android:showAsAction="ifRoom"
         android:title="@string/create_gist"/>
 

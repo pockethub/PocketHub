@@ -18,12 +18,12 @@
 
     <item
         android:id="@+id/issue_comment"
-        android:icon="@drawable/ic_action_create_comment"
+        android:icon="@drawable/action_create_comment"
         android:showAsAction="ifRoom"
         android:title="@string/comment"/>
     <item
         android:id="@+id/refresh"
-        android:icon="@drawable/ic_action_refresh"
+        android:icon="@drawable/action_refresh"
         android:showAsAction="never"
         android:title="@string/refresh"/>
     <item
