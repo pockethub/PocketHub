@@ -39,6 +39,7 @@
     <style name="ListView">
         <item name="android:dividerHeight">2dp</item>
         <item name="android:divider">@drawable/list_divider</item>
+        <item name="android:cacheColorHint">@android:color/transparent</item>
     </style>
 
     <style name="DropdownListView" parent="ListView">
