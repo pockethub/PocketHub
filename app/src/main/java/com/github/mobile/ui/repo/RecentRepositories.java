@@ -55,6 +55,8 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
 
     private final File file;
 
+    private int id;
+
     /**
      * Create a recent repositories cache for the given organization
      *
@@ -63,6 +65,7 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
      */
     public RecentRepositories(final Context context, final User organization) {
         file = getFile(context, organization);
+        id = organization.getId();
     }
 
     private void load() {
@@ -165,13 +168,22 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
 
     @Override
     public int compare(final Repository lhs, final Repository rhs) {
-        boolean lRecent = contains(lhs);
-        boolean rRecent = contains(rhs);
+        final boolean lRecent = contains(lhs);
+        final boolean rRecent = contains(rhs);
         if (lRecent && !rRecent)
             return -1;
         if (!lRecent && rRecent)
             return 1;
 
-        return CASE_INSENSITIVE_ORDER.compare(lhs.getName(), rhs.getName());
+        final int order = CASE_INSENSITIVE_ORDER.compare(lhs.getName(), rhs.getName());
+        if (order == 0)
+            if (id == lhs.getOwner().getId())
+                return -1;
+            else if (id == rhs.getOwner().getId())
+                return 1;
+            else
+                return CASE_INSENSITIVE_ORDER.compare(lhs.getOwner().getLogin(), rhs.getOwner().getLogin());
+        else
+            return order;
     }
 }
