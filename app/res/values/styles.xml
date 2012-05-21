@@ -42,10 +42,6 @@
         <item name="android:cacheColorHint">@android:color/transparent</item>
     </style>
 
-    <style name="DropdownListView" parent="ListView">
-        <item name="android:background">@color/background</item>
-    </style>
-
     <style name="CommentListView" parent="ListView">
         <item name="android:dividerHeight">5dp</item>
         <item name="android:divider">@null</item>

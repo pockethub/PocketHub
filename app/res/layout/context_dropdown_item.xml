@@ -20,4 +20,5 @@
     android:gravity="center_vertical"
     android:padding="10dp"
     android:singleLine="true"
+    android:textColor="@color/actionbar_text"
     android:textStyle="normal" />
