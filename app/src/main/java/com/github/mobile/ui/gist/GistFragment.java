@@ -245,9 +245,9 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
         MenuItem starItem = menu.findItem(id.gist_star);
         starItem.setEnabled(loadFinished && !owner);
         if (starred)
-            starItem.setTitle(string.unstar_gist);
+            starItem.setTitle(string.unstar);
         else
-            starItem.setTitle(string.star_gist);
+            starItem.setTitle(string.star);
     }
 
     @Override
