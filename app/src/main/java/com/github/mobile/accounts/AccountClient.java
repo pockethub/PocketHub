@@ -18,6 +18,7 @@ package com.github.mobile.accounts;
 import static android.util.Log.DEBUG;
 import android.util.Log;
 
+import com.github.mobile.DefaultClient;
 import com.google.inject.Provider;
 
 import java.net.HttpURLConnection;
@@ -27,7 +28,7 @@ import org.eclipse.egit.github.core.client.GitHubClient;
 /**
  * {@link GitHubClient} extensions that integrates with the Android account manager to provide request credentials
  */
-public class AccountGitHubClient extends GitHubClient {
+public class AccountClient extends DefaultClient {
 
     private static final String TAG = "AccountGitHubClient";
 
@@ -38,7 +39,9 @@ public class AccountGitHubClient extends GitHubClient {
      *
      * @param accountProvider
      */
-    public AccountGitHubClient(final Provider<GitHubAccount> accountProvider) {
+    public AccountClient(final Provider<GitHubAccount> accountProvider) {
+        super();
+
         this.accountProvider = accountProvider;
     }
 
@@ -48,8 +51,9 @@ public class AccountGitHubClient extends GitHubClient {
      * @param hostname
      * @param accountProvider
      */
-    public AccountGitHubClient(final String hostname, final Provider<GitHubAccount> accountProvider) {
+    public AccountClient(final String hostname, final Provider<GitHubAccount> accountProvider) {
         super(hostname);
+
         this.accountProvider = accountProvider;
     }
 

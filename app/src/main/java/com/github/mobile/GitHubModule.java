@@ -18,9 +18,9 @@ package com.github.mobile;
 import static org.eclipse.egit.github.core.client.IGitHubConstants.HOST_API_V2;
 import android.content.Context;
 
-import com.github.mobile.accounts.AccountGitHubClient;
-import com.github.mobile.accounts.GitHubAccount;
+import com.github.mobile.accounts.AccountClient;
 import com.github.mobile.accounts.AccountScope;
+import com.github.mobile.accounts.GitHubAccount;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.core.repo.IRepositorySearch;
@@ -35,7 +35,6 @@ import com.google.inject.name.Named;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.net.HttpURLConnection;
 import java.util.List;
 
 import org.eclipse.egit.github.core.SearchRepository;
@@ -61,22 +60,9 @@ public class GitHubModule extends AbstractModule {
         install(AccountScope.module());
     }
 
-    private GitHubClient configureClient(GitHubClient client) {
-        client.setSerializeNulls(false);
-        client.setUserAgent("GitHubAndroid/1.0");
-        return client;
-    }
-
     @Provides
-    GitHubClient client(Provider<GitHubAccount> gitHubAccountProvider) {
-        return configureClient(new AccountGitHubClient(gitHubAccountProvider) {
-            @Override
-            protected HttpURLConnection configureRequest(HttpURLConnection request) {
-                super.configureRequest(request);
-                request.setRequestProperty(HEADER_ACCEPT, "application/vnd.github.beta.full+json");
-                return request;
-            }
-        });
+    GitHubClient client(Provider<GitHubAccount> accountProvider) {
+        return new AccountClient(accountProvider);
     }
 
     @Provides
@@ -86,8 +72,8 @@ public class GitHubModule extends AbstractModule {
     }
 
     @Provides
-    IRepositorySearch searchService(final Provider<GitHubAccount> ghAccountProvider, final Context context) {
-        GitHubClient client = configureClient(new AccountGitHubClient(HOST_API_V2, ghAccountProvider));
+    IRepositorySearch searchService(final Provider<GitHubAccount> accountProvider, final Context context) {
+        GitHubClient client = new AccountClient(HOST_API_V2, accountProvider);
 
         final RepositoryService service = new RepositoryService(client);
 

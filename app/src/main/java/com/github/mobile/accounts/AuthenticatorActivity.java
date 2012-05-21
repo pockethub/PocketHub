@@ -28,6 +28,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -40,10 +41,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.github.mobile.DefaultClient;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.ui.BlankTextFieldWarner;
+import com.github.mobile.ui.LightProgressDialog;
 import com.github.mobile.ui.TextWatcherAdapter;
 import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockAccountAuthenticatorActivity;
@@ -171,17 +174,14 @@ public class AuthenticatorActivity extends RoboSherlockAccountAuthenticatorActiv
 
     @Override
     protected Dialog onCreateDialog(int id) {
-        final ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setMessage(getText(string.login_activity_authenticating));
-        dialog.setIndeterminate(true);
+        final ProgressDialog dialog = new LightProgressDialog(this, getText(string.login_activity_authenticating));
         dialog.setCancelable(true);
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        dialog.setOnCancelListener(new OnCancelListener() {
+
+            @Override
             public void onCancel(DialogInterface dialog) {
-                Log.i(TAG, "dialog cancel has been invoked");
-                if (authenticationTask != null) {
+                if (authenticationTask != null)
                     authenticationTask.cancel(true);
-                    finish();
-                }
             }
         });
         return dialog;
@@ -203,7 +203,7 @@ public class AuthenticatorActivity extends RoboSherlockAccountAuthenticatorActiv
 
         authenticationTask = new RoboAsyncTask<User>(this) {
             public User call() throws Exception {
-                GitHubClient client = new GitHubClient();
+                GitHubClient client = new DefaultClient();
                 client.setCredentials(username, password);
 
                 return new UserService(client).getUser();
@@ -211,6 +211,8 @@ public class AuthenticatorActivity extends RoboSherlockAccountAuthenticatorActiv
 
             @Override
             protected void onException(Exception e) throws RuntimeException {
+                Log.d(TAG, "Exception requesting authenticated user", e);
+
                 if (e instanceof RequestException && ((RequestException) e).getStatus() == 401)
                     onAuthenticationResult(false);
                 else
