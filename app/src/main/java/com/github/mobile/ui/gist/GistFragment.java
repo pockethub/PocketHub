@@ -36,8 +36,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.HeaderViewListAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -55,6 +53,7 @@ import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.core.gist.RefreshGistTask;
 import com.github.mobile.core.gist.StarGistTask;
 import com.github.mobile.core.gist.UnstarGistTask;
+import com.github.mobile.ui.HeaderFooterListAdapter;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.ui.comment.CommentListAdapter;
 import com.github.mobile.ui.comment.CreateCommentActivity;
@@ -67,7 +66,6 @@ import com.google.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -120,6 +118,8 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
     private View loadingView;
 
+    private HeaderFooterListAdapter<CommentListAdapter> adapter;
+
     private boolean starred;
 
     private boolean loadFinished;
@@ -153,11 +153,21 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        Activity activity = getActivity();
+        adapter = new HeaderFooterListAdapter<CommentListAdapter>(list, new CommentListAdapter(
+                activity.getLayoutInflater(), avatarHelper, new HttpImageGetter(activity)));
+        list.setAdapter(adapter);
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         list.setOnItemClickListener(this);
-        list.addHeaderView(headerView, null, false);
+        adapter.addHeader(headerView, null, false);
 
         gist = store.getGist(gistId);
 
@@ -169,16 +179,8 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
         if (gist == null || (gist.getComments() > 0 && comments == null)) {
             if (gist == null || gist.getFiles() == null || gist.getFiles().isEmpty())
                 loadingView.findViewById(id.v_separator).setVisibility(GONE);
-            list.addHeaderView(loadingView, null, false);
+            adapter.addHeader(loadingView, null, false);
         }
-
-        List<Comment> initialComments = comments;
-        if (initialComments == null)
-            initialComments = Collections.emptyList();
-
-        Activity activity = getActivity();
-        list.setAdapter(new CommentListAdapter(activity.getLayoutInflater(), initialComments
-                .toArray(new Comment[initialComments.size()]), avatarHelper, new HttpImageGetter(activity)));
 
         if (gist != null && comments != null)
             updateList(gist, comments);
@@ -348,7 +350,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
             return;
 
         for (View header : fileHeaders)
-            list.removeHeaderView(header);
+            adapter.removeHeader(header);
         fileHeaders.clear();
 
         Map<String, GistFile> files = gist.getFiles();
@@ -369,33 +371,19 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
             View fileView = inflater.inflate(layout.gist_file_item, null);
             ((TextView) fileView.findViewById(id.tv_file)).setText(file.getFilename());
             ((TextView) fileView.findViewById(id.tv_file_icon)).setTypeface(octicons);
-            list.addHeaderView(fileView, file, true);
+            adapter.addHeader(fileView, file, true);
             fileHeaders.add(fileView);
         }
     }
 
     private void updateList(Gist gist, List<Comment> comments) {
-        list.removeHeaderView(loadingView);
+        adapter.getWrappedAdapter().setItems(comments.toArray(new Comment[comments.size()]));
+        adapter.removeHeader(loadingView);
 
         headerView.setVisibility(VISIBLE);
         updateHeader(gist);
 
         updateFiles(gist);
-
-        CommentListAdapter adapter = getRootAdapter();
-        if (adapter != null)
-            adapter.setItems(comments.toArray(new Comment[comments.size()]));
-    }
-
-    private CommentListAdapter getRootAdapter() {
-        ListAdapter adapter = list.getAdapter();
-        if (adapter == null)
-            return null;
-        adapter = ((HeaderViewListAdapter) adapter).getWrappedAdapter();
-        if (adapter instanceof CommentListAdapter)
-            return (CommentListAdapter) adapter;
-        else
-            return null;
     }
 
     private void refreshGist() {
