@@ -79,18 +79,13 @@
 
     <style name="ListIcon" parent="TextIcon">
         <item name="android:textSize">14dp</item>
-        <item name="android:layout_marginTop">-4dp</item>
     </style>
 
     <style name="EventIcon" parent="TextIcon">
         <item name="android:textSize">22dp</item>
-        <item name="android:layout_height">26dp</item>
-        <item name="android:layout_width">26dp</item>
     </style>
 
     <style name="PrimaryIcon" parent="TextIcon">
-        <item name="android:layout_height">35dp</item>
-        <item name="android:layout_marginTop">-7dp</item>
         <item name="android:textSize">28dp</item>
     </style>
 
