@@ -18,6 +18,7 @@ package com.github.mobile.ui.issue;
 import static com.github.mobile.Intents.EXTRA_ISSUE_NUMBER;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY_NAME;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY_OWNER;
+import static com.github.mobile.Intents.EXTRA_USER;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,9 +26,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryId;
+import org.eclipse.egit.github.core.User;
 
 /**
  * Adapter to page through an {@link Issue} array
@@ -36,9 +40,11 @@ public class IssuesPagerAdapter extends FragmentPagerAdapter {
 
     private final Repository repo;
 
-    private final RepositoryId[] repos;
+    private final List<RepositoryId> repos;
 
-    private final Integer[] issues;
+    private final List<Integer> issues;
+
+    private final List<User> users;
 
     private final SparseArray<IssueFragment> fragments = new SparseArray<IssueFragment>();
 
@@ -46,13 +52,16 @@ public class IssuesPagerAdapter extends FragmentPagerAdapter {
      * @param fm
      * @param repoIds
      * @param issueNumbers
+     * @param repositoryOwners
      */
-    public IssuesPagerAdapter(FragmentManager fm, RepositoryId[] repoIds, Integer[] issueNumbers) {
+    public IssuesPagerAdapter(FragmentManager fm, List<RepositoryId> repoIds, List<Integer> issueNumbers,
+            List<User> repositoryOwners) {
         super(fm);
 
         repos = repoIds;
         repo = null;
         issues = issueNumbers;
+        users = repositoryOwners;
     }
 
     /**
@@ -60,10 +69,11 @@ public class IssuesPagerAdapter extends FragmentPagerAdapter {
      * @param repository
      * @param issueNumbers
      */
-    public IssuesPagerAdapter(FragmentManager fm, Repository repository, Integer[] issueNumbers) {
+    public IssuesPagerAdapter(FragmentManager fm, Repository repository, List<Integer> issueNumbers) {
         super(fm);
 
         repos = null;
+        users = null;
         repo = repository;
         issues = issueNumbers;
     }
@@ -74,13 +84,17 @@ public class IssuesPagerAdapter extends FragmentPagerAdapter {
         Bundle args = new Bundle();
         if (repo != null) {
             args.putString(EXTRA_REPOSITORY_NAME, repo.getName());
-            args.putString(EXTRA_REPOSITORY_OWNER, repo.getOwner().getLogin());
+            User owner = repo.getOwner();
+            args.putString(EXTRA_REPOSITORY_OWNER, owner.getLogin());
+            args.putSerializable(EXTRA_USER, owner);
         } else {
-            RepositoryId repo = repos[position];
+            RepositoryId repo = repos.get(position);
             args.putString(EXTRA_REPOSITORY_NAME, repo.getName());
             args.putString(EXTRA_REPOSITORY_OWNER, repo.getOwner());
+            if (users != null)
+                args.putSerializable(EXTRA_USER, users.get(position));
         }
-        args.putInt(EXTRA_ISSUE_NUMBER, issues[position]);
+        args.putInt(EXTRA_ISSUE_NUMBER, issues.get(position));
         fragment.setArguments(args);
         return fragment;
     }
@@ -102,7 +116,7 @@ public class IssuesPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return issues.length;
+        return issues.size();
     }
 
     /**

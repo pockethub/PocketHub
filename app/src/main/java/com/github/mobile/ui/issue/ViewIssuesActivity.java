@@ -20,7 +20,6 @@ import static com.github.mobile.Intents.EXTRA_POSITION;
 import static com.github.mobile.Intents.EXTRA_REPOSITORIES;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import static com.github.mobile.Intents.EXTRA_USERS;
-import android.R.integer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -129,7 +128,7 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
     private ViewPager pager;
 
     @InjectExtra(EXTRA_ISSUE_NUMBERS)
-    private ArrayList<integer> issueIds;
+    private ArrayList<Integer> issueIds;
 
     @InjectExtra(value = EXTRA_REPOSITORIES, optional = true)
     private ArrayList<RepositoryId> repoIds;
@@ -158,12 +157,10 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
 
         setContentView(layout.pager);
 
-        Integer[] numbers = issueIds.toArray(new Integer[issueIds.size()]);
         if (repo != null)
-            adapter = new IssuesPagerAdapter(getSupportFragmentManager(), repo, numbers);
+            adapter = new IssuesPagerAdapter(getSupportFragmentManager(), repo, issueIds);
         else
-            adapter = new IssuesPagerAdapter(getSupportFragmentManager(), repoIds.toArray(new RepositoryId[repoIds
-                    .size()]), numbers);
+            adapter = new IssuesPagerAdapter(getSupportFragmentManager(), repoIds, issueIds, users);
         pager.setAdapter(adapter);
 
         pager.setOnPageChangeListener(this);

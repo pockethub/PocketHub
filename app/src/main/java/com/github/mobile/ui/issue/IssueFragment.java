@@ -23,6 +23,7 @@ import static com.github.mobile.Intents.EXTRA_ISSUE;
 import static com.github.mobile.Intents.EXTRA_ISSUE_NUMBER;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY_NAME;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY_OWNER;
+import static com.github.mobile.Intents.EXTRA_USER;
 import static com.github.mobile.RequestCodes.COMMENT_CREATE;
 import static com.github.mobile.RequestCodes.ISSUE_ASSIGNEE_UPDATE;
 import static com.github.mobile.RequestCodes.ISSUE_CLOSE;
@@ -96,6 +97,8 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
     private Issue issue;
 
+    private User user;
+
     @Inject
     private AvatarLoader avatarHelper;
 
@@ -157,6 +160,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         repositoryId = RepositoryId.create(args.getString(EXTRA_REPOSITORY_OWNER),
                 args.getString(EXTRA_REPOSITORY_NAME));
         issueNumber = args.getInt(EXTRA_ISSUE_NUMBER);
+        user = (User) args.getSerializable(EXTRA_USER);
 
         DialogFragmentActivity dialogActivity = (DialogFragmentActivity) getActivity();
 
@@ -489,7 +493,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         case id.issue_comment:
             String title = getString(string.issue_title) + issueNumber;
             String subtitle = repositoryId.generateId();
-            startActivityForResult(CreateCommentActivity.createIntent(title, subtitle), COMMENT_CREATE);
+            startActivityForResult(CreateCommentActivity.createIntent(title, subtitle, user), COMMENT_CREATE);
             return true;
         case id.refresh:
             refreshIssue();
