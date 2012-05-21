@@ -56,7 +56,6 @@
     <string name="new_gist">New Gist</string>
     <string name="filter">Filter</string>
     <string name="bookmark">Bookmark</string>
-    <string name="apply">Apply</string>
     <string name="comment">Comment</string>
     <string name="delete_ellipsis">Delete…</string>
     <string name="refresh">Refresh</string>
@@ -104,7 +103,6 @@
     <string name="gist_description_hint">Android created Gist</string>
     <string name="title">Title</string>
     <string name="edit_description">Edit Title/Description</string>
-    <string name="update">Update</string>
     <string name="star_gist">Star Gist</string>
     <string name="starring_gist">Starring Gist…</string>
     <string name="unstar_gist">Unstar Gist</string>
@@ -186,5 +184,6 @@
     <string name="open_issues">Open Issues</string>
     <string name="closed_issues">Closed Issues</string>
     <string name="confirm_filter_delete_title">Remove Issue Filter</string>
+    <string name="save">Save</string>
 
 </resources>

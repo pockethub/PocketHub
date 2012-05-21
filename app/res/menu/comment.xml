@@ -18,8 +18,8 @@
 
     <item
         android:id="@+id/apply"
-        android:icon="@drawable/ic_action_apply"
+        android:icon="@drawable/action_save"
         android:showAsAction="ifRoom"
-        android:title="@string/apply"/>
+        android:title="@string/comment"/>
 
 </menu>
