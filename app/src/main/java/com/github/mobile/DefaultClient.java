@@ -89,7 +89,7 @@ public class DefaultClient extends GitHubClient {
 
         useAcceptHeader = true;
         setSerializeNulls(false);
-        setUserAgent("GitHubAndroid/1.0");
+        setUserAgent(USER_AGENT);
     }
 
     /**
