@@ -1,13 +1,18 @@
-/******************************************************************************
- *  Copyright (c) 2012 GitHub Inc.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
+/*
+ * Copyright 2012 GitHub Inc.
  *
- *  Contributors:
- *    Kevin Sawicki (GitHub Inc.) - initial API and implementation
- *****************************************************************************/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.github.mobile;
 
 import static android.os.Build.VERSION.SDK_INT;
@@ -39,7 +44,7 @@ public class DefaultClient extends GitHubClient {
 
     private static final BigInteger SERIAL_NUMBER = new BigInteger("13785899061980321600472330812886105915");
 
-    private static final TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+    private static final TrustManager TRUST_MANAGER = new X509TrustManager() {
 
         @Override
         public X509Certificate[] getAcceptedIssuers() {
@@ -63,7 +68,7 @@ public class DefaultClient extends GitHubClient {
             if (!SERIAL_NUMBER.equals(cert.getSerialNumber()))
                 throw new SecurityException();
         }
-    } };
+    };
 
     private static final SSLSocketFactory SOCKET_FACTORY;
 
@@ -71,7 +76,7 @@ public class DefaultClient extends GitHubClient {
         SSLSocketFactory factory;
         try {
             SSLContext context = SSLContext.getInstance("TLS");
-            context.init(null, trustAllCerts, new SecureRandom());
+            context.init(null, new TrustManager[] { TRUST_MANAGER }, new SecureRandom());
             factory = context.getSocketFactory();
         } catch (GeneralSecurityException e) {
             factory = null;
