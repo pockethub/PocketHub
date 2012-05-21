@@ -37,7 +37,6 @@ import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.ui.DialogFragmentActivity;
-import com.github.mobile.ui.SingleChoiceDialogFragment;
 import com.google.inject.Inject;
 
 import java.util.Set;
@@ -242,15 +241,7 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
             updateLabels();
             break;
         case REQUEST_MILESTONE:
-            String milestone = arguments.getString(SingleChoiceDialogFragment.ARG_SELECTED);
-            if (milestone != null) {
-                for (Milestone candidate : milestoneDialog.getMilestones())
-                    if (milestone.equals(candidate.getTitle())) {
-                        filter.setMilestone(candidate);
-                        break;
-                    }
-            } else
-                filter.setMilestone(null);
+            filter.setMilestone(MilestoneDialogFragment.getSelected(arguments));
             updateMilestone();
             break;
         case REQUEST_ASSIGNEE:

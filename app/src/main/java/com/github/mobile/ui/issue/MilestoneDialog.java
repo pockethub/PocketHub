@@ -23,7 +23,6 @@ import android.util.Log;
 import com.github.mobile.R.string;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.ProgressDialogTask;
-import com.github.mobile.ui.SingleChoiceDialogFragment;
 import com.github.mobile.util.ToastUtils;
 
 import java.util.ArrayList;
@@ -44,7 +43,7 @@ public class MilestoneDialog {
 
     private MilestoneService service;
 
-    private List<Milestone> repositoryMilestones;
+    private ArrayList<Milestone> repositoryMilestones;
 
     private final int requestCode;
 
@@ -78,11 +77,11 @@ public class MilestoneDialog {
     }
 
     private void load(final Milestone selectedMilestone) {
-        new ProgressDialogTask<List<Milestone>>(activity) {
+        new ProgressDialogTask<ArrayList<Milestone>>(activity) {
 
             @Override
-            public List<Milestone> run() throws Exception {
-                List<Milestone> milestones = new ArrayList<Milestone>();
+            public ArrayList<Milestone> run() throws Exception {
+                ArrayList<Milestone> milestones = new ArrayList<Milestone>();
                 milestones.addAll(service.getMilestones(repository, STATE_OPEN));
                 milestones.addAll(service.getMilestones(repository, STATE_CLOSED));
                 Collections.sort(milestones, new Comparator<Milestone>() {
@@ -95,7 +94,7 @@ public class MilestoneDialog {
             }
 
             @Override
-            protected void onSuccess(List<Milestone> all) throws Exception {
+            protected void onSuccess(ArrayList<Milestone> all) throws Exception {
                 super.onSuccess(all);
 
                 repositoryMilestones = all;
@@ -131,19 +130,15 @@ public class MilestoneDialog {
             return;
         }
 
-        final String[] names = new String[repositoryMilestones.size()];
         int checked = -1;
-        if (selectedMilestone == null)
-            for (int i = 0; i < names.length; i++)
-                names[i] = repositoryMilestones.get(i).getTitle();
-        else
-            for (int i = 0; i < names.length; i++) {
-                names[i] = repositoryMilestones.get(i).getTitle();
-                if (selectedMilestone.getNumber() == repositoryMilestones.get(i).getNumber())
+        if (selectedMilestone != null)
+            for (int i = 0; i < repositoryMilestones.size(); i++)
+                if (selectedMilestone.getNumber() == repositoryMilestones.get(i).getNumber()) {
                     checked = i;
-            }
-        SingleChoiceDialogFragment.show(activity, requestCode, activity.getString(string.select_milestone), null,
-                names, checked);
+                    break;
+                }
+        MilestoneDialogFragment.show(activity, requestCode, activity.getString(string.select_milestone), null,
+                repositoryMilestones, checked);
     }
 
     /**

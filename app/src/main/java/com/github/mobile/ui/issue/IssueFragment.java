@@ -59,7 +59,6 @@ import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.core.issue.RefreshIssueTask;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.DialogResultListener;
-import com.github.mobile.ui.SingleChoiceDialogFragment;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.ui.comment.CommentListAdapter;
 import com.github.mobile.ui.comment.CreateCommentActivity;
@@ -407,7 +406,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
         switch (requestCode) {
         case ISSUE_MILESTONE_UPDATE:
-            milestoneTask.edit(arguments.getString(SingleChoiceDialogFragment.ARG_SELECTED));
+            milestoneTask.edit(MilestoneDialogFragment.getSelected(arguments));
             break;
         case ISSUE_ASSIGNEE_UPDATE:
             assigneeTask.edit(AssigneeDialogFragment.getSelected(arguments));

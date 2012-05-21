@@ -86,12 +86,12 @@ public class EditMilestoneTask extends ProgressDialogTask<Issue> {
     /**
      * Edit issue to have given milestone
      *
-     * @param title
+     * @param milestone
      * @return this task
      */
-    public EditMilestoneTask edit(String title) {
-        if (title != null)
-            milestoneNumber = milestoneDialog.getMilestoneNumber(title);
+    public EditMilestoneTask edit(Milestone milestone) {
+        if (milestone != null)
+            milestoneNumber = milestone.getNumber();
         else
             milestoneNumber = -1;
 

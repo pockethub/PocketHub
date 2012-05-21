@@ -16,18 +16,19 @@
 package com.github.mobile.ui;
 
 import static android.app.Activity.RESULT_CANCELED;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-
 import roboguice.fragment.RoboDialogFragment;
 
 /**
  * Base dialog fragment helper
  */
-public abstract class DialogFragmentHelper extends RoboDialogFragment {
+public abstract class DialogFragmentHelper extends RoboDialogFragment implements OnClickListener {
 
     /**
      * Dialog message
@@ -112,5 +113,24 @@ public abstract class DialogFragmentHelper extends RoboDialogFragment {
     @Override
     public void onCancel(DialogInterface dialog) {
         onResult(RESULT_CANCELED);
+    }
+
+    /**
+     * Create default dialog
+     *
+     * @return dialog
+     */
+    protected AlertDialog createDialog() {
+        final AlertDialog dialog = new LightAlertDialog(getActivity());
+        dialog.setTitle(getTitle());
+        dialog.setMessage(getMessage());
+        dialog.setCancelable(true);
+        dialog.setOnCancelListener(this);
+        return dialog;
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        dialog.dismiss();
     }
 }

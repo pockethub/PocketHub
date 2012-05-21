@@ -15,15 +15,10 @@
  */
 package com.github.mobile.ui;
 
-import static android.app.Activity.RESULT_OK;
-import static android.content.DialogInterface.BUTTON_NEUTRAL;
-import android.app.AlertDialog.Builder;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 
-import com.github.mobile.R.string;
+import java.util.ArrayList;
 
 /**
  * Helper to display a single choice dialog
@@ -35,11 +30,20 @@ public class SingleChoiceDialogFragment extends DialogFragmentHelper implements 
      */
     public static final String ARG_SELECTED = "selected";
 
-    private static final String ARG_CHOICES = "choices";
+    /**
+     * Choices arguments
+     */
+    protected static final String ARG_CHOICES = "choices";
 
-    private static final String ARG_SELECTED_CHOICE = "selectedChoice";
+    /**
+     * Selected choice argument
+     */
+    protected static final String ARG_SELECTED_CHOICE = "selectedChoice";
 
-    private static final String TAG = "single_choice_dialog";
+    /**
+     * Tag
+     */
+    protected static final String TAG = "single_choice_dialog";
 
     /**
      * Confirm message and deliver callback to given activity
@@ -50,42 +54,13 @@ public class SingleChoiceDialogFragment extends DialogFragmentHelper implements 
      * @param message
      * @param choices
      * @param selectedChoice
+     * @param helper
      */
-    public static void show(final DialogFragmentActivity activity, final int requestCode, final String title,
-            final String message, final String[] choices, final int selectedChoice) {
+    protected static void show(final DialogFragmentActivity activity, final int requestCode, final String title,
+            final String message, ArrayList<?> choices, final int selectedChoice, final DialogFragmentHelper helper) {
         Bundle arguments = createArguments(title, message, requestCode);
-        arguments.putStringArray(ARG_CHOICES, choices);
+        arguments.putSerializable(ARG_CHOICES, choices);
         arguments.putInt(ARG_SELECTED_CHOICE, selectedChoice);
-        show(activity, new SingleChoiceDialogFragment(), arguments, TAG);
-    }
-
-    @Override
-    public Dialog onCreateDialog(final Bundle savedInstanceState) {
-        final Builder builder = new Builder(getActivity());
-        Bundle arguments = getArguments();
-        builder.setTitle(getTitle());
-        builder.setMessage(getMessage());
-        builder.setCancelable(true);
-        builder.setOnCancelListener(this);
-        int selected = arguments.getInt(ARG_SELECTED_CHOICE);
-        if (selected > -1)
-            builder.setNeutralButton(string.clear, this);
-        builder.setSingleChoiceItems(arguments.getStringArray(ARG_CHOICES), selected, this);
-
-        return builder.create();
-    }
-
-    @Override
-    public void onClick(DialogInterface dialog, int which) {
-        dialog.dismiss();
-        switch (which) {
-        case BUTTON_NEUTRAL:
-            onResult(RESULT_OK);
-            break;
-        default:
-            getArguments().putString(ARG_SELECTED, getArguments().getStringArray(ARG_CHOICES)[which]);
-            onResult(RESULT_OK);
-            break;
-        }
+        show(activity, helper, arguments, TAG);
     }
 }

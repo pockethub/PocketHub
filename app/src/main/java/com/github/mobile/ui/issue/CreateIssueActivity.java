@@ -37,7 +37,6 @@ import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.ui.DialogFragmentActivity;
-import com.github.mobile.ui.SingleChoiceDialogFragment;
 import com.github.mobile.ui.TextWatcherAdapter;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
@@ -47,7 +46,6 @@ import java.util.List;
 
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Label;
-import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.CollaboratorService;
@@ -214,12 +212,7 @@ public class CreateIssueActivity extends DialogFragmentActivity {
             updateHeader(newIssue);
             break;
         case REQUEST_CODE_MILESTONE:
-            String title = arguments.getString(SingleChoiceDialogFragment.ARG_SELECTED);
-            if (title != null)
-                newIssue.setMilestone(new Milestone().setTitle(title).setNumber(
-                        milestoneDialog.getMilestoneNumber(title)));
-            else
-                newIssue.setMilestone(null);
+            newIssue.setMilestone(MilestoneDialogFragment.getSelected(arguments));
             updateHeader(newIssue);
             break;
         case REQUEST_CODE_ASSIGNEE:

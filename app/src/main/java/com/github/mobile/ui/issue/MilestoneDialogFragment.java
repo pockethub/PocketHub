@@ -17,16 +17,18 @@ package com.github.mobile.ui.issue;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.DialogInterface.BUTTON_NEUTRAL;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -36,71 +38,71 @@ import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.SingleChoiceDialogFragment;
-import com.github.mobile.util.AvatarLoader;
-import com.google.inject.Inject;
 import com.viewpagerindicator.R.id;
 import com.viewpagerindicator.R.layout;
 
 import java.util.ArrayList;
 
-import org.eclipse.egit.github.core.User;
+import org.eclipse.egit.github.core.Milestone;
 
 /**
- * Dialog fragment to select an issue assignee from a list of collaborators
+ * Dialog fragment to select an issue milestone
  */
-public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
+public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
 
-    private static class UserItemView extends ItemView {
-
-        public final TextView login;
-
-        public final ImageView avatar;
+    private static class MilestoneItemView extends ItemView {
 
         public final RadioButton selected;
 
-        public UserItemView(final View view) {
+        public final TextView title;
+
+        public final TextView description;
+
+        public MilestoneItemView(final View view) {
             super(view);
 
-            login = (TextView) view.findViewById(id.tv_login);
-            avatar = (ImageView) view.findViewById(id.iv_avatar);
             selected = (RadioButton) view.findViewById(id.rb_selected);
+            title = (TextView) view.findViewById(id.tv_milestone_title);
+            description = (TextView) view.findViewById(id.tv_milestone_description);
         }
     }
 
-    private static class UserListAdapter extends ItemListAdapter<User, UserItemView> {
+    private static class MilestoneListAdapter extends ItemListAdapter<Milestone, MilestoneItemView> {
 
         private final int selected;
 
-        private final AvatarLoader loader;
-
-        public UserListAdapter(LayoutInflater inflater, User[] users, int selected, AvatarLoader loader) {
-            super(layout.collaborator_item, inflater, users);
+        public MilestoneListAdapter(LayoutInflater inflater, Milestone[] milestones, int selected) {
+            super(layout.milestone_item, inflater, milestones);
 
             this.selected = selected;
-            this.loader = loader;
         }
 
         @Override
-        protected void update(final int position, final UserItemView view, final User item) {
-            view.login.setText(item.getLogin());
-            loader.bind(view.avatar, item);
+        protected void update(final int position, final MilestoneItemView view, final Milestone item) {
+            view.title.setText(item.getTitle());
+            String description = item.getDescription();
+            if (!TextUtils.isEmpty(description)) {
+                view.description.setText(description);
+                view.description.setVisibility(VISIBLE);
+            } else
+                view.description.setVisibility(GONE);
             view.selected.setChecked(selected == position);
         }
 
         @Override
-        protected UserItemView createView(View view) {
-            return new UserItemView(view);
+        protected MilestoneItemView createView(View view) {
+            return new MilestoneItemView(view);
         }
     }
 
     /**
-     * Get selected user from results bundle
+     * Get selected milestone from results bundle
      *
      * @param arguments
-     * @return user
+     * @return milestone
      */
-    public static User getSelected(Bundle arguments) {
-        return (User) arguments.getSerializable(ARG_SELECTED);
+    public static Milestone getSelected(Bundle arguments) {
+        return (Milestone) arguments.getSerializable(ARG_SELECTED);
     }
 
     /**
@@ -114,12 +116,9 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
      * @param selectedChoice
      */
     public static void show(final DialogFragmentActivity activity, final int requestCode, final String title,
-            final String message, ArrayList<User> choices, final int selectedChoice) {
-        show(activity, requestCode, title, message, choices, selectedChoice, new AssigneeDialogFragment());
+            final String message, ArrayList<Milestone> choices, final int selectedChoice) {
+        show(activity, requestCode, title, message, choices, selectedChoice, new MilestoneDialogFragment());
     }
-
-    @Inject
-    private AvatarLoader loader;
 
     @Override
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
@@ -140,10 +139,10 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
             }
         });
 
-        ArrayList<User> choices = getChoices();
+        ArrayList<Milestone> choices = getChoices();
         int selected = arguments.getInt(ARG_SELECTED_CHOICE);
-        UserListAdapter adapter = new UserListAdapter(inflater, choices.toArray(new User[choices.size()]), selected,
-                loader);
+        MilestoneListAdapter adapter = new MilestoneListAdapter(inflater,
+                choices.toArray(new Milestone[choices.size()]), selected);
         view.setAdapter(adapter);
         if (selected >= 0)
             view.setSelection(selected);
@@ -153,8 +152,8 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
     }
 
     @SuppressWarnings("unchecked")
-    private ArrayList<User> getChoices() {
-        return (ArrayList<User>) getArguments().getSerializable(ARG_CHOICES);
+    private ArrayList<Milestone> getChoices() {
+        return (ArrayList<Milestone>) getArguments().getSerializable(ARG_CHOICES);
     }
 
     @Override
