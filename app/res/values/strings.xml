@@ -185,5 +185,6 @@
     <string name="closed_issues">Closed Issues</string>
     <string name="confirm_filter_delete_title">Remove Issue Filter</string>
     <string name="save">Save</string>
+    <string name="apply">Apply</string>
 
 </resources>
