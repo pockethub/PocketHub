@@ -31,7 +31,7 @@
         android:title="@string/create"/>
     <item
         android:id="@+id/refresh"
-        android:icon="@drawable/action_refresh"
+        android:icon="@drawable/menu_refresh"
         android:showAsAction="never"
         android:title="@string/refresh"/>
 
