@@ -15,11 +15,13 @@
  */
 package com.github.mobile.ui;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.ListView;
 
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.core.ResourcePager;
@@ -66,8 +68,18 @@ public abstract class PagedItemFragment<E> extends ItemListFragment<E> implement
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        loadingIndicator = new ResourceLoadingIndicator(getActivity(), getLoadingMessage());
-        loadingIndicator.setList(getListView());
+        configureList(getActivity(), getListView());
+    }
+
+    /**
+     * Configure list after view has been created
+     *
+     * @param activity
+     * @param listView
+     */
+    protected void configureList(Activity activity, ListView listView) {
+        loadingIndicator = new ResourceLoadingIndicator(activity, getLoadingMessage());
+        loadingIndicator.setList(listView);
         setListAdapter(createAdapter(items));
     }
 

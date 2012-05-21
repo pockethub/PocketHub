@@ -23,6 +23,7 @@ import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import static com.github.mobile.RequestCodes.ISSUE_CREATE;
 import static com.github.mobile.RequestCodes.ISSUE_FILTER_EDIT;
 import static com.github.mobile.RequestCodes.ISSUE_VIEW;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -85,6 +86,8 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     @InjectExtra(EXTRA_REPOSITORY)
     private Repository repository;
 
+    private View filterHeader;
+
     private TextView state;
 
     private ImageView assigneeAvatar;
@@ -112,17 +115,23 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        View filterHeader = getLayoutInflater(savedInstanceState).inflate(layout.issue_filter_header, null);
+        filterHeader = getLayoutInflater(savedInstanceState).inflate(layout.issue_filter_header, null);
         state = (TextView) filterHeader.findViewById(id.tv_filter_state);
         labels = (TextView) filterHeader.findViewById(id.tv_filter_labels);
         milestone = (TextView) filterHeader.findViewById(id.tv_filter_milestone);
         assigneeArea = filterHeader.findViewById(id.ll_assignee);
         assignee = (TextView) filterHeader.findViewById(id.tv_filter_assignee);
         assigneeAvatar = (ImageView) filterHeader.findViewById(id.iv_assignee_avatar);
-        getListView().addHeaderView(filterHeader, null, false);
         updateFilterSummary();
+
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    protected void configureList(Activity activity, ListView listView) {
+        listView.addHeaderView(filterHeader, null, false);
+
+        super.configureList(activity, listView);
     }
 
     private void updateFilterSummary() {
