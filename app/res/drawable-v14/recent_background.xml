@@ -21,7 +21,7 @@
             <solid android:color="@color/recent_border" />
 
             <corners
-                android:bottomLeftRadius="4dp"
+                android:bottomRightRadius="4dp"
                 android:topRightRadius="4dp" />
         </shape>
     </item>
@@ -34,7 +34,7 @@
             <solid android:color="@color/recent_background" />
 
             <corners
-                android:bottomLeftRadius="3dp"
+                android:bottomRightRadius="3dp"
                 android:topRightRadius="3dp" />
         </shape>
     </item>
