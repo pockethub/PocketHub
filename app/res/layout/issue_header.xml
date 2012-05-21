@@ -64,12 +64,12 @@
         <ImageView
             android:id="@+id/iv_avatar"
             style="@style/AvatarMedium"
+            android:layout_marginRight="8dp"
             android:contentDescription="@string/avatar" />
 
         <TextView
             android:id="@+id/tv_issue_creation"
             style="@style/ListSubtitleText"
-            android:paddingLeft="5dp"
             android:singleLine="true" />
     </LinearLayout>
 
