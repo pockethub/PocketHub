@@ -18,7 +18,7 @@
 
     <item
         android:id="@+id/issue_comment"
-        android:icon="@drawable/action_create_comment"
+        android:icon="@drawable/action_comment"
         android:showAsAction="ifRoom"
         android:title="@string/comment"/>
     <item
