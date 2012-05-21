@@ -45,6 +45,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.actionbarsherlock.view.Menu;
@@ -107,6 +108,9 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
     @InjectView(android.R.id.list)
     private ListView list;
+
+    @InjectView(id.pb_loading)
+    private ProgressBar progress;
 
     private View headerView;
 
@@ -224,11 +228,6 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         TextView loadingText = (TextView) loadingView.findViewById(id.tv_loading);
         loadingText.setText(string.loading_comments);
         loadingView.findViewById(id.v_separator).setVisibility(GONE);
-
-        if (issue == null) {
-            loadingText.setText(string.loading_issue);
-            headerView.setVisibility(GONE);
-        }
 
         if (issue == null || (issue.getComments() > 0 && comments == null))
             list.addHeaderView(loadingView, null, false);
@@ -354,6 +353,11 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             state = state.substring(0, 1).toUpperCase(Locale.US) + state.substring(1);
         else
             state = "";
+
+        if (GONE != progress.getVisibility())
+            progress.setVisibility(GONE);
+        if (VISIBLE != list.getVisibility())
+            list.setVisibility(VISIBLE);
     }
 
     private void refreshIssue() {
@@ -369,6 +373,9 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             @Override
             protected void onSuccess(FullIssue fullIssue) throws Exception {
                 super.onSuccess(fullIssue);
+
+                if (getActivity() == null)
+                    return;
 
                 issue = fullIssue.getIssue();
                 comments = fullIssue;

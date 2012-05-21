@@ -39,6 +39,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.actionbarsherlock.view.Menu;
@@ -100,6 +101,9 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
     @InjectView(android.R.id.list)
     private ListView list;
 
+    @InjectView(id.pb_loading)
+    private ProgressBar progress;
+
     @Inject
     private GistStore store;
 
@@ -160,9 +164,6 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
         if (gist != null) {
             updateHeader(gist);
             updateFiles(gist);
-        } else {
-            ((TextView) loadingView.findViewById(id.tv_loading)).setText(string.loading_gist);
-            headerView.setVisibility(GONE);
         }
 
         if (gist == null || (gist.getComments() > 0 && comments == null)) {
@@ -221,6 +222,11 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
             description.setText(desc);
         else
             description.setText(NO_DESCRIPTION);
+
+        if (GONE != progress.getVisibility())
+            progress.setVisibility(GONE);
+        if (VISIBLE != list.getVisibility())
+            list.setVisibility(VISIBLE);
     }
 
     @Override
