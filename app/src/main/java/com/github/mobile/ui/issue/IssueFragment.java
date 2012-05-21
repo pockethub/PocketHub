@@ -88,10 +88,6 @@ import roboguice.inject.InjectView;
  */
 public class IssueFragment extends RoboSherlockFragment implements DialogResultListener {
 
-    private String repositoryName;
-
-    private String repositoryOwner;
-
     private int issueNumber;
 
     private List<Comment> comments;
@@ -158,9 +154,8 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         setHasOptionsMenu(true);
 
         Bundle args = getArguments();
-        repositoryName = args.getString(EXTRA_REPOSITORY_NAME);
-        repositoryOwner = args.getString(EXTRA_REPOSITORY_OWNER);
-        repositoryId = RepositoryId.create(repositoryOwner, repositoryName);
+        repositoryId = RepositoryId.create(args.getString(EXTRA_REPOSITORY_OWNER),
+                args.getString(EXTRA_REPOSITORY_NAME));
         issueNumber = args.getInt(EXTRA_ISSUE_NUMBER);
 
         DialogFragmentActivity dialogActivity = (DialogFragmentActivity) getActivity();
