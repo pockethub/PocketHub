@@ -28,7 +28,6 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.HeaderViewListAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -124,6 +123,18 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
 
         emptyView = (TextView) view.findViewById(android.R.id.empty);
         listView.setEmptyView(emptyView);
+
+        configureList(getActivity(), getListView());
+    }
+
+    /**
+     * Configure list after view has been created
+     *
+     * @param activity
+     * @param listView
+     */
+    protected void configureList(Activity activity, ListView listView) {
+        listView.setAdapter(createAdapter());
     }
 
     @Override
@@ -175,19 +186,22 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
             manager.restartLoader(0, args, this);
     }
 
-    @SuppressWarnings("rawtypes")
     public void onLoadFinished(Loader<List<E>> loader, List<E> items) {
         this.items = items;
 
-        ListAdapter adapter = getListAdapter();
-        if (adapter instanceof HeaderViewListAdapter)
-            adapter = ((HeaderViewListAdapter) adapter).getWrappedAdapter();
-        if (adapter instanceof ItemListAdapter)
-            ((ItemListAdapter) adapter).setItems(items.toArray());
-        else
-            setListAdapter(createAdapter(this.items));
+        getListAdapter().getWrappedAdapter().setItems(items.toArray());
 
         showList();
+    }
+
+    /**
+     * Create adapter to display items
+     *
+     * @return adapter
+     */
+    protected HeaderFooterListAdapter<ItemListAdapter<E, ? extends ItemView>> createAdapter() {
+        ItemListAdapter<E, ? extends ItemView> wrapped = createAdapter(items);
+        return new HeaderFooterListAdapter<ItemListAdapter<E, ? extends ItemView>>(getListView(), wrapped);
     }
 
     /**
@@ -255,8 +269,12 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
      *
      * @return list adapter
      */
-    protected ListAdapter getListAdapter() {
-        return listView != null ? listView.getAdapter() : null;
+    @SuppressWarnings("unchecked")
+    protected HeaderFooterListAdapter<ItemListAdapter<E, ? extends ItemView>> getListAdapter() {
+        if (listView != null)
+            return (HeaderFooterListAdapter<ItemListAdapter<E, ? extends ItemView>>) listView.getAdapter();
+        else
+            return null;
     }
 
     /**

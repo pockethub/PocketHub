@@ -129,9 +129,9 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
     @Override
     protected void configureList(Activity activity, ListView listView) {
-        listView.addHeaderView(filterHeader, null, false);
-
         super.configureList(activity, listView);
+
+        getListAdapter().addHeader(filterHeader, null, false);
     }
 
     private void updateFilterSummary() {

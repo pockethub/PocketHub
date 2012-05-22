@@ -18,7 +18,6 @@ package com.github.mobile.ui;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.mobile.R.id;
@@ -29,17 +28,13 @@ import com.github.mobile.R.layout;
  */
 public class ResourceLoadingIndicator {
 
-    private final Context context;
-
-    private ListView listView;
+    private HeaderFooterListAdapter<?> adapter;
 
     private boolean showing;
 
     private final View view;
 
     private final TextView textView;
-
-    private final int loadingResId;
 
     /**
      * Create indicator using given inflater
@@ -49,21 +44,20 @@ public class ResourceLoadingIndicator {
      *            string resource id to show when loading
      */
     public ResourceLoadingIndicator(final Context context, final int loadingResId) {
-        this.context = context;
         view = LayoutInflater.from(context).inflate(layout.loading_item, null);
         textView = (TextView) view.findViewById(id.tv_loading);
-        this.loadingResId = loadingResId;
+        textView.setText(loadingResId);
     }
 
     /**
-     * Set the list view that this indicator should be added as a footer to
+     * Set the adapter that this indicator should be added as a footer to
      *
-     * @param listView
+     * @param adapter
      * @return this indicator
      */
-    public ResourceLoadingIndicator setList(final ListView listView) {
-        this.listView = listView;
-        listView.addFooterView(view, null, false);
+    public ResourceLoadingIndicator setList(final HeaderFooterListAdapter<?> adapter) {
+        this.adapter = adapter;
+        adapter.addFooter(view, null, false);
         showing = true;
         return this;
     }
@@ -75,23 +69,12 @@ public class ResourceLoadingIndicator {
      * @return this indicator
      */
     public ResourceLoadingIndicator setVisible(final boolean visible) {
-        if (showing != visible && listView != null)
+        if (showing != visible && adapter != null)
             if (visible)
-                listView.addFooterView(view, null, false);
+                adapter.addFooter(view, null, false);
             else
-                listView.removeFooterView(view);
+                adapter.removeFooter(view);
         showing = visible;
-        return this;
-    }
-
-    /**
-     * Show the indicator as loading state
-     *
-     * @return this indicator
-     */
-    public ResourceLoadingIndicator showLoading() {
-        setVisible(true);
-        textView.setText(context.getString(loadingResId));
         return this;
     }
 }

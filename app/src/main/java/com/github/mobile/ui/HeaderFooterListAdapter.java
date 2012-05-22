@@ -116,4 +116,9 @@ public class HeaderFooterListAdapter<E extends BaseAdapter> extends HeaderViewLi
     public E getWrappedAdapter() {
         return wrapped;
     }
+
+    @Override
+    public boolean isEmpty() {
+        return wrapped.isEmpty();
+    }
 }

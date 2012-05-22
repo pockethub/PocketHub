@@ -18,7 +18,6 @@ package com.github.mobile.ui;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
-import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
@@ -64,13 +63,6 @@ public abstract class PagedItemFragment<E> extends ItemListFragment<E> implement
         pager = createPager();
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        configureList(getActivity(), getListView());
-    }
-
     /**
      * Configure list after view has been created
      *
@@ -78,9 +70,10 @@ public abstract class PagedItemFragment<E> extends ItemListFragment<E> implement
      * @param listView
      */
     protected void configureList(Activity activity, ListView listView) {
+        super.configureList(activity, listView);
+
         loadingIndicator = new ResourceLoadingIndicator(activity, getLoadingMessage());
-        loadingIndicator.setList(listView);
-        setListAdapter(createAdapter(items));
+        loadingIndicator.setList(getListAdapter());
     }
 
     @Override
@@ -132,10 +125,7 @@ public abstract class PagedItemFragment<E> extends ItemListFragment<E> implement
 
     @Override
     public void onLoadFinished(Loader<List<E>> loader, List<E> items) {
-        if (pager.hasMore())
-            loadingIndicator.showLoading();
-        else
-            loadingIndicator.setVisible(false);
+        loadingIndicator.setVisible(pager.hasMore());
 
         super.onLoadFinished(loader, items);
     }
