@@ -145,13 +145,13 @@ public class OrganizationRepositories implements PersistableResource<Repository>
             Set<Repository> all = new TreeSet<Repository>(new Comparator<Repository>() {
 
                 public int compare(final Repository repo1, final Repository repo2) {
-                    final long diff = repo1.getId() - repo2.getId();
-                    if (diff > 0)
+                    final long id1 = repo1.getId();
+                    final long id2 = repo2.getId();
+                    if (id1 > id2)
                         return 1;
-                    else if (diff < 0)
+                    if (id1 < id2)
                         return -1;
-                    else
-                        return 0;
+                    return 0;
                 }
             });
             all.addAll(repos.getRepositories());
