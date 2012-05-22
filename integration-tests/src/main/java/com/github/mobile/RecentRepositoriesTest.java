@@ -20,7 +20,6 @@ import android.test.AndroidTestCase;
 
 import com.github.mobile.ui.repo.RecentRepositories;
 
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.User;
 
 /**
@@ -34,9 +33,8 @@ public class RecentRepositoriesTest extends AndroidTestCase {
 	public void testBadInput() {
 		User org = new User().setId(20);
 		RecentRepositories recent = new RecentRepositories(getContext(), org);
-		assertFalse(recent.contains((IRepositoryIdProvider) null));
-		assertFalse(recent.contains((String) null));
-		assertFalse(recent.contains(""));
+		assertFalse(recent.contains(null));
+		assertFalse(recent.contains(-1));
 	}
 
 	/**
@@ -47,19 +45,16 @@ public class RecentRepositoriesTest extends AndroidTestCase {
 		RecentRepositories recent = new RecentRepositories(getContext(), org);
 
 		for (int i = 0; i < MAX_SIZE; i++) {
-			String id = "owner/repo" + i;
-			recent.add(id);
-			assertTrue(recent.contains(id));
+			recent.add(i);
+			assertTrue(recent.contains(i));
 		}
 
-		recent.add("owner/repoLast");
-		assertTrue(recent.contains("owner/repoLast"));
-		assertFalse(recent.contains("owner/repo0"));
+		recent.add(MAX_SIZE + 1);
+		assertTrue(recent.contains(MAX_SIZE + 1));
+		assertFalse(recent.contains(0));
 
-		for (int i = 1; i < MAX_SIZE; i++) {
-			String id = "owner/repo" + i;
-			assertTrue(recent.contains(id));
-		}
+		for (int i = 1; i < MAX_SIZE; i++)
+			assertTrue(recent.contains(i));
 	}
 
 	/**
@@ -68,7 +63,7 @@ public class RecentRepositoriesTest extends AndroidTestCase {
 	public void testIO() {
 		User org = new User().setId(20);
 		RecentRepositories recent1 = new RecentRepositories(getContext(), org);
-		String id = "owner/repo";
+		long id = 1234;
 		recent1.add(id);
 		assertTrue(recent1.contains(id));
 		recent1.save();
@@ -82,14 +77,14 @@ public class RecentRepositoriesTest extends AndroidTestCase {
 	public void testScopedStorage() {
 		User org1 = new User().setId(20);
 		RecentRepositories recent1 = new RecentRepositories(getContext(), org1);
-		String id1 = "org1/repo";
+		long id1 = 1234;
 		recent1.add(id1);
 		assertTrue(recent1.contains(id1));
 
 		User org2 = new User().setId(40);
 		RecentRepositories recent2 = new RecentRepositories(getContext(), org2);
 		assertFalse(recent2.contains(id1));
-		String id2 = "org2/repo";
+		long id2 = 2345;
 		recent2.add(id2);
 		assertTrue(recent2.contains(id2));
 
@@ -97,5 +92,4 @@ public class RecentRepositoriesTest extends AndroidTestCase {
 		recent1 = new RecentRepositories(getContext(), org1);
 		assertFalse(recent1.contains(id2));
 	}
-
 }

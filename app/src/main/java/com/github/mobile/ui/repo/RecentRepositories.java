@@ -98,7 +98,7 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
      * @param id
      * @return this recent list
      */
-    public RecentRepositories add(final Long id) {
+    public RecentRepositories add(final long id) {
         if (ids == null)
             load();
         ids.remove(id);
