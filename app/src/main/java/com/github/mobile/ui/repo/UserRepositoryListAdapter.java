@@ -18,6 +18,7 @@ package com.github.mobile.ui.repo;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.github.mobile.ui.StyledText;
 import com.viewpagerindicator.R.layout;
 
 import org.eclipse.egit.github.core.Repository;
@@ -55,8 +56,11 @@ public class UserRepositoryListAdapter extends RepositoryListAdapter<Repository,
 
     @Override
     protected void update(final int position, final RepositoryItemView view, final Repository repository) {
-        view.repoName.setText(login.equals(repository.getOwner().getLogin()) ? repository.getName() : repository
-                .generateId());
+        StyledText name = new StyledText();
+        if (!login.equals(repository.getOwner().getLogin()))
+            name.append(repository.getOwner().getLogin()).append('/');
+        name.bold(repository.getName());
+        view.repoName.setText(name);
 
         updateDetails(view, repository.getDescription(), repository.getLanguage(), repository.getWatchers(),
                 repository.getForks(), repository.isPrivate(), repository.isFork());

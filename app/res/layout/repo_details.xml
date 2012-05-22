@@ -20,7 +20,8 @@
         android:id="@+id/tv_repo_name"
         style="@style/ListTitleText"
         android:paddingBottom="0dp"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:textStyle="normal" />
 
     <TextView
         android:id="@+id/tv_repo_description"

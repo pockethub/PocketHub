@@ -19,6 +19,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.github.mobile.ui.StyledText;
 import com.viewpagerindicator.R.layout;
 
 import org.eclipse.egit.github.core.SearchRepository;
@@ -50,7 +51,10 @@ public class SearchRepositoryListAdapter extends RepositoryListAdapter<SearchRep
 
     @Override
     protected void update(final int position, final RepositoryItemView view, final SearchRepository repository) {
-        view.repoName.setText(repository.generateId());
+        StyledText name = new StyledText();
+        name.append(repository.getOwner()).append('/');
+        name.bold(repository.getName());
+        view.repoName.setText(name);
 
         updateDetails(view, repository.getDescription(), repository.getLanguage(), repository.getWatchers(),
                 repository.getForks(), repository.isPrivate(), repository.isFork());

@@ -20,6 +20,7 @@ import static android.view.View.VISIBLE;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.github.mobile.ui.StyledText;
 import com.viewpagerindicator.R.layout;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -68,8 +69,11 @@ public class DefaultRepositoryListAdapter extends RepositoryListAdapter<Reposito
     protected void update(final int position, final RecentRepositoryItemView view, final Repository repository) {
         view.recentLabel.setVisibility(recent.get().contains(repository.getId()) ? VISIBLE : GONE);
 
-        view.repoName.setText(account.get().getLogin().equals(repository.getOwner().getLogin()) ? repository.getName()
-                : repository.generateId());
+        StyledText name = new StyledText();
+        if (!account.get().getLogin().equals(repository.getOwner().getLogin()))
+            name.append(repository.getOwner().getLogin()).append('/');
+        name.bold(repository.getName());
+        view.repoName.setText(name);
 
         updateDetails(view, repository.getDescription(), repository.getLanguage(), repository.getWatchers(),
                 repository.getForks(), repository.isPrivate(), repository.isFork());
