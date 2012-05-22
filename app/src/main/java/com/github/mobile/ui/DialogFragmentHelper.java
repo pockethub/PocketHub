@@ -121,7 +121,7 @@ public abstract class DialogFragmentHelper extends RoboDialogFragment implements
      * @return dialog
      */
     protected AlertDialog createDialog() {
-        final AlertDialog dialog = new LightAlertDialog(getActivity());
+        final AlertDialog dialog = LightAlertDialog.create(getActivity());
         dialog.setTitle(getTitle());
         dialog.setMessage(getMessage());
         dialog.setCancelable(true);

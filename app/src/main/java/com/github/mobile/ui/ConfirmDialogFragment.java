@@ -19,6 +19,7 @@ import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static android.content.DialogInterface.BUTTON_NEGATIVE;
 import static android.content.DialogInterface.BUTTON_POSITIVE;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -62,7 +63,7 @@ public class ConfirmDialogFragment extends DialogFragmentHelper implements OnCli
     }
 
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
-        LightAlertDialog dialog = new LightAlertDialog(getActivity());
+        AlertDialog dialog = LightAlertDialog.create(getActivity());
         dialog.setTitle(getTitle());
         dialog.setMessage(getMessage());
         dialog.setButton(BUTTON_POSITIVE, getResources().getString(android.R.string.yes), this);

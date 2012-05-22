@@ -67,7 +67,7 @@ public abstract class ProgressDialogTask<E> extends AuthenticatedUserTask<E> {
     protected void showIndeterminate(final CharSequence message) {
         dismissProgress();
 
-        progress = new LightProgressDialog(getContext(), message);
+        progress = LightProgressDialog.create(getContext(), message);
         progress.show();
     }
 
@@ -79,7 +79,7 @@ public abstract class ProgressDialogTask<E> extends AuthenticatedUserTask<E> {
     protected void showIndeterminate(final int resId) {
         dismissProgress();
 
-        progress = new LightProgressDialog(getContext(), resId);
+        progress = LightProgressDialog.create(getContext(), resId);
         progress.show();
     }
 

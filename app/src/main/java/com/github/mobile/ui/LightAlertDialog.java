@@ -15,6 +15,7 @@
  */
 package com.github.mobile.ui;
 
+import static android.os.Build.VERSION.SDK_INT;
 import android.app.AlertDialog;
 import android.content.Context;
 
@@ -27,8 +28,20 @@ public class LightAlertDialog extends AlertDialog {
      * Create alert dialog
      *
      * @param context
+     * @return dialog
      */
-    public LightAlertDialog(final Context context) {
-        super(context, THEME_HOLO_LIGHT);
+    public static AlertDialog create(final Context context) {
+        if (SDK_INT >= 14)
+            return new LightAlertDialog(context, THEME_HOLO_LIGHT);
+        else
+            return new LightAlertDialog(context);
+    }
+
+    private LightAlertDialog(final Context context, int theme) {
+        super(context, theme);
+    }
+
+    private LightAlertDialog(final Context context) {
+        super(context);
     }
 }

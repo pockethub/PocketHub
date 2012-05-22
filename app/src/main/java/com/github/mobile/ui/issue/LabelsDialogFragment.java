@@ -149,13 +149,13 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements OnClic
         arguments.putSerializable(ARG_SELECTED, selected);
 
         LayoutInflater inflater = activity.getLayoutInflater();
-        ListView view = (ListView) inflater.inflate(layout.list_view, null);
+        ListView view = (ListView) inflater.inflate(layout.dialog_list_view, null);
         LabelListAdapter adapter = new LabelListAdapter(inflater, choices.toArray(new Label[choices.size()]),
                 selectedChoices);
         view.setAdapter(adapter);
         view.setOnItemClickListener(adapter);
 
-        AlertDialog dialog = new LightAlertDialog(activity);
+        AlertDialog dialog = LightAlertDialog.create(activity);
         dialog.setCancelable(true);
         dialog.setOnCancelListener(this);
         dialog.setButton(BUTTON_NEUTRAL, activity.getString(string.clear), this);

@@ -15,6 +15,7 @@
  */
 package com.github.mobile.ui;
 
+import static android.os.Build.VERSION.SDK_INT;
 import android.app.ProgressDialog;
 import android.content.Context;
 
@@ -26,26 +27,39 @@ import com.github.mobile.R.drawable;
 public class LightProgressDialog extends ProgressDialog {
 
     /**
-     * Create progress dialog with given message
+     * Create progress dialog
      *
      * @param context
      * @param resId
+     * @return dialog
      */
-    public LightProgressDialog(Context context, int resId) {
-        this(context, context.getResources().getString(resId));
+    public static ProgressDialog create(Context context, int resId) {
+        return create(context, context.getResources().getString(resId));
     }
 
     /**
-     * Create progress dialog with given message
+     * Create progress dialog
      *
      * @param context
      * @param message
+     * @return dialog
      */
-    public LightProgressDialog(Context context, CharSequence message) {
+    public static ProgressDialog create(Context context, CharSequence message) {
+        ProgressDialog dialog;
+        if (SDK_INT >= 14)
+            dialog = new LightProgressDialog(context, message);
+        else
+            dialog = new ProgressDialog(context);
+
+        dialog.setMessage(message);
+        dialog.setIndeterminate(true);
+        dialog.setIndeterminateDrawable(context.getResources().getDrawable(drawable.spinner));
+
+        return dialog;
+    }
+
+    private LightProgressDialog(Context context, CharSequence message) {
         super(context, THEME_HOLO_LIGHT);
 
-        setMessage(message);
-        setIndeterminate(true);
-        setIndeterminateDrawable(context.getResources().getDrawable(drawable.spinner));
     }
 }

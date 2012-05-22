@@ -174,7 +174,7 @@ public class AuthenticatorActivity extends RoboSherlockAccountAuthenticatorActiv
 
     @Override
     protected Dialog onCreateDialog(int id) {
-        final ProgressDialog dialog = new LightProgressDialog(this, getText(string.login_activity_authenticating));
+        final ProgressDialog dialog = LightProgressDialog.create(this, string.login_activity_authenticating);
         dialog.setCancelable(true);
         dialog.setOnCancelListener(new OnCancelListener() {
 

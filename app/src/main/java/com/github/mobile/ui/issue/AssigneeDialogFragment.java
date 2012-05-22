@@ -131,7 +131,7 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
 
         LayoutInflater inflater = activity.getLayoutInflater();
 
-        ListView view = (ListView) inflater.inflate(layout.list_view, null);
+        ListView view = (ListView) inflater.inflate(layout.dialog_list_view, null);
         view.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
