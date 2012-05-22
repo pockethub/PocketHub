@@ -34,8 +34,6 @@
     <string name="sign_in_username_field_hint">Username</string>
     <string name="sign_in_password_field_hint">Password</string>
     <string name="blank_field_warning">Please populate this field</string>
-    <string name="single_file">1 file</string>
-    <string name="multiple_files">%,d files</string>
     <string name="creating_gist">Creating Gist…</string>
     <string name="create">Create</string>
     <string name="create_gist">Create Gist</string>
