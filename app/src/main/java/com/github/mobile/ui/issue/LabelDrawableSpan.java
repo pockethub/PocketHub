@@ -15,7 +15,6 @@ import static android.graphics.Color.WHITE;
 import static android.graphics.Paint.Style.FILL;
 import static android.graphics.Paint.Style.STROKE;
 import static android.graphics.Typeface.DEFAULT_BOLD;
-import static android.graphics.Typeface.MONOSPACE;
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import static java.util.Locale.US;
@@ -114,8 +113,7 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
             Paint p = getPaint();
             p.setAntiAlias(true);
             p.setColor(resources.getColor(android.R.color.transparent));
-            // Measure with monospace to ensure they are all the same height
-            p.setTypeface(MONOSPACE);
+            p.setTypeface(DEFAULT_BOLD);
             p.setTextSize(textSize);
 
             final Rect bounds = new Rect();
