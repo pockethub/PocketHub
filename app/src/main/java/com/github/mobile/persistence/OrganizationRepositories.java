@@ -85,7 +85,7 @@ public class OrganizationRepositories implements PersistableResource<Repository>
     public Cursor getCursor(SQLiteDatabase readableDatabase) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables("repos JOIN users ON (repos.ownerId = users.id)");
-        return builder.query(readableDatabase, new String[] { "repos.id, repos.name", "users.id", "users.name",
+        return builder.query(readableDatabase, new String[] { "repos.repoId, repos.name", "users.id", "users.name",
                 "users.avatarurl", "repos.private", "repos.fork", "repos.description", "repos.forks", "repos.watchers",
                 "repos.language" }, "repos.orgId=?", new String[] { Integer.toString(org.getId()) }, null, null, null);
     }
@@ -119,7 +119,7 @@ public class OrganizationRepositories implements PersistableResource<Repository>
             User owner = repo.getOwner();
             ContentValues values = new ContentValues(10);
 
-            values.put("id", repo.getId());
+            values.put("repoId", repo.getId());
             values.put("name", repo.getName());
             values.put("orgId", org.getId());
             values.put("ownerId", owner.getId());

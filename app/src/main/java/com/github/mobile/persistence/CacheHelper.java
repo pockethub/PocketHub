@@ -29,7 +29,7 @@ public class CacheHelper extends SQLiteOpenHelper {
     /**
      * Version constant to increment when the database should be rebuilt
      */
-    private static final int VERSION = 5;
+    private static final int VERSION = 6;
 
     /**
      * Name of database file
@@ -48,7 +48,7 @@ public class CacheHelper extends SQLiteOpenHelper {
     public void onCreate(final SQLiteDatabase db) {
         db.execSQL("CREATE TABLE orgs (id INTEGER PRIMARY KEY);");
         db.execSQL("CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT, avatarurl TEXT);");
-        db.execSQL("CREATE TABLE repos (id INTEGER PRIMARY KEY, orgId INTEGER, name TEXT, ownerId INTEGER, private INTEGER, fork INTEGER, description TEXT, forks INTEGER, watchers INTEGER, language TEXT);");
+        db.execSQL("CREATE TABLE repos (id INTEGER PRIMARY KEY, repoId INTEGER, orgId INTEGER, name TEXT, ownerId INTEGER, private INTEGER, fork INTEGER, description TEXT, forks INTEGER, watchers INTEGER, language TEXT);");
     }
 
     @Override
