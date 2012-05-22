@@ -29,10 +29,13 @@ import com.github.mobile.R.string;
 import com.github.mobile.core.gist.GistEventMatcher;
 import com.github.mobile.core.issue.IssueEventMatcher;
 import com.github.mobile.core.repo.RepositoryEventMatcher;
+import com.github.mobile.core.user.UserEventMatcher;
+import com.github.mobile.core.user.UserEventMatcher.UserPair;
 import com.github.mobile.ui.gist.ViewGistsActivity;
 import com.github.mobile.ui.issue.ViewIssuesActivity;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
 import com.github.mobile.ui.user.NewsListAdapter;
+import com.github.mobile.ui.user.UserViewActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
@@ -42,6 +45,7 @@ import org.eclipse.egit.github.core.Download;
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.event.DownloadPayload;
 import org.eclipse.egit.github.core.event.Event;
 import org.eclipse.egit.github.core.service.EventService;
@@ -65,6 +69,11 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
      * Matcher for finding a {@link Repository} from an {@link Event}
      */
     protected final RepositoryEventMatcher repoMatcher = new RepositoryEventMatcher();
+
+    /**
+     * Matcher for finding a {@link User} from an {@link Event}
+     */
+    protected final UserEventMatcher userMatcher = new UserEventMatcher();
 
     @Inject
     private AvatarLoader avatarHelper;
@@ -106,6 +115,10 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
         Repository repo = repoMatcher.getRepository(event);
         if (repo != null)
             viewRepository(repo);
+
+        UserPair users = userMatcher.getUsers(event);
+        if (users != null)
+            viewUser(users);
     }
 
     private void openDownload(Event event) {
@@ -127,6 +140,16 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
      */
     protected void viewRepository(Repository repository) {
         startActivity(RepositoryViewActivity.createIntent(repository));
+    }
+
+    /**
+     * Start an activity to view the given {@link UserPair}
+     * <p>
+     * This method does nothing by default, subclasses should override
+     *
+     * @param users
+     */
+    protected void viewUser(UserPair users) {
     }
 
     @Override

@@ -17,6 +17,7 @@ package com.github.mobile.ui.user;
 
 import android.app.Activity;
 
+import com.github.mobile.core.user.UserEventMatcher.UserPair;
 import com.github.mobile.ui.NewsFragment;
 
 import org.eclipse.egit.github.core.Repository;
@@ -54,5 +55,13 @@ public abstract class UserNewsFragment extends NewsFragment implements Organizat
         // Only hard refresh if view already created and org is changing
         if (previousOrgId != org.getId())
             refreshWithProgress();
+    }
+
+    @Override
+    protected void viewUser(UserPair users) {
+        if (org.getId() != users.from.getId())
+            startActivity(UserViewActivity.createIntent(users.from));
+        else if (org.getId() != users.to.getId())
+            startActivity(UserViewActivity.createIntent(users.to));
     }
 }

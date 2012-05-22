@@ -16,6 +16,7 @@
 package com.github.mobile.ui.user;
 
 import com.github.mobile.core.ResourcePager;
+import com.github.mobile.core.user.UserEventMatcher.UserPair;
 
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.event.Event;
