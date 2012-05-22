@@ -17,6 +17,7 @@ package com.github.mobile.util;
 
 import static android.graphics.Bitmap.CompressFormat.PNG;
 import static android.graphics.Bitmap.Config.ARGB_8888;
+import static android.view.View.VISIBLE;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -259,6 +260,7 @@ public class AvatarLoader {
     private AvatarLoader setImage(final Drawable image, final ImageView view, Object tag) {
         view.setImageDrawable(image);
         view.setTag(id.iv_avatar, tag);
+        view.setVisibility(VISIBLE);
         return this;
     }
 

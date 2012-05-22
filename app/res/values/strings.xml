@@ -138,10 +138,10 @@
     <string name="icon_pull_request">\uf20E</string>
     <string name="icon_comment">\uf22B</string>
     <string name="icon_file">\uf211</string>
-    <string name="section_issue_status">Issue Status:</string>
+    <string name="section_issue_status">Status:</string>
     <string name="status_open">Open</string>
     <string name="status_closed">Closed</string>
-    <string name="section_issue_assigned">Assigned:</string>
+    <string name="section_issue_assigned">Assigned To:</string>
     <string name="assignee_anyone">Anyone</string>
     <string name="section_issue_milestone">Milestone:</string>
     <string name="milestone_none">None</string>

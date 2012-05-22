@@ -14,107 +14,114 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="15dp" >
+    android:layout_height="match_parent" >
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:text="@string/section_issue_status"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/text"
-        android:textStyle="bold" />
+        android:orientation="vertical"
+        android:padding="10dp" >
 
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="10dp" >
+        <TextView
+            style="@style/TitleText"
+            android:text="@string/section_issue_status" />
 
-        <RadioButton
-            android:id="@+id/rb_open"
-            android:layout_width="wrap_content"
+        <RadioGroup
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/status_open"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/text_light" />
+            android:background="@drawable/inset_background"
+            android:orientation="horizontal" >
 
-        <RadioButton
-            android:id="@+id/rb_closed"
-            android:layout_width="wrap_content"
+            <RadioButton
+                android:id="@+id/rb_open"
+                style="@style/SubtitleText"
+                android:text="@string/status_open"
+                android:textColor="@color/text" />
+
+            <RadioButton
+                android:id="@+id/rb_closed"
+                style="@style/SubtitleText"
+                android:layout_marginLeft="10dp"
+                android:text="@string/status_closed" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/tv_assignee_label"
+            style="@style/TitleText"
+            android:paddingTop="5dp"
+            android:text="@string/section_issue_assigned" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/status_closed"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/text_light" />
-    </RadioGroup>
+            android:background="@drawable/inset_background"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp" >
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:shrinkColumns="1" >
-
-        <TableRow android:paddingBottom="10dp" >
-
-            <TextView
-                android:id="@+id/tv_assignee_label"
-                android:text="@string/section_issue_assigned"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/text"
-                android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/iv_avatar"
+                style="@style/AvatarLarge"
+                android:layout_marginRight="10dp"
+                android:contentDescription="@string/avatar" />
 
             <TextView
                 android:id="@+id/tv_assignee"
-                android:hint="@string/assignee_anyone"
-                android:paddingBottom="20dp"
-                android:paddingLeft="20dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/text_light" />
-        </TableRow>
+                style="@style/SubtitleText"
+                android:layout_width="match_parent"
+                android:includeFontPadding="true"
+                android:singleLine="true"
+                android:text="@string/assignee_anyone"
+                android:textColor="@color/text" />
+        </LinearLayout>
 
-        <TableRow android:paddingBottom="10dp" >
+        <TextView
+            android:id="@+id/tv_milestone_label"
+            style="@style/TitleText"
+            android:paddingTop="15dp"
+            android:text="@string/section_issue_milestone" />
 
-            <TextView
-                android:id="@+id/tv_milestone_label"
-                android:text="@string/section_issue_milestone"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/text"
-                android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/inset_background"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="10dp" >
 
             <TextView
                 android:id="@+id/tv_milestone"
+                style="@style/SubtitleText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/milestone_none"
-                android:paddingBottom="20dp"
-                android:paddingLeft="20dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/text_light" />
-        </TableRow>
+                android:layout_height="match_parent"
+                android:singleLine="true"
+                android:textColor="@color/text" />
+        </LinearLayout>
 
-        <TableRow android:paddingBottom="10dp" >
+        <TextView
+            android:id="@+id/tv_labels_label"
+            style="@style/TitleText"
+            android:paddingTop="15dp"
+            android:text="@string/section_issue_labels" />
 
-            <TextView
-                android:id="@+id/tv_labels_label"
-                android:text="@string/section_issue_labels"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/text"
-                android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/inset_background"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="10dp" >
 
             <TextView
                 android:id="@+id/tv_labels"
+                style="@style/SubtitleText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/labels_none"
-                android:paddingBottom="10dp"
-                android:paddingLeft="20dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/text_light" />
-        </TableRow>
-    </TableLayout>
+                android:layout_height="match_parent"
+                android:text="@string/labels_none"
+                android:textColor="@color/text" />
+        </LinearLayout>
+    </LinearLayout>
 
-</LinearLayout>
+</ScrollView>

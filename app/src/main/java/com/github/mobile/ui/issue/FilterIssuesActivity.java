@@ -15,15 +15,16 @@
  */
 package com.github.mobile.ui.issue;
 
+import static android.view.View.GONE;
 import static com.github.mobile.Intents.EXTRA_ISSUE_FILTER;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -37,6 +38,7 @@ import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.ui.DialogFragmentActivity;
+import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
 import java.util.Set;
@@ -48,6 +50,8 @@ import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.CollaboratorService;
 import org.eclipse.egit.github.core.service.LabelService;
 import org.eclipse.egit.github.core.service.MilestoneService;
+
+import roboguice.inject.InjectView;
 
 /**
  * Activity to create a persistent issues filter for a repository
@@ -69,6 +73,9 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
     @Inject
     private LabelService labels;
 
+    @Inject
+    private AvatarLoader avatars;
+
     private LabelsDialog labelsDialog;
 
     private MilestoneDialog milestoneDialog;
@@ -76,6 +83,18 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
     private AssigneeDialog assigneeDialog;
 
     private IssueFilter filter;
+
+    @InjectView(id.tv_labels)
+    private TextView labelsText;
+
+    @InjectView(id.tv_milestone)
+    private TextView milestoneText;
+
+    @InjectView(id.tv_assignee)
+    private TextView assigneeText;
+
+    @InjectView(id.iv_avatar)
+    private ImageView avatarView;
 
     /**
      * Create intent for creating an issue filter for the given repository
@@ -117,7 +136,7 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
         };
 
         ((TextView) findViewById(id.tv_assignee_label)).setOnClickListener(assigneeListener);
-        ((TextView) findViewById(id.tv_assignee)).setOnClickListener(assigneeListener);
+        assigneeText.setOnClickListener(assigneeListener);
 
         OnClickListener milestoneListener = new OnClickListener() {
 
@@ -130,7 +149,7 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
         };
 
         ((TextView) findViewById(id.tv_milestone_label)).setOnClickListener(milestoneListener);
-        ((TextView) findViewById(id.tv_milestone)).setOnClickListener(milestoneListener);
+        milestoneText.setOnClickListener(milestoneListener);
 
         OnClickListener labelsListener = new OnClickListener() {
 
@@ -146,7 +165,7 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
         };
 
         ((TextView) findViewById(id.tv_labels_label)).setOnClickListener(labelsListener);
-        ((TextView) findViewById(id.tv_labels)).setOnClickListener(labelsListener);
+        labelsText.setOnClickListener(labelsListener);
 
         updateAssignee();
         updateMilestone();
@@ -201,33 +220,35 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
         outState.putSerializable(EXTRA_ISSUE_FILTER, filter);
     }
 
     private void updateLabels() {
         Set<Label> selected = filter.getLabels();
-        if (selected == null)
-            ((TextView) findViewById(id.tv_labels)).setText("");
-        else if (selected.size() == 1)
-            ((TextView) findViewById(id.tv_labels)).setText(selected.iterator().next().getName());
-        else if (!selected.isEmpty())
-            ((TextView) findViewById(id.tv_labels)).setText(TextUtils.join(", ", selected));
+        if (selected != null)
+            LabelDrawableSpan.setText(labelsText, selected);
+        else
+            labelsText.setText(string.labels_none);
     }
 
     private void updateMilestone() {
         Milestone selected = filter.getMilestone();
         if (selected != null)
-            ((TextView) findViewById(id.tv_milestone)).setText(selected.getTitle());
+            milestoneText.setText(selected.getTitle());
         else
-            ((TextView) findViewById(id.tv_milestone)).setText("");
+            milestoneText.setText(string.milestone_none);
     }
 
     private void updateAssignee() {
         User selected = filter.getAssignee();
-        if (selected != null)
-            ((TextView) findViewById(id.tv_assignee)).setText(selected.getLogin());
-        else
-            ((TextView) findViewById(id.tv_assignee)).setText("");
+        if (selected != null) {
+            avatars.bind(avatarView, selected);
+            assigneeText.setText(selected.getLogin());
+        } else {
+            avatarView.setVisibility(GONE);
+            assigneeText.setText(string.assignee_anyone);
+        }
     }
 
     @Override

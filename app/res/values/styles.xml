@@ -125,23 +125,30 @@
         <item name="android:background">@drawable/list_divider</item>
     </style>
 
-    <style name="ListTitleText">
+    <style name="TitleText">
         <item name="android:textSize">17sp</item>
         <item name="android:paddingBottom">4dp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:includeFontPadding">false</item>
-        <item name="android:textColor">@color/text_selector</item>
+        <item name="android:textColor">@color/text</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
     </style>
 
-    <style name="ListSubtitleText">
-        <item name="android:textSize">14sp</item>
-        <item name="android:paddingTop">0dp</item>
+    <style name="ListTitleText" parent="TitleText">
         <item name="android:includeFontPadding">false</item>
-        <item name="android:textColor">@color/text_light_selector</item>
+        <item name="android:textColor">@color/text_selector</item>
+    </style>
+
+    <style name="SubtitleText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_light</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="ListSubtitleText" parent="SubtitleText">
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/text_light_selector</item>
     </style>
 
     <style name="ListItem">
