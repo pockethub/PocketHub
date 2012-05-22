@@ -51,8 +51,9 @@ public class IssueDashboardPagerAdapter extends FragmentPagerAdapter implements 
      * @param resources
      * @param fragmentManager
      */
-    public IssueDashboardPagerAdapter(Resources resources, FragmentManager fragmentManager) {
+    public IssueDashboardPagerAdapter(final Resources resources, final FragmentManager fragmentManager) {
         super(fragmentManager);
+
         this.resources = resources;
     }
 
@@ -62,7 +63,7 @@ public class IssueDashboardPagerAdapter extends FragmentPagerAdapter implements 
     }
 
     @Override
-    public Fragment getItem(int position) {
+    public Fragment getItem(final int position) {
         String filter = null;
         switch (position) {
         case 0:
@@ -92,7 +93,7 @@ public class IssueDashboardPagerAdapter extends FragmentPagerAdapter implements 
     }
 
     @Override
-    public String getTitle(int position) {
+    public String getTitle(final int position) {
         switch (position) {
         case 0:
             return resources.getString(string.dasbhoard_watched);
