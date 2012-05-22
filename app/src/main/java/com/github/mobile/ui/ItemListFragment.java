@@ -122,7 +122,6 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
         progressBar = (ProgressBar) view.findViewById(id.pb_loading);
 
         emptyView = (TextView) view.findViewById(android.R.id.empty);
-        listView.setEmptyView(emptyView);
 
         configureList(getActivity(), getListView());
     }
@@ -331,17 +330,18 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
         if (getActivity() == null)
             return this;
 
-        if (!shown)
-            hide(emptyView);
-
         if (shown == listShown)
             return this;
 
         listShown = shown;
         if (shown)
-            hide(progressBar).fadeIn(listView, animate).show(listView);
+            if (!items.isEmpty())
+                hide(progressBar).hide(emptyView).fadeIn(listView, animate).show(listView);
+            else
+                hide(progressBar).hide(listView).fadeIn(emptyView, animate).show(emptyView);
         else
-            hide(listView).fadeIn(progressBar, animate).show(progressBar);
+            hide(listView).hide(emptyView).fadeIn(progressBar, animate).show(progressBar);
+
         return this;
     }
 
