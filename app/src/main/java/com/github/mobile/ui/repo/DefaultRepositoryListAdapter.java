@@ -20,6 +20,7 @@ import static android.view.View.VISIBLE;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.actionbarsherlock.R.color;
 import com.github.mobile.ui.StyledText;
 import com.viewpagerindicator.R.layout;
 
@@ -70,8 +71,10 @@ public class DefaultRepositoryListAdapter extends RepositoryListAdapter<Reposito
         view.recentLabel.setVisibility(recent.get().contains(repository.getId()) ? VISIBLE : GONE);
 
         StyledText name = new StyledText();
-        if (!account.get().getLogin().equals(repository.getOwner().getLogin()))
-            name.append(repository.getOwner().getLogin()).append('/');
+        if (!account.get().getLogin().equals(repository.getOwner().getLogin())) {
+            int prefixColor = view.repoName.getResources().getColor(color.repo_description);
+            name.foreground(repository.getOwner().getLogin(), prefixColor).append('/', prefixColor);
+        }
         name.bold(repository.getName());
         view.repoName.setText(name);
 

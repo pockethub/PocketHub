@@ -18,6 +18,7 @@ package com.github.mobile.ui;
 import static android.graphics.Typeface.BOLD;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
 
@@ -68,6 +69,28 @@ public class StyledText extends SpannableStringBuilder {
      */
     public StyledText bold(final CharSequence text) {
         return append(text, new StyleSpan(BOLD));
+    }
+
+    /**
+     * Append text in with custom foreground color
+     *
+     * @param text
+     * @param color
+     * @return this text
+     */
+    public StyledText foreground(final CharSequence text, final int color) {
+        return append(text, new ForegroundColorSpan(color));
+    }
+
+    /**
+     * Append text in with custom foreground color
+     *
+     * @param text
+     * @param color
+     * @return this text
+     */
+    public StyledText foreground(final char text, final int color) {
+        return append(text, new ForegroundColorSpan(color));
     }
 
     /**
