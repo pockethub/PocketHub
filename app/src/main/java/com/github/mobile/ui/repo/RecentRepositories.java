@@ -18,7 +18,6 @@ package com.github.mobile.ui.repo;
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.text.TextUtils;
 
 import com.github.mobile.RequestReader;
 import com.github.mobile.RequestWriter;
@@ -29,7 +28,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
 
@@ -45,13 +43,13 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
 
     private static final long serialVersionUID = 580345177644233739L;
 
-    private static final int VERSION = 1;
+    private static final int VERSION = 2;
 
     private static File getFile(final Context context, final User organization) {
         return new File(context.getFilesDir(), "recent-repos-" + organization.getId() + ".ser");
     }
 
-    private LinkedHashSet<String> ids;
+    private LinkedHashSet<Long> ids;
 
     private final File file;
 
@@ -69,15 +67,15 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
     }
 
     private void load() {
-        LinkedHashSet<String> loaded = new RequestReader(file, VERSION).read();
+        LinkedHashSet<Long> loaded = new RequestReader(file, VERSION).read();
         if (loaded == null)
-            loaded = new LinkedHashSet<String>();
+            loaded = new LinkedHashSet<Long>();
         ids = loaded;
         trim();
     }
 
     private void trim() {
-        Iterator<String> iterator = ids.iterator();
+        Iterator<Long> iterator = ids.iterator();
         while (iterator.hasNext() && ids.size() > MAX_SIZE) {
             iterator.next();
             iterator.remove();
@@ -90,24 +88,21 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
      * @param repo
      * @return this recent list
      */
-    public RecentRepositories add(final IRepositoryIdProvider repo) {
-        return repo != null ? add(repo.generateId()) : this;
+    public RecentRepositories add(final Repository repo) {
+        return repo != null ? add(repo.getId()) : this;
     }
 
     /**
      * Add id to recent list
      *
-     * @param repoId
+     * @param id
      * @return this recent list
      */
-    public RecentRepositories add(final String repoId) {
-        if (TextUtils.isEmpty(repoId))
-            return this;
-
+    public RecentRepositories add(final Long id) {
         if (ids == null)
             load();
-        ids.remove(repoId);
-        ids.add(repoId);
+        ids.remove(id);
+        ids.add(id);
         trim();
         return this;
     }
@@ -136,7 +131,7 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
      * @return this recent list
      */
     public RecentRepositories save() {
-        final LinkedHashSet<String> save = ids;
+        final LinkedHashSet<Long> save = ids;
         if (save != null)
             new RequestWriter(file, VERSION).write(save);
         return this;
@@ -148,22 +143,20 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
      * @param repository
      * @return true if in recent list, false otherwise
      */
-    public boolean contains(IRepositoryIdProvider repository) {
-        return repository != null && contains(repository.generateId());
+    public boolean contains(Repository repository) {
+        return repository != null && contains(repository.getId());
     }
 
     /**
      * Is the given repository id in the recent list
      *
-     * @param repositoryId
+     * @param id
      * @return true if in recent list, false otherwise
      */
-    public boolean contains(String repositoryId) {
-        if (TextUtils.isEmpty(repositoryId))
-            return false;
+    public boolean contains(long id) {
         if (ids == null)
             load();
-        return ids.contains(repositoryId);
+        return ids.contains(id);
     }
 
     @Override

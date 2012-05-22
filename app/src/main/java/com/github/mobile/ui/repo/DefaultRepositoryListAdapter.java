@@ -66,10 +66,10 @@ public class DefaultRepositoryListAdapter extends RepositoryListAdapter<Reposito
 
     @Override
     protected void update(final int position, final RecentRepositoryItemView view, final Repository repository) {
-        final String id = repository.generateId();
-        view.recentLabel.setVisibility(recent.get().contains(id) ? VISIBLE : GONE);
+        view.recentLabel.setVisibility(recent.get().contains(repository.getId()) ? VISIBLE : GONE);
+
         view.repoName.setText(account.get().getLogin().equals(repository.getOwner().getLogin()) ? repository.getName()
-                : id);
+                : repository.generateId());
 
         updateDetails(view, repository.getDescription(), repository.getLanguage(), repository.getWatchers(),
                 repository.getForks(), repository.isPrivate(), repository.isFork());
