@@ -451,21 +451,22 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         }.create(comment);
     }
 
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (RESULT_OK == resultCode && ISSUE_EDIT == requestCode && data != null) {
+        if (RESULT_OK != resultCode || data == null)
+            return;
+
+        switch (requestCode) {
+        case ISSUE_EDIT:
             Issue editedIssue = (Issue) data.getSerializableExtra(EXTRA_ISSUE);
             bodyTask.edit(editedIssue.getTitle(), editedIssue.getBody());
             return;
-        }
-
-        if (RESULT_OK == resultCode && COMMENT_CREATE == requestCode && data != null) {
+        case COMMENT_CREATE:
             String comment = data.getStringExtra(EXTRA_COMMENT_BODY);
             if (!TextUtils.isEmpty(comment))
                 createComment(comment);
             return;
         }
-
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
