@@ -210,7 +210,7 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
     private static void formatFollow(Event event, StyledText main, StyledText details) {
         main.bold(event.getActor().getLogin());
         main.append(" started following ");
-        main.append(((FollowPayload) event.getPayload()).getTarget().getLogin());
+        main.bold(((FollowPayload) event.getPayload()).getTarget().getLogin());
     }
 
     private static void formatFork(Event event, StyledText main, StyledText details) {
