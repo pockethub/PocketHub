@@ -176,11 +176,8 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
             updateFiles(gist);
         }
 
-        if (gist == null || (gist.getComments() > 0 && comments == null)) {
-            if (gist == null || gist.getFiles() == null || gist.getFiles().isEmpty())
-                loadingView.findViewById(id.v_separator).setVisibility(GONE);
+        if (gist == null || (gist.getComments() > 0 && comments == null))
             adapter.addHeader(loadingView, null, false);
-        }
 
         if (gist != null && comments != null)
             updateList(gist, comments);

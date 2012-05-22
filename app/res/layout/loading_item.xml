@@ -14,36 +14,21 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/ListItem"
-    android:paddingLeft="0dp"
-    android:paddingRight="0dp"
-    android:paddingTop="0dp" >
-
-    <View
-        android:id="@+id/v_separator"
-        style="@style/ListDivider"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" />
+    android:gravity="center_vertical"
+    android:orientation="horizontal" >
 
     <ProgressBar
         android:id="@+id/pb_loading"
         style="@style/Spinner"
         android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/v_separator"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp" />
+        android:layout_height="32dp" />
 
     <TextView
         android:id="@+id/tv_loading"
         style="@style/ListSubtitleText"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/pb_loading"
         android:paddingLeft="10dp"
-        android:paddingTop="5dp"
         android:textSize="18sp" />
 
-</RelativeLayout>
+</LinearLayout>

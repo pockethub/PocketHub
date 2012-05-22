@@ -61,6 +61,7 @@ import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.core.issue.RefreshIssueTask;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.DialogResultListener;
+import com.github.mobile.ui.HeaderFooterListAdapter;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.ui.comment.CommentListAdapter;
 import com.github.mobile.ui.comment.CreateCommentActivity;
@@ -71,7 +72,6 @@ import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragmen
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -114,6 +114,8 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
     private View headerView;
 
     private View loadingView;
+
+    private HeaderFooterListAdapter<CommentListAdapter> adapter;
 
     private EditMilestoneTask milestoneTask;
 
@@ -220,24 +222,15 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         bodyImageGetter = new HttpImageGetter(getActivity());
         commentImageGetter = new HttpImageGetter(getActivity());
 
-        list.addHeaderView(headerView, null, false);
+        adapter.addHeader(headerView, null, false);
 
         issue = store.getIssue(repositoryId, issueNumber);
 
         TextView loadingText = (TextView) loadingView.findViewById(id.tv_loading);
         loadingText.setText(string.loading_comments);
-        loadingView.findViewById(id.v_separator).setVisibility(GONE);
 
         if (issue == null || (issue.getComments() > 0 && comments == null))
-            list.addHeaderView(loadingView, null, false);
-
-        List<Comment> initialComments = comments;
-        if (initialComments == null)
-            initialComments = Collections.emptyList();
-
-        Activity activity = getActivity();
-        list.setAdapter(new CommentListAdapter(activity.getLayoutInflater(), initialComments
-                .toArray(new Comment[initialComments.size()]), avatarHelper, commentImageGetter));
+            adapter.addHeader(loadingView, null, false);
 
         if (issue != null && comments != null)
             updateList(issue, comments);
@@ -299,6 +292,11 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
                     labelsTask.prompt(issue.getLabels());
             }
         });
+
+        Activity activity = getActivity();
+        adapter = new HeaderFooterListAdapter<CommentListAdapter>(list, new CommentListAdapter(
+                activity.getLayoutInflater(), avatarHelper, new HttpImageGetter(activity)));
+        list.setAdapter(adapter);
     }
 
     private void updateHeader(final Issue issue) {
@@ -385,7 +383,9 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
     }
 
     private void updateList(Issue issue, List<Comment> comments) {
-        list.removeHeaderView(loadingView);
+        adapter.getWrappedAdapter().setItems(comments.toArray(new Comment[comments.size()]));
+        adapter.removeHeader(loadingView);
+
         headerView.setVisibility(VISIBLE);
         updateHeader(issue);
 
