@@ -196,8 +196,6 @@ public class AccountDataManager {
             protected void onSuccess(Collection<IssueFilter> filters) throws Exception {
                 requestFuture.success(filters);
             }
-
-            ;
         }.execute();
     }
 
