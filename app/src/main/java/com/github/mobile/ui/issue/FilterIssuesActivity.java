@@ -156,11 +156,7 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
             public void onClick(View v) {
                 if (labelsDialog == null)
                     labelsDialog = new LabelsDialog(FilterIssuesActivity.this, REQUEST_LABELS, repository, labels);
-                Set<Label> labels = filter.getLabels();
-                if (labels != null)
-                    labelsDialog.show(labels);
-                else
-                    labelsDialog.show(null);
+                labelsDialog.show(filter.getLabels());
             }
         };
 
