@@ -18,6 +18,7 @@
 
     <item
         android:id="@+id/bookmark_filter"
+        android:icon="@drawable/menu_bookmark"
         android:showAsAction="never"
         android:title="@string/bookmark"/>
     <item
