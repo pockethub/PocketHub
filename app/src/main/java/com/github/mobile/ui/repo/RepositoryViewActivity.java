@@ -36,7 +36,6 @@ import com.viewpagerindicator.TitlePageIndicator;
 import org.eclipse.egit.github.core.Repository;
 
 import roboguice.inject.InjectExtra;
-import roboguice.inject.InjectView;
 
 /**
  * Activity to view a repository
@@ -56,12 +55,6 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
     @InjectExtra(EXTRA_REPOSITORY)
     private Repository repository;
 
-    @InjectView(id.tpi_header)
-    private TitlePageIndicator indicator;
-
-    @InjectView(id.vp_pages)
-    private ViewPager pager;
-
     @Inject
     private AvatarLoader avatarHelper;
 
@@ -76,8 +69,9 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         avatarHelper.bind(actionBar, repository.getOwner());
 
+        ViewPager pager = (ViewPager) findViewById(id.vp_pages);
         pager.setAdapter(new RepositoryPagerAdapter(getSupportFragmentManager()));
-        indicator.setViewPager(pager);
+        ((TitlePageIndicator) findViewById(id.tpi_header)).setViewPager(pager);
     }
 
     @Override

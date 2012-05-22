@@ -39,7 +39,6 @@ import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.User;
 
 import roboguice.inject.InjectExtra;
-import roboguice.inject.InjectView;
 
 /**
  * Activity to page through the content of all the files in a Gist
@@ -56,12 +55,6 @@ public class ViewGistFilesActivity extends RoboSherlockFragmentActivity {
     public static Intent createIntent(Gist gist, int position) {
         return new Builder("gist.files.VIEW").add(EXTRA_GIST_ID, gist.getId()).add(EXTRA_POSITION, position).toIntent();
     }
-
-    @InjectView(id.tpi_header)
-    private TitlePageIndicator indicator;
-
-    @InjectView(id.vp_pages)
-    private ViewPager pager;
 
     @InjectExtra(EXTRA_GIST_ID)
     private String gistId;
@@ -93,8 +86,9 @@ public class ViewGistFilesActivity extends RoboSherlockFragmentActivity {
         } else
             actionBar.setSubtitle(string.anonymous);
 
+        ViewPager pager = (ViewPager) findViewById(id.vp_pages);
         pager.setAdapter(new GistFilesPagerAdapter(getSupportFragmentManager(), gist));
-        indicator.setViewPager(pager);
+        ((TitlePageIndicator) findViewById(id.tpi_header)).setViewPager(pager);
 
         pager.setCurrentItem(initialPosition);
     }

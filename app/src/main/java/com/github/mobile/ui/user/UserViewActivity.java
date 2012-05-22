@@ -32,7 +32,6 @@ import com.viewpagerindicator.TitlePageIndicator;
 import org.eclipse.egit.github.core.User;
 
 import roboguice.inject.InjectExtra;
-import roboguice.inject.InjectView;
 
 /**
  * Activity to view a user's various pages
@@ -48,12 +47,6 @@ public class UserViewActivity extends RoboSherlockFragmentActivity implements Or
     public static Intent createIntent(User user) {
         return new Builder("user.VIEW").user(user).toIntent();
     }
-
-    @InjectView(id.tpi_header)
-    private TitlePageIndicator indicator;
-
-    @InjectView(id.vp_pages)
-    private ViewPager pager;
 
     @Inject
     private AvatarLoader avatarHelper;
@@ -71,8 +64,9 @@ public class UserViewActivity extends RoboSherlockFragmentActivity implements Or
         actionBar.setTitle(user.getLogin());
         avatarHelper.bind(actionBar, user);
 
+        ViewPager pager = (ViewPager) findViewById(id.vp_pages);
         pager.setAdapter(new UserPagerAdapter(getSupportFragmentManager(), getResources()));
-        indicator.setViewPager(pager);
+        ((TitlePageIndicator) findViewById(id.tpi_header)).setViewPager(pager);
     }
 
     @Override
