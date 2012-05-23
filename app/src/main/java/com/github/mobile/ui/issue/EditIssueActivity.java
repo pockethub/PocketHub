@@ -16,20 +16,26 @@
 package com.github.mobile.ui.issue;
 
 import static com.github.mobile.Intents.EXTRA_ISSUE;
+import static com.github.mobile.Intents.EXTRA_SUBTITLE;
+import static com.github.mobile.Intents.EXTRA_TITLE;
+import static com.github.mobile.Intents.EXTRA_USER;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
-import com.github.mobile.R.string;
+import com.github.mobile.util.AvatarLoader;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
+import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.User;
 
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
@@ -43,10 +49,20 @@ public class EditIssueActivity extends RoboSherlockFragmentActivity {
      * Create intent to edit an issue
      *
      * @param issue
+     * @param title
+     * @param subtitle
+     * @param user
      * @return intent
      */
-    public static Intent createIntent(final Issue issue) {
-        return new Builder("repo.issues.edit.VIEW").issue(issue).toIntent();
+    public static Intent createIntent(final Issue issue, final String title, final String subtitle, final User user) {
+        Builder builder = new Builder("repo.issues.edit.VIEW");
+        if (title != null)
+            builder.add(EXTRA_TITLE, title);
+        if (subtitle != null)
+            builder.add(EXTRA_SUBTITLE, subtitle);
+        if (user != null)
+            builder.add(EXTRA_USER, user);
+        return builder.issue(issue).toIntent();
     }
 
     @InjectView(id.et_issue_title)
@@ -58,12 +74,20 @@ public class EditIssueActivity extends RoboSherlockFragmentActivity {
     @InjectExtra(EXTRA_ISSUE)
     private Issue issue;
 
+    @Inject
+    private AvatarLoader avatars;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(layout.issue_edit);
-        setTitle(getString(string.issue_title) + issue.getNumber());
+
+        ActionBar actionBar = getSupportActionBar();
+        Intent intent = getIntent();
+        actionBar.setTitle(intent.getStringExtra(EXTRA_TITLE));
+        actionBar.setSubtitle(intent.getStringExtra(EXTRA_SUBTITLE));
+        avatars.bind(actionBar, (User) intent.getSerializableExtra(EXTRA_USER));
 
         titleText.setText(issue.getTitle());
         bodyText.setText(issue.getBody());

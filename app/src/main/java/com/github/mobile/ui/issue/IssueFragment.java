@@ -489,12 +489,14 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             stateTask.confirm(STATE_OPEN.equals(issue.getState()));
             return true;
         case id.issue_description:
-            startActivityForResult(EditIssueActivity.createIntent(issue), ISSUE_EDIT);
+            startActivityForResult(
+                    EditIssueActivity.createIntent(issue, getString(string.issue_title) + issueNumber,
+                            repositoryId.generateId(), user), ISSUE_EDIT);
             return true;
         case id.issue_comment:
-            String title = getString(string.issue_title) + issueNumber;
-            String subtitle = repositoryId.generateId();
-            startActivityForResult(CreateCommentActivity.createIntent(title, subtitle, user), COMMENT_CREATE);
+            startActivityForResult(
+                    CreateCommentActivity.createIntent(getString(string.issue_title) + issueNumber,
+                            repositoryId.generateId(), user), COMMENT_CREATE);
             return true;
         case id.refresh:
             refreshIssue();
