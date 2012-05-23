@@ -17,6 +17,7 @@ package com.github.mobile.ui.repo;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -72,8 +73,8 @@ public class DefaultRepositoryListAdapter extends RepositoryListAdapter<Reposito
 
         StyledText name = new StyledText();
         if (!account.get().getLogin().equals(repository.getOwner().getLogin())) {
-            int prefixColor = view.repoName.getResources().getColor(color.text_description_selector);
-            name.foreground(repository.getOwner().getLogin(), prefixColor).foreground('/', prefixColor);
+            ColorStateList states = view.repoName.getResources().getColorStateList(color.text_description_selector);
+            name.foreground(repository.getOwner().getLogin(), states).foreground('/', states);
         }
         name.bold(repository.getName());
         view.repoName.setText(name);

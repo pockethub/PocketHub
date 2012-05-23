@@ -16,11 +16,14 @@
 package com.github.mobile.ui;
 
 import static android.graphics.Typeface.BOLD;
+import android.content.res.ColorStateList;
 import android.text.SpannableStringBuilder;
+import android.text.TextPaint;
 import android.text.TextUtils;
-import android.text.style.ForegroundColorSpan;
+import android.text.style.CharacterStyle;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
+import android.text.style.UpdateAppearance;
 
 import com.github.mobile.util.TimeUtils;
 
@@ -30,6 +33,20 @@ import java.util.Date;
  * Helpers on top of {@link SpannableStringBuilder}
  */
 public class StyledText extends SpannableStringBuilder {
+
+    private static class StateForegroundSpan extends CharacterStyle implements UpdateAppearance {
+
+        private final ColorStateList states;
+
+        public StateForegroundSpan(ColorStateList states) {
+            this.states = states;
+        }
+
+        @Override
+        public void updateDrawState(TextPaint tp) {
+            tp.setColor(states.getColorForState(tp.drawableState, 0));
+        }
+    }
 
     /**
      * Append text and span to end of this text
@@ -75,22 +92,22 @@ public class StyledText extends SpannableStringBuilder {
      * Append text in with custom foreground color
      *
      * @param text
-     * @param color
+     * @param states
      * @return this text
      */
-    public StyledText foreground(final CharSequence text, final int color) {
-        return append(text, new ForegroundColorSpan(color));
+    public StyledText foreground(final CharSequence text, final ColorStateList states) {
+        return append(text, new StateForegroundSpan(states));
     }
 
     /**
      * Append text in with custom foreground color
      *
      * @param text
-     * @param color
+     * @param states
      * @return this text
      */
-    public StyledText foreground(final char text, final int color) {
-        return append(text, new ForegroundColorSpan(color));
+    public StyledText foreground(final char text, final ColorStateList states) {
+        return append(text, new StateForegroundSpan(states));
     }
 
     /**
