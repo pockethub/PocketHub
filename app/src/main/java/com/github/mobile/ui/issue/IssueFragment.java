@@ -137,8 +137,6 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
     private TextView assigneeText;
 
-    private TextView assigneeLabel;
-
     private ImageView assigneeAvatar;
 
     private TextView labelsArea;
@@ -258,7 +256,6 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         createdText = (TextView) headerView.findViewById(id.tv_issue_creation);
         creatorAvatar = (ImageView) headerView.findViewById(id.iv_avatar);
         assigneeText = (TextView) headerView.findViewById(id.tv_assignee_name);
-        assigneeLabel = (TextView) headerView.findViewById(id.tv_assignee_label);
         assigneeAvatar = (ImageView) headerView.findViewById(id.iv_assignee_avatar);
         labelsArea = (TextView) headerView.findViewById(id.tv_labels);
         milestoneArea = headerView.findViewById(id.ll_milestone);
@@ -313,15 +310,15 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
         User assignee = issue.getAssignee();
         if (assignee != null) {
-            assigneeText.setText(assignee.getLogin());
-            assigneeText.setVisibility(VISIBLE);
-            assigneeLabel.setText(string.assigned);
+            StyledText name = new StyledText();
+            name.bold(assignee.getLogin());
+            name.append(' ').append(getString(string.assigned));
+            assigneeText.setText(name);
             assigneeAvatar.setVisibility(VISIBLE);
             avatarHelper.bind(assigneeAvatar, assignee);
         } else {
             assigneeAvatar.setVisibility(GONE);
-            assigneeText.setVisibility(GONE);
-            assigneeLabel.setText(string.unassigned);
+            assigneeText.setText(string.unassigned);
         }
 
         List<Label> labels = issue.getLabels();

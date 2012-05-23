@@ -100,20 +100,12 @@
         <ImageView
             android:id="@+id/iv_assignee_avatar"
             style="@style/AvatarMedium"
+            android:layout_marginRight="5dp"
             android:contentDescription="@string/avatar" />
 
         <TextView
             android:id="@+id/tv_assignee_name"
             style="@style/ListSubtitleText"
-            android:paddingLeft="5dp"
-            android:singleLine="true"
-            android:textColor="@color/text"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tv_assignee_label"
-            style="@style/ListSubtitleText"
-            android:paddingLeft="5dp"
             android:singleLine="true"
             android:textColor="@color/text" />
     </LinearLayout>
