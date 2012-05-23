@@ -72,7 +72,7 @@ public class DefaultRepositoryListAdapter extends RepositoryListAdapter<Reposito
 
         StyledText name = new StyledText();
         if (!account.get().getLogin().equals(repository.getOwner().getLogin())) {
-            int prefixColor = view.repoName.getResources().getColor(color.repo_description);
+            int prefixColor = view.repoName.getResources().getColor(color.text_description_selector);
             name.foreground(repository.getOwner().getLogin(), prefixColor).foreground('/', prefixColor);
         }
         name.bold(repository.getName());
