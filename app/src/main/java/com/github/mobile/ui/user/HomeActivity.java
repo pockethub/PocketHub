@@ -20,7 +20,6 @@ import static com.github.mobile.Intents.EXTRA_USER;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_DASHBOARD;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_FILTERS;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_GISTS;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
