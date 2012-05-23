@@ -102,7 +102,7 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
          * @param textSize
          * @param label
          */
-        public LabelDrawable(final Resources resources, final float textSize, Label label) {
+        public LabelDrawable(final Resources resources, final float textSize, final Label label) {
             borderColor = resources.getColor(color.label_border);
             paddingTop = getPixels(resources, PADDING_TOP);
             paddingLeft = getPixels(resources, PADDING_LEFT);
@@ -199,7 +199,7 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
      * @param view
      * @param label
      */
-    public static void setText(final TextView view, Label label) {
+    public static void setText(final TextView view, final Label label) {
         StyledText text = new StyledText();
         text.append('\uFFFC', new LabelDrawableSpan(view.getResources(), view.getTextSize(), label));
         view.setText(text);
