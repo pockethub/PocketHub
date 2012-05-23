@@ -77,6 +77,7 @@ import org.eclipse.egit.github.core.event.FollowPayload;
 import org.eclipse.egit.github.core.event.GistPayload;
 import org.eclipse.egit.github.core.event.IssueCommentPayload;
 import org.eclipse.egit.github.core.event.IssuesPayload;
+import org.eclipse.egit.github.core.event.MemberPayload;
 import org.eclipse.egit.github.core.event.PullRequestPayload;
 import org.eclipse.egit.github.core.event.PullRequestReviewCommentPayload;
 import org.eclipse.egit.github.core.event.PushPayload;
@@ -283,7 +284,10 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
 
     private static void formatAddMember(Event event, StyledText main, StyledText details) {
         main.bold(event.getActor().getLogin());
-        main.append(" was added as a collaborator to ");
+        main.append(" added ");
+        User member = ((MemberPayload) event.getPayload()).getMember();
+        main.bold(member.getLogin());
+        main.append(" as a collaborator to ");
         main.bold(event.getRepo().getName());
     }
 

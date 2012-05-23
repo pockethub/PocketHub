@@ -53,6 +53,7 @@ import org.eclipse.egit.github.core.event.FollowPayload;
 import org.eclipse.egit.github.core.event.GistPayload;
 import org.eclipse.egit.github.core.event.IssueCommentPayload;
 import org.eclipse.egit.github.core.event.IssuesPayload;
+import org.eclipse.egit.github.core.event.MemberPayload;
 import org.eclipse.egit.github.core.event.PullRequestPayload;
 import org.eclipse.egit.github.core.event.PushPayload;
 import org.eclipse.egit.github.core.event.TeamAddPayload;
@@ -230,9 +231,11 @@ public class NewsEventTextTest extends AndroidTestCase {
 	 */
 	public void testAddMember() {
 		Event event = createEvent(TYPE_MEMBER);
+		event.setPayload(new MemberPayload().setMember(new User()
+				.setLogin("person")));
 		updateView(event);
 
-		verify("user was added as a collaborator to user/repo");
+		verify("user added person as a collaborator to user/repo");
 	}
 
 	/**
