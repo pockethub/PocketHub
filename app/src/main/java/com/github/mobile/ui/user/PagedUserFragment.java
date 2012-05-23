@@ -56,9 +56,7 @@ public abstract class PagedUserFragment extends PagedItemFragment<User> {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         User user = (User) l.getItemAtPosition(position);
-        if (AccountUtils.isUser(getActivity(), user))
-            startActivity(HomeActivity.createIntent());
-        else
+        if (!AccountUtils.isUser(getActivity(), user))
             startActivity(UserViewActivity.createIntent(user));
     }
 }

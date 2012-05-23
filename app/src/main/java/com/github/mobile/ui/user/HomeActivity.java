@@ -15,12 +15,12 @@
  */
 package com.github.mobile.ui.user;
 
-import static android.content.Intent.ACTION_MAIN;
 import static com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_LIST;
 import static com.github.mobile.Intents.EXTRA_USER;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_DASHBOARD;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_FILTERS;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_GISTS;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -69,15 +69,6 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
     private static final String TAG = "HomeActivity";
 
     private static final String PREF_ORG_ID = "orgId";
-
-    /**
-     * Create intent for this activity
-     *
-     * @return intent
-     */
-    public static Intent createIntent() {
-        return new Intent(ACTION_MAIN);
-    }
 
     @Inject
     private AccountDataManager accountDataManager;
