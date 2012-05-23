@@ -35,7 +35,6 @@ import com.github.mobile.ui.gist.ViewGistsActivity;
 import com.github.mobile.ui.issue.ViewIssuesActivity;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
 import com.github.mobile.ui.user.NewsListAdapter;
-import com.github.mobile.ui.user.UserViewActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
