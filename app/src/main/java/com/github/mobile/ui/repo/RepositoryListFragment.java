@@ -130,14 +130,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository> impleme
     }
 
     @Override
-    public void onLoadFinished(Loader<List<Repository>> loader, List<Repository> items) {
-        Exception exception = getException(loader);
-        if (exception != null) {
-            showError(exception, string.error_repos_load);
-            showList();
-            return;
-        }
-
-        super.onLoadFinished(loader, items);
+    protected int getErrorMessage(Exception exception) {
+        return string.error_repos_load;
     }
 }

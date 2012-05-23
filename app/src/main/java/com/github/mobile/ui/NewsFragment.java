@@ -20,7 +20,6 @@ import static org.eclipse.egit.github.core.event.Event.TYPE_DOWNLOAD;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
@@ -162,14 +161,8 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
         return string.loading_news;
     }
 
-    public void onLoadFinished(Loader<List<Event>> loader, List<Event> items) {
-        Exception exception = getException(loader);
-        if (exception != null) {
-            showError(exception, string.error_news_load);
-            showList();
-            return;
-        }
-
-        super.onLoadFinished(loader, items);
+    @Override
+    protected int getErrorMessage(Exception exception) {
+        return string.error_news_load;
     }
 }

@@ -185,7 +185,22 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
             manager.restartLoader(0, args, this);
     }
 
+    /**
+     * Get error message to display for exception
+     *
+     * @param exception
+     * @return string resource id
+     */
+    protected abstract int getErrorMessage(Exception exception);
+
     public void onLoadFinished(Loader<List<E>> loader, List<E> items) {
+        Exception exception = getException(loader);
+        if (exception != null) {
+            showError(exception, getErrorMessage(exception));
+            showList();
+            return;
+        }
+
         this.items = items;
 
         getListAdapter().getWrappedAdapter().setItems(items.toArray());

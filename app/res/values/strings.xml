@@ -184,5 +184,7 @@
     <string name="confirm_filter_delete_title">Remove Issue Filter</string>
     <string name="save">Save</string>
     <string name="apply">Apply</string>
+    <string name="error_filters_load">Loading issue filters failed</string>
+    <string name="error_members_load">Loading members failed</string>
 
 </resources>

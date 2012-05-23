@@ -66,6 +66,11 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> implements
     }
 
     @Override
+    protected int getErrorMessage(Exception exception) {
+        return string.error_filters_load;
+    }
+
+    @Override
     protected ItemListAdapter<IssueFilter, ? extends ItemView> createAdapter(List<IssueFilter> items) {
         return new FilterListAdapter(getActivity().getLayoutInflater(), items.toArray(new IssueFilter[items.size()]),
                 avatars);

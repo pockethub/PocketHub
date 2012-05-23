@@ -90,21 +90,13 @@ public class SearchRepositoryListFragment extends ItemListFragment<SearchReposit
     }
 
     @Override
-    public void onLoadFinished(Loader<List<SearchRepository>> loader, List<SearchRepository> items) {
-        Exception exception = getException(loader);
-        if (exception != null) {
-            showError(exception, string.error_repos_load);
-            showList();
-            return;
-        }
-
-        super.onLoadFinished(loader, items);
+    protected int getErrorMessage(Exception exception) {
+        return string.error_repos_load;
     }
 
     @Override
     protected ItemListAdapter<SearchRepository, ? extends ItemView> createAdapter(List<SearchRepository> items) {
         return new SearchRepositoryListAdapter(getActivity().getLayoutInflater(),
                 items.toArray(new SearchRepository[items.size()]));
-
     }
 }

@@ -66,6 +66,7 @@ public class MembersFragment extends ItemListFragment<User> implements Organizat
     public Loader<List<User>> onCreateLoader(int id, Bundle args) {
         return new ThrowableLoader<List<User>>(getActivity(), items) {
 
+            @Override
             public List<User> loadData() throws Exception {
                 return service.getMembers(org.getLogin());
             }
@@ -92,5 +93,10 @@ public class MembersFragment extends ItemListFragment<User> implements Organizat
         User user = (User) l.getItemAtPosition(position);
         if (!AccountUtils.isUser(getActivity(), user))
             startActivity(UserViewActivity.createIntent(user));
+    }
+
+    @Override
+    protected int getErrorMessage(Exception exception) {
+        return string.error_members_load;
     }
 }

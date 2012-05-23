@@ -243,6 +243,11 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
         return string.loading_issues;
     }
 
+    @Override
+    protected int getErrorMessage(Exception exception) {
+        return string.error_issues_load;
+    }
+
     protected ItemListAdapter<Issue, ? extends ItemView> createAdapter(List<Issue> items) {
         return new RepositoryIssueListAdapter(getActivity().getLayoutInflater(),
                 items.toArray(new Issue[items.size()]), avatarHelper);

@@ -103,6 +103,11 @@ public class DashboardIssueFragment extends PagedItemFragment<RepositoryIssue> {
     }
 
     @Override
+    protected int getErrorMessage(Exception exception) {
+        return string.error_issues_load;
+    }
+
+    @Override
     protected ItemListAdapter<RepositoryIssue, ? extends ItemView> createAdapter(List<RepositoryIssue> items) {
         return new DashboardIssueListAdapter(avatarHelper, getActivity().getLayoutInflater(),
                 items.toArray(new RepositoryIssue[items.size()]));

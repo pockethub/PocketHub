@@ -21,7 +21,6 @@ import static com.github.mobile.RequestCodes.GIST_CREATE;
 import static com.github.mobile.RequestCodes.GIST_VIEW;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
@@ -102,15 +101,8 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
     }
 
     @Override
-    public void onLoadFinished(Loader<List<Gist>> loader, List<Gist> items) {
-        Exception exception = getException(loader);
-        if (exception != null) {
-            showError(exception, string.error_gists_load);
-            showList();
-            return;
-        }
-
-        super.onLoadFinished(loader, items);
+    protected int getErrorMessage(Exception exception) {
+        return string.error_gists_load;
     }
 
     @Override

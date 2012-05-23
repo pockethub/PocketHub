@@ -76,6 +76,11 @@ public class UserRepositoryListFragment extends PagedItemFragment<Repository> {
     }
 
     @Override
+    protected int getErrorMessage(Exception exception) {
+        return string.error_repos_load;
+    }
+
+    @Override
     protected ItemListAdapter<Repository, ? extends ItemView> createAdapter(List<Repository> items) {
         return new UserRepositoryListAdapter(getActivity().getLayoutInflater(), items.toArray(new Repository[items
                 .size()]), user);
