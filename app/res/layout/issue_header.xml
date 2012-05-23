@@ -28,27 +28,12 @@
         android:orientation="vertical"
         android:padding="10dp" >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingBottom="5dp" >
-
-            <TextView
-                style="@style/ListSubtitleText"
-                android:singleLine="true"
-                android:text="@string/milestone_prefix"
-                android:textColor="@color/text" />
-
-            <TextView
-                android:id="@+id/tv_milestone"
-                style="@style/ListSubtitleText"
-                android:paddingLeft="5dp"
-                android:singleLine="true"
-                android:textColor="@color/text"
-                android:textStyle="bold" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_milestone"
+            style="@style/ListSubtitleText"
+            android:paddingBottom="5dp"
+            android:singleLine="true"
+            android:textColor="@color/text" />
 
         <include layout="@layout/milestone" />
     </LinearLayout>

@@ -330,7 +330,11 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
         if (issue.getMilestone() != null) {
             Milestone milestone = issue.getMilestone();
-            milestoneText.setText(milestone.getTitle());
+            StyledText milestoneLabel = new StyledText();
+            milestoneLabel.append(getString(string.milestone_prefix));
+            milestoneLabel.append(' ');
+            milestoneLabel.bold(milestone.getTitle());
+            milestoneText.setText(milestoneLabel);
             float closed = milestone.getClosedIssues();
             float total = closed + milestone.getOpenIssues();
             if (total > 0) {
@@ -473,19 +477,10 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             return super.onOptionsItemSelected(item);
 
         switch (item.getItemId()) {
-        case id.issue_labels:
-            labelsTask.prompt(issue.getLabels());
-            return true;
-        case id.issue_milestone:
-            milestoneTask.prompt(issue.getMilestone());
-            return true;
-        case id.issue_assignee:
-            assigneeTask.prompt(issue.getAssignee());
-            return true;
         case id.issue_state:
             stateTask.confirm(STATE_OPEN.equals(issue.getState()));
             return true;
-        case id.issue_description:
+        case id.issue_edit:
             startActivityForResult(
                     EditIssueActivity.createIntent(issue, getString(string.issue_title) + issueNumber,
                             repositoryId.generateId(), user), ISSUE_EDIT);
