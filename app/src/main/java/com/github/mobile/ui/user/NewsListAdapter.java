@@ -115,7 +115,7 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
                 || TYPE_FORK_APPLY.equals(type) //
                 || TYPE_GIST.equals(type) //
                 || TYPE_GOLLUM.equals(type) //
-                || TYPE_ISSUE_COMMENT.equals(type) //
+                || TYPE_ISSUE_COMMENT.equals(type) && ((IssueCommentPayload) payload).getIssue() != null //
                 || TYPE_ISSUES.equals(type) //
                 || TYPE_MEMBER.equals(type) //
                 || TYPE_PUBLIC.equals(type) //
@@ -252,10 +252,10 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
 
         Issue issue = payload.getIssue();
         String number;
-        if (issue.getPullRequest() == null || issue.getPullRequest().getHtmlUrl() == null)
-            number = "issue " + issue.getNumber();
-        else
+        if (issue.getPullRequest() != null && issue.getPullRequest().getHtmlUrl() != null)
             number = "pull request " + issue.getNumber();
+        else
+            number = "issue " + issue.getNumber();
         main.bold(number);
 
         main.append(" on ");
