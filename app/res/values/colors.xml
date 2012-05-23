@@ -32,7 +32,6 @@
     <color name="issue_header_separator">#A3A4A4</color>
     <color name="issue_header_start">#CDCDCD</color>
     <color name="issue_header_end">#E5E6E6</color>
-    <color name="issue_title_background">#D9DCDE</color>
     <color name="actionbar_background_top">#6E6E6E</color>
     <color name="actionbar_background_bottom">#181818</color>
     <color name="actionbar_background_end">#282828</color>
@@ -45,8 +44,9 @@
     <color name="pager_title_text">#E0E6EA</color>
     <color name="pager_title_selected_text">#FFFFFF</color>
     <color name="pager_footer">#FFFFFF</color>
-    <color name="edit_text_background_start">#EFF6FF</color>
-    <color name="edit_text_background_end">#FBFDFF</color>
+    <color name="edit_text_background">#F8F8F8</color>
+    <color name="edit_text_inner">#EDEDED</color>
+    <color name="edit_text_outer">#959595</color>
     <color name="edit_text_cursor">#A6A6A6</color>
     <color name="list_divider_top">#E2E2E2</color>
     <color name="list_divider_bottom">#FFFFFF</color>

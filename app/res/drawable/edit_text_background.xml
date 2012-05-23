@@ -14,13 +14,36 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <gradient
-        android:angle="270"
-        android:endColor="@color/edit_text_background_end"
-        android:startColor="@color/edit_text_background_start" />
+    <item>
+        <shape>
+            <solid android:color="@color/edit_text_outer" />
 
-    <corners android:radius="3dp" />
+            <corners android:radius="2dp" />
+        </shape>
+    </item>
+    <item
+        android:bottom="1dp"
+        android:left="1dp"
+        android:right="1dp"
+        android:top="1dp">
+        <shape>
+            <solid android:color="@color/edit_text_inner" />
 
-</shape>
+            <corners android:radius="1dp" />
+        </shape>
+    </item>
+    <item
+        android:bottom="2dp"
+        android:left="2dp"
+        android:right="2dp"
+        android:top="2dp">
+        <shape>
+            <solid android:color="@color/edit_text_background" />
+
+            <corners android:radius="1dp" />
+        </shape>
+    </item>
+
+</layer-list>
