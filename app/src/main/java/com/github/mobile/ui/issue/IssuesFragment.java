@@ -172,7 +172,8 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        startActivityForResult(ViewIssuesActivity.createIntent(items, repository, position - l.getHeaderViewsCount()),
+        startActivityForResult(
+                ViewIssuesActivity.createIntent(items, repository, position - getListAdapter().getHeadersCount()),
                 ISSUE_VIEW);
     }
 
