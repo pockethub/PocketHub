@@ -139,9 +139,7 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
             final int original = paint.getColor();
 
             final RectF rect = new RectF();
-            rect.left = 0;
             rect.right = width;
-            rect.top = 0;
             rect.bottom = height;
 
             paint.setStyle(FILL);
