@@ -16,6 +16,7 @@
 package com.github.mobile.sync;
 
 import android.content.SyncResult;
+import android.database.SQLException;
 import android.util.Log;
 
 import com.github.mobile.persistence.DatabaseCache;
@@ -80,11 +81,15 @@ public class SyncCampaign implements Runnable {
             syncResult.stats.numUpdates++;
         } catch (IOException e) {
             syncResult.stats.numIoExceptions++;
-            Log.d(TAG, "Exception requesting users & orgs", e);
+            Log.d(TAG, "Exception requesting users and orgs", e);
+            return;
+        } catch (SQLException e) {
+            syncResult.stats.numIoExceptions++;
+            Log.d(TAG, "Exception requesting users and orgs", e);
             return;
         }
 
-        Log.d(TAG, "Found " + orgs.size() + " users and orgs for sync");
+        Log.d(TAG, "Syncing " + orgs.size() + " users and orgs");
         for (User org : orgs) {
             if (cancelled)
                 return;
@@ -96,9 +101,13 @@ public class SyncCampaign implements Runnable {
             } catch (IOException e) {
                 syncResult.stats.numIoExceptions++;
                 Log.d(TAG, "Exception requesting repositories", e);
+            } catch (SQLException e) {
+                syncResult.stats.numIoExceptions++;
+                Log.d(TAG, "Exception requesting repositories", e);
             }
         }
-        Log.d(TAG, "...finished sync campaign");
+
+        Log.d(TAG, "Sync campaign finished");
     }
 
     /**
