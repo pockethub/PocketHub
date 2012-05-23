@@ -52,7 +52,7 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
 
     private static final int PADDING_BOTTOM = 8;
 
-    private static final int SHADOW_WIDTH = 2;
+    private static final int SHADOW_WIDTH = 1;
 
     private static final int CORNERS = 2;
 
