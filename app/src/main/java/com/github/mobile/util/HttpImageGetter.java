@@ -84,7 +84,7 @@ public class HttpImageGetter implements ImageGetter {
         this.context = context;
         dir = context.getCacheDir();
         width = ServiceUtils.getDisplayWidth(context);
-        loading = new LoadingImageGetter(context, 48);
+        loading = new LoadingImageGetter(context, 24);
     }
 
     private HttpImageGetter show(final TextView view, final CharSequence html) {
