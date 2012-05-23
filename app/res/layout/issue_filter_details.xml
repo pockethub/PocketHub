@@ -19,12 +19,14 @@
     <TextView
         android:id="@+id/tv_filter_state"
         style="@style/ListTitleText"
+        android:paddingBottom="0dp"
         android:singleLine="true" />
 
     <LinearLayout
         android:id="@+id/ll_assignee"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:gravity="center_vertical"
         android:paddingBottom="2dp" >
 
