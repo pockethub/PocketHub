@@ -89,11 +89,9 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if ((requestCode == GIST_VIEW || requestCode == GIST_CREATE)
-                && (RESULT_OK == resultCode || RESULT_CANCELED == resultCode)) {
-            ListAdapter adapter = getListAdapter();
-            if (adapter instanceof BaseAdapter)
-                ((BaseAdapter) adapter).notifyDataSetChanged();
+        if (requestCode == GIST_VIEW || requestCode == GIST_CREATE) {
+            getListAdapter().getWrappedAdapter().notifyDataSetChanged();
+            forceRefresh();
             return;
         }
 
