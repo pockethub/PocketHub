@@ -15,7 +15,6 @@
  */
 package com.github.mobile.ui.issue;
 
-import static android.graphics.Color.BLACK;
 import static android.graphics.Color.WHITE;
 import static android.graphics.Paint.Style.FILL;
 import static android.graphics.Paint.Style.STROKE;
@@ -57,8 +56,6 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
 
     private static final int PADDING_BOTTOM = 8;
 
-    private static final int SHADOW_WIDTH = 1;
-
     private static final int CORNERS = 2;
 
     private static final int BORDER = 1;
@@ -87,13 +84,13 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
 
         private final float paddingBottom;
 
-        private final float shadowWidth;
-
         private final float border;
 
         private final float corners;
 
         private final float textHeight;
+
+        private final int textColor;
 
         /**
          * Create drawable for labels
@@ -108,12 +105,19 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
             paddingLeft = getPixels(resources, PADDING_LEFT);
             paddingRight = getPixels(resources, PADDING_RIGHT);
             paddingBottom = getPixels(resources, PADDING_BOTTOM);
-            shadowWidth = getPixels(resources, SHADOW_WIDTH);
             corners = getPixels(resources, CORNERS);
             border = getPixels(resources, BORDER);
 
-            name = label.getName().toUpperCase(US);
             bg = Color.parseColor('#' + label.getColor());
+            float[] hsv = new float[3];
+            Color.colorToHSV(bg, hsv);
+            if ((hsv[2] > 0.6 && hsv[1] < 0.4) || (hsv[2] > 0.7 && hsv[0] > 40 && hsv[0] < 200)) {
+                hsv[2] = 0.4F;
+                textColor = Color.HSVToColor(hsv);
+            } else
+                textColor = WHITE;
+
+            name = label.getName().toUpperCase(US);
 
             Paint p = getPaint();
             p.setAntiAlias(true);
@@ -159,8 +163,8 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
             canvas.drawRoundRect(rect, corners, corners, paint);
 
             paint.setStyle(FILL);
-            paint.setColor(WHITE);
-            paint.setShadowLayer(shadowWidth, 0, 0, BLACK);
+            paint.setColor(textColor);
+
             canvas.drawText(name, paddingLeft, rect.bottom - ((height - textHeight) / 2), paint);
             paint.clearShadowLayer();
 
