@@ -129,6 +129,8 @@ public class EditIssueActivity extends DialogFragmentActivity {
 
     private Issue issue;
 
+    private RepositoryId repository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,15 +149,15 @@ public class EditIssueActivity extends DialogFragmentActivity {
         actionBar.setSubtitle(intent.getStringExtra(EXTRA_SUBTITLE));
         avatars.bind(actionBar, (User) intent.getSerializableExtra(EXTRA_USER));
 
-        final RepositoryId repo = RepositoryId.create(intent.getStringExtra(EXTRA_REPOSITORY_OWNER),
+        repository = RepositoryId.create(intent.getStringExtra(EXTRA_REPOSITORY_OWNER),
                 intent.getStringExtra(EXTRA_REPOSITORY_NAME));
 
         findViewById(id.ll_milestone).setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                new MilestoneDialog(EditIssueActivity.this, ISSUE_MILESTONE_UPDATE, repo, milestoneService).show(issue
-                        .getMilestone());
+                new MilestoneDialog(EditIssueActivity.this, ISSUE_MILESTONE_UPDATE, repository, milestoneService)
+                        .show(issue.getMilestone());
             }
         });
 
@@ -163,8 +165,8 @@ public class EditIssueActivity extends DialogFragmentActivity {
 
             @Override
             public void onClick(View v) {
-                new AssigneeDialog(EditIssueActivity.this, ISSUE_ASSIGNEE_UPDATE, repo, collaboratorService).show(issue
-                        .getAssignee());
+                new AssigneeDialog(EditIssueActivity.this, ISSUE_ASSIGNEE_UPDATE, repository, collaboratorService)
+                        .show(issue.getAssignee());
             }
         });
 
@@ -172,7 +174,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
 
             @Override
             public void onClick(View v) {
-                new LabelsDialog(EditIssueActivity.this, ISSUE_LABELS_UPDATE, repo, labelService).show(issue
+                new LabelsDialog(EditIssueActivity.this, ISSUE_LABELS_UPDATE, repository, labelService).show(issue
                         .getLabels());
             }
         });
@@ -262,10 +264,18 @@ public class EditIssueActivity extends DialogFragmentActivity {
         case id.issue_edit:
             issue.setTitle(titleText.getText().toString());
             issue.setBody(bodyText.getText().toString());
-            Intent intent = new Intent();
-            intent.putExtra(EXTRA_ISSUE, issue);
-            setResult(RESULT_OK, intent);
-            finish();
+            new EditIssueTask(this, repository, issue) {
+
+                @Override
+                protected void onSuccess(Issue editedIssue) throws Exception {
+                    super.onSuccess(editedIssue);
+
+                    Intent intent = new Intent();
+                    intent.putExtra(EXTRA_ISSUE, editedIssue);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+            }.edit();
             return true;
         default:
             return super.onOptionsItemSelected(item);

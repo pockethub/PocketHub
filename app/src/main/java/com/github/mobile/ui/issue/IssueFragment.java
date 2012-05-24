@@ -447,16 +447,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
         switch (requestCode) {
         case ISSUE_EDIT:
-            Issue issue = (Issue) data.getSerializableExtra(EXTRA_ISSUE);
-            new EditIssueTask((DialogFragmentActivity) getActivity(), repositoryId, issue) {
-
-                @Override
-                protected void onSuccess(Issue editedIssue) throws Exception {
-                    super.onSuccess(editedIssue);
-
-                    updateHeader(editedIssue);
-                }
-            }.edit();
+            updateHeader((Issue) data.getSerializableExtra(EXTRA_ISSUE));
             return;
         case COMMENT_CREATE:
             String comment = data.getStringExtra(EXTRA_COMMENT_BODY);
