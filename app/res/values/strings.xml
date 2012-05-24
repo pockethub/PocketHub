@@ -100,7 +100,7 @@
     <string name="description">Description</string>
     <string name="gist_description_hint">Android created Gist</string>
     <string name="title">Title</string>
-    <string name="edit_description">Edit Title/Description</string>
+    <string name="edit">Edit</string>
     <string name="star">Star</string>
     <string name="starring_gist">Starring Gist…</string>
     <string name="unstar">Unstar</string>
@@ -186,5 +186,9 @@
     <string name="apply">Apply</string>
     <string name="error_filters_load">Loading issue filters failed</string>
     <string name="error_members_load">Loading members failed</string>
+    <string name="labels_prefix">Labels:</string>
+    <string name="assignee">Assignee</string>
+    <string name="milestone">Milestone</string>
+    <string name="labels">Labels</string>
 
 </resources>

@@ -25,55 +25,42 @@ import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.Issue;
 
 /**
- * Task to edit an issue's title and/or body
+ * Task to edit an entire issue
  */
 public class EditIssueTask extends ProgressDialogTask<Issue> {
 
     @Inject
     private IssueStore store;
 
-    private final int issueNumber;
-
     private final IRepositoryIdProvider repositoryId;
 
-    private String title;
-
-    private String body;
+    private final Issue issue;
 
     /**
      * Create task to edit a milestone
      *
      * @param activity
      * @param repositoryId
-     * @param issueNumber
+     * @param issue
      */
     public EditIssueTask(final DialogFragmentActivity activity, final IRepositoryIdProvider repositoryId,
-            final int issueNumber) {
+            final Issue issue) {
         super(activity);
 
         this.repositoryId = repositoryId;
-        this.issueNumber = issueNumber;
+        this.issue = issue;
     }
 
     protected Issue run() throws Exception {
-        Issue editedIssue = new Issue();
-        editedIssue.setTitle(title);
-        editedIssue.setBody(body);
-        editedIssue.setNumber(issueNumber);
-        return store.editIssue(repositoryId, editedIssue);
+        return store.editIssue(repositoryId, issue);
     }
 
     /**
      * Edit issue
      *
-     * @param title
-     * @param body
      * @return this task
      */
-    public EditIssueTask edit(final String title, final String body) {
-        this.body = body;
-        this.title = title;
-
+    public EditIssueTask edit() {
         dismissProgress();
         showIndeterminate(string.updating_issue);
 

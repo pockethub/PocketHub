@@ -27,17 +27,10 @@
         android:showAsAction="never"
         android:title="@string/refresh"/>
     <item
-        android:id="@+id/issue_description"
+        android:id="@+id/issue_edit"
+        android:icon="@drawable/menu_edit"
         android:showAsAction="never"
-        android:title="@string/edit_description"/>
-    <item
-        android:id="@+id/issue_labels"
-        android:showAsAction="never"
-        android:title="@string/edit_labels"/>
-    <item
-        android:id="@+id/issue_milestone"
-        android:showAsAction="never"
-        android:title="@string/edit_milestone"/>
+        android:title="@string/edit"/>
     <item
         android:id="@+id/issue_state"
         android:showAsAction="never"

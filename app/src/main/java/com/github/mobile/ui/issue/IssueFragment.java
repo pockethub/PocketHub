@@ -125,8 +125,6 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
     private EditStateTask stateTask;
 
-    private EditIssueTask bodyTask;
-
     private TextView titleText;
 
     private TextView bodyText;
@@ -193,16 +191,6 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         };
 
         stateTask = new EditStateTask(dialogActivity, repositoryId, issueNumber) {
-
-            @Override
-            protected void onSuccess(Issue editedIssue) throws Exception {
-                super.onSuccess(editedIssue);
-
-                updateHeader(editedIssue);
-            }
-        };
-
-        bodyTask = new EditIssueTask(dialogActivity, repositoryId, issueNumber) {
 
             @Override
             protected void onSuccess(Issue editedIssue) throws Exception {
@@ -459,8 +447,16 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
         switch (requestCode) {
         case ISSUE_EDIT:
-            Issue editedIssue = (Issue) data.getSerializableExtra(EXTRA_ISSUE);
-            bodyTask.edit(editedIssue.getTitle(), editedIssue.getBody());
+            Issue issue = (Issue) data.getSerializableExtra(EXTRA_ISSUE);
+            new EditIssueTask((DialogFragmentActivity) getActivity(), repositoryId, issue) {
+
+                @Override
+                protected void onSuccess(Issue editedIssue) throws Exception {
+                    super.onSuccess(editedIssue);
+
+                    updateHeader(editedIssue);
+                }
+            }.edit();
             return;
         case COMMENT_CREATE:
             String comment = data.getStringExtra(EXTRA_COMMENT_BODY);
@@ -481,9 +477,9 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             stateTask.confirm(STATE_OPEN.equals(issue.getState()));
             return true;
         case id.issue_edit:
-            startActivityForResult(
-                    EditIssueActivity.createIntent(issue, getString(string.issue_title) + issueNumber,
-                            repositoryId.generateId(), user), ISSUE_EDIT);
+            startActivityForResult(EditIssueActivity.createIntent(issue, repositoryId.getOwner(),
+                    repositoryId.getName(), getString(string.issue_title) + issueNumber, repositoryId.generateId(),
+                    user), ISSUE_EDIT);
             return true;
         case id.issue_comment:
             startActivityForResult(
