@@ -29,11 +29,11 @@
 
     <TextView
         android:id="@+id/tv_org_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/TitleText"
+        android:paddingBottom="0dp"
         android:paddingLeft="5dp"
         android:singleLine="true"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/actionbar_text" />
+        android:textColor="@color/actionbar_text"
+        android:textStyle="normal" />
 
 </LinearLayout>
