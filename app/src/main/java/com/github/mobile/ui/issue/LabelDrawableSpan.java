@@ -92,6 +92,8 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
 
         private final int textColor;
 
+        private final RectF rect = new RectF();
+
         /**
          * Create drawable for labels
          *
@@ -147,7 +149,7 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
             final Paint paint = getPaint();
             final int original = paint.getColor();
 
-            final RectF rect = new RectF();
+            rect.setEmpty();
             rect.right = width;
             rect.bottom = height;
 
