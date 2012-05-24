@@ -129,6 +129,12 @@ public class HtmlUtils {
 
         private int indentLevel;
 
+        private boolean inOl;
+
+        private boolean inUl;
+
+        private int olCount = 1;
+
         public void handleTag(final boolean opening, final String tag, final Editable output, final XMLReader xmlReader) {
             if (TAG_DEL.equalsIgnoreCase(tag)) {
                 if (opening) {
@@ -145,10 +151,25 @@ public class HtmlUtils {
                 return;
             }
 
-            if (TAG_UL.equalsIgnoreCase(tag) || TAG_OL.equalsIgnoreCase(tag)) {
+            if (TAG_UL.equalsIgnoreCase(tag)) {
+                inUl = opening;
                 if (opening)
                     indentLevel++;
                 else
+                    indentLevel--;
+
+                if (!opening && indentLevel == 0)
+                    output.append('\n');
+                return;
+            }
+
+            if (TAG_OL.equalsIgnoreCase(tag)) {
+                inOl = opening;
+                if (opening) {
+                    indentLevel++;
+                    inUl = false;
+                    olCount = 1;
+                } else
                     indentLevel--;
 
                 if (!opening && indentLevel == 0)
@@ -161,7 +182,12 @@ public class HtmlUtils {
                     output.append('\n');
                     for (int i = 0; i < indentLevel * 2; i++)
                         output.append(' ');
-                    output.append('\u2022').append(' ').append(' ');
+                    if (inOl && !inUl) {
+                        output.append(Integer.toString(olCount)).append('.');
+                        olCount++;
+                    } else
+                        output.append('\u2022');
+                    output.append(' ').append(' ');
                 }
                 return;
             }
