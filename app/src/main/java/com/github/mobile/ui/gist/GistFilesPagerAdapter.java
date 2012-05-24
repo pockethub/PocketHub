@@ -21,8 +21,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.viewpagerindicator.TitleProvider;
-
 import java.util.Map;
 
 import org.eclipse.egit.github.core.Gist;
@@ -31,7 +29,7 @@ import org.eclipse.egit.github.core.GistFile;
 /**
  * Pager adapter for all the files in a given gist
  */
-public class GistFilesPagerAdapter extends FragmentPagerAdapter implements TitleProvider {
+public class GistFilesPagerAdapter extends FragmentPagerAdapter {
 
     private final GistFile[] files;
 
@@ -49,7 +47,7 @@ public class GistFilesPagerAdapter extends FragmentPagerAdapter implements Title
     }
 
     @Override
-    public String getTitle(final int position) {
+    public CharSequence getPageTitle(int position) {
         return files[position].getFilename();
     }
 

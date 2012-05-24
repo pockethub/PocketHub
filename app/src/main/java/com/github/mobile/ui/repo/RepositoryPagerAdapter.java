@@ -20,12 +20,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.github.mobile.ui.issue.IssuesFragment;
-import com.viewpagerindicator.TitleProvider;
 
 /**
  * Adapter to view a repository's various pages
  */
-public class RepositoryPagerAdapter extends FragmentPagerAdapter implements TitleProvider {
+public class RepositoryPagerAdapter extends FragmentPagerAdapter {
 
     /**
      * @param fm
@@ -34,7 +33,8 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter implements Titl
         super(fm);
     }
 
-    public String getTitle(int position) {
+    @Override
+    public CharSequence getPageTitle(int position) {
         switch (position) {
         case 0:
             return "News";

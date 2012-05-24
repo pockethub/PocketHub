@@ -15,18 +15,17 @@
  */
 package com.github.mobile.ui.gist;
 
+import com.github.mobile.R.string;
+
 import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.github.mobile.R.string;
-import com.viewpagerindicator.TitleProvider;
-
 /**
  * Pager adapter for different Gist queries
  */
-public class GistQueriesPagerAdapter extends FragmentPagerAdapter implements TitleProvider {
+public class GistQueriesPagerAdapter extends FragmentPagerAdapter {
 
     private final Resources resources;
 
@@ -61,7 +60,7 @@ public class GistQueriesPagerAdapter extends FragmentPagerAdapter implements Tit
     }
 
     @Override
-    public String getTitle(int position) {
+    public CharSequence getPageTitle(int position) {
         switch (position) {
         case 0:
             return resources.getString(string.my_gists_tab);

@@ -22,12 +22,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.github.mobile.R.string;
 import com.github.mobile.ui.repo.UserRepositoryListFragment;
-import com.viewpagerindicator.TitleProvider;
 
 /**
  * Pager adapter for a user's different views
  */
-public class UserPagerAdapter extends FragmentPagerAdapter implements TitleProvider {
+public class UserPagerAdapter extends FragmentPagerAdapter {
 
     private final Resources resources;
 
@@ -63,7 +62,7 @@ public class UserPagerAdapter extends FragmentPagerAdapter implements TitleProvi
     }
 
     @Override
-    public String getTitle(final int position) {
+    public CharSequence getPageTitle(int position) {
         switch (position) {
         case 0:
             return resources.getString(string.news);

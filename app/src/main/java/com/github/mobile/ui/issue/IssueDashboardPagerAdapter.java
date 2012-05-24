@@ -25,14 +25,14 @@ import static org.eclipse.egit.github.core.service.IssueService.FILTER_CREATED;
 import static org.eclipse.egit.github.core.service.IssueService.FILTER_MENTIONED;
 import static org.eclipse.egit.github.core.service.IssueService.FILTER_SUBSCRIBED;
 import static org.eclipse.egit.github.core.service.IssueService.SORT_UPDATED;
+
+import com.github.mobile.R.string;
+
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-
-import com.github.mobile.R.string;
-import com.viewpagerindicator.TitleProvider;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -41,7 +41,7 @@ import java.util.Map;
 /**
  * Pager adapter for the issues dashboard
  */
-public class IssueDashboardPagerAdapter extends FragmentPagerAdapter implements TitleProvider {
+public class IssueDashboardPagerAdapter extends FragmentPagerAdapter {
 
     private final Resources resources;
 
@@ -93,7 +93,7 @@ public class IssueDashboardPagerAdapter extends FragmentPagerAdapter implements 
     }
 
     @Override
-    public String getTitle(final int position) {
+    public CharSequence getPageTitle(int position) {
         switch (position) {
         case 0:
             return resources.getString(string.dasbhoard_watched);

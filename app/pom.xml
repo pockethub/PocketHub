@@ -16,7 +16,7 @@
 
     <properties>
         <abs.version>4.0.2</abs.version>
-        <vpi.version>2.2.3</vpi.version>
+        <vpi.version>2.3.1</vpi.version>
     </properties>
 
     <dependencies>

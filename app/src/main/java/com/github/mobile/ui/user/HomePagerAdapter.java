@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 
 import com.github.mobile.R.string;
 import com.github.mobile.ui.repo.RepositoryListFragment;
-import com.viewpagerindicator.TitleProvider;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -32,7 +31,7 @@ import java.util.Set;
 /**
  * Pager adapter for a user's different views
  */
-public class HomePagerAdapter extends FragmentPagerAdapter implements TitleProvider {
+public class HomePagerAdapter extends FragmentPagerAdapter {
 
     private final boolean defaultUser;
 
@@ -104,7 +103,7 @@ public class HomePagerAdapter extends FragmentPagerAdapter implements TitleProvi
     }
 
     @Override
-    public String getTitle(int position) {
+    public CharSequence getPageTitle(int position) {
         switch (position) {
         case 0:
             return resources.getString(string.news);
