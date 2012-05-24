@@ -144,9 +144,8 @@
     <string name="section_issue_assigned">Assigned To:</string>
     <string name="assignee_anyone">Anyone</string>
     <string name="section_issue_milestone">Milestone:</string>
-    <string name="milestone_none">None</string>
+    <string name="none">None</string>
     <string name="section_issue_labels">Labels:</string>
-    <string name="labels_none">None</string>
     <string name="log_in">Log in</string>
     <string name="signup_link">New to GitHub? &lt;a href=\"https://github.com/plans\">Click here&lt;/a> to sign up</string>
     <string name="connection_failed">Unable to connect to GitHub</string>

@@ -245,7 +245,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
         if (labels != null && !labels.isEmpty())
             LabelDrawableSpan.setText(labelsText, labels);
         else
-            labelsText.setText(string.labels_none);
+            labelsText.setText(string.none);
 
         if (issue.getMilestone() != null) {
             Milestone milestone = issue.getMilestone();
@@ -259,7 +259,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
                 milestoneClosed.setVisibility(GONE);
             milestoneGraph.setVisibility(VISIBLE);
         } else {
-            milestoneText.setText(string.milestone_none);
+            milestoneText.setText(string.none);
             milestoneGraph.setVisibility(GONE);
         }
     }

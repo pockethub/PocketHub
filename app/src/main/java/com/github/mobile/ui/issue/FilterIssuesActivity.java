@@ -225,7 +225,7 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
         if (selected != null)
             LabelDrawableSpan.setText(labelsText, selected);
         else
-            labelsText.setText(string.labels_none);
+            labelsText.setText(string.none);
     }
 
     private void updateMilestone() {
@@ -233,7 +233,7 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
         if (selected != null)
             milestoneText.setText(selected.getTitle());
         else
-            milestoneText.setText(string.milestone_none);
+            milestoneText.setText(string.none);
     }
 
     private void updateAssignee() {
