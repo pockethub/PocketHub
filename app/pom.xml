@@ -15,7 +15,7 @@
     <url>https://github.com/github/android</url>
 
     <properties>
-        <abs.version>4.0.2</abs.version>
+        <abs.version>4.1.0</abs.version>
         <vpi.version>2.3.1</vpi.version>
     </properties>
 
