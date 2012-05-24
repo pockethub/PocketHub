@@ -18,6 +18,7 @@ package com.github.mobile.ui.issue;
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.github.mobile.Intents.EXTRA_ISSUE;
 import static com.github.mobile.Intents.EXTRA_ISSUE_FILTER;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import static com.github.mobile.RequestCodes.ISSUE_CREATE;
@@ -186,7 +187,8 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case id.create_issue:
-            startActivityForResult(CreateIssueActivity.createIntent(repository), ISSUE_CREATE);
+            startActivityForResult(EditIssueActivity.createIntent(repository, getString(string.new_issue)),
+                    ISSUE_CREATE);
             return true;
         case id.filter_issues:
             startActivityForResult(FilterIssuesActivity.createIntent(repository, filter), ISSUE_FILTER_EDIT);
@@ -213,6 +215,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
                 updateFilterSummary();
                 pager.reset();
                 refreshWithProgress();
+                return;
             }
         }
 
@@ -220,10 +223,15 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
             ListAdapter adapter = getListAdapter();
             if (adapter instanceof BaseAdapter)
                 ((BaseAdapter) adapter).notifyDataSetChanged();
+            return;
         }
 
-        if (requestCode == ISSUE_CREATE && resultCode == RESULT_OK)
-            refresh();
+        if (requestCode == ISSUE_CREATE && resultCode == RESULT_OK) {
+            Issue created = (Issue) data.getSerializableExtra(EXTRA_ISSUE);
+            forceRefresh();
+            startActivityForResult(ViewIssuesActivity.createIntent(created), ISSUE_VIEW);
+            return;
+        }
 
         super.onActivityResult(requestCode, resultCode, data);
     }

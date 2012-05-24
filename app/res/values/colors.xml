@@ -29,9 +29,6 @@
     <color name="text_icon">#A8A8A8</color>
     <color name="item_separator1">#B8BABB</color>
     <color name="item_separator2">#E3E5E6</color>
-    <color name="issue_header_separator">#A3A4A4</color>
-    <color name="issue_header_start">#CDCDCD</color>
-    <color name="issue_header_end">#E5E6E6</color>
     <color name="actionbar_background_top">#6E6E6E</color>
     <color name="actionbar_background_bottom">#181818</color>
     <color name="actionbar_background_end">#282828</color>

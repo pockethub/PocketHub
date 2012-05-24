@@ -53,6 +53,7 @@ import java.util.List;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.Milestone;
+import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.CollaboratorService;
@@ -62,9 +63,22 @@ import org.eclipse.egit.github.core.service.MilestoneService;
 import roboguice.inject.InjectView;
 
 /**
- * Activity to edit the title and description for an issue
+ * Activity to edit or create an issue
  */
 public class EditIssueActivity extends DialogFragmentActivity {
+
+    /**
+     * Create intent to create an issue
+     *
+     * @param repository
+     * @param title
+     * @return intent
+     */
+    public static Intent createIntent(Repository repository, final String title) {
+        return createIntent(null, repository.getOwner().getLogin(), repository.getName(), title,
+                repository.generateId(), repository.getOwner());
+
+    }
 
     /**
      * Create intent to edit an issue
@@ -88,7 +102,9 @@ public class EditIssueActivity extends DialogFragmentActivity {
             builder.add(EXTRA_USER, user);
         builder.add(EXTRA_REPOSITORY_NAME, repositoryName);
         builder.add(EXTRA_REPOSITORY_OWNER, repositoryOwner);
-        return builder.issue(issue).toIntent();
+        if (issue != null)
+            builder.issue(issue);
+        return builder.toIntent();
     }
 
     @InjectView(id.et_issue_title)
@@ -143,6 +159,8 @@ public class EditIssueActivity extends DialogFragmentActivity {
             issue = (Issue) savedInstanceState.getSerializable(EXTRA_ISSUE);
         if (issue == null)
             issue = (Issue) intent.getSerializableExtra(EXTRA_ISSUE);
+        if (issue == null)
+            issue = new Issue();
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(intent.getStringExtra(EXTRA_TITLE));
@@ -264,18 +282,33 @@ public class EditIssueActivity extends DialogFragmentActivity {
         case id.issue_edit:
             issue.setTitle(titleText.getText().toString());
             issue.setBody(bodyText.getText().toString());
-            new EditIssueTask(this, repository, issue) {
+            if (issue.getNumber() > 0)
+                new EditIssueTask(this, repository, issue) {
 
-                @Override
-                protected void onSuccess(Issue editedIssue) throws Exception {
-                    super.onSuccess(editedIssue);
+                    @Override
+                    protected void onSuccess(Issue editedIssue) throws Exception {
+                        super.onSuccess(editedIssue);
 
-                    Intent intent = new Intent();
-                    intent.putExtra(EXTRA_ISSUE, editedIssue);
-                    setResult(RESULT_OK, intent);
-                    finish();
-                }
-            }.edit();
+                        Intent intent = new Intent();
+                        intent.putExtra(EXTRA_ISSUE, editedIssue);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
+                }.edit();
+            else
+                new CreateIssueTask(this, repository, issue) {
+
+                    @Override
+                    protected void onSuccess(Issue created) throws Exception {
+                        super.onSuccess(created);
+
+                        Intent intent = new Intent();
+                        intent.putExtra(EXTRA_ISSUE, created);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
+
+                }.create();
             return true;
         default:
             return super.onOptionsItemSelected(item);
