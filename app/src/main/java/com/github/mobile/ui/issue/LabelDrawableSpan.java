@@ -16,8 +16,6 @@
 package com.github.mobile.ui.issue;
 
 import static android.graphics.Color.WHITE;
-import static android.graphics.Paint.Style.FILL;
-import static android.graphics.Paint.Style.STROKE;
 import static android.graphics.Typeface.DEFAULT_BOLD;
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
@@ -27,14 +25,16 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.PaintDrawable;
 import android.text.style.DynamicDrawableSpan;
 import android.util.TypedValue;
 import android.widget.TextView;
 
-import com.github.mobile.R.color;
+import com.actionbarsherlock.R.drawable;
+import com.github.mobile.R.id;
 import com.github.mobile.ui.StyledText;
 
 import java.util.Arrays;
@@ -56,10 +56,6 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
 
     private static final int PADDING_BOTTOM = 8;
 
-    private static final int CORNERS = 2;
-
-    private static final int BORDER = 1;
-
     private static float getPixels(final Resources resources, final int dp) {
         return TypedValue.applyDimension(COMPLEX_UNIT_DIP, dp, resources.getDisplayMetrics());
     }
@@ -72,10 +68,6 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
 
         private final float height;
 
-        private final float width;
-
-        private final int borderColor;
-
         private final float paddingLeft;
 
         private final float paddingRight;
@@ -84,15 +76,11 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
 
         private final float paddingBottom;
 
-        private final float border;
-
-        private final float corners;
-
         private final float textHeight;
 
         private final int textColor;
 
-        private final RectF rect = new RectF();
+        private final LayerDrawable layers;
 
         /**
          * Create drawable for labels
@@ -102,13 +90,10 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
          * @param label
          */
         public LabelDrawable(final Resources resources, final float textSize, final Label label) {
-            borderColor = resources.getColor(color.label_border);
             paddingTop = getPixels(resources, PADDING_TOP);
             paddingLeft = getPixels(resources, PADDING_LEFT);
             paddingRight = getPixels(resources, PADDING_RIGHT);
             paddingBottom = getPixels(resources, PADDING_BOTTOM);
-            corners = getPixels(resources, CORNERS);
-            border = getPixels(resources, BORDER);
 
             bg = Color.parseColor('#' + label.getColor());
             float[] hsv = new float[3];
@@ -118,6 +103,11 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
                 textColor = Color.HSVToColor(hsv);
             } else
                 textColor = WHITE;
+
+            layers = (LayerDrawable) resources.getDrawable(drawable.label_background);
+            ((GradientDrawable) layers.findDrawableByLayerId(id.item_inner)).setColor(Color.argb(225, Color.red(bg),
+                    Color.green(bg), Color.blue(bg)));
+            ((GradientDrawable) layers.findDrawableByLayerId(id.item_bg)).setColor(bg);
 
             name = label.getName().toUpperCase(US);
 
@@ -131,14 +121,12 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
             final Rect textBounds = new Rect();
             p.getTextBounds(name, 0, name.length(), textBounds);
             bounds.right = Math.round(textBounds.width() + paddingLeft + paddingRight + 0.5F);
-            width = bounds.width();
             textHeight = textBounds.height();
             bounds.bottom = Math.round(textHeight + paddingTop + paddingBottom + 0.5F);
             height = bounds.height();
-            bounds.right += border;
-            bounds.bottom += border;
 
             p.setTypeface(DEFAULT_BOLD);
+            layers.setBounds(bounds);
             setBounds(bounds);
         }
 
@@ -146,29 +134,13 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
         public void draw(final Canvas canvas) {
             super.draw(canvas);
 
+            layers.draw(canvas);
+
             final Paint paint = getPaint();
             final int original = paint.getColor();
 
-            rect.setEmpty();
-            rect.right = width;
-            rect.bottom = height;
-
-            paint.setStyle(FILL);
-            paint.setColor(bg);
-            canvas.drawRoundRect(rect, corners + 1, corners + 1, paint);
-
-            paint.setStyle(STROKE);
-            paint.setColor(borderColor);
-            rect.top += border / 2;
-            rect.left += border / 2;
-            paint.setStrokeWidth(border);
-            canvas.drawRoundRect(rect, corners, corners, paint);
-
-            paint.setStyle(FILL);
             paint.setColor(textColor);
-
-            canvas.drawText(name, paddingLeft, rect.bottom - ((height - textHeight) / 2), paint);
-            paint.clearShadowLayer();
+            canvas.drawText(name, paddingLeft, height - ((height - textHeight) / 2), paint);
 
             paint.setColor(original);
         }
