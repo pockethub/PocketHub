@@ -209,7 +209,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == ISSUE_FILTER_EDIT && data != null) {
-            IssueFilter newFilter = ((IssueFilter) data.getSerializableExtra(EXTRA_ISSUE_FILTER)).clone();
+            IssueFilter newFilter = (IssueFilter) data.getSerializableExtra(EXTRA_ISSUE_FILTER);
             if (!filter.equals(newFilter)) {
                 filter = newFilter;
                 updateFilterSummary();

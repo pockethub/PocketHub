@@ -123,7 +123,7 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
             filter = (IssueFilter) savedInstanceState.getSerializable(EXTRA_ISSUE_FILTER);
 
         if (filter == null)
-            filter = ((IssueFilter) getIntent().getSerializableExtra(EXTRA_ISSUE_FILTER)).clone();
+            filter = (IssueFilter) getIntent().getSerializableExtra(EXTRA_ISSUE_FILTER);
 
         OnClickListener assigneeListener = new OnClickListener() {
 
