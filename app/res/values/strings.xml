@@ -189,5 +189,9 @@
     <string name="assignee">Assignee</string>
     <string name="milestone">Milestone</string>
     <string name="labels">Labels</string>
+    <string name="issue_confirm_close_message">Are you sure you want to close this issue?</string>
+    <string name="issue_confirm_reopen_message">Are you sure you want to reopen this issue?</string>
+    <string name="issue_confirm_close_title">Close Issue</string>
+    <string name="issue_confirm_reopen_title">Reopen Issue</string>
 
 </resources>

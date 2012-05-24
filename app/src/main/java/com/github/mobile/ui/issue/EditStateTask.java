@@ -67,11 +67,11 @@ public class EditStateTask extends ProgressDialogTask<Issue> {
      */
     public EditStateTask confirm(boolean close) {
         if (close)
-            ConfirmDialogFragment.show((DialogFragmentActivity) getContext(), ISSUE_CLOSE, null,
-                    "Are you sure you want to close this issue?");
+            ConfirmDialogFragment.show((DialogFragmentActivity) getContext(), ISSUE_CLOSE,
+                    getString(string.issue_confirm_close_title), getString(string.issue_confirm_close_message));
         else
-            ConfirmDialogFragment.show((DialogFragmentActivity) getContext(), ISSUE_REOPEN, null,
-                    "Are you sure you want to reopen this issue?");
+            ConfirmDialogFragment.show((DialogFragmentActivity) getContext(), ISSUE_REOPEN,
+                    getString(string.issue_confirm_reopen_title), getString(string.issue_confirm_reopen_message));
 
         return this;
     }
