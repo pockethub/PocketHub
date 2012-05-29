@@ -34,7 +34,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:padding="10dp"
             android:singleLine="true" />
 
         <TextView
@@ -121,7 +120,6 @@
             android:gravity="top"
             android:inputType="textMultiLine"
             android:minLines="5"
-            android:padding="10dp"
             android:scrollbars="horizontal|vertical" />
     </LinearLayout>
 
