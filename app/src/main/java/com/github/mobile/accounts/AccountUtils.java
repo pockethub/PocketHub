@@ -38,7 +38,7 @@ import org.eclipse.egit.github.core.User;
  */
 public class AccountUtils {
 
-    private static final String TAG = "GH.AccountHelper";
+    private static final String TAG = "AccountUtils";
 
     /**
      * Is the given user the owner of the default account?
