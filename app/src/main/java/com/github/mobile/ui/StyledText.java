@@ -64,6 +64,18 @@ public class StyledText extends SpannableStringBuilder {
         return this;
     }
 
+    @Override
+    public StyledText append(char text) {
+        super.append(text);
+        return this;
+    }
+
+    @Override
+    public StyledText append(CharSequence text) {
+        super.append(text);
+        return this;
+    }
+
     /**
      * Append text and span to end of this text
      *

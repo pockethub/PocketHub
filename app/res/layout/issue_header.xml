@@ -30,13 +30,25 @@
         <ImageView
             android:id="@+id/iv_avatar"
             style="@style/AvatarMedium"
-            android:layout_marginRight="8dp"
             android:contentDescription="@string/avatar" />
 
-        <TextView
-            android:id="@+id/tv_issue_creation"
-            style="@style/ListSubtitleText"
-            android:singleLine="true" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="8dp" >
+
+            <TextView
+                android:id="@+id/tv_issue_author"
+                style="@style/ListSubtitleText"
+                android:singleLine="true"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_issue_creation_date"
+                style="@style/ListSubtitleText"
+                android:singleLine="true" />
+        </LinearLayout>
     </LinearLayout>
 
     <TextView

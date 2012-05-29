@@ -129,7 +129,9 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
     private TextView bodyText;
 
-    private TextView createdText;
+    private TextView authorText;
+
+    private TextView createdDateText;
 
     private ImageView creatorAvatar;
 
@@ -241,7 +243,8 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         headerView = inflater.inflate(layout.issue_header, null);
 
         titleText = (TextView) headerView.findViewById(id.tv_issue_title);
-        createdText = (TextView) headerView.findViewById(id.tv_issue_creation);
+        authorText = (TextView) headerView.findViewById(id.tv_issue_author);
+        createdDateText = (TextView) headerView.findViewById(id.tv_issue_creation_date);
         creatorAvatar = (ImageView) headerView.findViewById(id.iv_avatar);
         assigneeText = (TextView) headerView.findViewById(id.tv_assignee_name);
         assigneeAvatar = (ImageView) headerView.findViewById(id.iv_assignee_avatar);
@@ -289,11 +292,8 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
         bodyImageGetter.bind(bodyText, issue.getBodyHtml(), issue.getId());
 
-        StyledText text = new StyledText();
-        text.bold(issue.getUser().getLogin());
-        text.append(" opened ");
-        text.append(issue.getCreatedAt());
-        createdText.setText(text);
+        authorText.setText(issue.getUser().getLogin());
+        createdDateText.setText(new StyledText().append("opened ").append(issue.getCreatedAt()));
         avatarHelper.bind(creatorAvatar, issue.getUser());
 
         User assignee = issue.getAssignee();
