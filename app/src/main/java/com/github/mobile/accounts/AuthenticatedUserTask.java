@@ -36,7 +36,7 @@ public abstract class AuthenticatedUserTask<ResultT> extends RoboAsyncTask<Resul
     private ContextScope contextScope;
 
     @Inject
-    private AccountScope gitHubAccountScope;
+    private AccountScope accountScope;
 
     @Inject
     private Activity activity;
@@ -62,7 +62,7 @@ public abstract class AuthenticatedUserTask<ResultT> extends RoboAsyncTask<Resul
 
     @Override
     public final ResultT call() throws Exception {
-        gitHubAccountScope.enterWith(activity);
+        accountScope.enterWith(activity);
         try {
             contextScope.enter(getContext());
             try {
@@ -71,7 +71,7 @@ public abstract class AuthenticatedUserTask<ResultT> extends RoboAsyncTask<Resul
                 contextScope.exit(getContext());
             }
         } finally {
-            gitHubAccountScope.exit();
+            accountScope.exit();
         }
     }
 

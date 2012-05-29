@@ -35,7 +35,7 @@ public abstract class AuthenticatedUserLoader<D> extends AsyncLoader<D> {
     private ContextScope contextScope;
 
     @Inject
-    private AccountScope gitHubAccountScope;
+    private AccountScope accountScope;
 
     /**
      * Activity using this loader
@@ -56,7 +56,7 @@ public abstract class AuthenticatedUserLoader<D> extends AsyncLoader<D> {
 
     @Override
     public final D loadInBackground() {
-        gitHubAccountScope.enterWith(activity);
+        accountScope.enterWith(activity);
         try {
             contextScope.enter(getContext());
             try {
@@ -65,7 +65,7 @@ public abstract class AuthenticatedUserLoader<D> extends AsyncLoader<D> {
                 contextScope.exit(getContext());
             }
         } finally {
-            gitHubAccountScope.exit();
+            accountScope.exit();
         }
     }
 
