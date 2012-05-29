@@ -18,7 +18,6 @@
 
     <string name="app_name">GitHub</string>
     <string name="news">News</string>
-    <string name="pull_requests">Pull Requests</string>
     <string name="issues">Issues</string>
     <string name="gists">Gists</string>
     <string name="dashboard_issues">Issues Dashboard</string>
@@ -26,27 +25,20 @@
     <string name="search_title">Search…</string>
     <string name="clear_search_history">Clear History</string>
     <string name="search_history_cleared">Search history cleared</string>
-    <string name="login_activity_username_label">Username</string>
-    <string name="login_activity_password_label">Password</string>
-    <string name="login_activity_ok_button">Sign in</string>
     <string name="login_activity_authenticating">Logging in…</string>
-    <string name="sign_in_button_label">Sign in</string>
-    <string name="sign_in_username_field_hint">Username</string>
-    <string name="sign_in_password_field_hint">Password</string>
-    <string name="blank_field_warning">Please populate this field</string>
     <string name="creating_gist">Creating Gist…</string>
     <string name="create">Create</string>
     <string name="create_gist">Create Gist</string>
     <string name="gist_content_hint">puts \"Hello World!\"</string>
     <string name="make_public">Public Gist</string>
-    <string name="gist_file_name_hint">file.txt</string>
+    <string name="gist_file_name_hint">file.rb</string>
     <string name="gist">Gist</string>
     <string name="loading_gist">Loading Gist…</string>
     <string name="random_gist">Random Gist…</string>
     <string name="comments">Comments</string>
     <string name="files">Files</string>
     <string name="open_gist">Open Gist</string>
-    <string name="open_random_gist">Open Random Gist</string>
+    <string name="open_random_gist">Random Gist</string>
     <string name="open">Open</string>
     <string name="random">Random</string>
     <string name="file_name">File Name</string>
