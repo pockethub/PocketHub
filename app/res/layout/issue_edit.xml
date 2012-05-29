@@ -26,29 +26,6 @@
 
         <TextView
             style="@style/HeaderTitleText"
-            android:text="@string/milestone" />
-
-        <LinearLayout
-            android:id="@+id/ll_milestone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/inset_background"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:padding="10dp" >
-
-            <TextView
-                android:id="@+id/tv_milestone"
-                style="@style/ListSubtitleText"
-                android:singleLine="true"
-                android:textColor="@color/text" />
-
-            <include layout="@layout/milestone" />
-        </LinearLayout>
-
-        <TextView
-            style="@style/HeaderTitleText"
-            android:paddingTop="5dp"
             android:text="@string/title" />
 
         <EditText
@@ -106,6 +83,29 @@
                 style="@style/ListSubtitleText"
                 android:singleLine="true"
                 android:textColor="@color/text" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/HeaderTitleText"
+            android:paddingTop="5dp"
+            android:text="@string/milestone" />
+
+        <LinearLayout
+            android:id="@+id/ll_milestone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/inset_background"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="10dp" >
+
+            <TextView
+                android:id="@+id/tv_milestone"
+                style="@style/ListSubtitleText"
+                android:singleLine="true"
+                android:textColor="@color/text" />
+
+            <include layout="@layout/milestone" />
         </LinearLayout>
 
         <TextView
