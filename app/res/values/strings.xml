@@ -29,7 +29,7 @@
     <string name="creating_gist">Creating Gist…</string>
     <string name="create">Create</string>
     <string name="create_gist">Create Gist</string>
-    <string name="gist_content_hint">puts \"Hello World!\"</string>
+    <string name="gist_content_hint">puts \'Hello World!\'</string>
     <string name="make_public">Public Gist</string>
     <string name="gist_file_name_hint">file.rb</string>
     <string name="gist">Gist</string>
