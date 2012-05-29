@@ -30,7 +30,7 @@ import java.util.zip.GZIPOutputStream;
  */
 public class RequestWriter {
 
-    private static final String TAG = "GHRW";
+    private static final String TAG = "RequestWriter";
 
     private final File handle;
 

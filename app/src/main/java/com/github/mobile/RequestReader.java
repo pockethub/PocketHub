@@ -30,7 +30,7 @@ import java.util.zip.GZIPInputStream;
  */
 public class RequestReader {
 
-    private static final String TAG = "GHRR";
+    private static final String TAG = "RequestReader";
 
     private final File handle;
 
