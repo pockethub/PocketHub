@@ -62,5 +62,9 @@
     <color name="milestone_closed_start">#6AA811</color>
     <color name="milestone_closed_end">#6EB807</color>
     <color name="repo_description">#666666</color>
+    <color name="sign_up_background">#E6E6E5</color>
+    <color name="sign_up_background_bottom">#D4D4D4</color>
+    <color name="sign_up_text">#666666</color>
+    <color name="sign_up_text_link">#3797C7</color>
 
 </resources>

@@ -18,7 +18,7 @@ package com.github.mobile.accounts;
 import static android.accounts.AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE;
 import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 import static android.accounts.AccountManager.KEY_INTENT;
-import static com.github.mobile.accounts.AuthenticatorActivity.PARAM_AUTHTOKEN_TYPE;
+import static com.github.mobile.accounts.LoginActivity.PARAM_AUTHTOKEN_TYPE;
 import static com.github.mobile.accounts.Constants.AUTH_TOKEN_TYPE;
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;
@@ -46,7 +46,7 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
     @Override
     public Bundle addAccount(final AccountAuthenticatorResponse response, final String accountType,
             final String authTokenType, String[] requiredFeatures, Bundle options) throws NetworkErrorException {
-        final Intent intent = new Intent(context, AuthenticatorActivity.class);
+        final Intent intent = new Intent(context, LoginActivity.class);
         intent.putExtra(PARAM_AUTHTOKEN_TYPE, authTokenType);
         intent.putExtra(KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
         final Bundle bundle = new Bundle();

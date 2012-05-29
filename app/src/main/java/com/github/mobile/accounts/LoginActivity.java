@@ -24,33 +24,38 @@ import static com.github.mobile.accounts.Constants.GITHUB_ACCOUNT_TYPE;
 import static com.github.mobile.accounts.Constants.GITHUB_PROVIDER_AUTHORITY;
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.DefaultClient;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
+import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
-import com.github.mobile.ui.BlankTextFieldWarner;
+import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.LightProgressDialog;
 import com.github.mobile.ui.TextWatcherAdapter;
 import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockAccountAuthenticatorActivity;
 import com.google.inject.Inject;
+
+import java.io.IOException;
+import java.util.List;
 
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
@@ -63,7 +68,7 @@ import roboguice.util.RoboAsyncTask;
 /**
  * Activity to login
  */
-public class AuthenticatorActivity extends RoboSherlockAccountAuthenticatorActivity {
+public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
 
     /**
      * Auth token type parameter
@@ -77,10 +82,26 @@ public class AuthenticatorActivity extends RoboSherlockAccountAuthenticatorActiv
     private static final String TAG = "GHAuthenticatorActivity";
 
     private static void configureSyncFor(Account account) {
-        Log.d(TAG, "Trying to configure account for sync...");
+        Log.d(TAG, "Configuring account sync");
+
         ContentResolver.setIsSyncable(account, GITHUB_PROVIDER_AUTHORITY, 1);
         ContentResolver.setSyncAutomatically(account, GITHUB_PROVIDER_AUTHORITY, true);
         ContentResolver.addPeriodicSync(account, GITHUB_PROVIDER_AUTHORITY, new Bundle(), 15L * 60L);
+    }
+
+    private static class AccountLoader extends AuthenticatedUserTask<List<User>> {
+
+        @Inject
+        private AccountDataManager cache;
+
+        protected AccountLoader(Context context) {
+            super(context);
+        }
+
+        @Override
+        protected List<User> run() throws Exception {
+            return cache.getOrgs();
+        }
     }
 
     private AccountManager accountManager;
@@ -91,19 +112,13 @@ public class AuthenticatorActivity extends RoboSherlockAccountAuthenticatorActiv
     @InjectView(id.et_password)
     private EditText passwordEdit;
 
-    @InjectView(id.b_login)
-    private Button okButton;
-
-    @Inject
-    private BlankTextFieldWarner leavingBlankTextFieldWarner;
-
-    private TextWatcher watcher = validationTextWatcher();
-
     private RoboAsyncTask<User> authenticationTask;
 
     private String authToken;
 
     private String authTokenType;
+
+    private MenuItem loginItem;
 
     /**
      * If set we are just checking that the user knows their credentials; this doesn't cause the user's password to be
@@ -121,8 +136,10 @@ public class AuthenticatorActivity extends RoboSherlockAccountAuthenticatorActiv
     private String username;
 
     @Override
-    public void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(layout.login);
 
         accountManager = AccountManager.get(this);
 
@@ -132,48 +149,42 @@ public class AuthenticatorActivity extends RoboSherlockAccountAuthenticatorActiv
         requestNewAccount = username == null;
         confirmCredentials = intent.getBooleanExtra(PARAM_CONFIRMCREDENTIALS, false);
 
-        setContentView(layout.login);
-
         TextView signupText = (TextView) findViewById(id.tv_signup);
         signupText.setMovementMethod(LinkMovementMethod.getInstance());
         signupText.setText(Html.fromHtml(getString(string.signup_link)));
 
-        setNonBlankValidationFor(usernameEdit);
-        setNonBlankValidationFor(passwordEdit);
-    }
+        TextWatcher watcher = new TextWatcherAdapter() {
 
-    private void setNonBlankValidationFor(EditText editText) {
-        editText.addTextChangedListener(watcher);
-        editText.setOnFocusChangeListener(leavingBlankTextFieldWarner);
-    }
-
-    private TextWatcher validationTextWatcher() {
-        return new TextWatcherAdapter() {
-
+            @Override
             public void afterTextChanged(Editable gitDirEditText) {
-                updateUIWithValidation();
+                updateEnablement();
             }
         };
+        usernameEdit.addTextChangedListener(watcher);
+        passwordEdit.addTextChangedListener(watcher);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        updateUIWithValidation();
+        updateEnablement();
     }
 
-    private void updateUIWithValidation() {
-        boolean populated = populated(usernameEdit) && populated(passwordEdit);
-        okButton.setEnabled(populated);
+    private void updateEnablement() {
+        if (loginItem != null)
+            loginItem.setEnabled(!TextUtils.isEmpty(usernameEdit.getText())
+                    && !TextUtils.isDigitsOnly(passwordEdit.getText()));
     }
 
-    private boolean populated(EditText editText) {
-        return editText.length() > 0;
-    }
+    /**
+     * Authenticate login & password
+     */
+    public void handleLogin() {
+        if (requestNewAccount)
+            username = usernameEdit.getText().toString();
+        password = passwordEdit.getText().toString();
 
-    @Override
-    protected Dialog onCreateDialog(int id) {
         final ProgressDialog dialog = LightProgressDialog.create(this, string.login_activity_authenticating);
         dialog.setCancelable(true);
         dialog.setOnCancelListener(new OnCancelListener() {
@@ -184,48 +195,57 @@ public class AuthenticatorActivity extends RoboSherlockAccountAuthenticatorActiv
                     authenticationTask.cancel(true);
             }
         });
-        return dialog;
-    }
-
-    /**
-     * Handles onClick event on the Submit button. Sends username/password to the server for authentication.
-     * <p/>
-     * Specified by android:onClick="handleLogin" in the layout xml
-     *
-     * @param view
-     */
-    public void handleLogin(View view) {
-        if (requestNewAccount)
-            username = usernameEdit.getText().toString();
-        password = passwordEdit.getText().toString();
-
-        showProgress();
+        dialog.show();
 
         authenticationTask = new RoboAsyncTask<User>(this) {
+
+            @Override
             public User call() throws Exception {
                 GitHubClient client = new DefaultClient();
                 client.setCredentials(username, password);
+                User user = new UserService(client).getUser();
 
-                return new UserService(client).getUser();
+                Account account = new Account(username, GITHUB_ACCOUNT_TYPE);
+                if (requestNewAccount) {
+                    accountManager.addAccountExplicitly(account, password, null);
+                    configureSyncFor(account);
+                    try {
+                        new AccountLoader(LoginActivity.this).call();
+                    } catch (IOException e) {
+                        Log.d(TAG, "Exception loading organizations", e);
+                    }
+                } else
+                    accountManager.setPassword(account, password);
+
+                return user;
             }
 
             @Override
             protected void onException(Exception e) throws RuntimeException {
+                dialog.dismiss();
+
                 Log.d(TAG, "Exception requesting authenticated user", e);
 
+                Throwable cause = e.getCause() != null ? e.getCause() : e;
+
+                boolean badCredentials = false;
                 if (e instanceof RequestException && ((RequestException) e).getStatus() == 401)
+                    badCredentials = true;
+                // A 401 can be returned as an IOException with this message
+                else if ("Received authentication challenge is null".equals(cause.getMessage()))
+                    badCredentials = true;
+
+                if (badCredentials)
                     onAuthenticationResult(false);
                 else
-                    ToastUtils.show(AuthenticatorActivity.this, e, string.connection_failed);
-            }
-
-            public void onSuccess(User user) {
-                onAuthenticationResult(true);
+                    ToastUtils.show(LoginActivity.this, e, string.connection_failed);
             }
 
             @Override
-            protected void onFinally() throws RuntimeException {
-                hideProgress();
+            public void onSuccess(User user) {
+                dialog.dismiss();
+
+                onAuthenticationResult(true);
             }
         };
         authenticationTask.execute();
@@ -255,14 +275,6 @@ public class AuthenticatorActivity extends RoboSherlockAccountAuthenticatorActiv
      */
 
     protected void finishLogin() {
-        final Account account = new Account(username, GITHUB_ACCOUNT_TYPE);
-
-        if (requestNewAccount) {
-            accountManager.addAccountExplicitly(account, password, null);
-            configureSyncFor(account);
-        } else
-            accountManager.setPassword(account, password);
-
         final Intent intent = new Intent();
         authToken = password;
         intent.putExtra(KEY_ACCOUNT_NAME, username);
@@ -272,16 +284,6 @@ public class AuthenticatorActivity extends RoboSherlockAccountAuthenticatorActiv
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
         finish();
-    }
-
-    @SuppressWarnings("deprecation")
-    private void hideProgress() {
-        dismissDialog(0);
-    }
-
-    @SuppressWarnings("deprecation")
-    private void showProgress() {
-        showDialog(0);
     }
 
     /**
@@ -301,5 +303,23 @@ public class AuthenticatorActivity extends RoboSherlockAccountAuthenticatorActiv
             else
                 ToastUtils.show(this, string.invalid_password);
         }
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case id.login:
+            handleLogin();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu optionMenu) {
+        getSupportMenuInflater().inflate(menu.login, optionMenu);
+        loginItem = optionMenu.findItem(id.login);
+        return true;
     }
 }

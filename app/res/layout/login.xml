@@ -17,18 +17,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_login"
     android:orientation="vertical" >
 
     <TextView
         android:id="@+id/tv_signup"
+        style="@style/SubtitleText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:background="@drawable/sign_up_background"
         android:gravity="center"
         android:padding="5dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/text"
-        android:textColorLink="@color/text_link" />
+        android:textColor="@color/sign_up_text"
+        android:textColorLink="@color/sign_up_text_link" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -45,31 +44,22 @@
             android:paddingTop="5dp" >
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="5dp"
+                style="@style/TitleText"
                 android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="@string/login"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/text" />
+                android:text="@string/login" />
 
             <EditText
                 android:id="@+id/et_login"
                 style="@style/LoginEditText"
                 android:imeOptions="actionNext"
-                android:inputType="text" />
+                android:inputType="textNoSuggestions" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="5dp"
+                style="@style/TitleText"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="10dp"
-                android:text="@string/password"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/text" />
+                android:text="@string/password" />
 
             <EditText
                 android:id="@+id/et_password"
@@ -77,20 +67,6 @@
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
                 android:password="true" />
-
-            <Button
-                android:id="@+id/b_login"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/button_background_states"
-                android:gravity="center"
-                android:onClick="handleLogin"
-                android:padding="10dp"
-                android:text="@string/log_in"
-                android:textColor="@color/text"
-                android:textSize="20sp"
-                android:textStyle="bold" />
         </LinearLayout>
     </ScrollView>
 

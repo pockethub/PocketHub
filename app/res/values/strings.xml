@@ -147,9 +147,10 @@
     <string name="none">None</string>
     <string name="section_issue_labels">Labels:</string>
     <string name="log_in">Log in</string>
-    <string name="signup_link">New to GitHub? &lt;a href=\"https://github.com/plans\">Click here&lt;/a> to sign up</string>
+    <string name="log_in_title">Log in to GitHub</string>
+    <string name="signup_link">New to GitHub? &lt;a href=\"https://github.com/plans\">Click Here&lt;/a> to sign up</string>
     <string name="connection_failed">Unable to connect to GitHub</string>
-    <string name="invalid_login_or_password">Please enter a valid login/password.</string>
+    <string name="invalid_login_or_password">Please enter a valid login &amp; password</string>
     <string name="invalid_password">Please enter a valid password.</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
