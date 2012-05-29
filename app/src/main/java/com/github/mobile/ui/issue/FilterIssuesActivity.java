@@ -58,6 +58,17 @@ import roboguice.inject.InjectView;
  */
 public class FilterIssuesActivity extends DialogFragmentActivity {
 
+    /**
+     * Create intent for creating an issue filter for the given repository
+     *
+     * @param repo
+     * @param filter
+     * @return intent
+     */
+    public static Intent createIntent(Repository repo, IssueFilter filter) {
+        return new Builder("repo.issues.filter.VIEW").repo(repo).add(EXTRA_ISSUE_FILTER, filter).toIntent();
+    }
+
     private static final int REQUEST_LABELS = 1;
 
     private static final int REQUEST_MILESTONE = 2;
@@ -95,17 +106,6 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
 
     @InjectView(id.iv_avatar)
     private ImageView avatarView;
-
-    /**
-     * Create intent for creating an issue filter for the given repository
-     *
-     * @param repo
-     * @param filter
-     * @return intent
-     */
-    public static Intent createIntent(Repository repo, IssueFilter filter) {
-        return new Builder("repo.issues.filter.VIEW").repo(repo).add(EXTRA_ISSUE_FILTER, filter).toIntent();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
