@@ -87,6 +87,7 @@ public abstract class PagedItemFragment<E> extends ItemListFragment<E> implement
     public Loader<List<E>> onCreateLoader(int id, Bundle bundle) {
         return new ThrowableLoader<List<E>>(getActivity(), items) {
 
+            @Override
             public List<E> loadData() throws IOException {
                 pager.next();
                 return pager.getResources();
