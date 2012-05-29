@@ -118,6 +118,7 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(string.filter_issues_title);
         actionBar.setSubtitle(repository.generateId());
+        avatars.bind(actionBar, repository.getOwner());
 
         if (savedInstanceState != null)
             filter = (IssueFilter) savedInstanceState.getSerializable(EXTRA_ISSUE_FILTER);
