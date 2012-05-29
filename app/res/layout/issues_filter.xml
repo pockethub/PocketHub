@@ -25,8 +25,7 @@
         android:padding="10dp" >
 
         <TextView
-            style="@style/TitleText"
-            android:paddingLeft="5dp"
+            style="@style/HeaderTitleText"
             android:text="@string/section_issue_status" />
 
         <RadioGroup
@@ -51,8 +50,7 @@
 
         <TextView
             android:id="@+id/tv_assignee_label"
-            style="@style/TitleText"
-            android:paddingLeft="5dp"
+            style="@style/HeaderTitleText"
             android:paddingTop="5dp"
             android:text="@string/section_issue_assigned" />
 
@@ -82,8 +80,7 @@
 
         <TextView
             android:id="@+id/tv_milestone_label"
-            style="@style/TitleText"
-            android:paddingLeft="5dp"
+            style="@style/HeaderTitleText"
             android:paddingTop="15dp"
             android:text="@string/section_issue_milestone" />
 
@@ -106,8 +103,7 @@
 
         <TextView
             android:id="@+id/tv_labels_label"
-            style="@style/TitleText"
-            android:paddingLeft="5dp"
+            style="@style/HeaderTitleText"
             android:paddingTop="15dp"
             android:text="@string/section_issue_labels" />
 

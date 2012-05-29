@@ -25,9 +25,7 @@
         android:padding="10dp" >
 
         <TextView
-            style="@style/TitleText"
-            android:paddingLeft="10dp"
-            android:singleLine="true"
+            style="@style/HeaderTitleText"
             android:text="@string/milestone" />
 
         <LinearLayout
@@ -49,10 +47,8 @@
         </LinearLayout>
 
         <TextView
-            style="@style/TitleText"
-            android:paddingLeft="10dp"
+            style="@style/HeaderTitleText"
             android:paddingTop="5dp"
-            android:singleLine="true"
             android:text="@string/title" />
 
         <EditText
@@ -65,10 +61,8 @@
             android:singleLine="true" />
 
         <TextView
-            style="@style/TitleText"
-            android:paddingLeft="10dp"
+            style="@style/HeaderTitleText"
             android:paddingTop="5dp"
-            android:singleLine="true"
             android:text="@string/labels" />
 
         <LinearLayout
@@ -88,10 +82,8 @@
         </LinearLayout>
 
         <TextView
-            style="@style/TitleText"
-            android:paddingLeft="10dp"
+            style="@style/HeaderTitleText"
             android:paddingTop="5dp"
-            android:singleLine="true"
             android:text="@string/assignee" />
 
         <LinearLayout
@@ -117,10 +109,8 @@
         </LinearLayout>
 
         <TextView
-            style="@style/TitleText"
-            android:paddingLeft="10dp"
+            style="@style/HeaderTitleText"
             android:paddingTop="5dp"
-            android:singleLine="true"
             android:text="@string/description" />
 
         <EditText

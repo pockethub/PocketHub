@@ -128,6 +128,11 @@
         <item name="android:layout_width">wrap_content</item>
     </style>
 
+    <style name="HeaderTitleText" parent="TitleText">
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
     <style name="ListTitleText" parent="TitleText">
         <item name="android:includeFontPadding">false</item>
         <item name="android:textColor">@color/text_selector</item>

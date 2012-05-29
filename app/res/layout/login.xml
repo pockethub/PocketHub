@@ -44,8 +44,7 @@
             android:paddingTop="5dp" >
 
             <TextView
-                style="@style/TitleText"
-                android:paddingLeft="5dp"
+                style="@style/HeaderTitleText"
                 android:text="@string/login" />
 
             <EditText
@@ -55,8 +54,7 @@
                 android:inputType="textNoSuggestions" />
 
             <TextView
-                style="@style/TitleText"
-                android:paddingLeft="5dp"
+                style="@style/HeaderTitleText"
                 android:paddingRight="5dp"
                 android:paddingTop="10dp"
                 android:text="@string/password" />
