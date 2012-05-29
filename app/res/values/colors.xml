@@ -19,9 +19,9 @@
     <color name="background">#F9F9F9</color>
     <color name="background_id">#E3E3E3</color>
     <color name="background_login">#E3E3E3</color>
-    <color name="background_comment">#F8F8F8</color>
-    <color name="comment_outer">#C7C7C7</color>
-    <color name="comment_inner">#FFFFFF</color>
+    <color name="inset_background">#F8F8F8</color>
+    <color name="inset_outer">#C7C7C7</color>
+    <color name="inset_inner">#FFFFFF</color>
     <color name="recent_background">#FFFE8B</color>
     <color name="recent_border">#C3C16A</color>
     <color name="text">#1E1E1E</color>
@@ -66,5 +66,8 @@
     <color name="sign_up_background_bottom">#D4D4D4</color>
     <color name="sign_up_text">#666666</color>
     <color name="sign_up_text_link">#3797C7</color>
+    <color name="state_background_open">#6CC644</color>
+    <color name="state_background_closed">#BD2C00</color>
+    <color name="state_text">#FFFFFF</color>
 
 </resources>

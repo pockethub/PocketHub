@@ -18,7 +18,7 @@
 
     <item>
         <shape>
-            <solid android:color="@color/comment_outer" />
+            <solid android:color="@color/inset_outer" />
 
             <corners android:radius="2dp" />
         </shape>
@@ -29,7 +29,7 @@
         android:right="1dp"
         android:top="1dp">
         <shape>
-            <solid android:color="@color/comment_inner" />
+            <solid android:color="@color/inset_inner" />
 
             <corners android:radius="1dp" />
         </shape>
@@ -40,7 +40,7 @@
         android:right="2dp"
         android:top="2dp">
         <shape>
-            <solid android:color="@color/background_comment" />
+            <solid android:color="@color/inset_background" />
 
             <corners android:radius="1dp" />
         </shape>

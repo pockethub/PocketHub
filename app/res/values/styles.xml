@@ -45,7 +45,6 @@
     <style name="CommentListView" parent="ListView">
         <item name="android:dividerHeight">5dp</item>
         <item name="android:divider">@null</item>
-        <item name="android:padding">5dp</item>
     </style>
 
     <style name="EditText">

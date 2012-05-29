@@ -49,6 +49,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.actionbarsherlock.R.color;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -124,6 +125,8 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
     private EditLabelsTask labelsTask;
 
     private EditStateTask stateTask;
+
+    private TextView stateText;
 
     private TextView titleText;
 
@@ -242,6 +245,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
         headerView = inflater.inflate(layout.issue_header, null);
 
+        stateText = (TextView) headerView.findViewById(id.tv_state);
         titleText = (TextView) headerView.findViewById(id.tv_issue_title);
         authorText = (TextView) headerView.findViewById(id.tv_issue_author);
         createdDateText = (TextView) headerView.findViewById(id.tv_issue_creation_date);
@@ -256,6 +260,15 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         bodyText.setMovementMethod(LinkMovementMethod.getInstance());
 
         loadingView = inflater.inflate(layout.loading_item, null);
+
+        stateText.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (issue != null)
+                    stateTask.confirm(STATE_OPEN.equals(issue.getState()));
+            }
+        });
 
         milestoneArea.setOnClickListener(new OnClickListener() {
 
@@ -295,6 +308,14 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         authorText.setText(issue.getUser().getLogin());
         createdDateText.setText(new StyledText().append("opened ").append(issue.getCreatedAt()));
         avatarHelper.bind(creatorAvatar, issue.getUser());
+
+        if (STATE_OPEN.equals(issue.getState())) {
+            stateText.setText(string.open);
+            stateText.setBackgroundResource(color.state_background_open);
+        } else {
+            stateText.setText(string.closed);
+            stateText.setBackgroundResource(color.state_background_closed);
+        }
 
         User assignee = issue.getAssignee();
         if (assignee != null) {
@@ -464,9 +485,6 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             return super.onOptionsItemSelected(item);
 
         switch (item.getItemId()) {
-        case id.issue_state:
-            stateTask.confirm(STATE_OPEN.equals(issue.getState()));
-            return true;
         case id.issue_edit:
             startActivityForResult(EditIssueActivity.createIntent(issue, repositoryId.getOwner(),
                     repositoryId.getName(), getString(string.issue_title) + issueNumber, repositoryId.generateId(),

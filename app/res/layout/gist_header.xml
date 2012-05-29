@@ -18,7 +18,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="5dp" >
+    android:padding="5dp" >
 
     <TextView
         android:id="@+id/tv_gist_creation"

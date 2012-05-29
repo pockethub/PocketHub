@@ -19,9 +19,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id/tv_state"
+        style="@style/SubtitleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="5dp"
+        android:textColor="@color/state_text"
+        android:textStyle="bold" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingBottom="5dp"
@@ -57,19 +69,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:paddingTop="5dp" />
 
     <TextView
         android:id="@+id/tv_labels"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="5dp" />
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" />
 
     <LinearLayout
         android:id="@+id/ll_milestone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:background="@drawable/inset_background"
         android:gravity="center_vertical"
         android:orientation="vertical"
@@ -89,6 +107,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:background="@drawable/inset_background"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -115,6 +135,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:paddingTop="5dp"
         android:textColor="@color/text"
         android:textColorLink="@color/text_link" />

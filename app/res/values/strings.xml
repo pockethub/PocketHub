@@ -82,8 +82,6 @@
     <string name="milestone_prefix">Milestone:</string>
     <string name="edit_milestone">Edit Milestone</string>
     <string name="edit_assignee">Edit Assignee</string>
-    <string name="close_issue">Close Issue</string>
-    <string name="reopen_issue">Reopen Issue</string>
     <string name="my_gists_tab">Mine</string>
     <string name="starred_gists_tab">Starred</string>
     <string name="all_gists_tab">All</string>
@@ -182,5 +180,6 @@
     <string name="issue_confirm_reopen_message">Are you sure you want to reopen this issue?</string>
     <string name="issue_confirm_close_title">Close Issue</string>
     <string name="issue_confirm_reopen_title">Reopen Issue</string>
+    <string name="closed">Closed</string>
 
 </resources>
