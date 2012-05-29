@@ -37,8 +37,6 @@
     <string name="random_gist">Random Gist…</string>
     <string name="comments">Comments</string>
     <string name="files">Files</string>
-    <string name="open_gist">Open Gist</string>
-    <string name="open_random_gist">Random Gist</string>
     <string name="open">Open</string>
     <string name="random">Random</string>
     <string name="file_name">File Name</string>
@@ -105,8 +103,6 @@
     <string name="unassigned">No one is assigned</string>
     <string name="assigned">is assigned</string>
     <string name="no_gists_found">No Gists found</string>
-    <string name="open_gist_title">Open Gist</string>
-    <string name="enter_id_message">Enter id:</string>
     <string name="no_description">No description</string>
     <string name="confirm_gist_delete_title">Confirm Delete</string>
     <string name="confirm_gist_delete_message">Are you sure you want to delete this Gist?</string>

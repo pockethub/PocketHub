@@ -17,13 +17,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/open_gist"
-        android:showAsAction="never"
-        android:title="@string/open_gist"/>
-    <item
         android:id="@+id/random_gist"
+        android:icon="@drawable/menu_random"
         android:showAsAction="never"
-        android:title="@string/open_random_gist"/>
+        android:title="@string/random"/>
     <item
         android:id="@+id/create_gist"
         android:icon="@drawable/action_create"
