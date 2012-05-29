@@ -44,7 +44,8 @@
                 android:id="@+id/rb_closed"
                 style="@style/SubtitleText"
                 android:layout_marginLeft="10dp"
-                android:text="@string/status_closed" />
+                android:text="@string/status_closed"
+                android:textColor="@color/text" />
         </RadioGroup>
 
         <TextView
