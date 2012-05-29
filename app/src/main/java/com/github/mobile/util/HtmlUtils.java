@@ -32,6 +32,9 @@ import android.text.style.QuoteSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.TypefaceSpan;
 
+import java.util.Deque;
+import java.util.LinkedList;
+
 import org.xml.sax.XMLReader;
 
 /**
@@ -125,15 +128,36 @@ public class HtmlUtils {
 
     private static final String CODE_END = "</code>";
 
+    private static class ListSeparator {
+
+        private int count;
+
+        public ListSeparator(boolean ordered) {
+            if (ordered)
+                count = 1;
+            else
+                count = -1;
+        }
+
+        public ListSeparator append(Editable output, int indentLevel) {
+            output.append('\n');
+            for (int i = 0; i < indentLevel * 2; i++)
+                output.append(' ');
+            if (count != -1) {
+                output.append(Integer.toString(count)).append('.');
+                count++;
+            } else
+                output.append('\u2022');
+            output.append(' ').append(' ');
+            return this;
+        }
+    }
+
     private static final TagHandler TAG_HANDLER = new TagHandler() {
 
         private int indentLevel;
 
-        private boolean inOl;
-
-        private boolean inUl;
-
-        private int olCount = 1;
+        private Deque<ListSeparator> listElements = new LinkedList<ListSeparator>();
 
         public void handleTag(final boolean opening, final String tag, final Editable output, final XMLReader xmlReader) {
             if (TAG_DEL.equalsIgnoreCase(tag)) {
@@ -152,11 +176,13 @@ public class HtmlUtils {
             }
 
             if (TAG_UL.equalsIgnoreCase(tag)) {
-                inUl = opening;
-                if (opening)
+                if (opening) {
+                    listElements.push(new ListSeparator(false));
                     indentLevel++;
-                else
+                } else {
+                    listElements.pop();
                     indentLevel--;
+                }
 
                 if (!opening && indentLevel == 0)
                     output.append('\n');
@@ -164,31 +190,20 @@ public class HtmlUtils {
             }
 
             if (TAG_OL.equalsIgnoreCase(tag)) {
-                inOl = opening;
                 if (opening) {
+                    listElements.push(new ListSeparator(true));
                     indentLevel++;
-                    inUl = false;
-                    olCount = 1;
-                } else
+                } else {
+                    listElements.pop();
                     indentLevel--;
-
+                }
                 if (!opening && indentLevel == 0)
                     output.append('\n');
                 return;
             }
 
-            if (TAG_LI.equalsIgnoreCase(tag)) {
-                if (opening) {
-                    output.append('\n');
-                    for (int i = 0; i < indentLevel * 2; i++)
-                        output.append(' ');
-                    if (inOl && !inUl) {
-                        output.append(Integer.toString(olCount)).append('.');
-                        olCount++;
-                    } else
-                        output.append('\u2022');
-                    output.append(' ').append(' ');
-                }
+            if (TAG_LI.equalsIgnoreCase(tag) && opening) {
+                listElements.peekFirst().append(output, indentLevel);
                 return;
             }
 
