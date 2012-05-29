@@ -21,6 +21,7 @@ import static com.github.mobile.accounts.Constants.GITHUB_ACCOUNT_TYPE;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerFuture;
+import android.accounts.AccountsException;
 import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
@@ -103,13 +104,10 @@ public class AccountUtils {
                 if (loggable)
                     Log.d(TAG, "Added account " + result.getString(KEY_ACCOUNT_NAME));
             }
-        } catch (AuthenticatorException e) {
+        } catch (AccountsException e) {
             Log.d(TAG, "Excepting retrieving account", e);
             throw new RuntimeException(e);
         } catch (IOException e) {
-            Log.d(TAG, "Excepting retrieving account", e);
-            throw new RuntimeException(e);
-        } catch (OperationCanceledException e) {
             Log.d(TAG, "Excepting retrieving account", e);
             throw new RuntimeException(e);
         }
