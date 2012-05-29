@@ -33,7 +33,7 @@ import java.util.Set;
  */
 public class HomePagerAdapter extends FragmentPagerAdapter {
 
-    private final boolean defaultUser;
+    private boolean defaultUser;
 
     private final FragmentManager fragmentManager;
 
@@ -73,9 +73,12 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
     /**
      * This methods clears any fragments that may not apply to the newly selected org.
      *
+     * @param isDefaultUser
      * @return this adapter
      */
-    public HomePagerAdapter clearAdapter() {
+    public HomePagerAdapter clearAdapter(boolean isDefaultUser) {
+        defaultUser = isDefaultUser;
+
         if (tags.isEmpty())
             return this;
 
@@ -88,6 +91,11 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
         transaction.commit();
 
         return this;
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
     }
 
     public Object instantiateItem(ViewGroup container, int position) {
