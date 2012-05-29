@@ -25,14 +25,13 @@ import static org.eclipse.egit.github.core.service.IssueService.FILTER_CREATED;
 import static org.eclipse.egit.github.core.service.IssueService.FILTER_MENTIONED;
 import static org.eclipse.egit.github.core.service.IssueService.FILTER_SUBSCRIBED;
 import static org.eclipse.egit.github.core.service.IssueService.SORT_UPDATED;
-
-import com.github.mobile.R.string;
-
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+
+import com.github.mobile.R.string;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -41,7 +40,7 @@ import java.util.Map;
 /**
  * Pager adapter for the issues dashboard
  */
-public class IssueDashboardPagerAdapter extends FragmentPagerAdapter {
+public class IssueDashboardPagerAdapter extends FragmentStatePagerAdapter {
 
     private final Resources resources;
 

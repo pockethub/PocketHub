@@ -19,12 +19,12 @@ import static com.github.mobile.Intents.EXTRA_GIST_ID;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 /**
  * Adapter to page through an array of Gists
  */
-public class GistsPagerAdapter extends FragmentPagerAdapter {
+public class GistsPagerAdapter extends FragmentStatePagerAdapter {
 
     private final String[] ids;
 
