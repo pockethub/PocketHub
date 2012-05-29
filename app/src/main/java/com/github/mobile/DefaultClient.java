@@ -129,9 +129,8 @@ public class DefaultClient extends GitHubClient {
     protected HttpURLConnection configureRequest(HttpURLConnection request) {
         super.configureRequest(request);
 
-        if (SDK_INT <= FROYO && request instanceof HttpsURLConnection) {
+        if (SDK_INT <= FROYO && request instanceof HttpsURLConnection)
             ((HttpsURLConnection) request).setSSLSocketFactory(SOCKET_FACTORY);
-        }
 
         if (useAcceptHeader)
             request.setRequestProperty(HEADER_ACCEPT, "application/vnd.github.beta.full+json");
