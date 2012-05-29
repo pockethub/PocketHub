@@ -15,6 +15,8 @@
  */
 package com.github.mobile.core.user;
 
+import static java.lang.String.CASE_INSENSITIVE_ORDER;
+
 import com.github.mobile.accounts.GitHubAccount;
 import com.google.inject.Inject;
 
@@ -50,6 +52,6 @@ public class UserComparator implements Comparator<User> {
         if (rhsLogin.equals(login))
             return lhsLogin.equals(login) ? 0 : 1;
 
-        return lhsLogin.compareToIgnoreCase(rhsLogin);
+        return CASE_INSENSITIVE_ORDER.compare(lhsLogin, rhsLogin);
     }
 }
