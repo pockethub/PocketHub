@@ -19,6 +19,8 @@ import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.FROYO;
 import android.util.Log;
 
+import com.github.kevinsawicki.http.HttpRequest;
+
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.security.GeneralSecurityException;
@@ -73,17 +75,24 @@ public class DefaultClient extends GitHubClient {
     private static final SSLSocketFactory SOCKET_FACTORY;
 
     static {
-        SSLSocketFactory factory;
-        try {
-            SSLContext context = SSLContext.getInstance("TLS");
-            context.init(null, new TrustManager[] { TRUST_MANAGER }, new SecureRandom());
-            factory = context.getSocketFactory();
-        } catch (GeneralSecurityException e) {
-            factory = null;
-            Log.d(TAG, "Exception configuring certificate validation", e);
-        }
-        SOCKET_FACTORY = factory;
+        if (SDK_INT <= FROYO) {
+            SSLSocketFactory factory;
+            try {
+                SSLContext context = SSLContext.getInstance("TLS");
+                context.init(null, new TrustManager[] { TRUST_MANAGER }, new SecureRandom());
+                factory = context.getSocketFactory();
+            } catch (GeneralSecurityException e) {
+                factory = null;
+                Log.d(TAG, "Exception configuring certificate validation", e);
+            }
+            SOCKET_FACTORY = factory;
+
+            // Disable http.keepAlive on Froyo and below
+            HttpRequest.keepAlive(false);
+        } else
+            SOCKET_FACTORY = null;
     }
+
     private final boolean useAcceptHeader;
 
     /**
