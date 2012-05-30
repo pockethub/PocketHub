@@ -33,7 +33,7 @@
                         <undeployBeforeDeploy>true</undeployBeforeDeploy>
                         <proguard>
                             <skip>false</skip>
-                            <config>../proguard-dev.cfg</config>
+                            <config>../proguard.cfg</config>
                         </proguard>
                         <manifest>
                             <versionName/>
