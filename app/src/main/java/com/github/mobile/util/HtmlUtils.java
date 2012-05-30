@@ -160,17 +160,10 @@ public class HtmlUtils {
 
         public void handleTag(final boolean opening, final String tag, final Editable output, final XMLReader xmlReader) {
             if (TAG_DEL.equalsIgnoreCase(tag)) {
-                if (opening) {
-                    int length = output.length();
-                    output.setSpan(new StrikethroughSpan(), length, length, SPAN_MARK_MARK);
-                } else {
-                    int length = output.length();
-                    Object span = getLast(output, StrikethroughSpan.class);
-                    int start = output.getSpanStart(span);
-                    output.removeSpan(span);
-                    if (start != length)
-                        output.setSpan(span, start, length, SPAN_EXCLUSIVE_EXCLUSIVE);
-                }
+                if (opening)
+                    startSpan(new StrikethroughSpan(), output);
+                else
+                    endSpan(StrikethroughSpan.class, output);
                 return;
             }
 
@@ -207,23 +200,19 @@ public class HtmlUtils {
             }
 
             if (TAG_CODE.equalsIgnoreCase(tag)) {
-                if (opening) {
-                    int length = output.length();
-                    TypefaceSpan span = new TypefaceSpan("monospace");
-                    output.setSpan(span, length, length, SPAN_MARK_MARK);
-                } else {
-                    int length = output.length();
-                    Object span = getLast(output, TypefaceSpan.class);
-                    int start = output.getSpanStart(span);
-                    output.removeSpan(span);
-                    if (start != length)
-                        output.setSpan(span, start, length, SPAN_EXCLUSIVE_EXCLUSIVE);
-                }
+                if (opening)
+                    startSpan(new TypefaceSpan("monospace"), output);
+                else
+                    endSpan(TypefaceSpan.class, output);
                 return;
             }
 
             if (TAG_PRE.equalsIgnoreCase(tag)) {
                 output.append('\n');
+                if (opening)
+                    startSpan(new TypefaceSpan("monospace"), output);
+                else
+                    endSpan(TypefaceSpan.class, output);
                 return;
             }
 
@@ -250,6 +239,25 @@ public class HtmlUtils {
             }
         }
     };
+
+    private static Object getLast(final Spanned text, final Class<?> kind) {
+        Object[] spans = text.getSpans(0, text.length(), kind);
+        return spans.length > 0 ? spans[spans.length - 1] : null;
+    }
+
+    private static void startSpan(Object span, Editable output) {
+        int length = output.length();
+        output.setSpan(span, length, length, SPAN_MARK_MARK);
+    }
+
+    private static void endSpan(Class<?> type, Editable output) {
+        int length = output.length();
+        Object span = getLast(output, type);
+        int start = output.getSpanStart(span);
+        output.removeSpan(span);
+        if (start != length)
+            output.setSpan(span, start, length, SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
 
     /**
      * Encode HTML
@@ -315,18 +323,6 @@ public class HtmlUtils {
         formatted.append(ROOT_END);
 
         return formatted;
-    }
-
-    /**
-     * Get last span of given kind
-     *
-     * @param text
-     * @param kind
-     * @return span
-     */
-    private static Object getLast(final Spanned text, final Class<?> kind) {
-        Object[] spans = text.getSpans(0, text.length(), kind);
-        return spans.length > 0 ? spans[spans.length - 1] : null;
     }
 
     private static StringBuilder strip(final StringBuilder input, final String prefix, final String suffix) {
