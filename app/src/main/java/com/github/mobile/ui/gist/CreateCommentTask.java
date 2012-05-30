@@ -20,6 +20,7 @@ import android.util.Log;
 
 import com.github.mobile.R.string;
 import com.github.mobile.ui.ProgressDialogTask;
+import com.github.mobile.util.HtmlUtils;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 
@@ -68,7 +69,11 @@ public class CreateCommentTask extends ProgressDialogTask<Comment> {
 
     @Override
     public Comment run() throws Exception {
-        return service.createComment(id, comment);
+        Comment created = service.createComment(id, comment);
+        String formatted = HtmlUtils.format(created.getBodyHtml()).toString();
+        created.setBodyHtml(formatted);
+        return created;
+
     }
 
     @Override

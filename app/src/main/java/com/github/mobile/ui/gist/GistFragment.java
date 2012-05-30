@@ -20,7 +20,7 @@ import static android.graphics.Typeface.ITALIC;
 import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.github.mobile.Intents.EXTRA_COMMENT_BODY;
+import static com.github.mobile.Intents.EXTRA_COMMENT;
 import static com.github.mobile.Intents.EXTRA_GIST_ID;
 import static com.github.mobile.RequestCodes.COMMENT_CREATE;
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
@@ -56,7 +56,6 @@ import com.github.mobile.core.gist.UnstarGistTask;
 import com.github.mobile.ui.HeaderFooterListAdapter;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.ui.comment.CommentListAdapter;
-import com.github.mobile.ui.comment.CreateCommentActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.ToastUtils;
@@ -254,10 +253,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
 
         switch (item.getItemId()) {
         case id.gist_comment:
-            String title = getString(string.gist_title) + gistId;
-            User user = gist.getUser();
-            String subtitle = user != null ? user.getLogin() : null;
-            startActivityForResult(CreateCommentActivity.createIntent(title, subtitle, user), COMMENT_CREATE);
+            startActivityForResult(CreateCommentActivity.createIntent(gist), COMMENT_CREATE);
             return true;
         case id.gist_star:
             if (starred)
@@ -319,26 +315,16 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (RESULT_OK == resultCode && COMMENT_CREATE == requestCode && data != null) {
-            String comment = data.getStringExtra(EXTRA_COMMENT_BODY);
-            if (comment != null && comment.length() > 0) {
-                createComment(comment);
-                return;
-            }
+            Comment comment = (Comment) data.getSerializableExtra(EXTRA_COMMENT);
+            if (comments != null) {
+                comments.add(comment);
+                gist.setComments(gist.getComments() + 1);
+                updateList(gist, comments);
+            } else
+                refreshGist();
+            return;
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private void createComment(final String comment) {
-        new CreateCommentTask(getActivity(), gistId, comment) {
-
-            @Override
-            protected void onSuccess(Comment comment) throws Exception {
-                super.onSuccess(comment);
-
-                refreshGist();
-            }
-
-        }.start();
     }
 
     private void updateFiles(Gist gist) {

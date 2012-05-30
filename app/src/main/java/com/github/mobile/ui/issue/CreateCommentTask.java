@@ -21,6 +21,7 @@ import android.util.Log;
 
 import com.github.mobile.R.string;
 import com.github.mobile.ui.ProgressDialogTask;
+import com.github.mobile.util.HtmlUtils;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 
@@ -39,10 +40,10 @@ public class CreateCommentTask extends ProgressDialogTask<Comment> {
 
     private final int issueNumber;
 
+    private final String comment;
+
     @Inject
     private IssueService service;
-
-    private String comment;
 
     /**
      * Create task for creating a comment on the given issue in the given repository
@@ -50,28 +51,31 @@ public class CreateCommentTask extends ProgressDialogTask<Comment> {
      * @param context
      * @param repository
      * @param issueNumber
+     * @param comment
      */
-    public CreateCommentTask(final Context context, final IRepositoryIdProvider repository, final int issueNumber) {
+    public CreateCommentTask(final Context context, final IRepositoryIdProvider repository, final int issueNumber,
+            final String comment) {
         super(context);
 
         this.repository = repository;
         this.issueNumber = issueNumber;
+        this.comment = comment;
     }
 
     @Override
     protected Comment run() throws Exception {
-        return service.createComment(repository, issueNumber, comment);
+        Comment created = service.createComment(repository, issueNumber, comment);
+        String formatted = HtmlUtils.format(created.getBodyHtml()).toString();
+        created.setBodyHtml(formatted);
+        return created;
     }
 
     /**
      * Create comment
      *
-     * @param comment
      * @return this task
      */
-    public CreateCommentTask create(final String comment) {
-        this.comment = comment;
-
+    public CreateCommentTask start() {
         dismissProgress();
         showIndeterminate(string.creating_comment);
 

@@ -18,7 +18,7 @@ package com.github.mobile.ui.issue;
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.github.mobile.Intents.EXTRA_COMMENT_BODY;
+import static com.github.mobile.Intents.EXTRA_COMMENT;
 import static com.github.mobile.Intents.EXTRA_ISSUE;
 import static com.github.mobile.Intents.EXTRA_ISSUE_NUMBER;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY_NAME;
@@ -35,7 +35,6 @@ import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,7 +64,6 @@ import com.github.mobile.ui.DialogResultListener;
 import com.github.mobile.ui.HeaderFooterListAdapter;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.ui.comment.CommentListAdapter;
-import com.github.mobile.ui.comment.CreateCommentActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.ToastUtils;
@@ -448,19 +446,6 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         inflater.inflate(menu.issue_view, optionsMenu);
     }
 
-    private void createComment(final String comment) {
-        new CreateCommentTask(getActivity(), repositoryId, issueNumber) {
-
-            @Override
-            protected void onSuccess(Comment comment) throws Exception {
-                super.onSuccess(comment);
-
-                if (getActivity() != null)
-                    refreshIssue();
-            }
-        }.create(comment);
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (RESULT_OK != resultCode || data == null)
@@ -471,9 +456,13 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             updateHeader((Issue) data.getSerializableExtra(EXTRA_ISSUE));
             return;
         case COMMENT_CREATE:
-            String comment = data.getStringExtra(EXTRA_COMMENT_BODY);
-            if (!TextUtils.isEmpty(comment))
-                createComment(comment);
+            Comment comment = (Comment) data.getSerializableExtra(EXTRA_COMMENT);
+            if (comments != null) {
+                comments.add(comment);
+                issue.setComments(issue.getComments() + 1);
+                updateList(issue, comments);
+            } else
+                refreshIssue();
             return;
         }
     }
@@ -491,9 +480,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
                     user), ISSUE_EDIT);
             return true;
         case id.issue_comment:
-            startActivityForResult(
-                    CreateCommentActivity.createIntent(getString(string.issue_title) + issueNumber,
-                            repositoryId.generateId(), user), COMMENT_CREATE);
+            startActivityForResult(CreateCommentActivity.createIntent(repositoryId, issueNumber, user), COMMENT_CREATE);
             return true;
         case id.refresh:
             refreshIssue();

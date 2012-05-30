@@ -124,6 +124,11 @@ public class Intents {
     public static final String EXTRA_COMMENTS = INTENT_EXTRA_PREFIX + "COMMENTS";
 
     /**
+     * Comment handle
+     */
+    public static final String EXTRA_COMMENT = INTENT_EXTRA_PREFIX + "COMMENT";
+
+    /**
      * Integer position
      */
     public static final String EXTRA_POSITION = INTENT_EXTRA_PREFIX + "POSITION";

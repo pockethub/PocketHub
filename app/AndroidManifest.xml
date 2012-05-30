@@ -97,9 +97,16 @@
             </intent-filter>
         </activity>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.comment.CreateCommentActivity">
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.CreateCommentActivity">
             <intent-filter>
-                <action android:name="com.github.mobile.android.comment.create.VIEW"/>
+                <action android:name="com.github.mobile.android.issue.comment.create.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.gist.CreateCommentActivity">
+            <intent-filter>
+                <action android:name="com.github.mobile.android.gist.comment.create.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>

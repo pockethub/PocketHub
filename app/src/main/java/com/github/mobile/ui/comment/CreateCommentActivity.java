@@ -15,74 +15,44 @@
  */
 package com.github.mobile.ui.comment;
 
-import static com.github.mobile.Intents.EXTRA_COMMENT_BODY;
-import static com.github.mobile.Intents.EXTRA_SUBTITLE;
-import static com.github.mobile.Intents.EXTRA_TITLE;
-import static com.github.mobile.Intents.EXTRA_USER;
+import static com.github.mobile.Intents.EXTRA_COMMENT;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.EditText;
 
-import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
-import com.github.mobile.R.string;
 import com.github.mobile.util.AvatarLoader;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.Gist;
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.User;
+import org.eclipse.egit.github.core.Comment;
+
+import roboguice.inject.InjectView;
 
 /**
- * Activity to create a comment on a {@link Gist} or {@link Issue}
+ * Base activity for creating comments
  */
-public class CreateCommentActivity extends RoboSherlockFragmentActivity {
+public abstract class CreateCommentActivity extends RoboSherlockFragmentActivity {
 
     /**
-     * Create intent to create a comment
-     *
-     * @param title
-     * @param subtitle
-     * @param user
-     * @return intent
+     * Avatar loader
      */
-    public static Intent createIntent(String title, String subtitle, User user) {
-        Builder builder = new Builder("comment.create.VIEW");
-        if (title != null)
-            builder.add(EXTRA_TITLE, title);
-        if (subtitle != null)
-            builder.add(EXTRA_SUBTITLE, subtitle);
-        if (user != null)
-            builder.add(EXTRA_USER, user);
-        return builder.toIntent();
-    }
-
     @Inject
-    private AvatarLoader avatarHelper;
+    protected AvatarLoader avatars;
+
+    @InjectView(id.et_comment)
+    private EditText commentText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(layout.comment_create);
-
-        ActionBar actionBar = getSupportActionBar();
-        Intent intent = getIntent();
-        String title = intent.getStringExtra(EXTRA_TITLE);
-        if (title != null)
-            actionBar.setTitle(title);
-        else
-            actionBar.setTitle(string.create_comment_title);
-        actionBar.setSubtitle(intent.getStringExtra(EXTRA_SUBTITLE));
-        User user = (User) intent.getSerializableExtra(EXTRA_USER);
-        if (user != null)
-            avatarHelper.bind(actionBar, user);
     }
 
     @Override
@@ -91,15 +61,32 @@ public class CreateCommentActivity extends RoboSherlockFragmentActivity {
         return true;
     }
 
+    /**
+     * Create comment
+     *
+     * @param comment
+     */
+    protected abstract void createComment(String comment);
+
+    /**
+     * Finish this activity passing back the created comment
+     *
+     * @param comment
+     */
+    protected void finish(Comment comment) {
+        Intent data = new Intent();
+        data.putExtra(EXTRA_COMMENT, comment);
+        setResult(RESULT_OK, data);
+        finish();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case id.apply:
-            String comment = ((EditText) findViewById(id.et_comment)).getText().toString();
-            Intent intent = new Intent();
-            intent.putExtra(EXTRA_COMMENT_BODY, comment);
-            setResult(RESULT_OK, intent);
-            finish();
+            String comment = commentText.getText().toString();
+            if (!TextUtils.isEmpty(comment))
+                createComment(comment);
             return true;
         default:
             return super.onOptionsItemSelected(item);
