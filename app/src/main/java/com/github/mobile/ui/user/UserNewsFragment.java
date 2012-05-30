@@ -45,6 +45,7 @@ public abstract class UserNewsFragment extends NewsFragment implements Organizat
         User owner = repository.getOwner();
         if (owner != null && org.getLogin().equals(owner.getLogin()))
             repository.setOwner(org);
+
         super.viewRepository(repository);
     }
 
