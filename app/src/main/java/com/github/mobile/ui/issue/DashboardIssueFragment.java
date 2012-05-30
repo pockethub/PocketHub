@@ -15,6 +15,8 @@
  */
 package com.github.mobile.ui.issue;
 
+import static com.github.mobile.RequestCodes.ISSUE_VIEW;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -72,8 +74,20 @@ public class DashboardIssueFragment extends PagedItemFragment<RepositoryIssue> {
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ISSUE_VIEW) {
+            getListAdapter().getWrappedAdapter().notifyDataSetChanged();
+            forceRefresh();
+            return;
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        startActivity(ViewIssuesActivity.createIntent(items, position - getListAdapter().getHeadersCount()));
+        startActivityForResult(ViewIssuesActivity.createIntent(items, position - getListAdapter().getHeadersCount()),
+                ISSUE_VIEW);
     }
 
     @Override
