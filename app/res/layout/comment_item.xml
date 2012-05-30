@@ -17,7 +17,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/ListItem"
     android:layout_width="match_parent"
-    android:paddingBottom="0dp"
+    android:paddingBottom="5dp"
     android:paddingTop="0dp" >
 
     <LinearLayout
@@ -66,9 +66,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:textColor="@color/text"
             android:textColorLink="@color/text_link"
-            android:textSize="16sp" />
+            android:textSize="14dp" />
     </LinearLayout>
 
 </FrameLayout>
