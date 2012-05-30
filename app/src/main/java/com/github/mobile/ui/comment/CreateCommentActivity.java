@@ -47,26 +47,6 @@ public class CreateCommentActivity extends RoboSherlockFragmentActivity {
     /**
      * Create intent to create a comment
      *
-     * @return intent
-     */
-    public static Intent createIntent() {
-        return createIntent(null, null, null);
-    }
-
-    /**
-     * Create intent to create a comment
-     *
-     * @param title
-     * @param subtitle
-     * @return intent
-     */
-    public static Intent createIntent(String title, String subtitle) {
-        return createIntent(title, subtitle, null);
-    }
-
-    /**
-     * Create intent to create a comment
-     *
      * @param title
      * @param subtitle
      * @param user
