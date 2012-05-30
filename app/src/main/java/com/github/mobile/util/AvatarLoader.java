@@ -54,7 +54,7 @@ public class AvatarLoader {
 
     private static final String TAG = "AvatarLoader";
 
-    private static final float CORNER_RADIUS_IN_DIP = 6;
+    private static final float CORNER_RADIUS_IN_DIP = 3;
 
     private static final int CACHE_SIZE = 75;
 

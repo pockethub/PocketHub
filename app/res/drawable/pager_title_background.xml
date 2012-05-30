@@ -28,7 +28,7 @@
     </item>
     <item
         android:bottom="1dp"
-        android:top="1dp">
+        android:top="0dp">
         <shape>
             <gradient
                 android:angle="270"

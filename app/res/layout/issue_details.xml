@@ -26,13 +26,13 @@
         style="@style/ListSubtitleText"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:paddingLeft="5dp"
+        android:paddingLeft="10dp"
         android:singleLine="true" />
 
     <TextView
         android:id="@+id/tv_pull_request_icon"
         style="@style/ListIcon"
-        android:paddingRight="5dp"
+        android:paddingRight="10dp"
         android:text="@string/icon_pull_request" />
 
     <TextView
@@ -44,6 +44,6 @@
         android:id="@+id/tv_issue_comments"
         style="@style/ListSubtitleText"
         android:gravity="center_vertical"
-        android:paddingLeft="5dp" />
+        android:paddingLeft="10dp" />
 
 </merge>
