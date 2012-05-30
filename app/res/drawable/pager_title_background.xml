@@ -36,5 +36,12 @@
                 android:startColor="@color/pager_title_background_start" />
         </shape>
     </item>
+    <item
+        android:bottom="1dp"
+        android:top="1dp">
+        <bitmap
+            android:src="@drawable/texture"
+            android:tileMode="repeat" />
+    </item>
 
 </layer-list>
