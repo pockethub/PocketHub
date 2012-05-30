@@ -100,7 +100,7 @@
                     <plugin>
                         <groupId>com.github.github</groupId>
                         <artifactId>downloads-maven-plugin</artifactId>
-                        <version>0.4</version>
+                        <version>0.5</version>
                         <configuration>
                             <description>${project.name} ${project.version}</description>
                             <override>true</override>
