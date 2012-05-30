@@ -16,6 +16,62 @@
 -->
 <resources>
 
+    <!-- Error messages -->
+    <string name="error_orgs_load">Loading account &amp; organizations failed</string>
+    <string name="error_issues_load">Loading issues failed</string>
+    <string name="error_repos_load">Loading repositories failed</string>
+    <string name="error_gist_load">Loading Gist failed</string>
+    <string name="error_news_load">Loading news failed</string>
+    <string name="error_followers_load">Loading followers failed</string>
+    <string name="error_people_load">Loading people failed</string>
+    <string name="error_gist_file_load">Loading Gist file content failed</string>
+    <string name="error_gists_load">Loading Gists failed</string>
+    <string name="error_issue_load">Loading issue failed</string>
+    <string name="error_collaborators_load">Loading collaborators failed</string>
+    <string name="error_milestones_load">Loading milestones failed</string>
+    <string name="error_labels_load">Loading labels failed</string>
+    <string name="error_filters_load">Loading issue filters failed</string>
+    <string name="error_members_load">Loading members failed</string>
+    <!--  -->
+
+
+    <!-- Loading messages -->
+    <string name="loading_gist">Loading Gist…</string>
+    <string name="random_gist">Loading Random Gist…</string>
+    <string name="loading_more_issues">Loading More Issues…</string>
+    <string name="loading_issues">Loading Issues…</string>
+    <string name="loading_comments">Loading Comments…</string>
+    <string name="loading_repositories">Loading Repositories…</string>
+    <string name="loading_issue">Loading Issue…</string>
+    <string name="loading_news">Loading News…</string>
+    <string name="loading_followers">Loading Followers…</string>
+    <string name="loading_people">Loading People…</string>
+    <string name="loading_gists">Loading Gists…</string>
+    <string name="loading_collaborators">Loading Collaborators…</string>
+    <string name="loading_milestones">Loading Milestones…</string>
+    <string name="loading_labels">Loading Labels…</string>
+    <!--  -->
+
+
+    <!-- Empty messages -->
+    <string name="no_filters">No Filters</string>
+    <string name="no_repositories">No Repositories</string>
+    <string name="no_issues">No Issues</string>
+    <string name="no_gists">No Gists</string>
+    <string name="no_people">No People</string>
+    <string name="no_followers">No Followers</string>
+    <string name="no_members">No Members</string>
+    <string name="no_news">No News</string>
+    <!--  -->
+
+
+    <!-- Updating messages -->
+    <string name="updating_assignee">Updating Assignee…</string>
+    <string name="updating_issue">Updating Issue…</string>
+    <string name="updating_labels">Updating Labels…</string>
+    <string name="updating_milestone">Updating Milestone…</string>
+    <!--  -->
+
     <string name="app_name">GitHub</string>
     <string name="news">News</string>
     <string name="issues">Issues</string>
@@ -33,8 +89,6 @@
     <string name="make_public">Public Gist</string>
     <string name="gist_file_name_hint">file.rb</string>
     <string name="gist">Gist</string>
-    <string name="loading_gist">Loading Gist…</string>
-    <string name="random_gist">Random Gist…</string>
     <string name="comments">Comments</string>
     <string name="files">Files</string>
     <string name="open">Open</string>
@@ -61,23 +115,8 @@
     <string name="create_comment_title">Create Comment</string>
     <string name="comment_hint">Enter a comment</string>
     <string name="show_more">Show More…</string>
-    <string name="loading_more_issues">Loading More Issues…</string>
     <string name="repositories">Repositories</string>
-    <string name="error_orgs_load">Loading account &amp; organizations failed</string>
-    <string name="no_filters">No Filters</string>
-    <string name="no_repositories">No Repositories</string>
-    <string name="no_issues">No Issues</string>
-    <string name="error_issues_load">Loading issues failed</string>
-    <string name="error_repos_load">Loading repositories failed</string>
-    <string name="error_gist_load">Loading Gist failed</string>
-    <string name="error_news_load">Loading News failed</string>
-    <string name="error_followers_load">Loading Followers failed</string>
-    <string name="error_people_load">Loading People failed</string>
-    <string name="error_gist_file_load">Loading Gist file content failed</string>
-    <string name="no_gists">No Gists</string>
-    <string name="error_gists_load">Loading Gists failed</string>
     <string name="issues_title">Issues</string>
-    <string name="error_issue_load">Loading issue failed</string>
     <string name="edit_labels">Edit Labels</string>
     <string name="milestone_prefix">Milestone:</string>
     <string name="edit_milestone">Edit Milestone</string>
@@ -107,18 +146,9 @@
     <string name="deleting_gist">Deleting Gist…</string>
     <string name="creating_comment">Creating comment…</string>
     <string name="confirm_filter_delete_message">Are you sure you want to remove this saved issue filter?</string>
-    <string name="loading_issues">Loading Issues…</string>
-    <string name="loading_comments">Loading Comments…</string>
-    <string name="loading_repositories">Loading Repositories…</string>
-    <string name="loading_issue">Loading Issue…</string>
-    <string name="loading_news">Loading News…</string>
     <string name="issue_dashboard">Issue Dashboard</string>
-    <string name="loading_followers">Loading Followers…</string>
-    <string name="loading_people">Loading People…</string>
-    <string name="no_people">No People</string>
     <string name="new_issue">New Issue</string>
     <string name="anonymous">Anonymous</string>
-    <string name="loading_gists">Loading Gists</string>
     <string name="message_filter_saved">Issue filter saved to bookmarks</string>
     <string name="recent">Recent</string>
     <string name="icon_pull_request">\uf20E</string>
@@ -143,13 +173,6 @@
     <string name="followers">Followers</string>
     <string name="following">Following</string>
     <string name="members">Members</string>
-    <string name="no_followers">No Followers</string>
-    <string name="no_members">No Members</string>
-    <string name="no_news">No News</string>
-    <string name="updating_assignee">Updating Assignee…</string>
-    <string name="updating_issue">Updating Issue…</string>
-    <string name="updating_labels">Updating Labels…</string>
-    <string name="updating_milestone">Updating Milestone…</string>
     <string name="closing_issue">Closing Issue…</string>
     <string name="reopening_issue">Reopening Issue…</string>
     <string name="icon_watch">\uf04E</string>
@@ -158,20 +181,12 @@
     <string name="creating_issue">Creating Issue…</string>
     <string name="prefix_created">created\u0020</string>
     <string name="updated_prefix">updated\u0020</string>
-    <string name="loading_collaborators">Loading Collaborators…</string>
     <string name="clear">Clear</string>
-    <string name="error_collaborators_load">Loading collaborators failed</string>
-    <string name="error_milestones_load">Loading milestones failed</string>
-    <string name="loading_milestones">Loading Milestones…</string>
-    <string name="error_labels_load">Loading labels failed</string>
-    <string name="loading_labels">Loading Labels…</string>
     <string name="open_issues">Open Issues</string>
     <string name="closed_issues">Closed Issues</string>
     <string name="confirm_filter_delete_title">Remove Issue Filter</string>
     <string name="save">Save</string>
     <string name="apply">Apply</string>
-    <string name="error_filters_load">Loading issue filters failed</string>
-    <string name="error_members_load">Loading members failed</string>
     <string name="labels_prefix">Labels:</string>
     <string name="assignee">Assignee</string>
     <string name="milestone">Milestone</string>
