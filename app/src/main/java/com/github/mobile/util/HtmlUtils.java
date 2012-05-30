@@ -32,7 +32,6 @@ import android.text.style.QuoteSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.TypefaceSpan;
 
-import java.util.Deque;
 import java.util.LinkedList;
 
 import org.xml.sax.XMLReader;
@@ -157,7 +156,7 @@ public class HtmlUtils {
 
         private int indentLevel;
 
-        private Deque<ListSeparator> listElements = new LinkedList<ListSeparator>();
+        private LinkedList<ListSeparator> listElements = new LinkedList<ListSeparator>();
 
         public void handleTag(final boolean opening, final String tag, final Editable output, final XMLReader xmlReader) {
             if (TAG_DEL.equalsIgnoreCase(tag)) {
@@ -180,7 +179,7 @@ public class HtmlUtils {
                     listElements.push(new ListSeparator(false));
                     indentLevel++;
                 } else {
-                    listElements.pop();
+                    listElements.removeFirst();
                     indentLevel--;
                 }
 
@@ -194,7 +193,7 @@ public class HtmlUtils {
                     listElements.push(new ListSeparator(true));
                     indentLevel++;
                 } else {
-                    listElements.pop();
+                    listElements.removeFirst();
                     indentLevel--;
                 }
                 if (!opening && indentLevel == 0)
@@ -203,7 +202,7 @@ public class HtmlUtils {
             }
 
             if (TAG_LI.equalsIgnoreCase(tag) && opening) {
-                listElements.peekFirst().append(output, indentLevel);
+                listElements.getFirst().append(output, indentLevel);
                 return;
             }
 
