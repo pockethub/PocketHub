@@ -69,6 +69,17 @@ public class AccountUtils {
         return accounts.length > 0 ? accounts[0].name : null;
     }
 
+    /**
+     * Get configured account
+     *
+     * @param context
+     * @return account or null if none
+     */
+    public static Account getAccount(final Context context) {
+        final Account[] accounts = AccountManager.get(context).getAccountsByType(GITHUB_ACCOUNT_TYPE);
+        return accounts.length > 0 ? accounts[0] : null;
+    }
+
     private static Account[] getAccounts(final AccountManager manager) throws OperationCanceledException,
             AuthenticatorException, IOException {
         final AccountManagerFuture<Account[]> future = manager.getAccountsByTypeAndFeatures(GITHUB_ACCOUNT_TYPE, null,

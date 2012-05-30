@@ -18,6 +18,9 @@ package com.github.mobile.util;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static java.lang.Integer.MAX_VALUE;
+import static org.eclipse.egit.github.core.client.IGitHubConstants.HOST_DEFAULT;
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -29,12 +32,16 @@ import android.widget.TextView;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
 import com.github.mobile.R.drawable;
+import com.github.mobile.accounts.AccountUtils;
 import com.google.inject.Inject;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import roboguice.util.RoboAsyncTask;
 
@@ -178,16 +185,29 @@ public class HttpImageGetter implements ImageGetter {
         return this;
     }
 
+    private HttpRequest createRequest(String source) {
+        HttpRequest request = HttpRequest.get(source);
+        // Add credentials if a secure connection to github.com
+        HttpURLConnection connection = request.getConnection();
+        if (connection instanceof HttpsURLConnection && HOST_DEFAULT.equals(connection.getURL().getHost())) {
+            Account account = AccountUtils.getAccount(context);
+            if (account != null) {
+                String password = AccountManager.get(context).getPassword(account);
+                if (!TextUtils.isEmpty(password))
+                    request.basic(account.name, password);
+            }
+        }
+        return request;
+    }
+
     public Drawable getDrawable(String source) {
         File output = null;
         try {
             output = File.createTempFile("image", ".jpg", dir);
-            synchronized (this) {
-                HttpRequest request = HttpRequest.get(source);
-                if (!request.ok())
-                    throw new IOException("Unexpected response code: " + request.code());
-                request.receive(output);
-            }
+            HttpRequest request = createRequest(source);
+            if (!request.ok())
+                throw new IOException("Unexpected response code: " + request.code());
+            request.receive(output);
             Bitmap bitmap = ImageUtils.getBitmap(output, width, MAX_VALUE);
             if (bitmap == null)
                 return loading.getDrawable(source);
@@ -204,5 +224,4 @@ public class HttpImageGetter implements ImageGetter {
                 output.delete();
         }
     }
-
 }
