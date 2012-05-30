@@ -94,17 +94,28 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // Start out with a progress bar
-        setListShown(false);
+        if (!items.isEmpty())
+            setListShown(true, false);
 
-        // Prepare the loader. Either re-connect with an existing one,
-        // or start a new one.
         getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(layout.item_list, null);
+    }
+
+    /**
+     * Detach from list view.
+     */
+    @Override
+    public void onDestroyView() {
+        listShown = false;
+        emptyView = null;
+        progressBar = null;
+        listView = null;
+
+        super.onDestroyView();
     }
 
     @Override
@@ -349,6 +360,7 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
             return this;
 
         listShown = shown;
+
         if (shown)
             if (!items.isEmpty())
                 hide(progressBar).hide(emptyView).fadeIn(listView, animate).show(listView);
