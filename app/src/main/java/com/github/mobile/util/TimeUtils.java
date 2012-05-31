@@ -15,6 +15,7 @@
  */
 package com.github.mobile.util;
 
+import static android.text.format.DateUtils.MINUTE_IN_MILLIS;
 import android.text.format.DateUtils;
 
 import java.util.Date;
@@ -31,6 +32,10 @@ public class TimeUtils {
      * @return relative time
      */
     public static CharSequence getRelativeTime(final Date date) {
-        return DateUtils.getRelativeTimeSpanString(date.getTime());
+        long now = System.currentTimeMillis();
+        if (Math.abs(now - date.getTime()) > 60000)
+            return DateUtils.getRelativeTimeSpanString(date.getTime(), now, MINUTE_IN_MILLIS);
+        else
+            return "just now";
     }
 }
