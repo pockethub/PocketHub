@@ -130,6 +130,18 @@
                 <action android:name="com.github.mobile.android.issues.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="https" android:host="github.com" android:pathPattern="/.*/.*/issues/.*" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="http" android:host="github.com" android:pathPattern="/.*/.*/issues/.*" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <service android:exported="false" android:name=".accounts.AccountAuthenticatorService" android:process=":auth">

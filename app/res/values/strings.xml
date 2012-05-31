@@ -199,5 +199,7 @@
     <string name="no_description_given">No description given.</string>
     <string name="close">Close</string>
     <string name="reopen">Reopen</string>
+    <string name="title_invalid_issue_url">Invalid Issue URL</string>
+    <string name="message_invalid_issue_url">A repository and issue number could not be parsed from \'\'{0}\'\'</string>
 
 </resources>

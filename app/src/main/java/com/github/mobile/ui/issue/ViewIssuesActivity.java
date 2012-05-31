@@ -20,10 +20,16 @@ import static com.github.mobile.Intents.EXTRA_POSITION;
 import static com.github.mobile.Intents.EXTRA_REPOSITORIES;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import static com.github.mobile.Intents.EXTRA_USERS;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.TextUtils;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.github.mobile.Intents.Builder;
@@ -31,10 +37,12 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.ui.DialogFragmentActivity;
+import com.github.mobile.ui.LightAlertDialog;
 import com.github.mobile.ui.UrlLauncher;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -127,7 +135,7 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
     @InjectView(id.vp_pages)
     private ViewPager pager;
 
-    @InjectExtra(EXTRA_ISSUE_NUMBERS)
+    @InjectExtra(value = EXTRA_ISSUE_NUMBERS, optional = true)
     private ArrayList<Integer> issueIds;
 
     @InjectExtra(value = EXTRA_REPOSITORIES, optional = true)
@@ -139,7 +147,7 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
     @InjectExtra(value = EXTRA_REPOSITORY, optional = true)
     private Repository repo;
 
-    @InjectExtra(EXTRA_POSITION)
+    @InjectExtra(value = EXTRA_POSITION, optional = true)
     private int initialPosition;
 
     @Inject
@@ -156,6 +164,36 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
         super.onCreate(savedInstanceState);
 
         setContentView(layout.pager);
+
+        Uri data = getIntent().getData();
+        if (data != null) {
+            RepositoryId repoId = null;
+            int issueId = -1;
+            List<String> segments = data.getPathSegments();
+            if (segments != null && segments.size() >= 4 && "issues".equals(segments.get(2))) {
+                String repoOwner = segments.get(0);
+                String repoName = segments.get(1);
+                String number = segments.get(3);
+                if (!TextUtils.isEmpty(repoOwner) && !TextUtils.isEmpty(repoName) && !TextUtils.isEmpty(number)) {
+                    repoId = RepositoryId.create(repoOwner, repoName);
+                    try {
+                        issueId = Integer.parseInt(number);
+                    } catch (NumberFormatException nfe) {
+                        issueId = -1;
+                    }
+                }
+            }
+
+            if (repoId != null && issueId > 0) {
+                repoIds = new ArrayList<RepositoryId>();
+                repoIds.add(repoId);
+                issueIds = new ArrayList<Integer>();
+                issueIds.add(issueId);
+            } else {
+                showParseError(data.toString());
+                return;
+            }
+        }
 
         if (repo != null)
             adapter = new IssuesPagerAdapter(getSupportFragmentManager(), repo, issueIds);
@@ -208,5 +246,26 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
             super.startActivity(converted);
         else
             super.startActivity(intent);
+    }
+
+    private void showParseError(String url) {
+        AlertDialog dialog = LightAlertDialog.create(this);
+        dialog.setTitle(string.title_invalid_issue_url);
+        dialog.setMessage(MessageFormat.format(getString(string.message_invalid_issue_url), url));
+        dialog.setOnCancelListener(new OnCancelListener() {
+
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                finish();
+            }
+        });
+        dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(android.R.string.ok), new OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        dialog.show();
     }
 }
