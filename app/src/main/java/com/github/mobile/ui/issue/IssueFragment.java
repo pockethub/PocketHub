@@ -49,7 +49,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.actionbarsherlock.R.color;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -72,6 +71,7 @@ import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragmen
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -148,6 +148,8 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
     private View milestoneProgressArea;
 
     private TextView milestoneText;
+
+    private MenuItem stateItem;
 
     private HttpImageGetter bodyImageGetter;
 
@@ -312,12 +314,16 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         createdDateText.setText(new StyledText().append("opened ").append(issue.getCreatedAt()));
         avatarHelper.bind(creatorAvatar, issue.getUser());
 
-        if (STATE_OPEN.equals(issue.getState())) {
-            stateText.setText(string.open);
-            stateText.setBackgroundResource(color.state_background_open);
-        } else {
-            stateText.setText(string.closed);
-            stateText.setBackgroundResource(color.state_background_closed);
+        if (STATE_OPEN.equals(issue.getState()))
+            stateText.setVisibility(GONE);
+        else {
+            StyledText text = new StyledText();
+            text.bold(getString(string.closed));
+            Date closedAt = issue.getClosedAt();
+            if (closedAt != null)
+                text.append(' ').append(closedAt);
+            stateText.setText(text);
+            stateText.setVisibility(VISIBLE);
         }
 
         User assignee = issue.getAssignee();
@@ -368,6 +374,12 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             progress.setVisibility(GONE);
         if (VISIBLE != list.getVisibility())
             list.setVisibility(VISIBLE);
+
+        if (stateItem != null)
+            if (STATE_OPEN.equals(issue.getState()))
+                stateItem.setTitle(string.close);
+            else
+                stateItem.setTitle(string.reopen);
     }
 
     private void refreshIssue() {
@@ -449,6 +461,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
     @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
         inflater.inflate(menu.issue_view, optionsMenu);
+        stateItem = optionsMenu.findItem(id.issue_toggle_state);
     }
 
     @Override
@@ -489,6 +502,9 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             return true;
         case id.refresh:
             refreshIssue();
+            return true;
+        case id.issue_toggle_state:
+            stateTask.confirm(STATE_OPEN.equals(issue.getState()));
             return true;
         default:
             return super.onOptionsItemSelected(item);

@@ -66,7 +66,6 @@
     <color name="sign_up_background_bottom">#D4D4D4</color>
     <color name="sign_up_text">#666666</color>
     <color name="sign_up_text_link">#3797C7</color>
-    <color name="state_background_open">#6CC644</color>
     <color name="state_background_closed">#BD2C00</color>
     <color name="state_text">#FFFFFF</color>
 

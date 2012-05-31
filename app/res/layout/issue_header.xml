@@ -24,10 +24,10 @@
         style="@style/SubtitleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/state_background_closed"
         android:gravity="center"
         android:padding="8dp"
-        android:textColor="@color/state_text"
-        android:textStyle="bold" />
+        android:textColor="@color/state_text" />
 
     <LinearLayout
         android:layout_width="match_parent"
