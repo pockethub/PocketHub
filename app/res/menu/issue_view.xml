@@ -33,6 +33,7 @@
         android:title="@string/edit"/>
     <item
         android:id="@+id/issue_toggle_state"
+        android:icon="@drawable/menu_issue_close"
         android:showAsAction="never"
         android:title="@string/close"/>
 

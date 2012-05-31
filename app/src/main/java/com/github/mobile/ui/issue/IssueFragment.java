@@ -52,6 +52,7 @@ import android.widget.TextView;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.mobile.R.drawable;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
@@ -377,9 +378,9 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
 
         if (stateItem != null)
             if (STATE_OPEN.equals(issue.getState()))
-                stateItem.setTitle(string.close);
+                stateItem.setTitle(string.close).setIcon(drawable.menu_issue_close);
             else
-                stateItem.setTitle(string.reopen);
+                stateItem.setTitle(string.reopen).setIcon(drawable.menu_issue_open);
     }
 
     private void refreshIssue() {
