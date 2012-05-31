@@ -30,6 +30,7 @@
         android:layout_width="match_parent"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/tv_file_icon"
+        android:paddingBottom="0dp"
         android:paddingLeft="10dp"
         android:singleLine="true" />
 
