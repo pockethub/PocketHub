@@ -19,6 +19,9 @@ import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
 import static android.accounts.AccountManager.KEY_ACCOUNT_TYPE;
 import static android.accounts.AccountManager.KEY_AUTHTOKEN;
 import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
+import static android.view.KeyEvent.ACTION_DOWN;
+import static android.view.KeyEvent.KEYCODE_ENTER;
+import static android.view.inputmethod.EditorInfo.IME_ACTION_DONE;
 import static com.github.mobile.accounts.Constants.AUTH_TOKEN_TYPE;
 import static com.github.mobile.accounts.Constants.GITHUB_ACCOUNT_TYPE;
 import static com.github.mobile.accounts.Constants.GITHUB_PROVIDER_AUTHORITY;
@@ -37,8 +40,12 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnKeyListener;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -162,6 +169,28 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
         };
         usernameEdit.addTextChangedListener(watcher);
         passwordEdit.addTextChangedListener(watcher);
+
+        passwordEdit.setOnKeyListener(new OnKeyListener() {
+
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event != null && ACTION_DOWN == event.getAction() && keyCode == KEYCODE_ENTER && loginEnabled()) {
+                    handleLogin();
+                    return true;
+                } else
+                    return false;
+            }
+        });
+
+        passwordEdit.setOnEditorActionListener(new OnEditorActionListener() {
+
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == IME_ACTION_DONE && loginEnabled()) {
+                    handleLogin();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -171,10 +200,13 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
         updateEnablement();
     }
 
+    private boolean loginEnabled() {
+        return !TextUtils.isEmpty(usernameEdit.getText()) && !TextUtils.isDigitsOnly(passwordEdit.getText());
+    }
+
     private void updateEnablement() {
         if (loginItem != null)
-            loginItem.setEnabled(!TextUtils.isEmpty(usernameEdit.getText())
-                    && !TextUtils.isDigitsOnly(passwordEdit.getText()));
+            loginItem.setEnabled(loginEnabled());
     }
 
     /**
