@@ -18,17 +18,10 @@
 
     <item>
         <shape android:shape="rectangle" >
-            <solid android:color="@color/pager_title_background_top" />
-        </shape>
-    </item>
-    <item android:top="1dp">
-        <shape android:shape="rectangle" >
             <solid android:color="@color/pager_title_background_bottom" />
         </shape>
     </item>
-    <item
-        android:bottom="1dp"
-        android:top="0dp">
+    <item android:bottom="1dp">
         <shape>
             <gradient
                 android:angle="270"
@@ -36,9 +29,7 @@
                 android:startColor="@color/pager_title_background_start" />
         </shape>
     </item>
-    <item
-        android:bottom="1dp"
-        android:top="1dp">
+    <item android:bottom="1dp">
         <bitmap
             android:src="@drawable/texture"
             android:tileMode="repeat" />
