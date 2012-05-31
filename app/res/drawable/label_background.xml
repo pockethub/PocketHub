@@ -16,24 +16,42 @@
 -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <item>
-        <shape>
-            <solid android:color="@color/label_border" />
+    <item android:id="@+id/item_outer_layer">
+        <layer-list>
+            <item android:id="@+id/item_outer">
+                <shape>
+                    <corners android:radius="2dp" />
+                </shape>
+            </item>
+            <item>
+                <shape>
+                    <solid android:color="@color/label_outer" />
 
-            <corners android:radius="2dp" />
-        </shape>
+                    <corners android:radius="2dp" />
+                </shape>
+            </item>
+        </layer-list>
     </item>
     <item
-        android:id="@+id/item_inner"
+        android:id="@+id/item_inner_layer"
         android:bottom="1dp"
         android:left="1dp"
         android:right="1dp"
         android:top="1dp">
-        <shape>
-            <solid android:color="@color/label_border" />
+        <layer-list>
+            <item android:id="@+id/item_inner">
+                <shape>
+                    <corners android:radius="1dp" />
+                </shape>
+            </item>
+            <item>
+                <shape>
+                    <solid android:color="@color/label_inner" />
 
-            <corners android:radius="1dp" />
-        </shape>
+                    <corners android:radius="1dp" />
+                </shape>
+            </item>
+        </layer-list>
     </item>
     <item
         android:id="@+id/item_bg"
@@ -42,8 +60,6 @@
         android:right="2dp"
         android:top="2dp">
         <shape>
-            <solid android:color="@color/label_border" />
-
             <corners android:radius="1dp" />
         </shape>
     </item>
