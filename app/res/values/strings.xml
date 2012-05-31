@@ -196,5 +196,6 @@
     <string name="issue_confirm_close_title">Close Issue</string>
     <string name="issue_confirm_reopen_title">Reopen Issue</string>
     <string name="closed">Closed</string>
+    <string name="no_description_given">No description given.</string>
 
 </resources>

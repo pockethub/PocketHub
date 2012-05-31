@@ -35,6 +35,7 @@ import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -301,7 +302,11 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
     private void updateHeader(final Issue issue) {
         titleText.setText(issue.getTitle());
 
-        bodyImageGetter.bind(bodyText, issue.getBodyHtml(), issue.getId());
+        String body = issue.getBodyHtml();
+        if (!TextUtils.isEmpty(body))
+            bodyImageGetter.bind(bodyText, body, issue.getId());
+        else
+            bodyText.setText(string.no_description_given);
 
         authorText.setText(issue.getUser().getLogin());
         createdDateText.setText(new StyledText().append("opened ").append(issue.getCreatedAt()));
