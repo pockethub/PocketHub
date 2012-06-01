@@ -30,7 +30,7 @@ public class TypefaceUtils {
     /**
      * Private repository icon
      */
-    public static final char ICON_PRIVATE = '\uf200';
+    public static final char ICON_PRIVATE = '\uf26a';
 
     /**
      * Public repository icon
