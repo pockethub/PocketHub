@@ -21,7 +21,6 @@ import android.test.AndroidTestCase;
 import com.github.mobile.core.issue.IssueUriMatcher;
 
 import org.eclipse.egit.github.core.RepositoryIssue;
-import org.junit.Test;
 
 /**
  * Unit tests of {@link IssueUriMatcher}
@@ -31,16 +30,14 @@ public class IssueUriMatcherTest extends AndroidTestCase {
 	/**
 	 * Verity empty uri
 	 */
-	@Test
-	public void emptyUri() {
-		assertNull(IssueUriMatcher.getIssue(null));
+	public void testEmptyUri() {
+		assertNull(IssueUriMatcher.getIssue(Uri.parse("")));
 	}
 
 	/**
 	 * Verity non-numeric issue number in uri
 	 */
-	@Test
-	public void nonNumericIssueNumber() {
+	public void testNonNumericIssueNumber() {
 		assertNull(IssueUriMatcher.getIssue(Uri
 				.parse("https://github.com/defunkt/resque/issues/fourty")));
 	}
@@ -48,8 +45,7 @@ public class IssueUriMatcherTest extends AndroidTestCase {
 	/**
 	 * Verify http uri
 	 */
-	@Test
-	public void httpUri() {
+	public void testHttpUri() {
 		RepositoryIssue issue = IssueUriMatcher.getIssue(Uri
 				.parse("https://github.com/defunkt/resque/issues/3"));
 		assertNotNull(issue);
@@ -63,8 +59,7 @@ public class IssueUriMatcherTest extends AndroidTestCase {
 	/**
 	 * Verify https uri
 	 */
-	@Test
-	public void httpsUri() {
+	public void testHttpsUri() {
 		RepositoryIssue issue = IssueUriMatcher.getIssue(Uri
 				.parse("http://github.com/defunkt/resque/issues/15"));
 		assertNotNull(issue);
@@ -78,8 +73,7 @@ public class IssueUriMatcherTest extends AndroidTestCase {
 	/**
 	 * Verify uri with comment fragment
 	 */
-	@Test
-	public void commentUri() {
+	public void testCommentUri() {
 		RepositoryIssue issue = IssueUriMatcher
 				.getIssue(Uri
 						.parse("https://github.com/defunkt/resque/issues/300#issuecomment-123456"));
