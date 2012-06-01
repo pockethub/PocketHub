@@ -66,7 +66,7 @@ public class GistListAdapter extends ItemListAdapter<Gist, GistView> {
         if (!TextUtils.isEmpty(description))
             view.title.setText(description);
         else
-            view.title.setText(string.no_description);
+            view.title.setText(string.no_description_given);
 
         User user = gist.getUser();
         avatarHelper.bind(view.avatar, user);
