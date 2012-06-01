@@ -112,7 +112,7 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
 
         Issue issue = issueMatcher.getIssue(event);
         if (issue != null && (issue.getPullRequest() == null || issue.getPullRequest().getHtmlUrl() == null)) {
-            startActivity(IssuesViewActivity.createIntent(issue));
+            viewIssue(issue);
             return;
         }
 
@@ -184,6 +184,15 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
      * @param users
      */
     protected void viewUser(UserPair users) {
+    }
+
+    /**
+     * Start an activity to view the given {@link Issue}
+     *
+     * @param issue
+     */
+    protected void viewIssue(Issue issue) {
+        startActivity(IssuesViewActivity.createIntent(issue));
     }
 
     @Override

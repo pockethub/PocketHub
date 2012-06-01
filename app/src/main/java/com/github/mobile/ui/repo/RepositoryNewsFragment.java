@@ -19,8 +19,12 @@ import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 
 import com.github.mobile.core.ResourcePager;
 import com.github.mobile.ui.NewsFragment;
+import com.github.mobile.ui.issue.IssuesViewActivity;
 import com.github.mobile.ui.user.EventPager;
 
+import java.util.Collections;
+
+import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.event.Event;
@@ -54,5 +58,10 @@ public class RepositoryNewsFragment extends NewsFragment {
     protected void viewRepository(Repository repository) {
         if (!repo.generateId().equals(repository.generateId()))
             super.viewRepository(repository);
+    }
+
+    @Override
+    protected void viewIssue(Issue issue) {
+        startActivity(IssuesViewActivity.createIntent(Collections.singletonList(issue), repo, 0));
     }
 }
