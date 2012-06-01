@@ -187,8 +187,7 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
     }
 
     private void refresh(final Bundle args) {
-        final Activity activity = getActivity();
-        if (activity == null)
+        if (!isUsable())
             return;
 
         LoaderManager manager = getLoaderManager();
@@ -353,7 +352,7 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
      * @return this fragment
      */
     public ItemListFragment<E> setListShown(final boolean shown, final boolean animate) {
-        if (getActivity() == null)
+        if (!isUsable())
             return this;
 
         if (shown == listShown)
@@ -405,5 +404,14 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
      * @param id
      */
     public void onListItemClick(ListView l, View v, int position, long id) {
+    }
+
+    /**
+     * Is this fragment still part of an activity and usable from the UI-thread?
+     *
+     * @return true if usable on the UI-thread, false otherwise
+     */
+    protected boolean isUsable() {
+        return getActivity() != null;
     }
 }
