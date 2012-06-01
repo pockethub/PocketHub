@@ -29,13 +29,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.text.TextUtils;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
+import com.github.mobile.core.issue.IssueUriMatcher;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.LightAlertDialog;
 import com.github.mobile.ui.UrlLauncher;
@@ -136,7 +136,7 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
     private ViewPager pager;
 
     @InjectExtra(value = EXTRA_ISSUE_NUMBERS, optional = true)
-    private ArrayList<Integer> issueIds;
+    private ArrayList<Integer> issueNumbers;
 
     @InjectExtra(value = EXTRA_REPOSITORIES, optional = true)
     private ArrayList<RepositoryId> repoIds;
@@ -167,28 +167,11 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
 
         Uri data = getIntent().getData();
         if (data != null) {
-            RepositoryId repoId = null;
-            int issueId = -1;
-            List<String> segments = data.getPathSegments();
-            if (segments != null && segments.size() >= 4 && "issues".equals(segments.get(2))) {
-                String repoOwner = segments.get(0);
-                String repoName = segments.get(1);
-                String number = segments.get(3);
-                if (!TextUtils.isEmpty(repoOwner) && !TextUtils.isEmpty(repoName) && !TextUtils.isEmpty(number)) {
-                    repoId = RepositoryId.create(repoOwner, repoName);
-                    try {
-                        issueId = Integer.parseInt(number);
-                    } catch (NumberFormatException nfe) {
-                        issueId = -1;
-                    }
-                }
-            }
-
-            if (repoId != null && issueId > 0) {
-                repoIds = new ArrayList<RepositoryId>();
-                repoIds.add(repoId);
-                issueIds = new ArrayList<Integer>();
-                issueIds.add(issueId);
+            RepositoryIssue issue = IssueUriMatcher.getIssue(data);
+            if (issue != null) {
+                repo = issue.getRepository();
+                issueNumbers = new ArrayList<Integer>();
+                issueNumbers.add(issue.getNumber());
             } else {
                 showParseError(data.toString());
                 return;
@@ -196,9 +179,9 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
         }
 
         if (repo != null)
-            adapter = new IssuesPagerAdapter(getSupportFragmentManager(), repo, issueIds);
+            adapter = new IssuesPagerAdapter(getSupportFragmentManager(), repo, issueNumbers);
         else
-            adapter = new IssuesPagerAdapter(getSupportFragmentManager(), repoIds, issueIds, users);
+            adapter = new IssuesPagerAdapter(getSupportFragmentManager(), repoIds, issueNumbers, users);
         pager.setAdapter(adapter);
 
         pager.setOnPageChangeListener(this);
@@ -219,7 +202,7 @@ public class ViewIssuesActivity extends DialogFragmentActivity implements OnPage
 
     public void onPageSelected(int position) {
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(getString(string.issue_title) + issueIds.get(position));
+        actionBar.setTitle(getString(string.issue_title) + issueNumbers.get(position));
         if (repo == null) {
             if (repoIds != null)
                 actionBar.setSubtitle(repoIds.get(position).generateId());
