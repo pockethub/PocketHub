@@ -237,7 +237,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
                 client.setCredentials(username, password);
                 User user = new UserService(client).getUser();
 
-                Account account = new Account(username, GITHUB_ACCOUNT_TYPE);
+                Account account = new Account(user.getLogin(), GITHUB_ACCOUNT_TYPE);
                 if (requestNewAccount) {
                     accountManager.addAccountExplicitly(account, password, null);
                     configureSyncFor(account);
