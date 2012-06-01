@@ -15,6 +15,7 @@
  */
 package com.github.mobile.ui.user;
 
+import static android.view.View.GONE;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.mobile.R.drawable;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
@@ -50,9 +52,9 @@ public class HomeDropdownListAdapter extends BaseAdapter {
     public static final int ACTION_DASHBOARD = 1;
 
     /**
-     * Action for issues filter
+     * Action for bookmarks
      */
-    public static final int ACTION_FILTERS = 2;
+    public static final int ACTION_BOOKMARKS = 2;
 
     private static class OrgItemView extends ItemView {
 
@@ -183,7 +185,7 @@ public class HomeDropdownListAdapter extends BaseAdapter {
             return context.getString(string.gists);
         case ACTION_DASHBOARD:
             return context.getString(string.issue_dashboard);
-        case ACTION_FILTERS:
+        case ACTION_BOOKMARKS:
             return context.getString(string.bookmarks);
         default:
             return listAdapter.getItem(position);
@@ -195,7 +197,7 @@ public class HomeDropdownListAdapter extends BaseAdapter {
         switch (getAction(position)) {
         case ACTION_GISTS:
         case ACTION_DASHBOARD:
-        case ACTION_FILTERS:
+        case ACTION_BOOKMARKS:
             return getItem(position).hashCode();
         default:
             return listAdapter.getItemId(position);
@@ -207,7 +209,7 @@ public class HomeDropdownListAdapter extends BaseAdapter {
         switch (getAction(position)) {
         case ACTION_GISTS:
         case ACTION_DASHBOARD:
-        case ACTION_FILTERS:
+        case ACTION_BOOKMARKS:
             return listAdapter.getView(selected, null, parent);
         default:
             return listAdapter.getView(position, null, parent);
@@ -218,12 +220,20 @@ public class HomeDropdownListAdapter extends BaseAdapter {
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         switch (getAction(position)) {
         case ACTION_GISTS:
+            View gistsRoot = LayoutInflater.from(context).inflate(layout.org_dropdown_item, null);
+            gistsRoot.findViewById(id.iv_avatar).setVisibility(GONE);
+            ((TextView) gistsRoot.findViewById(id.tv_org_name)).setText(getItem(position).toString());
+            return gistsRoot;
         case ACTION_DASHBOARD:
-        case ACTION_FILTERS:
-            Object item = getItem(position);
-            View root = LayoutInflater.from(context).inflate(layout.context_dropdown_item, null);
-            ((TextView) root.findViewById(id.tv_item_name)).setText(item.toString());
-            return root;
+            View dashboardRoot = LayoutInflater.from(context).inflate(layout.org_dropdown_item, null);
+            dashboardRoot.findViewById(id.iv_avatar).setVisibility(GONE);
+            ((TextView) dashboardRoot.findViewById(id.tv_org_name)).setText(getItem(position).toString());
+            return dashboardRoot;
+        case ACTION_BOOKMARKS:
+            View bookmarksRoot = LayoutInflater.from(context).inflate(layout.org_dropdown_item, null);
+            ((ImageView) bookmarksRoot.findViewById(id.iv_avatar)).setBackgroundResource(drawable.action_bookmark);
+            ((TextView) bookmarksRoot.findViewById(id.tv_org_name)).setText(getItem(position).toString());
+            return bookmarksRoot;
         default:
             return dropdownAdapter.getDropDownView(position, null, parent);
         }

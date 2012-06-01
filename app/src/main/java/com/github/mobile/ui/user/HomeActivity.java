@@ -17,8 +17,8 @@ package com.github.mobile.ui.user;
 
 import static com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_LIST;
 import static com.github.mobile.Intents.EXTRA_USER;
+import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_BOOKMARKS;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_DASHBOARD;
-import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_FILTERS;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_GISTS;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -193,7 +193,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
             case ACTION_DASHBOARD:
                 startActivity(new Intent(this, IssueDashboardActivity.class));
                 break;
-            case ACTION_FILTERS:
+            case ACTION_BOOKMARKS:
                 startActivity(ViewFiltersActivity.createIntent());
                 break;
             }
