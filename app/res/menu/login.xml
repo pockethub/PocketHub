@@ -19,8 +19,7 @@
     <item
         android:id="@+id/login"
         android:enabled="false"
-        android:icon="@drawable/action_save"
-        android:showAsAction="ifRoom"
+        android:showAsAction="always"
         android:title="@string/log_in"/>
 
 </menu>
