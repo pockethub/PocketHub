@@ -169,6 +169,7 @@
     <string name="invalid_password">Please enter a valid password.</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
+    <string name="login_or_email">Login or Email</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
     <string name="members">Members</string>
