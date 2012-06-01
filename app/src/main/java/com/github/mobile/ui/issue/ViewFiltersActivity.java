@@ -84,7 +84,10 @@ public class ViewFiltersActivity extends DialogFragmentActivity implements OnIte
 
                 @Override
                 public void success(IssueFilter response) {
-                    ((FilterListFragment) getSupportFragmentManager().findFragmentById(android.R.id.list)).refresh();
+                    FilterListFragment fragment = (FilterListFragment) getSupportFragmentManager().findFragmentById(
+                            android.R.id.list);
+                    if (fragment != null)
+                        fragment.refresh();
                 }
             });
             return;
