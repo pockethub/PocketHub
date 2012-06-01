@@ -23,7 +23,6 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.actionbarsherlock.app.SherlockActivity;
-import com.github.mobile.R;
 import com.github.mobile.R.string;
 import com.github.mobile.core.issue.IssueUriMatcher;
 import com.github.mobile.core.repo.RepositoryUriMatcher;
