@@ -198,7 +198,7 @@
     <string name="no_description_given">No description given.</string>
     <string name="close">Close</string>
     <string name="reopen">Reopen</string>
-    <string name="title_invalid_issue_url">Invalid Issue URL</string>
-    <string name="message_invalid_issue_url">A repository and issue number could not be parsed from \'\'{0}\'\'</string>
+    <string name="title_invalid_github_url">Invalid GitHub URL</string>
+    <string name="message_invalid_github_url">The following URL could not be opened by this application:\n{0}</string>
 
 </resources>

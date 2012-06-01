@@ -63,6 +63,7 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(layout.pager_with_title);
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(repository.getName());
         actionBar.setSubtitle(repository.getOwner().getLogin());

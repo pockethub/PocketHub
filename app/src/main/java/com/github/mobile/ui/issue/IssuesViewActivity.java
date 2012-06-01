@@ -20,12 +20,7 @@ import static com.github.mobile.Intents.EXTRA_POSITION;
 import static com.github.mobile.Intents.EXTRA_REPOSITORIES;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import static com.github.mobile.Intents.EXTRA_USERS;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -35,14 +30,11 @@ import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
-import com.github.mobile.core.issue.IssueUriMatcher;
 import com.github.mobile.ui.DialogFragmentActivity;
-import com.github.mobile.ui.LightAlertDialog;
 import com.github.mobile.ui.UrlLauncher;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -105,7 +97,11 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
         boolean hasOwners = false;
         for (Issue issue : issues) {
             numbers.add(issue.getNumber());
-            repos.add(RepositoryId.createFromUrl(issue.getHtmlUrl()));
+            if (issue instanceof RepositoryIssue) {
+                Repository issueRepo = ((RepositoryIssue) issue).getRepository();
+                repos.add(RepositoryId.create(issueRepo.getOwner().getLogin(), issueRepo.getName()));
+            } else
+                repos.add(RepositoryId.createFromUrl(issue.getHtmlUrl()));
             User owner = getOwner(issue);
             if (owner != null)
                 hasOwners = true;
@@ -135,7 +131,7 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
     @InjectView(id.vp_pages)
     private ViewPager pager;
 
-    @InjectExtra(value = EXTRA_ISSUE_NUMBERS, optional = true)
+    @InjectExtra(EXTRA_ISSUE_NUMBERS)
     private ArrayList<Integer> issueNumbers;
 
     @InjectExtra(value = EXTRA_REPOSITORIES, optional = true)
@@ -147,7 +143,7 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
     @InjectExtra(value = EXTRA_REPOSITORY, optional = true)
     private Repository repo;
 
-    @InjectExtra(value = EXTRA_POSITION, optional = true)
+    @InjectExtra(EXTRA_POSITION)
     private int initialPosition;
 
     @Inject
@@ -164,19 +160,6 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
         super.onCreate(savedInstanceState);
 
         setContentView(layout.pager);
-
-        Uri data = getIntent().getData();
-        if (data != null) {
-            RepositoryIssue issue = IssueUriMatcher.getIssue(data);
-            if (issue != null) {
-                repo = issue.getRepository();
-                issueNumbers = new ArrayList<Integer>();
-                issueNumbers.add(issue.getNumber());
-            } else {
-                showParseError(data.toString());
-                return;
-            }
-        }
 
         if (repo != null)
             adapter = new IssuesPagerAdapter(getSupportFragmentManager(), repo, issueNumbers);
@@ -204,8 +187,13 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getString(string.issue_title) + issueNumbers.get(position));
         if (repo == null) {
-            if (repoIds != null)
-                actionBar.setSubtitle(repoIds.get(position).generateId());
+            if (repoIds != null) {
+                RepositoryId repoId = repoIds.get(position);
+                if (repoId != null)
+                    actionBar.setSubtitle(repoId.generateId());
+                else
+                    actionBar.setSubtitle(null);
+            }
             if (users != null) {
                 user.set(users.get(position));
                 avatars.bind(actionBar, user);
@@ -229,26 +217,5 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
             super.startActivity(converted);
         else
             super.startActivity(intent);
-    }
-
-    private void showParseError(String url) {
-        AlertDialog dialog = LightAlertDialog.create(this);
-        dialog.setTitle(string.title_invalid_issue_url);
-        dialog.setMessage(MessageFormat.format(getString(string.message_invalid_issue_url), url));
-        dialog.setOnCancelListener(new OnCancelListener() {
-
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                finish();
-            }
-        });
-        dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(android.R.string.ok), new OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
-        dialog.show();
     }
 }
