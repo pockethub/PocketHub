@@ -125,7 +125,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.ViewIssuesActivity">
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.IssuesViewActivity">
             <intent-filter>
                 <action android:name="com.github.mobile.android.issues.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>

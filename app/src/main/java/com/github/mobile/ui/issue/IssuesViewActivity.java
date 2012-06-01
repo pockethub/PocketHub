@@ -60,7 +60,7 @@ import roboguice.inject.InjectView;
 /**
  * Activity display a collection of issues in a pager
  */
-public class ViewIssuesActivity extends DialogFragmentActivity implements OnPageChangeListener {
+public class IssuesViewActivity extends DialogFragmentActivity implements OnPageChangeListener {
 
     /**
      * Create an intent to show a single issue

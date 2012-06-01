@@ -172,7 +172,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         startActivityForResult(
-                ViewIssuesActivity.createIntent(items, repository, position - getListAdapter().getHeadersCount()),
+                IssuesViewActivity.createIntent(items, repository, position - getListAdapter().getHeadersCount()),
                 ISSUE_VIEW);
     }
 
@@ -226,7 +226,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
         if (requestCode == ISSUE_CREATE && resultCode == RESULT_OK) {
             Issue created = (Issue) data.getSerializableExtra(EXTRA_ISSUE);
             forceRefresh();
-            startActivityForResult(ViewIssuesActivity.createIntent(created), ISSUE_VIEW);
+            startActivityForResult(IssuesViewActivity.createIntent(created), ISSUE_VIEW);
             return;
         }
 
