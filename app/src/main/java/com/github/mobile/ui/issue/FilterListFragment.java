@@ -36,7 +36,7 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setEmptyText(string.no_filters);
+        setEmptyText(string.no_bookmarks);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> implements
 
     @Override
     protected int getErrorMessage(Exception exception) {
-        return string.error_filters_load;
+        return string.error_bookmarks_load;
     }
 
     @Override

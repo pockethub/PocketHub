@@ -184,7 +184,7 @@ public class HomeDropdownListAdapter extends BaseAdapter {
         case ACTION_DASHBOARD:
             return context.getString(string.issue_dashboard);
         case ACTION_FILTERS:
-            return context.getString(string.issue_filters);
+            return context.getString(string.bookmarks);
         default:
             return listAdapter.getItem(position);
         }
