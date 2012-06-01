@@ -60,15 +60,14 @@ import com.github.mobile.R.string;
 import com.github.mobile.core.issue.FullIssue;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.core.issue.RefreshIssueTask;
+import com.github.mobile.ui.DialogFragment;
 import com.github.mobile.ui.DialogFragmentActivity;
-import com.github.mobile.ui.DialogResultListener;
 import com.github.mobile.ui.HeaderFooterListAdapter;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.ui.comment.CommentListAdapter;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.ToastUtils;
-import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -88,7 +87,7 @@ import roboguice.inject.InjectView;
 /**
  * Fragment to display an issue
  */
-public class IssueFragment extends RoboSherlockFragment implements DialogResultListener {
+public class IssueFragment extends DialogFragment {
 
     private int issueNumber;
 
@@ -170,6 +169,8 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
         DialogFragmentActivity dialogActivity = (DialogFragmentActivity) getActivity();
 
         milestoneTask = new EditMilestoneTask(dialogActivity, repositoryId, issueNumber) {
+
+            @Override
             protected void onSuccess(Issue editedIssue) throws Exception {
                 super.onSuccess(editedIssue);
 
@@ -303,6 +304,9 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
     }
 
     private void updateHeader(final Issue issue) {
+        if (!isUsable())
+            return;
+
         titleText.setText(issue.getTitle());
 
         String body = issue.getBodyHtml();
@@ -397,7 +401,7 @@ public class IssueFragment extends RoboSherlockFragment implements DialogResultL
             protected void onSuccess(FullIssue fullIssue) throws Exception {
                 super.onSuccess(fullIssue);
 
-                if (getActivity() == null)
+                if (!isUsable())
                     return;
 
                 issue = fullIssue.getIssue();

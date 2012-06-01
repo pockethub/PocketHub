@@ -49,6 +49,7 @@ import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.core.gist.RefreshGistTask;
 import com.github.mobile.core.gist.StarGistTask;
 import com.github.mobile.core.gist.UnstarGistTask;
+import com.github.mobile.ui.DialogFragment;
 import com.github.mobile.ui.HeaderFooterListAdapter;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.ui.comment.CommentListAdapter;
@@ -56,7 +57,6 @@ import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.ToastUtils;
 import com.github.mobile.util.TypefaceUtils;
-import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -76,7 +76,7 @@ import roboguice.inject.InjectView;
 /**
  * Activity to display an existing Gist
  */
-public class GistFragment extends RoboSherlockFragment implements OnItemClickListener {
+public class GistFragment extends DialogFragment implements OnItemClickListener {
 
     private String gistId;
 
@@ -372,7 +372,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
             protected void onSuccess(FullGist fullGist) throws Exception {
                 super.onSuccess(fullGist);
 
-                if (getActivity() == null)
+                if (!isUsable())
                     return;
 
                 starred = fullGist.isStarred();
