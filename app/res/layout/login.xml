@@ -51,7 +51,7 @@
                 android:id="@+id/et_login"
                 style="@style/LoginEditText"
                 android:imeOptions="actionNext"
-                android:inputType="textNoSuggestions" />
+                android:inputType="textEmailAddress" />
 
             <TextView
                 style="@style/HeaderTitleText"
