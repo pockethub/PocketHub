@@ -47,11 +47,13 @@
                 style="@style/HeaderTitleText"
                 android:text="@string/login_or_email" />
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/et_login"
                 style="@style/LoginEditText"
+                android:completionThreshold="1"
                 android:imeOptions="actionNext"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:nextFocusDown="@+id/et_password" />
 
             <TextView
                 style="@style/HeaderTitleText"

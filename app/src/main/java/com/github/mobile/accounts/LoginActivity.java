@@ -43,6 +43,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
@@ -62,6 +64,7 @@ import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockAccount
 import com.google.inject.Inject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.egit.github.core.User;
@@ -114,10 +117,10 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
     private AccountManager accountManager;
 
     @InjectView(id.et_login)
-    private EditText usernameEdit;
+    private AutoCompleteTextView loginText;
 
     @InjectView(id.et_password)
-    private EditText passwordEdit;
+    private EditText passwordText;
 
     private RoboAsyncTask<User> authenticationTask;
 
@@ -167,10 +170,10 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
                 updateEnablement();
             }
         };
-        usernameEdit.addTextChangedListener(watcher);
-        passwordEdit.addTextChangedListener(watcher);
+        loginText.addTextChangedListener(watcher);
+        passwordText.addTextChangedListener(watcher);
 
-        passwordEdit.setOnKeyListener(new OnKeyListener() {
+        passwordText.setOnKeyListener(new OnKeyListener() {
 
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event != null && ACTION_DOWN == event.getAction() && keyCode == KEYCODE_ENTER && loginEnabled()) {
@@ -181,7 +184,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
             }
         });
 
-        passwordEdit.setOnEditorActionListener(new OnEditorActionListener() {
+        passwordText.setOnEditorActionListener(new OnEditorActionListener() {
 
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == IME_ACTION_DONE && loginEnabled()) {
@@ -191,6 +194,9 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
                 return false;
             }
         });
+
+        loginText.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,
+                getEmailAddresses()));
     }
 
     @Override
@@ -201,7 +207,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
     }
 
     private boolean loginEnabled() {
-        return !TextUtils.isEmpty(usernameEdit.getText()) && !TextUtils.isDigitsOnly(passwordEdit.getText());
+        return !TextUtils.isEmpty(loginText.getText()) && !TextUtils.isDigitsOnly(passwordText.getText());
     }
 
     private void updateEnablement() {
@@ -214,8 +220,8 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
      */
     public void handleLogin() {
         if (requestNewAccount)
-            username = usernameEdit.getText().toString();
-        password = passwordEdit.getText().toString();
+            username = loginText.getText().toString();
+        password = passwordText.getText().toString();
 
         final ProgressDialog dialog = LightProgressDialog.create(this, string.login_activity_authenticating);
         dialog.setCancelable(true);
@@ -353,5 +359,13 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
         getSupportMenuInflater().inflate(menu.login, optionMenu);
         loginItem = optionMenu.findItem(id.login);
         return true;
+    }
+
+    private List<String> getEmailAddresses() {
+        final Account[] accounts = accountManager.getAccountsByType("com.google");
+        final List<String> addresses = new ArrayList<String>(accounts.length);
+        for (Account account : accounts)
+            addresses.add(account.name);
+        return addresses;
     }
 }
