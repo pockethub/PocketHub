@@ -16,8 +16,6 @@
 package com.github.mobile.ui.gist;
 
 import static android.app.Activity.RESULT_OK;
-import static android.graphics.Typeface.ITALIC;
-import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.github.mobile.Intents.EXTRA_COMMENT;
@@ -28,9 +26,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
-import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,13 +77,6 @@ import roboguice.inject.InjectView;
  * Activity to display an existing Gist
  */
 public class GistFragment extends RoboSherlockFragment implements OnItemClickListener {
-
-    private static final SpannableStringBuilder NO_DESCRIPTION;
-
-    static {
-        NO_DESCRIPTION = new SpannableStringBuilder("No description");
-        NO_DESCRIPTION.setSpan(new StyleSpan(ITALIC), 0, NO_DESCRIPTION.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
-    }
 
     private String gistId;
 
@@ -219,7 +208,7 @@ public class GistFragment extends RoboSherlockFragment implements OnItemClickLis
         if (!TextUtils.isEmpty(desc))
             description.setText(desc);
         else
-            description.setText(NO_DESCRIPTION);
+            description.setText(string.no_description_given);
 
         if (GONE != progress.getVisibility())
             progress.setVisibility(GONE);
