@@ -58,8 +58,10 @@ public class StyledText extends SpannableStringBuilder {
     public StyledText append(final CharSequence text, final Object span) {
         if (!TextUtils.isEmpty(text)) {
             append(text);
-            final int length = length();
-            setSpan(span, length - text.length(), length, SPAN_EXCLUSIVE_EXCLUSIVE);
+            if (span != null) {
+                final int length = length();
+                setSpan(span, length - text.length(), length, SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
         }
         return this;
     }
@@ -72,7 +74,8 @@ public class StyledText extends SpannableStringBuilder {
 
     @Override
     public StyledText append(CharSequence text) {
-        super.append(text);
+        if (text != null)
+            super.append(text);
         return this;
     }
 
@@ -85,8 +88,10 @@ public class StyledText extends SpannableStringBuilder {
      */
     public StyledText append(final char text, final Object span) {
         append(text);
-        final int length = length();
-        setSpan(span, length - 1, length, SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (span != null) {
+            final int length = length();
+            setSpan(span, length - 1, length, SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
         return this;
     }
 
