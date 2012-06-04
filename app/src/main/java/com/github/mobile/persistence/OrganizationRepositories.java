@@ -87,7 +87,8 @@ public class OrganizationRepositories implements PersistableResource<Repository>
         builder.setTables("repos JOIN users ON (repos.ownerId = users.id)");
         return builder.query(readableDatabase, new String[] { "repos.repoId, repos.name", "users.id", "users.name",
                 "users.avatarurl", "repos.private", "repos.fork", "repos.description", "repos.forks", "repos.watchers",
-                "repos.language" }, "repos.orgId=?", new String[] { Integer.toString(org.getId()) }, null, null, null);
+                "repos.language", "repos.hasIssues" }, "repos.orgId=?", new String[] { Integer.toString(org.getId()) },
+                null, null, null);
     }
 
     @Override
@@ -108,6 +109,7 @@ public class OrganizationRepositories implements PersistableResource<Repository>
         repo.setForks(cursor.getInt(8));
         repo.setWatchers(cursor.getInt(9));
         repo.setLanguage(cursor.getString(10));
+        repo.setHasIssues(cursor.getInt(11) == 1);
 
         return repo;
     }
@@ -117,7 +119,7 @@ public class OrganizationRepositories implements PersistableResource<Repository>
         db.delete("repos", "orgId=?", new String[] { Integer.toString(org.getId()) });
         for (Repository repo : repos) {
             User owner = repo.getOwner();
-            ContentValues values = new ContentValues(10);
+            ContentValues values = new ContentValues(11);
 
             values.put("repoId", repo.getId());
             values.put("name", repo.getName());
@@ -129,6 +131,7 @@ public class OrganizationRepositories implements PersistableResource<Repository>
             values.put("forks", repo.getForks());
             values.put("watchers", repo.getWatchers());
             values.put("language", repo.getLanguage());
+            values.put("hasIssues", repo.isHasIssues() ? 1 : 0);
             db.replace("repos", null, values);
 
             values.clear();

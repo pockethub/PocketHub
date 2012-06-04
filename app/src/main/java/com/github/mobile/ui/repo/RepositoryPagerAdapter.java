@@ -26,11 +26,16 @@ import com.github.mobile.ui.issue.IssuesFragment;
  */
 public class RepositoryPagerAdapter extends FragmentPagerAdapter {
 
+    private final boolean hasIssues;
+
     /**
      * @param fm
+     * @param hasIssues
      */
-    public RepositoryPagerAdapter(FragmentManager fm) {
+    public RepositoryPagerAdapter(FragmentManager fm, boolean hasIssues) {
         super(fm);
+
+        this.hasIssues = hasIssues;
     }
 
     @Override
@@ -45,6 +50,7 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
         }
     }
 
+    @Override
     public Fragment getItem(int position) {
         switch (position) {
         case 0:
@@ -56,7 +62,8 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
         }
     }
 
+    @Override
     public int getCount() {
-        return 2;
+        return hasIssues ? 2 : 1;
     }
 }
