@@ -71,7 +71,8 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
         avatarHelper.bind(actionBar, repository.getOwner());
 
         ViewPager pager = (ViewPager) findViewById(id.vp_pages);
-        pager.setAdapter(new RepositoryPagerAdapter(getSupportFragmentManager(), repository.isHasIssues()));
+        pager.setAdapter(new RepositoryPagerAdapter(getSupportFragmentManager(), getResources(), repository
+                .isHasIssues()));
         ((TitlePageIndicator) findViewById(id.tpi_header)).setViewPager(pager);
     }
 

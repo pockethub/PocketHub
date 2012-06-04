@@ -15,10 +15,12 @@
  */
 package com.github.mobile.ui.repo;
 
+import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.github.mobile.R.string;
 import com.github.mobile.ui.issue.IssuesFragment;
 
 /**
@@ -26,15 +28,21 @@ import com.github.mobile.ui.issue.IssuesFragment;
  */
 public class RepositoryPagerAdapter extends FragmentPagerAdapter {
 
+    private final Resources resources;
+
     private final boolean hasIssues;
 
     /**
+     * Create repository pager adapter
+     *
      * @param fm
+     * @param resources
      * @param hasIssues
      */
-    public RepositoryPagerAdapter(FragmentManager fm, boolean hasIssues) {
+    public RepositoryPagerAdapter(FragmentManager fm, Resources resources, boolean hasIssues) {
         super(fm);
 
+        this.resources = resources;
         this.hasIssues = hasIssues;
     }
 
@@ -42,9 +50,9 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
         case 0:
-            return "News";
+            return resources.getString(string.news);
         case 1:
-            return "Issues";
+            return resources.getString(string.issues);
         default:
             return null;
         }
