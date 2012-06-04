@@ -107,7 +107,7 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
             return false;
 
         return TYPE_COMMIT_COMMENT.equals(type) //
-                || TYPE_CREATE.equals(type) //
+                || TYPE_CREATE.equals(type) && ((CreatePayload) payload).getRefType() != null //
                 || TYPE_DELETE.equals(type) //
                 || TYPE_DOWNLOAD.equals(type) //
                 || TYPE_FOLLOW.equals(type) //
