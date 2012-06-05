@@ -16,6 +16,7 @@
 package com.github.mobile.ui;
 
 import static android.content.Intent.ACTION_VIEW;
+import static android.content.Intent.CATEGORY_BROWSABLE;
 import android.content.Intent;
 import android.net.Uri;
 
@@ -51,7 +52,9 @@ public class UrlLauncher {
         if (gistId != null)
             return createGistIntent(uri, gistId);
 
-        return new Intent(ACTION_VIEW, Uri.parse(uri));
+        Intent intent = new Intent(ACTION_VIEW, Uri.parse(uri));
+        intent.addCategory(CATEGORY_BROWSABLE);
+        return intent;
     }
 
     private Intent createIssueIntent(final String uri, final int number) {
