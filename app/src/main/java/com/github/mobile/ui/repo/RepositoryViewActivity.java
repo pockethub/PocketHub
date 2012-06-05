@@ -17,25 +17,36 @@ package com.github.mobile.ui.repo;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
+import com.github.mobile.R.string;
+import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.ui.user.HomeActivity;
 import com.github.mobile.util.AvatarLoader;
+import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 import com.viewpagerindicator.TitlePageIndicator;
 
+import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.User;
+import org.eclipse.egit.github.core.service.RepositoryService;
 
 import roboguice.inject.InjectExtra;
+import roboguice.inject.InjectView;
 
 /**
  * Activity to view a repository
@@ -52,11 +63,38 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
         return new Builder("repo.VIEW").repo(repository).toIntent();
     }
 
+    private static class RefreshTask extends AuthenticatedUserTask<Repository> {
+
+        @Inject
+        private RepositoryService service;
+
+        private final IRepositoryIdProvider repo;
+
+        public RefreshTask(Context context, IRepositoryIdProvider repo) {
+            super(context);
+
+            this.repo = repo;
+        }
+
+        protected Repository run() throws Exception {
+            return service.getRepository(repo);
+        }
+    }
+
     @InjectExtra(EXTRA_REPOSITORY)
     private Repository repository;
 
     @Inject
     private AvatarLoader avatarHelper;
+
+    @InjectView(id.vp_pages)
+    private ViewPager pager;
+
+    @InjectView(id.pb_loading)
+    private ProgressBar loadingBar;
+
+    @InjectView(id.tpi_header)
+    private TitlePageIndicator indicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +106,42 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
         actionBar.setTitle(repository.getName());
         actionBar.setSubtitle(repository.getOwner().getLogin());
         actionBar.setDisplayHomeAsUpEnabled(true);
-        avatarHelper.bind(actionBar, repository.getOwner());
 
-        ViewPager pager = (ViewPager) findViewById(id.vp_pages);
+        User owner = repository.getOwner();
+        if (owner != null && owner.getAvatarUrl() != null)
+            configurePager();
+        else {
+            loadingBar.setVisibility(VISIBLE);
+            pager.setVisibility(GONE);
+            indicator.setVisibility(GONE);
+            new RefreshTask(this, repository) {
+
+                @Override
+                protected void onSuccess(Repository fullRepository) throws Exception {
+                    super.onSuccess(fullRepository);
+
+                    repository = fullRepository;
+                    configurePager();
+                }
+
+                @Override
+                protected void onException(Exception e) throws RuntimeException {
+                    super.onException(e);
+
+                    ToastUtils.show(RepositoryViewActivity.this, string.error_repo_load);
+                }
+            }.execute();
+        }
+    }
+
+    private void configurePager() {
+        avatarHelper.bind(getSupportActionBar(), repository.getOwner());
+        loadingBar.setVisibility(GONE);
+        pager.setVisibility(VISIBLE);
+        indicator.setVisibility(VISIBLE);
         pager.setAdapter(new RepositoryPagerAdapter(getSupportFragmentManager(), getResources(), repository
                 .isHasIssues()));
-        ((TitlePageIndicator) findViewById(id.tpi_header)).setViewPager(pager);
+        indicator.setViewPager(pager);
     }
 
     @Override

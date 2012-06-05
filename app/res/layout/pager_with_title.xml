@@ -18,7 +18,15 @@
     xmlns:app="http://schemas.android.com/apk/res/com.github.mobile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical" >
+
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        style="@style/Spinner"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:visibility="gone" />
 
     <com.viewpagerindicator.TitlePageIndicator
         android:id="@+id/tpi_header"
