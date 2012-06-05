@@ -73,6 +73,7 @@ import org.eclipse.egit.github.core.event.DeletePayload;
 import org.eclipse.egit.github.core.event.DownloadPayload;
 import org.eclipse.egit.github.core.event.Event;
 import org.eclipse.egit.github.core.event.EventPayload;
+import org.eclipse.egit.github.core.event.EventRepository;
 import org.eclipse.egit.github.core.event.FollowPayload;
 import org.eclipse.egit.github.core.event.GistPayload;
 import org.eclipse.egit.github.core.event.IssueCommentPayload;
@@ -157,19 +158,33 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         details.append(text);
     }
 
+    private static StyledText boldActor(final StyledText text, final Event event) {
+        User actor = event.getActor();
+        if (actor != null)
+            text.bold(actor.getLogin());
+        return text;
+    }
+
+    private static StyledText boldRepo(final StyledText text, final Event event) {
+        EventRepository repo = event.getRepo();
+        if (repo != null)
+            text.bold(repo.getName());
+        return text;
+    }
+
     private static void formatCommitComment(Event event, StyledText main, StyledText details) {
-        main.bold(event.getActor().getLogin());
+        boldActor(main, event);
         main.append(" commented on ");
-        main.bold(event.getRepo().getName());
+        boldRepo(main, event);
 
         CommitCommentPayload payload = (CommitCommentPayload) event.getPayload();
         appendCommitComment(details, payload.getComment());
     }
 
     private static void formatDownload(Event event, StyledText main, StyledText details) {
-        main.bold(event.getActor().getLogin());
+        boldActor(main, event);
         main.append(" uploaded a file to ");
-        main.bold(event.getRepo().getName());
+        boldRepo(main, event);
 
         DownloadPayload payload = (DownloadPayload) event.getPayload();
         Download download = payload.getDownload();
@@ -178,7 +193,7 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
     }
 
     private static void formatCreate(Event event, StyledText main, StyledText details) {
-        main.bold(event.getActor().getLogin());
+        boldActor(main, event);
 
         main.append(" created ");
         CreatePayload payload = (CreatePayload) event.getPayload();
@@ -196,7 +211,7 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
     }
 
     private static void formatDelete(Event event, StyledText main, StyledText details) {
-        main.bold(event.getActor().getLogin());
+        boldActor(main, event);
 
         DeletePayload payload = (DeletePayload) event.getPayload();
         main.append(" deleted ");
@@ -205,23 +220,23 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         main.append(payload.getRef());
         main.append(" at ");
 
-        main.bold(event.getRepo().getName());
+        boldRepo(main, event);
     }
 
     private static void formatFollow(Event event, StyledText main, StyledText details) {
-        main.bold(event.getActor().getLogin());
+        boldActor(main, event);
         main.append(" started following ");
         main.bold(((FollowPayload) event.getPayload()).getTarget().getLogin());
     }
 
     private static void formatFork(Event event, StyledText main, StyledText details) {
-        main.bold(event.getActor().getLogin());
+        boldActor(main, event);
         main.append(" forked repository ");
-        main.bold(event.getRepo().getName());
+        boldRepo(main, event);
     }
 
     private static void formatGist(Event event, StyledText main, StyledText details) {
-        main.bold(event.getActor().getLogin());
+        boldActor(main, event);
 
         GistPayload payload = (GistPayload) event.getPayload();
 
@@ -238,13 +253,13 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
     }
 
     private static void formatWiki(Event event, StyledText main, StyledText details) {
-        main.bold(event.getActor().getLogin());
+        boldActor(main, event);
         main.append(" updated the wiki in ");
-        main.bold(event.getRepo().getName());
+        boldRepo(main, event);
     }
 
     private static void formatIssueComment(Event event, StyledText main, StyledText details) {
-        main.bold(event.getActor().getLogin());
+        boldActor(main, event);
 
         main.append(" commented on ");
 
@@ -260,13 +275,13 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
 
         main.append(" on ");
 
-        main.bold(event.getRepo().getName());
+        boldRepo(main, event);
 
         appendComment(details, payload.getComment());
     }
 
     private static void formatIssues(Event event, StyledText main, StyledText details) {
-        main.bold(event.getActor().getLogin());
+        boldActor(main, event);
 
         IssuesPayload payload = (IssuesPayload) event.getPayload();
         String action = payload.getAction();
@@ -277,43 +292,43 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         main.bold("issue " + issue.getNumber());
         main.append(" on ");
 
-        main.bold(event.getRepo().getName());
+        boldRepo(main, event);
 
         appendText(details, issue.getTitle());
     }
 
     private static void formatAddMember(Event event, StyledText main, StyledText details) {
-        main.bold(event.getActor().getLogin());
+        boldActor(main, event);
         main.append(" added ");
         User member = ((MemberPayload) event.getPayload()).getMember();
         main.bold(member.getLogin());
         main.append(" as a collaborator to ");
-        main.bold(event.getRepo().getName());
+        boldRepo(main, event);
     }
 
     private static void formatPublic(Event event, StyledText main, StyledText details) {
-        main.bold(event.getActor().getLogin());
+        boldActor(main, event);
         main.append(" open sourced repository ");
-        main.bold(event.getRepo().getName());
+        boldRepo(main, event);
     }
 
     private static void formatWatch(Event event, StyledText main, StyledText details) {
-        main.bold(event.getActor().getLogin());
+        boldActor(main, event);
         main.append(" started watching ");
-        main.bold(event.getRepo().getName());
+        boldRepo(main, event);
     }
 
     private static void formatReviewComment(Event event, StyledText main, StyledText details) {
-        main.bold(event.getActor().getLogin());
+        boldActor(main, event);
         main.append(" commented on ");
-        main.bold(event.getRepo().getName());
+        boldRepo(main, event);
 
         PullRequestReviewCommentPayload payload = (PullRequestReviewCommentPayload) event.getPayload();
         appendCommitComment(details, payload.getComment());
     }
 
     private static void formatPullRequest(Event event, StyledText main, StyledText details) {
-        main.bold(event.getActor().getLogin());
+        boldActor(main, event);
 
         PullRequestPayload payload = (PullRequestPayload) event.getPayload();
         String action = payload.getAction();
@@ -325,11 +340,11 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         main.bold("pull request " + payload.getNumber());
         main.append(" on ");
 
-        main.bold(event.getRepo().getName());
+        boldRepo(main, event);
     }
 
     private static void formatPush(Event event, StyledText main, StyledText details) {
-        main.bold(event.getActor().getLogin());
+        boldActor(main, event);
 
         main.append(" pushed to ");
         PushPayload payload = (PushPayload) event.getPayload();
@@ -339,11 +354,11 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         main.bold(ref);
         main.append(" at ");
 
-        main.bold(event.getRepo().getName());
+        boldRepo(main, event);
     }
 
     private static void formatTeamAdd(Event event, StyledText main, StyledText details) {
-        main.bold(event.getActor().getLogin());
+        boldActor(main, event);
 
         TeamAddPayload payload = (TeamAddPayload) event.getPayload();
 
