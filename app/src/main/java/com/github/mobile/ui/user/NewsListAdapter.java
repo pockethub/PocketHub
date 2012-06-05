@@ -172,6 +172,19 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         return text;
     }
 
+    private static StyledText boldRepoName(final StyledText text, final Event event) {
+        EventRepository repo = event.getRepo();
+        if (repo != null) {
+            String name = repo.getName();
+            if (!TextUtils.isEmpty(name)) {
+                int slash = name.indexOf('/');
+                if (slash != -1 && slash + 1 < name.length())
+                    text.bold(name.substring(slash + 1));
+            }
+        }
+        return text;
+    }
+
     private static void formatCommitComment(Event event, StyledText main, StyledText details) {
         boldActor(main, event);
         main.append(" commented on ");
@@ -200,14 +213,12 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         String refType = payload.getRefType();
         main.append(refType);
         main.append(' ');
-        String repoName = event.getRepo().getName();
         if (!"repository".equals(refType)) {
             main.append(payload.getRef());
             main.append(" at ");
+            boldRepo(main, event);
         } else
-            repoName = repoName.substring(repoName.indexOf('/') + 1);
-
-        main.bold(repoName);
+            boldRepoName(main, event);
     }
 
     private static void formatDelete(Event event, StyledText main, StyledText details) {
