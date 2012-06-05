@@ -25,6 +25,10 @@ import com.actionbarsherlock.R.color;
 import com.github.mobile.ui.StyledText;
 import com.viewpagerindicator.R.layout;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.egit.github.core.Repository;
@@ -33,11 +37,13 @@ import org.eclipse.egit.github.core.User;
 /**
  * Adapter for the default account's repositories
  */
-public class DefaultRepositoryListAdapter extends RepositoryListAdapter<Repository, RecentRepositoryItemView> {
+public class DefaultRepositoryListAdapter extends RepositoryListAdapter<Repository, RepositoryHeaderItemView> {
 
     private final AtomicReference<User> account;
 
-    private final AtomicReference<RecentRepositories> recent;
+    private final Map<Long, String> headers = new HashMap<Long, String>();
+
+    private final Set<Long> noSeparators = new HashSet<Long>();
 
     /**
      * Create list adapter for repositories
@@ -45,14 +51,11 @@ public class DefaultRepositoryListAdapter extends RepositoryListAdapter<Reposito
      * @param inflater
      * @param elements
      * @param account
-     * @param recent
      */
-    public DefaultRepositoryListAdapter(LayoutInflater inflater, Repository[] elements, AtomicReference<User> account,
-            AtomicReference<RecentRepositories> recent) {
+    public DefaultRepositoryListAdapter(LayoutInflater inflater, Repository[] elements, AtomicReference<User> account) {
         super(layout.repo_item, inflater, elements);
 
         this.account = account;
-        this.recent = recent;
     }
 
     /**
@@ -60,16 +63,50 @@ public class DefaultRepositoryListAdapter extends RepositoryListAdapter<Reposito
      *
      * @param inflater
      * @param account
-     * @param recent
      */
-    public DefaultRepositoryListAdapter(LayoutInflater inflater, AtomicReference<User> account,
-            AtomicReference<RecentRepositories> recent) {
-        this(inflater, null, account, recent);
+    public DefaultRepositoryListAdapter(LayoutInflater inflater, AtomicReference<User> account) {
+        this(inflater, null, account);
+    }
+
+    /**
+     * Clear registered header values
+     *
+     * @return this adapter
+     */
+    public DefaultRepositoryListAdapter clearHeaders() {
+        headers.clear();
+        noSeparators.clear();
+        return this;
+    }
+
+    /**
+     * Register section header
+     *
+     * @param repository
+     * @param previous
+     * @param text
+     * @return this adapter
+     */
+    public DefaultRepositoryListAdapter registerHeader(Repository repository, Repository previous, String text) {
+        headers.put(repository.getId(), text);
+        if (previous != null)
+            noSeparators.add(previous.getId());
+        return this;
     }
 
     @Override
-    protected void update(final int position, final RecentRepositoryItemView view, final Repository repository) {
-        view.recentLabel.setVisibility(recent.get().contains(repository.getId()) ? VISIBLE : GONE);
+    protected void update(final int position, final RepositoryHeaderItemView view, final Repository repository) {
+        String headerValue = headers.get(repository.getId());
+        if (headerValue != null) {
+            view.header.setVisibility(VISIBLE);
+            view.headerText.setText(headerValue);
+        } else
+            view.header.setVisibility(GONE);
+
+        if (noSeparators.contains(repository.getId()))
+            view.separator.setVisibility(GONE);
+        else
+            view.separator.setVisibility(VISIBLE);
 
         StyledText name = new StyledText();
         if (!account.get().getLogin().equals(repository.getOwner().getLogin())) {
@@ -84,8 +121,8 @@ public class DefaultRepositoryListAdapter extends RepositoryListAdapter<Reposito
     }
 
     @Override
-    protected RecentRepositoryItemView createView(final View view) {
-        return new RecentRepositoryItemView(view);
+    protected RepositoryHeaderItemView createView(final View view) {
+        return new RepositoryHeaderItemView(view);
     }
 
     @Override

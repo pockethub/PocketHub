@@ -17,30 +17,62 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/ListItem"
     android:gravity="center_vertical"
-    android:paddingLeft="0dp" >
+    android:paddingBottom="0dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp" >
+
+    <LinearLayout
+        android:id="@+id/ll_header"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" >
+
+        <TextView
+            android:id="@+id/tv_header"
+            style="@style/ListSubtitleText"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:textColor="@color/text_recent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_recent" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_repo_icon"
         style="@style/PrimaryIcon"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="5dp" />
-
-    <View
-        android:id="@+id/v_recent_label"
-        style="@style/RecentLabel"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true" />
+        android:layout_below="@id/ll_header"
+        android:layout_marginLeft="5dp"
+        android:paddingRight="10dp" />
 
     <LinearLayout
+        android:id="@+id/ll_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/ll_header"
         android:layout_toRightOf="@id/tv_repo_icon"
         android:orientation="vertical"
-        android:paddingLeft="10dp" >
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" >
 
         <include layout="@layout/repo_details" />
     </LinearLayout>
+
+    <View
+        android:id="@+id/v_separator"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/ll_details"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/list_divider" />
 
 </RelativeLayout>

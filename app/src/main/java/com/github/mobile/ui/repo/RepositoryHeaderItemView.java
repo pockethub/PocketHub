@@ -16,27 +16,40 @@
 package com.github.mobile.ui.repo;
 
 import android.view.View;
+import android.widget.TextView;
 
 import com.github.mobile.R.id;
 
 /**
- * Repository item view with a recent indicator
+ * Repository item view with an optional header
  */
-public class RecentRepositoryItemView extends RepositoryItemView {
+public class RepositoryHeaderItemView extends RepositoryItemView {
 
     /**
-     * Recently view label
+     * Header area
      */
-    public final View recentLabel;
+    public final View header;
+
+    /**
+     * Header text view
+     */
+    public final TextView headerText;
+
+    /**
+     * Separator
+     */
+    public final View separator;
 
     /**
      * Create item view
      *
      * @param view
      */
-    public RecentRepositoryItemView(final View view) {
+    public RepositoryHeaderItemView(final View view) {
         super(view);
 
-        recentLabel = view.findViewById(id.v_recent_label);
+        header = view.findViewById(id.ll_header);
+        headerText = (TextView) header.findViewById(id.tv_header);
+        separator = view.findViewById(id.v_separator);
     }
 }

@@ -15,6 +15,7 @@
  */
 package com.github.mobile.ui.repo;
 
+import static java.util.Locale.US;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
@@ -48,7 +49,14 @@ public class RepositoryListFragment extends ItemListFragment<Repository> impleme
 
     private final AtomicReference<User> org = new AtomicReference<User>();
 
-    private final AtomicReference<RecentRepositories> recentRepos = new AtomicReference<RecentRepositories>();
+    private RecentRepositories recentRepos;
+
+    @Override
+    protected void configureList(Activity activity, ListView listView) {
+        super.configureList(activity, listView);
+
+        listView.setDividerHeight(0);
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -57,7 +65,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository> impleme
         User currentOrg = ((OrganizationSelectionProvider) activity).addListener(this);
         org.set(currentOrg);
         if (currentOrg != null)
-            recentRepos.set(new RecentRepositories(activity, currentOrg));
+            recentRepos = new RecentRepositories(activity, currentOrg);
     }
 
     @Override
@@ -66,13 +74,12 @@ public class RepositoryListFragment extends ItemListFragment<Repository> impleme
         int previousOrgId = previousOrg != null ? previousOrg.getId() : -1;
         org.set(organization);
 
-        RecentRepositories recent = recentRepos.get();
-        if (recent != null)
-            recent.saveAsync();
+        if (recentRepos != null)
+            recentRepos.saveAsync();
 
         Activity activity = getActivity();
         if (activity != null && previousOrgId != organization.getId())
-            recentRepos.set(new RecentRepositories(activity, organization));
+            recentRepos = new RecentRepositories(activity, organization);
 
         // Only hard refresh if view already created and org is changing
         if (previousOrgId != organization.getId())
@@ -89,9 +96,8 @@ public class RepositoryListFragment extends ItemListFragment<Repository> impleme
     @Override
     public void onListItemClick(ListView list, View v, int position, long id) {
         Repository repo = (Repository) list.getItemAtPosition(position);
-        RecentRepositories recent = recentRepos.get();
-        if (recent != null)
-            recent.add(repo);
+        if (recentRepos != null)
+            recentRepos.add(repo);
         startActivity(RepositoryViewActivity.createIntent(repo));
         refresh();
     }
@@ -100,9 +106,8 @@ public class RepositoryListFragment extends ItemListFragment<Repository> impleme
     public void onStop() {
         super.onStop();
 
-        RecentRepositories recent = recentRepos.get();
-        if (recent != null)
-            recent.saveAsync();
+        if (recentRepos != null)
+            recentRepos.saveAsync();
     }
 
     @Override
@@ -115,9 +120,43 @@ public class RepositoryListFragment extends ItemListFragment<Repository> impleme
                 if (org == null)
                     return Collections.emptyList();
 
-                RecentRepositories recent = recentRepos.get();
                 List<Repository> repos = cache.getRepos(org, isForceRefresh(args));
-                Collections.sort(repos, recent);
+                Collections.sort(repos, recentRepos);
+
+                DefaultRepositoryListAdapter adapter = (DefaultRepositoryListAdapter) getListAdapter()
+                        .getWrappedAdapter();
+                adapter.clearHeaders();
+
+                char start = 'a';
+                Repository previous = null;
+                for (int i = 0; i < repos.size(); i++) {
+                    Repository repository = repos.get(i);
+
+                    if (recentRepos.contains(repository.getId())) {
+                        previous = repository;
+                        continue;
+                    }
+
+                    char repoStart = Character.toLowerCase(repository.getName().charAt(0));
+                    if (repoStart < start) {
+                        previous = repository;
+                        continue;
+                    }
+
+                    adapter.registerHeader(repository, previous, Character.toString(repoStart).toUpperCase(US));
+                    start = repoStart;
+                    if (start == 'z')
+                        break;
+                    start++;
+                    previous = repository;
+                }
+
+                if (!repos.isEmpty()) {
+                    Repository first = repos.get(0);
+                    if (recentRepos.contains(first))
+                        adapter.registerHeader(first, null, getString(string.recently_viewed));
+                }
+
                 return repos;
             }
         };
@@ -126,7 +165,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository> impleme
     @Override
     protected ItemListAdapter<Repository, ? extends ItemView> createAdapter(List<Repository> items) {
         return new DefaultRepositoryListAdapter(getActivity().getLayoutInflater(), items.toArray(new Repository[items
-                .size()]), org, recentRepos);
+                .size()]), org);
     }
 
     @Override

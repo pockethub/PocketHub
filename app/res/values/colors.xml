@@ -21,11 +21,10 @@
     <color name="inset_background">#F8F8F8</color>
     <color name="inset_outer">#C7C7C7</color>
     <color name="inset_inner">#FFFFFF</color>
-    <color name="recent_background">#FFFE8B</color>
-    <color name="recent_border">#C3C16A</color>
     <color name="text">#1E1E1E</color>
     <color name="text_light">#AEAEAE</color>
     <color name="text_icon">#A8A8A8</color>
+    <color name="text_recent">#3797C7</color>
     <color name="item_separator1">#B8BABB</color>
     <color name="item_separator2">#E3E5E6</color>
     <color name="actionbar_background_top">#6E6E6E</color>
