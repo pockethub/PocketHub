@@ -28,15 +28,13 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:orientation="vertical"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" >
+        android:paddingBottom="10dp" >
 
         <TextView
             android:id="@+id/tv_header"
             style="@style/ListSubtitleText"
             android:paddingBottom="5dp"
-            android:paddingLeft="10dp"
+            android:paddingLeft="5dp"
             android:textColor="@color/text_recent" />
 
         <View
