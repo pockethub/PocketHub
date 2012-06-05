@@ -159,9 +159,12 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
     }
 
     private static StyledText boldActor(final StyledText text, final Event event) {
-        User actor = event.getActor();
-        if (actor != null)
-            text.bold(actor.getLogin());
+        return boldUser(text, event.getActor());
+    }
+
+    private static StyledText boldUser(final StyledText text, final User user) {
+        if (user != null)
+            text.bold(user.getLogin());
         return text;
     }
 
@@ -237,7 +240,7 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
     private static void formatFollow(Event event, StyledText main, StyledText details) {
         boldActor(main, event);
         main.append(" started following ");
-        main.bold(((FollowPayload) event.getPayload()).getTarget().getLogin());
+        boldUser(main, ((FollowPayload) event.getPayload()).getTarget());
     }
 
     private static void formatFork(Event event, StyledText main, StyledText details) {
@@ -312,7 +315,8 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         boldActor(main, event);
         main.append(" added ");
         User member = ((MemberPayload) event.getPayload()).getMember();
-        main.bold(member.getLogin());
+        if (member != null)
+            main.bold(member.getLogin());
         main.append(" as a collaborator to ");
         boldRepo(main, event);
     }
