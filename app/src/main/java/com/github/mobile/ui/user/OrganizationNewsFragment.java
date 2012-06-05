@@ -35,6 +35,11 @@ public class OrganizationNewsFragment extends UserNewsFragment {
                 String account = AccountUtils.getLogin(getActivity());
                 return service.pageUserOrgEvents(account, org.getLogin(), page, size);
             }
+
+            @Override
+            protected Event register(Event resource) {
+                return NewsListAdapter.isValid(resource) ? resource : null;
+            }
         };
     }
 }
