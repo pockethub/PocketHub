@@ -15,27 +15,17 @@
  */
 package com.github.mobile.ui;
 
-import static android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED;
-import static android.content.Context.DOWNLOAD_SERVICE;
-import static android.util.Base64.DEFAULT;
-import static com.github.kevinsawicki.http.HttpRequest.CHARSET_UTF8;
-import static com.github.kevinsawicki.http.HttpRequest.HEADER_AUTHORIZATION;
-import static org.eclipse.egit.github.core.client.IGitHubConstants.HOST_DEFAULT;
-import static org.eclipse.egit.github.core.client.IGitHubConstants.PROTOCOL_HTTPS;
+import static android.content.Intent.ACTION_VIEW;
+import static android.content.Intent.CATEGORY_BROWSABLE;
 import static org.eclipse.egit.github.core.event.Event.TYPE_DOWNLOAD;
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.app.DownloadManager;
-import android.app.DownloadManager.Request;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.view.View;
 import android.widget.ListView;
 
 import com.github.mobile.R.string;
-import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.core.gist.GistEventMatcher;
 import com.github.mobile.core.issue.IssueEventMatcher;
 import com.github.mobile.core.repo.RepositoryEventMatcher;
@@ -48,7 +38,6 @@ import com.github.mobile.ui.user.NewsListAdapter;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Download;
@@ -140,31 +129,10 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
         if (TextUtils.isEmpty(url))
             return;
 
-        Uri uri = Uri.parse(url);
-        if (!HOST_DEFAULT.equals(uri.getHost()) || !PROTOCOL_HTTPS.equals(uri.getScheme()))
-            return;
-
-        DownloadManager downloadService = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
-        if (downloadService == null)
-            return;
-
-        Request request = new Request(uri);
-        request.allowScanningByMediaScanner();
-        request.setTitle(download.getName());
-        request.setNotificationVisibility(VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        Account account = AccountUtils.getAccount(getActivity());
-        if (account != null) {
-            String password = AccountManager.get(getActivity()).getPassword(account);
-            if (!TextUtils.isEmpty(password))
-                try {
-                    byte[] credentials = (account.name + ':' + password).getBytes(CHARSET_UTF8);
-                    String encoded = Base64.encodeToString(credentials, DEFAULT);
-                    request.addRequestHeader(HEADER_AUTHORIZATION, "Basic " + encoded);
-                } catch (UnsupportedEncodingException ignored) {
-                    // Ignored
-                }
-        }
-        downloadService.enqueue(request);
+        Intent intent = new Intent(ACTION_VIEW);
+        intent.addCategory(CATEGORY_BROWSABLE);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
     }
 
     /**
