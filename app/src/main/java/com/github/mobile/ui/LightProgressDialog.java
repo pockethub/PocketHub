@@ -60,6 +60,5 @@ public class LightProgressDialog extends ProgressDialog {
 
     private LightProgressDialog(Context context, CharSequence message) {
         super(context, THEME_HOLO_LIGHT);
-
     }
 }
