@@ -31,6 +31,7 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.ui.DialogFragmentActivity;
+import com.github.mobile.ui.RefreshRepsitoryTask;
 import com.github.mobile.ui.UrlLauncher;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
@@ -179,6 +180,18 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
             user.set(repo.getOwner());
             avatars.bind(actionBar, user);
         }
+
+        // Load avatar if single issue and user is currently unset of missing avatar URL
+        if (issueNumbers.size() == 1 && (user.get() == null || user.get().getAvatarUrl() == null))
+            new RefreshRepsitoryTask(this, repo != null ? repo : repoIds.get(0)) {
+
+                @Override
+                protected void onSuccess(Repository fullRepository) throws Exception {
+                    super.onSuccess(fullRepository);
+
+                    avatars.bind(getSupportActionBar(), fullRepository.getOwner());
+                }
+            }.execute();
     }
 
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

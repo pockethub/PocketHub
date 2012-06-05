@@ -20,7 +20,6 @@ import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -32,7 +31,7 @@ import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
-import com.github.mobile.accounts.AuthenticatedUserTask;
+import com.github.mobile.ui.RefreshRepsitoryTask;
 import com.github.mobile.ui.user.HomeActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
@@ -40,10 +39,8 @@ import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmen
 import com.google.inject.Inject;
 import com.viewpagerindicator.TitlePageIndicator;
 
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.service.RepositoryService;
 
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
@@ -61,24 +58,6 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
      */
     public static Intent createIntent(Repository repository) {
         return new Builder("repo.VIEW").repo(repository).toIntent();
-    }
-
-    private static class RefreshTask extends AuthenticatedUserTask<Repository> {
-
-        @Inject
-        private RepositoryService service;
-
-        private final IRepositoryIdProvider repo;
-
-        public RefreshTask(Context context, IRepositoryIdProvider repo) {
-            super(context);
-
-            this.repo = repo;
-        }
-
-        protected Repository run() throws Exception {
-            return service.getRepository(repo);
-        }
     }
 
     @InjectExtra(EXTRA_REPOSITORY)
@@ -114,7 +93,7 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
             loadingBar.setVisibility(VISIBLE);
             pager.setVisibility(GONE);
             indicator.setVisibility(GONE);
-            new RefreshTask(this, repository) {
+            new RefreshRepsitoryTask(this, repository) {
 
                 @Override
                 protected void onSuccess(Repository fullRepository) throws Exception {
