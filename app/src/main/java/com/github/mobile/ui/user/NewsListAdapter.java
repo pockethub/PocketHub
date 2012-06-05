@@ -114,7 +114,7 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
                 || TYPE_FOLLOW.equals(type) //
                 || TYPE_FORK.equals(type) //
                 || TYPE_FORK_APPLY.equals(type) //
-                || TYPE_GIST.equals(type) //
+                || TYPE_GIST.equals(type) && ((GistPayload) payload).getGist() != null //
                 || TYPE_GOLLUM.equals(type) //
                 || TYPE_ISSUE_COMMENT.equals(type) && ((IssueCommentPayload) payload).getIssue() != null //
                 || TYPE_ISSUES.equals(type) //
