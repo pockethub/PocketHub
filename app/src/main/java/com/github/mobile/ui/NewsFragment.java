@@ -129,9 +129,8 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
         if (TextUtils.isEmpty(url))
             return;
 
-        Intent intent = new Intent(ACTION_VIEW);
+        Intent intent = new Intent(ACTION_VIEW, Uri.parse(url));
         intent.addCategory(CATEGORY_BROWSABLE);
-        intent.setData(Uri.parse(url));
         startActivity(intent);
     }
 
