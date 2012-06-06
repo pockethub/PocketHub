@@ -389,6 +389,6 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Object item = parent.getItemAtPosition(position);
         if (item instanceof GistFile)
-            startActivity(ViewGistFilesActivity.createIntent(gist, position - 1));
+            startActivity(GistFilesViewActivity.createIntent(gist, position - 1));
     }
 }

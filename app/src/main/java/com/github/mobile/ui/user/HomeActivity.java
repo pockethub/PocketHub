@@ -41,7 +41,7 @@ import com.github.mobile.core.user.UserComparator;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.gist.GistsActivity;
 import com.github.mobile.ui.issue.IssueDashboardActivity;
-import com.github.mobile.ui.issue.ViewFiltersActivity;
+import com.github.mobile.ui.issue.FiltersViewActivity;
 import com.github.mobile.ui.repo.OrganizationLoader;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.PreferenceUtils;
@@ -194,7 +194,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
                 startActivity(new Intent(this, IssueDashboardActivity.class));
                 break;
             case ACTION_BOOKMARKS:
-                startActivity(ViewFiltersActivity.createIntent());
+                startActivity(FiltersViewActivity.createIntent());
                 break;
             }
             int orgSelected = homeAdapter.getSelected();

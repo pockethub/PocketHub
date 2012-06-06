@@ -41,7 +41,7 @@ import com.google.inject.Inject;
 /**
  * Activity to display a list of saved {@link IssueFilter} objects
  */
-public class ViewFiltersActivity extends DialogFragmentActivity implements OnItemLongClickListener {
+public class FiltersViewActivity extends DialogFragmentActivity implements OnItemLongClickListener {
 
     /**
      * Create intent to browse issue filters

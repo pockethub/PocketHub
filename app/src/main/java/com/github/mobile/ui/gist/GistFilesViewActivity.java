@@ -43,7 +43,7 @@ import roboguice.inject.InjectExtra;
 /**
  * Activity to page through the content of all the files in a Gist
  */
-public class ViewGistFilesActivity extends RoboSherlockFragmentActivity {
+public class GistFilesViewActivity extends RoboSherlockFragmentActivity {
 
     /**
      * Create intent to show files with an initial selected file

@@ -89,7 +89,7 @@ public class IssueBrowseActivity extends RoboSherlockFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case android.R.id.home:
-            Intent intent = ViewFiltersActivity.createIntent();
+            Intent intent = FiltersViewActivity.createIntent();
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             return true;

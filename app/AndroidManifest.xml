@@ -76,7 +76,7 @@
 
         <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.gist.GistsActivity"/>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.ViewFiltersActivity">
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.FiltersViewActivity">
              <intent-filter>
                 <action android:name="com.github.mobile.android.repo.issues.filters.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -90,7 +90,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.gist.ViewGistFilesActivity">
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.gist.GistFilesViewActivity">
             <intent-filter>
                 <action android:name="com.github.mobile.android.gist.files.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
