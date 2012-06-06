@@ -17,21 +17,10 @@ package com.github.mobile;
 
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.FROYO;
-import android.util.Log;
 
 import com.github.kevinsawicki.http.HttpRequest;
 
-import java.math.BigInteger;
 import java.net.HttpURLConnection;
-import java.security.GeneralSecurityException;
-import java.security.SecureRandom;
-import java.security.cert.X509Certificate;
-
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 import org.eclipse.egit.github.core.client.GitHubClient;
 
@@ -40,57 +29,12 @@ import org.eclipse.egit.github.core.client.GitHubClient;
  */
 public class DefaultClient extends GitHubClient {
 
-    private static final String TAG = "DefaultClient";
-
     private static final String USER_AGENT = "GitHubAndroid/1.0";
 
-    private static final BigInteger SERIAL_NUMBER = new BigInteger("13785899061980321600472330812886105915");
-
-    private static final TrustManager TRUST_MANAGER = new X509TrustManager() {
-
-        @Override
-        public X509Certificate[] getAcceptedIssuers() {
-            return new X509Certificate[0];
-        }
-
-        @Override
-        public void checkClientTrusted(X509Certificate[] chain, String authType) {
-            // Intentionally left blank
-        }
-
-        @Override
-        public void checkServerTrusted(X509Certificate[] chain, String authType) {
-            if (chain.length == 0)
-                throw new SecurityException();
-
-            X509Certificate cert = chain[chain.length - 1];
-            if (cert == null)
-                throw new SecurityException();
-
-            if (!SERIAL_NUMBER.equals(cert.getSerialNumber()))
-                throw new SecurityException();
-        }
-    };
-
-    private static final SSLSocketFactory SOCKET_FACTORY;
-
     static {
-        if (SDK_INT <= FROYO) {
-            SSLSocketFactory factory;
-            try {
-                SSLContext context = SSLContext.getInstance("TLS");
-                context.init(null, new TrustManager[] { TRUST_MANAGER }, new SecureRandom());
-                factory = context.getSocketFactory();
-            } catch (GeneralSecurityException e) {
-                factory = null;
-                Log.d(TAG, "Exception configuring certificate validation", e);
-            }
-            SOCKET_FACTORY = factory;
-
-            // Disable http.keepAlive on Froyo and below
+        // Disable http.keepAlive on Froyo and below
+        if (SDK_INT <= FROYO)
             HttpRequest.keepAlive(false);
-        } else
-            SOCKET_FACTORY = null;
     }
 
     private final boolean useAcceptHeader;
@@ -137,9 +81,6 @@ public class DefaultClient extends GitHubClient {
     @Override
     protected HttpURLConnection configureRequest(HttpURLConnection request) {
         super.configureRequest(request);
-
-        if (SDK_INT <= FROYO && request instanceof HttpsURLConnection)
-            ((HttpsURLConnection) request).setSSLSocketFactory(SOCKET_FACTORY);
 
         if (useAcceptHeader)
             request.setRequestProperty(HEADER_ACCEPT, "application/vnd.github.beta.full+json");
