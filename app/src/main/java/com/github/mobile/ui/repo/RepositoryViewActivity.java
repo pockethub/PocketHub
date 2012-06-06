@@ -31,7 +31,7 @@ import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
-import com.github.mobile.ui.RefreshRepsitoryTask;
+import com.github.mobile.ui.RefreshRepositoryTask;
 import com.github.mobile.ui.user.HomeActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
@@ -93,7 +93,7 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
             loadingBar.setVisibility(VISIBLE);
             pager.setVisibility(GONE);
             indicator.setVisibility(GONE);
-            new RefreshRepsitoryTask(this, repository) {
+            new RefreshRepositoryTask(this, repository) {
 
                 @Override
                 protected void onSuccess(Repository fullRepository) throws Exception {

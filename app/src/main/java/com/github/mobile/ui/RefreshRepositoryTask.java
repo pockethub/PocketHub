@@ -27,7 +27,7 @@ import org.eclipse.egit.github.core.service.RepositoryService;
 /**
  * Task to refresh a repository
  */
-public class RefreshRepsitoryTask extends AuthenticatedUserTask<Repository> {
+public class RefreshRepositoryTask extends AuthenticatedUserTask<Repository> {
 
     @Inject
     private RepositoryService service;
@@ -40,7 +40,7 @@ public class RefreshRepsitoryTask extends AuthenticatedUserTask<Repository> {
      * @param context
      * @param repo
      */
-    public RefreshRepsitoryTask(Context context, IRepositoryIdProvider repo) {
+    public RefreshRepositoryTask(Context context, IRepositoryIdProvider repo) {
         super(context);
 
         this.repo = repo;
