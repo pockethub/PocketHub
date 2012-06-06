@@ -100,15 +100,16 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
             numbers.add(issue.getNumber());
 
             RepositoryId repoId = null;
+            User owner = null;
             if (issue instanceof RepositoryIssue) {
                 Repository issueRepo = ((RepositoryIssue) issue).getRepository();
+                owner = issueRepo.getOwner();
                 repoId = RepositoryId.create(issueRepo.getOwner().getLogin(), issueRepo.getName());
             }
             if (repoId == null)
                 repoId = RepositoryId.createFromUrl(issue.getHtmlUrl());
             repos.add(repoId);
 
-            User owner = getOwner(issue);
             if (owner != null)
                 hasOwners = true;
             owners.add(owner);
@@ -121,14 +122,6 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
         if (hasOwners)
             builder.add(EXTRA_USERS, owners);
         return builder.toIntent();
-    }
-
-    private static User getOwner(Issue issue) {
-        if (!(issue instanceof RepositoryIssue))
-            return null;
-
-        Repository repo = ((RepositoryIssue) issue).getRepository();
-        return repo != null ? repo.getOwner() : null;
     }
 
     @InjectView(id.vp_pages)
