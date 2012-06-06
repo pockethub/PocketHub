@@ -46,6 +46,7 @@ public class RefreshRepositoryTask extends AuthenticatedUserTask<Repository> {
         this.repo = repo;
     }
 
+    @Override
     protected Repository run() throws Exception {
         return service.getRepository(repo);
     }
