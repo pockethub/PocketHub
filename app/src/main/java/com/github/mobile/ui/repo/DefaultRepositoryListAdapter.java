@@ -83,14 +83,22 @@ public class DefaultRepositoryListAdapter extends RepositoryListAdapter<Reposito
      * Register section header
      *
      * @param repository
-     * @param previous
      * @param text
      * @return this adapter
      */
-    public DefaultRepositoryListAdapter registerHeader(Repository repository, Repository previous, String text) {
+    public DefaultRepositoryListAdapter registerHeader(Repository repository, String text) {
         headers.put(repository.getId(), text);
-        if (previous != null)
-            noSeparators.add(previous.getId());
+        return this;
+    }
+
+    /**
+     * Register repository to have no bottom separator
+     *
+     * @param repository
+     * @return this adapter
+     */
+    public DefaultRepositoryListAdapter registerNoSeparator(Repository repository) {
+        noSeparators.add(repository.getId());
         return this;
     }
 

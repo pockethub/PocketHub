@@ -143,7 +143,8 @@ public class RepositoryListFragment extends ItemListFragment<Repository> impleme
                         continue;
                     }
 
-                    adapter.registerHeader(repository, previous, Character.toString(repoStart).toUpperCase(US));
+                    adapter.registerHeader(repository, Character.toString(repoStart).toUpperCase(US));
+                    adapter.registerNoSeparator(previous);
                     start = repoStart;
                     if (start == 'z')
                         break;
@@ -154,7 +155,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository> impleme
                 if (!repos.isEmpty()) {
                     Repository first = repos.get(0);
                     if (recentRepos.contains(first))
-                        adapter.registerHeader(first, null, getString(string.recently_viewed));
+                        adapter.registerHeader(first, getString(string.recently_viewed));
                 }
 
                 return repos;
