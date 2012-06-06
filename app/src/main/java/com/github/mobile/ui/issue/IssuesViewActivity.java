@@ -31,8 +31,8 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.ui.DialogFragmentActivity;
-import com.github.mobile.ui.RefreshRepositoryTask;
 import com.github.mobile.ui.UrlLauncher;
+import com.github.mobile.ui.repo.RefreshRepositoryTask;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
