@@ -134,6 +134,7 @@ public abstract class PagedItemFragment<E> extends ItemListFragment<E> implement
     @Override
     protected void refreshWithProgress() {
         pager.reset();
+        pager = createPager();
 
         super.refreshWithProgress();
     }
