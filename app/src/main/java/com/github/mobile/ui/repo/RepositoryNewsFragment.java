@@ -23,8 +23,6 @@ import com.github.mobile.ui.issue.IssuesViewActivity;
 import com.github.mobile.ui.user.EventPager;
 import com.github.mobile.ui.user.NewsListAdapter;
 
-import java.util.Collections;
-
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.client.PageIterator;
