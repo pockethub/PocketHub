@@ -377,14 +377,13 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
 
         TeamAddPayload payload = (TeamAddPayload) event.getPayload();
 
-        String value;
+        main.append(" added ");
+
         User user = payload.getUser();
         if (user != null)
-            value = user.getLogin();
+            boldUser(main, user);
         else
-            value = payload.getRepo().getName();
-        main.append(" added ");
-        main.append(value);
+            boldRepoName(main, event);
 
         main.append(" to team");
 
