@@ -26,6 +26,7 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.github.mobile.R.string;
 import com.github.mobile.core.issue.IssueUriMatcher;
 import com.github.mobile.core.repo.RepositoryUriMatcher;
+import com.github.mobile.core.user.UserUriMatcher;
 import com.github.mobile.ui.LightAlertDialog;
 import com.github.mobile.ui.issue.IssuesViewActivity;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
@@ -35,6 +36,7 @@ import java.text.MessageFormat;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryIssue;
+import org.eclipse.egit.github.core.User;
 
 /**
  * Activity to launch other activities based on the intent's data {@link URI}
@@ -57,6 +59,13 @@ public class UriLauncherActivity extends SherlockActivity {
         Repository repository = RepositoryUriMatcher.getRepository(data);
         if (repository != null) {
             startActivity(RepositoryViewActivity.createIntent(repository));
+            finish();
+            return;
+        }
+
+        User user = UserUriMatcher.getUser(data);
+        if (user != null) {
+            startActivity(UserViewActivity.createIntent(user));
             finish();
             return;
         }

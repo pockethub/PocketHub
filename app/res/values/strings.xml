@@ -25,6 +25,7 @@
     <string name="error_news_load">Loading news failed</string>
     <string name="error_followers_load">Loading followers failed</string>
     <string name="error_people_load">Loading people failed</string>
+    <string name="error_person_load">Loading person failed</string>
     <string name="error_gist_file_load">Loading Gist file content failed</string>
     <string name="error_gists_load">Loading Gists failed</string>
     <string name="error_issue_load">Loading issue failed</string>
