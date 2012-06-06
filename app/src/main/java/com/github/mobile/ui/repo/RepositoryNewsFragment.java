@@ -69,6 +69,6 @@ public class RepositoryNewsFragment extends NewsFragment {
 
     @Override
     protected void viewIssue(Issue issue) {
-        startActivity(IssuesViewActivity.createIntent(Collections.singletonList(issue), repo, 0));
+        startActivity(IssuesViewActivity.createIntent(issue, repo));
     }
 }

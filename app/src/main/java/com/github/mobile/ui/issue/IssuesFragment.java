@@ -226,7 +226,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
         if (requestCode == ISSUE_CREATE && resultCode == RESULT_OK) {
             Issue created = (Issue) data.getSerializableExtra(EXTRA_ISSUE);
             forceRefresh();
-            startActivityForResult(IssuesViewActivity.createIntent(created), ISSUE_VIEW);
+            startActivityForResult(IssuesViewActivity.createIntent(created, repository), ISSUE_VIEW);
             return;
         }
 

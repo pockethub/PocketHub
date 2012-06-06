@@ -38,6 +38,7 @@ import com.google.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -65,6 +66,17 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
         List<Issue> list = new ArrayList<Issue>(1);
         list.add(issue);
         return createIntent(list, 0);
+    }
+
+    /**
+     * Create an intent to show issue
+     *
+     * @param issue
+     * @param repository
+     * @return intent
+     */
+    public static Intent createIntent(Issue issue, Repository repository) {
+        return createIntent(Collections.singletonList(issue), repository, 0);
     }
 
     /**
@@ -103,8 +115,11 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
             User owner = null;
             if (issue instanceof RepositoryIssue) {
                 Repository issueRepo = ((RepositoryIssue) issue).getRepository();
-                owner = issueRepo.getOwner();
-                repoId = RepositoryId.create(issueRepo.getOwner().getLogin(), issueRepo.getName());
+                if (issueRepo != null) {
+                    owner = issueRepo.getOwner();
+                    if (owner != null)
+                        repoId = RepositoryId.create(owner.getLogin(), issueRepo.getName());
+                }
             }
             if (repoId == null)
                 repoId = RepositoryId.createFromUrl(issue.getHtmlUrl());

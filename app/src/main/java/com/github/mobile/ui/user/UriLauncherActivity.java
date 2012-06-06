@@ -32,7 +32,6 @@ import com.github.mobile.ui.repo.RepositoryViewActivity;
 
 import java.net.URI;
 import java.text.MessageFormat;
-import java.util.Collections;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryIssue;
@@ -50,7 +49,7 @@ public class UriLauncherActivity extends SherlockActivity {
 
         RepositoryIssue issue = IssueUriMatcher.getIssue(data);
         if (issue != null) {
-            startActivity(IssuesViewActivity.createIntent(Collections.singleton(issue), issue.getRepository(), 0));
+            startActivity(IssuesViewActivity.createIntent(issue, issue.getRepository()));
             finish();
             return;
         }
