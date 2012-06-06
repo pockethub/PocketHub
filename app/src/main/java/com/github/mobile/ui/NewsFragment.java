@@ -31,7 +31,7 @@ import com.github.mobile.core.issue.IssueEventMatcher;
 import com.github.mobile.core.repo.RepositoryEventMatcher;
 import com.github.mobile.core.user.UserEventMatcher;
 import com.github.mobile.core.user.UserEventMatcher.UserPair;
-import com.github.mobile.ui.gist.ViewGistsActivity;
+import com.github.mobile.ui.gist.GistsViewActivity;
 import com.github.mobile.ui.issue.IssuesViewActivity;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
 import com.github.mobile.ui.user.NewsListAdapter;
@@ -107,7 +107,7 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
 
         Gist gist = gistMatcher.getGist(event);
         if (gist != null) {
-            startActivity(ViewGistsActivity.createIntent(gist));
+            startActivity(GistsViewActivity.createIntent(gist));
             return;
         }
 

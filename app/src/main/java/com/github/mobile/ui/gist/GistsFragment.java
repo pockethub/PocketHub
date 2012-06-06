@@ -62,7 +62,7 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        startActivityForResult(ViewGistsActivity.createIntent(items, position), GIST_VIEW);
+        startActivityForResult(GistsViewActivity.createIntent(items, position), GIST_VIEW);
     }
 
     @Override

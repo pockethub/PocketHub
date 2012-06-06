@@ -83,7 +83,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.gist.ViewGistsActivity">
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.gist.GistsViewActivity">
             <intent-filter>
                 <action android:name="com.github.mobile.android.gists.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>

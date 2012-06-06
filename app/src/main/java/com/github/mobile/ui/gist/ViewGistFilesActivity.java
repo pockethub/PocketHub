@@ -53,7 +53,7 @@ public class ViewGistFilesActivity extends RoboSherlockFragmentActivity {
      * @return intent
      */
     public static Intent createIntent(Gist gist, int position) {
-        return new Builder("gist.files.VIEW").add(EXTRA_GIST_ID, gist.getId()).add(EXTRA_POSITION, position).toIntent();
+        return new Builder("gist.files.VIEW").gist(gist.getId()).add(EXTRA_POSITION, position).toIntent();
     }
 
     @InjectExtra(EXTRA_GIST_ID)
@@ -97,7 +97,7 @@ public class ViewGistFilesActivity extends RoboSherlockFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case android.R.id.home:
-            Intent intent = ViewGistsActivity.createIntent(gist);
+            Intent intent = GistsViewActivity.createIntent(gist);
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             return true;

@@ -41,8 +41,6 @@ import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Gist;
@@ -53,7 +51,7 @@ import roboguice.inject.InjectView;
 /**
  * Activity to display a collection of Gists in a pager
  */
-public class ViewGistsActivity extends DialogFragmentActivity implements OnPageChangeListener {
+public class GistsViewActivity extends DialogFragmentActivity implements OnPageChangeListener {
 
     private static final int REQUEST_CONFIRM_DELETE = 1;
 
@@ -64,7 +62,7 @@ public class ViewGistsActivity extends DialogFragmentActivity implements OnPageC
      * @return intent
      */
     public static Intent createIntent(Gist gist) {
-        return new Builder("gists.VIEW").add(EXTRA_GIST, gist).add(EXTRA_POSITION, 0).toIntent();
+        return new Builder("gists.VIEW").gist(gist).add(EXTRA_POSITION, 0).toIntent();
     }
 
     /**
@@ -75,9 +73,10 @@ public class ViewGistsActivity extends DialogFragmentActivity implements OnPageC
      * @return intent
      */
     public static Intent createIntent(List<Gist> gists, int position) {
-        List<String> ids = new ArrayList<String>(gists.size());
+        String[] ids = new String[gists.size()];
+        int index = 0;
         for (Gist gist : gists)
-            ids.add(gist.getId());
+            ids[index++] = gist.getId();
         return new Builder("gists.VIEW").add(EXTRA_GIST_IDS, (Serializable) ids).add(EXTRA_POSITION, position)
                 .toIntent();
     }
@@ -86,7 +85,7 @@ public class ViewGistsActivity extends DialogFragmentActivity implements OnPageC
     private ViewPager pager;
 
     @InjectExtra(value = EXTRA_GIST_IDS, optional = true)
-    private List<String> gists;
+    private String[] gists;
 
     @InjectExtra(value = EXTRA_GIST, optional = true)
     private Gist gist;
@@ -118,10 +117,10 @@ public class ViewGistsActivity extends DialogFragmentActivity implements OnPageC
                 if (stored == null)
                     store.addGist(gist);
             }
-            gists = Collections.singletonList(id);
+            gists = new String[] { gist.getId() };
         }
 
-        pager.setAdapter(new GistsPagerAdapter(getSupportFragmentManager(), gists.toArray(new String[gists.size()])));
+        pager.setAdapter(new GistsPagerAdapter(getSupportFragmentManager(), gists));
         pager.setOnPageChangeListener(this);
         pager.setCurrentItem(initialPosition);
         onPageSelected(initialPosition);
@@ -136,7 +135,7 @@ public class ViewGistsActivity extends DialogFragmentActivity implements OnPageC
             startActivity(intent);
             return true;
         case id.gist_delete:
-            String gistId = gists.get(pager.getCurrentItem());
+            String gistId = gists[pager.getCurrentItem()];
             Bundle args = new Bundle();
             args.putString(EXTRA_GIST_ID, gistId);
             ConfirmDialogFragment.show(this, REQUEST_CONFIRM_DELETE, getString(string.confirm_gist_delete_title),
@@ -164,7 +163,7 @@ public class ViewGistsActivity extends DialogFragmentActivity implements OnPageC
 
     public void onPageSelected(int position) {
         ActionBar actionBar = getSupportActionBar();
-        String gistId = gists.get(position);
+        String gistId = gists[position];
         Gist gist = store.getGist(gistId);
         if (gist == null) {
             actionBar.setSubtitle(null);

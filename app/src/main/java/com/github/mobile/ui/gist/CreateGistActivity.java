@@ -114,7 +114,7 @@ public class CreateGistActivity extends RoboSherlockFragmentActivity {
             protected void onSuccess(Gist gist) throws Exception {
                 super.onSuccess(gist);
 
-                startActivity(ViewGistsActivity.createIntent(gist));
+                startActivity(GistsViewActivity.createIntent(gist));
                 setResult(RESULT_OK);
                 finish();
             }

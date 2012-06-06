@@ -89,7 +89,7 @@ public class RandomGistTask extends ProgressDialogTask<Gist> {
     protected void onSuccess(Gist gist) throws Exception {
         super.onSuccess(gist);
 
-        ((Activity) getContext()).startActivityForResult(ViewGistsActivity.createIntent(gist), GIST_VIEW);
+        ((Activity) getContext()).startActivityForResult(GistsViewActivity.createIntent(gist), GIST_VIEW);
     }
 
     @Override

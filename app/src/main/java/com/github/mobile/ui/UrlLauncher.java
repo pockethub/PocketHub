@@ -22,7 +22,7 @@ import android.net.Uri;
 
 import com.github.mobile.core.gist.GistUrlMatcher;
 import com.github.mobile.core.issue.IssueUrlMatcher;
-import com.github.mobile.ui.gist.ViewGistsActivity;
+import com.github.mobile.ui.gist.GistsViewActivity;
 import com.github.mobile.ui.issue.IssuesViewActivity;
 
 import org.eclipse.egit.github.core.Gist;
@@ -66,7 +66,7 @@ public class UrlLauncher {
 
     private Intent createGistIntent(final String uri, final String id) {
         Gist gist = new Gist().setId(id).setHtmlUrl(uri);
-        return ViewGistsActivity.createIntent(gist);
+        return GistsViewActivity.createIntent(gist);
     }
 
     /**
