@@ -19,7 +19,6 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
@@ -62,7 +61,7 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
      * @return true if the bundle indicates a requested forced refresh of the items
      */
     protected static boolean isForceRefresh(Bundle args) {
-        return args == null ? false : args.getBoolean(FORCE_REFRESH, false);
+        return args != null && args.getBoolean(FORCE_REFRESH, false);
     }
 
     /**
@@ -190,9 +189,7 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
         if (!isUsable())
             return;
 
-        LoaderManager manager = getLoaderManager();
-        if (!manager.hasRunningLoaders())
-            manager.restartLoader(0, args, this);
+        getLoaderManager().restartLoader(0, args, this);
     }
 
     /**
@@ -275,6 +272,7 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
      * Refresh the list with the progress bar showing
      */
     protected void refreshWithProgress() {
+        items.clear();
         setListShown(false);
         refresh();
     }
