@@ -271,6 +271,18 @@ public class Intents {
          * Add extra field data value to intent being built up
          *
          * @param fieldName
+         * @param values
+         * @return this builder
+         */
+        public Builder add(String fieldName, int[] values) {
+            intent.putExtra(fieldName, values);
+            return this;
+        }
+
+        /**
+         * Add extra field data value to intent being built up
+         *
+         * @param fieldName
          * @param value
          * @return this builder
          */

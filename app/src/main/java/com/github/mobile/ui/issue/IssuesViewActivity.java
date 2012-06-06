@@ -88,9 +88,10 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
      * @return intent
      */
     public static Intent createIntent(Collection<? extends Issue> issues, Repository repository, int position) {
-        ArrayList<Integer> numbers = new ArrayList<Integer>(issues.size());
+        int[] numbers = new int[issues.size()];
+        int index = 0;
         for (Issue issue : issues)
-            numbers.add(issue.getNumber());
+            numbers[index++] = issue.getNumber();
         return new Builder("issues.VIEW").add(EXTRA_ISSUE_NUMBERS, numbers).add(EXTRA_REPOSITORY, repository)
                 .add(EXTRA_POSITION, position).toIntent();
     }
@@ -104,12 +105,13 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
      */
     public static Intent createIntent(Collection<? extends Issue> issues, int position) {
         final int count = issues.size();
-        ArrayList<Integer> numbers = new ArrayList<Integer>(count);
+        int[] numbers = new int[count];
         ArrayList<RepositoryId> repos = new ArrayList<RepositoryId>(count);
         ArrayList<User> owners = new ArrayList<User>(count);
         boolean hasOwners = false;
+        int index = 0;
         for (Issue issue : issues) {
-            numbers.add(issue.getNumber());
+            numbers[index++] = issue.getNumber();
 
             RepositoryId repoId = null;
             User owner = null;
@@ -143,7 +145,7 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
     private ViewPager pager;
 
     @InjectExtra(EXTRA_ISSUE_NUMBERS)
-    private ArrayList<Integer> issueNumbers;
+    private int[] issueNumbers;
 
     @InjectExtra(value = EXTRA_REPOSITORIES, optional = true)
     private ArrayList<RepositoryId> repoIds;
@@ -190,7 +192,7 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
         }
 
         // Load avatar if single issue and user is currently unset of missing avatar URL
-        if (issueNumbers.size() == 1 && (user.get() == null || user.get().getAvatarUrl() == null))
+        if (issueNumbers.length == 1 && (user.get() == null || user.get().getAvatarUrl() == null))
             new RefreshRepositoryTask(this, repo != null ? repo : repoIds.get(0)) {
 
                 @Override
@@ -208,7 +210,7 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
 
     public void onPageSelected(int position) {
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(getString(string.issue_title) + issueNumbers.get(position));
+        actionBar.setTitle(getString(string.issue_title) + issueNumbers[position]);
         if (repo == null) {
             if (repoIds != null) {
                 RepositoryId repoId = repoIds.get(position);

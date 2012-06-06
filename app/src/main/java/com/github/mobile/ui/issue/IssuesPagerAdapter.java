@@ -42,7 +42,7 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
 
     private final List<RepositoryId> repos;
 
-    private final List<Integer> issues;
+    private final int[] issues;
 
     private final List<User> users;
 
@@ -54,7 +54,7 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
      * @param issueNumbers
      * @param repositoryOwners
      */
-    public IssuesPagerAdapter(FragmentManager fm, List<RepositoryId> repoIds, List<Integer> issueNumbers,
+    public IssuesPagerAdapter(FragmentManager fm, List<RepositoryId> repoIds, int[] issueNumbers,
             List<User> repositoryOwners) {
         super(fm);
 
@@ -69,7 +69,7 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
      * @param repository
      * @param issueNumbers
      */
-    public IssuesPagerAdapter(FragmentManager fm, Repository repository, List<Integer> issueNumbers) {
+    public IssuesPagerAdapter(FragmentManager fm, Repository repository, int[] issueNumbers) {
         super(fm);
 
         repos = null;
@@ -94,7 +94,7 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
             if (users != null)
                 args.putSerializable(EXTRA_USER, users.get(position));
         }
-        args.putInt(EXTRA_ISSUE_NUMBER, issues.get(position));
+        args.putInt(EXTRA_ISSUE_NUMBER, issues[position]);
         fragment.setArguments(args);
         return fragment;
     }
@@ -116,7 +116,7 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return issues.size();
+        return issues.length;
     }
 
     /**
