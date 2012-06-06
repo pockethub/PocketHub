@@ -19,7 +19,6 @@ import static com.github.mobile.Intents.EXTRA_ISSUE_NUMBERS;
 import static com.github.mobile.Intents.EXTRA_POSITION;
 import static com.github.mobile.Intents.EXTRA_REPOSITORIES;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
-import static com.github.mobile.Intents.EXTRA_USERS;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -30,6 +29,7 @@ import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
+import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.UrlLauncher;
 import com.github.mobile.ui.repo.RefreshRepositoryTask;
@@ -107,8 +107,6 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
         final int count = issues.size();
         int[] numbers = new int[count];
         ArrayList<RepositoryId> repos = new ArrayList<RepositoryId>(count);
-        ArrayList<User> owners = new ArrayList<User>(count);
-        boolean hasOwners = false;
         int index = 0;
         for (Issue issue : issues) {
             numbers[index++] = issue.getNumber();
@@ -126,18 +124,12 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
             if (repoId == null)
                 repoId = RepositoryId.createFromUrl(issue.getHtmlUrl());
             repos.add(repoId);
-
-            if (owner != null)
-                hasOwners = true;
-            owners.add(owner);
         }
 
         Builder builder = new Builder("issues.VIEW");
         builder.add(EXTRA_ISSUE_NUMBERS, numbers);
         builder.add(EXTRA_REPOSITORIES, repos);
         builder.add(EXTRA_POSITION, position);
-        if (hasOwners)
-            builder.add(EXTRA_USERS, owners);
         return builder.toIntent();
     }
 
@@ -150,9 +142,6 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
     @InjectExtra(value = EXTRA_REPOSITORIES, optional = true)
     private ArrayList<RepositoryId> repoIds;
 
-    @InjectExtra(value = EXTRA_USERS, optional = true)
-    private ArrayList<User> users;
-
     @InjectExtra(value = EXTRA_REPOSITORY, optional = true)
     private Repository repo;
 
@@ -161,6 +150,9 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
 
     @Inject
     private AvatarLoader avatars;
+
+    @Inject
+    private IssueStore store;
 
     private AtomicReference<User> user = new AtomicReference<User>();
 
@@ -177,7 +169,7 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
         if (repo != null)
             adapter = new IssuesPagerAdapter(getSupportFragmentManager(), repo, issueNumbers);
         else
-            adapter = new IssuesPagerAdapter(getSupportFragmentManager(), repoIds, issueNumbers, users);
+            adapter = new IssuesPagerAdapter(getSupportFragmentManager(), repoIds, issueNumbers, store);
         pager.setAdapter(adapter);
 
         pager.setOnPageChangeListener(this);
@@ -211,18 +203,27 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
     public void onPageSelected(int position) {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getString(string.issue_title) + issueNumbers[position]);
-        if (repo == null) {
-            if (repoIds != null) {
-                RepositoryId repoId = repoIds.get(position);
-                if (repoId != null)
-                    actionBar.setSubtitle(repoId.generateId());
-                else
-                    actionBar.setSubtitle(null);
-            }
-            if (users != null) {
-                user.set(users.get(position));
-                avatars.bind(actionBar, user);
-            }
+        if (repo != null)
+            return;
+        if (repoIds == null)
+            return;
+
+        RepositoryId repoId = repoIds.get(position);
+        if (repoId != null) {
+            actionBar.setSubtitle(repoId.generateId());
+            RepositoryIssue issue = store.getIssue(repoId, issueNumbers[position]);
+            if (issue != null) {
+                Repository fullRepo = issue.getRepository();
+                if (fullRepo != null && fullRepo.getOwner() != null) {
+                    user.set(fullRepo.getOwner());
+                    avatars.bind(actionBar, user);
+                } else
+                    actionBar.setLogo(null);
+            } else
+                actionBar.setLogo(null);
+        } else {
+            actionBar.setSubtitle(null);
+            actionBar.setLogo(null);
         }
     }
 

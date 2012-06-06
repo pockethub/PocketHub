@@ -26,11 +26,14 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
+import com.github.mobile.core.issue.IssueStore;
+
 import java.util.List;
 
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryId;
+import org.eclipse.egit.github.core.RepositoryIssue;
 import org.eclipse.egit.github.core.User;
 
 /**
@@ -44,24 +47,23 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
 
     private final int[] issues;
 
-    private final List<User> users;
-
     private final SparseArray<IssueFragment> fragments = new SparseArray<IssueFragment>();
+
+    private final IssueStore store;
 
     /**
      * @param fm
      * @param repoIds
      * @param issueNumbers
-     * @param repositoryOwners
+     * @param issueStore
      */
-    public IssuesPagerAdapter(FragmentManager fm, List<RepositoryId> repoIds, int[] issueNumbers,
-            List<User> repositoryOwners) {
+    public IssuesPagerAdapter(FragmentManager fm, List<RepositoryId> repoIds, int[] issueNumbers, IssueStore issueStore) {
         super(fm);
 
         repos = repoIds;
         repo = null;
         issues = issueNumbers;
-        users = repositoryOwners;
+        store = issueStore;
     }
 
     /**
@@ -73,9 +75,9 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
         super(fm);
 
         repos = null;
-        users = null;
         repo = repository;
         issues = issueNumbers;
+        store = null;
     }
 
     @Override
@@ -91,8 +93,12 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
             RepositoryId repo = repos.get(position);
             args.putString(EXTRA_REPOSITORY_NAME, repo.getName());
             args.putString(EXTRA_REPOSITORY_OWNER, repo.getOwner());
-            if (users != null)
-                args.putSerializable(EXTRA_USER, users.get(position));
+            RepositoryIssue issue = store.getIssue(repo, issues[position]);
+            if (issue != null && issue.getUser() != null) {
+                Repository fullRepo = issue.getRepository();
+                if (fullRepo != null && fullRepo.getOwner() != null)
+                    args.putSerializable(EXTRA_USER, fullRepo.getOwner());
+            }
         }
         args.putInt(EXTRA_ISSUE_NUMBER, issues[position]);
         fragment.setArguments(args);
