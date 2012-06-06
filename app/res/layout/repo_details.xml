@@ -48,10 +48,9 @@
 
         <TextView
             android:id="@+id/tv_watchers"
-            style="@style/ListSubtitleText"
+            style="@style/ListNumericSubtitleText"
             android:paddingLeft="5dp"
-            android:paddingRight="10dp"
-            android:singleLine="true" />
+            android:paddingRight="10dp" />
 
         <TextView
             android:id="@+id/tv_forks_icon"
@@ -60,9 +59,8 @@
 
         <TextView
             android:id="@+id/tv_forks"
-            style="@style/ListSubtitleText"
-            android:paddingLeft="3dp"
-            android:singleLine="true" />
+            style="@style/ListNumericSubtitleText"
+            android:paddingLeft="3dp" />
     </LinearLayout>
 
 </merge>

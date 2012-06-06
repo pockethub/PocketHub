@@ -68,7 +68,7 @@
 
         <TextView
             android:id="@+id/tv_gist_files"
-            style="@style/ListSubtitleText"
+            style="@style/ListNumericSubtitleText"
             android:gravity="center_vertical"
             android:paddingLeft="5dp"
             android:paddingRight="10dp" />
@@ -80,7 +80,7 @@
 
         <TextView
             android:id="@+id/tv_gist_comments"
-            style="@style/ListSubtitleText"
+            style="@style/ListNumericSubtitleText"
             android:gravity="center_vertical"
             android:paddingLeft="5dp" />
     </LinearLayout>

@@ -126,7 +126,6 @@
     </style>
 
     <style name="ListTitleText" parent="TitleText">
-        <item name="android:includeFontPadding">false</item>
         <item name="android:textColor">@color/text_selector</item>
     </style>
 
@@ -138,8 +137,12 @@
     </style>
 
     <style name="ListSubtitleText" parent="SubtitleText">
-        <item name="android:includeFontPadding">false</item>
         <item name="android:textColor">@color/text_light_selector</item>
+    </style>
+
+    <style name="ListNumericSubtitleText" parent="ListSubtitleText">
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:singleLine">true</item>
     </style>
 
     <style name="ListItem">
