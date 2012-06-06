@@ -144,7 +144,8 @@ public class RepositoryListFragment extends ItemListFragment<Repository> impleme
                     }
 
                     adapter.registerHeader(repository, Character.toString(repoStart).toUpperCase(US));
-                    adapter.registerNoSeparator(previous);
+                    if (previous != null)
+                        adapter.registerNoSeparator(previous);
                     start = repoStart;
                     if (start == 'z')
                         break;
