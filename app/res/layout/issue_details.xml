@@ -43,7 +43,6 @@
     <TextView
         android:id="@+id/tv_issue_comments"
         style="@style/ListNumericSubtitleText"
-        android:gravity="center_vertical"
         android:paddingLeft="10dp" />
 
 </merge>
