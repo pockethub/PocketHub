@@ -18,15 +18,11 @@
 
     <item>
         <shape>
-            <size android:height="1dp" />
-
             <solid android:color="@color/list_divider_top" />
         </shape>
     </item>
     <item android:top="1dp">
         <shape>
-            <size android:height="1dp" />
-
             <solid android:color="@color/list_divider_bottom" />
         </shape>
     </item>

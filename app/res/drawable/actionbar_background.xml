@@ -18,15 +18,11 @@
 
     <item>
         <shape android:shape="rectangle" >
-            <size android:height="1dp" />
-
             <solid android:color="@color/actionbar_background_top" />
         </shape>
     </item>
     <item android:top="1dp">
         <shape android:shape="rectangle" >
-            <size android:height="1dp" />
-
             <solid android:color="@color/actionbar_background_bottom" />
         </shape>
     </item>

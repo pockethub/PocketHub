@@ -18,8 +18,6 @@
 
     <item>
         <shape>
-            <size android:height="1dp" />
-
             <solid android:color="@color/sign_up_background_bottom" />
         </shape>
     </item>
