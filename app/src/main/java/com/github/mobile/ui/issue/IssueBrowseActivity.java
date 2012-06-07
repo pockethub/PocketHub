@@ -41,16 +41,6 @@ import roboguice.inject.InjectExtra;
 public class IssueBrowseActivity extends RoboSherlockFragmentActivity {
 
     /**
-     * Create intent to browse a repository's issues
-     *
-     * @param repository
-     * @return intent
-     */
-    public static Intent createIntent(Repository repository) {
-        return new Builder("repo.issues.VIEW").repo(repository).toIntent();
-    }
-
-    /**
      * Create intent to browse the filtered issues
      *
      * @param filter
