@@ -27,12 +27,13 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:paddingLeft="10dp"
+        android:paddingRight="2dp"
         android:singleLine="true" />
 
     <TextView
         android:id="@+id/tv_pull_request_icon"
         style="@style/ListIcon"
-        android:paddingRight="10dp"
+        android:paddingRight="5dp"
         android:text="@string/icon_pull_request" />
 
     <TextView
@@ -43,6 +44,6 @@
     <TextView
         android:id="@+id/tv_issue_comments"
         style="@style/ListNumericSubtitleText"
-        android:paddingLeft="10dp" />
+        android:paddingLeft="5dp" />
 
 </merge>
