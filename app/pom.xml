@@ -115,33 +115,6 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <plugin>
-                        <groupId>com.madgag</groupId>
-                        <artifactId>android-maven-plugin</artifactId>
-                        <inherited>true</inherited>
-                        <configuration>
-                            <sign>
-                                <debug>false</debug>
-                            </sign>
-                            <zipalign>
-                                <verbose>true</verbose>
-                                <outputApk>${project.build.directory}/${project.artifactId}.apk
-                                </outputApk>
-                            </zipalign>
-                            <manifest>
-                                <debuggable>false</debuggable>
-                            </manifest>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>alignApk</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>zipalign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
                 </plugins>
             </build>
         </profile>
