@@ -46,10 +46,6 @@
     <color name="list_divider_top">#E2E2E2</color>
     <color name="list_divider_bottom">#FFFFFF</color>
     <color name="text_link">#4183C4</color>
-    <color name="button_background_enabled_start">#0BA5DC</color>
-    <color name="button_background_enabled_end">#0770A0</color>
-    <color name="button_background_disabled_start">#7B7B7B</color>
-    <color name="button_background_disabled_end">#646464</color>
     <color name="text_inverted">#FFFFFF</color>
     <color name="text_news_details">#666666</color>
     <color name="separator">#E5E5E5</color>
