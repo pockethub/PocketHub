@@ -36,6 +36,7 @@
             android:id="@+id/tv_event"
             style="@style/ListTitleText"
             android:layout_width="match_parent"
+            android:paddingBottom="5dp"
             android:textSize="15dp"
             android:textStyle="normal" />
 
@@ -45,8 +46,7 @@
             android:layout_width="match_parent"
             android:includeFontPadding="true"
             android:maxLines="3"
-            android:paddingBottom="1dp"
-            android:paddingTop="2dp"
+            android:paddingBottom="5dp"
             android:textColor="@color/text_news_details_selector"
             android:textSize="15dp"
             android:textStyle="normal" />
