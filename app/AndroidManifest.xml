@@ -148,14 +148,14 @@
         
         <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.user.UriLauncherActivity">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <data android:scheme="http" android:host="github.com" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:scheme="http" android:host="github.com"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <data android:scheme="https" android:host="github.com" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:scheme="https" android:host="github.com"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
