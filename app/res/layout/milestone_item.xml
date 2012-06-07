@@ -15,9 +15,7 @@
   limitations under the License.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItem"
-    android:gravity="center_vertical"
-    android:orientation="horizontal" >
+    style="@style/ListItem" >
 
     <RadioButton
         android:id="@+id/rb_selected"
