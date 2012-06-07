@@ -71,7 +71,9 @@ public class IssueBrowseActivity extends RoboSherlockFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(layout.repo_issue_list);
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(repo.getName());
         actionBar.setSubtitle(repo.getOwner().getLogin());
