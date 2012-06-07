@@ -56,8 +56,6 @@ public class IssueBrowseActivity extends RoboSherlockFragmentActivity {
     @Inject
     private AvatarLoader avatarHelper;
 
-    private IssuesFragment issues;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,12 +67,6 @@ public class IssueBrowseActivity extends RoboSherlockFragmentActivity {
         actionBar.setSubtitle(repo.getOwner().getLogin());
         actionBar.setDisplayHomeAsUpEnabled(true);
         avatarHelper.bind(actionBar, repo.getOwner());
-
-        issues = (IssuesFragment) getSupportFragmentManager().findFragmentById(android.R.id.list);
-        if (issues == null) {
-            issues = new IssuesFragment();
-            getSupportFragmentManager().beginTransaction().add(android.R.id.list, issues).commit();
-        }
     }
 
     @Override
