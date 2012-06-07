@@ -41,9 +41,6 @@
         app:selectedBold="true"
         app:selectedColor="@color/pager_title_selected_text" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_pages"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <include layout="@layout/pager" />
 
 </LinearLayout>
