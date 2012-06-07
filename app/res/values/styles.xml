@@ -141,7 +141,6 @@
     </style>
 
     <style name="ListNumericSubtitleText" parent="ListSubtitleText">
-        <item name="android:includeFontPadding">false</item>
         <item name="android:singleLine">true</item>
     </style>
 
