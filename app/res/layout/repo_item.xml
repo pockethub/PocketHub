@@ -34,7 +34,7 @@
             android:id="@+id/tv_header"
             style="@style/ListSubtitleText"
             android:paddingBottom="5dp"
-            android:paddingLeft="5dp"
+            android:paddingLeft="10dp"
             android:textColor="@color/text_recent" />
 
         <View
