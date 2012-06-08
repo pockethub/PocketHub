@@ -19,22 +19,22 @@ import static android.view.KeyEvent.KEYCODE_DEL;
 import android.view.View;
 import android.widget.EditText;
 
-import com.github.mobile.ui.gist.CreateCommentActivity;
+import com.github.mobile.ui.issue.CreateCommentActivity;
 import com.viewpagerindicator.R.id;
 
-import org.eclipse.egit.github.core.Gist;
+import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.User;
 
 /**
  * Tests of {@link CreateCommentActivity}
  */
-public class GistCommentActivityTest extends
+public class IssueCommentActivityTest extends
 		ActivityTest<CreateCommentActivity> {
 
 	/**
 	 * Create test
 	 */
-	public GistCommentActivityTest() {
+	public IssueCommentActivityTest() {
 		super(CreateCommentActivity.class);
 	}
 
@@ -42,8 +42,8 @@ public class GistCommentActivityTest extends
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		setActivityIntent(CreateCommentActivity.createIntent(new Gist().setId(
-				"123").setUser(new User().setLogin("abc"))));
+		setActivityIntent(CreateCommentActivity.createIntent(new RepositoryId(
+				"o", "n"), 1, new User().setLogin("u")));
 	}
 
 	/**
