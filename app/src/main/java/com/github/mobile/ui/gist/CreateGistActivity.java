@@ -52,6 +52,8 @@ public class CreateGistActivity extends RoboSherlockFragmentActivity {
     @InjectView(id.cb_public)
     private CheckBox publicCheckBox;
 
+    private MenuItem createItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,22 +69,28 @@ public class CreateGistActivity extends RoboSherlockFragmentActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                invalidateOptionsMenu();
+                updateCreateMenu(s);
             }
         });
+        updateCreateMenu();
+    }
+
+    private void updateCreateMenu() {
+        if (contentText != null)
+            updateCreateMenu(contentText.getText());
+    }
+
+    private void updateCreateMenu(CharSequence text) {
+        if (createItem != null)
+            createItem.setEnabled(!TextUtils.isEmpty(text));
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
         getSupportMenuInflater().inflate(menu.gist_create, options);
+        createItem = options.findItem(id.m_apply);
+        updateCreateMenu();
         return true;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(id.m_create).setEnabled(!TextUtils.isEmpty(contentText.getText()));
-
-        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
