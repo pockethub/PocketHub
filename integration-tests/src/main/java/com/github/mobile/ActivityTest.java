@@ -36,6 +36,13 @@ public abstract class ActivityTest<T extends Activity> extends
 	}
 
 	/**
+	 * Verify activity was created successfully
+	 */
+	public void testActivityIsCreated() {
+		assertNotNull(getActivity());
+	}
+
+	/**
 	 * Get edit text with id
 	 * 
 	 * @param id

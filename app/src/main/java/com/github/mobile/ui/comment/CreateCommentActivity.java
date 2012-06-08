@@ -18,6 +18,7 @@ package com.github.mobile.ui.comment;
 import static com.github.mobile.Intents.EXTRA_COMMENT;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.widget.EditText;
 
@@ -26,6 +27,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
+import com.github.mobile.ui.TextWatcherAdapter;
 import com.github.mobile.util.AvatarLoader;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
@@ -48,16 +50,28 @@ public abstract class CreateCommentActivity extends RoboSherlockFragmentActivity
     @InjectView(id.et_comment)
     private EditText commentText;
 
+    private MenuItem applyItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(layout.comment_create);
+
+        commentText.addTextChangedListener(new TextWatcherAdapter() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (applyItem != null)
+                    applyItem.setEnabled(!TextUtils.isEmpty(s));
+            }
+        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
         getSupportMenuInflater().inflate(menu.comment, options);
+        applyItem = options.findItem(id.m_apply);
         return true;
     }
 
@@ -84,9 +98,7 @@ public abstract class CreateCommentActivity extends RoboSherlockFragmentActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case id.m_apply:
-            String comment = commentText.getText().toString();
-            if (!TextUtils.isEmpty(comment))
-                createComment(comment);
+            createComment(commentText.getText().toString());
             return true;
         default:
             return super.onOptionsItemSelected(item);

@@ -35,13 +35,6 @@ public class LoginActivityTest extends ActivityTest<LoginActivity> {
 
 	/**
 	 * Verify activity was created successfully
-	 */
-	public void testActivityIsCreated() {
-		assertNotNull(getActivity());
-	}
-
-	/**
-	 * Verify activity was created successfully
 	 * 
 	 * @throws Throwable
 	 */
