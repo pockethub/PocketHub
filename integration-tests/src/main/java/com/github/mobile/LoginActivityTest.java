@@ -46,7 +46,7 @@ public class LoginActivityTest extends ActivityTest<LoginActivity> {
 	 * @throws Throwable
 	 */
 	public void testSignInIsDisabled() throws Throwable {
-		View loginMenu = view(id.login);
+		View loginMenu = view(id.m_login);
 		assertFalse(loginMenu.isEnabled());
 		final EditText login = editText(id.et_login);
 		final EditText password = editText(id.et_password);

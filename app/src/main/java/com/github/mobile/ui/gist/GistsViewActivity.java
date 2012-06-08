@@ -134,7 +134,7 @@ public class GistsViewActivity extends DialogFragmentActivity implements OnPageC
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             return true;
-        case id.gist_delete:
+        case id.m_delete:
             String gistId = gists[pager.getCurrentItem()];
             Bundle args = new Bundle();
             args.putString(EXTRA_GIST_ID, gistId);

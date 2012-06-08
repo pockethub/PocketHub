@@ -67,7 +67,7 @@ public class GistsActivity extends RoboSherlockFragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case id.random_gist:
+        case id.m_random:
             randomGist();
             return true;
         case android.R.id.home:

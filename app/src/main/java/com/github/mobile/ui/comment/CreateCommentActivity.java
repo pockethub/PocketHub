@@ -83,7 +83,7 @@ public abstract class CreateCommentActivity extends RoboSherlockFragmentActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case id.apply:
+        case id.m_apply:
             String comment = commentText.getText().toString();
             if (!TextUtils.isEmpty(comment))
                 createComment(comment);

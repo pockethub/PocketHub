@@ -345,7 +345,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case id.login:
+        case id.m_login:
             handleLogin();
             return true;
         default:
@@ -357,7 +357,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu optionMenu) {
         getSupportMenuInflater().inflate(menu.login, optionMenu);
-        loginItem = optionMenu.findItem(id.login);
+        loginItem = optionMenu.findItem(id.m_login);
         return true;
     }
 

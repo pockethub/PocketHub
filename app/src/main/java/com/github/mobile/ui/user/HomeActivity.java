@@ -172,7 +172,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case id.search:
+        case id.m_search:
             onSearchRequested();
             return true;
         default:

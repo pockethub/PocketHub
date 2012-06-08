@@ -226,8 +226,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         super.onPrepareOptionsMenu(menu);
 
         boolean owner = isOwner();
-        menu.findItem(id.gist_delete).setEnabled(owner);
-        MenuItem starItem = menu.findItem(id.gist_star);
+        menu.findItem(id.m_delete).setEnabled(owner);
+        MenuItem starItem = menu.findItem(id.m_star);
         starItem.setEnabled(loadFinished && !owner);
         if (starred)
             starItem.setTitle(string.unstar);
@@ -241,16 +241,16 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
             return super.onOptionsItemSelected(item);
 
         switch (item.getItemId()) {
-        case id.gist_comment:
+        case id.m_comment:
             startActivityForResult(CreateCommentActivity.createIntent(gist), COMMENT_CREATE);
             return true;
-        case id.gist_star:
+        case id.m_star:
             if (starred)
                 unstarGist();
             else
                 starGist();
             return true;
-        case id.refresh:
+        case id.m_refresh:
             refreshGist();
             return true;
         default:

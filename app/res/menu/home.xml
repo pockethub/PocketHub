@@ -17,7 +17,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/search"
+        android:id="@+id/m_search"
         android:icon="@drawable/action_search"
         android:showAsAction="ifRoom"
         android:title="@string/find_repositories"/>

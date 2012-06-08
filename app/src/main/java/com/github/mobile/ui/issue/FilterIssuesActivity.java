@@ -203,7 +203,7 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case id.apply_filter:
+        case id.m_apply:
             Intent intent = new Intent();
             intent.putExtra(EXTRA_ISSUE_FILTER, filter);
             setResult(RESULT_OK, intent);

@@ -19,8 +19,6 @@ import static android.app.SearchManager.QUERY;
 import static android.content.Intent.ACTION_SEARCH;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
-import static com.github.mobile.ui.repo.RepositorySearchSuggestionsProvider.clearRepoQueryHistory;
-import static com.github.mobile.ui.repo.RepositorySearchSuggestionsProvider.saveRecentRepoQuery;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -51,11 +49,11 @@ public class RepositorySearchActivity extends RoboSherlockFragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case id.search:
+        case id.m_search:
             onSearchRequested();
             return true;
-        case id.clear_search_history:
-            clearRepoQueryHistory(this);
+        case id.m_clear:
+            RepositorySearchSuggestionsProvider.clearRepoQueryHistory(this);
             ToastUtils.show(this, string.search_history_cleared);
             return true;
         case android.R.id.home:
@@ -101,7 +99,7 @@ public class RepositorySearchActivity extends RoboSherlockFragmentActivity {
 
     private void search(final String query) {
         getSupportActionBar().setTitle(query);
-        saveRecentRepoQuery(this, query);
+        RepositorySearchSuggestionsProvider.saveRecentRepoQuery(this, query);
         repoFragment.setQuery(query);
     }
 }

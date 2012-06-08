@@ -466,7 +466,7 @@ public class IssueFragment extends DialogFragment {
     @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
         inflater.inflate(menu.issue_view, optionsMenu);
-        stateItem = optionsMenu.findItem(id.issue_toggle_state);
+        stateItem = optionsMenu.findItem(id.m_star);
     }
 
     @Override
@@ -497,18 +497,18 @@ public class IssueFragment extends DialogFragment {
             return super.onOptionsItemSelected(item);
 
         switch (item.getItemId()) {
-        case id.issue_edit:
+        case id.m_edit:
             startActivityForResult(EditIssueActivity.createIntent(issue, repositoryId.getOwner(),
                     repositoryId.getName(), getString(string.issue_title) + issueNumber, repositoryId.generateId(),
                     user), ISSUE_EDIT);
             return true;
-        case id.issue_comment:
+        case id.m_comment:
             startActivityForResult(CreateCommentActivity.createIntent(repositoryId, issueNumber, user), COMMENT_CREATE);
             return true;
-        case id.refresh:
+        case id.m_refresh:
             refreshIssue();
             return true;
-        case id.issue_toggle_state:
+        case id.m_state:
             stateTask.confirm(STATE_OPEN.equals(issue.getState()));
             return true;
         default:

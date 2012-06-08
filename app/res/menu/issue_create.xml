@@ -17,20 +17,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/issue_create"
+        android:id="@+id/m_create"
         android:icon="@drawable/action_save"
         android:showAsAction="ifRoom"
         android:title="@string/create"/>
     <item
-        android:id="@+id/issue_labels"
+        android:id="@+id/m_labels"
         android:showAsAction="never"
         android:title="@string/edit_labels"/>
     <item
-        android:id="@+id/issue_milestone"
+        android:id="@+id/m_milestone"
         android:showAsAction="never"
         android:title="@string/edit_milestone"/>
     <item
-        android:id="@+id/issue_assignee"
+        android:id="@+id/m_assignee"
         android:showAsAction="never"
         android:title="@string/edit_assignee"/>
 

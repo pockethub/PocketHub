@@ -80,7 +80,7 @@ public class CreateGistActivity extends RoboSherlockFragmentActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(id.gist_create).setEnabled(!TextUtils.isEmpty(contentText.getText()));
+        menu.findItem(id.m_create).setEnabled(!TextUtils.isEmpty(contentText.getText()));
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -88,7 +88,7 @@ public class CreateGistActivity extends RoboSherlockFragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case id.gist_create:
+        case id.m_create:
             createGist();
             return true;
         default:

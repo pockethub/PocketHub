@@ -17,7 +17,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/login"
+        android:id="@+id/m_login"
         android:enabled="false"
         android:showAsAction="always"
         android:title="@string/log_in"/>

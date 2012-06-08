@@ -17,7 +17,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/refresh"
+        android:id="@+id/m_refresh"
         android:icon="@drawable/menu_refresh"
         android:showAsAction="never"
         android:title="@string/refresh"/>

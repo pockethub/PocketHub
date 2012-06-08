@@ -188,10 +188,10 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
             startActivityForResult(EditIssueActivity.createIntent(repository, getString(string.new_issue)),
                     ISSUE_CREATE);
             return true;
-        case id.filter_issues:
+        case id.m_filter:
             startActivityForResult(FilterIssuesActivity.createIntent(repository, filter), ISSUE_FILTER_EDIT);
             return true;
-        case id.bookmark_filter:
+        case id.m_bookmark:
             cache.addIssueFilter(filter, new RequestFuture<IssueFilter>() {
 
                 public void success(IssueFilter response) {

@@ -75,7 +75,7 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case id.create_gist:
+        case id.m_create:
             startActivityForResult(new Intent(getActivity(), CreateGistActivity.class), GIST_CREATE);
             return true;
         default:

@@ -279,7 +279,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case id.issue_edit:
+        case id.m_edit:
             issue.setTitle(titleText.getText().toString());
             issue.setBody(bodyText.getText().toString());
             if (issue.getNumber() > 0)

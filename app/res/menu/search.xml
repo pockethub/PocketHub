@@ -17,12 +17,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/search"
+        android:id="@+id/m_search"
         android:icon="@drawable/action_search"
         android:showAsAction="ifRoom"
         android:title="@string/find_repositories"/>
     <item
-        android:id="@+id/clear_search_history"
+        android:id="@+id/m_clear"
         android:showAsAction="never"
         android:title="@string/clear_search_history"/>
 
