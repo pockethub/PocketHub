@@ -48,8 +48,7 @@
         style="@style/PrimaryIcon"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/ll_header"
-        android:layout_marginLeft="5dp"
-        android:paddingRight="10dp" />
+        android:layout_marginLeft="5dp" />
 
     <LinearLayout
         android:id="@+id/ll_details"
