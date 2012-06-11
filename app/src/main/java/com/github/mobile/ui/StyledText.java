@@ -93,22 +93,22 @@ public class StyledText extends SpannableStringBuilder {
      * Append text in with custom foreground color
      *
      * @param text
-     * @param resId
+     * @param color
      * @return this text
      */
-    public StyledText foreground(final CharSequence text, final int resId) {
-        return append(text, new ForegroundColorSpan(resId));
+    public StyledText foreground(final CharSequence text, final int color) {
+        return append(text, new ForegroundColorSpan(color));
     }
 
     /**
      * Append text in with custom foreground color
      *
      * @param text
-     * @param resId
+     * @param color
      * @return this text
      */
-    public StyledText foreground(final char text, final int resId) {
-        return append(text, new ForegroundColorSpan(resId));
+    public StyledText foreground(final char text, final int color) {
+        return append(text, new ForegroundColorSpan(color));
     }
 
     /**
