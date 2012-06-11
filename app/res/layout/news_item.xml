@@ -47,7 +47,7 @@
             android:includeFontPadding="true"
             android:maxLines="3"
             android:paddingBottom="5dp"
-            android:textColor="@color/text_news_details_selector"
+            android:textColor="@color/text_news_details"
             android:textSize="15dp"
             android:textStyle="normal" />
 

@@ -16,7 +16,7 @@
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:state_pressed="true" android:color="@color/text_inverted"/>
-    <item android:color="@color/text_icon"/>
+    <item android:drawable="@color/background_selected" android:state_pressed="true"/>
+    <item android:drawable="@color/background"/>
 
 </selector>

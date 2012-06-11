@@ -27,7 +27,7 @@
         android:id="@+id/tv_repo_description"
         style="@style/ListSubtitleText"
         android:singleLine="true"
-        android:textColor="@color/text_description_selector" />
+        android:textColor="@color/repo_description" />
 
     <LinearLayout
         android:layout_width="match_parent"

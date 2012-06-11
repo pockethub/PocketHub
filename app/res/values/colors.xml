@@ -18,6 +18,7 @@
 
     <color name="background">#F9F9F9</color>
     <color name="background_id">#E3E3E3</color>
+    <color name="background_selected">#EEEEEE</color>
     <color name="inset_background">#F8F8F8</color>
     <color name="inset_outer">#C7C7C7</color>
     <color name="inset_inner">#FFFFFF</color>
@@ -44,7 +45,6 @@
     <color name="list_divider_top">#E2E2E2</color>
     <color name="list_divider_bottom">#FFFFFF</color>
     <color name="text_link">#4183C4</color>
-    <color name="text_inverted">#FFFFFF</color>
     <color name="text_news_details">#666666</color>
     <color name="separator">#E5E5E5</color>
     <color name="label_outer">#55000000</color>

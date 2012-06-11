@@ -69,7 +69,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:singleLine">true</item>
-        <item name="android:textColor">@color/text_icon_selector</item>
+        <item name="android:textColor">@color/text_icon</item>
     </style>
 
     <style name="ListIcon" parent="TextIcon">
@@ -96,7 +96,7 @@
         <item name="android:paddingTop">2dp</item>
         <item name="android:singleLine">true</item>
         <item name="android:textSize">13sp</item>
-        <item name="android:textColor">@color/text_selector</item>
+        <item name="android:textColor">@color/text</item>
     </style>
 
     <style name="ListLabel">
@@ -126,7 +126,7 @@
     </style>
 
     <style name="ListTitleText" parent="TitleText">
-        <item name="android:textColor">@color/text_selector</item>
+        <item name="android:textColor">@color/text</item>
     </style>
 
     <style name="SubtitleText">
@@ -137,7 +137,7 @@
     </style>
 
     <style name="ListSubtitleText" parent="SubtitleText">
-        <item name="android:textColor">@color/text_light_selector</item>
+        <item name="android:textColor">@color/text_light</item>
     </style>
 
     <style name="ListNumericSubtitleText" parent="ListSubtitleText">
@@ -151,6 +151,7 @@
         <item name="android:paddingRight">10dp</item>
         <item name="android:paddingTop">10dp</item>
         <item name="android:paddingBottom">10dp</item>
+        <item name="android:background">@drawable/list_item_background</item>
     </style>
 
     <style name="Spinner">
