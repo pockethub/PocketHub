@@ -1,175 +1,258 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="100" android:versionName="1.0-SNAPSHOT" package="com.github.mobile">
-    <!-- Note: This file will be auto-formatted by the build (specifically android:manifest-update goal) -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.github.mobile"
+    android:versionCode="100"
+    android:versionName="1.0-SNAPSHOT" >
 
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="14"/>
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="14" />
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
-    <uses-permission android:name="android.permission.READ_SYNC_STATS"/>
-    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_SYNC_STATS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
 
-    <supports-screens android:largeScreens="true" android:normalScreens="true" android:smallScreens="true" android:xlargeScreens="true"/>
+    <supports-screens
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
 
-    <application android:debuggable="true" android:hardwareAccelerated="false" android:icon="@drawable/app_icon" android:label="@string/app_name" android:theme="@style/Theme.GitHub">
-
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.user.HomeActivity">
+    <application
+        android:debuggable="true"
+        android:hardwareAccelerated="false"
+        android:icon="@drawable/app_icon"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.GitHub" >
+        <activity
+            android:name=".ui.user.HomeActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <meta-data android:name="android.app.default_searchable" android:value=".ui.repo.RepositorySearchActivity"/>
-        </activity>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.gist.CreateGistActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.SEND"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:mimeType="text/plain"/>
-            </intent-filter>
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".ui.repo.RepositorySearchActivity" />
         </activity>
-
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.IssueBrowseActivity">
+        <activity
+            android:name=".ui.gist.CreateGistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
             <intent-filter>
-                <action android:name="com.github.mobile.android.repo.issues.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
+                <action android:name="android.intent.action.SEND" />
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.FilterIssuesActivity">
-            <intent-filter>
-                <action android:name="com.github.mobile.android.repo.issues.filter.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
+                <category android:name="android.intent.category.DEFAULT" />
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.IssueDashboardActivity">
-            <intent-filter>
-                <action android:name="com.github.mobile.android.repo.issues.dashboard.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.CreateIssueActivity">
-            <intent-filter>
-                <action android:name="com.github.mobile.android.repo.issues.create.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.EditIssueActivity">
+        <activity
+            android:name=".ui.issue.IssueBrowseActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
             <intent-filter>
-                <action android:name="com.github.mobile.android.repo.issues.edit.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.github.mobile.android.repo.issues.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.issue.FilterIssuesActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
+            <intent-filter>
+                <action android:name="com.github.mobile.android.repo.issues.filter.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.issue.IssueDashboardActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
+            <intent-filter>
+                <action android:name="com.github.mobile.android.repo.issues.dashboard.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.issue.CreateIssueActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
+            <intent-filter>
+                <action android:name="com.github.mobile.android.repo.issues.create.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.issue.EditIssueActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
+            <intent-filter>
+                <action android:name="com.github.mobile.android.repo.issues.edit.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.repo.RepositorySearchActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/search_title"
+            android:launchMode="singleTop" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity
+            android:name=".ui.gist.GistsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity
+            android:name=".ui.issue.FiltersViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
+            <intent-filter>
+                <action android:name="com.github.mobile.android.repo.issues.filters.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.gist.GistsViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
+            <intent-filter>
+                <action android:name="com.github.mobile.android.gists.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.gist.GistFilesViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
+            <intent-filter>
+                <action android:name="com.github.mobile.android.gist.files.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.issue.CreateCommentActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
+            <intent-filter>
+                <action android:name="com.github.mobile.android.issue.comment.create.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.gist.CreateCommentActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
+            <intent-filter>
+                <action android:name="com.github.mobile.android.gist.comment.create.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.repo.RepositoryViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
+            <intent-filter>
+                <action android:name="com.github.mobile.android.repo.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.user.UserViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
+            <intent-filter>
+                <action android:name="com.github.mobile.android.user.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.issue.IssuesViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
+            <intent-filter>
+                <action android:name="com.github.mobile.android.issues.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:label="@string/search_title" android:launchMode="singleTop" android:name=".ui.repo.RepositorySearchActivity">
+        <service
+            android:name=".accounts.AccountAuthenticatorService"
+            android:exported="false"
+            android:process=":auth" >
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH"/>
+                <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable" android:resource="@xml/searchable"/>
-        </activity>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.gist.GistsActivity"/>
-
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.FiltersViewActivity">
-             <intent-filter>
-                <action android:name="com.github.mobile.android.repo.issues.filters.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.gist.GistsViewActivity">
-            <intent-filter>
-                <action android:name="com.github.mobile.android.gists.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.gist.GistFilesViewActivity">
-            <intent-filter>
-                <action android:name="com.github.mobile.android.gist.files.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.CreateCommentActivity">
-            <intent-filter>
-                <action android:name="com.github.mobile.android.issue.comment.create.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.gist.CreateCommentActivity">
-            <intent-filter>
-                <action android:name="com.github.mobile.android.gist.comment.create.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.repo.RepositoryViewActivity">
-            <intent-filter>
-                <action android:name="com.github.mobile.android.repo.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.user.UserViewActivity">
-            <intent-filter>
-                <action android:name="com.github.mobile.android.user.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.issue.IssuesViewActivity">
-            <intent-filter>
-                <action android:name="com.github.mobile.android.issues.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-
-        <service android:exported="false" android:name=".accounts.AccountAuthenticatorService" android:process=":auth">
-            <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator"/>
-            </intent-filter>
-            <meta-data android:name="android.accounts.AccountAuthenticator" android:resource="@xml/authenticator"/>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
         </service>
 
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:excludeFromRecents="true" android:name=".accounts.LoginActivity">
+        <activity
+            android:name=".accounts.LoginActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:excludeFromRecents="true" >
+
             <!--
                 No intent-filter here! This activity is only ever launched by
                 someone who explicitly knows the class name
             -->
         </activity>
-        
-        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:name=".ui.user.UriLauncherActivity">
+        <activity
+            android:name=".ui.user.UriLauncherActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <data android:scheme="http" android:host="github.com"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="github.com"
+                    android:scheme="http" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <data android:scheme="https" android:host="github.com"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="github.com"
+                    android:scheme="https" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
-        <service android:exported="false" android:name=".sync.SyncAdapterService" android:process=":repos">
+        <service
+            android:name=".sync.SyncAdapterService"
+            android:exported="false"
+            android:process=":repos" >
             <intent-filter>
-                <action android:name="android.content.SyncAdapter"/>
+                <action android:name="android.content.SyncAdapter" />
             </intent-filter>
-            <meta-data android:name="android.content.SyncAdapter" android:resource="@xml/sync_adapter"/>
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/sync_adapter" />
         </service>
 
-        <provider android:authorities="com.github.sync" android:label="GitHub" android:name=".sync.ContentProviderAdapter" android:syncable="true"/>
-
-        <provider android:authorities="com.github.search.suggest.recent.repos" android:name=".ui.repo.RepositorySearchSuggestionsProvider"/>
-
+        <provider
+            android:name=".sync.ContentProviderAdapter"
+            android:authorities="com.github.sync"
+            android:label="GitHub"
+            android:syncable="true" />
+        <provider
+            android:name=".ui.repo.RepositorySearchSuggestionsProvider"
+            android:authorities="com.github.search.suggest.recent.repos" />
     </application>
 
 </manifest>
