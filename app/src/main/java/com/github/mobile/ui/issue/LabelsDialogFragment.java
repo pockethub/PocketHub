@@ -50,7 +50,8 @@ import org.eclipse.egit.github.core.Label;
 /**
  * Dialog fragment to present labels where one or more can be selected
  */
-public class LabelsDialogFragment extends DialogFragmentHelper implements OnClickListener {
+public class LabelsDialogFragment extends DialogFragmentHelper implements
+        OnClickListener {
 
     /**
      * Arguments key for the selected items
@@ -77,18 +78,22 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements OnClic
         }
     }
 
-    private static class LabelListAdapter extends ItemListAdapter<Label, LabelItemView> implements OnItemClickListener {
+    private static class LabelListAdapter extends
+            ItemListAdapter<Label, LabelItemView> implements
+            OnItemClickListener {
 
         private final boolean[] selected;
 
-        public LabelListAdapter(LayoutInflater inflater, Label[] labels, boolean[] selected) {
+        public LabelListAdapter(LayoutInflater inflater, Label[] labels,
+                boolean[] selected) {
             super(layout.label_item, inflater, labels);
 
             this.selected = selected;
         }
 
         @Override
-        protected void update(final int position, final LabelItemView view, final Label item) {
+        protected void update(final int position, final LabelItemView view,
+                final Label item) {
             LabelDrawableSpan.setText(view.name, item);
             view.checked.setChecked(selected[position]);
         }
@@ -99,7 +104,8 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements OnClic
         }
 
         @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        public void onItemClick(AdapterView<?> parent, View view, int position,
+                long id) {
             selected[position] = !selected[position];
             notifyDataSetChanged();
         }
@@ -126,8 +132,9 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements OnClic
      * @param choices
      * @param selectedChoices
      */
-    public static void show(final DialogFragmentActivity activity, final int requestCode, final String title,
-            final String message, final ArrayList<Label> choices, final boolean[] selectedChoices) {
+    public static void show(final DialogFragmentActivity activity,
+            final int requestCode, final String title, final String message,
+            final ArrayList<Label> choices, final boolean[] selectedChoices) {
         Bundle arguments = createArguments(title, message, requestCode);
         arguments.putSerializable(ARG_CHOICES, choices);
         arguments.putBooleanArray(ARG_SELECTED_CHOICES, selectedChoices);
@@ -140,7 +147,8 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements OnClic
         Activity activity = getActivity();
 
         ArrayList<Label> choices = getChoices();
-        boolean[] selectedChoices = arguments.getBooleanArray(ARG_SELECTED_CHOICES);
+        boolean[] selectedChoices = arguments
+                .getBooleanArray(ARG_SELECTED_CHOICES);
         HashSet<String> selected = new HashSet<String>();
         if (selectedChoices != null)
             for (int i = 0; i < choices.size(); i++)
@@ -149,9 +157,10 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements OnClic
         arguments.putSerializable(ARG_SELECTED, selected);
 
         LayoutInflater inflater = activity.getLayoutInflater();
-        ListView view = (ListView) inflater.inflate(layout.dialog_list_view, null);
-        LabelListAdapter adapter = new LabelListAdapter(inflater, choices.toArray(new Label[choices.size()]),
-                selectedChoices);
+        ListView view = (ListView) inflater.inflate(layout.dialog_list_view,
+                null);
+        LabelListAdapter adapter = new LabelListAdapter(inflater,
+                choices.toArray(new Label[choices.size()]), selectedChoices);
         view.setAdapter(adapter);
         view.setOnItemClickListener(adapter);
 
@@ -159,7 +168,8 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements OnClic
         dialog.setCancelable(true);
         dialog.setOnCancelListener(this);
         dialog.setButton(BUTTON_NEUTRAL, activity.getString(string.clear), this);
-        dialog.setButton(BUTTON_POSITIVE, activity.getString(string.apply), this);
+        dialog.setButton(BUTTON_POSITIVE, activity.getString(string.apply),
+                this);
         dialog.setTitle(getTitle());
         dialog.setMessage(getMessage());
         dialog.setView(view);
@@ -175,7 +185,8 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements OnClic
     protected void onResult(int resultCode) {
         Bundle arguments = getArguments();
         ArrayList<Label> selected = new ArrayList<Label>();
-        boolean[] selectedChoices = arguments.getBooleanArray(ARG_SELECTED_CHOICES);
+        boolean[] selectedChoices = arguments
+                .getBooleanArray(ARG_SELECTED_CHOICES);
         ArrayList<Label> choices = getChoices();
         for (int i = 0; i < selectedChoices.length; i++)
             if (selectedChoices[i])
@@ -190,7 +201,8 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements OnClic
         dialog.dismiss();
         switch (which) {
         case BUTTON_NEUTRAL:
-            Arrays.fill(getArguments().getBooleanArray(ARG_SELECTED_CHOICES), false);
+            Arrays.fill(getArguments().getBooleanArray(ARG_SELECTED_CHOICES),
+                    false);
         case BUTTON_POSITIVE:
             onResult(RESULT_OK);
         }

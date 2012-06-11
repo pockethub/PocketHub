@@ -80,7 +80,8 @@ public class RandomGistTask extends ProgressDialogTask<Gist> {
         }
 
         if (gists.isEmpty())
-            throw new IllegalArgumentException(getContext().getString(string.no_gists_found));
+            throw new IllegalArgumentException(getContext().getString(
+                    string.no_gists_found));
 
         return store.addGist(gists.iterator().next());
     }
@@ -89,7 +90,8 @@ public class RandomGistTask extends ProgressDialogTask<Gist> {
     protected void onSuccess(Gist gist) throws Exception {
         super.onSuccess(gist);
 
-        ((Activity) getContext()).startActivityForResult(GistsViewActivity.createIntent(gist), GIST_VIEW);
+        ((Activity) getContext()).startActivityForResult(
+                GistsViewActivity.createIntent(gist), GIST_VIEW);
     }
 
     @Override

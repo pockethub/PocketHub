@@ -47,18 +47,21 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Base fragment for displaying a list of items that loads with a progress bar visible
+ * Base fragment for displaying a list of items that loads with a progress bar
+ * visible
  *
  * @param <E>
  */
-public abstract class ItemListFragment<E> extends RoboSherlockFragment implements LoaderCallbacks<List<E>> {
+public abstract class ItemListFragment<E> extends RoboSherlockFragment
+        implements LoaderCallbacks<List<E>> {
 
     private static final String FORCE_REFRESH = "forceRefresh";
 
     /**
      * @param args
      *            bundle passed to the loader by the LoaderManager
-     * @return true if the bundle indicates a requested forced refresh of the items
+     * @return true if the bundle indicates a requested forced refresh of the
+     *         items
      */
     protected static boolean isForceRefresh(Bundle args) {
         return args != null && args.getBoolean(FORCE_REFRESH, false);
@@ -100,7 +103,8 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         return inflater.inflate(layout.item_list, null);
     }
 
@@ -125,7 +129,8 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
         listView.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id) {
                 onListItemClick((ListView) parent, view, position, id);
             }
         });
@@ -222,7 +227,8 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
      */
     protected HeaderFooterListAdapter<ItemListAdapter<E, ? extends ItemView>> createAdapter() {
         ItemListAdapter<E, ? extends ItemView> wrapped = createAdapter(items);
-        return new HeaderFooterListAdapter<ItemListAdapter<E, ? extends ItemView>>(getListView(), wrapped);
+        return new HeaderFooterListAdapter<ItemListAdapter<E, ? extends ItemView>>(
+                getListView(), wrapped);
     }
 
     /**
@@ -231,7 +237,8 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
      * @param items
      * @return adapter
      */
-    protected abstract ItemListAdapter<E, ? extends ItemView> createAdapter(final List<E> items);
+    protected abstract ItemListAdapter<E, ? extends ItemView> createAdapter(
+            final List<E> items);
 
     /**
      * Set the list to be shown
@@ -256,7 +263,8 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
     }
 
     /**
-     * Get exception from loader if it provides one by being a {@link ThrowableLoader}
+     * Get exception from loader if it provides one by being a
+     * {@link ThrowableLoader}
      *
      * @param loader
      * @return exception or null if none provided
@@ -294,7 +302,8 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
     @SuppressWarnings("unchecked")
     protected HeaderFooterListAdapter<ItemListAdapter<E, ? extends ItemView>> getListAdapter() {
         if (listView != null)
-            return (HeaderFooterListAdapter<ItemListAdapter<E, ? extends ItemView>>) listView.getAdapter();
+            return (HeaderFooterListAdapter<ItemListAdapter<E, ? extends ItemView>>) listView
+                    .getAdapter();
         else
             return null;
     }
@@ -314,7 +323,8 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
     private ItemListFragment<E> fadeIn(final View view, final boolean animate) {
         if (view != null)
             if (animate)
-                view.startAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in));
+                view.startAnimation(AnimationUtils.loadAnimation(getActivity(),
+                        android.R.anim.fade_in));
             else
                 view.clearAnimation();
         return this;
@@ -349,7 +359,8 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
      * @param animate
      * @return this fragment
      */
-    public ItemListFragment<E> setListShown(final boolean shown, final boolean animate) {
+    public ItemListFragment<E> setListShown(final boolean shown,
+            final boolean animate) {
         if (!isUsable())
             return this;
 
@@ -360,11 +371,14 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment implement
 
         if (shown)
             if (!items.isEmpty())
-                hide(progressBar).hide(emptyView).fadeIn(listView, animate).show(listView);
+                hide(progressBar).hide(emptyView).fadeIn(listView, animate)
+                        .show(listView);
             else
-                hide(progressBar).hide(listView).fadeIn(emptyView, animate).show(emptyView);
+                hide(progressBar).hide(listView).fadeIn(emptyView, animate)
+                        .show(emptyView);
         else
-            hide(listView).hide(emptyView).fadeIn(progressBar, animate).show(progressBar);
+            hide(listView).hide(emptyView).fadeIn(progressBar, animate)
+                    .show(progressBar);
 
         return this;
     }

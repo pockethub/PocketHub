@@ -46,27 +46,32 @@ public class Intents {
     /**
      * Repository handle
      */
-    public static final String EXTRA_REPOSITORY = INTENT_EXTRA_PREFIX + "REPOSITORY";
+    public static final String EXTRA_REPOSITORY = INTENT_EXTRA_PREFIX
+            + "REPOSITORY";
 
     /**
      * Repository ids collection handle
      */
-    public static final String EXTRA_REPOSITORIES = INTENT_EXTRA_PREFIX + "REPOSITORIES";
+    public static final String EXTRA_REPOSITORIES = INTENT_EXTRA_PREFIX
+            + "REPOSITORIES";
 
     /**
      * Repository name
      */
-    public static final String EXTRA_REPOSITORY_NAME = INTENT_EXTRA_PREFIX + "REPOSITORY_NAME";
+    public static final String EXTRA_REPOSITORY_NAME = INTENT_EXTRA_PREFIX
+            + "REPOSITORY_NAME";
 
     /**
      * Repository owner
      */
-    public static final String EXTRA_REPOSITORY_OWNER = INTENT_EXTRA_PREFIX + "REPOSITORY_OWNER";
+    public static final String EXTRA_REPOSITORY_OWNER = INTENT_EXTRA_PREFIX
+            + "REPOSITORY_OWNER";
 
     /**
      * Issue number
      */
-    public static final String EXTRA_ISSUE_NUMBER = INTENT_EXTRA_PREFIX + "ISSUE_NUMBER";
+    public static final String EXTRA_ISSUE_NUMBER = INTENT_EXTRA_PREFIX
+            + "ISSUE_NUMBER";
 
     /**
      * Issue handle
@@ -76,7 +81,8 @@ public class Intents {
     /**
      * Issue number collection handle
      */
-    public static final String EXTRA_ISSUE_NUMBERS = INTENT_EXTRA_PREFIX + "ISSUE_NUMBERS";
+    public static final String EXTRA_ISSUE_NUMBERS = INTENT_EXTRA_PREFIX
+            + "ISSUE_NUMBERS";
 
     /**
      * Gist id
@@ -86,7 +92,8 @@ public class Intents {
     /**
      * List of Gist ids
      */
-    public static final String EXTRA_GIST_IDS = INTENT_EXTRA_PREFIX + "GIST_IDS";
+    public static final String EXTRA_GIST_IDS = INTENT_EXTRA_PREFIX
+            + "GIST_IDS";
 
     /**
      * Gist handle
@@ -96,7 +103,8 @@ public class Intents {
     /**
      * Gist file handle
      */
-    public static final String EXTRA_GIST_FILE = INTENT_EXTRA_PREFIX + "GIST_FILE";
+    public static final String EXTRA_GIST_FILE = INTENT_EXTRA_PREFIX
+            + "GIST_FILE";
 
     /**
      * User handle
@@ -111,17 +119,20 @@ public class Intents {
     /**
      * Issue filter handle
      */
-    public static final String EXTRA_ISSUE_FILTER = INTENT_EXTRA_PREFIX + "ISSUE_FILTER";
+    public static final String EXTRA_ISSUE_FILTER = INTENT_EXTRA_PREFIX
+            + "ISSUE_FILTER";
 
     /**
      * Comment body
      */
-    public static final String EXTRA_COMMENT_BODY = INTENT_EXTRA_PREFIX + "COMMENT_BODY";
+    public static final String EXTRA_COMMENT_BODY = INTENT_EXTRA_PREFIX
+            + "COMMENT_BODY";
 
     /**
      * Comments handle
      */
-    public static final String EXTRA_COMMENTS = INTENT_EXTRA_PREFIX + "COMMENTS";
+    public static final String EXTRA_COMMENTS = INTENT_EXTRA_PREFIX
+            + "COMMENTS";
 
     /**
      * Comment handle
@@ -131,7 +142,8 @@ public class Intents {
     /**
      * Integer position
      */
-    public static final String EXTRA_POSITION = INTENT_EXTRA_PREFIX + "POSITION";
+    public static final String EXTRA_POSITION = INTENT_EXTRA_PREFIX
+            + "POSITION";
 
     /**
      * Action bar title
@@ -141,7 +153,8 @@ public class Intents {
     /**
      * Action bar subtitle
      */
-    public static final String EXTRA_SUBTITLE = INTENT_EXTRA_PREFIX + "SUBTITLE";
+    public static final String EXTRA_SUBTITLE = INTENT_EXTRA_PREFIX
+            + "SUBTITLE";
 
     /**
      * Resolve the {@link RepositoryId} referenced by the given intent
@@ -156,7 +169,8 @@ public class Intents {
     }
 
     /**
-     * Builder for generating an intent configured with extra data such as an issue, repository, or gist
+     * Builder for generating an intent configured with extra data such as an
+     * issue, repository, or gist
      */
     public static class Builder {
 
@@ -168,7 +182,9 @@ public class Intents {
          * @param actionSuffix
          */
         public Builder(String actionSuffix) {
-            intent = new Intent(INTENT_PREFIX + actionSuffix); // actionSuffix = e.g. "repos.VIEW"
+            intent = new Intent(INTENT_PREFIX + actionSuffix); // actionSuffix =
+                                                               // e.g.
+                                                               // "repos.VIEW"
         }
 
         /**
@@ -178,8 +194,8 @@ public class Intents {
          * @return this builder
          */
         public Builder repo(RepositoryId repositoryId) {
-            return add(EXTRA_REPOSITORY_NAME, repositoryId.getName()).add(EXTRA_REPOSITORY_OWNER,
-                    repositoryId.getOwner());
+            return add(EXTRA_REPOSITORY_NAME, repositoryId.getName()).add(
+                    EXTRA_REPOSITORY_OWNER, repositoryId.getOwner());
         }
 
         /**
@@ -199,8 +215,8 @@ public class Intents {
          * @return this builder
          */
         public Builder issue(Issue issue) {
-            return repo(createFromUrl(issue.getHtmlUrl())).add(EXTRA_ISSUE, issue).add(EXTRA_ISSUE_NUMBER,
-                    issue.getNumber());
+            return repo(createFromUrl(issue.getHtmlUrl())).add(EXTRA_ISSUE,
+                    issue).add(EXTRA_ISSUE_NUMBER, issue.getNumber());
         }
 
         /**

@@ -54,7 +54,8 @@ public class RepositoryEventMatcher {
         return null;
     }
 
-    private Repository getRepository(final EventRepository repo, final User actor) {
+    private Repository getRepository(final EventRepository repo,
+            final User actor) {
         if (repo == null)
             return null;
 

@@ -161,14 +161,16 @@ public class IssueFragment extends DialogFragment {
         setHasOptionsMenu(true);
 
         Bundle args = getArguments();
-        repositoryId = RepositoryId.create(args.getString(EXTRA_REPOSITORY_OWNER),
+        repositoryId = RepositoryId.create(
+                args.getString(EXTRA_REPOSITORY_OWNER),
                 args.getString(EXTRA_REPOSITORY_NAME));
         issueNumber = args.getInt(EXTRA_ISSUE_NUMBER);
         user = (User) args.getSerializable(EXTRA_USER);
 
         DialogFragmentActivity dialogActivity = (DialogFragmentActivity) getActivity();
 
-        milestoneTask = new EditMilestoneTask(dialogActivity, repositoryId, issueNumber) {
+        milestoneTask = new EditMilestoneTask(dialogActivity, repositoryId,
+                issueNumber) {
 
             @Override
             protected void onSuccess(Issue editedIssue) throws Exception {
@@ -178,7 +180,8 @@ public class IssueFragment extends DialogFragment {
             }
         };
 
-        assigneeTask = new EditAssigneeTask(dialogActivity, repositoryId, issueNumber) {
+        assigneeTask = new EditAssigneeTask(dialogActivity, repositoryId,
+                issueNumber) {
 
             @Override
             protected void onSuccess(Issue editedIssue) throws Exception {
@@ -188,7 +191,8 @@ public class IssueFragment extends DialogFragment {
             }
         };
 
-        labelsTask = new EditLabelsTask(dialogActivity, repositoryId, issueNumber) {
+        labelsTask = new EditLabelsTask(dialogActivity, repositoryId,
+                issueNumber) {
 
             @Override
             protected void onSuccess(Issue editedIssue) throws Exception {
@@ -220,7 +224,8 @@ public class IssueFragment extends DialogFragment {
 
         issue = store.getIssue(repositoryId, issueNumber);
 
-        TextView loadingText = (TextView) loadingView.findViewById(id.tv_loading);
+        TextView loadingText = (TextView) loadingView
+                .findViewById(id.tv_loading);
         loadingText.setText(string.loading_comments);
 
         if (issue == null || (issue.getComments() > 0 && comments == null))
@@ -236,7 +241,8 @@ public class IssueFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         return inflater.inflate(layout.comment_list_view, null);
     }
 
@@ -251,10 +257,12 @@ public class IssueFragment extends DialogFragment {
         stateText = (TextView) headerView.findViewById(id.tv_state);
         titleText = (TextView) headerView.findViewById(id.tv_issue_title);
         authorText = (TextView) headerView.findViewById(id.tv_issue_author);
-        createdDateText = (TextView) headerView.findViewById(id.tv_issue_creation_date);
+        createdDateText = (TextView) headerView
+                .findViewById(id.tv_issue_creation_date);
         creatorAvatar = (ImageView) headerView.findViewById(id.iv_avatar);
         assigneeText = (TextView) headerView.findViewById(id.tv_assignee_name);
-        assigneeAvatar = (ImageView) headerView.findViewById(id.iv_assignee_avatar);
+        assigneeAvatar = (ImageView) headerView
+                .findViewById(id.iv_assignee_avatar);
         labelsArea = (TextView) headerView.findViewById(id.tv_labels);
         milestoneArea = headerView.findViewById(id.ll_milestone);
         milestoneText = (TextView) headerView.findViewById(id.tv_milestone);
@@ -281,13 +289,14 @@ public class IssueFragment extends DialogFragment {
             }
         });
 
-        headerView.findViewById(id.ll_assignee).setOnClickListener(new OnClickListener() {
+        headerView.findViewById(id.ll_assignee).setOnClickListener(
+                new OnClickListener() {
 
-            public void onClick(View v) {
-                if (issue != null)
-                    assigneeTask.prompt(issue.getAssignee());
-            }
-        });
+                    public void onClick(View v) {
+                        if (issue != null)
+                            assigneeTask.prompt(issue.getAssignee());
+                    }
+                });
 
         labelsArea.setOnClickListener(new OnClickListener() {
 
@@ -298,8 +307,9 @@ public class IssueFragment extends DialogFragment {
         });
 
         Activity activity = getActivity();
-        adapter = new HeaderFooterListAdapter<CommentListAdapter>(list, new CommentListAdapter(
-                activity.getLayoutInflater(), avatarHelper, new HttpImageGetter(activity)));
+        adapter = new HeaderFooterListAdapter<CommentListAdapter>(list,
+                new CommentListAdapter(activity.getLayoutInflater(),
+                        avatarHelper, new HttpImageGetter(activity)));
         list.setAdapter(adapter);
     }
 
@@ -316,7 +326,8 @@ public class IssueFragment extends DialogFragment {
             bodyText.setText(string.no_description_given);
 
         authorText.setText(issue.getUser().getLogin());
-        createdDateText.setText(new StyledText().append("opened ").append(issue.getCreatedAt()));
+        createdDateText.setText(new StyledText().append("opened ").append(
+                issue.getCreatedAt()));
         avatarHelper.bind(creatorAvatar, issue.getUser());
 
         if (STATE_OPEN.equals(issue.getState()))
@@ -361,7 +372,8 @@ public class IssueFragment extends DialogFragment {
             float closed = milestone.getClosedIssues();
             float total = closed + milestone.getOpenIssues();
             if (total > 0) {
-                ((LayoutParams) milestoneProgressArea.getLayoutParams()).weight = closed / total;
+                ((LayoutParams) milestoneProgressArea.getLayoutParams()).weight = closed
+                        / total;
                 milestoneProgressArea.setVisibility(VISIBLE);
             } else
                 milestoneProgressArea.setVisibility(GONE);
@@ -371,7 +383,8 @@ public class IssueFragment extends DialogFragment {
 
         String state = issue.getState();
         if (state != null && state.length() > 0)
-            state = state.substring(0, 1).toUpperCase(Locale.US) + state.substring(1);
+            state = state.substring(0, 1).toUpperCase(Locale.US)
+                    + state.substring(1);
         else
             state = "";
 
@@ -382,13 +395,16 @@ public class IssueFragment extends DialogFragment {
 
         if (stateItem != null)
             if (STATE_OPEN.equals(issue.getState()))
-                stateItem.setTitle(string.close).setIcon(drawable.menu_issue_close);
+                stateItem.setTitle(string.close).setIcon(
+                        drawable.menu_issue_close);
             else
-                stateItem.setTitle(string.reopen).setIcon(drawable.menu_issue_open);
+                stateItem.setTitle(string.reopen).setIcon(
+                        drawable.menu_issue_open);
     }
 
     private void refreshIssue() {
-        new RefreshIssueTask(getActivity(), repositoryId, issueNumber, bodyImageGetter, commentImageGetter) {
+        new RefreshIssueTask(getActivity(), repositoryId, issueNumber,
+                bodyImageGetter, commentImageGetter) {
 
             @Override
             protected void onException(Exception e) throws RuntimeException {
@@ -413,7 +429,8 @@ public class IssueFragment extends DialogFragment {
     }
 
     private void updateList(Issue issue, List<Comment> comments) {
-        adapter.getWrappedAdapter().setItems(comments.toArray(new Comment[comments.size()]));
+        adapter.getWrappedAdapter().setItems(
+                comments.toArray(new Comment[comments.size()]));
         adapter.removeHeader(loadingView);
 
         headerView.setVisibility(VISIBLE);
@@ -448,7 +465,8 @@ public class IssueFragment extends DialogFragment {
             assigneeTask.edit(AssigneeDialogFragment.getSelected(arguments));
             break;
         case ISSUE_LABELS_UPDATE:
-            ArrayList<Label> labels = LabelsDialogFragment.getSelected(arguments);
+            ArrayList<Label> labels = LabelsDialogFragment
+                    .getSelected(arguments);
             if (labels != null && !labels.isEmpty())
                 labelsTask.edit(labels.toArray(new Label[labels.size()]));
             else
@@ -479,7 +497,8 @@ public class IssueFragment extends DialogFragment {
             updateHeader((Issue) data.getSerializableExtra(EXTRA_ISSUE));
             return;
         case COMMENT_CREATE:
-            Comment comment = (Comment) data.getSerializableExtra(EXTRA_COMMENT);
+            Comment comment = (Comment) data
+                    .getSerializableExtra(EXTRA_COMMENT);
             if (comments != null) {
                 comments.add(comment);
                 issue.setComments(issue.getComments() + 1);
@@ -498,12 +517,14 @@ public class IssueFragment extends DialogFragment {
 
         switch (item.getItemId()) {
         case id.m_edit:
-            startActivityForResult(EditIssueActivity.createIntent(issue, repositoryId.getOwner(),
-                    repositoryId.getName(), getString(string.issue_title) + issueNumber, repositoryId.generateId(),
-                    user), ISSUE_EDIT);
+            startActivityForResult(EditIssueActivity.createIntent(issue,
+                    repositoryId.getOwner(), repositoryId.getName(),
+                    getString(string.issue_title) + issueNumber,
+                    repositoryId.generateId(), user), ISSUE_EDIT);
             return true;
         case id.m_comment:
-            startActivityForResult(CreateCommentActivity.createIntent(repositoryId, issueNumber, user), COMMENT_CREATE);
+            startActivityForResult(CreateCommentActivity.createIntent(
+                    repositoryId, issueNumber, user), COMMENT_CREATE);
             return true;
         case id.m_refresh:
             refreshIssue();

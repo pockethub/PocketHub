@@ -56,7 +56,8 @@ public class CreateGistTask extends ProgressDialogTask<Gist> {
      * @param name
      * @param content
      */
-    public CreateGistTask(Activity activity, String description, boolean isPublic, String name, String content) {
+    public CreateGistTask(Activity activity, String description,
+            boolean isPublic, String name, String content) {
         super(activity);
 
         this.description = description;

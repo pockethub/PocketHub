@@ -46,7 +46,8 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
     private static final int VERSION = 2;
 
     private static File getFile(final Context context, final User organization) {
-        return new File(context.getFilesDir(), "recent-repos-" + organization.getId() + ".ser");
+        return new File(context.getFilesDir(), "recent-repos-"
+                + organization.getId() + ".ser");
     }
 
     private LinkedHashSet<Long> ids;
@@ -168,14 +169,16 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
         if (!lRecent && rRecent)
             return 1;
 
-        final int order = CASE_INSENSITIVE_ORDER.compare(lhs.getName(), rhs.getName());
+        final int order = CASE_INSENSITIVE_ORDER.compare(lhs.getName(),
+                rhs.getName());
         if (order == 0)
             if (id == lhs.getOwner().getId())
                 return -1;
             else if (id == rhs.getOwner().getId())
                 return 1;
             else
-                return CASE_INSENSITIVE_ORDER.compare(lhs.getOwner().getLogin(), rhs.getOwner().getLogin());
+                return CASE_INSENSITIVE_ORDER.compare(
+                        lhs.getOwner().getLogin(), rhs.getOwner().getLogin());
         else
             return order;
     }

@@ -28,12 +28,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Custom scope that makes an authenticated GitHub account available by enforcing that the user is logged in before
- * proceeding.
+ * Custom scope that makes an authenticated GitHub account available by
+ * enforcing that the user is logged in before proceeding.
  */
 public class AccountScope extends ScopeBase {
 
-    private static final Key<GitHubAccount> GITHUB_ACCOUNT_KEY = Key.get(GitHubAccount.class);
+    private static final Key<GitHubAccount> GITHUB_ACCOUNT_KEY = Key
+            .get(GitHubAccount.class);
 
     /**
      * Create new module
@@ -47,7 +48,9 @@ public class AccountScope extends ScopeBase {
 
                 bind(AccountScope.class).toInstance(scope);
 
-                bind(GITHUB_ACCOUNT_KEY).toProvider(AccountScope.<GitHubAccount> seededKeyProvider()).in(scope);
+                bind(GITHUB_ACCOUNT_KEY).toProvider(
+                        AccountScope.<GitHubAccount> seededKeyProvider()).in(
+                        scope);
             }
         };
     }
@@ -73,8 +76,10 @@ public class AccountScope extends ScopeBase {
      * @param account
      * @param accountManager
      */
-    public void enterWith(final Account account, final AccountManager accountManager) {
-        enterWith(new GitHubAccount(account.name, accountManager.getPassword(account)));
+    public void enterWith(final Account account,
+            final AccountManager accountManager) {
+        enterWith(new GitHubAccount(account.name,
+                accountManager.getPassword(account)));
     }
 
     /**
@@ -84,7 +89,8 @@ public class AccountScope extends ScopeBase {
      */
     public void enterWith(final GitHubAccount account) {
         if (currentAccount.get() != null)
-            throw new IllegalStateException("A scoping block is already in progress");
+            throw new IllegalStateException(
+                    "A scoping block is already in progress");
 
         currentAccount.set(account);
     }
@@ -103,7 +109,8 @@ public class AccountScope extends ScopeBase {
     protected <T> Map<Key<?>, Object> getScopedObjectMap(final Key<T> key) {
         GitHubAccount account = currentAccount.get();
         if (account == null)
-            throw new OutOfScopeException("Cannot access " + key + " outside of a scoping block");
+            throw new OutOfScopeException("Cannot access " + key
+                    + " outside of a scoping block");
 
         Map<Key<?>, Object> scopeMap = repoScopeMaps.get(account);
         if (scopeMap == null) {

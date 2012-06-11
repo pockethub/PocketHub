@@ -29,7 +29,8 @@ public class SourceEditor {
     private static final String URL_PAGE = "file:///android_asset/source-editor.html";
 
     /**
-     * Does the source editor have a highlighter set to match the given file name extension?
+     * Does the source editor have a highlighter set to match the given file
+     * name extension?
      *
      * @param extension
      * @return true if highlighting available, false otherwise
@@ -81,7 +82,8 @@ public class SourceEditor {
      * @param provider
      * @return view
      */
-    public static WebView showSource(WebView view, String name, final Object provider) {
+    public static WebView showSource(WebView view, String name,
+            final Object provider) {
         view.setWebViewClient(new WebViewClient() {
 
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -110,8 +112,11 @@ public class SourceEditor {
         view.getSettings().setBuiltInZoomControls(true);
         view.addJavascriptInterface(new Object() {
             public String toString() {
-                return "<script type=\"syntaxhighlighter\" class=\"toolbar:false;" + brush + "\"><![CDATA[\n"
-                        + provider.toString() + "\n]]></script>";
+                return "<script type=\"syntaxhighlighter\" class=\"toolbar:false;"
+                        + brush
+                        + "\"><![CDATA[\n"
+                        + provider.toString()
+                        + "\n]]></script>";
             }
 
         }, "SourceProvider");

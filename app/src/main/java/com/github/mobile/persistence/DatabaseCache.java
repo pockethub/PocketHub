@@ -28,8 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Given a PersistableResource, this class will take support loading/storing it's data or requesting fresh data, as
- * appropriate.
+ * Given a PersistableResource, this class will take support loading/storing
+ * it's data or requesting fresh data, as appropriate.
  */
 public class DatabaseCache {
 
@@ -45,12 +45,14 @@ public class DatabaseCache {
      * @return resource
      * @throws IOException
      */
-    public <E> List<E> loadOrRequest(PersistableResource<E> persistableResource) throws IOException {
+    public <E> List<E> loadOrRequest(PersistableResource<E> persistableResource)
+            throws IOException {
         SQLiteOpenHelper helper = helperProvider.get();
         try {
             List<E> items = loadFromDB(helper, persistableResource);
             if (items != null) {
-                Log.d(TAG, "CACHE HIT: Found " + items.size() + " items for " + persistableResource);
+                Log.d(TAG, "CACHE HIT: Found " + items.size() + " items for "
+                        + persistableResource);
                 return items;
             }
             return requestAndStore(helper, persistableResource);
@@ -66,7 +68,8 @@ public class DatabaseCache {
      * @return resources
      * @throws IOException
      */
-    public <E> List<E> requestAndStore(PersistableResource<E> persistableResource) throws IOException {
+    public <E> List<E> requestAndStore(
+            PersistableResource<E> persistableResource) throws IOException {
         SQLiteOpenHelper helper = helperProvider.get();
         try {
             return requestAndStore(helper, persistableResource);
@@ -75,8 +78,8 @@ public class DatabaseCache {
         }
     }
 
-    private <E> List<E> requestAndStore(SQLiteOpenHelper helper, PersistableResource<E> persistableResource)
-            throws IOException {
+    private <E> List<E> requestAndStore(SQLiteOpenHelper helper,
+            PersistableResource<E> persistableResource) throws IOException {
         List<E> items = persistableResource.request();
 
         SQLiteDatabase db = helper.getWritableDatabase();
@@ -93,8 +96,10 @@ public class DatabaseCache {
         return items;
     }
 
-    private <E> List<E> loadFromDB(SQLiteOpenHelper helper, PersistableResource<E> persistableResource) {
-        Cursor cursor = persistableResource.getCursor(helper.getReadableDatabase());
+    private <E> List<E> loadFromDB(SQLiteOpenHelper helper,
+            PersistableResource<E> persistableResource) {
+        Cursor cursor = persistableResource.getCursor(helper
+                .getReadableDatabase());
         try {
             if (cursor.moveToFirst()) {
                 List<E> cached = new ArrayList<E>();

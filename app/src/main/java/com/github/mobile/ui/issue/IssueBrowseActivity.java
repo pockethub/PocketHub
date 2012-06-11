@@ -47,7 +47,8 @@ public class IssueBrowseActivity extends RoboSherlockFragmentActivity {
      * @return intent
      */
     public static Intent createIntent(IssueFilter filter) {
-        return new Builder("repo.issues.VIEW").repo(filter.getRepository()).add(EXTRA_ISSUE_FILTER, filter).toIntent();
+        return new Builder("repo.issues.VIEW").repo(filter.getRepository())
+                .add(EXTRA_ISSUE_FILTER, filter).toIntent();
     }
 
     @InjectExtra(EXTRA_REPOSITORY)

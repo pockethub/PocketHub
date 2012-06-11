@@ -33,7 +33,8 @@ public class IssueUriMatcher {
      * Parse a {@link RepositoryIssue} from a non-null {@link Uri}
      *
      * @param uri
-     * @return {@link RepositoryIssue} or null if none found in given {@link Uri}
+     * @return {@link RepositoryIssue} or null if none found in given
+     *         {@link Uri}
      */
     public static RepositoryIssue getIssue(Uri uri) {
         List<String> segments = uri.getPathSegments();

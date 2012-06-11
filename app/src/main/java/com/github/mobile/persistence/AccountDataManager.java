@@ -53,7 +53,8 @@ public class AccountDataManager {
     private static final Executor EXECUTOR = Executors.newFixedThreadPool(10);
 
     /**
-     * Format version to bump if serialization format changes and cache should be ignored
+     * Format version to bump if serialization format changes and cache should
+     * be ignored
      */
     private static final int FORMAT_VERSION = 4;
 
@@ -91,9 +92,10 @@ public class AccountDataManager {
         long length = file.length();
         V data = new RequestReader(file, FORMAT_VERSION).read();
         if (data != null)
-            Log.d(TAG,
-                    MessageFormat.format("Cache hit to {0}, {1} ms to load {2} bytes", file.getName(),
-                            (System.currentTimeMillis() - start), length));
+            Log.d(TAG, MessageFormat.format(
+                    "Cache hit to {0}, {1} ms to load {2} bytes",
+                    file.getName(), (System.currentTimeMillis() - start),
+                    length));
         return data;
     }
 
@@ -117,7 +119,8 @@ public class AccountDataManager {
      * @param columns
      * @return cursor
      */
-    protected Cursor query(SQLiteOpenHelper helper, String tables, String[] columns) {
+    protected Cursor query(SQLiteOpenHelper helper, String tables,
+            String[] columns) {
         return query(helper, tables, columns, null, null);
     }
 
@@ -131,17 +134,19 @@ public class AccountDataManager {
      * @param selectionArgs
      * @return cursor
      */
-    protected Cursor query(SQLiteOpenHelper helper, String tables, String[] columns, String selection,
-            String[] selectionArgs) {
+    protected Cursor query(SQLiteOpenHelper helper, String tables,
+            String[] columns, String selection, String[] selectionArgs) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(tables);
-        return builder.query(helper.getReadableDatabase(), columns, selection, selectionArgs, null, null, null);
+        return builder.query(helper.getReadableDatabase(), columns, selection,
+                selectionArgs, null, null, null);
     }
 
     /**
      * Get organizations
      * <p/>
-     * This method may perform file and/or network I/O and should never be called on the UI-thread
+     * This method may perform file and/or network I/O and should never be
+     * called on the UI-thread
      *
      * @return list of user and Orgs
      * @throws IOException
@@ -153,7 +158,8 @@ public class AccountDataManager {
     /**
      * Get repositories for given {@link User}
      * <p/>
-     * This method may perform network I/O and should never be called on the UI-thread
+     * This method may perform network I/O and should never be called on the
+     * UI-thread
      *
      * @param user
      * @param forceReload
@@ -161,15 +167,18 @@ public class AccountDataManager {
      * @return list of repositories
      * @throws IOException
      */
-    public List<Repository> getRepos(final User user, boolean forceReload) throws IOException {
+    public List<Repository> getRepos(final User user, boolean forceReload)
+            throws IOException {
         OrganizationRepositories resource = allRepos.under(user);
-        return forceReload ? dbCache.requestAndStore(resource) : dbCache.loadOrRequest(resource);
+        return forceReload ? dbCache.requestAndStore(resource) : dbCache
+                .loadOrRequest(resource);
     }
 
     /**
      * Get bookmarked issue filters
      * <p/>
-     * This method may perform network I/O and should never be called on the UI-thread
+     * This method may perform network I/O and should never be called on the
+     * UI-thread
      *
      * @return non-null but possibly empty collection of issue filters
      */
@@ -186,14 +195,16 @@ public class AccountDataManager {
      *
      * @param requestFuture
      */
-    public void getIssueFilters(final RequestFuture<Collection<IssueFilter>> requestFuture) {
+    public void getIssueFilters(
+            final RequestFuture<Collection<IssueFilter>> requestFuture) {
         new AuthenticatedUserTask<Collection<IssueFilter>>(context, EXECUTOR) {
 
             public Collection<IssueFilter> run() throws Exception {
                 return getIssueFilters();
             }
 
-            protected void onSuccess(Collection<IssueFilter> filters) throws Exception {
+            protected void onSuccess(Collection<IssueFilter> filters)
+                    throws Exception {
                 requestFuture.success(filters);
             }
         }.execute();
@@ -202,7 +213,8 @@ public class AccountDataManager {
     /**
      * Add issue filter to store
      * <p/>
-     * This method may perform file I/O and should never be called on the UI-thread
+     * This method may perform file I/O and should never be called on the
+     * UI-thread
      *
      * @param filter
      */
@@ -221,7 +233,8 @@ public class AccountDataManager {
      * @param filter
      * @param requestFuture
      */
-    public void addIssueFilter(final IssueFilter filter, final RequestFuture<IssueFilter> requestFuture) {
+    public void addIssueFilter(final IssueFilter filter,
+            final RequestFuture<IssueFilter> requestFuture) {
         new AuthenticatedUserTask<IssueFilter>(context, EXECUTOR) {
 
             public IssueFilter run() throws Exception {
@@ -243,7 +256,8 @@ public class AccountDataManager {
     /**
      * Add issue filter from store
      * <p/>
-     * This method may perform file I/O and should never be called on the UI-thread
+     * This method may perform file I/O and should never be called on the
+     * UI-thread
      *
      * @param filter
      */
@@ -260,7 +274,8 @@ public class AccountDataManager {
      * @param filter
      * @param requestFuture
      */
-    public void removeIssueFilter(final IssueFilter filter, final RequestFuture<IssueFilter> requestFuture) {
+    public void removeIssueFilter(final IssueFilter filter,
+            final RequestFuture<IssueFilter> requestFuture) {
         new AuthenticatedUserTask<IssueFilter>(context, EXECUTOR) {
 
             public IssueFilter run() throws Exception {

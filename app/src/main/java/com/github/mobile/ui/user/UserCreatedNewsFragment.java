@@ -31,7 +31,8 @@ public class UserCreatedNewsFragment extends UserNewsFragment {
 
             @Override
             public PageIterator<Event> createIterator(int page, int size) {
-                return service.pageUserEvents(org.getLogin(), false, page, size);
+                return service
+                        .pageUserEvents(org.getLogin(), false, page, size);
             }
 
             @Override

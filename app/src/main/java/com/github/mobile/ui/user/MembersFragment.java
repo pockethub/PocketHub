@@ -38,7 +38,8 @@ import org.eclipse.egit.github.core.service.OrganizationService;
 /**
  * Fragment to display the members of an org.
  */
-public class MembersFragment extends ItemListFragment<User> implements OrganizationSelectionListener {
+public class MembersFragment extends ItemListFragment<User> implements
+        OrganizationSelectionListener {
 
     private User org;
 
@@ -74,9 +75,11 @@ public class MembersFragment extends ItemListFragment<User> implements Organizat
     }
 
     @Override
-    protected ItemListAdapter<User, ? extends ItemView> createAdapter(List<User> items) {
+    protected ItemListAdapter<User, ? extends ItemView> createAdapter(
+            List<User> items) {
         User[] users = items.toArray(new User[items.size()]);
-        return new UserListAdapter(getActivity().getLayoutInflater(), users, avatarHelper);
+        return new UserListAdapter(getActivity().getLayoutInflater(), users,
+                avatarHelper);
     }
 
     @Override

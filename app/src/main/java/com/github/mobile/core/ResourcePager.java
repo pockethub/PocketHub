@@ -53,7 +53,8 @@ public abstract class ResourcePager<E> {
     protected boolean hasMore;
 
     /**
-     * Reset the number of the next page to be requested from {@link #next()} and clear all stored state
+     * Reset the number of the next page to be requested from {@link #next()}
+     * and clear all stored state
      *
      * @return this pager
      */
@@ -63,7 +64,8 @@ public abstract class ResourcePager<E> {
     }
 
     /**
-     * Clear all stored resources and have the next call to {@link #next()} load all previously loaded pages
+     * Clear all stored resources and have the next call to {@link #next()} load
+     * all previously loaded pages
      *
      * @return this pager
      */
@@ -133,7 +135,8 @@ public abstract class ResourcePager<E> {
     /**
      * Are more pages available to request?
      *
-     * @return true if the last call to {@link #next()} returned true, false otherwise
+     * @return true if the last call to {@link #next()} returned true, false
+     *         otherwise
      */
     public boolean hasMore() {
         return hasMore;
@@ -166,5 +169,6 @@ public abstract class ResourcePager<E> {
      * @param size
      * @return iterator
      */
-    public abstract PageIterator<E> createIterator(final int page, final int size);
+    public abstract PageIterator<E> createIterator(final int page,
+            final int size);
 }

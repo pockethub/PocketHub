@@ -61,8 +61,9 @@ public class LabelsDialog {
      * @param repository
      * @param service
      */
-    public LabelsDialog(final DialogFragmentActivity activity, final int requestCode,
-            final IRepositoryIdProvider repository, final LabelService service) {
+    public LabelsDialog(final DialogFragmentActivity activity,
+            final int requestCode, final IRepositoryIdProvider repository,
+            final LabelService service) {
         this.activity = activity;
         this.requestCode = requestCode;
         this.repository = repository;
@@ -75,7 +76,8 @@ public class LabelsDialog {
             @Override
             public List<Label> run() throws Exception {
                 List<Label> repositoryLabels = service.getLabels(repository);
-                Map<String, Label> loadedLabels = new TreeMap<String, Label>(CASE_INSENSITIVE_ORDER);
+                Map<String, Label> loadedLabels = new TreeMap<String, Label>(
+                        CASE_INSENSITIVE_ORDER);
                 for (Label label : repositoryLabels)
                     loadedLabels.put(label.getName(), label);
                 labels = loadedLabels;
@@ -142,7 +144,7 @@ public class LabelsDialog {
                 if (selectedNames.contains(names.get(i).getName()))
                     checked[i] = true;
         }
-        LabelsDialogFragment
-                .show(activity, requestCode, activity.getString(string.select_labels), null, names, checked);
+        LabelsDialogFragment.show(activity, requestCode,
+                activity.getString(string.select_labels), null, names, checked);
     }
 }

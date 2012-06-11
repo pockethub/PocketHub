@@ -27,56 +27,56 @@ import org.eclipse.egit.github.core.Repository;
  */
 public class RepositoryUriMatcherTest extends AndroidTestCase {
 
-	/**
-	 * Verity empty uri
-	 */
-	public void testEmptyUri() {
-		assertNull(RepositoryUriMatcher.getRepository(Uri.parse("")));
-	}
+    /**
+     * Verity empty uri
+     */
+    public void testEmptyUri() {
+        assertNull(RepositoryUriMatcher.getRepository(Uri.parse("")));
+    }
 
-	/**
-	 * Verify URI with no owner
-	 */
-	public void testUriWithNoOnwer() {
-		assertNull(RepositoryUriMatcher.getRepository(Uri
-				.parse("http://github.com")));
-		assertNull(RepositoryUriMatcher.getRepository(Uri
-				.parse("http://github.com/")));
-		assertNull(RepositoryUriMatcher.getRepository(Uri
-				.parse("http://github.com//")));
-	}
+    /**
+     * Verify URI with no owner
+     */
+    public void testUriWithNoOnwer() {
+        assertNull(RepositoryUriMatcher.getRepository(Uri
+                .parse("http://github.com")));
+        assertNull(RepositoryUriMatcher.getRepository(Uri
+                .parse("http://github.com/")));
+        assertNull(RepositoryUriMatcher.getRepository(Uri
+                .parse("http://github.com//")));
+    }
 
-	/**
-	 * Verify URI with owner but no name
-	 */
-	public void testUriWithNoName() {
-		assertNull(RepositoryUriMatcher.getRepository(Uri
-				.parse("http://github.com/defunkt")));
-		assertNull(RepositoryUriMatcher.getRepository(Uri
-				.parse("http://github.com/defunkt/")));
-	}
+    /**
+     * Verify URI with owner but no name
+     */
+    public void testUriWithNoName() {
+        assertNull(RepositoryUriMatcher.getRepository(Uri
+                .parse("http://github.com/defunkt")));
+        assertNull(RepositoryUriMatcher.getRepository(Uri
+                .parse("http://github.com/defunkt/")));
+    }
 
-	/**
-	 * Verify URI with owner but no name
-	 */
-	public void testHttpUriWithOwnerAndName() {
-		Repository repo = RepositoryUriMatcher.getRepository(Uri
-				.parse("http://github.com/defunkt/resque"));
-		assertNotNull(repo);
-		assertEquals("resque", repo.getName());
-		assertNotNull(repo.getOwner());
-		assertEquals("defunkt", repo.getOwner().getLogin());
-	}
+    /**
+     * Verify URI with owner but no name
+     */
+    public void testHttpUriWithOwnerAndName() {
+        Repository repo = RepositoryUriMatcher.getRepository(Uri
+                .parse("http://github.com/defunkt/resque"));
+        assertNotNull(repo);
+        assertEquals("resque", repo.getName());
+        assertNotNull(repo.getOwner());
+        assertEquals("defunkt", repo.getOwner().getLogin());
+    }
 
-	/**
-	 * Verify URI with owner but no name
-	 */
-	public void testHttpsUriWithOwnerAndName() {
-		Repository repo = RepositoryUriMatcher.getRepository(Uri
-				.parse("https://github.com/mojombo/jekyll"));
-		assertNotNull(repo);
-		assertEquals("jekyll", repo.getName());
-		assertNotNull(repo.getOwner());
-		assertEquals("mojombo", repo.getOwner().getLogin());
-	}
+    /**
+     * Verify URI with owner but no name
+     */
+    public void testHttpsUriWithOwnerAndName() {
+        Repository repo = RepositoryUriMatcher.getRepository(Uri
+                .parse("https://github.com/mojombo/jekyll"));
+        assertNotNull(repo);
+        assertEquals("jekyll", repo.getName());
+        assertNotNull(repo.getOwner());
+        assertEquals("mojombo", repo.getOwner().getLogin());
+    }
 }

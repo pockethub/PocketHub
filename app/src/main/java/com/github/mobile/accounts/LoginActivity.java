@@ -95,11 +95,14 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
         Log.d(TAG, "Configuring account sync");
 
         ContentResolver.setIsSyncable(account, GITHUB_PROVIDER_AUTHORITY, 1);
-        ContentResolver.setSyncAutomatically(account, GITHUB_PROVIDER_AUTHORITY, true);
-        ContentResolver.addPeriodicSync(account, GITHUB_PROVIDER_AUTHORITY, new Bundle(), 15L * 60L);
+        ContentResolver.setSyncAutomatically(account,
+                GITHUB_PROVIDER_AUTHORITY, true);
+        ContentResolver.addPeriodicSync(account, GITHUB_PROVIDER_AUTHORITY,
+                new Bundle(), 15L * 60L);
     }
 
-    private static class AccountLoader extends AuthenticatedUserTask<List<User>> {
+    private static class AccountLoader extends
+            AuthenticatedUserTask<List<User>> {
 
         @Inject
         private AccountDataManager cache;
@@ -131,8 +134,8 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
     private MenuItem loginItem;
 
     /**
-     * If set we are just checking that the user knows their credentials; this doesn't cause the user's password to be
-     * changed on the device.
+     * If set we are just checking that the user knows their credentials; this
+     * doesn't cause the user's password to be changed on the device.
      */
     private Boolean confirmCredentials = false;
 
@@ -157,7 +160,8 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
         username = intent.getStringExtra(PARAM_USERNAME);
         authTokenType = intent.getStringExtra(PARAM_AUTHTOKEN_TYPE);
         requestNewAccount = username == null;
-        confirmCredentials = intent.getBooleanExtra(PARAM_CONFIRMCREDENTIALS, false);
+        confirmCredentials = intent.getBooleanExtra(PARAM_CONFIRMCREDENTIALS,
+                false);
 
         TextView signupText = (TextView) findViewById(id.tv_signup);
         signupText.setMovementMethod(LinkMovementMethod.getInstance());
@@ -176,7 +180,8 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
         passwordText.setOnKeyListener(new OnKeyListener() {
 
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event != null && ACTION_DOWN == event.getAction() && keyCode == KEYCODE_ENTER && loginEnabled()) {
+                if (event != null && ACTION_DOWN == event.getAction()
+                        && keyCode == KEYCODE_ENTER && loginEnabled()) {
                     handleLogin();
                     return true;
                 } else
@@ -186,7 +191,8 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
 
         passwordText.setOnEditorActionListener(new OnEditorActionListener() {
 
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            public boolean onEditorAction(TextView v, int actionId,
+                    KeyEvent event) {
                 if (actionId == IME_ACTION_DONE && loginEnabled()) {
                     handleLogin();
                     return true;
@@ -195,7 +201,8 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
             }
         });
 
-        loginText.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,
+        loginText.setAdapter(new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line,
                 getEmailAddresses()));
     }
 
@@ -207,7 +214,8 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
     }
 
     private boolean loginEnabled() {
-        return !TextUtils.isEmpty(loginText.getText()) && !TextUtils.isDigitsOnly(passwordText.getText());
+        return !TextUtils.isEmpty(loginText.getText())
+                && !TextUtils.isDigitsOnly(passwordText.getText());
     }
 
     private void updateEnablement() {
@@ -223,7 +231,8 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
             username = loginText.getText().toString();
         password = passwordText.getText().toString();
 
-        final ProgressDialog dialog = LightProgressDialog.create(this, string.login_activity_authenticating);
+        final ProgressDialog dialog = LightProgressDialog.create(this,
+                string.login_activity_authenticating);
         dialog.setCancelable(true);
         dialog.setOnCancelListener(new OnCancelListener() {
 
@@ -243,9 +252,11 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
                 client.setCredentials(username, password);
                 User user = new UserService(client).getUser();
 
-                Account account = new Account(user.getLogin(), GITHUB_ACCOUNT_TYPE);
+                Account account = new Account(user.getLogin(),
+                        GITHUB_ACCOUNT_TYPE);
                 if (requestNewAccount) {
-                    accountManager.addAccountExplicitly(account, password, null);
+                    accountManager
+                            .addAccountExplicitly(account, password, null);
                     configureSyncFor(account);
                     try {
                         new AccountLoader(LoginActivity.this).call();
@@ -267,16 +278,19 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
                 Throwable cause = e.getCause() != null ? e.getCause() : e;
 
                 boolean badCredentials = false;
-                if (e instanceof RequestException && ((RequestException) e).getStatus() == 401)
+                if (e instanceof RequestException
+                        && ((RequestException) e).getStatus() == 401)
                     badCredentials = true;
                 // A 401 can be returned as an IOException with this message
-                else if ("Received authentication challenge is null".equals(cause.getMessage()))
+                else if ("Received authentication challenge is null"
+                        .equals(cause.getMessage()))
                     badCredentials = true;
 
                 if (badCredentials)
                     onAuthenticationResult(false);
                 else
-                    ToastUtils.show(LoginActivity.this, e, string.connection_failed);
+                    ToastUtils.show(LoginActivity.this, e,
+                            string.connection_failed);
             }
 
             @Override
@@ -290,8 +304,9 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
     }
 
     /**
-     * Called when response is received from the server for confirm credentials request. See onAuthenticationResult().
-     * Sets the AccountAuthenticatorResult which is sent back to the caller.
+     * Called when response is received from the server for confirm credentials
+     * request. See onAuthenticationResult(). Sets the
+     * AccountAuthenticatorResult which is sent back to the caller.
      *
      * @param result
      */
@@ -307,9 +322,10 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
     }
 
     /**
-     * Called when response is received from the server for authentication request. See onAuthenticationResult(). Sets
-     * the AccountAuthenticatorResult which is sent back to the caller. Also sets the authToken in AccountManager for
-     * this account.
+     * Called when response is received from the server for authentication
+     * request. See onAuthenticationResult(). Sets the
+     * AccountAuthenticatorResult which is sent back to the caller. Also sets
+     * the authToken in AccountManager for this account.
      */
 
     protected void finishLogin() {
@@ -362,7 +378,8 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
     }
 
     private List<String> getEmailAddresses() {
-        final Account[] accounts = accountManager.getAccountsByType("com.google");
+        final Account[] accounts = accountManager
+                .getAccountsByType("com.google");
         final List<String> addresses = new ArrayList<String>(accounts.length);
         for (Account account : accounts)
             addresses.add(account.name);

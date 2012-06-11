@@ -28,7 +28,8 @@ import android.os.Bundle;
 /**
  * Helper to display a confirmation dialog
  */
-public class ConfirmDialogFragment extends DialogFragmentHelper implements OnClickListener {
+public class ConfirmDialogFragment extends DialogFragmentHelper implements
+        OnClickListener {
 
     private static final String TAG = "confirm_dialog";
 
@@ -40,8 +41,8 @@ public class ConfirmDialogFragment extends DialogFragmentHelper implements OnCli
      * @param title
      * @param message
      */
-    public static void show(final DialogFragmentActivity activity, final int requestCode, final String title,
-            final String message) {
+    public static void show(final DialogFragmentActivity activity,
+            final int requestCode, final String title, final String message) {
         show(activity, requestCode, title, message, null);
     }
 
@@ -54,8 +55,9 @@ public class ConfirmDialogFragment extends DialogFragmentHelper implements OnCli
      * @param message
      * @param bundle
      */
-    public static void show(final DialogFragmentActivity activity, final int requestCode, final String title,
-            final String message, final Bundle bundle) {
+    public static void show(final DialogFragmentActivity activity,
+            final int requestCode, final String title, final String message,
+            final Bundle bundle) {
         Bundle arguments = createArguments(title, message, requestCode);
         if (bundle != null)
             arguments.putAll(bundle);
@@ -66,8 +68,10 @@ public class ConfirmDialogFragment extends DialogFragmentHelper implements OnCli
         AlertDialog dialog = LightAlertDialog.create(getActivity());
         dialog.setTitle(getTitle());
         dialog.setMessage(getMessage());
-        dialog.setButton(BUTTON_POSITIVE, getResources().getString(android.R.string.yes), this);
-        dialog.setButton(BUTTON_NEGATIVE, getResources().getString(android.R.string.no), this);
+        dialog.setButton(BUTTON_POSITIVE,
+                getResources().getString(android.R.string.yes), this);
+        dialog.setButton(BUTTON_NEGATIVE,
+                getResources().getString(android.R.string.no), this);
         dialog.setCancelable(true);
         dialog.setOnCancelListener(this);
         return dialog;

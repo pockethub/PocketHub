@@ -25,7 +25,8 @@ import java.util.Comparator;
 import org.eclipse.egit.github.core.User;
 
 /**
- * Sorts users and orgs in alphabetical order with special handling to put currently authenticated user first.
+ * Sorts users and orgs in alphabetical order with special handling to put
+ * currently authenticated user first.
  */
 public class UserComparator implements Comparator<User> {
 

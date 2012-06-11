@@ -27,40 +27,40 @@ import org.eclipse.egit.github.core.User;
  */
 public class UserUriMatcherTest extends AndroidTestCase {
 
-	/**
-	 * Verity empty URI
-	 */
-	public void testEmptyUri() {
-		assertNull(UserUriMatcher.getUser(Uri.parse("")));
-	}
+    /**
+     * Verity empty URI
+     */
+    public void testEmptyUri() {
+        assertNull(UserUriMatcher.getUser(Uri.parse("")));
+    }
 
-	/**
-	 * Verify no name
-	 */
-	public void testUriWithNoName() {
-		assertNull(UserUriMatcher.getUser(Uri.parse("http://github.com")));
-		assertNull(UserUriMatcher.getUser(Uri.parse("https://github.com")));
-		assertNull(UserUriMatcher.getUser(Uri.parse("http://github.com/")));
-		assertNull(UserUriMatcher.getUser(Uri.parse("http://github.com//")));
-	}
+    /**
+     * Verify no name
+     */
+    public void testUriWithNoName() {
+        assertNull(UserUriMatcher.getUser(Uri.parse("http://github.com")));
+        assertNull(UserUriMatcher.getUser(Uri.parse("https://github.com")));
+        assertNull(UserUriMatcher.getUser(Uri.parse("http://github.com/")));
+        assertNull(UserUriMatcher.getUser(Uri.parse("http://github.com//")));
+    }
 
-	/**
-	 * Verity URI with name
-	 */
-	public void testHttpUriWithName() {
-		User user = UserUriMatcher.getUser(Uri
-				.parse("http://github.com/defunkt"));
-		assertNotNull(user);
-		assertEquals("defunkt", user.getLogin());
-	}
+    /**
+     * Verity URI with name
+     */
+    public void testHttpUriWithName() {
+        User user = UserUriMatcher.getUser(Uri
+                .parse("http://github.com/defunkt"));
+        assertNotNull(user);
+        assertEquals("defunkt", user.getLogin());
+    }
 
-	/**
-	 * Verity URI with name
-	 */
-	public void testHttpsUriWithName() {
-		User user = UserUriMatcher.getUser(Uri
-				.parse("https://github.com/mojombo"));
-		assertNotNull(user);
-		assertEquals("mojombo", user.getLogin());
-	}
+    /**
+     * Verity URI with name
+     */
+    public void testHttpsUriWithName() {
+        User user = UserUriMatcher.getUser(Uri
+                .parse("https://github.com/mojombo"));
+        assertNotNull(user);
+        assertEquals("mojombo", user.getLogin());
+    }
 }

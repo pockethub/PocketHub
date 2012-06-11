@@ -27,69 +27,69 @@ import org.eclipse.egit.github.core.User;
  */
 public class RecentRepositoriesTest extends AndroidTestCase {
 
-	/**
-	 * Verify bad input
-	 */
-	public void testBadInput() {
-		User org = new User().setId(20);
-		RecentRepositories recent = new RecentRepositories(getContext(), org);
-		assertFalse(recent.contains(null));
-		assertFalse(recent.contains(-1));
-	}
+    /**
+     * Verify bad input
+     */
+    public void testBadInput() {
+        User org = new User().setId(20);
+        RecentRepositories recent = new RecentRepositories(getContext(), org);
+        assertFalse(recent.contains(null));
+        assertFalse(recent.contains(-1));
+    }
 
-	/**
-	 * Verify eviction
-	 */
-	public void testMaxReached() {
-		User org = new User().setId(20);
-		RecentRepositories recent = new RecentRepositories(getContext(), org);
+    /**
+     * Verify eviction
+     */
+    public void testMaxReached() {
+        User org = new User().setId(20);
+        RecentRepositories recent = new RecentRepositories(getContext(), org);
 
-		for (int i = 0; i < MAX_SIZE; i++) {
-			recent.add(i);
-			assertTrue(recent.contains(i));
-		}
+        for (int i = 0; i < MAX_SIZE; i++) {
+            recent.add(i);
+            assertTrue(recent.contains(i));
+        }
 
-		recent.add(MAX_SIZE + 1);
-		assertTrue(recent.contains(MAX_SIZE + 1));
-		assertFalse(recent.contains(0));
+        recent.add(MAX_SIZE + 1);
+        assertTrue(recent.contains(MAX_SIZE + 1));
+        assertFalse(recent.contains(0));
 
-		for (int i = 1; i < MAX_SIZE; i++)
-			assertTrue(recent.contains(i));
-	}
+        for (int i = 1; i < MAX_SIZE; i++)
+            assertTrue(recent.contains(i));
+    }
 
-	/**
-	 * Verify input/output to disk of {@link RecentRepositories} state
-	 */
-	public void testIO() {
-		User org = new User().setId(20);
-		RecentRepositories recent1 = new RecentRepositories(getContext(), org);
-		long id = 1234;
-		recent1.add(id);
-		assertTrue(recent1.contains(id));
-		recent1.save();
-		RecentRepositories recent2 = new RecentRepositories(getContext(), org);
-		assertTrue(recent2.contains(id));
-	}
+    /**
+     * Verify input/output to disk of {@link RecentRepositories} state
+     */
+    public void testIO() {
+        User org = new User().setId(20);
+        RecentRepositories recent1 = new RecentRepositories(getContext(), org);
+        long id = 1234;
+        recent1.add(id);
+        assertTrue(recent1.contains(id));
+        recent1.save();
+        RecentRepositories recent2 = new RecentRepositories(getContext(), org);
+        assertTrue(recent2.contains(id));
+    }
 
-	/**
-	 * Verify repositories are scoped to organization
-	 */
-	public void testScopedStorage() {
-		User org1 = new User().setId(20);
-		RecentRepositories recent1 = new RecentRepositories(getContext(), org1);
-		long id1 = 1234;
-		recent1.add(id1);
-		assertTrue(recent1.contains(id1));
+    /**
+     * Verify repositories are scoped to organization
+     */
+    public void testScopedStorage() {
+        User org1 = new User().setId(20);
+        RecentRepositories recent1 = new RecentRepositories(getContext(), org1);
+        long id1 = 1234;
+        recent1.add(id1);
+        assertTrue(recent1.contains(id1));
 
-		User org2 = new User().setId(40);
-		RecentRepositories recent2 = new RecentRepositories(getContext(), org2);
-		assertFalse(recent2.contains(id1));
-		long id2 = 2345;
-		recent2.add(id2);
-		assertTrue(recent2.contains(id2));
+        User org2 = new User().setId(40);
+        RecentRepositories recent2 = new RecentRepositories(getContext(), org2);
+        assertFalse(recent2.contains(id1));
+        long id2 = 2345;
+        recent2.add(id2);
+        assertTrue(recent2.contains(id2));
 
-		recent2.save();
-		recent1 = new RecentRepositories(getContext(), org1);
-		assertFalse(recent1.contains(id2));
-	}
+        recent2.save();
+        recent1 = new RecentRepositories(getContext(), org1);
+        assertFalse(recent1.contains(id2));
+    }
 }

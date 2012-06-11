@@ -50,7 +50,8 @@ public class IssueDashboardPagerAdapter extends FragmentStatePagerAdapter {
      * @param resources
      * @param fragmentManager
      */
-    public IssueDashboardPagerAdapter(final Resources resources, final FragmentManager fragmentManager) {
+    public IssueDashboardPagerAdapter(final Resources resources,
+            final FragmentManager fragmentManager) {
         super(fragmentManager);
 
         this.resources = resources;

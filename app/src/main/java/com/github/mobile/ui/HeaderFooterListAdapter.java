@@ -28,7 +28,8 @@ import java.util.ArrayList;
  *
  * @param <E>
  */
-public class HeaderFooterListAdapter<E extends BaseAdapter> extends HeaderViewListAdapter {
+public class HeaderFooterListAdapter<E extends BaseAdapter> extends
+        HeaderViewListAdapter {
 
     private final ListView list;
 
@@ -45,11 +46,12 @@ public class HeaderFooterListAdapter<E extends BaseAdapter> extends HeaderViewLi
      * @param adapter
      */
     public HeaderFooterListAdapter(ListView view, E adapter) {
-        this(new ArrayList<FixedViewInfo>(), new ArrayList<FixedViewInfo>(), view, adapter);
+        this(new ArrayList<FixedViewInfo>(), new ArrayList<FixedViewInfo>(),
+                view, adapter);
     }
 
-    private HeaderFooterListAdapter(ArrayList<FixedViewInfo> headerViewInfos, ArrayList<FixedViewInfo> footerViewInfos,
-            ListView view, E adapter) {
+    private HeaderFooterListAdapter(ArrayList<FixedViewInfo> headerViewInfos,
+            ArrayList<FixedViewInfo> footerViewInfos, ListView view, E adapter) {
         super(headerViewInfos, footerViewInfos, adapter);
 
         headers = headerViewInfos;
@@ -66,7 +68,8 @@ public class HeaderFooterListAdapter<E extends BaseAdapter> extends HeaderViewLi
      * @param isSelectable
      * @return this adapter
      */
-    public HeaderFooterListAdapter<E> addHeader(View view, Object data, boolean isSelectable) {
+    public HeaderFooterListAdapter<E> addHeader(View view, Object data,
+            boolean isSelectable) {
         FixedViewInfo info = list.new FixedViewInfo();
         info.view = view;
         info.data = data;
@@ -85,7 +88,8 @@ public class HeaderFooterListAdapter<E extends BaseAdapter> extends HeaderViewLi
      * @param isSelectable
      * @return this adapter
      */
-    public HeaderFooterListAdapter<E> addFooter(View view, Object data, boolean isSelectable) {
+    public HeaderFooterListAdapter<E> addFooter(View view, Object data,
+            boolean isSelectable) {
         FixedViewInfo info = list.new FixedViewInfo();
         info.view = view;
         info.data = data;

@@ -22,7 +22,8 @@ import android.os.Bundle;
 /**
  * Base fragment capable of receiving dialog callbacks
  */
-public abstract class DialogFragment extends RoboSherlockFragment implements DialogResultListener {
+public abstract class DialogFragment extends RoboSherlockFragment implements
+        DialogResultListener {
 
     /**
      * Is this fragment usable from the UI-thread

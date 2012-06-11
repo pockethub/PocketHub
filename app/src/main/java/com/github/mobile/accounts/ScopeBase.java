@@ -33,8 +33,8 @@ public abstract class ScopeBase implements Scope {
     };
 
     /**
-     * Returns a provider that always throws an exception complaining that the object in question must be seeded before
-     * it can be injected.
+     * Returns a provider that always throws an exception complaining that the
+     * object in question must be seeded before it can be injected.
      *
      * @return typed provider
      */

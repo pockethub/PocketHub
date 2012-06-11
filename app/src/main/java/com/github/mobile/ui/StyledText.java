@@ -34,7 +34,8 @@ import java.util.Date;
  */
 public class StyledText extends SpannableStringBuilder {
 
-    private static class StateForegroundSpan extends CharacterStyle implements UpdateAppearance {
+    private static class StateForegroundSpan extends CharacterStyle implements
+            UpdateAppearance {
 
         private final ColorStateList states;
 
@@ -60,7 +61,8 @@ public class StyledText extends SpannableStringBuilder {
             append(text);
             if (span != null) {
                 final int length = length();
-                setSpan(span, length - text.length(), length, SPAN_EXCLUSIVE_EXCLUSIVE);
+                setSpan(span, length - text.length(), length,
+                        SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
         return this;
@@ -112,7 +114,8 @@ public class StyledText extends SpannableStringBuilder {
      * @param states
      * @return this text
      */
-    public StyledText foreground(final CharSequence text, final ColorStateList states) {
+    public StyledText foreground(final CharSequence text,
+            final ColorStateList states) {
         return append(text, new StateForegroundSpan(states));
     }
 

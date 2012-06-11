@@ -53,7 +53,8 @@ public class GistFilesViewActivity extends RoboSherlockFragmentActivity {
      * @return intent
      */
     public static Intent createIntent(Gist gist, int position) {
-        return new Builder("gist.files.VIEW").gist(gist.getId()).add(EXTRA_POSITION, position).toIntent();
+        return new Builder("gist.files.VIEW").gist(gist.getId())
+                .add(EXTRA_POSITION, position).toIntent();
     }
 
     @InjectExtra(EXTRA_GIST_ID)
@@ -87,7 +88,8 @@ public class GistFilesViewActivity extends RoboSherlockFragmentActivity {
             actionBar.setSubtitle(string.anonymous);
 
         ViewPager pager = (ViewPager) findViewById(id.vp_pages);
-        pager.setAdapter(new GistFilesPagerAdapter(getSupportFragmentManager(), gist));
+        pager.setAdapter(new GistFilesPagerAdapter(getSupportFragmentManager(),
+                gist));
         ((TitlePageIndicator) findViewById(id.tpi_header)).setViewPager(pager);
 
         pager.setCurrentItem(initialPosition);

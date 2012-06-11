@@ -109,7 +109,8 @@ public class GistFileFragment extends RoboSherlockFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         return inflater.inflate(layout.gist_file_view, null);
     }
 

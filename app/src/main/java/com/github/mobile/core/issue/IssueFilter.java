@@ -184,7 +184,8 @@ public class IssueFilter implements Serializable, Cloneable, Comparator<Label> {
             filter.put(FILTER_ASSIGNEE, assignee.getLogin());
 
         if (milestone != null)
-            filter.put(FILTER_MILESTONE, Integer.toString(milestone.getNumber()));
+            filter.put(FILTER_MILESTONE,
+                    Integer.toString(milestone.getNumber()));
 
         if (labels != null && !labels.isEmpty()) {
             StringBuilder labelsQuery = new StringBuilder();
@@ -240,8 +241,10 @@ public class IssueFilter implements Serializable, Cloneable, Comparator<Label> {
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(new Object[] { open, assignee != null ? assignee.getId() : null,
-                milestone != null ? milestone.getNumber() : null, assignee != null ? assignee.getId() : null,
+        return Arrays.hashCode(new Object[] { open,
+                assignee != null ? assignee.getId() : null,
+                milestone != null ? milestone.getNumber() : null,
+                assignee != null ? assignee.getId() : null,
                 repository != null ? repository.getId() : null, labels });
     }
 
@@ -275,8 +278,10 @@ public class IssueFilter implements Serializable, Cloneable, Comparator<Label> {
             return false;
 
         IssueFilter other = (IssueFilter) o;
-        return open == other.open && isEqual(milestone, other.milestone) && isEqual(assignee, other.assignee)
-                && isEqual(repository, repository) && isEqual(labels, other.labels);
+        return open == other.open && isEqual(milestone, other.milestone)
+                && isEqual(assignee, other.assignee)
+                && isEqual(repository, repository)
+                && isEqual(labels, other.labels);
     }
 
     @Override

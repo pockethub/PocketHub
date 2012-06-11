@@ -53,6 +53,7 @@ public class CreatedAtComparator implements Comparator<Issue> {
     }
 
     public int compare(Issue issue1, Issue issue2) {
-        return issue1.getCreatedAt().compareTo(issue2.getCreatedAt()) * direction;
+        return issue1.getCreatedAt().compareTo(issue2.getCreatedAt())
+                * direction;
     }
 }

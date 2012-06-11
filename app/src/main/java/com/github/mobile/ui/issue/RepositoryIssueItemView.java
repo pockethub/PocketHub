@@ -84,7 +84,8 @@ public class RepositoryIssueItemView extends ItemView {
         comments = (TextView) view.findViewById(id.tv_issue_comments);
 
         pullRequestIcon = (TextView) view.findViewById(id.tv_pull_request_icon);
-        TypefaceUtils.setOcticons(pullRequestIcon, (TextView) view.findViewById(id.tv_comment_icon));
+        TypefaceUtils.setOcticons(pullRequestIcon,
+                (TextView) view.findViewById(id.tv_comment_icon));
 
         labels = new View[8];
         labels[0] = view.findViewById(id.v_label0);

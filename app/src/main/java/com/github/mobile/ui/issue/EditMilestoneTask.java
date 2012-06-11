@@ -54,13 +54,14 @@ public class EditMilestoneTask extends ProgressDialogTask<Issue> {
      * @param repositoryId
      * @param issueNumber
      */
-    public EditMilestoneTask(final DialogFragmentActivity activity, final IRepositoryIdProvider repositoryId,
-            final int issueNumber) {
+    public EditMilestoneTask(final DialogFragmentActivity activity,
+            final IRepositoryIdProvider repositoryId, final int issueNumber) {
         super(activity);
 
         this.repositoryId = repositoryId;
         this.issueNumber = issueNumber;
-        milestoneDialog = new MilestoneDialog(activity, ISSUE_MILESTONE_UPDATE, repositoryId, service);
+        milestoneDialog = new MilestoneDialog(activity, ISSUE_MILESTONE_UPDATE,
+                repositoryId, service);
     }
 
     @Override

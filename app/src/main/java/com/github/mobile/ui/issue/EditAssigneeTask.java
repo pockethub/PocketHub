@@ -54,13 +54,14 @@ public class EditAssigneeTask extends ProgressDialogTask<Issue> {
      * @param repositoryId
      * @param issueNumber
      */
-    public EditAssigneeTask(final DialogFragmentActivity activity, final IRepositoryIdProvider repositoryId,
-            final int issueNumber) {
+    public EditAssigneeTask(final DialogFragmentActivity activity,
+            final IRepositoryIdProvider repositoryId, final int issueNumber) {
         super(activity);
 
         this.repositoryId = repositoryId;
         this.issueNumber = issueNumber;
-        assigneeDialog = new AssigneeDialog(activity, ISSUE_ASSIGNEE_UPDATE, repositoryId, service);
+        assigneeDialog = new AssigneeDialog(activity, ISSUE_ASSIGNEE_UPDATE,
+                repositoryId, service);
     }
 
     /**

@@ -108,16 +108,20 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
             return false;
 
         return TYPE_COMMIT_COMMENT.equals(type) //
-                || TYPE_CREATE.equals(type) && ((CreatePayload) payload).getRefType() != null //
+                || TYPE_CREATE.equals(type)
+                && ((CreatePayload) payload).getRefType() != null //
                 || TYPE_DELETE.equals(type) //
                 || TYPE_DOWNLOAD.equals(type) //
                 || TYPE_FOLLOW.equals(type) //
                 || TYPE_FORK.equals(type) //
                 || TYPE_FORK_APPLY.equals(type) //
-                || TYPE_GIST.equals(type) && ((GistPayload) payload).getGist() != null //
+                || TYPE_GIST.equals(type)
+                && ((GistPayload) payload).getGist() != null //
                 || TYPE_GOLLUM.equals(type) //
-                || TYPE_ISSUE_COMMENT.equals(type) && ((IssueCommentPayload) payload).getIssue() != null //
-                || TYPE_ISSUES.equals(type) && ((IssuesPayload) payload).getIssue() != null //
+                || TYPE_ISSUE_COMMENT.equals(type)
+                && ((IssueCommentPayload) payload).getIssue() != null //
+                || TYPE_ISSUES.equals(type)
+                && ((IssuesPayload) payload).getIssue() != null //
                 || TYPE_MEMBER.equals(type) //
                 || TYPE_PUBLIC.equals(type) //
                 || TYPE_PULL_REQUEST.equals(type) //
@@ -127,12 +131,14 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
                 || TYPE_WATCH.equals(type);
     }
 
-    private static void appendComment(final StyledText details, final Comment comment) {
+    private static void appendComment(final StyledText details,
+            final Comment comment) {
         if (comment != null)
             appendText(details, comment.getBody());
     }
 
-    private static void appendCommitComment(final StyledText details, final CommitComment comment) {
+    private static void appendCommitComment(final StyledText details,
+            final CommitComment comment) {
         if (comment == null)
             return;
 
@@ -175,7 +181,8 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         return text;
     }
 
-    private static StyledText boldRepoName(final StyledText text, final Event event) {
+    private static StyledText boldRepoName(final StyledText text,
+            final Event event) {
         EventRepository repo = event.getRepo();
         if (repo != null) {
             String name = repo.getName();
@@ -188,16 +195,19 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         return text;
     }
 
-    private static void formatCommitComment(Event event, StyledText main, StyledText details) {
+    private static void formatCommitComment(Event event, StyledText main,
+            StyledText details) {
         boldActor(main, event);
         main.append(" commented on ");
         boldRepo(main, event);
 
-        CommitCommentPayload payload = (CommitCommentPayload) event.getPayload();
+        CommitCommentPayload payload = (CommitCommentPayload) event
+                .getPayload();
         appendCommitComment(details, payload.getComment());
     }
 
-    private static void formatDownload(Event event, StyledText main, StyledText details) {
+    private static void formatDownload(Event event, StyledText main,
+            StyledText details) {
         boldActor(main, event);
         main.append(" uploaded a file to ");
         boldRepo(main, event);
@@ -208,7 +218,8 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
             appendText(details, download.getName());
     }
 
-    private static void formatCreate(Event event, StyledText main, StyledText details) {
+    private static void formatCreate(Event event, StyledText main,
+            StyledText details) {
         boldActor(main, event);
 
         main.append(" created ");
@@ -224,7 +235,8 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
             boldRepoName(main, event);
     }
 
-    private static void formatDelete(Event event, StyledText main, StyledText details) {
+    private static void formatDelete(Event event, StyledText main,
+            StyledText details) {
         boldActor(main, event);
 
         DeletePayload payload = (DeletePayload) event.getPayload();
@@ -237,19 +249,22 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         boldRepo(main, event);
     }
 
-    private static void formatFollow(Event event, StyledText main, StyledText details) {
+    private static void formatFollow(Event event, StyledText main,
+            StyledText details) {
         boldActor(main, event);
         main.append(" started following ");
         boldUser(main, ((FollowPayload) event.getPayload()).getTarget());
     }
 
-    private static void formatFork(Event event, StyledText main, StyledText details) {
+    private static void formatFork(Event event, StyledText main,
+            StyledText details) {
         boldActor(main, event);
         main.append(" forked repository ");
         boldRepo(main, event);
     }
 
-    private static void formatGist(Event event, StyledText main, StyledText details) {
+    private static void formatGist(Event event, StyledText main,
+            StyledText details) {
         boldActor(main, event);
 
         GistPayload payload = (GistPayload) event.getPayload();
@@ -266,13 +281,15 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         main.append(payload.getGist().getId());
     }
 
-    private static void formatWiki(Event event, StyledText main, StyledText details) {
+    private static void formatWiki(Event event, StyledText main,
+            StyledText details) {
         boldActor(main, event);
         main.append(" updated the wiki in ");
         boldRepo(main, event);
     }
 
-    private static void formatIssueComment(Event event, StyledText main, StyledText details) {
+    private static void formatIssueComment(Event event, StyledText main,
+            StyledText details) {
         boldActor(main, event);
 
         main.append(" commented on ");
@@ -281,7 +298,8 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
 
         Issue issue = payload.getIssue();
         String number;
-        if (issue.getPullRequest() != null && issue.getPullRequest().getHtmlUrl() != null)
+        if (issue.getPullRequest() != null
+                && issue.getPullRequest().getHtmlUrl() != null)
             number = "pull request " + issue.getNumber();
         else
             number = "issue " + issue.getNumber();
@@ -294,7 +312,8 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         appendComment(details, payload.getComment());
     }
 
-    private static void formatIssues(Event event, StyledText main, StyledText details) {
+    private static void formatIssues(Event event, StyledText main,
+            StyledText details) {
         boldActor(main, event);
 
         IssuesPayload payload = (IssuesPayload) event.getPayload();
@@ -311,7 +330,8 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         appendText(details, issue.getTitle());
     }
 
-    private static void formatAddMember(Event event, StyledText main, StyledText details) {
+    private static void formatAddMember(Event event, StyledText main,
+            StyledText details) {
         boldActor(main, event);
         main.append(" added ");
         User member = ((MemberPayload) event.getPayload()).getMember();
@@ -321,28 +341,33 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         boldRepo(main, event);
     }
 
-    private static void formatPublic(Event event, StyledText main, StyledText details) {
+    private static void formatPublic(Event event, StyledText main,
+            StyledText details) {
         boldActor(main, event);
         main.append(" open sourced repository ");
         boldRepo(main, event);
     }
 
-    private static void formatWatch(Event event, StyledText main, StyledText details) {
+    private static void formatWatch(Event event, StyledText main,
+            StyledText details) {
         boldActor(main, event);
         main.append(" started watching ");
         boldRepo(main, event);
     }
 
-    private static void formatReviewComment(Event event, StyledText main, StyledText details) {
+    private static void formatReviewComment(Event event, StyledText main,
+            StyledText details) {
         boldActor(main, event);
         main.append(" commented on ");
         boldRepo(main, event);
 
-        PullRequestReviewCommentPayload payload = (PullRequestReviewCommentPayload) event.getPayload();
+        PullRequestReviewCommentPayload payload = (PullRequestReviewCommentPayload) event
+                .getPayload();
         appendCommitComment(details, payload.getComment());
     }
 
-    private static void formatPullRequest(Event event, StyledText main, StyledText details) {
+    private static void formatPullRequest(Event event, StyledText main,
+            StyledText details) {
         boldActor(main, event);
 
         PullRequestPayload payload = (PullRequestPayload) event.getPayload();
@@ -358,7 +383,8 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         boldRepo(main, event);
     }
 
-    private static void formatPush(Event event, StyledText main, StyledText details) {
+    private static void formatPush(Event event, StyledText main,
+            StyledText details) {
         boldActor(main, event);
 
         main.append(" pushed to ");
@@ -372,7 +398,8 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         boldRepo(main, event);
     }
 
-    private static void formatTeamAdd(Event event, StyledText main, StyledText details) {
+    private static void formatTeamAdd(Event event, StyledText main,
+            StyledText details) {
         boldActor(main, event);
 
         TeamAddPayload payload = (TeamAddPayload) event.getPayload();
@@ -402,7 +429,8 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
      * @param elements
      * @param avatars
      */
-    public NewsListAdapter(LayoutInflater inflater, Event[] elements, AvatarLoader avatars) {
+    public NewsListAdapter(LayoutInflater inflater, Event[] elements,
+            AvatarLoader avatars) {
         super(layout.news_item, inflater, elements);
 
         this.avatars = avatars;
@@ -422,11 +450,13 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
     @Override
     public long getItemId(final int position) {
         final String id = getItem(position).getId();
-        return !TextUtils.isEmpty(id) ? id.hashCode() : super.getItemId(position);
+        return !TextUtils.isEmpty(id) ? id.hashCode() : super
+                .getItemId(position);
     }
 
     @Override
-    protected void update(final int position, final NewsItemView view, final Event event) {
+    protected void update(final int position, final NewsItemView view,
+            final Event event) {
         avatars.bind(view.avatarView, event.getActor());
 
         StyledText main = new StyledText();

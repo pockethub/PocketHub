@@ -65,7 +65,8 @@ public class AccountUtils {
      * @return login name or null if none configure
      */
     public static String getLogin(final Context context) {
-        final Account[] accounts = AccountManager.get(context).getAccountsByType(GITHUB_ACCOUNT_TYPE);
+        final Account[] accounts = AccountManager.get(context)
+                .getAccountsByType(GITHUB_ACCOUNT_TYPE);
         return accounts.length > 0 ? accounts[0].name : null;
     }
 
@@ -76,14 +77,17 @@ public class AccountUtils {
      * @return account or null if none
      */
     public static Account getAccount(final Context context) {
-        final Account[] accounts = AccountManager.get(context).getAccountsByType(GITHUB_ACCOUNT_TYPE);
+        final Account[] accounts = AccountManager.get(context)
+                .getAccountsByType(GITHUB_ACCOUNT_TYPE);
         return accounts.length > 0 ? accounts[0] : null;
     }
 
-    private static Account[] getAccounts(final AccountManager manager) throws OperationCanceledException,
-            AuthenticatorException, IOException {
-        final AccountManagerFuture<Account[]> future = manager.getAccountsByTypeAndFeatures(GITHUB_ACCOUNT_TYPE, null,
-                null, null);
+    private static Account[] getAccounts(final AccountManager manager)
+            throws OperationCanceledException, AuthenticatorException,
+            IOException {
+        final AccountManagerFuture<Account[]> future = manager
+                .getAccountsByTypeAndFeatures(GITHUB_ACCOUNT_TYPE, null, null,
+                        null);
         final Account[] accounts = future.getResult();
         return accounts != null ? accounts : new Account[0];
     }
@@ -95,7 +99,8 @@ public class AccountUtils {
      * @param activity
      * @return account
      */
-    public static Account getAccount(final AccountManager manager, final Activity activity) {
+    public static Account getAccount(final AccountManager manager,
+            final Activity activity) {
         final boolean loggable = Log.isLoggable(TAG, DEBUG);
         if (loggable)
             Log.d(TAG, "Getting account");
@@ -109,11 +114,13 @@ public class AccountUtils {
                 if (loggable)
                     Log.d(TAG, "No GitHub accounts for activity=" + activity);
 
-                Bundle result = manager.addAccount(GITHUB_ACCOUNT_TYPE, null, null, null, activity, null, null)
-                        .getResult();
+                Bundle result = manager.addAccount(GITHUB_ACCOUNT_TYPE, null,
+                        null, null, activity, null, null).getResult();
 
                 if (loggable)
-                    Log.d(TAG, "Added account " + result.getString(KEY_ACCOUNT_NAME));
+                    Log.d(TAG,
+                            "Added account "
+                                    + result.getString(KEY_ACCOUNT_NAME));
             }
         } catch (AccountsException e) {
             Log.d(TAG, "Excepting retrieving account", e);

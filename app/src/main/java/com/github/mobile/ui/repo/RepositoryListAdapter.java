@@ -36,12 +36,14 @@ import java.text.NumberFormat;
  * @param <V>
  *            view class
  */
-public abstract class RepositoryListAdapter<I, V extends ItemView> extends ItemListAdapter<I, V> {
+public abstract class RepositoryListAdapter<I, V extends ItemView> extends
+        ItemListAdapter<I, V> {
 
     /**
      * Number formatter
      */
-    protected static final NumberFormat FORMAT = NumberFormat.getIntegerInstance();
+    protected static final NumberFormat FORMAT = NumberFormat
+            .getIntegerInstance();
 
     /**
      * Create list adapter
@@ -50,7 +52,8 @@ public abstract class RepositoryListAdapter<I, V extends ItemView> extends ItemL
      * @param inflater
      * @param elements
      */
-    public RepositoryListAdapter(int viewId, LayoutInflater inflater, I[] elements) {
+    public RepositoryListAdapter(int viewId, LayoutInflater inflater,
+            I[] elements) {
         super(viewId, inflater, elements);
     }
 
@@ -75,8 +78,10 @@ public abstract class RepositoryListAdapter<I, V extends ItemView> extends ItemL
      * @param isPrivate
      * @param isFork
      */
-    protected void updateDetails(final RepositoryItemView view, final String description, final String language,
-            final int watchers, final int forks, final boolean isPrivate, final boolean isFork) {
+    protected void updateDetails(final RepositoryItemView view,
+            final String description, final String language,
+            final int watchers, final int forks, final boolean isPrivate,
+            final boolean isFork) {
         if (isPrivate)
             view.repoIcon.setText(Character.toString(ICON_PRIVATE));
         else if (isFork)

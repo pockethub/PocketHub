@@ -22,7 +22,8 @@ import android.provider.SearchRecentSuggestions;
 /**
  * Suggestions provider for recently searched for repository queries
  */
-public class RepositorySearchSuggestionsProvider extends SearchRecentSuggestionsProvider {
+public class RepositorySearchSuggestionsProvider extends
+        SearchRecentSuggestionsProvider {
 
     private static final String AUTHORITY = "com.github.search.suggest.recent.repos";
 
@@ -46,7 +47,8 @@ public class RepositorySearchSuggestionsProvider extends SearchRecentSuggestions
     }
 
     private static SearchRecentSuggestions suggestions(Context context) {
-        return new SearchRecentSuggestions(context, AUTHORITY, DATABASE_MODE_QUERIES);
+        return new SearchRecentSuggestions(context, AUTHORITY,
+                DATABASE_MODE_QUERIES);
     }
 
     /**

@@ -36,5 +36,6 @@ public interface OrganizationSelectionProvider {
      * @param listener
      * @return this selection provider
      */
-    OrganizationSelectionProvider removeListener(OrganizationSelectionListener listener);
+    OrganizationSelectionProvider removeListener(
+            OrganizationSelectionListener listener);
 }

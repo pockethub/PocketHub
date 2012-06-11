@@ -63,22 +63,26 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
 
             selected = (RadioButton) view.findViewById(id.rb_selected);
             title = (TextView) view.findViewById(id.tv_milestone_title);
-            description = (TextView) view.findViewById(id.tv_milestone_description);
+            description = (TextView) view
+                    .findViewById(id.tv_milestone_description);
         }
     }
 
-    private static class MilestoneListAdapter extends ItemListAdapter<Milestone, MilestoneItemView> {
+    private static class MilestoneListAdapter extends
+            ItemListAdapter<Milestone, MilestoneItemView> {
 
         private final int selected;
 
-        public MilestoneListAdapter(LayoutInflater inflater, Milestone[] milestones, int selected) {
+        public MilestoneListAdapter(LayoutInflater inflater,
+                Milestone[] milestones, int selected) {
             super(layout.milestone_item, inflater, milestones);
 
             this.selected = selected;
         }
 
         @Override
-        protected void update(final int position, final MilestoneItemView view, final Milestone item) {
+        protected void update(final int position, final MilestoneItemView view,
+                final Milestone item) {
             view.title.setText(item.getTitle());
             String description = item.getDescription();
             if (!TextUtils.isEmpty(description)) {
@@ -115,9 +119,11 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
      * @param choices
      * @param selectedChoice
      */
-    public static void show(final DialogFragmentActivity activity, final int requestCode, final String title,
-            final String message, ArrayList<Milestone> choices, final int selectedChoice) {
-        show(activity, requestCode, title, message, choices, selectedChoice, new MilestoneDialogFragment());
+    public static void show(final DialogFragmentActivity activity,
+            final int requestCode, final String title, final String message,
+            ArrayList<Milestone> choices, final int selectedChoice) {
+        show(activity, requestCode, title, message, choices, selectedChoice,
+                new MilestoneDialogFragment());
     }
 
     @Override
@@ -130,11 +136,13 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
 
         LayoutInflater inflater = activity.getLayoutInflater();
 
-        ListView view = (ListView) inflater.inflate(layout.dialog_list_view, null);
+        ListView view = (ListView) inflater.inflate(layout.dialog_list_view,
+                null);
         view.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id) {
                 onClick(dialog, position);
             }
         });
@@ -153,7 +161,8 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
 
     @SuppressWarnings("unchecked")
     private ArrayList<Milestone> getChoices() {
-        return (ArrayList<Milestone>) getArguments().getSerializable(ARG_CHOICES);
+        return (ArrayList<Milestone>) getArguments().getSerializable(
+                ARG_CHOICES);
     }
 
     @Override
@@ -165,7 +174,8 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
             onResult(RESULT_OK);
             break;
         default:
-            getArguments().putSerializable(ARG_SELECTED, getChoices().get(which));
+            getArguments().putSerializable(ARG_SELECTED,
+                    getChoices().get(which));
             onResult(RESULT_OK);
         }
     }

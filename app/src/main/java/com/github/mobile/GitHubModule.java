@@ -56,7 +56,8 @@ public class GitHubModule extends AbstractModule {
     protected void configure() {
         install(new ServicesModule());
         install(new FactoryModuleBuilder().build(SyncCampaign.Factory.class));
-        install(new FactoryModuleBuilder().build(OrganizationRepositories.Factory.class));
+        install(new FactoryModuleBuilder()
+                .build(OrganizationRepositories.Factory.class));
         install(AccountScope.module());
     }
 
@@ -72,14 +73,16 @@ public class GitHubModule extends AbstractModule {
     }
 
     @Provides
-    IRepositorySearch searchService(final Provider<GitHubAccount> accountProvider, final Context context) {
+    IRepositorySearch searchService(
+            final Provider<GitHubAccount> accountProvider, final Context context) {
         GitHubClient client = new AccountClient(HOST_API_V2, accountProvider);
 
         final RepositoryService service = new RepositoryService(client);
 
         return new IRepositorySearch() {
 
-            public List<SearchRepository> search(String query) throws IOException {
+            public List<SearchRepository> search(String query)
+                    throws IOException {
                 return service.searchRepositories(query);
             }
         };

@@ -36,11 +36,18 @@ public class UserComparatorTest {
         GitHubAccount account = new GitHubAccount("m", "n");
         UserComparator comparator = new UserComparator(account);
 
-        assertTrue(comparator.compare(new User().setLogin("m"), new User().setLogin("a")) < 0);
-        assertTrue(comparator.compare(new User().setLogin("a"), new User().setLogin("m")) > 0);
-        assertTrue(comparator.compare(new User().setLogin("m"), new User().setLogin("z")) < 0);
-        assertTrue(comparator.compare(new User().setLogin("z"), new User().setLogin("m")) > 0);
-        assertEquals(0, comparator.compare(new User().setLogin("m"), new User().setLogin("m")));
+        assertTrue(comparator.compare(new User().setLogin("m"),
+                new User().setLogin("a")) < 0);
+        assertTrue(comparator.compare(new User().setLogin("a"),
+                new User().setLogin("m")) > 0);
+        assertTrue(comparator.compare(new User().setLogin("m"),
+                new User().setLogin("z")) < 0);
+        assertTrue(comparator.compare(new User().setLogin("z"),
+                new User().setLogin("m")) > 0);
+        assertEquals(
+                0,
+                comparator.compare(new User().setLogin("m"),
+                        new User().setLogin("m")));
     }
 
     /**
@@ -51,7 +58,9 @@ public class UserComparatorTest {
         GitHubAccount account = new GitHubAccount("m", "n");
         UserComparator comparator = new UserComparator(account);
 
-        assertTrue(comparator.compare(new User().setLogin("a"), new User().setLogin("c")) < 0);
-        assertTrue(comparator.compare(new User().setLogin("db"), new User().setLogin("da")) > 0);
+        assertTrue(comparator.compare(new User().setLogin("a"),
+                new User().setLogin("c")) < 0);
+        assertTrue(comparator.compare(new User().setLogin("db"),
+                new User().setLogin("da")) > 0);
     }
 }

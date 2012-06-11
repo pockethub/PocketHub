@@ -126,16 +126,19 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         View root = inflater.inflate(layout.comment_list_view, null);
 
         headerView = inflater.inflate(layout.gist_header, null);
         created = (TextView) headerView.findViewById(id.tv_gist_creation);
         updated = (TextView) headerView.findViewById(id.tv_gist_updated);
-        description = (TextView) headerView.findViewById(id.tv_gist_description);
+        description = (TextView) headerView
+                .findViewById(id.tv_gist_description);
 
         loadingView = inflater.inflate(layout.loading_item, null);
-        ((TextView) loadingView.findViewById(id.tv_loading)).setText(string.loading_comments);
+        ((TextView) loadingView.findViewById(id.tv_loading))
+                .setText(string.loading_comments);
 
         return root;
     }
@@ -145,8 +148,9 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         super.onViewCreated(view, savedInstanceState);
 
         Activity activity = getActivity();
-        adapter = new HeaderFooterListAdapter<CommentListAdapter>(list, new CommentListAdapter(
-                activity.getLayoutInflater(), avatarHelper, new HttpImageGetter(activity)));
+        adapter = new HeaderFooterListAdapter<CommentListAdapter>(list,
+                new CommentListAdapter(activity.getLayoutInflater(),
+                        avatarHelper, new HttpImageGetter(activity)));
         list.setAdapter(adapter);
     }
 
@@ -242,7 +246,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
         switch (item.getItemId()) {
         case id.m_comment:
-            startActivityForResult(CreateCommentActivity.createIntent(gist), COMMENT_CREATE);
+            startActivityForResult(CreateCommentActivity.createIntent(gist),
+                    COMMENT_CREATE);
             return true;
         case id.m_star:
             if (starred)
@@ -303,8 +308,10 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (RESULT_OK == resultCode && COMMENT_CREATE == requestCode && data != null) {
-            Comment comment = (Comment) data.getSerializableExtra(EXTRA_COMMENT);
+        if (RESULT_OK == resultCode && COMMENT_CREATE == requestCode
+                && data != null) {
+            Comment comment = (Comment) data
+                    .getSerializableExtra(EXTRA_COMMENT);
             if (comments != null) {
                 comments.add(comment);
                 gist.setComments(gist.getComments() + 1);
@@ -329,11 +336,13 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         if (files == null || files.isEmpty())
             return;
 
-        final GistFile[] sortedFiles = files.values().toArray(new GistFile[files.size()]);
+        final GistFile[] sortedFiles = files.values().toArray(
+                new GistFile[files.size()]);
         Arrays.sort(sortedFiles, new Comparator<GistFile>() {
 
             public int compare(final GistFile lhs, final GistFile rhs) {
-                return CASE_INSENSITIVE_ORDER.compare(lhs.getFilename(), rhs.getFilename());
+                return CASE_INSENSITIVE_ORDER.compare(lhs.getFilename(),
+                        rhs.getFilename());
             }
         });
 
@@ -341,15 +350,18 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         final Typeface octicons = TypefaceUtils.getOcticons(activity);
         for (GistFile file : sortedFiles) {
             View fileView = inflater.inflate(layout.gist_file_item, null);
-            ((TextView) fileView.findViewById(id.tv_file)).setText(file.getFilename());
-            ((TextView) fileView.findViewById(id.tv_file_icon)).setTypeface(octicons);
+            ((TextView) fileView.findViewById(id.tv_file)).setText(file
+                    .getFilename());
+            ((TextView) fileView.findViewById(id.tv_file_icon))
+                    .setTypeface(octicons);
             adapter.addHeader(fileView, file, true);
             fileHeaders.add(fileView);
         }
     }
 
     private void updateList(Gist gist, List<Comment> comments) {
-        adapter.getWrappedAdapter().setItems(comments.toArray(new Comment[comments.size()]));
+        adapter.getWrappedAdapter().setItems(
+                comments.toArray(new Comment[comments.size()]));
         adapter.removeHeader(loadingView);
 
         headerView.setVisibility(VISIBLE);
@@ -386,9 +398,11 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    public void onItemClick(AdapterView<?> parent, View view, int position,
+            long id) {
         Object item = parent.getItemAtPosition(position);
         if (item instanceof GistFile)
-            startActivity(GistFilesViewActivity.createIntent(gist, position - 1));
+            startActivity(GistFilesViewActivity
+                    .createIntent(gist, position - 1));
     }
 }

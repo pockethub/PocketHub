@@ -42,7 +42,8 @@ import com.google.inject.Inject;
 /**
  * Activity to display a list of saved {@link IssueFilter} objects
  */
-public class FiltersViewActivity extends DialogFragmentActivity implements OnItemLongClickListener {
+public class FiltersViewActivity extends DialogFragmentActivity implements
+        OnItemLongClickListener {
 
     /**
      * Create intent to browse issue filters
@@ -72,21 +73,22 @@ public class FiltersViewActivity extends DialogFragmentActivity implements OnIte
         actionBar.setIcon(drawable.action_bookmark);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        ItemListFragment<?> listFragment = (ItemListFragment<?>) getSupportFragmentManager().findFragmentById(
-                android.R.id.list);
+        ItemListFragment<?> listFragment = (ItemListFragment<?>) getSupportFragmentManager()
+                .findFragmentById(android.R.id.list);
         listFragment.getListView().setOnItemLongClickListener(this);
     }
 
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
         if (requestCode == REQUEST_DELETE && resultCode == RESULT_OK) {
-            IssueFilter filter = (IssueFilter) arguments.getSerializable(ARG_FILTER);
+            IssueFilter filter = (IssueFilter) arguments
+                    .getSerializable(ARG_FILTER);
             cache.removeIssueFilter(filter, new RequestFuture<IssueFilter>() {
 
                 @Override
                 public void success(IssueFilter response) {
-                    FilterListFragment fragment = (FilterListFragment) getSupportFragmentManager().findFragmentById(
-                            android.R.id.list);
+                    FilterListFragment fragment = (FilterListFragment) getSupportFragmentManager()
+                            .findFragmentById(android.R.id.list);
                     if (fragment != null)
                         fragment.refresh();
                 }
@@ -111,11 +113,13 @@ public class FiltersViewActivity extends DialogFragmentActivity implements OnIte
     }
 
     @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+    public boolean onItemLongClick(AdapterView<?> parent, View view,
+            int position, long id) {
         IssueFilter filter = (IssueFilter) parent.getItemAtPosition(position);
         Bundle args = new Bundle();
         args.putSerializable(ARG_FILTER, filter);
-        ConfirmDialogFragment.show(this, REQUEST_DELETE, getString(string.confirm_bookmark_delete_title),
+        ConfirmDialogFragment.show(this, REQUEST_DELETE,
+                getString(string.confirm_bookmark_delete_title),
                 getString(string.confirm_bookmark_delete_message), args);
         return true;
     }

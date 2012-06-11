@@ -46,14 +46,16 @@ public class CreateCommentTask extends ProgressDialogTask<Comment> {
     private IssueService service;
 
     /**
-     * Create task for creating a comment on the given issue in the given repository
+     * Create task for creating a comment on the given issue in the given
+     * repository
      *
      * @param context
      * @param repository
      * @param issueNumber
      * @param comment
      */
-    public CreateCommentTask(final Context context, final IRepositoryIdProvider repository, final int issueNumber,
+    public CreateCommentTask(final Context context,
+            final IRepositoryIdProvider repository, final int issueNumber,
             final String comment) {
         super(context);
 
@@ -64,7 +66,8 @@ public class CreateCommentTask extends ProgressDialogTask<Comment> {
 
     @Override
     protected Comment run() throws Exception {
-        Comment created = service.createComment(repository, issueNumber, comment);
+        Comment created = service.createComment(repository, issueNumber,
+                comment);
         String formatted = HtmlUtils.format(created.getBodyHtml()).toString();
         created.setBodyHtml(formatted);
         return created;

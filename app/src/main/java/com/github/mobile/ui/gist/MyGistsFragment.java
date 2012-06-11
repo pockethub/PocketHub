@@ -43,7 +43,8 @@ public class MyGistsFragment extends GistsFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if ((requestCode == GIST_CREATE || requestCode == GIST_VIEW) && RESULT_OK == resultCode) {
+        if ((requestCode == GIST_CREATE || requestCode == GIST_VIEW)
+                && RESULT_OK == resultCode) {
             forceRefresh();
             return;
         }
@@ -57,14 +58,16 @@ public class MyGistsFragment extends GistsFragment {
 
             @Override
             public PageIterator<Gist> createIterator(int page, int size) {
-                return service.pageGists(accountProvider.get().username, page, size);
+                return service.pageGists(accountProvider.get().username, page,
+                        size);
             }
         };
     }
 
     @Override
-    protected ItemListAdapter<Gist, ? extends ItemView> createAdapter(List<Gist> items) {
-        return new GistListAdapter(avatarHelper, getActivity().getLayoutInflater(),
-                items.toArray(new Gist[items.size()]));
+    protected ItemListAdapter<Gist, ? extends ItemView> createAdapter(
+            List<Gist> items) {
+        return new GistListAdapter(avatarHelper, getActivity()
+                .getLayoutInflater(), items.toArray(new Gist[items.size()]));
     }
 }

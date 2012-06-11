@@ -35,7 +35,8 @@ import org.eclipse.egit.github.core.User;
 /**
  * Adapter to display a list of {@link IssueFilter} objects
  */
-public class FilterListAdapter extends ItemListAdapter<IssueFilter, FilterItemView> {
+public class FilterListAdapter extends
+        ItemListAdapter<IssueFilter, FilterItemView> {
 
     private final AvatarLoader avatars;
 
@@ -46,7 +47,8 @@ public class FilterListAdapter extends ItemListAdapter<IssueFilter, FilterItemVi
      * @param elements
      * @param avatars
      */
-    public FilterListAdapter(LayoutInflater inflater, IssueFilter[] elements, AvatarLoader avatars) {
+    public FilterListAdapter(LayoutInflater inflater, IssueFilter[] elements,
+            AvatarLoader avatars) {
         super(layout.issue_filter_item, inflater, elements);
 
         this.avatars = avatars;
@@ -63,7 +65,8 @@ public class FilterListAdapter extends ItemListAdapter<IssueFilter, FilterItemVi
     }
 
     @Override
-    protected void update(final int position, final FilterItemView view, final IssueFilter filter) {
+    protected void update(final int position, final FilterItemView view,
+            final IssueFilter filter) {
         avatars.bind(view.avatarView, filter.getRepository().getOwner());
         view.repoText.setText(filter.getRepository().generateId());
         if (filter.isOpen())

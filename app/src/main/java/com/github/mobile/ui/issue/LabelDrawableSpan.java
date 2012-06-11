@@ -58,7 +58,8 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
     private static final int PADDING_BOTTOM = 8;
 
     private static float getPixels(final Resources resources, final int dp) {
-        return TypedValue.applyDimension(COMPLEX_UNIT_DIP, dp, resources.getDisplayMetrics());
+        return TypedValue.applyDimension(COMPLEX_UNIT_DIP, dp,
+                resources.getDisplayMetrics());
     }
 
     private static class LabelDrawable extends PaintDrawable {
@@ -86,8 +87,9 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
          * @param name
          * @param bg
          */
-        public LabelDrawable(final float paddingLeft, final float textHeight, final Rect bounds,
-                final Resources resources, final float textSize, final String name, final int bg) {
+        public LabelDrawable(final float paddingLeft, final float textHeight,
+                final Rect bounds, final Resources resources,
+                final float textSize, final String name, final int bg) {
             this.paddingLeft = paddingLeft;
             this.textHeight = textHeight;
             this.name = name;
@@ -95,18 +97,23 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
 
             float[] hsv = new float[3];
             Color.colorToHSV(bg, hsv);
-            if ((hsv[2] > 0.6 && hsv[1] < 0.4) || (hsv[2] > 0.7 && hsv[0] > 40 && hsv[0] < 200)) {
+            if ((hsv[2] > 0.6 && hsv[1] < 0.4)
+                    || (hsv[2] > 0.7 && hsv[0] > 40 && hsv[0] < 200)) {
                 hsv[2] = 0.4F;
                 textColor = Color.HSVToColor(hsv);
             } else
                 textColor = WHITE;
 
-            layers = (LayerDrawable) resources.getDrawable(drawable.label_background);
-            ((GradientDrawable) ((LayerDrawable) layers.findDrawableByLayerId(id.item_outer_layer))
+            layers = (LayerDrawable) resources
+                    .getDrawable(drawable.label_background);
+            ((GradientDrawable) ((LayerDrawable) layers
+                    .findDrawableByLayerId(id.item_outer_layer))
                     .findDrawableByLayerId(id.item_outer)).setColor(bg);
-            ((GradientDrawable) ((LayerDrawable) layers.findDrawableByLayerId(id.item_inner_layer))
+            ((GradientDrawable) ((LayerDrawable) layers
+                    .findDrawableByLayerId(id.item_inner_layer))
                     .findDrawableByLayerId(id.item_inner)).setColor(bg);
-            ((GradientDrawable) layers.findDrawableByLayerId(id.item_bg)).setColor(bg);
+            ((GradientDrawable) layers.findDrawableByLayerId(id.item_bg))
+                    .setColor(bg);
 
             Paint p = getPaint();
             p.setAntiAlias(true);
@@ -128,7 +135,8 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
             final int original = paint.getColor();
 
             paint.setColor(textColor);
-            canvas.drawText(name, paddingLeft, height - ((height - textHeight) / 2), paint);
+            canvas.drawText(name, paddingLeft, height
+                    - ((height - textHeight) / 2), paint);
 
             paint.setColor(original);
         }
@@ -140,13 +148,15 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
      * @param view
      * @param labels
      */
-    public static void setText(final TextView view, final Collection<Label> labels) {
+    public static void setText(final TextView view,
+            final Collection<Label> labels) {
         final Label[] sortedLabels = labels.toArray(new Label[labels.size()]);
         Arrays.sort(sortedLabels, new Comparator<Label>() {
 
             @Override
             public int compare(final Label lhs, final Label rhs) {
-                return CASE_INSENSITIVE_ORDER.compare(lhs.getName(), rhs.getName());
+                return CASE_INSENSITIVE_ORDER.compare(lhs.getName(),
+                        rhs.getName());
             }
         });
         setText(view, sortedLabels);
@@ -190,11 +200,14 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
         final StyledText text = new StyledText();
         for (int i = 0; i < labels.length; i++) {
             Rect bounds = new Rect();
-            bounds.right = Math.round(nameWidths[i] + paddingLeft + paddingRight + 0.5F);
-            bounds.bottom = Math.round(textHeight + paddingTop + paddingBottom + 0.5F);
+            bounds.right = Math.round(nameWidths[i] + paddingLeft
+                    + paddingRight + 0.5F);
+            bounds.bottom = Math.round(textHeight + paddingTop + paddingBottom
+                    + 0.5F);
 
-            text.append('\uFFFC', new LabelDrawableSpan(resources, textSize, labels[i].getColor(), paddingLeft,
-                    textHeight, bounds, names[i]));
+            text.append('\uFFFC', new LabelDrawableSpan(resources, textSize,
+                    labels[i].getColor(), paddingLeft, textHeight, bounds,
+                    names[i]));
 
             if (i + 1 < labels.length)
                 text.append(' ');
@@ -227,8 +240,9 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
      * @param bounds
      * @param name
      */
-    public LabelDrawableSpan(final Resources resources, final float textSize, final String color,
-            final float paddingLeft, final float textHeight, final Rect bounds, final String name) {
+    public LabelDrawableSpan(final Resources resources, final float textSize,
+            final String color, final float paddingLeft,
+            final float textHeight, final Rect bounds, final String name) {
         this.resources = resources;
         this.textSize = textSize;
         this.color = Color.parseColor('#' + color);
@@ -240,6 +254,7 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
 
     @Override
     public Drawable getDrawable() {
-        return new LabelDrawable(paddingLeft, textHeight, bounds, resources, textSize, name, color);
+        return new LabelDrawable(paddingLeft, textHeight, bounds, resources,
+                textSize, name, color);
     }
 }

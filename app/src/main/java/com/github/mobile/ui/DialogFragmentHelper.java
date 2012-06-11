@@ -28,7 +28,8 @@ import roboguice.fragment.RoboDialogFragment;
 /**
  * Base dialog fragment helper
  */
-public abstract class DialogFragmentHelper extends RoboDialogFragment implements OnClickListener {
+public abstract class DialogFragmentHelper extends RoboDialogFragment implements
+        OnClickListener {
 
     /**
      * Dialog message
@@ -53,8 +54,8 @@ public abstract class DialogFragmentHelper extends RoboDialogFragment implements
      * @param arguments
      * @param tag
      */
-    protected static void show(DialogFragmentActivity activity, DialogFragmentHelper fragment, Bundle arguments,
-            String tag) {
+    protected static void show(DialogFragmentActivity activity,
+            DialogFragmentHelper fragment, Bundle arguments, String tag) {
         FragmentManager manager = activity.getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         Fragment current = manager.findFragmentByTag(tag);
@@ -74,7 +75,8 @@ public abstract class DialogFragmentHelper extends RoboDialogFragment implements
      * @param requestCode
      * @return bundle
      */
-    protected static Bundle createArguments(final String title, final String message, final int requestCode) {
+    protected static Bundle createArguments(final String title,
+            final String message, final int requestCode) {
         Bundle arguments = new Bundle();
         arguments.putInt(ARG_REQUEST_CODE, requestCode);
         arguments.putString(ARG_TITLE, title);
@@ -88,8 +90,8 @@ public abstract class DialogFragmentHelper extends RoboDialogFragment implements
      * @param resultCode
      */
     protected void onResult(int resultCode) {
-        ((DialogFragmentActivity) getActivity()).onDialogResult(getArguments().getInt(ARG_REQUEST_CODE), resultCode,
-                getArguments());
+        ((DialogFragmentActivity) getActivity()).onDialogResult(getArguments()
+                .getInt(ARG_REQUEST_CODE), resultCode, getArguments());
     }
 
     /**

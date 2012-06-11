@@ -51,7 +51,8 @@ public class OrganizationLoader extends AuthenticatedUserLoader<List<User>> {
      * @param userComparatorProvider
      */
     @Inject
-    public OrganizationLoader(Activity activity, AccountDataManager accountDataManager,
+    public OrganizationLoader(Activity activity,
+            AccountDataManager accountDataManager,
             Provider<UserComparator> userComparatorProvider) {
         super(activity);
         this.accountDataManager = accountDataManager;

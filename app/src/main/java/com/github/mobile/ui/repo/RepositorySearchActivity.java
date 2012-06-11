@@ -75,10 +75,12 @@ public class RepositorySearchActivity extends RoboSherlockFragmentActivity {
         actionBar.setSubtitle(string.repositories);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        repoFragment = (SearchRepositoryListFragment) getSupportFragmentManager().findFragmentById(android.R.id.list);
+        repoFragment = (SearchRepositoryListFragment) getSupportFragmentManager()
+                .findFragmentById(android.R.id.list);
         if (repoFragment == null) {
             repoFragment = new SearchRepositoryListFragment();
-            getSupportFragmentManager().beginTransaction().add(android.R.id.list, repoFragment).commit();
+            getSupportFragmentManager().beginTransaction()
+                    .add(android.R.id.list, repoFragment).commit();
         }
 
         handleIntent(getIntent());

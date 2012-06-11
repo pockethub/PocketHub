@@ -39,7 +39,8 @@ import org.eclipse.egit.github.core.Label;
 /**
  * Adapter for a list of {@link Issue} objects
  */
-public class RepositoryIssueListAdapter extends ItemListAdapter<Issue, RepositoryIssueItemView> {
+public class RepositoryIssueListAdapter extends
+        ItemListAdapter<Issue, RepositoryIssueItemView> {
 
     private final AvatarLoader avatars;
 
@@ -52,11 +53,13 @@ public class RepositoryIssueListAdapter extends ItemListAdapter<Issue, Repositor
      * @param elements
      * @param avatars
      */
-    public RepositoryIssueListAdapter(LayoutInflater inflater, Issue[] elements, AvatarLoader avatars) {
+    public RepositoryIssueListAdapter(LayoutInflater inflater,
+            Issue[] elements, AvatarLoader avatars) {
         super(layout.repo_issue_item, inflater, elements);
 
         this.avatars = avatars;
-        this.numberView = (TextView) inflater.inflate(layout.repo_issue_item, null).findViewById(id.tv_issue_number);
+        this.numberView = (TextView) inflater.inflate(layout.repo_issue_item,
+                null).findViewById(id.tv_issue_number);
 
         if (elements != null)
             computeNumberWidth(elements);
@@ -66,7 +69,8 @@ public class RepositoryIssueListAdapter extends ItemListAdapter<Issue, Repositor
      * @param inflater
      * @param avatars
      */
-    public RepositoryIssueListAdapter(LayoutInflater inflater, AvatarLoader avatars) {
+    public RepositoryIssueListAdapter(LayoutInflater inflater,
+            AvatarLoader avatars) {
         this(inflater, null, avatars);
     }
 
@@ -75,12 +79,13 @@ public class RepositoryIssueListAdapter extends ItemListAdapter<Issue, Repositor
         for (int i = 0; i < numbers.length; i++)
             numbers[i] = ((Issue) items[i]).getNumber();
         int digits = Math.max(TypefaceUtils.getMaxDigits(numbers), 4);
-        numberWidth = TypefaceUtils.getWidth(numberView, digits) + numberView.getPaddingLeft()
-                + numberView.getPaddingRight();
+        numberWidth = TypefaceUtils.getWidth(numberView, digits)
+                + numberView.getPaddingLeft() + numberView.getPaddingRight();
     }
 
     @Override
-    public ItemListAdapter<Issue, RepositoryIssueItemView> setItems(final Object[] items) {
+    public ItemListAdapter<Issue, RepositoryIssueItemView> setItems(
+            final Object[] items) {
         computeNumberWidth(items);
 
         return super.setItems(items);
@@ -92,17 +97,21 @@ public class RepositoryIssueListAdapter extends ItemListAdapter<Issue, Repositor
     }
 
     @Override
-    protected void update(final int position, final RepositoryIssueItemView view, final Issue issue) {
+    protected void update(final int position,
+            final RepositoryIssueItemView view, final Issue issue) {
         view.number.setText(Integer.toString(issue.getNumber()));
         if (issue.getClosedAt() != null)
-            view.number.setPaintFlags(view.numberPaintFlags | STRIKE_THRU_TEXT_FLAG);
+            view.number.setPaintFlags(view.numberPaintFlags
+                    | STRIKE_THRU_TEXT_FLAG);
         else
             view.number.setPaintFlags(view.numberPaintFlags);
         view.number.getLayoutParams().width = numberWidth;
 
         avatars.bind(view.avatar, issue.getUser());
 
-        view.pullRequestIcon.setVisibility(issue.getPullRequest().getHtmlUrl() == null ? GONE : VISIBLE);
+        view.pullRequestIcon
+                .setVisibility(issue.getPullRequest().getHtmlUrl() == null ? GONE
+                        : VISIBLE);
 
         view.title.setText(issue.getTitle());
 
@@ -120,7 +129,8 @@ public class RepositoryIssueListAdapter extends ItemListAdapter<Issue, Repositor
             for (int i = 0; i < size; i++) {
                 String color = labels.get(i).getColor();
                 if (!TextUtils.isEmpty(color)) {
-                    view.labels[i].setBackgroundColor(Color.parseColor('#' + color));
+                    view.labels[i].setBackgroundColor(Color
+                            .parseColor('#' + color));
                     view.labels[i].setVisibility(VISIBLE);
                 } else
                     view.labels[i].setVisibility(GONE);

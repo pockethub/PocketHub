@@ -35,7 +35,8 @@ import org.eclipse.egit.github.core.User;
  */
 public class GistListAdapter extends ItemListAdapter<Gist, GistView> {
 
-    private static final NumberFormat NUMBER_FORMAT = NumberFormat.getIntegerInstance();
+    private static final NumberFormat NUMBER_FORMAT = NumberFormat
+            .getIntegerInstance();
 
     private final AvatarLoader avatarHelper;
 
@@ -44,7 +45,8 @@ public class GistListAdapter extends ItemListAdapter<Gist, GistView> {
      * @param inflater
      * @param elements
      */
-    public GistListAdapter(AvatarLoader avatarHelper, LayoutInflater inflater, Gist[] elements) {
+    public GistListAdapter(AvatarLoader avatarHelper, LayoutInflater inflater,
+            Gist[] elements) {
         super(layout.gist_item, inflater, elements);
 
         this.avatarHelper = avatarHelper;
@@ -59,7 +61,8 @@ public class GistListAdapter extends ItemListAdapter<Gist, GistView> {
     }
 
     @Override
-    protected void update(final int position, final GistView view, final Gist gist) {
+    protected void update(final int position, final GistView view,
+            final Gist gist) {
         view.gistId.setText(gist.getId());
 
         String description = gist.getDescription();
@@ -75,7 +78,8 @@ public class GistListAdapter extends ItemListAdapter<Gist, GistView> {
         if (user != null)
             authorText.bold(user.getLogin());
         else
-            authorText.bold(view.author.getResources().getString(string.anonymous));
+            authorText.bold(view.author.getResources().getString(
+                    string.anonymous));
         authorText.append(' ');
         authorText.append(gist.getCreatedAt());
         view.author.setText(authorText);
@@ -92,6 +96,7 @@ public class GistListAdapter extends ItemListAdapter<Gist, GistView> {
     @Override
     public long getItemId(final int position) {
         final String id = getItem(position).getId();
-        return !TextUtils.isEmpty(id) ? id.hashCode() : super.getItemId(position);
+        return !TextUtils.isEmpty(id) ? id.hashCode() : super
+                .getItemId(position);
     }
 }

@@ -25,7 +25,8 @@ import roboguice.RoboGuice;
 import roboguice.inject.ContextScope;
 
 /**
- * Enforces that user is logged in before work on the background thread commences.
+ * Enforces that user is logged in before work on the background thread
+ * commences.
  *
  * @param <D>
  */

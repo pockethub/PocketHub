@@ -55,8 +55,10 @@ public class Organizations implements PersistableResource<User> {
     public Cursor getCursor(SQLiteDatabase readableDatabase) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables("orgs JOIN users ON (orgs.id = users.id)");
-        return builder.query(readableDatabase, new String[] { "users.id", "users.name", "users.avatarurl" }, null,
-                null, null, null, null);
+        return builder
+                .query(readableDatabase, new String[] { "users.id",
+                        "users.name", "users.avatarurl" }, null, null, null,
+                        null, null);
     }
 
     @Override

@@ -22,7 +22,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Describes how to store, load or request-an-update-for a particular set of data.
+ * Describes how to store, load or request-an-update-for a particular set of
+ * data.
  *
  * @param <E>
  *            type of item
@@ -31,7 +32,8 @@ public interface PersistableResource<E> {
 
     /**
      * @param readableDatabase
-     * @return a cursor capable of reading the required information out of the database.
+     * @return a cursor capable of reading the required information out of the
+     *         database.
      */
     Cursor getCursor(SQLiteDatabase readableDatabase);
 
@@ -50,7 +52,8 @@ public interface PersistableResource<E> {
     void store(SQLiteDatabase writableDatabase, List<E> items);
 
     /**
-     * Request the data directly from the GitHub API, rather than attempting to load it from the DB cache.
+     * Request the data directly from the GitHub API, rather than attempting to
+     * load it from the DB cache.
      *
      * @return list of items
      * @throws IOException

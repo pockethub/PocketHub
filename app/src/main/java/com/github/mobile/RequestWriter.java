@@ -62,7 +62,8 @@ public class RequestWriter {
                 handle.getParentFile().mkdirs();
             dir = new RandomAccessFile(handle, "rw");
             lock = dir.getChannel().lock();
-            output = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(dir.getFD()), 8192));
+            output = new ObjectOutputStream(new GZIPOutputStream(
+                    new FileOutputStream(dir.getFD()), 8192));
             output.writeInt(version);
             output.writeObject(request);
         } catch (IOException e) {

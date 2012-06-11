@@ -22,10 +22,10 @@ import com.github.mobile.ui.issue.FiltersViewActivity;
  */
 public class FiltersViewActivityTest extends ActivityTest<FiltersViewActivity> {
 
-	/**
-	 * Create test
-	 */
-	public FiltersViewActivityTest() {
-		super(FiltersViewActivity.class);
-	}
+    /**
+     * Create test
+     */
+    public FiltersViewActivityTest() {
+        super(FiltersViewActivity.class);
+    }
 }

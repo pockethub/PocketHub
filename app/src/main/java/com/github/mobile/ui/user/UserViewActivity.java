@@ -41,7 +41,8 @@ import roboguice.inject.InjectView;
 /**
  * Activity to view a user's various pages
  */
-public class UserViewActivity extends RoboSherlockFragmentActivity implements OrganizationSelectionProvider {
+public class UserViewActivity extends RoboSherlockFragmentActivity implements
+        OrganizationSelectionProvider {
 
     /**
      * Create intent for this activity
@@ -96,7 +97,8 @@ public class UserViewActivity extends RoboSherlockFragmentActivity implements Or
                 protected void onException(Exception e) throws RuntimeException {
                     super.onException(e);
 
-                    ToastUtils.show(UserViewActivity.this, string.error_person_load);
+                    ToastUtils.show(UserViewActivity.this,
+                            string.error_person_load);
                 }
             }.execute();
         }
@@ -107,7 +109,8 @@ public class UserViewActivity extends RoboSherlockFragmentActivity implements Or
         loadingBar.setVisibility(GONE);
         pager.setVisibility(VISIBLE);
         indicator.setVisibility(VISIBLE);
-        pager.setAdapter(new UserPagerAdapter(getSupportFragmentManager(), getResources()));
+        pager.setAdapter(new UserPagerAdapter(getSupportFragmentManager(),
+                getResources()));
         indicator.setViewPager(pager);
     }
 
@@ -117,7 +120,8 @@ public class UserViewActivity extends RoboSherlockFragmentActivity implements Or
     }
 
     @Override
-    public OrganizationSelectionProvider removeListener(OrganizationSelectionListener listener) {
+    public OrganizationSelectionProvider removeListener(
+            OrganizationSelectionListener listener) {
         return this;
     }
 }

@@ -28,7 +28,8 @@ public class HtmlUtilsTest {
     private String format(String html) {
         CharSequence formatted = HtmlUtils.format(html);
         assertNotNull(formatted);
-        return formatted.toString().replace("<githubroot>", "").replace("</githubroot>", "");
+        return formatted.toString().replace("<githubroot>", "")
+                .replace("</githubroot>", "");
     }
 
     /**
@@ -55,7 +56,8 @@ public class HtmlUtilsTest {
     @Test
     public void emailQuoted() {
         String html = "before <div class=\"email-quoted-reply\">quoted</div> after";
-        assertEquals("before <blockquote>quoted</blockquote> after", format(html));
+        assertEquals("before <blockquote>quoted</blockquote> after",
+                format(html));
     }
 
     /**
@@ -190,7 +192,8 @@ public class HtmlUtilsTest {
     @Test
     public void preWithAllWhitepsace() {
         String html = "a<pre>\nb\tc </pre>d";
-        assertEquals("a<pre><br>b&nbsp;&nbsp;&nbsp;&nbsp;c&nbsp;</pre>d", format(html));
+        assertEquals("a<pre><br>b&nbsp;&nbsp;&nbsp;&nbsp;c&nbsp;</pre>d",
+                format(html));
     }
 
     /**
@@ -199,7 +202,8 @@ public class HtmlUtilsTest {
     @Test
     public void multiplePresEscaped() {
         String html = "a<pre> c </pre>d<pre>\te\t</pre>";
-        assertEquals("a<pre>&nbsp;c&nbsp;</pre>d<pre>&nbsp;&nbsp;&nbsp;&nbsp;e&nbsp;&nbsp;&nbsp;&nbsp;</pre>",
+        assertEquals(
+                "a<pre>&nbsp;c&nbsp;</pre>d<pre>&nbsp;&nbsp;&nbsp;&nbsp;e&nbsp;&nbsp;&nbsp;&nbsp;</pre>",
                 format(html));
     }
 

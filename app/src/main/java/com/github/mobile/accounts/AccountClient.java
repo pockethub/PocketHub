@@ -26,7 +26,8 @@ import java.net.HttpURLConnection;
 import org.eclipse.egit.github.core.client.GitHubClient;
 
 /**
- * {@link GitHubClient} extensions that integrates with the Android account manager to provide request credentials
+ * {@link GitHubClient} extensions that integrates with the Android account
+ * manager to provide request credentials
  */
 public class AccountClient extends DefaultClient {
 
@@ -51,7 +52,8 @@ public class AccountClient extends DefaultClient {
      * @param hostname
      * @param accountProvider
      */
-    public AccountClient(final String hostname, final Provider<GitHubAccount> accountProvider) {
+    public AccountClient(final String hostname,
+            final Provider<GitHubAccount> accountProvider) {
         super(hostname);
 
         this.accountProvider = accountProvider;

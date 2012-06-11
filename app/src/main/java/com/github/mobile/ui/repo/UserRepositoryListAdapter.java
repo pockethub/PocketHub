@@ -29,7 +29,8 @@ import org.eclipse.egit.github.core.User;
 /**
  * Adapter for a list of repositories
  */
-public class UserRepositoryListAdapter extends RepositoryListAdapter<Repository, RepositoryItemView> {
+public class UserRepositoryListAdapter extends
+        RepositoryListAdapter<Repository, RepositoryItemView> {
 
     private final String login;
 
@@ -40,7 +41,8 @@ public class UserRepositoryListAdapter extends RepositoryListAdapter<Repository,
      * @param elements
      * @param user
      */
-    public UserRepositoryListAdapter(LayoutInflater inflater, Repository[] elements, User user) {
+    public UserRepositoryListAdapter(LayoutInflater inflater,
+            Repository[] elements, User user) {
         super(layout.user_repo_item, inflater, elements);
 
         login = user.getLogin();
@@ -57,17 +59,22 @@ public class UserRepositoryListAdapter extends RepositoryListAdapter<Repository,
     }
 
     @Override
-    protected void update(final int position, final RepositoryItemView view, final Repository repository) {
+    protected void update(final int position, final RepositoryItemView view,
+            final Repository repository) {
         StyledText name = new StyledText();
         if (!login.equals(repository.getOwner().getLogin())) {
-            ColorStateList states = view.repoName.getResources().getColorStateList(color.text_description_selector);
-            name.foreground(repository.getOwner().getLogin(), states).foreground('/', states);
+            ColorStateList states = view.repoName.getResources()
+                    .getColorStateList(color.text_description_selector);
+            name.foreground(repository.getOwner().getLogin(), states)
+                    .foreground('/', states);
         }
         name.bold(repository.getName());
         view.repoName.setText(name);
 
-        updateDetails(view, repository.getDescription(), repository.getLanguage(), repository.getWatchers(),
-                repository.getForks(), repository.isPrivate(), repository.isFork());
+        updateDetails(view, repository.getDescription(),
+                repository.getLanguage(), repository.getWatchers(),
+                repository.getForks(), repository.isPrivate(),
+                repository.isFork());
     }
 
     @Override

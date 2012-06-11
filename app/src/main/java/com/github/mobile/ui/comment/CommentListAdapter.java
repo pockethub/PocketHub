@@ -29,7 +29,8 @@ import org.eclipse.egit.github.core.Comment;
 /**
  * Adapter for a list of {@link Comment} objects
  */
-public class CommentListAdapter extends ItemListAdapter<Comment, CommentItemView> {
+public class CommentListAdapter extends
+        ItemListAdapter<Comment, CommentItemView> {
 
     private final AvatarLoader avatars;
 
@@ -43,8 +44,8 @@ public class CommentListAdapter extends ItemListAdapter<Comment, CommentItemView
      * @param avatars
      * @param imageGetter
      */
-    public CommentListAdapter(LayoutInflater inflater, Comment[] elements, AvatarLoader avatars,
-            HttpImageGetter imageGetter) {
+    public CommentListAdapter(LayoutInflater inflater, Comment[] elements,
+            AvatarLoader avatars, HttpImageGetter imageGetter) {
         super(layout.comment_item, inflater, elements);
 
         this.avatars = avatars;
@@ -58,17 +59,20 @@ public class CommentListAdapter extends ItemListAdapter<Comment, CommentItemView
      * @param avatars
      * @param imageGetter
      */
-    public CommentListAdapter(LayoutInflater inflater, AvatarLoader avatars, HttpImageGetter imageGetter) {
+    public CommentListAdapter(LayoutInflater inflater, AvatarLoader avatars,
+            HttpImageGetter imageGetter) {
         this(inflater, null, avatars, imageGetter);
     }
 
     @Override
-    protected void update(final int position, final CommentItemView view, final Comment comment) {
+    protected void update(final int position, final CommentItemView view,
+            final Comment comment) {
         imageGetter.bind(view.bodyView, comment.getBodyHtml(), comment.getId());
         avatars.bind(view.avatarView, comment.getUser());
 
         view.authorView.setText(comment.getUser().getLogin());
-        view.dateView.setText(TimeUtils.getRelativeTime(comment.getUpdatedAt()));
+        view.dateView
+                .setText(TimeUtils.getRelativeTime(comment.getUpdatedAt()));
     }
 
     @Override

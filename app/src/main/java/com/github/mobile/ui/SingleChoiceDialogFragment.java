@@ -23,7 +23,8 @@ import java.util.ArrayList;
 /**
  * Helper to display a single choice dialog
  */
-public class SingleChoiceDialogFragment extends DialogFragmentHelper implements OnClickListener {
+public class SingleChoiceDialogFragment extends DialogFragmentHelper implements
+        OnClickListener {
 
     /**
      * Arguments key for the selected item
@@ -56,8 +57,10 @@ public class SingleChoiceDialogFragment extends DialogFragmentHelper implements 
      * @param selectedChoice
      * @param helper
      */
-    protected static void show(final DialogFragmentActivity activity, final int requestCode, final String title,
-            final String message, ArrayList<?> choices, final int selectedChoice, final DialogFragmentHelper helper) {
+    protected static void show(final DialogFragmentActivity activity,
+            final int requestCode, final String title, final String message,
+            ArrayList<?> choices, final int selectedChoice,
+            final DialogFragmentHelper helper) {
         Bundle arguments = createArguments(title, message, requestCode);
         arguments.putSerializable(ARG_CHOICES, choices);
         arguments.putInt(ARG_SELECTED_CHOICE, selectedChoice);

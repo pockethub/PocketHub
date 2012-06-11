@@ -66,7 +66,8 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
      * @return intent
      */
     public static Intent createIntent(Repository repo, IssueFilter filter) {
-        return new Builder("repo.issues.filter.VIEW").repo(repo).add(EXTRA_ISSUE_FILTER, filter).toIntent();
+        return new Builder("repo.issues.filter.VIEW").repo(repo)
+                .add(EXTRA_ISSUE_FILTER, filter).toIntent();
     }
 
     private static final int REQUEST_LABELS = 1;
@@ -113,7 +114,8 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
 
         setContentView(layout.issues_filter);
 
-        final Repository repository = (Repository) getIntent().getSerializableExtra(EXTRA_REPOSITORY);
+        final Repository repository = (Repository) getIntent()
+                .getSerializableExtra(EXTRA_REPOSITORY);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(string.filter_issues_title);
@@ -121,47 +123,55 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
         avatars.bind(actionBar, repository.getOwner());
 
         if (savedInstanceState != null)
-            filter = (IssueFilter) savedInstanceState.getSerializable(EXTRA_ISSUE_FILTER);
+            filter = (IssueFilter) savedInstanceState
+                    .getSerializable(EXTRA_ISSUE_FILTER);
 
         if (filter == null)
-            filter = (IssueFilter) getIntent().getSerializableExtra(EXTRA_ISSUE_FILTER);
+            filter = (IssueFilter) getIntent().getSerializableExtra(
+                    EXTRA_ISSUE_FILTER);
 
         OnClickListener assigneeListener = new OnClickListener() {
 
             public void onClick(View v) {
                 if (assigneeDialog == null)
-                    assigneeDialog = new AssigneeDialog(FilterIssuesActivity.this, REQUEST_ASSIGNEE, repository,
-                            collaborators);
+                    assigneeDialog = new AssigneeDialog(
+                            FilterIssuesActivity.this, REQUEST_ASSIGNEE,
+                            repository, collaborators);
                 assigneeDialog.show(filter.getAssignee());
             }
         };
 
-        ((TextView) findViewById(id.tv_assignee_label)).setOnClickListener(assigneeListener);
+        ((TextView) findViewById(id.tv_assignee_label))
+                .setOnClickListener(assigneeListener);
         assigneeText.setOnClickListener(assigneeListener);
 
         OnClickListener milestoneListener = new OnClickListener() {
 
             public void onClick(View v) {
                 if (milestoneDialog == null)
-                    milestoneDialog = new MilestoneDialog(FilterIssuesActivity.this, REQUEST_MILESTONE, repository,
-                            milestones);
+                    milestoneDialog = new MilestoneDialog(
+                            FilterIssuesActivity.this, REQUEST_MILESTONE,
+                            repository, milestones);
                 milestoneDialog.show(filter.getMilestone());
             }
         };
 
-        ((TextView) findViewById(id.tv_milestone_label)).setOnClickListener(milestoneListener);
+        ((TextView) findViewById(id.tv_milestone_label))
+                .setOnClickListener(milestoneListener);
         milestoneText.setOnClickListener(milestoneListener);
 
         OnClickListener labelsListener = new OnClickListener() {
 
             public void onClick(View v) {
                 if (labelsDialog == null)
-                    labelsDialog = new LabelsDialog(FilterIssuesActivity.this, REQUEST_LABELS, repository, labels);
+                    labelsDialog = new LabelsDialog(FilterIssuesActivity.this,
+                            REQUEST_LABELS, repository, labels);
                 labelsDialog.show(filter.getLabels());
             }
         };
 
-        ((TextView) findViewById(id.tv_labels_label)).setOnClickListener(labelsListener);
+        ((TextView) findViewById(id.tv_labels_label))
+                .setOnClickListener(labelsListener);
         labelsText.setOnClickListener(labelsListener);
 
         updateAssignee();
@@ -172,7 +182,8 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
 
         openButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(CompoundButton buttonView,
+                    boolean isChecked) {
                 if (isChecked)
                     filter.setOpen(true);
             }
@@ -182,7 +193,8 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
 
         closedButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(CompoundButton buttonView,
+                    boolean isChecked) {
                 if (isChecked)
                     filter.setOpen(false);
             }

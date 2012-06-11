@@ -83,7 +83,8 @@ public class DefaultClient extends GitHubClient {
         super.configureRequest(request);
 
         if (useAcceptHeader)
-            request.setRequestProperty(HEADER_ACCEPT, "application/vnd.github.beta.full+json");
+            request.setRequestProperty(HEADER_ACCEPT,
+                    "application/vnd.github.beta.full+json");
 
         return request;
     }

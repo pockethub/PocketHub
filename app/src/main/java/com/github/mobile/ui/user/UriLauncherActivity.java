@@ -51,7 +51,8 @@ public class UriLauncherActivity extends SherlockActivity {
 
         RepositoryIssue issue = IssueUriMatcher.getIssue(data);
         if (issue != null) {
-            startActivity(IssuesViewActivity.createIntent(issue, issue.getRepository()));
+            startActivity(IssuesViewActivity.createIntent(issue,
+                    issue.getRepository()));
             finish();
             return;
         }
@@ -76,7 +77,8 @@ public class UriLauncherActivity extends SherlockActivity {
     private void showParseError(String url) {
         AlertDialog dialog = LightAlertDialog.create(this);
         dialog.setTitle(string.title_invalid_github_url);
-        dialog.setMessage(MessageFormat.format(getString(string.message_invalid_github_url), url));
+        dialog.setMessage(MessageFormat.format(
+                getString(string.message_invalid_github_url), url));
         dialog.setOnCancelListener(new OnCancelListener() {
 
             @Override
@@ -84,13 +86,14 @@ public class UriLauncherActivity extends SherlockActivity {
                 finish();
             }
         });
-        dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(android.R.string.ok), new OnClickListener() {
+        dialog.setButton(DialogInterface.BUTTON_POSITIVE,
+                getString(android.R.string.ok), new OnClickListener() {
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
         dialog.show();
     }
 }

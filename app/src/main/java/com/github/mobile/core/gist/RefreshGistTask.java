@@ -54,7 +54,8 @@ public class RefreshGistTask extends AuthenticatedUserTask<FullGist> {
      * @param gistId
      * @param imageGetter
      */
-    public RefreshGistTask(Context context, String gistId, HttpImageGetter imageGetter) {
+    public RefreshGistTask(Context context, String gistId,
+            HttpImageGetter imageGetter) {
         super(context);
 
         id = gistId;
@@ -70,7 +71,8 @@ public class RefreshGistTask extends AuthenticatedUserTask<FullGist> {
         else
             comments = Collections.emptyList();
         for (Comment comment : comments) {
-            String formatted = HtmlUtils.format(comment.getBodyHtml()).toString();
+            String formatted = HtmlUtils.format(comment.getBodyHtml())
+                    .toString();
             comment.setBodyHtml(formatted);
             imageGetter.encode(comment, formatted);
         }

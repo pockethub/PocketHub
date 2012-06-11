@@ -62,7 +62,8 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        startActivityForResult(GistsViewActivity.createIntent(items, position), GIST_VIEW);
+        startActivityForResult(GistsViewActivity.createIntent(items, position),
+                GIST_VIEW);
     }
 
     @Override
@@ -76,7 +77,8 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case id.m_create:
-            startActivityForResult(new Intent(getActivity(), CreateGistActivity.class), GIST_CREATE);
+            startActivityForResult(new Intent(getActivity(),
+                    CreateGistActivity.class), GIST_CREATE);
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -105,8 +107,9 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
     }
 
     @Override
-    protected ItemListAdapter<Gist, ? extends ItemView> createAdapter(List<Gist> items) {
-        return new GistListAdapter(avatarHelper, getActivity().getLayoutInflater(),
-                items.toArray(new Gist[items.size()]));
+    protected ItemListAdapter<Gist, ? extends ItemView> createAdapter(
+            List<Gist> items) {
+        return new GistListAdapter(avatarHelper, getActivity()
+                .getLayoutInflater(), items.toArray(new Gist[items.size()]));
     }
 }

@@ -59,8 +59,9 @@ public class MilestoneDialog {
      * @param repository
      * @param service
      */
-    public MilestoneDialog(final DialogFragmentActivity activity, final int requestCode,
-            final IRepositoryIdProvider repository, final MilestoneService service) {
+    public MilestoneDialog(final DialogFragmentActivity activity,
+            final int requestCode, final IRepositoryIdProvider repository,
+            final MilestoneService service) {
         this.activity = activity;
         this.requestCode = requestCode;
         this.repository = repository;
@@ -82,12 +83,15 @@ public class MilestoneDialog {
             @Override
             public ArrayList<Milestone> run() throws Exception {
                 ArrayList<Milestone> milestones = new ArrayList<Milestone>();
-                milestones.addAll(service.getMilestones(repository, STATE_OPEN));
-                milestones.addAll(service.getMilestones(repository, STATE_CLOSED));
+                milestones
+                        .addAll(service.getMilestones(repository, STATE_OPEN));
+                milestones.addAll(service.getMilestones(repository,
+                        STATE_CLOSED));
                 Collections.sort(milestones, new Comparator<Milestone>() {
 
                     public int compare(Milestone m1, Milestone m2) {
-                        return CASE_INSENSITIVE_ORDER.compare(m1.getTitle(), m2.getTitle());
+                        return CASE_INSENSITIVE_ORDER.compare(m1.getTitle(),
+                                m2.getTitle());
                     }
                 });
                 return milestones;
@@ -133,11 +137,13 @@ public class MilestoneDialog {
         int checked = -1;
         if (selectedMilestone != null)
             for (int i = 0; i < repositoryMilestones.size(); i++)
-                if (selectedMilestone.getNumber() == repositoryMilestones.get(i).getNumber()) {
+                if (selectedMilestone.getNumber() == repositoryMilestones
+                        .get(i).getNumber()) {
                     checked = i;
                     break;
                 }
-        MilestoneDialogFragment.show(activity, requestCode, activity.getString(string.select_milestone), null,
+        MilestoneDialogFragment.show(activity, requestCode,
+                activity.getString(string.select_milestone), null,
                 repositoryMilestones, checked);
     }
 

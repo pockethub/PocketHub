@@ -61,7 +61,8 @@ public class RefreshIssueTask extends AuthenticatedUserTask<FullIssue> {
      * @param bodyImageGetter
      * @param commentImageGetter
      */
-    public RefreshIssueTask(Context context, IRepositoryIdProvider repositoryId, int issueNumber,
+    public RefreshIssueTask(Context context,
+            IRepositoryIdProvider repositoryId, int issueNumber,
             HttpImageGetter bodyImageGetter, HttpImageGetter commentImageGetter) {
         super(context);
 
@@ -81,7 +82,8 @@ public class RefreshIssueTask extends AuthenticatedUserTask<FullIssue> {
         else
             comments = Collections.emptyList();
         for (Comment comment : comments) {
-            String formatted = HtmlUtils.format(comment.getBodyHtml()).toString();
+            String formatted = HtmlUtils.format(comment.getBodyHtml())
+                    .toString();
             comment.setBodyHtml(formatted);
             commentImageGetter.encode(comment.getId(), formatted);
         }

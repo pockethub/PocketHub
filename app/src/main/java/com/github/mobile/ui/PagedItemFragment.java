@@ -29,11 +29,13 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * List fragment that adds more elements when the bottom of the list is scrolled to
+ * List fragment that adds more elements when the bottom of the list is scrolled
+ * to
  *
  * @param <E>
  */
-public abstract class PagedItemFragment<E> extends ItemListFragment<E> implements OnScrollListener {
+public abstract class PagedItemFragment<E> extends ItemListFragment<E>
+        implements OnScrollListener {
 
     /**
      * Resource pager
@@ -72,7 +74,8 @@ public abstract class PagedItemFragment<E> extends ItemListFragment<E> implement
     protected void configureList(Activity activity, ListView listView) {
         super.configureList(activity, listView);
 
-        loadingIndicator = new ResourceLoadingIndicator(activity, getLoadingMessage());
+        loadingIndicator = new ResourceLoadingIndicator(activity,
+                getLoadingMessage());
         loadingIndicator.setList(getListAdapter());
     }
 
@@ -101,7 +104,8 @@ public abstract class PagedItemFragment<E> extends ItemListFragment<E> implement
     }
 
     @Override
-    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+    public void onScroll(AbsListView view, int firstVisibleItem,
+            int visibleItemCount, int totalItemCount) {
         if (!pager.hasMore())
             return;
         if (getLoaderManager().hasRunningLoaders())

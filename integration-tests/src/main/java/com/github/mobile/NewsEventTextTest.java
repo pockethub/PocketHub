@@ -63,239 +63,239 @@ import org.eclipse.egit.github.core.event.TeamAddPayload;
  */
 public class NewsEventTextTest extends AndroidTestCase {
 
-	private NewsListAdapter adapter;
+    private NewsListAdapter adapter;
 
-	private TextView text;
+    private TextView text;
 
-	private User actor;
+    private User actor;
 
-	private EventRepository repo;
+    private EventRepository repo;
 
-	private Date date;
+    private Date date;
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
 
-		date = new Date();
-		actor = new User().setLogin("user");
-		repo = new EventRepository().setName("user/repo");
+        date = new Date();
+        actor = new User().setLogin("user");
+        repo = new EventRepository().setName("user/repo");
 
-		adapter = new NewsListAdapter(LayoutInflater.from(mContext),
-				new AvatarLoader(mContext));
-	}
+        adapter = new NewsListAdapter(LayoutInflater.from(mContext),
+                new AvatarLoader(mContext));
+    }
 
-	private Event createEvent(String type) {
-		Event event = new Event();
-		event.setCreatedAt(date);
-		event.setType(type);
-		event.setActor(actor);
-		event.setRepo(repo);
-		return event;
-	}
+    private Event createEvent(String type) {
+        Event event = new Event();
+        event.setCreatedAt(date);
+        event.setType(type);
+        event.setActor(actor);
+        event.setRepo(repo);
+        return event;
+    }
 
-	private void verify(String expected) {
-		CharSequence actual = text.getText();
-		assertNotNull(actual);
-		assertEquals(expected, actual.toString());
-	}
+    private void verify(String expected) {
+        CharSequence actual = text.getText();
+        assertNotNull(actual);
+        assertEquals(expected, actual.toString());
+    }
 
-	private void updateView(Event event) {
-		adapter.setItems(new Object[] { event });
-		View view = adapter.getView(0, null, null);
-		assertNotNull(view);
-		text = (TextView) view.findViewById(id.tv_event);
-		assertNotNull(text);
-	}
+    private void updateView(Event event) {
+        adapter.setItems(new Object[] { event });
+        View view = adapter.getView(0, null, null);
+        assertNotNull(view);
+        text = (TextView) view.findViewById(id.tv_event);
+        assertNotNull(text);
+    }
 
-	/**
-	 * Verify text of commit comment event
-	 */
-	public void testCommitCommentEvent() {
-		Event event = createEvent(TYPE_COMMIT_COMMENT);
-		event.setPayload(new CommitCommentPayload());
-		updateView(event);
+    /**
+     * Verify text of commit comment event
+     */
+    public void testCommitCommentEvent() {
+        Event event = createEvent(TYPE_COMMIT_COMMENT);
+        event.setPayload(new CommitCommentPayload());
+        updateView(event);
 
-		CharSequence content = text.getText();
-		assertNotNull(content);
-		assertEquals("user commented on user/repo", content.toString());
-	}
+        CharSequence content = text.getText();
+        assertNotNull(content);
+        assertEquals("user commented on user/repo", content.toString());
+    }
 
-	/**
-	 * Verify text of create event
-	 */
-	public void testCreateRepositoryEvent() {
-		Event event = createEvent(TYPE_CREATE);
-		CreatePayload payload = new CreatePayload();
-		payload.setRefType("repository");
-		event.setPayload(payload);
-		updateView(event);
+    /**
+     * Verify text of create event
+     */
+    public void testCreateRepositoryEvent() {
+        Event event = createEvent(TYPE_CREATE);
+        CreatePayload payload = new CreatePayload();
+        payload.setRefType("repository");
+        event.setPayload(payload);
+        updateView(event);
 
-		verify("user created repository repo");
-	}
+        verify("user created repository repo");
+    }
 
-	/**
-	 * Verify text of create event
-	 */
-	public void testCreateBranchEvent() {
-		Event event = createEvent(TYPE_CREATE);
-		CreatePayload payload = new CreatePayload();
-		payload.setRefType("branch");
-		payload.setRef("b1");
-		event.setPayload(payload);
-		updateView(event);
+    /**
+     * Verify text of create event
+     */
+    public void testCreateBranchEvent() {
+        Event event = createEvent(TYPE_CREATE);
+        CreatePayload payload = new CreatePayload();
+        payload.setRefType("branch");
+        payload.setRef("b1");
+        event.setPayload(payload);
+        updateView(event);
 
-		verify("user created branch b1 at user/repo");
-	}
+        verify("user created branch b1 at user/repo");
+    }
 
-	/**
-	 * Verify text of deleve event
-	 */
-	public void testDelete() {
-		Event event = createEvent(TYPE_DELETE);
-		DeletePayload payload = new DeletePayload();
-		payload.setRefType("branch");
-		payload.setRef("b1");
-		event.setPayload(payload);
-		updateView(event);
+    /**
+     * Verify text of deleve event
+     */
+    public void testDelete() {
+        Event event = createEvent(TYPE_DELETE);
+        DeletePayload payload = new DeletePayload();
+        payload.setRefType("branch");
+        payload.setRef("b1");
+        event.setPayload(payload);
+        updateView(event);
 
-		verify("user deleted branch b1 at user/repo");
-	}
+        verify("user deleted branch b1 at user/repo");
+    }
 
-	/**
-	 * Verify text of follow event
-	 */
-	public void testFollow() {
-		Event event = createEvent(TYPE_FOLLOW);
-		FollowPayload payload = new FollowPayload();
-		payload.setTarget(new User().setLogin("user2"));
-		event.setPayload(payload);
-		updateView(event);
+    /**
+     * Verify text of follow event
+     */
+    public void testFollow() {
+        Event event = createEvent(TYPE_FOLLOW);
+        FollowPayload payload = new FollowPayload();
+        payload.setTarget(new User().setLogin("user2"));
+        event.setPayload(payload);
+        updateView(event);
 
-		verify("user started following user2");
-	}
+        verify("user started following user2");
+    }
 
-	/**
-	 * Verify text of Gist event
-	 */
-	public void testGist() {
-		Event event = createEvent(TYPE_GIST);
-		GistPayload payload = new GistPayload();
-		payload.setAction("create");
-		payload.setGist(new Gist().setId("1"));
-		event.setPayload(payload);
-		updateView(event);
+    /**
+     * Verify text of Gist event
+     */
+    public void testGist() {
+        Event event = createEvent(TYPE_GIST);
+        GistPayload payload = new GistPayload();
+        payload.setAction("create");
+        payload.setGist(new Gist().setId("1"));
+        event.setPayload(payload);
+        updateView(event);
 
-		verify("user created Gist 1");
-	}
+        verify("user created Gist 1");
+    }
 
-	/**
-	 * Verify text of wiki event
-	 */
-	public void testWiki() {
-		Event event = createEvent(TYPE_GOLLUM);
-		updateView(event);
+    /**
+     * Verify text of wiki event
+     */
+    public void testWiki() {
+        Event event = createEvent(TYPE_GOLLUM);
+        updateView(event);
 
-		verify("user updated the wiki in user/repo");
-	}
+        verify("user updated the wiki in user/repo");
+    }
 
-	/**
-	 * Verify text of issue comment event
-	 */
-	public void testIssueComment() {
-		Event event = createEvent(TYPE_ISSUE_COMMENT);
-		IssueCommentPayload payload = new IssueCommentPayload();
-		payload.setIssue(new Issue().setNumber(5));
-		event.setPayload(payload);
-		updateView(event);
+    /**
+     * Verify text of issue comment event
+     */
+    public void testIssueComment() {
+        Event event = createEvent(TYPE_ISSUE_COMMENT);
+        IssueCommentPayload payload = new IssueCommentPayload();
+        payload.setIssue(new Issue().setNumber(5));
+        event.setPayload(payload);
+        updateView(event);
 
-		verify("user commented on issue 5 on user/repo");
-	}
+        verify("user commented on issue 5 on user/repo");
+    }
 
-	/**
-	 * Verify text of issue event
-	 */
-	public void testIssue() {
-		Event event = createEvent(TYPE_ISSUES);
-		IssuesPayload payload = new IssuesPayload();
-		payload.setAction("closed");
-		payload.setIssue(new Issue().setNumber(8));
-		event.setPayload(payload);
-		updateView(event);
+    /**
+     * Verify text of issue event
+     */
+    public void testIssue() {
+        Event event = createEvent(TYPE_ISSUES);
+        IssuesPayload payload = new IssuesPayload();
+        payload.setAction("closed");
+        payload.setIssue(new Issue().setNumber(8));
+        event.setPayload(payload);
+        updateView(event);
 
-		verify("user closed issue 8 on user/repo");
-	}
+        verify("user closed issue 8 on user/repo");
+    }
 
-	/**
-	 * Verify text of member event
-	 */
-	public void testAddMember() {
-		Event event = createEvent(TYPE_MEMBER);
-		event.setPayload(new MemberPayload().setMember(new User()
-				.setLogin("person")));
-		updateView(event);
+    /**
+     * Verify text of member event
+     */
+    public void testAddMember() {
+        Event event = createEvent(TYPE_MEMBER);
+        event.setPayload(new MemberPayload().setMember(new User()
+                .setLogin("person")));
+        updateView(event);
 
-		verify("user added person as a collaborator to user/repo");
-	}
+        verify("user added person as a collaborator to user/repo");
+    }
 
-	/**
-	 * Verify text of open sourced event
-	 */
-	public void testOpenSourced() {
-		Event event = createEvent(TYPE_PUBLIC);
-		updateView(event);
+    /**
+     * Verify text of open sourced event
+     */
+    public void testOpenSourced() {
+        Event event = createEvent(TYPE_PUBLIC);
+        updateView(event);
 
-		verify("user open sourced repository user/repo");
-	}
+        verify("user open sourced repository user/repo");
+    }
 
-	/**
-	 * Verify text of watch event
-	 */
-	public void testWatch() {
-		Event event = createEvent(TYPE_WATCH);
-		updateView(event);
+    /**
+     * Verify text of watch event
+     */
+    public void testWatch() {
+        Event event = createEvent(TYPE_WATCH);
+        updateView(event);
 
-		verify("user started watching user/repo");
-	}
+        verify("user started watching user/repo");
+    }
 
-	/**
-	 * Verify text of pull request event
-	 */
-	public void testPullRequest() {
-		Event event = createEvent(TYPE_PULL_REQUEST);
-		PullRequestPayload payload = new PullRequestPayload();
-		payload.setNumber(30);
-		payload.setAction("merged");
-		event.setPayload(payload);
-		updateView(event);
+    /**
+     * Verify text of pull request event
+     */
+    public void testPullRequest() {
+        Event event = createEvent(TYPE_PULL_REQUEST);
+        PullRequestPayload payload = new PullRequestPayload();
+        payload.setNumber(30);
+        payload.setAction("merged");
+        event.setPayload(payload);
+        updateView(event);
 
-		verify("user merged pull request 30 on user/repo");
-	}
+        verify("user merged pull request 30 on user/repo");
+    }
 
-	/**
-	 * Verify text of push event
-	 */
-	public void testPush() {
-		Event event = createEvent(TYPE_PUSH);
-		PushPayload payload = new PushPayload();
-		payload.setRef("refs/heads/master");
-		event.setPayload(payload);
-		updateView(event);
+    /**
+     * Verify text of push event
+     */
+    public void testPush() {
+        Event event = createEvent(TYPE_PUSH);
+        PushPayload payload = new PushPayload();
+        payload.setRef("refs/heads/master");
+        event.setPayload(payload);
+        updateView(event);
 
-		verify("user pushed to master at user/repo");
-	}
+        verify("user pushed to master at user/repo");
+    }
 
-	/**
-	 * Verify text of push event
-	 */
-	public void testTeamAdd() {
-		Event event = createEvent(TYPE_TEAM_ADD);
-		TeamAddPayload payload = new TeamAddPayload();
-		payload.setTeam(new Team().setName("t1"));
-		payload.setUser(new User().setLogin("u2"));
-		event.setPayload(payload);
-		updateView(event);
+    /**
+     * Verify text of push event
+     */
+    public void testTeamAdd() {
+        Event event = createEvent(TYPE_TEAM_ADD);
+        TeamAddPayload payload = new TeamAddPayload();
+        payload.setTeam(new Team().setName("t1"));
+        payload.setUser(new User().setLogin("u2"));
+        event.setPayload(payload);
+        updateView(event);
 
-		verify("user added u2 to team t1");
-	}
+        verify("user added u2 to team t1");
+    }
 }

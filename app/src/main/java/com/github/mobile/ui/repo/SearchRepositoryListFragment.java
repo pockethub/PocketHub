@@ -38,7 +38,8 @@ import org.eclipse.egit.github.core.service.RepositoryService;
 /**
  * Fragment to display a list of {@link Repository} instances
  */
-public class SearchRepositoryListFragment extends ItemListFragment<SearchRepository> {
+public class SearchRepositoryListFragment extends
+        ItemListFragment<SearchRepository> {
 
     @Inject
     private IRepositorySearch search;
@@ -66,7 +67,8 @@ public class SearchRepositoryListFragment extends ItemListFragment<SearchReposit
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        final SearchRepository result = (SearchRepository) l.getItemAtPosition(position);
+        final SearchRepository result = (SearchRepository) l
+                .getItemAtPosition(position);
         new AuthenticatedUserTask<Repository>(getActivity()) {
 
             public Repository run() throws Exception {
@@ -95,8 +97,10 @@ public class SearchRepositoryListFragment extends ItemListFragment<SearchReposit
     }
 
     @Override
-    protected ItemListAdapter<SearchRepository, ? extends ItemView> createAdapter(List<SearchRepository> items) {
-        return new SearchRepositoryListAdapter(getActivity().getLayoutInflater(),
-                items.toArray(new SearchRepository[items.size()]));
+    protected ItemListAdapter<SearchRepository, ? extends ItemView> createAdapter(
+            List<SearchRepository> items) {
+        return new SearchRepositoryListAdapter(getActivity()
+                .getLayoutInflater(), items.toArray(new SearchRepository[items
+                .size()]));
     }
 }

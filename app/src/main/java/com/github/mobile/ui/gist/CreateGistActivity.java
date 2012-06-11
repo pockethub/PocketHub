@@ -112,7 +112,8 @@ public class CreateGistActivity extends RoboSherlockFragmentActivity {
                 : getString(string.gist_description_hint);
 
         String enteredName = nameText.getText().toString().trim();
-        final String name = enteredName.length() > 0 ? enteredName : getString(string.gist_file_name_hint);
+        final String name = enteredName.length() > 0 ? enteredName
+                : getString(string.gist_file_name_hint);
 
         final String content = contentText.getText().toString();
 

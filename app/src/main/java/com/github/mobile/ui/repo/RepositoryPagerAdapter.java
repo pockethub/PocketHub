@@ -39,7 +39,8 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
      * @param resources
      * @param hasIssues
      */
-    public RepositoryPagerAdapter(FragmentManager fm, Resources resources, boolean hasIssues) {
+    public RepositoryPagerAdapter(FragmentManager fm, Resources resources,
+            boolean hasIssues) {
         super(fm);
 
         this.resources = resources;

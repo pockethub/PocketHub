@@ -67,7 +67,8 @@ public class RepositoryItemView extends ItemView {
         repoName = (TextView) view.findViewById(id.tv_repo_name);
         repoDescription = (TextView) view.findViewById(id.tv_repo_description);
 
-        TypefaceUtils.setOcticons(repoIcon, (TextView) view.findViewById(id.tv_forks_icon),
+        TypefaceUtils.setOcticons(repoIcon,
+                (TextView) view.findViewById(id.tv_forks_icon),
                 (TextView) view.findViewById(id.tv_watchers_icon));
 
         language = (TextView) view.findViewById(id.tv_language);

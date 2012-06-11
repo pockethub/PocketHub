@@ -54,7 +54,8 @@ public class IssueStore extends ItemStore {
      * @return issue or null if not in store
      */
     public RepositoryIssue getIssue(IRepositoryIdProvider repository, int number) {
-        ItemReferences<RepositoryIssue> repoIssues = repos.get(repository.generateId());
+        ItemReferences<RepositoryIssue> repoIssues = repos.get(repository
+                .generateId());
         return repoIssues != null ? repoIssues.get(number) : null;
     }
 
@@ -106,7 +107,8 @@ public class IssueStore extends ItemStore {
      * @param issue
      * @return issue
      */
-    public RepositoryIssue addIssue(IRepositoryIdProvider repository, Issue issue) {
+    public RepositoryIssue addIssue(IRepositoryIdProvider repository,
+            Issue issue) {
         issue.setBodyHtml(HtmlUtils.format(issue.getBodyHtml()).toString());
         RepositoryIssue current = getIssue(repository, issue.getNumber());
         if (current != null) {
@@ -145,7 +147,8 @@ public class IssueStore extends ItemStore {
      * @return refreshed issue
      * @throws IOException
      */
-    public RepositoryIssue refreshIssue(IRepositoryIdProvider repository, int number) throws IOException {
+    public RepositoryIssue refreshIssue(IRepositoryIdProvider repository,
+            int number) throws IOException {
         return addIssue(repository, service.getIssue(repository, number));
     }
 
@@ -157,7 +160,8 @@ public class IssueStore extends ItemStore {
      * @return edited issue
      * @throws IOException
      */
-    public RepositoryIssue editIssue(IRepositoryIdProvider repository, Issue issue) throws IOException {
+    public RepositoryIssue editIssue(IRepositoryIdProvider repository,
+            Issue issue) throws IOException {
         return addIssue(repository, service.editIssue(repository, issue));
     }
 }

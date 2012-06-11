@@ -40,7 +40,8 @@ import org.eclipse.egit.github.core.service.WatcherService;
 /**
  * Cache of repositories under a given organization
  */
-public class OrganizationRepositories implements PersistableResource<Repository> {
+public class OrganizationRepositories implements
+        PersistableResource<Repository> {
 
     /**
      * Creation factory
@@ -73,7 +74,8 @@ public class OrganizationRepositories implements PersistableResource<Repository>
      * @param accountProvider
      */
     @Inject
-    public OrganizationRepositories(@Assisted User orgs, RepositoryService repos, WatcherService watcher,
+    public OrganizationRepositories(@Assisted User orgs,
+            RepositoryService repos, WatcherService watcher,
             Provider<GitHubAccount> accountProvider) {
         this.org = orgs;
         this.repos = repos;
@@ -85,10 +87,13 @@ public class OrganizationRepositories implements PersistableResource<Repository>
     public Cursor getCursor(SQLiteDatabase readableDatabase) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables("repos JOIN users ON (repos.ownerId = users.id)");
-        return builder.query(readableDatabase, new String[] { "repos.repoId, repos.name", "users.id", "users.name",
-                "users.avatarurl", "repos.private", "repos.fork", "repos.description", "repos.forks", "repos.watchers",
-                "repos.language", "repos.hasIssues" }, "repos.orgId=?", new String[] { Integer.toString(org.getId()) },
-                null, null, null);
+        return builder.query(readableDatabase, new String[] {
+                "repos.repoId, repos.name", "users.id", "users.name",
+                "users.avatarurl", "repos.private", "repos.fork",
+                "repos.description", "repos.forks", "repos.watchers",
+                "repos.language", "repos.hasIssues" }, "repos.orgId=?",
+                new String[] { Integer.toString(org.getId()) }, null, null,
+                null);
     }
 
     @Override
@@ -116,7 +121,8 @@ public class OrganizationRepositories implements PersistableResource<Repository>
 
     @Override
     public void store(SQLiteDatabase db, List<Repository> repos) {
-        db.delete("repos", "orgId=?", new String[] { Integer.toString(org.getId()) });
+        db.delete("repos", "orgId=?",
+                new String[] { Integer.toString(org.getId()) });
         for (Repository repo : repos) {
             User owner = repo.getOwner();
             ContentValues values = new ContentValues(11);
@@ -145,18 +151,20 @@ public class OrganizationRepositories implements PersistableResource<Repository>
     @Override
     public List<Repository> request() throws IOException {
         if (isAuthenticatedUser()) {
-            Set<Repository> all = new TreeSet<Repository>(new Comparator<Repository>() {
+            Set<Repository> all = new TreeSet<Repository>(
+                    new Comparator<Repository>() {
 
-                public int compare(final Repository repo1, final Repository repo2) {
-                    final long id1 = repo1.getId();
-                    final long id2 = repo2.getId();
-                    if (id1 > id2)
-                        return 1;
-                    if (id1 < id2)
-                        return -1;
-                    return 0;
-                }
-            });
+                        public int compare(final Repository repo1,
+                                final Repository repo2) {
+                            final long id1 = repo1.getId();
+                            final long id2 = repo2.getId();
+                            if (id1 > id2)
+                                return 1;
+                            if (id1 < id2)
+                                return -1;
+                            return 0;
+                        }
+                    });
             all.addAll(repos.getRepositories());
             all.addAll(watcher.getWatched());
             return new ArrayList<Repository>(all);

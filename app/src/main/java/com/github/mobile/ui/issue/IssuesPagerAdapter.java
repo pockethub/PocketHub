@@ -57,7 +57,8 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
      * @param issueNumbers
      * @param issueStore
      */
-    public IssuesPagerAdapter(FragmentManager fm, List<RepositoryId> repoIds, int[] issueNumbers, IssueStore issueStore) {
+    public IssuesPagerAdapter(FragmentManager fm, List<RepositoryId> repoIds,
+            int[] issueNumbers, IssueStore issueStore) {
         super(fm);
 
         repos = repoIds;
@@ -71,7 +72,8 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
      * @param repository
      * @param issueNumbers
      */
-    public IssuesPagerAdapter(FragmentManager fm, Repository repository, int[] issueNumbers) {
+    public IssuesPagerAdapter(FragmentManager fm, Repository repository,
+            int[] issueNumbers) {
         super(fm);
 
         repos = null;
@@ -134,7 +136,8 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
      * @param arguments
      * @return this adapter
      */
-    public IssuesPagerAdapter onDialogResult(int position, int requestCode, int resultCode, Bundle arguments) {
+    public IssuesPagerAdapter onDialogResult(int position, int requestCode,
+            int resultCode, Bundle arguments) {
         IssueFragment fragment = fragments.get(position);
         if (fragment != null)
             fragment.onDialogResult(requestCode, resultCode, arguments);

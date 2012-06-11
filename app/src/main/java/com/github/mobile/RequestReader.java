@@ -64,7 +64,8 @@ public class RequestReader {
         try {
             dir = new RandomAccessFile(handle, "rw");
             lock = dir.getChannel().lock();
-            input = new ObjectInputStream(new GZIPInputStream(new FileInputStream(dir.getFD()), 8192 * 8));
+            input = new ObjectInputStream(new GZIPInputStream(
+                    new FileInputStream(dir.getFD()), 8192 * 8));
             int streamVersion = input.readInt();
             if (streamVersion != version) {
                 delete = true;

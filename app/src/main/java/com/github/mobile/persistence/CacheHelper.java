@@ -52,7 +52,8 @@ public class CacheHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
+    public void onUpgrade(final SQLiteDatabase db, final int oldVersion,
+            final int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS orgs");
         db.execSQL("DROP TABLE IF EXISTS users");
         db.execSQL("DROP TABLE IF EXISTS repos");

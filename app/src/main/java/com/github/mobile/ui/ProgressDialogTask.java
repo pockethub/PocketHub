@@ -84,7 +84,8 @@ public abstract class ProgressDialogTask<E> extends AuthenticatedUserTask<E> {
     }
 
     /**
-     * Sub-classes may override but should always call super to ensure the progress dialog is dismissed
+     * Sub-classes may override but should always call super to ensure the
+     * progress dialog is dismissed
      */
     @Override
     protected void onSuccess(E e) throws Exception {
@@ -92,7 +93,8 @@ public abstract class ProgressDialogTask<E> extends AuthenticatedUserTask<E> {
     }
 
     /**
-     * Sub-classes may override but should always call super to ensure the progress dialog is dismissed
+     * Sub-classes may override but should always call super to ensure the
+     * progress dialog is dismissed
      */
     @Override
     protected void onException(Exception e) throws RuntimeException {

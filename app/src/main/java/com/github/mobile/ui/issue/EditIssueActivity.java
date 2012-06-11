@@ -75,8 +75,9 @@ public class EditIssueActivity extends DialogFragmentActivity {
      * @return intent
      */
     public static Intent createIntent(Repository repository, final String title) {
-        return createIntent(null, repository.getOwner().getLogin(), repository.getName(), title,
-                repository.generateId(), repository.getOwner());
+        return createIntent(null, repository.getOwner().getLogin(),
+                repository.getName(), title, repository.generateId(),
+                repository.getOwner());
 
     }
 
@@ -91,7 +92,8 @@ public class EditIssueActivity extends DialogFragmentActivity {
      * @param user
      * @return intent
      */
-    public static Intent createIntent(final Issue issue, final String repositoryOwner, final String repositoryName,
+    public static Intent createIntent(final Issue issue,
+            final String repositoryOwner, final String repositoryName,
             final String title, final String subtitle, final User user) {
         Builder builder = new Builder("repo.issues.edit.VIEW");
         if (title != null)
@@ -167,14 +169,16 @@ public class EditIssueActivity extends DialogFragmentActivity {
         actionBar.setSubtitle(intent.getStringExtra(EXTRA_SUBTITLE));
         avatars.bind(actionBar, (User) intent.getSerializableExtra(EXTRA_USER));
 
-        repository = RepositoryId.create(intent.getStringExtra(EXTRA_REPOSITORY_OWNER),
+        repository = RepositoryId.create(
+                intent.getStringExtra(EXTRA_REPOSITORY_OWNER),
                 intent.getStringExtra(EXTRA_REPOSITORY_NAME));
 
         findViewById(id.ll_milestone).setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                new MilestoneDialog(EditIssueActivity.this, ISSUE_MILESTONE_UPDATE, repository, milestoneService)
+                new MilestoneDialog(EditIssueActivity.this,
+                        ISSUE_MILESTONE_UPDATE, repository, milestoneService)
                         .show(issue.getMilestone());
             }
         });
@@ -183,7 +187,8 @@ public class EditIssueActivity extends DialogFragmentActivity {
 
             @Override
             public void onClick(View v) {
-                new AssigneeDialog(EditIssueActivity.this, ISSUE_ASSIGNEE_UPDATE, repository, collaboratorService)
+                new AssigneeDialog(EditIssueActivity.this,
+                        ISSUE_ASSIGNEE_UPDATE, repository, collaboratorService)
                         .show(issue.getAssignee());
             }
         });
@@ -192,8 +197,8 @@ public class EditIssueActivity extends DialogFragmentActivity {
 
             @Override
             public void onClick(View v) {
-                new LabelsDialog(EditIssueActivity.this, ISSUE_LABELS_UPDATE, repository, labelService).show(issue
-                        .getLabels());
+                new LabelsDialog(EditIssueActivity.this, ISSUE_LABELS_UPDATE,
+                        repository, labelService).show(issue.getLabels());
             }
         });
 
@@ -253,7 +258,8 @@ public class EditIssueActivity extends DialogFragmentActivity {
             float closed = milestone.getClosedIssues();
             float total = closed + milestone.getOpenIssues();
             if (total > 0) {
-                ((LayoutParams) milestoneClosed.getLayoutParams()).weight = closed / total;
+                ((LayoutParams) milestoneClosed.getLayoutParams()).weight = closed
+                        / total;
                 milestoneClosed.setVisibility(VISIBLE);
             } else
                 milestoneClosed.setVisibility(GONE);
@@ -286,7 +292,8 @@ public class EditIssueActivity extends DialogFragmentActivity {
                 new EditIssueTask(this, repository, issue) {
 
                     @Override
-                    protected void onSuccess(Issue editedIssue) throws Exception {
+                    protected void onSuccess(Issue editedIssue)
+                            throws Exception {
                         super.onSuccess(editedIssue);
 
                         Intent intent = new Intent();

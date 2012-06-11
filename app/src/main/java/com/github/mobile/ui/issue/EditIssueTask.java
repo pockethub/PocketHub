@@ -43,8 +43,8 @@ public class EditIssueTask extends ProgressDialogTask<Issue> {
      * @param repositoryId
      * @param issue
      */
-    public EditIssueTask(final DialogFragmentActivity activity, final IRepositoryIdProvider repositoryId,
-            final Issue issue) {
+    public EditIssueTask(final DialogFragmentActivity activity,
+            final IRepositoryIdProvider repositoryId, final Issue issue) {
         super(activity);
 
         this.repositoryId = repositoryId;

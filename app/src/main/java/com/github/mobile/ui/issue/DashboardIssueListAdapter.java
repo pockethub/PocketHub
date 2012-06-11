@@ -40,7 +40,8 @@ import org.eclipse.egit.github.core.RepositoryIssue;
 /**
  * Adapter to display a list of dashboard issues
  */
-public class DashboardIssueListAdapter extends ItemListAdapter<RepositoryIssue, DashboardIssueView> {
+public class DashboardIssueListAdapter extends
+        ItemListAdapter<RepositoryIssue, DashboardIssueView> {
 
     private final AvatarLoader avatarHelper;
 
@@ -54,7 +55,8 @@ public class DashboardIssueListAdapter extends ItemListAdapter<RepositoryIssue, 
      * @param avatarHelper
      * @param inflater
      */
-    public DashboardIssueListAdapter(AvatarLoader avatarHelper, LayoutInflater inflater) {
+    public DashboardIssueListAdapter(AvatarLoader avatarHelper,
+            LayoutInflater inflater) {
         this(avatarHelper, inflater, null);
     }
 
@@ -65,10 +67,12 @@ public class DashboardIssueListAdapter extends ItemListAdapter<RepositoryIssue, 
      * @param inflater
      * @param elements
      */
-    public DashboardIssueListAdapter(AvatarLoader avatarHelper, LayoutInflater inflater, RepositoryIssue[] elements) {
+    public DashboardIssueListAdapter(AvatarLoader avatarHelper,
+            LayoutInflater inflater, RepositoryIssue[] elements) {
         super(layout.dashboard_issue_item, inflater);
 
-        this.numberView = (TextView) inflater.inflate(layout.dashboard_issue_item, null).findViewById(
+        this.numberView = (TextView) inflater.inflate(
+                layout.dashboard_issue_item, null).findViewById(
                 id.tv_issue_number);
         this.avatarHelper = avatarHelper;
 
@@ -81,12 +85,13 @@ public class DashboardIssueListAdapter extends ItemListAdapter<RepositoryIssue, 
         for (int i = 0; i < numbers.length; i++)
             numbers[i] = ((Issue) items[i]).getNumber();
         int digits = Math.max(TypefaceUtils.getMaxDigits(numbers), 4);
-        numberWidth = TypefaceUtils.getWidth(numberView, digits) + numberView.getPaddingLeft()
-                + numberView.getPaddingRight();
+        numberWidth = TypefaceUtils.getWidth(numberView, digits)
+                + numberView.getPaddingLeft() + numberView.getPaddingRight();
     }
 
     @Override
-    public ItemListAdapter<RepositoryIssue, DashboardIssueView> setItems(final Object[] items) {
+    public ItemListAdapter<RepositoryIssue, DashboardIssueView> setItems(
+            final Object[] items) {
         computeNumberWidth(items);
 
         return super.setItems(items);
@@ -98,10 +103,12 @@ public class DashboardIssueListAdapter extends ItemListAdapter<RepositoryIssue, 
     }
 
     @Override
-    protected void update(final int position, final DashboardIssueView view, final RepositoryIssue issue) {
+    protected void update(final int position, final DashboardIssueView view,
+            final RepositoryIssue issue) {
         view.number.setText(Integer.toString(issue.getNumber()));
         if (issue.getClosedAt() != null)
-            view.number.setPaintFlags(view.numberPaintFlags | STRIKE_THRU_TEXT_FLAG);
+            view.number.setPaintFlags(view.numberPaintFlags
+                    | STRIKE_THRU_TEXT_FLAG);
         else
             view.number.setPaintFlags(view.numberPaintFlags);
         view.number.getLayoutParams().width = numberWidth;
@@ -111,11 +118,14 @@ public class DashboardIssueListAdapter extends ItemListAdapter<RepositoryIssue, 
         String[] segments = issue.getUrl().split("/");
         int length = segments.length;
         if (length >= 4)
-            view.repoText.setText(segments[length - 4] + "/" + segments[length - 3]);
+            view.repoText.setText(segments[length - 4] + "/"
+                    + segments[length - 3]);
         else
             view.repoText.setText("");
 
-        view.pullRequestIcon.setVisibility(issue.getPullRequest().getHtmlUrl() == null ? GONE : VISIBLE);
+        view.pullRequestIcon
+                .setVisibility(issue.getPullRequest().getHtmlUrl() == null ? GONE
+                        : VISIBLE);
 
         view.title.setText(issue.getTitle());
 
@@ -133,7 +143,8 @@ public class DashboardIssueListAdapter extends ItemListAdapter<RepositoryIssue, 
             for (int i = 0; i < size; i++) {
                 String color = labels.get(i).getColor();
                 if (!TextUtils.isEmpty(color)) {
-                    view.labels[i].setBackgroundColor(Color.parseColor('#' + color));
+                    view.labels[i].setBackgroundColor(Color
+                            .parseColor('#' + color));
                     view.labels[i].setVisibility(VISIBLE);
                 } else
                     view.labels[i].setVisibility(GONE);

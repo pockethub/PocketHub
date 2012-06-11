@@ -57,8 +57,9 @@ public class AssigneeDialog {
      * @param repository
      * @param service
      */
-    public AssigneeDialog(final DialogFragmentActivity activity, final int requestCode,
-            final IRepositoryIdProvider repository, final CollaboratorService service) {
+    public AssigneeDialog(final DialogFragmentActivity activity,
+            final int requestCode, final IRepositoryIdProvider repository,
+            final CollaboratorService service) {
         this.activity = activity;
         this.requestCode = requestCode;
         this.repository = repository;
@@ -71,7 +72,8 @@ public class AssigneeDialog {
             @Override
             public List<User> run() throws Exception {
                 List<User> users = service.getCollaborators(repository);
-                Map<String, User> loadedCollaborators = new TreeMap<String, User>(CASE_INSENSITIVE_ORDER);
+                Map<String, User> loadedCollaborators = new TreeMap<String, User>(
+                        CASE_INSENSITIVE_ORDER);
                 for (User user : users)
                     loadedCollaborators.put(user.getLogin(), user);
                 collaborators = loadedCollaborators;
@@ -128,13 +130,15 @@ public class AssigneeDialog {
             return;
         }
 
-        final ArrayList<User> users = new ArrayList<User>(collaborators.values());
+        final ArrayList<User> users = new ArrayList<User>(
+                collaborators.values());
         int checked = -1;
         if (selectedAssignee != null)
             for (int i = 0; i < users.size(); i++)
                 if (selectedAssignee.getLogin().equals(users.get(i).getLogin()))
                     checked = i;
-        AssigneeDialogFragment.show(activity, requestCode, activity.getString(string.select_assignee), null, users,
+        AssigneeDialogFragment.show(activity, requestCode,
+                activity.getString(string.select_assignee), null, users,
                 checked);
     }
 }

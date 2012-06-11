@@ -58,8 +58,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     @Override
-    public void onPerformSync(final Account account, final Bundle extras, final String authority,
-            final ContentProviderClient provider, final SyncResult syncResult) {
+    public void onPerformSync(final Account account, final Bundle extras,
+            final String authority, final ContentProviderClient provider,
+            final SyncResult syncResult) {
         accountScope.enterWith(account, AccountManager.get(getContext()));
         try {
             contextScope.enter(getContext());

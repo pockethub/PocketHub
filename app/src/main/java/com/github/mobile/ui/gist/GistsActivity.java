@@ -50,7 +50,8 @@ public class GistsActivity extends RoboSherlockFragmentActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         ViewPager pager = (ViewPager) findViewById(id.vp_pages);
-        pager.setAdapter(new GistQueriesPagerAdapter(getResources(), getSupportFragmentManager()));
+        pager.setAdapter(new GistQueriesPagerAdapter(getResources(),
+                getSupportFragmentManager()));
         ((TitlePageIndicator) findViewById(id.tpi_header)).setViewPager(pager);
     }
 

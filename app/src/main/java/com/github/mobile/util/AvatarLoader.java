@@ -58,9 +58,11 @@ public class AvatarLoader {
 
     private static final int CACHE_SIZE = 75;
 
-    private static abstract class FetchAvatarTask extends RoboAsyncTask<BitmapDrawable> {
+    private static abstract class FetchAvatarTask extends
+            RoboAsyncTask<BitmapDrawable> {
 
-        private static final Executor EXECUTOR = Executors.newFixedThreadPool(1);
+        private static final Executor EXECUTOR = Executors
+                .newFixedThreadPool(1);
 
         private FetchAvatarTask(Context context) {
             super(context, EXECUTOR);
@@ -74,12 +76,14 @@ public class AvatarLoader {
 
     private final float cornerRadius;
 
-    private final Map<Integer, BitmapDrawable> loaded = new LinkedHashMap<Integer, BitmapDrawable>(CACHE_SIZE, 1.0F) {
+    private final Map<Integer, BitmapDrawable> loaded = new LinkedHashMap<Integer, BitmapDrawable>(
+            CACHE_SIZE, 1.0F) {
 
         private static final long serialVersionUID = -4191624209581976720L;
 
         @Override
-        protected boolean removeEldestEntry(Map.Entry<Integer, BitmapDrawable> eldest) {
+        protected boolean removeEldestEntry(
+                Map.Entry<Integer, BitmapDrawable> eldest) {
             return size() >= CACHE_SIZE;
         }
     };
@@ -99,7 +103,8 @@ public class AvatarLoader {
     public AvatarLoader(final Context context) {
         this.context = context;
 
-        loadingAvatar = context.getResources().getDrawable(drawable.gravatar_icon);
+        loadingAvatar = context.getResources().getDrawable(
+                drawable.gravatar_icon);
 
         avatarDir = new File(context.getCacheDir(), "avatars/github.com");
         if (!avatarDir.isDirectory())
@@ -211,7 +216,8 @@ public class AvatarLoader {
      * @param userReference
      * @return this helper
      */
-    public AvatarLoader bind(final ActionBar actionBar, final AtomicReference<User> userReference) {
+    public AvatarLoader bind(final ActionBar actionBar,
+            final AtomicReference<User> userReference) {
         if (userReference == null)
             return this;
 
@@ -257,7 +263,8 @@ public class AvatarLoader {
         return setImage(image, view, null);
     }
 
-    private AvatarLoader setImage(final Drawable image, final ImageView view, Object tag) {
+    private AvatarLoader setImage(final Drawable image, final ImageView view,
+            Object tag) {
         view.setImageDrawable(image);
         view.setTag(id.iv_avatar, tag);
         view.setVisibility(VISIBLE);
@@ -302,7 +309,8 @@ public class AvatarLoader {
             }
 
             @Override
-            protected void onSuccess(final BitmapDrawable image) throws Exception {
+            protected void onSuccess(final BitmapDrawable image)
+                    throws Exception {
                 if (image == null)
                     return;
                 loaded.put(userId, image);

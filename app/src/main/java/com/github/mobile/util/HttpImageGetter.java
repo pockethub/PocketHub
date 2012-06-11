@@ -55,8 +55,10 @@ public class HttpImageGetter implements ImageGetter {
         private final Drawable image;
 
         private LoadingImageGetter(final Context context, final int size) {
-            int imageSize = Math.round(context.getResources().getDisplayMetrics().density * size + 0.5F);
-            image = context.getResources().getDrawable(drawable.image_loading_icon);
+            int imageSize = Math.round(context.getResources()
+                    .getDisplayMetrics().density * size + 0.5F);
+            image = context.getResources().getDrawable(
+                    drawable.image_loading_icon);
             image.setBounds(0, 0, imageSize, imageSize);
         }
 
@@ -141,7 +143,8 @@ public class HttpImageGetter implements ImageGetter {
      * @param id
      * @return this image getter
      */
-    public HttpImageGetter bind(final TextView view, final String html, final Object id) {
+    public HttpImageGetter bind(final TextView view, final String html,
+            final Object id) {
         if (TextUtils.isEmpty(html))
             return hide(view);
 
@@ -189,10 +192,12 @@ public class HttpImageGetter implements ImageGetter {
         HttpRequest request = HttpRequest.get(source);
         // Add credentials if a secure connection to github.com
         HttpURLConnection connection = request.getConnection();
-        if (connection instanceof HttpsURLConnection && HOST_DEFAULT.equals(connection.getURL().getHost())) {
+        if (connection instanceof HttpsURLConnection
+                && HOST_DEFAULT.equals(connection.getURL().getHost())) {
             Account account = AccountUtils.getAccount(context);
             if (account != null) {
-                String password = AccountManager.get(context).getPassword(account);
+                String password = AccountManager.get(context).getPassword(
+                        account);
                 if (!TextUtils.isEmpty(password))
                     request.basic(account.name, password);
             }
@@ -206,13 +211,15 @@ public class HttpImageGetter implements ImageGetter {
             output = File.createTempFile("image", ".jpg", dir);
             HttpRequest request = createRequest(source);
             if (!request.ok())
-                throw new IOException("Unexpected response code: " + request.code());
+                throw new IOException("Unexpected response code: "
+                        + request.code());
             request.receive(output);
             Bitmap bitmap = ImageUtils.getBitmap(output, width, MAX_VALUE);
             if (bitmap == null)
                 return loading.getDrawable(source);
 
-            BitmapDrawable drawable = new BitmapDrawable(context.getResources(), bitmap);
+            BitmapDrawable drawable = new BitmapDrawable(
+                    context.getResources(), bitmap);
             drawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
             return drawable;
         } catch (IOException e) {

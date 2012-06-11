@@ -43,7 +43,8 @@ public class FullGist extends ArrayList<Comment> implements Serializable {
      * @param starred
      * @param comments
      */
-    public FullGist(final Gist gist, final boolean starred, final Collection<Comment> comments) {
+    public FullGist(final Gist gist, final boolean starred,
+            final Collection<Comment> comments) {
         super(comments);
         this.starred = starred;
         this.gist = gist;

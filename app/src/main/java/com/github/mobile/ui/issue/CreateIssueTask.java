@@ -52,7 +52,8 @@ public class CreateIssueTask extends ProgressDialogTask<Issue> {
      * @param repository
      * @param issue
      */
-    public CreateIssueTask(final Activity activity, final IRepositoryIdProvider repository, final Issue issue) {
+    public CreateIssueTask(final Activity activity,
+            final IRepositoryIdProvider repository, final Issue issue) {
         super(activity);
 
         this.repository = repository;

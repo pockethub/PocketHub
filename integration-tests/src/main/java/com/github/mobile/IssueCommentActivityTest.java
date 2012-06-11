@@ -29,36 +29,36 @@ import org.eclipse.egit.github.core.User;
  * Tests of {@link CreateCommentActivity}
  */
 public class IssueCommentActivityTest extends
-		ActivityTest<CreateCommentActivity> {
+        ActivityTest<CreateCommentActivity> {
 
-	/**
-	 * Create test
-	 */
-	public IssueCommentActivityTest() {
-		super(CreateCommentActivity.class);
-	}
+    /**
+     * Create test
+     */
+    public IssueCommentActivityTest() {
+        super(CreateCommentActivity.class);
+    }
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
 
-		setActivityIntent(CreateCommentActivity.createIntent(new RepositoryId(
-				"o", "n"), 1, new User().setLogin("u")));
-	}
+        setActivityIntent(CreateCommentActivity.createIntent(new RepositoryId(
+                "o", "n"), 1, new User().setLogin("u")));
+    }
 
-	/**
-	 * Verify empty comment can't be created
-	 * 
-	 * @throws Throwable
-	 */
-	public void testEmptyCommentIsProhitibed() throws Throwable {
-		View createMenu = view(id.m_apply);
-		assertFalse(createMenu.isEnabled());
-		final EditText comment = editText(id.et_comment);
-		focus(comment);
-		send("a");
-		assertTrue(createMenu.isEnabled());
-		sendKeys(KEYCODE_DEL);
-		assertFalse(createMenu.isEnabled());
-	}
+    /**
+     * Verify empty comment can't be created
+     * 
+     * @throws Throwable
+     */
+    public void testEmptyCommentIsProhitibed() throws Throwable {
+        View createMenu = view(id.m_apply);
+        assertFalse(createMenu.isEnabled());
+        final EditText comment = editText(id.et_comment);
+        focus(comment);
+        send("a");
+        assertTrue(createMenu.isEnabled());
+        sendKeys(KEYCODE_DEL);
+        assertFalse(createMenu.isEnabled());
+    }
 }

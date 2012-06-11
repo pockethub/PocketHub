@@ -28,36 +28,36 @@ import com.viewpagerindicator.R.id;
  */
 public class GistCreateActivityTest extends ActivityTest<CreateGistActivity> {
 
-	/**
-	 * Create test
-	 */
-	public GistCreateActivityTest() {
-		super(CreateGistActivity.class);
-	}
+    /**
+     * Create test
+     */
+    public GistCreateActivityTest() {
+        super(CreateGistActivity.class);
+    }
 
-	/**
-	 * Create Gist with initial text
-	 */
-	public void testCreateWithInitialText() {
-		setActivityIntent(new Intent().putExtra(EXTRA_TEXT, "gist content"));
+    /**
+     * Create Gist with initial text
+     */
+    public void testCreateWithInitialText() {
+        setActivityIntent(new Intent().putExtra(EXTRA_TEXT, "gist content"));
 
-		View createMenu = view(id.m_apply);
-		assertTrue(createMenu.isEnabled());
-		EditText content = editText(id.et_gist_content);
-		assertEquals("gist content", content.getText().toString());
-	}
+        View createMenu = view(id.m_apply);
+        assertTrue(createMenu.isEnabled());
+        EditText content = editText(id.et_gist_content);
+        assertEquals("gist content", content.getText().toString());
+    }
 
-	/**
-	 * Create Gist with no initial text
-	 * 
-	 * @throws Throwable
-	 */
-	public void testCreateWithNoInitialText() throws Throwable {
-		View createMenu = view(id.m_apply);
-		assertFalse(createMenu.isEnabled());
-		EditText content = editText(id.et_gist_content);
-		focus(content);
-		send("gist content");
-		assertTrue(createMenu.isEnabled());
-	}
+    /**
+     * Create Gist with no initial text
+     * 
+     * @throws Throwable
+     */
+    public void testCreateWithNoInitialText() throws Throwable {
+        View createMenu = view(id.m_apply);
+        assertFalse(createMenu.isEnabled());
+        EditText content = editText(id.et_gist_content);
+        focus(content);
+        send("gist content");
+        assertTrue(createMenu.isEnabled());
+    }
 }

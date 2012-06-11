@@ -37,7 +37,8 @@ import roboguice.inject.InjectExtra;
 /**
  * Activity to create a comment on an {@link Issue}
  */
-public class CreateCommentActivity extends com.github.mobile.ui.comment.CreateCommentActivity {
+public class CreateCommentActivity extends
+        com.github.mobile.ui.comment.CreateCommentActivity {
 
     /**
      * Create intent to create a comment
@@ -47,7 +48,8 @@ public class CreateCommentActivity extends com.github.mobile.ui.comment.CreateCo
      * @param user
      * @return intent
      */
-    public static Intent createIntent(RepositoryId repoId, int issueNumber, User user) {
+    public static Intent createIntent(RepositoryId repoId, int issueNumber,
+            User user) {
         Builder builder = new Builder("issue.comment.create.VIEW");
         builder.repo(repoId);
         builder.add(EXTRA_ISSUE_NUMBER, issueNumber);
@@ -66,7 +68,8 @@ public class CreateCommentActivity extends com.github.mobile.ui.comment.CreateCo
 
         ActionBar actionBar = getSupportActionBar();
         Intent intent = getIntent();
-        repositoryId = new RepositoryId(intent.getStringExtra(EXTRA_REPOSITORY_OWNER),
+        repositoryId = new RepositoryId(
+                intent.getStringExtra(EXTRA_REPOSITORY_OWNER),
                 intent.getStringExtra(EXTRA_REPOSITORY_NAME));
         actionBar.setTitle(getString(string.issue_title) + issueNumber);
 

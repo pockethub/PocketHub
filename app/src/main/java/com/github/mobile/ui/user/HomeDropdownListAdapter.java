@@ -37,7 +37,8 @@ import java.util.List;
 import org.eclipse.egit.github.core.User;
 
 /**
- * Dropdown list adapter to display orgs. and other context-related activity links
+ * Dropdown list adapter to display orgs. and other context-related activity
+ * links
  */
 public class HomeDropdownListAdapter extends BaseAdapter {
 
@@ -70,19 +71,21 @@ public class HomeDropdownListAdapter extends BaseAdapter {
         }
     }
 
-    private static class OrgListAdapter extends ItemListAdapter<User, OrgItemView> {
+    private static class OrgListAdapter extends
+            ItemListAdapter<User, OrgItemView> {
 
         private final AvatarLoader avatars;
 
-        public OrgListAdapter(final int viewId, final LayoutInflater inflater, final User[] elements,
-                final AvatarLoader avatars) {
+        public OrgListAdapter(final int viewId, final LayoutInflater inflater,
+                final User[] elements, final AvatarLoader avatars) {
             super(viewId, inflater, elements);
 
             this.avatars = avatars;
         }
 
         @Override
-        protected void update(final int position, final OrgItemView view, final User user) {
+        protected void update(final int position, final OrgItemView view,
+                final User user) {
             view.nameText.setText(user.getLogin());
             avatars.bind(view.avatarView, user);
         }
@@ -113,14 +116,17 @@ public class HomeDropdownListAdapter extends BaseAdapter {
      * @param orgs
      * @param avatarHelper
      */
-    public HomeDropdownListAdapter(final Context context, final List<User> orgs, final AvatarLoader avatarHelper) {
+    public HomeDropdownListAdapter(final Context context,
+            final List<User> orgs, final AvatarLoader avatarHelper) {
         this.context = context;
 
         LayoutInflater inflater = LayoutInflater.from(context);
         User[] orgItems = orgs.toArray(new User[orgs.size()]);
 
-        listAdapter = new OrgListAdapter(layout.org_item, inflater, orgItems, avatarHelper);
-        dropdownAdapter = new OrgListAdapter(layout.org_dropdown_item, inflater, orgItems, avatarHelper);
+        listAdapter = new OrgListAdapter(layout.org_item, inflater, orgItems,
+                avatarHelper);
+        dropdownAdapter = new OrgListAdapter(layout.org_dropdown_item,
+                inflater, orgItems, avatarHelper);
     }
 
     /**
@@ -220,19 +226,26 @@ public class HomeDropdownListAdapter extends BaseAdapter {
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         switch (getAction(position)) {
         case ACTION_GISTS:
-            View gistsRoot = LayoutInflater.from(context).inflate(layout.org_dropdown_item, null);
+            View gistsRoot = LayoutInflater.from(context).inflate(
+                    layout.org_dropdown_item, null);
             gistsRoot.findViewById(id.iv_avatar).setVisibility(GONE);
-            ((TextView) gistsRoot.findViewById(id.tv_org_name)).setText(getItem(position).toString());
+            ((TextView) gistsRoot.findViewById(id.tv_org_name))
+                    .setText(getItem(position).toString());
             return gistsRoot;
         case ACTION_DASHBOARD:
-            View dashboardRoot = LayoutInflater.from(context).inflate(layout.org_dropdown_item, null);
+            View dashboardRoot = LayoutInflater.from(context).inflate(
+                    layout.org_dropdown_item, null);
             dashboardRoot.findViewById(id.iv_avatar).setVisibility(GONE);
-            ((TextView) dashboardRoot.findViewById(id.tv_org_name)).setText(getItem(position).toString());
+            ((TextView) dashboardRoot.findViewById(id.tv_org_name))
+                    .setText(getItem(position).toString());
             return dashboardRoot;
         case ACTION_BOOKMARKS:
-            View bookmarksRoot = LayoutInflater.from(context).inflate(layout.org_dropdown_item, null);
-            ((ImageView) bookmarksRoot.findViewById(id.iv_avatar)).setBackgroundResource(drawable.action_bookmark);
-            ((TextView) bookmarksRoot.findViewById(id.tv_org_name)).setText(getItem(position).toString());
+            View bookmarksRoot = LayoutInflater.from(context).inflate(
+                    layout.org_dropdown_item, null);
+            ((ImageView) bookmarksRoot.findViewById(id.iv_avatar))
+                    .setBackgroundResource(drawable.action_bookmark);
+            ((TextView) bookmarksRoot.findViewById(id.tv_org_name))
+                    .setText(getItem(position).toString());
             return bookmarksRoot;
         default:
             return dropdownAdapter.getDropDownView(position, null, parent);

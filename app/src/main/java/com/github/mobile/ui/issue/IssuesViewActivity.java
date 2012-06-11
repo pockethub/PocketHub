@@ -54,7 +54,8 @@ import roboguice.inject.InjectView;
 /**
  * Activity display a collection of issues in a pager
  */
-public class IssuesViewActivity extends DialogFragmentActivity implements OnPageChangeListener {
+public class IssuesViewActivity extends DialogFragmentActivity implements
+        OnPageChangeListener {
 
     /**
      * Create an intent to show a single issue
@@ -87,12 +88,14 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
      * @param position
      * @return intent
      */
-    public static Intent createIntent(Collection<? extends Issue> issues, Repository repository, int position) {
+    public static Intent createIntent(Collection<? extends Issue> issues,
+            Repository repository, int position) {
         int[] numbers = new int[issues.size()];
         int index = 0;
         for (Issue issue : issues)
             numbers[index++] = issue.getNumber();
-        return new Builder("issues.VIEW").add(EXTRA_ISSUE_NUMBERS, numbers).add(EXTRA_REPOSITORY, repository)
+        return new Builder("issues.VIEW").add(EXTRA_ISSUE_NUMBERS, numbers)
+                .add(EXTRA_REPOSITORY, repository)
                 .add(EXTRA_POSITION, position).toIntent();
     }
 
@@ -103,7 +106,8 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
      * @param position
      * @return intent
      */
-    public static Intent createIntent(Collection<? extends Issue> issues, int position) {
+    public static Intent createIntent(Collection<? extends Issue> issues,
+            int position) {
         final int count = issues.size();
         int[] numbers = new int[count];
         ArrayList<RepositoryId> repos = new ArrayList<RepositoryId>(count);
@@ -114,11 +118,13 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
             RepositoryId repoId = null;
             User owner = null;
             if (issue instanceof RepositoryIssue) {
-                Repository issueRepo = ((RepositoryIssue) issue).getRepository();
+                Repository issueRepo = ((RepositoryIssue) issue)
+                        .getRepository();
                 if (issueRepo != null) {
                     owner = issueRepo.getOwner();
                     if (owner != null)
-                        repoId = RepositoryId.create(owner.getLogin(), issueRepo.getName());
+                        repoId = RepositoryId.create(owner.getLogin(),
+                                issueRepo.getName());
                 }
             }
             if (repoId == null)
@@ -167,9 +173,11 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
         setContentView(layout.pager);
 
         if (repo != null)
-            adapter = new IssuesPagerAdapter(getSupportFragmentManager(), repo, issueNumbers);
+            adapter = new IssuesPagerAdapter(getSupportFragmentManager(), repo,
+                    issueNumbers);
         else
-            adapter = new IssuesPagerAdapter(getSupportFragmentManager(), repoIds, issueNumbers, store);
+            adapter = new IssuesPagerAdapter(getSupportFragmentManager(),
+                    repoIds, issueNumbers, store);
         pager.setAdapter(adapter);
 
         pager.setOnPageChangeListener(this);
@@ -183,26 +191,33 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
             avatars.bind(actionBar, user);
         }
 
-        // Load avatar if single issue and user is currently unset of missing avatar URL
-        if (issueNumbers.length == 1 && (user.get() == null || user.get().getAvatarUrl() == null))
-            new RefreshRepositoryTask(this, repo != null ? repo : repoIds.get(0)) {
+        // Load avatar if single issue and user is currently unset of missing
+        // avatar URL
+        if (issueNumbers.length == 1
+                && (user.get() == null || user.get().getAvatarUrl() == null))
+            new RefreshRepositoryTask(this, repo != null ? repo
+                    : repoIds.get(0)) {
 
                 @Override
-                protected void onSuccess(Repository fullRepository) throws Exception {
+                protected void onSuccess(Repository fullRepository)
+                        throws Exception {
                     super.onSuccess(fullRepository);
 
-                    avatars.bind(getSupportActionBar(), fullRepository.getOwner());
+                    avatars.bind(getSupportActionBar(),
+                            fullRepository.getOwner());
                 }
             }.execute();
     }
 
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    public void onPageScrolled(int position, float positionOffset,
+            int positionOffsetPixels) {
         // Intentionally left blank
     }
 
     public void onPageSelected(int position) {
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(getString(string.issue_title) + issueNumbers[position]);
+        actionBar.setTitle(getString(string.issue_title)
+                + issueNumbers[position]);
         if (repo != null)
             return;
         if (repoIds == null)
@@ -211,7 +226,8 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
         RepositoryId repoId = repoIds.get(position);
         if (repoId != null) {
             actionBar.setSubtitle(repoId.generateId());
-            RepositoryIssue issue = store.getIssue(repoId, issueNumbers[position]);
+            RepositoryIssue issue = store.getIssue(repoId,
+                    issueNumbers[position]);
             if (issue != null) {
                 Repository fullRepo = issue.getRepository();
                 if (fullRepo != null && fullRepo.getOwner() != null) {
@@ -233,7 +249,8 @@ public class IssuesViewActivity extends DialogFragmentActivity implements OnPage
 
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
-        adapter.onDialogResult(pager.getCurrentItem(), requestCode, resultCode, arguments);
+        adapter.onDialogResult(pager.getCurrentItem(), requestCode, resultCode,
+                arguments);
     }
 
     @Override

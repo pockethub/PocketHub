@@ -37,7 +37,8 @@ import org.eclipse.egit.github.core.User;
 /**
  * Adapter for the default account's repositories
  */
-public class DefaultRepositoryListAdapter extends RepositoryListAdapter<Repository, RepositoryHeaderItemView> {
+public class DefaultRepositoryListAdapter extends
+        RepositoryListAdapter<Repository, RepositoryHeaderItemView> {
 
     private final AtomicReference<User> account;
 
@@ -52,7 +53,8 @@ public class DefaultRepositoryListAdapter extends RepositoryListAdapter<Reposito
      * @param elements
      * @param account
      */
-    public DefaultRepositoryListAdapter(LayoutInflater inflater, Repository[] elements, AtomicReference<User> account) {
+    public DefaultRepositoryListAdapter(LayoutInflater inflater,
+            Repository[] elements, AtomicReference<User> account) {
         super(layout.repo_item, inflater, elements);
 
         this.account = account;
@@ -64,7 +66,8 @@ public class DefaultRepositoryListAdapter extends RepositoryListAdapter<Reposito
      * @param inflater
      * @param account
      */
-    public DefaultRepositoryListAdapter(LayoutInflater inflater, AtomicReference<User> account) {
+    public DefaultRepositoryListAdapter(LayoutInflater inflater,
+            AtomicReference<User> account) {
         this(inflater, null, account);
     }
 
@@ -86,7 +89,8 @@ public class DefaultRepositoryListAdapter extends RepositoryListAdapter<Reposito
      * @param text
      * @return this adapter
      */
-    public DefaultRepositoryListAdapter registerHeader(Repository repository, String text) {
+    public DefaultRepositoryListAdapter registerHeader(Repository repository,
+            String text) {
         headers.put(repository.getId(), text);
         return this;
     }
@@ -97,13 +101,15 @@ public class DefaultRepositoryListAdapter extends RepositoryListAdapter<Reposito
      * @param repository
      * @return this adapter
      */
-    public DefaultRepositoryListAdapter registerNoSeparator(Repository repository) {
+    public DefaultRepositoryListAdapter registerNoSeparator(
+            Repository repository) {
         noSeparators.add(repository.getId());
         return this;
     }
 
     @Override
-    protected void update(final int position, final RepositoryHeaderItemView view, final Repository repository) {
+    protected void update(final int position,
+            final RepositoryHeaderItemView view, final Repository repository) {
         String headerValue = headers.get(repository.getId());
         if (headerValue != null) {
             view.header.setVisibility(VISIBLE);
@@ -118,14 +124,18 @@ public class DefaultRepositoryListAdapter extends RepositoryListAdapter<Reposito
 
         StyledText name = new StyledText();
         if (!account.get().getLogin().equals(repository.getOwner().getLogin())) {
-            ColorStateList states = view.repoName.getResources().getColorStateList(color.text_description_selector);
-            name.foreground(repository.getOwner().getLogin(), states).foreground('/', states);
+            ColorStateList states = view.repoName.getResources()
+                    .getColorStateList(color.text_description_selector);
+            name.foreground(repository.getOwner().getLogin(), states)
+                    .foreground('/', states);
         }
         name.bold(repository.getName());
         view.repoName.setText(name);
 
-        updateDetails(view, repository.getDescription(), repository.getLanguage(), repository.getWatchers(),
-                repository.getForks(), repository.isPrivate(), repository.isFork());
+        updateDetails(view, repository.getDescription(),
+                repository.getLanguage(), repository.getWatchers(),
+                repository.getForks(), repository.isPrivate(),
+                repository.isFork());
     }
 
     @Override

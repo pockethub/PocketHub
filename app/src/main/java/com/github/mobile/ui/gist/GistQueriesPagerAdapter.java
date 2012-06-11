@@ -35,7 +35,8 @@ public class GistQueriesPagerAdapter extends FragmentPagerAdapter {
      * @param resources
      * @param fragmentManager
      */
-    public GistQueriesPagerAdapter(Resources resources, FragmentManager fragmentManager) {
+    public GistQueriesPagerAdapter(Resources resources,
+            FragmentManager fragmentManager) {
         super(fragmentManager);
         this.resources = resources;
     }

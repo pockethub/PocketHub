@@ -26,66 +26,66 @@ import android.widget.EditText;
  * @param <T>
  */
 public abstract class ActivityTest<T extends Activity> extends
-		ActivityInstrumentationTestCase2<T> {
+        ActivityInstrumentationTestCase2<T> {
 
-	/**
-	 * @param activityClass
-	 */
-	public ActivityTest(Class<T> activityClass) {
-		super(activityClass);
-	}
+    /**
+     * @param activityClass
+     */
+    public ActivityTest(Class<T> activityClass) {
+        super(activityClass);
+    }
 
-	/**
-	 * Verify activity was created successfully
-	 */
-	public void testActivityIsCreated() {
-		assertNotNull(getActivity());
-	}
+    /**
+     * Verify activity was created successfully
+     */
+    public void testActivityIsCreated() {
+        assertNotNull(getActivity());
+    }
 
-	/**
-	 * Get edit text with id
-	 * 
-	 * @param id
-	 * @return edit text
-	 */
-	protected EditText editText(final int id) {
-		return (EditText) view(id);
-	}
+    /**
+     * Get edit text with id
+     * 
+     * @param id
+     * @return edit text
+     */
+    protected EditText editText(final int id) {
+        return (EditText) view(id);
+    }
 
-	/**
-	 * Get view with id
-	 * 
-	 * @param id
-	 * @return edit text
-	 */
-	protected View view(final int id) {
-		assertNotNull(getActivity());
-		View view = getActivity().findViewById(id);
-		assertNotNull(view);
-		return view;
-	}
+    /**
+     * Get view with id
+     * 
+     * @param id
+     * @return edit text
+     */
+    protected View view(final int id) {
+        assertNotNull(getActivity());
+        View view = getActivity().findViewById(id);
+        assertNotNull(view);
+        return view;
+    }
 
-	/**
-	 * Send focus to view
-	 * 
-	 * @param view
-	 * @throws Throwable
-	 */
-	protected void focus(final View view) throws Throwable {
-		runTestOnUiThread(new Runnable() {
+    /**
+     * Send focus to view
+     * 
+     * @param view
+     * @throws Throwable
+     */
+    protected void focus(final View view) throws Throwable {
+        runTestOnUiThread(new Runnable() {
 
-			public void run() {
-				view.requestFocus();
-			}
-		});
-	}
+            public void run() {
+                view.requestFocus();
+            }
+        });
+    }
 
-	/**
-	 * Send text
-	 * 
-	 * @param text
-	 */
-	protected void send(final String text) {
-		getInstrumentation().sendStringSync(text);
-	}
+    /**
+     * Send text
+     * 
+     * @param text
+     */
+    protected void send(final String text) {
+        getInstrumentation().sendStringSync(text);
+    }
 }

@@ -26,7 +26,8 @@ import org.eclipse.egit.github.core.User;
 /**
  * Fragment to display a news feed for a given user/org
  */
-public abstract class UserNewsFragment extends NewsFragment implements OrganizationSelectionListener {
+public abstract class UserNewsFragment extends NewsFragment implements
+        OrganizationSelectionListener {
 
     /**
      * Current organization/user

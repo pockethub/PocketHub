@@ -22,7 +22,8 @@ import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmen
 /**
  * Activity that display dialogs
  */
-public abstract class DialogFragmentActivity extends RoboSherlockFragmentActivity implements DialogResultListener {
+public abstract class DialogFragmentActivity extends
+        RoboSherlockFragmentActivity implements DialogResultListener {
 
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {

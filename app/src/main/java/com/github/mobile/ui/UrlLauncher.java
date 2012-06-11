@@ -70,7 +70,8 @@ public class UrlLauncher {
     }
 
     /**
-     * Convert global view intent one into one that can be possibly opened inside the current application.
+     * Convert global view intent one into one that can be possibly opened
+     * inside the current application.
      *
      * @param intent
      * @return converted intent or null if non-application specific

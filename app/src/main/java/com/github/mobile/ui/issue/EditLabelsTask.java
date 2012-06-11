@@ -57,13 +57,14 @@ public class EditLabelsTask extends ProgressDialogTask<Issue> {
      * @param repositoryId
      * @param issueNumber
      */
-    public EditLabelsTask(final DialogFragmentActivity activity, final IRepositoryIdProvider repositoryId,
-            final int issueNumber) {
+    public EditLabelsTask(final DialogFragmentActivity activity,
+            final IRepositoryIdProvider repositoryId, final int issueNumber) {
         super(activity);
 
         this.repositoryId = repositoryId;
         this.issueNumber = issueNumber;
-        labelsDialog = new LabelsDialog(activity, ISSUE_LABELS_UPDATE, repositoryId, service);
+        labelsDialog = new LabelsDialog(activity, ISSUE_LABELS_UPDATE,
+                repositoryId, service);
     }
 
     /**

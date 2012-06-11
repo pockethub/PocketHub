@@ -33,7 +33,8 @@ public class OrganizationNewsFragment extends UserNewsFragment {
             @Override
             public PageIterator<Event> createIterator(int page, int size) {
                 String account = AccountUtils.getLogin(getActivity());
-                return service.pageUserOrgEvents(account, org.getLogin(), page, size);
+                return service.pageUserOrgEvents(account, org.getLogin(), page,
+                        size);
             }
 
             @Override

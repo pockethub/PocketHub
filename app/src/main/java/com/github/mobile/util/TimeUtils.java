@@ -34,7 +34,8 @@ public class TimeUtils {
     public static CharSequence getRelativeTime(final Date date) {
         long now = System.currentTimeMillis();
         if (Math.abs(now - date.getTime()) > 60000)
-            return DateUtils.getRelativeTimeSpanString(date.getTime(), now, MINUTE_IN_MILLIS);
+            return DateUtils.getRelativeTimeSpanString(date.getTime(), now,
+                    MINUTE_IN_MILLIS);
         else
             return "just now";
     }

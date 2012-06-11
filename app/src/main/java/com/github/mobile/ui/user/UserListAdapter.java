@@ -38,7 +38,8 @@ public class UserListAdapter extends ItemListAdapter<User, UserItemView> {
      * @param elements
      * @param avatarHelper
      */
-    public UserListAdapter(final LayoutInflater inflater, final User[] elements, final AvatarLoader avatarHelper) {
+    public UserListAdapter(final LayoutInflater inflater,
+            final User[] elements, final AvatarLoader avatarHelper) {
         super(layout.user_item, inflater, elements);
 
         this.avatarHelper = avatarHelper;
@@ -50,12 +51,14 @@ public class UserListAdapter extends ItemListAdapter<User, UserItemView> {
      * @param inflater
      * @param avatarHelper
      */
-    public UserListAdapter(final LayoutInflater inflater, final AvatarLoader avatarHelper) {
+    public UserListAdapter(final LayoutInflater inflater,
+            final AvatarLoader avatarHelper) {
         this(inflater, null, avatarHelper);
     }
 
     @Override
-    protected void update(final int position, final UserItemView view, final User user) {
+    protected void update(final int position, final UserItemView view,
+            final User user) {
         avatarHelper.bind(view.avatarView, user);
         view.loginText.setText(user.getLogin());
     }

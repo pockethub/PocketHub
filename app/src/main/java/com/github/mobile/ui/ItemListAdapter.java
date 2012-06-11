@@ -26,7 +26,8 @@ import android.widget.BaseAdapter;
  * @param <I>
  * @param <V>
  */
-public abstract class ItemListAdapter<I, V extends ItemView> extends BaseAdapter {
+public abstract class ItemListAdapter<I, V extends ItemView> extends
+        BaseAdapter {
 
     private final LayoutInflater inflater;
 
@@ -51,7 +52,8 @@ public abstract class ItemListAdapter<I, V extends ItemView> extends BaseAdapter
      * @param inflater
      * @param elements
      */
-    public ItemListAdapter(final int viewId, final LayoutInflater inflater, final I[] elements) {
+    public ItemListAdapter(final int viewId, final LayoutInflater inflater,
+            final I[] elements) {
         this.viewId = viewId;
         this.inflater = inflater;
         if (elements != null)
@@ -118,7 +120,8 @@ public abstract class ItemListAdapter<I, V extends ItemView> extends BaseAdapter
      */
     protected abstract V createView(View view);
 
-    public View getView(final int position, View convertView, final ViewGroup parent) {
+    public View getView(final int position, View convertView,
+            final ViewGroup parent) {
         @SuppressWarnings("unchecked")
         V view = convertView != null ? (V) convertView.getTag() : null;
         if (view == null) {

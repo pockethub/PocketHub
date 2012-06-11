@@ -82,6 +82,7 @@ public class FilterItemView extends ItemView {
         milestoneText = (TextView) view.findViewById(id.tv_filter_milestone);
         assigneeArea = view.findViewById(id.ll_assignee);
         assigneeText = (TextView) view.findViewById(id.tv_filter_assignee);
-        assigneeAvatarView = (ImageView)view.findViewById(id.iv_assignee_avatar);
+        assigneeAvatarView = (ImageView) view
+                .findViewById(id.iv_assignee_avatar);
     }
 }

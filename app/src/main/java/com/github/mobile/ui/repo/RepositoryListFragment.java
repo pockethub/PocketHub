@@ -42,7 +42,8 @@ import org.eclipse.egit.github.core.User;
 /**
  * Fragment to display a list of {@link Repository} instances
  */
-public class RepositoryListFragment extends ItemListFragment<Repository> implements OrganizationSelectionListener {
+public class RepositoryListFragment extends ItemListFragment<Repository>
+        implements OrganizationSelectionListener {
 
     @Inject
     private AccountDataManager cache;
@@ -62,7 +63,8 @@ public class RepositoryListFragment extends ItemListFragment<Repository> impleme
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        User currentOrg = ((OrganizationSelectionProvider) activity).addListener(this);
+        User currentOrg = ((OrganizationSelectionProvider) activity)
+                .addListener(this);
         org.set(currentOrg);
         if (currentOrg != null)
             recentRepos = new RecentRepositories(activity, currentOrg);
@@ -120,7 +122,8 @@ public class RepositoryListFragment extends ItemListFragment<Repository> impleme
                 if (org == null)
                     return Collections.emptyList();
 
-                List<Repository> repos = cache.getRepos(org, isForceRefresh(args));
+                List<Repository> repos = cache.getRepos(org,
+                        isForceRefresh(args));
                 Collections.sort(repos, recentRepos);
 
                 DefaultRepositoryListAdapter adapter = (DefaultRepositoryListAdapter) getListAdapter()
@@ -137,13 +140,15 @@ public class RepositoryListFragment extends ItemListFragment<Repository> impleme
                         continue;
                     }
 
-                    char repoStart = Character.toLowerCase(repository.getName().charAt(0));
+                    char repoStart = Character.toLowerCase(repository.getName()
+                            .charAt(0));
                     if (repoStart < start) {
                         previous = repository;
                         continue;
                     }
 
-                    adapter.registerHeader(repository, Character.toString(repoStart).toUpperCase(US));
+                    adapter.registerHeader(repository,
+                            Character.toString(repoStart).toUpperCase(US));
                     if (previous != null)
                         adapter.registerNoSeparator(previous);
                     start = repoStart;
@@ -156,7 +161,8 @@ public class RepositoryListFragment extends ItemListFragment<Repository> impleme
                 if (!repos.isEmpty()) {
                     Repository first = repos.get(0);
                     if (recentRepos.contains(first))
-                        adapter.registerHeader(first, getString(string.recently_viewed));
+                        adapter.registerHeader(first,
+                                getString(string.recently_viewed));
                 }
 
                 return repos;
@@ -165,9 +171,11 @@ public class RepositoryListFragment extends ItemListFragment<Repository> impleme
     }
 
     @Override
-    protected ItemListAdapter<Repository, ? extends ItemView> createAdapter(List<Repository> items) {
-        return new DefaultRepositoryListAdapter(getActivity().getLayoutInflater(), items.toArray(new Repository[items
-                .size()]), org);
+    protected ItemListAdapter<Repository, ? extends ItemView> createAdapter(
+            List<Repository> items) {
+        return new DefaultRepositoryListAdapter(getActivity()
+                .getLayoutInflater(),
+                items.toArray(new Repository[items.size()]), org);
     }
 
     @Override

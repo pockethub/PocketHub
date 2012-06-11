@@ -67,13 +67,15 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
         }
     }
 
-    private static class UserListAdapter extends ItemListAdapter<User, UserItemView> {
+    private static class UserListAdapter extends
+            ItemListAdapter<User, UserItemView> {
 
         private final int selected;
 
         private final AvatarLoader loader;
 
-        public UserListAdapter(LayoutInflater inflater, User[] users, int selected, AvatarLoader loader) {
+        public UserListAdapter(LayoutInflater inflater, User[] users,
+                int selected, AvatarLoader loader) {
             super(layout.collaborator_item, inflater, users);
 
             this.selected = selected;
@@ -81,7 +83,8 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
         }
 
         @Override
-        protected void update(final int position, final UserItemView view, final User item) {
+        protected void update(final int position, final UserItemView view,
+                final User item) {
             view.login.setText(item.getLogin());
             loader.bind(view.avatar, item);
             view.selected.setChecked(selected == position);
@@ -113,9 +116,11 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
      * @param choices
      * @param selectedChoice
      */
-    public static void show(final DialogFragmentActivity activity, final int requestCode, final String title,
-            final String message, ArrayList<User> choices, final int selectedChoice) {
-        show(activity, requestCode, title, message, choices, selectedChoice, new AssigneeDialogFragment());
+    public static void show(final DialogFragmentActivity activity,
+            final int requestCode, final String title, final String message,
+            ArrayList<User> choices, final int selectedChoice) {
+        show(activity, requestCode, title, message, choices, selectedChoice,
+                new AssigneeDialogFragment());
     }
 
     @Inject
@@ -131,19 +136,21 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
 
         LayoutInflater inflater = activity.getLayoutInflater();
 
-        ListView view = (ListView) inflater.inflate(layout.dialog_list_view, null);
+        ListView view = (ListView) inflater.inflate(layout.dialog_list_view,
+                null);
         view.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id) {
                 onClick(dialog, position);
             }
         });
 
         ArrayList<User> choices = getChoices();
         int selected = arguments.getInt(ARG_SELECTED_CHOICE);
-        UserListAdapter adapter = new UserListAdapter(inflater, choices.toArray(new User[choices.size()]), selected,
-                loader);
+        UserListAdapter adapter = new UserListAdapter(inflater,
+                choices.toArray(new User[choices.size()]), selected, loader);
         view.setAdapter(adapter);
         if (selected >= 0)
             view.setSelection(selected);
@@ -166,7 +173,8 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
             onResult(RESULT_OK);
             break;
         default:
-            getArguments().putSerializable(ARG_SELECTED, getChoices().get(which));
+            getArguments().putSerializable(ARG_SELECTED,
+                    getChoices().get(which));
             onResult(RESULT_OK);
         }
     }

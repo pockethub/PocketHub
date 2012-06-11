@@ -51,7 +51,8 @@ import roboguice.inject.InjectView;
 /**
  * Activity to display a collection of Gists in a pager
  */
-public class GistsViewActivity extends DialogFragmentActivity implements OnPageChangeListener {
+public class GistsViewActivity extends DialogFragmentActivity implements
+        OnPageChangeListener {
 
     private static final int REQUEST_CONFIRM_DELETE = 1;
 
@@ -62,7 +63,8 @@ public class GistsViewActivity extends DialogFragmentActivity implements OnPageC
      * @return intent
      */
     public static Intent createIntent(Gist gist) {
-        return new Builder("gists.VIEW").gist(gist).add(EXTRA_POSITION, 0).toIntent();
+        return new Builder("gists.VIEW").gist(gist).add(EXTRA_POSITION, 0)
+                .toIntent();
     }
 
     /**
@@ -77,8 +79,9 @@ public class GistsViewActivity extends DialogFragmentActivity implements OnPageC
         int index = 0;
         for (Gist gist : gists)
             ids[index++] = gist.getId();
-        return new Builder("gists.VIEW").add(EXTRA_GIST_IDS, (Serializable) ids).add(EXTRA_POSITION, position)
-                .toIntent();
+        return new Builder("gists.VIEW")
+                .add(EXTRA_GIST_IDS, (Serializable) ids)
+                .add(EXTRA_POSITION, position).toIntent();
     }
 
     @InjectView(id.vp_pages)
@@ -108,7 +111,8 @@ public class GistsViewActivity extends DialogFragmentActivity implements OnPageC
         setContentView(layout.pager);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Support opening this activity with a single Gist that may be present in the intent but not currently present
+        // Support opening this activity with a single Gist that may be present
+        // in the intent but not currently present
         // in the store
         if (gists == null && gist != null) {
             String id = gist.getId();
@@ -120,7 +124,8 @@ public class GistsViewActivity extends DialogFragmentActivity implements OnPageC
             gists = new String[] { gist.getId() };
         }
 
-        pager.setAdapter(new GistsPagerAdapter(getSupportFragmentManager(), gists));
+        pager.setAdapter(new GistsPagerAdapter(getSupportFragmentManager(),
+                gists));
         pager.setOnPageChangeListener(this);
         pager.setCurrentItem(initialPosition);
         onPageSelected(initialPosition);
@@ -138,7 +143,8 @@ public class GistsViewActivity extends DialogFragmentActivity implements OnPageC
             String gistId = gists[pager.getCurrentItem()];
             Bundle args = new Bundle();
             args.putString(EXTRA_GIST_ID, gistId);
-            ConfirmDialogFragment.show(this, REQUEST_CONFIRM_DELETE, getString(string.confirm_gist_delete_title),
+            ConfirmDialogFragment.show(this, REQUEST_CONFIRM_DELETE,
+                    getString(string.confirm_gist_delete_title),
                     getString(string.confirm_gist_delete_message), args);
             return true;
         default:
@@ -157,7 +163,8 @@ public class GistsViewActivity extends DialogFragmentActivity implements OnPageC
         super.onDialogResult(requestCode, resultCode, arguments);
     }
 
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    public void onPageScrolled(int position, float positionOffset,
+            int positionOffsetPixels) {
         // Intentionally left blank
     }
 

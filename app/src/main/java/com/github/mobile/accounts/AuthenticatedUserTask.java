@@ -26,11 +26,13 @@ import roboguice.inject.ContextScope;
 import roboguice.util.RoboAsyncTask;
 
 /**
- * Enforces that user is logged in before work on the background thread commences.
+ * Enforces that user is logged in before work on the background thread
+ * commences.
  *
  * @param <ResultT>
  */
-public abstract class AuthenticatedUserTask<ResultT> extends RoboAsyncTask<ResultT> {
+public abstract class AuthenticatedUserTask<ResultT> extends
+        RoboAsyncTask<ResultT> {
 
     @Inject
     private ContextScope contextScope;
@@ -42,7 +44,8 @@ public abstract class AuthenticatedUserTask<ResultT> extends RoboAsyncTask<Resul
     private Activity activity;
 
     /**
-     * Create asynchronous task that ensures a valid account is present when executed
+     * Create asynchronous task that ensures a valid account is present when
+     * executed
      *
      * @param context
      */
@@ -51,7 +54,8 @@ public abstract class AuthenticatedUserTask<ResultT> extends RoboAsyncTask<Resul
     }
 
     /**
-     * Create asynchronous task that ensures a valid account is present when executed
+     * Create asynchronous task that ensures a valid account is present when
+     * executed
      *
      * @param context
      * @param executor

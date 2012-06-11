@@ -32,7 +32,8 @@ import roboguice.inject.InjectExtra;
 /**
  * Activity to create a comment on a {@link Gist}
  */
-public class CreateCommentActivity extends com.github.mobile.ui.comment.CreateCommentActivity {
+public class CreateCommentActivity extends
+        com.github.mobile.ui.comment.CreateCommentActivity {
 
     /**
      * Create intent to create a comment

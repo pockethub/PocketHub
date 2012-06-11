@@ -24,7 +24,8 @@ import java.util.List;
 /**
  * Fragment to display a list of {@link IssueFilter} objects
  */
-public class FilterListFragment extends ItemListFragment<IssueFilter> implements Comparator<IssueFilter> {
+public class FilterListFragment extends ItemListFragment<IssueFilter> implements
+        Comparator<IssueFilter> {
 
     @Inject
     private AccountDataManager cache;
@@ -45,7 +46,8 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> implements
 
             @Override
             public List<IssueFilter> loadInBackground() {
-                List<IssueFilter> filters = new ArrayList<IssueFilter>(cache.getIssueFilters());
+                List<IssueFilter> filters = new ArrayList<IssueFilter>(
+                        cache.getIssueFilters());
                 Collections.sort(filters, FilterListFragment.this);
                 return filters;
             }
@@ -71,17 +73,19 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> implements
     }
 
     @Override
-    protected ItemListAdapter<IssueFilter, ? extends ItemView> createAdapter(List<IssueFilter> items) {
-        return new FilterListAdapter(getActivity().getLayoutInflater(), items.toArray(new IssueFilter[items.size()]),
-                avatars);
+    protected ItemListAdapter<IssueFilter, ? extends ItemView> createAdapter(
+            List<IssueFilter> items) {
+        return new FilterListAdapter(getActivity().getLayoutInflater(),
+                items.toArray(new IssueFilter[items.size()]), avatars);
     }
 
     @Override
     public int compare(final IssueFilter lhs, final IssueFilter rhs) {
-        int compare = CASE_INSENSITIVE_ORDER
-                .compare(lhs.getRepository().generateId(), rhs.getRepository().generateId());
+        int compare = CASE_INSENSITIVE_ORDER.compare(lhs.getRepository()
+                .generateId(), rhs.getRepository().generateId());
         if (compare == 0)
-            compare = CASE_INSENSITIVE_ORDER.compare(lhs.toDisplay().toString(), rhs.toDisplay().toString());
+            compare = CASE_INSENSITIVE_ORDER.compare(
+                    lhs.toDisplay().toString(), rhs.toDisplay().toString());
         return compare;
     }
 }

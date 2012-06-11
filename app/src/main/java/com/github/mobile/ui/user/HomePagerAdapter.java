@@ -46,7 +46,8 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
      * @param resources
      * @param defaultUser
      */
-    public HomePagerAdapter(final FragmentManager fm, final Resources resources, final boolean defaultUser) {
+    public HomePagerAdapter(final FragmentManager fm,
+            final Resources resources, final boolean defaultUser) {
         super(fm);
 
         this.resources = resources;
@@ -58,11 +59,13 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
         case 0:
-            return defaultUser ? new UserReceivedNewsFragment() : new OrganizationNewsFragment();
+            return defaultUser ? new UserReceivedNewsFragment()
+                    : new OrganizationNewsFragment();
         case 1:
             return new RepositoryListFragment();
         case 2:
-            return defaultUser ? new MyFollowersFragment() : new MembersFragment();
+            return defaultUser ? new MyFollowersFragment()
+                    : new MembersFragment();
         case 3:
             return new MyFollowingFragment();
         default:
@@ -71,7 +74,8 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
     }
 
     /**
-     * This methods clears any fragments that may not apply to the newly selected org.
+     * This methods clears any fragments that may not apply to the newly
+     * selected org.
      *
      * @param isDefaultUser
      * @return this adapter
@@ -118,7 +122,8 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
         case 1:
             return resources.getString(string.repositories);
         case 2:
-            return resources.getString(defaultUser ? string.followers : string.members);
+            return resources.getString(defaultUser ? string.followers
+                    : string.members);
         case 3:
             return resources.getString(string.following);
         default:

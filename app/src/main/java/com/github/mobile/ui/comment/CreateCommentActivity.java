@@ -39,7 +39,8 @@ import roboguice.inject.InjectView;
 /**
  * Base activity for creating comments
  */
-public abstract class CreateCommentActivity extends RoboSherlockFragmentActivity {
+public abstract class CreateCommentActivity extends
+        RoboSherlockFragmentActivity {
 
     /**
      * Avatar loader

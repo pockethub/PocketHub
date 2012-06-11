@@ -62,8 +62,9 @@ import roboguice.inject.InjectView;
 /**
  * Home screen activity
  */
-public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavigationListener,
-        OrganizationSelectionProvider, LoaderCallbacks<List<User>> {
+public class HomeActivity extends RoboSherlockFragmentActivity implements
+        OnNavigationListener, OrganizationSelectionProvider,
+        LoaderCallbacks<List<User>> {
 
     private static final String TAG = "HomeActivity";
 
@@ -133,7 +134,8 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
     private void setOrg(User org) {
         Log.d(TAG, "setOrg : " + org.getLogin());
 
-        PreferenceUtils.save(sharedPreferences.edit().putInt(PREF_ORG_ID, org.getId()));
+        PreferenceUtils.save(sharedPreferences.edit().putInt(PREF_ORG_ID,
+                org.getId()));
 
         // Don't notify listeners or change pager if org hasn't changed
         if (this.org != null && this.org.getId() == org.getId())
@@ -144,7 +146,8 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
         boolean isDefaultUser = isDefaultUser(org);
         PagerAdapter pagerAdater = pager.getAdapter();
         if (pagerAdater == null) {
-            pager.setAdapter(new HomePagerAdapter(getSupportFragmentManager(), getResources(), isDefaultUser));
+            pager.setAdapter(new HomePagerAdapter(getSupportFragmentManager(),
+                    getResources(), isDefaultUser));
             indicator.setViewPager(pager);
         } else if (this.isDefaultUser != isDefaultUser) {
             int item = pager.getCurrentItem();
@@ -207,7 +210,8 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
 
     @Override
     public Loader<List<User>> onCreateLoader(int i, Bundle bundle) {
-        return new OrganizationLoader(this, accountDataManager, userComparatorProvider);
+        return new OrganizationLoader(this, accountDataManager,
+                userComparatorProvider);
     }
 
     @Override
@@ -236,7 +240,8 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
 
     private boolean isDefaultUser(final User org) {
         final String accountLogin = AccountUtils.getLogin(this);
-        return org != null && accountLogin != null && accountLogin.equals(org.getLogin());
+        return org != null && accountLogin != null
+                && accountLogin.equals(org.getLogin());
     }
 
     @Override
@@ -247,7 +252,8 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements OnNavi
     }
 
     @Override
-    public OrganizationSelectionProvider removeListener(OrganizationSelectionListener listener) {
+    public OrganizationSelectionProvider removeListener(
+            OrganizationSelectionListener listener) {
         if (listener != null)
             orgSelectionListeners.remove(listener);
         return this;

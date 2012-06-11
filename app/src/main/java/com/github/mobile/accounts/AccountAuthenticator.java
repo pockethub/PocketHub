@@ -39,13 +39,16 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
     }
 
     /**
-     * The user has requested to add a new account to the system. We return an intent that will launch our login screen
-     * if the user has not logged in yet, otherwise our activity will just pass the user's credentials on to the account
-     * manager.
+     * The user has requested to add a new account to the system. We return an
+     * intent that will launch our login screen if the user has not logged in
+     * yet, otherwise our activity will just pass the user's credentials on to
+     * the account manager.
      */
     @Override
-    public Bundle addAccount(final AccountAuthenticatorResponse response, final String accountType,
-            final String authTokenType, String[] requiredFeatures, Bundle options) throws NetworkErrorException {
+    public Bundle addAccount(final AccountAuthenticatorResponse response,
+            final String accountType, final String authTokenType,
+            String[] requiredFeatures, Bundle options)
+            throws NetworkErrorException {
         final Intent intent = new Intent(context, LoginActivity.class);
         intent.putExtra(PARAM_AUTHTOKEN_TYPE, authTokenType);
         intent.putExtra(KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
@@ -55,18 +58,21 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
     }
 
     @Override
-    public Bundle confirmCredentials(AccountAuthenticatorResponse response, Account account, Bundle options) {
+    public Bundle confirmCredentials(AccountAuthenticatorResponse response,
+            Account account, Bundle options) {
         return null;
     }
 
     @Override
-    public Bundle editProperties(AccountAuthenticatorResponse response, String accountType) {
+    public Bundle editProperties(AccountAuthenticatorResponse response,
+            String accountType) {
         return null;
     }
 
     @Override
-    public Bundle getAuthToken(AccountAuthenticatorResponse response, Account account, String authTokenType,
-            Bundle options) throws NetworkErrorException {
+    public Bundle getAuthToken(AccountAuthenticatorResponse response,
+            Account account, String authTokenType, Bundle options)
+            throws NetworkErrorException {
         return null;
     }
 
@@ -78,16 +84,16 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
     }
 
     @Override
-    public Bundle hasFeatures(AccountAuthenticatorResponse response, Account account, String[] features)
-            throws NetworkErrorException {
+    public Bundle hasFeatures(AccountAuthenticatorResponse response,
+            Account account, String[] features) throws NetworkErrorException {
         final Bundle result = new Bundle();
         result.putBoolean(KEY_BOOLEAN_RESULT, false);
         return result;
     }
 
     @Override
-    public Bundle updateCredentials(AccountAuthenticatorResponse response, Account account, String authTokenType,
-            Bundle options) {
+    public Bundle updateCredentials(AccountAuthenticatorResponse response,
+            Account account, String authTokenType, Bundle options) {
         return null;
     }
 }

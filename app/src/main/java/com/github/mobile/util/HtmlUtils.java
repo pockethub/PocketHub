@@ -54,8 +54,9 @@ public class HtmlUtils {
             return 18;
         }
 
-        public void drawLeadingMargin(Canvas c, Paint p, int x, int dir, int top, int baseline, int bottom,
-                CharSequence text, int start, int end, boolean first, Layout layout) {
+        public void drawLeadingMargin(Canvas c, Paint p, int x, int dir,
+                int top, int baseline, int bottom, CharSequence text,
+                int start, int end, boolean first, Layout layout) {
             final Style style = p.getStyle();
             final int color = p.getColor();
 
@@ -158,7 +159,8 @@ public class HtmlUtils {
 
         private LinkedList<ListSeparator> listElements = new LinkedList<ListSeparator>();
 
-        public void handleTag(final boolean opening, final String tag, final Editable output, final XMLReader xmlReader) {
+        public void handleTag(final boolean opening, final String tag,
+                final Editable output, final XMLReader xmlReader) {
             if (TAG_DEL.equalsIgnoreCase(tag)) {
                 if (opening)
                     startSpan(new StrikethroughSpan(), output);
@@ -228,12 +230,14 @@ public class HtmlUtils {
                     last = output.length() - 1;
                 }
 
-                QuoteSpan[] quoteSpans = output.getSpans(0, output.length(), QuoteSpan.class);
+                QuoteSpan[] quoteSpans = output.getSpans(0, output.length(),
+                        QuoteSpan.class);
                 for (QuoteSpan span : quoteSpans) {
                     int start = output.getSpanStart(span);
                     int end = output.getSpanEnd(span);
                     output.removeSpan(span);
-                    output.setSpan(new ReplySpan(), start, end, SPAN_EXCLUSIVE_EXCLUSIVE);
+                    output.setSpan(new ReplySpan(), start, end,
+                            SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
                 return;
             }
@@ -276,7 +280,8 @@ public class HtmlUtils {
      * @param imageGetter
      * @return html
      */
-    public static CharSequence encode(final String html, final ImageGetter imageGetter) {
+    public static CharSequence encode(final String html,
+            final ImageGetter imageGetter) {
         if (TextUtils.isEmpty(html))
             return "";
 
@@ -304,7 +309,8 @@ public class HtmlUtils {
         strip(formatted, SIGNATURE_START, SIGNATURE_END);
 
         // Replace div with e-mail content with block quote
-        replace(formatted, REPLY_START, REPLY_END, BLOCKQUOTE_START, BLOCKQUOTE_END);
+        replace(formatted, REPLY_START, REPLY_END, BLOCKQUOTE_START,
+                BLOCKQUOTE_END);
 
         // Remove hidden div
         strip(formatted, HIDDEN_REPLY_START, HIDDEN_REPLY_END);
@@ -325,7 +331,8 @@ public class HtmlUtils {
         return formatted;
     }
 
-    private static StringBuilder strip(final StringBuilder input, final String prefix, final String suffix) {
+    private static StringBuilder strip(final StringBuilder input,
+            final String prefix, final String suffix) {
         int start = input.indexOf(prefix);
         while (start != -1) {
             int end = input.indexOf(suffix, start + prefix.length());
@@ -337,7 +344,8 @@ public class HtmlUtils {
         return input;
     }
 
-    private static StringBuilder replace(final StringBuilder input, final String from, final String to) {
+    private static StringBuilder replace(final StringBuilder input,
+            final String from, final String to) {
         int start = input.indexOf(from);
         int length = from.length();
         while (start != -1) {
@@ -348,8 +356,9 @@ public class HtmlUtils {
         return input;
     }
 
-    private static StringBuilder replace(final StringBuilder input, final String fromStart, final String fromEnd,
-            final String toStart, final String toEnd) {
+    private static StringBuilder replace(final StringBuilder input,
+            final String fromStart, final String fromEnd, final String toStart,
+            final String toEnd) {
         int start = input.indexOf(fromStart);
         while (start != -1) {
 
@@ -461,7 +470,8 @@ public class HtmlUtils {
         while (length > 0) {
             if (input.indexOf(BREAK) == 0)
                 input.delete(0, breakLength);
-            else if (length >= breakLength && input.lastIndexOf(BREAK) == length - breakLength)
+            else if (length >= breakLength
+                    && input.lastIndexOf(BREAK) == length - breakLength)
                 input.delete(length - breakLength, length);
             else if (Character.isWhitespace(input.charAt(0)))
                 input.deleteCharAt(0);

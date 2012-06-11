@@ -70,7 +70,8 @@ public class DashboardIssueFragment extends PagedItemFragment<RepositoryIssue> {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        filterData = (Map<String, String>) getArguments().getSerializable(ARG_FILTER);
+        filterData = (Map<String, String>) getArguments().getSerializable(
+                ARG_FILTER);
     }
 
     @Override
@@ -86,8 +87,9 @@ public class DashboardIssueFragment extends PagedItemFragment<RepositoryIssue> {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        startActivityForResult(IssuesViewActivity.createIntent(items, position - getListAdapter().getHeadersCount()),
-                ISSUE_VIEW);
+        startActivityForResult(
+                IssuesViewActivity.createIntent(items, position
+                        - getListAdapter().getHeadersCount()), ISSUE_VIEW);
     }
 
     @Override
@@ -105,7 +107,8 @@ public class DashboardIssueFragment extends PagedItemFragment<RepositoryIssue> {
             }
 
             @Override
-            public PageIterator<RepositoryIssue> createIterator(int page, int size) {
+            public PageIterator<RepositoryIssue> createIterator(int page,
+                    int size) {
                 return service.pageIssues(filterData, page, size);
             }
         };
@@ -122,8 +125,10 @@ public class DashboardIssueFragment extends PagedItemFragment<RepositoryIssue> {
     }
 
     @Override
-    protected ItemListAdapter<RepositoryIssue, ? extends ItemView> createAdapter(List<RepositoryIssue> items) {
-        return new DashboardIssueListAdapter(avatarHelper, getActivity().getLayoutInflater(),
-                items.toArray(new RepositoryIssue[items.size()]));
+    protected ItemListAdapter<RepositoryIssue, ? extends ItemView> createAdapter(
+            List<RepositoryIssue> items) {
+        return new DashboardIssueListAdapter(avatarHelper, getActivity()
+                .getLayoutInflater(), items.toArray(new RepositoryIssue[items
+                .size()]));
     }
 }

@@ -51,8 +51,8 @@ public class EditStateTask extends ProgressDialogTask<Issue> {
      * @param repositoryId
      * @param issueNumber
      */
-    public EditStateTask(final DialogFragmentActivity activity, final IRepositoryIdProvider repositoryId,
-            final int issueNumber) {
+    public EditStateTask(final DialogFragmentActivity activity,
+            final IRepositoryIdProvider repositoryId, final int issueNumber) {
         super(activity);
 
         this.repositoryId = repositoryId;
@@ -67,11 +67,13 @@ public class EditStateTask extends ProgressDialogTask<Issue> {
      */
     public EditStateTask confirm(boolean close) {
         if (close)
-            ConfirmDialogFragment.show((DialogFragmentActivity) getContext(), ISSUE_CLOSE,
-                    getString(string.issue_confirm_close_title), getString(string.issue_confirm_close_message));
+            ConfirmDialogFragment.show((DialogFragmentActivity) getContext(),
+                    ISSUE_CLOSE, getString(string.issue_confirm_close_title),
+                    getString(string.issue_confirm_close_message));
         else
-            ConfirmDialogFragment.show((DialogFragmentActivity) getContext(), ISSUE_REOPEN,
-                    getString(string.issue_confirm_reopen_title), getString(string.issue_confirm_reopen_message));
+            ConfirmDialogFragment.show((DialogFragmentActivity) getContext(),
+                    ISSUE_REOPEN, getString(string.issue_confirm_reopen_title),
+                    getString(string.issue_confirm_reopen_message));
 
         return this;
     }

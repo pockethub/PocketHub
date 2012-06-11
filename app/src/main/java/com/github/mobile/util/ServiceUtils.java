@@ -33,7 +33,8 @@ public class ServiceUtils {
      * @return display
      */
     public static Display getDisplay(final Context context) {
-        return ((WindowManager) context.getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
+        return ((WindowManager) context.getSystemService(WINDOW_SERVICE))
+                .getDefaultDisplay();
     }
 
     /**

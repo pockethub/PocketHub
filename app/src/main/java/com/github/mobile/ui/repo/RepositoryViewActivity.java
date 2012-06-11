@@ -95,7 +95,8 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
             new RefreshRepositoryTask(this, repository) {
 
                 @Override
-                protected void onSuccess(Repository fullRepository) throws Exception {
+                protected void onSuccess(Repository fullRepository)
+                        throws Exception {
                     super.onSuccess(fullRepository);
 
                     repository = fullRepository;
@@ -106,7 +107,8 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
                 protected void onException(Exception e) throws RuntimeException {
                     super.onException(e);
 
-                    ToastUtils.show(RepositoryViewActivity.this, string.error_repo_load);
+                    ToastUtils.show(RepositoryViewActivity.this,
+                            string.error_repo_load);
                 }
             }.execute();
         }
@@ -117,8 +119,9 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
         loadingBar.setVisibility(GONE);
         pager.setVisibility(VISIBLE);
         indicator.setVisibility(VISIBLE);
-        pager.setAdapter(new RepositoryPagerAdapter(getSupportFragmentManager(), getResources(), repository
-                .isHasIssues()));
+        pager.setAdapter(new RepositoryPagerAdapter(
+                getSupportFragmentManager(), getResources(), repository
+                        .isHasIssues()));
         indicator.setViewPager(pager);
     }
 

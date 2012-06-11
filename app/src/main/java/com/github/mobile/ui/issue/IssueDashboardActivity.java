@@ -55,7 +55,8 @@ public class IssueDashboardActivity extends RoboSherlockFragmentActivity {
         actionBar.setSubtitle(AccountUtils.getLogin(this));
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        pager.setAdapter(new IssueDashboardPagerAdapter(getResources(), getSupportFragmentManager()));
+        pager.setAdapter(new IssueDashboardPagerAdapter(getResources(),
+                getSupportFragmentManager()));
         indicator.setViewPager(pager);
     }
 

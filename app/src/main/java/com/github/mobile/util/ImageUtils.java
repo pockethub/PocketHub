@@ -65,7 +65,8 @@ public class ImageUtils {
         RandomAccessFile file = null;
         try {
             file = new RandomAccessFile(imagePath, "r");
-            return BitmapFactory.decodeFileDescriptor(file.getFD(), null, options);
+            return BitmapFactory.decodeFileDescriptor(file.getFD(), null,
+                    options);
         } catch (IOException e) {
             Log.d(TAG, e.getMessage(), e);
             return null;
@@ -153,7 +154,8 @@ public class ImageUtils {
     }
 
     /**
-     * Load a {@link Bitmap} from the given path and set it on the given {@link ImageView}
+     * Load a {@link Bitmap} from the given path and set it on the given
+     * {@link ImageView}
      *
      * @param imagePath
      * @param view
@@ -163,7 +165,8 @@ public class ImageUtils {
     }
 
     /**
-     * Load a {@link Bitmap} from the given {@link File} and set it on the given {@link ImageView}
+     * Load a {@link Bitmap} from the given {@link File} and set it on the given
+     * {@link ImageView}
      *
      * @param image
      * @param view
@@ -191,7 +194,8 @@ public class ImageUtils {
 
         Bitmap clipped = Bitmap.createBitmap(width, height, ARGB_8888);
         Canvas canvas = new Canvas(clipped);
-        canvas.drawRoundRect(new RectF(0, 0, width, height), radius, radius, paint);
+        canvas.drawRoundRect(new RectF(0, 0, width, height), radius, radius,
+                paint);
         paint.setXfermode(new PorterDuffXfermode(DST_IN));
 
         Bitmap rounded = Bitmap.createBitmap(width, height, ARGB_8888);

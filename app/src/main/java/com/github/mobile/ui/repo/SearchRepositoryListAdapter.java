@@ -27,7 +27,8 @@ import org.eclipse.egit.github.core.SearchRepository;
 /**
  * Adapter for a list of searched for repositories
  */
-public class SearchRepositoryListAdapter extends RepositoryListAdapter<SearchRepository, RepositoryItemView> {
+public class SearchRepositoryListAdapter extends
+        RepositoryListAdapter<SearchRepository, RepositoryItemView> {
 
     /**
      * Create list adapter for searched for repositories
@@ -35,7 +36,8 @@ public class SearchRepositoryListAdapter extends RepositoryListAdapter<SearchRep
      * @param inflater
      * @param elements
      */
-    public SearchRepositoryListAdapter(LayoutInflater inflater, SearchRepository[] elements) {
+    public SearchRepositoryListAdapter(LayoutInflater inflater,
+            SearchRepository[] elements) {
         super(layout.user_repo_item, inflater, elements);
     }
 
@@ -50,14 +52,17 @@ public class SearchRepositoryListAdapter extends RepositoryListAdapter<SearchRep
     }
 
     @Override
-    protected void update(final int position, final RepositoryItemView view, final SearchRepository repository) {
+    protected void update(final int position, final RepositoryItemView view,
+            final SearchRepository repository) {
         StyledText name = new StyledText();
         name.append(repository.getOwner()).append('/');
         name.bold(repository.getName());
         view.repoName.setText(name);
 
-        updateDetails(view, repository.getDescription(), repository.getLanguage(), repository.getWatchers(),
-                repository.getForks(), repository.isPrivate(), repository.isFork());
+        updateDetails(view, repository.getDescription(),
+                repository.getLanguage(), repository.getWatchers(),
+                repository.getForks(), repository.isPrivate(),
+                repository.isFork());
     }
 
     @Override
@@ -68,6 +73,7 @@ public class SearchRepositoryListAdapter extends RepositoryListAdapter<SearchRep
     @Override
     public long getItemId(final int position) {
         final String id = getItem(position).getId();
-        return !TextUtils.isEmpty(id) ? id.hashCode() : super.getItemId(position);
+        return !TextUtils.isEmpty(id) ? id.hashCode() : super
+                .getItemId(position);
     }
 }
