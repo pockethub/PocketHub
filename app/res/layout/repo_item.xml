@@ -19,7 +19,8 @@
     android:gravity="center_vertical"
     android:paddingBottom="0dp"
     android:paddingLeft="0dp"
-    android:paddingRight="0dp" >
+    android:paddingRight="0dp"
+    android:paddingTop="0dp" >
 
     <LinearLayout
         android:id="@+id/ll_header"
@@ -27,8 +28,9 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:background="@color/background"
         android:orientation="vertical"
-        android:paddingBottom="10dp" >
+        android:paddingTop="10dp" >
 
         <TextView
             android:id="@+id/tv_header"
@@ -48,7 +50,8 @@
         style="@style/PrimaryIcon"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/ll_header"
-        android:layout_marginLeft="5dp" />
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp" />
 
     <LinearLayout
         android:id="@+id/ll_details"
@@ -58,7 +61,8 @@
         android:layout_toRightOf="@id/tv_repo_icon"
         android:orientation="vertical"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp" >
+        android:paddingRight="10dp"
+        android:paddingTop="10dp" >
 
         <include layout="@layout/repo_details" />
     </LinearLayout>
