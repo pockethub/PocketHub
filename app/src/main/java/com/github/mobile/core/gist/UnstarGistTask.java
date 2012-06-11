@@ -19,6 +19,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.github.mobile.accounts.AuthenticatedUserTask;
+import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.service.GistService;
@@ -30,6 +31,7 @@ public class UnstarGistTask extends AuthenticatedUserTask<Gist> {
 
     private static final String TAG = "UnstarGistTask";
 
+    @Inject
     private GistService service;
 
     private final String id;
