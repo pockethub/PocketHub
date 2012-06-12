@@ -15,7 +15,7 @@
   limitations under the License.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItem"
+    style="@style/DropdownItem"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingBottom="10dp"
