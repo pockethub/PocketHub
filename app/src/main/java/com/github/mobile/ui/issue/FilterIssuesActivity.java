@@ -17,7 +17,6 @@ package com.github.mobile.ui.issue;
 
 import static android.view.View.GONE;
 import static com.github.mobile.Intents.EXTRA_ISSUE_FILTER;
-import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -61,13 +60,12 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
     /**
      * Create intent for creating an issue filter for the given repository
      *
-     * @param repo
      * @param filter
      * @return intent
      */
-    public static Intent createIntent(Repository repo, IssueFilter filter) {
-        return new Builder("repo.issues.filter.VIEW").repo(repo)
-                .add(EXTRA_ISSUE_FILTER, filter).toIntent();
+    public static Intent createIntent(IssueFilter filter) {
+        return new Builder("repo.issues.filter.VIEW").add(EXTRA_ISSUE_FILTER,
+                filter).toIntent();
     }
 
     private static final int REQUEST_LABELS = 1;
@@ -114,14 +112,6 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
 
         setContentView(layout.issues_filter);
 
-        final Repository repository = (Repository) getIntent()
-                .getSerializableExtra(EXTRA_REPOSITORY);
-
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(string.filter_issues_title);
-        actionBar.setSubtitle(repository.generateId());
-        avatars.bind(actionBar, repository.getOwner());
-
         if (savedInstanceState != null)
             filter = (IssueFilter) savedInstanceState
                     .getSerializable(EXTRA_ISSUE_FILTER);
@@ -129,6 +119,13 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
         if (filter == null)
             filter = (IssueFilter) getIntent().getSerializableExtra(
                     EXTRA_ISSUE_FILTER);
+
+        final Repository repository = filter.getRepository();
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(string.filter_issues_title);
+        actionBar.setSubtitle(repository.generateId());
+        avatars.bind(actionBar, repository.getOwner());
 
         OnClickListener assigneeListener = new OnClickListener() {
 
