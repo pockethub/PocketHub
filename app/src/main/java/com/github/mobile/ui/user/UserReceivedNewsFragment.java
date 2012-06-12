@@ -34,11 +34,6 @@ public class UserReceivedNewsFragment extends UserNewsFragment {
                 return service.pageUserReceivedEvents(org.getLogin(), false,
                         page, size);
             }
-
-            @Override
-            protected Event register(Event resource) {
-                return NewsListAdapter.isValid(resource) ? resource : null;
-            }
         };
     }
 }

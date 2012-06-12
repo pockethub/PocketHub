@@ -21,7 +21,6 @@ import com.github.mobile.core.ResourcePager;
 import com.github.mobile.ui.NewsFragment;
 import com.github.mobile.ui.issue.IssuesViewActivity;
 import com.github.mobile.ui.user.EventPager;
-import com.github.mobile.ui.user.NewsListAdapter;
 
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
@@ -45,11 +44,6 @@ public class RepositoryNewsFragment extends NewsFragment {
             @Override
             public PageIterator<Event> createIterator(int page, int size) {
                 return service.pageEvents(repo, page, size);
-            }
-
-            @Override
-            protected Event register(Event resource) {
-                return NewsListAdapter.isValid(resource) ? resource : null;
             }
         };
     }

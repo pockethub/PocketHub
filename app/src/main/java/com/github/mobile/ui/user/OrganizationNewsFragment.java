@@ -36,11 +36,6 @@ public class OrganizationNewsFragment extends UserNewsFragment {
                 return service.pageUserOrgEvents(account, org.getLogin(), page,
                         size);
             }
-
-            @Override
-            protected Event register(Event resource) {
-                return NewsListAdapter.isValid(resource) ? resource : null;
-            }
         };
     }
 }

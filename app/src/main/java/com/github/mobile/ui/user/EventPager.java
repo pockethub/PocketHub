@@ -28,4 +28,9 @@ public abstract class EventPager extends ResourcePager<Event> {
     protected Object getId(Event resource) {
         return resource.getId();
     }
+
+    @Override
+    protected Event register(Event resource) {
+        return NewsListAdapter.isValid(resource) ? resource : null;
+    }
 }
