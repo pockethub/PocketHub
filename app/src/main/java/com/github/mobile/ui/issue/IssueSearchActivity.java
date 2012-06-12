@@ -83,12 +83,15 @@ public class IssueSearchActivity extends RoboSherlockFragmentActivity {
 
         setContentView(layout.issue_search);
 
-        Bundle appData = getIntent().getBundleExtra(APP_DATA);
-        repository = (Repository) appData.getSerializable(EXTRA_REPOSITORY);
-
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setSubtitle(repository.generateId());
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        Bundle appData = getIntent().getBundleExtra(APP_DATA);
+        if (appData != null) {
+            repository = (Repository) appData.getSerializable(EXTRA_REPOSITORY);
+            if (repository != null) {
+                actionBar.setSubtitle(repository.generateId());
+                actionBar.setDisplayHomeAsUpEnabled(true);
+            }
+        }
         avatars.bind(actionBar, repository.getOwner());
 
         issueFragment = (SearchIssueListFragment) getSupportFragmentManager()
