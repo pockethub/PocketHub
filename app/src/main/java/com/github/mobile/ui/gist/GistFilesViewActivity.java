@@ -71,6 +71,7 @@ public class GistFilesViewActivity extends RoboSherlockFragmentActivity {
     @Inject
     private AvatarLoader avatarHelper;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
