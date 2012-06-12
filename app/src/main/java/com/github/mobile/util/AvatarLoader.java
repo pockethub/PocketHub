@@ -282,7 +282,14 @@ public class AvatarLoader {
         if (user == null)
             return setImage(loadingAvatar, view);
 
-        final String avatarUrl = user.getAvatarUrl();
+        String avatarUrl = user.getAvatarUrl();
+        if (TextUtils.isEmpty(avatarUrl)) {
+            String gravatarId = user.getGravatarId();
+            if (!TextUtils.isEmpty(gravatarId))
+                avatarUrl = "https://secure.gravatar.com/avatar/" + gravatarId
+                        + "?d=404";
+        }
+
         if (TextUtils.isEmpty(avatarUrl))
             return setImage(loadingAvatar, view);
 
@@ -294,6 +301,7 @@ public class AvatarLoader {
 
         setImage(loadingAvatar, view, userId);
 
+        final String loadUrl = avatarUrl;
         new FetchAvatarTask(context) {
 
             @Override
@@ -305,7 +313,7 @@ public class AvatarLoader {
                 if (image != null)
                     return image;
                 else
-                    return fetchAvatar(avatarUrl, userId);
+                    return fetchAvatar(loadUrl, userId);
             }
 
             @Override

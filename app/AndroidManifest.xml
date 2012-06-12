@@ -108,7 +108,7 @@
 
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
+                android:resource="@xml/searchable_repos" />
         </activity>
         <activity
             android:name=".ui.gist.GistsActivity"
@@ -166,6 +166,10 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".ui.issue.IssueSearchActivity" />
         </activity>
         <activity
             android:name=".ui.user.UserViewActivity"
@@ -231,6 +235,19 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.issue.IssueSearchActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/search_title"
+            android:launchMode="singleTop" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable_issues" />
+        </activity>
 
         <service
             android:name=".sync.SyncAdapterService"
@@ -253,6 +270,9 @@
         <provider
             android:name=".ui.repo.RepositorySearchSuggestionsProvider"
             android:authorities="com.github.search.suggest.recent.repos" />
+        <provider
+            android:name=".ui.issue.IssueSearchSuggestionsProvider"
+            android:authorities="com.github.search.suggest.recent.issues" />
     </application>
 
 </manifest>

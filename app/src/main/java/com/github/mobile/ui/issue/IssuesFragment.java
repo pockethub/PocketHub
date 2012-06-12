@@ -204,6 +204,11 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
                 }
             });
             return true;
+        case id.m_search:
+            Bundle args = new Bundle();
+            args.putSerializable(EXTRA_REPOSITORY, repository);
+            getActivity().startSearch(null, false, args, false);
+            return true;
         default:
             return super.onOptionsItemSelected(item);
         }

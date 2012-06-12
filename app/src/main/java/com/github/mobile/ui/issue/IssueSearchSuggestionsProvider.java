@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.ui.repo;
+package com.github.mobile.ui.issue;
 
 import android.content.Context;
 import android.content.SearchRecentSuggestionsProvider;
 import android.provider.SearchRecentSuggestions;
 
 /**
- * Suggestions provider for recently searched for repository queries
+ * Suggestions provider for recently searched for issue queries
  */
-public class RepositorySearchSuggestionsProvider extends
+public class IssueSearchSuggestionsProvider extends
         SearchRecentSuggestionsProvider {
 
-    private static final String AUTHORITY = "com.github.search.suggest.recent.repos";
+    private static final String AUTHORITY = "com.github.search.suggest.recent.issues";
 
     /**
      * Save query to history
@@ -52,9 +52,9 @@ public class RepositorySearchSuggestionsProvider extends
     }
 
     /**
-     * Create suggestions provider for searched for repository queries
+     * Create suggestions provider for searched for issue queries
      */
-    public RepositorySearchSuggestionsProvider() {
+    public IssueSearchSuggestionsProvider() {
         setupSuggestions(AUTHORITY, DATABASE_MODE_QUERIES);
     }
 }

@@ -114,6 +114,17 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
         }
     }
 
+    @Override
+    public boolean onSearchRequested() {
+        if (pager.getCurrentItem() == 1) {
+            Bundle args = new Bundle();
+            args.putSerializable(EXTRA_REPOSITORY, repository);
+            startSearch(null, false, args, false);
+            return true;
+        } else
+            return false;
+    }
+
     private void configurePager() {
         avatarHelper.bind(getSupportActionBar(), repository.getOwner());
         loadingBar.setVisibility(GONE);

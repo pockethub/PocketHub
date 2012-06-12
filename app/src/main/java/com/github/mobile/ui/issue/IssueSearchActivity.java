@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.ui.repo;
+package com.github.mobile.ui.issue;
 
+import static android.app.SearchManager.APP_DATA;
 import static android.app.SearchManager.QUERY;
 import static android.content.Intent.ACTION_SEARCH;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -29,16 +31,25 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
-import com.github.mobile.ui.user.HomeActivity;
+import com.github.mobile.ui.repo.RepositoryViewActivity;
+import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
+import com.google.inject.Inject;
+
+import org.eclipse.egit.github.core.Repository;
 
 /**
- * Activity to search repositories
+ * Activity to search issues
  */
-public class RepositorySearchActivity extends RoboSherlockFragmentActivity {
+public class IssueSearchActivity extends RoboSherlockFragmentActivity {
 
-    private SearchRepositoryListFragment repoFragment;
+    @Inject
+    private AvatarLoader avatars;
+
+    private Repository repository;
+
+    private SearchIssueListFragment issueFragment;
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
@@ -53,11 +64,11 @@ public class RepositorySearchActivity extends RoboSherlockFragmentActivity {
             onSearchRequested();
             return true;
         case id.m_clear:
-            RepositorySearchSuggestionsProvider.clear(this);
+            IssueSearchSuggestionsProvider.clear(this);
             ToastUtils.show(this, string.search_history_cleared);
             return true;
         case android.R.id.home:
-            Intent intent = new Intent(this, HomeActivity.class);
+            Intent intent = RepositoryViewActivity.createIntent(repository);
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             return true;
@@ -70,13 +81,17 @@ public class RepositorySearchActivity extends RoboSherlockFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(layout.repo_search);
+        setContentView(layout.issue_search);
+
+        Bundle appData = getIntent().getBundleExtra(APP_DATA);
+        repository = (Repository) appData.getSerializable(EXTRA_REPOSITORY);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setSubtitle(string.repositories);
+        actionBar.setSubtitle(repository.generateId());
         actionBar.setDisplayHomeAsUpEnabled(true);
+        avatars.bind(actionBar, repository.getOwner());
 
-        repoFragment = (SearchRepositoryListFragment) getSupportFragmentManager()
+        issueFragment = (SearchIssueListFragment) getSupportFragmentManager()
                 .findFragmentById(android.R.id.list);
 
         handleIntent(getIntent());
@@ -85,9 +100,9 @@ public class RepositorySearchActivity extends RoboSherlockFragmentActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
-        repoFragment.setListShown(false);
+        issueFragment.setListShown(false);
         handleIntent(intent);
-        repoFragment.refresh();
+        issueFragment.refresh();
     }
 
     private void handleIntent(Intent intent) {
@@ -97,7 +112,7 @@ public class RepositorySearchActivity extends RoboSherlockFragmentActivity {
 
     private void search(final String query) {
         getSupportActionBar().setTitle(query);
-        RepositorySearchSuggestionsProvider.save(this, query);
-        repoFragment.setQuery(query);
+        IssueSearchSuggestionsProvider.save(this, query);
+        issueFragment.setQuery(query);
     }
 }
