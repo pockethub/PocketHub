@@ -15,11 +15,16 @@
  */
 package com.github.mobile.core.gist;
 
+import static java.lang.String.CASE_INSENSITIVE_ORDER;
+
 import com.github.mobile.core.ItemStore;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.eclipse.egit.github.core.Gist;
+import org.eclipse.egit.github.core.GistFile;
 import org.eclipse.egit.github.core.service.GistService;
 
 /**
@@ -51,6 +56,23 @@ public class GistStore extends ItemStore {
     }
 
     /**
+     * Sort files in {@link Gist}
+     *
+     * @param gist
+     * @return sorted files
+     */
+    protected Map<String, GistFile> sortFiles(final Gist gist) {
+        Map<String, GistFile> files = gist.getFiles();
+        if (files == null || files.size() < 2)
+            return files;
+
+        Map<String, GistFile> sorted = new TreeMap<String, GistFile>(
+                CASE_INSENSITIVE_ORDER);
+        sorted.putAll(files);
+        return sorted;
+    }
+
+    /**
      * Add gist to store
      *
      * @param gist
@@ -61,10 +83,11 @@ public class GistStore extends ItemStore {
         if (current != null) {
             current.setComments(gist.getComments());
             current.setDescription(gist.getDescription());
-            current.setFiles(gist.getFiles());
+            current.setFiles(sortFiles(gist));
             current.setUpdatedAt(gist.getUpdatedAt());
             return current;
         } else {
+            gist.setFiles(sortFiles(gist));
             gists.put(gist.getId(), gist);
             return gist;
         }

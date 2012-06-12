@@ -21,7 +21,6 @@ import static android.view.View.VISIBLE;
 import static com.github.mobile.Intents.EXTRA_COMMENT;
 import static com.github.mobile.Intents.EXTRA_GIST_ID;
 import static com.github.mobile.RequestCodes.COMMENT_CREATE;
-import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -60,8 +59,6 @@ import com.github.mobile.util.TypefaceUtils;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -339,19 +336,9 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         if (files == null || files.isEmpty())
             return;
 
-        final GistFile[] sortedFiles = files.values().toArray(
-                new GistFile[files.size()]);
-        Arrays.sort(sortedFiles, new Comparator<GistFile>() {
-
-            public int compare(final GistFile lhs, final GistFile rhs) {
-                return CASE_INSENSITIVE_ORDER.compare(lhs.getFilename(),
-                        rhs.getFilename());
-            }
-        });
-
         final LayoutInflater inflater = activity.getLayoutInflater();
         final Typeface octicons = TypefaceUtils.getOcticons(activity);
-        for (GistFile file : sortedFiles) {
+        for (GistFile file : files.values()) {
             View fileView = inflater.inflate(layout.gist_file_item, null);
             ((TextView) fileView.findViewById(id.tv_file)).setText(file
                     .getFilename());
