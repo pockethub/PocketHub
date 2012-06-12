@@ -393,13 +393,7 @@ public class IssueFragment extends DialogFragment {
         if (VISIBLE != list.getVisibility())
             list.setVisibility(VISIBLE);
 
-        if (stateItem != null)
-            if (STATE_OPEN.equals(issue.getState()))
-                stateItem.setTitle(string.close).setIcon(
-                        drawable.menu_issue_close);
-            else
-                stateItem.setTitle(string.reopen).setIcon(
-                        drawable.menu_issue_open);
+        updateStateItem(issue);
     }
 
     private void refreshIssue() {
@@ -481,10 +475,28 @@ public class IssueFragment extends DialogFragment {
         }
     }
 
+    private void updateStateItem(Issue issue) {
+        if (issue != null && stateItem != null)
+            if (STATE_OPEN.equals(issue.getState()))
+                stateItem.setTitle(string.close).setIcon(
+                        drawable.menu_issue_close);
+            else
+                stateItem.setTitle(string.reopen).setIcon(
+                        drawable.menu_issue_open);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        updateStateItem(issue);
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
         inflater.inflate(menu.issue_view, optionsMenu);
-        stateItem = optionsMenu.findItem(id.m_star);
+        stateItem = optionsMenu.findItem(id.m_state);
+        updateStateItem(issue);
     }
 
     @Override
