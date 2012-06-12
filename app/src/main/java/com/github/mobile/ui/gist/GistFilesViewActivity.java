@@ -73,6 +73,7 @@ public class GistFilesViewActivity extends RoboSherlockFragmentActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(layout.pager_with_title);
 
         gist = store.getGist(gistId);
