@@ -39,7 +39,8 @@
         app:footerIndicatorStyle="triangle"
         app:footerLineHeight="0dp"
         app:selectedBold="true"
-        app:selectedColor="@color/pager_title_selected_text" />
+        app:selectedColor="@color/pager_title_selected_text"
+        app:titlePadding="10dp" />
 
     <include layout="@layout/pager" />
 
