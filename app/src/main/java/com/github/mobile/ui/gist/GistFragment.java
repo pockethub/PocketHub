@@ -230,14 +230,16 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         super.onPrepareOptionsMenu(menu);
 
         boolean owner = isOwner();
-        if (!owner)
+        if (!owner) {
             menu.removeItem(id.m_delete);
-        MenuItem starItem = menu.findItem(id.m_star);
-        starItem.setEnabled(loadFinished && !owner);
-        if (starred)
-            starItem.setTitle(string.unstar);
-        else
-            starItem.setTitle(string.star);
+            MenuItem starItem = menu.findItem(id.m_star);
+            starItem.setEnabled(loadFinished && !owner);
+            if (starred)
+                starItem.setTitle(string.unstar);
+            else
+                starItem.setTitle(string.star);
+        } else
+            menu.removeItem(id.m_star);
     }
 
     @Override
