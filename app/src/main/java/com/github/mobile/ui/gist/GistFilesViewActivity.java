@@ -81,7 +81,7 @@ public class GistFilesViewActivity extends RoboSherlockFragmentActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(getString(string.gist) + ' ' + gistId);
+        actionBar.setTitle(getString(string.gist_title) + gistId);
         User author = gist.getUser();
         if (author != null) {
             actionBar.setSubtitle(author.getLogin());
