@@ -36,7 +36,7 @@ import org.eclipse.egit.github.core.SearchRepository;
 import org.eclipse.egit.github.core.service.RepositoryService;
 
 /**
- * Fragment to display a list of {@link Repository} instances
+ * Fragment to display a list of {@link SearchRepository} instances
  */
 public class SearchRepositoryListFragment extends
         ItemListFragment<SearchRepository> {
