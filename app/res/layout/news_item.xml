@@ -45,10 +45,11 @@
             style="@style/ListTitleText"
             android:layout_width="match_parent"
             android:includeFontPadding="true"
+            android:lineSpacingExtra="3dp"
             android:maxLines="3"
             android:paddingBottom="5dp"
             android:textColor="@color/text_news_details"
-            android:textSize="15dp"
+            android:textSize="14dp"
             android:textStyle="normal" />
 
         <LinearLayout
