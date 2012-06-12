@@ -72,12 +72,22 @@ public abstract class ActivityTest<T extends Activity> extends
      * @throws Throwable
      */
     protected void focus(final View view) throws Throwable {
-        runTestOnUiThread(new Runnable() {
+        ui(new Runnable() {
 
             public void run() {
                 view.requestFocus();
             }
         });
+    }
+
+    /**
+     * Run runnable on ui thread
+     * 
+     * @param runnable
+     * @throws Throwable
+     */
+    protected void ui(Runnable runnable) throws Throwable {
+        runTestOnUiThread(runnable);
     }
 
     /**
