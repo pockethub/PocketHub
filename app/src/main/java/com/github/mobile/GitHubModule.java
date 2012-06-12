@@ -15,7 +15,6 @@
  */
 package com.github.mobile;
 
-import static org.eclipse.egit.github.core.client.IGitHubConstants.HOST_API_V2;
 import android.content.Context;
 
 import com.github.mobile.accounts.AccountClient;
@@ -23,7 +22,6 @@ import com.github.mobile.accounts.AccountScope;
 import com.github.mobile.accounts.GitHubAccount;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.core.issue.IssueStore;
-import com.github.mobile.core.repo.IRepositorySearch;
 import com.github.mobile.persistence.OrganizationRepositories;
 import com.github.mobile.sync.SyncCampaign;
 import com.google.inject.AbstractModule;
@@ -33,15 +31,11 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.name.Named;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.util.List;
 
-import org.eclipse.egit.github.core.SearchRepository;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.IssueService;
-import org.eclipse.egit.github.core.service.RepositoryService;
 
 /**
  * Main module provide services and clients
@@ -70,22 +64,6 @@ public class GitHubModule extends AbstractModule {
     @Named("cacheDir")
     File cacheDir(Context context) {
         return new File(context.getFilesDir(), "cache");
-    }
-
-    @Provides
-    IRepositorySearch searchService(
-            final Provider<GitHubAccount> accountProvider, final Context context) {
-        GitHubClient client = new AccountClient(HOST_API_V2, accountProvider);
-
-        final RepositoryService service = new RepositoryService(client);
-
-        return new IRepositorySearch() {
-
-            public List<SearchRepository> search(String query)
-                    throws IOException {
-                return service.searchRepositories(query);
-            }
-        };
     }
 
     @Provides

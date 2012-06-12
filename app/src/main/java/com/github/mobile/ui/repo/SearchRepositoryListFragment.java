@@ -23,7 +23,6 @@ import android.widget.ListView;
 import com.github.mobile.R.string;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.accounts.AuthenticatedUserTask;
-import com.github.mobile.core.repo.IRepositorySearch;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
 import com.github.mobile.ui.ItemView;
@@ -42,10 +41,7 @@ public class SearchRepositoryListFragment extends
         ItemListFragment<SearchRepository> {
 
     @Inject
-    private IRepositorySearch search;
-
-    @Inject
-    private RepositoryService repos;
+    private RepositoryService service;
 
     private String query;
 
@@ -72,7 +68,7 @@ public class SearchRepositoryListFragment extends
         new AuthenticatedUserTask<Repository>(getActivity()) {
 
             public Repository run() throws Exception {
-                return repos.getRepository(result);
+                return service.getRepository(result);
             }
 
             protected void onSuccess(Repository repository) throws Exception {
@@ -86,7 +82,7 @@ public class SearchRepositoryListFragment extends
         return new ThrowableLoader<List<SearchRepository>>(getActivity(), items) {
 
             public List<SearchRepository> loadData() throws Exception {
-                return search.search(query);
+                return service.searchRepositories(query);
             }
         };
     }
