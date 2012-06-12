@@ -26,6 +26,7 @@
     <color name="text_light">#AEAEAE</color>
     <color name="text_icon">#A8A8A8</color>
     <color name="text_recent">#3797C7</color>
+    <color name="text_description">#666666</color>
     <color name="actionbar_background_top">#6E6E6E</color>
     <color name="actionbar_background_bottom">#181818</color>
     <color name="actionbar_background_end">#282828</color>
@@ -54,7 +55,6 @@
     <color name="milestone_opened_end">#DCDCDC</color>
     <color name="milestone_closed_start">#6AA811</color>
     <color name="milestone_closed_end">#6EB807</color>
-    <color name="repo_description">#666666</color>
     <color name="sign_up_background">#E6E6E5</color>
     <color name="sign_up_background_bottom">#D4D4D4</color>
     <color name="sign_up_text">#666666</color>

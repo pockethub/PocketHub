@@ -124,7 +124,7 @@ public class DefaultRepositoryListAdapter extends
         StyledText name = new StyledText();
         if (!account.get().getLogin().equals(repository.getOwner().getLogin())) {
             int descriptionColor = view.repoName.getResources().getColor(
-                    color.repo_description);
+                    color.text_description);
             name.foreground(repository.getOwner().getLogin(), descriptionColor)
                     .foreground('/', descriptionColor);
         }
