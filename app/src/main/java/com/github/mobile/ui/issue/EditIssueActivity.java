@@ -270,6 +270,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
         }
     }
 
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
