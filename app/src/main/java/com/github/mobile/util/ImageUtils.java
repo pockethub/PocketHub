@@ -208,5 +208,4 @@ public class ImageUtils {
 
         return rounded;
     }
-
 }
