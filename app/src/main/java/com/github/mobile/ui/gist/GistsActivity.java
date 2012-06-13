@@ -29,7 +29,6 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
-import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.ui.user.HomeActivity;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.viewpagerindicator.TitlePageIndicator;
@@ -47,7 +46,6 @@ public class GistsActivity extends RoboSherlockFragmentActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(string.gists_title);
-        actionBar.setSubtitle(AccountUtils.getLogin(this));
         actionBar.setIcon(drawable.action_gist);
         actionBar.setDisplayHomeAsUpEnabled(true);
 

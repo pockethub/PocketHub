@@ -30,7 +30,6 @@ import com.github.mobile.R.drawable;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.RequestFuture;
-import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.ConfirmDialogFragment;
@@ -69,7 +68,6 @@ public class FiltersViewActivity extends DialogFragmentActivity implements
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(string.bookmarks);
-        actionBar.setSubtitle(AccountUtils.getLogin(this));
         actionBar.setIcon(drawable.action_bookmark);
         actionBar.setDisplayHomeAsUpEnabled(true);
 

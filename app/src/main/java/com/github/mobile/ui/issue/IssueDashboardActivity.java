@@ -27,7 +27,6 @@ import com.github.mobile.R.drawable;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
-import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.ui.user.HomeActivity;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.viewpagerindicator.TitlePageIndicator;
@@ -53,7 +52,6 @@ public class IssueDashboardActivity extends RoboSherlockFragmentActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(string.dashboard_issues_title);
-        actionBar.setSubtitle(AccountUtils.getLogin(this));
         actionBar.setIcon(drawable.action_dashboard);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
