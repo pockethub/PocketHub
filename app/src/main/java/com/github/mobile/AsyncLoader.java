@@ -29,6 +29,7 @@ import android.support.v4.content.AsyncTaskLoader;
  * @author Alexander Blom (me@alexanderblom.se)
  */
 public abstract class AsyncLoader<D> extends AsyncTaskLoader<D> {
+
     private D data;
 
     /**
@@ -75,5 +76,4 @@ public abstract class AsyncLoader<D> extends AsyncTaskLoader<D> {
 
         data = null;
     }
-
 }
