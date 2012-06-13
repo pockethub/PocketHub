@@ -182,9 +182,8 @@ public class Intents {
          * @param actionSuffix
          */
         public Builder(String actionSuffix) {
-            intent = new Intent(INTENT_PREFIX + actionSuffix); // actionSuffix =
-                                                               // e.g.
-                                                               // "repos.VIEW"
+            // actionSuffix = e.g. "repos.VIEW"
+            intent = new Intent(INTENT_PREFIX + actionSuffix);
         }
 
         /**

@@ -75,7 +75,7 @@ public class ServicesModule extends AbstractModule {
 
     @Provides
     User currentUser(UserService userService) throws IOException {
-        return userService.getUser(); // actually, probably better to cache this
+        return userService.getUser();
     }
 
     @Provides
