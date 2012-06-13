@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.ui.user;
+package com.github.mobile.core.repo;
 
 import android.content.Context;
 import android.util.Log;
@@ -21,42 +21,43 @@ import android.util.Log;
 import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.service.UserService;
+import org.eclipse.egit.github.core.IRepositoryIdProvider;
+import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.service.RepositoryService;
 
 /**
- * Task to refresh a user
+ * Task to refresh a repository
  */
-public class RefreshUserTask extends AuthenticatedUserTask<User> {
+public class RefreshRepositoryTask extends AuthenticatedUserTask<Repository> {
 
-    private static final String TAG = "RefreshUserTask";
+    private static final String TAG = "RefreshRepositoryTask";
 
     @Inject
-    private UserService service;
+    private RepositoryService service;
 
-    private final String login;
+    private final IRepositoryIdProvider repo;
 
     /**
-     * Create task for context and login
+     * Create task for context and id provider
      *
      * @param context
-     * @param login
+     * @param repo
      */
-    public RefreshUserTask(Context context, String login) {
+    public RefreshRepositoryTask(Context context, IRepositoryIdProvider repo) {
         super(context);
 
-        this.login = login;
+        this.repo = repo;
     }
 
     @Override
-    protected User run() throws Exception {
-        return service.getUser(login);
+    protected Repository run() throws Exception {
+        return service.getRepository(repo);
     }
 
     @Override
     protected void onException(Exception e) throws RuntimeException {
         super.onException(e);
 
-        Log.d(TAG, "Exception loading user", e);
+        Log.d(TAG, "Exception loading repository", e);
     }
 }
