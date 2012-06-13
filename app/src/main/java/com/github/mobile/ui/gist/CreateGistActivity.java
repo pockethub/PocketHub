@@ -22,6 +22,8 @@ import android.text.TextUtils;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import com.actionbarsherlock.R.drawable;
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R.id;
@@ -59,7 +61,10 @@ public class CreateGistActivity extends RoboSherlockFragmentActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(layout.gist_create);
-        setTitle(string.new_gist);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(string.new_gist);
+        actionBar.setIcon(drawable.action_gist);
 
         String text = getIntent().getStringExtra(EXTRA_TEXT);
         if (!TextUtils.isEmpty(text))
