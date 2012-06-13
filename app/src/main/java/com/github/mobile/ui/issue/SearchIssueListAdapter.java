@@ -25,7 +25,6 @@ import android.widget.TextView;
 import com.github.mobile.R.id;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.StyledText;
-import com.github.mobile.ui.repo.RepositoryListAdapter;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.TypefaceUtils;
 import com.viewpagerindicator.R.layout;
@@ -38,7 +37,7 @@ import org.eclipse.egit.github.core.service.IssueService;
  * Adapter for a list of searched for issues
  */
 public class SearchIssueListAdapter extends
-        RepositoryListAdapter<SearchIssue, RepositoryIssueItemView> {
+        ItemListAdapter<SearchIssue, RepositoryIssueItemView> {
 
     private final AvatarLoader avatars;
 
