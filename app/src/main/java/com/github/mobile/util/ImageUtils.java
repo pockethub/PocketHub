@@ -38,7 +38,7 @@ import java.io.RandomAccessFile;
  */
 public class ImageUtils {
 
-    private static final String TAG = "AUIU";
+    private static final String TAG = "ImageUtils";
 
     /**
      * Get a bitmap from the image path
