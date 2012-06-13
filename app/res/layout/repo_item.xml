@@ -60,6 +60,7 @@
         android:layout_below="@id/ll_header"
         android:layout_toRightOf="@id/tv_repo_icon"
         android:orientation="vertical"
+        android:paddingBottom="5dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="10dp" >
@@ -73,7 +74,7 @@
         android:layout_height="2dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/ll_details"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/list_divider" />
 
 </RelativeLayout>
