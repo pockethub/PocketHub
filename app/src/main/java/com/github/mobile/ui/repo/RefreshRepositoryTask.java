@@ -16,6 +16,7 @@
 package com.github.mobile.ui.repo;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.google.inject.Inject;
@@ -28,6 +29,8 @@ import org.eclipse.egit.github.core.service.RepositoryService;
  * Task to refresh a repository
  */
 public class RefreshRepositoryTask extends AuthenticatedUserTask<Repository> {
+
+    private static final String TAG = "RefreshRepositoryTask";
 
     @Inject
     private RepositoryService service;
@@ -49,5 +52,12 @@ public class RefreshRepositoryTask extends AuthenticatedUserTask<Repository> {
     @Override
     protected Repository run() throws Exception {
         return service.getRepository(repo);
+    }
+
+    @Override
+    protected void onException(Exception e) throws RuntimeException {
+        super.onException(e);
+
+        Log.d(TAG, "Exception loading repository", e);
     }
 }
