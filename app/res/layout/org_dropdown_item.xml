@@ -26,7 +26,8 @@
     <ImageView
         android:id="@+id/iv_avatar"
         style="@style/AvatarActionBar"
-        android:layout_marginRight="5dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="6dp"
         android:contentDescription="@string/avatar" />
 
     <TextView
