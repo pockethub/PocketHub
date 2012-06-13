@@ -18,11 +18,9 @@ package com.github.mobile.core.gist;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Gist;
-import org.eclipse.egit.github.core.GistFile;
 
 /**
  * Gist model with comments and starred status
@@ -70,14 +68,5 @@ public class FullGist extends ArrayList<Comment> implements Serializable {
      */
     public Gist getGist() {
         return gist;
-    }
-
-    /**
-     * Get files in gist
-     *
-     * @return list of files
-     */
-    public List<GistFile> getFiles() {
-        return new ArrayList<GistFile>(gist.getFiles().values());
     }
 }
