@@ -48,7 +48,7 @@ import org.eclipse.egit.github.core.User;
  */
 public class AccountDataManager {
 
-    private static final String TAG = "ADM";
+    private static final String TAG = "AccountDataManager";
 
     private static final Executor EXECUTOR = Executors.newFixedThreadPool(10);
 
