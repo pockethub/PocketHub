@@ -41,6 +41,7 @@ public abstract class ThrowableLoader<D> extends AuthenticatedUserLoader<D> {
      */
     public ThrowableLoader(Context context, D data) {
         super(context);
+
         this.data = data;
     }
 
@@ -51,8 +52,8 @@ public abstract class ThrowableLoader<D> extends AuthenticatedUserLoader<D> {
         } catch (Exception e) {
             Log.d(TAG, "Exception loading data", e);
             exception = e;
+            return data;
         }
-        return data;
     }
 
     /**
