@@ -16,6 +16,7 @@
 package com.github.mobile.ui.user;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.google.inject.Inject;
@@ -27,6 +28,8 @@ import org.eclipse.egit.github.core.service.UserService;
  * Task to refresh a user
  */
 public class RefreshUserTask extends AuthenticatedUserTask<User> {
+
+    private static final String TAG = "RefreshUserTask";
 
     @Inject
     private UserService service;
@@ -48,5 +51,12 @@ public class RefreshUserTask extends AuthenticatedUserTask<User> {
     @Override
     protected User run() throws Exception {
         return service.getUser(login);
+    }
+
+    @Override
+    protected void onException(Exception e) throws RuntimeException {
+        super.onException(e);
+
+        Log.d(TAG, "Exception loading user", e);
     }
 }
