@@ -23,6 +23,7 @@ import android.support.v4.view.ViewPager;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.mobile.R.drawable;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
@@ -53,6 +54,7 @@ public class IssueDashboardActivity extends RoboSherlockFragmentActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(string.dashboard_issues_title);
         actionBar.setSubtitle(AccountUtils.getLogin(this));
+        actionBar.setIcon(drawable.action_dashboard);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         pager.setAdapter(new IssueDashboardPagerAdapter(getResources(),

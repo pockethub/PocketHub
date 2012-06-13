@@ -15,7 +15,6 @@
  */
 package com.github.mobile.ui.user;
 
-import static android.view.View.GONE;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -228,14 +227,16 @@ public class HomeDropdownListAdapter extends BaseAdapter {
         case ACTION_GISTS:
             View gistsRoot = LayoutInflater.from(context).inflate(
                     layout.org_dropdown_item, null);
-            gistsRoot.findViewById(id.iv_avatar).setVisibility(GONE);
+            ((ImageView) gistsRoot.findViewById(id.iv_avatar))
+                    .setBackgroundResource(drawable.action_gist);
             ((TextView) gistsRoot.findViewById(id.tv_org_name))
                     .setText(getItem(position).toString());
             return gistsRoot;
         case ACTION_DASHBOARD:
             View dashboardRoot = LayoutInflater.from(context).inflate(
                     layout.org_dropdown_item, null);
-            dashboardRoot.findViewById(id.iv_avatar).setVisibility(GONE);
+            ((ImageView) dashboardRoot.findViewById(id.iv_avatar))
+                    .setBackgroundResource(drawable.action_dashboard);
             ((TextView) dashboardRoot.findViewById(id.tv_org_name))
                     .setText(getItem(position).toString());
             return dashboardRoot;

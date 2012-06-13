@@ -24,6 +24,7 @@ import android.support.v4.view.ViewPager;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.mobile.R.drawable;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
@@ -47,6 +48,7 @@ public class GistsActivity extends RoboSherlockFragmentActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(string.gists_title);
         actionBar.setSubtitle(AccountUtils.getLogin(this));
+        actionBar.setIcon(drawable.action_gist);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         ViewPager pager = (ViewPager) findViewById(id.vp_pages);
