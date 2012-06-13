@@ -89,7 +89,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
 
     private static final String PARAM_USERNAME = "username";
 
-    private static final String TAG = "GHAuthenticatorActivity";
+    private static final String TAG = "LoginActivity";
 
     private static void configureSyncFor(Account account) {
         Log.d(TAG, "Configuring account sync");
