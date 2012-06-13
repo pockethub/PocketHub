@@ -47,7 +47,6 @@
     <color name="list_divider_bottom">#FFFFFF</color>
     <color name="text_link">#4183C4</color>
     <color name="text_news_details">#666666</color>
-    <color name="separator">#E5E5E5</color>
     <color name="label_outer">#55000000</color>
     <color name="label_inner">#55FFFFFF</color>
     <color name="milestone_border">#ABABAB</color>
