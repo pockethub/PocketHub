@@ -22,95 +22,72 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="5dp" >
+        android:paddingBottom="10dp" >
+
+        <CheckBox
+            android:id="@+id/cb_public"
+            style="@style/SubtitleText"
+            android:layout_gravity="right"
+            android:paddingRight="10dp"
+            android:text="@string/make_public"
+            android:textColor="@color/text" />
+
+        <View style="@style/Separator" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="5dp" >
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp" >
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:paddingRight="5dp"
-                android:singleLine="true"
-                android:text="@string/description"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/text"
-                android:textStyle="bold" />
+                style="@style/HeaderTitleText"
+                android:text="@string/description" />
 
-            <CheckBox
-                android:id="@+id/cb_public"
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/et_gist_description"
+                style="@style/EditText"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:text="@string/make_public"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/text" />
+                android:hint="@string/gist_description_hint"
+                android:singleLine="true" />
+
+            <TextView
+                style="@style/HeaderTitleText"
+                android:paddingTop="15dp"
+                android:text="@string/file_name" />
+
+            <EditText
+                android:id="@+id/et_gist_name"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/gist_file_name_hint"
+                android:singleLine="true" />
+
+            <TextView
+                style="@style/HeaderTitleText"
+                android:paddingTop="15dp"
+                android:text="@string/file_content" />
+
+            <EditText
+                android:id="@+id/et_gist_content"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="top"
+                android:hint="@string/gist_content_hint"
+                android:inputType="textMultiLine"
+                android:minLines="5"
+                android:padding="10dp"
+                android:scrollbars="horizontal|vertical"
+                android:typeface="monospace" >
+
+                <requestFocus />
+            </EditText>
         </LinearLayout>
-
-        <EditText
-            android:id="@+id/et_gist_description"
-            style="@style/EditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/gist_description_hint"
-            android:padding="10dp"
-            android:singleLine="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:paddingBottom="5dp"
-            android:paddingLeft="5dp"
-            android:paddingTop="10dp"
-            android:singleLine="true"
-            android:text="@string/file_name"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/text"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/et_gist_name"
-            style="@style/EditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/gist_file_name_hint"
-            android:padding="10dp"
-            android:singleLine="true" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:paddingBottom="5dp"
-            android:paddingLeft="5dp"
-            android:paddingTop="10dp"
-            android:singleLine="true"
-            android:text="@string/file_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/text"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/et_gist_content"
-            style="@style/EditText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="top"
-            android:hint="@string/gist_content_hint"
-            android:inputType="textMultiLine"
-            android:minLines="10"
-            android:padding="10dp"
-            android:scrollbars="horizontal|vertical"
-            android:typeface="monospace" >
-
-            <requestFocus />
-        </EditText>
     </LinearLayout>
 
 </ScrollView>

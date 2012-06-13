@@ -89,7 +89,7 @@
     <string name="create">Create</string>
     <string name="create_gist">Create Gist</string>
     <string name="gist_content_hint">puts \'Hello World!\'</string>
-    <string name="make_public">Public Gist</string>
+    <string name="make_public">Make this Gist public</string>
     <string name="gist_file_name_hint">file.rb</string>
     <string name="gist">Gist</string>
     <string name="comments">Comments</string>
