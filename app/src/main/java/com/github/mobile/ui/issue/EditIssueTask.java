@@ -61,7 +61,6 @@ public class EditIssueTask extends ProgressDialogTask<Issue> {
      * @return this task
      */
     public EditIssueTask edit() {
-        dismissProgress();
         showIndeterminate(string.updating_issue);
 
         execute();

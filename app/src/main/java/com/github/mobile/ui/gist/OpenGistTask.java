@@ -57,7 +57,6 @@ public class OpenGistTask extends ProgressDialogTask<Gist> {
      * This method must be called from the main thread.
      */
     public void start() {
-        dismissProgress();
         showIndeterminate(string.loading_gist);
 
         execute();

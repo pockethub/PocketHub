@@ -96,7 +96,6 @@ public class EditStateTask extends ProgressDialogTask<Issue> {
      * @return this task
      */
     public EditStateTask edit(boolean close) {
-        dismissProgress();
         if (close)
             showIndeterminate(string.closing_issue);
         else

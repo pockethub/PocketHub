@@ -83,7 +83,6 @@ public class EditAssigneeTask extends ProgressDialogTask<Issue> {
      * @return this task
      */
     public EditAssigneeTask edit(User user) {
-        dismissProgress();
         showIndeterminate(string.updating_assignee);
 
         this.assignee = user;

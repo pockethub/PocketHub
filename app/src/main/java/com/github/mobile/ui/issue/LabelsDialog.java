@@ -101,7 +101,6 @@ public class LabelsDialog {
 
             @Override
             public void execute() {
-                dismissProgress();
                 showIndeterminate(string.loading_labels);
 
                 super.execute();

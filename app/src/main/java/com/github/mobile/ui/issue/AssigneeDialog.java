@@ -97,7 +97,6 @@ public class AssigneeDialog {
 
             @Override
             public void execute() {
-                dismissProgress();
                 showIndeterminate(string.loading_collaborators);
 
                 super.execute();

@@ -115,7 +115,6 @@ public class MilestoneDialog {
 
             @Override
             public void execute() {
-                dismissProgress();
                 showIndeterminate(string.loading_milestones);
 
                 super.execute();

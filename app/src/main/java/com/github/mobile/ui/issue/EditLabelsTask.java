@@ -86,7 +86,6 @@ public class EditLabelsTask extends ProgressDialogTask<Issue> {
      * @return this task
      */
     public EditLabelsTask edit(Label[] labels) {
-        dismissProgress();
         showIndeterminate(string.updating_labels);
 
         this.labels = labels;

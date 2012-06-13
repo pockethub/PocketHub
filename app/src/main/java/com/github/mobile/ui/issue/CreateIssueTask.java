@@ -66,7 +66,6 @@ public class CreateIssueTask extends ProgressDialogTask<Issue> {
      * @return this task
      */
     public CreateIssueTask create() {
-        dismissProgress();
         showIndeterminate(string.creating_issue);
 
         execute();

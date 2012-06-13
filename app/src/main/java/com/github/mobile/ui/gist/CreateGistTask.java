@@ -92,7 +92,6 @@ public class CreateGistTask extends ProgressDialogTask<Gist> {
      * Create the {@link Gist} with the configured values
      */
     public void create() {
-        dismissProgress();
         showIndeterminate(string.creating_gist);
 
         execute();

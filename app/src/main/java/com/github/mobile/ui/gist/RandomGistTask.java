@@ -59,7 +59,6 @@ public class RandomGistTask extends ProgressDialogTask<Gist> {
      * This method must be called from the main thread.
      */
     public void start() {
-        dismissProgress();
         showIndeterminate(string.random_gist);
 
         execute();

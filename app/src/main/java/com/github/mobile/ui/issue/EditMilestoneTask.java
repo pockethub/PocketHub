@@ -96,7 +96,6 @@ public class EditMilestoneTask extends ProgressDialogTask<Issue> {
         else
             milestoneNumber = -1;
 
-        dismissProgress();
         showIndeterminate(string.updating_milestone);
 
         super.execute();
