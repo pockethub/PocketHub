@@ -27,7 +27,6 @@ import org.eclipse.egit.github.core.Issue;
  */
 public class FullIssue extends ArrayList<Comment> implements Serializable {
 
-    /** serialVersionUID */
     private static final long serialVersionUID = 4586476132467323827L;
 
     private final Issue issue;

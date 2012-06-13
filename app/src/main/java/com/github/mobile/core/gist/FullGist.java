@@ -29,7 +29,6 @@ import org.eclipse.egit.github.core.GistFile;
  */
 public class FullGist extends ArrayList<Comment> implements Serializable {
 
-    /** serialVersionUID */
     private static final long serialVersionUID = -5966699489498437000L;
 
     private final Gist gist;
