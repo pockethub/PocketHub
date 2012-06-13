@@ -40,6 +40,7 @@ public class FullIssue extends ArrayList<Comment> implements Serializable {
      */
     public FullIssue(final Issue issue, final Collection<Comment> comments) {
         super(comments);
+
         this.issue = issue;
     }
 
