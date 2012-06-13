@@ -134,7 +134,7 @@ public class DefaultRepositoryListAdapter extends
         updateDetails(view, repository.getDescription(),
                 repository.getLanguage(), repository.getWatchers(),
                 repository.getForks(), repository.isPrivate(),
-                repository.isFork());
+                repository.isFork(), repository.getMirrorUrl());
     }
 
     @Override

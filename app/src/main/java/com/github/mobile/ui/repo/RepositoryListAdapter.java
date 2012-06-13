@@ -18,6 +18,8 @@ package com.github.mobile.ui.repo;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.github.mobile.util.TypefaceUtils.ICON_FORK;
+import static com.github.mobile.util.TypefaceUtils.ICON_MIRROR_PRIVATE;
+import static com.github.mobile.util.TypefaceUtils.ICON_MIRROR_PUBLIC;
 import static com.github.mobile.util.TypefaceUtils.ICON_PRIVATE;
 import static com.github.mobile.util.TypefaceUtils.ICON_PUBLIC;
 import android.text.TextUtils;
@@ -77,17 +79,25 @@ public abstract class RepositoryListAdapter<I, V extends ItemView> extends
      * @param forks
      * @param isPrivate
      * @param isFork
+     * @param mirrorUrl
      */
     protected void updateDetails(final RepositoryItemView view,
             final String description, final String language,
             final int watchers, final int forks, final boolean isPrivate,
-            final boolean isFork) {
-        if (isPrivate)
-            view.repoIcon.setText(Character.toString(ICON_PRIVATE));
-        else if (isFork)
-            view.repoIcon.setText(Character.toString(ICON_FORK));
-        else
-            view.repoIcon.setText(Character.toString(ICON_PUBLIC));
+            final boolean isFork, final String mirrorUrl) {
+        if (TextUtils.isEmpty(mirrorUrl))
+            if (isPrivate)
+                view.repoIcon.setText(Character.toString(ICON_PRIVATE));
+            else if (isFork)
+                view.repoIcon.setText(Character.toString(ICON_FORK));
+            else
+                view.repoIcon.setText(Character.toString(ICON_PUBLIC));
+        else {
+            if (isPrivate)
+                view.repoIcon.setText(Character.toString(ICON_MIRROR_PRIVATE));
+            else
+                view.repoIcon.setText(Character.toString(ICON_MIRROR_PUBLIC));
+        }
 
         if (!TextUtils.isEmpty(description)) {
             view.repoDescription.setText(description);

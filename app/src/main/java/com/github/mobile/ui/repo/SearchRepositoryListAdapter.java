@@ -62,7 +62,7 @@ public class SearchRepositoryListAdapter extends
         updateDetails(view, repository.getDescription(),
                 repository.getLanguage(), repository.getWatchers(),
                 repository.getForks(), repository.isPrivate(),
-                repository.isFork());
+                repository.isFork(), null);
     }
 
     @Override

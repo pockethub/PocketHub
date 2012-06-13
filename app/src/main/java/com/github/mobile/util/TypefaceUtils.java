@@ -78,6 +78,16 @@ public class TypefaceUtils {
     public static final char ICON_ADD_MEMBER = '\uf21A';
 
     /**
+     * Public mirror repository icon
+     */
+    public static final char ICON_MIRROR_PUBLIC = '\uf224';
+
+    /**
+     * Public mirror repository icon
+     */
+    public static final char ICON_MIRROR_PRIVATE = '\uf225';
+
+    /**
      * Follow icon
      */
     public static final char ICON_FOLLOW = '\uf228';

@@ -91,7 +91,8 @@ public class OrganizationRepositories implements
                 "repos.repoId, repos.name", "users.id", "users.name",
                 "users.avatarurl", "repos.private", "repos.fork",
                 "repos.description", "repos.forks", "repos.watchers",
-                "repos.language", "repos.hasIssues" }, "repos.orgId=?",
+                "repos.language", "repos.hasIssues", "repos.mirrorUrl" },
+                "repos.orgId=?",
                 new String[] { Integer.toString(org.getId()) }, null, null,
                 null);
     }
@@ -115,6 +116,7 @@ public class OrganizationRepositories implements
         repo.setWatchers(cursor.getInt(9));
         repo.setLanguage(cursor.getString(10));
         repo.setHasIssues(cursor.getInt(11) == 1);
+        repo.setMirrorUrl(cursor.getString(12));
 
         return repo;
     }
@@ -125,7 +127,7 @@ public class OrganizationRepositories implements
                 new String[] { Integer.toString(org.getId()) });
         for (Repository repo : repos) {
             User owner = repo.getOwner();
-            ContentValues values = new ContentValues(11);
+            ContentValues values = new ContentValues(12);
 
             values.put("repoId", repo.getId());
             values.put("name", repo.getName());
@@ -138,6 +140,7 @@ public class OrganizationRepositories implements
             values.put("watchers", repo.getWatchers());
             values.put("language", repo.getLanguage());
             values.put("hasIssues", repo.isHasIssues() ? 1 : 0);
+            values.put("mirrorUrl", repo.getMirrorUrl());
             db.replace("repos", null, values);
 
             values.clear();
