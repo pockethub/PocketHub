@@ -60,6 +60,10 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".ui.issue.IssueSearchActivity" />
         </activity>
         <activity
             android:name=".ui.issue.FilterIssuesActivity"
