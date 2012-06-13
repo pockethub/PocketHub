@@ -228,7 +228,7 @@ public class HomeDropdownListAdapter extends BaseAdapter {
             View gistsRoot = LayoutInflater.from(context).inflate(
                     layout.org_dropdown_item, null);
             ((ImageView) gistsRoot.findViewById(id.iv_avatar))
-                    .setBackgroundResource(drawable.action_gist);
+                    .setBackgroundResource(drawable.dropdown_gist);
             ((TextView) gistsRoot.findViewById(id.tv_org_name))
                     .setText(getItem(position).toString());
             return gistsRoot;
@@ -236,7 +236,7 @@ public class HomeDropdownListAdapter extends BaseAdapter {
             View dashboardRoot = LayoutInflater.from(context).inflate(
                     layout.org_dropdown_item, null);
             ((ImageView) dashboardRoot.findViewById(id.iv_avatar))
-                    .setBackgroundResource(drawable.action_dashboard);
+                    .setBackgroundResource(drawable.dropdown_dashboard);
             ((TextView) dashboardRoot.findViewById(id.tv_org_name))
                     .setText(getItem(position).toString());
             return dashboardRoot;
@@ -244,7 +244,7 @@ public class HomeDropdownListAdapter extends BaseAdapter {
             View bookmarksRoot = LayoutInflater.from(context).inflate(
                     layout.org_dropdown_item, null);
             ((ImageView) bookmarksRoot.findViewById(id.iv_avatar))
-                    .setBackgroundResource(drawable.action_bookmark);
+                    .setBackgroundResource(drawable.dropdown_bookmark);
             ((TextView) bookmarksRoot.findViewById(id.tv_org_name))
                     .setText(getItem(position).toString());
             return bookmarksRoot;
