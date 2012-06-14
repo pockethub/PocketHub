@@ -100,7 +100,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     private TextView milestone;
 
     @Inject
-    private AvatarLoader avatarHelper;
+    private AvatarLoader avatars;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -158,7 +158,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
         User user = filter.getAssignee();
         if (user != null) {
-            avatarHelper.bind(assigneeAvatar, user);
+            avatars.bind(assigneeAvatar, user);
             assignee.setText(user.getLogin());
             assigneeArea.setVisibility(VISIBLE);
         } else
@@ -273,6 +273,6 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
             List<Issue> items) {
         return new RepositoryIssueListAdapter(
                 getActivity().getLayoutInflater(),
-                items.toArray(new Issue[items.size()]), avatarHelper);
+                items.toArray(new Issue[items.size()]), avatars);
     }
 }

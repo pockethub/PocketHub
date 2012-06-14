@@ -113,19 +113,19 @@ public class HomeDropdownListAdapter extends BaseAdapter {
      *
      * @param context
      * @param orgs
-     * @param avatarHelper
+     * @param avatars
      */
     public HomeDropdownListAdapter(final Context context,
-            final List<User> orgs, final AvatarLoader avatarHelper) {
+            final List<User> orgs, final AvatarLoader avatars) {
         this.context = context;
 
         LayoutInflater inflater = LayoutInflater.from(context);
         User[] orgItems = orgs.toArray(new User[orgs.size()]);
 
         listAdapter = new OrgListAdapter(layout.org_item, inflater, orgItems,
-                avatarHelper);
+                avatars);
         dropdownAdapter = new OrgListAdapter(layout.org_dropdown_item,
-                inflater, orgItems, avatarHelper);
+                inflater, orgItems, avatars);
     }
 
     /**

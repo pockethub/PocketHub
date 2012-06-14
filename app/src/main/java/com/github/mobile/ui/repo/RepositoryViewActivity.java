@@ -64,7 +64,7 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
     private Repository repository;
 
     @Inject
-    private AvatarLoader avatarHelper;
+    private AvatarLoader avatars;
 
     @InjectView(id.vp_pages)
     private ViewPager pager;
@@ -127,7 +127,7 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
     }
 
     private void configurePager() {
-        avatarHelper.bind(getSupportActionBar(), repository.getOwner());
+        avatars.bind(getSupportActionBar(), repository.getOwner());
         loadingBar.setVisibility(GONE);
         pager.setVisibility(VISIBLE);
         indicator.setVisibility(VISIBLE);

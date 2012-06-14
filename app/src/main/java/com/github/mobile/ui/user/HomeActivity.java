@@ -93,7 +93,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements
     private ViewPager pager;
 
     @Inject
-    private AvatarLoader avatarHelper;
+    private AvatarLoader avatars;
 
     @Inject
     private SharedPreferences sharedPreferences;
@@ -127,7 +127,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setNavigationMode(NAVIGATION_MODE_LIST);
 
-        homeAdapter = new HomeDropdownListAdapter(this, orgs, avatarHelper);
+        homeAdapter = new HomeDropdownListAdapter(this, orgs, avatars);
         actionBar.setListNavigationCallbacks(homeAdapter, this);
     }
 

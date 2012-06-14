@@ -100,7 +100,7 @@ public class IssueFragment extends DialogFragment {
     private User user;
 
     @Inject
-    private AvatarLoader avatarHelper;
+    private AvatarLoader avatars;
 
     @Inject
     private IssueStore store;
@@ -309,7 +309,7 @@ public class IssueFragment extends DialogFragment {
         Activity activity = getActivity();
         adapter = new HeaderFooterListAdapter<CommentListAdapter>(list,
                 new CommentListAdapter(activity.getLayoutInflater(),
-                        avatarHelper, new HttpImageGetter(activity)));
+                        avatars, new HttpImageGetter(activity)));
         list.setAdapter(adapter);
     }
 
@@ -328,7 +328,7 @@ public class IssueFragment extends DialogFragment {
         authorText.setText(issue.getUser().getLogin());
         createdDateText.setText(new StyledText().append("opened ").append(
                 issue.getCreatedAt()));
-        avatarHelper.bind(creatorAvatar, issue.getUser());
+        avatars.bind(creatorAvatar, issue.getUser());
 
         if (STATE_OPEN.equals(issue.getState()))
             stateText.setVisibility(GONE);
@@ -349,7 +349,7 @@ public class IssueFragment extends DialogFragment {
             name.append(' ').append(getString(string.assigned));
             assigneeText.setText(name);
             assigneeAvatar.setVisibility(VISIBLE);
-            avatarHelper.bind(assigneeAvatar, assignee);
+            avatars.bind(assigneeAvatar, assignee);
         } else {
             assigneeAvatar.setVisibility(GONE);
             assigneeText.setText(string.unassigned);

@@ -100,7 +100,7 @@ public class GistsViewActivity extends DialogFragmentActivity implements
     private GistStore store;
 
     @Inject
-    private AvatarLoader avatarHelper;
+    private AvatarLoader avatars;
 
     private final UrlLauncher urlLauncher = new UrlLauncher();
 
@@ -177,7 +177,7 @@ public class GistsViewActivity extends DialogFragmentActivity implements
             actionBar.setLogo(null);
             actionBar.setIcon(drawable.app_icon);
         } else if (gist.getUser() != null) {
-            avatarHelper.bind(actionBar, gist.getUser());
+            avatars.bind(actionBar, gist.getUser());
             actionBar.setSubtitle(gist.getUser().getLogin());
         } else {
             actionBar.setSubtitle(string.anonymous);

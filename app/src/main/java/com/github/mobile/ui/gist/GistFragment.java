@@ -110,7 +110,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     private boolean loadFinished;
 
     @Inject
-    private AvatarLoader avatarHelper;
+    private AvatarLoader avatars;
 
     private List<View> fileHeaders = new ArrayList<View>();
 
@@ -147,7 +147,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         Activity activity = getActivity();
         adapter = new HeaderFooterListAdapter<CommentListAdapter>(list,
                 new CommentListAdapter(activity.getLayoutInflater(),
-                        avatarHelper, new HttpImageGetter(activity)));
+                        avatars, new HttpImageGetter(activity)));
         list.setAdapter(adapter);
     }
 

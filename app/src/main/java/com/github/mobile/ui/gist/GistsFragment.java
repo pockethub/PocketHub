@@ -43,10 +43,10 @@ import org.eclipse.egit.github.core.service.GistService;
 public abstract class GistsFragment extends PagedItemFragment<Gist> {
 
     /**
-     * Avatar helper
+     * Avatar loader
      */
     @Inject
-    protected AvatarLoader avatarHelper;
+    protected AvatarLoader avatars;
 
     /**
      * Gist service
@@ -111,7 +111,7 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
     @Override
     protected ItemListAdapter<Gist, ? extends ItemView> createAdapter(
             List<Gist> items) {
-        return new GistListAdapter(avatarHelper, getActivity()
-                .getLayoutInflater(), items.toArray(new Gist[items.size()]));
+        return new GistListAdapter(avatars, getActivity().getLayoutInflater(),
+                items.toArray(new Gist[items.size()]));
     }
 }

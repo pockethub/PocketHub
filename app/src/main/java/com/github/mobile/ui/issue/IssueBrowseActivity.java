@@ -55,7 +55,7 @@ public class IssueBrowseActivity extends RoboSherlockFragmentActivity {
     private Repository repo;
 
     @Inject
-    private AvatarLoader avatarHelper;
+    private AvatarLoader avatars;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +67,7 @@ public class IssueBrowseActivity extends RoboSherlockFragmentActivity {
         actionBar.setTitle(repo.getName());
         actionBar.setSubtitle(repo.getOwner().getLogin());
         actionBar.setDisplayHomeAsUpEnabled(true);
-        avatarHelper.bind(actionBar, repo.getOwner());
+        avatars.bind(actionBar, repo.getOwner());
     }
 
     @Override

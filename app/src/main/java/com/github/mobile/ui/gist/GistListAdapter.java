@@ -38,26 +38,26 @@ public class GistListAdapter extends ItemListAdapter<Gist, GistView> {
     private static final NumberFormat NUMBER_FORMAT = NumberFormat
             .getIntegerInstance();
 
-    private final AvatarLoader avatarHelper;
+    private final AvatarLoader avatars;
 
     /**
-     * @param avatarHelper
+     * @param avatars
      * @param inflater
      * @param elements
      */
-    public GistListAdapter(AvatarLoader avatarHelper, LayoutInflater inflater,
+    public GistListAdapter(AvatarLoader avatars, LayoutInflater inflater,
             Gist[] elements) {
         super(layout.gist_item, inflater, elements);
 
-        this.avatarHelper = avatarHelper;
+        this.avatars = avatars;
     }
 
     /**
-     * @param avatarHelper
+     * @param avatars
      * @param inflater
      */
-    public GistListAdapter(AvatarLoader avatarHelper, LayoutInflater inflater) {
-        this(avatarHelper, inflater, null);
+    public GistListAdapter(AvatarLoader avatars, LayoutInflater inflater) {
+        this(avatars, inflater, null);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class GistListAdapter extends ItemListAdapter<Gist, GistView> {
             view.title.setText(string.no_description_given);
 
         User user = gist.getUser();
-        avatarHelper.bind(view.avatar, user);
+        avatars.bind(view.avatar, user);
 
         StyledText authorText = new StyledText();
         if (user != null)

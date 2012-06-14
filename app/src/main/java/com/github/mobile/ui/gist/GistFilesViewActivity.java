@@ -69,7 +69,7 @@ public class GistFilesViewActivity extends RoboSherlockFragmentActivity {
     private GistStore store;
 
     @Inject
-    private AvatarLoader avatarHelper;
+    private AvatarLoader avatars;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +85,7 @@ public class GistFilesViewActivity extends RoboSherlockFragmentActivity {
         User author = gist.getUser();
         if (author != null) {
             actionBar.setSubtitle(author.getLogin());
-            avatarHelper.bind(actionBar, author);
+            avatars.bind(actionBar, author);
         } else
             actionBar.setSubtitle(string.anonymous);
 

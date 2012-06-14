@@ -75,7 +75,7 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
     protected final UserEventMatcher userMatcher = new UserEventMatcher();
 
     @Inject
-    private AvatarLoader avatarHelper;
+    private AvatarLoader avatars;
 
     /**
      * Event service
@@ -100,7 +100,9 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
         }
 
         Issue issue = issueMatcher.getIssue(event);
-        if (issue != null && (issue.getPullRequest() == null || issue.getPullRequest().getHtmlUrl() == null)) {
+        if (issue != null
+                && (issue.getPullRequest() == null || issue.getPullRequest()
+                        .getHtmlUrl() == null)) {
             viewIssue(issue);
             return;
         }
@@ -121,7 +123,8 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
     }
 
     private void openDownload(Event event) {
-        Download download = ((DownloadPayload) event.getPayload()).getDownload();
+        Download download = ((DownloadPayload) event.getPayload())
+                .getDownload();
         if (download == null)
             return;
 
@@ -163,9 +166,10 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
     }
 
     @Override
-    protected ItemListAdapter<Event, ? extends ItemView> createAdapter(List<Event> items) {
-        return new NewsListAdapter(getActivity().getLayoutInflater(), items.toArray(new Event[items.size()]),
-                avatarHelper);
+    protected ItemListAdapter<Event, ? extends ItemView> createAdapter(
+            List<Event> items) {
+        return new NewsListAdapter(getActivity().getLayoutInflater(),
+                items.toArray(new Event[items.size()]), avatars);
     }
 
     @Override

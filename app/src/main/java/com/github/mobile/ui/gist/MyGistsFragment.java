@@ -67,7 +67,7 @@ public class MyGistsFragment extends GistsFragment {
     @Override
     protected ItemListAdapter<Gist, ? extends ItemView> createAdapter(
             List<Gist> items) {
-        return new GistListAdapter(avatarHelper, getActivity()
+        return new GistListAdapter(avatars, getActivity()
                 .getLayoutInflater(), items.toArray(new Gist[items.size()]));
     }
 }

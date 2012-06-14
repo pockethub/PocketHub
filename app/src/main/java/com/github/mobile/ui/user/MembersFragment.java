@@ -47,7 +47,7 @@ public class MembersFragment extends ItemListFragment<User> implements
     private OrganizationService service;
 
     @Inject
-    private AvatarLoader avatarHelper;
+    private AvatarLoader avatars;
 
     @Override
     public void onAttach(Activity activity) {
@@ -79,7 +79,7 @@ public class MembersFragment extends ItemListFragment<User> implements
             List<User> items) {
         User[] users = items.toArray(new User[items.size()]);
         return new UserListAdapter(getActivity().getLayoutInflater(), users,
-                avatarHelper);
+                avatars);
     }
 
     @Override

@@ -43,7 +43,7 @@ import org.eclipse.egit.github.core.RepositoryIssue;
 public class DashboardIssueListAdapter extends
         ItemListAdapter<RepositoryIssue, DashboardIssueView> {
 
-    private final AvatarLoader avatarHelper;
+    private final AvatarLoader avatars;
 
     private int numberWidth;
 
@@ -52,29 +52,29 @@ public class DashboardIssueListAdapter extends
     /**
      * Create adapter
      *
-     * @param avatarHelper
+     * @param avatars
      * @param inflater
      */
-    public DashboardIssueListAdapter(AvatarLoader avatarHelper,
+    public DashboardIssueListAdapter(AvatarLoader avatars,
             LayoutInflater inflater) {
-        this(avatarHelper, inflater, null);
+        this(avatars, inflater, null);
     }
 
     /**
      * Create adapter
      *
-     * @param avatarHelper
+     * @param avatars
      * @param inflater
      * @param elements
      */
-    public DashboardIssueListAdapter(AvatarLoader avatarHelper,
+    public DashboardIssueListAdapter(AvatarLoader avatars,
             LayoutInflater inflater, RepositoryIssue[] elements) {
         super(layout.dashboard_issue_item, inflater);
 
         this.numberView = (TextView) inflater.inflate(
                 layout.dashboard_issue_item, null).findViewById(
                 id.tv_issue_number);
-        this.avatarHelper = avatarHelper;
+        this.avatars = avatars;
 
         if (elements != null)
             computeNumberWidth(elements);
@@ -113,7 +113,7 @@ public class DashboardIssueListAdapter extends
             view.number.setPaintFlags(view.numberPaintFlags);
         view.number.getLayoutParams().width = numberWidth;
 
-        avatarHelper.bind(view.avatar, issue.getUser());
+        avatars.bind(view.avatar, issue.getUser());
 
         String[] segments = issue.getUrl().split("/");
         int length = segments.length;

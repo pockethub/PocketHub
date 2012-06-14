@@ -29,37 +29,37 @@ import org.eclipse.egit.github.core.User;
  */
 public class UserListAdapter extends ItemListAdapter<User, UserItemView> {
 
-    private final AvatarLoader avatarHelper;
+    private final AvatarLoader avatars;
 
     /**
      * Create user list adapter
      *
      * @param inflater
      * @param elements
-     * @param avatarHelper
+     * @param avatars
      */
     public UserListAdapter(final LayoutInflater inflater,
-            final User[] elements, final AvatarLoader avatarHelper) {
+            final User[] elements, final AvatarLoader avatars) {
         super(layout.user_item, inflater, elements);
 
-        this.avatarHelper = avatarHelper;
+        this.avatars = avatars;
     }
 
     /**
      * Create user list adapter
      *
      * @param inflater
-     * @param avatarHelper
+     * @param avatars
      */
     public UserListAdapter(final LayoutInflater inflater,
-            final AvatarLoader avatarHelper) {
-        this(inflater, null, avatarHelper);
+            final AvatarLoader avatars) {
+        this(inflater, null, avatars);
     }
 
     @Override
     protected void update(final int position, final UserItemView view,
             final User user) {
-        avatarHelper.bind(view.avatarView, user);
+        avatars.bind(view.avatarView, user);
         view.loginText.setText(user.getLogin());
     }
 

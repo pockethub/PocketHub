@@ -56,7 +56,7 @@ public class UserViewActivity extends RoboSherlockFragmentActivity implements
     }
 
     @Inject
-    private AvatarLoader avatarHelper;
+    private AvatarLoader avatars;
 
     @InjectExtra(EXTRA_USER)
     private User user;
@@ -106,7 +106,7 @@ public class UserViewActivity extends RoboSherlockFragmentActivity implements
     }
 
     private void configurePager() {
-        avatarHelper.bind(getSupportActionBar(), user);
+        avatars.bind(getSupportActionBar(), user);
         loadingBar.setVisibility(GONE);
         pager.setVisibility(VISIBLE);
         indicator.setVisibility(VISIBLE);

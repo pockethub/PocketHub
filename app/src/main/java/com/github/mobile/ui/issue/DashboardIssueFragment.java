@@ -54,7 +54,7 @@ public class DashboardIssueFragment extends PagedItemFragment<RepositoryIssue> {
     private IssueStore store;
 
     @Inject
-    private AvatarLoader avatarHelper;
+    private AvatarLoader avatars;
 
     private Map<String, String> filterData;
 
@@ -127,7 +127,7 @@ public class DashboardIssueFragment extends PagedItemFragment<RepositoryIssue> {
     @Override
     protected ItemListAdapter<RepositoryIssue, ? extends ItemView> createAdapter(
             List<RepositoryIssue> items) {
-        return new DashboardIssueListAdapter(avatarHelper, getActivity()
+        return new DashboardIssueListAdapter(avatars, getActivity()
                 .getLayoutInflater(), items.toArray(new RepositoryIssue[items
                 .size()]));
     }
