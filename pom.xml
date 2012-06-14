@@ -35,22 +35,7 @@
                             <skip>false</skip>
                             <config>../proguard.cfg</config>
                         </proguard>
-                        <manifest>
-                            <versionName/>
-                            <!-- defaults to Maven project version -->
-                            <versionCodeUpdateFromVersion>true</versionCodeUpdateFromVersion>
-                            <debuggable>true</debuggable>
-                        </manifest>
                     </configuration>
-                    <executions>
-                        <execution>
-                            <id>manifestUpdate</id>
-                            <phase>process-resources</phase>
-                            <goals>
-                                <goal>manifest-update</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </plugin>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
