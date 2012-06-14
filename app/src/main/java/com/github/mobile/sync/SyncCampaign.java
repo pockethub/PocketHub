@@ -31,7 +31,7 @@ import java.util.List;
 import org.eclipse.egit.github.core.User;
 
 /**
- * A cancellable Sync operation - aims to synchronize data for a given account.
+ * A cancellable sync operation to synchronize data for a given account
  */
 public class SyncCampaign implements Runnable {
 
@@ -52,13 +52,13 @@ public class SyncCampaign implements Runnable {
     }
 
     @Inject
-    private DatabaseCache dbCache;
+    private DatabaseCache cache;
 
     @Inject
-    private OrganizationRepositories.Factory allRepos;
+    private OrganizationRepositories.Factory repos;
 
     @Inject
-    private Organizations userAndOrgsResource;
+    private Organizations persistedOrgs;
 
     private final SyncResult syncResult;
 
@@ -77,7 +77,7 @@ public class SyncCampaign implements Runnable {
     public void run() {
         List<User> orgs;
         try {
-            orgs = dbCache.requestAndStore(userAndOrgsResource);
+            orgs = cache.requestAndStore(persistedOrgs);
             syncResult.stats.numUpdates++;
         } catch (IOException e) {
             syncResult.stats.numIoExceptions++;
@@ -96,7 +96,7 @@ public class SyncCampaign implements Runnable {
 
             Log.d(TAG, "Syncing repos for " + org.getLogin() + "...");
             try {
-                dbCache.requestAndStore(allRepos.under(org));
+                cache.requestAndStore(repos.under(org));
                 syncResult.stats.numUpdates++;
             } catch (IOException e) {
                 syncResult.stats.numIoExceptions++;
