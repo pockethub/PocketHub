@@ -26,12 +26,12 @@ import com.viewpagerindicator.R.id;
 /**
  * Tests of {@link CreateGistActivity}
  */
-public class GistCreateActivityTest extends ActivityTest<CreateGistActivity> {
+public class CreateGistActivityTest extends ActivityTest<CreateGistActivity> {
 
     /**
      * Create test
      */
-    public GistCreateActivityTest() {
+    public CreateGistActivityTest() {
         super(CreateGistActivity.class);
     }
 
