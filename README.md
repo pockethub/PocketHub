@@ -35,7 +35,7 @@ you will then be able to install your own built version.
 ## Acknowledgements
 
 This project uses the [GitHub Java API](https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core)
-on top of [API v3](http://developer.github.com/) for making GitHub Requests.
+built on top of [API v3](http://developer.github.com/).
 
 It also uses many great open-source libraries from the Android dev community:
 
