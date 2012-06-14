@@ -181,6 +181,6 @@ public class OrganizationRepositories implements
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "[" + org.getLogin() + "]";
+        return getClass().getSimpleName() + '[' + org.getLogin() + ']';
     }
 }
