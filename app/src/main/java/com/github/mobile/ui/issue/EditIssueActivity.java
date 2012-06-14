@@ -28,6 +28,8 @@ import static com.github.mobile.RequestCodes.ISSUE_LABELS_UPDATE;
 import static com.github.mobile.RequestCodes.ISSUE_MILESTONE_UPDATE;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -45,6 +47,7 @@ import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.StyledText;
+import com.github.mobile.ui.TextWatcherAdapter;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
@@ -149,6 +152,8 @@ public class EditIssueActivity extends DialogFragmentActivity {
 
     private RepositoryId repository;
 
+    private MenuItem saveItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -202,6 +207,15 @@ public class EditIssueActivity extends DialogFragmentActivity {
             }
         });
 
+        titleText.addTextChangedListener(new TextWatcherAdapter() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                updateSaveMenu(s);
+            }
+        });
+
+        updateSaveMenu();
         updateView();
     }
 
@@ -277,16 +291,28 @@ public class EditIssueActivity extends DialogFragmentActivity {
         outState.putSerializable(EXTRA_ISSUE, issue);
     }
 
+    private void updateSaveMenu() {
+        if (titleText != null)
+            updateSaveMenu(titleText.getText());
+    }
+
+    private void updateSaveMenu(final CharSequence text) {
+        if (saveItem != null)
+            saveItem.setEnabled(!TextUtils.isEmpty(text));
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
         getSupportMenuInflater().inflate(menu.issue_edit, options);
+        saveItem = options.findItem(id.m_apply);
+        updateSaveMenu();
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case id.m_edit:
+        case id.m_apply:
             issue.setTitle(titleText.getText().toString());
             issue.setBody(bodyText.getText().toString());
             if (issue.getNumber() > 0)

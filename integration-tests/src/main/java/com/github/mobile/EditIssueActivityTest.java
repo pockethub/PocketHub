@@ -15,7 +15,12 @@
  */
 package com.github.mobile;
 
+import static android.view.KeyEvent.KEYCODE_DEL;
+import android.view.View;
+import android.widget.EditText;
+
 import com.github.mobile.ui.issue.EditIssueActivity;
+import com.viewpagerindicator.R.id;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
@@ -40,5 +45,22 @@ public class EditIssueActivityTest extends ActivityTest<EditIssueActivity> {
         repo.setName("repo");
         repo.setOwner(new User().setLogin("owner"));
         setActivityIntent(EditIssueActivity.createIntent(repo, "an issue"));
+    }
+
+    /**
+     * Verify save menu is properly enabled/disable depending on the issue have
+     * a non-empty title
+     * 
+     * @throws Throwable
+     */
+    public void testSaveMenuEnabled() throws Throwable {
+        View saveMenu = view(id.m_apply);
+        assertFalse(saveMenu.isEnabled());
+        EditText title = editText(id.et_issue_title);
+        focus(title);
+        send("a");
+        assertTrue(saveMenu.isEnabled());
+        sendKeys(KEYCODE_DEL);
+        assertFalse(saveMenu.isEnabled());
     }
 }

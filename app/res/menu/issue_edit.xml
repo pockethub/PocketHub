@@ -17,7 +17,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/m_edit"
+        android:id="@+id/m_apply"
+        android:enabled="false"
         android:icon="@drawable/action_save"
         android:showAsAction="ifRoom"
         android:title="@string/save"/>
