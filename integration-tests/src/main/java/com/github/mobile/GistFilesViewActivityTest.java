@@ -67,7 +67,7 @@ public class GistFilesViewActivityTest extends
 
     /**
      * Verify changing pages between gist files
-     * 
+     *
      * @throws Throwable
      */
     public void testChangingPages() throws Throwable {

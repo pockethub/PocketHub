@@ -48,7 +48,7 @@ public class GistCommentActivityTest extends
 
     /**
      * Verify empty comment can't be created
-     * 
+     *
      * @throws Throwable
      */
     public void testEmptyCommentIsProhitibed() throws Throwable {

@@ -22,7 +22,7 @@ import android.widget.EditText;
 
 /**
  * Base class for activity tests
- * 
+ *
  * @param <T>
  */
 public abstract class ActivityTest<T extends Activity> extends
@@ -44,7 +44,7 @@ public abstract class ActivityTest<T extends Activity> extends
 
     /**
      * Get edit text with id
-     * 
+     *
      * @param id
      * @return edit text
      */
@@ -54,7 +54,7 @@ public abstract class ActivityTest<T extends Activity> extends
 
     /**
      * Get view with id
-     * 
+     *
      * @param id
      * @return edit text
      */
@@ -67,7 +67,7 @@ public abstract class ActivityTest<T extends Activity> extends
 
     /**
      * Send focus to view
-     * 
+     *
      * @param view
      * @throws Throwable
      */
@@ -82,7 +82,7 @@ public abstract class ActivityTest<T extends Activity> extends
 
     /**
      * Run runnable on ui thread
-     * 
+     *
      * @param runnable
      * @throws Throwable
      */
@@ -92,7 +92,7 @@ public abstract class ActivityTest<T extends Activity> extends
 
     /**
      * Send text
-     * 
+     *
      * @param text
      */
     protected void send(final String text) {

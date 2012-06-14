@@ -35,7 +35,7 @@ public class LoginActivityTest extends ActivityTest<LoginActivity> {
 
     /**
      * Verify activity was created successfully
-     * 
+     *
      * @throws Throwable
      */
     public void testSignInIsDisabled() throws Throwable {

@@ -49,7 +49,7 @@ public class CreateGistActivityTest extends ActivityTest<CreateGistActivity> {
 
     /**
      * Create Gist with no initial text
-     * 
+     *
      * @throws Throwable
      */
     public void testCreateWithNoInitialText() throws Throwable {

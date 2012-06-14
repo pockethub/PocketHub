@@ -50,7 +50,7 @@ public class EditIssueActivityTest extends ActivityTest<EditIssueActivity> {
     /**
      * Verify save menu is properly enabled/disable depending on the issue have
      * a non-empty title
-     * 
+     *
      * @throws Throwable
      */
     public void testSaveMenuEnabled() throws Throwable {
