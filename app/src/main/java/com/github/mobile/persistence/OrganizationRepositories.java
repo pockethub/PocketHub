@@ -125,10 +125,14 @@ public class OrganizationRepositories implements
     public void store(SQLiteDatabase db, List<Repository> repos) {
         db.delete("repos", "orgId=?",
                 new String[] { Integer.toString(org.getId()) });
-        for (Repository repo : repos) {
-            User owner = repo.getOwner();
-            ContentValues values = new ContentValues(12);
+        if (repos.isEmpty())
+            return;
 
+        ContentValues values = new ContentValues(12);
+        for (Repository repo : repos) {
+            values.clear();
+
+            User owner = repo.getOwner();
             values.put("repoId", repo.getId());
             values.put("name", repo.getName());
             values.put("orgId", org.getId());
@@ -144,6 +148,7 @@ public class OrganizationRepositories implements
             db.replace("repos", null, values);
 
             values.clear();
+
             values.put("id", owner.getId());
             values.put("name", owner.getLogin());
             values.put("avatarurl", owner.getAvatarUrl());
