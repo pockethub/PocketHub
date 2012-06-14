@@ -165,6 +165,8 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (!isUsable())
+            return false;
         switch (item.getItemId()) {
         case id.m_refresh:
             forceRefresh();

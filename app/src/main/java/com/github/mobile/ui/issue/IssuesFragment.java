@@ -186,6 +186,8 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (!isUsable())
+            return false;
         switch (item.getItemId()) {
         case id.create_issue:
             startActivityForResult(EditIssueActivity.createIntent(repository,
