@@ -199,10 +199,12 @@ public class AccountDataManager {
             final RequestFuture<Collection<IssueFilter>> requestFuture) {
         new AuthenticatedUserTask<Collection<IssueFilter>>(context, EXECUTOR) {
 
+            @Override
             public Collection<IssueFilter> run() throws Exception {
                 return getIssueFilters();
             }
 
+            @Override
             protected void onSuccess(Collection<IssueFilter> filters)
                     throws Exception {
                 requestFuture.success(filters);
@@ -237,19 +239,21 @@ public class AccountDataManager {
             final RequestFuture<IssueFilter> requestFuture) {
         new AuthenticatedUserTask<IssueFilter>(context, EXECUTOR) {
 
+            @Override
             public IssueFilter run() throws Exception {
                 addIssueFilter(filter);
                 return filter;
             }
 
+            @Override
             protected void onSuccess(IssueFilter filter) throws Exception {
                 requestFuture.success(filter);
             }
 
+            @Override
             protected void onException(Exception e) throws RuntimeException {
                 Log.d(TAG, "Exception adding issue filter", e);
             }
-
         }.execute();
     }
 
@@ -278,19 +282,21 @@ public class AccountDataManager {
             final RequestFuture<IssueFilter> requestFuture) {
         new AuthenticatedUserTask<IssueFilter>(context, EXECUTOR) {
 
+            @Override
             public IssueFilter run() throws Exception {
                 removeIssueFilter(filter);
                 return filter;
             }
 
+            @Override
             protected void onSuccess(IssueFilter filter) throws Exception {
                 requestFuture.success(filter);
             }
 
+            @Override
             protected void onException(Exception e) throws RuntimeException {
                 Log.d(TAG, "Exception removing issue filter", e);
             }
-
         }.execute();
     }
 }
