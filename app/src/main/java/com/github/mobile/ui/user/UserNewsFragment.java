@@ -42,6 +42,15 @@ public abstract class UserNewsFragment extends NewsFragment implements
     }
 
     @Override
+    public void onDetach() {
+        OrganizationSelectionProvider selectionProvider = (OrganizationSelectionProvider) getActivity();
+        if (selectionProvider != null)
+            selectionProvider.removeListener(this);
+
+        super.onDetach();
+    }
+
+    @Override
     protected void viewRepository(Repository repository) {
         User owner = repository.getOwner();
         if (owner != null && org.getLogin().equals(owner.getLogin()))

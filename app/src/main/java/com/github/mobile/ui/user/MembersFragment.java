@@ -57,6 +57,15 @@ public class MembersFragment extends ItemListFragment<User> implements
     }
 
     @Override
+    public void onDetach() {
+        OrganizationSelectionProvider selectionProvider = (OrganizationSelectionProvider) getActivity();
+        if (selectionProvider != null)
+            selectionProvider.removeListener(this);
+
+        super.onDetach();
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 

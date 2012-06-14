@@ -71,6 +71,15 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
     }
 
     @Override
+    public void onDetach() {
+        OrganizationSelectionProvider selectionProvider = (OrganizationSelectionProvider) getActivity();
+        if (selectionProvider != null)
+            selectionProvider.removeListener(this);
+
+        super.onDetach();
+    }
+
+    @Override
     public void onOrganizationSelected(final User organization) {
         User previousOrg = org.get();
         int previousOrgId = previousOrg != null ? previousOrg.getId() : -1;
