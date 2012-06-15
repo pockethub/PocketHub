@@ -17,7 +17,7 @@ package com.github.mobile.accounts;
 
 import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
 import static android.util.Log.DEBUG;
-import static com.github.mobile.accounts.AccountConstants.GITHUB_ACCOUNT_TYPE;
+import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerFuture;
@@ -66,7 +66,7 @@ public class AccountUtils {
      */
     public static String getLogin(final Context context) {
         final Account[] accounts = AccountManager.get(context)
-                .getAccountsByType(GITHUB_ACCOUNT_TYPE);
+                .getAccountsByType(ACCOUNT_TYPE);
         return accounts.length > 0 ? accounts[0].name : null;
     }
 
@@ -78,7 +78,7 @@ public class AccountUtils {
      */
     public static Account getAccount(final Context context) {
         final Account[] accounts = AccountManager.get(context)
-                .getAccountsByType(GITHUB_ACCOUNT_TYPE);
+                .getAccountsByType(ACCOUNT_TYPE);
         return accounts.length > 0 ? accounts[0] : null;
     }
 
@@ -86,7 +86,7 @@ public class AccountUtils {
             throws OperationCanceledException, AuthenticatorException,
             IOException {
         final AccountManagerFuture<Account[]> future = manager
-                .getAccountsByTypeAndFeatures(GITHUB_ACCOUNT_TYPE, null, null,
+                .getAccountsByTypeAndFeatures(ACCOUNT_TYPE, null, null,
                         null);
         final Account[] accounts = future.getResult();
         return accounts != null ? accounts : new Account[0];
@@ -114,7 +114,7 @@ public class AccountUtils {
                 if (loggable)
                     Log.d(TAG, "No GitHub accounts for activity=" + activity);
 
-                Bundle result = manager.addAccount(GITHUB_ACCOUNT_TYPE, null,
+                Bundle result = manager.addAccount(ACCOUNT_TYPE, null,
                         null, null, activity, null, null).getResult();
 
                 if (loggable)

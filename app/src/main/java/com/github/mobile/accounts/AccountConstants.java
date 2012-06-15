@@ -23,15 +23,15 @@ public interface AccountConstants {
     /**
      * Account type
      */
-    String GITHUB_ACCOUNT_TYPE = "com.github";
+    String ACCOUNT_TYPE = "com.github";
 
     /**
      * Account name
      */
-    String GITHUB_ACCOUNT_NAME = "GitHub";
+    String ACCOUNT_NAME = "GitHub";
 
     /**
      * Provider authority
      */
-    String GITHUB_PROVIDER_AUTHORITY = "com.github.sync";
+    String PROVIDER_AUTHORITY = "com.github.sync";
 }

@@ -19,7 +19,7 @@ import static android.accounts.AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE
 import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 import static android.accounts.AccountManager.KEY_INTENT;
 import static com.github.mobile.accounts.LoginActivity.PARAM_AUTHTOKEN_TYPE;
-import static com.github.mobile.accounts.AccountConstants.GITHUB_ACCOUNT_TYPE;
+import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
@@ -78,7 +78,7 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
 
     @Override
     public String getAuthTokenLabel(String authTokenType) {
-        if (authTokenType.equals(GITHUB_ACCOUNT_TYPE))
+        if (authTokenType.equals(ACCOUNT_TYPE))
             return authTokenType;
         return null;
     }

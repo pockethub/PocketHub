@@ -22,9 +22,8 @@ import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 import static android.view.KeyEvent.ACTION_DOWN;
 import static android.view.KeyEvent.KEYCODE_ENTER;
 import static android.view.inputmethod.EditorInfo.IME_ACTION_DONE;
-import static com.github.mobile.accounts.AccountConstants.AUTH_TOKEN_TYPE;
-import static com.github.mobile.accounts.AccountConstants.GITHUB_ACCOUNT_TYPE;
-import static com.github.mobile.accounts.AccountConstants.GITHUB_PROVIDER_AUTHORITY;
+import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
+import static com.github.mobile.accounts.AccountConstants.PROVIDER_AUTHORITY;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.ProgressDialog;
@@ -94,10 +93,10 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
     private static void configureSyncFor(Account account) {
         Log.d(TAG, "Configuring account sync");
 
-        ContentResolver.setIsSyncable(account, GITHUB_PROVIDER_AUTHORITY, 1);
+        ContentResolver.setIsSyncable(account, PROVIDER_AUTHORITY, 1);
         ContentResolver.setSyncAutomatically(account,
-                GITHUB_PROVIDER_AUTHORITY, true);
-        ContentResolver.addPeriodicSync(account, GITHUB_PROVIDER_AUTHORITY,
+                PROVIDER_AUTHORITY, true);
+        ContentResolver.addPeriodicSync(account, PROVIDER_AUTHORITY,
                 new Bundle(), 15L * 60L);
     }
 
@@ -253,7 +252,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
                 User user = new UserService(client).getUser();
 
                 Account account = new Account(user.getLogin(),
-                        GITHUB_ACCOUNT_TYPE);
+                        ACCOUNT_TYPE);
                 if (requestNewAccount) {
                     accountManager
                             .addAccountExplicitly(account, password, null);
@@ -311,7 +310,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
      * @param result
      */
     protected void finishConfirmCredentials(boolean result) {
-        final Account account = new Account(username, GITHUB_ACCOUNT_TYPE);
+        final Account account = new Account(username, ACCOUNT_TYPE);
         accountManager.setPassword(account, password);
 
         final Intent intent = new Intent();
@@ -332,8 +331,8 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
         final Intent intent = new Intent();
         authToken = password;
         intent.putExtra(KEY_ACCOUNT_NAME, username);
-        intent.putExtra(KEY_ACCOUNT_TYPE, GITHUB_ACCOUNT_TYPE);
-        if (authTokenType != null && authTokenType.equals(AUTH_TOKEN_TYPE))
+        intent.putExtra(KEY_ACCOUNT_TYPE, ACCOUNT_TYPE);
+        if (authTokenType != null && authTokenType.equals(ACCOUNT_TYPE))
             intent.putExtra(KEY_AUTHTOKEN, authToken);
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
