@@ -126,4 +126,9 @@ public class SearchIssueListAdapter extends
     protected RepositoryIssueItemView createView(View view) {
         return new RepositoryIssueItemView(view);
     }
+
+    @Override
+    public long getItemId(int position) {
+        return getItem(position).getNumber();
+    }
 }
