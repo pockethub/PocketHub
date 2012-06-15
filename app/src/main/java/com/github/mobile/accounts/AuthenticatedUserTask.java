@@ -26,8 +26,8 @@ import roboguice.inject.ContextScope;
 import roboguice.util.RoboAsyncTask;
 
 /**
- * Enforces that user is logged in before work on the background thread
- * commences.
+ * Base task class that ensures an authenticated account exists before
+ * {@link #run()} is invoked
  *
  * @param <ResultT>
  */

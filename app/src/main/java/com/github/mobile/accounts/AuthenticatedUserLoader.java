@@ -25,8 +25,8 @@ import roboguice.RoboGuice;
 import roboguice.inject.ContextScope;
 
 /**
- * Enforces that user is logged in before work on the background thread
- * commences.
+ * Base loader class that ensures an authenticated account exists before
+ * {@link #load()} is called
  *
  * @param <D>
  */
