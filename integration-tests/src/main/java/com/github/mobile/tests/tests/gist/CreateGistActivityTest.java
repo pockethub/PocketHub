@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile;
+package com.github.mobile.tests.tests.gist;
 
 import static android.content.Intent.EXTRA_TEXT;
 import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
 
+import com.github.mobile.tests.ActivityTest;
 import com.github.mobile.ui.gist.CreateGistActivity;
 import com.viewpagerindicator.R.id;
 

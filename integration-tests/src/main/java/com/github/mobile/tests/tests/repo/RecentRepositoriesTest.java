@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile;
+package com.github.mobile.tests.tests.repo;
 
 import static com.github.mobile.ui.repo.RecentRepositories.MAX_SIZE;
 import android.test.AndroidTestCase;

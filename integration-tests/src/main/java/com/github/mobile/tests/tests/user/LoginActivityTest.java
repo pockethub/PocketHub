@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile;
+package com.github.mobile.tests.tests.user;
 
 import android.view.View;
 import android.widget.EditText;
 
 import com.github.mobile.accounts.LoginActivity;
+import com.github.mobile.tests.ActivityTest;
 import com.viewpagerindicator.R.id;
 
 /**

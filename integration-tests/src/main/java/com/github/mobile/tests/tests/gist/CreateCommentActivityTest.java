@@ -13,54 +13,53 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile;
+package com.github.mobile.tests.tests.gist;
 
 import static android.view.KeyEvent.KEYCODE_DEL;
 import android.view.View;
 import android.widget.EditText;
 
-import com.github.mobile.ui.issue.EditIssueActivity;
+import com.github.mobile.tests.ActivityTest;
+import com.github.mobile.ui.gist.CreateCommentActivity;
 import com.viewpagerindicator.R.id;
 
-import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.User;
 
 /**
- * Tests of {@link EditIssueActivity}
+ * Tests of {@link CreateCommentActivity}
  */
-public class EditIssueActivityTest extends ActivityTest<EditIssueActivity> {
+public class CreateCommentActivityTest extends
+        ActivityTest<CreateCommentActivity> {
 
     /**
      * Create test
      */
-    public EditIssueActivityTest() {
-        super(EditIssueActivity.class);
+    public CreateCommentActivityTest() {
+        super(CreateCommentActivity.class);
     }
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
 
-        Repository repo = new Repository();
-        repo.setName("repo");
-        repo.setOwner(new User().setLogin("owner"));
-        setActivityIntent(EditIssueActivity.createIntent(repo, "an issue"));
+        setActivityIntent(CreateCommentActivity.createIntent(new Gist().setId(
+                "123").setUser(new User().setLogin("abc"))));
     }
 
     /**
-     * Verify save menu is properly enabled/disable depending on the issue have
-     * a non-empty title
+     * Verify empty comment can't be created
      *
      * @throws Throwable
      */
-    public void testSaveMenuEnabled() throws Throwable {
-        View saveMenu = view(id.m_apply);
-        assertFalse(saveMenu.isEnabled());
-        EditText title = editText(id.et_issue_title);
-        focus(title);
+    public void testEmptyCommentIsProhitibed() throws Throwable {
+        View createMenu = view(id.m_apply);
+        assertFalse(createMenu.isEnabled());
+        final EditText comment = editText(id.et_comment);
+        focus(comment);
         send("a");
-        assertTrue(saveMenu.isEnabled());
+        assertTrue(createMenu.isEnabled());
         sendKeys(KEYCODE_DEL);
-        assertFalse(saveMenu.isEnabled());
+        assertFalse(createMenu.isEnabled());
     }
 }

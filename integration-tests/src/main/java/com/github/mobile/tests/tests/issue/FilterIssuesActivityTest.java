@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile;
+package com.github.mobile.tests.tests.issue;
 
 import com.github.mobile.core.issue.IssueFilter;
+import com.github.mobile.tests.ActivityTest;
 import com.github.mobile.ui.issue.FilterIssuesActivity;
 
 import org.eclipse.egit.github.core.Repository;

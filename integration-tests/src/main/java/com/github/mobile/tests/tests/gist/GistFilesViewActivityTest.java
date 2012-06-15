@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile;
+package com.github.mobile.tests.tests.gist;
 
 import android.support.v4.view.ViewPager;
 
 import com.github.mobile.core.gist.GistStore;
+import com.github.mobile.tests.ActivityTest;
 import com.github.mobile.ui.gist.GistFilesViewActivity;
 import com.google.inject.Inject;
 import com.viewpagerindicator.R.id;
