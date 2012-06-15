@@ -91,8 +91,11 @@ public class Organizations implements PersistableResource<User> {
 
     @Override
     public List<User> request() throws IOException {
-        List<User> orgs = new ArrayList<User>(orgService.getOrganizations());
-        orgs.add(0, userService.getUser());
-        return orgs;
+        User user = userService.getUser();
+        List<User> orgs = orgService.getOrganizations();
+        List<User> all = new ArrayList<User>(orgs.size() + 1);
+        all.add(user);
+        all.addAll(orgs);
+        return all;
     }
 }
