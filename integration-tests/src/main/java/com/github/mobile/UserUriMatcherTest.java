@@ -63,4 +63,24 @@ public class UserUriMatcherTest extends AndroidTestCase {
         assertNotNull(user);
         assertEquals("mojombo", user.getLogin());
     }
+
+    /**
+     * Verity URI with name
+     */
+    public void testUriWithTrailingSlash() {
+        User user = UserUriMatcher.getUser(Uri
+                .parse("http://github.com/defunkt/"));
+        assertNotNull(user);
+        assertEquals("defunkt", user.getLogin());
+    }
+
+    /**
+     * Verity URI with name
+     */
+    public void testUriWithTrailingSlashes() {
+        User user = UserUriMatcher.getUser(Uri
+                .parse("http://github.com/defunkt//"));
+        assertNotNull(user);
+        assertEquals("defunkt", user.getLogin());
+    }
 }
