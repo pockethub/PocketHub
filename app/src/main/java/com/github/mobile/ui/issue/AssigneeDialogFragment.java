@@ -94,6 +94,11 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
         protected UserItemView createView(View view) {
             return new UserItemView(view);
         }
+
+        @Override
+        public long getItemId(int position) {
+            return getItem(position).getId();
+        }
     }
 
     /**
