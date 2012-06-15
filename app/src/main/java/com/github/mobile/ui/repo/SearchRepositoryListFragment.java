@@ -67,11 +67,15 @@ public class SearchRepositoryListFragment extends
                 .getItemAtPosition(position);
         new AuthenticatedUserTask<Repository>(getActivity()) {
 
+            @Override
             public Repository run() throws Exception {
                 return service.getRepository(result);
             }
 
+            @Override
             protected void onSuccess(Repository repository) throws Exception {
+                super.onSuccess(repository);
+
                 startActivity(RepositoryViewActivity.createIntent(repository));
             }
         }.execute();
@@ -81,6 +85,7 @@ public class SearchRepositoryListFragment extends
     public Loader<List<SearchRepository>> onCreateLoader(int id, Bundle args) {
         return new ThrowableLoader<List<SearchRepository>>(getActivity(), items) {
 
+            @Override
             public List<SearchRepository> loadData() throws Exception {
                 return service.searchRepositories(query);
             }
