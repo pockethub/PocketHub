@@ -25,13 +25,14 @@
     <ImageView
         android:id="@+id/iv_avatar"
         style="@style/AvatarActionBar"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="6dp"
         android:contentDescription="@string/avatar" />
 
     <TextView
         android:id="@+id/tv_org_name"
         style="@style/TitleText"
         android:paddingBottom="0dp"
-        android:paddingLeft="5dp"
         android:singleLine="true"
         android:textColor="@color/actionbar_text"
         android:textStyle="normal" />
