@@ -34,6 +34,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/pager_title_background"
         android:textColor="@color/pager_title_text"
+        app:clipPadding="10dp"
         app:footerColor="@color/pager_footer"
         app:footerIndicatorHeight="5dp"
         app:footerIndicatorStyle="triangle"
