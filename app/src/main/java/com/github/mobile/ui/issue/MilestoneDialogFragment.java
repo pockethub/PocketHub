@@ -97,6 +97,11 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
         protected MilestoneItemView createView(View view) {
             return new MilestoneItemView(view);
         }
+
+        @Override
+        public long getItemId(int position) {
+            return getItem(position).getNumber();
+        }
     }
 
     /**
