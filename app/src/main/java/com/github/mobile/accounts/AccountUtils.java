@@ -17,7 +17,7 @@ package com.github.mobile.accounts;
 
 import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
 import static android.util.Log.DEBUG;
-import static com.github.mobile.accounts.Constants.GITHUB_ACCOUNT_TYPE;
+import static com.github.mobile.accounts.AccountConstants.GITHUB_ACCOUNT_TYPE;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerFuture;

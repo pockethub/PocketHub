@@ -18,25 +18,20 @@ package com.github.mobile.accounts;
 /**
  * Authentication constants
  */
-public class Constants {
+public interface AccountConstants {
 
     /**
      * Account type
      */
-    public static final String GITHUB_ACCOUNT_TYPE = "com.github";
+    String GITHUB_ACCOUNT_TYPE = "com.github";
 
     /**
-     * Acccount name
+     * Account name
      */
-    public static final String GITHUB_ACCOUNT_NAME = "GitHub";
+    String GITHUB_ACCOUNT_NAME = "GitHub";
 
     /**
      * Provider authority
      */
-    public static final String GITHUB_PROVIDER_AUTHORITY = "com.github.sync";
-
-    /**
-     * Auth token type
-     */
-    public static final String AUTH_TOKEN_TYPE = GITHUB_ACCOUNT_TYPE;
+    String GITHUB_PROVIDER_AUTHORITY = "com.github.sync";
 }
