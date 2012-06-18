@@ -461,7 +461,7 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
 
         StyledText main = new StyledText();
         StyledText details = new StyledText();
-        char icon = ' ';
+        String icon = null;
 
         String type = event.getType();
         if (TYPE_COMMIT_COMMENT.equals(type)) {
@@ -522,8 +522,8 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
             formatWatch(event, main, details);
         }
 
-        if (icon != ' ') {
-            view.iconText.setText(Character.toString(icon));
+        if (icon != null) {
+            view.iconText.setText(icon);
             view.iconText.setVisibility(VISIBLE);
         } else
             view.iconText.setVisibility(GONE);

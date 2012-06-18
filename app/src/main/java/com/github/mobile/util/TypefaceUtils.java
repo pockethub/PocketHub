@@ -30,102 +30,102 @@ public class TypefaceUtils {
     /**
      * Private repository icon
      */
-    public static final char ICON_PRIVATE = '\uf26a';
+    public static final String ICON_PRIVATE = "\uf26a";
 
     /**
      * Public repository icon
      */
-    public static final char ICON_PUBLIC = '\uf201';
+    public static final String ICON_PUBLIC = "\uf201";
 
     /**
      * Fork icon
      */
-    public static final char ICON_FORK = '\uf202';
+    public static final String ICON_FORK = "\uf202";
 
     /**
      * Create icon
      */
-    public static final char ICON_CREATE = '\uf203';
+    public static final String ICON_CREATE = "\uf203";
 
     /**
      * Delete icon
      */
-    public static final char ICON_DELETE = '\uf204';
+    public static final String ICON_DELETE = "\uf204";
 
     /**
      * Push icon
      */
-    public static final char ICON_PUSH = '\uf205';
+    public static final String ICON_PUSH = "\uf205";
 
     /**
      * Wiki icon
      */
-    public static final char ICON_WIKI = '\uf207';
+    public static final String ICON_WIKI = "\uf207";
 
     /**
      * Upload icon
      */
-    public static final char ICON_UPLOAD = '\uf20C';
+    public static final String ICON_UPLOAD = "\uf20C";
 
     /**
      * Gist icon
      */
-    public static final char ICON_GIST = '\uf20E';
+    public static final String ICON_GIST = "\uf20E";
 
     /**
      * Add member icon
      */
-    public static final char ICON_ADD_MEMBER = '\uf21A';
+    public static final String ICON_ADD_MEMBER = "\uf21A";
 
     /**
      * Public mirror repository icon
      */
-    public static final char ICON_MIRROR_PUBLIC = '\uf224';
+    public static final String ICON_MIRROR_PUBLIC = "\uf224";
 
     /**
      * Public mirror repository icon
      */
-    public static final char ICON_MIRROR_PRIVATE = '\uf225';
+    public static final String ICON_MIRROR_PRIVATE = "\uf225";
 
     /**
      * Follow icon
      */
-    public static final char ICON_FOLLOW = '\uf228';
+    public static final String ICON_FOLLOW = "\uf228";
 
     /**
      * Watch icon
      */
-    public static final char ICON_WATCH = '\uf21D';
+    public static final String ICON_WATCH = "\uf21D";
 
     /**
      * Pull request icon
      */
-    public static final char ICON_PULL_REQUEST = '\uf222';
+    public static final String ICON_PULL_REQUEST = "\uf222";
 
     /**
      * Issue open icon
      */
-    public static final char ICON_ISSUE_OPEN = '\uf226';
+    public static final String ICON_ISSUE_OPEN = "\uf226";
 
     /**
      * Issue reopen icon
      */
-    public static final char ICON_ISSUE_REOPEN = '\uf227';
+    public static final String ICON_ISSUE_REOPEN = "\uf227";
 
     /**
      * Issue close icon
      */
-    public static final char ICON_ISSUE_CLOSE = '\uf228';
+    public static final String ICON_ISSUE_CLOSE = "\uf228";
 
     /**
      * Issue comment icon
      */
-    public static final char ICON_ISSUE_COMMENT = '\uf229';
+    public static final String ICON_ISSUE_COMMENT = "\uf229";
 
     /**
      * Comment icon
      */
-    public static final char ICON_COMMENT = '\uf22b';
+    public static final String ICON_COMMENT = "\uf22b";
 
     /**
      * Find the maximum number of digits in the given numbers

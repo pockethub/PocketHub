@@ -87,16 +87,16 @@ public abstract class RepositoryListAdapter<I, V extends ItemView> extends
             final boolean isFork, final String mirrorUrl) {
         if (TextUtils.isEmpty(mirrorUrl))
             if (isPrivate)
-                view.repoIcon.setText(Character.toString(ICON_PRIVATE));
+                view.repoIcon.setText(ICON_PRIVATE);
             else if (isFork)
-                view.repoIcon.setText(Character.toString(ICON_FORK));
+                view.repoIcon.setText(ICON_FORK);
             else
-                view.repoIcon.setText(Character.toString(ICON_PUBLIC));
+                view.repoIcon.setText(ICON_PUBLIC);
         else {
             if (isPrivate)
-                view.repoIcon.setText(Character.toString(ICON_MIRROR_PRIVATE));
+                view.repoIcon.setText(ICON_MIRROR_PRIVATE);
             else
-                view.repoIcon.setText(Character.toString(ICON_MIRROR_PUBLIC));
+                view.repoIcon.setText(ICON_MIRROR_PUBLIC);
         }
 
         if (!TextUtils.isEmpty(description)) {
