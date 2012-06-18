@@ -105,12 +105,11 @@ public abstract class RepositoryListAdapter<I, V extends ItemView> extends
         } else
             view.repoDescription.setVisibility(GONE);
 
-        if (TextUtils.isEmpty(language))
-            view.language.setVisibility(GONE);
-        else {
+        if (!TextUtils.isEmpty(language)) {
             view.language.setText(language);
             view.language.setVisibility(VISIBLE);
-        }
+        } else
+            view.language.setVisibility(GONE);
 
         view.watchers.setText(FORMAT.format(watchers));
         view.forks.setText(FORMAT.format(forks));
