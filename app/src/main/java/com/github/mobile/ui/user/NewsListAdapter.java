@@ -108,20 +108,20 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
             return false;
 
         return TYPE_COMMIT_COMMENT.equals(type) //
-                || TYPE_CREATE.equals(type)
-                && ((CreatePayload) payload).getRefType() != null //
+                || (TYPE_CREATE.equals(type) //
+                && ((CreatePayload) payload).getRefType() != null) //
                 || TYPE_DELETE.equals(type) //
                 || TYPE_DOWNLOAD.equals(type) //
                 || TYPE_FOLLOW.equals(type) //
                 || TYPE_FORK.equals(type) //
                 || TYPE_FORK_APPLY.equals(type) //
-                || TYPE_GIST.equals(type)
-                && ((GistPayload) payload).getGist() != null //
+                || (TYPE_GIST.equals(type) //
+                && ((GistPayload) payload).getGist() != null) //
                 || TYPE_GOLLUM.equals(type) //
-                || TYPE_ISSUE_COMMENT.equals(type)
-                && ((IssueCommentPayload) payload).getIssue() != null //
-                || TYPE_ISSUES.equals(type)
-                && ((IssuesPayload) payload).getIssue() != null //
+                || (TYPE_ISSUE_COMMENT.equals(type) //
+                && ((IssueCommentPayload) payload).getIssue() != null) //
+                || (TYPE_ISSUES.equals(type) //
+                && ((IssuesPayload) payload).getIssue() != null) //
                 || TYPE_MEMBER.equals(type) //
                 || TYPE_PUBLIC.equals(type) //
                 || TYPE_PULL_REQUEST.equals(type) //
