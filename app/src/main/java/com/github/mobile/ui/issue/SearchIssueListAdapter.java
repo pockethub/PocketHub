@@ -117,14 +117,14 @@ public class SearchIssueListAdapter extends
         view.reporter.setText(reporterText);
 
         view.comments.setText(Integer.toString(issue.getComments()));
-
-        for (View label : view.labels)
-            label.setVisibility(GONE);
     }
 
     @Override
     protected RepositoryIssueItemView createView(View view) {
-        return new RepositoryIssueItemView(view);
+        RepositoryIssueItemView itemView = new RepositoryIssueItemView(view);
+        for (View label : itemView.labels)
+            label.setVisibility(GONE);
+        return itemView;
     }
 
     @Override
