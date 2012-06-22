@@ -90,14 +90,18 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
 
     private static final String TAG = "LoginActivity";
 
+    /**
+     * Sync period in seconds, currently every 8 hours
+     */
+    private static final long SYNC_PERIOD = 8L * 60L * 60L;
+
     private static void configureSyncFor(Account account) {
         Log.d(TAG, "Configuring account sync");
 
         ContentResolver.setIsSyncable(account, PROVIDER_AUTHORITY, 1);
-        ContentResolver.setSyncAutomatically(account,
-                PROVIDER_AUTHORITY, true);
+        ContentResolver.setSyncAutomatically(account, PROVIDER_AUTHORITY, true);
         ContentResolver.addPeriodicSync(account, PROVIDER_AUTHORITY,
-                new Bundle(), 15L * 60L);
+                new Bundle(), SYNC_PERIOD);
     }
 
     private static class AccountLoader extends
@@ -251,8 +255,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
                 client.setCredentials(username, password);
                 User user = new UserService(client).getUser();
 
-                Account account = new Account(user.getLogin(),
-                        ACCOUNT_TYPE);
+                Account account = new Account(user.getLogin(), ACCOUNT_TYPE);
                 if (requestNewAccount) {
                     accountManager
                             .addAccountExplicitly(account, password, null);
