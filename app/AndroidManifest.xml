@@ -29,7 +29,8 @@
         android:theme="@style/Theme.GitHub" >
         <activity
             android:name=".ui.user.HomeActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" >
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -53,7 +54,8 @@
         </activity>
         <activity
             android:name=".ui.issue.IssueBrowseActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" >
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true" >
             <intent-filter>
                 <action android:name="com.github.mobile.android.repo.issues.VIEW" />
 
@@ -75,7 +77,8 @@
         </activity>
         <activity
             android:name=".ui.issue.IssueDashboardActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" >
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true" >
             <intent-filter>
                 <action android:name="com.github.mobile.android.repo.issues.dashboard.VIEW" />
 
@@ -103,6 +106,7 @@
         <activity
             android:name=".ui.repo.RepositorySearchActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true"
             android:label="@string/search_title"
             android:launchMode="singleTop" >
             <intent-filter>
@@ -115,10 +119,12 @@
         </activity>
         <activity
             android:name=".ui.gist.GistsActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true" />
         <activity
             android:name=".ui.issue.FiltersViewActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" >
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true" >
             <intent-filter>
                 <action android:name="com.github.mobile.android.repo.issues.filters.VIEW" />
 
@@ -163,7 +169,8 @@
         </activity>
         <activity
             android:name=".ui.repo.RepositoryViewActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" >
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true" >
             <intent-filter>
                 <action android:name="com.github.mobile.android.repo.VIEW" />
 
@@ -176,7 +183,8 @@
         </activity>
         <activity
             android:name=".ui.user.UserViewActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" >
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true" >
             <intent-filter>
                 <action android:name="com.github.mobile.android.user.VIEW" />
 
@@ -241,6 +249,7 @@
         <activity
             android:name=".ui.issue.IssueSearchActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true"
             android:label="@string/search_title"
             android:launchMode="singleTop" >
             <intent-filter>
