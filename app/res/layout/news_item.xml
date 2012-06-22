@@ -44,7 +44,6 @@
             android:id="@+id/tv_event_details"
             style="@style/ListTitleText"
             android:layout_width="match_parent"
-            android:includeFontPadding="true"
             android:lineSpacingExtra="3dp"
             android:maxLines="3"
             android:paddingBottom="5dp"
