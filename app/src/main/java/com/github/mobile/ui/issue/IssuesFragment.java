@@ -269,6 +269,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
         return string.error_issues_load;
     }
 
+    @Override
     protected ItemListAdapter<Issue, ? extends ItemView> createAdapter(
             List<Issue> items) {
         return new RepositoryIssueListAdapter(
