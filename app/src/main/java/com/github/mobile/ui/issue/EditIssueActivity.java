@@ -20,8 +20,6 @@ import static android.view.View.VISIBLE;
 import static com.github.mobile.Intents.EXTRA_ISSUE;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY_NAME;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY_OWNER;
-import static com.github.mobile.Intents.EXTRA_SUBTITLE;
-import static com.github.mobile.Intents.EXTRA_TITLE;
 import static com.github.mobile.Intents.EXTRA_USER;
 import static com.github.mobile.RequestCodes.ISSUE_ASSIGNEE_UPDATE;
 import static com.github.mobile.RequestCodes.ISSUE_LABELS_UPDATE;
@@ -74,13 +72,11 @@ public class EditIssueActivity extends DialogFragmentActivity {
      * Create intent to create an issue
      *
      * @param repository
-     * @param title
      * @return intent
      */
-    public static Intent createIntent(Repository repository, final String title) {
+    public static Intent createIntent(Repository repository) {
         return createIntent(null, repository.getOwner().getLogin(),
-                repository.getName(), title, repository.generateId(),
-                repository.getOwner());
+                repository.getName(), repository.getOwner());
 
     }
 
@@ -90,19 +86,13 @@ public class EditIssueActivity extends DialogFragmentActivity {
      * @param issue
      * @param repositoryOwner
      * @param repositoryName
-     * @param title
-     * @param subtitle
      * @param user
      * @return intent
      */
     public static Intent createIntent(final Issue issue,
             final String repositoryOwner, final String repositoryName,
-            final String title, final String subtitle, final User user) {
+            final User user) {
         Builder builder = new Builder("repo.issues.edit.VIEW");
-        if (title != null)
-            builder.add(EXTRA_TITLE, title);
-        if (subtitle != null)
-            builder.add(EXTRA_SUBTITLE, subtitle);
         if (user != null)
             builder.add(EXTRA_USER, user);
         builder.add(EXTRA_REPOSITORY_NAME, repositoryName);
@@ -169,14 +159,18 @@ public class EditIssueActivity extends DialogFragmentActivity {
         if (issue == null)
             issue = new Issue();
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(intent.getStringExtra(EXTRA_TITLE));
-        actionBar.setSubtitle(intent.getStringExtra(EXTRA_SUBTITLE));
-        avatars.bind(actionBar, (User) intent.getSerializableExtra(EXTRA_USER));
-
         repository = RepositoryId.create(
                 intent.getStringExtra(EXTRA_REPOSITORY_OWNER),
                 intent.getStringExtra(EXTRA_REPOSITORY_NAME));
+
+        ActionBar actionBar = getSupportActionBar();
+        if (issue.getNumber() > 0)
+            actionBar.setTitle(getString(string.issue_title)
+                    + issue.getNumber());
+        else
+            actionBar.setTitle(string.new_issue);
+        actionBar.setSubtitle(repository.generateId());
+        avatars.bind(actionBar, (User) intent.getSerializableExtra(EXTRA_USER));
 
         findViewById(id.ll_milestone).setOnClickListener(new OnClickListener() {
 

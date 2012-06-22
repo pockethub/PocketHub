@@ -18,7 +18,6 @@ package com.github.mobile.ui.issue;
 import static com.github.mobile.Intents.EXTRA_ISSUE_NUMBER;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY_NAME;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY_OWNER;
-import static com.github.mobile.Intents.EXTRA_SUBTITLE;
 import static com.github.mobile.Intents.EXTRA_USER;
 import android.content.Intent;
 import android.os.Bundle;
@@ -73,7 +72,7 @@ public class CreateCommentActivity extends
                 intent.getStringExtra(EXTRA_REPOSITORY_NAME));
         actionBar.setTitle(getString(string.issue_title) + issueNumber);
 
-        actionBar.setSubtitle(intent.getStringExtra(EXTRA_SUBTITLE));
+        actionBar.setSubtitle(repositoryId.generateId());
         avatars.bind(actionBar, (User) intent.getSerializableExtra(EXTRA_USER));
     }
 

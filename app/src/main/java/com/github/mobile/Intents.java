@@ -146,17 +146,6 @@ public class Intents {
             + "POSITION";
 
     /**
-     * Action bar title
-     */
-    public static final String EXTRA_TITLE = INTENT_EXTRA_PREFIX + "TITLE";
-
-    /**
-     * Action bar subtitle
-     */
-    public static final String EXTRA_SUBTITLE = INTENT_EXTRA_PREFIX
-            + "SUBTITLE";
-
-    /**
      * Resolve the {@link RepositoryId} referenced by the given intent
      *
      * @param intent

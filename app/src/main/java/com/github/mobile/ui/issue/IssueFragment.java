@@ -530,9 +530,8 @@ public class IssueFragment extends DialogFragment {
         switch (item.getItemId()) {
         case id.m_edit:
             startActivityForResult(EditIssueActivity.createIntent(issue,
-                    repositoryId.getOwner(), repositoryId.getName(),
-                    getString(string.issue_title) + issueNumber,
-                    repositoryId.generateId(), user), ISSUE_EDIT);
+                    repositoryId.getOwner(), repositoryId.getName(), user),
+                    ISSUE_EDIT);
             return true;
         case id.m_comment:
             startActivityForResult(CreateCommentActivity.createIntent(
