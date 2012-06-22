@@ -45,7 +45,7 @@ public class EditIssueActivityTest extends ActivityTest<EditIssueActivity> {
         Repository repo = new Repository();
         repo.setName("repo");
         repo.setOwner(new User().setLogin("owner"));
-        setActivityIntent(EditIssueActivity.createIntent(repo, "an issue"));
+        setActivityIntent(EditIssueActivity.createIntent(repo));
     }
 
     /**
