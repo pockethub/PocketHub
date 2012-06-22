@@ -182,6 +182,7 @@
     <string name="creating_issue">Creating Issue…</string>
     <string name="prefix_created">created\u0020</string>
     <string name="updated_prefix">updated\u0020</string>
+    <string name="prefix_opened">opened\u0020</string>
     <string name="clear">Clear</string>
     <string name="open_issues">Open Issues</string>
     <string name="closed_issues">Closed Issues</string>

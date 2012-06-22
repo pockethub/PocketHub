@@ -308,8 +308,8 @@ public class IssueFragment extends DialogFragment {
 
         Activity activity = getActivity();
         adapter = new HeaderFooterListAdapter<CommentListAdapter>(list,
-                new CommentListAdapter(activity.getLayoutInflater(),
-                        avatars, new HttpImageGetter(activity)));
+                new CommentListAdapter(activity.getLayoutInflater(), avatars,
+                        new HttpImageGetter(activity)));
         list.setAdapter(adapter);
     }
 
@@ -326,8 +326,8 @@ public class IssueFragment extends DialogFragment {
             bodyText.setText(string.no_description_given);
 
         authorText.setText(issue.getUser().getLogin());
-        createdDateText.setText(new StyledText().append("opened ").append(
-                issue.getCreatedAt()));
+        createdDateText.setText(new StyledText().append(
+                getString(string.prefix_opened)).append(issue.getCreatedAt()));
         avatars.bind(creatorAvatar, issue.getUser());
 
         if (STATE_OPEN.equals(issue.getState()))
