@@ -25,46 +25,44 @@
         android:layout_marginRight="10dp"
         android:contentDescription="@string/avatar" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <TextView
+        android:id="@+id/tv_event"
+        style="@style/ListTitleText"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/iv_avatar"
-        android:orientation="vertical" >
+        android:paddingBottom="5dp"
+        android:textSize="15dp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/tv_event_details"
+        style="@style/ListTitleText"
+        android:layout_alignLeft="@+id/tv_event"
+        android:layout_below="@+id/tv_event"
+        android:lineSpacingExtra="3dp"
+        android:maxLines="3"
+        android:paddingBottom="5dp"
+        android:textColor="@color/text_news_details"
+        android:textSize="14dp"
+        android:textStyle="normal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tv_event_details"
+        android:layout_below="@+id/tv_event_details"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/tv_event"
-            style="@style/ListTitleText"
-            android:paddingBottom="5dp"
-            android:textSize="15dp"
-            android:textStyle="normal" />
+            android:id="@+id/tv_event_icon"
+            style="@style/EventIcon" />
 
         <TextView
-            android:id="@+id/tv_event_details"
-            style="@style/ListTitleText"
-            android:lineSpacingExtra="3dp"
-            android:maxLines="3"
-            android:paddingBottom="5dp"
-            android:textColor="@color/text_news_details"
-            android:textSize="14dp"
-            android:textStyle="normal" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/tv_event_icon"
-                style="@style/EventIcon" />
-
-            <TextView
-                android:id="@+id/tv_event_date"
-                style="@style/ListSubtitleText"
-                android:paddingLeft="5dp"
-                android:singleLine="true" />
-        </LinearLayout>
+            android:id="@+id/tv_event_date"
+            style="@style/ListSubtitleText"
+            android:paddingLeft="5dp"
+            android:singleLine="true" />
     </LinearLayout>
 
 </RelativeLayout>
