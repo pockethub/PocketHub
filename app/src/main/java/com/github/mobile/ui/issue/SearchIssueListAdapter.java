@@ -29,6 +29,8 @@ import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.TypefaceUtils;
 import com.viewpagerindicator.R.layout;
 
+import java.text.NumberFormat;
+
 import org.eclipse.egit.github.core.SearchIssue;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.IssueService;
@@ -38,6 +40,12 @@ import org.eclipse.egit.github.core.service.IssueService;
  */
 public class SearchIssueListAdapter extends
         ItemListAdapter<SearchIssue, RepositoryIssueItemView> {
+
+    /**
+     * Number formatter
+     */
+    protected static final NumberFormat FORMAT = NumberFormat
+            .getIntegerInstance();
 
     private final AvatarLoader avatars;
 
@@ -116,7 +124,7 @@ public class SearchIssueListAdapter extends
         reporterText.append(issue.getCreatedAt());
         view.reporter.setText(reporterText);
 
-        view.comments.setText(Integer.toString(issue.getComments()));
+        view.comments.setText(FORMAT.format(issue.getComments()));
     }
 
     @Override

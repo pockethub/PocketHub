@@ -31,6 +31,7 @@ import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.TypefaceUtils;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Issue;
@@ -42,6 +43,12 @@ import org.eclipse.egit.github.core.RepositoryIssue;
  */
 public class DashboardIssueListAdapter extends
         ItemListAdapter<RepositoryIssue, DashboardIssueView> {
+
+    /**
+     * Number formatter
+     */
+    protected static final NumberFormat FORMAT = NumberFormat
+            .getIntegerInstance();
 
     private final AvatarLoader avatars;
 
@@ -135,7 +142,7 @@ public class DashboardIssueListAdapter extends
         reporterText.append(issue.getCreatedAt());
         view.reporter.setText(reporterText);
 
-        view.comments.setText(Integer.toString(issue.getComments()));
+        view.comments.setText(FORMAT.format(issue.getComments()));
 
         List<Label> labels = issue.getLabels();
         if (labels != null && !labels.isEmpty()) {
