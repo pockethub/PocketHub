@@ -94,6 +94,8 @@ public class AvatarLoader {
 
     private final Drawable loadingAvatar;
 
+    private final Options options;
+
     /**
      * Create avatar helper
      *
@@ -112,6 +114,10 @@ public class AvatarLoader {
 
         float density = context.getResources().getDisplayMetrics().density;
         cornerRadius = CORNER_RADIUS_IN_DIP * density;
+
+        options = new Options();
+        options.inDither = false;
+        options.inPreferredConfig = ARGB_8888;
     }
 
     /**
@@ -142,9 +148,6 @@ public class AvatarLoader {
      * @return bitmap
      */
     protected Bitmap decode(final File file) {
-        Options options = new Options();
-        options.inDither = false;
-        options.inPreferredConfig = ARGB_8888;
         return BitmapFactory.decodeFile(file.getAbsolutePath(), options);
     }
 
