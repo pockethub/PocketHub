@@ -146,8 +146,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
         Activity activity = getActivity();
         adapter = new HeaderFooterListAdapter<CommentListAdapter>(list,
-                new CommentListAdapter(activity.getLayoutInflater(),
-                        avatars, new HttpImageGetter(activity)));
+                new CommentListAdapter(activity.getLayoutInflater(), avatars,
+                        new HttpImageGetter(activity)));
         list.setAdapter(adapter);
     }
 
@@ -198,7 +198,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         Date updatedAt = gist.getUpdatedAt();
         if (updatedAt != null && !updatedAt.equals(createdAt)) {
             StyledText text = new StyledText();
-            text.append(getString(string.updated_prefix));
+            text.append(getString(string.prefix_updated));
             text.append(updatedAt);
             updated.setText(text);
             updated.setVisibility(VISIBLE);
