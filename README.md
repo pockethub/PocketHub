@@ -40,7 +40,7 @@ you will then be able to install your own built version.
 This project uses the [GitHub Java API](https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core)
 built on top of [API v3](http://developer.github.com/).
 
-It also uses many great open-source libraries from the Android dev community:
+It also uses many other open source libraries such as:
 
 * [ActionBarSherlock](https://github.com/JakeWharton/ActionBarSherlock)
 * [ViewPagerIndicator](https://github.com/JakeWharton/Android-ViewPagerIndicator)
