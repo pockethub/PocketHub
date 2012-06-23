@@ -32,7 +32,8 @@
     <color name="actionbar_background_end">#282828</color>
     <color name="actionbar_background_start">#515252</color>
     <color name="actionbar_text">#F4F2F1</color>
-    <color name="pager_title_background_top">#153D55</color>
+    <color name="pager_title_background_top_start">#1A4D6B</color>
+    <color name="pager_title_background_top_end">#1A5373</color>
     <color name="pager_title_background_bottom">#155A7F</color>
     <color name="pager_title_background_end">#22688F</color>
     <color name="pager_title_background_start">#1F5D82</color>

@@ -18,17 +18,20 @@
 
     <item>
         <shape android:shape="rectangle" >
-            <solid android:color="@color/pager_title_background_top" />
+            <gradient
+                android:angle="270"
+                android:endColor="@color/pager_title_background_top_end"
+                android:startColor="@color/pager_title_background_top_start" />
         </shape>
     </item>
-    <item android:top="1dp">
+    <item android:top="2dp">
         <shape android:shape="rectangle" >
             <solid android:color="@color/pager_title_background_bottom" />
         </shape>
     </item>
     <item
         android:bottom="1dp"
-        android:top="1dp">
+        android:top="2dp">
         <shape>
             <gradient
                 android:angle="270"
