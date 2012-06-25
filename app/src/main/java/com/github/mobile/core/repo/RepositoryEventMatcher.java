@@ -69,7 +69,7 @@ public class RepositoryEventMatcher {
         full.setName(id.substring(slash + 1));
         String login = id.substring(0, slash);
         // Use actor if it matches login parsed from repository id
-        if (actor != null && login.equals(actor))
+        if (actor != null && login.equals(actor.getLogin()))
             full.setOwner(actor);
         else
             full.setOwner(new User().setLogin(id.substring(0, slash)));
