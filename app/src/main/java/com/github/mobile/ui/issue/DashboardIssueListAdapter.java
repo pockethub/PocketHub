@@ -15,13 +15,13 @@
  */
 package com.github.mobile.ui.issue;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.github.mobile.R.layout;
+import com.github.mobile.core.issue.IssueUtils;
 import com.github.mobile.util.AvatarLoader;
+import com.github.mobile.util.ViewUtils;
 
 import org.eclipse.egit.github.core.RepositoryIssue;
 
@@ -64,9 +64,8 @@ public class DashboardIssueListAdapter extends
         else
             view.repoText.setText("");
 
-        view.pullRequestIcon
-                .setVisibility(issue.getPullRequest().getHtmlUrl() == null ? GONE
-                        : VISIBLE);
+        ViewUtils.setGone(view.pullRequestIcon,
+                !IssueUtils.isPullRequest(issue));
 
         view.title.setText(issue.getTitle());
 

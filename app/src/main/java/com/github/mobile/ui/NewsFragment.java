@@ -28,6 +28,7 @@ import android.widget.ListView;
 import com.github.mobile.R.string;
 import com.github.mobile.core.gist.GistEventMatcher;
 import com.github.mobile.core.issue.IssueEventMatcher;
+import com.github.mobile.core.issue.IssueUtils;
 import com.github.mobile.core.repo.RepositoryEventMatcher;
 import com.github.mobile.core.user.UserEventMatcher;
 import com.github.mobile.core.user.UserEventMatcher.UserPair;
@@ -100,9 +101,7 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
         }
 
         Issue issue = issueMatcher.getIssue(event);
-        if (issue != null
-                && (issue.getPullRequest() == null || issue.getPullRequest()
-                        .getHtmlUrl() == null)) {
+        if (!IssueUtils.isPullRequest(issue)) {
             viewIssue(issue);
             return;
         }

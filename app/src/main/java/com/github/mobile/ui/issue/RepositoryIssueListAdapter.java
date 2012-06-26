@@ -15,12 +15,12 @@
  */
 package com.github.mobile.ui.issue;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.github.mobile.core.issue.IssueUtils;
 import com.github.mobile.util.AvatarLoader;
+import com.github.mobile.util.ViewUtils;
 import com.viewpagerindicator.R.layout;
 
 import org.eclipse.egit.github.core.Issue;
@@ -54,9 +54,8 @@ public class RepositoryIssueListAdapter extends
 
         avatars.bind(view.avatar, issue.getUser());
 
-        view.pullRequestIcon
-                .setVisibility(issue.getPullRequest().getHtmlUrl() == null ? GONE
-                        : VISIBLE);
+        ViewUtils.setGone(view.pullRequestIcon,
+                !IssueUtils.isPullRequest(issue));
 
         view.title.setText(issue.getTitle());
 

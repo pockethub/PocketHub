@@ -55,6 +55,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.github.mobile.core.issue.IssueUtils;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
@@ -298,8 +299,7 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
 
         Issue issue = payload.getIssue();
         String number;
-        if (issue.getPullRequest() != null
-                && issue.getPullRequest().getHtmlUrl() != null)
+        if (IssueUtils.isPullRequest(issue))
             number = "pull request " + issue.getNumber();
         else
             number = "issue " + issue.getNumber();
