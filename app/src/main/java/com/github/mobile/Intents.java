@@ -36,7 +36,7 @@ public class Intents {
     /**
      * Prefix for all intents created
      */
-    public static final String INTENT_PREFIX = "com.github.mobile.android.";
+    public static final String INTENT_PREFIX = "com.github.mobile.";
 
     /**
      * Prefix for all extra data added to intents

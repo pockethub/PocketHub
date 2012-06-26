@@ -57,7 +57,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true" >
             <intent-filter>
-                <action android:name="com.github.mobile.android.repo.issues.VIEW" />
+                <action android:name="com.github.mobile.repo.issues.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -70,7 +70,7 @@
             android:name=".ui.issue.FilterIssuesActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" >
             <intent-filter>
-                <action android:name="com.github.mobile.android.repo.issues.filter.VIEW" />
+                <action android:name="com.github.mobile.repo.issues.filter.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -80,7 +80,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true" >
             <intent-filter>
-                <action android:name="com.github.mobile.android.repo.issues.dashboard.VIEW" />
+                <action android:name="com.github.mobile.repo.issues.dashboard.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -89,7 +89,7 @@
             android:name=".ui.issue.CreateIssueActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" >
             <intent-filter>
-                <action android:name="com.github.mobile.android.repo.issues.create.VIEW" />
+                <action android:name="com.github.mobile.repo.issues.create.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -98,7 +98,7 @@
             android:name=".ui.issue.EditIssueActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" >
             <intent-filter>
-                <action android:name="com.github.mobile.android.repo.issues.edit.VIEW" />
+                <action android:name="com.github.mobile.repo.issues.edit.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -126,7 +126,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true" >
             <intent-filter>
-                <action android:name="com.github.mobile.android.repo.issues.filters.VIEW" />
+                <action android:name="com.github.mobile.repo.issues.filters.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -135,7 +135,7 @@
             android:name=".ui.gist.GistsViewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" >
             <intent-filter>
-                <action android:name="com.github.mobile.android.gists.VIEW" />
+                <action android:name="com.github.mobile.gists.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -144,7 +144,7 @@
             android:name=".ui.gist.GistFilesViewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" >
             <intent-filter>
-                <action android:name="com.github.mobile.android.gist.files.VIEW" />
+                <action android:name="com.github.mobile.gist.files.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -153,7 +153,7 @@
             android:name=".ui.issue.CreateCommentActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" >
             <intent-filter>
-                <action android:name="com.github.mobile.android.issue.comment.create.VIEW" />
+                <action android:name="com.github.mobile.issue.comment.create.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -162,7 +162,7 @@
             android:name=".ui.gist.CreateCommentActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" >
             <intent-filter>
-                <action android:name="com.github.mobile.android.gist.comment.create.VIEW" />
+                <action android:name="com.github.mobile.gist.comment.create.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -172,7 +172,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true" >
             <intent-filter>
-                <action android:name="com.github.mobile.android.repo.VIEW" />
+                <action android:name="com.github.mobile.repo.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -186,7 +186,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true" >
             <intent-filter>
-                <action android:name="com.github.mobile.android.user.VIEW" />
+                <action android:name="com.github.mobile.user.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -195,7 +195,7 @@
             android:name=".ui.issue.IssuesViewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" >
             <intent-filter>
-                <action android:name="com.github.mobile.android.issues.VIEW" />
+                <action android:name="com.github.mobile.issues.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
