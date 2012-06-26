@@ -48,12 +48,12 @@
         <dependency>
             <groupId>com.github.rtyley</groupId>
             <artifactId>roboguice-sherlock</artifactId>
-            <version>1.2</version>
+            <version>1.4</version>
         </dependency>
         <dependency>
             <groupId>org.roboguice</groupId>
             <artifactId>roboguice</artifactId>
-            <version>2.0-RC1</version>
+            <version>2.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.inject.extensions</groupId>
