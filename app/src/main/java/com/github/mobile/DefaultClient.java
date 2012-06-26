@@ -37,43 +37,12 @@ public class DefaultClient extends GitHubClient {
             HttpRequest.keepAlive(false);
     }
 
-    private final boolean useAcceptHeader;
-
     /**
      * Create client
      */
     public DefaultClient() {
         super();
 
-        useAcceptHeader = true;
-        setSerializeNulls(false);
-        setUserAgent(USER_AGENT);
-    }
-
-    /**
-     * Create client
-     *
-     * @param hostname
-     * @param port
-     * @param scheme
-     */
-    public DefaultClient(String hostname, int port, String scheme) {
-        super(hostname, port, scheme);
-
-        useAcceptHeader = false;
-        setSerializeNulls(false);
-        setUserAgent(USER_AGENT);
-    }
-
-    /**
-     * Create client
-     *
-     * @param hostname
-     */
-    public DefaultClient(String hostname) {
-        super(hostname);
-
-        useAcceptHeader = false;
         setSerializeNulls(false);
         setUserAgent(USER_AGENT);
     }
@@ -82,9 +51,8 @@ public class DefaultClient extends GitHubClient {
     protected HttpURLConnection configureRequest(HttpURLConnection request) {
         super.configureRequest(request);
 
-        if (useAcceptHeader)
-            request.setRequestProperty(HEADER_ACCEPT,
-                    "application/vnd.github.beta.full+json");
+        request.setRequestProperty(HEADER_ACCEPT,
+                "application/vnd.github.beta.full+json");
 
         return request;
     }

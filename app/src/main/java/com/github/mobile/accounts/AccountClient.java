@@ -46,19 +46,6 @@ public class AccountClient extends DefaultClient {
         this.accountProvider = accountProvider;
     }
 
-    /**
-     * Create account-aware client
-     *
-     * @param hostname
-     * @param accountProvider
-     */
-    public AccountClient(final String hostname,
-            final Provider<GitHubAccount> accountProvider) {
-        super(hostname);
-
-        this.accountProvider = accountProvider;
-    }
-
     @Override
     protected HttpURLConnection configureRequest(final HttpURLConnection request) {
         GitHubAccount account = accountProvider.get();
