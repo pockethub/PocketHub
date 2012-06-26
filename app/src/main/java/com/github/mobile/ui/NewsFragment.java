@@ -101,7 +101,7 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
         }
 
         Issue issue = issueMatcher.getIssue(event);
-        if (!IssueUtils.isPullRequest(issue)) {
+        if (issue != null && !IssueUtils.isPullRequest(issue)) {
             viewIssue(issue);
             return;
         }
