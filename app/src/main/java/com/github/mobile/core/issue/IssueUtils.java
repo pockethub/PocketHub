@@ -56,6 +56,7 @@ public class IssueUtils {
         issue.setHtmlUrl(pullRequest.getHtmlUrl());
         issue.setId(pullRequest.getId());
         issue.setNumber(pullRequest.getNumber());
+        issue.setPullRequest(pullRequest);
         issue.setState(pullRequest.getState());
         issue.setTitle(pullRequest.getTitle());
         issue.setUpdatedAt(pullRequest.getUpdatedAt());
