@@ -15,45 +15,21 @@
  */
 package com.github.mobile.ui.issue;
 
-import static android.graphics.Paint.STRIKE_THRU_TEXT_FLAG;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import android.graphics.Color;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
-import com.github.mobile.R.id;
-import com.github.mobile.ui.ItemListAdapter;
-import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
-import com.github.mobile.util.TypefaceUtils;
 import com.viewpagerindicator.R.layout;
 
-import java.text.NumberFormat;
-import java.util.List;
-
 import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.Label;
 
 /**
  * Adapter for a list of {@link Issue} objects
  */
 public class RepositoryIssueListAdapter extends
-        ItemListAdapter<Issue, RepositoryIssueItemView> {
-
-    /**
-     * Number formatter
-     */
-    protected static final NumberFormat FORMAT = NumberFormat
-            .getIntegerInstance();
-
-    private final AvatarLoader avatars;
-
-    private final TextView numberView;
-
-    private int numberWidth;
+        IssueListAdapter<Issue, RepositoryIssueItemView> {
 
     /**
      * @param inflater
@@ -62,40 +38,7 @@ public class RepositoryIssueListAdapter extends
      */
     public RepositoryIssueListAdapter(LayoutInflater inflater,
             Issue[] elements, AvatarLoader avatars) {
-        super(layout.repo_issue_item, inflater, elements);
-
-        this.avatars = avatars;
-        this.numberView = (TextView) inflater.inflate(layout.repo_issue_item,
-                null).findViewById(id.tv_issue_number);
-
-        if (elements != null)
-            computeNumberWidth(elements);
-    }
-
-    /**
-     * @param inflater
-     * @param avatars
-     */
-    public RepositoryIssueListAdapter(LayoutInflater inflater,
-            AvatarLoader avatars) {
-        this(inflater, null, avatars);
-    }
-
-    private void computeNumberWidth(final Object[] items) {
-        int[] numbers = new int[items.length];
-        for (int i = 0; i < numbers.length; i++)
-            numbers[i] = ((Issue) items[i]).getNumber();
-        int digits = Math.max(TypefaceUtils.getMaxDigits(numbers), 4);
-        numberWidth = TypefaceUtils.getWidth(numberView, digits)
-                + numberView.getPaddingLeft() + numberView.getPaddingRight();
-    }
-
-    @Override
-    public ItemListAdapter<Issue, RepositoryIssueItemView> setItems(
-            final Object[] items) {
-        computeNumberWidth(items);
-
-        return super.setItems(items);
+        super(layout.repo_issue_item, inflater, elements, avatars);
     }
 
     @Override
@@ -106,13 +49,8 @@ public class RepositoryIssueListAdapter extends
     @Override
     protected void update(final int position,
             final RepositoryIssueItemView view, final Issue issue) {
-        view.number.setText(Integer.toString(issue.getNumber()));
-        if (issue.getClosedAt() != null)
-            view.number.setPaintFlags(view.numberPaintFlags
-                    | STRIKE_THRU_TEXT_FLAG);
-        else
-            view.number.setPaintFlags(view.numberPaintFlags);
-        view.number.getLayoutParams().width = numberWidth;
+        updateNumber(issue.getNumber(), issue.getState(),
+                view.numberPaintFlags, view.number);
 
         avatars.bind(view.avatar, issue.getUser());
 
@@ -122,35 +60,18 @@ public class RepositoryIssueListAdapter extends
 
         view.title.setText(issue.getTitle());
 
-        StyledText reporterText = new StyledText();
-        reporterText.bold(issue.getUser().getLogin());
-        reporterText.append(' ');
-        reporterText.append(issue.getCreatedAt());
-        view.reporter.setText(reporterText);
-
-        view.comments.setText(FORMAT.format(issue.getComments()));
-
-        List<Label> labels = issue.getLabels();
-        if (labels != null && !labels.isEmpty()) {
-            int size = Math.min(labels.size(), view.labels.length);
-            for (int i = 0; i < size; i++) {
-                String color = labels.get(i).getColor();
-                if (!TextUtils.isEmpty(color)) {
-                    view.labels[i].setBackgroundColor(Color
-                            .parseColor('#' + color));
-                    view.labels[i].setVisibility(VISIBLE);
-                } else
-                    view.labels[i].setVisibility(GONE);
-            }
-            for (int i = size; i < view.labels.length; i++)
-                view.labels[i].setVisibility(GONE);
-        } else
-            for (View label : view.labels)
-                label.setVisibility(GONE);
+        updateReporter(issue.getUser().getLogin(), issue.getCreatedAt(),
+                view.reporter);
+        updateComments(issue.getComments(), view.comments);
+        updateLabels(issue.getLabels(), view.labels);
     }
 
     @Override
     protected RepositoryIssueItemView createView(View view) {
         return new RepositoryIssueItemView(view);
+    }
+
+    protected int getNumber(Issue issue) {
+        return issue.getNumber();
     }
 }

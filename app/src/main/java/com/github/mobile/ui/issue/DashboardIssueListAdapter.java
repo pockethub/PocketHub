@@ -15,57 +15,21 @@
  */
 package com.github.mobile.ui.issue;
 
-import static android.graphics.Paint.STRIKE_THRU_TEXT_FLAG;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import android.graphics.Color;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
-import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
-import com.github.mobile.ui.ItemListAdapter;
-import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
-import com.github.mobile.util.TypefaceUtils;
 
-import java.text.NumberFormat;
-import java.util.List;
-
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.RepositoryIssue;
 
 /**
  * Adapter to display a list of dashboard issues
  */
 public class DashboardIssueListAdapter extends
-        ItemListAdapter<RepositoryIssue, DashboardIssueView> {
-
-    /**
-     * Number formatter
-     */
-    protected static final NumberFormat FORMAT = NumberFormat
-            .getIntegerInstance();
-
-    private final AvatarLoader avatars;
-
-    private int numberWidth;
-
-    private final TextView numberView;
-
-    /**
-     * Create adapter
-     *
-     * @param avatars
-     * @param inflater
-     */
-    public DashboardIssueListAdapter(AvatarLoader avatars,
-            LayoutInflater inflater) {
-        this(avatars, inflater, null);
-    }
+        IssueListAdapter<RepositoryIssue, DashboardIssueView> {
 
     /**
      * Create adapter
@@ -76,49 +40,19 @@ public class DashboardIssueListAdapter extends
      */
     public DashboardIssueListAdapter(AvatarLoader avatars,
             LayoutInflater inflater, RepositoryIssue[] elements) {
-        super(layout.dashboard_issue_item, inflater);
-
-        this.numberView = (TextView) inflater.inflate(
-                layout.dashboard_issue_item, null).findViewById(
-                id.tv_issue_number);
-        this.avatars = avatars;
-
-        if (elements != null)
-            computeNumberWidth(elements);
-    }
-
-    private void computeNumberWidth(final Object[] items) {
-        int[] numbers = new int[items.length];
-        for (int i = 0; i < numbers.length; i++)
-            numbers[i] = ((Issue) items[i]).getNumber();
-        int digits = Math.max(TypefaceUtils.getMaxDigits(numbers), 4);
-        numberWidth = TypefaceUtils.getWidth(numberView, digits)
-                + numberView.getPaddingLeft() + numberView.getPaddingRight();
+        super(layout.dashboard_issue_item, inflater, elements, avatars);
     }
 
     @Override
-    public ItemListAdapter<RepositoryIssue, DashboardIssueView> setItems(
-            final Object[] items) {
-        computeNumberWidth(items);
-
-        return super.setItems(items);
-    }
-
-    @Override
-    public long getItemId(int position) {
+    public long getItemId(final int position) {
         return getItem(position).getId();
     }
 
     @Override
     protected void update(final int position, final DashboardIssueView view,
             final RepositoryIssue issue) {
-        view.number.setText(Integer.toString(issue.getNumber()));
-        if (issue.getClosedAt() != null)
-            view.number.setPaintFlags(view.numberPaintFlags
-                    | STRIKE_THRU_TEXT_FLAG);
-        else
-            view.number.setPaintFlags(view.numberPaintFlags);
-        view.number.getLayoutParams().width = numberWidth;
+        updateNumber(issue.getNumber(), issue.getState(),
+                view.numberPaintFlags, view.number);
 
         avatars.bind(view.avatar, issue.getUser());
 
@@ -136,35 +70,19 @@ public class DashboardIssueListAdapter extends
 
         view.title.setText(issue.getTitle());
 
-        StyledText reporterText = new StyledText();
-        reporterText.bold(issue.getUser().getLogin());
-        reporterText.append(' ');
-        reporterText.append(issue.getCreatedAt());
-        view.reporter.setText(reporterText);
-
-        view.comments.setText(FORMAT.format(issue.getComments()));
-
-        List<Label> labels = issue.getLabels();
-        if (labels != null && !labels.isEmpty()) {
-            int size = Math.min(labels.size(), view.labels.length);
-            for (int i = 0; i < size; i++) {
-                String color = labels.get(i).getColor();
-                if (!TextUtils.isEmpty(color)) {
-                    view.labels[i].setBackgroundColor(Color
-                            .parseColor('#' + color));
-                    view.labels[i].setVisibility(VISIBLE);
-                } else
-                    view.labels[i].setVisibility(GONE);
-            }
-            for (int i = size; i < view.labels.length; i++)
-                view.labels[i].setVisibility(GONE);
-        } else
-            for (View label : view.labels)
-                label.setVisibility(GONE);
+        updateReporter(issue.getUser().getLogin(), issue.getCreatedAt(),
+                view.reporter);
+        updateComments(issue.getComments(), view.comments);
+        updateLabels(issue.getLabels(), view.labels);
     }
 
     @Override
     protected DashboardIssueView createView(final View view) {
         return new DashboardIssueView(view);
+    }
+
+    @Override
+    protected int getNumber(final RepositoryIssue issue) {
+        return issue.getNumber();
     }
 }
