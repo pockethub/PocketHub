@@ -15,8 +15,6 @@
  */
 package com.github.mobile.ui;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -40,6 +38,7 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.menu;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.util.ToastUtils;
+import com.github.mobile.util.ViewUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.viewpagerindicator.R.layout;
 
@@ -333,14 +332,12 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment
     }
 
     private ItemListFragment<E> show(final View view) {
-        if (view != null)
-            view.setVisibility(VISIBLE);
+        ViewUtils.setGone(view, false);
         return this;
     }
 
     private ItemListFragment<E> hide(final View view) {
-        if (view != null)
-            view.setVisibility(GONE);
+        ViewUtils.setGone(view, true);
         return this;
     }
 

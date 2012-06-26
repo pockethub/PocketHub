@@ -56,6 +56,7 @@ import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.ToastUtils;
 import com.github.mobile.util.TypefaceUtils;
+import com.github.mobile.util.ViewUtils;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -211,10 +212,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         else
             description.setText(string.no_description_given);
 
-        if (GONE != progress.getVisibility())
-            progress.setVisibility(GONE);
-        if (VISIBLE != list.getVisibility())
-            list.setVisibility(VISIBLE);
+        ViewUtils.setGone(progress, true);
+        ViewUtils.setGone(list, false);
     }
 
     @Override

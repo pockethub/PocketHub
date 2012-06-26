@@ -15,8 +15,6 @@
  */
 package com.github.mobile.ui.user;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 import static com.github.mobile.Intents.EXTRA_USER;
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,6 +28,7 @@ import com.github.mobile.R.string;
 import com.github.mobile.core.user.RefreshUserTask;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
+import com.github.mobile.util.ViewUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 import com.viewpagerindicator.TitlePageIndicator;
@@ -81,9 +80,9 @@ public class UserViewActivity extends RoboSherlockFragmentActivity implements
         if (user.getAvatarUrl() != null)
             configurePager();
         else {
-            loadingBar.setVisibility(VISIBLE);
-            pager.setVisibility(GONE);
-            indicator.setVisibility(GONE);
+            ViewUtils.setGone(loadingBar, false);
+            ViewUtils.setGone(pager, true);
+            ViewUtils.setGone(indicator, true);
             new RefreshUserTask(this, user.getLogin()) {
 
                 @Override
@@ -107,9 +106,9 @@ public class UserViewActivity extends RoboSherlockFragmentActivity implements
 
     private void configurePager() {
         avatars.bind(getSupportActionBar(), user);
-        loadingBar.setVisibility(GONE);
-        pager.setVisibility(VISIBLE);
-        indicator.setVisibility(VISIBLE);
+        ViewUtils.setGone(loadingBar, true);
+        ViewUtils.setGone(pager, false);
+        ViewUtils.setGone(indicator, false);
         pager.setAdapter(new UserPagerAdapter(getSupportFragmentManager(),
                 getResources()));
         indicator.setViewPager(pager);

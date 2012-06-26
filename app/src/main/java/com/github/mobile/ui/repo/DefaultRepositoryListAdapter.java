@@ -22,6 +22,7 @@ import android.view.View;
 
 import com.actionbarsherlock.R.color;
 import com.github.mobile.ui.StyledText;
+import com.github.mobile.util.ViewUtils;
 import com.viewpagerindicator.R.layout;
 
 import java.util.HashMap;
@@ -116,10 +117,8 @@ public class DefaultRepositoryListAdapter extends
         } else
             view.header.setVisibility(GONE);
 
-        if (noSeparators.contains(repository.getId()))
-            view.separator.setVisibility(GONE);
-        else
-            view.separator.setVisibility(VISIBLE);
+        ViewUtils.setGone(view.separator,
+                noSeparators.contains(repository.getId()));
 
         StyledText name = new StyledText();
         if (!account.get().getLogin().equals(repository.getOwner().getLogin())) {

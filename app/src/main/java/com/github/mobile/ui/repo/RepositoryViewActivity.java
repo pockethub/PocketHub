@@ -17,8 +17,6 @@ package com.github.mobile.ui.repo;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,6 +33,7 @@ import com.github.mobile.core.repo.RefreshRepositoryTask;
 import com.github.mobile.ui.user.HomeActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
+import com.github.mobile.util.ViewUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 import com.viewpagerindicator.TitlePageIndicator;
@@ -90,9 +89,9 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
         if (owner != null && owner.getAvatarUrl() != null)
             configurePager();
         else {
-            loadingBar.setVisibility(VISIBLE);
-            pager.setVisibility(GONE);
-            indicator.setVisibility(GONE);
+            ViewUtils.setGone(loadingBar, false);
+            ViewUtils.setGone(pager, true);
+            ViewUtils.setGone(indicator, true);
             new RefreshRepositoryTask(this, repository) {
 
                 @Override
@@ -128,9 +127,9 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
 
     private void configurePager() {
         avatars.bind(getSupportActionBar(), repository.getOwner());
-        loadingBar.setVisibility(GONE);
-        pager.setVisibility(VISIBLE);
-        indicator.setVisibility(VISIBLE);
+        ViewUtils.setGone(loadingBar, true);
+        ViewUtils.setGone(pager, false);
+        ViewUtils.setGone(indicator, false);
         pager.setAdapter(new RepositoryPagerAdapter(
                 getSupportFragmentManager(), getResources(), repository
                         .isHasIssues()));

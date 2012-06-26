@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.github.mobile.util.AvatarLoader;
+import com.github.mobile.util.ViewUtils;
 import com.viewpagerindicator.R.layout;
 
 import org.eclipse.egit.github.core.SearchIssue;
@@ -56,7 +57,7 @@ public class SearchIssueListAdapter extends
         } else
             avatars.bind(view.avatar, null);
 
-        view.pullRequestIcon.setVisibility(GONE);
+        ViewUtils.setGone(view.pullRequestIcon, true);
 
         view.title.setText(issue.getTitle());
 
