@@ -23,6 +23,7 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryIssue;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.IssueService;
+import org.eclipse.egit.github.core.service.PullRequestService;
 
 /**
  * Unit tests of {@link IssueStore}
@@ -33,7 +34,8 @@ public class IssueStoreTest extends AndroidTestCase {
      * Verify issue is updated when re-added
      */
     public void testReuseIssue() {
-        IssueStore store = new IssueStore(new IssueService());
+        IssueStore store = new IssueStore(new IssueService(),
+                new PullRequestService());
         Repository repo = new Repository();
         repo.setName("name");
         repo.setOwner(new User().setLogin("owner"));
