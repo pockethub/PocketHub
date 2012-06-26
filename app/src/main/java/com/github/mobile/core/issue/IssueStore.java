@@ -26,7 +26,9 @@ import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.RepositoryIssue;
+import org.eclipse.egit.github.core.client.RequestException;
 import org.eclipse.egit.github.core.service.IssueService;
+import org.eclipse.egit.github.core.service.PullRequestService;
 
 /**
  * Store of loaded issues
@@ -35,15 +37,20 @@ public class IssueStore extends ItemStore {
 
     private final Map<String, ItemReferences<RepositoryIssue>> repos = new HashMap<String, ItemReferences<RepositoryIssue>>();
 
-    private final IssueService service;
+    private final IssueService issueService;
+
+    private final PullRequestService pullService;
 
     /**
      * Create issue store
      *
-     * @param service
+     * @param issueService
+     * @param pullService
      */
-    public IssueStore(final IssueService service) {
-        this.service = service;
+    public IssueStore(final IssueService issueService,
+            final PullRequestService pullService) {
+        this.issueService = issueService;
+        this.pullService = pullService;
     }
 
     /**
@@ -149,7 +156,22 @@ public class IssueStore extends ItemStore {
      */
     public RepositoryIssue refreshIssue(IRepositoryIdProvider repository,
             int number) throws IOException {
-        return addIssue(repository, service.getIssue(repository, number));
+        Issue issue;
+        try {
+            issue = issueService.getIssue(repository, number);
+        } catch (IOException e) {
+            if (e instanceof RequestException
+                    && 410 == ((RequestException) e).getStatus())
+                try {
+                    issue = IssueUtils.toIssue(pullService.getPullRequest(
+                            repository, number));
+                } catch (IOException e2) {
+                    throw e;
+                }
+            else
+                throw e;
+        }
+        return addIssue(repository, issue);
     }
 
     /**
@@ -162,6 +184,6 @@ public class IssueStore extends ItemStore {
      */
     public RepositoryIssue editIssue(IRepositoryIdProvider repository,
             Issue issue) throws IOException {
-        return addIssue(repository, service.editIssue(repository, issue));
+        return addIssue(repository, issueService.editIssue(repository, issue));
     }
 }

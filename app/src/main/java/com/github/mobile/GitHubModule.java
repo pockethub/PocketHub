@@ -36,6 +36,7 @@ import java.lang.ref.WeakReference;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.IssueService;
+import org.eclipse.egit.github.core.service.PullRequestService;
 
 /**
  * Main module provide services and clients
@@ -67,10 +68,11 @@ public class GitHubModule extends AbstractModule {
     }
 
     @Provides
-    IssueStore issueStore(IssueService service) {
+    IssueStore issueStore(IssueService issueService,
+            PullRequestService pullService) {
         IssueStore store = issues != null ? issues.get() : null;
         if (store == null) {
-            store = new IssueStore(service);
+            store = new IssueStore(issueService, pullService);
             issues = new WeakReference<IssueStore>(store);
         }
         return store;
