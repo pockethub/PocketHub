@@ -68,6 +68,7 @@ import com.github.mobile.ui.comment.CommentListAdapter;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.ToastUtils;
+import com.github.mobile.util.ViewUtils;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -124,6 +125,8 @@ public class IssueFragment extends DialogFragment {
     private EditLabelsTask labelsTask;
 
     private EditStateTask stateTask;
+
+    private View headerSeparator;
 
     private TextView stateText;
 
@@ -254,6 +257,7 @@ public class IssueFragment extends DialogFragment {
 
         headerView = inflater.inflate(layout.issue_header, null);
 
+        headerSeparator = view.findViewById(id.v_header_separator);
         stateText = (TextView) headerView.findViewById(id.tv_state);
         titleText = (TextView) headerView.findViewById(id.tv_issue_title);
         authorText = (TextView) headerView.findViewById(id.tv_issue_author);
@@ -330,17 +334,17 @@ public class IssueFragment extends DialogFragment {
                 getString(string.prefix_opened)).append(issue.getCreatedAt()));
         avatars.bind(creatorAvatar, issue.getUser());
 
-        if (STATE_OPEN.equals(issue.getState()))
-            stateText.setVisibility(GONE);
-        else {
+        boolean open = STATE_OPEN.equals(issue.getState());
+        if (!open) {
             StyledText text = new StyledText();
             text.bold(getString(string.closed));
             Date closedAt = issue.getClosedAt();
             if (closedAt != null)
                 text.append(' ').append(closedAt);
             stateText.setText(text);
-            stateText.setVisibility(VISIBLE);
         }
+        ViewUtils.setGone(stateText, open);
+        ViewUtils.setGone(headerSeparator, !open);
 
         User assignee = issue.getAssignee();
         if (assignee != null) {

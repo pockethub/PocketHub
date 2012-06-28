@@ -14,14 +14,21 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
+
+    <View
+        android:id="@+id/v_header_separator"
+        style="@style/HeaderSeparator"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
 
     <fragment
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/v_header_separator"
         class="com.github.mobile.ui.issue.SearchIssueListFragment" />
 
-</FrameLayout>
+</RelativeLayout>

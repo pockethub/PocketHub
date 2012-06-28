@@ -170,4 +170,10 @@
         <item name="android:indeterminateOnly">true</item>
     </style>
 
+    <style name="HeaderSeparator">
+        <item name="android:layout_height">5dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@drawable/header_separator_background</item>
+    </style>
+
 </resources>
