@@ -80,7 +80,7 @@
                 android:layout_height="match_parent"
                 android:gravity="top"
                 android:hint="@string/gist_content_hint"
-                android:inputType="textMultiLine"
+                android:inputType="textMultiLine|textAutoComplete"
                 android:minLines="5"
                 android:padding="10dp"
                 android:scrollbars="horizontal|vertical"
