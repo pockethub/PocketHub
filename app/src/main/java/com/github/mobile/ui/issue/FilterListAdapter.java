@@ -49,7 +49,7 @@ public class FilterListAdapter extends
      */
     public FilterListAdapter(LayoutInflater inflater, IssueFilter[] elements,
             AvatarLoader avatars) {
-        super(layout.issue_filter_item, inflater, elements);
+        super(layout.issues_filter_item, inflater, elements);
 
         this.avatars = avatars;
     }

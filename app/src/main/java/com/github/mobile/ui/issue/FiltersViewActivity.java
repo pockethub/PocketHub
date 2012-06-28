@@ -64,7 +64,7 @@ public class FiltersViewActivity extends DialogFragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(layout.issue_filter_list);
+        setContentView(layout.issues_filter_list);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(string.bookmarks);

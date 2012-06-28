@@ -115,7 +115,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         filterHeader = getLayoutInflater(savedInstanceState).inflate(
-                layout.issue_filter_header, null);
+                layout.issues_filter_header, null);
         state = (TextView) filterHeader.findViewById(id.tv_filter_state);
         labels = (TextView) filterHeader.findViewById(id.tv_filter_labels);
         milestone = (TextView) filterHeader
@@ -194,7 +194,8 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
                     ISSUE_CREATE);
             return true;
         case id.m_filter:
-            startActivityForResult(EditIssuesFilterActivity.createIntent(filter),
+            startActivityForResult(
+                    EditIssuesFilterActivity.createIntent(filter),
                     ISSUE_FILTER_EDIT);
             return true;
         case id.m_bookmark:

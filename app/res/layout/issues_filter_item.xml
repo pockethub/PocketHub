@@ -39,7 +39,7 @@
             style="@style/ListSubtitleText"
             android:singleLine="true" />
 
-        <include layout="@layout/issue_filter_details" />
+        <include layout="@layout/issues_filter_details" />
     </LinearLayout>
 
 </RelativeLayout>

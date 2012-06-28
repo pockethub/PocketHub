@@ -18,6 +18,6 @@
     style="@style/ListItem"
     android:orientation="vertical" >
 
-    <include layout="@layout/issue_filter_details" />
+    <include layout="@layout/issues_filter_details" />
 
 </LinearLayout>
