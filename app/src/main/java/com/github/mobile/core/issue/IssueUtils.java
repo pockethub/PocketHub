@@ -47,6 +47,7 @@ public class IssueUtils {
             return null;
 
         Issue issue = new Issue();
+        issue.setAssignee(pullRequest.getAssignee());
         issue.setBody(pullRequest.getBody());
         issue.setBodyHtml(pullRequest.getBodyHtml());
         issue.setBodyText(pullRequest.getBodyText());
@@ -55,6 +56,7 @@ public class IssueUtils {
         issue.setCreatedAt(pullRequest.getCreatedAt());
         issue.setHtmlUrl(pullRequest.getHtmlUrl());
         issue.setId(pullRequest.getId());
+        issue.setMilestone(pullRequest.getMilestone());
         issue.setNumber(pullRequest.getNumber());
         issue.setPullRequest(pullRequest);
         issue.setState(pullRequest.getState());
