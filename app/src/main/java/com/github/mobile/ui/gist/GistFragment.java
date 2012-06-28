@@ -96,6 +96,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
     private View headerView;
 
+    private View footerView;
+
     private TextView created;
 
     private TextView updated;
@@ -138,6 +140,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         ((TextView) loadingView.findViewById(id.tv_loading))
                 .setText(string.loading_comments);
 
+        footerView = inflater.inflate(layout.footer_separator, null);
+
         return root;
     }
 
@@ -158,6 +162,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
         list.setOnItemClickListener(this);
         adapter.addHeader(headerView, null, false);
+        adapter.addFooter(footerView, null, false);
 
         gist = store.getGist(gistId);
 

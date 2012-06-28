@@ -116,6 +116,8 @@ public class IssueFragment extends DialogFragment {
 
     private View loadingView;
 
+    private View footerView;
+
     private HeaderFooterListAdapter<CommentListAdapter> adapter;
 
     private EditMilestoneTask milestoneTask;
@@ -224,6 +226,7 @@ public class IssueFragment extends DialogFragment {
         commentImageGetter = new HttpImageGetter(getActivity());
 
         adapter.addHeader(headerView, null, false);
+        adapter.addFooter(footerView, null, false);
 
         issue = store.getIssue(repositoryId, issueNumber);
 
@@ -275,6 +278,8 @@ public class IssueFragment extends DialogFragment {
         bodyText.setMovementMethod(LinkMovementMethod.getInstance());
 
         loadingView = inflater.inflate(layout.loading_item, null);
+
+        footerView = inflater.inflate(layout.footer_separator, null);
 
         stateText.setOnClickListener(new OnClickListener() {
 

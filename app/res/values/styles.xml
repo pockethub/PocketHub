@@ -176,4 +176,9 @@
         <item name="android:background">@drawable/header_separator_background</item>
     </style>
 
+    <style name="FooterSeparator">
+        <item name="android:layout_height">10dp</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
 </resources>
