@@ -194,7 +194,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
                     ISSUE_CREATE);
             return true;
         case id.m_filter:
-            startActivityForResult(FilterIssuesActivity.createIntent(filter),
+            startActivityForResult(EditIssuesFilterActivity.createIntent(filter),
                     ISSUE_FILTER_EDIT);
             return true;
         case id.m_bookmark:

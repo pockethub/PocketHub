@@ -53,9 +53,9 @@ import org.eclipse.egit.github.core.service.MilestoneService;
 import roboguice.inject.InjectView;
 
 /**
- * Activity to create a persistent issues filter for a repository
+ * Activity to create or edit an issues filter for a repository
  */
-public class FilterIssuesActivity extends DialogFragmentActivity {
+public class EditIssuesFilterActivity extends DialogFragmentActivity {
 
     /**
      * Create intent for creating an issue filter for the given repository
@@ -110,7 +110,7 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(layout.issues_filter);
+        setContentView(layout.issues_filter_edit);
 
         if (savedInstanceState != null)
             filter = (IssueFilter) savedInstanceState
@@ -132,7 +132,7 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
             public void onClick(View v) {
                 if (assigneeDialog == null)
                     assigneeDialog = new AssigneeDialog(
-                            FilterIssuesActivity.this, REQUEST_ASSIGNEE,
+                            EditIssuesFilterActivity.this, REQUEST_ASSIGNEE,
                             repository, collaborators);
                 assigneeDialog.show(filter.getAssignee());
             }
@@ -147,7 +147,7 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
             public void onClick(View v) {
                 if (milestoneDialog == null)
                     milestoneDialog = new MilestoneDialog(
-                            FilterIssuesActivity.this, REQUEST_MILESTONE,
+                            EditIssuesFilterActivity.this, REQUEST_MILESTONE,
                             repository, milestones);
                 milestoneDialog.show(filter.getMilestone());
             }
@@ -161,8 +161,9 @@ public class FilterIssuesActivity extends DialogFragmentActivity {
 
             public void onClick(View v) {
                 if (labelsDialog == null)
-                    labelsDialog = new LabelsDialog(FilterIssuesActivity.this,
-                            REQUEST_LABELS, repository, labels);
+                    labelsDialog = new LabelsDialog(
+                            EditIssuesFilterActivity.this, REQUEST_LABELS,
+                            repository, labels);
                 labelsDialog.show(filter.getLabels());
             }
         };

@@ -17,22 +17,22 @@ package com.github.mobile.tests.tests.issue;
 
 import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.tests.ActivityTest;
-import com.github.mobile.ui.issue.FilterIssuesActivity;
+import com.github.mobile.ui.issue.EditIssuesFilterActivity;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
 
 /**
- * Tests of {@link FilterIssuesActivity}
+ * Tests of {@link EditIssuesFilterActivity}
  */
-public class FilterIssuesActivityTest extends
-        ActivityTest<FilterIssuesActivity> {
+public class EditIssuesFilterActivityTest extends
+        ActivityTest<EditIssuesFilterActivity> {
 
     /**
      * Create test
      */
-    public FilterIssuesActivityTest() {
-        super(FilterIssuesActivity.class);
+    public EditIssuesFilterActivityTest() {
+        super(EditIssuesFilterActivity.class);
     }
 
     @Override
@@ -43,6 +43,6 @@ public class FilterIssuesActivityTest extends
         repo.setName("name");
         repo.setOwner(new User().setLogin("owner"));
         IssueFilter filter = new IssueFilter(repo);
-        setActivityIntent(FilterIssuesActivity.createIntent(filter));
+        setActivityIntent(EditIssuesFilterActivity.createIntent(filter));
     }
 }

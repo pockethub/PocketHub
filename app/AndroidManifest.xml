@@ -67,7 +67,7 @@
                 android:value=".ui.issue.IssueSearchActivity" />
         </activity>
         <activity
-            android:name=".ui.issue.FilterIssuesActivity"
+            android:name=".ui.issue.EditIssuesFilterActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" >
             <intent-filter>
                 <action android:name="com.github.mobile.repo.issues.filter.VIEW" />
