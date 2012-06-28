@@ -1,4 +1,4 @@
-# GitHub Android Application
+# GitHub Android App
 
 This repository contains the source code for the GitHub Android app.
 
@@ -49,7 +49,7 @@ It also uses many other open source libraries such as:
 * [SyntaxHighlighter](https://github.com/alexgorbatchev/SyntaxHighlighter)
 
 These are just a few of the major dependencies, the entire list of dependencies
-is listed in the [application's POM file](https://github.com/github/android/blob/master/app/pom.xml).
+is listed in the [app's POM file](https://github.com/github/android/blob/master/app/pom.xml).
 
 ## Contributing
 
