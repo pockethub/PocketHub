@@ -44,7 +44,7 @@
                 style="@style/EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
+                android:inputType="text|textAutoCorrect"
                 android:singleLine="true" />
 
             <TextView
@@ -129,7 +129,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="top"
-                android:inputType="textMultiLine"
+                android:inputType="textMultiLine|textAutoCorrect"
                 android:minLines="5"
                 android:scrollbars="horizontal|vertical" />
         </LinearLayout>

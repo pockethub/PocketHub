@@ -52,6 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/gist_description_hint"
+                android:inputType="text|textAutoCorrect"
                 android:singleLine="true" />
 
             <TextView
