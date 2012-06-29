@@ -48,7 +48,7 @@ public class SyncCampaign implements Runnable {
          * @param syncResult
          * @return campaign
          */
-        public SyncCampaign create(SyncResult syncResult);
+        SyncCampaign create(SyncResult syncResult);
     }
 
     @Inject
