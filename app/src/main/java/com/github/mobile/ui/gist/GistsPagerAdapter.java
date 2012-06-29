@@ -34,6 +34,7 @@ public class GistsPagerAdapter extends FragmentStatePagerAdapter {
      */
     public GistsPagerAdapter(FragmentManager fm, String[] gistIds) {
         super(fm);
+
         this.ids = gistIds;
     }
 

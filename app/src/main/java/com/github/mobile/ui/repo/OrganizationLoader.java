@@ -55,6 +55,7 @@ public class OrganizationLoader extends AuthenticatedUserLoader<List<User>> {
             AccountDataManager accountDataManager,
             Provider<UserComparator> userComparatorProvider) {
         super(activity);
+
         this.accountDataManager = accountDataManager;
         this.userComparatorProvider = userComparatorProvider;
     }

@@ -38,6 +38,7 @@ public class GistQueriesPagerAdapter extends FragmentPagerAdapter {
     public GistQueriesPagerAdapter(Resources resources,
             FragmentManager fragmentManager) {
         super(fragmentManager);
+
         this.resources = resources;
     }
 
