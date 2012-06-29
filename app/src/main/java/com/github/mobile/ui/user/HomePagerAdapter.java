@@ -93,6 +93,7 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
                 transaction.remove(fragment);
         }
         transaction.commit();
+        tags.clear();
 
         return this;
     }
