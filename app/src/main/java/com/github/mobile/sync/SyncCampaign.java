@@ -31,7 +31,7 @@ import java.util.List;
 import org.eclipse.egit.github.core.User;
 
 /**
- * A cancellable sync operation to synchronize data for a given account
+ * A cancelable sync operation to synchronize data for a given account
  */
 public class SyncCampaign implements Runnable {
 
