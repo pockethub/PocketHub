@@ -77,7 +77,6 @@ public class EditIssueActivity extends DialogFragmentActivity {
     public static Intent createIntent(Repository repository) {
         return createIntent(null, repository.getOwner().getLogin(),
                 repository.getName(), repository.getOwner());
-
     }
 
     /**
