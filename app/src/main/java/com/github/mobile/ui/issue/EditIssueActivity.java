@@ -238,8 +238,8 @@ public class EditIssueActivity extends DialogFragmentActivity {
     }
 
     private void updateMilestone() {
-        if (issue.getMilestone() != null) {
-            Milestone milestone = issue.getMilestone();
+        Milestone milestone = issue.getMilestone();
+        if (milestone != null) {
             milestoneText.setText(milestone.getTitle());
             float closed = milestone.getClosedIssues();
             float total = closed + milestone.getOpenIssues();
