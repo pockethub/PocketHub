@@ -86,8 +86,7 @@ public class AccountUtils {
             throws OperationCanceledException, AuthenticatorException,
             IOException {
         final AccountManagerFuture<Account[]> future = manager
-                .getAccountsByTypeAndFeatures(ACCOUNT_TYPE, null, null,
-                        null);
+                .getAccountsByTypeAndFeatures(ACCOUNT_TYPE, null, null, null);
         final Account[] accounts = future.getResult();
         return accounts != null ? accounts : new Account[0];
     }
@@ -114,14 +113,18 @@ public class AccountUtils {
                 if (loggable)
                     Log.d(TAG, "No GitHub accounts for activity=" + activity);
 
-                Bundle result = manager.addAccount(ACCOUNT_TYPE, null,
-                        null, null, activity, null, null).getResult();
+                Bundle result = manager.addAccount(ACCOUNT_TYPE, null, null,
+                        null, activity, null, null).getResult();
 
                 if (loggable)
                     Log.d(TAG,
                             "Added account "
                                     + result.getString(KEY_ACCOUNT_NAME));
             }
+        } catch (OperationCanceledException e) {
+            Log.d(TAG, "Excepting retrieving account", e);
+            activity.finish();
+            throw new RuntimeException(e);
         } catch (AccountsException e) {
             Log.d(TAG, "Excepting retrieving account", e);
             throw new RuntimeException(e);
