@@ -220,7 +220,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
         switch (requestCode) {
         case ISSUE_MILESTONE_UPDATE:
             issue.setMilestone(MilestoneDialogFragment.getSelected(arguments));
-            updateView();
+            updateMilestone();
             break;
         case ISSUE_ASSIGNEE_UPDATE:
             User assignee = AssigneeDialogFragment.getSelected(arguments);
@@ -228,37 +228,16 @@ public class EditIssueActivity extends DialogFragmentActivity {
                 issue.setAssignee(assignee);
             else
                 issue.setAssignee(new User().setLogin(""));
-            updateView();
+            updateAssignee();
             break;
         case ISSUE_LABELS_UPDATE:
             issue.setLabels(LabelsDialogFragment.getSelected(arguments));
-            updateView();
+            updateLabels();
             break;
         }
     }
 
-    private void updateView() {
-        titleText.setText(issue.getTitle());
-        bodyText.setText(issue.getBody());
-
-        User assignee = issue.getAssignee();
-        if (assignee != null) {
-            StyledText name = new StyledText();
-            name.bold(assignee.getLogin());
-            assigneeText.setText(name);
-            assigneeAvatar.setVisibility(VISIBLE);
-            avatars.bind(assigneeAvatar, assignee);
-        } else {
-            assigneeAvatar.setVisibility(GONE);
-            assigneeText.setText(string.unassigned);
-        }
-
-        List<Label> labels = issue.getLabels();
-        if (labels != null && !labels.isEmpty())
-            LabelDrawableSpan.setText(labelsText, labels);
-        else
-            labelsText.setText(string.none);
-
+    private void updateMilestone() {
         if (issue.getMilestone() != null) {
             Milestone milestone = issue.getMilestone();
             milestoneText.setText(milestone.getTitle());
@@ -275,6 +254,37 @@ public class EditIssueActivity extends DialogFragmentActivity {
             milestoneText.setText(string.none);
             milestoneGraph.setVisibility(GONE);
         }
+    }
+
+    private void updateAssignee() {
+        User assignee = issue.getAssignee();
+        if (assignee != null) {
+            StyledText name = new StyledText();
+            name.bold(assignee.getLogin());
+            assigneeText.setText(name);
+            assigneeAvatar.setVisibility(VISIBLE);
+            avatars.bind(assigneeAvatar, assignee);
+        } else {
+            assigneeAvatar.setVisibility(GONE);
+            assigneeText.setText(string.unassigned);
+        }
+    }
+
+    private void updateLabels() {
+        List<Label> labels = issue.getLabels();
+        if (labels != null && !labels.isEmpty())
+            LabelDrawableSpan.setText(labelsText, labels);
+        else
+            labelsText.setText(string.none);
+    }
+
+    private void updateView() {
+        titleText.setText(issue.getTitle());
+        bodyText.setText(issue.getBody());
+
+        updateAssignee();
+        updateLabels();
+        updateMilestone();
     }
 
     @Override
