@@ -143,6 +143,12 @@ public class EditIssueActivity extends DialogFragmentActivity {
 
     private MenuItem saveItem;
 
+    private MilestoneDialog milestoneDialog;
+
+    private AssigneeDialog assigneeDialog;
+
+    private LabelsDialog labelsDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -175,9 +181,11 @@ public class EditIssueActivity extends DialogFragmentActivity {
 
             @Override
             public void onClick(View v) {
-                new MilestoneDialog(EditIssueActivity.this,
-                        ISSUE_MILESTONE_UPDATE, repository, milestoneService)
-                        .show(issue.getMilestone());
+                if (milestoneDialog == null)
+                    milestoneDialog = new MilestoneDialog(
+                            EditIssueActivity.this, ISSUE_MILESTONE_UPDATE,
+                            repository, milestoneService);
+                milestoneDialog.show(issue.getMilestone());
             }
         });
 
@@ -185,9 +193,11 @@ public class EditIssueActivity extends DialogFragmentActivity {
 
             @Override
             public void onClick(View v) {
-                new AssigneeDialog(EditIssueActivity.this,
-                        ISSUE_ASSIGNEE_UPDATE, repository, collaboratorService)
-                        .show(issue.getAssignee());
+                if (assigneeDialog == null)
+                    assigneeDialog = new AssigneeDialog(EditIssueActivity.this,
+                            ISSUE_ASSIGNEE_UPDATE, repository,
+                            collaboratorService);
+                assigneeDialog.show(issue.getAssignee());
             }
         });
 
@@ -195,8 +205,10 @@ public class EditIssueActivity extends DialogFragmentActivity {
 
             @Override
             public void onClick(View v) {
-                new LabelsDialog(EditIssueActivity.this, ISSUE_LABELS_UPDATE,
-                        repository, labelService).show(issue.getLabels());
+                if (labelsDialog == null)
+                    labelsDialog = new LabelsDialog(EditIssueActivity.this,
+                            ISSUE_LABELS_UPDATE, repository, labelService);
+                labelsDialog.show(issue.getLabels());
             }
         });
 
