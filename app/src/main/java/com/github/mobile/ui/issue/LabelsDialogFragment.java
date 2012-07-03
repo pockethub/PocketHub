@@ -201,7 +201,8 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        dialog.dismiss();
+        super.onClick(dialog, which);
+
         switch (which) {
         case BUTTON_NEUTRAL:
             Arrays.fill(getArguments().getBooleanArray(ARG_SELECTED_CHOICES),
