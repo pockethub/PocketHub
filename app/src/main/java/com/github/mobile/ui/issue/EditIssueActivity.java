@@ -258,10 +258,9 @@ public class EditIssueActivity extends DialogFragmentActivity {
 
     private void updateAssignee() {
         User assignee = issue.getAssignee();
-        if (assignee != null) {
-            StyledText name = new StyledText();
-            name.bold(assignee.getLogin());
-            assigneeText.setText(name);
+        String login = assignee != null ? assignee.getLogin() : null;
+        if (!TextUtils.isEmpty(login)) {
+            assigneeText.setText(new StyledText().bold(login));
             assigneeAvatar.setVisibility(VISIBLE);
             avatars.bind(assigneeAvatar, assignee);
         } else {
