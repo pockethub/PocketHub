@@ -204,5 +204,6 @@
     <string name="title_invalid_github_url">Invalid GitHub URL</string>
     <string name="message_invalid_github_url">The following URL could not be opened by this application:\n{0}</string>
     <string name="recently_viewed">RECENTLY VIEWED</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

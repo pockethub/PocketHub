@@ -16,6 +16,7 @@
 package com.github.mobile.ui.issue;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.DialogInterface.BUTTON_NEGATIVE;
 import static android.content.DialogInterface.BUTTON_NEUTRAL;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -137,6 +138,8 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
         Bundle arguments = getArguments();
 
         final AlertDialog dialog = createDialog();
+        dialog.setButton(BUTTON_NEGATIVE, activity.getString(string.cancel),
+                this);
         dialog.setButton(BUTTON_NEUTRAL, activity.getString(string.clear), this);
 
         LayoutInflater inflater = activity.getLayoutInflater();
@@ -175,6 +178,8 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
         super.onClick(dialog, which);
 
         switch (which) {
+        case BUTTON_NEGATIVE:
+            break;
         case BUTTON_NEUTRAL:
             onResult(RESULT_OK);
             break;

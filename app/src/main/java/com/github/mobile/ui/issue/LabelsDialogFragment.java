@@ -16,6 +16,7 @@
 package com.github.mobile.ui.issue;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.DialogInterface.BUTTON_NEGATIVE;
 import static android.content.DialogInterface.BUTTON_NEUTRAL;
 import static android.content.DialogInterface.BUTTON_POSITIVE;
 import android.app.Activity;
@@ -167,6 +168,8 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
         AlertDialog dialog = LightAlertDialog.create(activity);
         dialog.setCancelable(true);
         dialog.setOnCancelListener(this);
+        dialog.setButton(BUTTON_NEGATIVE, activity.getString(string.cancel),
+                this);
         dialog.setButton(BUTTON_NEUTRAL, activity.getString(string.clear), this);
         dialog.setButton(BUTTON_POSITIVE, activity.getString(string.apply),
                 this);
