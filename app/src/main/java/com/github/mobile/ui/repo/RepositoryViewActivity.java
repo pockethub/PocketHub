@@ -30,6 +30,7 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.core.repo.RefreshRepositoryTask;
+import com.github.mobile.core.repo.RepositoryUtils;
 import com.github.mobile.ui.user.HomeActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
@@ -80,15 +81,18 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
 
         setContentView(layout.pager_with_title);
 
+        User owner = repository.getOwner();
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(repository.getName());
-        actionBar.setSubtitle(repository.getOwner().getLogin());
+        actionBar.setSubtitle(owner.getLogin());
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        User owner = repository.getOwner();
-        if (owner != null && owner.getAvatarUrl() != null)
+        if (owner.getAvatarUrl() != null
+                && RepositoryUtils.isComplete(repository))
             configurePager();
         else {
+            avatars.bind(getSupportActionBar(), owner);
             ViewUtils.setGone(loadingBar, false);
             ViewUtils.setGone(pager, true);
             ViewUtils.setGone(indicator, true);
