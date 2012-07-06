@@ -35,7 +35,6 @@
         android:gravity="top"
         android:hint="@string/comment_hint"
         android:inputType="textMultiLine|textAutoCorrect"
-        android:padding="10dp"
         android:scrollbars="horizontal|vertical" >
 
         <requestFocus />
