@@ -122,6 +122,50 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
             recentRepos.saveAsync();
     }
 
+    private void updateHeaders(final List<Repository> repos) {
+        HeaderFooterListAdapter<?> rootAdapter = getListAdapter();
+        if (rootAdapter == null)
+            return;
+
+        DefaultRepositoryListAdapter adapter = (DefaultRepositoryListAdapter) rootAdapter
+                .getWrappedAdapter();
+        adapter.clearHeaders();
+
+        char start = 'a';
+        Repository previous = null;
+        for (int i = 0; i < repos.size(); i++) {
+            Repository repository = repos.get(i);
+
+            if (recentRepos.contains(repository.getId())) {
+                previous = repository;
+                continue;
+            }
+
+            char repoStart = Character.toLowerCase(repository.getName().charAt(
+                    0));
+            if (repoStart < start) {
+                previous = repository;
+                continue;
+            }
+
+            adapter.registerHeader(repository, Character.toString(repoStart)
+                    .toUpperCase(US));
+            if (previous != null)
+                adapter.registerNoSeparator(previous);
+            start = repoStart;
+            if (start == 'z')
+                break;
+            start++;
+            previous = repository;
+        }
+
+        if (!repos.isEmpty()) {
+            Repository first = repos.get(0);
+            if (recentRepos.contains(first))
+                adapter.registerHeader(first, getString(string.recently_viewed));
+        }
+    }
+
     @Override
     public Loader<List<Repository>> onCreateLoader(int id, final Bundle args) {
         return new ThrowableLoader<List<Repository>>(getActivity(), items) {
@@ -135,49 +179,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
                 List<Repository> repos = cache.getRepos(org,
                         isForceRefresh(args));
                 Collections.sort(repos, recentRepos);
-
-                HeaderFooterListAdapter<?> rootAdapter = getListAdapter();
-                if (rootAdapter != null) {
-                    DefaultRepositoryListAdapter adapter = (DefaultRepositoryListAdapter) rootAdapter
-                            .getWrappedAdapter();
-                    adapter.clearHeaders();
-
-                    char start = 'a';
-                    Repository previous = null;
-                    for (int i = 0; i < repos.size(); i++) {
-                        Repository repository = repos.get(i);
-
-                        if (recentRepos.contains(repository.getId())) {
-                            previous = repository;
-                            continue;
-                        }
-
-                        char repoStart = Character.toLowerCase(repository
-                                .getName().charAt(0));
-                        if (repoStart < start) {
-                            previous = repository;
-                            continue;
-                        }
-
-                        adapter.registerHeader(repository,
-                                Character.toString(repoStart).toUpperCase(US));
-                        if (previous != null)
-                            adapter.registerNoSeparator(previous);
-                        start = repoStart;
-                        if (start == 'z')
-                            break;
-                        start++;
-                        previous = repository;
-                    }
-
-                    if (!repos.isEmpty()) {
-                        Repository first = repos.get(0);
-                        if (recentRepos.contains(first))
-                            adapter.registerHeader(first,
-                                    getString(string.recently_viewed));
-                    }
-                }
-
+                updateHeaders(repos);
                 return repos;
             }
         };
