@@ -101,7 +101,7 @@ public class CreateGistActivity extends RoboSherlockFragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case id.m_create:
+        case id.m_apply:
             createGist();
             return true;
         default:
