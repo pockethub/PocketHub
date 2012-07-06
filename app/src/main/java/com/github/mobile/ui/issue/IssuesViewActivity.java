@@ -191,7 +191,7 @@ public class IssuesViewActivity extends DialogFragmentActivity implements
             avatars.bind(actionBar, user);
         }
 
-        // Load avatar if single issue and user is currently unset of missing
+        // Load avatar if single issue and user is currently unset or missing
         // avatar URL
         if (issueNumbers.length == 1
                 && (user.get() == null || user.get().getAvatarUrl() == null))
