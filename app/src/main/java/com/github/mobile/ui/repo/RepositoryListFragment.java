@@ -25,6 +25,7 @@ import android.widget.ListView;
 import com.github.mobile.R.string;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.persistence.AccountDataManager;
+import com.github.mobile.ui.HeaderFooterListAdapter;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
 import com.github.mobile.ui.ItemView;
@@ -135,43 +136,46 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
                         isForceRefresh(args));
                 Collections.sort(repos, recentRepos);
 
-                DefaultRepositoryListAdapter adapter = (DefaultRepositoryListAdapter) getListAdapter()
-                        .getWrappedAdapter();
-                adapter.clearHeaders();
+                HeaderFooterListAdapter<?> rootAdapter = getListAdapter();
+                if (rootAdapter != null) {
+                    DefaultRepositoryListAdapter adapter = (DefaultRepositoryListAdapter) rootAdapter
+                            .getWrappedAdapter();
+                    adapter.clearHeaders();
 
-                char start = 'a';
-                Repository previous = null;
-                for (int i = 0; i < repos.size(); i++) {
-                    Repository repository = repos.get(i);
+                    char start = 'a';
+                    Repository previous = null;
+                    for (int i = 0; i < repos.size(); i++) {
+                        Repository repository = repos.get(i);
 
-                    if (recentRepos.contains(repository.getId())) {
+                        if (recentRepos.contains(repository.getId())) {
+                            previous = repository;
+                            continue;
+                        }
+
+                        char repoStart = Character.toLowerCase(repository
+                                .getName().charAt(0));
+                        if (repoStart < start) {
+                            previous = repository;
+                            continue;
+                        }
+
+                        adapter.registerHeader(repository,
+                                Character.toString(repoStart).toUpperCase(US));
+                        if (previous != null)
+                            adapter.registerNoSeparator(previous);
+                        start = repoStart;
+                        if (start == 'z')
+                            break;
+                        start++;
                         previous = repository;
-                        continue;
                     }
 
-                    char repoStart = Character.toLowerCase(repository.getName()
-                            .charAt(0));
-                    if (repoStart < start) {
-                        previous = repository;
-                        continue;
+                    if (!repos.isEmpty()) {
+                        Repository first = repos.get(0);
+                        if (recentRepos.contains(first))
+                            adapter.registerHeader(first,
+                                    getString(string.recently_viewed));
                     }
-
-                    adapter.registerHeader(repository,
-                            Character.toString(repoStart).toUpperCase(US));
-                    if (previous != null)
-                        adapter.registerNoSeparator(previous);
-                    start = repoStart;
-                    if (start == 'z')
-                        break;
-                    start++;
-                    previous = repository;
-                }
-
-                if (!repos.isEmpty()) {
-                    Repository first = repos.get(0);
-                    if (recentRepos.contains(first))
-                        adapter.registerHeader(first,
-                                getString(string.recently_viewed));
                 }
 
                 return repos;
