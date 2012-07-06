@@ -361,8 +361,16 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment
         if (!isUsable())
             return this;
 
-        if (shown == listShown)
+        if (shown == listShown) {
+            if (shown)
+                // List has already been shown so hide/show the empty view with
+                // no fade effect
+                if (items.isEmpty())
+                    hide(listView).show(emptyView);
+                else
+                    hide(emptyView).show(listView);
             return this;
+        }
 
         listShown = shown;
 
