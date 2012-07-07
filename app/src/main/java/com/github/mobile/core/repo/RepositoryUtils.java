@@ -34,6 +34,6 @@ public class RepositoryUtils {
      *
      */
     public static boolean isComplete(Repository repository) {
-        return repository.isFork() || repository.getForks() != 0;
+        return repository.isFork() || repository.getForks() > 0;
     }
 }
