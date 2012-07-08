@@ -126,7 +126,6 @@
     </style>
 
     <style name="ListTitleText" parent="TitleText">
-        <item name="android:textColor">@color/text</item>
     </style>
 
     <style name="SubtitleText">
@@ -137,7 +136,6 @@
     </style>
 
     <style name="ListSubtitleText" parent="SubtitleText">
-        <item name="android:textColor">@color/text_light</item>
     </style>
 
     <style name="ListNumericSubtitleText" parent="ListSubtitleText">
