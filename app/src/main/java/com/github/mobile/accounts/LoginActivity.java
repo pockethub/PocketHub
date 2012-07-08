@@ -26,7 +26,7 @@ import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
 import static com.github.mobile.accounts.AccountConstants.PROVIDER_AUTHORITY;
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.ProgressDialog;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -234,7 +234,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
             username = loginText.getText().toString();
         password = passwordText.getText().toString();
 
-        final ProgressDialog dialog = LightProgressDialog.create(this,
+        final AlertDialog dialog = LightProgressDialog.create(this,
                 string.login_activity_authenticating);
         dialog.setCancelable(true);
         dialog.setOnCancelListener(new OnCancelListener() {
