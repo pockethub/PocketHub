@@ -277,14 +277,17 @@
         <provider
             android:name=".sync.ContentProviderAdapter"
             android:authorities="com.github.sync"
+            android:exported="false"
             android:label="GitHub"
             android:syncable="true" />
         <provider
             android:name=".ui.repo.RepositorySearchSuggestionsProvider"
-            android:authorities="com.github.search.suggest.recent.repos" />
+            android:authorities="com.github.search.suggest.recent.repos"
+            android:exported="false" />
         <provider
             android:name=".ui.issue.IssueSearchSuggestionsProvider"
-            android:authorities="com.github.search.suggest.recent.issues" />
+            android:authorities="com.github.search.suggest.recent.issues"
+            android:exported="false" />
     </application>
 
 </manifest>
