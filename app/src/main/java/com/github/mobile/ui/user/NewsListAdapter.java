@@ -62,7 +62,11 @@ import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.TimeUtils;
 import com.viewpagerindicator.R.layout;
 
+import java.text.NumberFormat;
+import java.util.List;
+
 import org.eclipse.egit.github.core.Comment;
+import org.eclipse.egit.github.core.Commit;
 import org.eclipse.egit.github.core.CommitComment;
 import org.eclipse.egit.github.core.Download;
 import org.eclipse.egit.github.core.Issue;
@@ -89,6 +93,9 @@ import org.eclipse.egit.github.core.event.TeamAddPayload;
  * Adapter for a list of news events
  */
 public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
+
+    private static final NumberFormat NUMBER_FORMAT = NumberFormat
+            .getIntegerInstance();
 
     /**
      * Can the given event be rendered by this view holder?
@@ -396,6 +403,47 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         main.append(" at ");
 
         boldRepo(main, event);
+
+        final List<Commit> commits = payload.getCommits();
+        int size = commits != null ? commits.size() : -1;
+        if (size > 0) {
+            if (size != 1)
+                details.append(NUMBER_FORMAT.format(size)).append(
+                        " new commits");
+            else
+                details.append("1 new commit");
+
+            int max = 3;
+            int appended = 0;
+            for (Commit commit : commits) {
+                if (commit == null)
+                    continue;
+
+                details.append('\n');
+
+                String sha = commit.getSha();
+                if (TextUtils.isEmpty(sha))
+                    continue;
+                if (sha.length() > 7)
+                    details.monospace(sha.substring(0, 7));
+                else
+                    details.monospace(sha);
+
+                String message = commit.getMessage();
+                if (!TextUtils.isEmpty(message)) {
+                    details.append(' ');
+                    int newline = message.indexOf('\n');
+                    if (newline > 0)
+                        details.append(message.subSequence(0, newline));
+                    else
+                        details.append(message);
+                }
+
+                appended++;
+                if (appended == max)
+                    break;
+            }
+        }
     }
 
     private static void formatTeamAdd(Event event, StyledText main,
