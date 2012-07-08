@@ -29,8 +29,10 @@
 
     <TextView
         android:id="@+id/tv_loading"
-        style="@style/ListSubtitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingLeft="10dp"
-        android:textSize="18sp" />
+        android:textColor="@color/text"
+        android:textSize="16sp" />
 
 </LinearLayout>
