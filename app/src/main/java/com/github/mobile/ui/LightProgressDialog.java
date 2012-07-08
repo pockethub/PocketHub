@@ -48,8 +48,10 @@ public class LightProgressDialog extends ProgressDialog {
         ProgressDialog dialog;
         if (SDK_INT >= 14)
             dialog = new LightProgressDialog(context, message);
-        else
+        else {
             dialog = new ProgressDialog(context);
+            dialog.setInverseBackgroundForced(true);
+        }
 
         dialog.setMessage(message);
         dialog.setIndeterminate(true);
