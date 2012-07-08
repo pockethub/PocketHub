@@ -171,7 +171,7 @@ public class HtmlUtils {
 
             if (TAG_UL.equalsIgnoreCase(tag)) {
                 if (opening) {
-                    listElements.push(new ListSeparator(false));
+                    listElements.addFirst(new ListSeparator(false));
                     indentLevel++;
                 } else {
                     listElements.removeFirst();
@@ -185,7 +185,7 @@ public class HtmlUtils {
 
             if (TAG_OL.equalsIgnoreCase(tag)) {
                 if (opening) {
-                    listElements.push(new ListSeparator(true));
+                    listElements.addFirst(new ListSeparator(true));
                     indentLevel++;
                 } else {
                     listElements.removeFirst();
