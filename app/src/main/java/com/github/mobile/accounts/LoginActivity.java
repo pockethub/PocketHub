@@ -220,7 +220,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
 
     private boolean loginEnabled() {
         return !TextUtils.isEmpty(loginText.getText())
-                && !TextUtils.isDigitsOnly(passwordText.getText());
+                && !TextUtils.isEmpty(passwordText.getText());
     }
 
     private void updateEnablement() {
