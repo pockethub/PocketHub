@@ -101,17 +101,17 @@ public class DatabaseCache {
         Cursor cursor = persistableResource.getCursor(helper
                 .getReadableDatabase());
         try {
-            if (cursor.moveToFirst()) {
-                List<E> cached = new ArrayList<E>();
-                do {
-                    cached.add(persistableResource.loadFrom(cursor));
-                } while (cursor.moveToNext());
-                return cached;
-            }
+            if (!cursor.moveToFirst())
+                return null;
+
+            List<E> cached = new ArrayList<E>();
+            do {
+                cached.add(persistableResource.loadFrom(cursor));
+            } while (cursor.moveToNext());
+            return cached;
         } finally {
             cursor.close();
         }
-        return null;
     }
 
 }
