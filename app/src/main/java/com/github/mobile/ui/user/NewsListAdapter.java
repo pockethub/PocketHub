@@ -419,11 +419,11 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
                 if (commit == null)
                     continue;
 
-                details.append('\n');
-
                 String sha = commit.getSha();
                 if (TextUtils.isEmpty(sha))
                     continue;
+
+                details.append('\n');
                 if (sha.length() > 7)
                     details.monospace(sha.substring(0, 7));
                 else
