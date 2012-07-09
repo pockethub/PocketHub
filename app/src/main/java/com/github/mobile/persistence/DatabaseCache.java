@@ -85,12 +85,13 @@ public class DatabaseCache {
         SQLiteDatabase db = helper.getWritableDatabase();
         try {
             db.beginTransaction();
-
-            persistableResource.store(db, items);
-
-            db.setTransactionSuccessful();
+            try {
+                persistableResource.store(db, items);
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
         } finally {
-            db.endTransaction();
             db.close();
         }
         return items;
