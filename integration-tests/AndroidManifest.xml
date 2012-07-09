@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.github.mobile.tests"
     android:versionCode="100"
-    android:versionName="1.0-SNAPSHOT" >
+    android:versionName="1.0" >
 
     <uses-sdk
         android:minSdkVersion="8"
