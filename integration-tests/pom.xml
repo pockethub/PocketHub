@@ -74,7 +74,7 @@
                 </executions>
             </plugin>
              <plugin>
-                <groupId>com.madgag</groupId>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
                  <configuration>
                      <resourceDirectory>${project.build.directory}/filtered-res</resourceDirectory>

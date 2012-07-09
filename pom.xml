@@ -22,9 +22,9 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>com.madgag</groupId>
+                    <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                     <artifactId>android-maven-plugin</artifactId>
-                    <version>3.1.1.99.0.6</version>
+                    <version>3.3.0</version>
                     <extensions>true</extensions>
                     <configuration>
                         <sdk>
