@@ -19,6 +19,8 @@ import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
 import static android.accounts.AccountManager.KEY_ACCOUNT_TYPE;
 import static android.accounts.AccountManager.KEY_AUTHTOKEN;
 import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
+import static android.content.Intent.ACTION_VIEW;
+import static android.content.Intent.CATEGORY_BROWSABLE;
 import static android.view.KeyEvent.ACTION_DOWN;
 import static android.view.KeyEvent.KEYCODE_ENTER;
 import static android.view.inputmethod.EditorInfo.IME_ACTION_DONE;
@@ -224,6 +226,14 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
     private void updateEnablement() {
         if (loginItem != null)
             loginItem.setEnabled(loginEnabled());
+    }
+
+    @Override
+    public void startActivity(Intent intent) {
+        if (intent != null && ACTION_VIEW.equals(intent.getAction()))
+            intent.addCategory(CATEGORY_BROWSABLE);
+
+        super.startActivity(intent);
     }
 
     /**
