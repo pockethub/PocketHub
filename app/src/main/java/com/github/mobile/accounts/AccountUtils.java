@@ -23,6 +23,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerFuture;
 import android.accounts.AccountsException;
+import android.accounts.AuthenticatorDescription;
 import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
@@ -50,9 +51,38 @@ public class AccountUtils {
 
     private static final String TAG = "AccountUtils";
 
+    private static boolean AUTHENTICATOR_CHECKED;
+
+    private static boolean HAS_AUTHENTICATOR;
+
     private static class AuthenticatorConflictException extends IOException {
 
         private static final long serialVersionUID = 641279204734869183L;
+    }
+
+    /**
+     * Verify authenticator registered for account type matches the package name
+     * of this application
+     *
+     * @param manager
+     * @return true is authenticator registered, false otherwise
+     */
+    public static boolean hasAuthenticator(final AccountManager manager) {
+        if (!AUTHENTICATOR_CHECKED) {
+            final AuthenticatorDescription[] types = manager
+                    .getAuthenticatorTypes();
+            if (types != null && types.length > 0)
+                for (AuthenticatorDescription descriptor : types)
+                    if (descriptor != null
+                            && ACCOUNT_TYPE.equals(descriptor.type)) {
+                        HAS_AUTHENTICATOR = "com.github.mobile"
+                                .equals(descriptor.packageName);
+                        break;
+                    }
+            AUTHENTICATOR_CHECKED = true;
+        }
+
+        return HAS_AUTHENTICATOR;
     }
 
     /**
@@ -146,6 +176,9 @@ public class AccountUtils {
 
         Account[] accounts;
         try {
+            if (!hasAuthenticator(manager))
+                throw new AuthenticatorConflictException();
+
             while ((accounts = getAccounts(manager)).length == 0) {
                 if (loggable)
                     Log.d(TAG, "No GitHub accounts for activity=" + activity);
