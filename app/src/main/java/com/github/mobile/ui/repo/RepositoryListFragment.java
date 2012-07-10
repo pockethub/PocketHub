@@ -111,7 +111,6 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         if (recentRepos != null)
             recentRepos.add(repo);
         startActivity(RepositoryViewActivity.createIntent(repo));
-        refresh();
     }
 
     @Override
