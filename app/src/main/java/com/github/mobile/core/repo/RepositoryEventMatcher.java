@@ -18,6 +18,7 @@ package com.github.mobile.core.repo;
 import static org.eclipse.egit.github.core.event.Event.TYPE_CREATE;
 import static org.eclipse.egit.github.core.event.Event.TYPE_FORK;
 import static org.eclipse.egit.github.core.event.Event.TYPE_WATCH;
+import android.text.TextUtils;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
@@ -46,8 +47,15 @@ public class RepositoryEventMatcher {
             return null;
 
         String type = event.getType();
-        if (TYPE_FORK.equals(type))
-            return ((ForkPayload) payload).getForkee();
+        if (TYPE_FORK.equals(type)) {
+            Repository repository = ((ForkPayload) payload).getForkee();
+            // Verify repository has valid name and owner
+            if (repository != null && !TextUtils.isEmpty(repository.getName())
+                    && repository.getOwner() != null
+                    && !TextUtils.isEmpty(repository.getOwner().getLogin()))
+                return repository;
+        }
+
         if (TYPE_CREATE.equals(type) || TYPE_WATCH.equals(type))
             return getRepository(event.getRepo(), event.getActor());
 
