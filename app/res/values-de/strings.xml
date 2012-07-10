@@ -36,10 +36,9 @@
     <string name="error_members_load">Laden der Mitglieder fehlgeschlagen</string>
     <!--  -->
 
-
     <!-- Loading messages -->
     <string name="loading_gist">Lade Gist…</string>
-    <string name="random_gist">Lade zufälliges Gist…</string>
+    <string name="random_gist">Lade zufälligen Gist…</string>
     <string name="loading_more_issues">Lade weitere Probleme…</string>
     <string name="loading_issues">Lade Probleme…</string>
     <string name="loading_comments">Lade Kommentare…</string>
@@ -54,7 +53,6 @@
     <string name="loading_labels">Lade Markierungen…</string>
     <!--  -->
 
-
     <!-- Empty messages -->
     <string name="no_bookmarks">Keine Lesezeichen</string>
     <string name="no_repositories">Keine Repositories</string>
@@ -65,7 +63,6 @@
     <string name="no_members">Keine Mitglieder</string>
     <string name="no_news">Keine Neuigkeiten</string>
     <!--  -->
-
 
     <!-- Updating messages -->
     <string name="updating_assignee">Aktualisiere Verantwortlichen…</string>
@@ -89,18 +86,18 @@
     <string name="create">erstellen</string>
     <string name="create_gist">Gist erstellen</string>
     <string name="gist_content_hint">puts \'Hallo Welt!\'</string>
-    <string name="make_public">Diesen Gist öffentlich machen</string>
+    <string name="make_public">öffentlicher Gist</string>
     <string name="gist_file_name_hint">dateiname.rb</string>
     <string name="gist">Gist</string>
     <string name="comments">Kommentare</string>
     <string name="files">Dateien</string>
     <string name="open">Öffnen</string>
-    <string name="random">zufällig</string>
+    <string name="random">Zufälliger Eintrag</string>
     <string name="file_name">Dateiname</string>
     <string name="file_content">Dateiinhalt</string>
-    <string name="new_gist">Neuen Gist</string>
+    <string name="new_gist">Neuen Gist erstellen</string>
     <string name="filter">Filter</string>
-    <string name="bookmark">Lesezeichen</string>
+    <string name="bookmark">Lesezeichen hinzufügen</string>
     <string name="comment">Kommentar</string>
     <string name="delete">löschen</string>
     <string name="refresh">aktualisieren</string>
@@ -124,16 +121,16 @@
     <string name="edit_milestone">Meilenstein bearbeiten</string>
     <string name="edit_assignee">Verantwortlichen bearbeiten</string>
     <string name="my_gists_tab">Meine Gists</string>
-    <string name="starred_gists_tab">Hervorgehobene</string>
+    <string name="starred_gists_tab">Favoriten</string>
     <string name="all_gists_tab">alle Gists</string>
     <string name="description">Beschreibung</string>
     <string name="gist_description_hint">erstellt mit Android</string>
     <string name="title">Titel</string>
     <string name="edit">bearbeiten</string>
-    <string name="star">Hervorgehoben</string>
-    <string name="starring_gist">Heben Gist hervor…</string>
-    <string name="unstar">Hervorhebung entfernen</string>
-    <string name="unstarring_gist">Entferne Hervorhebung des Gist…</string>
+    <string name="star">Favorisieren</string>
+    <string name="starring_gist">Füge Gist als Favorit hinzu…</string>
+    <string name="unstar">Favorit entfernen</string>
+    <string name="unstarring_gist">Entferne favorisierten Gist…</string>
     <string name="accounts_label">Konten</string>
     <string name="select_assignee">Verantwortlichen wählen</string>
     <string name="select_milestone">Meilenstein wählen</string>
@@ -150,7 +147,7 @@
     <string name="issue_dashboard">Problem-Übersicht</string>
     <string name="new_issue">Neues Problem</string>
     <string name="anonymous">Anonym</string>
-    <string name="message_filter_saved">Problem-Filter als Lesezeichen gespeichert</string>
+    <string name="message_filter_saved">Filter als Lesezeichen gespeichert</string>
     <string name="recent">Letzte</string>
     <string name="icon_pull_request">\uf20E</string>
     <string name="icon_comment">\uf22B</string>
