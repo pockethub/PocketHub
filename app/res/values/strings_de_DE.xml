@@ -36,7 +36,6 @@
     <string name="error_members_load">Laden der Mitglieder fehlgeschlagen</string>
     <!--  -->
 
-
     <!-- Loading messages -->
     <string name="loading_gist">Lade Gist…</string>
     <string name="random_gist">Lade zufälligen Gist…</string>
@@ -54,7 +53,6 @@
     <string name="loading_labels">Lade Markierungen…</string>
     <!--  -->
 
-
     <!-- Empty messages -->
     <string name="no_bookmarks">Keine Lesezeichen</string>
     <string name="no_repositories">Keine Repositories</string>
@@ -65,7 +63,6 @@
     <string name="no_members">Keine Mitglieder</string>
     <string name="no_news">Keine Neuigkeiten</string>
     <!--  -->
-
 
     <!-- Updating messages -->
     <string name="updating_assignee">Aktualisiere Verantwortlichen…</string>
