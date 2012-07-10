@@ -15,9 +15,11 @@
  */
 package com.github.mobile.tests.tests.user;
 
+import android.accounts.AccountManager;
 import android.view.View;
 import android.widget.EditText;
 
+import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.accounts.LoginActivity;
 import com.github.mobile.tests.ActivityTest;
 import com.viewpagerindicator.R.id;
@@ -32,6 +34,14 @@ public class LoginActivityTest extends ActivityTest<LoginActivity> {
      */
     public LoginActivityTest() {
         super(LoginActivity.class);
+    }
+
+    /**
+     * Verify authenticator is registered
+     */
+    public void testHasAuthenticator() {
+        assertTrue(AccountUtils.hasAuthenticator(AccountManager
+                .get(getActivity())));
     }
 
     /**
