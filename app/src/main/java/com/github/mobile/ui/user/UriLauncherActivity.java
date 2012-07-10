@@ -15,6 +15,7 @@
  */
 package com.github.mobile.ui.user;
 
+import static android.content.DialogInterface.BUTTON_POSITIVE;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -86,8 +87,8 @@ public class UriLauncherActivity extends SherlockActivity {
                 finish();
             }
         });
-        dialog.setButton(DialogInterface.BUTTON_POSITIVE,
-                getString(android.R.string.ok), new OnClickListener() {
+        dialog.setButton(BUTTON_POSITIVE, getString(android.R.string.ok),
+                new OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
