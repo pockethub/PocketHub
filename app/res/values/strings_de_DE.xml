@@ -201,7 +201,7 @@
     <string name="close">schließen</string>
     <string name="reopen">neu öffnen</string>
     <string name="title_invalid_github_url">Ungültige GitHub URL</string>
-    <string name="message_invalid_github_url">Die folgende URL konnte nicht von der Anwendung geöffnet werden:\n{0}</string>
+    <string name="message_invalid_github_url">Die folgende URL konnte von der Anwendung nicht geöffnet werden:\n{0}</string>
     <string name="recently_viewed">Zuletzt Angesehen</string>
     <string name="cancel">abbrechen</string>
     <string name="authenticator_conflict_title">App Konflikt</string>
