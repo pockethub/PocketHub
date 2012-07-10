@@ -68,7 +68,7 @@
 
 
     <!-- Updating messages -->
-    <string name="updating_assignee">Aktualisiere Bevollmächtigten…</string>
+    <string name="updating_assignee">Aktualisiere Verantwortlichen…</string>
     <string name="updating_issue">Aktualisiere Problem…</string>
     <string name="updating_labels">Aktualisiere Markierungen…</string>
     <string name="updating_milestone">Aktualisiere Meilensteine…</string>
@@ -122,7 +122,7 @@
     <string name="edit_labels">Markierungen bearbeiten</string>
     <string name="milestone_prefix">Meilenstein:</string>
     <string name="edit_milestone">Meilenstein bearbeiten</string>
-    <string name="edit_assignee">Bevollmächtigten bearbeiten</string>
+    <string name="edit_assignee">Verantwortlichen bearbeiten</string>
     <string name="my_gists_tab">Meine Gists</string>
     <string name="starred_gists_tab">Hervorgehobene</string>
     <string name="all_gists_tab">alle Gists</string>
@@ -135,7 +135,7 @@
     <string name="unstar">Hervorhebung entfernen</string>
     <string name="unstarring_gist">Entferne Hervorhebung des Gist…</string>
     <string name="accounts_label">Konten</string>
-    <string name="select_assignee">Bevollmächtigten wählen</string>
+    <string name="select_assignee">Verantwortlichen wählen</string>
     <string name="select_milestone">Meilenstein wählen</string>
     <string name="select_labels">Markierung wählen</string>
     <string name="no_milestone">keine Meilensteine</string>
@@ -189,7 +189,7 @@
     <string name="save">speichern</string>
     <string name="apply">annehmen</string>
     <string name="labels_prefix">Markierungen:</string>
-    <string name="assignee">Bevollmächtigter</string>
+    <string name="assignee">Verantwortlicher</string>
     <string name="milestone">Meilenstein</string>
     <string name="labels">Markierungen</string>
     <string name="issue_confirm_close_message">Sind Sie sicher, dass Sie dieses Problem schließen möchten?</string>
