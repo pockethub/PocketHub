@@ -17,7 +17,6 @@ package com.github.mobile.accounts;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.Activity;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Key;
@@ -58,17 +57,6 @@ public class AccountScope extends ScopeBase {
     private final ThreadLocal<GitHubAccount> currentAccount = new ThreadLocal<GitHubAccount>();
 
     private final Map<GitHubAccount, Map<Key<?>, Object>> repoScopeMaps = new ConcurrentHashMap<GitHubAccount, Map<Key<?>, Object>>();
-
-    /**
-     * Enters scope once we've ensured the user has a valid account.
-     *
-     * @param activity
-     */
-    public void enterWith(final Activity activity) {
-        AccountManager accountManager = AccountManager.get(activity);
-        Account account = AccountUtils.getAccount(accountManager, activity);
-        enterWith(account, accountManager);
-    }
 
     /**
      * Enters scope using a GitHubAccount derived from the supplied account

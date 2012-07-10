@@ -15,6 +15,8 @@
  */
 package com.github.mobile.accounts;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Context;
 
@@ -66,7 +68,10 @@ public abstract class AuthenticatedUserTask<ResultT> extends
 
     @Override
     public final ResultT call() throws Exception {
-        accountScope.enterWith(activity);
+        final AccountManager manager = AccountManager.get(activity);
+        final Account account = AccountUtils.getAccount(manager, activity);
+
+        accountScope.enterWith(account, manager);
         try {
             contextScope.enter(getContext());
             try {

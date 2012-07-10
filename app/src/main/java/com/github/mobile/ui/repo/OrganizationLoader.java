@@ -61,6 +61,11 @@ public class OrganizationLoader extends AuthenticatedUserLoader<List<User>> {
     }
 
     @Override
+    protected List<User> getAccountFailureData() {
+        return Collections.emptyList();
+    }
+
+    @Override
     public List<User> load() {
         List<User> orgs;
         try {

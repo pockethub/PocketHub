@@ -15,11 +15,16 @@
  */
 package com.github.mobile.accounts;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.accounts.AccountsException;
 import android.app.Activity;
 import android.content.Context;
 
 import com.github.mobile.AsyncLoader;
 import com.google.inject.Inject;
+
+import java.io.IOException;
 
 import roboguice.RoboGuice;
 import roboguice.inject.ContextScope;
@@ -55,9 +60,26 @@ public abstract class AuthenticatedUserLoader<D> extends AsyncLoader<D> {
         RoboGuice.injectMembers(context, this);
     }
 
+    /**
+     * Get data to display when obtaining an account fails
+     *
+     * @return data
+     */
+    protected abstract D getAccountFailureData();
+
     @Override
     public final D loadInBackground() {
-        accountScope.enterWith(activity);
+        final AccountManager manager = AccountManager.get(activity);
+        final Account account;
+        try {
+            account = AccountUtils.getAccount(manager, activity);
+        } catch (IOException e) {
+            return getAccountFailureData();
+        } catch (AccountsException e) {
+            return getAccountFailureData();
+        }
+
+        accountScope.enterWith(account, manager);
         try {
             contextScope.enter(getContext());
             try {

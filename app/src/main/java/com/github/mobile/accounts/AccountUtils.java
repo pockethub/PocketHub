@@ -16,6 +16,7 @@
 package com.github.mobile.accounts;
 
 import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
+import static android.content.DialogInterface.BUTTON_POSITIVE;
 import static android.util.Log.DEBUG;
 import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
 import android.accounts.Account;
@@ -25,11 +26,20 @@ import android.accounts.AccountsException;
 import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.github.mobile.R.string;
+import com.github.mobile.ui.LightAlertDialog;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.egit.github.core.User;
 
@@ -39,6 +49,11 @@ import org.eclipse.egit.github.core.User;
 public class AccountUtils {
 
     private static final String TAG = "AccountUtils";
+
+    private static class AuthenticatorConflictException extends IOException {
+
+        private static final long serialVersionUID = 641279204734869183L;
+    }
 
     /**
      * Is the given user the owner of the default account?
@@ -87,7 +102,28 @@ public class AccountUtils {
         final AccountManagerFuture<Account[]> future = manager
                 .getAccountsByTypeAndFeatures(ACCOUNT_TYPE, null, null, null);
         final Account[] accounts = future.getResult();
-        return accounts != null ? accounts : new Account[0];
+        if (accounts != null && accounts.length > 0)
+            return getPasswordAccessibleAccounts(manager, accounts);
+        else
+            return new Account[0];
+    }
+
+    private static Account[] getPasswordAccessibleAccounts(
+            final AccountManager manager, final Account[] candidates)
+            throws AuthenticatorConflictException {
+        final List<Account> accessible = new ArrayList<Account>(
+                candidates.length);
+        boolean exceptionThrown = false;
+        for (Account account : candidates)
+            try {
+                manager.getPassword(account);
+                accessible.add(account);
+            } catch (SecurityException ignored) {
+                exceptionThrown = true;
+            }
+        if (accessible.isEmpty() && exceptionThrown)
+            throw new AuthenticatorConflictException();
+        return accessible.toArray(new Account[accessible.size()]);
     }
 
     /**
@@ -96,9 +132,11 @@ public class AccountUtils {
      * @param manager
      * @param activity
      * @return account
+     * @throws IOException
+     * @throws AccountsException
      */
     public static Account getAccount(final AccountManager manager,
-            final Activity activity) {
+            final Activity activity) throws IOException, AccountsException {
         final boolean loggable = Log.isLoggable(TAG, DEBUG);
         if (loggable)
             Log.d(TAG, "Getting account");
@@ -123,18 +161,55 @@ public class AccountUtils {
         } catch (OperationCanceledException e) {
             Log.d(TAG, "Excepting retrieving account", e);
             activity.finish();
-            throw new RuntimeException(e);
+            throw e;
         } catch (AccountsException e) {
             Log.d(TAG, "Excepting retrieving account", e);
-            throw new RuntimeException(e);
+            throw e;
+        } catch (AuthenticatorConflictException e) {
+            activity.runOnUiThread(new Runnable() {
+
+                public void run() {
+                    showConflictMessage(activity);
+                }
+            });
+            throw e;
         } catch (IOException e) {
             Log.d(TAG, "Excepting retrieving account", e);
-            throw new RuntimeException(e);
+            throw e;
         }
 
         if (loggable)
             Log.d(TAG, "Returning account " + accounts[0].name);
 
         return accounts[0];
+    }
+
+    /**
+     * Show conflict message about previously registered authenticator from
+     * another application
+     *
+     * @param activity
+     */
+    private static void showConflictMessage(final Activity activity) {
+        AlertDialog dialog = LightAlertDialog.create(activity);
+        dialog.setTitle(activity.getString(string.authenticator_conflict_title));
+        dialog.setMessage(activity
+                .getString(string.authenticator_conflict_message));
+        dialog.setOnCancelListener(new OnCancelListener() {
+
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                activity.finish();
+            }
+        });
+        dialog.setButton(BUTTON_POSITIVE,
+                activity.getString(android.R.string.ok), new OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        activity.finish();
+                    }
+                });
+        dialog.show();
     }
 }

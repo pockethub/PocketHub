@@ -204,5 +204,7 @@
     <string name="message_invalid_github_url">The following URL could not be opened by this application:\n{0}</string>
     <string name="recently_viewed">RECENTLY VIEWED</string>
     <string name="cancel">Cancel</string>
+    <string name="authenticator_conflict_title">App Conflict</string>
+    <string name="authenticator_conflict_message">Another installed app is already configured for GitHub authentication.\n\nYou must remove the other app from the Accounts &amp; sync settings and uninstall it before the GitHub app can be used.</string>
 
 </resources>

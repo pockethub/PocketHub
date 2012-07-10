@@ -45,6 +45,12 @@ public abstract class ThrowableLoader<D> extends AuthenticatedUserLoader<D> {
         this.data = data;
     }
 
+    @Override
+    protected D getAccountFailureData() {
+        return data;
+    }
+
+    @Override
     public D load() {
         exception = null;
         try {
