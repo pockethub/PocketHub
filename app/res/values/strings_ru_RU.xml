@@ -23,15 +23,15 @@
     <string name="error_repo_load">Ошибка при загрузке репозитория</string>
     <string name="error_gist_load">Ошибка при загрузке Gist</string>
     <string name="error_news_load">Ошибка при загрузке новостей</string>
-    <string name="error_followers_load">Ошибка при загрузке последователей</string>
+    <string name="error_followers_load">Ошибка при загрузке подписчиков</string>
     <string name="error_people_load">Ошибка при загрузке профилей</string>
     <string name="error_person_load">Ошибка при загрузке профиля</string>
     <string name="error_gist_file_load">Ошибка при загрузке содержимого Gist файла</string>
     <string name="error_gists_load">Ошибка при загрузке Gists</string>
     <string name="error_issue_load">Ошибка при загрузке проблемы</string>
-    <string name="error_collaborators_load">Ошибка при загрузке сотрудников</string>
+    <string name="error_collaborators_load">Ошибка при загрузке соработников</string>
     <string name="error_milestones_load">Ошибка при загрузке достижений</string>
-    <string name="error_labels_load">Ошибка при загрузке табличек</string>
+    <string name="error_labels_load">Ошибка при загрузке тегов</string>
     <string name="error_bookmarks_load">Ошибка при загрузке закладок</string>
     <string name="error_members_load">Ошибка при загрузке членов</string>
     <!--  -->
@@ -49,9 +49,9 @@
     <string name="loading_followers">Загружаем подписчиков…</string>
     <string name="loading_people">Загружаем людей…</string>
     <string name="loading_gists">Загружаем Gists…</string>
-    <string name="loading_collaborators">Загружаем сотрудников…</string>
+    <string name="loading_collaborators">Загружаем соработников…</string>
     <string name="loading_milestones">Загружаем достижения…</string>
-    <string name="loading_labels">Загружаем таблички…</string>
+    <string name="loading_labels">Загружаем теги…</string>
     <!--  -->
 
 
@@ -70,7 +70,7 @@
     <!-- Updating messages -->
     <string name="updating_assignee">Обновляем…</string>
     <string name="updating_issue">Обновляем проблемы…</string>
-    <string name="updating_labels">Обновляем таблички…</string>
+    <string name="updating_labels">Обновляем теги…</string>
     <string name="updating_milestone">Обновляем достижения…</string>
     <!--  -->
 
@@ -78,7 +78,7 @@
     <string name="news">Новости</string>
     <string name="issues">Проблемы</string>
     <string name="gists">Gists</string>
-    <string name="dashboard_issues">Доска Проблем</string>
+    <string name="dashboard_issues">Доска проблем</string>
     <string name="find_repositories">Найти хранилища</string>
     <string name="find_issues">Найти проблемы</string>
     <string name="search_title">Поиск…</string>
@@ -97,7 +97,7 @@
     <string name="open">Открыть</string>
     <string name="random">Случайный</string>
     <string name="file_name">Имя файла</string>
-    <string name="file_content">Содержимоей файла</string>
+    <string name="file_content">Содержимое файла</string>
     <string name="new_gist">Новый Gist</string>
     <string name="filter">Фильтр</string>
     <string name="bookmark">Закладка</string>
@@ -108,7 +108,7 @@
     <string name="dasbhoard_assigned">Назначеные</string>
     <string name="dasbhoard_created">Созданые</string>
     <string name="dasbhoard_mentioned">Упомянутые</string>
-    <string name="dashboard_issues_title">Доска проблемы</string>
+    <string name="dashboard_issues_title">Панель проблемы</string>
     <string name="bookmarks">Закладки</string>
     <string name="gists_title">Gists</string>
     <string name="issue_title">Проблема #</string>
@@ -119,15 +119,15 @@
     <string name="show_more">Больше…</string>
     <string name="repositories">Хранилища</string>
     <string name="issues_title">Проблемы</string>
-    <string name="edit_labels">Редактировать таблички</string>
+    <string name="edit_labels">Редактировать теги</string>
     <string name="milestone_prefix">Достижения:</string>
     <string name="edit_milestone">Редактировать достижение</string>
     <string name="edit_assignee">Редактировать назначение</string>
     <string name="my_gists_tab">Мои</string>
-    <string name="starred_gists_tab">Лучшие</string>
+    <string name="starred_gists_tab">Любимые</string>
     <string name="all_gists_tab">Все</string>
     <string name="description">Описание</string>
-    <string name="gist_description_hint">Gist созданые на Android</string>
+    <string name="gist_description_hint">Gist созданные на Android</string>
     <string name="title">Заголовок</string>
     <string name="edit">Редактировать</string>
     <string name="star">Полюбить</string>
@@ -137,7 +137,7 @@
     <string name="accounts_label">Аккаунты</string>
     <string name="select_assignee">Выбрать назначение</string>
     <string name="select_milestone">Выбрать достижение</string>
-    <string name="select_labels">Выбрать табличку</string>
+    <string name="select_labels">Выбрать тег</string>
     <string name="no_milestone">Нет достижений</string>
     <string name="unassigned">Никто не назначен</string>
     <string name="assigned">назначен</string>
@@ -147,24 +147,24 @@
     <string name="deleting_gist">Удаляем Gist…</string>
     <string name="creating_comment">Создаем комментарий…</string>
     <string name="confirm_bookmark_delete_message">Вы точно хотите удалить этот комментарий?</string>
-    <string name="issue_dashboard">Доска проблемы</string>
-    <string name="new_issue">Новай проблема</string>
-    <string name="anonymous">Анонимный</string>
+    <string name="issue_dashboard">Панель проблемы</string>
+    <string name="new_issue">Новая проблема</string>
+    <string name="anonymous">Анонимно</string>
     <string name="message_filter_saved">Фильтр проблем сохранен в закладки</string>
-    <string name="recent">Недавеие</string>
+    <string name="recent">Недавние</string>
     <string name="icon_pull_request">\uf20E</string>
     <string name="icon_comment">\uf22B</string>
     <string name="icon_file">\uf211</string>
     <string name="section_issue_status">Статус:</string>
     <string name="status_open">Открыта</string>
     <string name="status_closed">Закрыта</string>
-    <string name="section_issue_assigned">Назначен:</string>
+    <string name="section_issue_assigned">Назначена:</string>
     <string name="assignee_anyone">Кто угодно</string>
     <string name="section_issue_milestone">Достижение:</string>
     <string name="none">Никому</string>
     <string name="section_issue_labels">Теги:</string>
     <string name="log_in">Войти</string>
-    <string name="signup_link">Первый раз на GitHub? &lt;a href=\"https://github.com/plans\">Нажмите здесь&lt;/a> что бы зарегистрировать</string>
+    <string name="signup_link">Первый раз на GitHub? &lt;a href=\"https://github.com/plans\">Нажмите здесь&lt;/a> что бы зарегистрироваться.</string>
     <string name="connection_failed">Не можем подключится к GitHub</string>
     <string name="invalid_login_or_password">Пожалуйства проверте ваш логин и пароль.</string>
     <string name="invalid_password">Пожалуйста введите правильный пароль.</string>
@@ -179,9 +179,9 @@
     <string name="icon_fork">\uf020</string>
     <string name="avatar">Аватар</string>
     <string name="creating_issue">Создаем пролему…</string>
-    <string name="prefix_created">создан\u0020</string>
-    <string name="prefix_updated">обновлен\u0020</string>
-    <string name="prefix_opened">открыт\u0020</string>
+    <string name="prefix_created">создан(а)\u0020</string>
+    <string name="prefix_updated">обновлен(а)\u0020</string>
+    <string name="prefix_opened">открыт(а)\u0020</string>
     <string name="clear">Очистить</string>
     <string name="open_issues">Открытые проблемы</string>
     <string name="closed_issues">Закрытые проблемы</string>
@@ -189,14 +189,14 @@
     <string name="save">Сохранить</string>
     <string name="apply">Применить</string>
     <string name="labels_prefix">Теги:</string>
-    <string name="assignee">Назначен</string>
+    <string name="assignee">Назначение</string>
     <string name="milestone">Достижение</string>
     <string name="labels">Теги</string>
     <string name="issue_confirm_close_message">Вы точно хотите закрыть эту проблему?</string>
     <string name="issue_confirm_reopen_message">Вы точно хотите переоткрыть эту проблему?</string>
     <string name="issue_confirm_close_title">Закрыть проблему</string>
-    <string name="issue_confirm_reopen_title">Reopen Issue</string>
-    <string name="closed">Закрыта</string>
+    <string name="issue_confirm_reopen_title">Переоткрыть проблему</string>
+    <string name="closed">Закрыт(а)</string>
     <string name="no_description_given">Описание отсутствует.</string>
     <string name="close">Закрыть</string>
     <string name="reopen">Переоткрыть</string>
