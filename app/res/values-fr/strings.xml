@@ -39,7 +39,7 @@
 
     <!-- Messages de chargement -->
     <string name="loading_gist">Chargement du Gist…</string>
-    <string name="random_gist">Chargement d'un Gist aléatoire…</string>
+    <string name="random_gist">Chargement d\'un Gist aléatoire…</string>
     <string name="loading_more_issues">Chargement de plus de tickets…</string>
     <string name="loading_issues">Chargement des tickets…</string>
     <string name="loading_comments">Chargement des commentaires…</string>
@@ -68,7 +68,7 @@
 
 
     <!-- Messages de mise à jour -->
-    <string name="updating_assignee">Mise à jour de l'assigné…</string>
+    <string name="updating_assignee">Mise à jour de l\'assigné…</string>
     <string name="updating_issue">Mise à jour du ticket…</string>
     <string name="updating_labels">Mise à jour des libellés…</string>
     <string name="updating_milestone">Mise à jour du jalon…</string>
@@ -82,10 +82,10 @@
     <string name="find_repositories">Trouver des dépôts</string>
     <string name="find_issues">Trouver des tickets</string>
     <string name="search_title">Chercher…</string>
-    <string name="clear_search_history">Supprimer l'historique</string>
+    <string name="clear_search_history">Supprimer l\'historique</string>
     <string name="search_history_cleared">Historique de recherche supprimé</string>
     <string name="login_activity_authenticating">Connexion…</string>
-    <string name="creating_gist">Création d'un Gist…</string>
+    <string name="creating_gist">Création d\'un Gist…</string>
     <string name="create">Créer</string>
     <string name="create_gist">Créer un Gist</string>
     <string name="gist_content_hint">puts \'Hello World!\'</string>
@@ -122,7 +122,7 @@
     <string name="edit_labels">Modifier les libellés</string>
     <string name="milestone_prefix">Jalon\u00a0:</string>
     <string name="edit_milestone">Modifier le jalon</string>
-    <string name="edit_assignee">Modifier l'assigné</string>
+    <string name="edit_assignee">Modifier l\'assigné</string>
     <string name="my_gists_tab">Les miens</string>
     <string name="starred_gists_tab">Favorisés</string>
     <string name="all_gists_tab">Tous</string>
@@ -135,17 +135,17 @@
     <string name="unstar">Supprimer des favoris</string>
     <string name="unstarring_gist">Suppression du Gist des favoris…</string>
     <string name="accounts_label">Comptes</string>
-    <string name="select_assignee">Sélectionner l'assigné</string>
+    <string name="select_assignee">Sélectionner l\'assigné</string>
     <string name="select_milestone">Sélectionner le jalon</string>
     <string name="select_labels">Sélectionner les libellés</string>
     <string name="no_milestone">Aucun jalon</string>
-    <string name="unassigned">Personne n'est assigné</string>
+    <string name="unassigned">Personne n\'est assigné</string>
     <string name="assigned">est assigné</string>
     <string name="no_gists_found">Aucun Gist trouvé</string>
     <string name="confirm_gist_delete_title">Confirmer la suppression</string>
     <string name="confirm_gist_delete_message">Êtes-vous sûr de vouloir supprimer ce Gist\u00a0?</string>
     <string name="deleting_gist">Suppression du Gist…</string>
-    <string name="creating_comment">Création d'un commentaire…</string>
+    <string name="creating_comment">Création d\'un commentaire…</string>
     <string name="confirm_bookmark_delete_message">Êtes-vous sûr de vouloir supprimer ce favoris\u00a0?</string>
     <string name="issue_dashboard">Aperçu des tickets</string>
     <string name="new_issue">Nouveau ticket</string>
@@ -159,12 +159,12 @@
     <string name="status_open">Ouvert</string>
     <string name="status_closed">Fermé</string>
     <string name="section_issue_assigned">Assigné à\u00a0:</string>
-    <string name="assignee_anyone">N'importe qui</string>
+    <string name="assignee_anyone">N\'importe qui</string>
     <string name="section_issue_milestone">Jalon\u00a0:</string>
     <string name="none">Aucun</string>
     <string name="section_issue_labels">Libellés\u00a0:</string>
     <string name="log_in">Se connecter</string>
-    <string name="signup_link">Nouveau sur GitHub\u00a0? &lt;a href=\"https://github.com/plans\">Cliquez ici&lt;/a> pour s'inscrire</string>
+    <string name="signup_link">Nouveau sur GitHub\u00a0? &lt;a href=\"https://github.com/plans\">Cliquez ici&lt;/a> pour s\'inscrire</string>
     <string name="connection_failed">Impossible de se connecter à GitHub</string>
     <string name="invalid_login_or_password">Veuillez entrer un login et mot de passe valides</string>
     <string name="invalid_password">Veuillez entrer un mot de passe valide.</string>
@@ -178,7 +178,7 @@
     <string name="icon_watch">\uf04E</string>
     <string name="icon_fork">\uf020</string>
     <string name="avatar">Avatar</string>
-    <string name="creating_issue">Création d'un ticket…</string>
+    <string name="creating_issue">Création d\'un ticket…</string>
     <string name="prefix_created">créé\u0020</string>
     <string name="prefix_updated">mis à jour\u0020</string>
     <string name="prefix_opened">ouvert\u0020</string>
@@ -201,7 +201,7 @@
     <string name="close">Fermer</string>
     <string name="reopen">Réouvrir</string>
     <string name="title_invalid_github_url">URL GitHub invalide</string>
-    <string name="message_invalid_github_url">L'URL suivante ne peut pas être ouverte par cette application\u00a0:\n{0}</string>
+    <string name="message_invalid_github_url">L\'URL suivante ne peut pas être ouverte par cette application\u00a0:\n{0}</string>
     <string name="recently_viewed">RECENTLY VIEWED</string>
     <string name="cancel">Annuler</string>
 
