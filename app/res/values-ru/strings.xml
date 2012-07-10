@@ -88,7 +88,7 @@
     <string name="creating_gist">Создаем Gist…</string>
     <string name="create">Создать</string>
     <string name="create_gist">Создать Gist</string>
-    <string name="gist_content_hint">добавляет \'Hello World!\'</string>
+    <string name="gist_content_hint">puts \'Hello World!\'</string>
     <string name="make_public">Делает этот Gist публичным</string>
     <string name="gist_file_name_hint">file.rb</string>
     <string name="gist">Gist</string>
