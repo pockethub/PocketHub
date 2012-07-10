@@ -65,9 +65,8 @@ public class AccountUtils {
      * @return login name or null if none configure
      */
     public static String getLogin(final Context context) {
-        final Account[] accounts = AccountManager.get(context)
-                .getAccountsByType(ACCOUNT_TYPE);
-        return accounts.length > 0 ? accounts[0].name : null;
+        final Account account = getAccount(context);
+        return account != null ? account.name : null;
     }
 
     /**
