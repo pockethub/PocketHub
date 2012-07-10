@@ -345,7 +345,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
         authToken = password;
         intent.putExtra(KEY_ACCOUNT_NAME, username);
         intent.putExtra(KEY_ACCOUNT_TYPE, ACCOUNT_TYPE);
-        if (authTokenType != null && authTokenType.equals(ACCOUNT_TYPE))
+        if (ACCOUNT_TYPE.equals(authTokenType))
             intent.putExtra(KEY_AUTHTOKEN, authToken);
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
