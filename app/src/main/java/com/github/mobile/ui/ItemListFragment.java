@@ -215,7 +215,7 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment
         }
 
         this.items = items;
-        getListAdapter().getWrappedAdapter().setItems(items.toArray());
+        getListAdapter().getWrappedAdapter().setItems(items);
         showList();
     }
 

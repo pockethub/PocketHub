@@ -26,6 +26,7 @@ import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
 
 import java.text.NumberFormat;
+import java.util.List;
 
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.User;
@@ -46,7 +47,7 @@ public class GistListAdapter extends ItemListAdapter<Gist, GistView> {
      * @param elements
      */
     public GistListAdapter(AvatarLoader avatars, LayoutInflater inflater,
-            Gist[] elements) {
+            List<Gist> elements) {
         super(layout.gist_item, inflater, elements);
 
         this.avatars = avatars;

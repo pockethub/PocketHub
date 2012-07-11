@@ -74,15 +74,15 @@ public abstract class IssueListAdapter<I, V extends ItemView> extends
      * @param elements
      * @param avatars
      */
-    public IssueListAdapter(int viewId, LayoutInflater inflater, I[] elements,
-            AvatarLoader avatars) {
+    public IssueListAdapter(int viewId, LayoutInflater inflater,
+            List<I> elements, AvatarLoader avatars) {
         super(viewId, inflater, elements);
 
         this.avatars = avatars;
         this.numberView = (TextView) inflater.inflate(viewId, null)
                 .findViewById(id.tv_issue_number);
 
-        if (elements != null && elements.length > 0)
+        if (elements != null && elements.size() > 0)
             computeNumberWidth(elements);
     }
 
@@ -94,18 +94,17 @@ public abstract class IssueListAdapter<I, V extends ItemView> extends
      */
     protected abstract int getNumber(I issue);
 
-    @SuppressWarnings("unchecked")
-    private void computeNumberWidth(final Object[] items) {
-        int[] numbers = new int[items.length];
+    private void computeNumberWidth(final List<I> items) {
+        int[] numbers = new int[items.size()];
         for (int i = 0; i < numbers.length; i++)
-            numbers[i] = getNumber((I) items[i]);
+            numbers[i] = getNumber(items.get(i));
         int digits = Math.max(TypefaceUtils.getMaxDigits(numbers), 4);
         numberWidth = TypefaceUtils.getWidth(numberView, digits)
                 + numberView.getPaddingLeft() + numberView.getPaddingRight();
     }
 
     @Override
-    public ItemListAdapter<I, V> setItems(final Object[] items) {
+    public ItemListAdapter<I, V> setItems(final List<I> items) {
         computeNumberWidth(items);
 
         return super.setItems(items);

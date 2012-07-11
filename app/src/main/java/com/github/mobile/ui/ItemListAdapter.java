@@ -19,6 +19,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * List adapter for items of a specific type
@@ -27,13 +32,15 @@ import android.widget.BaseAdapter;
  * @param <V>
  */
 public abstract class ItemListAdapter<I, V extends ItemView> extends
-        BaseAdapter {
+        BaseAdapter implements Filterable {
 
     private final LayoutInflater inflater;
 
     private final int viewId;
 
-    private Object[] elements;
+    private List<I> items;
+
+    private List<I> initialItems;
 
     /**
      * Create empty adapter
@@ -50,16 +57,17 @@ public abstract class ItemListAdapter<I, V extends ItemView> extends
      *
      * @param viewId
      * @param inflater
-     * @param elements
+     * @param items
      */
     public ItemListAdapter(final int viewId, final LayoutInflater inflater,
-            final I[] elements) {
+            final List<I> items) {
         this.viewId = viewId;
         this.inflater = inflater;
-        if (elements != null)
-            this.elements = elements;
+        if (items != null)
+            this.items = items;
         else
-            this.elements = new Object[0];
+            this.items = Collections.emptyList();
+        this.initialItems = this.items;
     }
 
     @Override
@@ -68,37 +76,60 @@ public abstract class ItemListAdapter<I, V extends ItemView> extends
     }
 
     /**
+     * Get items being displayed
+     *
      * @return items
      */
-    @SuppressWarnings("unchecked")
-    protected I[] getItems() {
-        return (I[]) elements;
+    public List<I> getItems() {
+        return items;
     }
 
     public int getCount() {
-        return elements.length;
+        return items.size();
     }
 
-    @SuppressWarnings("unchecked")
     public I getItem(int position) {
-        return (I) elements[position];
+        return items.get(position);
     }
 
     public long getItemId(int position) {
-        return elements[position].hashCode();
+        return getItem(position).hashCode();
+    }
+
+    /**
+     * @return initialItems
+     */
+    protected List<I> getInitialItems() {
+        return initialItems;
     }
 
     /**
      * Set items
      *
      * @param items
-     * @return items
+     * @return this adapter
      */
-    public ItemListAdapter<I, V> setItems(final Object[] items) {
+    public ItemListAdapter<I, V> setItems(final List<I> items) {
         if (items != null)
-            elements = items;
+            this.items = items;
         else
-            elements = new Object[0];
+            this.items = Collections.emptyList();
+        initialItems = this.items;
+        notifyDataSetChanged();
+        return this;
+    }
+
+    /**
+     * Set filtered items to display
+     *
+     * @param items
+     * @return this adapter
+     */
+    public ItemListAdapter<I, V> setFilteredItems(final List<I> items) {
+        if (items != null)
+            this.items = items;
+        else
+            this.items = Collections.emptyList();
         notifyDataSetChanged();
         return this;
     }
@@ -120,6 +151,7 @@ public abstract class ItemListAdapter<I, V extends ItemView> extends
      */
     protected abstract V createView(View view);
 
+    @Override
     public View getView(final int position, View convertView,
             final ViewGroup parent) {
         @SuppressWarnings("unchecked")
@@ -131,5 +163,10 @@ public abstract class ItemListAdapter<I, V extends ItemView> extends
         }
         update(position, view, getItem(position));
         return convertView;
+    }
+
+    @Override
+    public Filter getFilter() {
+        return null;
     }
 }

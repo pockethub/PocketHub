@@ -27,6 +27,7 @@ import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.util.AvatarLoader;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.Milestone;
@@ -47,8 +48,8 @@ public class FilterListAdapter extends
      * @param elements
      * @param avatars
      */
-    public FilterListAdapter(LayoutInflater inflater, IssueFilter[] elements,
-            AvatarLoader avatars) {
+    public FilterListAdapter(LayoutInflater inflater,
+            List<IssueFilter> elements, AvatarLoader avatars) {
         super(layout.issues_filter_item, inflater, elements);
 
         this.avatars = avatars;

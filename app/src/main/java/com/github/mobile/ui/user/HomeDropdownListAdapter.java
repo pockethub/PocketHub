@@ -76,7 +76,7 @@ public class HomeDropdownListAdapter extends BaseAdapter {
         private final AvatarLoader avatars;
 
         public OrgListAdapter(final int viewId, final LayoutInflater inflater,
-                final User[] elements, final AvatarLoader avatars) {
+                final List<User> elements, final AvatarLoader avatars) {
             super(viewId, inflater, elements);
 
             this.avatars = avatars;
@@ -120,12 +120,11 @@ public class HomeDropdownListAdapter extends BaseAdapter {
         this.context = context;
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        User[] orgItems = orgs.toArray(new User[orgs.size()]);
 
-        listAdapter = new OrgListAdapter(layout.org_item, inflater, orgItems,
+        listAdapter = new OrgListAdapter(layout.org_item, inflater, orgs,
                 avatars);
         dropdownAdapter = new OrgListAdapter(layout.org_dropdown_item,
-                inflater, orgItems, avatars);
+                inflater, orgs, avatars);
     }
 
     /**
@@ -155,9 +154,8 @@ public class HomeDropdownListAdapter extends BaseAdapter {
      * @return this adapter
      */
     public HomeDropdownListAdapter setOrgs(final List<User> orgs) {
-        User[] orgItems = orgs.toArray(new User[orgs.size()]);
-        listAdapter.setItems(orgItems);
-        dropdownAdapter.setItems(orgItems);
+        listAdapter.setItems(orgs);
+        dropdownAdapter.setItems(orgs);
         notifyDataSetChanged();
         return this;
     }

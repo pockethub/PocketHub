@@ -22,6 +22,8 @@ import android.view.View;
 import com.github.mobile.ui.StyledText;
 import com.viewpagerindicator.R.layout;
 
+import java.util.List;
+
 import org.eclipse.egit.github.core.SearchRepository;
 
 /**
@@ -37,18 +39,8 @@ public class SearchRepositoryListAdapter extends
      * @param elements
      */
     public SearchRepositoryListAdapter(LayoutInflater inflater,
-            SearchRepository[] elements) {
+            List<SearchRepository> elements) {
         super(layout.user_repo_item, inflater, elements);
-    }
-
-    /**
-     *
-     * Create list adapter for searched for repositories
-     *
-     * @param inflater
-     */
-    public SearchRepositoryListAdapter(LayoutInflater inflater) {
-        this(inflater, null);
     }
 
     @Override

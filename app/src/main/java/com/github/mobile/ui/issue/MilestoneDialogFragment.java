@@ -43,6 +43,7 @@ import com.viewpagerindicator.R.id;
 import com.viewpagerindicator.R.layout;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.egit.github.core.Milestone;
 
@@ -75,7 +76,7 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
         private final int selected;
 
         public MilestoneListAdapter(LayoutInflater inflater,
-                Milestone[] milestones, int selected) {
+                List<Milestone> milestones, int selected) {
             super(layout.milestone_item, inflater, milestones);
 
             this.selected = selected;
@@ -158,7 +159,7 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
         ArrayList<Milestone> choices = getChoices();
         int selected = arguments.getInt(ARG_SELECTED_CHOICE);
         MilestoneListAdapter adapter = new MilestoneListAdapter(inflater,
-                choices.toArray(new Milestone[choices.size()]), selected);
+                choices, selected);
         view.setAdapter(adapter);
         if (selected >= 0)
             view.setSelection(selected);

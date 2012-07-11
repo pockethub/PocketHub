@@ -23,6 +23,8 @@ import com.github.mobile.core.issue.IssueUtils;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ViewUtils;
 
+import java.util.List;
+
 import org.eclipse.egit.github.core.RepositoryIssue;
 
 /**
@@ -39,7 +41,7 @@ public class DashboardIssueListAdapter extends
      * @param elements
      */
     public DashboardIssueListAdapter(AvatarLoader avatars,
-            LayoutInflater inflater, RepositoryIssue[] elements) {
+            LayoutInflater inflater, List<RepositoryIssue> elements) {
         super(layout.dashboard_issue_item, inflater, elements, avatars);
     }
 

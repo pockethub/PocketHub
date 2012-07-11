@@ -106,7 +106,6 @@ public class SearchRepositoryListFragment extends
     protected ItemListAdapter<SearchRepository, ? extends ItemView> createAdapter(
             List<SearchRepository> items) {
         return new SearchRepositoryListAdapter(getActivity()
-                .getLayoutInflater(), items.toArray(new SearchRepository[items
-                .size()]));
+                .getLayoutInflater(), items);
     }
 }

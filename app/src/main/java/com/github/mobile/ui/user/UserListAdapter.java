@@ -22,6 +22,8 @@ import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.util.AvatarLoader;
 import com.viewpagerindicator.R.layout;
 
+import java.util.List;
+
 import org.eclipse.egit.github.core.User;
 
 /**
@@ -39,7 +41,7 @@ public class UserListAdapter extends ItemListAdapter<User, UserItemView> {
      * @param avatars
      */
     public UserListAdapter(final LayoutInflater inflater,
-            final User[] elements, final AvatarLoader avatars) {
+            final List<User> elements, final AvatarLoader avatars) {
         super(layout.user_item, inflater, elements);
 
         this.avatars = avatars;

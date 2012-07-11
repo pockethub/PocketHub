@@ -21,12 +21,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.actionbarsherlock.R.color;
+import com.github.mobile.ui.ItemFilter;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.ViewUtils;
 import com.viewpagerindicator.R.layout;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
@@ -46,6 +48,8 @@ public class DefaultRepositoryListAdapter extends
 
     private final Set<Long> noSeparators = new HashSet<Long>();
 
+    private ItemFilter<Repository> filter;
+
     /**
      * Create list adapter for repositories
      *
@@ -54,21 +58,10 @@ public class DefaultRepositoryListAdapter extends
      * @param account
      */
     public DefaultRepositoryListAdapter(LayoutInflater inflater,
-            Repository[] elements, AtomicReference<User> account) {
+            List<Repository> elements, AtomicReference<User> account) {
         super(layout.repo_item, inflater, elements);
 
         this.account = account;
-    }
-
-    /**
-     * Create list adapter for repositories
-     *
-     * @param inflater
-     * @param account
-     */
-    public DefaultRepositoryListAdapter(LayoutInflater inflater,
-            AtomicReference<User> account) {
-        this(inflater, null, account);
     }
 
     /**
@@ -144,5 +137,21 @@ public class DefaultRepositoryListAdapter extends
     @Override
     public long getItemId(final int position) {
         return getItem(position).getId();
+    }
+
+    @Override
+    public ItemFilter<Repository> getFilter() {
+        if (filter == null)
+            filter = new ItemFilter<Repository>(this) {
+
+                @Override
+                protected boolean isMatch(CharSequence prefix,
+                        String upperCasePrefix, Repository item) {
+                    return contains(upperCasePrefix, item.getName())
+                            || contains(upperCasePrefix, item.getOwner()
+                                    .getLogin());
+                }
+            };
+        return filter;
     }
 }

@@ -118,7 +118,7 @@ public class SearchIssueListFragment extends ItemListFragment<SearchIssue>
     protected ItemListAdapter<SearchIssue, ? extends ItemView> createAdapter(
             List<SearchIssue> items) {
         return new SearchIssueListAdapter(getActivity().getLayoutInflater(),
-                items.toArray(new SearchIssue[items.size()]), avatars);
+                items, avatars);
     }
 
     @Override

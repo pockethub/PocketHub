@@ -128,7 +128,6 @@ public class DashboardIssueFragment extends PagedItemFragment<RepositoryIssue> {
     protected ItemListAdapter<RepositoryIssue, ? extends ItemView> createAdapter(
             List<RepositoryIssue> items) {
         return new DashboardIssueListAdapter(avatars, getActivity()
-                .getLayoutInflater(), items.toArray(new RepositoryIssue[items
-                .size()]));
+                .getLayoutInflater(), items);
     }
 }
