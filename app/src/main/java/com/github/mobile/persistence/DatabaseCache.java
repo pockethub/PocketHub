@@ -126,16 +126,12 @@ public class DatabaseCache {
         if (db == null)
             return items;
 
+        db.beginTransaction();
         try {
-            db.beginTransaction();
-            try {
-                persistableResource.store(db, items);
-                db.setTransactionSuccessful();
-            } finally {
-                db.endTransaction();
-            }
+            persistableResource.store(db, items);
+            db.setTransactionSuccessful();
         } finally {
-            db.close();
+            db.endTransaction();
         }
         return items;
     }
@@ -146,22 +142,18 @@ public class DatabaseCache {
         if (db == null)
             return null;
 
+        Cursor cursor = persistableResource.getCursor(db);
         try {
-            Cursor cursor = persistableResource.getCursor(db);
-            try {
-                if (!cursor.moveToFirst())
-                    return null;
+            if (!cursor.moveToFirst())
+                return null;
 
-                List<E> cached = new ArrayList<E>();
-                do {
-                    cached.add(persistableResource.loadFrom(cursor));
-                } while (cursor.moveToNext());
-                return cached;
-            } finally {
-                cursor.close();
-            }
+            List<E> cached = new ArrayList<E>();
+            do {
+                cached.add(persistableResource.loadFrom(cursor));
+            } while (cursor.moveToNext());
+            return cached;
         } finally {
-            db.close();
+            cursor.close();
         }
     }
 
