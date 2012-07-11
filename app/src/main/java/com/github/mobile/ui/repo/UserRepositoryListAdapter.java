@@ -22,6 +22,8 @@ import com.actionbarsherlock.R.color;
 import com.github.mobile.ui.StyledText;
 import com.viewpagerindicator.R.layout;
 
+import java.util.List;
+
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
 
@@ -41,20 +43,10 @@ public class UserRepositoryListAdapter extends
      * @param user
      */
     public UserRepositoryListAdapter(LayoutInflater inflater,
-            Repository[] elements, User user) {
+            List<Repository> elements, User user) {
         super(layout.user_repo_item, inflater, elements);
 
         login = user.getLogin();
-    }
-
-    /**
-     * Create list adapter for repositories
-     *
-     * @param inflater
-     * @param user
-     */
-    public UserRepositoryListAdapter(LayoutInflater inflater, User user) {
-        this(inflater, null, user);
     }
 
     @Override

@@ -41,10 +41,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.HeaderViewListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -432,27 +430,11 @@ public class IssueFragment extends DialogFragment {
     }
 
     private void updateList(Issue issue, List<Comment> comments) {
-        adapter.getWrappedAdapter().setItems(
-                comments.toArray(new Comment[comments.size()]));
+        adapter.getWrappedAdapter().setItems(comments);
         adapter.removeHeader(loadingView);
 
         headerView.setVisibility(VISIBLE);
         updateHeader(issue);
-
-        CommentListAdapter adapter = getRootAdapter();
-        if (adapter != null)
-            adapter.setItems(comments.toArray(new Comment[comments.size()]));
-    }
-
-    private CommentListAdapter getRootAdapter() {
-        ListAdapter adapter = list.getAdapter();
-        if (adapter == null)
-            return null;
-        adapter = ((HeaderViewListAdapter) adapter).getWrappedAdapter();
-        if (adapter instanceof CommentListAdapter)
-            return (CommentListAdapter) adapter;
-        else
-            return null;
     }
 
     @Override

@@ -43,6 +43,7 @@ import com.viewpagerindicator.R.id;
 import com.viewpagerindicator.R.layout;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.egit.github.core.User;
 
@@ -75,7 +76,7 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
 
         private final AvatarLoader loader;
 
-        public UserListAdapter(LayoutInflater inflater, User[] users,
+        public UserListAdapter(LayoutInflater inflater, List<User> users,
                 int selected, AvatarLoader loader) {
             super(layout.collaborator_item, inflater, users);
 
@@ -157,8 +158,8 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
 
         ArrayList<User> choices = getChoices();
         int selected = arguments.getInt(ARG_SELECTED_CHOICE);
-        UserListAdapter adapter = new UserListAdapter(inflater,
-                choices.toArray(new User[choices.size()]), selected, loader);
+        UserListAdapter adapter = new UserListAdapter(inflater, choices,
+                selected, loader);
         view.setAdapter(adapter);
         if (selected >= 0)
             view.setSelection(selected);

@@ -19,7 +19,13 @@ import static java.util.Locale.US;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
+import android.text.Editable;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filter.FilterListener;
 import android.widget.ListView;
 
 import com.github.mobile.R.string;
@@ -29,9 +35,13 @@ import com.github.mobile.ui.HeaderFooterListAdapter;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
 import com.github.mobile.ui.ItemView;
+import com.github.mobile.ui.TextWatcherAdapter;
 import com.github.mobile.ui.user.OrganizationSelectionListener;
 import com.github.mobile.ui.user.OrganizationSelectionProvider;
+import com.github.mobile.util.ViewUtils;
 import com.google.inject.Inject;
+import com.viewpagerindicator.R.id;
+import com.viewpagerindicator.R.layout;
 
 import java.util.Collections;
 import java.util.List;
@@ -52,6 +62,55 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
     private final AtomicReference<User> org = new AtomicReference<User>();
 
     private RecentRepositories recentRepos;
+
+    private EditText filter;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        return inflater.inflate(layout.item_filter_list, null);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        final Filter adapterFilter = getListAdapter().getWrappedAdapter()
+                .getFilter();
+        if (adapterFilter != null) {
+            filter = (EditText) view.findViewById(id.et_filter);
+            filter.addTextChangedListener(new TextWatcherAdapter() {
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    adapterFilter.filter(s, new FilterListener() {
+
+                        @Override
+                        public void onFilterComplete(int count) {
+                            updateHeaders(getAdapterItems());
+                        }
+                    });
+                }
+
+            });
+        }
+    }
+
+    private List<Repository> getAdapterItems() {
+        DefaultRepositoryListAdapter adapter = getRepositoryAdapter();
+        if (adapter != null)
+            return adapter.getItems();
+        else
+            return Collections.emptyList();
+    }
+
+    @Override
+    public ItemListFragment<Repository> setListShown(boolean shown,
+            boolean animate) {
+        ViewUtils.setGone(filter, !shown);
+
+        return super.setListShown(shown, animate);
+    }
 
     @Override
     protected void configureList(Activity activity, ListView listView) {
@@ -121,13 +180,20 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
             recentRepos.saveAsync();
     }
 
-    private void updateHeaders(final List<Repository> repos) {
+    private DefaultRepositoryListAdapter getRepositoryAdapter() {
         HeaderFooterListAdapter<?> rootAdapter = getListAdapter();
-        if (rootAdapter == null)
+        if (rootAdapter != null)
+            return (DefaultRepositoryListAdapter) rootAdapter
+                    .getWrappedAdapter();
+        else
+            return null;
+    }
+
+    private void updateHeaders(final List<Repository> repos) {
+        final DefaultRepositoryListAdapter adapter = getRepositoryAdapter();
+        if (adapter == null)
             return;
 
-        DefaultRepositoryListAdapter adapter = (DefaultRepositoryListAdapter) rootAdapter
-                .getWrappedAdapter();
         adapter.clearHeaders();
 
         char start = 'a';
@@ -188,8 +254,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
     protected ItemListAdapter<Repository, ? extends ItemView> createAdapter(
             List<Repository> items) {
         return new DefaultRepositoryListAdapter(getActivity()
-                .getLayoutInflater(),
-                items.toArray(new Repository[items.size()]), org);
+                .getLayoutInflater(), items, org);
     }
 
     @Override

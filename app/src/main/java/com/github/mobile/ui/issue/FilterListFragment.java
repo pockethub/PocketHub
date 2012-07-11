@@ -75,8 +75,8 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> implements
     @Override
     protected ItemListAdapter<IssueFilter, ? extends ItemView> createAdapter(
             List<IssueFilter> items) {
-        return new FilterListAdapter(getActivity().getLayoutInflater(),
-                items.toArray(new IssueFilter[items.size()]), avatars);
+        return new FilterListAdapter(getActivity().getLayoutInflater(), items,
+                avatars);
     }
 
     @Override

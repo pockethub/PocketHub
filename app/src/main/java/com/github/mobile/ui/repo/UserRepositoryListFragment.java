@@ -84,7 +84,7 @@ public class UserRepositoryListFragment extends PagedItemFragment<Repository> {
     protected ItemListAdapter<Repository, ? extends ItemView> createAdapter(
             List<Repository> items) {
         return new UserRepositoryListAdapter(getActivity().getLayoutInflater(),
-                items.toArray(new Repository[items.size()]), user);
+                items, user);
     }
 
     @Override

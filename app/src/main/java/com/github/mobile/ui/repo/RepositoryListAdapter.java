@@ -29,6 +29,7 @@ import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemView;
 
 import java.text.NumberFormat;
+import java.util.List;
 
 /**
  * Adapter for a list of repositories
@@ -55,7 +56,7 @@ public abstract class RepositoryListAdapter<I, V extends ItemView> extends
      * @param elements
      */
     public RepositoryListAdapter(int viewId, LayoutInflater inflater,
-            I[] elements) {
+            List<I> elements) {
         super(viewId, inflater, elements);
     }
 

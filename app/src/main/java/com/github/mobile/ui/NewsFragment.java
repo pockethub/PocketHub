@@ -166,8 +166,8 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
     @Override
     protected ItemListAdapter<Event, ? extends ItemView> createAdapter(
             List<Event> items) {
-        return new NewsListAdapter(getActivity().getLayoutInflater(),
-                items.toArray(new Event[items.size()]), avatars);
+        return new NewsListAdapter(getActivity().getLayoutInflater(), items,
+                avatars);
     }
 
     @Override

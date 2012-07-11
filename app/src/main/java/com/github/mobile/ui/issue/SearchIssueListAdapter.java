@@ -24,6 +24,8 @@ import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ViewUtils;
 import com.viewpagerindicator.R.layout;
 
+import java.util.List;
+
 import org.eclipse.egit.github.core.SearchIssue;
 import org.eclipse.egit.github.core.User;
 
@@ -39,7 +41,7 @@ public class SearchIssueListAdapter extends
      * @param avatars
      */
     public SearchIssueListAdapter(LayoutInflater inflater,
-            SearchIssue[] elements, AvatarLoader avatars) {
+            List<SearchIssue> elements, AvatarLoader avatars) {
         super(layout.repo_issue_item, inflater, elements, avatars);
     }
 

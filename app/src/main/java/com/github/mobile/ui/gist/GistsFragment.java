@@ -112,6 +112,6 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
     protected ItemListAdapter<Gist, ? extends ItemView> createAdapter(
             List<Gist> items) {
         return new GistListAdapter(avatars, getActivity().getLayoutInflater(),
-                items.toArray(new Gist[items.size()]));
+                items);
     }
 }

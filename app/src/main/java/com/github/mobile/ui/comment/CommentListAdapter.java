@@ -24,6 +24,8 @@ import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.TimeUtils;
 import com.viewpagerindicator.R.layout;
 
+import java.util.List;
+
 import org.eclipse.egit.github.core.Comment;
 
 /**
@@ -44,7 +46,7 @@ public class CommentListAdapter extends
      * @param avatars
      * @param imageGetter
      */
-    public CommentListAdapter(LayoutInflater inflater, Comment[] elements,
+    public CommentListAdapter(LayoutInflater inflater, List<Comment> elements,
             AvatarLoader avatars, HttpImageGetter imageGetter) {
         super(layout.comment_item, inflater, elements);
 

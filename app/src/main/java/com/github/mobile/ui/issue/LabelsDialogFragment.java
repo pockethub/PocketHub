@@ -45,6 +45,7 @@ import com.viewpagerindicator.R.layout;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 import org.eclipse.egit.github.core.Label;
 
@@ -85,7 +86,7 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
 
         private final boolean[] selected;
 
-        public LabelListAdapter(LayoutInflater inflater, Label[] labels,
+        public LabelListAdapter(LayoutInflater inflater, List<Label> labels,
                 boolean[] selected) {
             super(layout.label_item, inflater, labels);
 
@@ -160,8 +161,8 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
         LayoutInflater inflater = activity.getLayoutInflater();
         ListView view = (ListView) inflater.inflate(layout.dialog_list_view,
                 null);
-        LabelListAdapter adapter = new LabelListAdapter(inflater,
-                choices.toArray(new Label[choices.size()]), selectedChoices);
+        LabelListAdapter adapter = new LabelListAdapter(inflater, choices,
+                selectedChoices);
         view.setAdapter(adapter);
         view.setOnItemClickListener(adapter);
 

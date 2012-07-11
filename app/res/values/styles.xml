@@ -47,7 +47,12 @@
         <item name="android:divider">@null</item>
     </style>
 
-    <style name="EditText">
+    <style name="Global">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="EditText" parent="Global">
         <item name="android:textColor">@color/text</item>
         <item name="android:textCursorDrawable">@drawable/edit_text_cursor</item>
         <item name="android:textSize">14sp</item>
@@ -125,8 +130,7 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="ListTitleText" parent="TitleText">
-    </style>
+    <style name="ListTitleText" parent="TitleText"></style>
 
     <style name="SubtitleText">
         <item name="android:textSize">14sp</item>
@@ -135,8 +139,7 @@
         <item name="android:layout_width">wrap_content</item>
     </style>
 
-    <style name="ListSubtitleText" parent="SubtitleText">
-    </style>
+    <style name="ListSubtitleText" parent="SubtitleText"></style>
 
     <style name="ListNumericSubtitleText" parent="ListSubtitleText">
         <item name="android:singleLine">true</item>

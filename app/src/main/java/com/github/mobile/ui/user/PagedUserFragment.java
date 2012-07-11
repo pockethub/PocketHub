@@ -50,8 +50,7 @@ public abstract class PagedUserFragment extends PagedItemFragment<User> {
     @Override
     protected ItemListAdapter<User, ? extends ItemView> createAdapter(
             List<User> items) {
-        User[] users = items.toArray(new User[items.size()]);
-        return new UserListAdapter(getActivity().getLayoutInflater(), users,
+        return new UserListAdapter(getActivity().getLayoutInflater(), items,
                 avatars);
     }
 

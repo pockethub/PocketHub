@@ -477,7 +477,7 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
      * @param elements
      * @param avatars
      */
-    public NewsListAdapter(LayoutInflater inflater, Event[] elements,
+    public NewsListAdapter(LayoutInflater inflater, List<Event> elements,
             AvatarLoader avatars) {
         super(layout.news_item, inflater, elements);
 
