@@ -18,7 +18,7 @@ package com.github.mobile.core.repo;
 import android.content.Context;
 import android.util.Log;
 
-import com.github.mobile.accounts.AuthenticatedUserTask;
+import com.github.mobile.ui.ProgressDialogTask;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
@@ -28,7 +28,7 @@ import org.eclipse.egit.github.core.service.RepositoryService;
 /**
  * Task to refresh a repository
  */
-public class RefreshRepositoryTask extends AuthenticatedUserTask<Repository> {
+public class RefreshRepositoryTask extends ProgressDialogTask<Repository> {
 
     private static final String TAG = "RefreshRepositoryTask";
 

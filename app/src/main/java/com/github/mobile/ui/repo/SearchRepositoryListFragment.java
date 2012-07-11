@@ -22,12 +22,13 @@ import android.widget.ListView;
 
 import com.github.mobile.R.string;
 import com.github.mobile.ThrowableLoader;
-import com.github.mobile.accounts.AuthenticatedUserTask;
+import com.github.mobile.core.repo.RefreshRepositoryTask;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
 import com.github.mobile.ui.ItemView;
 import com.google.inject.Inject;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Repository;
@@ -65,11 +66,15 @@ public class SearchRepositoryListFragment extends
     public void onListItemClick(ListView l, View v, int position, long id) {
         final SearchRepository result = (SearchRepository) l
                 .getItemAtPosition(position);
-        new AuthenticatedUserTask<Repository>(getActivity()) {
+        new RefreshRepositoryTask(getActivity(), result) {
 
             @Override
-            public Repository run() throws Exception {
-                return service.getRepository(result);
+            public void execute() {
+                showIndeterminate(MessageFormat.format(
+                        getString(string.opening_repository),
+                        result.generateId()));
+
+                super.execute();
             }
 
             @Override
