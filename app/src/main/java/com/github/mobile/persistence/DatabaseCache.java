@@ -17,6 +17,7 @@ package com.github.mobile.persistence;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
@@ -37,6 +38,44 @@ public class DatabaseCache {
 
     @Inject
     private Provider<CacheHelper> helperProvider;
+
+    /**
+     * Get writable database
+     *
+     * @param helper
+     * @return writable database or null if it failed to create/open
+     */
+    protected SQLiteDatabase getWritable(SQLiteOpenHelper helper) {
+        try {
+            return helper.getWritableDatabase();
+        } catch (SQLiteException e1) {
+            // Make second attempt
+            try {
+                return helper.getWritableDatabase();
+            } catch (SQLiteException e2) {
+                return null;
+            }
+        }
+    }
+
+    /**
+     * Get readable database
+     *
+     * @param helper
+     * @return readable database or null if it failed to create/open
+     */
+    protected SQLiteDatabase getReadable(SQLiteOpenHelper helper) {
+        try {
+            return helper.getReadableDatabase();
+        } catch (SQLiteException e1) {
+            // Make second attempt
+            try {
+                return helper.getReadableDatabase();
+            } catch (SQLiteException e2) {
+                return null;
+            }
+        }
+    }
 
     /**
      * Load or request given resources
@@ -78,11 +117,15 @@ public class DatabaseCache {
         }
     }
 
-    private <E> List<E> requestAndStore(SQLiteOpenHelper helper,
-            PersistableResource<E> persistableResource) throws IOException {
-        List<E> items = persistableResource.request();
+    private <E> List<E> requestAndStore(final SQLiteOpenHelper helper,
+            final PersistableResource<E> persistableResource)
+            throws IOException {
+        final List<E> items = persistableResource.request();
 
-        SQLiteDatabase db = helper.getWritableDatabase();
+        final SQLiteDatabase db = getWritable(helper);
+        if (db == null)
+            return items;
+
         try {
             db.beginTransaction();
             try {
@@ -97,9 +140,12 @@ public class DatabaseCache {
         return items;
     }
 
-    private <E> List<E> loadFromDB(SQLiteOpenHelper helper,
-            PersistableResource<E> persistableResource) {
-        SQLiteDatabase db = helper.getReadableDatabase();
+    private <E> List<E> loadFromDB(final SQLiteOpenHelper helper,
+            final PersistableResource<E> persistableResource) {
+        final SQLiteDatabase db = getReadable(helper);
+        if (db == null)
+            return null;
+
         try {
             Cursor cursor = persistableResource.getCursor(db);
             try {
