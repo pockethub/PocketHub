@@ -124,7 +124,7 @@
     <string name="edit_milestone">Modifier le jalon</string>
     <string name="edit_assignee">Modifier l\'assigné</string>
     <string name="my_gists_tab">Les miens</string>
-    <string name="starred_gists_tab">Favorisés</string>
+    <string name="starred_gists_tab">Favoris</string>
     <string name="all_gists_tab">Tous</string>
     <string name="description">Description</string>
     <string name="gist_description_hint">Gist créé sur Android</string>
@@ -202,7 +202,7 @@
     <string name="reopen">Réouvrir</string>
     <string name="title_invalid_github_url">URL GitHub invalide</string>
     <string name="message_invalid_github_url">L\'URL suivante ne peut pas être ouverte par cette application\u00a0:\n{0}</string>
-    <string name="recently_viewed">RECENTLY VIEWED</string>
+    <string name="recently_viewed">VUS RÉCEMMENT</string>
     <string name="cancel">Annuler</string>
 
 </resources>
