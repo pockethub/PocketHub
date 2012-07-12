@@ -203,5 +203,6 @@
     <string name="cancel">abbrechen</string>
     <string name="authenticator_conflict_title">App Konflikt</string>
     <string name="authenticator_conflict_message">Eine andere App ist derzeit für die Anmeldung bei GitHub konfiguriert.\n\nSie müssen diese App aus dem Bereich Konten &amp; Synchronisierung entfernen und diese App deinstallieren, bevor Sie die GitHub App verwenden können.</string>
+    <string name="opening_repository">Öffne {0}…</string>
 
-</resources>    
+</resources>
