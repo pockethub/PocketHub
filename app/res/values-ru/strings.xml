@@ -178,7 +178,7 @@
     <string name="icon_watch">\uf04E</string>
     <string name="icon_fork">\uf020</string>
     <string name="avatar">Аватар</string>
-    <string name="creating_issue">Создаем пролему…</string>
+    <string name="creating_issue">Создаем проблему…</string>
     <string name="prefix_created">создан(а)\u0020</string>
     <string name="prefix_updated">обновлен(а)\u0020</string>
     <string name="prefix_opened">открыт(а)\u0020</string>
