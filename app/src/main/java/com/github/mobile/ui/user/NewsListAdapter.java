@@ -70,6 +70,7 @@ import org.eclipse.egit.github.core.Commit;
 import org.eclipse.egit.github.core.CommitComment;
 import org.eclipse.egit.github.core.Download;
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.PullRequest;
 import org.eclipse.egit.github.core.Team;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.event.CommitCommentPayload;
@@ -388,6 +389,15 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         main.append(" on ");
 
         boldRepo(main, event);
+
+        if ("opened".equals(action) || "closed".equals(action)) {
+            PullRequest request = payload.getPullRequest();
+            if (request != null) {
+                String title = request.getTitle();
+                if (!TextUtils.isEmpty(title))
+                    details.append(title);
+            }
+        }
     }
 
     private static void formatPush(Event event, StyledText main,
