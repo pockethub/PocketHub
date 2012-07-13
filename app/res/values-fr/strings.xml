@@ -205,7 +205,7 @@
     <string name="recently_viewed">VUS RÉCEMMENT</string>
     <string name="cancel">Annuler</string>
     <string name="authenticator_conflict_title">Conflit d\'application</string>
-    <string name="authenticator_conflict_message">Une autre application est déjà configurée pour l'authentification GitHub.\n\nVous devez la supprimer des paramètres de Comptes et synchronisation et la désinstaller avant de pouvoir utiliser l'application GitHub.</string>
+    <string name="authenticator_conflict_message">Une autre application est déjà configurée pour l\'authentification GitHub.\n\nVous devez la supprimer des paramètres de Comptes et synchronisation et la désinstaller avant de pouvoir utiliser l\'application GitHub.</string>
     <string name="opening_repository">Ouverture de {0}…</string>
 
 </resources>
