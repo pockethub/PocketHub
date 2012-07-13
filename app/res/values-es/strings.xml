@@ -23,14 +23,14 @@
     <string name="error_repo_load">Error al cargar repositorio</string>
     <string name="error_gist_load">Error al cargar Gist</string>
     <string name="error_news_load">Error al cargar actualizaciones</string>
-    <string name="error_followers_load">Erro al cargar seguidores</string>
-    <string name="error_people_load">Loading people failed</string>
-    <string name="error_person_load">Loading person failed</string>
+    <string name="error_followers_load">Error al cargar seguidores</string>
+    <string name="error_people_load">Error al cargar usuarios</string>
+    <string name="error_person_load">Error al cargar usuario</string>
     <string name="error_gist_file_load">Loading Gist file content failed</string>
     <string name="error_gists_load">Error al cargar Gists</string>
     <string name="error_issue_load">Loading issue failed</string>
     <string name="error_collaborators_load">Error al cargar colaboradores</string>
-    <string name="error_milestones_load">Loading milestones failed</string>
+    <string name="error_milestones_load">Error al cargar hitos</string>
     <string name="error_labels_load">Error al cargar etiquetas</string>
     <string name="error_bookmarks_load">Error al cargar marcadores</string>
     <string name="error_members_load">Error al cargar miembros</string>
@@ -47,7 +47,7 @@
     <string name="loading_issue">Loading Issue…</string>
     <string name="loading_news">Cargando Actualizaciones…</string>
     <string name="loading_followers">Cargando Seguidores…</string>
-    <string name="loading_people">Loading People…</string>
+    <string name="loading_people">Cargando Usuarios…</string>
     <string name="loading_gists">Cargando Gists…</string>
     <string name="loading_collaborators">Cargando Colaboradores…</string>
     <string name="loading_milestones">Cargando Hitos…</string>
@@ -60,7 +60,7 @@
     <string name="no_repositories">No Hay Repositorios</string>
     <string name="no_issues">No Issues</string>
     <string name="no_gists">No Hay Gists</string>
-    <string name="no_people">No People</string>
+    <string name="no_people">No Hay Usuarios</string>
     <string name="no_followers">No Hay Seguidores</string>
     <string name="no_members">No Hay Miembros</string>
     <string name="no_news">No Hay Actualizaciones</string>
