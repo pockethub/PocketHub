@@ -56,7 +56,7 @@
 
 
     <!-- Messages de listes vides -->
-    <string name="no_bookmarks">Aucun favoris</string>
+    <string name="no_bookmarks">Aucun favori</string>
     <string name="no_repositories">Aucun dépôt</string>
     <string name="no_issues">Aucun ticket</string>
     <string name="no_gists">Aucun Gist</string>
@@ -146,7 +146,7 @@
     <string name="confirm_gist_delete_message">Êtes-vous sûr de vouloir supprimer ce Gist\u00a0?</string>
     <string name="deleting_gist">Suppression du Gist…</string>
     <string name="creating_comment">Création d\'un commentaire…</string>
-    <string name="confirm_bookmark_delete_message">Êtes-vous sûr de vouloir supprimer ce favoris\u00a0?</string>
+    <string name="confirm_bookmark_delete_message">Êtes-vous sûr de vouloir supprimer ce favori\u00a0?</string>
     <string name="issue_dashboard">Aperçu des tickets</string>
     <string name="new_issue">Nouveau ticket</string>
     <string name="anonymous">Anonyme</string>
@@ -164,7 +164,7 @@
     <string name="none">Aucun</string>
     <string name="section_issue_labels">Libellés\u00a0:</string>
     <string name="log_in">Se connecter</string>
-    <string name="signup_link">Nouveau sur GitHub\u00a0? &lt;a href=\"https://github.com/plans\">Cliquez ici&lt;/a> pour s\'inscrire</string>
+    <string name="signup_link">Nouveau sur GitHub\u00a0? &lt;a href=\"https://github.com/plans\">Cliquez ici&lt;/a> pour vous inscrire</string>
     <string name="connection_failed">Impossible de se connecter à GitHub</string>
     <string name="invalid_login_or_password">Veuillez entrer un login et mot de passe valides</string>
     <string name="invalid_password">Veuillez entrer un mot de passe valide.</string>
@@ -185,10 +185,10 @@
     <string name="clear">Vider</string>
     <string name="open_issues">Tickets ouverts</string>
     <string name="closed_issues">Tickets fermés</string>
-    <string name="confirm_bookmark_delete_title">Supprimer le favoris</string>
+    <string name="confirm_bookmark_delete_title">Supprimer le favori</string>
     <string name="save">Sauvegarder</string>
     <string name="apply">Appliquer</string>
-    <string name="labels_prefix">Labels:</string>
+    <string name="labels_prefix">Libellés:</string>
     <string name="assignee">Assigné</string>
     <string name="milestone">Jalon</string>
     <string name="labels">Libellés</string>
@@ -204,5 +204,8 @@
     <string name="message_invalid_github_url">L\'URL suivante ne peut pas être ouverte par cette application\u00a0:\n{0}</string>
     <string name="recently_viewed">VUS RÉCEMMENT</string>
     <string name="cancel">Annuler</string>
+    <string name="authenticator_conflict_title">Conflit d\'application</string>
+    <string name="authenticator_conflict_message">Une autre application est déjà configurée pour l'authentification GitHub.\n\nVous devez la supprimer des paramètres de Comptes et synchronisation et la désinstaller avant de pouvoir utiliser l'application GitHub.</string>
+    <string name="opening_repository">Ouverture de {0}…</string>
 
 </resources>
