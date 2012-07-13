@@ -22,7 +22,7 @@
     <string name="error_repos_load">Error al cargar repositorios</string>
     <string name="error_repo_load">Error al cargar repositorio</string>
     <string name="error_gist_load">Error al cargar Gist</string>
-    <string name="error_news_load">Loading news failed</string>
+    <string name="error_news_load">Error al cargar actualizaciones</string>
     <string name="error_followers_load">Erro al cargar seguidores</string>
     <string name="error_people_load">Loading people failed</string>
     <string name="error_person_load">Loading person failed</string>
@@ -45,7 +45,7 @@
     <string name="loading_comments">Cargando Comentarios…</string>
     <string name="loading_repositories">Cargando Repositorios…</string>
     <string name="loading_issue">Loading Issue…</string>
-    <string name="loading_news">Loading News…</string>
+    <string name="loading_news">Cargando Actualizaciones…</string>
     <string name="loading_followers">Cargando Seguidores…</string>
     <string name="loading_people">Loading People…</string>
     <string name="loading_gists">Cargando Gists…</string>
@@ -63,7 +63,7 @@
     <string name="no_people">No People</string>
     <string name="no_followers">No Hay Seguidores</string>
     <string name="no_members">No Hay Miembros</string>
-    <string name="no_news">No News</string>
+    <string name="no_news">No Hay Actualizaciones</string>
     <!--  -->
 
 
@@ -75,7 +75,7 @@
     <!--  -->
 
     <string name="app_name">GitHub</string>
-    <string name="news">News</string>
+    <string name="news">Actualizaciones</string>
     <string name="issues">Issues</string>
     <string name="gists">Gists</string>
     <string name="dashboard_issues">Issues Dashboard</string>
