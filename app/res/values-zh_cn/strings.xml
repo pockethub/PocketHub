@@ -200,7 +200,7 @@
     <string name="no_description_given">暂无描述。</string>
     <string name="close">关闭</string>
     <string name="reopen">重新开放</string>
-    <string name="title_invalid_github_url">非法的 GitHub URL</string>
+    <string name="title_invalid_github_url">无效的 GitHub URL</string>
     <string name="message_invalid_github_url">无法打开以下 URL:\n{0}</string>
     <string name="recently_viewed">近期浏览过的</string>
     <string name="cancel">取消</string>
