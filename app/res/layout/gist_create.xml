@@ -59,12 +59,9 @@
 
                 <EditText
                     android:id="@+id/et_gist_description"
-                    style="@style/EditText"
+                    style="@style/FormalSingleLineEditText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/gist_description_hint"
-                    android:inputType="text|textAutoCorrect"
-                    android:singleLine="true" />
+                    android:hint="@string/gist_description_hint" />
 
                 <TextView
                     style="@style/HeaderTitleText"

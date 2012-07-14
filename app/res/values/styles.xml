@@ -14,7 +14,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="Global">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
 
     <style name="AvatarActionBar">
         <item name="android:layout_width">28dp</item>
@@ -47,12 +52,22 @@
         <item name="android:divider">@null</item>
     </style>
 
-    <style name="EditText">
+    <style name="EditText" parent="Global">
         <item name="android:textColor">@color/text</item>
         <item name="android:textCursorDrawable">@drawable/edit_text_cursor</item>
         <item name="android:textSize">14sp</item>
         <item name="android:padding">10dp</item>
         <item name="android:background">@drawable/edit_text_background</item>
+    </style>
+
+    <style name="FormalMultiLineEditText" parent="EditText">
+        <item name="android:gravity">top</item>
+        <item name="android:inputType">textMultiLine|textAutoCorrect|textCapSentences</item>
+    </style>
+
+    <style name="FormalSingleLineEditText" parent="EditText">
+        <item name="android:singleLine">true</item>
+        <item name="android:inputType">text|textAutoCorrect|textCapSentences</item>
     </style>
 
     <style name="LoginEditText" parent="EditText">
