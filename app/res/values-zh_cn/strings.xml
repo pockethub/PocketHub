@@ -78,7 +78,7 @@
     <string name="news">新鲜事</string>
     <string name="issues">事项</string>
     <string name="gists">代码片段</string>
-    <string name="dashboard_issues">Issues Dashboard</string>
+    <string name="dashboard_issues">事项面板</string>
     <string name="find_repositories">寻找储存库</string>
     <string name="find_issues">寻找事项</string>
     <string name="search_title">搜索…</string>
@@ -108,7 +108,7 @@
     <string name="dasbhoard_assigned">指派给我的</string>
     <string name="dasbhoard_created">创建的</string>
     <string name="dasbhoard_mentioned">提到我的</string>
-    <string name="dashboard_issues_title">Issue Dashboard</string>
+    <string name="dashboard_issues_title">事项面板</string>
     <string name="bookmarks">书签</string>
     <string name="gists_title">代码片段列表</string>
     <string name="issue_title">事项 #</string>
@@ -147,7 +147,7 @@
     <string name="deleting_gist">删除片段…</string>
     <string name="creating_comment">评论发表中…</string>
     <string name="confirm_bookmark_delete_message">确定要移除这个书签吗?</string>
-    <string name="issue_dashboard">Issue Dashboard</string>
+    <string name="issue_dashboard">事项面板</string>
     <string name="new_issue">新事项</string>
     <string name="anonymous">匿名</string>
     <string name="message_filter_saved">事项过滤器已保存至书签</string>
