@@ -151,7 +151,7 @@
     <string name="new_issue">新事项</string>
     <string name="anonymous">匿名</string>
     <string name="message_filter_saved">事项过滤器已保存至书签</string>
-    <string name="recent">Recent</string>
+    <string name="recent">最近的</string>
     <string name="icon_pull_request">\uf20E</string>
     <string name="icon_comment">\uf22B</string>
     <string name="icon_file">\uf211</string>
