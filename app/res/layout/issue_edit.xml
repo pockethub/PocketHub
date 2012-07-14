@@ -41,11 +41,8 @@
 
             <EditText
                 android:id="@+id/et_issue_title"
-                style="@style/EditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text|textAutoCorrect"
-                android:singleLine="true" />
+                style="@style/FormalSingleLineEditText"
+                android:layout_width="match_parent" />
 
             <TextView
                 style="@style/HeaderTitleText"
@@ -125,11 +122,8 @@
 
             <EditText
                 android:id="@+id/et_issue_body"
-                style="@style/EditText"
+                style="@style/FormalMultiLineEditText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="top"
-                android:inputType="textMultiLine|textAutoCorrect"
                 android:minLines="5"
                 android:scrollbars="horizontal|vertical" />
         </LinearLayout>
