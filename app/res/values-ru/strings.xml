@@ -19,7 +19,7 @@
     <!-- Error messages -->
     <string name="error_orgs_load">Ошибка при загрузке организаций</string>
     <string name="error_issues_load">Ошибка при загрузке проблем</string>
-    <string name="error_repos_load">Ошибка при загрузке хранилиш </string>
+    <string name="error_repos_load">Ошибка при загрузке хранилищ</string>
     <string name="error_repo_load">Ошибка при загрузке хранилища</string>
     <string name="error_gist_load">Ошибка при загрузке Gist</string>
     <string name="error_news_load">Ошибка при загрузке новостей</string>
