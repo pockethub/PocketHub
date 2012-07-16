@@ -23,7 +23,7 @@
     <string name="error_repo_load">储存库加载失败</string>
     <string name="error_gist_load">代码片段加载失败</string>
     <string name="error_news_load">新鲜事加载失败</string>
-    <string name="error_followers_load">粉丝列表加载失败</string>
+    <string name="error_followers_load">关注我的用户列表加载失败</string>
     <string name="error_people_load">用户列表加载失败</string>
     <string name="error_person_load">用户信息加载失败</string>
     <string name="error_gist_file_load">片段文件内容加载失败</string>
@@ -46,7 +46,7 @@
     <string name="loading_repositories">加载储存库列表…</string>
     <string name="loading_issue">加载事项…</string>
     <string name="loading_news">加载新鲜事…</string>
-    <string name="loading_followers">加载粉丝列表…</string>
+    <string name="loading_followers">加载关注我的用户列表…</string>
     <string name="loading_people">加载用户列表…</string>
     <string name="loading_gists">加载代码片段列表…</string>
     <string name="loading_collaborators">加载协作者…</string>
@@ -61,7 +61,7 @@
     <string name="no_issues">暂无事项</string>
     <string name="no_gists">暂无片段</string>
     <string name="no_people">暂无用户</string>
-    <string name="no_followers">暂无粉丝</string>
+    <string name="no_followers">暂无关注我的用户</string>
     <string name="no_members">暂无成员</string>
     <string name="no_news">暂无新鲜事</string>
     <!--  -->
@@ -170,8 +170,8 @@
     <string name="invalid_password">请输入正确的密码。</string>
     <string name="password">密码</string>
     <string name="login_or_email">登录名 / 电子邮件</string>
-    <string name="followers">粉丝</string>
-    <string name="following">关注的</string>
+    <string name="followers">关注我的</string>
+    <string name="following">我关注的</string>
     <string name="members">成员</string>
     <string name="closing_issue">关闭事项…</string>
     <string name="reopening_issue">重新开放事项…</string>
