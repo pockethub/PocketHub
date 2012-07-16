@@ -135,7 +135,7 @@
     <string name="unstar">Zrušiť obľúbenie</string>
     <string name="unstarring_gist">Ruším obľúbenie…</string>
     <string name="accounts_label">Účty</string>
-    <string name="select_assignee">Zvoliť priradených</string>
+    <string name="select_assignee">Zvoliť priradenie</string>
     <string name="select_milestone">Zvoliť míľnik</string>
     <string name="select_labels">Zvoliť štítky</string>
     <string name="no_milestone">Žiadny míľnik</string>
@@ -148,7 +148,7 @@
     <string name="creating_comment">Vytváram komentár…</string>
     <string name="confirm_bookmark_delete_message">Ste si istý vymazať túto záložku?</string>
     <string name="issue_dashboard">Issue panel</string>
-    <string name="new_issue">Nový issue</string>
+    <string name="new_issue">Nová issue</string>
     <string name="anonymous">Anonymný</string>
     <string name="message_filter_saved">Filter issues uložený do záložiek</string>
     <string name="recent">Nedávny</string>
@@ -179,9 +179,9 @@
     <string name="icon_fork">\uf020</string>
     <string name="avatar">Avatar</string>
     <string name="creating_issue">Vytváram issue…</string>
-    <string name="prefix_created">vytvorený\u0020</string>
-    <string name="prefix_updated">aktualizovaný\u0020</string>
-    <string name="prefix_opened">otvorený\u0020</string>
+    <string name="prefix_created">vytvorená\u0020</string>
+    <string name="prefix_updated">aktualizovaná\u0020</string>
+    <string name="prefix_opened">otvorená\u0020</string>
     <string name="clear">Vyčistiť</string>
     <string name="open_issues">Otvoriť issues</string>
     <string name="closed_issues">Uzavreté issues</string>
