@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<resources>
+
+    <!-- Error messages -->
+    <string name="error_orgs_load">Načítavanie účtu &amp; organizácií zlyhalo</string>
+    <string name="error_issues_load">Načítavanie issues zlyhalo</string>
+    <string name="error_repos_load">Načítavanie repozitárov zlyhalo</string>
+    <string name="error_repo_load">Načítavanie repozitára zlyhalo</string>
+    <string name="error_gist_load">Načítavanie Gistu zlyhalo</string>
+    <string name="error_news_load">Načítavanie noviniek zlyhalo</string>
+    <string name="error_followers_load">Načítavanie sledujúcich zlyhalo</string>
+    <string name="error_people_load">Načítavanie ľudí zlyhalo</string>
+    <string name="error_person_load">Načítavanie osoby zlyhalo</string>
+    <string name="error_gist_file_load">Načítavanie obsahu Gistu zlyhalo</string>
+    <string name="error_gists_load">Načítavanie Gistov zlyhalo</string>
+    <string name="error_issue_load">Načítavanie issue zlyhalo</string>
+    <string name="error_collaborators_load">Načítavanie spolupracovníkov zlyhalo</string>
+    <string name="error_milestones_load">Načítavanie míľnikov zlyhalo</string>
+    <string name="error_labels_load">Načítavanie štítkov zlyhalo</string>
+    <string name="error_bookmarks_load">Načítavanie záložiek zlyhalo</string>
+    <string name="error_members_load">Načítavanie členov zlyhalo</string>
+    <!--  -->
+
+
+    <!-- Loading messages -->
+    <string name="loading_gist">Načítavam Gist…</string>
+    <string name="random_gist">Načítavam náhodný Gist…</string>
+    <string name="loading_more_issues">Načítavam viac issues…</string>
+    <string name="loading_issues">Načítavam issues…</string>
+    <string name="loading_comments">Načítavam komentáre…</string>
+    <string name="loading_repositories">Načítavam repozitáre…</string>
+    <string name="loading_issue">Načítavam issue…</string>
+    <string name="loading_news">Načítavam novinky…</string>
+    <string name="loading_followers">Načítavam sledujúcich…</string>
+    <string name="loading_people">Načítavam ľudí…</string>
+    <string name="loading_gists">Načítavam Gisty…</string>
+    <string name="loading_collaborators">Načítavam spolupracovníkov…</string>
+    <string name="loading_milestones">Načítavam míľniky…</string>
+    <string name="loading_labels">Načítavam štítky…</string>
+    <!--  -->
+
+
+    <!-- Empty messages -->
+    <string name="no_bookmarks">Žiadne záložky</string>
+    <string name="no_repositories">Žiadne repozitáre</string>
+    <string name="no_issues">Žiadne issues</string>
+    <string name="no_gists">Žiadne gisty</string>
+    <string name="no_people">Žiadny ľudia</string>
+    <string name="no_followers">Žiadny sledujúci</string>
+    <string name="no_members">Žiadny členovia</string>
+    <string name="no_news">Žiadne novinky</string>
+    <!--  -->
+
+
+    <!-- Updating messages -->
+    <string name="updating_assignee">Aktualizujem priradených…</string>
+    <string name="updating_issue">Aktualizujem issue…</string>
+    <string name="updating_labels">Aktualizujem štítky…</string>
+    <string name="updating_milestone">Aktualizujem míľnik…</string>
+    <!--  -->
+
+    <string name="app_name">GitHub</string>
+    <string name="news">Novinky</string>
+    <string name="issues">Issues</string>
+    <string name="gists">Gisty</string>
+    <string name="dashboard_issues">Issues Panel</string>
+    <string name="find_repositories">Nájsť repozitár</string>
+    <string name="find_issues">Nájsť issue</string>
+    <string name="search_title">Hľadať…</string>
+    <string name="clear_search_history">Vymazať históriu</string>
+    <string name="search_history_cleared">Hľadať v premazanej histórii</string>
+    <string name="login_activity_authenticating">Prihlásenie…</string>
+    <string name="creating_gist">Vytváram Gist…</string>
+    <string name="create">Vytvoriť</string>
+    <string name="create_gist">Vytvoriť gist</string>
+    <string name="gist_content_hint">puts \'Hello world!\'</string>
+    <string name="make_public">Zverejniť tento gist</string>
+    <string name="gist_file_name_hint">file.rb</string>
+    <string name="gist">Gist</string>
+    <string name="comments">Komentáre</string>
+    <string name="files">Súbory</string>
+    <string name="open">Otvoriť</string>
+    <string name="random">Náhodný</string>
+    <string name="file_name">Meno súboru</string>
+    <string name="file_content">Obsah súboru</string>
+    <string name="new_gist">Nový Gist</string>
+    <string name="filter">Filter</string>
+    <string name="bookmark">Záložka</string>
+    <string name="comment">Komentár</string>
+    <string name="delete">Zmazať</string>
+    <string name="refresh">Obnoviť</string>
+    <string name="dasbhoard_watched">Sledované</string>
+    <string name="dasbhoard_assigned">Priradené</string>
+    <string name="dasbhoard_created">Vytvorené</string>
+    <string name="dasbhoard_mentioned">Spomenuté</string>
+    <string name="dashboard_issues_title">Prehľad issues</string>
+    <string name="bookmarks">Záložky</string>
+    <string name="gists_title">Gisty</string>
+    <string name="issue_title">Issue #</string>
+    <string name="gist_title">Gist\u0020</string>
+    <string name="filter_issues_title">Filtrovať issues</string>
+    <string name="create_comment_title">Vytvoriť komentár</string>
+    <string name="comment_hint">Potvrdiť komentár</string>
+    <string name="show_more">Ukázať viac…</string>
+    <string name="repositories">Repozitáre</string>
+    <string name="issues_title">issues</string>
+    <string name="edit_labels">Upraviť štítky</string>
+    <string name="milestone_prefix">Míľnik:</string>
+    <string name="edit_milestone">Upraviť míľnik</string>
+    <string name="edit_assignee">Upraviť priradenie</string>
+    <string name="my_gists_tab">Môj</string>
+    <string name="starred_gists_tab">Obľúbený</string>
+    <string name="all_gists_tab">Všetky</string>
+    <string name="description">Popis</string>
+    <string name="gist_description_hint">Android vytvoril gist</string>
+    <string name="title">Nadpis</string>
+    <string name="edit">Upraviť</string>
+    <string name="star">Označiť obľúbený</string>
+    <string name="starring_gist">Označujem ako obľúbený gist…</string>
+    <string name="unstar">Zrušiť obľúbenie</string>
+    <string name="unstarring_gist">Ruším obľúbenie…</string>
+    <string name="accounts_label">Účty</string>
+    <string name="select_assignee">Zvoliť priradenie</string>
+    <string name="select_milestone">Zvoliť míľnik</string>
+    <string name="select_labels">Zvoliť štítky</string>
+    <string name="no_milestone">Žiadny míľnik</string>
+    <string name="unassigned">Nikto nie je priradený</string>
+    <string name="assigned">je priradený</string>
+    <string name="no_gists_found">Nenašli sa žiadne Gisty</string>
+    <string name="confirm_gist_delete_title">Potvrdiť vymazanie</string>
+    <string name="confirm_gist_delete_message">Ste si istý vymazať tento Gist?</string>
+    <string name="deleting_gist">Mažem Gist…</string>
+    <string name="creating_comment">Vytváram komentár…</string>
+    <string name="confirm_bookmark_delete_message">Ste si istý vymazať túto záložku?</string>
+    <string name="issue_dashboard">Issue panel</string>
+    <string name="new_issue">Nová issue</string>
+    <string name="anonymous">Anonymný</string>
+    <string name="message_filter_saved">Filter issues uložený do záložiek</string>
+    <string name="recent">Nedávny</string>
+    <string name="icon_pull_request">\uf20E</string>
+    <string name="icon_comment">\uf22B</string>
+    <string name="icon_file">\uf211</string>
+    <string name="section_issue_status">Stav:</string>
+    <string name="status_open">Otvoriť</string>
+    <string name="status_closed">Zatvoriť</string>
+    <string name="section_issue_assigned">Priradené k:</string>
+    <string name="assignee_anyone">Ktokoľvek</string>
+    <string name="section_issue_milestone">Míľnik:</string>
+    <string name="none">Žiadny</string>
+    <string name="section_issue_labels">Štítky:</string>
+    <string name="log_in">Prihlásiť sa</string>
+    <string name="signup_link">Ste nový na GitHube? &lt;a href=\"https://github.com/plans\">Kliknite sem&lt;/a> a zaregistrujte sa</string>
+    <string name="connection_failed">Nie je možné pripojiť sa na GitHub</string>
+    <string name="invalid_login_or_password">Prosím, vložte platné užívateľské meno &amp; heslo</string>
+    <string name="invalid_password">Prosím, vložte platné heslo.</string>
+    <string name="password">Heslo</string>
+    <string name="login_or_email">Užívateľské meno alebo E-mail</string>
+    <string name="followers">Sledujúci</string>
+    <string name="following">Sledujem</string>
+    <string name="members">Členovia</string>
+    <string name="closing_issue">Zatváram issue…</string>
+    <string name="reopening_issue">Znovu otváram issue…</string>
+    <string name="icon_watch">\uf04E</string>
+    <string name="icon_fork">\uf020</string>
+    <string name="avatar">Avatar</string>
+    <string name="creating_issue">Vytváram issue…</string>
+    <string name="prefix_created">vytvorená\u0020</string>
+    <string name="prefix_updated">aktualizovaná\u0020</string>
+    <string name="prefix_opened">otvorená\u0020</string>
+    <string name="clear">Vyčistiť</string>
+    <string name="open_issues">Otvoriť issues</string>
+    <string name="closed_issues">Uzavreté issues</string>
+    <string name="confirm_bookmark_delete_title">Odstrániť záložku</string>
+    <string name="save">Uložiť</string>
+    <string name="apply">Použiť</string>
+    <string name="labels_prefix">Štítky:</string>
+    <string name="assignee">Priradiť</string>
+    <string name="milestone">Míľnik</string>
+    <string name="labels">Štítky</string>
+    <string name="issue_confirm_close_message">Ste si istý uzavrieť túto issue?</string>
+    <string name="issue_confirm_reopen_message">Ste si istý znovu otvoriť túto issue?</string>
+    <string name="issue_confirm_close_title">Uzavrieť issue</string>
+    <string name="issue_confirm_reopen_title">Znovu otvoriť issue</string>
+    <string name="closed">Uzavretý</string>
+    <string name="no_description_given">Žiadny dostupný popis.</string>
+    <string name="close">Zatvoriť</string>
+    <string name="reopen">Znovu otvoriť</string>
+    <string name="title_invalid_github_url">Nelatná GitHub URL</string>
+    <string name="message_invalid_github_url">Nasledujúca URL nemohla byť otvorená touto aplikáciou:\n{0}</string>
+    <string name="recently_viewed">Naposledy zobrazené</string>
+    <string name="cancel">Zrušiť</string>
+    <string name="authenticator_conflict_title">App konflikt</string>
+    <string name="authenticator_conflict_message">Ďalšia nainštalovaná aplikácia už používa GitHub overenie.\n\nMusíte túto aplikáciu odstrániť z Účtov &amp; synchronizovať nastavenia a odinštalovať ju predtým než môže byť aplikácia GitHub použitá.</string>
+    <string name="opening_repository">Otváram {0}…</string>
+
+</resources>
