@@ -84,7 +84,7 @@
     <string name="search_title">搜索…</string>
     <string name="clear_search_history">清空搜索历史</string>
     <string name="search_history_cleared">搜索历史已清空</string>
-    <string name="login_activity_authenticating">登陆中…</string>
+    <string name="login_activity_authenticating">登录中…</string>
     <string name="creating_gist">代码片段创建中…</string>
     <string name="create">创建</string>
     <string name="create_gist">创建代码片段</string>
@@ -133,7 +133,7 @@
     <string name="star">加注星标</string>
     <string name="starring_gist">为片段加注星标…</string>
     <string name="unstar">移除星标</string>
-    <string name="unstarring_gist">移除片段的星标…</string>
+    <string name="unstarring_gist">为片段移除星标…</string>
     <string name="accounts_label">账户</string>
     <string name="select_assignee">选择被指派人</string>
     <string name="select_milestone">选择里程碑</string>
@@ -157,7 +157,7 @@
     <string name="icon_file">\uf211</string>
     <string name="section_issue_status">状态:</string>
     <string name="status_open">开放</string>
-    <string name="status_closed">Closed</string>
+    <string name="status_closed">关闭</string>
     <string name="section_issue_assigned">指派给:</string>
     <string name="assignee_anyone">任何人</string>
     <string name="section_issue_milestone">里程碑:</string>
