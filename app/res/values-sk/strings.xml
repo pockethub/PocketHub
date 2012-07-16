@@ -18,7 +18,7 @@
 
     <!-- Error messages -->
     <string name="error_orgs_load">Načítavanie účtu &amp; organizácií zlyhalo</string>
-    <string name="error_issues_load">Načítavanie problémov zlyhalo</string>
+    <string name="error_issues_load">Načítavanie issues zlyhalo</string>
     <string name="error_repos_load">Načítavanie repozitárov zlyhalo</string>
     <string name="error_repo_load">Načítavanie repozitára zlyhalo</string>
     <string name="error_gist_load">Načítavanie Gistu zlyhalo</string>
@@ -28,7 +28,7 @@
     <string name="error_person_load">Načítavanie osoby zlyhalo</string>
     <string name="error_gist_file_load">Načítavanie obsahu Gistu zlyhalo</string>
     <string name="error_gists_load">Načítavanie Gistov zlyhalo</string>
-    <string name="error_issue_load">Načítavanie problému zlyhalo</string>
+    <string name="error_issue_load">Načítavanie issue zlyhalo</string>
     <string name="error_collaborators_load">Načítavanie spolupracovníkov zlyhalo</string>
     <string name="error_milestones_load">Načítavanie míľnikov zlyhalo</string>
     <string name="error_labels_load">Načítavanie štítkov zlyhalo</string>
@@ -40,11 +40,11 @@
     <!-- Loading messages -->
     <string name="loading_gist">Načítavam Gist…</string>
     <string name="random_gist">Načítavam náhodný Gist…</string>
-    <string name="loading_more_issues">Načítavam viac problémov…</string>
-    <string name="loading_issues">Načítavam problémy…</string>
+    <string name="loading_more_issues">Načítavam viac issues…</string>
+    <string name="loading_issues">Načítavam issues…</string>
     <string name="loading_comments">Načítavam komentáre…</string>
     <string name="loading_repositories">Načítavam repozitáre…</string>
-    <string name="loading_issue">Načítavam problém…</string>
+    <string name="loading_issue">Načítavam issue…</string>
     <string name="loading_news">Načítavam novinky…</string>
     <string name="loading_followers">Načítavam sledujúcich…</string>
     <string name="loading_people">Načítavam ľudí…</string>
@@ -58,7 +58,7 @@
     <!-- Empty messages -->
     <string name="no_bookmarks">Žiadne záložky</string>
     <string name="no_repositories">Žiadne repozitáre</string>
-    <string name="no_issues">Žiadne problémy</string>
+    <string name="no_issues">Žiadne issues</string>
     <string name="no_gists">Žiadne gisty</string>
     <string name="no_people">Žiadny ľudia</string>
     <string name="no_followers">Žiadny sledujúci</string>
@@ -69,18 +69,18 @@
 
     <!-- Updating messages -->
     <string name="updating_assignee">Aktualizujem priradených…</string>
-    <string name="updating_issue">Aktualizujem problém…</string>
+    <string name="updating_issue">Aktualizujem issue…</string>
     <string name="updating_labels">Aktualizujem štítky…</string>
     <string name="updating_milestone">Aktualizujem míľnik…</string>
     <!--  -->
 
     <string name="app_name">GitHub</string>
     <string name="news">Novinky</string>
-    <string name="issues">Problémy</string>
+    <string name="issues">Issues</string>
     <string name="gists">Gisty</string>
-    <string name="dashboard_issues">Panel problémov</string>
+    <string name="dashboard_issues">Issues Panel</string>
     <string name="find_repositories">Nájsť repozitár</string>
-    <string name="find_issues">Nájsť problém</string>
+    <string name="find_issues">Nájsť issue</string>
     <string name="search_title">Hľadať…</string>
     <string name="clear_search_history">Vymazať históriu</string>
     <string name="search_history_cleared">Hľadať v premazanej histórii</string>
@@ -108,17 +108,17 @@
     <string name="dasbhoard_assigned">Priradené</string>
     <string name="dasbhoard_created">Vytvorené</string>
     <string name="dasbhoard_mentioned">Spomenuté</string>
-    <string name="dashboard_issues_title">Prehľad problémov</string>
+    <string name="dashboard_issues_title">Prehľad issues</string>
     <string name="bookmarks">Záložky</string>
     <string name="gists_title">Gisty</string>
-    <string name="issue_title">Problém #</string>
+    <string name="issue_title">Issue #</string>
     <string name="gist_title">Gist\u0020</string>
-    <string name="filter_issues_title">Filtrovať problémy</string>
+    <string name="filter_issues_title">Filtrovať issues</string>
     <string name="create_comment_title">Vytvoriť komentár</string>
     <string name="comment_hint">Potvrdiť komentár</string>
     <string name="show_more">Ukázať viac…</string>
     <string name="repositories">Repozitáre</string>
-    <string name="issues_title">Problémy</string>
+    <string name="issues_title">issues</string>
     <string name="edit_labels">Upraviť štítky</string>
     <string name="milestone_prefix">Míľnik:</string>
     <string name="edit_milestone">Upraviť míľnik</string>
@@ -147,10 +147,10 @@
     <string name="deleting_gist">Mažem Gist…</string>
     <string name="creating_comment">Vytváram komentár…</string>
     <string name="confirm_bookmark_delete_message">Ste si istý vymazať túto záložku?</string>
-    <string name="issue_dashboard">Panel problémov</string>
-    <string name="new_issue">Nový problém</string>
+    <string name="issue_dashboard">Issue panel</string>
+    <string name="new_issue">Nový issue</string>
     <string name="anonymous">Anonymný</string>
-    <string name="message_filter_saved">Filter problémov uložený do záložiek</string>
+    <string name="message_filter_saved">Filter issues uložený do záložiek</string>
     <string name="recent">Nedávny</string>
     <string name="icon_pull_request">\uf20E</string>
     <string name="icon_comment">\uf22B</string>
@@ -173,18 +173,18 @@
     <string name="followers">Sledujúci</string>
     <string name="following">Sledujem</string>
     <string name="members">Členovia</string>
-    <string name="closing_issue">Zatváram problém…</string>
-    <string name="reopening_issue">Znovu otváram problém…</string>
+    <string name="closing_issue">Zatváram issue…</string>
+    <string name="reopening_issue">Znovu otváram issue…</string>
     <string name="icon_watch">\uf04E</string>
     <string name="icon_fork">\uf020</string>
     <string name="avatar">Avatar</string>
-    <string name="creating_issue">Vytváram problém…</string>
+    <string name="creating_issue">Vytváram issue…</string>
     <string name="prefix_created">vytvorený\u0020</string>
     <string name="prefix_updated">aktualizovaný\u0020</string>
     <string name="prefix_opened">otvorený\u0020</string>
     <string name="clear">Vyčistiť</string>
-    <string name="open_issues">Otvoriť problémy</string>
-    <string name="closed_issues">Uzavreté problémy</string>
+    <string name="open_issues">Otvoriť issues</string>
+    <string name="closed_issues">Uzavreté issues</string>
     <string name="confirm_bookmark_delete_title">Odstrániť záložku</string>
     <string name="save">Uložiť</string>
     <string name="apply">Použiť</string>
@@ -192,10 +192,10 @@
     <string name="assignee">Priradiť</string>
     <string name="milestone">Míľnik</string>
     <string name="labels">Štítky</string>
-    <string name="issue_confirm_close_message">Ste si istý uzavrieť tento problém?</string>
-    <string name="issue_confirm_reopen_message">Ste si istý znovu otvoriť tento problém?</string>
-    <string name="issue_confirm_close_title">Uzavrieť problém</string>
-    <string name="issue_confirm_reopen_title">Znovu otvoriť problém</string>
+    <string name="issue_confirm_close_message">Ste si istý uzavrieť túto issue?</string>
+    <string name="issue_confirm_reopen_message">Ste si istý znovu otvoriť túto issue?</string>
+    <string name="issue_confirm_close_title">Uzavrieť issue</string>
+    <string name="issue_confirm_reopen_title">Znovu otvoriť issue</string>
     <string name="closed">Uzavretý</string>
     <string name="no_description_given">Žiadny dostupný popis.</string>
     <string name="close">Zatvoriť</string>
