@@ -260,6 +260,16 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable_issues" />
         </activity>
+        <activity
+            android:name=".ui.commit.CommitCompareViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/commit_compare_title" >
+            <intent-filter>
+                <action android:name="com.github.mobile.commits.compare.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <service
             android:name=".sync.SyncAdapterService"

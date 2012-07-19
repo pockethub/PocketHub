@@ -151,6 +151,14 @@
 
     <style name="ListSubtitleText" parent="SubtitleText"></style>
 
+    <style name="CodeText">
+        <item name="android:textSize">12sp</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
     <style name="ListNumericSubtitleText" parent="ListSubtitleText">
         <item name="android:singleLine">true</item>
     </style>

@@ -18,6 +18,7 @@ package com.github.mobile.ui;
 import static android.content.Intent.ACTION_VIEW;
 import static android.content.Intent.CATEGORY_BROWSABLE;
 import static org.eclipse.egit.github.core.event.Event.TYPE_DOWNLOAD;
+import static org.eclipse.egit.github.core.event.Event.TYPE_PUSH;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import com.github.mobile.core.issue.IssueEventMatcher;
 import com.github.mobile.core.repo.RepositoryEventMatcher;
 import com.github.mobile.core.user.UserEventMatcher;
 import com.github.mobile.core.user.UserEventMatcher.UserPair;
+import com.github.mobile.ui.commit.CommitCompareViewActivity;
 import com.github.mobile.ui.gist.GistsViewActivity;
 import com.github.mobile.ui.issue.IssuesViewActivity;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
@@ -40,6 +42,7 @@ import com.google.inject.Inject;
 
 import java.util.List;
 
+import org.eclipse.egit.github.core.Commit;
 import org.eclipse.egit.github.core.Download;
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.Issue;
@@ -47,6 +50,7 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.event.DownloadPayload;
 import org.eclipse.egit.github.core.event.Event;
+import org.eclipse.egit.github.core.event.PushPayload;
 import org.eclipse.egit.github.core.service.EventService;
 
 /**
@@ -99,6 +103,11 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
             return;
         }
 
+        if (TYPE_PUSH.equals(event.getType())) {
+            openPush(event);
+            return;
+        }
+
         Issue issue = issueMatcher.getIssue(event);
         if (issue != null) {
             viewIssue(issue);
@@ -133,6 +142,25 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
         Intent intent = new Intent(ACTION_VIEW, Uri.parse(url));
         intent.addCategory(CATEGORY_BROWSABLE);
         startActivity(intent);
+    }
+
+    private void openPush(Event event) {
+        Repository repo = RepositoryEventMatcher.getRepository(event.getRepo(),
+                event.getActor(), event.getOrg());
+        if (repo == null)
+            return;
+
+        PushPayload payload = (PushPayload) event.getPayload();
+        List<Commit> commits = payload.getCommits();
+        if (commits == null || commits.size() < 2)
+            return;
+
+        String base = commits.get(0).getSha();
+        String head = commits.get(commits.size() - 1).getSha();
+        if (TextUtils.isEmpty(base) || TextUtils.isEmpty(head))
+            return;
+
+        startActivity(CommitCompareViewActivity.createIntent(repo, base, head));
     }
 
     /**
