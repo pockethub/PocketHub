@@ -35,9 +35,7 @@
 
     <ProgressBar
         android:id="@+id/pb_loading"
-        style="@style/Spinner"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        style="@style/ListSpinner"
         android:layout_centerInParent="true" />
 
 </RelativeLayout>

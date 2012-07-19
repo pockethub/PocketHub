@@ -140,8 +140,7 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="ListTitleText" parent="TitleText">
-    </style>
+    <style name="ListTitleText" parent="TitleText"></style>
 
     <style name="SubtitleText">
         <item name="android:textSize">14sp</item>
@@ -150,8 +149,7 @@
         <item name="android:layout_width">wrap_content</item>
     </style>
 
-    <style name="ListSubtitleText" parent="SubtitleText">
-    </style>
+    <style name="ListSubtitleText" parent="SubtitleText"></style>
 
     <style name="ListNumericSubtitleText" parent="ListSubtitleText">
         <item name="android:singleLine">true</item>
@@ -181,6 +179,11 @@
         <item name="android:indeterminateDrawable">@drawable/spinner</item>
         <item name="android:indeterminateDuration">2000</item>
         <item name="android:indeterminateOnly">true</item>
+    </style>
+
+    <style name="ListSpinner" parent="Spinner">
+        <item name="android:layout_width">64dp</item>
+        <item name="android:layout_height">64dp</item>
     </style>
 
     <style name="HeaderSeparator">
