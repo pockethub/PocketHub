@@ -54,6 +54,7 @@ public class RepositoryUriMatcher {
                 || "languages".equals(repoOwner) //
                 || "logout".equals(repoOwner) //
                 || "new".equals(repoOwner) //
+                || "notifications".equals(repoOwner) //
                 || "repositories".equals(repoOwner) //
                 || "search".equals(repoOwner) //
                 || "settings".equals(repoOwner) //
