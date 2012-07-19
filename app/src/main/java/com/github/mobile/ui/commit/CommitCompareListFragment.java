@@ -18,7 +18,6 @@ package com.github.mobile.ui.commit;
 import static com.github.mobile.Intents.EXTRA_BASE;
 import static com.github.mobile.Intents.EXTRA_HEAD;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
-import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -37,7 +36,6 @@ import com.github.mobile.util.ViewUtils;
 import com.viewpagerindicator.R.layout;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -131,20 +129,7 @@ public class CommitCompareListFragment extends DialogFragment {
                             end = patch.indexOf('\n', start);
                         }
                     }
-                    Collections.sort(files, new Comparator<CommitFile>() {
-
-                        public int compare(CommitFile lhs, CommitFile rhs) {
-                            String lPath = lhs.getFilename();
-                            String rPath = rhs.getFilename();
-                            int lSlash = lPath.lastIndexOf('/');
-                            if (lSlash != -1)
-                                lPath = lPath.substring(lSlash + 1);
-                            int rSlash = rPath.lastIndexOf('/');
-                            if (rSlash != -1)
-                                rPath = rPath.substring(rSlash + 1);
-                            return CASE_INSENSITIVE_ORDER.compare(lPath, rPath);
-                        }
-                    });
+                    Collections.sort(files, new CommitFileComparator());
                 }
                 return compare;
             }
