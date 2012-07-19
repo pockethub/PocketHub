@@ -113,6 +113,7 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
 
                     ToastUtils.show(RepositoryViewActivity.this,
                             string.error_repo_load);
+                    ViewUtils.setGone(loadingBar, true);
                 }
             }.execute();
         }
