@@ -50,6 +50,7 @@ public class RepositoryUriMatcher {
                 || "contact".equals(repoOwner) //
                 || "explore".equals(repoOwner) //
                 || "features".equals(repoOwner) //
+                || "inbox".equals(repoOwner) //
                 || "languages".equals(repoOwner) //
                 || "logout".equals(repoOwner) //
                 || "new".equals(repoOwner) //
