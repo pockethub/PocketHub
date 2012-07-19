@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<resources>
+
+    <!-- Mensagens de erro -->
+    <string name="error_orgs_load">Carregamento das contas &amp; organizações falhou</string>
+    <string name="error_issues_load">Carregamento dos problemas falhou</string>
+    <string name="error_repos_load">Carregamento dos repositórios falhou</string>
+    <string name="error_repo_load">Carregamento do repositórios falhou</string>
+    <string name="error_gist_load">Carregamento do Gist falhou</string>
+    <string name="error_news_load">Carregamento das novidades falhou</string>
+    <string name="error_followers_load">Carregamento dos seguidores falhou</string>
+    <string name="error_people_load">Carregamento das pessoas falhou</string>
+    <string name="error_person_load">Carregamento da pessoa falhou</string>
+    <string name="error_gist_file_load">Carregamento do conteúdo do ficheiro Gist falhou</string>
+    <string name="error_gists_load">Carregamentos dos Gists falhou</string>
+    <string name="error_issue_load">Carregamento do problema falhou</string>
+    <string name="error_collaborators_load">Carregamento dos colaboradoes falhou</string>
+    <string name="error_milestones_load">Carregamento dos marcos falhou</string>
+    <string name="error_labels_load">Carregamento das etiquetas falhou</string>
+    <string name="error_bookmarks_load">Carregamentos dos favoritos falhou</string>
+    <string name="error_members_load">Carregamento dos membros falhou</string>
+    <!--  -->
+
+
+    <!-- Mensagens de carregamento -->
+    <string name="loading_gist">Carregando Gist…</string>
+    <string name="random_gist">Carregando Gist aleatório…</string>
+    <string name="loading_more_issues">Carregando mais problemas…</string>
+    <string name="loading_issues">Carregando problemas…</string>
+    <string name="loading_comments">Carregando comentários…</string>
+    <string name="loading_repositories">Carregando repositórios…</string>
+    <string name="loading_issue">Carregando problema…</string>
+    <string name="loading_news">Carregando noticias…</string>
+    <string name="loading_followers">Carregando seguidores…</string>
+    <string name="loading_people">Carregando pessoas…</string>
+    <string name="loading_gists">Carregando Gists…</string>
+    <string name="loading_collaborators">Carregando colaboradores…</string>
+    <string name="loading_milestones">Carregando marcos…</string>
+    <string name="loading_labels">Carregando etiquetas…</string>
+    <!--  -->
+
+
+    <!-- Mensagens vazias -->
+    <string name="no_bookmarks">Nenhuns favorito</string>
+    <string name="no_repositories">Nenhuns repositórios</string>
+    <string name="no_issues">Nenhuns problemas</string>
+    <string name="no_gists">Nenhuns Gists</string>
+    <string name="no_people">Nenhumas pessoas</string>
+    <string name="no_followers">Nenhuns seguidores</string>
+    <string name="no_members">Nenhuns membros</string>
+    <string name="no_news">Nenhumas notícias</string>
+    <!--  -->
+
+
+    <!-- Mensagens de actualização -->
+    <string name="updating_assignee">Actualizando cessionário…</string>
+    <string name="updating_issue">Actualizando problema…</string>
+    <string name="updating_labels">Actualizando etiquitas…</string>
+    <string name="updating_milestone">Actualizando marco…</string>
+    <!--  -->
+
+    <string name="app_name">GitHub</string>
+    <string name="news">Notícias</string>
+    <string name="issues">Problemas</string>
+    <string name="gists">Gists</string>
+    <string name="dashboard_issues">Painel de problemas</string>
+    <string name="find_repositories">Procurar repositórios</string>
+    <string name="find_issues">Procurar problemas</string>
+    <string name="search_title">Procurar…</string>
+    <string name="clear_search_history">Limpar histórico</string>
+    <string name="search_history_cleared">Histórico limpo</string>
+    <string name="login_activity_authenticating">A registar…</string>
+    <string name="creating_gist">Criando Gist…</string>
+    <string name="create">Criar</string>
+    <string name="create_gist">Criar Gist</string>
+    <string name="gist_content_hint">puts \'Ola Mundo!\'</string>
+    <string name="make_public">Fazer este Gist público</string>
+    <string name="gist_file_name_hint">file.rb</string>
+    <string name="gist">Gist</string>
+    <string name="comments">Comentários</string>
+    <string name="files">Ficheiros</string>
+    <string name="open">Abrir</string>
+    <string name="random">Aleatório</string>
+    <string name="file_name">Nome du fichiro</string>
+    <string name="file_content">Conteúdo do ficheiro</string>
+    <string name="new_gist">Novo Gist</string>
+    <string name="filter">Filtrar</string>
+    <string name="bookmark">Favorito</string>
+    <string name="comment">Comentário</string>
+    <string name="delete">Apagar</string>
+    <string name="refresh">Atualizar</string>
+    <string name="dasbhoard_watched">Observando</string>
+    <string name="dasbhoard_assigned">Atribuído</string>
+    <string name="dasbhoard_created">Criado</string>
+    <string name="dasbhoard_mentioned">Mencionado</string>
+    <string name="dashboard_issues_title">Painel de problemas</string>
+    <string name="bookmarks">Favoritos</string>
+    <string name="gists_title">Gists</string>
+    <string name="issue_title">Problema #</string>
+    <string name="gist_title">Gist\u0020</string>
+    <string name="filter_issues_title">Filtrar problemas</string>
+    <string name="create_comment_title">Criar comentário</string>
+    <string name="comment_hint">Entrar um comentário</string>
+    <string name="show_more">Mostar mais…</string>
+    <string name="repositories">Repositórios</string>
+    <string name="issues_title">Problemas</string>
+    <string name="edit_labels">Editar etiquetas</string>
+    <string name="milestone_prefix">Marco:</string>
+    <string name="edit_milestone">Editar marco</string>
+    <string name="edit_assignee">Editar atribuído</string>
+    <string name="my_gists_tab">Meu</string>
+    <string name="starred_gists_tab">Olhando</string>
+    <string name="all_gists_tab">Todos</string>
+    <string name="description">Sescrição</string>
+    <string name="gist_description_hint">Gist criado por Android</string>
+    <string name="title">Título</string>
+    <string name="edit">Editar</string>
+    <string name="star">Star</string>
+    <string name="starring_gist">Starring Gist…</string>
+    <string name="unstar">Unstar</string>
+    <string name="unstarring_gist">Unstarring Gist…</string>
+    <string name="accounts_label">Contas</string>
+    <string name="select_assignee">Seleccione um cessionário</string>
+    <string name="select_milestone">Seleccione um marco</string>
+    <string name="select_labels">Seleccione uma	 etiquita</string>
+    <string name="no_milestone">Nunhuns marcos</string>
+    <string name="unassigned">Ninguem esta atribuído</string>
+    <string name="assigned">esta atribuído</string>
+    <string name="no_gists_found">Nenhuns Gists encontrado</string>
+    <string name="confirm_gist_delete_title">Confirmar apagar</string>
+    <string name="confirm_gist_delete_message">Tem certeza que deseja apagar este Gist?</string>
+    <string name="deleting_gist">Apagando Gist…</string>
+    <string name="creating_comment">Criando comentário…</string>
+    <string name="confirm_bookmark_delete_message">Tem certeza que deseja apagar este favorito?</string>
+    <string name="issue_dashboard">Painel de problema</string>
+    <string name="new_issue">Novo problema</string>
+    <string name="anonymous">Anônimo</string>
+    <string name="message_filter_saved">Filtro de problemas salveguardado nos favoritos</string>
+    <string name="recent">Recente</string>
+    <string name="icon_pull_request">\uf20E</string>
+    <string name="icon_comment">\uf22B</string>
+    <string name="icon_file">\uf211</string>
+    <string name="section_issue_status">Estado:</string>
+    <string name="status_open">Aberto</string>
+    <string name="status_closed">Fechado</string>
+    <string name="section_issue_assigned">Atribuído a:</string>
+    <string name="assignee_anyone">Qualquer pessoa</string>
+    <string name="section_issue_milestone">Marco:</string>
+    <string name="none">Nenhum</string>
+    <string name="section_issue_labels">Etiquetas:</string>
+    <string name="log_in">Log in</string>
+    <string name="signup_link">Novo no GitHub? &lt;a href=\"https://github.com/plans\">Clique aqui&lt;/a> para se inscrever</string>
+    <string name="connection_failed">Foi impossível de se conectar ao GitHub</string>
+    <string name="invalid_login_or_password">Por favor digite um login ou uma senha válida.</string>
+    <string name="invalid_password">Por favor digite uma senha válida.</string>
+    <string name="password">Senha</string>
+    <string name="login_or_email">Login ou Email</string>
+    <string name="followers">Seguidores</string>
+    <string name="following">Seguindo</string>
+    <string name="members">Membros</string>
+    <string name="closing_issue">Fechar problema…</string>
+    <string name="reopening_issue">Reabrir problema…</string>
+    <string name="icon_watch">\uf04E</string>
+    <string name="icon_fork">\uf020</string>
+    <string name="avatar">Avatar</string>
+    <string name="creating_issue">Criando problema…</string>
+    <string name="prefix_created">criado\u0020</string>
+    <string name="prefix_updated">actualizado\u0020</string>
+    <string name="prefix_opened">aberto\u0020</string>
+    <string name="clear">Limpar</string>
+    <string name="open_issues">Problemas abertos</string>
+    <string name="closed_issues">Problemas fechados</string>
+    <string name="confirm_bookmark_delete_title">Remover favorito</string>
+    <string name="save">Salveguardar</string>
+    <string name="apply">Aplicar</string>
+    <string name="labels_prefix">Etiquetas:</string>
+    <string name="assignee">Cessionário</string>
+    <string name="milestone">Marco</string>
+    <string name="labels">Etiqueta</string>
+    <string name="issue_confirm_close_message">Tem certeza que deseja fechar este problema?</string>
+    <string name="issue_confirm_reopen_message">Tem certeza que deseja reabrir este problema?</string>
+    <string name="issue_confirm_close_title">Fechar problema</string>
+    <string name="issue_confirm_reopen_title">Reabrir problema</string>
+    <string name="closed">Fechado</string>
+    <string name="no_description_given">Nenhuma descrição dada.</string>
+    <string name="close">Fechar</string>
+    <string name="reopen">Reabrir</string>
+    <string name="title_invalid_github_url">URL GitHub invalida</string>
+    <string name="message_invalid_github_url">A seguinte URL não pôde ser aberta pela aplicação:\n{0}</string>
+    <string name="recently_viewed">VISTOS RECENTAMENTE</string> 
+    <string name="cancel">Cancelar</string>
+    <string name="authenticator_conflict_title">Conflito App</string>
+    <string name="authenticator_conflict_message">Uma outra aplicação já foi configurada para utilizar a autentificação do GitHub..\n\nVocê tem de remover a outra aplicação das contas e opções de sincronização e tem de a desinstalar antes que a aplicação GitHub possa ser usado correctamente.</string>
+    <string name="opening_repository">Abrindo {0}…</string>
+
+</resources>
