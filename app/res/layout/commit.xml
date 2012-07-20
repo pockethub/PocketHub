@@ -24,17 +24,11 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" />
 
-    <ListView
+    <fragment
         android:id="@android:id/list"
-        style="@style/CommentListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/v_header_separator"
-        android:visibility="gone" />
-
-    <ProgressBar
-        android:id="@+id/pb_loading"
-        style="@style/ListSpinner"
-        android:layout_centerInParent="true" />
+        class="com.github.mobile.ui.commit.CommitDiffListFragment" />
 
 </RelativeLayout>

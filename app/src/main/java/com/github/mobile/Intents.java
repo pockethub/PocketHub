@@ -146,6 +146,16 @@ public class Intents {
             + "POSITION";
 
     /**
+     * Base commit name
+     */
+    public static final String EXTRA_BASE = INTENT_EXTRA_PREFIX + "BASE";
+
+    /**
+     * Base commit name
+     */
+    public static final String EXTRA_HEAD = INTENT_EXTRA_PREFIX + "HEAD";
+
+    /**
      * Resolve the {@link RepositoryId} referenced by the given intent
      *
      * @param intent

@@ -18,6 +18,7 @@ package com.github.mobile.ui;
 import static android.graphics.Typeface.BOLD;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
@@ -87,6 +88,17 @@ public class StyledText extends SpannableStringBuilder {
      */
     public StyledText bold(final CharSequence text) {
         return append(text, new StyleSpan(BOLD));
+    }
+
+    /**
+     * Append text in bold
+     *
+     * @param text
+     * @param color
+     * @return this text
+     */
+    public StyledText background(final CharSequence text, final int color) {
+        return append(text, new BackgroundColorSpan(color));
     }
 
     /**
