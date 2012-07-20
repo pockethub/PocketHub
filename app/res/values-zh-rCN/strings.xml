@@ -170,8 +170,10 @@
     <string name="invalid_password">请输入正确的密码。</string>
     <string name="password">密码</string>
     <string name="login_or_email">登录名 / 电子邮件</string>
-    <string name="followers">关注我的</string>
-    <string name="following">我关注的</string>
+    <string name="followers">关注Ta的</string>
+    <string name="following">Ta关注的</string>
+    <string name="followers_self">关注我的</string>
+    <string name="following_self">我关注的</string>
     <string name="members">成员</string>
     <string name="closing_issue">正在关闭 Issue…</string>
     <string name="reopening_issue">正在重新开放 Issue…</string>
@@ -207,5 +209,6 @@
     <string name="authenticator_conflict_title">应用冲突</string>
     <string name="authenticator_conflict_message">GitHub 认证已配置为安装的另一个应用使用。\n\n您必须从“账户与同步”设置中移除那个应用并将其卸载，才能使用本应用。</string>
     <string name="opening_repository">正在打开 {0}…</string>
-
+    <string name="commit_compare_title">Commit Compare</string>
+    
 </resources>
