@@ -20,8 +20,11 @@ import static android.content.Intent.CATEGORY_BROWSABLE;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.github.mobile.core.commit.CommitUrlMatcher;
+import com.github.mobile.core.commit.CommitUrlMatcher.CommitMatch;
 import com.github.mobile.core.gist.GistUrlMatcher;
 import com.github.mobile.core.issue.IssueUrlMatcher;
+import com.github.mobile.ui.commit.CommitViewActivity;
 import com.github.mobile.ui.gist.GistsViewActivity;
 import com.github.mobile.ui.issue.IssuesViewActivity;
 
@@ -36,6 +39,8 @@ public class UrlLauncher {
     private final GistUrlMatcher gistMatcher = new GistUrlMatcher();
 
     private final IssueUrlMatcher issueMatcher = new IssueUrlMatcher();
+
+    private final CommitUrlMatcher commitMatcher = new CommitUrlMatcher();
 
     /**
      * Create intent to launch view of URI
@@ -52,9 +57,17 @@ public class UrlLauncher {
         if (gistId != null)
             return createGistIntent(uri, gistId);
 
+        CommitMatch commitMatch = commitMatcher.getCommit(uri);
+        if (commitMatch != null)
+            return createCommitIntent(uri, commitMatch);
+
         Intent intent = new Intent(ACTION_VIEW, Uri.parse(uri));
         intent.addCategory(CATEGORY_BROWSABLE);
         return intent;
+    }
+
+    private Intent createCommitIntent(final String uri, final CommitMatch match) {
+        return CommitViewActivity.createIntent(match.repository, match.commit);
     }
 
     private Intent createIssueIntent(final String uri, final int number) {
@@ -95,6 +108,10 @@ public class UrlLauncher {
         String gistId = gistMatcher.getId(uri);
         if (gistId != null)
             return createGistIntent(uri, gistId);
+
+        CommitMatch match = commitMatcher.getCommit(uri);
+        if (match != null)
+            return createCommitIntent(uri, match);
 
         return null;
     }
