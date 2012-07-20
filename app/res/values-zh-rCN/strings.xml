@@ -19,8 +19,8 @@
     <!-- Error messages -->
     <string name="error_orgs_load">账户和组织信息加载失败</string>
     <string name="error_issues_load">事项列表加载失败</string>
-    <string name="error_repos_load">储存库列表加载失败</string>
-    <string name="error_repo_load">储存库加载失败</string>
+    <string name="error_repos_load">版本库列表加载失败</string>
+    <string name="error_repo_load">版本库加载失败</string>
     <string name="error_gist_load">代码片段加载失败</string>
     <string name="error_news_load">新鲜事加载失败</string>
     <string name="error_followers_load">关注我的用户列表加载失败</string>
@@ -43,7 +43,7 @@
     <string name="loading_more_issues">加载更多事项…</string>
     <string name="loading_issues">加载事项列表…</string>
     <string name="loading_comments">加载评论…</string>
-    <string name="loading_repositories">加载储存库列表…</string>
+    <string name="loading_repositories">加载版本库列表…</string>
     <string name="loading_issue">加载事项…</string>
     <string name="loading_news">加载新鲜事…</string>
     <string name="loading_followers">加载关注我的用户列表…</string>
@@ -57,7 +57,7 @@
 
     <!-- Empty messages -->
     <string name="no_bookmarks">暂无书签</string>
-    <string name="no_repositories">暂无储存库</string>
+    <string name="no_repositories">暂无版本库</string>
     <string name="no_issues">暂无事项</string>
     <string name="no_gists">暂无片段</string>
     <string name="no_people">暂无用户</string>
@@ -79,7 +79,7 @@
     <string name="issues">事项</string>
     <string name="gists">代码片段</string>
     <string name="dashboard_issues">事项面板</string>
-    <string name="find_repositories">寻找储存库</string>
+    <string name="find_repositories">寻找版本库</string>
     <string name="find_issues">寻找事项</string>
     <string name="search_title">搜索…</string>
     <string name="clear_search_history">清空搜索历史</string>
@@ -117,7 +117,7 @@
     <string name="create_comment_title">发表评论</string>
     <string name="comment_hint">输入评论</string>
     <string name="show_more">显示更多…</string>
-    <string name="repositories">储存库</string>
+    <string name="repositories">版本库</string>
     <string name="issues_title">事项</string>
     <string name="edit_labels">编辑标签</string>
     <string name="milestone_prefix">里程碑:</string>
