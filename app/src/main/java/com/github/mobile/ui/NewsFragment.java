@@ -33,6 +33,7 @@ import com.github.mobile.core.repo.RepositoryEventMatcher;
 import com.github.mobile.core.user.UserEventMatcher;
 import com.github.mobile.core.user.UserEventMatcher.UserPair;
 import com.github.mobile.ui.commit.CommitCompareViewActivity;
+import com.github.mobile.ui.commit.CommitViewActivity;
 import com.github.mobile.ui.gist.GistsViewActivity;
 import com.github.mobile.ui.issue.IssuesViewActivity;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
@@ -152,15 +153,21 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
 
         PushPayload payload = (PushPayload) event.getPayload();
         List<Commit> commits = payload.getCommits();
-        if (commits == null || commits.size() < 2)
+        if (commits == null || commits.isEmpty())
             return;
 
         String base = commits.get(0).getSha();
-        String head = commits.get(commits.size() - 1).getSha();
-        if (TextUtils.isEmpty(base) || TextUtils.isEmpty(head))
+        if (TextUtils.isEmpty(base))
             return;
 
-        startActivity(CommitCompareViewActivity.createIntent(repo, base, head));
+        if (commits.size() > 1) {
+            String head = commits.get(commits.size() - 1).getSha();
+            if (TextUtils.isEmpty(base) || TextUtils.isEmpty(head))
+                return;
+            startActivity(CommitCompareViewActivity.createIntent(repo, base,
+                    head));
+        } else
+            startActivity(CommitViewActivity.createIntent(repo, base));
     }
 
     /**

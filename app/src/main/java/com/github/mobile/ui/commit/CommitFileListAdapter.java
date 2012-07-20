@@ -29,12 +29,18 @@ import org.eclipse.egit.github.core.CommitFile;
 public class CommitFileListAdapter extends
         ItemListAdapter<CommitFile, CommitFileView> {
 
+    private DiffStyler diffStyler;
+
     /**
      * @param viewId
      * @param inflater
+     * @param diffStyler
      */
-    public CommitFileListAdapter(int viewId, LayoutInflater inflater) {
+    public CommitFileListAdapter(int viewId, LayoutInflater inflater,
+            DiffStyler diffStyler) {
         super(viewId, inflater);
+
+        this.diffStyler = diffStyler;
     }
 
     @Override
@@ -49,6 +55,8 @@ public class CommitFileListAdapter extends
             view.name.setText(path);
             ViewUtils.setGone(view.folder, true);
         }
+
+        view.diff.setText(diffStyler.get(item.getFilename()));
     }
 
     @Override
