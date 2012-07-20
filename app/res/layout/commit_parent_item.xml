@@ -27,6 +27,6 @@
     <TextView
         style="@style/ListSubtitleText"
         android:singleLine="true"
-        android:text="@string/parent" />
+        android:text="@string/parent_commit" />
 
 </LinearLayout>

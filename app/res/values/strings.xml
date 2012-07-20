@@ -208,7 +208,7 @@
     <string name="authenticator_conflict_message">Another installed app is already configured for GitHub authentication.\n\nYou must remove the other app from the Accounts &amp; sync settings and uninstall it before the GitHub app can be used.</string>
     <string name="opening_repository">Opening {0}…</string>
     <string name="commit_compare_title">Commit Compare</string>
-    <string name="parent">parent</string>
+    <string name="parent_commit">parent commit</string>
     <string name="commit_prefix">Commit\u0020</string>
 
 </resources>
