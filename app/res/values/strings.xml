@@ -34,6 +34,7 @@
     <string name="error_labels_load">Loading labels failed</string>
     <string name="error_bookmarks_load">Loading bookmarks failed</string>
     <string name="error_members_load">Loading members failed</string>
+    <string name="error_commits_load">Loading commits failed</string>
     <!--  -->
 
 
@@ -52,6 +53,7 @@
     <string name="loading_collaborators">Loading Collaborators…</string>
     <string name="loading_milestones">Loading Milestones…</string>
     <string name="loading_labels">Loading Labels…</string>
+    <string name="loading_commits">Loading Commits…</string>
     <!--  -->
 
 
@@ -64,6 +66,7 @@
     <string name="no_followers">No Followers</string>
     <string name="no_members">No Members</string>
     <string name="no_news">No News</string>
+    <string name="no_commits">No Commits</string>
     <!--  -->
 
 
@@ -78,6 +81,7 @@
     <string name="news">News</string>
     <string name="issues">Issues</string>
     <string name="gists">Gists</string>
+    <string name="commits">Commits</string>
     <string name="dashboard_issues">Issues Dashboard</string>
     <string name="find_repositories">Find Repositories</string>
     <string name="find_issues">Find Issues</string>
