@@ -74,13 +74,13 @@ public class DiffStyler {
                 String line = patch.substring(start, end + 1);
                 switch (patch.charAt(start)) {
                 case '@':
-                    styled.background(line, markerColor);
+                    styled.foreground(line, markerColor);
                     break;
                 case '+':
-                    styled.background(line, addColor);
+                    styled.foreground(line, addColor);
                     break;
                 case '-':
-                    styled.background(line, removeColor);
+                    styled.foreground(line, removeColor);
                     break;
                 default:
                     styled.append(line);
