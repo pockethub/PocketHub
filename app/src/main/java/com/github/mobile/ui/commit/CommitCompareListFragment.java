@@ -26,16 +26,20 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.github.mobile.R.id;
 import com.github.mobile.core.commit.CommitCompareTask;
 import com.github.mobile.ui.DialogFragment;
 import com.github.mobile.ui.HeaderFooterListAdapter;
+import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ViewUtils;
 import com.google.inject.Inject;
 import com.viewpagerindicator.R.layout;
 
+import java.text.MessageFormat;
+import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.List;
 
@@ -52,6 +56,9 @@ import roboguice.inject.InjectView;
  */
 public class CommitCompareListFragment extends DialogFragment implements
         OnItemClickListener {
+
+    private static final NumberFormat FORMAT = NumberFormat
+            .getIntegerInstance();
 
     private DiffStyler diffStyler;
 
@@ -117,8 +124,16 @@ public class CommitCompareListFragment extends DialogFragment implements
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         adapter.clearHeaders();
+
         List<RepositoryCommit> commits = compare.getCommits();
         if (commits != null && !commits.isEmpty()) {
+            View commitHeader = inflater.inflate(layout.commit_details_header,
+                    null);
+            ((TextView) commitHeader.findViewById(id.tv_commit_summary))
+                    .setText(MessageFormat.format("Comparing {0} commits",
+                            commits.size()));
+            adapter.addHeader(commitHeader, null, false);
+
             CommitListAdapter commitAdapter = new CommitListAdapter(
                     layout.commit_item, inflater, commits, avatars);
             for (int i = 0; i < commits.size(); i++) {
@@ -129,11 +144,47 @@ public class CommitCompareListFragment extends DialogFragment implements
         }
 
         List<CommitFile> files = compare.getFiles();
-        if (files != null && !files.isEmpty())
+        if (files != null && !files.isEmpty()) {
+            addFileStatHeader(files, inflater);
             adapter.getWrappedAdapter().setItems(
                     files.toArray(new CommitFile[files.size()]));
-        else
+        } else
             adapter.getWrappedAdapter().setItems(null);
+    }
+
+    private void addFileStatHeader(List<CommitFile> files,
+            LayoutInflater inflater) {
+        StyledText fileDetails = new StyledText();
+        int added = 0;
+        int deleted = 0;
+        int changed = files.size();
+        for (CommitFile file : files) {
+            added += file.getAdditions();
+            deleted += file.getDeletions();
+        }
+
+        if (changed > 1)
+            fileDetails.bold(FORMAT.format(changed)).bold(" changed files");
+        else
+            fileDetails.bold("1 changed files");
+        fileDetails.append(" with ");
+
+        if (added != 1)
+            fileDetails.bold(FORMAT.format(added)).bold(" additions");
+        else
+            fileDetails.bold("1 addition ");
+        fileDetails.append(" and ");
+
+        if (deleted != 1)
+            fileDetails.bold(FORMAT.format(deleted)).bold(" deletion");
+        else
+            fileDetails.bold("1 deletion");
+
+        View fileHeader = inflater.inflate(layout.commit_file_details_header,
+                null);
+        ((TextView) fileHeader.findViewById(id.tv_commit_file_summary))
+                .setText(fileDetails);
+        adapter.addHeader(fileHeader, null, false);
     }
 
     @Override
