@@ -24,17 +24,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.github.mobile.R.id;
 import com.github.mobile.core.commit.CommitCompareTask;
-import com.github.mobile.core.commit.CommitUtils;
 import com.github.mobile.ui.DialogFragment;
 import com.github.mobile.ui.HeaderFooterListAdapter;
-import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ViewUtils;
 import com.google.inject.Inject;
@@ -43,7 +39,6 @@ import com.viewpagerindicator.R.layout;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.egit.github.core.Commit;
 import org.eclipse.egit.github.core.CommitFile;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryCommit;
@@ -123,24 +118,15 @@ public class CommitCompareListFragment extends DialogFragment implements
         LayoutInflater inflater = getActivity().getLayoutInflater();
         adapter.clearHeaders();
         List<RepositoryCommit> commits = compare.getCommits();
-        if (commits != null && !commits.isEmpty())
-            for (RepositoryCommit commit : commits) {
-                View header = inflater.inflate(layout.commit_item, null);
-                avatars.bind((ImageView) header.findViewById(id.iv_avatar),
-                        commit.getAuthor());
-                Commit rawCommit = commit.getCommit();
-                ((TextView) header.findViewById(id.tv_commit_id))
-                        .setText(CommitUtils.abbreviate(commit));
-                StyledText author = new StyledText();
-                author.bold(commit.getAuthor().getLogin());
-                author.append(' ');
-                author.append(rawCommit.getAuthor().getDate());
-                ((TextView) header.findViewById(id.tv_commit_author))
-                        .setText(author);
-                ((TextView) header.findViewById(id.tv_commit_message))
-                        .setText(rawCommit.getMessage());
-                adapter.addHeader(header, commit, true);
+        if (commits != null && !commits.isEmpty()) {
+            CommitListAdapter commitAdapter = new CommitListAdapter(
+                    layout.commit_item, inflater, commits, avatars);
+            for (int i = 0; i < commits.size(); i++) {
+                RepositoryCommit commit = commits.get(i);
+                View view = commitAdapter.getView(i, null, null);
+                adapter.addHeader(view, commit, true);
             }
+        }
 
         List<CommitFile> files = compare.getFiles();
         if (files != null && !files.isEmpty())

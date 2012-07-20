@@ -25,10 +25,7 @@ import com.github.mobile.util.AvatarLoader;
 
 import java.util.Collection;
 
-import org.eclipse.egit.github.core.Commit;
-import org.eclipse.egit.github.core.CommitUser;
 import org.eclipse.egit.github.core.RepositoryCommit;
-import org.eclipse.egit.github.core.User;
 
 /**
  *
@@ -68,22 +65,18 @@ public class CommitListAdapter extends
             final RepositoryCommit item) {
         view.sha.setText(CommitUtils.abbreviate(item.getSha()));
 
-        User author = item.getAuthor();
-        Commit commit = item.getCommit();
-        CommitUser commitAuthor = commit.getAuthor();
-        String name = author != null ? author.getLocation()
-                : commitAuthor != null ? commitAuthor.getName() : null;
         StyledText authorText = new StyledText();
-        authorText.bold(name);
-        if (commitAuthor != null) {
-            authorText.append(' ');
-            authorText.append(commit.getAuthor().getDate());
-        }
+        authorText.bold(CommitUtils.getAuthor(item));
+        authorText.append(' ');
+        authorText.append(CommitUtils.getAuthorDate(item));
         view.author.setText(authorText);
 
-        avatars.bind(view.avatar, author);
+        if (item.getAuthor() != null)
+            avatars.bind(view.avatar, item.getAuthor());
+        else
+            avatars.bind(view.avatar, item.getCommit().getAuthor());
 
-        view.message.setText(commit.getMessage());
+        view.message.setText(item.getCommit().getMessage());
     }
 
     @Override

@@ -17,8 +17,12 @@ package com.github.mobile.core.commit;
 
 import android.text.TextUtils;
 
+import java.util.Date;
+
 import org.eclipse.egit.github.core.Commit;
+import org.eclipse.egit.github.core.CommitUser;
 import org.eclipse.egit.github.core.RepositoryCommit;
+import org.eclipse.egit.github.core.User;
 
 /**
  * Utilities for working with commits
@@ -71,5 +75,45 @@ public class CommitUtils {
             return sha.matches("[a-fA-F0-9]+");
         else
             return false;
+    }
+
+    /**
+     * Get author of commit
+     * <p>
+     * This checks both the {@link RepositoryCommit} and the underlying
+     * {@link Commit} to retrieve a name
+     *
+     * @param commit
+     * @return author name or null if missing
+     */
+    public static String getAuthor(final RepositoryCommit commit) {
+        User author = commit.getAuthor();
+        if (author != null)
+            return author.getLogin();
+
+        Commit rawCommit = commit.getCommit();
+        if (rawCommit == null)
+            return null;
+
+        CommitUser commitAuthor = rawCommit.getAuthor();
+        return commitAuthor != null ? commitAuthor.getName() : null;
+    }
+
+    /**
+     * Get author date of commit
+     * <p>
+     * This checks both the {@link RepositoryCommit} and the underlying
+     * {@link Commit} to retrieve a name
+     *
+     * @param commit
+     * @return author name or null if missing
+     */
+    public static Date getAuthorDate(final RepositoryCommit commit) {
+        Commit rawCommit = commit.getCommit();
+        if (rawCommit == null)
+            return null;
+
+        CommitUser commitAuthor = rawCommit.getAuthor();
+        return commitAuthor != null ? commitAuthor.getDate() : null;
     }
 }
