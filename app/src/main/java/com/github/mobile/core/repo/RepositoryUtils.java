@@ -27,16 +27,17 @@ public class RepositoryUtils {
     /**
      * Does the repository have details denoting it was loaded from an API call?
      * <p>
-     * This uses a simple heuristic of either being a fork or having a non-zero
-     * amount of forks meaning it came back from an API call providing those
-     * details and more.
+     * This uses a simple heuristic of either being private, being a fork, or
+     * having a non-zero amount of forks meaning it came back from an API call
+     * providing those details and more.
      *
      * @param repository
      * @return true if complete, false otherwise
      *
      */
     public static boolean isComplete(Repository repository) {
-        return repository.isFork() || repository.getForks() > 0;
+        return repository.isPrivate() || repository.isFork()
+                || repository.getForks() > 0;
     }
 
     /**
