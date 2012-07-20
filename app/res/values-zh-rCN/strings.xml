@@ -79,8 +79,8 @@
     <string name="issues">事项</string>
     <string name="gists">代码片段</string>
     <string name="dashboard_issues">事项面板</string>
-    <string name="find_repositories">寻找版本库</string>
-    <string name="find_issues">寻找事项</string>
+    <string name="find_repositories">查询版本库</string>
+    <string name="find_issues">查询事项</string>
     <string name="search_title">搜索…</string>
     <string name="clear_search_history">清空搜索历史</string>
     <string name="search_history_cleared">搜索历史已清空</string>
@@ -127,7 +127,7 @@
     <string name="starred_gists_tab">已加星标</string>
     <string name="all_gists_tab">所有</string>
     <string name="description">描述</string>
-    <string name="gist_description_hint">从Android 创建的代码片段</string>
+    <string name="gist_description_hint">从 Android 创建的代码片段</string>
     <string name="title">标题</string>
     <string name="edit">编辑</string>
     <string name="star">加注星标</string>
@@ -144,7 +144,7 @@
     <string name="no_gists_found">找不到片段</string>
     <string name="confirm_gist_delete_title">确认删除</string>
     <string name="confirm_gist_delete_message">确定要删除这条代码片段吗?</string>
-    <string name="deleting_gist">删除片段…</string>
+    <string name="deleting_gist">正在删除片段…</string>
     <string name="creating_comment">评论发表中…</string>
     <string name="confirm_bookmark_delete_message">确定要移除这个书签吗?</string>
     <string name="issue_dashboard">事项面板</string>
