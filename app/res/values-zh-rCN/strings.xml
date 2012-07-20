@@ -104,9 +104,9 @@
     <string name="comment">评论</string>
     <string name="delete">删除</string>
     <string name="refresh">刷新</string>
-    <string name="dasbhoard_watched">关注的</string>
+    <string name="dasbhoard_watched">我关注的</string>
     <string name="dasbhoard_assigned">指派给我的</string>
-    <string name="dasbhoard_created">创建的</string>
+    <string name="dasbhoard_created">我创建的</string>
     <string name="dasbhoard_mentioned">提到我的</string>
     <string name="dashboard_issues_title">事项面板</string>
     <string name="bookmarks">书签</string>
@@ -127,7 +127,7 @@
     <string name="starred_gists_tab">已加星标</string>
     <string name="all_gists_tab">所有</string>
     <string name="description">描述</string>
-    <string name="gist_description_hint">Android 创建的代码片段</string>
+    <string name="gist_description_hint">从Android 创建的代码片段</string>
     <string name="title">标题</string>
     <string name="edit">编辑</string>
     <string name="star">加注星标</string>
@@ -178,13 +178,13 @@
     <string name="icon_watch">\uf04E</string>
     <string name="icon_fork">\uf020</string>
     <string name="avatar">头像</string>
-    <string name="creating_issue">创建事项…</string>
+    <string name="creating_issue">正在创建事项…</string>
     <string name="prefix_created">创建了\u0020</string>
     <string name="prefix_updated">更新了\u0020</string>
     <string name="prefix_opened">开放了\u0020</string>
     <string name="clear">清除</string>
-    <string name="open_issues">开放的事项</string>
-    <string name="closed_issues">已关闭的事项</string>
+    <string name="open_issues">开放中事项</string>
+    <string name="closed_issues">已关闭事项</string>
     <string name="confirm_bookmark_delete_title">删除书签</string>
     <string name="save">保存</string>
     <string name="apply">应用</string>
