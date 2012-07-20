@@ -22,6 +22,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -52,7 +54,8 @@ import roboguice.inject.InjectView;
 /**
  * Fragment to display a list of commits being compared
  */
-public class CommitCompareListFragment extends DialogFragment {
+public class CommitCompareListFragment extends DialogFragment implements
+        OnItemClickListener {
 
     private DiffStyler diffStyler;
 
@@ -150,6 +153,7 @@ public class CommitCompareListFragment extends DialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        list.setOnItemClickListener(this);
         adapter = new HeaderFooterListAdapter<CommitFileListAdapter>(list,
                 new CommitFileListAdapter(layout.commit_file_item,
                         getActivity().getLayoutInflater(), diffStyler));
@@ -160,5 +164,14 @@ public class CommitCompareListFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         return inflater.inflate(layout.item_list, container);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position,
+            long id) {
+        Object item = parent.getItemAtPosition(position);
+        if (item instanceof RepositoryCommit)
+            startActivity(CommitViewActivity.createIntent(repository,
+                    ((RepositoryCommit) item).getSha()));
     }
 }
