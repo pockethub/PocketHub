@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<resources>
+
+    <!-- Error messages -->
+    <string name="error_orgs_load">アカウントと組織名のロードに失敗しました</string>
+    <string name="error_issues_load">イシューのロードに失敗しました</string>
+    <string name="error_repos_load">レポジトリのロードに失敗しました</string>
+    <string name="error_repo_load">レポジトリのロードに失敗しました</string>
+    <string name="error_gist_load">Gist のロードに失敗しました</string>
+    <string name="error_news_load">ニュースのロードに失敗しました</string>
+    <string name="error_followers_load">フォロワーのロードに失敗しました</string>
+    <string name="error_people_load">人のロードに失敗しました</string>
+    <string name="error_person_load">人物のロードに失敗しました</string>
+    <string name="error_gist_file_load">Gist ファイルのロードに失敗しました</string>
+    <string name="error_gists_load">Gists のロードに失敗しました</string>
+    <string name="error_issue_load">イシューのロードに失敗しました</string>
+    <string name="error_collaborators_load">共同作業者のロードに失敗しました</string>
+    <string name="error_milestones_load">マイルストーンのロードに失敗しました</string>
+    <string name="error_labels_load">ラベルのロードに失敗しました</string>
+    <string name="error_bookmarks_load">ブックマークのロードに失敗しました</string>
+    <string name="error_members_load">メンバーのロードに失敗しました</string>
+    <!-- エラー メッセージ -->
+
+
+    <!-- Loading messages -->
+    <string name="loading_gist">Gist をロードしています…</string>
+    <string name="random_gist">ランダムな Gist をロードしています…</string>
+    <string name="loading_more_issues">さらなるイシューをロードしています…</string>
+    <string name="loading_issues">イシューをロードしています…</string>
+    <string name="loading_comments">コメントをロードしています…</string>
+    <string name="loading_repositories">レポジトリをロードしています…</string>
+    <string name="loading_issue">イシューをロードしています…</string>
+    <string name="loading_news">ニュースをロードしています…</string>
+    <string name="loading_followers">フォロワーをロードしています…</string>
+    <string name="loading_people">人物をロードしています…</string>
+    <string name="loading_gists">Gists をロードしています…</string>
+    <string name="loading_collaborators">共同作業者をロードしています…</string>
+    <string name="loading_milestones">マイルストーンをロードしています…</string>
+    <string name="loading_labels">ラベルをロードしています…</string>
+    <!-- ロード中 メッセージ -->
+
+
+    <!-- Empty messages -->
+    <string name="no_bookmarks">ブックマークはありません</string>
+    <string name="no_repositories">レポジトリはありません</string>
+    <string name="no_issues">イシューはありません</string>
+    <string name="no_gists">Gists はありません</string>
+    <string name="no_people">人物はいません</string>
+    <string name="no_followers">フォロワーはいません</string>
+    <string name="no_members">メンバーはいません</string>
+    <string name="no_news">ニュースはありません</string>
+    <!-- 空き メッセージ -->
+
+
+    <!-- Updating messages -->
+    <string name="updating_assignee">管理者を更新しています…</string>
+    <string name="updating_issue">イシューを更新しています…</string>
+    <string name="updating_labels">ラベルを更新しています…</string>
+    <string name="updating_milestone">マイルストーンを更新しています…</string>
+    <!-- 更新中 メッセージ -->
+
+    <string name="app_name">GitHub</string>
+    <string name="news">ニュース</string>
+    <string name="issues">イシュー</string>
+    <string name="gists">Gists</string>
+    <string name="dashboard_issues">イシュー ダッシュボードd</string>
+    <string name="find_repositories">レポジトリを検索</string>
+    <string name="find_issues">イシューを検索</string>
+    <string name="search_title">検索…</string>
+    <string name="clear_search_history">履歴を消去</string>
+    <string name="search_history_cleared">検索履歴を消去</string>
+    <string name="login_activity_authenticating">ログインしています…</string>
+    <string name="creating_gist">Gist を作成しています…</string>
+    <string name="create">作成</string>
+    <string name="create_gist">Gist を作成</string>
+    <string name="gist_content_hint">puts \'Hello World!\'</string>
+    <string name="make_public">この Gist をパブリックにする</string>
+    <string name="gist_file_name_hint">file.rb</string>
+    <string name="gist">Gist</string>
+    <string name="comments">コメント</string>
+    <string name="files">ファイル</string>
+    <string name="open">開く</string>
+    <string name="random">ランダム</string>
+    <string name="file_name">ファイル名</string>
+    <string name="file_content">ファイル内容</string>
+    <string name="new_gist">新規 Gist</string>
+    <string name="filter">フィルター</string>
+    <string name="bookmark">ブックマーク</string>
+    <string name="comment">コメント</string>
+    <string name="delete">削除</string>
+    <string name="refresh">更新</string>
+    <string name="dasbhoard_watched">ウォッチ中</string>
+    <string name="dasbhoard_assigned">参加中</string>
+    <string name="dasbhoard_created">自作</string>
+    <string name="dasbhoard_mentioned">意見交換など</string>
+    <string name="dashboard_issues_title">イシュー ダッシュボード</string>
+    <string name="bookmarks">ブックマーク</string>
+    <string name="gists_title">Gists</string>
+    <string name="issue_title">イシュー #</string>
+    <string name="gist_title">Gist\u0020</string>
+    <string name="filter_issues_title">イシュー フィルター</string>
+    <string name="create_comment_title">コメント作成</string>
+    <string name="comment_hint">コメントを入力して下さい</string>
+    <string name="show_more">さらに表示…</string>
+    <string name="repositories">レポジトリ</string>
+    <string name="issues_title">イシュー</string>
+    <string name="edit_labels">ラベルを編集</string>
+    <string name="milestone_prefix">マイルストーン:</string>
+    <string name="edit_milestone">マイルストーンを編集</string>
+    <string name="edit_assignee">管理者を編集</string>
+    <string name="my_gists_tab">自作</string>
+    <string name="starred_gists_tab">スター付き</string>
+    <string name="all_gists_tab">すべて</string>
+    <string name="description">説明</string>
+    <string name="gist_description_hint">Android 作成 Gist</string>
+    <string name="title">タイトル</string>
+    <string name="edit">編集</string>
+    <string name="star">スター</string>
+    <string name="starring_gist">Gist にスターを付けています…</string>
+    <string name="unstar">スターを外す</string>
+    <string name="unstarring_gist">Gist のスターを解除しています…</string>
+    <string name="accounts_label">アカウント</string>
+    <string name="select_assignee">管理者を選択</string>
+    <string name="select_milestone">マイルストーンを選択</string>
+    <string name="select_labels">ラベルを選択</string>
+    <string name="no_milestone">マイルストーンはありません</string>
+    <string name="unassigned">参加者はいません</string>
+    <string name="assigned">が参加しています</string>
+    <string name="no_gists_found">Gists は見つかりませんでした</string>
+    <string name="confirm_gist_delete_title">削除の確認</string>
+    <string name="confirm_gist_delete_message">本当にこの Gist を削除してもよろしいですか?</string>
+    <string name="deleting_gist">Gist を削除しています…</string>
+    <string name="creating_comment">コメントを作成しています…</string>
+    <string name="confirm_bookmark_delete_message">本当にこのブックマークを削除してもよろしいですか?</string>
+    <string name="issue_dashboard">イシュー ダッシュボード</string>
+    <string name="new_issue">新規イシュー</string>
+    <string name="anonymous">匿名</string>
+    <string name="message_filter_saved">イシュー フィルターをブックマークに保存しました</string>
+    <string name="recent">最新</string>
+    <string name="icon_pull_request">\uf20E</string>
+    <string name="icon_comment">\uf22B</string>
+    <string name="icon_file">\uf211</string>
+    <string name="section_issue_status">状態:</string>
+    <string name="status_open">開く</string>
+    <string name="status_closed">閉じる</string>
+    <string name="section_issue_assigned">割り当て:</string>
+    <string name="assignee_anyone">誰でも</string>
+    <string name="section_issue_milestone">マイルストーン:</string>
+    <string name="none">なし</string>
+    <string name="section_issue_labels">ラベル:</string>
+    <string name="log_in">ログイン</string>
+    <string name="signup_link">GitHub は初めてですか? &lt;a href=\"https://github.com/plans\">こちら&lt;/a> からサインアップしてください。</string>
+    <string name="connection_failed">GitHub に接続できません</string>
+    <string name="invalid_login_or_password">正しいログイン &amp; パスワードを入力してください</string>
+    <string name="invalid_password">正しいパスワードを入力してください。</string>
+    <string name="password">パスワード</string>
+    <string name="login_or_email">ログインまたは Email</string>
+    <string name="followers">フォロワー</string>
+    <string name="following">フォロー</string>
+    <string name="members">メンバー</string>
+    <string name="closing_issue">イシューを閉じる…</string>
+    <string name="reopening_issue">イシューを再度開く…</string>
+    <string name="icon_watch">\uf04E</string>
+    <string name="icon_fork">\uf020</string>
+    <string name="avatar">アバター</string>
+    <string name="creating_issue">イシューを作成しています…</string>
+    <string name="prefix_created">作成\u0020</string>
+    <string name="prefix_updated">更新\u0020</string>
+    <string name="prefix_opened">編集\u0020</string>
+    <string name="clear">消去</string>
+    <string name="open_issues">イシューを開く</string>
+    <string name="closed_issues">イシューを閉じる</string>
+    <string name="confirm_bookmark_delete_title">ブックマークを削除</string>
+    <string name="save">保存</string>
+    <string name="apply">適用</string>
+    <string name="labels_prefix">ラベル:</string>
+    <string name="assignee">管理者</string>
+    <string name="milestone">マイルストーン</string>
+    <string name="labels">ラベル</string>
+    <string name="issue_confirm_close_message">本当にこのイシューを閉じてもよろしいですか?</string>
+    <string name="issue_confirm_reopen_message">本当にこのイシューを再度開いてもよろしいですか?</string>
+    <string name="issue_confirm_close_title">イシューを閉じる</string>
+    <string name="issue_confirm_reopen_title">イシューを再度開く</string>
+    <string name="closed">閉じました</string>
+    <string name="no_description_given">詳細説明はありません</string>
+    <string name="close">閉じる</string>
+    <string name="reopen">再度開く</string>
+    <string name="title_invalid_github_url">不正な GitHub URL です</string>
+    <string name="message_invalid_github_url">次の URL はこのアプリケーションでは開くことができませんでした:\n{0}</string>
+    <string name="recently_viewed">最近表示</string>
+    <string name="cancel">キャンセル</string>
+    <string name="authenticator_conflict_title">App の重複</string>
+    <string name="authenticator_conflict_message">他のインストール済みアプリケーションが既に GitHub の認証を使用しています。\n\nGitHub app を利用するには Accounts &amp; sync 設定でそのアプリケーションをアンインストールし無ければなりません。</string>
+    <string name="opening_repository">{0} を開いています…</string>
+
+</resources>

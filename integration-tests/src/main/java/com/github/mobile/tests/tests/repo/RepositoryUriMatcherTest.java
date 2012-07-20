@@ -79,4 +79,12 @@ public class RepositoryUriMatcherTest extends AndroidTestCase {
         assertNotNull(repo.getOwner());
         assertEquals("mojombo", repo.getOwner().getLogin());
     }
+
+    /**
+     * Verify URI with white-listed owner
+     */
+    public void testInvalidOwner() {
+        assertNull(RepositoryUriMatcher.getRepository(Uri
+                .parse("http://github.com/blog/page1")));
+    }
 }

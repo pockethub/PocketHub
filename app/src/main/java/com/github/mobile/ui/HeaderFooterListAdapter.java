@@ -108,6 +108,34 @@ public class HeaderFooterListAdapter<E extends BaseAdapter> extends
         return removed;
     }
 
+    /**
+     * Remove all headers
+     *
+     * @return true if headers were removed, false otherwise
+     */
+    public boolean clearHeaders() {
+        boolean removed = false;
+        for (FixedViewInfo info : headers)
+            removed = super.removeHeader(info.view) || removed;
+        if (removed)
+            wrapped.notifyDataSetChanged();
+        return removed;
+    }
+
+    /**
+     * Remove all footers
+     *
+     * @return true if headers were removed, false otherwise
+     */
+    public boolean clearFooters() {
+        boolean removed = false;
+        for (FixedViewInfo info : footers)
+            removed = super.removeFooter(info.view) || removed;
+        if (removed)
+            wrapped.notifyDataSetChanged();
+        return removed;
+    }
+
     @Override
     public boolean removeFooter(View v) {
         boolean removed = super.removeFooter(v);
