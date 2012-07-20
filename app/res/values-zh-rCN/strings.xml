@@ -173,8 +173,8 @@
     <string name="followers">关注我的</string>
     <string name="following">我关注的</string>
     <string name="members">成员</string>
-    <string name="closing_issue">关闭事项…</string>
-    <string name="reopening_issue">重新开放事项…</string>
+    <string name="closing_issue">正在关闭事项…</string>
+    <string name="reopening_issue">正在重新开放事项…</string>
     <string name="icon_watch">\uf04E</string>
     <string name="icon_fork">\uf020</string>
     <string name="avatar">头像</string>
@@ -184,8 +184,8 @@
     <string name="prefix_opened">开放了\u0020</string>
     <string name="clear">清除</string>
     <string name="open_issues">开放的事项</string>
-    <string name="closed_issues">关闭了的事项</string>
-    <string name="confirm_bookmark_delete_title">移除书签</string>
+    <string name="closed_issues">已关闭的事项</string>
+    <string name="confirm_bookmark_delete_title">删除书签</string>
     <string name="save">保存</string>
     <string name="apply">应用</string>
     <string name="labels_prefix">标签:</string>
@@ -205,7 +205,7 @@
     <string name="recently_viewed">近期浏览过的</string>
     <string name="cancel">取消</string>
     <string name="authenticator_conflict_title">应用冲突</string>
-    <string name="authenticator_conflict_message">GitHub 认证已配置为安装的另一个应用使用。\n\n您必须从“账户与同步”设置中移除那个应用并将其卸载，才能使用本 GitHub 应用。</string>
+    <string name="authenticator_conflict_message">GitHub 认证已配置为安装的另一个应用使用。\n\n您必须从“账户与同步”设置中移除那个应用并将其卸载，才能使用本应用。</string>
     <string name="opening_repository">正在打开 {0}…</string>
 
 </resources>
