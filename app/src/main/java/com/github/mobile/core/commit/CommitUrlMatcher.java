@@ -30,27 +30,6 @@ import org.eclipse.egit.github.core.User;
  */
 public class CommitUrlMatcher extends UrlMatcher {
 
-    /**
-     * Match for a commit in a repository
-     */
-    public static class CommitMatch {
-
-        /**
-         * Repository of commit
-         */
-        public final Repository repository;
-
-        /**
-         * SHA-1 of commit
-         */
-        public final String commit;
-
-        private CommitMatch(final Repository repository, final String commit) {
-            this.repository = repository;
-            this.commit = commit;
-        }
-    }
-
     private static final String REGEX = "https?://.+/([^/]+)/([^/]+)/commit/([a-fA-F0-9]+)";
 
     private static final Pattern PATTERN = Pattern.compile(REGEX);

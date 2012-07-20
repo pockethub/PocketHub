@@ -19,8 +19,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import com.github.mobile.core.commit.CommitUrlMatcher.CommitMatch;
-
 import org.junit.Test;
 
 /**

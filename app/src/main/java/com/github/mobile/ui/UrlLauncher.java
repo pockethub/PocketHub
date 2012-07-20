@@ -20,8 +20,8 @@ import static android.content.Intent.CATEGORY_BROWSABLE;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.github.mobile.core.commit.CommitMatch;
 import com.github.mobile.core.commit.CommitUrlMatcher;
-import com.github.mobile.core.commit.CommitUrlMatcher.CommitMatch;
 import com.github.mobile.core.gist.GistUrlMatcher;
 import com.github.mobile.core.issue.IssueUrlMatcher;
 import com.github.mobile.ui.commit.CommitViewActivity;

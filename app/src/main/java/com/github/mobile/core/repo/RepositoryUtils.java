@@ -15,6 +15,8 @@
  */
 package com.github.mobile.core.repo;
 
+import android.text.TextUtils;
+
 import org.eclipse.egit.github.core.Repository;
 
 /**
@@ -35,5 +37,35 @@ public class RepositoryUtils {
      */
     public static boolean isComplete(Repository repository) {
         return repository.isFork() || repository.getForks() > 0;
+    }
+
+    /**
+     * Is the given owner name valid?
+     *
+     * @param name
+     * @return true if valid, false otherwise
+     */
+    public static boolean isValidOwner(String name) {
+        if (TextUtils.isEmpty(name))
+            return false;
+
+        if ("about".equals(name) //
+                || "blog".equals(name) //
+                || "contact".equals(name) //
+                || "explore".equals(name) //
+                || "features".equals(name) //
+                || "inbox".equals(name) //
+                || "languages".equals(name) //
+                || "logout".equals(name) //
+                || "new".equals(name) //
+                || "notifications".equals(name) //
+                || "repositories".equals(name) //
+                || "search".equals(name) //
+                || "settings".equals(name) //
+                || "timeline".equals(name) //
+                || "training".equals(name))
+            return false;
+        else
+            return true;
     }
 }
