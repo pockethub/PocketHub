@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.tests.tests.issue;
+package com.github.mobile.tests.issue;
 
 import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.tests.ActivityTest;

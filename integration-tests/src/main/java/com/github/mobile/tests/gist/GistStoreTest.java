@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.tests.tests.gist;
+package com.github.mobile.tests.gist;
 
 import android.test.AndroidTestCase;
 
