@@ -22,21 +22,28 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.github.mobile.R.id;
 import com.github.mobile.core.commit.CommitCompareTask;
 import com.github.mobile.ui.DialogFragment;
 import com.github.mobile.ui.HeaderFooterListAdapter;
+import com.github.mobile.ui.StyledText;
+import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ViewUtils;
+import com.google.inject.Inject;
 import com.viewpagerindicator.R.layout;
 
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.egit.github.core.Commit;
 import org.eclipse.egit.github.core.CommitFile;
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.RepositoryCommit;
 import org.eclipse.egit.github.core.RepositoryCommitCompare;
 
 import roboguice.inject.InjectExtra;
@@ -64,7 +71,8 @@ public class CommitCompareListFragment extends DialogFragment {
     @InjectExtra(EXTRA_HEAD)
     private String head;
 
-    private RepositoryCommitCompare compare;
+    @Inject
+    private AvatarLoader avatars;
 
     private HeaderFooterListAdapter<CommitFileListAdapter> adapter;
 
@@ -95,16 +103,40 @@ public class CommitCompareListFragment extends DialogFragment {
                     throws Exception {
                 super.onSuccess(compare);
 
-                CommitCompareListFragment.this.compare = compare;
-                updateList();
+                updateList(compare);
             }
 
         }.execute();
     }
 
-    private void updateList() {
+    private void updateList(RepositoryCommitCompare compare) {
+        if (!isUsable())
+            return;
+
         ViewUtils.setGone(progress, true);
         ViewUtils.setGone(list, false);
+
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        adapter.clearHeaders();
+        List<RepositoryCommit> commits = compare.getCommits();
+        if (commits != null && !commits.isEmpty())
+            for (RepositoryCommit commit : commits) {
+                View header = inflater.inflate(layout.commit_item, null);
+                avatars.bind((ImageView) header.findViewById(id.iv_avatar),
+                        commit.getAuthor());
+                Commit rawCommit = commit.getCommit();
+                ((TextView) header.findViewById(id.tv_commit_id))
+                        .setText(commit.getSha());
+                StyledText author = new StyledText();
+                author.bold(commit.getAuthor().getLogin());
+                author.append(' ');
+                author.append(rawCommit.getAuthor().getDate());
+                ((TextView) header.findViewById(id.tv_commit_author))
+                        .setText(author);
+                ((TextView) header.findViewById(id.tv_commit_message))
+                        .setText(rawCommit.getMessage());
+                adapter.addHeader(header, commit, true);
+            }
 
         List<CommitFile> files = compare.getFiles();
         if (files != null && !files.isEmpty())

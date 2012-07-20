@@ -17,11 +17,35 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/ListItem" >
 
+    <ImageView
+        android:id="@+id/iv_avatar"
+        style="@style/AvatarLarge"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dp"
+        android:contentDescription="@string/avatar" />
+
     <TextView
         android:id="@+id/tv_commit_id"
+        style="@style/ListSubtitleText"
+        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/iv_avatar"
+        android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/tv_commit_message"
         style="@style/ListTitleText"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
+        android:layout_width="match_parent"
+        android:layout_alignLeft="@id/tv_commit_id"
+        android:layout_below="@id/tv_commit_id"
+        android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/tv_commit_author"
+        style="@style/ListSubtitleText"
+        android:layout_alignLeft="@id/tv_commit_message"
+        android:layout_below="@id/tv_commit_message"
         android:singleLine="true" />
 
 </RelativeLayout>
