@@ -25,6 +25,8 @@ import android.os.Bundle;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents.Builder;
+import com.github.mobile.R.string;
+import com.github.mobile.core.commit.CommitUtils;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
 import com.github.mobile.util.AvatarLoader;
@@ -72,7 +74,8 @@ public class CommitViewActivity extends DialogFragmentActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(id);
+        actionBar.setTitle(getString(string.commit_prefix)
+                + CommitUtils.abbreviate(id));
         actionBar.setSubtitle(repository.generateId());
         avatars.bind(actionBar, repository.getOwner());
     }

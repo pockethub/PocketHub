@@ -21,12 +21,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.mobile.R.id;
+import com.github.mobile.core.commit.CommitUtils;
 import com.github.mobile.core.commit.RefreshCommitTask;
 import com.github.mobile.ui.DialogFragment;
 import com.github.mobile.ui.HeaderFooterListAdapter;
@@ -36,6 +39,7 @@ import com.github.mobile.util.ViewUtils;
 import com.google.inject.Inject;
 import com.viewpagerindicator.R.layout;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -50,9 +54,10 @@ import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
 
 /**
- * Fragment to display a list of commits being compared
+ * Fragment to display commit details with diff output
  */
-public class CommitDiffListFragment extends DialogFragment {
+public class CommitDiffListFragment extends DialogFragment implements
+        OnItemClickListener {
 
     private DiffStyler diffStyler;
 
@@ -80,6 +85,8 @@ public class CommitDiffListFragment extends DialogFragment {
     private TextView authorDate;
 
     private HeaderFooterListAdapter<CommitFileListAdapter> adapter;
+
+    private List<View> parentViews = new ArrayList<View>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -114,6 +121,9 @@ public class CommitDiffListFragment extends DialogFragment {
     }
 
     private void updateList(RepositoryCommit commit) {
+        if (!isUsable())
+            return;
+
         ViewUtils.setGone(progress, true);
         ViewUtils.setGone(list, false);
 
@@ -128,6 +138,22 @@ public class CommitDiffListFragment extends DialogFragment {
             authorName.setText(commitAuthor.getName());
         authorDate.setText(new StyledText().append(commitAuthor.getDate()));
 
+        for (View view : parentViews)
+            adapter.removeHeader(view);
+        parentViews.clear();
+
+        List<Commit> parents = commit.getParents();
+        if (parents != null && !parents.isEmpty()) {
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+            for (Commit parent : parents) {
+                View parentView = inflater.inflate(layout.commit_parent_item,
+                        null);
+                ((TextView) parentView.findViewById(id.tv_commit_id))
+                        .setText(CommitUtils.abbreviate(parent));
+                adapter.addHeader(parentView, parent, true);
+            }
+        }
+
         List<CommitFile> files = commit.getFiles();
         if (files != null && !files.isEmpty())
             adapter.getWrappedAdapter().setItems(
@@ -139,6 +165,8 @@ public class CommitDiffListFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        list.setOnItemClickListener(this);
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
@@ -160,5 +188,14 @@ public class CommitDiffListFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         return inflater.inflate(layout.item_list, container);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position,
+            long id) {
+        Object item = parent.getItemAtPosition(position);
+        if (item instanceof Commit)
+            startActivity(CommitViewActivity.createIntent(repository,
+                    ((Commit) item).getSha()));
     }
 }

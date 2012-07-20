@@ -31,6 +31,7 @@ import android.widget.TextView;
 
 import com.github.mobile.R.id;
 import com.github.mobile.core.commit.CommitCompareTask;
+import com.github.mobile.core.commit.CommitUtils;
 import com.github.mobile.ui.DialogFragment;
 import com.github.mobile.ui.HeaderFooterListAdapter;
 import com.github.mobile.ui.StyledText;
@@ -129,7 +130,7 @@ public class CommitCompareListFragment extends DialogFragment implements
                         commit.getAuthor());
                 Commit rawCommit = commit.getCommit();
                 ((TextView) header.findViewById(id.tv_commit_id))
-                        .setText(commit.getSha());
+                        .setText(CommitUtils.abbreviate(commit));
                 StyledText author = new StyledText();
                 author.bold(commit.getAuthor().getLogin());
                 author.append(' ');
