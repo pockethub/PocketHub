@@ -28,14 +28,14 @@ import org.eclipse.egit.github.core.RepositoryIssue;
 public class IssueUriMatcherTest extends AndroidTestCase {
 
     /**
-     * Verity empty uri
+     * Verify empty uri
      */
     public void testEmptyUri() {
         assertNull(IssueUriMatcher.getIssue(Uri.parse("")));
     }
 
     /**
-     * Verity non-numeric issue number in uri
+     * Verify non-numeric issue number in uri
      */
     public void testNonNumericIssueNumber() {
         assertNull(IssueUriMatcher.getIssue(Uri
