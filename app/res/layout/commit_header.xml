@@ -60,6 +60,7 @@
         android:paddingTop="5dp"
         android:textColor="@color/text"
         android:textColorLink="@color/text_link"
-        android:textSize="14dp" />
+        android:textSize="14dp"
+        android:typeface="monospace" />
 
 </LinearLayout>
