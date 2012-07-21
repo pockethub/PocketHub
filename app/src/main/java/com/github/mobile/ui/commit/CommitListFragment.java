@@ -97,9 +97,9 @@ public class CommitListFragment extends PagedItemFragment<RepositoryCommit> {
             }
 
             @Override
-            public ResourcePager<RepositoryCommit> reset() {
+            public ResourcePager<RepositoryCommit> clear() {
                 last = null;
-                return super.reset();
+                return super.clear();
             }
         };
     }
