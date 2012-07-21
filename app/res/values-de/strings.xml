@@ -34,6 +34,7 @@
     <string name="error_labels_load">Laden der Markierungen fehlgeschlagen</string>
     <string name="error_bookmarks_load">Laden der Lesezeichen fehlgeschlagen</string>
     <string name="error_members_load">Laden der Mitglieder fehlgeschlagen</string>
+    <string name="error_commits_load">Laden der Commits fehlgeschlagen</string>
     <!--  -->
 
     <!-- Loading messages -->
@@ -51,6 +52,7 @@
     <string name="loading_collaborators">Lade Mitarbeiter…</string>
     <string name="loading_milestones">Lade Meilensteine…</string>
     <string name="loading_labels">Lade Markierungen…</string>
+    <string name="loading_commits">Lade Commits…</string>
     <!--  -->
 
     <!-- Empty messages -->
@@ -62,6 +64,7 @@
     <string name="no_followers">Keine Anhänger</string>
     <string name="no_members">Keine Mitglieder</string>
     <string name="no_news">Keine Neuigkeiten</string>
+    <string name="no_commits">Keine Commits</string>
     <!--  -->
 
     <!-- Updating messages -->
@@ -75,6 +78,7 @@
     <string name="news">Neuigkeiten</string>
     <string name="issues">Probleme</string>
     <string name="gists">Gists</string>
+    <string name="commits">Commits</string>
     <string name="dashboard_issues">Problem-Übersicht</string>
     <string name="find_repositories">Repositories suchen</string>
     <string name="find_issues">Probleme finden</string>
@@ -204,5 +208,8 @@
     <string name="authenticator_conflict_title">App Konflikt</string>
     <string name="authenticator_conflict_message">Eine andere App ist derzeit für die Anmeldung bei GitHub konfiguriert.\n\nSie müssen diese App aus dem Bereich Konten &amp; Synchronisierung entfernen und diese App deinstallieren, bevor Sie die GitHub App verwenden können.</string>
     <string name="opening_repository">Öffne {0}…</string>
+    <string name="commit_compare_title">Commit-Vergleich</string>
+    <string name="parent_commit">Vorheriger Commit</string>
+    <string name="commit_prefix">Commit\u0020</string>
 
 </resources>

@@ -42,7 +42,7 @@ public class RepositoryUriMatcher {
             return null;
 
         String repoOwner = segments.get(0);
-        if (TextUtils.isEmpty(repoOwner))
+        if (!RepositoryUtils.isValidOwner(repoOwner))
             return null;
 
         String repoName = segments.get(1);

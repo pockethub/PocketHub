@@ -116,12 +116,11 @@ public class IssuesViewActivity extends DialogFragmentActivity implements
             numbers[index++] = issue.getNumber();
 
             RepositoryId repoId = null;
-            User owner = null;
             if (issue instanceof RepositoryIssue) {
                 Repository issueRepo = ((RepositoryIssue) issue)
                         .getRepository();
                 if (issueRepo != null) {
-                    owner = issueRepo.getOwner();
+                    User owner = issueRepo.getOwner();
                     if (owner != null)
                         repoId = RepositoryId.create(owner.getLogin(),
                                 issueRepo.getName());
