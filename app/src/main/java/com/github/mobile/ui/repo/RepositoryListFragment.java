@@ -58,6 +58,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         super.configureList(activity, listView);
 
         listView.setDividerHeight(0);
+        updateHeaders(items);
     }
 
     @Override
