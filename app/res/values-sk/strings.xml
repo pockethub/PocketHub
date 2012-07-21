@@ -34,6 +34,7 @@
     <string name="error_labels_load">Načítavanie štítkov zlyhalo</string>
     <string name="error_bookmarks_load">Načítavanie záložiek zlyhalo</string>
     <string name="error_members_load">Načítavanie členov zlyhalo</string>
+    <string name="error_commits_load">Načítavanie commitov zlyhalo</string>
     <!--  -->
 
 
@@ -52,6 +53,7 @@
     <string name="loading_collaborators">Načítavam spolupracovníkov…</string>
     <string name="loading_milestones">Načítavam míľniky…</string>
     <string name="loading_labels">Načítavam štítky…</string>
+    <string name="loading_commits">Načítavam commity…</string>
     <!--  -->
 
 
@@ -64,6 +66,7 @@
     <string name="no_followers">Žiadny sledujúci</string>
     <string name="no_members">Žiadny členovia</string>
     <string name="no_news">Žiadne novinky</string>
+    <string name="no_commits">Žiadne commity</string>
     <!--  -->
 
 
@@ -207,5 +210,8 @@
     <string name="authenticator_conflict_title">App konflikt</string>
     <string name="authenticator_conflict_message">Ďalšia nainštalovaná aplikácia už používa GitHub overenie.\n\nMusíte túto aplikáciu odstrániť z Účtov &amp; synchronizovať nastavenia a odinštalovať ju predtým než môže byť aplikácia GitHub použitá.</string>
     <string name="opening_repository">Otváram {0}…</string>
+    <string name="commit_compare_title">Porovnanie commitov</string>
+    <string name="parent_commit">rodičovský commit</string>
+    <string name="commit_prefix">Commit\u0020</string>
 
 </resources>
