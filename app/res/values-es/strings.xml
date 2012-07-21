@@ -172,6 +172,8 @@
     <string name="login_or_email">Usuario o Correo Electrónico</string>
     <string name="followers">Seguidores</string>
     <string name="following">Siguiendo</string>
+    <string name="followers_self">Seguidores</string>
+    <string name="following_self">Siguiendo</string>
     <string name="members">Miembros</string>
     <string name="closing_issue">Cerrando Incidencia…</string>
     <string name="reopening_issue">Reabriendo Incidencia…</string>

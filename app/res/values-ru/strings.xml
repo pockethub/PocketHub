@@ -172,6 +172,8 @@
     <string name="login_or_email">Логин или почта</string>
     <string name="followers">Подписчики</string>
     <string name="following">Подписки</string>
+    <string name="followers_self">Подписчики</string>
+    <string name="following_self">Подписки</string>
     <string name="members">Члены</string>
     <string name="closing_issue">Закрываем задачу…</string>
     <string name="reopening_issue">Переоткрываем задачу…</string>
