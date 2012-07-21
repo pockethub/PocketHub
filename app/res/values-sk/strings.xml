@@ -175,6 +175,8 @@
     <string name="login_or_email">Užívateľské meno alebo E-mail</string>
     <string name="followers">Sledujúci</string>
     <string name="following">Sledujem</string>
+    <string name="followers_self">Sledujúci</string>
+    <string name="following_self">Sledujem</string>
     <string name="members">Členovia</string>
     <string name="closing_issue">Zatváram issue…</string>
     <string name="reopening_issue">Znovu otváram issue…</string>

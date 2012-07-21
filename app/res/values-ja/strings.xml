@@ -172,6 +172,8 @@
     <string name="login_or_email">ログインまたは Email</string>
     <string name="followers">フォロワー</string>
     <string name="following">フォロー</string>
+    <string name="followers_self">フォロワー</string>
+    <string name="following_self">フォロー</string>
     <string name="members">メンバー</string>
     <string name="closing_issue">イシューを閉じる…</string>
     <string name="reopening_issue">イシューを再度開く…</string>

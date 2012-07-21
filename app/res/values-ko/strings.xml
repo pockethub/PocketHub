@@ -172,6 +172,8 @@
     <string name="login_or_email">로그인계정 또는 이메일주소</string>
     <string name="followers">팔로워</string>
     <string name="following">팔로잉</string>
+    <string name="followers_self">팔로워</string>
+    <string name="following_self">팔로잉</string>
     <string name="members">멤버</string>
     <string name="closing_issue">이슈 종결처리중…</string>
     <string name="reopening_issue">이슈 재오픈중…</string>

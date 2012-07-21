@@ -173,6 +173,8 @@
     <string name="login_or_email">Benutzername oder E-Mail</string>
     <string name="followers">Meine Anhänger</string>
     <string name="following">Ich folge</string>
+    <string name="followers_self">Meine Anhänger</string>
+    <string name="following_self">Ich folge</string>
     <string name="members">Mitglieder</string>
     <string name="closing_issue">Schließe Problem…</string>
     <string name="reopening_issue">Problem neu öffnen…</string>

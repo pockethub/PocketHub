@@ -170,8 +170,10 @@
     <string name="invalid_password">请输入正确的密码。</string>
     <string name="password">密码</string>
     <string name="login_or_email">登录名 / 电子邮件</string>
-    <string name="followers">关注我的</string>
-    <string name="following">我关注的</string>
+    <string name="followers">关注Ta的</string>
+    <string name="following">Ta关注的</string>
+    <string name="followers_self">关注我的</string>
+    <string name="following_self">我关注的</string>
     <string name="members">成员</string>
     <string name="closing_issue">关闭事项…</string>
     <string name="reopening_issue">重新开放事项…</string>

@@ -172,6 +172,8 @@
     <string name="login_or_email">Login ou Email</string>
     <string name="followers">Followers</string>
     <string name="following">Suivis</string>
+    <string name="followers_self">Followers</string>
+    <string name="following_self">Suivis</string>
     <string name="members">Membres</string>
     <string name="closing_issue">Fermeture du ticket…</string>
     <string name="reopening_issue">Réouverture du ticket…</string>
