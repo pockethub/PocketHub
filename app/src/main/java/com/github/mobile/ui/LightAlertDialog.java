@@ -37,7 +37,7 @@ public class LightAlertDialog extends AlertDialog {
             return new LightAlertDialog(context);
     }
 
-    private LightAlertDialog(final Context context, int theme) {
+    private LightAlertDialog(final Context context, final int theme) {
         super(context, theme);
     }
 
