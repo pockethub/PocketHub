@@ -72,7 +72,10 @@ public class DiffStyler {
             StyledText styled = new StyledText();
             while (end != -1) {
                 String line = patch.substring(start, end + 1);
-                switch (patch.charAt(start)) {
+                if (line.length() == 0) {
+                    continue;
+                }
+                switch (line.charAt(0)) {
                 case '@':
                     styled.foreground(line, markerColor);
                     break;
@@ -86,10 +89,10 @@ public class DiffStyler {
                     styled.append(line);
                     break;
                 }
-                diffs.put(file.getFilename(), styled);
                 start = end + 1;
                 end = patch.indexOf('\n', start);
             }
+            diffs.put(file.getFilename(), styled);
         }
         return this;
     }
