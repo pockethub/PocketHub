@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.core.repo;
+package com.github.mobile.core.commit;
 
 import android.net.Uri;
 import android.text.TextUtils;
+
+import com.github.mobile.core.repo.RepositoryUtils;
 
 import java.util.List;
 
@@ -24,21 +26,23 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
 
 /**
- * Parses a {@link Repository} from a {@link Uri}
+ * Parses a {@link CommitMatch} from a {@link Uri}
  */
-public class RepositoryUriMatcher {
+public class CommitUriMatcher {
 
     /**
-     * Attempt to parse a {@link Repository} from the given {@link Uri}
+     * Attempt to parse a {@link CommitMatch} from the given {@link Uri}
      *
      * @param uri
-     * @return {@link Repository} or null if unparseable
+     * @return {@link CommitMatch} or null if unparseable
      */
-    public static Repository getRepository(Uri uri) {
+    public static CommitMatch getCommit(Uri uri) {
         List<String> segments = uri.getPathSegments();
         if (segments == null)
             return null;
-        if (segments.size() != 2)
+        if (segments.size() != 4)
+            return null;
+        if (!"commit".equals(segments.get(2)))
             return null;
 
         String repoOwner = segments.get(0);
@@ -49,9 +53,13 @@ public class RepositoryUriMatcher {
         if (TextUtils.isEmpty(repoName))
             return null;
 
+        String commit = segments.get(3);
+        if (!CommitUtils.isValidCommit(commit))
+            return null;
+
         Repository repository = new Repository();
         repository.setName(repoName);
         repository.setOwner(new User().setLogin(repoOwner));
-        return repository;
+        return new CommitMatch(repository, commit);
     }
 }

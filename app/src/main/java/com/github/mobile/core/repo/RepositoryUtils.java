@@ -15,6 +15,8 @@
  */
 package com.github.mobile.core.repo;
 
+import android.text.TextUtils;
+
 import org.eclipse.egit.github.core.Repository;
 
 /**
@@ -25,15 +27,46 @@ public class RepositoryUtils {
     /**
      * Does the repository have details denoting it was loaded from an API call?
      * <p>
-     * This uses a simple heuristic of either being a fork or having a non-zero
-     * amount of forks meaning it came back from an API call providing those
-     * details and more.
+     * This uses a simple heuristic of either being private, being a fork, or
+     * having a non-zero amount of forks meaning it came back from an API call
+     * providing those details and more.
      *
      * @param repository
      * @return true if complete, false otherwise
      *
      */
     public static boolean isComplete(Repository repository) {
-        return repository.isFork() || repository.getForks() > 0;
+        return repository.isPrivate() || repository.isFork()
+                || repository.getForks() > 0;
+    }
+
+    /**
+     * Is the given owner name valid?
+     *
+     * @param name
+     * @return true if valid, false otherwise
+     */
+    public static boolean isValidOwner(String name) {
+        if (TextUtils.isEmpty(name))
+            return false;
+
+        if ("about".equals(name) //
+                || "blog".equals(name) //
+                || "contact".equals(name) //
+                || "explore".equals(name) //
+                || "features".equals(name) //
+                || "inbox".equals(name) //
+                || "languages".equals(name) //
+                || "logout".equals(name) //
+                || "new".equals(name) //
+                || "notifications".equals(name) //
+                || "repositories".equals(name) //
+                || "search".equals(name) //
+                || "settings".equals(name) //
+                || "timeline".equals(name) //
+                || "training".equals(name))
+            return false;
+        else
+            return true;
     }
 }

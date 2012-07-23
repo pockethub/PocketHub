@@ -13,33 +13,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.core.gist;
+package com.github.mobile.core.commit;
 
 import com.github.mobile.core.UrlMatcher;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.User;
+
 /**
- * Matcher for gist URLs that provides the Gist id matched
+ * Matcher for commit URLs
  * <p>
  * This class is not thread-safe
  */
-public class GistUrlMatcher extends UrlMatcher {
+public class CommitUrlMatcher extends UrlMatcher {
 
-    private static final String REGEX = "https?://((gist.github.com)|([^/]+/gist))/([a-fA-F0-9]+)";
+    private static final String REGEX = "https?://.+/([^/]+)/([^/]+)/commit/([a-fA-F0-9]+)";
 
     private static final Pattern PATTERN = Pattern.compile(REGEX);
 
     private final Matcher matcher = PATTERN.matcher("");
 
     /**
-     * Get Gist id from URL
+     * Get commit match from URL
      *
      * @param url
-     * @return gist id or null if the given URL is not to a Gist
+     * @return commit match or null if the given URL wasn't a match
      */
-    public String getId(final String url) {
-        return isMatch(url, matcher) ? matcher.group(4) : null;
+    public CommitMatch getCommit(final String url) {
+        if (!isMatch(url, matcher))
+            return null;
+
+        String owner = matcher.group(1);
+        String name = matcher.group(2);
+        String sha = matcher.group(3);
+        Repository repo = new Repository();
+        repo.setName(name);
+        repo.setOwner(new User().setLogin(owner));
+        return new CommitMatch(repo, sha);
     }
 }

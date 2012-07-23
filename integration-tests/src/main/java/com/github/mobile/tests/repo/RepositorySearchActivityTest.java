@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.tests.tests.repo;
+package com.github.mobile.tests.repo;
 
 import static android.app.SearchManager.QUERY;
 import static android.content.Intent.ACTION_SEARCH;

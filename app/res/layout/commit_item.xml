@@ -39,7 +39,9 @@
         android:layout_width="match_parent"
         android:layout_alignLeft="@id/tv_commit_id"
         android:layout_below="@id/tv_commit_id"
-        android:singleLine="true" />
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:singleLine="false" />
 
     <TextView
         android:id="@+id/tv_commit_author"

@@ -25,10 +25,13 @@ import android.os.Bundle;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.github.mobile.R.string;
+import com.github.mobile.core.commit.CommitMatch;
+import com.github.mobile.core.commit.CommitUriMatcher;
 import com.github.mobile.core.issue.IssueUriMatcher;
 import com.github.mobile.core.repo.RepositoryUriMatcher;
 import com.github.mobile.core.user.UserUriMatcher;
 import com.github.mobile.ui.LightAlertDialog;
+import com.github.mobile.ui.commit.CommitViewActivity;
 import com.github.mobile.ui.issue.IssuesViewActivity;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
 
@@ -68,6 +71,14 @@ public class UriLauncherActivity extends SherlockActivity {
         User user = UserUriMatcher.getUser(data);
         if (user != null) {
             startActivity(UserViewActivity.createIntent(user));
+            finish();
+            return;
+        }
+
+        CommitMatch commit = CommitUriMatcher.getCommit(data);
+        if (commit != null) {
+            startActivity(CommitViewActivity.createIntent(commit.repository,
+                    commit.commit));
             finish();
             return;
         }

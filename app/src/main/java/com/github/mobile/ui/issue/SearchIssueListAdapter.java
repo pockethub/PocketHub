@@ -50,12 +50,12 @@ public class SearchIssueListAdapter extends
                 view.numberPaintFlags, view.number);
 
         String gravatarId = issue.getGravatarId();
-        if (!TextUtils.isEmpty(gravatarId)) {
-            User user = new User();
-            user.setGravatarId(gravatarId);
-            avatars.bind(view.avatar, user);
-        } else
-            avatars.bind(view.avatar, null);
+        User user;
+        if (!TextUtils.isEmpty(gravatarId))
+            user = new User().setGravatarId(gravatarId);
+        else
+            user = null;
+        avatars.bind(view.avatar, user);
 
         ViewUtils.setGone(view.pullRequestIcon, true);
 

@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.tests.tests.gist;
+package com.github.mobile.tests.issue;
 
 import static android.view.KeyEvent.KEYCODE_DEL;
 import android.view.View;
 import android.widget.EditText;
 
 import com.github.mobile.tests.ActivityTest;
-import com.github.mobile.ui.gist.CreateCommentActivity;
+import com.github.mobile.ui.issue.CreateCommentActivity;
 import com.viewpagerindicator.R.id;
 
-import org.eclipse.egit.github.core.Gist;
+import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.User;
 
 /**
@@ -43,8 +43,8 @@ public class CreateCommentActivityTest extends
     protected void setUp() throws Exception {
         super.setUp();
 
-        setActivityIntent(CreateCommentActivity.createIntent(new Gist().setId(
-                "123").setUser(new User().setLogin("abc"))));
+        setActivityIntent(CreateCommentActivity.createIntent(new RepositoryId(
+                "o", "n"), 1, new User().setLogin("u")));
     }
 
     /**
