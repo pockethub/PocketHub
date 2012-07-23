@@ -104,10 +104,10 @@
     <string name="comment">Commenter</string>
     <string name="delete">Supprimer</string>
     <string name="refresh">Rafraîchir</string>
-    <string name="dasbhoard_watched">Suivis</string>
-    <string name="dasbhoard_assigned">Assignés</string>
-    <string name="dasbhoard_created">Créés</string>
-    <string name="dasbhoard_mentioned">Mentionnés</string>
+    <string name="dashboard_watched">Suivis</string>
+    <string name="dashboard_assigned">Assignés</string>
+    <string name="dashboard_created">Créés</string>
+    <string name="dashboard_mentioned">Mentionnés</string>
     <string name="dashboard_issues_title">Aperçu des tickets</string>
     <string name="bookmarks">Favoris</string>
     <string name="gists_title">Gists</string>
