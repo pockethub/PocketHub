@@ -20,11 +20,7 @@ import android.content.Context;
 import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.google.inject.Inject;
 
-import java.util.List;
-
-import org.eclipse.egit.github.core.Commit;
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
-import org.eclipse.egit.github.core.RepositoryCommit;
 import org.eclipse.egit.github.core.RepositoryCommitCompare;
 import org.eclipse.egit.github.core.service.CommitService;
 
@@ -60,11 +56,6 @@ public class CommitCompareTask extends
 
     @Override
     protected RepositoryCommitCompare run() throws Exception {
-        RepositoryCommit commit = service.getCommit(repository, base);
-        List<Commit> parents = commit.getParents();
-        if (parents != null && !parents.isEmpty())
-            return service.compare(repository, parents.get(0).getSha(), head);
-        else
-            return service.compare(repository, base, head);
+        return service.compare(repository, base, head);
     }
 }

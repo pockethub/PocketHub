@@ -156,16 +156,15 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
         if (commits == null || commits.isEmpty())
             return;
 
-        String base = commits.get(0).getSha();
+        String base = payload.getBefore();
         if (TextUtils.isEmpty(base))
             return;
 
         if (commits.size() > 1) {
-            String head = commits.get(commits.size() - 1).getSha();
-            if (TextUtils.isEmpty(base) || TextUtils.isEmpty(head))
-                return;
-            startActivity(CommitCompareViewActivity.createIntent(repo, base,
-                    head));
+            String head = payload.getHead();
+            if (!TextUtils.isEmpty(head))
+                startActivity(CommitCompareViewActivity.createIntent(repo,
+                        base, head));
         } else
             startActivity(CommitViewActivity.createIntent(repo, base));
     }
