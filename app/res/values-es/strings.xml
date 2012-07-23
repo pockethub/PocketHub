@@ -104,10 +104,10 @@
     <string name="comment">Comentario</string>
     <string name="delete">Borrar</string>
     <string name="refresh">Recargar</string>
-    <string name="dasbhoard_watched">Observadas</string>
-    <string name="dasbhoard_assigned">Asignadas</string>
-    <string name="dasbhoard_created">Creadas</string>
-    <string name="dasbhoard_mentioned">Menciones</string>
+    <string name="dashboard_watched">Observadas</string>
+    <string name="dashboard_assigned">Asignadas</string>
+    <string name="dashboard_created">Creadas</string>
+    <string name="dashboard_mentioned">Menciones</string>
     <string name="dashboard_issues_title">Panel de Incidencias</string>
     <string name="bookmarks">Marcadores</string>
     <string name="gists_title">Gists</string>

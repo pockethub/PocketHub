@@ -104,10 +104,10 @@
     <string name="comment">댓글</string>
     <string name="delete">삭제</string>
     <string name="refresh">새로고침</string>
-    <string name="dasbhoard_watched">감시중</string>
-    <string name="dasbhoard_assigned">Assigned</string>
-    <string name="dasbhoard_created">생성한것</string>
-    <string name="dasbhoard_mentioned">Mentioned</string>
+    <string name="dashboard_watched">감시중</string>
+    <string name="dashboard_assigned">Assigned</string>
+    <string name="dashboard_created">생성한것</string>
+    <string name="dashboard_mentioned">Mentioned</string>
     <string name="dashboard_issues_title">이슈 대쉬보드</string>
     <string name="bookmarks">책갈피</string>
     <string name="gists_title">Gists</string>
