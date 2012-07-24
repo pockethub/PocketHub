@@ -104,10 +104,10 @@
     <string name="comment">Комментарий</string>
     <string name="delete">Удалить</string>
     <string name="refresh">Обновить</string>
-    <string name="dasbhoard_watched">Подписки</string>
-    <string name="dasbhoard_assigned">Ответственные</string>
-    <string name="dasbhoard_created">Созданые</string>
-    <string name="dasbhoard_mentioned">Упомянутые</string>
+    <string name="dashboard_watched">Подписки</string>
+    <string name="dashboard_assigned">Ответственные</string>
+    <string name="dashboard_created">Созданые</string>
+    <string name="dashboard_mentioned">Упомянутые</string>
     <string name="dashboard_issues_title">Панель задач</string>
     <string name="bookmarks">Закладки</string>
     <string name="gists_title">Gists</string>

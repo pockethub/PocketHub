@@ -104,10 +104,10 @@
     <string name="comment">评论</string>
     <string name="delete">删除</string>
     <string name="refresh">刷新</string>
-    <string name="dasbhoard_watched">关注的</string>
-    <string name="dasbhoard_assigned">指派给我的</string>
-    <string name="dasbhoard_created">创建的</string>
-    <string name="dasbhoard_mentioned">提到我的</string>
+    <string name="dashboard_watched">关注的</string>
+    <string name="dashboard_assigned">指派给我的</string>
+    <string name="dashboard_created">创建的</string>
+    <string name="dashboard_mentioned">提到我的</string>
     <string name="dashboard_issues_title">事项面板</string>
     <string name="bookmarks">书签</string>
     <string name="gists_title">代码片段列表</string>

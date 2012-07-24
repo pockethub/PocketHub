@@ -104,10 +104,10 @@
     <string name="comment">コメント</string>
     <string name="delete">削除</string>
     <string name="refresh">更新</string>
-    <string name="dasbhoard_watched">ウォッチ中</string>
-    <string name="dasbhoard_assigned">参加中</string>
-    <string name="dasbhoard_created">自作</string>
-    <string name="dasbhoard_mentioned">意見交換など</string>
+    <string name="dashboard_watched">ウォッチ中</string>
+    <string name="dashboard_assigned">参加中</string>
+    <string name="dashboard_created">自作</string>
+    <string name="dashboard_mentioned">意見交換など</string>
     <string name="dashboard_issues_title">イシュー ダッシュボード</string>
     <string name="bookmarks">ブックマーク</string>
     <string name="gists_title">Gists</string>

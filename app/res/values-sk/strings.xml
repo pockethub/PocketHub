@@ -107,10 +107,10 @@
     <string name="comment">Komentár</string>
     <string name="delete">Zmazať</string>
     <string name="refresh">Obnoviť</string>
-    <string name="dasbhoard_watched">Sledované</string>
-    <string name="dasbhoard_assigned">Priradené</string>
-    <string name="dasbhoard_created">Vytvorené</string>
-    <string name="dasbhoard_mentioned">Spomenuté</string>
+    <string name="dashboard_watched">Sledované</string>
+    <string name="dashboard_assigned">Priradené</string>
+    <string name="dashboard_created">Vytvorené</string>
+    <string name="dashboard_mentioned">Spomenuté</string>
     <string name="dashboard_issues_title">Prehľad issues</string>
     <string name="bookmarks">Záložky</string>
     <string name="gists_title">Gisty</string>
