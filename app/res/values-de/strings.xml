@@ -105,10 +105,10 @@
     <string name="comment">Kommentar</string>
     <string name="delete">löschen</string>
     <string name="refresh">aktualisieren</string>
-    <string name="dasbhoard_watched">beobachtet</string>
-    <string name="dasbhoard_assigned">mir zugewiesen</string>
-    <string name="dasbhoard_created">von mir erstellt</string>
-    <string name="dasbhoard_mentioned">erwähnt</string>
+    <string name="dashboard_watched">beobachtet</string>
+    <string name="dashboard_assigned">mir zugewiesen</string>
+    <string name="dashboard_created">von mir erstellt</string>
+    <string name="dashboard_mentioned">erwähnt</string>
     <string name="dashboard_issues_title">Problem-Übersicht</string>
     <string name="bookmarks">Lesezeichen</string>
     <string name="gists_title">Gists</string>
