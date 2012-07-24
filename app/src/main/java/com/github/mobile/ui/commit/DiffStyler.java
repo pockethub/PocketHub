@@ -51,8 +51,16 @@ public class DiffStyler {
         removeColor = resources.getColor(color.diff_remove);
     }
 
+    private int nextLine(final String patch, final int start) {
+        final int end = patch.indexOf('\n', start);
+        if (end != -1)
+            return end + 1;
+        else
+            return patch.length();
+    }
+
     /**
-     * Set files to style
+     * Set files to styler
      *
      * @param files
      * @return this styler
@@ -68,28 +76,26 @@ public class DiffStyler {
                 continue;
 
             int start = 0;
-            int end = patch.indexOf('\n');
+            int end = nextLine(patch, start);
             StyledText styled = new StyledText();
-            while (end != -1) {
-                if (end + 1 - start > 0) {
-                    String line = patch.substring(start, end + 1);
-                    switch (line.charAt(0)) {
-                    case '@':
-                        styled.foreground(line, markerColor);
-                        break;
-                    case '+':
-                        styled.foreground(line, addColor);
-                        break;
-                    case '-':
-                        styled.foreground(line, removeColor);
-                        break;
-                    default:
-                        styled.append(line);
-                        break;
-                    }
+            while (end > start) {
+                String line = patch.substring(start, end);
+                switch (line.charAt(0)) {
+                case '@':
+                    styled.foreground(line, markerColor);
+                    break;
+                case '+':
+                    styled.foreground(line, addColor);
+                    break;
+                case '-':
+                    styled.foreground(line, removeColor);
+                    break;
+                default:
+                    styled.append(line);
+                    break;
                 }
-                start = end + 1;
-                end = patch.indexOf('\n', start);
+                start = end;
+                end = nextLine(patch, start);
             }
             diffs.put(file.getFilename(), styled);
         }
