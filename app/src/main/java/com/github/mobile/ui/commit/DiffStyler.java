@@ -71,23 +71,22 @@ public class DiffStyler {
             int end = patch.indexOf('\n');
             StyledText styled = new StyledText();
             while (end != -1) {
-                String line = patch.substring(start, end + 1);
-                if (line.length() == 0) {
-                    continue;
-                }
-                switch (line.charAt(0)) {
-                case '@':
-                    styled.foreground(line, markerColor);
-                    break;
-                case '+':
-                    styled.foreground(line, addColor);
-                    break;
-                case '-':
-                    styled.foreground(line, removeColor);
-                    break;
-                default:
-                    styled.append(line);
-                    break;
+                if (end + 1 - start > 0) {
+                    String line = patch.substring(start, end + 1);
+                    switch (line.charAt(0)) {
+                    case '@':
+                        styled.foreground(line, markerColor);
+                        break;
+                    case '+':
+                        styled.foreground(line, addColor);
+                        break;
+                    case '-':
+                        styled.foreground(line, removeColor);
+                        break;
+                    default:
+                        styled.append(line);
+                        break;
+                    }
                 }
                 start = end + 1;
                 end = patch.indexOf('\n', start);
