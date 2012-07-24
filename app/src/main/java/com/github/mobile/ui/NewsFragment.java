@@ -17,6 +17,7 @@ package com.github.mobile.ui;
 
 import static android.content.Intent.ACTION_VIEW;
 import static android.content.Intent.CATEGORY_BROWSABLE;
+import static org.eclipse.egit.github.core.event.Event.TYPE_COMMIT_COMMENT;
 import static org.eclipse.egit.github.core.event.Event.TYPE_DOWNLOAD;
 import static org.eclipse.egit.github.core.event.Event.TYPE_PUSH;
 import android.content.Intent;
@@ -44,11 +45,13 @@ import com.google.inject.Inject;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Commit;
+import org.eclipse.egit.github.core.CommitComment;
 import org.eclipse.egit.github.core.Download;
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
+import org.eclipse.egit.github.core.event.CommitCommentPayload;
 import org.eclipse.egit.github.core.event.DownloadPayload;
 import org.eclipse.egit.github.core.event.Event;
 import org.eclipse.egit.github.core.event.PushPayload;
@@ -109,6 +112,11 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
             return;
         }
 
+        if (TYPE_COMMIT_COMMENT.equals(event.getType())) {
+            openCommitComment(event);
+            return;
+        }
+
         Issue issue = issueMatcher.getIssue(event);
         if (issue != null) {
             viewIssue(issue);
@@ -143,6 +151,23 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
         Intent intent = new Intent(ACTION_VIEW, Uri.parse(url));
         intent.addCategory(CATEGORY_BROWSABLE);
         startActivity(intent);
+    }
+
+    private void openCommitComment(Event event) {
+        Repository repo = RepositoryEventMatcher.getRepository(event.getRepo(),
+                event.getActor(), event.getOrg());
+        if (repo == null)
+            return;
+
+        CommitCommentPayload payload = (CommitCommentPayload) event
+                .getPayload();
+        CommitComment comment = payload.getComment();
+        if (comment == null)
+            return;
+
+        String sha = comment.getCommitId();
+        if (!TextUtils.isEmpty(sha))
+            startActivity(CommitViewActivity.createIntent(repo, sha));
     }
 
     private void openPush(Event event) {
