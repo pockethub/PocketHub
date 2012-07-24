@@ -56,7 +56,7 @@
         android:id="@+id/tv_commit_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="5dp"
+        android:lineSpacingExtra="3dp"
         android:paddingTop="5dp"
         android:textColor="@color/text"
         android:textColorLink="@color/text_link"

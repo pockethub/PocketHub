@@ -24,17 +24,21 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.mobile.R.id;
 import com.github.mobile.core.commit.CommitUtils;
+import com.github.mobile.core.commit.FullCommit;
 import com.github.mobile.core.commit.RefreshCommitTask;
 import com.github.mobile.ui.DialogFragment;
 import com.github.mobile.ui.HeaderFooterListAdapter;
 import com.github.mobile.ui.StyledText;
+import com.github.mobile.ui.comment.CommentListAdapter;
 import com.github.mobile.util.AvatarLoader;
+import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.ViewUtils;
 import com.google.inject.Inject;
 import com.viewpagerindicator.R.layout;
@@ -43,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Commit;
 import org.eclipse.egit.github.core.CommitFile;
 import org.eclipse.egit.github.core.CommitUser;
@@ -86,32 +91,36 @@ public class CommitDiffListFragment extends DialogFragment implements
 
     private HeaderFooterListAdapter<CommitFileListAdapter> adapter;
 
+    private HttpImageGetter commentImageGetter;
+
     private List<View> parentViews = new ArrayList<View>();
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-        diffStyler = new DiffStyler(getResources());
+        commentImageGetter = new HttpImageGetter(getActivity());
+
         refreshCommit();
     }
 
     private void refreshCommit() {
-        new RefreshCommitTask(getActivity(), repository, base) {
+        new RefreshCommitTask(getActivity(), repository, base,
+                commentImageGetter) {
 
             @Override
-            protected RepositoryCommit run() throws Exception {
-                RepositoryCommit commit = super.run();
+            protected FullCommit run() throws Exception {
+                FullCommit full = super.run();
 
-                List<CommitFile> files = commit.getFiles();
+                List<CommitFile> files = full.getCommit().getFiles();
                 diffStyler.setFiles(files);
                 if (files != null)
                     Collections.sort(files, new CommitFileComparator());
-                return commit;
+                return full;
             }
 
             @Override
-            protected void onSuccess(RepositoryCommit commit) throws Exception {
+            protected void onSuccess(FullCommit commit) throws Exception {
                 super.onSuccess(commit);
 
                 updateList(commit);
@@ -120,9 +129,12 @@ public class CommitDiffListFragment extends DialogFragment implements
         }.execute();
     }
 
-    private void updateList(RepositoryCommit commit) {
+    private void updateList(FullCommit fullCommit) {
         if (!isUsable())
             return;
+
+        RepositoryCommit commit = fullCommit.getCommit();
+        LayoutInflater inflater = getActivity().getLayoutInflater();
 
         ViewUtils.setGone(progress, true);
         ViewUtils.setGone(list, false);
@@ -144,7 +156,6 @@ public class CommitDiffListFragment extends DialogFragment implements
 
         List<Commit> parents = commit.getParents();
         if (parents != null && !parents.isEmpty()) {
-            LayoutInflater inflater = getActivity().getLayoutInflater();
             for (Commit parent : parents) {
                 View parentView = inflater.inflate(layout.commit_parent_item,
                         null);
@@ -152,6 +163,18 @@ public class CommitDiffListFragment extends DialogFragment implements
                         .setText(CommitUtils.abbreviate(parent));
                 adapter.addHeader(parentView, parent, true);
             }
+        }
+
+        if (!fullCommit.isEmpty()) {
+            LinearLayout commentRoot = (LinearLayout) inflater.inflate(
+                    layout.commit_comments, null);
+            CommentListAdapter commentAdapter = new CommentListAdapter(
+                    inflater,
+                    fullCommit.toArray(new Comment[fullCommit.size()]),
+                    avatars, commentImageGetter);
+            for (int i = 0; i < fullCommit.size(); i++)
+                commentRoot.addView(commentAdapter.getView(i));
+            adapter.addFooter(commentRoot);
         }
 
         List<CommitFile> files = commit.getFiles();
@@ -165,6 +188,8 @@ public class CommitDiffListFragment extends DialogFragment implements
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        diffStyler = new DiffStyler(getResources());
 
         list.setOnItemClickListener(this);
 

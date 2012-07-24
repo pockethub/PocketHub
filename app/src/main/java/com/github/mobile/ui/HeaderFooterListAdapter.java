@@ -61,6 +61,17 @@ public class HeaderFooterListAdapter<E extends BaseAdapter> extends
     }
 
     /**
+     * Add non-selectable header view with no data
+     *
+     * @see #addHeader(View, Object, boolean)
+     * @param view
+     * @return this adapter
+     */
+    public HeaderFooterListAdapter<E> addHeader(View view) {
+        return addHeader(view, null, false);
+    }
+
+    /**
      * Add header
      *
      * @param view
@@ -81,7 +92,18 @@ public class HeaderFooterListAdapter<E extends BaseAdapter> extends
     }
 
     /**
-     * Add header
+     * Add non-selectable footer view with no data
+     *
+     * @see #addFooter(View, Object, boolean)
+     * @param view
+     * @return this adapter
+     */
+    public HeaderFooterListAdapter<E> addFooter(View view) {
+        return addFooter(view, null, false);
+    }
+
+    /**
+     * Add footer
      *
      * @param view
      * @param data
