@@ -108,10 +108,10 @@
     <string name="comment">Comment</string>
     <string name="delete">Delete</string>
     <string name="refresh">Refresh</string>
-    <string name="dasbhoard_watched">Watched</string>
-    <string name="dasbhoard_assigned">Assigned</string>
-    <string name="dasbhoard_created">Created</string>
-    <string name="dasbhoard_mentioned">Mentioned</string>
+    <string name="dashboard_watched">Watched</string>
+    <string name="dashboard_assigned">Assigned</string>
+    <string name="dashboard_created">Created</string>
+    <string name="dashboard_mentioned">Mentioned</string>
     <string name="dashboard_issues_title">Issue Dashboard</string>
     <string name="bookmarks">Bookmarks</string>
     <string name="gists_title">Gists</string>
