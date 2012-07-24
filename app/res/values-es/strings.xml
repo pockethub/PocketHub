@@ -16,7 +16,7 @@
 -->
 <resources>
 
-    <!-- Mensages de error -->
+    <!-- Mensajes de error -->
     <string name="error_orgs_load">Error al cargar la cuenta y las organizaciones</string>
     <string name="error_issues_load">Error al cargar incidencias</string>
     <string name="error_repos_load">Error al cargar repositorios</string>
@@ -37,7 +37,7 @@
     <!--  -->
 
 
-    <!-- Mensages de carga -->
+    <!-- Mensajes de carga -->
     <string name="loading_gist">Cargando Gist…</string>
     <string name="random_gist">Cargando Gist Aleatorio…</string>
     <string name="loading_more_issues">Cargando Más Incidencias…</string>
