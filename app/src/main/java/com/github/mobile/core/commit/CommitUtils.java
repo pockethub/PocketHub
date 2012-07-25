@@ -18,11 +18,15 @@ package com.github.mobile.core.commit;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
+import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
 
+import java.text.NumberFormat;
+import java.util.Collection;
 import java.util.Date;
 
 import org.eclipse.egit.github.core.Commit;
+import org.eclipse.egit.github.core.CommitFile;
 import org.eclipse.egit.github.core.CommitUser;
 import org.eclipse.egit.github.core.RepositoryCommit;
 import org.eclipse.egit.github.core.User;
@@ -31,6 +35,8 @@ import org.eclipse.egit.github.core.User;
  * Utilities for working with commits
  */
 public class CommitUtils {
+
+    private static NumberFormat FORMAT = NumberFormat.getIntegerInstance();
 
     private static final int LENGTH = 10;
 
@@ -194,5 +200,43 @@ public class CommitUtils {
                 avatars.bind(view, rawCommit.getCommitter());
         }
         return view;
+    }
+
+    /**
+     * Format stats into {@link StyledText}
+     *
+     * @param files
+     * @return styled text
+     */
+    public static StyledText formatStats(final Collection<CommitFile> files) {
+        StyledText fileDetails = new StyledText();
+        int added = 0;
+        int deleted = 0;
+        int changed = 0;
+        if (files != null)
+            for (CommitFile file : files) {
+                added += file.getAdditions();
+                deleted += file.getDeletions();
+                changed++;
+            }
+
+        if (changed > 1)
+            fileDetails.append(FORMAT.format(changed)).append(" changed files");
+        else
+            fileDetails.append("1 changed file");
+        fileDetails.append(" with ");
+
+        if (added != 1)
+            fileDetails.append(FORMAT.format(added)).append(" additions");
+        else
+            fileDetails.append("1 addition ");
+        fileDetails.append(" and ");
+
+        if (deleted != 1)
+            fileDetails.append(FORMAT.format(deleted)).append(" deletions");
+        else
+            fileDetails.append("1 deletion");
+
+        return fileDetails;
     }
 }

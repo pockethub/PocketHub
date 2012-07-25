@@ -148,7 +148,7 @@ public class CommitDiffListFragment extends DialogFragment implements
         return committerDate != null && !committerDate.equals(authorDate);
     }
 
-    private void updateCommitDetails(RepositoryCommit commit) {
+    private void addCommitDetails(RepositoryCommit commit) {
         adapter.addHeader(commitHeader);
 
         String commitAuthor = CommitUtils.getAuthor(commit);
@@ -184,7 +184,15 @@ public class CommitDiffListFragment extends DialogFragment implements
             ViewUtils.setGone(committerArea, true);
     }
 
-    private void updateCommitParents(RepositoryCommit commit,
+    private void addDiffStats(RepositoryCommit commit, LayoutInflater inflater) {
+        View fileHeader = inflater.inflate(layout.commit_file_details_header,
+                null);
+        ((TextView) fileHeader.findViewById(id.tv_commit_file_summary))
+                .setText(CommitUtils.formatStats(commit.getFiles()));
+        adapter.addHeader(fileHeader);
+    }
+
+    private void addCommitParents(RepositoryCommit commit,
             LayoutInflater inflater) {
         List<Commit> parents = commit.getParents();
         if (parents == null || parents.isEmpty())
@@ -216,8 +224,9 @@ public class CommitDiffListFragment extends DialogFragment implements
 
         adapter.clearHeaders();
 
-        updateCommitDetails(commit);
-        updateCommitParents(commit, inflater);
+        addCommitDetails(commit);
+        addCommitParents(commit, inflater);
+        addDiffStats(commit, inflater);
 
         CommitFileListAdapter rootAdapter = adapter.getWrappedAdapter();
         for (FullCommitFile file : fullCommit.getFiles())

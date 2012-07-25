@@ -16,8 +16,7 @@
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/ListItem"
-    android:paddingBottom="0dp"
-    android:paddingTop="0dp" >
+    android:paddingBottom="0dp" >
 
     <TextView
         android:id="@+id/tv_commit_file_summary"
