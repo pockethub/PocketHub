@@ -17,6 +17,7 @@ package com.github.mobile.ui.commit;
 
 import static com.github.mobile.Intents.EXTRA_BASE;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -158,8 +159,11 @@ public class CommitDiffListFragment extends DialogFragment implements
             for (Commit parent : parents) {
                 View parentView = inflater.inflate(layout.commit_parent_item,
                         null);
-                ((TextView) parentView.findViewById(id.tv_commit_id))
-                        .setText(CommitUtils.abbreviate(parent));
+                TextView parentIdText = (TextView) parentView
+                        .findViewById(id.tv_commit_id);
+                parentIdText.setPaintFlags(parentIdText.getPaintFlags()
+                        | Paint.UNDERLINE_TEXT_FLAG);
+                parentIdText.setText(CommitUtils.abbreviate(parent));
                 adapter.addHeader(parentView, parent, true);
             }
         }

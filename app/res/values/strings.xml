@@ -216,5 +216,6 @@
     <string name="commit_compare_title">Commit Compare</string>
     <string name="parent_commit">parent commit</string>
     <string name="commit_prefix">Commit\u0020</string>
+    <string name="parent_prefix">parent:</string>
 
 </resources>
