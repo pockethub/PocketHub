@@ -29,11 +29,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.mobile.R.id;
+import com.github.mobile.R.string;
 import com.github.mobile.core.commit.CommitCompareTask;
 import com.github.mobile.core.commit.CommitUtils;
 import com.github.mobile.ui.DialogFragment;
 import com.github.mobile.ui.HeaderFooterListAdapter;
 import com.github.mobile.util.AvatarLoader;
+import com.github.mobile.util.ToastUtils;
 import com.github.mobile.util.ViewUtils;
 import com.google.inject.Inject;
 import com.viewpagerindicator.R.layout;
@@ -106,6 +108,13 @@ public class CommitCompareListFragment extends DialogFragment implements
                 super.onSuccess(compare);
 
                 updateList(compare);
+            }
+
+            @Override
+            protected void onException(Exception e) throws RuntimeException {
+                super.onException(e);
+
+                ToastUtils.show(getActivity(), e, string.error_commits_load);
             }
 
         }.execute();

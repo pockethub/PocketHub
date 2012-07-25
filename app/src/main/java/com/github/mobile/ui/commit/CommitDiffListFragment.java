@@ -40,6 +40,7 @@ import com.github.mobile.ui.HeaderFooterListAdapter;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
+import com.github.mobile.util.ToastUtils;
 import com.github.mobile.util.ViewUtils;
 import com.google.inject.Inject;
 import com.viewpagerindicator.R.layout;
@@ -133,6 +134,13 @@ public class CommitDiffListFragment extends DialogFragment implements
                 super.onSuccess(commit);
 
                 updateList(commit);
+            }
+
+            @Override
+            protected void onException(Exception e) throws RuntimeException {
+                super.onException(e);
+
+                ToastUtils.show(getActivity(), e, string.error_commit_load);
             }
 
         }.execute();
