@@ -16,6 +16,7 @@
 package com.github.mobile.ui.gist;
 
 import static com.github.mobile.RequestCodes.GIST_VIEW;
+import android.accounts.Account;
 import android.app.Activity;
 import android.util.Log;
 
@@ -79,7 +80,7 @@ public class OpenGistTask extends ProgressDialogTask<Gist> {
     }
 
     @Override
-    protected Gist run() throws Exception {
+    protected Gist run(Account account) throws Exception {
         return store.refreshGist(id);
     }
 }

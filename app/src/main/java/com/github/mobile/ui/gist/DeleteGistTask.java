@@ -16,6 +16,7 @@
 package com.github.mobile.ui.gist;
 
 import static android.app.Activity.RESULT_OK;
+import android.accounts.Account;
 import android.app.Activity;
 import android.util.Log;
 
@@ -63,7 +64,7 @@ public class DeleteGistTask extends ProgressDialogTask<Gist> {
     }
 
     @Override
-    public Gist run() throws Exception {
+    public Gist run(Account account) throws Exception {
         service.deleteGist(id);
         return null;
     }

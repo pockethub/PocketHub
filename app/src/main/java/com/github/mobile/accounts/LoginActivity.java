@@ -117,7 +117,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
         }
 
         @Override
-        protected List<User> run() throws Exception {
+        protected List<User> run(Account account) throws Exception {
             return cache.getOrgs();
         }
     }

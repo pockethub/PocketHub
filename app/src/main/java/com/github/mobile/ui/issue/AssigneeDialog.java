@@ -16,6 +16,7 @@
 package com.github.mobile.ui.issue;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
+import android.accounts.Account;
 import android.util.Log;
 
 import com.github.mobile.R.string;
@@ -70,7 +71,7 @@ public class AssigneeDialog {
         new ProgressDialogTask<List<User>>(activity) {
 
             @Override
-            public List<User> run() throws Exception {
+            public List<User> run(Account account) throws Exception {
                 List<User> users = service.getCollaborators(repository);
                 Map<String, User> loadedCollaborators = new TreeMap<String, User>(
                         CASE_INSENSITIVE_ORDER);

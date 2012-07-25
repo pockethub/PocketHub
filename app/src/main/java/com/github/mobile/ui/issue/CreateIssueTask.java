@@ -15,6 +15,7 @@
  */
 package com.github.mobile.ui.issue;
 
+import android.accounts.Account;
 import android.app.Activity;
 import android.util.Log;
 
@@ -73,7 +74,7 @@ public class CreateIssueTask extends ProgressDialogTask<Issue> {
     }
 
     @Override
-    public Issue run() throws Exception {
+    public Issue run(Account account) throws Exception {
         return store.addIssue(service.createIssue(repository, issue));
     }
 

@@ -15,6 +15,7 @@
  */
 package com.github.mobile.core.repo;
 
+import android.accounts.Account;
 import android.content.Context;
 import android.util.Log;
 
@@ -50,7 +51,7 @@ public class RefreshRepositoryTask extends ProgressDialogTask<Repository> {
     }
 
     @Override
-    protected Repository run() throws Exception {
+    protected Repository run(Account account) throws Exception {
         return service.getRepository(repo);
     }
 

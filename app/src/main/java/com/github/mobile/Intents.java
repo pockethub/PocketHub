@@ -156,6 +156,16 @@ public class Intents {
     public static final String EXTRA_HEAD = INTENT_EXTRA_PREFIX + "HEAD";
 
     /**
+     * Handle to a {@link String} path
+     */
+    public static final String EXTRA_PATH = INTENT_EXTRA_PREFIX + "PATH";
+
+    /**
+     * Handle to a {@link String} raw URL
+     */
+    public static final String EXTRA_RAW_URL = INTENT_EXTRA_PREFIX + "RAW_URL";
+
+    /**
      * Resolve the {@link RepositoryId} referenced by the given intent
      *
      * @param intent

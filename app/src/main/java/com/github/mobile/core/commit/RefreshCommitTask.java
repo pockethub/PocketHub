@@ -15,6 +15,7 @@
  */
 package com.github.mobile.core.commit;
 
+import android.accounts.Account;
 import android.content.Context;
 
 import com.github.mobile.accounts.AuthenticatedUserTask;
@@ -59,7 +60,7 @@ public class RefreshCommitTask extends AuthenticatedUserTask<FullCommit> {
     }
 
     @Override
-    protected FullCommit run() throws Exception {
+    protected FullCommit run(Account account) throws Exception {
         RepositoryCommit commit = service.getCommit(repository, id);
         List<CommitComment> comments = service.getComments(repository,
                 commit.getSha());

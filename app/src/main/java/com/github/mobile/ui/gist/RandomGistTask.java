@@ -16,6 +16,7 @@
 package com.github.mobile.ui.gist;
 
 import static com.github.mobile.RequestCodes.GIST_VIEW;
+import android.accounts.Account;
 import android.app.Activity;
 import android.util.Log;
 
@@ -65,7 +66,7 @@ public class RandomGistTask extends ProgressDialogTask<Gist> {
     }
 
     @Override
-    protected Gist run() throws Exception {
+    protected Gist run(Account account) throws Exception {
         PageIterator<Gist> pages = service.pagePublicGists(1);
         pages.next();
         int randomPage = 1 + (int) (Math.random() * ((pages.getLastPage() - 1) + 1));

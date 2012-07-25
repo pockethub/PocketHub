@@ -17,6 +17,7 @@ package com.github.mobile.ui.gist;
 
 import static com.github.mobile.Intents.EXTRA_GIST_FILE;
 import static com.github.mobile.Intents.EXTRA_GIST_ID;
+import android.accounts.Account;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +48,7 @@ import roboguice.inject.InjectView;
  */
 public class GistFileFragment extends RoboSherlockFragment {
 
-    @InjectView(id.wv_gist_content)
+    @InjectView(id.wv_code)
     private WebView webView;
 
     @InjectExtra(EXTRA_GIST_ID)
@@ -72,7 +73,7 @@ public class GistFileFragment extends RoboSherlockFragment {
 
     private void loadSource() {
         new AuthenticatedUserTask<GistFile>(getActivity()) {
-            public GistFile run() throws Exception {
+            public GistFile run(Account account) throws Exception {
                 gist = store.refreshGist(gistId);
                 Map<String, GistFile> files = gist.getFiles();
                 if (files == null)

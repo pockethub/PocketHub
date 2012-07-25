@@ -18,6 +18,7 @@ package com.github.mobile.ui.commit;
 import static android.graphics.Paint.UNDERLINE_TEXT_FLAG;
 import static com.github.mobile.Intents.EXTRA_BASE;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
+import android.accounts.Account;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -119,8 +120,8 @@ public class CommitDiffListFragment extends DialogFragment implements
                 commentImageGetter) {
 
             @Override
-            protected FullCommit run() throws Exception {
-                FullCommit full = super.run();
+            protected FullCommit run(Account account) throws Exception {
+                FullCommit full = super.run(account);
 
                 List<CommitFile> files = full.getCommit().getFiles();
                 diffStyler.setFiles(files);
@@ -289,5 +290,8 @@ public class CommitDiffListFragment extends DialogFragment implements
         if (item instanceof Commit)
             startActivity(CommitViewActivity.createIntent(repository,
                     ((Commit) item).getSha()));
+        else if (item instanceof CommitFile)
+            startActivity(CommitFileViewActivity.createIntent(repository, base,
+                    (CommitFile) item));
     }
 }

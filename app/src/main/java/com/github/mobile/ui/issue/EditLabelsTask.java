@@ -17,6 +17,8 @@ package com.github.mobile.ui.issue;
 
 import static com.github.mobile.RequestCodes.ISSUE_LABELS_UPDATE;
 
+import android.accounts.Account;
+
 import com.github.mobile.R.string;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.ui.DialogFragmentActivity;
@@ -95,7 +97,7 @@ public class EditLabelsTask extends ProgressDialogTask<Issue> {
     }
 
     @Override
-    public Issue run() throws Exception {
+    public Issue run(Account account) throws Exception {
         Issue editedIssue = new Issue();
         editedIssue.setNumber(issueNumber);
         if (labels != null && labels.length > 0)

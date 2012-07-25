@@ -16,6 +16,7 @@
 package com.github.mobile.ui.issue;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
+import android.accounts.Account;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -74,7 +75,7 @@ public class LabelsDialog {
         new ProgressDialogTask<List<Label>>(activity) {
 
             @Override
-            public List<Label> run() throws Exception {
+            public List<Label> run(Account account) throws Exception {
                 List<Label> repositoryLabels = service.getLabels(repository);
                 Map<String, Label> loadedLabels = new TreeMap<String, Label>(
                         CASE_INSENSITIVE_ORDER);

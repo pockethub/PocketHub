@@ -18,6 +18,7 @@ package com.github.mobile.ui.commit;
 import static com.github.mobile.Intents.EXTRA_BASE;
 import static com.github.mobile.Intents.EXTRA_HEAD;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
+import android.accounts.Account;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,8 +93,9 @@ public class CommitCompareListFragment extends DialogFragment implements
         new CommitCompareTask(getActivity(), repository, base, head) {
 
             @Override
-            protected RepositoryCommitCompare run() throws Exception {
-                RepositoryCommitCompare compare = super.run();
+            protected RepositoryCommitCompare run(Account account)
+                    throws Exception {
+                RepositoryCommitCompare compare = super.run(account);
 
                 List<CommitFile> files = compare.getFiles();
                 diffStyler.setFiles(files);
@@ -193,5 +195,8 @@ public class CommitCompareListFragment extends DialogFragment implements
         if (item instanceof RepositoryCommit)
             startActivity(CommitViewActivity.createIntent(repository,
                     ((RepositoryCommit) item).getSha()));
+        else if (item instanceof CommitFile)
+            startActivity(CommitFileViewActivity.createIntent(repository, base,
+                    (CommitFile) item));
     }
 }

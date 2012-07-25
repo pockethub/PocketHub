@@ -15,6 +15,7 @@
  */
 package com.github.mobile.core.commit;
 
+import android.accounts.Account;
 import android.content.Context;
 
 import com.github.mobile.accounts.AuthenticatedUserTask;
@@ -55,7 +56,7 @@ public class CommitCompareTask extends
     }
 
     @Override
-    protected RepositoryCommitCompare run() throws Exception {
+    protected RepositoryCommitCompare run(Account account) throws Exception {
         return service.compare(repository, base, head);
     }
 }

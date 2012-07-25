@@ -36,6 +36,7 @@
     <string name="error_members_load">Loading members failed</string>
     <string name="error_commits_load">Loading commits failed</string>
     <string name="error_commit_load">Loading commit failed</string>
+    <string name="error_file_load">Loading file failed</string>
     <!--  -->
 
 

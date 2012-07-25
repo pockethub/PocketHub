@@ -15,6 +15,7 @@
  */
 package com.github.mobile.core.gist;
 
+import android.accounts.Account;
 import android.content.Context;
 import android.util.Log;
 
@@ -49,7 +50,7 @@ public class StarGistTask extends AuthenticatedUserTask<Gist> {
     }
 
     @Override
-    public Gist run() throws Exception {
+    public Gist run(Account account) throws Exception {
         service.starGist(id);
         return null;
     }
