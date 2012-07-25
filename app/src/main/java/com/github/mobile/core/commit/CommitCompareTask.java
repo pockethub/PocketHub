@@ -17,6 +17,7 @@ package com.github.mobile.core.commit;
 
 import android.accounts.Account;
 import android.content.Context;
+import android.util.Log;
 
 import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.google.inject.Inject;
@@ -30,6 +31,8 @@ import org.eclipse.egit.github.core.service.CommitService;
  */
 public class CommitCompareTask extends
         AuthenticatedUserTask<RepositoryCommitCompare> {
+
+    private static final String TAG = "CommitCompareTask";
 
     @Inject
     private CommitService service;
@@ -58,5 +61,12 @@ public class CommitCompareTask extends
     @Override
     protected RepositoryCommitCompare run(Account account) throws Exception {
         return service.compare(repository, base, head);
+    }
+
+    @Override
+    protected void onException(Exception e) throws RuntimeException {
+        super.onException(e);
+
+        Log.d(TAG, "Exception loading commit compare", e);
     }
 }

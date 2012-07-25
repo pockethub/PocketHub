@@ -24,6 +24,7 @@ import android.accounts.AccountManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
@@ -53,6 +54,8 @@ import roboguice.inject.InjectView;
  * Activity to display the contents of a file in a commit
  */
 public class CommitFileViewActivity extends RoboSherlockActivity {
+
+    private static final String TAG = "CommitFileViewActivity";
 
     /**
      * Create intent to show file in commit
@@ -139,6 +142,8 @@ public class CommitFileViewActivity extends RoboSherlockActivity {
             @Override
             protected void onException(Exception e) throws RuntimeException {
                 super.onException(e);
+
+                Log.d(TAG, "Loading commit file contents failed", e);
 
                 ViewUtils.setGone(loadingBar, true);
                 ViewUtils.setGone(codeView, false);

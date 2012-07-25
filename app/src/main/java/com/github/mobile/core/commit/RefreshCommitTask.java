@@ -17,6 +17,7 @@ package com.github.mobile.core.commit;
 
 import android.accounts.Account;
 import android.content.Context;
+import android.util.Log;
 
 import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.util.HtmlUtils;
@@ -34,6 +35,8 @@ import org.eclipse.egit.github.core.service.CommitService;
  * Task to load a commit by SHA-1 id
  */
 public class RefreshCommitTask extends AuthenticatedUserTask<FullCommit> {
+
+    private static final String TAG = "RefreshCommitTask";
 
     @Inject
     private CommitService service;
@@ -71,5 +74,12 @@ public class RefreshCommitTask extends AuthenticatedUserTask<FullCommit> {
             imageGetter.encode(comment, formatted);
         }
         return new FullCommit(commit, comments);
+    }
+
+    @Override
+    protected void onException(Exception e) throws RuntimeException {
+        super.onException(e);
+
+        Log.d(TAG, "Exception loading commit", e);
     }
 }
