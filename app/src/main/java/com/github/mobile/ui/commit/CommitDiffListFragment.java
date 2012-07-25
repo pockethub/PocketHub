@@ -169,6 +169,8 @@ public class CommitDiffListFragment extends DialogFragment implements
             rootAdapter.addItem(file);
         for (CommitComment comment : fullCommit)
             rootAdapter.addComment(comment);
+
+        adapter.addFooter(inflater.inflate(layout.footer_separator, null));
     }
 
     @Override

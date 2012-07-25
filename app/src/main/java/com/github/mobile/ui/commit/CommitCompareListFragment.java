@@ -150,6 +150,8 @@ public class CommitCompareListFragment extends DialogFragment implements
             for (CommitFile file : files)
                 adapter.getWrappedAdapter().addItem(file);
         }
+
+        adapter.addFooter(inflater.inflate(layout.footer_separator, null));
     }
 
     private void addFileStatHeader(List<CommitFile> files,
