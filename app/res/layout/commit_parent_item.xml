@@ -19,16 +19,9 @@
     android:orientation="horizontal" >
 
     <TextView
-        style="@style/SubtitleText"
-        android:layout_width="wrap_content"
-        android:singleLine="true"
-        android:text="@string/parent_prefix" />
-
-    <TextView
         android:id="@+id/tv_commit_id"
         style="@style/SubtitleText"
         android:layout_width="match_parent"
-        android:paddingLeft="5dp"
         android:singleLine="true"
         android:textColor="@color/text_link" />
 

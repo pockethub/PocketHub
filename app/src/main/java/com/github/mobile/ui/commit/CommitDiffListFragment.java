@@ -196,7 +196,10 @@ public class CommitDiffListFragment extends DialogFragment implements
                     .findViewById(id.tv_commit_id);
             parentIdText.setPaintFlags(parentIdText.getPaintFlags()
                     | Paint.UNDERLINE_TEXT_FLAG);
-            parentIdText.setText(CommitUtils.abbreviate(parent));
+            StyledText parentText = new StyledText();
+            parentText.append(getString(string.parent_prefix));
+            parentText.monospace(CommitUtils.abbreviate(parent));
+            parentIdText.setText(parentText);
             adapter.addHeader(parentView, parent, true);
         }
     }
