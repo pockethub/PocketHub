@@ -65,5 +65,8 @@
     <color name="diff_marker_text">#999999</color>
     <color name="diff_add">#DDFFDD</color>
     <color name="diff_remove">#FFDDDD</color>
+    <color name="section_border">#D0D0D0</color>
+    <color name="section_start">#F9F9F9</color>
+    <color name="section_end">#E0E0E0</color>
 
 </resources>

@@ -15,21 +15,31 @@
   limitations under the License.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItem" >
+    style="@style/ListItem"
+    android:background="@color/background"
+    android:paddingBottom="0dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp" >
 
-    <TextView
-        android:id="@+id/tv_name"
-        style="@style/ListTitleText"
-        android:layout_alignParentLeft="true"
-        android:paddingBottom="0dp"
-        android:singleLine="true" />
+    <LinearLayout
+        style="@style/ListItem"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/section_background"
+        android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/tv_folder"
-        style="@style/ListSubtitleText"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/tv_name"
-        android:paddingBottom="5dp"
-        android:singleLine="true" />
+        <TextView
+            android:id="@+id/tv_name"
+            style="@style/ListTitleText"
+            android:paddingBottom="0dp"
+            android:singleLine="true" />
+
+        <TextView
+            android:id="@+id/tv_folder"
+            style="@style/ListSubtitleText"
+            android:paddingBottom="5dp"
+            android:singleLine="true"
+            android:textColor="#555555" />
+    </LinearLayout>
 
 </RelativeLayout>

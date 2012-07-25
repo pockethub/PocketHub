@@ -14,12 +14,22 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItem"
-    android:paddingBottom="0dp" >
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <TextView
-        android:id="@+id/tv_commit_file_summary"
-        style="@style/SubtitleText" />
+    <item>
+        <shape>
+            <solid android:color="@color/section_border" />
+        </shape>
+    </item>
+    <item
+        android:bottom="1dp"
+        android:top="1dp">
+        <shape>
+            <gradient
+                android:angle="270"
+                android:endColor="@color/section_end"
+                android:startColor="@color/section_start" />
+        </shape>
+    </item>
 
-</FrameLayout>
+</layer-list>
