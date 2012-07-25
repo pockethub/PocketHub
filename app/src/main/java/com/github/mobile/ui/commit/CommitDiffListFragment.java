@@ -15,9 +15,9 @@
  */
 package com.github.mobile.ui.commit;
 
+import static android.graphics.Paint.UNDERLINE_TEXT_FLAG;
 import static com.github.mobile.Intents.EXTRA_BASE;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -195,7 +195,7 @@ public class CommitDiffListFragment extends DialogFragment implements
             TextView parentIdText = (TextView) parentView
                     .findViewById(id.tv_commit_id);
             parentIdText.setPaintFlags(parentIdText.getPaintFlags()
-                    | Paint.UNDERLINE_TEXT_FLAG);
+                    | UNDERLINE_TEXT_FLAG);
             StyledText parentText = new StyledText();
             parentText.append(getString(string.parent_prefix));
             parentText.monospace(CommitUtils.abbreviate(parent));
