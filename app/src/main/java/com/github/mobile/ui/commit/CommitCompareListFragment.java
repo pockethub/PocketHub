@@ -168,7 +168,7 @@ public class CommitCompareListFragment extends DialogFragment implements
         if (changed > 1)
             fileDetails.bold(FORMAT.format(changed)).bold(" changed files");
         else
-            fileDetails.bold("1 changed files");
+            fileDetails.bold("1 changed file");
         fileDetails.append(" with ");
 
         if (added != 1)
@@ -178,7 +178,7 @@ public class CommitCompareListFragment extends DialogFragment implements
         fileDetails.append(" and ");
 
         if (deleted != 1)
-            fileDetails.bold(FORMAT.format(deleted)).bold(" deletion");
+            fileDetails.bold(FORMAT.format(deleted)).bold(" deletions");
         else
             fileDetails.bold("1 deletion");
 
