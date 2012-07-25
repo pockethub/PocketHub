@@ -15,8 +15,7 @@
   limitations under the License.
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItem"
-    android:layout_width="match_parent"
+    style="@style/CommentListItem"
     android:paddingBottom="5dp"
     android:paddingTop="0dp" >
 
