@@ -14,12 +14,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItem"
-    android:layout_width="match_parent"
-    android:paddingBottom="5dp"
-    android:paddingTop="0dp" >
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <include layout="@layout/comment" />
+    <item android:drawable="@color/background_selected" android:state_pressed="true"/>
+    <item android:drawable="@color/diff_marker_bg"/>
 
-</FrameLayout>
+</selector>

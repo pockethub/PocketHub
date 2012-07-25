@@ -14,12 +14,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItem"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_diff"
+    style="@style/CodeText"
     android:layout_width="match_parent"
-    android:paddingBottom="5dp"
-    android:paddingTop="0dp" >
-
-    <include layout="@layout/comment" />
-
-</FrameLayout>
+    android:background="@drawable/list_item_background"
+    android:paddingBottom="1dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="10dp"
+    android:paddingTop="1dp" />

@@ -61,8 +61,9 @@
     <color name="sign_up_text_link">#3797C7</color>
     <color name="state_background_closed">#BD2C00</color>
     <color name="state_text">#FFFFFF</color>
-    <color name="diff_marker">#4772A1</color>
-    <color name="diff_add">#528E4C</color>
-    <color name="diff_remove">#932121</color>
+    <color name="diff_marker_bg">#EAF2F5</color>
+    <color name="diff_marker_text">#999999</color>
+    <color name="diff_add">#DDFFDD</color>
+    <color name="diff_remove">#FFDDDD</color>
 
 </resources>

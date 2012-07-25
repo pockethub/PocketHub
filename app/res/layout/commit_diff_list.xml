@@ -14,14 +14,28 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <fragment
+    <View
+        android:id="@+id/v_header_separator"
+        style="@style/HeaderSeparator"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
+
+    <ListView
         android:id="@android:id/list"
+        style="@style/ListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        class="com.github.mobile.ui.commit.CommitDiffListFragment" />
+        android:layout_below="@id/v_header_separator"
+        android:dividerHeight="0dp"
+        android:visibility="gone" />
 
-</FrameLayout>
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        style="@style/ListSpinner"
+        android:layout_centerInParent="true" />
+
+</RelativeLayout>

@@ -18,8 +18,12 @@ package com.github.mobile.core.commit;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.egit.github.core.CommitComment;
+import org.eclipse.egit.github.core.CommitFile;
 import org.eclipse.egit.github.core.RepositoryCommit;
 
 /**
@@ -32,6 +36,8 @@ public class FullCommit extends ArrayList<CommitComment> implements
 
     private final RepositoryCommit commit;
 
+    private final List<FullCommitFile> files;
+
     /**
      * Create commit with comments
      *
@@ -40,16 +46,37 @@ public class FullCommit extends ArrayList<CommitComment> implements
      */
     public FullCommit(final RepositoryCommit commit,
             final Collection<CommitComment> comments) {
-        super(comments);
-
         this.commit = commit;
+
+        List<CommitFile> rawFiles = commit.getFiles();
+        if (rawFiles != null) {
+            files = new ArrayList<FullCommitFile>(rawFiles.size());
+            if (comments != null && !comments.isEmpty()) {
+                for (CommitFile file : rawFiles) {
+                    Iterator<CommitComment> iterator = comments.iterator();
+                    FullCommitFile full = new FullCommitFile(file);
+                    while (iterator.hasNext()) {
+                        CommitComment comment = iterator.next();
+                        if (file.getFilename().equals(comment.getPath())) {
+                            full.add(comment);
+                            iterator.remove();
+                        }
+                    }
+                    files.add(full);
+                }
+                addAll(comments);
+            } else
+                for (CommitFile file : rawFiles)
+                    files.add(new FullCommitFile(file));
+        } else
+            files = Collections.emptyList();
     }
 
     /**
-     * Create empty full commit
+     * @return files
      */
-    public FullCommit() {
-        this.commit = null;
+    public List<FullCommitFile> getFiles() {
+        return files;
     }
 
     /**

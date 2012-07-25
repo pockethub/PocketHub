@@ -17,12 +17,16 @@ package com.github.mobile.ui.commit;
 
 import android.content.res.Resources;
 import android.text.TextUtils;
+import android.widget.TextView;
 
 import com.actionbarsherlock.R.color;
-import com.github.mobile.ui.StyledText;
+import com.github.mobile.R.drawable;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.egit.github.core.CommitFile;
@@ -32,13 +36,11 @@ import org.eclipse.egit.github.core.CommitFile;
  */
 public class DiffStyler {
 
-    private final Map<String, CharSequence> diffs = new HashMap<String, CharSequence>();
+    private final Map<String, List<CharSequence>> diffs = new HashMap<String, List<CharSequence>>();
 
     private final int markerColor;
 
-    private final int addColor;
-
-    private final int removeColor;
+    private final int defaultColor;
 
     /**
      * Create diff styler
@@ -46,17 +48,48 @@ public class DiffStyler {
      * @param resources
      */
     public DiffStyler(final Resources resources) {
-        markerColor = resources.getColor(color.diff_marker);
-        addColor = resources.getColor(color.diff_add);
-        removeColor = resources.getColor(color.diff_remove);
+        markerColor = resources.getColor(color.diff_marker_text);
+        defaultColor = resources.getColor(color.text);
     }
 
-    private int nextLine(final String patch, final int start) {
+    private int nextLine(final String patch, final int start, final int length) {
         final int end = patch.indexOf('\n', start);
         if (end != -1)
-            return end + 1;
+            return end;
         else
-            return patch.length();
+            return length;
+    }
+
+    /**
+     * Style view for line
+     *
+     * @param line
+     * @param view
+     */
+    public void updateColors(final CharSequence line, final TextView view) {
+        if (TextUtils.isEmpty(line)) {
+            view.setBackgroundResource(drawable.list_item_background);
+            view.setTextColor(defaultColor);
+            return;
+        }
+
+        switch (line.charAt(0)) {
+        case '@':
+            view.setBackgroundResource(drawable.diff_marker_background);
+            view.setTextColor(markerColor);
+            return;
+        case '+':
+            view.setBackgroundResource(drawable.diff_add_background);
+            view.setTextColor(defaultColor);
+            return;
+        case '-':
+            view.setBackgroundResource(drawable.diff_remove_background);
+            view.setTextColor(defaultColor);
+            return;
+        default:
+            view.setBackgroundResource(drawable.list_item_background);
+            view.setTextColor(defaultColor);
+        }
     }
 
     /**
@@ -76,39 +109,29 @@ public class DiffStyler {
                 continue;
 
             int start = 0;
-            int end = nextLine(patch, start);
-            StyledText styled = new StyledText();
-            while (end > start) {
-                String line = patch.substring(start, end);
-                switch (line.charAt(0)) {
-                case '@':
-                    styled.foreground(line, markerColor);
-                    break;
-                case '+':
-                    styled.foreground(line, addColor);
-                    break;
-                case '-':
-                    styled.foreground(line, removeColor);
-                    break;
-                default:
-                    styled.append(line);
-                    break;
-                }
-                start = end;
-                end = nextLine(patch, start);
+            int length = patch.length();
+            int end = nextLine(patch, start, length);
+            List<CharSequence> lines = new ArrayList<CharSequence>();
+            while (start < length) {
+                lines.add(patch.substring(start, end));
+                start = end + 1;
+                end = nextLine(patch, start, length);
             }
-            diffs.put(file.getFilename(), styled);
+            diffs.put(file.getFilename(), lines);
         }
         return this;
     }
 
     /**
-     * Get styled text for file path
+     * Get lines for file path
      *
      * @param file
      * @return styled text
      */
-    public CharSequence get(final String file) {
-        return diffs.get(file);
+    public List<CharSequence> get(final String file) {
+        if (TextUtils.isEmpty(file))
+            return Collections.emptyList();
+        List<CharSequence> lines = diffs.get(file);
+        return lines != null ? lines : Collections.<CharSequence> emptyList();
     }
 }

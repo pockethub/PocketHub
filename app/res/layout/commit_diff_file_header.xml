@@ -14,12 +14,22 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItem"
-    android:layout_width="match_parent"
-    android:paddingBottom="5dp"
-    android:paddingTop="0dp" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ListItem" >
 
-    <include layout="@layout/comment" />
+    <TextView
+        android:id="@+id/tv_name"
+        style="@style/ListTitleText"
+        android:layout_alignParentLeft="true"
+        android:paddingBottom="0dp"
+        android:singleLine="true" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/tv_folder"
+        style="@style/ListSubtitleText"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/tv_name"
+        android:paddingBottom="5dp"
+        android:singleLine="true" />
+
+</RelativeLayout>

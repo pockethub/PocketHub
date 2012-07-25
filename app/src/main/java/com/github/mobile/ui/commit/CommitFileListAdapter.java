@@ -16,51 +16,161 @@
 package com.github.mobile.ui.commit;
 
 import android.view.LayoutInflater;
-import android.view.View;
 
-import com.github.mobile.ui.ItemListAdapter;
+import com.github.kevinsawicki.wishlist.MultiTypeAdapter;
+import com.github.mobile.R.layout;
+import com.github.mobile.core.commit.FullCommitFile;
+import com.github.mobile.util.AvatarLoader;
+import com.github.mobile.util.HttpImageGetter;
+import com.github.mobile.util.TimeUtils;
 import com.github.mobile.util.ViewUtils;
+import com.viewpagerindicator.R.id;
 
+import java.util.List;
+
+import org.eclipse.egit.github.core.CommitComment;
 import org.eclipse.egit.github.core.CommitFile;
 
 /**
  * Adapter to display a list of files changed in commits
  */
-public class CommitFileListAdapter extends
-        ItemListAdapter<CommitFile, CommitFileView> {
+public class CommitFileListAdapter extends MultiTypeAdapter {
 
-    private DiffStyler diffStyler;
+    private static final int TYPE_FILE_HEADER = 0;
+
+    private static final int TYPE_FILE_LINE = 1;
+
+    private static final int TYPE_LINE_COMMENT = 2;
+
+    private static final int TYPE_COMMENT = 3;
+
+    private final DiffStyler diffStyler;
+
+    private final HttpImageGetter imageGetter;
+
+    private final AvatarLoader avatars;
 
     /**
-     * @param viewId
      * @param inflater
      * @param diffStyler
+     * @param avatars
+     * @param imageGetter
      */
-    public CommitFileListAdapter(int viewId, LayoutInflater inflater,
-            DiffStyler diffStyler) {
-        super(viewId, inflater);
+    public CommitFileListAdapter(LayoutInflater inflater,
+            DiffStyler diffStyler, AvatarLoader avatars,
+            HttpImageGetter imageGetter) {
+        super(inflater);
 
         this.diffStyler = diffStyler;
+        this.avatars = avatars;
+        this.imageGetter = imageGetter;
     }
 
     @Override
-    protected void update(int position, CommitFileView view, CommitFile item) {
-        String path = item.getFilename();
-        int lastSlash = path.lastIndexOf('/');
-        if (lastSlash != -1) {
-            view.name.setText(path.substring(lastSlash + 1));
-            view.folder.setText(path.substring(0, lastSlash));
-            ViewUtils.setGone(view.folder, false);
-        } else {
-            view.name.setText(path);
-            ViewUtils.setGone(view.folder, true);
+    public int getViewTypeCount() {
+        return 4;
+    }
+
+    /**
+     * Add file to adapter
+     *
+     * @param file
+     */
+    public void addItem(FullCommitFile file) {
+        addItem(TYPE_FILE_HEADER, file.getFile());
+        List<CharSequence> lines = diffStyler.get(file.getFile().getFilename());
+        int number = 0;
+        for (CharSequence line : lines) {
+            addItem(TYPE_FILE_LINE, line);
+            for (CommitComment comment : file.get(number))
+                addItem(TYPE_LINE_COMMENT, comment);
+            number++;
         }
+    }
 
-        view.diff.setText(diffStyler.get(item.getFilename()));
+    /**
+     * Add file to adapter
+     *
+     * @param file
+     */
+    public void addItem(CommitFile file) {
+        addItem(TYPE_FILE_HEADER, file);
+        addItems(TYPE_FILE_LINE, diffStyler.get(file.getFilename()));
+    }
+
+    /**
+     * Add comment to adapter
+     *
+     * @param comment
+     */
+    public void addComment(CommitComment comment) {
+        addItem(TYPE_COMMENT, comment);
+    }
+
+    protected int getChildLayoutId(int type) {
+        switch (type) {
+        case TYPE_FILE_HEADER:
+            return layout.commit_diff_file_header;
+        case TYPE_FILE_LINE:
+            return layout.commit_diff_line;
+        case TYPE_LINE_COMMENT:
+            return layout.diff_comment_item;
+        case TYPE_COMMENT:
+            return layout.commit_comment_item;
+        default:
+            return -1;
+        }
     }
 
     @Override
-    protected CommitFileView createView(final View view) {
-        return new CommitFileView(view);
+    protected int[] getChildViewIds(int type) {
+        switch (type) {
+        case TYPE_FILE_HEADER:
+            return new int[] { id.tv_name, id.tv_folder };
+        case TYPE_FILE_LINE:
+            return new int[] { id.tv_diff };
+        case TYPE_LINE_COMMENT:
+        case TYPE_COMMENT:
+            return new int[] { id.tv_comment_body, id.iv_avatar,
+                    id.tv_comment_author, id.tv_comment_date };
+        default:
+            return null;
+        }
+    }
+
+    @Override
+    protected void update(int position, Object item, int type) {
+        switch (type) {
+        case TYPE_FILE_HEADER:
+            String path = ((CommitFile) item).getFilename();
+            int lastSlash = path.lastIndexOf('/');
+            if (lastSlash != -1) {
+                setText(id.tv_name, path.substring(lastSlash + 1));
+                ViewUtils.setGone(
+                        setText(id.tv_folder, path.substring(0, lastSlash)),
+                        false);
+            } else {
+                setText(id.tv_name, path);
+                setGone(id.tv_folder, true);
+            }
+            return;
+        case TYPE_FILE_LINE:
+            CharSequence text = (CharSequence) item;
+            diffStyler.updateColors((CharSequence) item,
+                    setText(id.tv_diff, text));
+            return;
+        case TYPE_LINE_COMMENT:
+        case TYPE_COMMENT:
+            CommitComment comment = (CommitComment) item;
+            avatars.bind(imageView(id.iv_avatar), comment.getUser());
+            setText(id.tv_comment_author, comment.getUser().getLogin());
+            setText(id.tv_comment_date,
+                    TimeUtils.getRelativeTime(comment.getUpdatedAt()));
+            imageGetter.bind(textView(id.tv_comment_body),
+                    comment.getBodyHtml(), comment.getId());
+            return;
+        default:
+            return;
+        }
     }
 }

@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -32,11 +31,11 @@ import android.widget.TextView;
 import com.github.mobile.R.id;
 import com.github.mobile.core.commit.CommitUtils;
 import com.github.mobile.core.commit.FullCommit;
+import com.github.mobile.core.commit.FullCommitFile;
 import com.github.mobile.core.commit.RefreshCommitTask;
 import com.github.mobile.ui.DialogFragment;
 import com.github.mobile.ui.HeaderFooterListAdapter;
 import com.github.mobile.ui.StyledText;
-import com.github.mobile.ui.comment.CommentListAdapter;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.ViewUtils;
@@ -47,8 +46,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Commit;
+import org.eclipse.egit.github.core.CommitComment;
 import org.eclipse.egit.github.core.CommitFile;
 import org.eclipse.egit.github.core.CommitUser;
 import org.eclipse.egit.github.core.Repository;
@@ -165,24 +164,11 @@ public class CommitDiffListFragment extends DialogFragment implements
             }
         }
 
-        if (!fullCommit.isEmpty()) {
-            LinearLayout commentRoot = (LinearLayout) inflater.inflate(
-                    layout.commit_comments, null);
-            CommentListAdapter commentAdapter = new CommentListAdapter(
-                    inflater,
-                    fullCommit.toArray(new Comment[fullCommit.size()]),
-                    avatars, commentImageGetter);
-            for (int i = 0; i < fullCommit.size(); i++)
-                commentRoot.addView(commentAdapter.getView(i));
-            adapter.addFooter(commentRoot);
-        }
-
-        List<CommitFile> files = commit.getFiles();
-        if (files != null && !files.isEmpty())
-            adapter.getWrappedAdapter().setItems(
-                    files.toArray(new CommitFile[files.size()]));
-        else
-            adapter.getWrappedAdapter().setItems(null);
+        CommitFileListAdapter rootAdapter = adapter.getWrappedAdapter();
+        for (FullCommitFile file : fullCommit.getFiles())
+            rootAdapter.addItem(file);
+        for (CommitComment comment : fullCommit)
+            rootAdapter.addComment(comment);
     }
 
     @Override
@@ -196,8 +182,8 @@ public class CommitDiffListFragment extends DialogFragment implements
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         adapter = new HeaderFooterListAdapter<CommitFileListAdapter>(list,
-                new CommitFileListAdapter(layout.commit_file_item, inflater,
-                        diffStyler));
+                new CommitFileListAdapter(inflater, diffStyler, avatars,
+                        new HttpImageGetter(getActivity())));
         list.setAdapter(adapter);
 
         View header = inflater.inflate(layout.commit_header, null);
@@ -212,7 +198,7 @@ public class CommitDiffListFragment extends DialogFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(layout.item_list, container);
+        return inflater.inflate(layout.commit_diff_list, container);
     }
 
     @Override
