@@ -88,11 +88,15 @@ public class GistFileFragment extends RoboSherlockFragment {
 
             @Override
             protected void onException(Exception e) throws RuntimeException {
+                super.onException(e);
+
                 ToastUtils.show(getActivity(), e, string.error_gist_file_load);
             }
 
             @Override
             protected void onSuccess(GistFile loadedFile) throws Exception {
+                super.onSuccess(loadedFile);
+
                 if (loadedFile == null)
                     return;
 
