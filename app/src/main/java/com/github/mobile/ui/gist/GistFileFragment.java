@@ -73,6 +73,8 @@ public class GistFileFragment extends RoboSherlockFragment {
 
     private void loadSource() {
         new AuthenticatedUserTask<GistFile>(getActivity()) {
+
+            @Override
             public GistFile run(Account account) throws Exception {
                 gist = store.refreshGist(gistId);
                 Map<String, GistFile> files = gist.getFiles();
@@ -84,10 +86,12 @@ public class GistFileFragment extends RoboSherlockFragment {
                 return loadedFile;
             }
 
+            @Override
             protected void onException(Exception e) throws RuntimeException {
                 ToastUtils.show(getActivity(), e, string.error_gist_file_load);
             }
 
+            @Override
             protected void onSuccess(GistFile loadedFile) throws Exception {
                 if (loadedFile == null)
                     return;
