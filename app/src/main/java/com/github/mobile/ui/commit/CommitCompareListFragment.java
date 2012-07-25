@@ -134,13 +134,14 @@ public class CommitCompareListFragment extends DialogFragment implements
                     .setText(MessageFormat.format("Comparing {0} commits",
                             commits.size()));
             adapter.addHeader(commitHeader, null, false);
-
+            adapter.addHeader(inflater.inflate(layout.list_divider, null));
             CommitListAdapter commitAdapter = new CommitListAdapter(
                     layout.commit_item, inflater, commits, avatars);
             for (int i = 0; i < commits.size(); i++) {
                 RepositoryCommit commit = commits.get(i);
                 View view = commitAdapter.getView(i, null, null);
                 adapter.addHeader(view, commit, true);
+                adapter.addHeader(inflater.inflate(layout.list_divider, null));
             }
         }
 
