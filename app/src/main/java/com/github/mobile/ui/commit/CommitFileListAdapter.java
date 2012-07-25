@@ -146,9 +146,11 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
             int lastSlash = path.lastIndexOf('/');
             if (lastSlash != -1) {
                 setText(id.tv_name, path.substring(lastSlash + 1));
-                ViewUtils.setGone(
-                        setText(id.tv_folder, path.substring(0, lastSlash)),
-                        false);
+                ViewUtils
+                        .setGone(
+                                setText(id.tv_folder,
+                                        path.substring(0, lastSlash + 1)),
+                                false);
             } else {
                 setText(id.tv_name, path);
                 setGone(id.tv_folder, true);
