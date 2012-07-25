@@ -25,7 +25,7 @@
         style="@style/ListItem"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/section_background"
+        android:background="@drawable/section_selector"
         android:orientation="vertical"
         android:paddingBottom="5dp"
         android:paddingTop="5dp" >
