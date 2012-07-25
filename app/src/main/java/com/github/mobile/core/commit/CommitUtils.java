@@ -16,6 +16,9 @@
 package com.github.mobile.core.commit;
 
 import android.text.TextUtils;
+import android.widget.ImageView;
+
+import com.github.mobile.util.AvatarLoader;
 
 import java.util.Date;
 
@@ -100,10 +103,29 @@ public class CommitUtils {
     }
 
     /**
-     * Get author date of commit
+     * Get committer of commit
      * <p>
      * This checks both the {@link RepositoryCommit} and the underlying
      * {@link Commit} to retrieve a name
+     *
+     * @param commit
+     * @return committer name or null if missing
+     */
+    public static String getCommitter(final RepositoryCommit commit) {
+        User committer = commit.getCommitter();
+        if (committer != null)
+            return committer.getLogin();
+
+        Commit rawCommit = commit.getCommit();
+        if (rawCommit == null)
+            return null;
+
+        CommitUser commitCommitter = rawCommit.getCommitter();
+        return commitCommitter != null ? commitCommitter.getName() : null;
+    }
+
+    /**
+     * Get author date of commit
      *
      * @param commit
      * @return author name or null if missing
@@ -115,5 +137,62 @@ public class CommitUtils {
 
         CommitUser commitAuthor = rawCommit.getAuthor();
         return commitAuthor != null ? commitAuthor.getDate() : null;
+    }
+
+    /**
+     * Get committer date of commit
+     *
+     * @param commit
+     * @return author name or null if missing
+     */
+    public static Date getCommiterDate(final RepositoryCommit commit) {
+        Commit rawCommit = commit.getCommit();
+        if (rawCommit == null)
+            return null;
+
+        CommitUser commitCommiter = rawCommit.getCommitter();
+        return commitCommiter != null ? commitCommiter.getDate() : null;
+    }
+
+    /**
+     * Bind commit author avatar to image view
+     *
+     * @param commit
+     * @param avatars
+     * @param view
+     * @return view
+     */
+    public static ImageView bindAuthor(final RepositoryCommit commit,
+            final AvatarLoader avatars, final ImageView view) {
+        User author = commit.getAuthor();
+        if (author != null)
+            avatars.bind(view, author);
+        else {
+            Commit rawCommit = commit.getCommit();
+            if (rawCommit != null)
+                avatars.bind(view, rawCommit.getAuthor());
+        }
+        return view;
+    }
+
+    /**
+     * Bind commit committer avatar to image view
+     *
+     * @param commit
+     * @param avatars
+     * @param view
+     * @return view
+     */
+    public static ImageView bindCommitter(final RepositoryCommit commit,
+            final AvatarLoader avatars, final ImageView view) {
+        User committer = commit.getCommitter();
+        if (committer != null)
+            avatars.bind(view, committer);
+        else {
+            Commit rawCommit = commit.getCommit();
+            if (rawCommit != null)
+                avatars.bind(view, rawCommit.getCommitter());
+        }
+        return view;
     }
 }

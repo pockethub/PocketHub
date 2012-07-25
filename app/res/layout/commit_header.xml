@@ -20,6 +20,7 @@
     android:orientation="vertical" >
 
     <LinearLayout
+        android:id="@+id/ll_author"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -27,7 +28,7 @@
         android:paddingBottom="2dp" >
 
         <ImageView
-            android:id="@+id/iv_avatar"
+            android:id="@+id/iv_author"
             style="@style/AvatarMedium"
             android:contentDescription="@string/avatar" />
 
@@ -38,7 +39,41 @@
             android:paddingLeft="8dp" >
 
             <TextView
-                android:id="@+id/tv_commit_author"
+                android:id="@+id/tv_author"
+                style="@style/ListTitleText"
+                android:paddingBottom="0dp"
+                android:singleLine="true"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_author_date"
+                style="@style/ListSubtitleText"
+                android:singleLine="true" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_committer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="2dp" >
+
+        <ImageView
+            android:id="@+id/iv_committer"
+            style="@style/AvatarMedium"
+            android:contentDescription="@string/avatar" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="8dp" >
+
+            <TextView
+                android:id="@+id/tv_committer"
                 style="@style/ListTitleText"
                 android:paddingBottom="0dp"
                 android:singleLine="true"

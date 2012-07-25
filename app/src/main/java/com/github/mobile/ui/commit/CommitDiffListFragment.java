@@ -30,6 +30,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.mobile.R.id;
+import com.github.mobile.R.string;
 import com.github.mobile.core.commit.CommitUtils;
 import com.github.mobile.core.commit.FullCommit;
 import com.github.mobile.core.commit.FullCommitFile;
@@ -43,17 +44,15 @@ import com.github.mobile.util.ViewUtils;
 import com.google.inject.Inject;
 import com.viewpagerindicator.R.layout;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Commit;
 import org.eclipse.egit.github.core.CommitComment;
 import org.eclipse.egit.github.core.CommitFile;
-import org.eclipse.egit.github.core.CommitUser;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryCommit;
-import org.eclipse.egit.github.core.User;
 
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
@@ -81,7 +80,11 @@ public class CommitDiffListFragment extends DialogFragment implements
     @Inject
     private AvatarLoader avatars;
 
+    private View commitHeader;
+
     private TextView commitMessage;
+
+    private View authorArea;
 
     private ImageView authorAvatar;
 
@@ -89,11 +92,17 @@ public class CommitDiffListFragment extends DialogFragment implements
 
     private TextView authorDate;
 
+    private View committerArea;
+
+    private ImageView committerAvatar;
+
+    private TextView committerName;
+
+    private TextView committerDate;
+
     private HeaderFooterListAdapter<CommitFileListAdapter> adapter;
 
     private HttpImageGetter commentImageGetter;
-
-    private List<View> parentViews = new ArrayList<View>();
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -129,6 +138,69 @@ public class CommitDiffListFragment extends DialogFragment implements
         }.execute();
     }
 
+    private boolean isDifferentCommitter(final String author,
+            final Date authorDate, final String committer,
+            final Date committerDate) {
+        if (committer == null)
+            return false;
+        if (!committer.equals(author))
+            return true;
+        return committerDate != null && !committerDate.equals(authorDate);
+    }
+
+    private void updateCommitDetails(RepositoryCommit commit) {
+        adapter.addHeader(commitHeader);
+
+        String commitAuthor = CommitUtils.getAuthor(commit);
+        Date commitAuthorDate = CommitUtils.getAuthorDate(commit);
+        String commitCommitter = CommitUtils.getCommitter(commit);
+        Date commitCommitterDate = CommitUtils.getCommiterDate(commit);
+
+        commitMessage.setText(commit.getCommit().getMessage());
+
+        if (commitAuthor != null) {
+            CommitUtils.bindAuthor(commit, avatars, authorAvatar);
+            authorName.setText(commitAuthor);
+            StyledText styledAuthor = new StyledText();
+            styledAuthor.append(getString(string.authored));
+            if (commitAuthorDate != null)
+                styledAuthor.append(' ').append(commitAuthorDate);
+            authorDate.setText(styledAuthor);
+            ViewUtils.setGone(authorArea, false);
+        } else
+            ViewUtils.setGone(authorArea, true);
+
+        if (isDifferentCommitter(commitAuthor, commitAuthorDate,
+                commitCommitter, commitCommitterDate)) {
+            CommitUtils.bindCommitter(commit, avatars, committerAvatar);
+            committerName.setText(commitCommitter);
+            StyledText styledCommitter = new StyledText();
+            styledCommitter.append(getString(string.committed));
+            if (commitCommitterDate != null)
+                styledCommitter.append(' ').append(commitCommitterDate);
+            committerDate.setText(styledCommitter);
+            ViewUtils.setGone(committerArea, false);
+        } else
+            ViewUtils.setGone(committerArea, true);
+    }
+
+    private void updateCommitParents(RepositoryCommit commit,
+            LayoutInflater inflater) {
+        List<Commit> parents = commit.getParents();
+        if (parents == null || parents.isEmpty())
+            return;
+
+        for (Commit parent : parents) {
+            View parentView = inflater.inflate(layout.commit_parent_item, null);
+            TextView parentIdText = (TextView) parentView
+                    .findViewById(id.tv_commit_id);
+            parentIdText.setPaintFlags(parentIdText.getPaintFlags()
+                    | Paint.UNDERLINE_TEXT_FLAG);
+            parentIdText.setText(CommitUtils.abbreviate(parent));
+            adapter.addHeader(parentView, parent, true);
+        }
+    }
+
     private void updateList(FullCommit fullCommit) {
         if (!isUsable())
             return;
@@ -139,34 +211,10 @@ public class CommitDiffListFragment extends DialogFragment implements
         ViewUtils.setGone(progress, true);
         ViewUtils.setGone(list, false);
 
-        Commit rawCommit = commit.getCommit();
-        commitMessage.setText(rawCommit.getMessage());
-        User author = commit.getAuthor();
-        CommitUser commitAuthor = rawCommit.getAuthor();
-        avatars.bind(authorAvatar, author);
-        if (author != null)
-            authorName.setText(author.getLogin());
-        else
-            authorName.setText(commitAuthor.getName());
-        authorDate.setText(new StyledText().append(commitAuthor.getDate()));
+        adapter.clearHeaders();
 
-        for (View view : parentViews)
-            adapter.removeHeader(view);
-        parentViews.clear();
-
-        List<Commit> parents = commit.getParents();
-        if (parents != null && !parents.isEmpty()) {
-            for (Commit parent : parents) {
-                View parentView = inflater.inflate(layout.commit_parent_item,
-                        null);
-                TextView parentIdText = (TextView) parentView
-                        .findViewById(id.tv_commit_id);
-                parentIdText.setPaintFlags(parentIdText.getPaintFlags()
-                        | Paint.UNDERLINE_TEXT_FLAG);
-                parentIdText.setText(CommitUtils.abbreviate(parent));
-                adapter.addHeader(parentView, parent, true);
-            }
-        }
+        updateCommitDetails(commit);
+        updateCommitParents(commit, inflater);
 
         CommitFileListAdapter rootAdapter = adapter.getWrappedAdapter();
         for (FullCommitFile file : fullCommit.getFiles())
@@ -192,13 +240,20 @@ public class CommitDiffListFragment extends DialogFragment implements
                         new HttpImageGetter(getActivity())));
         list.setAdapter(adapter);
 
-        View header = inflater.inflate(layout.commit_header, null);
-        commitMessage = (TextView) header.findViewById(id.tv_commit_message);
-        authorAvatar = (ImageView) header.findViewById(id.iv_avatar);
-        authorName = (TextView) header.findViewById(id.tv_commit_author);
-        authorDate = (TextView) header.findViewById(id.tv_commit_date);
+        commitHeader = inflater.inflate(layout.commit_header, null);
+        commitMessage = (TextView) commitHeader
+                .findViewById(id.tv_commit_message);
 
-        adapter.addHeader(header, null, false);
+        authorArea = commitHeader.findViewById(id.ll_author);
+        authorAvatar = (ImageView) commitHeader.findViewById(id.iv_author);
+        authorName = (TextView) commitHeader.findViewById(id.tv_author);
+        authorDate = (TextView) commitHeader.findViewById(id.tv_author_date);
+
+        committerArea = commitHeader.findViewById(id.ll_committer);
+        committerAvatar = (ImageView) commitHeader
+                .findViewById(id.iv_committer);
+        committerName = (TextView) commitHeader.findViewById(id.tv_committer);
+        committerDate = (TextView) commitHeader.findViewById(id.tv_commit_date);
     }
 
     @Override

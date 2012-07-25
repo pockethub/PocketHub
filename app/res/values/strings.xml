@@ -217,5 +217,7 @@
     <string name="parent_commit">parent commit</string>
     <string name="commit_prefix">Commit\u0020</string>
     <string name="parent_prefix">parent:</string>
+    <string name="authored">authored</string>
+    <string name="committed">committed</string>
 
 </resources>
