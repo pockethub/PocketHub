@@ -15,17 +15,21 @@
  */
 package com.github.mobile.ui.commit;
 
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 
+import com.actionbarsherlock.R.color;
 import com.github.kevinsawicki.wishlist.MultiTypeAdapter;
 import com.github.mobile.R.layout;
 import com.github.mobile.core.commit.FullCommitFile;
+import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.TimeUtils;
 import com.github.mobile.util.ViewUtils;
 import com.viewpagerindicator.R.id;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 import org.eclipse.egit.github.core.CommitComment;
@@ -35,6 +39,9 @@ import org.eclipse.egit.github.core.CommitFile;
  * Adapter to display a list of files changed in commits
  */
 public class CommitFileListAdapter extends MultiTypeAdapter {
+
+    private static final NumberFormat FORMAT = NumberFormat
+            .getIntegerInstance();
 
     private static final int TYPE_FILE_HEADER = 0;
 
@@ -50,6 +57,10 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
 
     private final AvatarLoader avatars;
 
+    private final int addTextColor;
+
+    private final int removeTextColor;
+
     /**
      * @param inflater
      * @param diffStyler
@@ -64,6 +75,10 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
         this.diffStyler = diffStyler;
         this.avatars = avatars;
         this.imageGetter = imageGetter;
+
+        Resources resources = inflater.getContext().getResources();
+        addTextColor = resources.getColor(color.diff_add_text);
+        removeTextColor = resources.getColor(color.diff_remove_text);
     }
 
     @Override
@@ -126,7 +141,7 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
     protected int[] getChildViewIds(int type) {
         switch (type) {
         case TYPE_FILE_HEADER:
-            return new int[] { id.tv_name, id.tv_folder };
+            return new int[] { id.tv_name, id.tv_folder, id.tv_stats };
         case TYPE_FILE_LINE:
             return new int[] { id.tv_diff };
         case TYPE_LINE_COMMENT:
@@ -142,7 +157,8 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
     protected void update(int position, Object item, int type) {
         switch (type) {
         case TYPE_FILE_HEADER:
-            String path = ((CommitFile) item).getFilename();
+            CommitFile file = (CommitFile) item;
+            String path = file.getFilename();
             int lastSlash = path.lastIndexOf('/');
             if (lastSlash != -1) {
                 setText(id.tv_name, path.substring(lastSlash + 1));
@@ -155,6 +171,15 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
                 setText(id.tv_name, path);
                 setGone(id.tv_folder, true);
             }
+
+            StyledText stats = new StyledText();
+            stats.foreground('+', addTextColor);
+            stats.foreground(FORMAT.format(file.getAdditions()), addTextColor);
+            stats.append(' ').append(' ').append(' ');
+            stats.foreground('-', removeTextColor);
+            stats.foreground(FORMAT.format(file.getDeletions()),
+                    removeTextColor);
+            setText(id.tv_stats, stats);
             return;
         case TYPE_FILE_LINE:
             CharSequence text = (CharSequence) item;
