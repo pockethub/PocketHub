@@ -30,7 +30,11 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R.id;
+import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.core.commit.CommitUtils;
 import com.github.mobile.core.commit.FullCommit;
@@ -113,6 +117,26 @@ public class CommitDiffListFragment extends DialogFragment implements
         commentImageGetter = new HttpImageGetter(getActivity());
 
         refreshCommit();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(final Menu optionsMenu,
+            final MenuInflater inflater) {
+        inflater.inflate(menu.refresh, optionsMenu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        if (!isUsable())
+            return false;
+
+        switch (item.getItemId()) {
+        case id.m_refresh:
+            refreshCommit();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     private void refreshCommit() {
@@ -238,12 +262,11 @@ public class CommitDiffListFragment extends DialogFragment implements
         addDiffStats(commit, inflater);
 
         CommitFileListAdapter rootAdapter = adapter.getWrappedAdapter();
+        rootAdapter.clear();
         for (FullCommitFile file : fullCommit.getFiles())
             rootAdapter.addItem(file);
         for (CommitComment comment : fullCommit)
             rootAdapter.addComment(comment);
-
-        adapter.addFooter(inflater.inflate(layout.footer_separator, null));
     }
 
     @Override
@@ -259,6 +282,7 @@ public class CommitDiffListFragment extends DialogFragment implements
         adapter = new HeaderFooterListAdapter<CommitFileListAdapter>(list,
                 new CommitFileListAdapter(inflater, diffStyler, avatars,
                         new HttpImageGetter(getActivity())));
+        adapter.addFooter(inflater.inflate(layout.footer_separator, null));
         list.setAdapter(adapter);
 
         commitHeader = inflater.inflate(layout.commit_header, null);
