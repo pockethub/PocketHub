@@ -16,6 +16,7 @@
 package com.github.mobile.ui.commit;
 
 import android.content.res.Resources;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 
@@ -85,6 +86,24 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
     @Override
     public int getViewTypeCount() {
         return 4;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        switch (getItemViewType(position)) {
+        case TYPE_FILE_HEADER:
+            String sha = ((CommitFile) getItem(position)).getSha();
+            if (!TextUtils.isEmpty(sha))
+                return sha.hashCode();
+            else
+                return super.getItemId(position);
+        case TYPE_COMMENT:
+        case TYPE_LINE_COMMENT:
+            return ((CommitComment) getItem(position)).getId();
+        default:
+            return super.getItemId(position);
+        }
+
     }
 
     /**
