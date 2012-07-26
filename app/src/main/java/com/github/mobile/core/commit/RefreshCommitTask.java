@@ -26,6 +26,7 @@ import com.google.inject.Inject;
 
 import java.util.List;
 
+import org.eclipse.egit.github.core.Commit;
 import org.eclipse.egit.github.core.CommitComment;
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.RepositoryCommit;
@@ -65,15 +66,19 @@ public class RefreshCommitTask extends AuthenticatedUserTask<FullCommit> {
     @Override
     protected FullCommit run(Account account) throws Exception {
         RepositoryCommit commit = service.getCommit(repository, id);
-        List<CommitComment> comments = service.getComments(repository,
-                commit.getSha());
-        for (CommitComment comment : comments) {
-            String formatted = HtmlUtils.format(comment.getBodyHtml())
-                    .toString();
-            comment.setBodyHtml(formatted);
-            imageGetter.encode(comment, formatted);
-        }
-        return new FullCommit(commit, comments);
+        Commit rawCommit = commit.getCommit();
+        if (rawCommit != null && rawCommit.getCommentCount() > 0) {
+            List<CommitComment> comments = service.getComments(repository,
+                    commit.getSha());
+            for (CommitComment comment : comments) {
+                String formatted = HtmlUtils.format(comment.getBodyHtml())
+                        .toString();
+                comment.setBodyHtml(formatted);
+                imageGetter.encode(comment, formatted);
+            }
+            return new FullCommit(commit, comments);
+        } else
+            return new FullCommit(commit);
     }
 
     @Override

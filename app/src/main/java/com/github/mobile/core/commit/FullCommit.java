@@ -39,6 +39,22 @@ public class FullCommit extends ArrayList<CommitComment> implements
     private final List<FullCommitFile> files;
 
     /**
+     * Create commit with no comments
+     *
+     * @param commit
+     */
+    public FullCommit(final RepositoryCommit commit) {
+        this.commit = commit;
+        List<CommitFile> rawFiles = commit.getFiles();
+        if (rawFiles != null && !rawFiles.isEmpty()) {
+            files = new ArrayList<FullCommitFile>(rawFiles.size());
+            for (CommitFile file : rawFiles)
+                files.add(new FullCommitFile(file));
+        } else
+            files = Collections.emptyList();
+    }
+
+    /**
      * Create commit with comments
      *
      * @param commit
