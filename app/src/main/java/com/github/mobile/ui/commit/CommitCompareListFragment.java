@@ -226,5 +226,18 @@ public class CommitCompareListFragment extends DialogFragment implements
         else if (item instanceof CommitFile)
             startActivity(CommitFileViewActivity.createIntent(repository, head,
                     (CommitFile) item));
+        else if (item instanceof CharSequence) {
+            // Scan backwards and find the file
+            position--;
+            while (position >= 0) {
+                item = parent.getItemAtPosition(position);
+                if (item instanceof CommitFile) {
+                    startActivity(CommitFileViewActivity.createIntent(
+                            repository, head, (CommitFile) item));
+                    break;
+                }
+                position--;
+            }
+        }
     }
 }
