@@ -195,8 +195,6 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
             imageGetter.bind(textView(id.tv_comment_body),
                     comment.getBodyHtml(), comment.getId());
             return;
-        default:
-            return;
         }
     }
 }
