@@ -17,6 +17,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/CommentListItem"
     android:paddingBottom="5dp"
+    android:paddingLeft="15dp"
     android:paddingTop="5dp" >
 
     <include layout="@layout/comment" />
