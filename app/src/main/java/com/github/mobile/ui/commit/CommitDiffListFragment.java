@@ -174,11 +174,7 @@ public class CommitDiffListFragment extends DialogFragment implements
     private boolean isDifferentCommitter(final String author,
             final Date authorDate, final String committer,
             final Date committerDate) {
-        if (committer == null)
-            return false;
-        if (!committer.equals(author))
-            return true;
-        return committerDate != null && !committerDate.equals(authorDate);
+        return committer != null && !committer.equals(author);
     }
 
     private void addCommitDetails(RepositoryCommit commit) {
