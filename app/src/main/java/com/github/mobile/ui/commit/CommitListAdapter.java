@@ -15,6 +15,7 @@
  */
 package com.github.mobile.ui.commit;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -58,6 +59,15 @@ public class CommitListAdapter extends
         super(viewId, inflater, elements);
 
         this.avatars = avatars;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        String sha = getItem(position).getSha();
+        if (!TextUtils.isEmpty(sha))
+            return sha.hashCode();
+        else
+            return super.getItemId(position);
     }
 
     @Override
