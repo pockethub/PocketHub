@@ -114,8 +114,8 @@ public class CommitDiffListFragment extends DialogFragment implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        setHasOptionsMenu(true);
         commentImageGetter = new HttpImageGetter(getActivity());
-
         refreshCommit();
     }
 

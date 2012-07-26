@@ -89,6 +89,7 @@ public class CommitCompareListFragment extends DialogFragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setHasOptionsMenu(true);
         diffStyler = new DiffStyler(getResources());
         compareCommits();
     }
