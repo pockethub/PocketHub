@@ -224,7 +224,7 @@ public class CommitCompareListFragment extends DialogFragment implements
             startActivity(CommitViewActivity.createIntent(repository,
                     ((RepositoryCommit) item).getSha()));
         else if (item instanceof CommitFile)
-            startActivity(CommitFileViewActivity.createIntent(repository, base,
+            startActivity(CommitFileViewActivity.createIntent(repository, head,
                     (CommitFile) item));
     }
 }
