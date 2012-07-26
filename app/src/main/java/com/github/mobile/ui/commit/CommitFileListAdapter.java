@@ -123,6 +123,7 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
         addItem(TYPE_COMMENT, comment);
     }
 
+    @Override
     protected int getChildLayoutId(final int type) {
         switch (type) {
         case TYPE_FILE_HEADER:
