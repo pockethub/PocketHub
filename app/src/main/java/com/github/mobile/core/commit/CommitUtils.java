@@ -36,7 +36,8 @@ import org.eclipse.egit.github.core.User;
  */
 public class CommitUtils {
 
-    private static NumberFormat FORMAT = NumberFormat.getIntegerInstance();
+    private static final NumberFormat FORMAT = NumberFormat
+            .getIntegerInstance();
 
     private static final int LENGTH = 10;
 
@@ -200,6 +201,20 @@ public class CommitUtils {
                 avatars.bind(view, rawCommit.getCommitter());
         }
         return view;
+    }
+
+    /**
+     * Get comment count
+     *
+     * @param commit
+     * @return count
+     */
+    public static String getCommentCount(final RepositoryCommit commit) {
+        final Commit rawCommit = commit.getCommit();
+        if (rawCommit != null)
+            return FORMAT.format(rawCommit.getCommentCount());
+        else
+            return "0";
     }
 
     /**

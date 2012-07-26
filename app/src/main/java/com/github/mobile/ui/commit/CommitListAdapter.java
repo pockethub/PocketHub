@@ -28,7 +28,7 @@ import java.util.Collection;
 import org.eclipse.egit.github.core.RepositoryCommit;
 
 /**
- *
+ * Adapter to display commits
  */
 public class CommitListAdapter extends
         ItemListAdapter<RepositoryCommit, CommitView> {
@@ -71,12 +71,9 @@ public class CommitListAdapter extends
         authorText.append(CommitUtils.getAuthorDate(item));
         view.author.setText(authorText);
 
-        if (item.getAuthor() != null)
-            avatars.bind(view.avatar, item.getAuthor());
-        else
-            avatars.bind(view.avatar, item.getCommit().getAuthor());
-
+        CommitUtils.bindAuthor(item, avatars, view.avatar);
         view.message.setText(item.getCommit().getMessage());
+        view.comments.setText(CommitUtils.getCommentCount(item));
     }
 
     @Override

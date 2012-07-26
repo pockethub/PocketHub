@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mobile.ui.ItemView;
+import com.github.mobile.util.TypefaceUtils;
 import com.viewpagerindicator.R.id;
 
 /**
@@ -48,6 +49,11 @@ public class CommitView extends ItemView {
     public final TextView message;
 
     /**
+     * Comment count
+     */
+    public final TextView comments;
+
+    /**
      * Create view
      *
      * @param view
@@ -59,5 +65,7 @@ public class CommitView extends ItemView {
         author = textView(view, id.tv_commit_author);
         avatar = imageView(view, id.iv_avatar);
         message = textView(view, id.tv_commit_message);
+        TypefaceUtils.setOcticons(textView(view, id.tv_comment_icon));
+        comments = textView(view, id.tv_commit_comments);
     }
 }
