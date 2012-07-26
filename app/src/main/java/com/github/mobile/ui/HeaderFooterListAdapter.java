@@ -137,8 +137,12 @@ public class HeaderFooterListAdapter<E extends BaseAdapter> extends
      */
     public boolean clearHeaders() {
         boolean removed = false;
-        for (FixedViewInfo info : headers)
-            removed = super.removeHeader(info.view) || removed;
+        if (!headers.isEmpty()) {
+            FixedViewInfo[] infos = headers.toArray(new FixedViewInfo[headers
+                    .size()]);
+            for (FixedViewInfo info : infos)
+                removed = super.removeHeader(info.view) || removed;
+        }
         if (removed)
             wrapped.notifyDataSetChanged();
         return removed;
@@ -151,8 +155,12 @@ public class HeaderFooterListAdapter<E extends BaseAdapter> extends
      */
     public boolean clearFooters() {
         boolean removed = false;
-        for (FixedViewInfo info : footers)
-            removed = super.removeFooter(info.view) || removed;
+        if (!footers.isEmpty()) {
+            FixedViewInfo[] infos = footers.toArray(new FixedViewInfo[footers
+                    .size()]);
+            for (FixedViewInfo info : infos)
+                removed = super.removeFooter(info.view) || removed;
+        }
         if (removed)
             wrapped.notifyDataSetChanged();
         return removed;
