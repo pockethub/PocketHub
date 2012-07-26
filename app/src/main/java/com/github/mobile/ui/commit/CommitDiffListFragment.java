@@ -15,10 +15,14 @@
  */
 package com.github.mobile.ui.commit;
 
+import static android.app.Activity.RESULT_OK;
 import static android.graphics.Paint.UNDERLINE_TEXT_FLAG;
 import static com.github.mobile.Intents.EXTRA_BASE;
+import static com.github.mobile.Intents.EXTRA_COMMENT;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
+import static com.github.mobile.RequestCodes.COMMENT_CREATE;
 import android.accounts.Account;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,6 +87,8 @@ public class CommitDiffListFragment extends DialogFragment implements
     @InjectExtra(EXTRA_BASE)
     private String base;
 
+    private FullCommit commit;
+
     @Inject
     private AvatarLoader avatars;
 
@@ -119,10 +125,35 @@ public class CommitDiffListFragment extends DialogFragment implements
         refreshCommit();
     }
 
+    private void addComment(CommitComment comment) {
+        if (commit != null) {
+            commit.add(comment);
+            Commit rawCommit = commit.getCommit().getCommit();
+            if (rawCommit != null)
+                rawCommit.setCommentCount(rawCommit.getCommentCount() + 1);
+            commentImageGetter.encode(comment, comment.getBodyHtml());
+            adapter.getWrappedAdapter().addComment(comment);
+        } else
+            refreshCommit();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (RESULT_OK == resultCode && COMMENT_CREATE == requestCode
+                && data != null) {
+            CommitComment comment = (CommitComment) data
+                    .getSerializableExtra(EXTRA_COMMENT);
+            addComment(comment);
+            return;
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     @Override
     public void onCreateOptionsMenu(final Menu optionsMenu,
             final MenuInflater inflater) {
-        inflater.inflate(menu.refresh, optionsMenu);
+        inflater.inflate(menu.commit_view, optionsMenu);
     }
 
     @Override
@@ -133,6 +164,11 @@ public class CommitDiffListFragment extends DialogFragment implements
         switch (item.getItemId()) {
         case id.m_refresh:
             refreshCommit();
+            return true;
+        case id.m_comment:
+            startActivityForResult(
+                    CreateCommentActivity.createIntent(repository, base),
+                    COMMENT_CREATE);
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -244,6 +280,8 @@ public class CommitDiffListFragment extends DialogFragment implements
     private void updateList(FullCommit fullCommit) {
         if (!isUsable())
             return;
+
+        commit = fullCommit;
 
         RepositoryCommit commit = fullCommit.getCommit();
         LayoutInflater inflater = getActivity().getLayoutInflater();
