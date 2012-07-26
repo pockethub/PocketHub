@@ -219,7 +219,7 @@
     <string name="parent_commit">rodičovský commit</string>
     <string name="commit_prefix">Commit\u0020</string>
     <string name="parent_prefix">Rodič\u0020</string>
-    <string name="authored">napísal</string>
+    <string name="authored">pridal</string>
     <string name="committed">commitované</string>
 
 </resources>
