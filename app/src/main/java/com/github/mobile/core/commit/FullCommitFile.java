@@ -62,7 +62,7 @@ public class FullCommitFile {
      * @return this file
      */
     public FullCommitFile add(final CommitComment comment) {
-        int line = comment.getLine();
+        int line = comment.getPosition();
         if (line >= 0) {
             List<CommitComment> lineComments = comments.get(line);
             if (lineComments == null) {
