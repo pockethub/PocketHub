@@ -68,9 +68,9 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
      * @param avatars
      * @param imageGetter
      */
-    public CommitFileListAdapter(LayoutInflater inflater,
-            DiffStyler diffStyler, AvatarLoader avatars,
-            HttpImageGetter imageGetter) {
+    public CommitFileListAdapter(final LayoutInflater inflater,
+            final DiffStyler diffStyler, final AvatarLoader avatars,
+            final HttpImageGetter imageGetter) {
         super(inflater);
 
         this.diffStyler = diffStyler;
@@ -92,7 +92,7 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
      *
      * @param file
      */
-    public void addItem(FullCommitFile file) {
+    public void addItem(final FullCommitFile file) {
         addItem(TYPE_FILE_HEADER, file.getFile());
         List<CharSequence> lines = diffStyler.get(file.getFile().getFilename());
         int number = 0;
@@ -109,7 +109,7 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
      *
      * @param file
      */
-    public void addItem(CommitFile file) {
+    public void addItem(final CommitFile file) {
         addItem(TYPE_FILE_HEADER, file);
         addItems(TYPE_FILE_LINE, diffStyler.get(file.getFilename()));
     }
@@ -119,11 +119,11 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
      *
      * @param comment
      */
-    public void addComment(CommitComment comment) {
+    public void addComment(final CommitComment comment) {
         addItem(TYPE_COMMENT, comment);
     }
 
-    protected int getChildLayoutId(int type) {
+    protected int getChildLayoutId(final int type) {
         switch (type) {
         case TYPE_FILE_HEADER:
             return layout.commit_diff_file_header;
@@ -139,7 +139,7 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
     }
 
     @Override
-    protected int[] getChildViewIds(int type) {
+    protected int[] getChildViewIds(final int type) {
         switch (type) {
         case TYPE_FILE_HEADER:
             return new int[] { id.tv_name, id.tv_folder, id.tv_stats };
@@ -155,7 +155,7 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
     }
 
     @Override
-    protected void update(int position, Object item, int type) {
+    protected void update(final int position, final Object item, final int type) {
         switch (type) {
         case TYPE_FILE_HEADER:
             CommitFile file = (CommitFile) item;
