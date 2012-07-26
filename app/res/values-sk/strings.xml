@@ -35,6 +35,8 @@
     <string name="error_bookmarks_load">Načítavanie záložiek zlyhalo</string>
     <string name="error_members_load">Načítavanie členov zlyhalo</string>
     <string name="error_commits_load">Načítavanie commitov zlyhalo</string>
+    <string name="error_commit_load">Načítavanie commitu zlyhalo</string>
+    <string name="error_file_load">Načítavanie súboru zlyhalo</string>
     <!--  -->
 
 
@@ -81,8 +83,9 @@
     <string name="news">Novinky</string>
     <string name="issues">Issues</string>
     <string name="gists">Gisty</string>
+    <string name="commits">Commity</string>
     <string name="dashboard_issues">Issues Panel</string>
-    <string name="find_repositories">Nájsť repozitár</string>
+    <string name="find_repositories">Nájsť repozitáre</string>
     <string name="find_issues">Nájsť issue</string>
     <string name="search_title">Hľadať…</string>
     <string name="clear_search_history">Vymazať históriu</string>
@@ -210,5 +213,8 @@
     <string name="commit_compare_title">Porovnanie commitov</string>
     <string name="parent_commit">rodičovský commit</string>
     <string name="commit_prefix">Commit\u0020</string>
+    <string name="parent_prefix">Rodič\u0020</string>
+    <string name="authored">pridal</string>
+    <string name="committed">commitované</string>
 
 </resources>
