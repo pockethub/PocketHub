@@ -36,10 +36,13 @@ import org.eclipse.egit.github.core.User;
  */
 public class CommitUtils {
 
+    /**
+     * Length of used for abbreviations
+     */
+    public static final int LENGTH = 10;
+
     private static final NumberFormat FORMAT = NumberFormat
             .getIntegerInstance();
-
-    private static final int LENGTH = 10;
 
     /**
      * Abbreviate commit sha to default length if longer
@@ -258,10 +261,19 @@ public class CommitUtils {
      * @param file
      * @return last segment of commit file path
      */
-    public static String getName(CommitFile file) {
-        String path = file.getFilename();
+    public static String getName(final CommitFile file) {
+        return file != null ? getName(file.getFilename()) : null;
+    }
+
+    /**
+     * Get file name for path
+     *
+     * @param path
+     * @return last segment of path
+     */
+    public static String getName(final String path) {
         if (TextUtils.isEmpty(path))
-            return null;
+            return path;
 
         int lastSlash = path.lastIndexOf('/');
         if (lastSlash != -1 && lastSlash + 1 < path.length())
