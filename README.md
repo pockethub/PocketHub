@@ -6,7 +6,10 @@ This repository contains the source code for the GitHub Android app.
   <img src="http://www.android.com/images/brand/android_app_on_play_large.png">
 </a>
 
-![](http://img.skitch.com/20120709-nkdc1yugu2qmdg1ss81m1gr9ty.jpg)
+<a href="https://play.google.com/store/apps/details?id=com.github.mobile" alt="Download from Google Play">
+  <img src="http://img.skitch.com/20120709-nkdc1yugu2qmdg1ss81m1gr9ty.jpg">
+</a>
+
 
 Please see the [issues](https://github.com/github/android/issues) section to
 report any bugs or feature requests and to see the list of known issues.
