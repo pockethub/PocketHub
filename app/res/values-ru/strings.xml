@@ -214,7 +214,7 @@
     <string name="commit_prefix">Коммит\u0020</string>
     <string name="parent_prefix">Родитель\u0020</string>
     <string name="authored">автор</string>
-    <string name="committed">закомичен</string>
+    <string name="committed">закоммичен</string>
     <string name="diff_line_message">Что вы собираетесь сделать?</string>
     <string name="comment_on_line">Комментировать строку</string>
     <string name="view_entire_file">Просмотреть весь файл</string>
