@@ -81,10 +81,7 @@ public class CommitUtils {
      * @return true if valid, false otherwise
      */
     public static boolean isValidCommit(final String sha) {
-        if (!TextUtils.isEmpty(sha))
-            return sha.matches("[a-fA-F0-9]+");
-        else
-            return false;
+        return !TextUtils.isEmpty(sha) && sha.matches("[a-fA-F0-9]+");
     }
 
     /**
