@@ -34,6 +34,9 @@
     <string name="error_labels_load">Error al cargar etiquetas</string>
     <string name="error_bookmarks_load">Error al cargar marcadores</string>
     <string name="error_members_load">Error al cargar miembros</string>
+    <string name="error_commits_load">Error al cargar los commits</string>
+    <string name="error_commit_load">Error al cargar el commit</string>
+    <string name="error_file_load">Error al cargar el fichero</string>
     <!--  -->
 
 
@@ -52,6 +55,7 @@
     <string name="loading_collaborators">Cargando Colaboradores…</string>
     <string name="loading_milestones">Cargando Hitos…</string>
     <string name="loading_labels">Cargando Etiquetas…</string>
+    <string name="loading_commits">Cargando Commits…</string>
     <!--  -->
 
 
@@ -64,6 +68,7 @@
     <string name="no_followers">No Hay Seguidores</string>
     <string name="no_members">No Hay Miembros</string>
     <string name="no_news">No Hay Actualizaciones</string>
+    <string name="no_commits">No Hay Commits</string>
     <!--  -->
 
 
@@ -78,6 +83,7 @@
     <string name="news">Actualizaciones</string>
     <string name="issues">Incidencias</string>
     <string name="gists">Gists</string>
+    <string name="commits">Commits</string>
     <string name="dashboard_issues">Panel de Incidencias</string>
     <string name="find_repositories">Buscar Repositorios</string>
     <string name="find_issues">Buscar Incidencias</string>
@@ -204,5 +210,11 @@
     <string name="authenticator_conflict_title">Conflicto con la aplicación</string>
     <string name="authenticator_conflict_message">Una de las aplicaciones instaladas está configurada para la autenticación con GitHub.\n\nDebes eliminar la otra aplicación del menú de ajustes Cuentas y sincronizació y desinstalarla antes de poder usar la aplicación de GitHub.</string>
     <string name="opening_repository">Abriendo {0}…</string>
+    <string name="commit_compare_title">Comparación de Commits</string>
+    <string name="parent_commit">commit anterior</string>
+    <string name="commit_prefix">Commit\u0020</string>
+    <string name="parent_prefix">Anterior\u0020</string>
+    <string name="authored">autor</string>
+    <string name="committed">commit enviado</string>
 
 </resources>
