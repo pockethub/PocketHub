@@ -16,9 +16,12 @@
 package com.github.mobile.ui.commit;
 
 import static com.github.mobile.Intents.EXTRA_BASE;
+import static com.github.mobile.Intents.EXTRA_PATH;
+import static com.github.mobile.Intents.EXTRA_POSITION;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.github.mobile.Intents.Builder;
@@ -44,10 +47,30 @@ public class CreateCommentActivity extends
      * @return intent
      */
     public static Intent createIntent(Repository repository, String commit) {
+        return createIntent(repository, commit, null, -1);
+    }
+
+    /**
+     * Create intent to create a comment on a diff position
+     *
+     * @param repository
+     * @param commit
+     * @param path
+     * @param position
+     * @return intent
+     */
+    public static Intent createIntent(Repository repository, String commit,
+            String path, int position) {
         Builder builder = new Builder("commit.comment.create.VIEW");
         builder.repo(repository);
         builder.add(EXTRA_BASE, commit);
+        if (isLineComment(path, position))
+            builder.add(EXTRA_PATH, path).add(EXTRA_POSITION, position);
         return builder.toIntent();
+    }
+
+    private static boolean isLineComment(final String path, final int position) {
+        return !TextUtils.isEmpty(path) && position > -1;
     }
 
     @InjectExtra(EXTRA_REPOSITORY)
@@ -55,6 +78,12 @@ public class CreateCommentActivity extends
 
     @InjectExtra(EXTRA_BASE)
     private String commit;
+
+    @InjectExtra(value = EXTRA_POSITION, optional = true)
+    private int position;
+
+    @InjectExtra(value = EXTRA_PATH, optional = true)
+    private String path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +100,8 @@ public class CreateCommentActivity extends
     protected void createComment(String comment) {
         CommitComment commitComment = new CommitComment();
         commitComment.setBody(comment);
+        if (isLineComment(path, position))
+            commitComment.setPath(path).setPosition(position);
         new CreateCommentTask(this, repository, commit, commitComment) {
 
             @Override

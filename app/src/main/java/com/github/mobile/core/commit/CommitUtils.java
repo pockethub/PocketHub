@@ -254,4 +254,22 @@ public class CommitUtils {
 
         return fileDetails;
     }
+
+    /**
+     * Get file name for commit file
+     *
+     * @param file
+     * @return last segment of commit file path
+     */
+    public static String getName(CommitFile file) {
+        String path = file.getFilename();
+        if (TextUtils.isEmpty(path))
+            return null;
+
+        int lastSlash = path.lastIndexOf('/');
+        if (lastSlash != -1 && lastSlash + 1 < path.length())
+            return path.substring(lastSlash + 1);
+        else
+            return path;
+    }
 }

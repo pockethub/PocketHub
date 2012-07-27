@@ -15,6 +15,8 @@
  */
 package com.github.mobile.core.commit;
 
+import android.text.TextUtils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -86,6 +88,25 @@ public class FullCommit extends ArrayList<CommitComment> implements
                     files.add(new FullCommitFile(file));
         } else
             files = Collections.emptyList();
+    }
+
+    @Override
+    public boolean add(CommitComment comment) {
+        String path = comment.getPath();
+        if (TextUtils.isEmpty(path))
+            return super.add(comment);
+        else {
+            boolean added = false;
+            for (FullCommitFile file : files)
+                if (path.equals(file.getFile().getFilename())) {
+                    file.add(comment);
+                    added = true;
+                    break;
+                }
+            if (!added)
+                added = super.add(comment);
+            return added;
+        }
     }
 
     /**

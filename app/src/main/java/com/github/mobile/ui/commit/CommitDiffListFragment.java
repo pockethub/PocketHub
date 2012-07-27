@@ -16,16 +16,21 @@
 package com.github.mobile.ui.commit;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.DialogInterface.BUTTON_NEGATIVE;
 import static android.graphics.Paint.UNDERLINE_TEXT_FLAG;
 import static com.github.mobile.Intents.EXTRA_BASE;
 import static com.github.mobile.Intents.EXTRA_COMMENT;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import static com.github.mobile.RequestCodes.COMMENT_CREATE;
 import android.accounts.Account;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -46,6 +51,7 @@ import com.github.mobile.core.commit.FullCommitFile;
 import com.github.mobile.core.commit.RefreshCommitTask;
 import com.github.mobile.ui.DialogFragment;
 import com.github.mobile.ui.HeaderFooterListAdapter;
+import com.github.mobile.ui.LightAlertDialog;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
@@ -132,7 +138,7 @@ public class CommitDiffListFragment extends DialogFragment implements
             if (rawCommit != null)
                 rawCommit.setCommentCount(rawCommit.getCommentCount() + 1);
             commentImageGetter.encode(comment, comment.getBodyHtml());
-            adapter.getWrappedAdapter().addComment(comment);
+            updateItems(commit);
         } else
             refreshCommit();
     }
@@ -295,6 +301,10 @@ public class CommitDiffListFragment extends DialogFragment implements
         addCommitParents(commit, inflater);
         addDiffStats(commit, inflater);
 
+        updateItems(fullCommit);
+    }
+
+    private void updateItems(FullCommit fullCommit) {
         CommitFileListAdapter rootAdapter = adapter.getWrappedAdapter();
         rootAdapter.clear();
         for (FullCommitFile file : fullCommit.getFiles())
@@ -341,6 +351,90 @@ public class CommitDiffListFragment extends DialogFragment implements
         return inflater.inflate(layout.commit_diff_list, container);
     }
 
+    private void showFileOptions(CharSequence line, final int position,
+            final CommitFile file) {
+        final AlertDialog dialog = LightAlertDialog.create(getActivity());
+        dialog.setTitle(CommitUtils.getName(file));
+        dialog.setCanceledOnTouchOutside(true);
+
+        View view = getActivity().getLayoutInflater().inflate(
+                layout.diff_line_dialog, null);
+
+        TextView diff = (TextView) view.findViewById(id.tv_diff);
+        diff.setText(line);
+        diffStyler.updateColors(line, diff);
+
+        TextView commitText = (TextView) view.findViewById(id.tv_commit);
+        commitText.setText(getString(string.commit_prefix)
+                + CommitUtils.abbreviate(commit.getCommit()));
+
+        view.findViewById(id.ll_view_area).setOnClickListener(
+                new OnClickListener() {
+
+                    public void onClick(View v) {
+                        dialog.dismiss();
+
+                        startActivity(CommitFileViewActivity.createIntent(
+                                repository, commit.getCommit().getSha(), file));
+                    }
+                });
+
+        view.findViewById(id.ll_comment_area).setOnClickListener(
+                new OnClickListener() {
+
+                    public void onClick(View v) {
+                        dialog.dismiss();
+
+                        startActivityForResult(
+                                CreateCommentActivity.createIntent(repository,
+                                        commit.getCommit().getSha(),
+                                        file.getFilename(), position),
+                                COMMENT_CREATE);
+                    }
+                });
+
+        dialog.setView(view);
+        dialog.setButton(BUTTON_NEGATIVE, getString(string.cancel),
+                new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        dialog.show();
+    }
+
+    /**
+     * Select previous file by scanning backwards from the current position
+     *
+     * @param position
+     * @param item
+     * @param parent
+     */
+    private void selectPreviousFile(int position, Object item,
+            AdapterView<?> parent) {
+        CharSequence line;
+        if (item instanceof CharSequence)
+            line = (CharSequence) item;
+        else
+            line = null;
+
+        int linePosition = 0;
+        while (--position >= 0) {
+            item = parent.getItemAtPosition(position);
+
+            if (item instanceof CommitFile) {
+                if (line != null)
+                    showFileOptions(line, linePosition, (CommitFile) item);
+                break;
+            } else if (item instanceof CharSequence)
+                if (line != null)
+                    linePosition++;
+                else
+                    line = (CharSequence) item;
+        }
+    }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
@@ -351,5 +445,10 @@ public class CommitDiffListFragment extends DialogFragment implements
         else if (item instanceof CommitFile)
             startActivity(CommitFileViewActivity.createIntent(repository, base,
                     (CommitFile) item));
+        else if (item instanceof CharSequence)
+            selectPreviousFile(position, item, parent);
+        else if (item instanceof CommitComment)
+            if (!TextUtils.isEmpty(((CommitComment) item).getPath()))
+                selectPreviousFile(position, item, parent);
     }
 }

@@ -221,5 +221,8 @@
     <string name="parent_prefix">Parent\u0020</string>
     <string name="authored">authored</string>
     <string name="committed">committed</string>
+    <string name="diff_line_message">What would you like to do?</string>
+    <string name="comment_on_line">Comment on line</string>
+    <string name="view_entire_file">View entire file</string>
 
 </resources>
