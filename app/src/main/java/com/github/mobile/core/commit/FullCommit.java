@@ -67,9 +67,11 @@ public class FullCommit extends ArrayList<CommitComment> implements
         this.commit = commit;
 
         List<CommitFile> rawFiles = commit.getFiles();
-        if (rawFiles != null) {
+        boolean hasComments = comments != null && !comments.isEmpty();
+        boolean hasFiles = rawFiles != null && !rawFiles.isEmpty();
+        if (hasFiles) {
             files = new ArrayList<FullCommitFile>(rawFiles.size());
-            if (comments != null && !comments.isEmpty()) {
+            if (hasComments) {
                 for (CommitFile file : rawFiles) {
                     Iterator<CommitComment> iterator = comments.iterator();
                     FullCommitFile full = new FullCommitFile(file);
@@ -82,16 +84,19 @@ public class FullCommit extends ArrayList<CommitComment> implements
                     }
                     files.add(full);
                 }
-                addAll(comments);
+                hasComments = !comments.isEmpty();
             } else
                 for (CommitFile file : rawFiles)
                     files.add(new FullCommitFile(file));
         } else
             files = Collections.emptyList();
+
+        if (hasComments)
+            addAll(comments);
     }
 
     @Override
-    public boolean add(CommitComment comment) {
+    public boolean add(final CommitComment comment) {
         String path = comment.getPath();
         if (TextUtils.isEmpty(path))
             return super.add(comment);
