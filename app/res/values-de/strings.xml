@@ -35,6 +35,8 @@
     <string name="error_bookmarks_load">Laden der Lesezeichen fehlgeschlagen</string>
     <string name="error_members_load">Laden der Mitglieder fehlgeschlagen</string>
     <string name="error_commits_load">Laden der Commits fehlgeschlagen</string>
+    <string name="error_commit_load">Laden des Commits fehlgeschlagen</string>
+    <string name="error_file_load">Laden der Datei fehlgeschlagen</string>
     <!--  -->
 
     <!-- Loading messages -->
@@ -208,5 +210,8 @@
     <string name="commit_compare_title">Commit-Vergleich</string>
     <string name="parent_commit">Vorheriger Commit</string>
     <string name="commit_prefix">Commit\u0020</string>
+    <string name="parent_prefix">Vorgänger\u0020</string>
+    <string name="authored">verfasst</string>
+    <string name="committed">eingespielt</string>
 
 </resources>
