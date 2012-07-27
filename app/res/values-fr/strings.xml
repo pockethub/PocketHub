@@ -152,9 +152,6 @@
     <string name="anonymous">Anonyme</string>
     <string name="message_filter_saved">Filtre de tickets ajouté aux favoris</string>
     <string name="recent">Récent</string>
-    <string name="icon_pull_request">\uf20E</string>
-    <string name="icon_comment">\uf22B</string>
-    <string name="icon_file">\uf211</string>
     <string name="section_issue_status">Statut\u00a0:</string>
     <string name="status_open">Ouvert</string>
     <string name="status_closed">Fermé</string>
@@ -177,8 +174,6 @@
     <string name="members">Membres</string>
     <string name="closing_issue">Fermeture du ticket…</string>
     <string name="reopening_issue">Réouverture du ticket…</string>
-    <string name="icon_watch">\uf04E</string>
-    <string name="icon_fork">\uf020</string>
     <string name="avatar">Avatar</string>
     <string name="creating_issue">Création d\'un ticket…</string>
     <string name="prefix_created">créé\u0020</string>

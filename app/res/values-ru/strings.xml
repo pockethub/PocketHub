@@ -152,9 +152,6 @@
     <string name="anonymous">Анонимно</string>
     <string name="message_filter_saved">Фильтр сохранен в закладки</string>
     <string name="recent">Недавние</string>
-    <string name="icon_pull_request">\uf20E</string>
-    <string name="icon_comment">\uf22B</string>
-    <string name="icon_file">\uf211</string>
     <string name="section_issue_status">Статус:</string>
     <string name="status_open">Открыта</string>
     <string name="status_closed">Закрыта</string>
@@ -177,8 +174,6 @@
     <string name="members">Члены</string>
     <string name="closing_issue">Закрываем задачу…</string>
     <string name="reopening_issue">Переоткрываем задачу…</string>
-    <string name="icon_watch">\uf04E</string>
-    <string name="icon_fork">\uf020</string>
     <string name="avatar">Аватар</string>
     <string name="creating_issue">Создаем задачу…</string>
     <string name="prefix_created">создан\u0020</string>

@@ -152,9 +152,6 @@
     <string name="anonymous">匿名</string>
     <string name="message_filter_saved">イシュー フィルターをブックマークに保存しました</string>
     <string name="recent">最新</string>
-    <string name="icon_pull_request">\uf20E</string>
-    <string name="icon_comment">\uf22B</string>
-    <string name="icon_file">\uf211</string>
     <string name="section_issue_status">状態:</string>
     <string name="status_open">開く</string>
     <string name="status_closed">閉じる</string>
@@ -177,8 +174,6 @@
     <string name="members">メンバー</string>
     <string name="closing_issue">イシューを閉じる…</string>
     <string name="reopening_issue">イシューを再度開く…</string>
-    <string name="icon_watch">\uf04E</string>
-    <string name="icon_fork">\uf020</string>
     <string name="avatar">アバター</string>
     <string name="creating_issue">イシューを作成しています…</string>
     <string name="prefix_created">作成\u0020</string>

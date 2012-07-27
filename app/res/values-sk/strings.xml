@@ -155,9 +155,6 @@
     <string name="anonymous">Anonymný</string>
     <string name="message_filter_saved">Filter issues uložený do záložiek</string>
     <string name="recent">Nedávny</string>
-    <string name="icon_pull_request">\uf20E</string>
-    <string name="icon_comment">\uf22B</string>
-    <string name="icon_file">\uf211</string>
     <string name="section_issue_status">Stav:</string>
     <string name="status_open">Otvoriť</string>
     <string name="status_closed">Zatvoriť</string>
@@ -180,8 +177,6 @@
     <string name="members">Členovia</string>
     <string name="closing_issue">Zatváram issue…</string>
     <string name="reopening_issue">Znovu otváram issue…</string>
-    <string name="icon_watch">\uf04E</string>
-    <string name="icon_fork">\uf020</string>
     <string name="avatar">Avatar</string>
     <string name="creating_issue">Vytváram issue…</string>
     <string name="prefix_created">vytvorená\u0020</string>

@@ -152,9 +152,6 @@
     <string name="anonymous">익명</string>
     <string name="message_filter_saved">책갈피에 이슈 필터가 저장됨</string>
     <string name="recent">최근</string>
-    <string name="icon_pull_request">\uf20E</string>
-    <string name="icon_comment">\uf22B</string>
-    <string name="icon_file">\uf211</string>
     <string name="section_issue_status">상태:</string>
     <string name="status_open">열림</string>
     <string name="status_closed">종결됨</string>
@@ -177,8 +174,6 @@
     <string name="members">멤버</string>
     <string name="closing_issue">이슈 종결처리중…</string>
     <string name="reopening_issue">이슈 재오픈중…</string>
-    <string name="icon_watch">\uf04E</string>
-    <string name="icon_fork">\uf020</string>
     <string name="avatar">아바타</string>
     <string name="creating_issue">이슈 생성중…</string>
     <string name="prefix_created">created\u0020</string>

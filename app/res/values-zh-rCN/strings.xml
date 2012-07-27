@@ -156,9 +156,6 @@
     <string name="anonymous">匿名</string>
     <string name="message_filter_saved">Issue 过滤器已保存至书签</string>
     <string name="recent">最近的</string>
-    <string name="icon_pull_request">\uf20E</string>
-    <string name="icon_comment">\uf22B</string>
-    <string name="icon_file">\uf211</string>
     <string name="section_issue_status">状态:</string>
     <string name="status_open">开放</string>
     <string name="status_closed">关闭</string>
@@ -181,8 +178,6 @@
     <string name="members">成员</string>
     <string name="closing_issue">正在关闭 Issue…</string>
     <string name="reopening_issue">正在重新开放 Issue…</string>
-    <string name="icon_watch">\uf04E</string>
-    <string name="icon_fork">\uf020</string>
     <string name="avatar">头像</string>
     <string name="creating_issue">正在创建 Issue…</string>
     <string name="prefix_created">创建了\u0020</string>

@@ -152,9 +152,6 @@
     <string name="anonymous">Anónimo</string>
     <string name="message_filter_saved">Filtro de incidencias guardado en marcadores</string>
     <string name="recent">Recientes</string>
-    <string name="icon_pull_request">\uf20E</string>
-    <string name="icon_comment">\uf22B</string>
-    <string name="icon_file">\uf211</string>
     <string name="section_issue_status">Estado:</string>
     <string name="status_open">Abierto</string>
     <string name="status_closed">Cerrado</string>
@@ -177,8 +174,6 @@
     <string name="members">Miembros</string>
     <string name="closing_issue">Cerrando Incidencia…</string>
     <string name="reopening_issue">Reabriendo Incidencia…</string>
-    <string name="icon_watch">\uf04E</string>
-    <string name="icon_fork">\uf020</string>
     <string name="avatar">Avatar</string>
     <string name="creating_issue">Creando Incidencia…</string>
     <string name="prefix_created">creado\u0020</string>
