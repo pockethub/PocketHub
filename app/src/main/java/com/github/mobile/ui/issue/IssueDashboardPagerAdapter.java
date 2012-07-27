@@ -96,13 +96,13 @@ public class IssueDashboardPagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
         case 0:
-            return resources.getString(string.dasbhoard_watched);
+            return resources.getString(string.dashboard_watched);
         case 1:
-            return resources.getString(string.dasbhoard_assigned);
+            return resources.getString(string.dashboard_assigned);
         case 2:
-            return resources.getString(string.dasbhoard_created);
+            return resources.getString(string.dashboard_created);
         case 3:
-            return resources.getString(string.dasbhoard_mentioned);
+            return resources.getString(string.dashboard_mentioned);
         default:
             return null;
         }

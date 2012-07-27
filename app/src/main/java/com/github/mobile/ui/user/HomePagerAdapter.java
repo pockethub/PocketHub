@@ -123,10 +123,10 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
         case 1:
             return resources.getString(string.repositories);
         case 2:
-            return resources.getString(defaultUser ? string.followers
+            return resources.getString(defaultUser ? string.followers_self
                     : string.members);
         case 3:
-            return resources.getString(string.following);
+            return resources.getString(string.following_self);
         default:
             return null;
         }

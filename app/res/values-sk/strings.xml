@@ -34,6 +34,7 @@
     <string name="error_labels_load">Načítavanie štítkov zlyhalo</string>
     <string name="error_bookmarks_load">Načítavanie záložiek zlyhalo</string>
     <string name="error_members_load">Načítavanie členov zlyhalo</string>
+    <string name="error_commits_load">Načítavanie commitov zlyhalo</string>
     <!--  -->
 
 
@@ -52,6 +53,7 @@
     <string name="loading_collaborators">Načítavam spolupracovníkov…</string>
     <string name="loading_milestones">Načítavam míľniky…</string>
     <string name="loading_labels">Načítavam štítky…</string>
+    <string name="loading_commits">Načítavam commity…</string>
     <!--  -->
 
 
@@ -64,6 +66,7 @@
     <string name="no_followers">Žiadny sledujúci</string>
     <string name="no_members">Žiadny členovia</string>
     <string name="no_news">Žiadne novinky</string>
+    <string name="no_commits">Žiadne commity</string>
     <!--  -->
 
 
@@ -104,10 +107,10 @@
     <string name="comment">Komentár</string>
     <string name="delete">Zmazať</string>
     <string name="refresh">Obnoviť</string>
-    <string name="dasbhoard_watched">Sledované</string>
-    <string name="dasbhoard_assigned">Priradené</string>
-    <string name="dasbhoard_created">Vytvorené</string>
-    <string name="dasbhoard_mentioned">Spomenuté</string>
+    <string name="dashboard_watched">Sledované</string>
+    <string name="dashboard_assigned">Priradené</string>
+    <string name="dashboard_created">Vytvorené</string>
+    <string name="dashboard_mentioned">Spomenuté</string>
     <string name="dashboard_issues_title">Prehľad issues</string>
     <string name="bookmarks">Záložky</string>
     <string name="gists_title">Gisty</string>
@@ -171,7 +174,9 @@
     <string name="password">Heslo</string>
     <string name="login_or_email">Užívateľské meno alebo E-mail</string>
     <string name="followers">Sledujúci</string>
-    <string name="following">Sledujem</string>
+    <string name="following">Sleduje</string>
+    <string name="followers_self">Sledujúci</string>
+    <string name="following_self">Sledujem</string>
     <string name="members">Členovia</string>
     <string name="closing_issue">Zatváram issue…</string>
     <string name="reopening_issue">Znovu otváram issue…</string>
@@ -207,5 +212,8 @@
     <string name="authenticator_conflict_title">App konflikt</string>
     <string name="authenticator_conflict_message">Ďalšia nainštalovaná aplikácia už používa GitHub overenie.\n\nMusíte túto aplikáciu odstrániť z Účtov &amp; synchronizovať nastavenia a odinštalovať ju predtým než môže byť aplikácia GitHub použitá.</string>
     <string name="opening_repository">Otváram {0}…</string>
+    <string name="commit_compare_title">Porovnanie commitov</string>
+    <string name="parent_commit">rodičovský commit</string>
+    <string name="commit_prefix">Commit\u0020</string>
 
 </resources>

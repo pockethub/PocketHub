@@ -42,23 +42,7 @@ public class RepositoryUriMatcher {
             return null;
 
         String repoOwner = segments.get(0);
-        if (TextUtils.isEmpty(repoOwner))
-            return null;
-
-        if ("about".equals(repoOwner) //
-                || "blog".equals(repoOwner) //
-                || "contact".equals(repoOwner) //
-                || "explore".equals(repoOwner) //
-                || "features".equals(repoOwner) //
-                || "inbox".equals(repoOwner) //
-                || "languages".equals(repoOwner) //
-                || "logout".equals(repoOwner) //
-                || "new".equals(repoOwner) //
-                || "repositories".equals(repoOwner) //
-                || "search".equals(repoOwner) //
-                || "settings".equals(repoOwner) //
-                || "timeline".equals(repoOwner) //
-                || "training".equals(repoOwner))
+        if (!RepositoryUtils.isValidOwner(repoOwner))
             return null;
 
         String repoName = segments.get(1);

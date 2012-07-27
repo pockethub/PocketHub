@@ -18,6 +18,7 @@ package com.github.mobile.ui.issue;
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_CLOSED;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
+import android.accounts.Account;
 import android.util.Log;
 
 import com.github.mobile.R.string;
@@ -81,7 +82,7 @@ public class MilestoneDialog {
         new ProgressDialogTask<ArrayList<Milestone>>(activity) {
 
             @Override
-            public ArrayList<Milestone> run() throws Exception {
+            public ArrayList<Milestone> run(Account account) throws Exception {
                 ArrayList<Milestone> milestones = new ArrayList<Milestone>();
                 milestones
                         .addAll(service.getMilestones(repository, STATE_OPEN));

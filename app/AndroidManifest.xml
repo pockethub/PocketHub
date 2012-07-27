@@ -168,6 +168,15 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.commit.CreateCommentActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
+            <intent-filter>
+                <action android:name="com.github.mobile.commit.comment.create.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".ui.repo.RepositoryViewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true" >
@@ -259,6 +268,34 @@
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable_issues" />
+        </activity>
+        <activity
+            android:name=".ui.commit.CommitCompareViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/commit_compare_title" >
+            <intent-filter>
+                <action android:name="com.github.mobile.commits.compare.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.commit.CommitViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
+            <intent-filter>
+                <action android:name="com.github.mobile.commits.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.commit.CommitFileViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
+            <intent-filter>
+                <action android:name="com.github.mobile.commit.file.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <service

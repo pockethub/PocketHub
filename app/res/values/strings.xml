@@ -34,6 +34,9 @@
     <string name="error_labels_load">Loading labels failed</string>
     <string name="error_bookmarks_load">Loading bookmarks failed</string>
     <string name="error_members_load">Loading members failed</string>
+    <string name="error_commits_load">Loading commits failed</string>
+    <string name="error_commit_load">Loading commit failed</string>
+    <string name="error_file_load">Loading file failed</string>
     <!--  -->
 
 
@@ -52,6 +55,7 @@
     <string name="loading_collaborators">Loading Collaborators…</string>
     <string name="loading_milestones">Loading Milestones…</string>
     <string name="loading_labels">Loading Labels…</string>
+    <string name="loading_commits">Loading Commits…</string>
     <!--  -->
 
 
@@ -64,6 +68,7 @@
     <string name="no_followers">No Followers</string>
     <string name="no_members">No Members</string>
     <string name="no_news">No News</string>
+    <string name="no_commits">No Commits</string>
     <!--  -->
 
 
@@ -78,6 +83,7 @@
     <string name="news">News</string>
     <string name="issues">Issues</string>
     <string name="gists">Gists</string>
+    <string name="commits">Commits</string>
     <string name="dashboard_issues">Issues Dashboard</string>
     <string name="find_repositories">Find Repositories</string>
     <string name="find_issues">Find Issues</string>
@@ -104,10 +110,10 @@
     <string name="comment">Comment</string>
     <string name="delete">Delete</string>
     <string name="refresh">Refresh</string>
-    <string name="dasbhoard_watched">Watched</string>
-    <string name="dasbhoard_assigned">Assigned</string>
-    <string name="dasbhoard_created">Created</string>
-    <string name="dasbhoard_mentioned">Mentioned</string>
+    <string name="dashboard_watched">Watched</string>
+    <string name="dashboard_assigned">Assigned</string>
+    <string name="dashboard_created">Created</string>
+    <string name="dashboard_mentioned">Mentioned</string>
     <string name="dashboard_issues_title">Issue Dashboard</string>
     <string name="bookmarks">Bookmarks</string>
     <string name="gists_title">Gists</string>
@@ -172,6 +178,8 @@
     <string name="login_or_email">Login or Email</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
+    <string name="followers_self">Followers</string>
+    <string name="following_self">Following</string>
     <string name="members">Members</string>
     <string name="closing_issue">Closing Issue…</string>
     <string name="reopening_issue">Reopening Issue…</string>
@@ -207,5 +215,11 @@
     <string name="authenticator_conflict_title">App Conflict</string>
     <string name="authenticator_conflict_message">Another installed app is already configured for GitHub authentication.\n\nYou must remove the other app from the Accounts &amp; sync settings and uninstall it before the GitHub app can be used.</string>
     <string name="opening_repository">Opening {0}…</string>
+    <string name="commit_compare_title">Commit Compare</string>
+    <string name="parent_commit">parent commit</string>
+    <string name="commit_prefix">Commit\u0020</string>
+    <string name="parent_prefix">Parent\u0020</string>
+    <string name="authored">authored</string>
+    <string name="committed">committed</string>
 
 </resources>

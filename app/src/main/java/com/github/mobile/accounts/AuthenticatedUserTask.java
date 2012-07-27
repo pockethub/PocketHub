@@ -29,7 +29,7 @@ import roboguice.util.RoboAsyncTask;
 
 /**
  * Base task class that ensures an authenticated account exists before
- * {@link #run()} is invoked
+ * {@link #run(Account)} is invoked
  *
  * @param <ResultT>
  */
@@ -75,7 +75,7 @@ public abstract class AuthenticatedUserTask<ResultT> extends
         try {
             contextScope.enter(getContext());
             try {
-                return run();
+                return run(account);
             } finally {
                 contextScope.exit(getContext());
             }
@@ -87,8 +87,9 @@ public abstract class AuthenticatedUserTask<ResultT> extends
     /**
      * Execute task with an authenticated account
      *
+     * @param account
      * @return result
      * @throws Exception
      */
-    protected abstract ResultT run() throws Exception;
+    protected abstract ResultT run(Account account) throws Exception;
 }

@@ -324,6 +324,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 refreshGist();
             return;
         }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 

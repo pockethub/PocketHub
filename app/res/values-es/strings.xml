@@ -16,7 +16,7 @@
 -->
 <resources>
 
-    <!-- Mensages de error -->
+    <!-- Mensajes de error -->
     <string name="error_orgs_load">Error al cargar la cuenta y las organizaciones</string>
     <string name="error_issues_load">Error al cargar incidencias</string>
     <string name="error_repos_load">Error al cargar repositorios</string>
@@ -37,7 +37,7 @@
     <!--  -->
 
 
-    <!-- Mensages de carga -->
+    <!-- Mensajes de carga -->
     <string name="loading_gist">Cargando Gist…</string>
     <string name="random_gist">Cargando Gist Aleatorio…</string>
     <string name="loading_more_issues">Cargando Más Incidencias…</string>
@@ -104,10 +104,10 @@
     <string name="comment">Comentario</string>
     <string name="delete">Borrar</string>
     <string name="refresh">Recargar</string>
-    <string name="dasbhoard_watched">Observadas</string>
-    <string name="dasbhoard_assigned">Asignadas</string>
-    <string name="dasbhoard_created">Creadas</string>
-    <string name="dasbhoard_mentioned">Menciones</string>
+    <string name="dashboard_watched">Observadas</string>
+    <string name="dashboard_assigned">Asignadas</string>
+    <string name="dashboard_created">Creadas</string>
+    <string name="dashboard_mentioned">Menciones</string>
     <string name="dashboard_issues_title">Panel de Incidencias</string>
     <string name="bookmarks">Marcadores</string>
     <string name="gists_title">Gists</string>
@@ -172,6 +172,8 @@
     <string name="login_or_email">Usuario o Correo Electrónico</string>
     <string name="followers">Seguidores</string>
     <string name="following">Siguiendo</string>
+    <string name="followers_self">Seguidores</string>
+    <string name="following_self">Siguiendo</string>
     <string name="members">Miembros</string>
     <string name="closing_issue">Cerrando Incidencia…</string>
     <string name="reopening_issue">Reabriendo Incidencia…</string>

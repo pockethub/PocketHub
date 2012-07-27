@@ -160,6 +160,7 @@ public class IssueFragment extends DialogFragment {
 
     private HttpImageGetter commentImageGetter;
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

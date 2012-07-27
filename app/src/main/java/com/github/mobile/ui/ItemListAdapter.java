@@ -120,6 +120,17 @@ public abstract class ItemListAdapter<I, V extends ItemView> extends
      */
     protected abstract V createView(View view);
 
+    /**
+     * Get view for position
+     *
+     * @see #getView(int, View, ViewGroup)
+     * @param position
+     * @return view
+     */
+    public View getView(final int position) {
+        return getView(position, null, null);
+    }
+
     public View getView(final int position, View convertView,
             final ViewGroup parent) {
         @SuppressWarnings("unchecked")

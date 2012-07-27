@@ -16,6 +16,8 @@
 package com.github.mobile.ui;
 
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * Class that stores references to children of a view that get updated when the
@@ -29,7 +31,29 @@ public abstract class ItemView {
      *
      * @param view
      */
-    public ItemView(View view) {
+    public ItemView(final View view) {
         // Intentionally left blank
+    }
+
+    /**
+     * Get text view with id
+     *
+     * @param view
+     * @param id
+     * @return text view
+     */
+    protected TextView textView(final View view, final int id) {
+        return (TextView) view.findViewById(id);
+    }
+
+    /**
+     * Get image view with id
+     *
+     * @param view
+     * @param id
+     * @return text view
+     */
+    protected ImageView imageView(final View view, final int id) {
+        return (ImageView) view.findViewById(id);
     }
 }

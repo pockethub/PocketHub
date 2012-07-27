@@ -253,6 +253,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     protected ResourcePager<Issue> createPager() {
         return new IssuePager(store) {
 
+            @Override
             public PageIterator<Issue> createIterator(int page, int size) {
                 return service.pageIssues(repository, filter.toFilterMap(),
                         page, size);

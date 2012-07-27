@@ -15,6 +15,7 @@
  */
 package com.github.mobile.core.user;
 
+import android.accounts.Account;
 import android.content.Context;
 import android.util.Log;
 
@@ -49,7 +50,7 @@ public class RefreshUserTask extends AuthenticatedUserTask<User> {
     }
 
     @Override
-    protected User run() throws Exception {
+    protected User run(Account account) throws Exception {
         return service.getUser(login);
     }
 

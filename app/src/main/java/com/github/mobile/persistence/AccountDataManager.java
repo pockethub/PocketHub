@@ -15,6 +15,7 @@
  */
 package com.github.mobile.persistence;
 
+import android.accounts.Account;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -200,7 +201,8 @@ public class AccountDataManager {
         new AuthenticatedUserTask<Collection<IssueFilter>>(context, EXECUTOR) {
 
             @Override
-            public Collection<IssueFilter> run() throws Exception {
+            public Collection<IssueFilter> run(Account account)
+                    throws Exception {
                 return getIssueFilters();
             }
 
@@ -240,7 +242,7 @@ public class AccountDataManager {
         new AuthenticatedUserTask<IssueFilter>(context, EXECUTOR) {
 
             @Override
-            public IssueFilter run() throws Exception {
+            public IssueFilter run(Account account) throws Exception {
                 addIssueFilter(filter);
                 return filter;
             }
@@ -283,7 +285,7 @@ public class AccountDataManager {
         new AuthenticatedUserTask<IssueFilter>(context, EXECUTOR) {
 
             @Override
-            public IssueFilter run() throws Exception {
+            public IssueFilter run(Account account) throws Exception {
                 removeIssueFilter(filter);
                 return filter;
             }

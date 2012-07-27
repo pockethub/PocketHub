@@ -15,6 +15,7 @@
  */
 package com.github.mobile.core.gist;
 
+import android.accounts.Account;
 import android.content.Context;
 import android.util.Log;
 
@@ -63,7 +64,7 @@ public class RefreshGistTask extends AuthenticatedUserTask<FullGist> {
     }
 
     @Override
-    public FullGist run() throws Exception {
+    public FullGist run(Account account) throws Exception {
         Gist gist = store.refreshGist(id);
         List<Comment> comments;
         if (gist.getComments() > 0)

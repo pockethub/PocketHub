@@ -20,6 +20,8 @@ import static com.github.mobile.RequestCodes.ISSUE_REOPEN;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_CLOSED;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 
+import android.accounts.Account;
+
 import com.github.mobile.R.string;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.ui.ConfirmDialogFragment;
@@ -79,7 +81,7 @@ public class EditStateTask extends ProgressDialogTask<Issue> {
     }
 
     @Override
-    protected Issue run() throws Exception {
+    protected Issue run(Account account) throws Exception {
         Issue editedIssue = new Issue();
         editedIssue.setNumber(issueNumber);
         if (close)

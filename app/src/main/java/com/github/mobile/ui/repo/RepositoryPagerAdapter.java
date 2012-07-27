@@ -21,6 +21,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.github.mobile.R.string;
+import com.github.mobile.ui.commit.CommitListFragment;
 import com.github.mobile.ui.issue.IssuesFragment;
 
 /**
@@ -51,8 +52,10 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
         case 0:
-            return resources.getString(string.news);
+            return resources.getString(string.commits);
         case 1:
+            return resources.getString(string.news);
+        case 2:
             return resources.getString(string.issues);
         default:
             return null;
@@ -63,8 +66,10 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
         case 0:
-            return new RepositoryNewsFragment();
+            return new CommitListFragment();
         case 1:
+            return new RepositoryNewsFragment();
+        case 2:
             return new IssuesFragment();
         default:
             return null;
@@ -73,6 +78,6 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return hasIssues ? 2 : 1;
+        return hasIssues ? 3 : 2;
     }
 }

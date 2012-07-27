@@ -21,7 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Matcher for gist URLS that provides the Gist id matched
+ * Matcher for gist URLs that provides the Gist id matched
  * <p>
  * This class is not thread-safe
  */

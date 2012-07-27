@@ -61,6 +61,17 @@ public class HeaderFooterListAdapter<E extends BaseAdapter> extends
     }
 
     /**
+     * Add non-selectable header view with no data
+     *
+     * @see #addHeader(View, Object, boolean)
+     * @param view
+     * @return this adapter
+     */
+    public HeaderFooterListAdapter<E> addHeader(View view) {
+        return addHeader(view, null, false);
+    }
+
+    /**
      * Add header
      *
      * @param view
@@ -81,7 +92,18 @@ public class HeaderFooterListAdapter<E extends BaseAdapter> extends
     }
 
     /**
-     * Add header
+     * Add non-selectable footer view with no data
+     *
+     * @see #addFooter(View, Object, boolean)
+     * @param view
+     * @return this adapter
+     */
+    public HeaderFooterListAdapter<E> addFooter(View view) {
+        return addFooter(view, null, false);
+    }
+
+    /**
+     * Add footer
      *
      * @param view
      * @param data
@@ -103,6 +125,42 @@ public class HeaderFooterListAdapter<E extends BaseAdapter> extends
     @Override
     public boolean removeHeader(View v) {
         boolean removed = super.removeHeader(v);
+        if (removed)
+            wrapped.notifyDataSetChanged();
+        return removed;
+    }
+
+    /**
+     * Remove all headers
+     *
+     * @return true if headers were removed, false otherwise
+     */
+    public boolean clearHeaders() {
+        boolean removed = false;
+        if (!headers.isEmpty()) {
+            FixedViewInfo[] infos = headers.toArray(new FixedViewInfo[headers
+                    .size()]);
+            for (FixedViewInfo info : infos)
+                removed = super.removeHeader(info.view) || removed;
+        }
+        if (removed)
+            wrapped.notifyDataSetChanged();
+        return removed;
+    }
+
+    /**
+     * Remove all footers
+     *
+     * @return true if headers were removed, false otherwise
+     */
+    public boolean clearFooters() {
+        boolean removed = false;
+        if (!footers.isEmpty()) {
+            FixedViewInfo[] infos = footers.toArray(new FixedViewInfo[footers
+                    .size()]);
+            for (FixedViewInfo info : infos)
+                removed = super.removeFooter(info.view) || removed;
+        }
         if (removed)
             wrapped.notifyDataSetChanged();
         return removed;

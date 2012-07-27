@@ -17,6 +17,7 @@ package com.github.mobile.ui.gist;
 
 import static com.github.mobile.Intents.EXTRA_GIST_FILE;
 import static com.github.mobile.Intents.EXTRA_GIST_ID;
+import android.accounts.Account;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +48,7 @@ import roboguice.inject.InjectView;
  */
 public class GistFileFragment extends RoboSherlockFragment {
 
-    @InjectView(id.wv_gist_content)
+    @InjectView(id.wv_code)
     private WebView webView;
 
     @InjectExtra(EXTRA_GIST_ID)
@@ -72,7 +73,9 @@ public class GistFileFragment extends RoboSherlockFragment {
 
     private void loadSource() {
         new AuthenticatedUserTask<GistFile>(getActivity()) {
-            public GistFile run() throws Exception {
+
+            @Override
+            public GistFile run(Account account) throws Exception {
                 gist = store.refreshGist(gistId);
                 Map<String, GistFile> files = gist.getFiles();
                 if (files == null)
@@ -83,11 +86,17 @@ public class GistFileFragment extends RoboSherlockFragment {
                 return loadedFile;
             }
 
+            @Override
             protected void onException(Exception e) throws RuntimeException {
+                super.onException(e);
+
                 ToastUtils.show(getActivity(), e, string.error_gist_file_load);
             }
 
+            @Override
             protected void onSuccess(GistFile loadedFile) throws Exception {
+                super.onSuccess(loadedFile);
+
                 if (loadedFile == null)
                     return;
 

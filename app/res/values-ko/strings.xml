@@ -104,10 +104,10 @@
     <string name="comment">댓글</string>
     <string name="delete">삭제</string>
     <string name="refresh">새로고침</string>
-    <string name="dasbhoard_watched">감시중</string>
-    <string name="dasbhoard_assigned">Assigned</string>
-    <string name="dasbhoard_created">생성한것</string>
-    <string name="dasbhoard_mentioned">Mentioned</string>
+    <string name="dashboard_watched">감시중</string>
+    <string name="dashboard_assigned">Assigned</string>
+    <string name="dashboard_created">생성한것</string>
+    <string name="dashboard_mentioned">Mentioned</string>
     <string name="dashboard_issues_title">이슈 대쉬보드</string>
     <string name="bookmarks">책갈피</string>
     <string name="gists_title">Gists</string>
@@ -172,6 +172,8 @@
     <string name="login_or_email">로그인계정 또는 이메일주소</string>
     <string name="followers">팔로워</string>
     <string name="following">팔로잉</string>
+    <string name="followers_self">팔로워</string>
+    <string name="following_self">팔로잉</string>
     <string name="members">멤버</string>
     <string name="closing_issue">이슈 종결처리중…</string>
     <string name="reopening_issue">이슈 재오픈중…</string>
