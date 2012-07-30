@@ -224,5 +224,6 @@
     <string name="diff_line_message">What would you like to do?</string>
     <string name="comment_on_line">Comment on line</string>
     <string name="view_entire_file">View entire file</string>
+    <string name="comparing_commits">Comparing {0} commits</string>
 
 </resources>
