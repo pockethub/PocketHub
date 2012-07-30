@@ -93,7 +93,7 @@ public class IssueDashboardPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override
-    public CharSequence getPageTitle(int position) {
+    public CharSequence getPageTitle(final int position) {
         switch (position) {
         case 0:
             return resources.getString(string.dashboard_watched);
