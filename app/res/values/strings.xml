@@ -158,9 +158,6 @@
     <string name="anonymous">Anonymous</string>
     <string name="message_filter_saved">Issue filter saved to bookmarks</string>
     <string name="recent">Recent</string>
-    <string name="icon_pull_request">\uf20E</string>
-    <string name="icon_comment">\uf04f</string>
-    <string name="icon_file">\uf211</string>
     <string name="section_issue_status">Status:</string>
     <string name="status_open">Open</string>
     <string name="status_closed">Closed</string>
@@ -183,8 +180,6 @@
     <string name="members">Members</string>
     <string name="closing_issue">Closing Issue…</string>
     <string name="reopening_issue">Reopening Issue…</string>
-    <string name="icon_watch">\uf04E</string>
-    <string name="icon_fork">\uf020</string>
     <string name="avatar">Avatar</string>
     <string name="creating_issue">Creating Issue…</string>
     <string name="prefix_created">created\u0020</string>
