@@ -84,13 +84,13 @@
     <string name="issues">Frågor</string>
     <string name="gists">Gists</string>
     <string name="commits">Commits</string>
-    <string name="dashboard_issues">Frågor <!--Dashboard--></string>
+    <string name="dashboard_issues">Frågor</string> <!--Dashboard-->
     <string name="find_repositories">Hitta Arkiv</string>
     <string name="find_issues">Hitta Frågor</string>
     <string name="search_title">Sök…</string>
     <string name="clear_search_history">Rensa Historik</string>
     <string name="search_history_cleared">Search history cleared</string>
-    <string name="login_activity_authenticating">Logging in…</string>
+    <string name="login_activity_authenticating">Loggar in…</string>
     <string name="creating_gist">Skapar Gist…</string>
     <string name="create">Skapa</string>
     <string name="create_gist">Skapa Gist</string>
@@ -114,7 +114,7 @@
     <string name="dashboard_assigned">Tilldelad</string>
     <string name="dashboard_created">Skapade</string>
     <string name="dashboard_mentioned">Nämnd</string>
-    <string name="dashboard_issues_title">Frågor <!--Dashboard--></string>
+    <string name="dashboard_issues_title">Frågor</string> <!--Dashboard-->
     <string name="bookmarks">Bokmärken</string>
     <string name="gists_title">Gists</string>
     <string name="issue_title">Fråga #</string>
@@ -130,16 +130,16 @@
     <string name="edit_milestone">Ändra Milstolpe</string>
     <string name="edit_assignee">Ändra Förvärvaren</string>
     <string name="my_gists_tab">Min</string>
-    <string name="starred_gists_tab"><!--Starred--></string>
+    <string name="starred_gists_tab">Markerade</string>
     <string name="all_gists_tab">Alla</string>
     <string name="description">Beskrivning</string>
     <string name="gist_description_hint">Android Skapad Gist</string>
     <string name="title">Titel</string>
     <string name="edit">Ändra</string>
-    <!-- <string name="star">star</string>
-    <string name="starring_gist">Starring Gist…</string>
-    <string name="unstar">Unstar</string>
-    <string name="unstarring_gist">Unstarring Gist…</string> -->
+    <string name="star">Markera</string>
+    <string name="starring_gist">Markerar Gist…</string>
+    <string name="unstar">Avmarkera</string>
+    <string name="unstarring_gist">Avmarkerar Gist…</string>
     <string name="accounts_label">Konton</string>
     <string name="select_assignee">Välj Förvärvare</string>
     <string name="select_milestone">Välj Milstolpe</string>
@@ -147,7 +147,7 @@
     <string name="no_milestone">Inga Milstolpar</string>
     <string name="unassigned">Ingen har tilldelats detta</string>
     <string name="assigned">är tilldelad</string>
-    <string name="no_gists_found">Inga Gists hittade</string>
+    <string name="no_gists_found">Inga Gists hittades</string>
     <string name="confirm_gist_delete_title">Bekräfta Borttagning</string>
     <string name="confirm_gist_delete_message">Är du säker på att du vill ta bort den här Gisten?</string>
     <string name="deleting_gist">Tar bort Gist…</string>
@@ -221,7 +221,7 @@
     <string name="parent_prefix">Förälder\u0020</string>
     <string name="authored">skrivit</string>
     <string name="committed">committed</string>
-    <string name="diff_line_message">Vad skulle du villja göra?</string>
+    <string name="diff_line_message">Vad vill du göra?</string>
     <string name="comment_on_line">Kommentera raden</string>
     <string name="view_entire_file">Visa hela filen</string>
 
