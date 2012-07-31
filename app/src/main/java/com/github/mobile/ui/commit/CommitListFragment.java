@@ -16,7 +16,6 @@
 package com.github.mobile.ui.commit;
 
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -125,7 +124,7 @@ public class CommitListFragment extends PagedItemFragment<RepositoryCommit> {
     public void onListItemClick(ListView l, View v, int position, long id) {
         Object item = l.getItemAtPosition(position);
         if (item instanceof RepositoryCommit)
-            startActivity(CommitViewActivity.createIntent(repository,
-                    ((RepositoryCommit) item).getSha()));
+            startActivity(CommitViewActivity.createIntent(repository, position,
+                    items));
     }
 }

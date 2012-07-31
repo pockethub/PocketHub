@@ -70,7 +70,6 @@ import org.eclipse.egit.github.core.CommitFile;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryCommit;
 
-import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
 
 /**
@@ -87,10 +86,8 @@ public class CommitDiffListFragment extends DialogFragment implements
     @InjectView(id.pb_loading)
     private ProgressBar progress;
 
-    @InjectExtra(EXTRA_REPOSITORY)
     private Repository repository;
 
-    @InjectExtra(EXTRA_BASE)
     private String base;
 
     private FullCommit commit;
@@ -123,10 +120,19 @@ public class CommitDiffListFragment extends DialogFragment implements
     private HttpImageGetter commentImageGetter;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+        Bundle args = getArguments();
+        base = args.getString(EXTRA_BASE);
+        repository = (Repository) args.getSerializable(EXTRA_REPOSITORY);
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setHasOptionsMenu(true);
         commentImageGetter = new HttpImageGetter(getActivity());
         refreshCommit();
     }
@@ -348,7 +354,7 @@ public class CommitDiffListFragment extends DialogFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(layout.commit_diff_list, container);
+        return inflater.inflate(layout.commit_diff_list, null);
     }
 
     private void showFileOptions(CharSequence line, final int position,

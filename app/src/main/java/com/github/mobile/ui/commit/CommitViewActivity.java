@@ -17,14 +17,18 @@ package com.github.mobile.ui.commit;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
-import static com.github.mobile.Intents.EXTRA_BASE;
+import static com.github.mobile.Intents.EXTRA_BASES;
+import static com.github.mobile.Intents.EXTRA_POSITION;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents.Builder;
+import com.github.mobile.R.id;
 import com.github.mobile.R.string;
 import com.github.mobile.core.commit.CommitUtils;
 import com.github.mobile.ui.DialogFragmentActivity;
@@ -33,14 +37,19 @@ import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 import com.viewpagerindicator.R.layout;
 
+import java.util.Collection;
+
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.RepositoryCommit;
 
 import roboguice.inject.InjectExtra;
+import roboguice.inject.InjectView;
 
 /**
  * Activity to display a commit
  */
-public class CommitViewActivity extends DialogFragmentActivity {
+public class CommitViewActivity extends DialogFragmentActivity implements
+        OnPageChangeListener {
 
     /**
      * Create intent for this activity
@@ -51,17 +60,54 @@ public class CommitViewActivity extends DialogFragmentActivity {
      */
     public static Intent createIntent(final Repository repository,
             final String id) {
+        return createIntent(repository, 0, id);
+    }
+
+    /**
+     * Create intent for this activity
+     *
+     * @param repository
+     * @param position
+     * @param commits
+     * @return intent
+     */
+    public static Intent createIntent(final Repository repository,
+            final int position, final Collection<RepositoryCommit> commits) {
+        String[] ids = new String[commits.size()];
+        int index = 0;
+        for (RepositoryCommit commit : commits)
+            ids[index++] = commit.getSha();
+        return createIntent(repository, position, ids);
+    }
+
+    /**
+     * Create intent for this activity
+     *
+     * @param repository
+     * @param position
+     * @param ids
+     * @return intent
+     */
+    public static Intent createIntent(final Repository repository,
+            final int position, final String... ids) {
         Builder builder = new Builder("commits.VIEW");
-        builder.add(EXTRA_BASE, id);
+        builder.add(EXTRA_POSITION, position);
+        builder.add(EXTRA_BASES, ids);
         builder.repo(repository);
         return builder.toIntent();
     }
 
+    @InjectView(id.vp_pages)
+    private ViewPager pager;
+
     @InjectExtra(EXTRA_REPOSITORY)
     private Repository repository;
 
-    @InjectExtra(EXTRA_BASE)
-    private String id;
+    @InjectExtra(EXTRA_BASES)
+    private CharSequence[] ids;
+
+    @InjectExtra(EXTRA_POSITION)
+    private int initialPosition;
 
     @Inject
     private AvatarLoader avatars;
@@ -70,12 +116,17 @@ public class CommitViewActivity extends DialogFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(layout.commit);
+        setContentView(layout.pager);
+
+        pager.setAdapter(new CommitPagerAdapter(getSupportFragmentManager(),
+                repository, ids));
+
+        pager.setOnPageChangeListener(this);
+        pager.setCurrentItem(initialPosition);
+        onPageSelected(initialPosition);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(getString(string.commit_prefix)
-                + CommitUtils.abbreviate(id));
         actionBar.setSubtitle(repository.generateId());
         avatars.bind(actionBar, repository.getOwner());
     }
@@ -91,5 +142,20 @@ public class CommitViewActivity extends DialogFragmentActivity {
         default:
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void onPageScrolled(int position, float positionOffset,
+            int positionOffsetPixels) {
+        // Intentionally left blank
+    }
+
+    public void onPageSelected(int position) {
+        getSupportActionBar().setTitle(
+                getString(string.commit_prefix)
+                        + CommitUtils.abbreviate(ids[position].toString()));
+    }
+
+    public void onPageScrollStateChanged(int state) {
+        // Intentionally left blank
     }
 }
