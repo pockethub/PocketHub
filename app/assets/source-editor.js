@@ -73,6 +73,10 @@ function getMode(name) {
     mode.mode = "text/x-python";
     mode.file = extension;
     break;
+  case "r":
+    mode.mode = "text/x-rsrc";
+    mode.file = extension;
+    break;
   case "rb":
     mode.mode = "text/x-ruby";
     mode.file = extension;
