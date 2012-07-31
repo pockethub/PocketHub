@@ -216,5 +216,9 @@
     <string name="parent_prefix">Rodič\u0020</string>
     <string name="authored">pridal</string>
     <string name="committed">commitované</string>
+    <string name="diff_line_message">Čo by ste chceli spraviť?</string>
+    <string name="comment_on_line">Komentár na riadku</string>
+    <string name="view_entire_file">Pozrieť celý súbor</string>
+    <string name="comparing_commits">Porovnávanie {0} commitov</string>
 
 </resources>

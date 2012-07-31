@@ -151,6 +151,11 @@ public class Intents {
     public static final String EXTRA_BASE = INTENT_EXTRA_PREFIX + "BASE";
 
     /**
+     * Base commit names
+     */
+    public static final String EXTRA_BASES = INTENT_EXTRA_PREFIX + "BASES";
+
+    /**
      * Base commit name
      */
     public static final String EXTRA_HEAD = INTENT_EXTRA_PREFIX + "HEAD";

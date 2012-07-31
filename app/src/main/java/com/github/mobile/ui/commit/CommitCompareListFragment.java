@@ -46,6 +46,7 @@ import com.google.inject.Inject;
 import com.viewpagerindicator.R.layout;
 
 import java.text.MessageFormat;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -84,6 +85,8 @@ public class CommitCompareListFragment extends DialogFragment implements
     private AvatarLoader avatars;
 
     private HeaderFooterListAdapter<CommitFileListAdapter> adapter;
+
+    private RepositoryCommitCompare compare;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -151,6 +154,8 @@ public class CommitCompareListFragment extends DialogFragment implements
         if (!isUsable())
             return;
 
+        this.compare = compare;
+
         ViewUtils.setGone(progress, true);
         ViewUtils.setGone(list, false);
 
@@ -216,24 +221,49 @@ public class CommitCompareListFragment extends DialogFragment implements
         return inflater.inflate(layout.commit_diff_list, container);
     }
 
+    private void openCommit(final RepositoryCommit commit) {
+        if (compare != null) {
+            int commitPosition = 0;
+            Collection<RepositoryCommit> commits = compare.getCommits();
+            for (RepositoryCommit candidate : commits)
+                if (commit == candidate)
+                    break;
+                else
+                    commitPosition++;
+            if (commitPosition < commits.size())
+                startActivity(CommitViewActivity.createIntent(repository,
+                        commitPosition, commits));
+        } else
+            startActivity(CommitViewActivity.createIntent(repository,
+                    commit.getSha()));
+    }
+
+    private void openFile(final CommitFile file) {
+        startActivity(CommitFileViewActivity.createIntent(repository, head,
+                file));
+    }
+
+    private void openLine(AdapterView<?> parent, int position) {
+        Object item = null;
+        while (--position >= 0) {
+            item = parent.getItemAtPosition(position);
+            if (item instanceof CommitFile) {
+                startActivity(CommitFileViewActivity.createIntent(repository,
+                        head, (CommitFile) item));
+                return;
+            }
+        }
+    }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
         Object item = parent.getItemAtPosition(position);
         if (item instanceof RepositoryCommit)
-            startActivity(CommitViewActivity.createIntent(repository,
-                    ((RepositoryCommit) item).getSha()));
+            openCommit((RepositoryCommit) item);
         else if (item instanceof CommitFile)
-            startActivity(CommitFileViewActivity.createIntent(repository, head,
-                    (CommitFile) item));
+            openFile((CommitFile) item);
         else if (item instanceof CharSequence)
-            while (--position >= 0) {
-                item = parent.getItemAtPosition(position);
-                if (item instanceof CommitFile) {
-                    startActivity(CommitFileViewActivity.createIntent(
-                            repository, head, (CommitFile) item));
-                    break;
-                }
-            }
+            openLine(parent, position);
     }
 }
