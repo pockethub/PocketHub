@@ -19,6 +19,8 @@ import static com.github.mobile.Intents.EXTRA_GIST_FILE;
 import static com.github.mobile.Intents.EXTRA_GIST_ID;
 import static com.github.mobile.util.PreferenceUtils.WRAP;
 import android.accounts.Account;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +54,8 @@ import roboguice.inject.InjectView;
 /**
  * Fragment to display the content of a file in a Gist
  */
-public class GistFileFragment extends RoboSherlockFragment {
+public class GistFileFragment extends RoboSherlockFragment implements
+        OnSharedPreferenceChangeListener {
 
     @InjectView(id.wv_code)
     private WebView webView;
@@ -69,6 +72,10 @@ public class GistFileFragment extends RoboSherlockFragment {
 
     private SourceEditor editor;
 
+    private SharedPreferences codePrefs;
+
+    private MenuItem wrapItem;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,18 +86,36 @@ public class GistFileFragment extends RoboSherlockFragment {
         gist = store.getGist(gistId);
         if (gist == null)
             gist = new Gist().setId(gistId);
+
+        codePrefs = PreferenceUtils.getCodePreferences(getActivity());
+        codePrefs.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        codePrefs.unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 
     @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
         inflater.inflate(menu.code_view, optionsMenu);
 
-        MenuItem wrapItem = optionsMenu.findItem(id.m_wrap);
-        if (PreferenceUtils.getCodePreferences(getActivity()).getBoolean(WRAP,
-                false))
-            wrapItem.setTitle(string.disable_wrapping);
-        else
-            wrapItem.setTitle(string.enable_wrapping);
+        wrapItem = optionsMenu.findItem(id.m_wrap);
+        updateWrapItem();
+    }
+
+    private void updateWrapItem() {
+        if (wrapItem != null)
+            if (codePrefs.getBoolean(WRAP, false))
+                wrapItem.setTitle(string.disable_wrapping);
+            else
+                wrapItem.setTitle(string.enable_wrapping);
     }
 
     @Override
@@ -104,9 +129,8 @@ public class GistFileFragment extends RoboSherlockFragment {
                 item.setTitle(string.disable_wrapping);
                 editor.setWrap(true);
             }
-            PreferenceUtils.save(PreferenceUtils
-                    .getCodePreferences(getActivity()).edit()
-                    .putBoolean(WRAP, editor.getWrap()));
+            PreferenceUtils.save(codePrefs.edit().putBoolean(WRAP,
+                    editor.getWrap()));
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -173,5 +197,14 @@ public class GistFileFragment extends RoboSherlockFragment {
             showSource();
         else
             loadSource();
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+            String key) {
+        if (WRAP.equals(key)) {
+            updateWrapItem();
+            editor.setWrap(sharedPreferences.getBoolean(WRAP, false));
+        }
     }
 }
