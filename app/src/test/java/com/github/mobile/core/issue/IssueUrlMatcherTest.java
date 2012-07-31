@@ -48,6 +48,8 @@ public class IssueUrlMatcherTest {
 
         assertEquals(5, matcher.getNumber("http://github.com/r/o/issues/5"));
         assertEquals(17, matcher.getNumber("https://github.com/r/o/issues/17"));
-        assertEquals(75, matcher.getNumber("http://github.com/r/o/issues/issue/75"));
+        assertEquals(75,
+                matcher.getNumber("http://github.com/r/o/issues/issue/75"));
+        assertEquals(1234, matcher.getNumber("http://github.com/r/o/pull/1234"));
     }
 }
