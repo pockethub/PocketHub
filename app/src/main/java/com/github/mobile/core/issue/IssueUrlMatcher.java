@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
  */
 public class IssueUrlMatcher extends UrlMatcher {
 
-    private static final String REGEX = "https?://.+/[^/]+/[^/]+/issues/(issue/)?(\\d+)";
+    private static final String REGEX = "https?://.+/[^/]+/[^/]+/(issues|pull)/(issue/)?(\\d+)";
 
     private static final Pattern PATTERN = Pattern.compile(REGEX);
 
@@ -44,7 +44,7 @@ public class IssueUrlMatcher extends UrlMatcher {
             return -1;
 
         try {
-            return Integer.parseInt(matcher.group(2));
+            return Integer.parseInt(matcher.group(3));
         } catch (NumberFormatException nfe) {
             return -1;
         }

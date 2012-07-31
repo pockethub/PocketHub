@@ -163,8 +163,8 @@ public class CommitCompareListFragment extends DialogFragment implements
             View commitHeader = inflater.inflate(layout.commit_details_header,
                     null);
             ((TextView) commitHeader.findViewById(id.tv_commit_summary))
-                    .setText(MessageFormat.format("Comparing {0} commits",
-                            commits.size()));
+                    .setText(MessageFormat.format(
+                            getString(string.comparing_commits), commits.size()));
             adapter.addHeader(commitHeader, null, false);
             adapter.addHeader(inflater.inflate(layout.list_divider, null));
             CommitListAdapter commitAdapter = new CommitListAdapter(
@@ -226,18 +226,14 @@ public class CommitCompareListFragment extends DialogFragment implements
         else if (item instanceof CommitFile)
             startActivity(CommitFileViewActivity.createIntent(repository, head,
                     (CommitFile) item));
-        else if (item instanceof CharSequence) {
-            // Scan backwards and find the file
-            position--;
-            while (position >= 0) {
+        else if (item instanceof CharSequence)
+            while (--position >= 0) {
                 item = parent.getItemAtPosition(position);
                 if (item instanceof CommitFile) {
                     startActivity(CommitFileViewActivity.createIntent(
                             repository, head, (CommitFile) item));
                     break;
                 }
-                position--;
             }
-        }
     }
 }

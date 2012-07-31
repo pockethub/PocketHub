@@ -57,6 +57,20 @@ public class IssueUriMatcherTest extends AndroidTestCase {
     }
 
     /**
+     * Verify pull uri
+     */
+    public void testPullUri() {
+        RepositoryIssue issue = IssueUriMatcher.getIssue(Uri
+                .parse("https://github.com/defunkt/resque/pull/3"));
+        assertNotNull(issue);
+        assertEquals(3, issue.getNumber());
+        assertNotNull(issue.getRepository());
+        assertEquals("resque", issue.getRepository().getName());
+        assertNotNull(issue.getRepository().getOwner());
+        assertEquals("defunkt", issue.getRepository().getOwner().getLogin());
+    }
+
+    /**
      * Verify https uri
      */
     public void testHttpsUri() {
