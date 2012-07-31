@@ -3,7 +3,6 @@
 target
 tmp
 *~
-lib
 bin
 */test-output
 temp-testng-customsuite.xml
