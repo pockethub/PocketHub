@@ -39,6 +39,7 @@
     <string name="error_file_load">Laden der Datei fehlgeschlagen</string>
     <!--  -->
 
+
     <!-- Loading messages -->
     <string name="loading_gist">Lade Gist…</string>
     <string name="random_gist">Lade zufälligen Gist…</string>
@@ -57,6 +58,7 @@
     <string name="loading_commits">Lade Commits…</string>
     <!--  -->
 
+
     <!-- Empty messages -->
     <string name="no_bookmarks">Keine Lesezeichen</string>
     <string name="no_repositories">Keine Repositories</string>
@@ -68,6 +70,7 @@
     <string name="no_news">Keine Neuigkeiten</string>
     <string name="no_commits">Keine Commits</string>
     <!--  -->
+
 
     <!-- Updating messages -->
     <string name="updating_assignee">Aktualisiere Verantwortlichen…</string>
