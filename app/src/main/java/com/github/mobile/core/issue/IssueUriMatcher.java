@@ -42,7 +42,8 @@ public class IssueUriMatcher {
             return null;
         if (segments.size() < 4)
             return null;
-        if (!"issues".equals(segments.get(2)))
+        if (!"issues".equals(segments.get(2))
+                && !"pull".equals(segments.get(2)))
             return null;
 
         String repoOwner = segments.get(0);
