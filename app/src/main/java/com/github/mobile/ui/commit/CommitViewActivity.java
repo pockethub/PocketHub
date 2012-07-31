@@ -150,9 +150,8 @@ public class CommitViewActivity extends DialogFragmentActivity implements
     }
 
     public void onPageSelected(int position) {
-        getSupportActionBar().setTitle(
-                getString(string.commit_prefix)
-                        + CommitUtils.abbreviate(ids[position].toString()));
+        final String id = CommitUtils.abbreviate(ids[position].toString());
+        getSupportActionBar().setTitle(getString(string.commit_prefix) + id);
     }
 
     public void onPageScrollStateChanged(int state) {
