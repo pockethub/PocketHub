@@ -89,13 +89,19 @@ function getMode(name) {
     mode.mode = "text/x-mysql";
     mode.file = "mysql";
     break;
-  case "yml":
-    mode.mode = "text/x-yaml";
-    mode.file = "yaml";
+  case "xq":
+  case "xqy":
+  case "xquery":
+    mode.mode = "application/xquery";
+    mode.file = "xquery";
     break;
   case "xml":
     mode.mode = "application/xml";
     mode.file = extension;
+    break;
+  case "yml":
+    mode.mode = "text/x-yaml";
+    mode.file = "yaml";
     break;
   default:
     mode.mode = "text/x-" + extension;
