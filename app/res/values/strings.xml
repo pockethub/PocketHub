@@ -220,5 +220,7 @@
     <string name="comment_on_line">Comment on line</string>
     <string name="view_entire_file">View entire file</string>
     <string name="comparing_commits">Comparing {0} commits</string>
+    <string name="enable_wrapping">Enable wrapping</string>
+    <string name="disable_wrapping">Disable wrapping</string>
 
 </resources>

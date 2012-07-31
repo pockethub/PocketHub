@@ -17,6 +17,7 @@ package com.github.mobile.ui.gist;
 
 import static com.github.mobile.Intents.EXTRA_GIST_FILE;
 import static com.github.mobile.Intents.EXTRA_GIST_ID;
+import static com.github.mobile.util.PreferenceUtils.WRAP;
 import android.accounts.Account;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,11 +25,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
+import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.core.gist.GistStore;
+import com.github.mobile.util.PreferenceUtils;
 import com.github.mobile.util.SourceEditor;
 import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
@@ -61,14 +67,50 @@ public class GistFileFragment extends RoboSherlockFragment {
     @Inject
     private GistStore store;
 
+    private SourceEditor editor;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
 
         file = (GistFile) getArguments().get(EXTRA_GIST_FILE);
         gist = store.getGist(gistId);
         if (gist == null)
             gist = new Gist().setId(gistId);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
+        inflater.inflate(menu.code_view, optionsMenu);
+
+        MenuItem wrapItem = optionsMenu.findItem(id.m_wrap);
+        if (PreferenceUtils.getCodePreferences(getActivity()).getBoolean(WRAP,
+                false))
+            wrapItem.setTitle(string.disable_wrapping);
+        else
+            wrapItem.setTitle(string.enable_wrapping);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case id.m_wrap:
+            if (editor.getWrap()) {
+                item.setTitle(string.enable_wrapping);
+                editor.setWrap(false);
+            } else {
+                item.setTitle(string.disable_wrapping);
+                editor.setWrap(true);
+            }
+            PreferenceUtils.save(PreferenceUtils
+                    .getCodePreferences(getActivity()).edit()
+                    .putBoolean(WRAP, editor.getWrap()));
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     private void loadSource() {
@@ -110,11 +152,7 @@ public class GistFileFragment extends RoboSherlockFragment {
     }
 
     private void showSource() {
-        SourceEditor.showSource(webView, file.getFilename(), new Object() {
-            public String toString() {
-                return file.getContent();
-            }
-        });
+        editor.setSource(file.getFilename(), file.getContent());
     }
 
     @Override
@@ -126,6 +164,10 @@ public class GistFileFragment extends RoboSherlockFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        editor = new SourceEditor(webView);
+        editor.setWrap(PreferenceUtils.getCodePreferences(getActivity())
+                .getBoolean(WRAP, false));
 
         if (file.getContent() != null)
             showSource();

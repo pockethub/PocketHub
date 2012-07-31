@@ -15,7 +15,9 @@
  */
 package com.github.mobile.util;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -28,66 +30,26 @@ public class SourceEditor {
 
     private static final String URL_PAGE = "file:///android_asset/source-editor.html";
 
-    /**
-     * Does the source editor have a highlighter set to match the given file
-     * name extension?
-     *
-     * @param extension
-     * @return true if highlighting available, false otherwise
-     */
-    public static boolean isValid(String extension) {
-        return "actionscript3".equals(extension) //
-                || "applescript".equals(extension) //
-                || "as3".equals(extension) //
-                || "bash".equals(extension) //
-                || "c".equals(extension) //
-                || "cf".equals(extension) //
-                || "coldfusion".equals(extension) //
-                || "cpp".equals(extension) //
-                || "cs".equals(extension) //
-                || "css".equals(extension) //
-                || "delphi".equals(extension) //
-                || "diff".equals(extension) //
-                || "erl".equals(extension) //
-                || "erlang".equals(extension) //
-                || "groovy".equals(extension) //
-                || "html".equals(extension) //
-                || "java".equals(extension) //
-                || "js".equals(extension) //
-                || "pas".equals(extension) //
-                || "pascal".equals(extension) //
-                || "patch".equals(extension) //
-                || "pl".equals(extension) //
-                || "php".equals(extension) //
-                || "py".equals(extension) //
-                || "rb".equals(extension) //
-                || "sass".equals(extension) //
-                || "scala".equals(extension) //
-                || "scss".equals(extension) //
-                || "sh".equals(extension) //
-                || "sql".equals(extension) //
-                || "txt".equals(extension) //
-                || "vb".equals(extension) //
-                || "vbnet".equals(extension) //
-                || "xhtml".equals(extension) //
-                || "xml".equals(extension) //
-                || "xslt".equals(extension);
-    }
+    private final WebView view;
+
+    private boolean wrap;
+
+    private String name;
+
+    private Object content;
 
     /**
-     * Bind {@link Object#toString()} to given {@link WebView}
+     * Create source editor using given web view
      *
      * @param view
-     * @param name
-     * @param provider
-     * @return view
      */
-    public static WebView showSource(WebView view, String name,
-            final Object provider) {
-        view.setWebViewClient(new WebViewClient() {
+    @SuppressLint("SetJavaScriptEnabled")
+    public SourceEditor(final WebView view) {
+        WebViewClient client = new WebViewClient() {
 
+            @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (url.equals(URL_PAGE)) {
+                if (URL_PAGE.equals(url)) {
                     view.loadUrl(url);
                     return false;
                 } else {
@@ -96,31 +58,71 @@ public class SourceEditor {
                     return true;
                 }
             }
+        };
+        view.setWebViewClient(client);
 
-        });
-        int suffix = name.lastIndexOf('.');
-        String ext = null;
-        if (suffix != -1 && suffix + 2 < name.length()) {
-            ext = name.substring(suffix + 1);
-            if (!isValid(ext))
-                ext = null;
-        }
-        if (ext == null)
-            ext = "txt";
-        final String brush = "brush: " + ext + ";";
-        view.getSettings().setJavaScriptEnabled(true);
-        view.getSettings().setBuiltInZoomControls(true);
-        view.addJavascriptInterface(new Object() {
-            public String toString() {
-                return "<script type=\"syntaxhighlighter\" class=\"toolbar:false;"
-                        + brush
-                        + "\"><![CDATA[\n"
-                        + provider.toString()
-                        + "\n]]></script>";
-            }
+        WebSettings settings = view.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setBuiltInZoomControls(true);
+        view.addJavascriptInterface(this, "SourceEditor");
 
-        }, "SourceProvider");
+        this.view = view;
+    }
+
+    /**
+     * @return name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @return content
+     */
+    public String getContent() {
+        return content.toString();
+    }
+
+    /**
+     * @return wrap
+     */
+    public boolean getWrap() {
+        return wrap;
+    }
+
+    /**
+     * Set whether lines should wrap
+     *
+     * @param wrap
+     * @return this editor
+     */
+    public SourceEditor setWrap(final boolean wrap) {
+        this.wrap = wrap;
+        if (name != null && content != null)
+            view.loadUrl(URL_PAGE);
+        return this;
+    }
+
+    /**
+     * Bind {@link Object#toString()} to given {@link WebView}
+     *
+     * @param name
+     * @param provider
+     * @return this editor
+     */
+    public SourceEditor setSource(String name, final Object provider) {
+        this.name = name;
+        this.content = provider;
         view.loadUrl(URL_PAGE);
-        return view;
+        return this;
+    }
+
+    /**
+     * Toggle line wrap
+     *
+     * @return this editor
+     */
+    public SourceEditor toggleWrap() {
+        return setWrap(!wrap);
     }
 }
