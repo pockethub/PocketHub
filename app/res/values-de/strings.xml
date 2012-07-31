@@ -213,5 +213,9 @@
     <string name="parent_prefix">Vorgänger\u0020</string>
     <string name="authored">verfasst</string>
     <string name="committed">eingespielt</string>
+    <string name="diff_line_message">Was möchten Sie nun tun?</string>
+    <string name="comment_on_line">Kommentar zu Zeile</string>
+    <string name="view_entire_file">Zeige gesamte Datei</string>
+    <string name="comparing_commits">Vergleiche {0} Commits</string>
 
 </resources>
