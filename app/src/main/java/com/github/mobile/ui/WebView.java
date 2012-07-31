@@ -16,6 +16,7 @@
 package com.github.mobile.ui;
 
 import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH;
 import android.content.Context;
 import android.util.AttributeSet;
 
@@ -74,7 +75,7 @@ public class WebView extends android.webkit.WebView {
 
     @Override
     public boolean canScrollHorizontally(final int direction) {
-        if (SDK_INT >= 14)
+        if (SDK_INT >= ICE_CREAM_SANDWICH)
             return super.canScrollHorizontally(direction);
         else
             return canScrollCodeHorizontally(direction);

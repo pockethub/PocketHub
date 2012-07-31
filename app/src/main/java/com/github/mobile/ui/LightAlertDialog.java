@@ -16,6 +16,7 @@
 package com.github.mobile.ui;
 
 import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH;
 import android.app.AlertDialog;
 import android.content.Context;
 
@@ -31,7 +32,7 @@ public class LightAlertDialog extends AlertDialog {
      * @return dialog
      */
     public static AlertDialog create(final Context context) {
-        if (SDK_INT >= 14)
+        if (SDK_INT >= ICE_CREAM_SANDWICH)
             return new LightAlertDialog(context, THEME_HOLO_LIGHT);
         else
             return new LightAlertDialog(context);
