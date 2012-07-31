@@ -18,7 +18,6 @@ package com.github.mobile.util;
 import static android.content.Context.MODE_PRIVATE;
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.GINGERBREAD;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -52,7 +51,6 @@ public class PreferenceUtils {
      *
      * @param editor
      */
-    @SuppressLint("NewApi")
     public static void save(final Editor editor) {
         if (isEditorApplyAvailable())
             editor.apply();

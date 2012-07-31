@@ -15,7 +15,6 @@
  */
 package com.github.mobile.util;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -43,7 +42,6 @@ public class SourceEditor {
      *
      * @param view
      */
-    @SuppressLint("SetJavaScriptEnabled")
     public SourceEditor(final WebView view) {
         WebViewClient client = new WebViewClient() {
 
