@@ -7,7 +7,7 @@ function getMode(name) {
   if (lastDot == -1 || lastDot + 1 == name.length)
     return mode;
 
-  var extension = name.substring(lastDot + 1);
+  var extension = name.substring(lastDot + 1).toLowerCase();
   switch (extension) {
   case "cc":
   case "h":
