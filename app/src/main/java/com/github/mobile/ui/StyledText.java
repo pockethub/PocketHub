@@ -140,7 +140,15 @@ public class StyledText extends SpannableStringBuilder {
      * @return this text
      */
     public StyledText append(final Date date) {
-        append(TimeUtils.getRelativeTime(date));
+        CharSequence timeString = TimeUtils.getRelativeTime(date);
+        // Un-capitalize time string if there is already a prefix.
+        // So you get "opened in 5 days" instead of "opened In 5 days".
+        if (this.length() > 0) {
+            append(timeString.subSequence(0, 1).toString().toLowerCase()).append(timeString.subSequence(1, timeString.length()));
+        }
+        else {
+            append(timeString);
+        }
         return this;
     }
 }
