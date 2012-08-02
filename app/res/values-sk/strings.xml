@@ -129,8 +129,8 @@
     <string name="milestone_prefix">Míľnik:</string>
     <string name="edit_milestone">Upraviť míľnik</string>
     <string name="edit_assignee">Upraviť priradenie</string>
-    <string name="my_gists_tab">Môj</string>
-    <string name="starred_gists_tab">Obľúbený</string>
+    <string name="my_gists_tab">Moje</string>
+    <string name="starred_gists_tab">Obľúbené</string>
     <string name="all_gists_tab">Všetky</string>
     <string name="description">Popis</string>
     <string name="gist_description_hint">Android vytvoril gist</string>
@@ -220,5 +220,7 @@
     <string name="comment_on_line">Komentár na riadku</string>
     <string name="view_entire_file">Pozrieť celý súbor</string>
     <string name="comparing_commits">Porovnávanie {0} commitov</string>
+    <string name="enable_wrapping">Zapnúť zalamovanie riadkov</string>
+    <string name="disable_wrapping">Vypnúť zalamovanie riadkov</string>
 
 </resources>
