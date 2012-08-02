@@ -54,7 +54,7 @@ It also uses many other open source libraries such as:
 * [ViewPagerIndicator](https://github.com/JakeWharton/Android-ViewPagerIndicator)
 * [RoboGuice](http://code.google.com/p/roboguice/)
 * [android-maven-plugin](https://github.com/jayway/maven-android-plugin)
-* [SyntaxHighlighter](https://github.com/alexgorbatchev/SyntaxHighlighter)
+* [CodeMirror](https://github.com/marijnh/CodeMirror2)
 
 These are just a few of the major dependencies, the entire list of dependencies
 is listed in the [app's POM file](https://github.com/github/android/blob/master/app/pom.xml).

@@ -1,0 +1,15 @@
+body {
+  padding: 0;
+  margin: 0;
+  font-size: 12px;
+}
+
+.CodeMirror {
+  overflow-x: scroll;
+  line-height: 1.4em;
+}
+
+.CodeMirror-scroll {
+  height: auto;
+  overflow-y: hidden;
+}
