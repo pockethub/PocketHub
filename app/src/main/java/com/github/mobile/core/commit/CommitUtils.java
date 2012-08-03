@@ -235,7 +235,7 @@ public class CommitUtils {
                 changed++;
             }
 
-        if (changed > 1)
+        if (changed != 1)
             fileDetails.append(FORMAT.format(changed)).append(" changed files");
         else
             fileDetails.append("1 changed file");
