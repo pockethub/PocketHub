@@ -217,5 +217,7 @@
     <string name="comment_on_line">Kommentar zu Zeile</string>
     <string name="view_entire_file">Zeige gesamte Datei</string>
     <string name="comparing_commits">Vergleiche {0} Commits</string>
+    <string name="enable_wrapping">Zeilenumbruch aktivieren</string>
+    <string name="disable_wrapping">Zeilenumbruch deaktivieren</string>
 
 </resources>
