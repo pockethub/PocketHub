@@ -30,6 +30,7 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.core.issue.IssueStore;
+import com.github.mobile.core.issue.IssueUtils;
 import com.github.mobile.core.repo.RefreshRepositoryTask;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.UrlLauncher;
@@ -39,7 +40,6 @@ import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.egit.github.core.Issue;
@@ -52,10 +52,12 @@ import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
 
 /**
- * Activity display a collection of issues in a pager
+ * Activity to display a collection of issues or pull requests in a pager
  */
 public class IssuesViewActivity extends DialogFragmentActivity implements
         OnPageChangeListener {
+
+    private static final String EXTRA_PULL_REQUESTS = "pullRequests";
 
     /**
      * Create an intent to show a single issue
@@ -63,10 +65,8 @@ public class IssuesViewActivity extends DialogFragmentActivity implements
      * @param issue
      * @return intent
      */
-    public static Intent createIntent(Issue issue) {
-        List<Issue> list = new ArrayList<Issue>(1);
-        list.add(issue);
-        return createIntent(list, 0);
+    public static Intent createIntent(final Issue issue) {
+        return createIntent(Collections.singletonList(issue), 0);
     }
 
     /**
@@ -76,7 +76,8 @@ public class IssuesViewActivity extends DialogFragmentActivity implements
      * @param repository
      * @return intent
      */
-    public static Intent createIntent(Issue issue, Repository repository) {
+    public static Intent createIntent(final Issue issue,
+            final Repository repository) {
         return createIntent(Collections.singletonList(issue), repository, 0);
     }
 
@@ -88,15 +89,20 @@ public class IssuesViewActivity extends DialogFragmentActivity implements
      * @param position
      * @return intent
      */
-    public static Intent createIntent(Collection<? extends Issue> issues,
-            Repository repository, int position) {
+    public static Intent createIntent(final Collection<? extends Issue> issues,
+            final Repository repository, final int position) {
         int[] numbers = new int[issues.size()];
+        boolean[] pullRequests = new boolean[issues.size()];
         int index = 0;
-        for (Issue issue : issues)
-            numbers[index++] = issue.getNumber();
+        for (Issue issue : issues) {
+            numbers[index] = issue.getNumber();
+            pullRequests[index] = IssueUtils.isPullRequest(issue);
+            index++;
+        }
         return new Builder("issues.VIEW").add(EXTRA_ISSUE_NUMBERS, numbers)
                 .add(EXTRA_REPOSITORY, repository)
-                .add(EXTRA_POSITION, position).toIntent();
+                .add(EXTRA_POSITION, position)
+                .add(EXTRA_PULL_REQUESTS, pullRequests).toIntent();
     }
 
     /**
@@ -110,10 +116,13 @@ public class IssuesViewActivity extends DialogFragmentActivity implements
             int position) {
         final int count = issues.size();
         int[] numbers = new int[count];
+        boolean[] pullRequests = new boolean[count];
         ArrayList<RepositoryId> repos = new ArrayList<RepositoryId>(count);
         int index = 0;
         for (Issue issue : issues) {
-            numbers[index++] = issue.getNumber();
+            numbers[index] = issue.getNumber();
+            pullRequests[index] = IssueUtils.isPullRequest(issue);
+            index++;
 
             RepositoryId repoId = null;
             if (issue instanceof RepositoryIssue) {
@@ -135,6 +144,7 @@ public class IssuesViewActivity extends DialogFragmentActivity implements
         builder.add(EXTRA_ISSUE_NUMBERS, numbers);
         builder.add(EXTRA_REPOSITORIES, repos);
         builder.add(EXTRA_POSITION, position);
+        builder.add(EXTRA_PULL_REQUESTS, pullRequests);
         return builder.toIntent();
     }
 
@@ -143,6 +153,9 @@ public class IssuesViewActivity extends DialogFragmentActivity implements
 
     @InjectExtra(EXTRA_ISSUE_NUMBERS)
     private int[] issueNumbers;
+
+    @InjectExtra(EXTRA_PULL_REQUESTS)
+    private boolean[] pullRequests;
 
     @InjectExtra(value = EXTRA_REPOSITORIES, optional = true)
     private ArrayList<RepositoryId> repoIds;
@@ -213,17 +226,31 @@ public class IssuesViewActivity extends DialogFragmentActivity implements
         // Intentionally left blank
     }
 
-    public void onPageSelected(int position) {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(getString(string.issue_title)
-                + issueNumbers[position]);
-        if (repo != null)
+    private void updateTitle(final int position) {
+        int number = issueNumbers[position];
+        boolean pullRequest = pullRequests[position];
+
+        if (pullRequest)
+            getSupportActionBar().setTitle(
+                    getString(string.pull_request_title) + number);
+        else
+            getSupportActionBar().setTitle(
+                    getString(string.issue_title) + number);
+    }
+
+    public void onPageSelected(final int position) {
+        if (repo != null) {
+            updateTitle(position);
             return;
+        }
+
         if (repoIds == null)
             return;
 
+        ActionBar actionBar = getSupportActionBar();
         RepositoryId repoId = repoIds.get(position);
         if (repoId != null) {
+            updateTitle(position);
             actionBar.setSubtitle(repoId.generateId());
             RepositoryIssue issue = store.getIssue(repoId,
                     issueNumbers[position]);

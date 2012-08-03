@@ -118,6 +118,7 @@
     <string name="bookmarks">Bookmarks</string>
     <string name="gists_title">Gists</string>
     <string name="issue_title">Issue #</string>
+    <string name="pull_request_title">Pull Request #</string>
     <string name="gist_title">Gist\u0020</string>
     <string name="filter_issues_title">Filter Issues</string>
     <string name="create_comment_title">Create Comment</string>

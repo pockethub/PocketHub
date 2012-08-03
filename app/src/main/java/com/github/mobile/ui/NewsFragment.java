@@ -119,7 +119,9 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
 
         Issue issue = issueMatcher.getIssue(event);
         if (issue != null) {
-            viewIssue(issue);
+            Repository repo = RepositoryEventMatcher.getRepository(
+                    event.getRepo(), event.getActor(), event.getOrg());
+            viewIssue(issue, repo);
             return;
         }
 
@@ -218,9 +220,13 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
      * Start an activity to view the given {@link Issue}
      *
      * @param issue
+     * @param repository
      */
-    protected void viewIssue(Issue issue) {
-        startActivity(IssuesViewActivity.createIntent(issue));
+    protected void viewIssue(Issue issue, Repository repository) {
+        if (repository != null)
+            startActivity(IssuesViewActivity.createIntent(issue, repository));
+        else
+            startActivity(IssuesViewActivity.createIntent(issue));
     }
 
     @Override
