@@ -216,5 +216,11 @@
     <string name="parent_prefix">Anterior\u0020</string>
     <string name="authored">autor</string>
     <string name="committed">commit enviado</string>
+    <string name="diff_line_message">¿Qué deseas hacer?</string>
+    <string name="comment_on_line">Comentar linea</string>
+    <string name="view_entire_file">Ver fichero completo</string>
+    <string name="comparing_commits">Comparando {0} commits</string>
+    <string name="enable_wrapping">Habilitar ajuste de texto</string>
+    <string name="disable_wrapping">Deshabilitar ajuste de texto</string>
 
 </resources>
