@@ -226,8 +226,8 @@ public class IssueFragment extends DialogFragment {
         bodyImageGetter = new HttpImageGetter(getActivity());
         commentImageGetter = new HttpImageGetter(getActivity());
 
-        adapter.addHeader(headerView, null, false);
-        adapter.addFooter(footerView, null, false);
+        adapter.addHeader(headerView);
+        adapter.addFooter(footerView);
 
         issue = store.getIssue(repositoryId, issueNumber);
 
@@ -236,7 +236,7 @@ public class IssueFragment extends DialogFragment {
         loadingText.setText(string.loading_comments);
 
         if (issue == null || (issue.getComments() > 0 && comments == null))
-            adapter.addHeader(loadingView, null, false);
+            adapter.addHeader(loadingView);
 
         if (issue != null && comments != null)
             updateList(issue, comments);
