@@ -18,6 +18,7 @@ package com.github.mobile.ui.issue;
 import static android.graphics.Paint.STRIKE_THRU_TEXT_FLAG;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static org.eclipse.egit.github.core.service.IssueService.STATE_CLOSED;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -36,7 +37,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Label;
-import org.eclipse.egit.github.core.service.IssueService;
 
 /**
  * Base list adapter to display issues
@@ -122,7 +122,7 @@ public abstract class IssueListAdapter<I, V extends ItemView> extends
     protected void updateNumber(int number, String state, int flags,
             TextView view) {
         view.setText(Integer.toString(number));
-        if (IssueService.STATE_CLOSED.equals(state))
+        if (STATE_CLOSED.equals(state))
             view.setPaintFlags(flags | STRIKE_THRU_TEXT_FLAG);
         else
             view.setPaintFlags(flags);
