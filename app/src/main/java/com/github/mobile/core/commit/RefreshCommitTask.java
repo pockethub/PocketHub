@@ -40,6 +40,9 @@ public class RefreshCommitTask extends AuthenticatedUserTask<FullCommit> {
     private static final String TAG = "RefreshCommitTask";
 
     @Inject
+    private CommitStore store;
+
+    @Inject
     private CommitService service;
 
     private final IRepositoryIdProvider repository;
@@ -65,7 +68,7 @@ public class RefreshCommitTask extends AuthenticatedUserTask<FullCommit> {
 
     @Override
     protected FullCommit run(Account account) throws Exception {
-        RepositoryCommit commit = service.getCommit(repository, id);
+        RepositoryCommit commit = store.refreshCommit(repository, id);
         Commit rawCommit = commit.getCommit();
         if (rawCommit != null && rawCommit.getCommentCount() > 0) {
             List<CommitComment> comments = service.getComments(repository,

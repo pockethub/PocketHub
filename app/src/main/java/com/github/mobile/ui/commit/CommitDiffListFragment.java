@@ -45,6 +45,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R.id;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
+import com.github.mobile.core.commit.CommitStore;
 import com.github.mobile.core.commit.CommitUtils;
 import com.github.mobile.core.commit.FullCommit;
 import com.github.mobile.core.commit.FullCommitFile;
@@ -90,10 +91,19 @@ public class CommitDiffListFragment extends DialogFragment implements
 
     private String base;
 
-    private FullCommit commit;
+    private RepositoryCommit commit;
+
+    private List<CommitComment> comments;
+
+    private List<FullCommitFile> files;
 
     @Inject
     private AvatarLoader avatars;
+
+    @Inject
+    private CommitStore store;
+
+    private View loadingView;
 
     private View commitHeader;
 
@@ -134,17 +144,34 @@ public class CommitDiffListFragment extends DialogFragment implements
         super.onActivityCreated(savedInstanceState);
 
         commentImageGetter = new HttpImageGetter(getActivity());
-        refreshCommit();
+
+        commit = store.getCommit(repository, base);
+
+        ((TextView) loadingView.findViewById(id.tv_loading))
+                .setText(string.loading_files_and_comments);
+
+        if (commit == null
+                || (commit.getCommit().getCommentCount() > 0 && comments == null)
+                || files == null)
+            adapter.addFooter(loadingView);
+
+        if (commit != null && comments != null && files != null)
+            updateList(commit, comments, files);
+        else {
+            if (commit != null)
+                updateHeader(commit);
+            refreshCommit();
+        }
     }
 
-    private void addComment(CommitComment comment) {
-        if (commit != null) {
-            commit.add(comment);
-            Commit rawCommit = commit.getCommit().getCommit();
+    private void addComment(final CommitComment comment) {
+        if (comments != null && files != null) {
+            comments.add(comment);
+            Commit rawCommit = commit.getCommit();
             if (rawCommit != null)
                 rawCommit.setCommentCount(rawCommit.getCommentCount() + 1);
             commentImageGetter.encode(comment, comment.getBodyHtml());
-            updateItems(commit);
+            updateItems(comments, files);
         } else
             refreshCommit();
     }
@@ -206,7 +233,7 @@ public class CommitDiffListFragment extends DialogFragment implements
             protected void onSuccess(FullCommit commit) throws Exception {
                 super.onSuccess(commit);
 
-                updateList(commit);
+                updateList(commit.getCommit(), commit, commit.getFiles());
             }
 
             @Override
@@ -289,33 +316,37 @@ public class CommitDiffListFragment extends DialogFragment implements
         }
     }
 
-    private void updateList(FullCommit fullCommit) {
-        if (!isUsable())
-            return;
-
-        commit = fullCommit;
-
-        RepositoryCommit commit = fullCommit.getCommit();
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-
+    private void updateHeader(RepositoryCommit commit) {
         ViewUtils.setGone(progress, true);
         ViewUtils.setGone(list, false);
 
-        adapter.clearHeaders();
-
         addCommitDetails(commit);
-        addCommitParents(commit, inflater);
-        addDiffStats(commit, inflater);
-
-        updateItems(fullCommit);
+        addCommitParents(commit, getActivity().getLayoutInflater());
     }
 
-    private void updateItems(FullCommit fullCommit) {
+    private void updateList(RepositoryCommit commit,
+            List<CommitComment> comments, List<FullCommitFile> files) {
+        if (!isUsable())
+            return;
+
+        this.commit = commit;
+        this.comments = comments;
+        this.files = files;
+
+        adapter.clearHeaders();
+        adapter.clearFooters();
+        updateHeader(commit);
+        addDiffStats(commit, getActivity().getLayoutInflater());
+        updateItems(comments, files);
+    }
+
+    private void updateItems(List<CommitComment> comments,
+            List<FullCommitFile> files) {
         CommitFileListAdapter rootAdapter = adapter.getWrappedAdapter();
         rootAdapter.clear();
-        for (FullCommitFile file : fullCommit.getFiles())
+        for (FullCommitFile file : files)
             rootAdapter.addItem(file);
-        for (CommitComment comment : fullCommit)
+        for (CommitComment comment : comments)
             rootAdapter.addComment(comment);
     }
 
@@ -349,6 +380,8 @@ public class CommitDiffListFragment extends DialogFragment implements
                 .findViewById(id.iv_committer);
         committerName = (TextView) commitHeader.findViewById(id.tv_committer);
         committerDate = (TextView) commitHeader.findViewById(id.tv_commit_date);
+
+        loadingView = inflater.inflate(layout.loading_item, null);
     }
 
     @Override

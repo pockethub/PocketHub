@@ -22,6 +22,8 @@ import android.widget.ListView;
 
 import com.github.mobile.R.string;
 import com.github.mobile.core.ResourcePager;
+import com.github.mobile.core.commit.CommitPager;
+import com.github.mobile.core.commit.CommitStore;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.PagedItemFragment;
@@ -50,11 +52,11 @@ public class CommitListFragment extends PagedItemFragment<RepositoryCommit> {
     @Inject
     protected AvatarLoader avatars;
 
-    /**
-     * Commit service
-     */
     @Inject
-    protected CommitService service;
+    private CommitService service;
+
+    @Inject
+    private CommitStore store;
 
     @InjectExtra(EXTRA_REPOSITORY)
     private Repository repository;
@@ -68,7 +70,7 @@ public class CommitListFragment extends PagedItemFragment<RepositoryCommit> {
 
     @Override
     protected ResourcePager<RepositoryCommit> createPager() {
-        return new ResourcePager<RepositoryCommit>() {
+        return new CommitPager(repository, store) {
 
             private String last;
 
@@ -81,12 +83,8 @@ public class CommitListFragment extends PagedItemFragment<RepositoryCommit> {
                     last = parents.get(0).getSha();
                 else
                     last = null;
-                return super.register(resource);
-            }
 
-            @Override
-            protected Object getId(RepositoryCommit resource) {
-                return resource.getSha();
+                return super.register(resource);
             }
 
             @Override
