@@ -18,6 +18,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <android.version>4.0.1.2</android.version>
     </properties>
+    <scm>
+        <connection>scm:git:git://github.com/github/android.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/github/android.git</developerConnection>
+        <url>https://github.com/github/android</url>
+    </scm>
     <build>
         <pluginManagement>
             <plugins>
