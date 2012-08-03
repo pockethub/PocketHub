@@ -16,12 +16,9 @@
 package com.github.mobile.core.commit;
 
 import com.github.mobile.core.ResourcePager;
-import com.github.mobile.core.gist.GistStore;
 
-import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.RepositoryCommit;
-import org.eclipse.egit.github.core.client.PageIterator;
 
 /**
  * Pager over commits
@@ -45,12 +42,12 @@ public abstract class CommitPager extends ResourcePager<RepositoryCommit> {
     }
 
     @Override
-    protected Object getId(RepositoryCommit resource) {
+    protected Object getId(final RepositoryCommit resource) {
         return resource.getSha();
     }
 
     @Override
-    protected RepositoryCommit register(RepositoryCommit resource) {
+    protected RepositoryCommit register(final RepositoryCommit resource) {
         return store.addCommit(repository, resource);
     }
 }
