@@ -150,9 +150,8 @@ public class CommitDiffListFragment extends DialogFragment implements
         ((TextView) loadingView.findViewById(id.tv_loading))
                 .setText(string.loading_files_and_comments);
 
-        if (commit == null
-                || (commit.getCommit().getCommentCount() > 0 && comments == null)
-                || files == null)
+        if (files == null
+                || (commit != null && commit.getCommit().getCommentCount() > 0 && comments == null))
             adapter.addFooter(loadingView);
 
         if (commit != null && comments != null && files != null)
