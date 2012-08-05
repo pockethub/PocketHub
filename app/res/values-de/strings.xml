@@ -55,6 +55,7 @@
     <string name="loading_milestones">Lade Meilensteine…</string>
     <string name="loading_labels">Lade Markierungen…</string>
     <string name="loading_commits">Lade Commits…</string>
+    <string name="loading_files_and_comments">Lade Dateien &amp; Kommentare…</string>
     <!--  -->
 
     <!-- Empty messages -->
@@ -115,6 +116,7 @@
     <string name="bookmarks">Lesezeichen</string>
     <string name="gists_title">Gists</string>
     <string name="issue_title">Problem #</string>
+    <string name="pull_request_title">Pull Request #</string>
     <string name="gist_title">Gist\u0020</string>
     <string name="filter_issues_title">Probleme filtern</string>
     <string name="create_comment_title">Kommentar erstellen</string>
