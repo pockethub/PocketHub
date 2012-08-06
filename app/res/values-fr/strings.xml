@@ -84,6 +84,7 @@
     <string name="news">Nouvelles</string>
     <string name="issues">Tickets</string>
     <string name="gists">Gists</string>
+    <string name="commits">Commits</string>
     <string name="dashboard_issues">Aperçu des tickets</string>
     <string name="find_repositories">Trouver des dépôts</string>
     <string name="find_issues">Trouver des tickets</string>
@@ -118,6 +119,7 @@
     <string name="bookmarks">Favoris</string>
     <string name="gists_title">Gists</string>
     <string name="issue_title">Ticket #</string>
+    <string name="pull_request_title">Demande de pull #</string>
     <string name="gist_title">Gist\u0020</string>
     <string name="filter_issues_title">Filtrer les tickets</string>
     <string name="create_comment_title">Ajouter un commentaire</string>
@@ -222,4 +224,5 @@
     <string name="comparing_commits">Comparaison {0} commits</string>
     <string name="enable_wrapping">Activer la coupure</string>
     <string name="disable_wrapping">Désactiver la coupure</string>
+
 </resources>
