@@ -88,16 +88,17 @@ public class AccountDataManager {
      * @param file
      * @return data
      */
-    private <V> V read(File file) {
+    @SuppressWarnings("unchecked")
+    private <V> V read(final File file) {
         long start = System.currentTimeMillis();
         long length = file.length();
-        V data = new RequestReader(file, FORMAT_VERSION).read();
+        Object data = new RequestReader(file, FORMAT_VERSION).read();
         if (data != null)
             Log.d(TAG, MessageFormat.format(
                     "Cache hit to {0}, {1} ms to load {2} bytes",
                     file.getName(), (System.currentTimeMillis() - start),
                     length));
-        return data;
+        return (V) data;
     }
 
     /**
