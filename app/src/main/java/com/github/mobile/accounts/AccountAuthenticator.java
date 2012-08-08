@@ -18,8 +18,9 @@ package com.github.mobile.accounts;
 import static android.accounts.AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE;
 import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 import static android.accounts.AccountManager.KEY_INTENT;
-import static com.github.mobile.accounts.LoginActivity.PARAM_AUTHTOKEN_TYPE;
 import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
+import static com.github.mobile.accounts.LoginActivity.PARAM_AUTHTOKEN_TYPE;
+import static com.github.mobile.accounts.LoginActivity.PARAM_USERNAME;
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
@@ -27,6 +28,7 @@ import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 class AccountAuthenticator extends AbstractAccountAuthenticator {
 
@@ -94,6 +96,13 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
     @Override
     public Bundle updateCredentials(AccountAuthenticatorResponse response,
             Account account, String authTokenType, Bundle options) {
-        return null;
+        final Intent intent = new Intent(context, LoginActivity.class);
+        intent.putExtra(PARAM_AUTHTOKEN_TYPE, authTokenType);
+        intent.putExtra(KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
+        if (!TextUtils.isEmpty(account.name))
+            intent.putExtra(PARAM_USERNAME, account.name);
+        final Bundle bundle = new Bundle();
+        bundle.putParcelable(KEY_INTENT, intent);
+        return bundle;
     }
 }

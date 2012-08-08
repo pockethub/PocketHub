@@ -218,6 +218,43 @@ public class AccountUtils {
     }
 
     /**
+     * Update account
+     *
+     * @param account
+     * @param activity
+     * @throws IOException
+     * @throws AccountsException
+     */
+    public static void updateAccount(final Account account,
+            final Activity activity) throws IOException, AccountsException {
+        AccountManager manager = AccountManager.get(activity);
+        try {
+            if (!hasAuthenticator(manager))
+                throw new AuthenticatorConflictException();
+            manager.updateCredentials(account, ACCOUNT_TYPE, null, activity,
+                    null, null).getResult();
+        } catch (OperationCanceledException e) {
+            Log.d(TAG, "Excepting retrieving account", e);
+            activity.finish();
+            throw e;
+        } catch (AccountsException e) {
+            Log.d(TAG, "Excepting retrieving account", e);
+            throw e;
+        } catch (AuthenticatorConflictException e) {
+            activity.runOnUiThread(new Runnable() {
+
+                public void run() {
+                    showConflictMessage(activity);
+                }
+            });
+            throw e;
+        } catch (IOException e) {
+            Log.d(TAG, "Excepting retrieving account", e);
+            throw e;
+        }
+    }
+
+    /**
      * Show conflict message about previously registered authenticator from
      * another application
      *

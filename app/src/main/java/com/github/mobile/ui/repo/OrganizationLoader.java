@@ -15,6 +15,7 @@
  */
 package com.github.mobile.ui.repo;
 
+import android.accounts.Account;
 import android.app.Activity;
 import android.util.Log;
 
@@ -66,7 +67,7 @@ public class OrganizationLoader extends AuthenticatedUserLoader<List<User>> {
     }
 
     @Override
-    public List<User> load() {
+    public List<User> load(final Account account) {
         List<User> orgs;
         try {
             orgs = accountDataManager.getOrgs();

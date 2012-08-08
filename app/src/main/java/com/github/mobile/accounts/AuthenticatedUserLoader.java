@@ -31,7 +31,7 @@ import roboguice.inject.ContextScope;
 
 /**
  * Base loader class that ensures an authenticated account exists before
- * {@link #load()} is called
+ * {@link #load(Account)} is called
  *
  * @param <D>
  */
@@ -83,7 +83,7 @@ public abstract class AuthenticatedUserLoader<D> extends AsyncLoader<D> {
         try {
             contextScope.enter(getContext());
             try {
-                return load();
+                return load(account);
             } finally {
                 contextScope.exit(getContext());
             }
@@ -95,7 +95,8 @@ public abstract class AuthenticatedUserLoader<D> extends AsyncLoader<D> {
     /**
      * Load data
      *
+     * @param account
      * @return data
      */
-    public abstract D load();
+    public abstract D load(Account account);
 }

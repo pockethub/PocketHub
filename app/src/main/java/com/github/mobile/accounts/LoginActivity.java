@@ -86,9 +86,12 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
      */
     public static final String PARAM_AUTHTOKEN_TYPE = "authtokenType";
 
-    private static final String PARAM_CONFIRMCREDENTIALS = "confirmCredentials";
+    /**
+     * Initial user name
+     */
+    public static final String PARAM_USERNAME = "username";
 
-    private static final String PARAM_USERNAME = "username";
+    private static final String PARAM_CONFIRMCREDENTIALS = "confirmCredentials";
 
     private static final String TAG = "LoginActivity";
 
@@ -171,6 +174,11 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
         TextView signupText = (TextView) findViewById(id.tv_signup);
         signupText.setMovementMethod(LinkMovementMethod.getInstance());
         signupText.setText(Html.fromHtml(getString(string.signup_link)));
+
+        if (!TextUtils.isEmpty(username)) {
+            loginText.setText(username);
+            loginText.setEnabled(false);
+        }
 
         TextWatcher watcher = new TextWatcherAdapter() {
 
