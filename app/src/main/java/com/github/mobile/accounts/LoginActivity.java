@@ -177,6 +177,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
         if (!TextUtils.isEmpty(username)) {
             loginText.setText(username);
             loginText.setEnabled(false);
+            loginText.setFocusable(false);
         }
 
         TextWatcher watcher = new TextWatcherAdapter() {
