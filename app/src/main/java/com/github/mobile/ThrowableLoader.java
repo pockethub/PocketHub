@@ -17,6 +17,7 @@ package com.github.mobile;
 
 import android.accounts.Account;
 import android.accounts.AccountsException;
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -24,6 +25,7 @@ import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.accounts.AuthenticatedUserLoader;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Loader that support throwing an exception when loading in the background
@@ -33,6 +35,28 @@ import java.io.IOException;
 public abstract class ThrowableLoader<D> extends AuthenticatedUserLoader<D> {
 
     private static final String TAG = "ThrowableLoader";
+
+    private static final AtomicInteger UPDATE_COUNT = new AtomicInteger(0);
+
+    private static boolean updateAccount(final Account account,
+            final Activity activity) {
+        int count = UPDATE_COUNT.get();
+        synchronized (UPDATE_COUNT) {
+            // Don't update the account if the account was successfully updated
+            // while the lock was being waited for
+            if (count != UPDATE_COUNT.get())
+                return true;
+            try {
+                AccountUtils.updateAccount(account, activity);
+                UPDATE_COUNT.incrementAndGet();
+                return true;
+            } catch (IOException ignored) {
+                return false;
+            } catch (AccountsException ignored) {
+                return false;
+            }
+        }
+    }
 
     private final D data;
 
@@ -61,20 +85,12 @@ public abstract class ThrowableLoader<D> extends AuthenticatedUserLoader<D> {
         try {
             return loadData();
         } catch (Exception e) {
-            if (AccountUtils.isUnauthorized(e))
+            if (AccountUtils.isUnauthorized(e)
+                    && updateAccount(account, activity))
                 try {
-                    AccountUtils.updateAccount(account, activity);
-                    try {
-                        return loadData();
-                    } catch (Exception ignored) {
-                        Log.d(TAG, "Exception loading data", e);
-                        exception = e;
-                        return data;
-                    }
-                } catch (IOException ignored) {
-                    // Ignored
-                } catch (AccountsException ignored) {
-                    // Ignored
+                    return loadData();
+                } catch (Exception e2) {
+                    e = e2;
                 }
             Log.d(TAG, "Exception loading data", e);
             exception = e;
