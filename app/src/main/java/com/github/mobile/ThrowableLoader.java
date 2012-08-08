@@ -15,7 +15,6 @@
  */
 package com.github.mobile;
 
-import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 import android.accounts.Account;
 import android.accounts.AccountsException;
 import android.content.Context;
@@ -25,8 +24,6 @@ import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.accounts.AuthenticatedUserLoader;
 
 import java.io.IOException;
-
-import org.eclipse.egit.github.core.client.RequestException;
 
 /**
  * Loader that support throwing an exception when loading in the background
@@ -64,8 +61,7 @@ public abstract class ThrowableLoader<D> extends AuthenticatedUserLoader<D> {
         try {
             return loadData();
         } catch (Exception e) {
-            if (e instanceof RequestException
-                    && HTTP_UNAUTHORIZED == ((RequestException) e).getStatus())
+            if (AccountUtils.isUnauthorized(e))
                 try {
                     AccountUtils.updateAccount(account, activity);
                     try {

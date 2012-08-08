@@ -19,6 +19,7 @@ import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
 import static android.content.DialogInterface.BUTTON_POSITIVE;
 import static android.util.Log.DEBUG;
 import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
+import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerFuture;
@@ -33,6 +34,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.github.mobile.R.string;
@@ -43,6 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.egit.github.core.User;
+import org.eclipse.egit.github.core.client.RequestException;
 
 /**
  * Helpers for accessing {@link AccountManager}
@@ -281,5 +284,36 @@ public class AccountUtils {
                     }
                 });
         dialog.show();
+    }
+
+    /**
+     * Is the given {@link Exception} due to a 401 Unauthorized API response?
+     *
+     * @param e
+     * @return true if 401, false otherwise
+     */
+    public static boolean isUnauthorized(final Exception e) {
+        if (e instanceof RequestException)
+            return ((RequestException) e).getStatus() == HTTP_UNAUTHORIZED;
+
+        String message = null;
+        if (e instanceof IOException)
+            message = e.getMessage();
+        final Throwable cause = e.getCause();
+        if (cause instanceof IOException) {
+            String causeMessage = cause.getMessage();
+            if (!TextUtils.isEmpty(causeMessage))
+                message = causeMessage;
+        }
+
+        if (TextUtils.isEmpty(message))
+            return false;
+
+        if ("Received authentication challenge is null".equals(message))
+            return true;
+        if ("No authentication challenges found".equals(message))
+            return true;
+
+        return false;
     }
 }
