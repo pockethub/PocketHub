@@ -205,7 +205,6 @@
     <string name="authenticator_conflict_message">Другое приложение уже настроено для аунтификации на GitHub.\n\nВы должны удалить конфликтующее приложение из учётных записей и настроек синхронизации для использования этого приложения.</string>
     <string name="opening_repository">Загрузка {0}…</string>
     <string name="commit_compare_title">Сравнить коммиты</string>
-    <string name="parent_commit">родительский коммит</string>
     <string name="commit_prefix">Коммит\u0020</string>
     <string name="parent_prefix">Родитель\u0020</string>
     <string name="authored">автор</string>

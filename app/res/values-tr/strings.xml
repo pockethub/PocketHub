@@ -213,7 +213,6 @@
     <string name="authenticator_conflict_message">Kurulu olan başka bir uygulama GitHub kimlik doğrulaması için ayarlanmış.\n\nGitHub uygulamasının tekrar kullanılabilmesi için diğer uygulamayı Hesaplardan &amp; eş zamanlama ayarlarından kaldırmanız gerekmekte.</string>
     <string name="opening_repository">Açılıyor {0}…</string>
     <string name="commit_compare_title">Onaylama Karşılaştır</string>
-    <string name="parent_commit">ana onay</string>
     <string name="commit_prefix">Onay\u0020</string>
     <string name="parent_prefix">Ana Onay\u0020</string>
     <string name="authored">yazılmış</string>

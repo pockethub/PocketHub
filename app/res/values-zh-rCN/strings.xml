@@ -209,7 +209,6 @@
     <string name="authenticator_conflict_message">GitHub 认证已配置为安装的另一个应用使用。\n\n您必须从“账户与同步”设置中移除那个应用并将其卸载，才能使用本应用。</string>
     <string name="opening_repository">正在打开 {0}…</string>
     <string name="commit_compare_title">提交比较</string>
-    <string name="parent_commit">先导提交</string>
     <string name="commit_prefix">提交\u0020</string>
 
 </resources>

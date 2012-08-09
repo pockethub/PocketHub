@@ -211,7 +211,6 @@
     <string name="authenticator_conflict_message">Ďalšia nainštalovaná aplikácia už používa GitHub overenie.\n\nMusíte túto aplikáciu odstrániť z Účtov &amp; synchronizovať nastavenia a odinštalovať ju predtým než môže byť aplikácia GitHub použitá.</string>
     <string name="opening_repository">Otváram {0}…</string>
     <string name="commit_compare_title">Porovnanie commitov</string>
-    <string name="parent_commit">rodičovský commit</string>
     <string name="commit_prefix">Commit\u0020</string>
     <string name="parent_prefix">Rodič\u0020</string>
     <string name="authored">pridal</string>
