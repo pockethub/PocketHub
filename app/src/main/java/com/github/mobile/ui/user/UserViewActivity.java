@@ -99,6 +99,7 @@ public class UserViewActivity extends RoboSherlockFragmentActivity implements
 
                     ToastUtils.show(UserViewActivity.this,
                             string.error_person_load);
+                    ViewUtils.setGone(loadingBar, true);
                 }
             }.execute();
         }
