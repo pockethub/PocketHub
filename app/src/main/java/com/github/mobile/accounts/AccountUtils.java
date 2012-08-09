@@ -43,6 +43,7 @@ import com.github.mobile.ui.LightAlertDialog;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.RequestException;
@@ -57,6 +58,8 @@ public class AccountUtils {
     private static boolean AUTHENTICATOR_CHECKED;
 
     private static boolean HAS_AUTHENTICATOR;
+
+    private static final AtomicInteger UPDATE_COUNT = new AtomicInteger(0);
 
     private static class AuthenticatorConflictException extends IOException {
 
@@ -225,35 +228,44 @@ public class AccountUtils {
      *
      * @param account
      * @param activity
-     * @throws IOException
-     * @throws AccountsException
+     * @return true if account was updated, false otherwise
      */
-    public static void updateAccount(final Account account,
-            final Activity activity) throws IOException, AccountsException {
-        AccountManager manager = AccountManager.get(activity);
-        try {
-            if (!hasAuthenticator(manager))
-                throw new AuthenticatorConflictException();
-            manager.updateCredentials(account, ACCOUNT_TYPE, null, activity,
-                    null, null).getResult();
-        } catch (OperationCanceledException e) {
-            Log.d(TAG, "Excepting retrieving account", e);
-            activity.finish();
-            throw e;
-        } catch (AccountsException e) {
-            Log.d(TAG, "Excepting retrieving account", e);
-            throw e;
-        } catch (AuthenticatorConflictException e) {
-            activity.runOnUiThread(new Runnable() {
+    public static boolean updateAccount(final Account account,
+            final Activity activity) {
+        int count = UPDATE_COUNT.get();
+        synchronized (UPDATE_COUNT) {
+            // Don't update the account if the account was successfully updated
+            // while the lock was being waited for
+            if (count != UPDATE_COUNT.get())
+                return true;
 
-                public void run() {
-                    showConflictMessage(activity);
-                }
-            });
-            throw e;
-        } catch (IOException e) {
-            Log.d(TAG, "Excepting retrieving account", e);
-            throw e;
+            AccountManager manager = AccountManager.get(activity);
+            try {
+                if (!hasAuthenticator(manager))
+                    throw new AuthenticatorConflictException();
+                manager.updateCredentials(account, ACCOUNT_TYPE, null,
+                        activity, null, null).getResult();
+                UPDATE_COUNT.incrementAndGet();
+                return true;
+            } catch (OperationCanceledException e) {
+                Log.d(TAG, "Excepting retrieving account", e);
+                activity.finish();
+                return false;
+            } catch (AccountsException e) {
+                Log.d(TAG, "Excepting retrieving account", e);
+                return false;
+            } catch (AuthenticatorConflictException e) {
+                activity.runOnUiThread(new Runnable() {
+
+                    public void run() {
+                        showConflictMessage(activity);
+                    }
+                });
+                return false;
+            } catch (IOException e) {
+                Log.d(TAG, "Excepting retrieving account", e);
+                return false;
+            }
         }
     }
 

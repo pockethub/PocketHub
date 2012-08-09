@@ -22,6 +22,7 @@ import android.content.Context;
 
 import com.google.inject.Inject;
 
+import java.io.IOException;
 import java.util.concurrent.Executor;
 
 import roboguice.inject.ContextScope;
@@ -76,6 +77,14 @@ public abstract class AuthenticatedUserTask<ResultT> extends
             contextScope.enter(getContext());
             try {
                 return run(account);
+            } catch (IOException e) {
+                // Retry task if authentication failure occurs and account is
+                // successfully updated
+                if (AccountUtils.isUnauthorized(e)
+                        && AccountUtils.updateAccount(account, activity))
+                    return run(account);
+                else
+                    throw e;
             } finally {
                 contextScope.exit(getContext());
             }
