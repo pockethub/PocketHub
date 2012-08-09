@@ -61,6 +61,7 @@ public class RepositoryUtils {
                 || "logout".equals(name) //
                 || "new".equals(name) //
                 || "notifications".equals(name) //
+                || "organizations".equals(name) //
                 || "repositories".equals(name) //
                 || "search".equals(name) //
                 || "settings".equals(name) //
