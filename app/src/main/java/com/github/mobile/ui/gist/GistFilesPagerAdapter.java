@@ -39,6 +39,7 @@ public class GistFilesPagerAdapter extends FragmentPagerAdapter {
      */
     public GistFilesPagerAdapter(FragmentManager fm, Gist gist) {
         super(fm);
+
         Map<String, GistFile> gistFiles = gist.getFiles();
         if (gistFiles != null && !gistFiles.isEmpty())
             files = gistFiles.values().toArray(new GistFile[gistFiles.size()]);
