@@ -56,6 +56,7 @@
     <string name="loading_milestones">Načítavam míľniky…</string>
     <string name="loading_labels">Načítavam štítky…</string>
     <string name="loading_commits">Načítavam commity…</string>
+    <string name="loading_files_and_comments">Načítavam súbory &amp; komentáre…</string>
     <!--  -->
 
 
@@ -118,6 +119,7 @@
     <string name="bookmarks">Záložky</string>
     <string name="gists_title">Gisty</string>
     <string name="issue_title">Issue #</string>
+    <string name="pull_request_title">Žiadosť o potiahnutie #</string>
     <string name="gist_title">Gist\u0020</string>
     <string name="filter_issues_title">Filtrovať issues</string>
     <string name="create_comment_title">Vytvoriť komentár</string>
@@ -211,7 +213,6 @@
     <string name="authenticator_conflict_message">Ďalšia nainštalovaná aplikácia už používa GitHub overenie.\n\nMusíte túto aplikáciu odstrániť z Účtov &amp; synchronizovať nastavenia a odinštalovať ju predtým než môže byť aplikácia GitHub použitá.</string>
     <string name="opening_repository">Otváram {0}…</string>
     <string name="commit_compare_title">Porovnanie commitov</string>
-    <string name="parent_commit">rodičovský commit</string>
     <string name="commit_prefix">Commit\u0020</string>
     <string name="parent_prefix">Rodič\u0020</string>
     <string name="authored">pridal</string>
