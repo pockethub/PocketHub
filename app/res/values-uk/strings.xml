@@ -30,7 +30,7 @@
     <string name="error_gists_load">Помилка при завантаженні Gist-ів</string>
     <string name="error_issue_load">Помилка при завантаженні задачі</string>
     <string name="error_collaborators_load">Помилка при завантаженні співучасників</string>
-    <string name="error_milestones_load">Помилка при завантаженні цілей</string>
+    <string name="error_milestones_load">Помилка при завантаженні етапів</string>
     <string name="error_labels_load">Помилка при завантаженні тегів</string>
     <string name="error_bookmarks_load">Помилка при завантаженні закладок</string>
     <string name="error_members_load">Помилка при завантаженні членів</string>
@@ -53,7 +53,7 @@
     <string name="loading_people">Завантаження профілів…</string>
     <string name="loading_gists">Завантаження Gist-ів…</string>
     <string name="loading_collaborators">Завантаження співучасників…</string>
-    <string name="loading_milestones">Завантаження цілей…</string>
+    <string name="loading_milestones">Завантаження етапів…</string>
     <string name="loading_labels">Завантаження тегів…</string>
     <string name="loading_commits">Завантаження комітів…</string>
     <string name="loading_files_and_comments">Завантаження файлів та коментарів…</string>
@@ -77,7 +77,7 @@
     <string name="updating_assignee">Оновлення відповідального…</string>
     <string name="updating_issue">Оновлення задач…</string>
     <string name="updating_labels">Оновлення тегів…</string>
-    <string name="updating_milestone">Оновлення цілі…</string>
+    <string name="updating_milestone">Оновлення етапу…</string>
     <!--  -->
 
     <string name="app_name">GitHub</string>
@@ -128,8 +128,8 @@
     <string name="repositories">Репозиторії</string>
     <string name="issues_title">Завдання</string>
     <string name="edit_labels">Редагувати теги</string>
-    <string name="milestone_prefix">Ціль:</string>
-    <string name="edit_milestone">Редагувати ціль</string>
+    <string name="milestone_prefix">Етап:</string>
+    <string name="edit_milestone">Редагувати етап</string>
     <string name="edit_assignee">Редагувати відповідального</string>
     <string name="my_gists_tab">Мої</string>
     <string name="starred_gists_tab">Улюблені</string>
@@ -144,9 +144,9 @@
     <string name="unstarring_gist">Видалення Gist із улюблених…</string>
     <string name="accounts_label">Профілі</string>
     <string name="select_assignee">Відповідальний</string>
-    <string name="select_milestone">Ціль</string>
+    <string name="select_milestone">Етап</string>
     <string name="select_labels">Теги</string>
-    <string name="no_milestone">Не входить до жодної із цілей</string>
+    <string name="no_milestone">Не входить до жодного із етапів</string>
     <string name="unassigned">Немає відповідального</string>
     <string name="assigned">відповідальний</string>
     <string name="no_gists_found">Gist-и не знайдені</string>
@@ -165,7 +165,7 @@
     <string name="status_closed">Закритий</string>
     <string name="section_issue_assigned">Відповідальний:</string>
     <string name="assignee_anyone">Будь-хто</string>
-    <string name="section_issue_milestone">Ціль:</string>
+    <string name="section_issue_milestone">Етап:</string>
     <string name="none">Немає</string>
     <string name="section_issue_labels">Теги:</string>
     <string name="log_in">Увійти</string>
@@ -195,7 +195,7 @@
     <string name="apply">Ок</string>
     <string name="labels_prefix">Теги:</string>
     <string name="assignee">Відповідальний</string>
-    <string name="milestone">Ціль</string>
+    <string name="milestone">Етап</string>
     <string name="labels">Теги</string>
     <string name="issue_confirm_close_message">Ви впевнені, що хочете закрити це завдання?</string>
     <string name="issue_confirm_reopen_message">Ви впевнені, що хочете відкрити це завдання?</string>
