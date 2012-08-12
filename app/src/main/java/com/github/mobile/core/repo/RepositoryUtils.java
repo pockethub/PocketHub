@@ -54,6 +54,7 @@ public class RepositoryUtils {
                 || "blog".equals(name) //
                 || "contact".equals(name) //
                 || "dashboard".equals(name) //
+                || "downloads".equals(name) //
                 || "explore".equals(name) //
                 || "features".equals(name) //
                 || "inbox".equals(name) //
