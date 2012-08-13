@@ -90,7 +90,7 @@ public class TypefaceUtils {
     /**
      * Follow icon
      */
-    public static final String ICON_FOLLOW = "\uf228";
+    public static final String ICON_FOLLOW = "\uf21C";
 
     /**
      * Watch icon
