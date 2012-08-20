@@ -16,6 +16,8 @@
 package com.github.mobile.util;
 
 import static android.graphics.Paint.Style.FILL;
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH;
 import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 import static android.text.Spanned.SPAN_MARK_MARK;
 import android.graphics.Canvas;
@@ -323,12 +325,26 @@ public class HtmlUtils {
 
         formatEmailFragments(formatted);
 
+        formatIncorrectStyles(formatted);
+
         trim(formatted);
 
         formatted.insert(0, ROOT_START);
         formatted.append(ROOT_END);
 
         return formatted;
+    }
+
+    private static void formatIncorrectStyles(final StringBuilder input) {
+        // em and strong tag styles are swapped on pre-4.0 so swap them back
+        // using alternate tags that don't exhibit the incorrect styling.
+        // http://code.google.com/p/android/issues/detail?id=3473
+        if (SDK_INT < ICE_CREAM_SANDWICH) {
+            replace(input, "<em>", "<i>");
+            replace(input, "</em>", "</i>");
+            replace(input, "<strong>", "<b>");
+            replace(input, "</strong>", "</b>");
+        }
     }
 
     private static StringBuilder strip(final StringBuilder input,
