@@ -19,7 +19,7 @@
     <string name="icon_pull_request">\uf20E</string>
     <string name="icon_comment">\uf04f</string>
     <string name="icon_file">\uf211</string>
-    <string name="icon_watch">\uf04E</string>
+    <string name="icon_star">\uf02a</string>
     <string name="icon_fork">\uf020</string>
 
 </resources>

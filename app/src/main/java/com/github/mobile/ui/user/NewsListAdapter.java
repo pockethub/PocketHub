@@ -30,8 +30,8 @@ import static com.github.mobile.util.TypefaceUtils.ICON_ISSUE_OPEN;
 import static com.github.mobile.util.TypefaceUtils.ICON_ISSUE_REOPEN;
 import static com.github.mobile.util.TypefaceUtils.ICON_PULL_REQUEST;
 import static com.github.mobile.util.TypefaceUtils.ICON_PUSH;
+import static com.github.mobile.util.TypefaceUtils.ICON_STAR;
 import static com.github.mobile.util.TypefaceUtils.ICON_UPLOAD;
-import static com.github.mobile.util.TypefaceUtils.ICON_WATCH;
 import static com.github.mobile.util.TypefaceUtils.ICON_WIKI;
 import static org.eclipse.egit.github.core.event.Event.TYPE_COMMIT_COMMENT;
 import static org.eclipse.egit.github.core.event.Event.TYPE_CREATE;
@@ -359,7 +359,7 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
     private static void formatWatch(Event event, StyledText main,
             StyledText details) {
         boldActor(main, event);
-        main.append(" started watching ");
+        main.append(" starred ");
         boldRepo(main, event);
     }
 
@@ -576,7 +576,7 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
             icon = ICON_ADD_MEMBER;
             formatTeamAdd(event, main, details);
         } else if (TYPE_WATCH.equals(type)) {
-            icon = ICON_WATCH;
+            icon = ICON_STAR;
             formatWatch(event, main, details);
         }
 

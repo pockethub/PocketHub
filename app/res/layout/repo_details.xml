@@ -44,7 +44,7 @@
         <TextView
             android:id="@+id/tv_watchers_icon"
             style="@style/ListIcon"
-            android:text="@string/icon_watch" />
+            android:text="@string/icon_star" />
 
         <TextView
             android:id="@+id/tv_watchers"

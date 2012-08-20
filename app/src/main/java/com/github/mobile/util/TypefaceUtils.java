@@ -93,9 +93,9 @@ public class TypefaceUtils {
     public static final String ICON_FOLLOW = "\uf21C";
 
     /**
-     * Watch icon
+     * Star icon
      */
-    public static final String ICON_WATCH = "\uf21D";
+    public static final String ICON_STAR = "\uf02A";
 
     /**
      * Pull request icon
