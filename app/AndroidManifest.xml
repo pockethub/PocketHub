@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.github.mobile"
-    android:versionCode="600"
-    android:versionName="1.1" >
+    android:versionCode="700"
+    android:versionName="1.2" >
 
     <uses-sdk
         android:minSdkVersion="8"
