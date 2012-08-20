@@ -56,6 +56,7 @@
     <string name="loading_milestones">Načítavam míľniky…</string>
     <string name="loading_labels">Načítavam štítky…</string>
     <string name="loading_commits">Načítavam commity…</string>
+    <string name="loading_files_and_comments">Načítavam súbory &amp; komentáre…</string>
     <!--  -->
 
 
@@ -118,6 +119,7 @@
     <string name="bookmarks">Záložky</string>
     <string name="gists_title">Gisty</string>
     <string name="issue_title">Issue #</string>
+    <string name="pull_request_title">Žiadosť o potiahnutie #</string>
     <string name="gist_title">Gist\u0020</string>
     <string name="filter_issues_title">Filtrovať issues</string>
     <string name="create_comment_title">Vytvoriť komentár</string>
