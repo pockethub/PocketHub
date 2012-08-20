@@ -50,7 +50,7 @@
             android:id="@+id/tv_watchers"
             style="@style/ListNumericSubtitleText"
             android:paddingLeft="5dp"
-            android:paddingRight="10dp" />
+            android:paddingRight="15dp" />
 
         <TextView
             android:id="@+id/tv_forks_icon"
