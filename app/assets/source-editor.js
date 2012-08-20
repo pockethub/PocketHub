@@ -114,7 +114,7 @@ function updateWidth() {
   var lines = document.getElementsByClassName("CodeMirror-lines")[0];
   if (lines) {
     var root = document.getElementsByClassName("CodeMirror")[0];
-    if (root)
+    if (root && lines.scrollWidth > lines.clientWidth)
       root.style.width = lines.scrollWidth + "px";
   }
 }
@@ -136,5 +136,6 @@ function loadEditor() {
   if (mode.file)
     CodeMirror.autoLoadMode(editor, mode.file);
 
-  updateWidth();
+  if (!config.lineWrapping)
+    updateWidth();
 }
