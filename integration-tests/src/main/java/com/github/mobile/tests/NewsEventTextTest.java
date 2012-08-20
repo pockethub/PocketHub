@@ -255,7 +255,7 @@ public class NewsEventTextTest extends AndroidTestCase {
         Event event = createEvent(TYPE_WATCH);
         updateView(event);
 
-        verify("user started watching user/repo");
+        verify("user starred user/repo");
     }
 
     /**
