@@ -340,10 +340,8 @@ public class HtmlUtils {
         // using alternate tags that don't exhibit the incorrect styling.
         // http://code.google.com/p/android/issues/detail?id=3473
         if (SDK_INT < ICE_CREAM_SANDWICH) {
-            replace(input, "<em>", "<i>");
-            replace(input, "</em>", "</i>");
-            replace(input, "<strong>", "<b>");
-            replace(input, "</strong>", "</b>");
+            replaceTag(input, "em", "i");
+            replaceTag(input, "strong", "b");
         }
     }
 
@@ -360,16 +358,25 @@ public class HtmlUtils {
         return input;
     }
 
-    private static StringBuilder replace(final StringBuilder input,
+    private static boolean replace(final StringBuilder input,
             final String from, final String to) {
         int start = input.indexOf(from);
-        int length = from.length();
+        if (start == -1)
+            return false;
+
+        final int length = from.length();
         while (start != -1) {
             input.delete(start, start + length);
             input.insert(start, to);
             start = input.indexOf(from, start);
         }
-        return input;
+        return true;
+    }
+
+    private static void replaceTag(final StringBuilder input,
+            final String from, final String to) {
+        if (replace(input, '<' + from + '>', '<' + to + '>'))
+            replace(input, "</" + from + '>', "</" + to + '>');
     }
 
     private static StringBuilder replace(final StringBuilder input,
