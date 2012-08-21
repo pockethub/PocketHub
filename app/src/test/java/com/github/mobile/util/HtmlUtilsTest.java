@@ -133,6 +133,24 @@ public class HtmlUtilsTest {
     }
 
     /**
+     * em tags replaced with i tags
+     */
+    @Test
+    public void emReplacedWithI() {
+        String html = "a<em>b</em>c";
+        assertEquals("a<i>b</i>c", format(html));
+    }
+
+    /**
+     * strong tags replaced with b tags
+     */
+    @Test
+    public void strongReplacedWithB() {
+        String html = "<strong>a</strong>";
+        assertEquals("<b>a</b>", format(html));
+    }
+
+    /**
      * Leading whitespace is removed
      */
     @Test
