@@ -383,11 +383,17 @@ public class HtmlUtils {
             final String fromStart, final String fromEnd, final String toStart,
             final String toEnd) {
         int start = input.indexOf(fromStart);
+        if (start == -1)
+            return input;
+
+        final int fromStartLength = fromStart.length();
+        final int fromEndLength = fromEnd.length();
+        final int toStartLength = toStart.length();
         while (start != -1) {
-            input.replace(start, start + fromStart.length(), toStart);
-            int end = input.indexOf(fromEnd, start + toStart.length());
+            input.replace(start, start + fromStartLength, toStart);
+            int end = input.indexOf(fromEnd, start + toStartLength);
             if (end != -1)
-                input.replace(end, end + fromEnd.length(), toEnd);
+                input.replace(end, end + fromEndLength, toEnd);
 
             start = input.indexOf(fromStart);
         }
