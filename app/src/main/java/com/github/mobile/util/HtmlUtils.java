@@ -367,8 +367,7 @@ public class HtmlUtils {
         final int fromLength = from.length();
         final int toLength = to.length();
         while (start != -1) {
-            input.delete(start, start + fromLength);
-            input.insert(start, to);
+            input.replace(start, start + fromLength, to);
             start = input.indexOf(from, start + toLength);
         }
         return true;
@@ -385,15 +384,10 @@ public class HtmlUtils {
             final String toEnd) {
         int start = input.indexOf(fromStart);
         while (start != -1) {
-
-            input.delete(start, start + fromStart.length());
-            input.insert(start, toStart);
-
+            input.replace(start, start + fromStart.length(), toStart);
             int end = input.indexOf(fromEnd, start + toStart.length());
-            if (end != -1) {
-                input.delete(end, end + fromEnd.length());
-                input.insert(end, toEnd);
-            }
+            if (end != -1)
+                input.replace(end, end + fromEnd.length(), toEnd);
 
             start = input.indexOf(fromStart);
         }
