@@ -53,6 +53,9 @@ import android.widget.TextView.OnEditorActionListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.DefaultClient;
+import com.github.mobile.AuthorizationClient;
+import com.github.mobile.AuthorizationResponse;
+import com.github.mobile.accounts.AuthorizationHelper;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
@@ -261,14 +264,27 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
 
             @Override
             public User call() throws Exception {
+              
+                AuthorizationClient ac = new AuthorizationClient(username, password);
+                AuthorizationResponse[] auths = ac.getAuthorizations();
+              
                 GitHubClient client = new DefaultClient();
                 client.setCredentials(username, password);
                 User user = new UserService(client).getUser();
 
+                String authToken = AuthorizationHelper.requestAuthToken(username, password);
+
                 Account account = new Account(user.getLogin(), ACCOUNT_TYPE);
                 if (requestNewAccount) {
-                    accountManager
-                            .addAccountExplicitly(account, password, null);
+                    accountManager.addAccount(
+                        ACCOUNT_TYPE,
+                        authTokenType,
+                        null, // Required Features
+                        null, // Account Options
+                        LoginActivity.this,
+                        null, // Callback
+                        null  // Handler ( default: main thread )
+                      );
                     configureSyncFor(account);
                     try {
                         new AccountLoader(LoginActivity.this).call();
@@ -276,7 +292,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
                         Log.d(TAG, "Exception loading organizations", e);
                     }
                 } else
-                    accountManager.setPassword(account, password);
+                    accountManager.setAuthToken(account, authTokenType, authToken);
 
                 return user;
             }
