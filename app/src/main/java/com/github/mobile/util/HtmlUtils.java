@@ -318,8 +318,8 @@ public class HtmlUtils {
         strip(formatted, HIDDEN_REPLY_START, HIDDEN_REPLY_END);
 
         // Replace paragraphs with breaks
-        replace(formatted, PARAGRAPH_START, BREAK);
-        replace(formatted, PARAGRAPH_END, BREAK);
+        if (replace(formatted, PARAGRAPH_START, BREAK))
+            replace(formatted, PARAGRAPH_END, BREAK);
 
         formatPres(formatted);
 
