@@ -364,11 +364,12 @@ public class HtmlUtils {
         if (start == -1)
             return false;
 
-        final int length = from.length();
+        final int fromLength = from.length();
+        final int toLength = to.length();
         while (start != -1) {
-            input.delete(start, start + length);
+            input.delete(start, start + fromLength);
             input.insert(start, to);
-            start = input.indexOf(from, start);
+            start = input.indexOf(from, start + toLength);
         }
         return true;
     }

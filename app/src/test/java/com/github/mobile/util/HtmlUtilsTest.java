@@ -124,6 +124,15 @@ public class HtmlUtilsTest {
     }
 
     /**
+     * Paragraph replaced with break
+     */
+    @Test
+    public void paragraphReplacedWithBreak() {
+        String html = "line1<p>line2</p>";
+        assertEquals("line1<br>line2", format(html));
+    }
+
+    /**
      * Leading whitespace is removed
      */
     @Test
