@@ -23,12 +23,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R.drawable;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
-import com.github.mobile.ui.ItemListAdapter;
-import com.github.mobile.ui.ItemView;
 import com.github.mobile.util.AvatarLoader;
 
 import java.util.List;
@@ -56,47 +55,32 @@ public class HomeDropdownListAdapter extends BaseAdapter {
      */
     public static final int ACTION_BOOKMARKS = 2;
 
-    private static class OrgItemView extends ItemView {
-
-        public final TextView nameText;
-
-        public final ImageView avatarView;
-
-        public OrgItemView(View view) {
-            super(view);
-
-            nameText = (TextView) view.findViewById(id.tv_org_name);
-            avatarView = (ImageView) view.findViewById(id.iv_avatar);
-        }
-    }
-
-    private static class OrgListAdapter extends
-            ItemListAdapter<User, OrgItemView> {
+    private static class OrgListAdapter extends SingleTypeAdapter<User> {
 
         private final AvatarLoader avatars;
 
         public OrgListAdapter(final int viewId, final LayoutInflater inflater,
                 final User[] elements, final AvatarLoader avatars) {
-            super(viewId, inflater, elements);
+            super(inflater, viewId);
 
             this.avatars = avatars;
-        }
-
-        @Override
-        protected void update(final int position, final OrgItemView view,
-                final User user) {
-            view.nameText.setText(user.getLogin());
-            avatars.bind(view.avatarView, user);
-        }
-
-        @Override
-        protected OrgItemView createView(final View view) {
-            return new OrgItemView(view);
+            setItems(elements);
         }
 
         @Override
         public long getItemId(final int position) {
             return getItem(position).getId();
+        }
+
+        @Override
+        protected int[] getChildViewIds() {
+            return new int[] { id.tv_org_name, id.iv_avatar };
+        }
+
+        @Override
+        protected void update(int position, User user) {
+            setText(id.tv_org_name, user.getLogin());
+            avatars.bind(imageView(id.iv_avatar), user);
         }
     }
 

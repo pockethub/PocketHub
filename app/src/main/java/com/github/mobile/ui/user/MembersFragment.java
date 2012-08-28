@@ -21,12 +21,11 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R.string;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.accounts.AccountUtils;
-import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
-import com.github.mobile.ui.ItemView;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
@@ -84,8 +83,7 @@ public class MembersFragment extends ItemListFragment<User> implements
     }
 
     @Override
-    protected ItemListAdapter<User, ? extends ItemView> createAdapter(
-            List<User> items) {
+    protected SingleTypeAdapter<User> createAdapter(List<User> items) {
         User[] users = items.toArray(new User[items.size()]);
         return new UserListAdapter(getActivity().getLayoutInflater(), users,
                 avatars);

@@ -36,6 +36,7 @@ import com.actionbarsherlock.R.menu;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
@@ -45,8 +46,6 @@ import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.core.issue.IssuePager;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.persistence.AccountDataManager;
-import com.github.mobile.ui.ItemListAdapter;
-import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.PagedItemFragment;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
@@ -272,8 +271,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     }
 
     @Override
-    protected ItemListAdapter<Issue, ? extends ItemView> createAdapter(
-            List<Issue> items) {
+    protected SingleTypeAdapter<Issue> createAdapter(List<Issue> items) {
         return new RepositoryIssueListAdapter(
                 getActivity().getLayoutInflater(),
                 items.toArray(new Issue[items.size()]), avatars);

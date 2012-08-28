@@ -31,7 +31,6 @@ import com.github.mobile.util.TimeUtils;
 import com.github.mobile.util.ViewUtils;
 import com.viewpagerindicator.R.id;
 
-import java.text.NumberFormat;
 import java.util.List;
 
 import org.eclipse.egit.github.core.CommitComment;
@@ -41,9 +40,6 @@ import org.eclipse.egit.github.core.CommitFile;
  * Adapter to display a list of files changed in commits
  */
 public class CommitFileListAdapter extends MultiTypeAdapter {
-
-    private static final NumberFormat FORMAT = NumberFormat
-            .getIntegerInstance();
 
     private static final int TYPE_FILE_HEADER = 0;
 
@@ -193,10 +189,11 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
 
             StyledText stats = new StyledText();
             stats.foreground('+', addTextColor);
-            stats.foreground(FORMAT.format(file.getAdditions()), addTextColor);
+            stats.foreground(FORMAT_INT.format(file.getAdditions()),
+                    addTextColor);
             stats.append(' ').append(' ').append(' ');
             stats.foreground('-', removeTextColor);
-            stats.foreground(FORMAT.format(file.getDeletions()),
+            stats.foreground(FORMAT_INT.format(file.getDeletions()),
                     removeTextColor);
             setText(id.tv_stats, stats);
             return;

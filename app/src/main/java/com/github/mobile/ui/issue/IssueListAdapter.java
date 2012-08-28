@@ -16,8 +16,6 @@
 package com.github.mobile.ui.issue;
 
 import static android.graphics.Paint.STRIKE_THRU_TEXT_FLAG;
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_CLOSED;
 import android.graphics.Color;
 import android.text.TextUtils;
@@ -25,14 +23,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R.id;
-import com.github.mobile.ui.ItemListAdapter;
-import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.TypefaceUtils;
 
-import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -41,17 +38,14 @@ import org.eclipse.egit.github.core.Label;
 /**
  * Base list adapter to display issues
  *
- * @param <I>
  * @param <V>
  */
-public abstract class IssueListAdapter<I, V extends ItemView> extends
-        ItemListAdapter<I, V> {
+public abstract class IssueListAdapter<V> extends SingleTypeAdapter<V> {
 
     /**
-     * Number formatter
+     * Maximum number of label bands to display
      */
-    private static final NumberFormat FORMAT = NumberFormat
-            .getIntegerInstance();
+    protected static final int MAX_LABELS = 8;
 
     /**
      * Avatar loader
@@ -74,16 +68,14 @@ public abstract class IssueListAdapter<I, V extends ItemView> extends
      * @param elements
      * @param avatars
      */
-    public IssueListAdapter(int viewId, LayoutInflater inflater, I[] elements,
-            AvatarLoader avatars) {
-        super(viewId, inflater, elements);
+    public IssueListAdapter(int viewId, LayoutInflater inflater,
+            Object[] elements, AvatarLoader avatars) {
+        super(inflater, viewId);
 
         this.avatars = avatars;
         this.numberView = (TextView) inflater.inflate(viewId, null)
                 .findViewById(id.tv_issue_number);
-
-        if (elements != null && elements.length > 0)
-            computeNumberWidth(elements);
+        setItems(elements);
     }
 
     /**
@@ -92,35 +84,36 @@ public abstract class IssueListAdapter<I, V extends ItemView> extends
      * @param issue
      * @return issue number
      */
-    protected abstract int getNumber(I issue);
+    protected abstract int getNumber(V issue);
 
     @SuppressWarnings("unchecked")
     private void computeNumberWidth(final Object[] items) {
         int[] numbers = new int[items.length];
         for (int i = 0; i < numbers.length; i++)
-            numbers[i] = getNumber((I) items[i]);
+            numbers[i] = getNumber((V) items[i]);
         int digits = Math.max(TypefaceUtils.getMaxDigits(numbers), 4);
         numberWidth = TypefaceUtils.getWidth(numberView, digits)
                 + numberView.getPaddingLeft() + numberView.getPaddingRight();
     }
 
     @Override
-    public ItemListAdapter<I, V> setItems(final Object[] items) {
-        computeNumberWidth(items);
+    public void setItems(final Object[] items) {
+        super.setItems(items);
 
-        return super.setItems(items);
+        computeNumberWidth(items);
     }
 
     /**
      * Update issue number displayed in given text view
      *
+     *
      * @param number
      * @param state
      * @param flags
-     * @param view
+     * @param viewId
      */
-    protected void updateNumber(int number, String state, int flags,
-            TextView view) {
+    protected void updateNumber(int number, String state, int flags, int viewId) {
+        TextView view = textView(viewId);
         view.setText(Integer.toString(number));
         if (STATE_CLOSED.equals(state))
             view.setPaintFlags(flags | STRIKE_THRU_TEXT_FLAG);
@@ -130,51 +123,42 @@ public abstract class IssueListAdapter<I, V extends ItemView> extends
     }
 
     /**
-     * Update comment count in given text view
-     *
-     * @param comments
-     * @param view
-     */
-    protected void updateComments(int comments, TextView view) {
-        view.setText(FORMAT.format(comments));
-    }
-
-    /**
      * Update reporter details in given text view
+     *
      *
      * @param reporter
      * @param date
-     * @param view
+     * @param viewId
      */
-    protected void updateReporter(String reporter, Date date, TextView view) {
+    protected void updateReporter(String reporter, Date date, int viewId) {
         StyledText reporterText = new StyledText();
         reporterText.bold(reporter);
         reporterText.append(' ');
         reporterText.append(date);
-        view.setText(reporterText);
+        setText(viewId, reporterText);
     }
 
     /**
      * Update label views with values from given label models
      *
      * @param labels
-     * @param views
      */
-    protected void updateLabels(List<Label> labels, View[] views) {
+    protected void updateLabels(List<Label> labels) {
         if (labels != null && !labels.isEmpty()) {
-            int size = Math.min(labels.size(), views.length);
+            int size = Math.min(labels.size(), MAX_LABELS);
             for (int i = 0; i < size; i++) {
                 String color = labels.get(i).getColor();
                 if (!TextUtils.isEmpty(color)) {
-                    views[i].setBackgroundColor(Color.parseColor('#' + color));
-                    views[i].setVisibility(VISIBLE);
+                    View view = view(id.v_label0 + i);
+                    view.setBackgroundColor(Color.parseColor('#' + color));
+                    ViewUtils.setGone(view, false);
                 } else
-                    views[i].setVisibility(GONE);
+                    setGone(id.v_label0 + i, true);
             }
-            for (int i = size; i < views.length; i++)
-                views[i].setVisibility(GONE);
+            for (int i = size; i < MAX_LABELS; i++)
+                setGone(id.v_label0 + i, true);
         } else
-            for (View label : views)
-                label.setVisibility(GONE);
+            for (int i = 0; i < MAX_LABELS; i++)
+                setGone(id.v_label0 + i, true);
     }
 }

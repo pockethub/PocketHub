@@ -27,15 +27,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.TextView;
 
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R.string;
 import com.github.mobile.ui.DialogFragmentActivity;
-import com.github.mobile.ui.ItemListAdapter;
-import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.SingleChoiceDialogFragment;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
@@ -51,25 +47,7 @@ import org.eclipse.egit.github.core.User;
  */
 public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
 
-    private static class UserItemView extends ItemView {
-
-        public final TextView login;
-
-        public final ImageView avatar;
-
-        public final RadioButton selected;
-
-        public UserItemView(final View view) {
-            super(view);
-
-            login = (TextView) view.findViewById(id.tv_login);
-            avatar = (ImageView) view.findViewById(id.iv_avatar);
-            selected = (RadioButton) view.findViewById(id.rb_selected);
-        }
-    }
-
-    private static class UserListAdapter extends
-            ItemListAdapter<User, UserItemView> {
+    private static class UserListAdapter extends SingleTypeAdapter<User> {
 
         private final int selected;
 
@@ -77,28 +55,28 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
 
         public UserListAdapter(LayoutInflater inflater, User[] users,
                 int selected, AvatarLoader loader) {
-            super(layout.collaborator_item, inflater, users);
+            super(inflater, layout.collaborator_item);
 
             this.selected = selected;
             this.loader = loader;
-        }
-
-        @Override
-        protected void update(final int position, final UserItemView view,
-                final User item) {
-            view.login.setText(item.getLogin());
-            loader.bind(view.avatar, item);
-            view.selected.setChecked(selected == position);
-        }
-
-        @Override
-        protected UserItemView createView(View view) {
-            return new UserItemView(view);
+            setItems(users);
         }
 
         @Override
         public long getItemId(int position) {
             return getItem(position).getId();
+        }
+
+        @Override
+        protected int[] getChildViewIds() {
+            return new int[] { id.tv_login, id.iv_avatar, id.rb_selected };
+        }
+
+        @Override
+        protected void update(int position, User item) {
+            setText(id.tv_login, item.getLogin());
+            loader.bind(imageView(id.iv_avatar), item);
+            setChecked(id.rb_selected, selected == position);
         }
     }
 

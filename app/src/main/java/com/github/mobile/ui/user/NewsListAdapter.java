@@ -15,8 +15,6 @@
  */
 package com.github.mobile.ui.user;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 import static com.github.mobile.util.TypefaceUtils.ICON_ADD_MEMBER;
 import static com.github.mobile.util.TypefaceUtils.ICON_COMMENT;
 import static com.github.mobile.util.TypefaceUtils.ICON_CREATE;
@@ -55,14 +53,16 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.github.kevinsawicki.wishlist.ViewUtils;
+import com.github.mobile.R.id;
 import com.github.mobile.core.issue.IssueUtils;
-import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.TimeUtils;
+import com.github.mobile.util.TypefaceUtils;
 import com.viewpagerindicator.R.layout;
 
-import java.text.NumberFormat;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Comment;
@@ -93,10 +93,7 @@ import org.eclipse.egit.github.core.event.TeamAddPayload;
 /**
  * Adapter for a list of news events
  */
-public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
-
-    private static final NumberFormat NUMBER_FORMAT = NumberFormat
-            .getIntegerInstance();
+public class NewsListAdapter extends SingleTypeAdapter<Event> {
 
     /**
      * Can the given event be rendered by this view holder?
@@ -418,8 +415,7 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
         int size = commits != null ? commits.size() : -1;
         if (size > 0) {
             if (size != 1)
-                details.append(NUMBER_FORMAT.format(size)).append(
-                        " new commits");
+                details.append(FORMAT_INT.format(size)).append(" new commits");
             else
                 details.append("1 new commit");
 
@@ -489,9 +485,10 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
      */
     public NewsListAdapter(LayoutInflater inflater, Event[] elements,
             AvatarLoader avatars) {
-        super(layout.news_item, inflater, elements);
+        super(inflater, layout.news_item);
 
         this.avatars = avatars;
+        setItems(elements);
     }
 
     /**
@@ -513,9 +510,22 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
     }
 
     @Override
-    protected void update(final int position, final NewsItemView view,
-            final Event event) {
-        avatars.bind(view.avatarView, event.getActor());
+    protected int[] getChildViewIds() {
+        return new int[] { id.iv_avatar, id.tv_event, id.tv_event_details,
+                id.tv_event_icon, id.tv_event_date };
+    }
+
+    @Override
+    protected View initialize(View view) {
+        view = super.initialize(view);
+
+        TypefaceUtils.setOcticons(textView(view, id.tv_event_icon));
+        return view;
+    }
+
+    @Override
+    protected void update(int position, Event event) {
+        avatars.bind(imageView(id.iv_avatar), event.getActor());
 
         StyledText main = new StyledText();
         StyledText details = new StyledText();
@@ -580,25 +590,19 @@ public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
             formatWatch(event, main, details);
         }
 
-        if (icon != null) {
-            view.iconText.setText(icon);
-            view.iconText.setVisibility(VISIBLE);
-        } else
-            view.iconText.setVisibility(GONE);
+        if (icon != null)
+            ViewUtils.setGone(setText(id.tv_event_icon, icon), false);
+        else
+            setGone(id.tv_event_icon, true);
 
-        view.eventText.setText(main);
+        setText(id.tv_event, main);
 
-        if (!TextUtils.isEmpty(details)) {
-            view.detailsText.setText(details);
-            view.detailsText.setVisibility(VISIBLE);
-        } else
-            view.detailsText.setVisibility(GONE);
+        if (!TextUtils.isEmpty(details))
+            ViewUtils.setGone(setText(id.tv_event_details, details), false);
+        else
+            setGone(id.tv_event_details, true);
 
-        view.dateText.setText(TimeUtils.getRelativeTime(event.getCreatedAt()));
-    }
-
-    @Override
-    protected NewsItemView createView(final View view) {
-        return new NewsItemView(view);
+        setText(id.tv_event_date,
+                TimeUtils.getRelativeTime(event.getCreatedAt()));
     }
 }

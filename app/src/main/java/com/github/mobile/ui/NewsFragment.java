@@ -27,6 +27,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R.string;
 import com.github.mobile.core.gist.GistEventMatcher;
 import com.github.mobile.core.issue.IssueEventMatcher;
@@ -230,8 +231,7 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
     }
 
     @Override
-    protected ItemListAdapter<Event, ? extends ItemView> createAdapter(
-            List<Event> items) {
+    protected SingleTypeAdapter<Event> createAdapter(List<Event> items) {
         return new NewsListAdapter(getActivity().getLayoutInflater(),
                 items.toArray(new Event[items.size()]), avatars);
     }

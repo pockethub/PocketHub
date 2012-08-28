@@ -15,15 +15,15 @@
  */
 package com.github.mobile.ui.issue;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 import android.view.LayoutInflater;
-import android.view.View;
+import android.widget.TextView;
 
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.github.kevinsawicki.wishlist.ViewUtils;
+import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.core.issue.IssueFilter;
-import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.util.AvatarLoader;
 
 import java.util.Collection;
@@ -35,8 +35,7 @@ import org.eclipse.egit.github.core.User;
 /**
  * Adapter to display a list of {@link IssueFilter} objects
  */
-public class FilterListAdapter extends
-        ItemListAdapter<IssueFilter, FilterItemView> {
+public class FilterListAdapter extends SingleTypeAdapter<IssueFilter> {
 
     private final AvatarLoader avatars;
 
@@ -49,9 +48,10 @@ public class FilterListAdapter extends
      */
     public FilterListAdapter(LayoutInflater inflater, IssueFilter[] elements,
             AvatarLoader avatars) {
-        super(layout.issues_filter_item, inflater, elements);
+        super(inflater, layout.issues_filter_item);
 
         this.avatars = avatars;
+        setItems(elements);
     }
 
     /**
@@ -65,40 +65,43 @@ public class FilterListAdapter extends
     }
 
     @Override
-    protected void update(final int position, final FilterItemView view,
-            final IssueFilter filter) {
-        avatars.bind(view.avatarView, filter.getRepository().getOwner());
-        view.repoText.setText(filter.getRepository().generateId());
-        if (filter.isOpen())
-            view.stateText.setText(string.open_issues);
-        else
-            view.stateText.setText(string.closed_issues);
-
-        Collection<Label> labels = filter.getLabels();
-        if (labels != null && !labels.isEmpty()) {
-            LabelDrawableSpan.setText(view.labelsText, labels);
-            view.labelsText.setVisibility(VISIBLE);
-        } else
-            view.labelsText.setVisibility(GONE);
-
-        Milestone milestone = filter.getMilestone();
-        if (milestone != null) {
-            view.milestoneText.setText(milestone.getTitle());
-            view.milestoneText.setVisibility(VISIBLE);
-        } else
-            view.milestoneText.setVisibility(GONE);
-
-        User assignee = filter.getAssignee();
-        if (assignee != null) {
-            avatars.bind(view.assigneeAvatarView, assignee);
-            view.assigneeText.setText(assignee.getLogin());
-            view.assigneeArea.setVisibility(VISIBLE);
-        } else
-            view.assigneeArea.setVisibility(GONE);
+    protected int[] getChildViewIds() {
+        return new int[] { id.iv_avatar, id.tv_repo_name, id.tv_filter_state,
+                id.tv_filter_labels, id.tv_filter_milestone, id.ll_assignee,
+                id.tv_filter_assignee, id.iv_assignee_avatar };
     }
 
     @Override
-    protected FilterItemView createView(final View view) {
-        return new FilterItemView(view);
+    protected void update(int position, IssueFilter filter) {
+        avatars.bind(imageView(id.iv_avatar), filter.getRepository().getOwner());
+        setText(id.tv_repo_name, filter.getRepository().generateId());
+        if (filter.isOpen())
+            setText(id.tv_filter_state, string.open_issues);
+        else
+            setText(id.tv_filter_state, string.closed_issues);
+
+        Collection<Label> labels = filter.getLabels();
+        if (labels != null && !labels.isEmpty()) {
+            TextView labelsText = textView(id.tv_filter_labels);
+            LabelDrawableSpan.setText(labelsText, labels);
+            ViewUtils.setGone(labelsText, false);
+        } else
+            setGone(id.tv_filter_labels, true);
+
+        Milestone milestone = filter.getMilestone();
+        if (milestone != null)
+            ViewUtils.setGone(
+                    setText(id.tv_filter_milestone, milestone.getTitle()),
+                    false);
+        else
+            setGone(id.tv_filter_milestone, true);
+
+        User assignee = filter.getAssignee();
+        if (assignee != null) {
+            avatars.bind(imageView(id.iv_assignee_avatar), assignee);
+            ViewUtils.setGone(
+                    setText(id.tv_filter_assignee, assignee.getLogin()), false);
+        } else
+            setGone(id.tv_filter_assignee, true);
     }
 }

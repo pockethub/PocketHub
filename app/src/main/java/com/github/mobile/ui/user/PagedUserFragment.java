@@ -18,9 +18,8 @@ package com.github.mobile.ui.user;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.accounts.AccountUtils;
-import com.github.mobile.ui.ItemListAdapter;
-import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.PagedItemFragment;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
@@ -48,8 +47,7 @@ public abstract class PagedUserFragment extends PagedItemFragment<User> {
     protected UserService service;
 
     @Override
-    protected ItemListAdapter<User, ? extends ItemView> createAdapter(
-            List<User> items) {
+    protected SingleTypeAdapter<User> createAdapter(List<User> items) {
         User[] users = items.toArray(new User[items.size()]);
         return new UserListAdapter(getActivity().getLayoutInflater(), users,
                 avatars);

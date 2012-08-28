@@ -20,11 +20,10 @@ import static com.github.mobile.RequestCodes.GIST_CREATE;
 import static com.github.mobile.RequestCodes.GIST_VIEW;
 import android.content.Intent;
 
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.accounts.GitHubAccount;
 import com.github.mobile.core.ResourcePager;
 import com.github.mobile.core.gist.GistPager;
-import com.github.mobile.ui.ItemListAdapter;
-import com.github.mobile.ui.ItemView;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -65,9 +64,8 @@ public class MyGistsFragment extends GistsFragment {
     }
 
     @Override
-    protected ItemListAdapter<Gist, ? extends ItemView> createAdapter(
-            List<Gist> items) {
-        return new GistListAdapter(avatars, getActivity()
-                .getLayoutInflater(), items.toArray(new Gist[items.size()]));
+    protected SingleTypeAdapter<Gist> createAdapter(List<Gist> items) {
+        return new GistListAdapter(avatars, getActivity().getLayoutInflater(),
+                items.toArray(new Gist[items.size()]));
     }
 }

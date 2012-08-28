@@ -22,13 +22,12 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R.string;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.HeaderFooterListAdapter;
-import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
-import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.user.OrganizationSelectionListener;
 import com.github.mobile.ui.user.OrganizationSelectionProvider;
 import com.google.inject.Inject;
@@ -186,8 +185,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
     }
 
     @Override
-    protected ItemListAdapter<Repository, ? extends ItemView> createAdapter(
-            List<Repository> items) {
+    protected SingleTypeAdapter<Repository> createAdapter(List<Repository> items) {
         return new DefaultRepositoryListAdapter(getActivity()
                 .getLayoutInflater(),
                 items.toArray(new Repository[items.size()]), org);

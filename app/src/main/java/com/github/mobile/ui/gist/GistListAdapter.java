@@ -18,14 +18,15 @@ package com.github.mobile.ui.gist;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
-import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
-
-import java.text.NumberFormat;
+import com.github.mobile.util.TypefaceUtils;
 
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.User;
@@ -33,12 +34,11 @@ import org.eclipse.egit.github.core.User;
 /**
  * Adapter to display a list of {@link Gist} objects
  */
-public class GistListAdapter extends ItemListAdapter<Gist, GistView> {
-
-    private static final NumberFormat NUMBER_FORMAT = NumberFormat
-            .getIntegerInstance();
+public class GistListAdapter extends SingleTypeAdapter<Gist> {
 
     private final AvatarLoader avatars;
+
+    private String anonymous;
 
     /**
      * @param avatars
@@ -47,9 +47,10 @@ public class GistListAdapter extends ItemListAdapter<Gist, GistView> {
      */
     public GistListAdapter(AvatarLoader avatars, LayoutInflater inflater,
             Gist[] elements) {
-        super(layout.gist_item, inflater, elements);
+        super(inflater, layout.gist_item);
 
         this.avatars = avatars;
+        setItems(elements);
     }
 
     /**
@@ -61,42 +62,52 @@ public class GistListAdapter extends ItemListAdapter<Gist, GistView> {
     }
 
     @Override
-    protected void update(final int position, final GistView view,
-            final Gist gist) {
-        view.gistId.setText(gist.getId());
+    public long getItemId(final int position) {
+        final String id = getItem(position).getId();
+        return !TextUtils.isEmpty(id) ? id.hashCode() : super
+                .getItemId(position);
+    }
+
+    @Override
+    protected int[] getChildViewIds() {
+        return new int[] { id.tv_gist_id, id.tv_gist_title, id.tv_gist_author,
+                id.tv_gist_comments, id.tv_gist_files, id.iv_avatar };
+    }
+
+    @Override
+    protected View initialize(View view) {
+        view = super.initialize(view);
+
+        TypefaceUtils.setOcticons(
+                (TextView) view.findViewById(id.tv_comment_icon),
+                (TextView) view.findViewById(id.tv_file_icon));
+        anonymous = view.getResources().getString(string.anonymous);
+        return view;
+    }
+
+    @Override
+    protected void update(int position, Gist gist) {
+        setText(id.tv_gist_id, gist.getId());
 
         String description = gist.getDescription();
         if (!TextUtils.isEmpty(description))
-            view.title.setText(description);
+            setText(id.tv_gist_title, description);
         else
-            view.title.setText(string.no_description_given);
+            setText(id.tv_gist_title, string.no_description_given);
 
         User user = gist.getUser();
-        avatars.bind(view.avatar, user);
+        avatars.bind(imageView(id.iv_avatar), user);
 
         StyledText authorText = new StyledText();
         if (user != null)
             authorText.bold(user.getLogin());
         else
-            authorText.bold(view.author.getResources().getString(
-                    string.anonymous));
+            authorText.bold(anonymous);
         authorText.append(' ');
         authorText.append(gist.getCreatedAt());
-        view.author.setText(authorText);
+        setText(id.tv_gist_author, authorText);
 
-        view.files.setText(NUMBER_FORMAT.format(gist.getFiles().size()));
-        view.comments.setText(NUMBER_FORMAT.format(gist.getComments()));
-    }
-
-    @Override
-    protected GistView createView(final View view) {
-        return new GistView(view);
-    }
-
-    @Override
-    public long getItemId(final int position) {
-        final String id = getItem(position).getId();
-        return !TextUtils.isEmpty(id) ? id.hashCode() : super
-                .getItemId(position);
+        setNumber(id.tv_gist_files, gist.getFiles().size());
+        setNumber(id.tv_gist_comments, gist.getComments());
     }
 }

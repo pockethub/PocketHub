@@ -18,8 +18,6 @@ package com.github.mobile.ui.issue;
 import static android.app.Activity.RESULT_OK;
 import static android.content.DialogInterface.BUTTON_NEGATIVE;
 import static android.content.DialogInterface.BUTTON_NEUTRAL;
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -31,13 +29,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.TextView;
 
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R.string;
 import com.github.mobile.ui.DialogFragmentActivity;
-import com.github.mobile.ui.ItemListAdapter;
-import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.SingleChoiceDialogFragment;
 import com.viewpagerindicator.R.id;
 import com.viewpagerindicator.R.layout;
@@ -51,52 +47,38 @@ import org.eclipse.egit.github.core.Milestone;
  */
 public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
 
-    private static class MilestoneItemView extends ItemView {
-
-        public final RadioButton selected;
-
-        public final TextView title;
-
-        public final TextView description;
-
-        public MilestoneItemView(final View view) {
-            super(view);
-
-            selected = (RadioButton) view.findViewById(id.rb_selected);
-            title = (TextView) view.findViewById(id.tv_milestone_title);
-            description = (TextView) view
-                    .findViewById(id.tv_milestone_description);
-        }
-    }
-
     private static class MilestoneListAdapter extends
-            ItemListAdapter<Milestone, MilestoneItemView> {
+            SingleTypeAdapter<Milestone> {
 
         private final int selected;
 
         public MilestoneListAdapter(LayoutInflater inflater,
                 Milestone[] milestones, int selected) {
-            super(layout.milestone_item, inflater, milestones);
+            super(inflater, layout.milestone_item);
 
             this.selected = selected;
+            setItems(milestones);
         }
 
         @Override
-        protected void update(final int position, final MilestoneItemView view,
-                final Milestone item) {
-            view.title.setText(item.getTitle());
+        protected int[] getChildViewIds() {
+            return new int[] { id.rb_selected, id.tv_milestone_title,
+                    id.tv_milestone_description };
+        }
+
+        @Override
+        protected void update(int position, Milestone item) {
+            setText(id.tv_milestone_title, item.getTitle());
+
             String description = item.getDescription();
-            if (!TextUtils.isEmpty(description)) {
-                view.description.setText(description);
-                view.description.setVisibility(VISIBLE);
-            } else
-                view.description.setVisibility(GONE);
-            view.selected.setChecked(selected == position);
-        }
+            if (!TextUtils.isEmpty(description))
+                ViewUtils.setGone(
+                        setText(id.tv_milestone_description, description),
+                        false);
+            else
+                setGone(id.tv_milestone_description, true);
 
-        @Override
-        protected MilestoneItemView createView(View view) {
-            return new MilestoneItemView(view);
+            setChecked(id.rb_selected, selected == position);
         }
 
         @Override

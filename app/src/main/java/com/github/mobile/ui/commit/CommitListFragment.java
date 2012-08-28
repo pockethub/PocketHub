@@ -22,12 +22,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R.string;
 import com.github.mobile.core.ResourcePager;
 import com.github.mobile.core.commit.CommitPager;
 import com.github.mobile.core.commit.CommitStore;
-import com.github.mobile.ui.ItemListAdapter;
-import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.PagedItemFragment;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
@@ -114,7 +113,7 @@ public class CommitListFragment extends PagedItemFragment<RepositoryCommit> {
     }
 
     @Override
-    protected ItemListAdapter<RepositoryCommit, ? extends ItemView> createAdapter(
+    protected SingleTypeAdapter<RepositoryCommit> createAdapter(
             List<RepositoryCommit> items) {
         return new CommitListAdapter(layout.commit_item, getActivity()
                 .getLayoutInflater(), items, avatars);

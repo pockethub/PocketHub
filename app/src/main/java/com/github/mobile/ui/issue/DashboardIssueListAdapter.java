@@ -17,11 +17,13 @@ package com.github.mobile.ui.issue;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
+import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.core.issue.IssueUtils;
 import com.github.mobile.util.AvatarLoader;
-import com.github.mobile.util.ViewUtils;
+import com.github.mobile.util.TypefaceUtils;
 
 import org.eclipse.egit.github.core.RepositoryIssue;
 
@@ -29,7 +31,9 @@ import org.eclipse.egit.github.core.RepositoryIssue;
  * Adapter to display a list of dashboard issues
  */
 public class DashboardIssueListAdapter extends
-        IssueListAdapter<RepositoryIssue, DashboardIssueView> {
+        IssueListAdapter<RepositoryIssue> {
+
+    private int numberPaintFlags;
 
     /**
      * Create adapter
@@ -49,39 +53,51 @@ public class DashboardIssueListAdapter extends
     }
 
     @Override
-    protected void update(final int position, final DashboardIssueView view,
-            final RepositoryIssue issue) {
-        updateNumber(issue.getNumber(), issue.getState(),
-                view.numberPaintFlags, view.number);
+    protected int getNumber(final RepositoryIssue issue) {
+        return issue.getNumber();
+    }
 
-        avatars.bind(view.avatar, issue.getUser());
+    @Override
+    protected View initialize(View view) {
+        view = super.initialize(view);
+
+        numberPaintFlags = textView(view, id.tv_issue_number).getPaintFlags();
+        TypefaceUtils.setOcticons(textView(view, id.tv_pull_request_icon),
+                (TextView) view.findViewById(id.tv_comment_icon));
+        return view;
+    }
+
+    @Override
+    protected int[] getChildViewIds() {
+        return new int[] { id.tv_issue_repo_name, id.tv_issue_number,
+                id.tv_issue_title, id.iv_avatar, id.tv_issue_creation,
+                id.tv_issue_comments, id.tv_pull_request_icon, id.v_label0,
+                id.v_label1, id.v_label2, id.v_label3, id.v_label4,
+                id.v_label5, id.v_label6, id.v_label7 };
+    }
+
+    @Override
+    protected void update(int position, RepositoryIssue issue) {
+        updateNumber(issue.getNumber(), issue.getState(), numberPaintFlags,
+                id.tv_issue_number);
+
+        avatars.bind(imageView(id.iv_avatar), issue.getUser());
 
         String[] segments = issue.getUrl().split("/");
         int length = segments.length;
         if (length >= 4)
-            view.repoText.setText(segments[length - 4] + "/"
+            setText(id.tv_issue_repo_name, segments[length - 4] + '/'
                     + segments[length - 3]);
         else
-            view.repoText.setText("");
+            setText(id.tv_issue_repo_name, null);
 
-        ViewUtils.setGone(view.pullRequestIcon,
-                !IssueUtils.isPullRequest(issue));
+        setGone(id.tv_pull_request_icon, !IssueUtils.isPullRequest(issue));
 
-        view.title.setText(issue.getTitle());
+        setText(id.tv_issue_title, issue.getTitle());
 
         updateReporter(issue.getUser().getLogin(), issue.getCreatedAt(),
-                view.reporter);
-        updateComments(issue.getComments(), view.comments);
-        updateLabels(issue.getLabels(), view.labels);
-    }
-
-    @Override
-    protected DashboardIssueView createView(final View view) {
-        return new DashboardIssueView(view);
-    }
-
-    @Override
-    protected int getNumber(final RepositoryIssue issue) {
-        return issue.getNumber();
+                id.tv_issue_creation);
+        setNumber(id.tv_issue_comments, issue.getComments());
+        updateLabels(issue.getLabels());
     }
 }

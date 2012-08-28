@@ -18,11 +18,14 @@ package com.github.mobile.ui.commit;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.core.commit.CommitUtils;
-import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
+import com.github.mobile.util.TypefaceUtils;
+import com.viewpagerindicator.R.id;
 
 import java.util.Collection;
 
@@ -31,8 +34,7 @@ import org.eclipse.egit.github.core.RepositoryCommit;
 /**
  * Adapter to display commits
  */
-public class CommitListAdapter extends
-        ItemListAdapter<RepositoryCommit, CommitView> {
+public class CommitListAdapter extends SingleTypeAdapter<RepositoryCommit> {
 
     private final AvatarLoader avatars;
 
@@ -56,9 +58,10 @@ public class CommitListAdapter extends
      */
     public CommitListAdapter(int viewId, LayoutInflater inflater,
             RepositoryCommit[] elements, AvatarLoader avatars) {
-        super(viewId, inflater, elements);
+        super(inflater, viewId);
 
         this.avatars = avatars;
+        setItems(elements);
     }
 
     @Override
@@ -71,23 +74,32 @@ public class CommitListAdapter extends
     }
 
     @Override
-    protected void update(final int position, final CommitView view,
-            final RepositoryCommit item) {
-        view.sha.setText(CommitUtils.abbreviate(item.getSha()));
+    protected int[] getChildViewIds() {
+        return new int[] { id.tv_commit_id, id.tv_commit_author, id.iv_avatar,
+                id.tv_commit_message, id.tv_commit_comments };
+    }
+
+    @Override
+    protected View initialize(View view) {
+        view = super.initialize(view);
+
+        TypefaceUtils.setOcticons((TextView) view
+                .findViewById(id.tv_comment_icon));
+        return view;
+    }
+
+    @Override
+    protected void update(int position, RepositoryCommit item) {
+        setText(id.tv_commit_id, CommitUtils.abbreviate(item.getSha()));
 
         StyledText authorText = new StyledText();
         authorText.bold(CommitUtils.getAuthor(item));
         authorText.append(' ');
         authorText.append(CommitUtils.getAuthorDate(item));
-        view.author.setText(authorText);
+        setText(id.tv_commit_author, authorText);
 
-        CommitUtils.bindAuthor(item, avatars, view.avatar);
-        view.message.setText(item.getCommit().getMessage());
-        view.comments.setText(CommitUtils.getCommentCount(item));
-    }
-
-    @Override
-    protected CommitView createView(final View view) {
-        return new CommitView(view);
+        CommitUtils.bindAuthor(item, avatars, imageView(id.iv_avatar));
+        setText(id.tv_commit_message, item.getCommit().getMessage());
+        setText(id.tv_commit_comments, CommitUtils.getCommentCount(item));
     }
 }

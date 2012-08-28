@@ -15,10 +15,12 @@
  */
 package com.github.mobile.ui.comment;
 
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.github.mobile.ui.ItemListAdapter;
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.github.mobile.R.id;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.TimeUtils;
@@ -29,8 +31,7 @@ import org.eclipse.egit.github.core.Comment;
 /**
  * Adapter for a list of {@link Comment} objects
  */
-public class CommentListAdapter extends
-        ItemListAdapter<Comment, CommentItemView> {
+public class CommentListAdapter extends SingleTypeAdapter<Comment> {
 
     private final AvatarLoader avatars;
 
@@ -46,10 +47,11 @@ public class CommentListAdapter extends
      */
     public CommentListAdapter(LayoutInflater inflater, Comment[] elements,
             AvatarLoader avatars, HttpImageGetter imageGetter) {
-        super(layout.comment_item, inflater, elements);
+        super(inflater, layout.comment_item);
 
         this.avatars = avatars;
         this.imageGetter = imageGetter;
+        setItems(elements);
     }
 
     /**
@@ -65,14 +67,14 @@ public class CommentListAdapter extends
     }
 
     @Override
-    protected void update(final int position, final CommentItemView view,
-            final Comment comment) {
-        imageGetter.bind(view.bodyView, comment.getBodyHtml(), comment.getId());
-        avatars.bind(view.avatarView, comment.getUser());
+    protected void update(int position, Comment comment) {
+        imageGetter.bind(textView(id.tv_comment_body), comment.getBodyHtml(),
+                comment.getId());
+        avatars.bind(imageView(id.iv_avatar), comment.getUser());
 
-        view.authorView.setText(comment.getUser().getLogin());
-        view.dateView
-                .setText(TimeUtils.getRelativeTime(comment.getUpdatedAt()));
+        setText(id.tv_comment_author, comment.getUser().getLogin());
+        setText(id.tv_comment_date,
+                TimeUtils.getRelativeTime(comment.getUpdatedAt()));
     }
 
     @Override
@@ -80,8 +82,17 @@ public class CommentListAdapter extends
         return getItem(position).getId();
     }
 
+    protected View initialize(View view) {
+        view = super.initialize(view);
+
+        textView(view, id.tv_comment_body).setMovementMethod(
+                LinkMovementMethod.getInstance());
+        return view;
+    }
+
     @Override
-    protected CommentItemView createView(final View view) {
-        return new CommentItemView(view);
+    protected int[] getChildViewIds() {
+        return new int[] { id.tv_comment_body, id.tv_comment_author,
+                id.tv_comment_date, id.iv_avatar };
     }
 }

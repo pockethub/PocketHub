@@ -19,11 +19,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.Intents;
 import com.github.mobile.R.string;
 import com.github.mobile.core.ResourcePager;
-import com.github.mobile.ui.ItemListAdapter;
-import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.PagedItemFragment;
 import com.google.inject.Inject;
 
@@ -81,8 +80,7 @@ public class UserRepositoryListFragment extends PagedItemFragment<Repository> {
     }
 
     @Override
-    protected ItemListAdapter<Repository, ? extends ItemView> createAdapter(
-            List<Repository> items) {
+    protected SingleTypeAdapter<Repository> createAdapter(List<Repository> items) {
         return new UserRepositoryListAdapter(getActivity().getLayoutInflater(),
                 items.toArray(new Repository[items.size()]), user);
     }

@@ -29,15 +29,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.TextView;
 
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R.string;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.DialogFragmentHelper;
-import com.github.mobile.ui.ItemListAdapter;
-import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.LightAlertDialog;
 import com.viewpagerindicator.R.id;
 import com.viewpagerindicator.R.layout;
@@ -65,43 +62,17 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
 
     private static final String TAG = "multi_choice_dialog";
 
-    private static class LabelItemView extends ItemView {
-
-        public final TextView name;
-
-        public final CheckBox checked;
-
-        public LabelItemView(View view) {
-            super(view);
-
-            name = (TextView) view.findViewById(id.tv_label_name);
-            checked = (CheckBox) view.findViewById(id.cb_selected);
-        }
-    }
-
-    private static class LabelListAdapter extends
-            ItemListAdapter<Label, LabelItemView> implements
-            OnItemClickListener {
+    private static class LabelListAdapter extends SingleTypeAdapter<Label>
+            implements OnItemClickListener {
 
         private final boolean[] selected;
 
         public LabelListAdapter(LayoutInflater inflater, Label[] labels,
                 boolean[] selected) {
-            super(layout.label_item, inflater, labels);
+            super(inflater, layout.label_item);
 
             this.selected = selected;
-        }
-
-        @Override
-        protected void update(final int position, final LabelItemView view,
-                final Label item) {
-            LabelDrawableSpan.setText(view.name, item);
-            view.checked.setChecked(selected[position]);
-        }
-
-        @Override
-        protected LabelItemView createView(View view) {
-            return new LabelItemView(view);
+            setItems(labels);
         }
 
         @Override
@@ -109,6 +80,17 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
                 long id) {
             selected[position] = !selected[position];
             notifyDataSetChanged();
+        }
+
+        @Override
+        protected int[] getChildViewIds() {
+            return new int[] { id.tv_label_name, id.cb_selected };
+        }
+
+        @Override
+        protected void update(int position, Label item) {
+            LabelDrawableSpan.setText(textView(id.tv_label_name), item);
+            setChecked(id.cb_selected, selected[position]);
         }
     }
 
