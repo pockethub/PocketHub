@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.widget.ProgressBar;
 
+import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
@@ -28,7 +29,6 @@ import com.github.mobile.R.string;
 import com.github.mobile.core.user.RefreshUserTask;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
-import com.github.mobile.util.ViewUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 import com.viewpagerindicator.TitlePageIndicator;

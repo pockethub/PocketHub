@@ -22,14 +22,14 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.R.color;
 import com.github.kevinsawicki.wishlist.MultiTypeAdapter;
+import com.github.kevinsawicki.wishlist.ViewUtils;
+import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.core.commit.FullCommitFile;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.TimeUtils;
-import com.github.mobile.util.ViewUtils;
-import com.viewpagerindicator.R.id;
 
 import java.util.List;
 
