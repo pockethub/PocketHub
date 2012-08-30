@@ -32,11 +32,11 @@ import android.widget.ListView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.SingleChoiceDialogFragment;
-import com.viewpagerindicator.R.id;
-import com.viewpagerindicator.R.layout;
 
 import java.util.ArrayList;
 

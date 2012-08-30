@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.core.ResourcePager;
 import com.github.mobile.core.commit.CommitPager;
@@ -30,7 +31,6 @@ import com.github.mobile.core.commit.CommitStore;
 import com.github.mobile.ui.PagedItemFragment;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
-import com.viewpagerindicator.R.layout;
 
 import java.util.List;
 

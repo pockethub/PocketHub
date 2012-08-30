@@ -25,7 +25,7 @@ import android.view.LayoutInflater;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
-import com.viewpagerindicator.R.id;
+import com.github.mobile.R.id;
 
 /**
  * Adapter for a list of repositories

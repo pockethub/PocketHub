@@ -18,9 +18,9 @@ package com.github.mobile.ui.user;
 import android.view.LayoutInflater;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 import com.github.mobile.util.AvatarLoader;
-import com.viewpagerindicator.R.id;
-import com.viewpagerindicator.R.layout;
 
 import org.eclipse.egit.github.core.User;
 

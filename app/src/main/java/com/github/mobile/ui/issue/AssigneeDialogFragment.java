@@ -30,13 +30,13 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.SingleChoiceDialogFragment;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
-import com.viewpagerindicator.R.id;
-import com.viewpagerindicator.R.layout;
 
 import java.util.ArrayList;
 

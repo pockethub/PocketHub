@@ -34,6 +34,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.core.commit.CommitCompareTask;
@@ -43,7 +44,6 @@ import com.github.mobile.ui.HeaderFooterListAdapter;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
-import com.viewpagerindicator.R.layout;
 
 import java.text.MessageFormat;
 import java.util.Collection;

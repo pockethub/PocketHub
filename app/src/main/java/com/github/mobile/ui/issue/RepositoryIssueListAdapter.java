@@ -20,10 +20,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 import com.github.mobile.core.issue.IssueUtils;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.TypefaceUtils;
-import com.viewpagerindicator.R.layout;
 
 import org.eclipse.egit.github.core.Issue;
 

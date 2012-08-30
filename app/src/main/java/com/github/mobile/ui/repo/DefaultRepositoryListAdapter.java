@@ -21,9 +21,9 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.R.color;
 import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.TypefaceUtils;
-import com.viewpagerindicator.R.layout;
 
 import java.util.HashMap;
 import java.util.HashSet;

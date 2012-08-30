@@ -20,10 +20,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.actionbarsherlock.R.color;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.TypefaceUtils;
-import com.viewpagerindicator.R.id;
-import com.viewpagerindicator.R.layout;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;

@@ -21,10 +21,10 @@ import android.view.View;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.TimeUtils;
-import com.viewpagerindicator.R.layout;
 
 import org.eclipse.egit.github.core.Comment;
 

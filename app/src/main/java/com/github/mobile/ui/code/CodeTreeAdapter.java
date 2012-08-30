@@ -22,13 +22,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.MultiTypeAdapter;
+import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.core.code.FullTree.Entry;
 import com.github.mobile.core.code.FullTree.Folder;
 import com.github.mobile.core.commit.CommitUtils;
 import com.github.mobile.util.TypefaceUtils;
-import com.viewpagerindicator.R.id;
 
 /**
  * Adapter to display a source code tree

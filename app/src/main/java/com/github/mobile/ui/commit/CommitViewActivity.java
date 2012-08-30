@@ -29,13 +29,13 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.core.commit.CommitUtils;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
-import com.viewpagerindicator.R.layout;
 
 import java.util.Collection;
 

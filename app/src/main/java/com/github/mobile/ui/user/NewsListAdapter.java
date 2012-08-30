@@ -56,12 +56,12 @@ import android.view.View;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 import com.github.mobile.core.issue.IssueUtils;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.TimeUtils;
 import com.github.mobile.util.TypefaceUtils;
-import com.viewpagerindicator.R.layout;
 
 import java.util.List;
 

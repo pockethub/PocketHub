@@ -34,6 +34,8 @@ import android.widget.TextView;
 import com.actionbarsherlock.R.color;
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.kevinsawicki.wishlist.ViewUtils;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.core.code.FullTree;
 import com.github.mobile.core.code.FullTree.Entry;
@@ -45,8 +47,6 @@ import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.ToastUtils;
 import com.github.mobile.util.TypefaceUtils;
 import com.google.inject.Inject;
-import com.viewpagerindicator.R.id;
-import com.viewpagerindicator.R.layout;
 
 import org.eclipse.egit.github.core.Reference;
 import org.eclipse.egit.github.core.Repository;
