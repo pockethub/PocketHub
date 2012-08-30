@@ -17,26 +17,26 @@
 <resources>
 
     <!-- Error messages -->
-    <string name="error_orgs_load">Loading account &amp; organizations failed</string>
-    <string name="error_issues_load">Loading issues failed</string>
+    <string name="error_orgs_load">Impossibile caricare account e organizzazioni</string>
+    <string name="error_issues_load">Impossibile caricare le segnalazioni</string>
     <string name="error_repos_load">Loading repositories failed</string>
     <string name="error_repo_load">Loading repository failed</string>
-    <string name="error_gist_load">Loading Gist failed</string>
-    <string name="error_news_load">Loading news failed</string>
-    <string name="error_followers_load">Loading followers failed</string>
-    <string name="error_people_load">Loading people failed</string>
-    <string name="error_person_load">Loading person failed</string>
-    <string name="error_gist_file_load">Loading Gist file content failed</string>
-    <string name="error_gists_load">Loading Gists failed</string>
-    <string name="error_issue_load">Loading issue failed</string>
-    <string name="error_collaborators_load">Loading collaborators failed</string>
-    <string name="error_milestones_load">Loading milestones failed</string>
-    <string name="error_labels_load">Loading labels failed</string>
-    <string name="error_bookmarks_load">Loading bookmarks failed</string>
-    <string name="error_members_load">Loading members failed</string>
-    <string name="error_commits_load">Loading commits failed</string>
-    <string name="error_commit_load">Loading commit failed</string>
-    <string name="error_file_load">Loading file failed</string>
+    <string name="error_gist_load">Impossibile caricare Gist</string>
+    <string name="error_news_load">Impossibile caricare le news</string>
+    <string name="error_followers_load">Impossibile caricare followers</string>
+    <string name="error_people_load">Impossibile caricare persone</string>
+    <string name="error_person_load">Impossibile caricare la persona</string>
+    <string name="error_gist_file_load">Impossibile caricare il contenuto del file Gist</string>
+    <string name="error_gists_load">Impossibile caricare i Gistd</string>
+    <string name="error_issue_load">Impossibile caricare la segnalazione</string>
+    <string name="error_collaborators_load">Impossibile caricare collaboratori</string>
+    <string name="error_milestones_load">Impossibile caricare i milestones</string>
+    <string name="error_labels_load">Impossibile caricare le etichette</string>
+    <string name="error_bookmarks_load">Impossibile caricare i segnalibri</string>
+    <string name="error_members_load">Impossibile caricare membri</string>
+    <string name="error_commits_load">Impossibile caricare i Commits</string>
+    <string name="error_commit_load">Impossibile caricare il Commit</string>
+    <string name="error_file_load">Impossibile caricare il file</string>
     <!--  -->
 
 
