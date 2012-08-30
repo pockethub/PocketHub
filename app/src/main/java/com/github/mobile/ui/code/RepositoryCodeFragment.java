@@ -66,6 +66,8 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
     private ProgressBar progressView;
 
+    private TextView branchIconView;
+
     private TextView branchView;
 
     private TextView pathView;
@@ -117,6 +119,10 @@ public class RepositoryCodeFragment extends DialogFragment implements
                             }
                         });
                 branchView.setText(branchText);
+                if (RefUtils.isTag(fullTree.reference))
+                    branchIconView.setText(string.icon_tag);
+                else
+                    branchIconView.setText(string.icon_fork);
                 setFolder(fullTree.root);
             }
 
@@ -175,14 +181,14 @@ public class RepositoryCodeFragment extends DialogFragment implements
         pathView = finder.find(id.tv_path);
         pathView.setMovementMethod(LinkMovementMethod.getInstance());
         branchView = finder.find(id.tv_branch);
+        branchIconView = finder.find(id.tv_branch_icon);
         finder.onClick(id.rl_branch, new Runnable() {
 
             public void run() {
                 switchBranches();
             }
         });
-        TypefaceUtils.setOcticons(
-                (TextView) footerView.findViewById(id.tv_branch_icon),
+        TypefaceUtils.setOcticons(branchIconView,
                 (TextView) pathHeaderView.findViewById(id.tv_folder_icon));
         listView.setAdapter(adapter);
     }
