@@ -16,9 +16,12 @@
 package com.github.mobile.ui.code;
 
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
+import android.app.Activity;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -26,7 +29,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.github.kevinsawicki.wishlist.Toaster;
+import com.actionbarsherlock.R.color;
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R.string;
@@ -35,7 +38,9 @@ import com.github.mobile.core.code.FullTree.Entry;
 import com.github.mobile.core.code.FullTree.Folder;
 import com.github.mobile.core.code.RefreshTreeTask;
 import com.github.mobile.ui.DialogFragment;
-import com.github.mobile.ui.HeaderFooterListAdapter;
+import com.github.mobile.ui.StyledText;
+import com.github.mobile.util.ToastUtils;
+import com.github.mobile.util.TypefaceUtils;
 import com.viewpagerindicator.R.id;
 import com.viewpagerindicator.R.layout;
 
@@ -55,9 +60,15 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
     private ProgressBar progressView;
 
+    private TextView branchView;
+
     private TextView pathView;
 
-    private HeaderFooterListAdapter<CodeTreeAdapter> adapter;
+    private View pathHeaderView;
+
+    private View footerView;
+
+    private CodeTreeAdapter adapter;
 
     private Folder folder;
 
@@ -81,6 +92,15 @@ public class RepositoryCodeFragment extends DialogFragment implements
                 tree = fullTree;
                 ViewUtils.setGone(progressView, true);
                 ViewUtils.setGone(listView, false);
+                ViewUtils.setGone(footerView, false);
+                StyledText branchText = new StyledText().url(fullTree.branch,
+                        new OnClickListener() {
+
+                            public void onClick(View v) {
+                                switchBranches();
+                            }
+                        });
+                branchView.setText(branchText);
                 setFolder(fullTree.root);
             }
 
@@ -90,10 +110,14 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
                 ViewUtils.setGone(progressView, true);
                 ViewUtils.setGone(listView, false);
-                Toaster.showLong(getActivity(), string.error_code_load);
+                ToastUtils.show(getActivity(), e, string.error_file_load);
             }
 
         }.execute();
+    }
+
+    private void switchBranches() {
+
     }
 
     @Override
@@ -111,12 +135,22 @@ public class RepositoryCodeFragment extends DialogFragment implements
         listView = finder.find(android.R.id.list);
         listView.setOnItemClickListener(this);
 
-        adapter = new HeaderFooterListAdapter<CodeTreeAdapter>(listView,
-                new CodeTreeAdapter(getActivity()));
-        View pathHeader = getActivity().getLayoutInflater().inflate(
-                layout.path_item, null);
-        pathView = (TextView) pathHeader.findViewById(id.tv_path);
-        adapter.addHeader(pathHeader);
+        Activity activity = getActivity();
+        adapter = new CodeTreeAdapter(activity);
+        footerView = finder.find(id.ll_footer);
+        pathHeaderView = finder.find(id.rl_path);
+        pathView = finder.find(id.tv_path);
+        pathView.setMovementMethod(LinkMovementMethod.getInstance());
+        branchView = finder.find(id.tv_branch);
+        finder.onClick(id.rl_branch, new Runnable() {
+
+            public void run() {
+                switchBranches();
+            }
+        });
+        TypefaceUtils.setOcticons(
+                (TextView) footerView.findViewById(id.tv_branch_icon),
+                (TextView) pathHeaderView.findViewById(id.tv_folder_icon));
         listView.setAdapter(adapter);
     }
 
@@ -135,14 +169,36 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
     private void setFolder(final Folder folder) {
         this.folder = folder;
-        if (folder.entry != null)
-            pathView.setText(folder.entry.getPath());
-        else
-            pathView.setText(tree.branch);
-        adapter.getWrappedAdapter().setItems(folder);
+        if (folder.entry != null) {
+            int textLightColor = getResources().getColor(color.text_light);
+            final String[] segments = folder.entry.getPath().split("/");
+            StyledText text = new StyledText();
+            for (int i = 0; i < segments.length - 1; i++) {
+                final int index = i;
+                text.url(segments[i], new OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        Folder clicked = folder;
+                        for (int i = index; i < segments.length - 1; i++) {
+                            clicked = clicked.parent;
+                            if (clicked == null)
+                                return;
+                        }
+                        setFolder(clicked);
+                    }
+                }).append(' ').foreground('/', textLightColor).append(' ');
+            }
+            text.append(segments[segments.length - 1]);
+            pathView.setText(text);
+            ViewUtils.setGone(pathHeaderView, false);
+        } else
+            ViewUtils.setGone(pathHeaderView, true);
+        adapter.setItems(folder);
         listView.setSelection(0);
     }
 
+    @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
         Entry entry = (Entry) parent.getItemAtPosition(position);

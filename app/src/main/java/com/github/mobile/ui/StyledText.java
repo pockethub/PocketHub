@@ -22,6 +22,9 @@ import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
+import android.text.style.URLSpan;
+import android.view.View;
+import android.view.View.OnClickListener;
 
 import com.github.mobile.util.TimeUtils;
 
@@ -131,6 +134,34 @@ public class StyledText extends SpannableStringBuilder {
      */
     public StyledText monospace(final CharSequence text) {
         return append(text, new TypefaceSpan("monospace"));
+    }
+
+    /**
+     * Append text as URL
+     *
+     * @param text
+     * @param listener
+     * @return this text
+     */
+    public StyledText url(final CharSequence text,
+            final OnClickListener listener) {
+        return append(text, new URLSpan(text.toString()) {
+
+            @Override
+            public void onClick(View widget) {
+                listener.onClick(widget);
+            }
+        });
+    }
+
+    /**
+     * Append text as URL
+     *
+     * @param text
+     * @return this text
+     */
+    public StyledText url(final CharSequence text) {
+        return append(text, new URLSpan(text.toString()));
     }
 
     /**

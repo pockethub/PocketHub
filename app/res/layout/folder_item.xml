@@ -36,8 +36,7 @@
             android:id="@+id/tv_folder"
             style="@style/ListTitleText"
             android:layout_width="match_parent"
-            android:layout_centerVertical="true"
-            android:paddingBottom="0dp" />
+            android:layout_centerVertical="true" />
 
         <LinearLayout
             android:layout_width="match_parent"
