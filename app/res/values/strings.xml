@@ -37,6 +37,7 @@
     <string name="error_commits_load">Loading commits failed</string>
     <string name="error_commit_load">Loading commit failed</string>
     <string name="error_file_load">Loading file failed</string>
+    <string name="error_code_load">Loading code failed</string>
     <!--  -->
 
 
@@ -223,5 +224,8 @@
     <string name="comparing_commits">Comparing {0} commits</string>
     <string name="enable_wrapping">Enable wrapping</string>
     <string name="disable_wrapping">Disable wrapping</string>
+    <string name="code">Code</string>
+    <string name="one_byte">1 byte</string>
+    <string name="bytes">bytes</string>
 
 </resources>

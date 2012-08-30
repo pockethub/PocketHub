@@ -18,6 +18,7 @@ package com.github.mobile.ui.repo;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
+import static com.github.mobile.ui.repo.RepositoryPagerAdapter.ITEM_CODE;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -75,6 +76,8 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
     @InjectView(id.tpi_header)
     private TitlePageIndicator indicator;
 
+    private RepositoryPagerAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,16 +133,23 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
             return false;
     }
 
+    @Override
+    public void onBackPressed() {
+        if (adapter == null || pager.getCurrentItem() != ITEM_CODE
+                || !adapter.onBackPressed())
+            super.onBackPressed();
+    }
+
     private void configurePager() {
         avatars.bind(getSupportActionBar(), repository.getOwner());
         ViewUtils.setGone(loadingBar, true);
         ViewUtils.setGone(pager, false);
         ViewUtils.setGone(indicator, false);
-        pager.setAdapter(new RepositoryPagerAdapter(
-                getSupportFragmentManager(), getResources(), repository
-                        .isHasIssues()));
+        adapter = new RepositoryPagerAdapter(getSupportFragmentManager(),
+                getResources(), repository.isHasIssues());
+        pager.setAdapter(adapter);
         indicator.setViewPager(pager);
-        pager.setCurrentItem(1);
+        pager.setCurrentItem(2);
     }
 
     @Override

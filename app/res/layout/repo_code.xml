@@ -14,13 +14,20 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<resources>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-    <string name="icon_pull_request">\uf20E</string>
-    <string name="icon_comment">\uf04f</string>
-    <string name="icon_file">\uf011</string>
-    <string name="icon_folder">\uf216</string>
-    <string name="icon_star">\uf02a</string>
-    <string name="icon_fork">\uf020</string>
+    <ListView
+        android:id="@android:id/list"
+        style="@style/ListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
-</resources>
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        style="@style/ListSpinner"
+        android:layout_centerInParent="true" />
+
+</RelativeLayout>

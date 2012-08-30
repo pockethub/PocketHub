@@ -14,13 +14,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<resources>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ListItem" >
 
-    <string name="icon_pull_request">\uf20E</string>
-    <string name="icon_comment">\uf04f</string>
-    <string name="icon_file">\uf011</string>
-    <string name="icon_folder">\uf216</string>
-    <string name="icon_star">\uf02a</string>
-    <string name="icon_fork">\uf020</string>
+    <TextView
+        android:id="@+id/tv_path"
+        style="@style/ListSubtitleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-</resources>
+</RelativeLayout>
