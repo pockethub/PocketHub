@@ -66,6 +66,7 @@ public class FullTree {
             this.name = CommitUtils.getName(entry.getPath());
         }
 
+        @Override
         public int compareTo(Entry another) {
             return CASE_INSENSITIVE_ORDER.compare(name, another.name);
         }
