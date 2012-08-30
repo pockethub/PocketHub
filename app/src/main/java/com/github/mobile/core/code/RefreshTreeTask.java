@@ -21,10 +21,10 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.github.mobile.accounts.AuthenticatedUserTask;
+import com.github.mobile.ui.code.RefUtils;
 import com.google.inject.Inject;
 
 import java.io.IOException;
-import java.util.concurrent.Executor;
 
 import org.eclipse.egit.github.core.Commit;
 import org.eclipse.egit.github.core.Reference;
@@ -42,6 +42,8 @@ public class RefreshTreeTask extends AuthenticatedUserTask<FullTree> {
 
     private final Repository repository;
 
+    private final Reference reference;
+
     @Inject
     private RepositoryService repoService;
 
@@ -52,42 +54,44 @@ public class RefreshTreeTask extends AuthenticatedUserTask<FullTree> {
      * Create task to refresh repository's tree
      *
      * @param repository
-     * @param context
-     * @param executor
-     */
-    public RefreshTreeTask(final Repository repository, final Context context,
-            final Executor executor) {
-        super(context, executor);
-
-        this.repository = repository;
-    }
-
-    /**
-     * Create task to refresh repository's tree
-     *
-     * @param repository
+     * @param reference
      * @param context
      */
-    public RefreshTreeTask(final Repository repository, final Context context) {
+    public RefreshTreeTask(final Repository repository,
+            final Reference reference, final Context context) {
         super(context);
 
         this.repository = repository;
+        this.reference = reference;
+    }
+
+    private boolean isValidRef(Reference ref) {
+        return ref != null && ref.getObject() != null
+                && !TextUtils.isEmpty(ref.getObject().getSha());
     }
 
     @Override
     protected FullTree run(Account account) throws Exception {
-        String branch = repository.getMasterBranch();
-        if (TextUtils.isEmpty(branch)) {
-            branch = repoService.getRepository(repository).getMasterBranch();
-            if (TextUtils.isEmpty(branch))
-                throw new IOException("Repository does not have master branch");
+        Reference ref = reference;
+        String branch = RefUtils.getPath(ref);
+        if (branch == null) {
+            branch = repository.getMasterBranch();
+            if (TextUtils.isEmpty(branch)) {
+                branch = repoService.getRepository(repository)
+                        .getMasterBranch();
+                if (TextUtils.isEmpty(branch))
+                    throw new IOException(
+                            "Repository does not have master branch");
+            }
+            branch = "heads/" + branch;
         }
 
-        Reference ref = dataService.getReference(repository, "heads/" + branch);
-        if (ref == null || ref.getObject() == null
-                || TextUtils.isEmpty(ref.getObject().getSha()))
-            throw new IOException(
-                    "Reference does not have associated commit SHA-1");
+        if (!isValidRef(ref)) {
+            ref = dataService.getReference(repository, branch);
+            if (!isValidRef(ref))
+                throw new IOException(
+                        "Reference does not have associated commit SHA-1");
+        }
 
         Commit commit = dataService.getCommit(repository, ref.getObject()
                 .getSha());
@@ -97,7 +101,7 @@ public class RefreshTreeTask extends AuthenticatedUserTask<FullTree> {
 
         Tree tree = dataService.getTree(repository, commit.getTree().getSha(),
                 true);
-        return new FullTree(tree, branch);
+        return new FullTree(tree, ref);
     }
 
     @Override

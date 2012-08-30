@@ -15,7 +15,9 @@
  */
 package com.github.mobile.ui.code;
 
+import static android.app.Activity.RESULT_OK;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
+import static com.github.mobile.RequestCodes.REF_UPDATE;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
@@ -38,13 +40,17 @@ import com.github.mobile.core.code.FullTree.Entry;
 import com.github.mobile.core.code.FullTree.Folder;
 import com.github.mobile.core.code.RefreshTreeTask;
 import com.github.mobile.ui.DialogFragment;
+import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.ToastUtils;
 import com.github.mobile.util.TypefaceUtils;
+import com.google.inject.Inject;
 import com.viewpagerindicator.R.id;
 import com.viewpagerindicator.R.layout;
 
+import org.eclipse.egit.github.core.Reference;
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.service.DataService;
 
 import roboguice.inject.InjectExtra;
 
@@ -75,24 +81,34 @@ public class RepositoryCodeFragment extends DialogFragment implements
     @InjectExtra(EXTRA_REPOSITORY)
     private Repository repository;
 
+    @Inject
+    private DataService service;
+
+    private RefDialog dialog;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        refreshTree();
+        refreshTree(null);
     }
 
-    private void refreshTree() {
-        new RefreshTreeTask(repository, getActivity()) {
+    private void showLoading(final boolean loading) {
+        ViewUtils.setGone(progressView, !loading);
+        ViewUtils.setGone(listView, loading);
+        ViewUtils.setGone(footerView, loading);
+    }
+
+    private void refreshTree(final Reference reference) {
+        showLoading(true);
+        new RefreshTreeTask(repository, reference, getActivity()) {
 
             @Override
             protected void onSuccess(final FullTree fullTree) throws Exception {
                 super.onSuccess(fullTree);
 
                 tree = fullTree;
-                ViewUtils.setGone(progressView, true);
-                ViewUtils.setGone(listView, false);
-                ViewUtils.setGone(footerView, false);
+                showLoading(false);
                 StyledText branchText = new StyledText().url(fullTree.branch,
                         new OnClickListener() {
 
@@ -108,8 +124,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
             protected void onException(Exception e) throws RuntimeException {
                 super.onException(e);
 
-                ViewUtils.setGone(progressView, true);
-                ViewUtils.setGone(listView, false);
+                showLoading(false);
                 ToastUtils.show(getActivity(), e, string.error_file_load);
             }
 
@@ -117,7 +132,25 @@ public class RepositoryCodeFragment extends DialogFragment implements
     }
 
     private void switchBranches() {
+        if (tree == null)
+            return;
 
+        if (dialog == null)
+            dialog = new RefDialog((DialogFragmentActivity) getActivity(),
+                    REF_UPDATE, repository, service);
+        dialog.show(tree.reference);
+    }
+
+    @Override
+    public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
+        if (RESULT_OK != resultCode)
+            return;
+
+        switch (requestCode) {
+        case REF_UPDATE:
+            refreshTree(RefDialogFragment.getSelected(arguments));
+            break;
+        }
     }
 
     @Override

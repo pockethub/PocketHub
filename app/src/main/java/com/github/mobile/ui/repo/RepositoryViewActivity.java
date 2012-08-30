@@ -33,10 +33,10 @@ import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.core.repo.RefreshRepositoryTask;
 import com.github.mobile.core.repo.RepositoryUtils;
+import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.user.HomeActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 import com.viewpagerindicator.TitlePageIndicator;
 
@@ -49,7 +49,7 @@ import roboguice.inject.InjectView;
 /**
  * Activity to view a repository
  */
-public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
+public class RepositoryViewActivity extends DialogFragmentActivity {
 
     /**
      * Create intent for this activity
@@ -163,5 +163,11 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
         default:
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
+        adapter.onDialogResult(pager.getCurrentItem(), requestCode, resultCode,
+                arguments);
     }
 }

@@ -19,6 +19,7 @@
     <string name="icon_pull_request">\uf20E</string>
     <string name="icon_comment">\uf04f</string>
     <string name="icon_file">\uf011</string>
+    <string name="icon_tag">\uf215</string>
     <string name="icon_folder">\uf216</string>
     <string name="icon_folders">\uf217</string>
     <string name="icon_star">\uf02a</string>

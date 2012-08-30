@@ -21,11 +21,13 @@ import static org.eclipse.egit.github.core.TreeEntry.TYPE_TREE;
 import android.text.TextUtils;
 
 import com.github.mobile.core.commit.CommitUtils;
+import com.github.mobile.ui.code.RefUtils;
 
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.eclipse.egit.github.core.Reference;
 import org.eclipse.egit.github.core.Tree;
 import org.eclipse.egit.github.core.TreeEntry;
 
@@ -160,6 +162,11 @@ public class FullTree {
     public final Folder root;
 
     /**
+     * Reference
+     */
+    public final Reference reference;
+
+    /**
      * Branch where tree is present
      */
     public final String branch;
@@ -168,11 +175,12 @@ public class FullTree {
      * Create tree with branch
      *
      * @param tree
-     * @param branch
+     * @param reference
      */
-    public FullTree(final Tree tree, final String branch) {
+    public FullTree(final Tree tree, final Reference reference) {
         this.tree = tree;
-        this.branch = branch;
+        this.reference = reference;
+        this.branch = RefUtils.getName(reference);
 
         root = new Folder();
         List<TreeEntry> entries = tree.getTree();

@@ -73,7 +73,7 @@
             android:clickable="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            android:lineSpacingExtra="1dp"
+            android:lineSpacingExtra="2dp"
             android:paddingBottom="0dp"
             android:paddingLeft="10dp"
             android:textColorLink="@color/text_link" />

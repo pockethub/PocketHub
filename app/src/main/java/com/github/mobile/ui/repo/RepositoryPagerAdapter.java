@@ -16,6 +16,7 @@
 package com.github.mobile.ui.repo;
 
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -101,5 +102,21 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
      */
     public boolean onBackPressed() {
         return codeFragment != null && codeFragment.onBackPressed();
+    }
+
+    /**
+     * Deliver dialog result to fragment at given position
+     *
+     * @param position
+     * @param requestCode
+     * @param resultCode
+     * @param arguments
+     * @return this adapter
+     */
+    public RepositoryPagerAdapter onDialogResult(int position, int requestCode,
+            int resultCode, Bundle arguments) {
+        if (position == ITEM_CODE && codeFragment != null)
+            codeFragment.onDialogResult(requestCode, resultCode, arguments);
+        return this;
     }
 }
