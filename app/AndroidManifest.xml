@@ -235,7 +235,8 @@
         </activity>
         <activity
             android:name=".ui.user.UriLauncherActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" >
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:excludeFromRecents="true" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
