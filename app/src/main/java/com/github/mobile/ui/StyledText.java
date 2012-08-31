@@ -175,7 +175,8 @@ public class StyledText extends SpannableStringBuilder {
         // Un-capitalize time string if there is already a prefix.
         // So you get "opened in 5 days" instead of "opened In 5 days".
         final int timeLength = time.length();
-        if (length() > 0 && timeLength > 0) {
+        if (length() > 0 && timeLength > 0
+                && Character.isUpperCase(time.charAt(0))) {
             append(time.subSequence(0, 1).toString().toLowerCase());
             append(time.subSequence(1, timeLength));
         } else
