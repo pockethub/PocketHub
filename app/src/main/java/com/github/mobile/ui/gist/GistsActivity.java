@@ -83,8 +83,4 @@ public class GistsActivity extends TabPagerActivity<GistQueriesPagerAdapter> {
     protected String getTitle(int position) {
         return adapter.getPageTitle(position).toString();
     }
-
-    @Override
-    protected void setCurrentItem(int position) {
-    }
 }
