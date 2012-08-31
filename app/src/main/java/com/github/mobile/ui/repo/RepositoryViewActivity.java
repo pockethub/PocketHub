@@ -84,7 +84,6 @@ public class RepositoryViewActivity extends
                 && RepositoryUtils.isComplete(repository))
             configurePager();
         else {
-            createTabPager();
             avatars.bind(getSupportActionBar(), owner);
             ViewUtils.setGone(loadingBar, false);
             setGone(true);
@@ -131,7 +130,7 @@ public class RepositoryViewActivity extends
 
     private void configurePager() {
         avatars.bind(getSupportActionBar(), repository.getOwner());
-        createTabPager();
+        configureTabPager();
         ViewUtils.setGone(loadingBar, true);
         setGone(false);
     }

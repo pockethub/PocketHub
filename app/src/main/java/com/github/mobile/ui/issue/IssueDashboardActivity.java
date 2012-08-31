@@ -42,7 +42,7 @@ public class IssueDashboardActivity extends
         actionBar.setIcon(drawable.action_dashboard);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        createTabPager();
+        configureTabPager();
     }
 
     @Override

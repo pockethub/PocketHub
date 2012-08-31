@@ -44,7 +44,7 @@ public class GistsActivity extends TabPagerActivity<GistQueriesPagerAdapter> {
         actionBar.setIcon(drawable.action_gist);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        createTabPager();
+        configureTabPager();
     }
 
     private void randomGist() {

@@ -70,7 +70,6 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
         if (user.getAvatarUrl() != null)
             configurePager();
         else {
-            createTabPager();
             ViewUtils.setGone(loadingBar, false);
             setGone(true);
             new RefreshUserTask(this, user.getLogin()) {
@@ -97,7 +96,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
 
     private void configurePager() {
         avatars.bind(getSupportActionBar(), user);
-        createTabPager();
+        configureTabPager();
         ViewUtils.setGone(loadingBar, true);
         setGone(false);
     }

@@ -116,10 +116,6 @@ public abstract class TabPagerActivity<V extends PagerAdapter> extends
     }
 
     private void createPager() {
-        if (pager != null)
-            return;
-
-        pager = (ViewPager) findViewById(id.vp_pages);
         pager.setOnPageChangeListener(new OnPageChangeListener() {
 
             public void onPageScrolled(int position, float positionOffset,
@@ -140,9 +136,6 @@ public abstract class TabPagerActivity<V extends PagerAdapter> extends
     }
 
     private void createTabs() {
-        if (host != null)
-            return;
-
         host = (TabHost) findViewById(id.th_tabs);
         host.setup();
         host.setOnTabChangedListener(new OnTabChangeListener() {
@@ -171,11 +164,13 @@ public abstract class TabPagerActivity<V extends PagerAdapter> extends
     }
 
     /**
-     * Create tabs and pager
+     * Configure tabs and pager
      */
-    protected void createTabPager() {
-        createPager();
-        createTabs();
+    protected void configureTabPager() {
+        if (adapter == null) {
+            createPager();
+            createTabs();
+        }
     }
 
     @Override
@@ -183,5 +178,7 @@ public abstract class TabPagerActivity<V extends PagerAdapter> extends
         super.onCreate(savedInstanceState);
 
         setContentView(getContentView());
+        pager = (ViewPager) findViewById(id.vp_pages);
+        host = (TabHost) findViewById(id.th_tabs);
     }
 }
