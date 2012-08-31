@@ -104,6 +104,9 @@ public abstract class TabPagerActivity<V extends PagerAdapter> extends
     }
 
     private void createPager() {
+        if (pager != null)
+            return;
+
         pager = (ViewPager) findViewById(id.vp_pages);
         pager.setOnPageChangeListener(new OnPageChangeListener() {
 
@@ -125,6 +128,9 @@ public abstract class TabPagerActivity<V extends PagerAdapter> extends
     }
 
     private void createTabs() {
+        if (host != null)
+            return;
+
         host = (TabHost) findViewById(id.th_tabs);
         host.setup();
         host.setOnTabChangedListener(new OnTabChangeListener() {
