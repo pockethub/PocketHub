@@ -17,7 +17,6 @@ package com.github.mobile.ui.code;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.DialogInterface.BUTTON_NEGATIVE;
-import static android.content.DialogInterface.BUTTON_NEUTRAL;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -160,9 +159,6 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
 
         switch (which) {
         case BUTTON_NEGATIVE:
-            break;
-        case BUTTON_NEUTRAL:
-            onResult(RESULT_OK);
             break;
         default:
             getArguments().putSerializable(ARG_SELECTED,
