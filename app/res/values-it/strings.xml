@@ -209,7 +209,7 @@
     <string name="message_invalid_github_url">La applicazione non riesce ad aprire il seguente URL:\n{0}</string>
     <string name="recently_viewed">VISUALIZZATI RECENTEMENTE</string>
     <string name="cancel">Cancella</string>
-    <string name="authenticator_conflict_title">Conflitto nell'applicazione'</string>
+    <string name="authenticator_conflict_title">Conflitto nell\'applicazione</string>
     <string name="authenticator_conflict_message">E\' già stata configurata un\' altra applicazione per l\' autenticazione di GitHub.\n\nPer utilizzare l\'app di Github rimuovi l\'altra applicazione dagli Account e dalle impostazioni di sincronizzazione e disintallala.</string>
     <string name="opening_repository">Apertura in corso {0}…</string>
     <string name="commit_compare_title">Confronta Commit</string>
