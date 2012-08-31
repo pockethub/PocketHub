@@ -99,6 +99,10 @@
         <item name="android:textSize">28dp</item>
     </style>
 
+    <style name="TabIcon" parent="TextIcon">
+        <item name="android:textSize">18dp</item>
+    </style>
+
     <style name="IssueNumber">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

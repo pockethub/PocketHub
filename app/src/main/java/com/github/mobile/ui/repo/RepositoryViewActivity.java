@@ -19,6 +19,10 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import static com.github.mobile.ui.repo.RepositoryPagerAdapter.ITEM_CODE;
+import static com.github.mobile.util.TypefaceUtils.ICON_CODE;
+import static com.github.mobile.util.TypefaceUtils.ICON_COMMIT;
+import static com.github.mobile.util.TypefaceUtils.ICON_ISSUE_OPEN;
+import static com.github.mobile.util.TypefaceUtils.ICON_NEWS;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ProgressBar;
@@ -163,5 +167,21 @@ public class RepositoryViewActivity extends
     @Override
     protected int getContentView() {
         return layout.tabbed_progress_pager;
+    }
+
+    @Override
+    protected String getIcon(int position) {
+        switch (position) {
+        case 0:
+            return ICON_NEWS;
+        case 1:
+            return ICON_CODE;
+        case 2:
+            return ICON_COMMIT;
+        case 3:
+            return ICON_ISSUE_OPEN;
+        default:
+            return super.getIcon(position);
+        }
     }
 }

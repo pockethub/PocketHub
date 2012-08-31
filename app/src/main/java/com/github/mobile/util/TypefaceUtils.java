@@ -128,6 +128,36 @@ public class TypefaceUtils {
     public static final String ICON_COMMENT = "\uf22b";
 
     /**
+     * News icon
+     */
+    public static final String ICON_NEWS = "\uf234";
+
+    /**
+     * Watch icon
+     */
+    public static final String ICON_WATCH = "\uf04e";
+
+    /**
+     * Team icon
+     */
+    public static final String ICON_TEAM = "\uf019";
+
+    /**
+     * Code icon
+     */
+    public static final String ICON_CODE = "\uf011";
+
+    /**
+     * Commit icon
+     */
+    public static final String ICON_COMMIT = "\uf01f";
+
+    /**
+     * Person icon
+     */
+    public static final String ICON_PERSON = "\uf218";
+
+    /**
      * Find the maximum number of digits in the given numbers
      *
      * @param numbers

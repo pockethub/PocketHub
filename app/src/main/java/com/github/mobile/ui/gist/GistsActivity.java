@@ -17,6 +17,9 @@ package com.github.mobile.ui.gist;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+import static com.github.mobile.util.TypefaceUtils.ICON_PERSON;
+import static com.github.mobile.util.TypefaceUtils.ICON_STAR;
+import static com.github.mobile.util.TypefaceUtils.ICON_TEAM;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -80,7 +83,16 @@ public class GistsActivity extends TabPagerActivity<GistQueriesPagerAdapter> {
     }
 
     @Override
-    protected String getTitle(int position) {
-        return adapter.getPageTitle(position).toString();
+    protected String getIcon(int position) {
+        switch (position) {
+        case 0:
+            return ICON_PERSON;
+        case 1:
+            return ICON_STAR;
+        case 2:
+            return ICON_TEAM;
+        default:
+            return super.getIcon(position);
+        }
     }
 }

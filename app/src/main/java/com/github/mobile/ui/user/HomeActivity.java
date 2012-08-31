@@ -20,6 +20,11 @@ import static com.github.mobile.Intents.EXTRA_USER;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_BOOKMARKS;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_DASHBOARD;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_GISTS;
+import static com.github.mobile.util.TypefaceUtils.ICON_FOLLOW;
+import static com.github.mobile.util.TypefaceUtils.ICON_NEWS;
+import static com.github.mobile.util.TypefaceUtils.ICON_PUBLIC;
+import static com.github.mobile.util.TypefaceUtils.ICON_TEAM;
+import static com.github.mobile.util.TypefaceUtils.ICON_WATCH;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -247,5 +252,21 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
     protected HomePagerAdapter createAdapter() {
         return new HomePagerAdapter(getSupportFragmentManager(),
                 getResources(), isDefaultUser);
+    }
+
+    @Override
+    protected String getIcon(int position) {
+        switch (position) {
+        case 0:
+            return ICON_NEWS;
+        case 1:
+            return ICON_PUBLIC;
+        case 2:
+            return isDefaultUser ? ICON_WATCH : ICON_TEAM;
+        case 3:
+            return ICON_FOLLOW;
+        default:
+            return super.getIcon(position);
+        }
     }
 }

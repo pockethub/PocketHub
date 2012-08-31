@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TabHost;
@@ -29,6 +30,7 @@ import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R.id;
+import com.github.mobile.util.TypefaceUtils;
 import com.viewpagerindicator.R.layout;
 
 /**
@@ -99,6 +101,16 @@ public abstract class TabPagerActivity<V extends PagerAdapter> extends
     }
 
     /**
+     * Get icon for position
+     *
+     * @param position
+     * @return icon
+     */
+    protected String getIcon(final int position) {
+        return null;
+    }
+
+    /**
      * Set tab and pager as gone or visible
      *
      * @param gone
@@ -160,7 +172,15 @@ public abstract class TabPagerActivity<V extends PagerAdapter> extends
             TabSpec spec = host.newTabSpec("tab" + i);
             spec.setContent(this);
             View view = inflater.inflate(layout.tab, null);
+            TextView icon = (TextView) view.findViewById(id.tv_icon);
+            String iconText = getIcon(i);
+            if (!TextUtils.isEmpty(iconText))
+                icon.setText(getIcon(i));
+            else
+                ViewUtils.setGone(icon, true);
+            TypefaceUtils.setOcticons(icon);
             ((TextView) view.findViewById(id.tv_tab)).setText(getTitle(i));
+
             spec.setIndicator(view);
             host.addTab(spec);
         }

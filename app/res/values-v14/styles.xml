@@ -34,4 +34,10 @@
         <item name="android:layout_height">35dp</item>
     </style>
 
+    <style name="TabIcon" parent="TextIcon">
+        <item name="android:textSize">18dp</item>
+        <item name="android:layout_marginTop">-2dp</item>
+        <item name="android:layout_height">22dp</item>
+    </style>
+
 </resources>

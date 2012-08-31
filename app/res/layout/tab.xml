@@ -17,20 +17,29 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/tab_background" >
+    android:background="@drawable/tab_background"
+    android:paddingBottom="3dp"
+    android:paddingLeft="3dp"
+    android:paddingRight="3dp"
+    android:paddingTop="3dp" >
+
+    <TextView
+        android:id="@+id/tv_icon"
+        style="@style/TabIcon"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/tab_text" />
 
     <TextView
         android:id="@+id/tv_tab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_below="@id/tv_icon"
+        android:layout_centerHorizontal="true"
         android:ellipsize="middle"
-        android:paddingBottom="10dp"
-        android:paddingLeft="3dp"
-        android:paddingRight="3dp"
-        android:paddingTop="10dp"
+        android:paddingTop="1dp"
         android:singleLine="true"
         android:textColor="@color/tab_text"
-        android:textSize="14sp" />
+        android:textSize="12sp" />
 
 </RelativeLayout>

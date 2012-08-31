@@ -16,6 +16,10 @@
 package com.github.mobile.ui.user;
 
 import static com.github.mobile.Intents.EXTRA_USER;
+import static com.github.mobile.util.TypefaceUtils.ICON_FOLLOW;
+import static com.github.mobile.util.TypefaceUtils.ICON_NEWS;
+import static com.github.mobile.util.TypefaceUtils.ICON_PUBLIC;
+import static com.github.mobile.util.TypefaceUtils.ICON_WATCH;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ProgressBar;
@@ -120,5 +124,21 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     @Override
     protected int getContentView() {
         return layout.tabbed_progress_pager;
+    }
+
+    @Override
+    protected String getIcon(int position) {
+        switch (position) {
+        case 0:
+            return ICON_NEWS;
+        case 1:
+            return ICON_PUBLIC;
+        case 2:
+            return ICON_WATCH;
+        case 3:
+            return ICON_FOLLOW;
+        default:
+            return super.getIcon(position);
+        }
     }
 }
