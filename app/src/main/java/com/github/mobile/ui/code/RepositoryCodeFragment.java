@@ -89,10 +89,13 @@ public class RepositoryCodeFragment extends DialogFragment implements
     private RefDialog dialog;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-        refreshTree(null);
+        if (tree == null || folder == null)
+            refreshTree(null);
+        else
+            setFolder(tree, folder);
     }
 
     private void showLoading(final boolean loading) {
@@ -109,21 +112,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
             protected void onSuccess(final FullTree fullTree) throws Exception {
                 super.onSuccess(fullTree);
 
-                tree = fullTree;
-                showLoading(false);
-                StyledText branchText = new StyledText().url(fullTree.branch,
-                        new OnClickListener() {
-
-                            public void onClick(View v) {
-                                switchBranches();
-                            }
-                        });
-                branchView.setText(branchText);
-                if (RefUtils.isTag(fullTree.reference))
-                    branchIconView.setText(string.icon_tag);
-                else
-                    branchIconView.setText(string.icon_fork);
-                setFolder(fullTree.root);
+                setFolder(fullTree, fullTree.root);
             }
 
             @Override
@@ -200,14 +189,31 @@ public class RepositoryCodeFragment extends DialogFragment implements
      */
     public boolean onBackPressed() {
         if (folder != null && folder.parent != null) {
-            setFolder(folder.parent);
+            setFolder(tree, folder.parent);
             return true;
         } else
             return false;
     }
 
-    private void setFolder(final Folder folder) {
+    private void setFolder(final FullTree tree, final Folder folder) {
         this.folder = folder;
+        this.tree = tree;
+
+        showLoading(false);
+
+        StyledText branchText = new StyledText().url(tree.branch,
+                new OnClickListener() {
+
+                    public void onClick(View v) {
+                        switchBranches();
+                    }
+                });
+        branchView.setText(branchText);
+        if (RefUtils.isTag(tree.reference))
+            branchIconView.setText(string.icon_tag);
+        else
+            branchIconView.setText(string.icon_fork);
+
         if (folder.entry != null) {
             int textLightColor = getResources().getColor(color.text_light);
             final String[] segments = folder.entry.getPath().split("/");
@@ -224,7 +230,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
                             if (clicked == null)
                                 return;
                         }
-                        setFolder(clicked);
+                        setFolder(tree, clicked);
                     }
                 }).append(' ').foreground('/', textLightColor).append(' ');
             }
@@ -233,6 +239,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
             ViewUtils.setGone(pathHeaderView, false);
         } else
             ViewUtils.setGone(pathHeaderView, true);
+
         adapter.setItems(folder);
         listView.setSelection(0);
     }
@@ -242,7 +249,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
             long id) {
         Entry entry = (Entry) parent.getItemAtPosition(position);
         if (entry instanceof Folder)
-            setFolder((Folder) entry);
+            setFolder(tree, (Folder) entry);
         else
             startActivity(BranchFileViewActivity.createIntent(repository,
                     tree.branch, entry.name, entry.entry.getSha()));
