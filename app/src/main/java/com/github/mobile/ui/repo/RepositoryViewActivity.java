@@ -87,8 +87,7 @@ public class RepositoryViewActivity extends
             createTabPager();
             avatars.bind(getSupportActionBar(), owner);
             ViewUtils.setGone(loadingBar, false);
-            ViewUtils.setGone(host, true);
-            ViewUtils.setGone(pager, true);
+            setGone(true);
             new RefreshRepositoryTask(this, repository) {
 
                 @Override
@@ -134,8 +133,7 @@ public class RepositoryViewActivity extends
         avatars.bind(getSupportActionBar(), repository.getOwner());
         createTabPager();
         ViewUtils.setGone(loadingBar, true);
-        ViewUtils.setGone(host, false);
-        ViewUtils.setGone(pager, false);
+        setGone(false);
     }
 
     @Override

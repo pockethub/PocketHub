@@ -72,6 +72,18 @@ public abstract class TabPagerActivity<V extends PagerAdapter> extends
     }
 
     /**
+     * Set tab and pager as gone or visible
+     *
+     * @param gone
+     * @return this activity
+     */
+    protected TabPagerActivity<V> setGone(boolean gone) {
+        ViewUtils.setGone(host, gone);
+        ViewUtils.setGone(pager, gone);
+        return this;
+    }
+
+    /**
      * Set current item to new position
      * <p>
      * This is guaranteed to only be called when a position changes and the
