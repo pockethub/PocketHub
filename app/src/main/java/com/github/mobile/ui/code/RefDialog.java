@@ -112,7 +112,7 @@ public class RefDialog {
      * @param selectedRef
      */
     public void show(Reference selectedRef) {
-        if (refs == null) {
+        if (refs == null || refs.isEmpty()) {
             load(selectedRef);
             return;
         }
