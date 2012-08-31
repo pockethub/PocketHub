@@ -17,6 +17,10 @@ package com.github.mobile.ui.issue;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+import static com.github.mobile.util.TypefaceUtils.ICON_ADD;
+import static com.github.mobile.util.TypefaceUtils.ICON_BROADCAST;
+import static com.github.mobile.util.TypefaceUtils.ICON_FOLLOW;
+import static com.github.mobile.util.TypefaceUtils.ICON_WATCH;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -62,5 +66,21 @@ public class IssueDashboardActivity extends
     protected IssueDashboardPagerAdapter createAdapter() {
         return new IssueDashboardPagerAdapter(getResources(),
                 getSupportFragmentManager());
+    }
+
+    @Override
+    protected String getIcon(int position) {
+        switch (position) {
+        case 0:
+            return ICON_WATCH;
+        case 1:
+            return ICON_FOLLOW;
+        case 2:
+            return ICON_ADD;
+        case 3:
+            return ICON_BROADCAST;
+        default:
+            return super.getIcon(position);
+        }
     }
 }

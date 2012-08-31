@@ -158,6 +158,16 @@ public class TypefaceUtils {
     public static final String ICON_PERSON = "\uf218";
 
     /**
+     * Add icon
+     */
+    public static final String ICON_ADD = "\uf05d";
+
+    /**
+     * Broadcast icon
+     */
+    public static final String ICON_BROADCAST = "\uf030";
+
+    /**
      * Find the maximum number of digits in the given numbers
      *
      * @param numbers
