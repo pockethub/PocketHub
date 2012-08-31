@@ -224,13 +224,14 @@ public class RepositoryCodeFragment extends DialogFragment implements
         pathView = finder.find(id.tv_path);
         pathView.setMovementMethod(LinkMovementMethod.getInstance());
         branchView = finder.find(id.tv_branch);
+        branchView.setMovementMethod(LinkMovementMethod.getInstance());
         branchIconView = finder.find(id.tv_branch_icon);
-        finder.onClick(new Runnable() {
+        branchIconView.setOnClickListener(new OnClickListener() {
 
-            public void run() {
+            public void onClick(View v) {
                 switchBranches();
             }
-        }, id.rl_branch, id.tv_branch_icon);
+        });
         TypefaceUtils.setOcticons(branchIconView,
                 (TextView) pathHeaderView.findViewById(id.tv_folder_icon));
         listView.setAdapter(adapter);

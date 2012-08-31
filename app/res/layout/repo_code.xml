@@ -26,25 +26,17 @@
     <LinearLayout
         android:id="@+id/ll_footer"
         style="@style/ListItem"
+        android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:background="@drawable/section_selector"
         android:orientation="vertical"
-        android:paddingLeft="0dp"
-        android:paddingRight="0dp"
         android:visibility="gone" >
 
         <RelativeLayout
             android:id="@+id/rl_path"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:paddingBottom="0dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="3dp" >
+            android:layout_height="wrap_content" >
 
             <TextView
                 android:id="@+id/tv_folder_icon"
@@ -56,12 +48,7 @@
             <TextView
                 android:id="@+id/tv_path"
                 style="@style/ListSubtitleText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/tv_folder_icon"
-                android:clickable="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
                 android:lineSpacingExtra="1dp"
                 android:paddingBottom="0dp"
                 android:paddingLeft="10dp"
@@ -73,11 +60,7 @@
             android:id="@+id/rl_branch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:paddingBottom="0dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="0dp" >
+            android:paddingTop="5dp" >
 
             <TextView
                 android:id="@+id/tv_branch_icon"
@@ -89,7 +72,6 @@
             <TextView
                 android:id="@+id/tv_branch"
                 style="@style/ListSubtitleText"
-                android:layout_width="match_parent"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/tv_branch_icon"
                 android:paddingLeft="10dp"
