@@ -25,8 +25,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -34,21 +32,19 @@ import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.core.user.UserComparator;
 import com.github.mobile.persistence.AccountDataManager;
+import com.github.mobile.ui.TabPagerActivity;
 import com.github.mobile.ui.gist.GistsActivity;
-import com.github.mobile.ui.issue.IssueDashboardActivity;
 import com.github.mobile.ui.issue.FiltersViewActivity;
+import com.github.mobile.ui.issue.IssueDashboardActivity;
 import com.github.mobile.ui.repo.OrganizationLoader;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.PreferenceUtils;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.viewpagerindicator.TitlePageIndicator;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -57,12 +53,10 @@ import java.util.Set;
 
 import org.eclipse.egit.github.core.User;
 
-import roboguice.inject.InjectView;
-
 /**
  * Home screen activity
  */
-public class HomeActivity extends RoboSherlockFragmentActivity implements
+public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
         OnNavigationListener, OrganizationSelectionProvider,
         LoaderCallbacks<List<User>> {
 
@@ -86,12 +80,6 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements
 
     private User org;
 
-    @InjectView(id.tpi_header)
-    private TitlePageIndicator indicator;
-
-    @InjectView(id.vp_pages)
-    private ViewPager pager;
-
     @Inject
     private AvatarLoader avatars;
 
@@ -101,8 +89,6 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(layout.pager_with_title);
 
         getSupportLoaderManager().initLoader(0, null, this);
 
@@ -144,22 +130,20 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements
         this.org = org;
 
         boolean isDefaultUser = isDefaultUser(org);
-        PagerAdapter pagerAdater = pager.getAdapter();
-        if (pagerAdater == null) {
-            pager.setAdapter(new HomePagerAdapter(getSupportFragmentManager(),
-                    getResources(), isDefaultUser));
-            indicator.setViewPager(pager);
-        } else if (this.isDefaultUser != isDefaultUser) {
+        boolean changed = this.isDefaultUser != isDefaultUser;
+        this.isDefaultUser = isDefaultUser;
+        if (adapter == null)
+            configureTabPager();
+        else if (changed) {
             int item = pager.getCurrentItem();
-            ((HomePagerAdapter) pagerAdater).clearAdapter(isDefaultUser);
-            pagerAdater.notifyDataSetChanged();
-            if (item >= pagerAdater.getCount())
-                item = pagerAdater.getCount() - 1;
-            indicator.invalidate();
-            indicator.setCurrentItem(item);
+            host.clearAllTabs();
+            adapter.clearAdapter(isDefaultUser);
+            adapter.notifyDataSetChanged();
+            createTabs();
+            if (item >= adapter.getCount())
+                item = adapter.getCount() - 1;
             pager.setCurrentItem(item, false);
         }
-        this.isDefaultUser = isDefaultUser;
 
         for (OrganizationSelectionListener listener : orgSelectionListeners)
             listener.onOrganizationSelected(org);
@@ -257,5 +241,11 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements
         if (listener != null)
             orgSelectionListeners.remove(listener);
         return this;
+    }
+
+    @Override
+    protected HomePagerAdapter createAdapter() {
+        return new HomePagerAdapter(getSupportFragmentManager(),
+                getResources(), isDefaultUser);
     }
 }

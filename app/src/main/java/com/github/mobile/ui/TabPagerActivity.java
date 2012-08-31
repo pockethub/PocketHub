@@ -147,7 +147,13 @@ public abstract class TabPagerActivity<V extends PagerAdapter> extends
         pager.setAdapter(adapter);
     }
 
-    private void createTabs() {
+    /**
+     * Create tab using information from current adapter
+     * <p>
+     * This can be called when the tabs changed but must be called after an
+     * initial call to {@link #configureTabPager()}
+     */
+    protected void createTabs() {
         LayoutInflater inflater = getLayoutInflater();
         int count = adapter.getCount();
         for (int i = 0; i < count; i++) {
