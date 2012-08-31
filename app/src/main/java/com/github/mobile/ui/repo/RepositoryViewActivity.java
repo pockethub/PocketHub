@@ -21,7 +21,6 @@ import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import static com.github.mobile.ui.repo.RepositoryPagerAdapter.ITEM_CODE;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -33,12 +32,11 @@ import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.core.repo.RefreshRepositoryTask;
 import com.github.mobile.core.repo.RepositoryUtils;
-import com.github.mobile.ui.DialogFragmentActivity;
+import com.github.mobile.ui.TabPagerActivity;
 import com.github.mobile.ui.user.HomeActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
-import com.viewpagerindicator.TitlePageIndicator;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
@@ -49,7 +47,8 @@ import roboguice.inject.InjectView;
 /**
  * Activity to view a repository
  */
-public class RepositoryViewActivity extends DialogFragmentActivity {
+public class RepositoryViewActivity extends
+        TabPagerActivity<RepositoryPagerAdapter> {
 
     /**
      * Create intent for this activity
@@ -67,22 +66,12 @@ public class RepositoryViewActivity extends DialogFragmentActivity {
     @Inject
     private AvatarLoader avatars;
 
-    @InjectView(id.vp_pages)
-    private ViewPager pager;
-
     @InjectView(id.pb_loading)
     private ProgressBar loadingBar;
-
-    @InjectView(id.tpi_header)
-    private TitlePageIndicator indicator;
-
-    private RepositoryPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(layout.pager_with_title);
 
         User owner = repository.getOwner();
 
@@ -95,10 +84,10 @@ public class RepositoryViewActivity extends DialogFragmentActivity {
                 && RepositoryUtils.isComplete(repository))
             configurePager();
         else {
+            createTabPager();
             avatars.bind(getSupportActionBar(), owner);
             ViewUtils.setGone(loadingBar, false);
             ViewUtils.setGone(pager, true);
-            ViewUtils.setGone(indicator, true);
             new RefreshRepositoryTask(this, repository) {
 
                 @Override
@@ -142,14 +131,9 @@ public class RepositoryViewActivity extends DialogFragmentActivity {
 
     private void configurePager() {
         avatars.bind(getSupportActionBar(), repository.getOwner());
+        createTabPager();
         ViewUtils.setGone(loadingBar, true);
         ViewUtils.setGone(pager, false);
-        ViewUtils.setGone(indicator, false);
-        adapter = new RepositoryPagerAdapter(getSupportFragmentManager(),
-                getResources(), repository.isHasIssues());
-        pager.setAdapter(adapter);
-        indicator.setViewPager(pager);
-        pager.setCurrentItem(2);
     }
 
     @Override
@@ -169,5 +153,16 @@ public class RepositoryViewActivity extends DialogFragmentActivity {
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
         adapter.onDialogResult(pager.getCurrentItem(), requestCode, resultCode,
                 arguments);
+    }
+
+    @Override
+    protected RepositoryPagerAdapter createAdapter() {
+        return new RepositoryPagerAdapter(getSupportFragmentManager(),
+                getResources(), repository.isHasIssues());
+    }
+
+    @Override
+    protected int getContentView() {
+        return layout.tabbed_progress_pager;
     }
 }

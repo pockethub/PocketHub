@@ -34,7 +34,7 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
     /**
      * Index of code page
      */
-    public static final int ITEM_CODE = 0;
+    public static final int ITEM_CODE = 1;
 
     private final Resources resources;
 
@@ -61,11 +61,11 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
         case 0:
-            return resources.getString(string.code);
-        case 1:
-            return resources.getString(string.commits);
-        case 2:
             return resources.getString(string.news);
+        case 1:
+            return resources.getString(string.code);
+        case 2:
+            return resources.getString(string.commits);
         case 3:
             return resources.getString(string.issues);
         default:
@@ -77,12 +77,12 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
         case 0:
+            return new RepositoryNewsFragment();
+        case 1:
             codeFragment = new RepositoryCodeFragment();
             return codeFragment;
-        case 1:
-            return new CommitListFragment();
         case 2:
-            return new RepositoryNewsFragment();
+            return new CommitListFragment();
         case 3:
             return new IssuesFragment();
         default:
