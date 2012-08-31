@@ -19,6 +19,7 @@ import static org.eclipse.egit.github.core.Blob.ENCODING_BASE64;
 import static org.eclipse.egit.github.core.client.IGitHubConstants.CHARSET_UTF8;
 import android.accounts.Account;
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.google.inject.Inject;
@@ -56,7 +57,8 @@ public class RefreshBlobTask extends AuthenticatedUserTask<String> {
     protected String run(Account account) throws Exception {
         Blob blob = service.getBlob(repository, blobSha);
         String content = blob.getContent();
-        if (ENCODING_BASE64.equals(blob.getEncoding()))
+        if (!TextUtils.isEmpty(content)
+                && ENCODING_BASE64.equals(blob.getEncoding()))
             content = new String(EncodingUtils.fromBase64(content),
                     CHARSET_UTF8);
         return content;
