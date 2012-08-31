@@ -174,7 +174,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
                 super.onException(e);
 
                 showLoading(false);
-                ToastUtils.show(getActivity(), e, string.error_file_load);
+                ToastUtils.show(getActivity(), e, string.error_code_load);
             }
 
         }.execute();
@@ -225,12 +225,12 @@ public class RepositoryCodeFragment extends DialogFragment implements
         pathView.setMovementMethod(LinkMovementMethod.getInstance());
         branchView = finder.find(id.tv_branch);
         branchIconView = finder.find(id.tv_branch_icon);
-        finder.onClick(id.rl_branch, new Runnable() {
+        finder.onClick(new Runnable() {
 
             public void run() {
                 switchBranches();
             }
-        });
+        }, id.rl_branch, id.tv_branch_icon);
         TypefaceUtils.setOcticons(branchIconView,
                 (TextView) pathHeaderView.findViewById(id.tv_folder_icon));
         listView.setAdapter(adapter);
