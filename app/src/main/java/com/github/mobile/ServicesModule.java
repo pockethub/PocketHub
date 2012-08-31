@@ -24,6 +24,7 @@ import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.CollaboratorService;
 import org.eclipse.egit.github.core.service.CommitService;
+import org.eclipse.egit.github.core.service.DataService;
 import org.eclipse.egit.github.core.service.EventService;
 import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.IssueService;
@@ -107,5 +108,10 @@ public class ServicesModule extends AbstractModule {
     @Provides
     CommitService commitService(GitHubClient client) {
         return new CommitService(client);
+    }
+
+    @Provides
+    DataService dataService(GitHubClient client) {
+        return new DataService(client);
     }
 }
