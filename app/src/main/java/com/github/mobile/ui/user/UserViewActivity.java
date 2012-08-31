@@ -18,7 +18,6 @@ package com.github.mobile.ui.user;
 import static com.github.mobile.Intents.EXTRA_USER;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.widget.ProgressBar;
 
 import com.github.kevinsawicki.wishlist.ViewUtils;
@@ -27,11 +26,10 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.core.user.RefreshUserTask;
+import com.github.mobile.ui.TabPagerActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
-import com.viewpagerindicator.TitlePageIndicator;
 
 import org.eclipse.egit.github.core.User;
 
@@ -41,8 +39,8 @@ import roboguice.inject.InjectView;
 /**
  * Activity to view a user's various pages
  */
-public class UserViewActivity extends RoboSherlockFragmentActivity implements
-        OrganizationSelectionProvider {
+public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
+        implements OrganizationSelectionProvider {
 
     /**
      * Create intent for this activity
@@ -60,29 +58,21 @@ public class UserViewActivity extends RoboSherlockFragmentActivity implements
     @InjectExtra(EXTRA_USER)
     private User user;
 
-    @InjectView(id.vp_pages)
-    private ViewPager pager;
-
     @InjectView(id.pb_loading)
     private ProgressBar loadingBar;
-
-    @InjectView(id.tpi_header)
-    private TitlePageIndicator indicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(layout.pager_with_title);
 
         getSupportActionBar().setTitle(user.getLogin());
 
         if (user.getAvatarUrl() != null)
             configurePager();
         else {
+            createTabPager();
             ViewUtils.setGone(loadingBar, false);
             ViewUtils.setGone(pager, true);
-            ViewUtils.setGone(indicator, true);
             new RefreshUserTask(this, user.getLogin()) {
 
                 @Override
@@ -107,12 +97,9 @@ public class UserViewActivity extends RoboSherlockFragmentActivity implements
 
     private void configurePager() {
         avatars.bind(getSupportActionBar(), user);
+        createTabPager();
         ViewUtils.setGone(loadingBar, true);
         ViewUtils.setGone(pager, false);
-        ViewUtils.setGone(indicator, false);
-        pager.setAdapter(new UserPagerAdapter(getSupportFragmentManager(),
-                getResources()));
-        indicator.setViewPager(pager);
     }
 
     @Override
@@ -124,5 +111,15 @@ public class UserViewActivity extends RoboSherlockFragmentActivity implements
     public OrganizationSelectionProvider removeListener(
             OrganizationSelectionListener listener) {
         return this;
+    }
+
+    @Override
+    protected UserPagerAdapter createAdapter() {
+        return new UserPagerAdapter(getSupportFragmentManager(), getResources());
+    }
+
+    @Override
+    protected int getContentView() {
+        return layout.tabbed_progress_pager;
     }
 }
