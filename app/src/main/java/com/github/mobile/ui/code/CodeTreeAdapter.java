@@ -17,14 +17,13 @@ package com.github.mobile.ui.code;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
+import android.text.format.Formatter;
 import android.view.View;
 import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.MultiTypeAdapter;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
-import com.github.mobile.R.string;
 import com.github.mobile.core.code.FullTree.Entry;
 import com.github.mobile.core.code.FullTree.Folder;
 import com.github.mobile.core.commit.CommitUtils;
@@ -39,9 +38,7 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
 
     private static final int TYPE_TREE = 1;
 
-    private final String sizeSingle;
-
-    private final String sizePlural;
+    private final Context context;
 
     /**
      * @param activity
@@ -49,9 +46,7 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
     public CodeTreeAdapter(Activity activity) {
         super(activity);
 
-        Resources resources = activity.getResources();
-        sizeSingle = resources.getString(string.one_byte);
-        sizePlural = resources.getString(string.bytes);
+        this.context = activity;
     }
 
     /**
@@ -60,9 +55,7 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
     public CodeTreeAdapter(Context context) {
         super(context);
 
-        Resources resources = context.getResources();
-        sizeSingle = resources.getString(string.one_byte);
-        sizePlural = resources.getString(string.bytes);
+        this.context = context;
     }
 
     @Override
@@ -129,11 +122,8 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
         case TYPE_BLOB:
             Entry file = (Entry) item;
             setText(id.tv_file, file.name);
-            long size = file.entry.getSize();
-            if (size != 1)
-                setText(id.tv_size, FORMAT_INT.format(size) + ' ' + sizePlural);
-            else
-                setText(id.tv_size, sizeSingle);
+            setText(id.tv_size,
+                    Formatter.formatFileSize(context, file.entry.getSize()));
 
             break;
         case TYPE_TREE:
