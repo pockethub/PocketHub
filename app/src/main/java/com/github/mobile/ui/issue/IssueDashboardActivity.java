@@ -19,47 +19,33 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R.drawable;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
+import com.github.mobile.ui.TabPagerActivity;
 import com.github.mobile.ui.user.HomeActivity;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
-import com.viewpagerindicator.TitlePageIndicator;
-
-import roboguice.inject.InjectView;
 
 /**
  * Dashboard activity for issues
  */
-public class IssueDashboardActivity extends RoboSherlockFragmentActivity {
-
-    @InjectView(id.tpi_header)
-    private TitlePageIndicator indicator;
-
-    @InjectView(id.vp_pages)
-    private ViewPager pager;
+public class IssueDashboardActivity extends
+        TabPagerActivity<IssueDashboardPagerAdapter> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(layout.pager_with_title);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(string.dashboard_issues_title);
         actionBar.setIcon(drawable.action_dashboard);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        pager.setAdapter(new IssueDashboardPagerAdapter(getResources(),
-                getSupportFragmentManager()));
-        indicator.setViewPager(pager);
+        createTabPager();
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case android.R.id.home:
@@ -70,5 +56,11 @@ public class IssueDashboardActivity extends RoboSherlockFragmentActivity {
         default:
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected IssueDashboardPagerAdapter createAdapter() {
+        return new IssueDashboardPagerAdapter(getResources(),
+                getSupportFragmentManager());
     }
 }
