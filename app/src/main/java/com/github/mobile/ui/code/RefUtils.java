@@ -26,9 +26,9 @@ public class RefUtils {
 
     private static final String PREFIX_REFS = "refs/";
 
-    private static final String PREFIX_TAG = "refs/tags";
+    private static final String PREFIX_TAG = "refs/tags/";
 
-    private static final String PREFIX_HEADS = "refs/heads";
+    private static final String PREFIX_HEADS = "refs/heads/";
 
     /**
      * Is reference a branch?
@@ -69,7 +69,7 @@ public class RefUtils {
             return null;
         String name = ref.getRef();
         if (!TextUtils.isEmpty(name) && name.startsWith(PREFIX_REFS))
-            return name.substring(PREFIX_REFS.length() + 1);
+            return name.substring(PREFIX_REFS.length());
         else
             return null;
     }
@@ -87,11 +87,11 @@ public class RefUtils {
         if (TextUtils.isEmpty(name))
             return name;
         if (name.startsWith(PREFIX_HEADS))
-            return name.substring(PREFIX_HEADS.length() + 1);
+            return name.substring(PREFIX_HEADS.length());
         else if (name.startsWith(PREFIX_TAG))
-            return name.substring(PREFIX_TAG.length() + 1);
+            return name.substring(PREFIX_TAG.length());
         else if (name.startsWith(PREFIX_REFS))
-            return name.substring(PREFIX_REFS.length() + 1);
+            return name.substring(PREFIX_REFS.length());
         else
             return name;
     }
