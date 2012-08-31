@@ -37,7 +37,8 @@ import com.viewpagerindicator.R.layout;
  * @param <V>
  */
 public abstract class TabPagerActivity<V extends PagerAdapter> extends
-        DialogFragmentActivity {
+        DialogFragmentActivity implements OnPageChangeListener,
+        OnTabChangeListener, TabContentFactory {
 
     /**
      * View pager
@@ -53,6 +54,32 @@ public abstract class TabPagerActivity<V extends PagerAdapter> extends
      * Pager adapter
      */
     protected V adapter;
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset,
+            int positionOffsetPixels) {
+        // Intentionally left blank
+    }
+
+    @Override
+    public void onPageSelected(final int position) {
+        host.setCurrentTab(position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+        // Intentionally left blank
+    }
+
+    @Override
+    public void onTabChanged(String tabId) {
+        updateCurrentItem(host.getCurrentTab());
+    }
+
+    @Override
+    public View createTabContent(String tag) {
+        return ViewUtils.setGone(new View(this), true);
+    }
 
     /**
      * Create pager adapter
@@ -116,21 +143,7 @@ public abstract class TabPagerActivity<V extends PagerAdapter> extends
     }
 
     private void createPager() {
-        pager.setOnPageChangeListener(new OnPageChangeListener() {
-
-            public void onPageScrolled(int position, float positionOffset,
-                    int positionOffsetPixels) {
-                // Intentionally left blank
-            }
-
-            public void onPageSelected(final int position) {
-                host.setCurrentTab(position);
-            }
-
-            public void onPageScrollStateChanged(int state) {
-                // Intentionally left blank
-            }
-        });
+        pager.setOnPageChangeListener(this);
         adapter = createAdapter();
         pager.setAdapter(adapter);
     }
@@ -138,24 +151,12 @@ public abstract class TabPagerActivity<V extends PagerAdapter> extends
     private void createTabs() {
         host = (TabHost) findViewById(id.th_tabs);
         host.setup();
-        host.setOnTabChangedListener(new OnTabChangeListener() {
-
-            public void onTabChanged(String tabId) {
-                updateCurrentItem(host.getCurrentTab());
-            }
-        });
+        host.setOnTabChangedListener(this);
         LayoutInflater inflater = getLayoutInflater();
         int count = adapter.getCount();
         for (int i = 0; i < count; i++) {
             TabSpec spec = host.newTabSpec("tab" + i);
-            spec.setContent(new TabContentFactory() {
-
-                @Override
-                public View createTabContent(String tag) {
-                    return ViewUtils.setGone(new View(TabPagerActivity.this),
-                            true);
-                }
-            });
+            spec.setContent(this);
             View view = inflater.inflate(layout.tab, null);
             ((TextView) view.findViewById(id.tv_tab)).setText(getTitle(i));
             spec.setIndicator(view);
