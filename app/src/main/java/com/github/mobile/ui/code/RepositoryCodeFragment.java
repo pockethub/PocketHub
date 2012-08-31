@@ -80,7 +80,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
     private View pathHeaderView;
 
-    private View footerView;
+    private View branchFooterView;
 
     private CodeTreeAdapter adapter;
 
@@ -134,7 +134,9 @@ public class RepositoryCodeFragment extends DialogFragment implements
     private void showLoading(final boolean loading) {
         ViewUtils.setGone(progressView, !loading);
         ViewUtils.setGone(listView, loading);
-        ViewUtils.setGone(footerView, loading);
+        ViewUtils.setGone(pathHeaderView, loading || folder == null
+                || folder.parent == null);
+        ViewUtils.setGone(branchFooterView, loading);
     }
 
     private void refreshTree(final Reference reference) {
@@ -219,14 +221,13 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
         Activity activity = getActivity();
         adapter = new CodeTreeAdapter(activity);
-        footerView = finder.find(id.ll_footer);
         pathHeaderView = finder.find(id.rl_path);
+        branchFooterView = finder.find(id.rl_branch);
         pathView = finder.find(id.tv_path);
         pathView.setMovementMethod(LinkMovementMethod.getInstance());
         branchView = finder.find(id.tv_branch);
-        branchView.setMovementMethod(LinkMovementMethod.getInstance());
         branchIconView = finder.find(id.tv_branch_icon);
-        branchIconView.setOnClickListener(new OnClickListener() {
+        branchFooterView.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
                 switchBranches();
@@ -256,14 +257,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
         showLoading(false);
 
-        StyledText branchText = new StyledText().url(tree.branch,
-                new OnClickListener() {
-
-                    public void onClick(View v) {
-                        switchBranches();
-                    }
-                });
-        branchView.setText(branchText);
+        branchView.setText(tree.branch);
         if (RefUtils.isTag(tree.reference))
             branchIconView.setText(string.icon_tag);
         else
