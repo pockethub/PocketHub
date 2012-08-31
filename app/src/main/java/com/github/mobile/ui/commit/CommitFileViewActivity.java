@@ -178,6 +178,8 @@ public class CommitFileViewActivity extends RoboSherlockActivity {
 
                 ViewUtils.setGone(loadingBar, true);
                 ViewUtils.setGone(codeView, false);
+                if (body == null)
+                    body = "";
                 editor.setSource(path, body);
             }
 
