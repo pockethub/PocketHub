@@ -32,10 +32,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.actionbarsherlock.R.color;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
+import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.core.code.FullTree;
 import com.github.mobile.core.code.FullTree.Entry;
@@ -47,6 +51,8 @@ import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.ToastUtils;
 import com.github.mobile.util.TypefaceUtils;
 import com.google.inject.Inject;
+
+import java.util.LinkedList;
 
 import org.eclipse.egit.github.core.Reference;
 import org.eclipse.egit.github.core.Repository;
@@ -89,6 +95,13 @@ public class RepositoryCodeFragment extends DialogFragment implements
     private RefDialog dialog;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -96,6 +109,26 @@ public class RepositoryCodeFragment extends DialogFragment implements
             refreshTree(null);
         else
             setFolder(tree, folder);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
+        inflater.inflate(menu.refresh, optionsMenu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case id.m_refresh:
+            if (tree != null)
+                refreshTree(new Reference().setRef(tree.reference.getRef()));
+            else
+                refreshTree(null);
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+
     }
 
     private void showLoading(final boolean loading) {
@@ -112,7 +145,28 @@ public class RepositoryCodeFragment extends DialogFragment implements
             protected void onSuccess(final FullTree fullTree) throws Exception {
                 super.onSuccess(fullTree);
 
-                setFolder(fullTree, fullTree.root);
+                if (folder == null || folder.parent == null)
+                    setFolder(fullTree, fullTree.root);
+                else {
+                    // Look for current folder in new tree or else reset to root
+                    Folder current = folder;
+                    LinkedList<Folder> stack = new LinkedList<Folder>();
+                    while (current != null && current.parent != null) {
+                        stack.addFirst(current);
+                        current = current.parent;
+                    }
+                    Folder refreshed = fullTree.root;
+                    while (!stack.isEmpty()) {
+                        refreshed = refreshed.folders
+                                .get(stack.removeFirst().name);
+                        if (refreshed == null)
+                            break;
+                    }
+                    if (refreshed != null)
+                        setFolder(fullTree, refreshed);
+                    else
+                        setFolder(fullTree, fullTree.root);
+                }
             }
 
             @Override
