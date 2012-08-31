@@ -24,10 +24,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:ellipsize="middle"
         android:paddingBottom="10dp"
         android:paddingLeft="3dp"
         android:paddingRight="3dp"
         android:paddingTop="10dp"
+        android:singleLine="true"
         android:textColor="@color/tab_text"
         android:textSize="14sp" />
 
