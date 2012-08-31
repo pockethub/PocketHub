@@ -37,6 +37,8 @@
     <string name="error_commits_load">Erreur lors du chargement des commits</string>
     <string name="error_commit_load">Erreur lors du chargement du commit</string>
     <string name="error_file_load">Erreur lors du chargement du fichier</string>
+    <string name="error_code_load">Erreur lors du chargement du code</string>
+    <string name="error_refs_load">Erreur lors du chargement des branches et tags</string>
     <!--  -->
 
 
@@ -56,7 +58,8 @@
     <string name="loading_milestones">Chargement des jalons…</string>
     <string name="loading_labels">Chargement des libellés…</string>
     <string name="loading_commits">Chargement des commits…</string>
-    <string name="loading_files_and_comments">Chargement des fichiers &amp; commentaires…</string>
+    <string name="loading_files_and_comments">Chargement des fichiers et commentaires…</string>
+    <string name="loading_refs">Chargement des branches et tags</string>
     <!--  -->
 
 
@@ -119,7 +122,7 @@
     <string name="bookmarks">Favoris</string>
     <string name="gists_title">Gists</string>
     <string name="issue_title">Ticket #</string>
-    <string name="pull_request_title">Demande de pull #</string>
+    <string name="pull_request_title">Pull Request #</string>
     <string name="gist_title">Gist\u0020</string>
     <string name="filter_issues_title">Filtrer les tickets</string>
     <string name="create_comment_title">Ajouter un commentaire</string>
@@ -146,6 +149,7 @@
     <string name="select_assignee">Sélectionner l\'assigné</string>
     <string name="select_milestone">Sélectionner le jalon</string>
     <string name="select_labels">Sélectionner les libellés</string>
+    <string name="select_ref">Sélectionner branche ou tag</string>
     <string name="no_milestone">Aucun jalon</string>
     <string name="unassigned">Personne n\'est assigné</string>
     <string name="assigned">est assigné</string>
@@ -223,5 +227,6 @@
     <string name="comparing_commits">Comparaison {0} commits</string>
     <string name="enable_wrapping">Activer la coupure</string>
     <string name="disable_wrapping">Désactiver la coupure</string>
+    <string name="code">Code</string>
 
 </resources>
