@@ -143,15 +143,12 @@ public abstract class TabPagerActivity<V extends PagerAdapter> extends
     }
 
     private void createPager() {
-        pager.setOnPageChangeListener(this);
         adapter = createAdapter();
         pager.setAdapter(adapter);
     }
 
     private void createTabs() {
-        host = (TabHost) findViewById(id.th_tabs);
         host.setup();
-        host.setOnTabChangedListener(this);
         LayoutInflater inflater = getLayoutInflater();
         int count = adapter.getCount();
         for (int i = 0; i < count; i++) {
@@ -180,6 +177,8 @@ public abstract class TabPagerActivity<V extends PagerAdapter> extends
 
         setContentView(getContentView());
         pager = (ViewPager) findViewById(id.vp_pages);
+        pager.setOnPageChangeListener(this);
         host = (TabHost) findViewById(id.th_tabs);
+        host.setOnTabChangedListener(this);
     }
 }
