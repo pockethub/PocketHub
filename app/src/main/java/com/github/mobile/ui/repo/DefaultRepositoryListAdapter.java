@@ -112,7 +112,7 @@ public class DefaultRepositoryListAdapter extends
     protected View initialize(View view) {
         view = super.initialize(view);
 
-        TypefaceUtils.setOcticons(textView(view, 3),
+        TypefaceUtils.setOcticons(textView(view, 0),
                 (TextView) view.findViewById(id.tv_forks_icon),
                 (TextView) view.findViewById(id.tv_watchers_icon));
         descriptionColor = view.getResources().getColor(color.text_description);
