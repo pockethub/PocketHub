@@ -79,8 +79,8 @@ public class HomeDropdownListAdapter extends BaseAdapter {
 
         @Override
         protected void update(int position, User user) {
-            setText(id.tv_org_name, user.getLogin());
-            avatars.bind(imageView(id.iv_avatar), user);
+            setText(0, user.getLogin());
+            avatars.bind(imageView(1), user);
         }
     }
 

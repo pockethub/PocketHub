@@ -112,7 +112,7 @@ public class DefaultRepositoryListAdapter extends
     protected View initialize(View view) {
         view = super.initialize(view);
 
-        TypefaceUtils.setOcticons(textView(view, id.tv_repo_icon),
+        TypefaceUtils.setOcticons(textView(view, 3),
                 (TextView) view.findViewById(id.tv_forks_icon),
                 (TextView) view.findViewById(id.tv_watchers_icon));
         descriptionColor = view.getResources().getColor(color.text_description);
@@ -121,28 +121,28 @@ public class DefaultRepositoryListAdapter extends
 
     @Override
     protected int[] getChildViewIds() {
-        return new int[] { id.ll_header, id.tv_header, id.v_separator,
-                id.tv_repo_icon, id.tv_repo_name, id.tv_repo_description,
-                id.tv_language, id.tv_watchers, id.tv_forks };
+        return new int[] { id.tv_repo_icon, id.tv_repo_description,
+                id.tv_language, id.tv_watchers, id.tv_forks, id.ll_header,
+                id.tv_header, id.v_separator, id.tv_repo_name };
     }
 
     @Override
     protected void update(int position, Repository repository) {
         String headerValue = headers.get(repository.getId());
         if (headerValue != null) {
-            setGone(id.ll_header, false);
-            setText(id.tv_header, headerValue);
+            setGone(5, false);
+            setText(6, headerValue);
         } else
-            setGone(id.ll_header, true);
+            setGone(5, true);
 
-        setGone(id.v_separator, noSeparators.contains(repository.getId()));
+        setGone(7, noSeparators.contains(repository.getId()));
 
         StyledText name = new StyledText();
         if (!account.get().getLogin().equals(repository.getOwner().getLogin()))
             name.foreground(repository.getOwner().getLogin(), descriptionColor)
                     .foreground('/', descriptionColor);
         name.bold(repository.getName());
-        setText(id.tv_repo_name, name);
+        setText(8, name);
 
         updateDetails(repository.getDescription(), repository.getLanguage(),
                 repository.getWatchers(), repository.getForks(),

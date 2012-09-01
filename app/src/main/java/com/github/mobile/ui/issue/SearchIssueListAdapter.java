@@ -60,7 +60,7 @@ public class SearchIssueListAdapter extends IssueListAdapter<SearchIssue> {
     protected View initialize(View view) {
         view = super.initialize(view);
 
-        numberPaintFlags = textView(view, id.tv_issue_number).getPaintFlags();
+        numberPaintFlags = textView(view, 0).getPaintFlags();
         TypefaceUtils.setOcticons(
                 (TextView) view.findViewById(id.tv_pull_request_icon),
                 (TextView) view.findViewById(id.tv_comment_icon));
@@ -78,8 +78,7 @@ public class SearchIssueListAdapter extends IssueListAdapter<SearchIssue> {
 
     @Override
     protected void update(int position, SearchIssue issue) {
-        updateNumber(issue.getNumber(), issue.getState(), numberPaintFlags,
-                id.tv_issue_number);
+        updateNumber(issue.getNumber(), issue.getState(), numberPaintFlags, 0);
 
         String gravatarId = issue.getGravatarId();
         User user;
@@ -87,12 +86,11 @@ public class SearchIssueListAdapter extends IssueListAdapter<SearchIssue> {
             user = new User().setGravatarId(gravatarId);
         else
             user = null;
-        avatars.bind(imageView(id.iv_avatar), user);
+        avatars.bind(imageView(2), user);
 
-        setText(id.tv_issue_title, issue.getTitle());
+        setText(1, issue.getTitle());
 
-        updateReporter(issue.getUser(), issue.getCreatedAt(),
-                id.tv_issue_creation);
-        setNumber(id.tv_issue_comments, issue.getComments());
+        updateReporter(issue.getUser(), issue.getCreatedAt(), 3);
+        setNumber(4, issue.getComments());
     }
 }

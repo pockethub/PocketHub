@@ -65,7 +65,7 @@ public class SearchRepositoryListAdapter extends
     protected View initialize(View view) {
         view = super.initialize(view);
 
-        TypefaceUtils.setOcticons(textView(view, id.tv_repo_icon),
+        TypefaceUtils.setOcticons(textView(view, 0),
                 (TextView) view.findViewById(id.tv_forks_icon),
                 (TextView) view.findViewById(id.tv_watchers_icon));
         return view;
@@ -73,9 +73,8 @@ public class SearchRepositoryListAdapter extends
 
     @Override
     protected int[] getChildViewIds() {
-        return new int[] { id.tv_repo_icon, id.tv_repo_name,
-                id.tv_repo_description, id.tv_language, id.tv_watchers,
-                id.tv_forks };
+        return new int[] { id.tv_repo_icon, id.tv_repo_description,
+                id.tv_language, id.tv_watchers, id.tv_forks, id.tv_repo_name };
     }
 
     @Override
@@ -83,7 +82,7 @@ public class SearchRepositoryListAdapter extends
         StyledText name = new StyledText();
         name.append(repository.getOwner()).append('/');
         name.bold(repository.getName());
-        setText(id.tv_repo_name, name);
+        setText(5, name);
 
         updateDetails(repository.getDescription(), repository.getLanguage(),
                 repository.getWatchers(), repository.getForks(),

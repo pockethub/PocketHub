@@ -25,7 +25,6 @@ import android.view.LayoutInflater;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
-import com.github.mobile.R.id;
 
 /**
  * Adapter for a list of repositories
@@ -75,30 +74,29 @@ public abstract class RepositoryListAdapter<V> extends SingleTypeAdapter<V> {
             final String mirrorUrl) {
         if (TextUtils.isEmpty(mirrorUrl))
             if (isPrivate)
-                setText(id.tv_repo_icon, ICON_PRIVATE);
+                setText(0, ICON_PRIVATE);
             else if (isFork)
-                setText(id.tv_repo_icon, ICON_FORK);
+                setText(0, ICON_FORK);
             else
-                setText(id.tv_repo_icon, ICON_PUBLIC);
+                setText(0, ICON_PUBLIC);
         else {
             if (isPrivate)
-                setText(id.tv_repo_icon, ICON_MIRROR_PRIVATE);
+                setText(0, ICON_MIRROR_PRIVATE);
             else
-                setText(id.tv_repo_icon, ICON_MIRROR_PUBLIC);
+                setText(0, ICON_MIRROR_PUBLIC);
         }
 
         if (!TextUtils.isEmpty(description))
-            ViewUtils.setGone(setText(id.tv_repo_description, description),
-                    false);
+            ViewUtils.setGone(setText(1, description), false);
         else
-            setGone(id.tv_repo_description, true);
+            setGone(1, true);
 
         if (!TextUtils.isEmpty(language))
-            ViewUtils.setGone(setText(id.tv_language, language), false);
+            ViewUtils.setGone(setText(2, language), false);
         else
-            setGone(id.tv_language, true);
+            setGone(2, true);
 
-        setNumber(id.tv_watchers, watchers);
-        setNumber(id.tv_forks, forks);
+        setNumber(3, watchers);
+        setNumber(4, forks);
     }
 }

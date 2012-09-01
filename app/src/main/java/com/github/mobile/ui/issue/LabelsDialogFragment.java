@@ -89,8 +89,8 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
 
         @Override
         protected void update(int position, Label item) {
-            LabelDrawableSpan.setText(textView(id.tv_label_name), item);
-            setChecked(id.cb_selected, selected[position]);
+            LabelDrawableSpan.setText(textView(0), item);
+            setChecked(1, selected[position]);
         }
     }
 

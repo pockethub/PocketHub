@@ -73,35 +73,32 @@ public class FilterListAdapter extends SingleTypeAdapter<IssueFilter> {
 
     @Override
     protected void update(int position, IssueFilter filter) {
-        avatars.bind(imageView(id.iv_avatar), filter.getRepository().getOwner());
-        setText(id.tv_repo_name, filter.getRepository().generateId());
+        avatars.bind(imageView(0), filter.getRepository().getOwner());
+        setText(1, filter.getRepository().generateId());
         if (filter.isOpen())
-            setText(id.tv_filter_state, string.open_issues);
+            setText(2, string.open_issues);
         else
-            setText(id.tv_filter_state, string.closed_issues);
+            setText(2, string.closed_issues);
 
         Collection<Label> labels = filter.getLabels();
         if (labels != null && !labels.isEmpty()) {
-            TextView labelsText = textView(id.tv_filter_labels);
+            TextView labelsText = textView(3);
             LabelDrawableSpan.setText(labelsText, labels);
             ViewUtils.setGone(labelsText, false);
         } else
-            setGone(id.tv_filter_labels, true);
+            setGone(3, true);
 
         Milestone milestone = filter.getMilestone();
         if (milestone != null)
-            ViewUtils.setGone(
-                    setText(id.tv_filter_milestone, milestone.getTitle()),
-                    false);
+            ViewUtils.setGone(setText(4, milestone.getTitle()), false);
         else
-            setGone(id.tv_filter_milestone, true);
+            setGone(4, true);
 
         User assignee = filter.getAssignee();
         if (assignee != null) {
-            avatars.bind(imageView(id.iv_assignee_avatar), assignee);
-            ViewUtils.setGone(
-                    setText(id.tv_filter_assignee, assignee.getLogin()), false);
+            avatars.bind(imageView(6), assignee);
+            ViewUtils.setGone(setText(5, assignee.getLogin()), false);
         } else
-            setGone(id.tv_filter_assignee, true);
+            setGone(5, true);
     }
 }

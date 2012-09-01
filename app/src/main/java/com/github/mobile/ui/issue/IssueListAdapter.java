@@ -73,8 +73,8 @@ public abstract class IssueListAdapter<V> extends SingleTypeAdapter<V> {
         super(inflater, viewId);
 
         this.avatars = avatars;
-        this.numberView = (TextView) inflater.inflate(viewId, null)
-                .findViewById(id.tv_issue_number);
+        numberView = (TextView) inflater.inflate(viewId, null).findViewById(
+                id.tv_issue_number);
         setItems(elements);
     }
 
@@ -110,10 +110,11 @@ public abstract class IssueListAdapter<V> extends SingleTypeAdapter<V> {
      * @param number
      * @param state
      * @param flags
-     * @param viewId
+     * @param viewIndex
      */
-    protected void updateNumber(int number, String state, int flags, int viewId) {
-        TextView view = textView(viewId);
+    protected void updateNumber(int number, String state, int flags,
+            int viewIndex) {
+        TextView view = textView(viewIndex);
         view.setText(Integer.toString(number));
         if (STATE_CLOSED.equals(state))
             view.setPaintFlags(flags | STRIKE_THRU_TEXT_FLAG);
@@ -128,37 +129,38 @@ public abstract class IssueListAdapter<V> extends SingleTypeAdapter<V> {
      *
      * @param reporter
      * @param date
-     * @param viewId
+     * @param viewIndex
      */
-    protected void updateReporter(String reporter, Date date, int viewId) {
+    protected void updateReporter(String reporter, Date date, int viewIndex) {
         StyledText reporterText = new StyledText();
         reporterText.bold(reporter);
         reporterText.append(' ');
         reporterText.append(date);
-        setText(viewId, reporterText);
+        setText(viewIndex, reporterText);
     }
 
     /**
      * Update label views with values from given label models
      *
      * @param labels
+     * @param viewIndex
      */
-    protected void updateLabels(List<Label> labels) {
+    protected void updateLabels(final List<Label> labels, final int viewIndex) {
         if (labels != null && !labels.isEmpty()) {
             int size = Math.min(labels.size(), MAX_LABELS);
             for (int i = 0; i < size; i++) {
                 String color = labels.get(i).getColor();
                 if (!TextUtils.isEmpty(color)) {
-                    View view = view(id.v_label0 + i);
+                    View view = view(viewIndex + i);
                     view.setBackgroundColor(Color.parseColor('#' + color));
                     ViewUtils.setGone(view, false);
                 } else
-                    setGone(id.v_label0 + i, true);
+                    setGone(viewIndex + i, true);
             }
             for (int i = size; i < MAX_LABELS; i++)
-                setGone(id.v_label0 + i, true);
+                setGone(viewIndex + i, true);
         } else
             for (int i = 0; i < MAX_LABELS; i++)
-                setGone(id.v_label0 + i, true);
+                setGone(viewIndex + i, true);
     }
 }

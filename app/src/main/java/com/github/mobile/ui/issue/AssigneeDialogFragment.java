@@ -74,9 +74,9 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
 
         @Override
         protected void update(int position, User item) {
-            setText(id.tv_login, item.getLogin());
-            loader.bind(imageView(id.iv_avatar), item);
-            setChecked(id.rb_selected, selected == position);
+            setText(0, item.getLogin());
+            loader.bind(imageView(1), item);
+            setChecked(2, selected == position);
         }
     }
 

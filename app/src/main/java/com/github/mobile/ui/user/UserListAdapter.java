@@ -68,7 +68,7 @@ public class UserListAdapter extends SingleTypeAdapter<User> {
 
     @Override
     protected void update(final int position, final User user) {
-        avatars.bind(imageView(id.iv_avatar), user);
-        setText(id.tv_login, user.getLogin());
+        avatars.bind(imageView(0), user);
+        setText(1, user.getLogin());
     }
 }

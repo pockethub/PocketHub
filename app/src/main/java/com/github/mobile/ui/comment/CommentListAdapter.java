@@ -68,13 +68,11 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
 
     @Override
     protected void update(int position, Comment comment) {
-        imageGetter.bind(textView(id.tv_comment_body), comment.getBodyHtml(),
-                comment.getId());
-        avatars.bind(imageView(id.iv_avatar), comment.getUser());
+        imageGetter.bind(textView(0), comment.getBodyHtml(), comment.getId());
+        avatars.bind(imageView(3), comment.getUser());
 
-        setText(id.tv_comment_author, comment.getUser().getLogin());
-        setText(id.tv_comment_date,
-                TimeUtils.getRelativeTime(comment.getUpdatedAt()));
+        setText(1, comment.getUser().getLogin());
+        setText(2, TimeUtils.getRelativeTime(comment.getUpdatedAt()));
     }
 
     @Override
@@ -85,8 +83,7 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
     protected View initialize(View view) {
         view = super.initialize(view);
 
-        textView(view, id.tv_comment_body).setMovementMethod(
-                LinkMovementMethod.getInstance());
+        textView(view, 0).setMovementMethod(LinkMovementMethod.getInstance());
         return view;
     }
 

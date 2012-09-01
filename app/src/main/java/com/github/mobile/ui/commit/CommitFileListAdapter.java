@@ -178,13 +178,13 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
             String path = file.getFilename();
             int lastSlash = path.lastIndexOf('/');
             if (lastSlash != -1) {
-                setText(id.tv_name, path.substring(lastSlash + 1));
+                setText(0, path.substring(lastSlash + 1));
                 TextView folderText = setText(id.tv_folder,
                         path.substring(0, lastSlash + 1));
                 ViewUtils.setGone(folderText, false);
             } else {
-                setText(id.tv_name, path);
-                setGone(id.tv_folder, true);
+                setText(0, path);
+                setGone(1, true);
             }
 
             StyledText stats = new StyledText();
@@ -195,22 +195,20 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
             stats.foreground('-', removeTextColor);
             stats.foreground(FORMAT_INT.format(file.getDeletions()),
                     removeTextColor);
-            setText(id.tv_stats, stats);
+            setText(2, stats);
             return;
         case TYPE_FILE_LINE:
             CharSequence text = (CharSequence) item;
-            diffStyler.updateColors((CharSequence) item,
-                    setText(id.tv_diff, text));
+            diffStyler.updateColors((CharSequence) item, setText(0, text));
             return;
         case TYPE_LINE_COMMENT:
         case TYPE_COMMENT:
             CommitComment comment = (CommitComment) item;
-            avatars.bind(imageView(id.iv_avatar), comment.getUser());
-            setText(id.tv_comment_author, comment.getUser().getLogin());
-            setText(id.tv_comment_date,
-                    TimeUtils.getRelativeTime(comment.getUpdatedAt()));
-            imageGetter.bind(textView(id.tv_comment_body),
-                    comment.getBodyHtml(), comment.getId());
+            avatars.bind(imageView(1), comment.getUser());
+            setText(2, comment.getUser().getLogin());
+            setText(3, TimeUtils.getRelativeTime(comment.getUpdatedAt()));
+            imageGetter.bind(textView(0), comment.getBodyHtml(),
+                    comment.getId());
             return;
         }
     }

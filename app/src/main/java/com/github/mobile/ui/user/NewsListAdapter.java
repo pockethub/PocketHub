@@ -519,13 +519,13 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
     protected View initialize(View view) {
         view = super.initialize(view);
 
-        TypefaceUtils.setOcticons(textView(view, id.tv_event_icon));
+        TypefaceUtils.setOcticons(textView(view, 3));
         return view;
     }
 
     @Override
     protected void update(int position, Event event) {
-        avatars.bind(imageView(id.iv_avatar), event.getActor());
+        avatars.bind(imageView(0), event.getActor());
 
         StyledText main = new StyledText();
         StyledText details = new StyledText();
@@ -591,18 +591,17 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
         }
 
         if (icon != null)
-            ViewUtils.setGone(setText(id.tv_event_icon, icon), false);
+            ViewUtils.setGone(setText(3, icon), false);
         else
-            setGone(id.tv_event_icon, true);
+            setGone(3, true);
 
-        setText(id.tv_event, main);
+        setText(1, main);
 
         if (!TextUtils.isEmpty(details))
-            ViewUtils.setGone(setText(id.tv_event_details, details), false);
+            ViewUtils.setGone(setText(2, details), false);
         else
-            setGone(id.tv_event_details, true);
+            setGone(2, true);
 
-        setText(id.tv_event_date,
-                TimeUtils.getRelativeTime(event.getCreatedAt()));
+        setText(4, TimeUtils.getRelativeTime(event.getCreatedAt()));
     }
 }

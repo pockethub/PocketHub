@@ -121,16 +121,15 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
         switch (type) {
         case TYPE_BLOB:
             Entry file = (Entry) item;
-            setText(id.tv_file, file.name);
-            setText(id.tv_size,
-                    Formatter.formatFileSize(context, file.entry.getSize()));
+            setText(0, file.name);
+            setText(1, Formatter.formatFileSize(context, file.entry.getSize()));
 
             break;
         case TYPE_TREE:
             Folder folder = (Folder) item;
-            setText(id.tv_folder, CommitUtils.getName(folder.name));
-            setNumber(id.tv_folders, folder.folders.size());
-            setNumber(id.tv_files, folder.files.size());
+            setText(0, CommitUtils.getName(folder.name));
+            setNumber(1, folder.folders.size());
+            setNumber(2, folder.files.size());
             break;
         }
     }

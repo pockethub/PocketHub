@@ -87,16 +87,16 @@ public class GistListAdapter extends SingleTypeAdapter<Gist> {
 
     @Override
     protected void update(int position, Gist gist) {
-        setText(id.tv_gist_id, gist.getId());
+        setText(0, gist.getId());
 
         String description = gist.getDescription();
         if (!TextUtils.isEmpty(description))
-            setText(id.tv_gist_title, description);
+            setText(1, description);
         else
-            setText(id.tv_gist_title, string.no_description_given);
+            setText(1, string.no_description_given);
 
         User user = gist.getUser();
-        avatars.bind(imageView(id.iv_avatar), user);
+        avatars.bind(imageView(5), user);
 
         StyledText authorText = new StyledText();
         if (user != null)
@@ -105,9 +105,9 @@ public class GistListAdapter extends SingleTypeAdapter<Gist> {
             authorText.bold(anonymous);
         authorText.append(' ');
         authorText.append(gist.getCreatedAt());
-        setText(id.tv_gist_author, authorText);
+        setText(2, authorText);
 
-        setNumber(id.tv_gist_files, gist.getFiles().size());
-        setNumber(id.tv_gist_comments, gist.getComments());
+        setNumber(3, gist.getComments());
+        setNumber(4, gist.getFiles().size());
     }
 }

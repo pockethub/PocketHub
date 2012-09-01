@@ -61,8 +61,8 @@ public class DashboardIssueListAdapter extends
     protected View initialize(View view) {
         view = super.initialize(view);
 
-        numberPaintFlags = textView(view, id.tv_issue_number).getPaintFlags();
-        TypefaceUtils.setOcticons(textView(view, id.tv_pull_request_icon),
+        numberPaintFlags = textView(view, 1).getPaintFlags();
+        TypefaceUtils.setOcticons(textView(view, 6),
                 (TextView) view.findViewById(id.tv_comment_icon));
         return view;
     }
@@ -78,26 +78,23 @@ public class DashboardIssueListAdapter extends
 
     @Override
     protected void update(int position, RepositoryIssue issue) {
-        updateNumber(issue.getNumber(), issue.getState(), numberPaintFlags,
-                id.tv_issue_number);
+        updateNumber(issue.getNumber(), issue.getState(), numberPaintFlags, 1);
 
-        avatars.bind(imageView(id.iv_avatar), issue.getUser());
+        avatars.bind(imageView(3), issue.getUser());
 
         String[] segments = issue.getUrl().split("/");
         int length = segments.length;
         if (length >= 4)
-            setText(id.tv_issue_repo_name, segments[length - 4] + '/'
-                    + segments[length - 3]);
+            setText(0, segments[length - 4] + '/' + segments[length - 3]);
         else
-            setText(id.tv_issue_repo_name, null);
+            setText(0, null);
 
-        setGone(id.tv_pull_request_icon, !IssueUtils.isPullRequest(issue));
+        setGone(6, !IssueUtils.isPullRequest(issue));
 
-        setText(id.tv_issue_title, issue.getTitle());
+        setText(2, issue.getTitle());
 
-        updateReporter(issue.getUser().getLogin(), issue.getCreatedAt(),
-                id.tv_issue_creation);
-        setNumber(id.tv_issue_comments, issue.getComments());
-        updateLabels(issue.getLabels());
+        updateReporter(issue.getUser().getLogin(), issue.getCreatedAt(), 4);
+        setNumber(5, issue.getComments());
+        updateLabels(issue.getLabels(), 7);
     }
 }

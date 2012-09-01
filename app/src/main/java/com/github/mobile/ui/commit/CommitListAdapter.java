@@ -90,16 +90,16 @@ public class CommitListAdapter extends SingleTypeAdapter<RepositoryCommit> {
 
     @Override
     protected void update(int position, RepositoryCommit item) {
-        setText(id.tv_commit_id, CommitUtils.abbreviate(item.getSha()));
+        setText(0, CommitUtils.abbreviate(item.getSha()));
 
         StyledText authorText = new StyledText();
         authorText.bold(CommitUtils.getAuthor(item));
         authorText.append(' ');
         authorText.append(CommitUtils.getAuthorDate(item));
-        setText(id.tv_commit_author, authorText);
+        setText(1, authorText);
 
-        CommitUtils.bindAuthor(item, avatars, imageView(id.iv_avatar));
-        setText(id.tv_commit_message, item.getCommit().getMessage());
-        setText(id.tv_commit_comments, CommitUtils.getCommentCount(item));
+        CommitUtils.bindAuthor(item, avatars, imageView(2));
+        setText(3, item.getCommit().getMessage());
+        setText(4, CommitUtils.getCommentCount(item));
     }
 }

@@ -71,18 +71,18 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
         protected View initialize(View view) {
             view = super.initialize(view);
 
-            TypefaceUtils.setOcticons(textView(view, id.tv_ref_icon));
+            TypefaceUtils.setOcticons(textView(view, 0));
             return view;
         }
 
         @Override
         protected void update(int position, Reference item) {
             if (RefUtils.isTag(item))
-                setText(id.tv_ref_icon, string.icon_tag);
+                setText(0, string.icon_tag);
             else
-                setText(id.tv_ref_icon, string.icon_fork);
-            setText(id.tv_ref, RefUtils.getName(item));
-            setChecked(id.rb_selected, selected == position);
+                setText(0, string.icon_fork);
+            setText(1, RefUtils.getName(item));
+            setChecked(2, selected == position);
         }
     }
 
