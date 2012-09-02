@@ -34,7 +34,11 @@
     <string name="error_labels_load">标签加载失败</string>
     <string name="error_bookmarks_load">书签加载失败</string>
     <string name="error_members_load">成员加载失败</string>
-    <string name="error_commits_load">提交加载失败</string>
+    <string name="error_commits_load">提交列表加载失败</string>
+    <string name="error_commit_load">提交加载失败</string>
+    <string name="error_file_load">文件加载失败</string>
+    <string name="error_code_load">代码加载失败</string>
+    <string name="error_refs_load">分支与标签加载失败</string>
     <!--  -->
 
 
@@ -54,6 +58,8 @@
     <string name="loading_milestones">加载里程碑…</string>
     <string name="loading_labels">加载标签…</string>
     <string name="loading_commits">加载提交…</string>
+    <string name="loading_files_and_comments">加载文件与评论…</string>
+    <string name="loading_refs">加载分支与标签…</string>
     <!--  -->
 
 
@@ -116,6 +122,7 @@
     <string name="bookmarks">书签</string>
     <string name="gists_title">Gist 列表</string>
     <string name="issue_title">Issue #</string>
+    <string name="pull_request_title">Pull Request #</string>
     <string name="gist_title">Gist\u0020</string>
     <string name="filter_issues_title">过滤 Issue</string>
     <string name="create_comment_title">发表评论</string>
@@ -142,6 +149,7 @@
     <string name="select_assignee">选择被指派人</string>
     <string name="select_milestone">选择里程碑</string>
     <string name="select_labels">选择标签</string>
+    <string name="select_ref">选择分支或标签</string>
     <string name="no_milestone">暂无里程碑</string>
     <string name="unassigned">无人被指派</string>
     <string name="assigned">被指派</string>
@@ -210,5 +218,15 @@
     <string name="opening_repository">正在打开 {0}…</string>
     <string name="commit_compare_title">提交比较</string>
     <string name="commit_prefix">提交\u0020</string>
+    <string name="parent_prefix">先导\u0020</string>
+    <string name="authored">authored</string>
+    <string name="committed">committed</string>
+    <string name="diff_line_message">您想做什么？</string>
+    <string name="comment_on_line">评论此行</string>
+    <string name="view_entire_file">查看整个文件</string>
+    <string name="comparing_commits">比较 {0} 个提交</string>
+    <string name="enable_wrapping">启用自动折行</string>
+    <string name="disable_wrapping">禁用自动折行</string>
+    <string name="code">代码</string>
 
 </resources>
