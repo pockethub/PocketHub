@@ -128,15 +128,15 @@
     <string name="create_comment_title">Create Comment</string>
     <string name="comment_hint">Enter a comment</string>
     <string name="show_more">Show More…</string>
-    <string name="repositories">Repositories</string>
+    <string name="repositories">repositories</string>
     <string name="issues_title">Issues</string>
     <string name="edit_labels">Edit Labels</string>
     <string name="milestone_prefix">Milestone:</string>
     <string name="edit_milestone">Edit Milestone</string>
     <string name="edit_assignee">Edit Assignee</string>
-    <string name="my_gists_tab">Mine</string>
-    <string name="starred_gists_tab">Starred</string>
-    <string name="all_gists_tab">All</string>
+    <string name="my_gists_tab">mine</string>
+    <string name="starred_gists_tab">starred</string>
+    <string name="all_gists_tab">all</string>
     <string name="description">Description</string>
     <string name="gist_description_hint">Android created Gist</string>
     <string name="title">Title</string>
@@ -228,5 +228,23 @@
     <string name="enable_wrapping">Enable wrapping</string>
     <string name="disable_wrapping">Disable wrapping</string>
     <string name="code">Code</string>
+
+    <!-- Tab titles, should be as short as possible -->
+    <string name="tab_repositories">repositories</string>
+    <string name="tab_news">news</string>
+    <string name="tab_following_self">following</string>
+    <string name="tab_followers_self">followers</string>
+    <string name="tab_following">following</string>
+    <string name="tab_followers">followers</string>
+    <string name="tab_members">members</string>
+    <string name="tab_news">news</string>
+    <string name="tab_code">code</string>
+    <string name="tab_commits">commits</string>
+    <string name="tab_issues">issues</string>
+    <string name="tab_watched">watched</string>
+    <string name="tab_assigned">assigned</string>
+    <string name="tab_created">created</string>
+    <string name="tab_mentioned">mentioned</string>
+    <!--  -->
 
 </resources>

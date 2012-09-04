@@ -61,13 +61,13 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
         case 0:
-            return resources.getString(string.news);
+            return resources.getString(string.tab_news);
         case 1:
-            return resources.getString(string.code);
+            return resources.getString(string.tab_code);
         case 2:
-            return resources.getString(string.commits);
+            return resources.getString(string.tab_commits);
         case 3:
-            return resources.getString(string.issues);
+            return resources.getString(string.tab_issues);
         default:
             return null;
         }

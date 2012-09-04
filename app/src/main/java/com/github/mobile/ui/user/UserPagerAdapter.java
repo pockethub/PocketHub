@@ -65,13 +65,13 @@ public class UserPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
         case 0:
-            return resources.getString(string.news);
+            return resources.getString(string.tab_news);
         case 1:
-            return resources.getString(string.repositories);
+            return resources.getString(string.tab_repositories);
         case 2:
-            return resources.getString(string.followers);
+            return resources.getString(string.tab_followers);
         case 3:
-            return resources.getString(string.following);
+            return resources.getString(string.tab_following);
         default:
             return null;
         }

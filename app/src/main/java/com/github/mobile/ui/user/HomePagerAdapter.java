@@ -119,14 +119,14 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
         case 0:
-            return resources.getString(string.news);
+            return resources.getString(string.tab_news);
         case 1:
-            return resources.getString(string.repositories);
+            return resources.getString(string.tab_repositories);
         case 2:
-            return resources.getString(defaultUser ? string.followers_self
-                    : string.members);
+            return resources.getString(defaultUser ? string.tab_followers_self
+                    : string.tab_members);
         case 3:
-            return resources.getString(string.following_self);
+            return resources.getString(string.tab_following_self);
         default:
             return null;
         }
