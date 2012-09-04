@@ -37,6 +37,8 @@
     <string name="error_commits_load">Načítavanie commitov zlyhalo</string>
     <string name="error_commit_load">Načítavanie commitu zlyhalo</string>
     <string name="error_file_load">Načítavanie súboru zlyhalo</string>
+    <string name="error_code_load">Načítavanie kódu zlyhalo</string>
+    <string name="error_refs_load">Načítavanie vetiev &amp; značiek zlyhalo</string>
     <!--  -->
 
 
@@ -57,6 +59,7 @@
     <string name="loading_labels">Načítavam štítky…</string>
     <string name="loading_commits">Načítavam commity…</string>
     <string name="loading_files_and_comments">Načítavam súbory &amp; komentáre…</string>
+    <string name="loading_refs">Načítavam vetvy &amp; značky…</string>
     <!--  -->
 
 
@@ -146,6 +149,7 @@
     <string name="select_assignee">Zvoliť priradenie</string>
     <string name="select_milestone">Zvoliť míľnik</string>
     <string name="select_labels">Zvoliť štítky</string>
+    <string name="select_ref">Zvoliť vetvu alebo značku</string>
     <string name="no_milestone">Žiadny míľnik</string>
     <string name="unassigned">Nikto nie je priradený</string>
     <string name="assigned">je priradený</string>
@@ -223,5 +227,6 @@
     <string name="comparing_commits">Porovnávanie {0} commitov</string>
     <string name="enable_wrapping">Zapnúť zalamovanie riadkov</string>
     <string name="disable_wrapping">Vypnúť zalamovanie riadkov</string>
+    <string name="code">Kód</string>
 
 </resources>
