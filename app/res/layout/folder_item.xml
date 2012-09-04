@@ -29,43 +29,36 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/tv_folder_icon"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:paddingLeft="10dp" >
 
         <TextView
             android:id="@+id/tv_folder"
             style="@style/ListTitleText"
-            android:layout_width="match_parent"
-            android:layout_centerVertical="true" />
+            android:layout_width="0dp"
+            android:layout_weight="1" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:orientation="horizontal" >
+        <TextView
+            android:id="@+id/tv_folders_icon"
+            style="@style/ListIcon"
+            android:text="@string/icon_folder" />
 
-            <TextView
-                android:id="@+id/tv_folders_icon"
-                style="@style/ListIcon"
-                android:text="@string/icon_folder" />
+        <TextView
+            android:id="@+id/tv_folders"
+            style="@style/ListNumericSubtitleText"
+            android:paddingLeft="5dp"
+            android:paddingRight="10dp" />
 
-            <TextView
-                android:id="@+id/tv_folders"
-                style="@style/ListNumericSubtitleText"
-                android:paddingLeft="5dp"
-                android:paddingRight="10dp" />
+        <TextView
+            android:id="@+id/tv_files_icon"
+            style="@style/ListIcon"
+            android:paddingLeft="5dp"
+            android:text="@string/icon_file" />
 
-            <TextView
-                android:id="@+id/tv_files_icon"
-                style="@style/ListIcon"
-                android:paddingLeft="5dp"
-                android:text="@string/icon_file" />
-
-            <TextView
-                android:id="@+id/tv_files"
-                style="@style/ListNumericSubtitleText"
-                android:paddingLeft="5dp" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_files"
+            style="@style/ListNumericSubtitleText"
+            android:paddingLeft="5dp" />
     </LinearLayout>
 
 </RelativeLayout>
