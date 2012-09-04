@@ -20,6 +20,7 @@ import android.accounts.Account;
 import android.util.Log;
 
 import com.github.mobile.R.string;
+import com.github.mobile.core.ref.RefUtils;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.github.mobile.util.ToastUtils;
