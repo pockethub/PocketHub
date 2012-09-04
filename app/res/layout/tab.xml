@@ -28,18 +28,19 @@
         style="@style/TabIcon"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/tab_text" />
+        android:shadowColor="@color/tab_text_shadow"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"
+        android:textColor="@color/tab_icon_colors" />
 
     <TextView
         android:id="@+id/tv_tab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/TabText"
         android:layout_below="@id/tv_icon"
         android:layout_centerHorizontal="true"
         android:ellipsize="middle"
         android:paddingTop="1dp"
-        android:singleLine="true"
-        android:textColor="@color/tab_text"
-        android:textSize="12sp" />
+        android:singleLine="true" />
 
 </RelativeLayout>

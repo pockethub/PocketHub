@@ -214,4 +214,13 @@
         <item name="android:layout_width">match_parent</item>
     </style>
 
+    <style name="TabText" parent="Global">
+        <item name="android:textColor">@color/tab_text_colors</item>
+        <item name="android:shadowColor">@color/tab_text_shadow</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
 </resources>

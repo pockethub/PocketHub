@@ -71,5 +71,10 @@
     <color name="section_start">#F9F9F9</color>
     <color name="section_end">#E0E0E0</color>
     <color name="section_subtitle">#555555</color>
+    <color name="tab_selected_text">#FFFFFF</color>
+    <color name="tab_selected_icon">#08D7FF</color>
+    <color name="tab_text">#B3D5E8</color>
+    <color name="tab_icon">#FAFAFA</color>
+    <color name="tab_text_shadow">#245066</color>
 
 </resources>
