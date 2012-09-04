@@ -28,11 +28,11 @@
 
     <TextView
         android:id="@+id/tv_path"
-        style="@style/ListTitleText"
+        style="@style/HeaderTitleText"
         android:layout_centerInParent="true"
         android:layout_toRightOf="@id/tv_folder_icon"
         android:lineSpacingExtra="2dp"
-        android:paddingLeft="10dp"
+        android:singleLine="false"
         android:textColorLink="@color/text_link"
         android:textStyle="normal" />
 
