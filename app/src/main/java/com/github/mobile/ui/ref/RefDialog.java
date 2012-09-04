@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.ui.code;
+package com.github.mobile.ui.ref;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import android.accounts.Account;

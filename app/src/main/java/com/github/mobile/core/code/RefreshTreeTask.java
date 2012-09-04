@@ -21,7 +21,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.github.mobile.accounts.AuthenticatedUserTask;
-import com.github.mobile.ui.code.RefUtils;
+import com.github.mobile.ui.ref.RefUtils;
 import com.google.inject.Inject;
 
 import java.io.IOException;

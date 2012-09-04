@@ -21,7 +21,7 @@ import static org.eclipse.egit.github.core.TreeEntry.TYPE_TREE;
 import android.text.TextUtils;
 
 import com.github.mobile.core.commit.CommitUtils;
-import com.github.mobile.ui.code.RefUtils;
+import com.github.mobile.ui.ref.RefUtils;
 
 import java.util.List;
 import java.util.Map;

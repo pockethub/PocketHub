@@ -299,7 +299,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.code.BranchFileViewActivity"
+            android:name=".ui.ref.BranchFileViewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" >
             <intent-filter>
                 <action android:name="com.github.mobile.branch.file.VIEW" />
