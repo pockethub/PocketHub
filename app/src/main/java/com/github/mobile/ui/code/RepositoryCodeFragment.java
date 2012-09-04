@@ -47,6 +47,7 @@ import com.github.mobile.core.code.FullTree.Folder;
 import com.github.mobile.core.code.RefreshTreeTask;
 import com.github.mobile.ui.DialogFragment;
 import com.github.mobile.ui.DialogFragmentActivity;
+import com.github.mobile.ui.HeaderFooterListAdapter;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.ToastUtils;
 import com.github.mobile.util.TypefaceUtils;
@@ -82,7 +83,9 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
     private View branchFooterView;
 
-    private CodeTreeAdapter adapter;
+    private HeaderFooterListAdapter<CodeTreeAdapter> adapter;
+
+    private boolean pathShowing;
 
     private Folder folder;
 
@@ -134,8 +137,6 @@ public class RepositoryCodeFragment extends DialogFragment implements
     private void showLoading(final boolean loading) {
         ViewUtils.setGone(progressView, !loading);
         ViewUtils.setGone(listView, loading);
-        ViewUtils.setGone(pathHeaderView, loading || folder == null
-                || folder.parent == null);
         ViewUtils.setGone(branchFooterView, loading);
     }
 
@@ -220,11 +221,10 @@ public class RepositoryCodeFragment extends DialogFragment implements
         listView.setOnItemClickListener(this);
 
         Activity activity = getActivity();
-        adapter = new CodeTreeAdapter(activity);
-        pathHeaderView = finder.find(id.rl_path);
+        adapter = new HeaderFooterListAdapter<CodeTreeAdapter>(listView,
+                new CodeTreeAdapter(activity));
+
         branchFooterView = finder.find(id.rl_branch);
-        pathView = finder.find(id.tv_path);
-        pathView.setMovementMethod(LinkMovementMethod.getInstance());
         branchView = finder.find(id.tv_branch);
         branchIconView = finder.find(id.tv_branch_icon);
         branchFooterView.setOnClickListener(new OnClickListener() {
@@ -233,6 +233,12 @@ public class RepositoryCodeFragment extends DialogFragment implements
                 switchBranches();
             }
         });
+
+        pathHeaderView = activity.getLayoutInflater().inflate(layout.path_item,
+                null);
+        pathView = (TextView) pathHeaderView.findViewById(id.tv_path);
+        pathView.setMovementMethod(LinkMovementMethod.getInstance());
+
         TypefaceUtils.setOcticons(branchIconView,
                 (TextView) pathHeaderView.findViewById(id.tv_folder_icon));
         listView.setAdapter(adapter);
@@ -285,11 +291,16 @@ public class RepositoryCodeFragment extends DialogFragment implements
             }
             text.append(segments[segments.length - 1]);
             pathView.setText(text);
-            ViewUtils.setGone(pathHeaderView, false);
-        } else
-            ViewUtils.setGone(pathHeaderView, true);
+            if (!pathShowing) {
+                adapter.addHeader(pathHeaderView);
+                pathShowing = true;
+            }
+        } else if (pathShowing) {
+            adapter.removeHeader(pathHeaderView);
+            pathShowing = false;
+        }
 
-        adapter.setItems(folder);
+        adapter.getWrappedAdapter().setItems(folder);
         listView.setSelection(0);
     }
 
