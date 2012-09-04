@@ -70,7 +70,7 @@ public class OrganizationLoader extends AuthenticatedUserLoader<List<User>> {
     public List<User> load(final Account account) {
         List<User> orgs;
         try {
-            orgs = accountDataManager.getOrgs();
+            orgs = accountDataManager.getOrgs(false);
         } catch (final IOException e) {
             Log.e(TAG, "Exception loading organizations", e);
             ToastUtils.show(activity, e, string.error_orgs_load);

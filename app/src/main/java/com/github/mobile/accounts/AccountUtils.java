@@ -144,6 +144,26 @@ public class AccountUtils {
             return new Account[0];
     }
 
+    /**
+     * Get default account where password can be retrieved
+     *
+     * @param context
+     * @return password accessible account or null if none
+     */
+    public static Account getPasswordAccessibleAccount(final Context context) {
+        AccountManager manager = AccountManager.get(context);
+        Account[] accounts = manager.getAccountsByType(ACCOUNT_TYPE);
+        if (accounts == null || accounts.length == 0)
+            return null;
+
+        try {
+            accounts = getPasswordAccessibleAccounts(manager, accounts);
+        } catch (AuthenticatorConflictException e) {
+            return null;
+        }
+        return accounts != null && accounts.length > 0 ? accounts[0] : null;
+    }
+
     private static Account[] getPasswordAccessibleAccounts(
             final AccountManager manager, final Account[] candidates)
             throws AuthenticatorConflictException {

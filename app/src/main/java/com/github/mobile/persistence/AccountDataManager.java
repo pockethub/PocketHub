@@ -150,11 +150,13 @@ public class AccountDataManager {
      * This method may perform file and/or network I/O and should never be
      * called on the UI-thread
      *
+     * @param forceReload
      * @return list of user and Orgs
      * @throws IOException
      */
-    public List<User> getOrgs() throws IOException {
-        return dbCache.loadOrRequest(userAndOrgsResource);
+    public List<User> getOrgs(boolean forceReload) throws IOException {
+        return forceReload ? dbCache.requestAndStore(userAndOrgsResource)
+                : dbCache.loadOrRequest(userAndOrgsResource);
     }
 
     /**

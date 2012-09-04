@@ -140,6 +140,8 @@ public class HomeDropdownListAdapter extends BaseAdapter {
      */
     public HomeDropdownListAdapter setOrgs(final List<User> orgs) {
         User[] orgItems = orgs.toArray(new User[orgs.size()]);
+        if (selected >= orgItems.length)
+            selected = 0;
         listAdapter.setItems(orgItems);
         dropdownAdapter.setItems(orgItems);
         notifyDataSetChanged();

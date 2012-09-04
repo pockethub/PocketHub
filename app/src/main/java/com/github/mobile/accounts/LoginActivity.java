@@ -120,7 +120,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
 
         @Override
         protected List<User> run(Account account) throws Exception {
-            return cache.getOrgs();
+            return cache.getOrgs(true);
         }
     }
 
@@ -133,8 +133,6 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
     private EditText passwordText;
 
     private RoboAsyncTask<User> authenticationTask;
-
-    private String authToken;
 
     private String authTokenType;
 
@@ -222,6 +220,18 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        // Finish task if valid account exists
+        if (requestNewAccount) {
+            Account existing = AccountUtils.getPasswordAccessibleAccount(this);
+            if (existing != null && !TextUtils.isEmpty(existing.name)) {
+                String password = AccountManager.get(this)
+                        .getPassword(existing);
+                if (!TextUtils.isEmpty(password))
+                    finishLogin(existing.name, password);
+            }
+            return;
+        }
 
         updateEnablement();
     }
@@ -335,15 +345,17 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
      * request. See onAuthenticationResult(). Sets the
      * AccountAuthenticatorResult which is sent back to the caller. Also sets
      * the authToken in AccountManager for this account.
+     *
+     * @param username
+     * @param password
      */
 
-    protected void finishLogin() {
+    protected void finishLogin(final String username, final String password) {
         final Intent intent = new Intent();
-        authToken = password;
         intent.putExtra(KEY_ACCOUNT_NAME, username);
         intent.putExtra(KEY_ACCOUNT_TYPE, ACCOUNT_TYPE);
         if (ACCOUNT_TYPE.equals(authTokenType))
-            intent.putExtra(KEY_AUTHTOKEN, authToken);
+            intent.putExtra(KEY_AUTHTOKEN, password);
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
         finish();
@@ -357,7 +369,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
     public void onAuthenticationResult(boolean result) {
         if (result) {
             if (!confirmCredentials)
-                finishLogin();
+                finishLogin(username, password);
             else
                 finishConfirmCredentials(true);
         } else {

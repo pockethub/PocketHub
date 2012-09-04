@@ -105,6 +105,18 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Restart loader if default account doesn't match currently loaded
+        // account
+        List<User> currentOrgs = orgs;
+        if (currentOrgs != null && !currentOrgs.isEmpty()
+                && !AccountUtils.isUser(this, currentOrgs.get(0)))
+            getSupportLoaderManager().restartLoader(0, null, this);
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
@@ -134,7 +146,7 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
 
         this.org = org;
 
-        boolean isDefaultUser = isDefaultUser(org);
+        boolean isDefaultUser = AccountUtils.isUser(this, org);
         boolean changed = this.isDefaultUser != isDefaultUser;
         this.isDefaultUser = isDefaultUser;
         if (adapter == null)
@@ -225,12 +237,6 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
 
     @Override
     public void onLoaderReset(Loader<List<User>> listLoader) {
-    }
-
-    private boolean isDefaultUser(final User org) {
-        final String accountLogin = AccountUtils.getLogin(this);
-        return org != null && accountLogin != null
-                && accountLogin.equals(org.getLogin());
     }
 
     @Override
