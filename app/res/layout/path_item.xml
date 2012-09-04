@@ -33,6 +33,7 @@
         android:layout_toRightOf="@id/tv_folder_icon"
         android:lineSpacingExtra="2dp"
         android:paddingLeft="10dp"
-        android:textColorLink="@color/text_link" />
+        android:textColorLink="@color/text_link"
+        android:textStyle="normal" />
 
 </RelativeLayout>
