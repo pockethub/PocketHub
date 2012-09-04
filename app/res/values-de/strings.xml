@@ -37,6 +37,8 @@
     <string name="error_commits_load">Laden der Commits fehlgeschlagen</string>
     <string name="error_commit_load">Laden des Commits fehlgeschlagen</string>
     <string name="error_file_load">Laden der Datei fehlgeschlagen</string>
+    <string name="error_code_load">Laden des Codes fehlgeschlagen</string>
+    <string name="error_refs_load">Laden der Branches &amp; Tags fehlgeschlagen</string>
     <!--  -->
 
     <!-- Loading messages -->
@@ -56,6 +58,7 @@
     <string name="loading_labels">Lade Markierungen…</string>
     <string name="loading_commits">Lade Commits…</string>
     <string name="loading_files_and_comments">Lade Dateien &amp; Kommentare…</string>
+    <string name="loading_refs">Lade Branches &amp; Tags…</string>
     <!--  -->
 
     <!-- Empty messages -->
@@ -143,6 +146,7 @@
     <string name="select_assignee">Verantwortlichen wählen</string>
     <string name="select_milestone">Meilenstein wählen</string>
     <string name="select_labels">Markierung wählen</string>
+    <string name="select_ref">Branch oder Tag wählen</string>
     <string name="no_milestone">keine Meilensteine</string>
     <string name="unassigned">Niemand zugewiesen</string>
     <string name="assigned">ist zugewiesen</string>
@@ -220,5 +224,6 @@
     <string name="comparing_commits">Vergleiche {0} Commits</string>
     <string name="enable_wrapping">Zeilenumbruch aktivieren</string>
     <string name="disable_wrapping">Zeilenumbruch deaktivieren</string>
+    <string name="code">Code</string>
 
 </resources>
