@@ -65,11 +65,11 @@ public class GistQueriesPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
         case 0:
-            return resources.getString(string.my_gists_tab);
+            return resources.getString(string.tab_mine);
         case 1:
-            return resources.getString(string.starred_gists_tab);
+            return resources.getString(string.tab_starred);
         case 2:
-            return resources.getString(string.all_gists_tab);
+            return resources.getString(string.tab_all);
         default:
             return null;
         }
