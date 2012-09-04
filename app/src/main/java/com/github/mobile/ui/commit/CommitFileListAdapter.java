@@ -18,7 +18,6 @@ package com.github.mobile.ui.commit;
 import android.content.res.Resources;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.widget.TextView;
 
 import com.actionbarsherlock.R.color;
 import com.github.kevinsawicki.wishlist.MultiTypeAdapter;
@@ -179,9 +178,8 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
             int lastSlash = path.lastIndexOf('/');
             if (lastSlash != -1) {
                 setText(0, path.substring(lastSlash + 1));
-                TextView folderText = setText(id.tv_folder,
-                        path.substring(0, lastSlash + 1));
-                ViewUtils.setGone(folderText, false);
+                ViewUtils.setGone(setText(1, path.substring(0, lastSlash + 1)),
+                        false);
             } else {
                 setText(0, path);
                 setGone(1, true);
