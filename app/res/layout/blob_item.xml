@@ -21,7 +21,7 @@
         android:id="@+id/tv_file_icon"
         style="@style/PrimaryIcon"
         android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
+        android:layout_alignParentTop="true"
         android:text="@string/icon_file" />
 
     <LinearLayout
@@ -29,22 +29,19 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/tv_file_icon"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:paddingLeft="10dp" >
 
         <TextView
             android:id="@+id/tv_file"
             style="@style/ListTitleText"
-            android:layout_width="match_parent"
-            android:layout_centerVertical="true"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:paddingBottom="0dp" />
 
         <TextView
             android:id="@+id/tv_size"
             style="@style/ListSubtitleText"
-            android:layout_width="match_parent"
-            android:layout_centerVertical="true"
-            android:paddingBottom="0dp"
             android:singleLine="true" />
     </LinearLayout>
 
