@@ -36,7 +36,8 @@
             android:id="@+id/tv_folder"
             style="@style/ListTitleText"
             android:layout_width="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:paddingRight="5dp" />
 
         <TextView
             android:id="@+id/tv_folders_icon"
