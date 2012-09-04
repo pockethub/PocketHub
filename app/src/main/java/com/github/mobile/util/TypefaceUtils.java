@@ -145,7 +145,7 @@ public class TypefaceUtils {
     /**
      * Code icon
      */
-    public static final String ICON_CODE = "\uf011";
+    public static final String ICON_CODE = "\uf010";
 
     /**
      * Commit icon
