@@ -128,6 +128,7 @@ public class BranchFileViewActivity extends RoboSherlockActivity {
         return true;
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case id.m_wrap:
