@@ -17,8 +17,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rl_path"
-    style="@style/ListItem"
-    android:background="@drawable/header_background" >
+    style="@style/HeaderListItem" >
 
     <TextView
         android:id="@+id/tv_folder_icon"
