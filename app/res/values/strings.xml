@@ -128,7 +128,7 @@
     <string name="create_comment_title">Create Comment</string>
     <string name="comment_hint">Enter a comment</string>
     <string name="show_more">Show More…</string>
-    <string name="repositories">repositories</string>
+    <string name="repositories">Repositories</string>
     <string name="issues_title">Issues</string>
     <string name="edit_labels">Edit Labels</string>
     <string name="milestone_prefix">Milestone:</string>
