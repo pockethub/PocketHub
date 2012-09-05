@@ -28,16 +28,17 @@ public class RepositoryUtils {
      * Does the repository have details denoting it was loaded from an API call?
      * <p>
      * This uses a simple heuristic of either being private, being a fork, or
-     * having a non-zero amount of forks or watchers; meaning it came back from
-     * an API call providing those details and more.
+     * having a non-zero amount of forks or watchers, or has issues enable;
+     * meaning it came back from an API call providing those details and more.
      *
      * @param repository
      * @return true if complete, false otherwise
      *
      */
-    public static boolean isComplete(Repository repository) {
+    public static boolean isComplete(final Repository repository) {
         return repository.isPrivate() || repository.isFork()
-                || repository.getForks() > 0 || repository.getWatchers() > 0;
+                || repository.getForks() > 0 || repository.getWatchers() > 0
+                || repository.isHasIssues();
     }
 
     /**
@@ -46,7 +47,7 @@ public class RepositoryUtils {
      * @param name
      * @return true if valid, false otherwise
      */
-    public static boolean isValidOwner(String name) {
+    public static boolean isValidOwner(final String name) {
         if (TextUtils.isEmpty(name))
             return false;
 
