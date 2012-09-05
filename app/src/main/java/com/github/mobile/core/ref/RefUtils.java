@@ -109,9 +109,6 @@ public class RefUtils {
             return false;
 
         String name = ref.getRef();
-        if (TextUtils.isEmpty(name))
-            return false;
-
-        return !name.startsWith("refs/pull");
+        return !TextUtils.isEmpty(name) && !name.startsWith("refs/pull");
     }
 }
