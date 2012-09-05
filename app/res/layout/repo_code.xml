@@ -74,7 +74,8 @@
             style="@style/HeaderTitleText"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/tv_branch_icon"
-            android:paddingBottom="0dp" />
+            android:paddingBottom="0dp"
+            android:textSize="15sp" />
     </RelativeLayout>
 
     <ListView
