@@ -93,4 +93,28 @@ public class ServiceUtils {
         return TypedValue.applyDimension(COMPLEX_UNIT_DIP, dp,
                 resources.getDisplayMetrics());
     }
+
+    /**
+     * Get pixels from dps
+     *
+     * @param view
+     * @param dp
+     * @return pixels
+     */
+    public static int getIntPixels(final View view, final int dp) {
+        return getIntPixels(view.getResources(), dp);
+    }
+
+    /**
+     * Get pixels from dps
+     *
+     * @param resources
+     * @param dp
+     * @return pixels
+     */
+    public static int getIntPixels(final Resources resources, final int dp) {
+        float pixels = TypedValue.applyDimension(COMPLEX_UNIT_DIP, dp,
+                resources.getDisplayMetrics());
+        return (int) Math.floor(pixels + 0.5F);
+    }
 }

@@ -62,7 +62,7 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
         super(activity);
 
         this.context = activity;
-        indentedPaddingLeft = (int) ServiceUtils.getPixels(
+        indentedPaddingLeft = ServiceUtils.getIntPixels(
                 activity.getResources(), INDENTED_PADDING);
     }
 
@@ -73,8 +73,8 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
         super(context);
 
         this.context = context;
-        indentedPaddingLeft = (int) ServiceUtils.getPixels(
-                context.getResources(), INDENTED_PADDING);
+        indentedPaddingLeft = ServiceUtils.getIntPixels(context.getResources(),
+                INDENTED_PADDING);
     }
 
     /**
