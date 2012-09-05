@@ -243,6 +243,8 @@ public class RepositoryCodeFragment extends DialogFragment implements
                 null);
         pathView = (TextView) pathHeaderView.findViewById(id.tv_path);
         pathView.setMovementMethod(LinkMovementMethod.getInstance());
+        if (pathShowing)
+            adapter.addHeader(pathHeaderView);
 
         TypefaceUtils.setOcticons(branchIconView,
                 (TextView) pathHeaderView.findViewById(id.tv_folder_icon));
