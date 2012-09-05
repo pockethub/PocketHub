@@ -71,7 +71,7 @@ public class RefUtils {
         if (!TextUtils.isEmpty(name) && name.startsWith(PREFIX_REFS))
             return name.substring(PREFIX_REFS.length());
         else
-            return null;
+            return name;
     }
 
     /**
