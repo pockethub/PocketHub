@@ -178,7 +178,7 @@
     </style>
 
     <style name="HeaderListItem" parent="ListItem">
-        <item name="android:background">@drawable/header_background</item>
+        <item name="android:background">@color/background_header</item>
     </style>
 
     <style name="CommentListItem" parent="ListItem">
