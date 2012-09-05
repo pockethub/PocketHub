@@ -54,6 +54,7 @@ public class RefreshBlobTask extends AuthenticatedUserTask<String> {
         this.blobSha = blobSha;
     }
 
+    @Override
     protected String run(Account account) throws Exception {
         Blob blob = service.getBlob(repository, blobSha);
         String content = blob.getContent();
