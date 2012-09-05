@@ -42,6 +42,57 @@ public class ViewPager extends android.support.v4.view.ViewPager {
         super(context, attrs);
     }
 
+    /**
+     * Set current item and return whether the item changed
+     * <p>
+     * This method does not call {@link #setCurrentItem(int)} unless the item
+     * parameter differs from the current item
+     *
+     * @param item
+     * @return true if set, false if same
+     */
+    public boolean setItem(final int item) {
+        final boolean changed = item != getCurrentItem();
+        if (changed)
+            setCurrentItem(item);
+        return changed;
+    }
+
+    /**
+     * Set current item, invoke the listener if changes, and return whether the
+     * item changed
+     * <p>
+     * This method does not call {@link #setCurrentItem(int)} unless the item
+     * parameter differs from the current item
+     *
+     * @param item
+     * @param listener
+     * @return true if set, false if same
+     */
+    public boolean setItem(final int item, final OnPageChangeListener listener) {
+        final boolean changed = setItem(item);
+        if (changed)
+            listener.onPageSelected(item);
+        return changed;
+    }
+
+    /**
+     * Schedule a call to {@link #setItem(int)} to occur on the UI-thread
+     *
+     * @param item
+     * @param listener
+     */
+    public void scheduleSetItem(final int item,
+            final OnPageChangeListener listener) {
+        post(new Runnable() {
+
+            @Override
+            public void run() {
+                setItem(item, listener);
+            }
+        });
+    }
+
     @Override
     protected boolean canScroll(final View v, final boolean checkV,
             final int dx, final int x, final int y) {
