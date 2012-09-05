@@ -120,7 +120,6 @@ public class CommitViewActivity extends DialogFragmentActivity implements
 
         pager.setAdapter(new CommitPagerAdapter(getSupportFragmentManager(),
                 repository, ids));
-
         pager.setOnPageChangeListener(this);
         pager.setCurrentItem(initialPosition);
         onPageSelected(initialPosition);
