@@ -19,7 +19,7 @@
 
     <TextView
         android:id="@+id/tv_file_icon"
-        style="@style/PrimaryIcon"
+        style="@style/EventIcon"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:text="@string/icon_file" />
