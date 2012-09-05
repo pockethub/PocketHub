@@ -43,11 +43,11 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
 
     private final Context context;
 
-    private final int indentedPaddingLeft ;
+    private final int indentedPaddingLeft;
 
-    private int paddingLeft ;
+    private int paddingLeft;
 
-    private boolean indented ;
+    private boolean indented;
 
     /**
      * @param activity
@@ -56,7 +56,8 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
         super(activity);
 
         this.context = activity;
-        indentedPaddingLeft = (int) ServiceUtils.getPixels(activity.getResources(), INDENTED_PADDING);
+        indentedPaddingLeft = (int) ServiceUtils.getPixels(
+                activity.getResources(), INDENTED_PADDING);
     }
 
     /**
@@ -66,11 +67,19 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
         super(context);
 
         this.context = context;
-        indentedPaddingLeft = (int) ServiceUtils.getPixels(context.getResources(), INDENTED_PADDING);
+        indentedPaddingLeft = (int) ServiceUtils.getPixels(
+                context.getResources(), INDENTED_PADDING);
     }
 
-    public void setIndented(boolean indented) {
+    /**
+     * Set whether views should be indented
+     *
+     * @param indented
+     * @return this adapter
+     */
+    public CodeTreeAdapter setIndented(final boolean indented) {
         this.indented = indented;
+        return this;
     }
 
     @Override
@@ -136,9 +145,11 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
     @Override
     protected void update(final int position, final Object item, final int type) {
         if (indented)
-            view.setPadding(indentedPaddingLeft, view.getPaddingTop(),view.getPaddingRight(), view.getPaddingBottom());
+            view.setPadding(indentedPaddingLeft, view.getPaddingTop(),
+                    view.getPaddingRight(), view.getPaddingBottom());
         else
-            view.setPadding(paddingLeft, view.getPaddingTop(),view.getPaddingRight(), view.getPaddingBottom());
+            view.setPadding(paddingLeft, view.getPaddingTop(),
+                    view.getPaddingRight(), view.getPaddingBottom());
 
         switch (type) {
         case TYPE_BLOB:
@@ -156,4 +167,3 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
         }
     }
 }
-
