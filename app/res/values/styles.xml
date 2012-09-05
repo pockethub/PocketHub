@@ -177,9 +177,7 @@
         <item name="android:background">@drawable/list_item_background</item>
     </style>
 
-    <style name="HeaderListItem" parent="ListItem">
-        <item name="android:background">@color/background_header</item>
-    </style>
+    <style name="HeaderListItem" parent="ListItem"></style>
 
     <style name="CommentListItem" parent="ListItem">
         <item name="android:layout_width">match_parent</item>
