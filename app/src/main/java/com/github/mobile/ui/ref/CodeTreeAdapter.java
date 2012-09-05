@@ -126,7 +126,9 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
     @Override
     protected View initialize(final int type, View view) {
         view = super.initialize(type, view);
+
         paddingLeft = view.getPaddingLeft();
+
         switch (type) {
         case TYPE_BLOB:
             TypefaceUtils.setOcticons((TextView) view
