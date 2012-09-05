@@ -38,7 +38,8 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:paddingBottom="0dp"
-            android:paddingRight="5dp" />
+            android:paddingRight="5dp"
+            android:textStyle="normal" />
 
         <TextView
             android:id="@+id/tv_size"
