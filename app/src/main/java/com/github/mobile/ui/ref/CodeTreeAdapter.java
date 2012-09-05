@@ -47,6 +47,12 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
 
     private int paddingLeft;
 
+    private int paddingRight;
+
+    private int paddingTop;
+
+    private int paddingBottom;
+
     private boolean indented;
 
     /**
@@ -128,6 +134,9 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
         view = super.initialize(type, view);
 
         paddingLeft = view.getPaddingLeft();
+        paddingRight = view.getPaddingRight();
+        paddingTop = view.getPaddingTop();
+        paddingBottom = view.getPaddingBottom();
 
         switch (type) {
         case TYPE_BLOB:
@@ -147,11 +156,11 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
     @Override
     protected void update(final int position, final Object item, final int type) {
         if (indented)
-            view.setPadding(indentedPaddingLeft, view.getPaddingTop(),
-                    view.getPaddingRight(), view.getPaddingBottom());
+            view.setPadding(indentedPaddingLeft, paddingTop, paddingRight,
+                    paddingBottom);
         else
-            view.setPadding(paddingLeft, view.getPaddingTop(),
-                    view.getPaddingRight(), view.getPaddingBottom());
+            view.setPadding(paddingLeft, paddingTop, paddingRight,
+                    paddingBottom);
 
         switch (type) {
         case TYPE_BLOB:
