@@ -29,7 +29,7 @@
     <TextView
         android:id="@+id/tv_path"
         style="@style/HeaderTitleText"
-        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
         android:layout_toRightOf="@id/tv_folder_icon"
         android:lineSpacingExtra="2dp"
         android:paddingTop="2dp"
