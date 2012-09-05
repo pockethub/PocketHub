@@ -35,9 +35,9 @@
     </style>
 
     <style name="TabIcon" parent="TextIcon">
-        <item name="android:textSize">18dp</item>
-        <item name="android:layout_marginTop">-2dp</item>
-        <item name="android:layout_height">22dp</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:layout_marginTop">-4dp</item>
+        <item name="android:layout_height">26dp</item>
     </style>
 
 </resources>

@@ -100,7 +100,7 @@
     </style>
 
     <style name="TabIcon" parent="TextIcon">
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">20dp</item>
     </style>
 
     <style name="IssueNumber">
@@ -224,7 +224,7 @@
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">1</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">11sp</item>
     </style>
 
 </resources>

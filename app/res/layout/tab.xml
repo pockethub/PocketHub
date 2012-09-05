@@ -40,7 +40,6 @@
         android:layout_below="@id/tv_icon"
         android:layout_centerHorizontal="true"
         android:ellipsize="middle"
-        android:paddingTop="1dp"
         android:singleLine="true" />
 
 </RelativeLayout>
