@@ -24,35 +24,6 @@
         android:layout_centerInParent="true" />
 
     <RelativeLayout
-        android:id="@+id/rl_path"
-        style="@style/ListItem"
-        android:layout_width="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/section_background"
-        android:paddingBottom="2dp"
-        android:paddingTop="5dp"
-        android:visibility="gone" >
-
-        <TextView
-            android:id="@+id/tv_folder_icon"
-            style="@style/PrimaryIcon"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:text="@string/icon_folders" />
-
-        <TextView
-            android:id="@+id/tv_path"
-            style="@style/ListSubtitleText"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@id/tv_folder_icon"
-            android:lineSpacingExtra="2dp"
-            android:paddingLeft="10dp"
-            android:textColor="@color/text"
-            android:textColorLink="@color/text_link" />
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/rl_branch"
         style="@style/ListItem"
         android:layout_width="match_parent"
