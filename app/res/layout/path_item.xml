@@ -23,7 +23,7 @@
         android:id="@+id/tv_folder_icon"
         style="@style/PrimaryIcon"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
         android:text="@string/icon_folders" />
 
     <TextView
@@ -32,8 +32,9 @@
         android:layout_centerInParent="true"
         android:layout_toRightOf="@id/tv_folder_icon"
         android:lineSpacingExtra="2dp"
+        android:paddingTop="2dp"
         android:singleLine="false"
         android:textColorLink="@color/text_link"
-        android:textStyle="normal" />
+        android:textStyle="bold" />
 
 </RelativeLayout>

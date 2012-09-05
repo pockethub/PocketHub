@@ -27,6 +27,7 @@ import com.github.mobile.R.layout;
 import com.github.mobile.core.code.FullTree.Entry;
 import com.github.mobile.core.code.FullTree.Folder;
 import com.github.mobile.core.commit.CommitUtils;
+import com.github.mobile.util.ServiceUtils;
 import com.github.mobile.util.TypefaceUtils;
 
 /**
@@ -38,7 +39,15 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
 
     private static final int TYPE_TREE = 1;
 
+    private static final int INDENTED_PADDING = 16;
+
     private final Context context;
+
+    private final int indentedPaddingLeft ;
+
+    private int paddingLeft ;
+
+    private boolean indented ;
 
     /**
      * @param activity
@@ -47,6 +56,7 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
         super(activity);
 
         this.context = activity;
+        indentedPaddingLeft = (int) ServiceUtils.getPixels(activity.getResources(), INDENTED_PADDING);
     }
 
     /**
@@ -56,6 +66,11 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
         super(context);
 
         this.context = context;
+        indentedPaddingLeft = (int) ServiceUtils.getPixels(context.getResources(), INDENTED_PADDING);
+    }
+
+    public void setIndented(boolean indented) {
+        this.indented = indented;
     }
 
     @Override
@@ -100,7 +115,9 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
     }
 
     @Override
-    protected View initialize(final int type, final View view) {
+    protected View initialize(final int type, View view) {
+        view = super.initialize(type, view);
+        paddingLeft = view.getPaddingLeft();
         switch (type) {
         case TYPE_BLOB:
             TypefaceUtils.setOcticons((TextView) view
@@ -113,11 +130,16 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
                     (TextView) view.findViewById(id.tv_files_icon));
         }
 
-        return super.initialize(type, view);
+        return view;
     }
 
     @Override
     protected void update(final int position, final Object item, final int type) {
+        if (indented)
+            view.setPadding(indentedPaddingLeft, view.getPaddingTop(),view.getPaddingRight(), view.getPaddingBottom());
+        else
+            view.setPadding(paddingLeft, view.getPaddingTop(),view.getPaddingRight(), view.getPaddingBottom());
+
         switch (type) {
         case TYPE_BLOB:
             Entry file = (Entry) item;
@@ -134,3 +156,4 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
         }
     }
 }
+

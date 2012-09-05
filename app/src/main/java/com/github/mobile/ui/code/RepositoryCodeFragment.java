@@ -276,6 +276,8 @@ public class RepositoryCodeFragment extends DialogFragment implements
         else
             branchIconView.setText(string.icon_fork);
 
+        adapter.getWrappedAdapter().setIndented(folder.entry!= null);
+
         if (folder.entry != null) {
             int textLightColor = getResources().getColor(color.text_light);
             final String[] segments = folder.entry.getPath().split("/");
