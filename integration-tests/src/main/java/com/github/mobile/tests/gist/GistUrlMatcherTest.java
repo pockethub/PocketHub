@@ -13,25 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.core.gist;
+package com.github.mobile.tests.gist;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import android.test.AndroidTestCase;
 
 import com.github.mobile.core.gist.GistUrlMatcher;
-
-import org.junit.Test;
 
 /**
  * Unit tests of {@link GistUrlMatcher}
  */
-public class GistUrlMatcherTest {
+public class GistUrlMatcherTest extends AndroidTestCase {
 
     /**
      * Verify issue URL matching provides accurate Gist ids
      */
-    @Test
-    public void urlsWithoutIds() {
+    public void testUrlsWithoutIds() {
         GistUrlMatcher matcher = new GistUrlMatcher();
 
         assertNull(matcher.getId(null));
@@ -46,8 +42,7 @@ public class GistUrlMatcherTest {
     /**
      * Verify issue URL matching provides accurate Gist ids
      */
-    @Test
-    public void urlsWithIds() {
+    public void testUrlsWithIds() {
         GistUrlMatcher matcher = new GistUrlMatcher();
 
         assertEquals("a5", matcher.getId("http://gist.github.com/a5"));

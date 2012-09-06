@@ -13,24 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.core.commit;
+package com.github.mobile.tests.commit;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import android.test.AndroidTestCase;
 
-import org.junit.Test;
+import com.github.mobile.core.commit.CommitMatch;
+import com.github.mobile.core.commit.CommitUrlMatcher;
 
 /**
  * Unit tests of {@link CommitUrlMatcher}
  */
-public class CommitUrlMatcherTest {
+public class CommitUrlMatcherTest extends AndroidTestCase {
 
     /**
      * Check non-matching URLs
      */
-    @Test
-    public void urlsWithoutCommit() {
+    public void testUrlsWithoutCommit() {
         CommitUrlMatcher matcher = new CommitUrlMatcher();
 
         assertNull(matcher.getCommit(null));
@@ -44,8 +42,7 @@ public class CommitUrlMatcherTest {
     /**
      * Verify issue URL matching provides commits
      */
-    @Test
-    public void urlsWithCommit() {
+    public void testUrlsWithCommit() {
         CommitUrlMatcher matcher = new CommitUrlMatcher();
 
         CommitMatch match = matcher.getCommit("http://github.com/a/b/commit/1");

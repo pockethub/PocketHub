@@ -13,26 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.core.user;
+package com.github.mobile.tests.user;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import android.test.AndroidTestCase;
 
 import com.github.mobile.accounts.GitHubAccount;
+import com.github.mobile.core.user.UserComparator;
 
 import org.eclipse.egit.github.core.User;
-import org.junit.Test;
 
 /**
  * Unit tests of {@link UserComparator}
  */
-public class UserComparatorTest {
+public class UserComparatorTest extends AndroidTestCase {
 
     /**
      * Test sorting of users that match login
      */
-    @Test
-    public void loginMatch() {
+    public void testLoginMatch() {
         GitHubAccount account = new GitHubAccount("m", "n");
         UserComparator comparator = new UserComparator(account);
 
@@ -53,8 +51,7 @@ public class UserComparatorTest {
     /**
      * Test sorting of users that don't match login
      */
-    @Test
-    public void noLoginMatch() {
+    public void testNoLoginMatch() {
         GitHubAccount account = new GitHubAccount("m", "n");
         UserComparator comparator = new UserComparator(account);
 

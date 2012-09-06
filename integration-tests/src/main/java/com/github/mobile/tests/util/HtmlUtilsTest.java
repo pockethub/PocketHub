@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.util;
+package com.github.mobile.tests.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import android.test.AndroidTestCase;
 
-import org.junit.Test;
+import com.github.mobile.util.HtmlUtils;
 
 /**
  * Unit tests of HTML conversions done when rendering markdown
  */
-public class HtmlUtilsTest {
+public class HtmlUtilsTest extends AndroidTestCase {
 
     private String format(String html) {
         CharSequence formatted = HtmlUtils.format(html);
@@ -35,8 +34,7 @@ public class HtmlUtilsTest {
     /**
      * Single email toggle span is removed
      */
-    @Test
-    public void toggleRemoved() {
+    public void testToggleRemoved() {
         String html = "before <span class=\"email-hidden-toggle\"><a href=\"#\">…</a></span>after";
         assertEquals("before after", format(html));
     }
@@ -44,8 +42,7 @@ public class HtmlUtilsTest {
     /**
      * Multiple email toggle spans are removed
      */
-    @Test
-    public void togglesRemoved() {
+    public void testTogglesRemoved() {
         String html = "before <span class=\"email-hidden-toggle\"><a href=\"#\">…</a></span>after<span class=\"email-hidden-toggle\"><a href=\"#\">…</a></span>";
         assertEquals("before after", format(html));
     }
@@ -53,8 +50,7 @@ public class HtmlUtilsTest {
     /**
      * Email div is transformed into block quote
      */
-    @Test
-    public void emailQuoted() {
+    public void testEmailQuoted() {
         String html = "before <div class=\"email-quoted-reply\">quoted</div> after";
         assertEquals("before <blockquote>quoted</blockquote> after",
                 format(html));
@@ -63,8 +59,7 @@ public class HtmlUtilsTest {
     /**
      * Email fragment div is removed and newlines are replaced with br tags
      */
-    @Test
-    public void emailFragment() {
+    public void testEmailFragment() {
         String html = "before <div class=\"email-fragment\">in\nside</div> after";
         assertEquals("before in<br>side after", format(html));
     }
@@ -72,8 +67,7 @@ public class HtmlUtilsTest {
     /**
      * Email fragment div is removed and newlines are replaced with br tags
      */
-    @Test
-    public void emailFragments() {
+    public void testEmailFragments() {
         String html = "before <div class=\"email-fragment\">in\nside</div> after <div class=\"email-fragment\">out\nside</div>";
         assertEquals("before in<br>side after out<br>side", format(html));
     }
@@ -81,8 +75,7 @@ public class HtmlUtilsTest {
     /**
      * Email fragment div is removed and newlines are replaced with br tags
      */
-    @Test
-    public void trailingEmailFragment() {
+    public void testTrailingEmailFragment() {
         String html = "before <div class=\"email-fragment\">in\nside</div>";
         assertEquals("before in<br>side", format(html));
     }
@@ -90,8 +83,7 @@ public class HtmlUtilsTest {
     /**
      * Leading break is removed
      */
-    @Test
-    public void leadingBreak() {
+    public void testLeadingBreak() {
         String html = "<br>content";
         assertEquals("content", format(html));
     }
@@ -99,8 +91,7 @@ public class HtmlUtilsTest {
     /**
      * Trailing break is removed
      */
-    @Test
-    public void trailingBreak() {
+    public void testTrailingBreak() {
         String html = "content<br>";
         assertEquals("content", format(html));
     }
@@ -108,8 +99,7 @@ public class HtmlUtilsTest {
     /**
      * Leading & trailing breaks are removed
      */
-    @Test
-    public void wrappedBreaks() {
+    public void testWrappedBreaks() {
         String html = "<br>content<br>";
         assertEquals("content", format(html));
     }
@@ -117,8 +107,7 @@ public class HtmlUtilsTest {
     /**
      * Leading & trailing breaks are removed
      */
-    @Test
-    public void wrappedParagraphs() {
+    public void testWrappedParagraphs() {
         String html = "<p>content</p>";
         assertEquals("content", format(html));
     }
@@ -126,8 +115,7 @@ public class HtmlUtilsTest {
     /**
      * Paragraph replaced with break
      */
-    @Test
-    public void paragraphReplacedWithBreak() {
+    public void testParagraphReplacedWithBreak() {
         String html = "line1<p>line2</p>";
         assertEquals("line1<br>line2", format(html));
     }
@@ -135,8 +123,7 @@ public class HtmlUtilsTest {
     /**
      * em tags replaced with i tags
      */
-    @Test
-    public void emReplacedWithI() {
+    public void testEmReplacedWithI() {
         String html = "a<em>b</em>c";
         assertEquals("a<i>b</i>c", format(html));
     }
@@ -144,8 +131,7 @@ public class HtmlUtilsTest {
     /**
      * strong tags replaced with b tags
      */
-    @Test
-    public void strongReplacedWithB() {
+    public void testStrongReplacedWithB() {
         String html = "<strong>a</strong>";
         assertEquals("<b>a</b>", format(html));
     }
@@ -153,8 +139,7 @@ public class HtmlUtilsTest {
     /**
      * Leading whitespace is removed
      */
-    @Test
-    public void leadingWhitespace() {
+    public void testLeadingWhitespace() {
         String html = " content";
         assertEquals("content", format(html));
     }
@@ -162,8 +147,7 @@ public class HtmlUtilsTest {
     /**
      * Trailing whitespace is removed
      */
-    @Test
-    public void trailingWhitespace() {
+    public void testTrailingWhitespace() {
         String html = "content ";
         assertEquals("content", format(html));
     }
@@ -171,8 +155,7 @@ public class HtmlUtilsTest {
     /**
      * Leading & trailing whitespace is removed
      */
-    @Test
-    public void wrappedWhitetspace() {
+    public void testWrappedWhitetspace() {
         String html = " content ";
         assertEquals("content", format(html));
     }
@@ -180,8 +163,7 @@ public class HtmlUtilsTest {
     /**
      * Pre untouched
      */
-    @Test
-    public void preWithNoWhitespace() {
+    public void testPreWithNoWhitespace() {
         String html = "a<pre>b</pre> c";
         assertEquals("a<pre>b</pre> c", format(html));
     }
@@ -189,8 +171,7 @@ public class HtmlUtilsTest {
     /**
      * Pre space escaped
      */
-    @Test
-    public void preWithSpaces() {
+    public void testPreWithSpaces() {
         String html = "a<pre> b</pre> c";
         assertEquals("a<pre>&nbsp;b</pre> c", format(html));
     }
@@ -198,8 +179,7 @@ public class HtmlUtilsTest {
     /**
      * Pre tab escaped
      */
-    @Test
-    public void preWithTabs() {
+    public void testPreWithTabs() {
         String html = "a<pre>\tb</pre> c";
         assertEquals("a<pre>&nbsp;&nbsp;&nbsp;&nbsp;b</pre> c", format(html));
     }
@@ -207,8 +187,7 @@ public class HtmlUtilsTest {
     /**
      * Pre newline escaped
      */
-    @Test
-    public void preWithNewline() {
+    public void testPreWithNewline() {
         String html = "a<pre>\nb</pre> c";
         assertEquals("a<pre><br>b</pre> c", format(html));
     }
@@ -216,8 +195,7 @@ public class HtmlUtilsTest {
     /**
      * Pre space, tab, and newline escaped
      */
-    @Test
-    public void preWithAllWhitepsace() {
+    public void testPreWithAllWhitepsace() {
         String html = "a<pre>\nb\tc </pre>d";
         assertEquals("a<pre><br>b&nbsp;&nbsp;&nbsp;&nbsp;c&nbsp;</pre>d",
                 format(html));
@@ -226,8 +204,7 @@ public class HtmlUtilsTest {
     /**
      * Multiple pre elements escaped
      */
-    @Test
-    public void multiplePresEscaped() {
+    public void testMultiplePresEscaped() {
         String html = "a<pre> c </pre>d<pre>\te\t</pre>";
         assertEquals(
                 "a<pre>&nbsp;c&nbsp;</pre>d<pre>&nbsp;&nbsp;&nbsp;&nbsp;e&nbsp;&nbsp;&nbsp;&nbsp;</pre>",
@@ -237,8 +214,7 @@ public class HtmlUtilsTest {
     /**
      * Single code element inside a pre element
      */
-    @Test
-    public void formatPreCodeOnly() {
+    public void testFormatPreCodeOnly() {
         String html = "<pre><code>a\nb\nc\n</code></pre>";
         assertEquals("<pre><code>a<br>b<br>c</code></pre>", format(html));
     }

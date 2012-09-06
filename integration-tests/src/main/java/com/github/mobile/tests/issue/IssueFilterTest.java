@@ -13,27 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.core.issue;
+package com.github.mobile.tests.issue;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import android.test.AndroidTestCase;
+
+import com.github.mobile.core.issue.IssueFilter;
 
 import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
-import org.junit.Test;
 
 /**
  * Unit tests of {@link IssueFilter}
  */
-public class IssueFilterTest {
+public class IssueFilterTest extends AndroidTestCase {
 
     /**
      * Verify {@link IssueFilter#equals(Object)}
      */
-    @Test
-    public void equalFilter() {
+    public void testEqualFilter() {
         Repository repo = new Repository().setId(1);
         IssueFilter filter1 = new IssueFilter(repo);
 

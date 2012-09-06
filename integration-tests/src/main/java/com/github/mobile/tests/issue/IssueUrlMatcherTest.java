@@ -13,24 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.core.issue;
+package com.github.mobile.tests.issue;
 
-import static org.junit.Assert.assertEquals;
+import android.test.AndroidTestCase;
 
 import com.github.mobile.core.issue.IssueUrlMatcher;
-
-import org.junit.Test;
 
 /**
  * Unit tests of {@link IssueUrlMatcher}
  */
-public class IssueUrlMatcherTest {
+public class IssueUrlMatcherTest extends AndroidTestCase {
 
     /**
      * Verify issue URL matching provides accurate issue numbers
      */
-    @Test
-    public void urlsWithoutNumbers() {
+    public void testUrlsWithoutNumbers() {
         IssueUrlMatcher matcher = new IssueUrlMatcher();
 
         assertEquals(-1, matcher.getNumber(null));
@@ -42,8 +39,7 @@ public class IssueUrlMatcherTest {
     /**
      * Verify issue URL matching provides accurate issue numbers
      */
-    @Test
-    public void urlsWithNumbers() {
+    public void testUrlsWithNumbers() {
         IssueUrlMatcher matcher = new IssueUrlMatcher();
 
         assertEquals(5, matcher.getNumber("http://github.com/r/o/issues/5"));

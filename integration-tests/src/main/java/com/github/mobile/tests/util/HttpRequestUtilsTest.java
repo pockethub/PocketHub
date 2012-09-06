@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.util;
+package com.github.mobile.tests.util;
+
+import android.test.AndroidTestCase;
 
 import com.github.kevinsawicki.http.HttpRequest;
-
-import org.junit.Test;
+import com.github.mobile.util.HttpRequestUtils;
 
 /**
  * Unit tests of {@link HttpRequestUtils}
  */
-public class HttpRequestUtilsTest {
+public class HttpRequestUtilsTest extends AndroidTestCase {
 
     /**
      * Test secure requests
      */
-    @Test
-    public void secureRequests() {
+    public void testSecureRequests() {
         HttpRequestUtils.isSecure(HttpRequest.get("https://github.com"));
         HttpRequestUtils.isSecure(HttpRequest
                 .get("https://github.com/a/b/raw/1234"));
@@ -37,8 +37,7 @@ public class HttpRequestUtilsTest {
     /**
      * Test insecure requests
      */
-    @Test
-    public void insecureRequests() {
+    public void testInsecureRequests() {
         HttpRequestUtils.isSecure(HttpRequest.get("http://github.com"));
         HttpRequestUtils.isSecure(HttpRequest.get("https://github.c0m"));
     }
