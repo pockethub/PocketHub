@@ -20,6 +20,7 @@ import android.support.v4.view.PagerAdapter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabContentFactory;
@@ -27,6 +28,7 @@ import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.ViewUtils;
+import com.github.mobile.R.drawable;
 import com.github.mobile.R.id;
 import com.github.mobile.util.TypefaceUtils;
 import com.viewpagerindicator.R.layout;
@@ -135,8 +137,10 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
 
     private void updateCurrentItem(final int newPosition) {
         if (newPosition > -1 && newPosition < adapter.getCount()
-                && pager.setItem(newPosition))
+                && pager.setItem(newPosition)) {
+
             setCurrentItem(newPosition);
+        }
     }
 
     private void createPager() {
@@ -169,6 +173,16 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
 
             spec.setIndicator(view);
             host.addTab(spec);
+
+            int background;
+            if (i == 0)
+                background = drawable.tab_selector_right;
+            else if (i == count - 1)
+                background = drawable.tab_selector_left;
+            else
+                background = drawable.tab_selector_left_right;
+            ((ImageView) view.findViewById(id.iv_tab))
+                    .setImageResource(background);
         }
     }
 

@@ -14,30 +14,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item>
-        <shape>
-            <solid android:color="#143C52" />
-        </shape>
-    </item>
-    <item
-        android:bottom="1dp"
-        android:left="1dp"
-        android:right="1dp"
-        android:top="1dp">
-        <shape>
-            <solid android:color="#194964" />
-        </shape>
-    </item>
-    <item
-        android:bottom="2dp"
-        android:left="2dp"
-        android:right="2dp"
-        android:top="2dp">
-        <shape>
-            <solid android:color="#1E5B7E" />
-        </shape>
-    </item>
+    <item android:drawable="@drawable/tab_selected" android:state_pressed="true"/>
+    <item android:drawable="@drawable/tab_selected" android:state_selected="true"/>
+    <item android:drawable="@drawable/tab_left_right"/>
 
-</layer-list>
+</selector>

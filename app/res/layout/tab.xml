@@ -16,30 +16,44 @@
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/tab_background"
-    android:paddingBottom="3dp"
-    android:paddingLeft="3dp"
-    android:paddingRight="3dp"
-    android:paddingTop="3dp" >
+    android:layout_height="wrap_content" >
 
-    <TextView
-        android:id="@+id/tv_icon"
-        style="@style/TabIcon"
+    <ImageView
+        android:id="@+id/iv_tab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/rl_text"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:shadowColor="@color/tab_text_shadow"
-        android:shadowDx="1"
-        android:shadowDy="1"
-        android:shadowRadius="1"
-        android:textColor="@color/tab_icon_colors" />
+        android:adjustViewBounds="false"
+        android:duplicateParentState="true"
+        android:scaleType="fitXY" />
 
-    <TextView
-        android:id="@+id/tv_tab"
-        style="@style/TabText"
-        android:layout_below="@id/tv_icon"
-        android:layout_centerHorizontal="true"
-        android:ellipsize="middle"
-        android:singleLine="true" />
+    <RelativeLayout
+        android:id="@+id/rl_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dp" >
+
+        <TextView
+            android:id="@+id/tv_icon"
+            style="@style/TabIcon"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:shadowColor="@color/tab_text_shadow"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1"
+            android:textColor="@color/tab_icon_colors" />
+
+        <TextView
+            android:id="@+id/tv_tab"
+            style="@style/TabText"
+            android:layout_below="@id/tv_icon"
+            android:layout_centerHorizontal="true"
+            android:ellipsize="middle"
+            android:singleLine="true" />
+    </RelativeLayout>
 
 </RelativeLayout>

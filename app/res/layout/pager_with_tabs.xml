@@ -28,9 +28,8 @@
             android:id="@android:id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/tab"
-            android:divider="@drawable/tab_divider"
-            android:dividerPadding="0dp" />
+            android:dividerPadding="0dp"
+            android:showDividers="none" />
 
         <FrameLayout
             android:id="@android:id/tabcontent"
