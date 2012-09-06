@@ -15,6 +15,8 @@
  */
 package com.github.mobile.ui.user;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static com.github.mobile.Intents.EXTRA_USER;
 import static com.github.mobile.util.TypefaceUtils.ICON_FOLLOW;
 import static com.github.mobile.util.TypefaceUtils.ICON_NEWS;
@@ -24,6 +26,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ProgressBar;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
@@ -69,7 +73,9 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getSupportActionBar().setTitle(user.getLogin());
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle(user.getLogin());
 
         if (user.getAvatarUrl() != null)
             configurePager();
@@ -96,6 +102,20 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
                 }
             }.execute();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case android.R.id.home:
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+
     }
 
     private void configurePager() {
