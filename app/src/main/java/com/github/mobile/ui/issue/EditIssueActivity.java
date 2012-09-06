@@ -43,6 +43,7 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
+import com.github.mobile.core.issue.IssueUtils;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.ui.TextWatcherAdapter;
@@ -170,8 +171,12 @@ public class EditIssueActivity extends DialogFragmentActivity {
 
         ActionBar actionBar = getSupportActionBar();
         if (issue.getNumber() > 0)
-            actionBar.setTitle(getString(string.issue_title)
-                    + issue.getNumber());
+            if (IssueUtils.isPullRequest(issue))
+                actionBar.setTitle(getString(string.pull_request_title)
+                        + issue.getNumber());
+            else
+                actionBar.setTitle(getString(string.issue_title)
+                        + issue.getNumber());
         else
             actionBar.setTitle(string.new_issue);
         actionBar.setSubtitle(repository.generateId());
