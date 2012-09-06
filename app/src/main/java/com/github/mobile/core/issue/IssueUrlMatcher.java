@@ -21,7 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Matcher for issue URLS that provides the issue number matched
+ * Matcher for issue URLs that provides the issue number matched
  * <p>
  * This class is not thread-safe
  */
@@ -37,7 +37,7 @@ public class IssueUrlMatcher extends UrlMatcher {
      * Get issue number from URL
      *
      * @param url
-     * @return issue number of -1 if the given URL is not to an issue
+     * @return issue number or -1 if the given URL is not to an issue
      */
     public int getNumber(final String url) {
         if (!isMatch(url, matcher))
