@@ -82,6 +82,7 @@ function getMode(name) {
     mode.file = extension;
     break;
   case "sh":
+  case "zsh":
     mode.mode = "text/x-sh";
     mode.file = "shell";
     break;
