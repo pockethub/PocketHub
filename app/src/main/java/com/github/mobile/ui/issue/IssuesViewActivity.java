@@ -21,7 +21,6 @@ import static com.github.mobile.Intents.EXTRA_REPOSITORIES;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.github.mobile.Intents.Builder;
@@ -31,7 +30,8 @@ import com.github.mobile.R.string;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.core.issue.IssueUtils;
 import com.github.mobile.core.repo.RefreshRepositoryTask;
-import com.github.mobile.ui.DialogFragmentActivity;
+import com.github.mobile.ui.FragmentProvider;
+import com.github.mobile.ui.PagerActivity;
 import com.github.mobile.ui.UrlLauncher;
 import com.github.mobile.ui.ViewPager;
 import com.github.mobile.util.AvatarLoader;
@@ -54,8 +54,7 @@ import roboguice.inject.InjectView;
 /**
  * Activity to display a collection of issues or pull requests in a pager
  */
-public class IssuesViewActivity extends DialogFragmentActivity implements
-        OnPageChangeListener {
+public class IssuesViewActivity extends PagerActivity {
 
     private static final String EXTRA_PULL_REQUESTS = "pullRequests";
 
@@ -219,11 +218,6 @@ public class IssuesViewActivity extends DialogFragmentActivity implements
             }.execute();
     }
 
-    public void onPageScrolled(int position, float positionOffset,
-            int positionOffsetPixels) {
-        // Intentionally left blank
-    }
-
     private void updateTitle(final int position) {
         int number = issueNumbers[position];
         boolean pullRequest = pullRequests[position];
@@ -236,7 +230,10 @@ public class IssuesViewActivity extends DialogFragmentActivity implements
                     getString(string.issue_title) + number);
     }
 
+    @Override
     public void onPageSelected(final int position) {
+        super.onPageSelected(position);
+
         if (repo != null) {
             updateTitle(position);
             return;
@@ -267,10 +264,6 @@ public class IssuesViewActivity extends DialogFragmentActivity implements
         }
     }
 
-    public void onPageScrollStateChanged(int state) {
-        // Intentionally left blank
-    }
-
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
         adapter.onDialogResult(pager.getCurrentItem(), requestCode, resultCode,
@@ -284,5 +277,9 @@ public class IssuesViewActivity extends DialogFragmentActivity implements
             super.startActivity(converted);
         else
             super.startActivity(intent);
+    }
+
+    protected FragmentProvider getProvider() {
+        return adapter;
     }
 }
