@@ -108,10 +108,10 @@
     <string name="comment">Comentário</string>
     <string name="delete">Excluir</string>
     <string name="refresh">Atualizar</string>
-    <string name="dasbhoard_watched">Observando</string>
-    <string name="dasbhoard_assigned">Atribuído</string>
-    <string name="dasbhoard_created">Criado</string>
-    <string name="dasbhoard_mentioned">Mencionado</string>
+    <string name="dashboard_watched">Observando</string>
+    <string name="dashboard_assigned">Atribuído</string>
+    <string name="dashboard_created">Criado</string>
+    <string name="dashboard_mentioned">Mencionado</string>
     <string name="dashboard_issues_title">Painel de Incidentes</string>
     <string name="bookmarks">Favoritos</string>
     <string name="gists_title">Gists</string>
