@@ -57,8 +57,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/rl_branch"
-        android:layout_alignWithParentIfMissing="true"
-        android:layout_below="@id/rl_path"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
         android:visibility="gone" />
 
 </RelativeLayout>
