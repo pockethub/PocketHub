@@ -22,7 +22,6 @@ import static com.github.mobile.Intents.EXTRA_POSITION;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
@@ -49,8 +48,7 @@ import roboguice.inject.InjectView;
 /**
  * Activity to display a commit
  */
-public class CommitViewActivity extends PagerActivity implements
-        OnPageChangeListener {
+public class CommitViewActivity extends PagerActivity {
 
     /**
      * Create intent for this activity
