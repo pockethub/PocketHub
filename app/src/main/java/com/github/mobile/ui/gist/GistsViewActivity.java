@@ -23,7 +23,6 @@ import static com.github.mobile.Intents.EXTRA_GIST_IDS;
 import static com.github.mobile.Intents.EXTRA_POSITION;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -37,6 +36,7 @@ import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.ui.ConfirmDialogFragment;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.UrlLauncher;
+import com.github.mobile.ui.ViewPager;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
@@ -126,8 +126,7 @@ public class GistsViewActivity extends DialogFragmentActivity implements
 
         pager.setAdapter(new GistsPagerAdapter(this, gists));
         pager.setOnPageChangeListener(this);
-        pager.setCurrentItem(initialPosition);
-        onPageSelected(initialPosition);
+        pager.scheduleSetItem(initialPosition, this);
     }
 
     @Override

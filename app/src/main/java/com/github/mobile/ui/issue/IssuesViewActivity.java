@@ -21,7 +21,6 @@ import static com.github.mobile.Intents.EXTRA_REPOSITORIES;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -34,6 +33,7 @@ import com.github.mobile.core.issue.IssueUtils;
 import com.github.mobile.core.repo.RefreshRepositoryTask;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.UrlLauncher;
+import com.github.mobile.ui.ViewPager;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
@@ -191,8 +191,7 @@ public class IssuesViewActivity extends DialogFragmentActivity implements
         pager.setAdapter(adapter);
 
         pager.setOnPageChangeListener(this);
-        pager.setCurrentItem(initialPosition);
-        onPageSelected(initialPosition);
+        pager.scheduleSetItem(initialPosition, this);
 
         if (repo != null) {
             ActionBar actionBar = getSupportActionBar();
