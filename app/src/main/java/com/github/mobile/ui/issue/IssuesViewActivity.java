@@ -175,7 +175,7 @@ public class IssuesViewActivity extends PagerActivity {
 
     private IssuesPagerAdapter adapter;
 
-    private final UrlLauncher urlLauncher = new UrlLauncher();
+    private final UrlLauncher urlLauncher = new UrlLauncher(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -15,6 +15,7 @@
  */
 package com.github.mobile.util;
 
+import android.content.Context;
 import android.content.Intent;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -51,8 +52,9 @@ public class SourceEditor {
                     view.loadUrl(url);
                     return false;
                 } else {
-                    Intent intent = new UrlLauncher().create(url);
-                    view.getContext().startActivity(intent);
+                    Context context = view.getContext();
+                    Intent intent = new UrlLauncher(context).create(url);
+                    context.startActivity(intent);
                     return true;
                 }
             }
