@@ -118,7 +118,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
 
     @Override
     protected UserPagerAdapter createAdapter() {
-        return new UserPagerAdapter(getSupportFragmentManager(), getResources());
+        return new UserPagerAdapter(this);
     }
 
     @Override

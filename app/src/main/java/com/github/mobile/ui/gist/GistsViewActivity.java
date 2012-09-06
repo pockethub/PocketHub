@@ -124,8 +124,7 @@ public class GistsViewActivity extends DialogFragmentActivity implements
             gists = new String[] { gist.getId() };
         }
 
-        pager.setAdapter(new GistsPagerAdapter(getSupportFragmentManager(),
-                gists));
+        pager.setAdapter(new GistsPagerAdapter(this, gists));
         pager.setOnPageChangeListener(this);
         pager.setCurrentItem(initialPosition);
         onPageSelected(initialPosition);

@@ -133,7 +133,6 @@ public class CommitDiffListFragment extends DialogFragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setHasOptionsMenu(true);
         Bundle args = getArguments();
         base = args.getString(EXTRA_BASE);
         repository = (Repository) args.getSerializable(EXTRA_REPOSITORY);

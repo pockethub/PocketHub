@@ -105,8 +105,6 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setHasOptionsMenu(true);
-
         if (filter == null)
             filter = new IssueFilter(repository);
     }

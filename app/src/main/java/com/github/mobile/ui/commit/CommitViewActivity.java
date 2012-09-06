@@ -22,7 +22,6 @@ import static com.github.mobile.Intents.EXTRA_POSITION;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -32,7 +31,9 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.core.commit.CommitUtils;
-import com.github.mobile.ui.DialogFragmentActivity;
+import com.github.mobile.ui.FragmentProvider;
+import com.github.mobile.ui.PagerActivity;
+import com.github.mobile.ui.ViewPager;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
@@ -48,7 +49,7 @@ import roboguice.inject.InjectView;
 /**
  * Activity to display a commit
  */
-public class CommitViewActivity extends DialogFragmentActivity implements
+public class CommitViewActivity extends PagerActivity implements
         OnPageChangeListener {
 
     /**
@@ -112,17 +113,18 @@ public class CommitViewActivity extends DialogFragmentActivity implements
     @Inject
     private AvatarLoader avatars;
 
+    private CommitPagerAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(layout.pager);
 
-        pager.setAdapter(new CommitPagerAdapter(getSupportFragmentManager(),
-                repository, ids));
+        adapter = new CommitPagerAdapter(this, repository, ids);
+        pager.setAdapter(adapter);
         pager.setOnPageChangeListener(this);
-        pager.setCurrentItem(initialPosition);
-        onPageSelected(initialPosition);
+        pager.scheduleSetItem(initialPosition, this);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -143,17 +145,16 @@ public class CommitViewActivity extends DialogFragmentActivity implements
         }
     }
 
-    public void onPageScrolled(int position, float positionOffset,
-            int positionOffsetPixels) {
-        // Intentionally left blank
-    }
-
+    @Override
     public void onPageSelected(int position) {
+        super.onPageSelected(position);
+
         final String id = CommitUtils.abbreviate(ids[position].toString());
         getSupportActionBar().setTitle(getString(string.commit_prefix) + id);
     }
 
-    public void onPageScrollStateChanged(int state) {
-        // Intentionally left blank
+    @Override
+    protected FragmentProvider getProvider() {
+        return adapter;
     }
 }

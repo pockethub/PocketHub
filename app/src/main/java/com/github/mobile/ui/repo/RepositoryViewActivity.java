@@ -160,8 +160,7 @@ public class RepositoryViewActivity extends
 
     @Override
     protected RepositoryPagerAdapter createAdapter() {
-        return new RepositoryPagerAdapter(getSupportFragmentManager(),
-                getResources(), repository.isHasIssues());
+        return new RepositoryPagerAdapter(this, repository.isHasIssues());
     }
 
     @Override

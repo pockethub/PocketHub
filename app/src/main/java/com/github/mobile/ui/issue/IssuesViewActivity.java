@@ -185,11 +185,9 @@ public class IssuesViewActivity extends DialogFragmentActivity implements
         setContentView(layout.pager);
 
         if (repo != null)
-            adapter = new IssuesPagerAdapter(getSupportFragmentManager(), repo,
-                    issueNumbers);
+            adapter = new IssuesPagerAdapter(this, repo, issueNumbers);
         else
-            adapter = new IssuesPagerAdapter(getSupportFragmentManager(),
-                    repoIds, issueNumbers, store);
+            adapter = new IssuesPagerAdapter(this, repoIds, issueNumbers, store);
         pager.setAdapter(adapter);
 
         pager.setOnPageChangeListener(this);

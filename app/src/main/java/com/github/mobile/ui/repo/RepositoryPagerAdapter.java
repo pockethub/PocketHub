@@ -18,10 +18,10 @@ package com.github.mobile.ui.repo;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.github.mobile.R.string;
+import com.github.mobile.ui.FragmentPagerAdapter;
 import com.github.mobile.ui.code.RepositoryCodeFragment;
 import com.github.mobile.ui.commit.CommitListFragment;
 import com.github.mobile.ui.issue.IssuesFragment;
@@ -45,15 +45,14 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
     /**
      * Create repository pager adapter
      *
-     * @param fm
-     * @param resources
+     * @param activity
      * @param hasIssues
      */
-    public RepositoryPagerAdapter(FragmentManager fm, Resources resources,
+    public RepositoryPagerAdapter(SherlockFragmentActivity activity,
             boolean hasIssues) {
-        super(fm);
+        super(activity);
 
-        this.resources = resources;
+        resources = activity.getResources();
         this.hasIssues = hasIssues;
     }
 

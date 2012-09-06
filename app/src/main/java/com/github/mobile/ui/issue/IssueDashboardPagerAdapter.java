@@ -28,10 +28,10 @@ import static org.eclipse.egit.github.core.service.IssueService.SORT_UPDATED;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.github.mobile.R.string;
+import com.github.mobile.ui.FragmentStatePagerAdapter;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -47,14 +47,12 @@ public class IssueDashboardPagerAdapter extends FragmentStatePagerAdapter {
     /**
      * Create pager adapter
      *
-     * @param resources
-     * @param fragmentManager
+     * @param activity
      */
-    public IssueDashboardPagerAdapter(final Resources resources,
-            final FragmentManager fragmentManager) {
-        super(fragmentManager);
+    public IssueDashboardPagerAdapter(final SherlockFragmentActivity activity) {
+        super(activity);
 
-        this.resources = resources;
+        resources = activity.getResources();
     }
 
     @Override

@@ -18,11 +18,12 @@ package com.github.mobile.ui.user;
 import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.view.ViewGroup;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.github.mobile.R.string;
+import com.github.mobile.ui.FragmentPagerAdapter;
 import com.github.mobile.ui.repo.RepositoryListFragment;
 
 import java.util.HashSet;
@@ -42,16 +43,15 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
     private final Set<String> tags = new HashSet<String>();
 
     /**
-     * @param fm
-     * @param resources
+     * @param activity
      * @param defaultUser
      */
-    public HomePagerAdapter(final FragmentManager fm,
-            final Resources resources, final boolean defaultUser) {
-        super(fm);
+    public HomePagerAdapter(final SherlockFragmentActivity activity,
+            final boolean defaultUser) {
+        super(activity);
 
-        this.resources = resources;
-        fragmentManager = fm;
+        fragmentManager = activity.getSupportFragmentManager();
+        resources = activity.getResources();
         this.defaultUser = defaultUser;
     }
 

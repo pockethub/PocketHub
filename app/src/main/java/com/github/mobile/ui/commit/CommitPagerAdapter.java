@@ -19,8 +19,9 @@ import static com.github.mobile.Intents.EXTRA_BASE;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.github.mobile.ui.FragmentStatePagerAdapter;
 
 import org.eclipse.egit.github.core.Repository;
 
@@ -34,13 +35,13 @@ public class CommitPagerAdapter extends FragmentStatePagerAdapter {
     private final CharSequence[] ids;
 
     /**
-     * @param fm
+     * @param activity
      * @param repository
      * @param ids
      */
-    public CommitPagerAdapter(FragmentManager fm, Repository repository,
-            CharSequence[] ids) {
-        super(fm);
+    public CommitPagerAdapter(SherlockFragmentActivity activity,
+            Repository repository, CharSequence[] ids) {
+        super(activity);
 
         this.repository = repository;
         this.ids = ids;

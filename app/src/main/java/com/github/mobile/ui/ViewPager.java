@@ -54,7 +54,7 @@ public class ViewPager extends android.support.v4.view.ViewPager {
     public boolean setItem(final int item) {
         final boolean changed = item != getCurrentItem();
         if (changed)
-            setCurrentItem(item);
+            setCurrentItem(item, false);
         return changed;
     }
 
@@ -89,6 +89,21 @@ public class ViewPager extends android.support.v4.view.ViewPager {
             @Override
             public void run() {
                 setItem(item, listener);
+            }
+        });
+    }
+
+    /**
+     * Schedule a call to {@link #setItem(int)} to occur on the UI-thread
+     *
+     * @param item
+     */
+    public void scheduleSetItem(final int item) {
+        post(new Runnable() {
+
+            @Override
+            public void run() {
+                setItem(item);
             }
         });
     }

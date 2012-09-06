@@ -57,13 +57,6 @@ public class DashboardIssueFragment extends PagedItemFragment<RepositoryIssue> {
 
     private Map<String, String> filterData;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setHasOptionsMenu(true);
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

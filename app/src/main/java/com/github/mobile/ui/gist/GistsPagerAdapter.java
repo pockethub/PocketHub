@@ -18,8 +18,9 @@ package com.github.mobile.ui.gist;
 import static com.github.mobile.Intents.EXTRA_GIST_ID;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.github.mobile.ui.FragmentStatePagerAdapter;
 
 /**
  * Adapter to page through an array of Gists
@@ -29,11 +30,11 @@ public class GistsPagerAdapter extends FragmentStatePagerAdapter {
     private final String[] ids;
 
     /**
-     * @param fm
+     * @param activity
      * @param gistIds
      */
-    public GistsPagerAdapter(FragmentManager fm, String[] gistIds) {
-        super(fm);
+    public GistsPagerAdapter(SherlockFragmentActivity activity, String[] gistIds) {
+        super(activity);
 
         this.ids = gistIds;
     }

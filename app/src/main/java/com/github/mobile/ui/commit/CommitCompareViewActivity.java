@@ -24,6 +24,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.layout;
@@ -64,6 +66,8 @@ public class CommitCompareViewActivity extends DialogFragmentActivity {
     @Inject
     private AvatarLoader avatars;
 
+    private SherlockFragment fragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +78,17 @@ public class CommitCompareViewActivity extends DialogFragmentActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setSubtitle(repository.generateId());
         avatars.bind(actionBar, repository.getOwner());
+
+        fragment = (SherlockFragment) getSupportFragmentManager()
+                .findFragmentById(android.R.id.list);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu optionsMenu) {
+        if (fragment != null)
+            fragment.onCreateOptionsMenu(optionsMenu, getSupportMenuInflater());
+
+        return super.onCreateOptionsMenu(optionsMenu);
     }
 
     @Override
@@ -85,7 +100,10 @@ public class CommitCompareViewActivity extends DialogFragmentActivity {
             startActivity(intent);
             return true;
         default:
-            return super.onOptionsItemSelected(item);
+            if (fragment != null)
+                return fragment.onOptionsItemSelected(item);
+            else
+                return super.onOptionsItemSelected(item);
         }
     }
 }

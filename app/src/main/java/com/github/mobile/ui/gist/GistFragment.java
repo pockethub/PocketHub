@@ -120,8 +120,6 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setHasOptionsMenu(true);
-
         gistId = getArguments().getString(EXTRA_GIST_ID);
     }
 

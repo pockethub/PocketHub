@@ -164,8 +164,6 @@ public class IssueFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setHasOptionsMenu(true);
-
         Bundle args = getArguments();
         repositoryId = RepositoryId.create(
                 args.getString(EXTRA_REPOSITORY_OWNER),

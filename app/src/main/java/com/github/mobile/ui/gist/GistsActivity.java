@@ -57,7 +57,8 @@ public class GistsActivity extends TabPagerActivity<GistQueriesPagerAdapter> {
     @Override
     public boolean onCreateOptionsMenu(Menu optionsMenu) {
         getSupportMenuInflater().inflate(menu.gists, optionsMenu);
-        return true;
+
+        return super.onCreateOptionsMenu(optionsMenu);
     }
 
     @Override
@@ -78,8 +79,7 @@ public class GistsActivity extends TabPagerActivity<GistQueriesPagerAdapter> {
 
     @Override
     protected GistQueriesPagerAdapter createAdapter() {
-        return new GistQueriesPagerAdapter(getResources(),
-                getSupportFragmentManager());
+        return new GistQueriesPagerAdapter(this);
     }
 
     @Override

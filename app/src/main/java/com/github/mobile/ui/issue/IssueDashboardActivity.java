@@ -64,8 +64,7 @@ public class IssueDashboardActivity extends
 
     @Override
     protected IssueDashboardPagerAdapter createAdapter() {
-        return new IssueDashboardPagerAdapter(getResources(),
-                getSupportFragmentManager());
+        return new IssueDashboardPagerAdapter(this);
     }
 
     @Override

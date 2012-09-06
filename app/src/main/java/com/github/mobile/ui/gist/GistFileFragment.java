@@ -80,8 +80,6 @@ public class GistFileFragment extends RoboSherlockFragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setHasOptionsMenu(true);
-
         file = (GistFile) getArguments().get(EXTRA_GIST_FILE);
         gist = store.getGist(gistId);
         if (gist == null)

@@ -15,12 +15,12 @@
  */
 package com.github.mobile.ui.gist;
 
-import com.github.mobile.R.string;
-
 import android.content.res.Resources;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.github.mobile.R.string;
+import com.github.mobile.ui.FragmentPagerAdapter;
 
 /**
  * Pager adapter for different Gist queries
@@ -32,14 +32,12 @@ public class GistQueriesPagerAdapter extends FragmentPagerAdapter {
     /**
      * Create pager adapter
      *
-     * @param resources
-     * @param fragmentManager
+     * @param activity
      */
-    public GistQueriesPagerAdapter(Resources resources,
-            FragmentManager fragmentManager) {
-        super(fragmentManager);
+    public GistQueriesPagerAdapter(SherlockFragmentActivity activity) {
+        super(activity);
 
-        this.resources = resources;
+        resources = activity.getResources();
     }
 
     @Override

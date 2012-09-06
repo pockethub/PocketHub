@@ -17,10 +17,10 @@ package com.github.mobile.ui.user;
 
 import android.content.res.Resources;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.github.mobile.R.string;
+import com.github.mobile.ui.FragmentPagerAdapter;
 import com.github.mobile.ui.repo.UserRepositoryListFragment;
 
 /**
@@ -31,13 +31,12 @@ public class UserPagerAdapter extends FragmentPagerAdapter {
     private final Resources resources;
 
     /**
-     * @param fm
-     * @param resources
+     * @param activity
      */
-    public UserPagerAdapter(final FragmentManager fm, final Resources resources) {
-        super(fm);
+    public UserPagerAdapter(final SherlockFragmentActivity activity) {
+        super(activity);
 
-        this.resources = resources;
+        resources = activity.getResources();
     }
 
     @Override
