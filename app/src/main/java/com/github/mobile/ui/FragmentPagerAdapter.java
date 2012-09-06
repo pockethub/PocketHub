@@ -49,11 +49,16 @@ public abstract class FragmentPagerAdapter extends
             final Object object) {
         super.setPrimaryItem(container, position, object);
 
-        if (object instanceof SherlockFragment)
+        boolean changed = false;
+        if (object instanceof SherlockFragment) {
+            changed = object != selected;
             selected = (SherlockFragment) object;
-        else
+        } else {
+            changed = object != null;
             selected = null;
+        }
 
-        activity.invalidateOptionsMenu();
+        if (changed)
+            activity.invalidateOptionsMenu();
     }
 }
