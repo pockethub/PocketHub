@@ -127,6 +127,7 @@ public class GistsViewActivity extends DialogFragmentActivity implements
         pager.setAdapter(new GistsPagerAdapter(this, gists));
         pager.setOnPageChangeListener(this);
         pager.scheduleSetItem(initialPosition, this);
+        onPageSelected(initialPosition);
     }
 
     @Override

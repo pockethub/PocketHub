@@ -192,6 +192,7 @@ public class IssuesViewActivity extends DialogFragmentActivity implements
 
         pager.setOnPageChangeListener(this);
         pager.scheduleSetItem(initialPosition, this);
+        onPageSelected(initialPosition);
 
         if (repo != null) {
             ActionBar actionBar = getSupportActionBar();

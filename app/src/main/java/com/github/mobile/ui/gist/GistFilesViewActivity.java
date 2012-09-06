@@ -142,8 +142,10 @@ public class GistFilesViewActivity extends PagerActivity {
         pager.setAdapter(adapter);
         indicator.setViewPager(pager);
 
-        if (initialPosition < adapter.getCount())
+        if (initialPosition < adapter.getCount()) {
             pager.scheduleSetItem(initialPosition, null);
+            onPageSelected(initialPosition);
+        }
     }
 
     @Override

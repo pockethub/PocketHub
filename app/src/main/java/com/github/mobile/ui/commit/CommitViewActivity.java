@@ -125,6 +125,7 @@ public class CommitViewActivity extends PagerActivity implements
         pager.setAdapter(adapter);
         pager.setOnPageChangeListener(this);
         pager.scheduleSetItem(initialPosition, this);
+        onPageSelected(initialPosition);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
