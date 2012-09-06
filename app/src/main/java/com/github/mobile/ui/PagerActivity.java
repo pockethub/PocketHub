@@ -37,14 +37,24 @@ public abstract class PagerActivity extends DialogFragmentActivity implements
      */
     protected abstract FragmentProvider getProvider();
 
+    /**
+     * Get selected fragment
+     *
+     * @return fragment
+     */
+    protected SherlockFragment getFragment() {
+        FragmentProvider provider = getProvider();
+        if (provider != null)
+            return provider.getSelected();
+        else
+            return null;
+    }
+
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        FragmentProvider provider = getProvider();
-        if (provider != null) {
-            SherlockFragment fragment = provider.getSelected();
-            if (fragment != null)
-                return fragment.onOptionsItemSelected(item);
-        }
+        SherlockFragment fragment = getFragment();
+        if (fragment != null)
+            return fragment.onOptionsItemSelected(item);
 
         return super.onOptionsItemSelected(item);
     }
@@ -57,12 +67,9 @@ public abstract class PagerActivity extends DialogFragmentActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        FragmentProvider provider = getProvider();
-        if (provider != null) {
-            SherlockFragment fragment = provider.getSelected();
-            if (fragment != null)
-                fragment.onCreateOptionsMenu(menu, getSupportMenuInflater());
-        }
+        SherlockFragment fragment = getFragment();
+        if (fragment != null)
+            fragment.onCreateOptionsMenu(menu, getSupportMenuInflater());
 
         boolean created = super.onCreateOptionsMenu(menu);
         menuCreated = true;
