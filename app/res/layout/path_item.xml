@@ -35,6 +35,6 @@
         android:paddingTop="2dp"
         android:singleLine="false"
         android:textColorLink="@color/text_link"
-        android:textStyle="bold" />
+        android:textStyle="normal" />
 
 </RelativeLayout>
