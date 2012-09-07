@@ -75,6 +75,10 @@ function getMode(extension) {
     mode.mode = "text/x-perl";
     mode.file = extension;
     break;
+  case "prefs":
+    mode.mode = "text/x-properties";
+    mode.file = "properties";
+    break;
   case "py":
     mode.mode = "text/x-python";
     mode.file = extension;
