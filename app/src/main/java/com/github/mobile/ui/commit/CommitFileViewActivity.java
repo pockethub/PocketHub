@@ -16,12 +16,11 @@
 package com.github.mobile.ui.commit;
 
 import static com.github.mobile.Intents.EXTRA_BASE;
+import static com.github.mobile.Intents.EXTRA_HEAD;
 import static com.github.mobile.Intents.EXTRA_PATH;
-import static com.github.mobile.Intents.EXTRA_RAW_URL;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import static com.github.mobile.util.PreferenceUtils.WRAP;
-import android.accounts.Account;
-import android.accounts.AccountManager;
+import static org.eclipse.egit.github.core.Blob.ENCODING_BASE64;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -32,26 +31,24 @@ import android.widget.ProgressBar;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.github.kevinsawicki.http.HttpRequest;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
-import com.github.mobile.accounts.AuthenticatedUserTask;
+import com.github.mobile.core.code.RefreshBlobTask;
 import com.github.mobile.core.commit.CommitUtils;
 import com.github.mobile.util.AvatarLoader;
-import com.github.mobile.util.HttpRequestUtils;
 import com.github.mobile.util.PreferenceUtils;
 import com.github.mobile.util.SourceEditor;
 import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockActivity;
 import com.google.inject.Inject;
 
+import org.eclipse.egit.github.core.Blob;
 import org.eclipse.egit.github.core.CommitFile;
 import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.util.EncodingUtils;
 
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
@@ -75,23 +72,23 @@ public class CommitFileViewActivity extends RoboSherlockActivity {
             CommitFile file) {
         Builder builder = new Builder("commit.file.VIEW");
         builder.repo(repository);
-        builder.add(EXTRA_BASE, commit);
+        builder.add(EXTRA_HEAD, commit);
         builder.add(EXTRA_PATH, file.getFilename());
-        builder.add(EXTRA_RAW_URL, file.getRawUrl());
+        builder.add(EXTRA_BASE, file.getSha());
         return builder.toIntent();
     }
 
     @InjectExtra(EXTRA_REPOSITORY)
     private Repository repo;
 
-    @InjectExtra(EXTRA_BASE)
+    @InjectExtra(EXTRA_HEAD)
     private String commit;
+
+    @InjectExtra(EXTRA_BASE)
+    private String sha;
 
     @InjectExtra(EXTRA_PATH)
     private String path;
-
-    @InjectExtra(EXTRA_RAW_URL)
-    private String url;
 
     @InjectView(id.pb_loading)
     private ProgressBar loadingBar;
@@ -159,30 +156,21 @@ public class CommitFileViewActivity extends RoboSherlockActivity {
     }
 
     private void loadContent() {
-        new AuthenticatedUserTask<byte[]>(this) {
+        new RefreshBlobTask(repo, sha, this) {
 
             @Override
-            protected byte[] run(Account account) throws Exception {
-                HttpRequest request = HttpRequest.get(url);
-                if (HttpRequestUtils.isSecure(request)) {
-                    String password = AccountManager.get(
-                            CommitFileViewActivity.this).getPassword(account);
-                    if (!TextUtils.isEmpty(password))
-                        request.basic(account.name, password);
-                }
-                return request.ok() ? request.bytes() : null;
-            }
-
-            @Override
-            protected void onSuccess(byte[] body) throws Exception {
-                super.onSuccess(body);
+            protected void onSuccess(Blob blob) throws Exception {
+                super.onSuccess(blob);
 
                 ViewUtils.setGone(loadingBar, true);
                 ViewUtils.setGone(codeView, false);
-                if (body != null && body.length > 0)
-                    editor.setSource(path, EncodingUtils.toBase64(body), true);
-                else
-                    editor.setSource(path, "", false);
+
+                String content = blob.getContent();
+                if (content == null)
+                    content = "";
+                boolean encoded = !TextUtils.isEmpty(content)
+                        && ENCODING_BASE64.equals(blob.getEncoding());
+                editor.setSource(path, content, encoded);
             }
 
             @Override
