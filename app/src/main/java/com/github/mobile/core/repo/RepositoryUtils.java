@@ -52,20 +52,27 @@ public class RepositoryUtils {
             return false;
 
         if ("about".equals(name) //
+                || "account".equals(name) //
+                || "admin".equals(name) //
+                || "api".equals(name) //
                 || "blog".equals(name) //
+                || "camo".equals(name) //
                 || "contact".equals(name) //
                 || "dashboard".equals(name) //
                 || "downloads".equals(name) //
+                || "edu".equals(name) //
                 || "explore".equals(name) //
                 || "features".equals(name) //
                 || "inbox".equals(name) //
                 || "languages".equals(name) //
+                || "login".equals(name) //
                 || "logout".equals(name) //
                 || "new".equals(name) //
                 || "notifications".equals(name) //
                 || "organizations".equals(name) //
                 || "repositories".equals(name) //
                 || "search".equals(name) //
+                || "security".equals(name) //
                 || "settings".equals(name) //
                 || "stars".equals(name) //
                 || "timeline".equals(name) //
