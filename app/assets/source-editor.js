@@ -81,7 +81,7 @@ function getMode(extension) {
     break;
   case "py":
     mode.mode = "text/x-python";
-    mode.file = extension;
+    mode.file = "python";
     break;
   case "r":
     mode.mode = "text/x-rsrc";
@@ -107,7 +107,7 @@ function getMode(extension) {
     mode.file = "xquery";
     break;
   case "project":
-  case "classpath:
+  case "classpath":
   case "xml":
     mode.mode = "application/xml";
     mode.file = "xml";
