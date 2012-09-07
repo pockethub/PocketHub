@@ -291,7 +291,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
                     }
                 }).append(' ').foreground('/', textLightColor).append(' ');
             }
-            text.append(segments[segments.length - 1]);
+            text.bold(segments[segments.length - 1]);
             pathView.setText(text);
             if (!pathShowing) {
                 adapter.addHeader(pathHeaderView);
