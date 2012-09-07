@@ -107,6 +107,7 @@ function getMode(extension) {
     mode.file = "xquery";
     break;
   case "project":
+  case "classpath:
   case "xml":
     mode.mode = "application/xml";
     mode.file = "xml";
