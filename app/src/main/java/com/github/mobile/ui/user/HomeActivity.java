@@ -196,13 +196,12 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
             configureTabPager();
         else if (changed) {
             int item = pager.getCurrentItem();
-            host.clearAllTabs();
             adapter.clearAdapter(isDefaultUser);
             adapter.notifyDataSetChanged();
             createTabs();
             if (item >= adapter.getCount())
                 item = adapter.getCount() - 1;
-            pager.scheduleSetItem(item);
+            pager.setItem(item);
         }
 
         for (OrganizationSelectionListener listener : orgSelectionListeners)

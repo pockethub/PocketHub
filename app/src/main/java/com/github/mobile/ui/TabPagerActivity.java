@@ -156,6 +156,15 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
      * initial call to {@link #configureTabPager()}
      */
     protected void createTabs() {
+        if (host.getTabWidget().getTabCount() > 0) {
+            // Crash on Gingerbread if tab isn't set to zero since adding a
+            // new tab removes selection state on the old tab which will be
+            // null unless the current tab index is the same as the first
+            // tab index being added
+            host.setCurrentTab(0);
+            host.clearAllTabs();
+        }
+
         LayoutInflater inflater = getLayoutInflater();
         int count = adapter.getCount();
         for (int i = 0; i < count; i++) {
