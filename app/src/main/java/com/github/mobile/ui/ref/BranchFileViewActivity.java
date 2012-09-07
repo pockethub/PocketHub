@@ -20,8 +20,10 @@ import static com.github.mobile.Intents.EXTRA_HEAD;
 import static com.github.mobile.Intents.EXTRA_PATH;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import static com.github.mobile.util.PreferenceUtils.WRAP;
+import static org.eclipse.egit.github.core.Blob.ENCODING_BASE64;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
@@ -43,6 +45,7 @@ import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockActivity;
 import com.google.inject.Inject;
 
+import org.eclipse.egit.github.core.Blob;
 import org.eclipse.egit.github.core.Repository;
 
 import roboguice.inject.InjectExtra;
@@ -151,14 +154,18 @@ public class BranchFileViewActivity extends RoboSherlockActivity {
         new RefreshBlobTask(repo, sha, this) {
 
             @Override
-            protected void onSuccess(String body) throws Exception {
-                super.onSuccess(body);
+            protected void onSuccess(Blob blob) throws Exception {
+                super.onSuccess(blob);
 
                 ViewUtils.setGone(loadingBar, true);
                 ViewUtils.setGone(codeView, false);
-                if (body == null)
-                    body = "";
-                editor.setSource(file, body);
+
+                String content = blob.getContent();
+                if (content == null)
+                    content = "";
+                boolean encoded = !TextUtils.isEmpty(content)
+                        && ENCODING_BASE64.equals(blob.getEncoding());
+                editor.setSource(file, content, encoded);
             }
 
             @Override

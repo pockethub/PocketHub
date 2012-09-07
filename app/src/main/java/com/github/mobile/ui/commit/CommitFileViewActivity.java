@@ -51,6 +51,7 @@ import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.CommitFile;
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.util.EncodingUtils;
 
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
@@ -158,10 +159,10 @@ public class CommitFileViewActivity extends RoboSherlockActivity {
     }
 
     private void loadContent() {
-        new AuthenticatedUserTask<String>(this) {
+        new AuthenticatedUserTask<byte[]>(this) {
 
             @Override
-            protected String run(Account account) throws Exception {
+            protected byte[] run(Account account) throws Exception {
                 HttpRequest request = HttpRequest.get(url);
                 if (HttpRequestUtils.isSecure(request)) {
                     String password = AccountManager.get(
@@ -169,18 +170,19 @@ public class CommitFileViewActivity extends RoboSherlockActivity {
                     if (!TextUtils.isEmpty(password))
                         request.basic(account.name, password);
                 }
-                return request.ok() ? request.body() : null;
+                return request.ok() ? request.bytes() : null;
             }
 
             @Override
-            protected void onSuccess(String body) throws Exception {
+            protected void onSuccess(byte[] body) throws Exception {
                 super.onSuccess(body);
 
                 ViewUtils.setGone(loadingBar, true);
                 ViewUtils.setGone(codeView, false);
-                if (body == null)
-                    body = "";
-                editor.setSource(path, body);
+                if (body != null && body.length > 0)
+                    editor.setSource(path, EncodingUtils.toBase64(body), true);
+                else
+                    editor.setSource(path, "", false);
             }
 
             @Override

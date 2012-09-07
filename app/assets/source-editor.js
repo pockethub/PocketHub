@@ -1,13 +1,19 @@
-function getMode(name) {
-  var mode = {};
+function getExtension(name) {
   if (!name)
-    return mode;
+    return null;
 
-  var lastDot = name.lastIndexOf(".")
+  var lastDot = name.lastIndexOf(".");
   if (lastDot == -1 || lastDot + 1 == name.length)
+    return null;
+  else
+    return name.substring(lastDot + 1).toLowerCase();
+}
+
+function getMode(extension) {
+  var mode = {};
+  if (!extension)
     return mode;
 
-  var extension = name.substring(lastDot + 1).toLowerCase();
   switch (extension) {
   case "cc":
   case "h":
@@ -120,7 +126,23 @@ function updateWidth() {
   }
 }
 
+function loadImage(type, content) {
+  var img = document.createElement("img");
+  img.setAttribute("src", "data:image/" + type + ";base64," + content);
+  document.body.appendChild(img);
+}
+
 function loadEditor() {
+  var name = SourceEditor.getName();
+  var extension = getExtension(name);
+  if ("png" == extension || "gif" == extension) {
+    loadImage(extension, SourceEditor.getRawContent());
+    return;
+  } else if ("jpg" == extension || "jpeg" == extension) {
+    loadImage("jpeg", SourceEditor.getRawContent());
+    return;
+  }
+
   CodeMirror.modeURL = "mode/%N/%N.js";
 
   var config = {};
@@ -131,7 +153,7 @@ function loadEditor() {
   config.lineWrapping = SourceEditor.getWrap();
   var editor = CodeMirror(document.body, config);
 
-  var mode = getMode(SourceEditor.getName());
+  var mode = getMode(extension);
   if (mode.mode)
     editor.setOption("mode", mode.mode);
   if (mode.file)

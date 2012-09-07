@@ -174,7 +174,7 @@ public class GistFileFragment extends RoboSherlockFragment implements
     }
 
     private void showSource() {
-        editor.setSource(file.getFilename(), file.getContent());
+        editor.setSource(file.getFilename(), file.getContent(), false);
     }
 
     @Override
