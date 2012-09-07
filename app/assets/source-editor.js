@@ -106,9 +106,10 @@ function getMode(extension) {
     mode.mode = "application/xquery";
     mode.file = "xquery";
     break;
+  case "project":
   case "xml":
     mode.mode = "application/xml";
-    mode.file = extension;
+    mode.file = "xml";
     break;
   case "yml":
     mode.mode = "text/x-yaml";
