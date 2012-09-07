@@ -15,9 +15,11 @@
  */
 package com.github.mobile.util;
 
+import static org.eclipse.egit.github.core.Blob.ENCODING_BASE64;
 import static org.eclipse.egit.github.core.client.IGitHubConstants.CHARSET_UTF8;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -26,6 +28,7 @@ import com.github.mobile.ui.UrlLauncher;
 
 import java.io.UnsupportedEncodingException;
 
+import org.eclipse.egit.github.core.Blob;
 import org.eclipse.egit.github.core.util.EncodingUtils;
 
 /**
@@ -126,20 +129,36 @@ public class SourceEditor {
     }
 
     /**
-     * Bind content to given {@link WebView}
+     * Bind content to current {@link WebView}
      *
      * @param name
      * @param content
      * @param encoded
      * @return this editor
      */
-    public SourceEditor setSource(String name, final String content,
+    public SourceEditor setSource(final String name, final String content,
             final boolean encoded) {
         this.name = name;
         this.content = content;
         this.encoded = encoded;
         view.loadUrl(URL_PAGE);
         return this;
+    }
+
+    /**
+     * Bind blob content to current {@link WebView}
+     *
+     * @param name
+     * @param blob
+     * @return this editor
+     */
+    public SourceEditor setSource(final String name, final Blob blob) {
+        String content = blob.getContent();
+        if (content == null)
+            content = "";
+        boolean encoded = !TextUtils.isEmpty(content)
+                && ENCODING_BASE64.equals(blob.getEncoding());
+        return setSource(name, content, encoded);
     }
 
     /**
