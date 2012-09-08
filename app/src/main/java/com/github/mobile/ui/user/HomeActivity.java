@@ -102,8 +102,10 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
         User org = (User) getIntent().getSerializableExtra(EXTRA_USER);
         if (org == null && savedInstanceState != null)
             org = (User) savedInstanceState.getSerializable(EXTRA_USER);
-        if (org != null)
+        if (org != null) {
+            isDefaultUser = AccountUtils.isUser(this, org);
             setOrg(org);
+        }
     }
 
     private void reloadOrgs() {
