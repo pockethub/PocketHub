@@ -100,8 +100,6 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
         getSupportLoaderManager().initLoader(0, null, this);
 
         User org = (User) getIntent().getSerializableExtra(EXTRA_USER);
-        if (org == null && savedInstanceState != null)
-            org = (User) savedInstanceState.getSerializable(EXTRA_USER);
         if (org != null) {
             isDefaultUser = AccountUtils.isUser(this, org);
             setOrg(org);
@@ -159,14 +157,6 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
         if (currentOrgs != null && !currentOrgs.isEmpty()
                 && !AccountUtils.isUser(this, currentOrgs.get(0)))
             reloadOrgs();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        if (org != null)
-            outState.putSerializable(EXTRA_USER, org);
     }
 
     private void configureActionBar() {
