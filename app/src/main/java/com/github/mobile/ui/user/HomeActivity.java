@@ -16,7 +16,6 @@
 package com.github.mobile.ui.user;
 
 import static com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_LIST;
-import static com.github.mobile.Intents.EXTRA_USER;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_BOOKMARKS;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_DASHBOARD;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_GISTS;
@@ -98,12 +97,6 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
         super.onCreate(savedInstanceState);
 
         getSupportLoaderManager().initLoader(0, null, this);
-
-        User org = (User) getIntent().getSerializableExtra(EXTRA_USER);
-        if (org != null) {
-            isDefaultUser = AccountUtils.isUser(this, org);
-            setOrg(org);
-        }
     }
 
     private void reloadOrgs() {
