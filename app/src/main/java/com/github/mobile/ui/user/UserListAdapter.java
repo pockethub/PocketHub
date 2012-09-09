@@ -62,6 +62,7 @@ public class UserListAdapter extends SingleTypeAdapter<User> {
         return getItem(position).getId();
     }
 
+    @Override
     protected int[] getChildViewIds() {
         return new int[] { id.iv_avatar, id.tv_login };
     }
