@@ -44,10 +44,12 @@ function getMode(extension) {
     break;
   case "erl":
     mode.mode = "text/x-erlang";
+    mode.file = "erlang";
     break;
   case "hs":
   case "hsc":
     mode.mode = "text/x-haskell";
+    mode.file = "haskell";
     break;
   case "html":
     mode.mode = "text/html";
