@@ -227,24 +227,24 @@
     <string name="code">Kód</string>
 
     <!-- Tab titles, should be as short as possible -->
-    <string name="tab_repositories">repozitáre</string>
-    <string name="tab_news">novinky</string>
-    <string name="tab_following_self">sledujem</string>
-    <string name="tab_followers_self">sledujúci</string>
-    <string name="tab_following">sleduje</string>
-    <string name="tab_followers">sledujúci</string>
-    <string name="tab_members">členovia</string>
-    <string name="tab_news">novinky</string>
-    <string name="tab_code">kód</string>
-    <string name="tab_commits">commity</string>
-    <string name="tab_issues">issue</string>
-    <string name="tab_watched">sledovaný</string>
-    <string name="tab_assigned">priradený</string>
-    <string name="tab_created">vytvorený</string>
-    <string name="tab_mentioned">spomenutý</string>
-    <string name="tab_mine">moje</string>
-    <string name="tab_starred">obľúbený</string>
-    <string name="tab_all">všetko</string>
+    <string name="tab_repositories">Repozitáre</string>
+    <string name="tab_news">Novinky</string>
+    <string name="tab_following_self">Sledujem</string>
+    <string name="tab_followers_self">Sledujúci</string>
+    <string name="tab_following">Sleduje</string>
+    <string name="tab_followers">Sledujúci</string>
+    <string name="tab_members">Členovia</string>
+    <string name="tab_news">Novinky</string>
+    <string name="tab_code">Kód</string>
+    <string name="tab_commits">Commity</string>
+    <string name="tab_issues">Issue</string>
+    <string name="tab_watched">Sledovaný</string>
+    <string name="tab_assigned">Priradený</string>
+    <string name="tab_created">Vytvorený</string>
+    <string name="tab_mentioned">Spomenutý</string>
+    <string name="tab_mine">Moje</string>
+    <string name="tab_starred">obľúbené</string>
+    <string name="tab_all">Všetky</string>
     <!--  -->
 
 </resources>
