@@ -37,14 +37,8 @@ function getMode(extension) {
     mode.file = "clike";
     break;
   case "css":
-    mode.mode = "text/css";
-    mode.file = extension;
-    break;
-  case "scss":
-    mode.mode = "text/css";
-    mode.file = "css";
-    break;
   case "sass":
+  case "scss":
     mode.mode = "text/css";
     mode.file = "css";
     break;
