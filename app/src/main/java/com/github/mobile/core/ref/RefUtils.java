@@ -26,9 +26,9 @@ public class RefUtils {
 
     private static final String PREFIX_REFS = "refs/";
 
-    private static final String PREFIX_TAG = "refs/tags/";
+    private static final String PREFIX_TAG = PREFIX_REFS + "tags/";
 
-    private static final String PREFIX_HEADS = "refs/heads/";
+    private static final String PREFIX_HEADS = PREFIX_REFS + "heads/";
 
     /**
      * Is reference a branch?
