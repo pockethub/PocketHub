@@ -129,14 +129,11 @@
     <string name="comment_hint">Potvrdiť komentár</string>
     <string name="show_more">Ukázať viac…</string>
     <string name="repositories">Repozitáre</string>
-    <string name="issues_title">issues</string>
+    <string name="issues_title">Issues</string>
     <string name="edit_labels">Upraviť štítky</string>
     <string name="milestone_prefix">Míľnik:</string>
     <string name="edit_milestone">Upraviť míľnik</string>
     <string name="edit_assignee">Upraviť priradenie</string>
-    <string name="my_gists_tab">Moje</string>
-    <string name="starred_gists_tab">Obľúbené</string>
-    <string name="all_gists_tab">Všetky</string>
     <string name="description">Popis</string>
     <string name="gist_description_hint">Android vytvoril gist</string>
     <string name="title">Nadpis</string>
@@ -228,5 +225,26 @@
     <string name="enable_wrapping">Zapnúť zalamovanie riadkov</string>
     <string name="disable_wrapping">Vypnúť zalamovanie riadkov</string>
     <string name="code">Kód</string>
+
+    <!-- Tab titles, should be as short as possible -->
+    <string name="tab_repositories">repozitáre</string>
+    <string name="tab_news">novinky</string>
+    <string name="tab_following_self">sledujem</string>
+    <string name="tab_followers_self">sledujúci</string>
+    <string name="tab_following">sleduje</string>
+    <string name="tab_followers">sledujúci</string>
+    <string name="tab_members">členovia</string>
+    <string name="tab_news">novinky</string>
+    <string name="tab_code">kód</string>
+    <string name="tab_commits">commity</string>
+    <string name="tab_issues">issue</string>
+    <string name="tab_watched">sledovaný</string>
+    <string name="tab_assigned">priradený</string>
+    <string name="tab_created">vytvorený</string>
+    <string name="tab_mentioned">spomenutý</string>
+    <string name="tab_mine">moje</string>
+    <string name="tab_starred">obľúbený</string>
+    <string name="tab_all">všetko</string>
+    <!--  -->
 
 </resources>
