@@ -54,16 +54,6 @@ public class FilterListAdapter extends SingleTypeAdapter<IssueFilter> {
         setItems(elements);
     }
 
-    /**
-     * Create {@link IssueFilter} list adapter
-     *
-     * @param inflater
-     * @param avatars
-     */
-    public FilterListAdapter(LayoutInflater inflater, AvatarLoader avatars) {
-        this(inflater, null, avatars);
-    }
-
     @Override
     protected int[] getChildViewIds() {
         return new int[] { id.iv_avatar, id.tv_repo_name, id.tv_filter_state,

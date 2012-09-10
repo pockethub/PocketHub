@@ -48,16 +48,6 @@ public abstract class RepositoryListAdapter<V> extends SingleTypeAdapter<V> {
     }
 
     /**
-     * Create list adapter
-     *
-     * @param viewId
-     * @param inflater
-     */
-    public RepositoryListAdapter(int viewId, LayoutInflater inflater) {
-        super(inflater, viewId);
-    }
-
-    /**
      * Update repository details
      *
      * @param description

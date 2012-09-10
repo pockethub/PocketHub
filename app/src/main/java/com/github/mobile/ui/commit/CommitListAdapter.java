@@ -46,18 +46,6 @@ public class CommitListAdapter extends SingleTypeAdapter<RepositoryCommit> {
      */
     public CommitListAdapter(int viewId, LayoutInflater inflater,
             Collection<RepositoryCommit> elements, AvatarLoader avatars) {
-        this(viewId, inflater, elements != null ? elements
-                .toArray(new RepositoryCommit[elements.size()]) : null, avatars);
-    }
-
-    /**
-     * @param viewId
-     * @param inflater
-     * @param elements
-     * @param avatars
-     */
-    public CommitListAdapter(int viewId, LayoutInflater inflater,
-            RepositoryCommit[] elements, AvatarLoader avatars) {
         super(inflater, viewId);
 
         this.avatars = avatars;

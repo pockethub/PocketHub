@@ -63,17 +63,6 @@ public class DefaultRepositoryListAdapter extends
     }
 
     /**
-     * Create list adapter for repositories
-     *
-     * @param inflater
-     * @param account
-     */
-    public DefaultRepositoryListAdapter(LayoutInflater inflater,
-            AtomicReference<User> account) {
-        this(inflater, null, account);
-    }
-
-    /**
      * Clear registered header values
      *
      * @return this adapter

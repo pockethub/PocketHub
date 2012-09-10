@@ -53,14 +53,6 @@ public class GistListAdapter extends SingleTypeAdapter<Gist> {
         setItems(elements);
     }
 
-    /**
-     * @param avatars
-     * @param inflater
-     */
-    public GistListAdapter(AvatarLoader avatars, LayoutInflater inflater) {
-        this(avatars, inflater, null);
-    }
-
     @Override
     public long getItemId(final int position) {
         final String id = getItem(position).getId();

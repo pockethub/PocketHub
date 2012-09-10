@@ -52,16 +52,6 @@ public class UserRepositoryListAdapter extends
         login = user.getLogin();
     }
 
-    /**
-     * Create list adapter for repositories
-     *
-     * @param inflater
-     * @param user
-     */
-    public UserRepositoryListAdapter(LayoutInflater inflater, User user) {
-        this(inflater, null, user);
-    }
-
     @Override
     public long getItemId(final int position) {
         return getItem(position).getId();

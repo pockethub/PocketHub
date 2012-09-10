@@ -44,16 +44,6 @@ public class SearchRepositoryListAdapter extends
         super(layout.user_repo_item, inflater, elements);
     }
 
-    /**
-     *
-     * Create list adapter for searched for repositories
-     *
-     * @param inflater
-     */
-    public SearchRepositoryListAdapter(LayoutInflater inflater) {
-        this(inflater, null);
-    }
-
     @Override
     public long getItemId(final int position) {
         final String id = getItem(position).getId();
