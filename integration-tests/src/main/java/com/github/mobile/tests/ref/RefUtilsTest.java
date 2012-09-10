@@ -63,6 +63,7 @@ public class RefUtilsTest extends AndroidTestCase {
                 .setRef("refs/pull/6/merge")));
         assertFalse(RefUtils
                 .isValid(new Reference().setRef("refs/pull/6/head")));
+        assertTrue(RefUtils.isValid(new Reference().setRef("refs/pull")));
         assertTrue(RefUtils.isValid(new Reference().setRef("refs/heads/b1")));
         assertTrue(RefUtils.isValid(new Reference().setRef("refs/tags/v1")));
     }
