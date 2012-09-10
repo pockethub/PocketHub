@@ -61,12 +61,9 @@ function getMode(extension) {
     mode.file = "clike";
     break;
   case "js":
+  case "json":
     mode.mode = "text/javascript";
     mode.file = "javascript";
-    break;
-  case "json":
-    mode.mode = "application/json";
-    mode.file = extension;
     break;
   case "md":
   case "markdown":
