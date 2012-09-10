@@ -327,12 +327,8 @@ public class AvatarLoader {
         String gravatarId = user.getGravatarId();
         if (!TextUtils.isEmpty(gravatarId))
             return gravatarId;
-
-        String email = user.getEmail();
-        if (!TextUtils.isEmpty(email))
-            return GravatarUtils.getHash(email);
-
-        return null;
+        else
+            return GravatarUtils.getHash(user.getEmail());
     }
 
     /**
