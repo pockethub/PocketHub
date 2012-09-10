@@ -76,7 +76,7 @@ function getMode(extension) {
     break;
   case "pl":
     mode.mode = "text/x-perl";
-    mode.file = extension;
+    mode.file = "perl";
     break;
   case "py":
     mode.mode = "text/x-python";
@@ -88,7 +88,7 @@ function getMode(extension) {
     break;
   case "rb":
     mode.mode = "text/x-ruby";
-    mode.file = extension;
+    mode.file = "ruby";
     break;
   case "sh":
   case "zsh":
