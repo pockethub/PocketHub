@@ -40,6 +40,14 @@ function getMode(extension) {
     mode.mode = "text/css";
     mode.file = extension;
     break;
+  case "scss":
+    mode.mode = "text/css";
+    mode.file = "css";
+    break;
+  case "sass":
+    mode.mode = "text/css";
+    mode.file = "css";
+    break;
   case "erl":
     mode.mode = "text/x-erlang";
     break;
