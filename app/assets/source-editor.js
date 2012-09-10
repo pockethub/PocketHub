@@ -62,7 +62,7 @@ function getMode(extension) {
     break;
   case "js":
     mode.mode = "text/javascript";
-    mode.file = extension;
+    mode.file = "javascript";
     break;
   case "json":
     mode.mode = "application/json";
