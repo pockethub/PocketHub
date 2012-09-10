@@ -237,7 +237,7 @@
     <string name="tab_news">Novinky</string>
     <string name="tab_code">Kód</string>
     <string name="tab_commits">Commity</string>
-    <string name="tab_issues">Issue</string>
+    <string name="tab_issues">Issues</string>
     <string name="tab_watched">Sledovaný</string>
     <string name="tab_assigned">Priradený</string>
     <string name="tab_created">Vytvorený</string>
