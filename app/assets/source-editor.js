@@ -22,7 +22,7 @@ function getMode(extension) {
     break;
   case "clj":
     mode.mode = "text/x-clojure";
-    mode.file = extension;
+    mode.file = "clojure";
     break;
   case "coffee":
     mode.mode = "text/x-coffeescript";
@@ -51,6 +51,7 @@ function getMode(extension) {
     break;
   case "html":
     mode.mode = "text/html";
+    mode.file = "htmlmixed";
     break;
   case "ini":
     mode.mode = "text/x-ini";
