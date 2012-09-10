@@ -54,8 +54,9 @@ function getMode(extension) {
     mode.file = "htmlmixed";
     break;
   case "ini":
-    mode.mode = "text/x-ini";
-    mode.file = extension;
+  case "prefs":
+    mode.mode = "text/x-properties";
+    mode.file = "properties";
     break;
   case "java":
     mode.mode = "text/x-java";
@@ -74,10 +75,6 @@ function getMode(extension) {
   case "pl":
     mode.mode = "text/x-perl";
     mode.file = extension;
-    break;
-  case "prefs":
-    mode.mode = "text/x-properties";
-    mode.file = "properties";
     break;
   case "py":
     mode.mode = "text/x-python";
