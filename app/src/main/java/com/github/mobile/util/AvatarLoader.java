@@ -255,6 +255,8 @@ public class AvatarLoader {
             return this;
 
         final String userId = getId(user);
+        if (userId == null)
+            return this;
 
         BitmapDrawable loadedImage = loaded.get(userId);
         if (loadedImage != null) {
