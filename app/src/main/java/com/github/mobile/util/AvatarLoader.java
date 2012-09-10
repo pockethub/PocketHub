@@ -247,15 +247,12 @@ public class AvatarLoader {
             return this;
 
         final User user = userReference.get();
-        if (user == null)
+        final String userId = getId(user);
+        if (userId == null)
             return this;
 
         final String avatarUrl = user.getAvatarUrl();
         if (TextUtils.isEmpty(avatarUrl))
-            return this;
-
-        final String userId = getId(user);
-        if (userId == null)
             return this;
 
         BitmapDrawable loadedImage = loaded.get(userId);
@@ -277,8 +274,7 @@ public class AvatarLoader {
 
             @Override
             protected void onSuccess(BitmapDrawable image) throws Exception {
-                final User current = userReference.get();
-                if (current != null && userId.equals(getId(current)))
+                if (userId.equals(getId(userReference.get())))
                     actionBar.setLogo(image);
             }
         }.execute();
@@ -321,6 +317,9 @@ public class AvatarLoader {
     }
 
     private String getId(final User user) {
+        if (user == null)
+            return null;
+
         int id = user.getId();
         if (id > 0)
             return Integer.toString(id);
@@ -344,15 +343,12 @@ public class AvatarLoader {
      * @return this helper
      */
     public AvatarLoader bind(final ImageView view, final User user) {
-        if (user == null)
+        final String userId = getId(user);
+        if (userId == null)
             return setImage(loadingAvatar, view);
 
         String avatarUrl = getAvatarUrl(user);
         if (TextUtils.isEmpty(avatarUrl))
-            return setImage(loadingAvatar, view);
-
-        final String userId = getId(user);
-        if (userId == null)
             return setImage(loadingAvatar, view);
 
         BitmapDrawable loadedImage = loaded.get(userId);
