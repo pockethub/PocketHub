@@ -79,13 +79,22 @@ public class HomeDropdownListAdapter extends SingleTypeAdapter<Object> {
     }
 
     /**
+     * Get number of orgs
+     *
+     * @return org count
+     */
+    private int getOrgCount() {
+        return getCount() - NON_ORG_ITEMS;
+    }
+
+    /**
      * Is the given position an org. selection position?
      *
      * @param position
      * @return true if org., false otherwise
      */
     public boolean isOrgPosition(final int position) {
-        return position < (getCount() - NON_ORG_ITEMS);
+        return position < getOrgCount();
     }
 
     /**
@@ -95,7 +104,7 @@ public class HomeDropdownListAdapter extends SingleTypeAdapter<Object> {
      * @return action id
      */
     public int getAction(final int position) {
-        return position - (getCount() - NON_ORG_ITEMS);
+        return position - getOrgCount();
     }
 
     /**
