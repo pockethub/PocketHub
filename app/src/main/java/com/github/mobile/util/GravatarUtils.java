@@ -32,30 +32,45 @@ public class GravatarUtils {
     /**
      * Length of generated hash
      */
-    public static final int HASH_LENGTH = 32;
-
-    /**
-     * Algorithm used for hashing
-     */
-    public static final String HASH_ALGORITHM = "MD5"; //$NON-NLS-1$
+    private static final int HASH_LENGTH = 32;
 
     /**
      * Charset used for hashing
      */
-    public static final String CHARSET = "CP1252"; //$NON-NLS-1$
+    private static final String CHARSET = "CP1252";
+
+    /**
+     * Algorithm used for hashing
+     */
+    private static final MessageDigest MD5;
+
+    static {
+        MessageDigest digest;
+        try {
+            digest = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            digest = null;
+        }
+        MD5 = digest;
+    }
 
     private static String digest(final String value) {
-        byte[] digested;
-        try {
-            digested = MessageDigest.getInstance(HASH_ALGORITHM).digest(
-                    value.getBytes(CHARSET));
-        } catch (NoSuchAlgorithmException e) {
+        if (MD5 == null)
             return null;
+
+        byte[] bytes;
+        try {
+            bytes = value.getBytes(CHARSET);
         } catch (UnsupportedEncodingException e) {
             return null;
         }
 
-        String hashed = new BigInteger(1, digested).toString(16);
+        synchronized (MD5) {
+            MD5.reset();
+            bytes = MD5.digest(bytes);
+        }
+
+        String hashed = new BigInteger(1, bytes).toString(16);
         int padding = HASH_LENGTH - hashed.length();
         if (padding == 0)
             return hashed;
