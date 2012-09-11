@@ -41,7 +41,7 @@ public class RefDialog {
 
     private static final String TAG = "RefDialog";
 
-    private DataService service;
+    private final DataService service;
 
     private Map<String, Reference> refs;
 
