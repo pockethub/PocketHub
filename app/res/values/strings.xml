@@ -234,7 +234,6 @@
     <string name="tab_following">following</string>
     <string name="tab_followers">followers</string>
     <string name="tab_members">members</string>
-    <string name="tab_news">news</string>
     <string name="tab_code">code</string>
     <string name="tab_commits">commits</string>
     <string name="tab_issues">issues</string>
