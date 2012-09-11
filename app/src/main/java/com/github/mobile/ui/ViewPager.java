@@ -71,7 +71,7 @@ public class ViewPager extends android.support.v4.view.ViewPager {
      */
     public boolean setItem(final int item, final OnPageChangeListener listener) {
         final boolean changed = setItem(item);
-        if (changed)
+        if (changed && listener != null)
             listener.onPageSelected(item);
         return changed;
     }
