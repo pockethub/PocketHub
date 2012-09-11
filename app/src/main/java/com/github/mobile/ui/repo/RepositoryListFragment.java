@@ -15,6 +15,7 @@
  */
 package com.github.mobile.ui.repo;
 
+import static com.github.mobile.Intents.EXTRA_USER;
 import static java.util.Locale.US;
 import android.app.Activity;
 import android.os.Bundle;
@@ -51,6 +52,15 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
     private final AtomicReference<User> org = new AtomicReference<User>();
 
     private RecentRepositories recentRepos;
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        User org = this.org.get();
+        if (org != null)
+            outState.putSerializable(EXTRA_USER, org);
+    }
 
     @Override
     protected void configureList(Activity activity, ListView listView) {
@@ -92,6 +102,8 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         Activity activity = getActivity();
         User currentOrg = ((OrganizationSelectionProvider) activity)
                 .addListener(this);
+        if (currentOrg == null && savedInstanceState != null)
+            currentOrg = (User) savedInstanceState.getSerializable(EXTRA_USER);
         org.set(currentOrg);
         if (currentOrg != null)
             recentRepos = new RecentRepositories(activity, currentOrg);

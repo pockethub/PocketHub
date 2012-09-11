@@ -15,6 +15,7 @@
  */
 package com.github.mobile.ui.user;
 
+import static com.github.mobile.Intents.EXTRA_USER;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
@@ -47,6 +48,13 @@ public class MembersFragment extends ItemListFragment<User> implements
     @Inject
     private AvatarLoader avatars;
 
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (org != null)
+            outState.putSerializable(EXTRA_USER, org);
+    }
+
     @Override
     public void onDetach() {
         OrganizationSelectionProvider selectionProvider = (OrganizationSelectionProvider) getActivity();
@@ -59,6 +67,8 @@ public class MembersFragment extends ItemListFragment<User> implements
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         org = ((OrganizationSelectionProvider) getActivity()).addListener(this);
+        if (org == null && savedInstanceState != null)
+            org = (User) savedInstanceState.getSerializable(EXTRA_USER);
         setEmptyText(string.no_members);
 
         super.onActivityCreated(savedInstanceState);
