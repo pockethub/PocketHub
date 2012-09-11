@@ -15,7 +15,6 @@
  */
 package com.github.mobile.ui.user;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
@@ -49,13 +48,6 @@ public class MembersFragment extends ItemListFragment<User> implements
     private AvatarLoader avatars;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        org = ((OrganizationSelectionProvider) activity).addListener(this);
-    }
-
-    @Override
     public void onDetach() {
         OrganizationSelectionProvider selectionProvider = (OrganizationSelectionProvider) getActivity();
         if (selectionProvider != null)
@@ -66,9 +58,10 @@ public class MembersFragment extends ItemListFragment<User> implements
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
+        org = ((OrganizationSelectionProvider) getActivity()).addListener(this);
         setEmptyText(string.no_members);
+
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override

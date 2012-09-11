@@ -61,17 +61,6 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        User currentOrg = ((OrganizationSelectionProvider) activity)
-                .addListener(this);
-        org.set(currentOrg);
-        if (currentOrg != null)
-            recentRepos = new RecentRepositories(activity, currentOrg);
-    }
-
-    @Override
     public void onDetach() {
         OrganizationSelectionProvider selectionProvider = (OrganizationSelectionProvider) getActivity();
         if (selectionProvider != null)
@@ -100,9 +89,16 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+        Activity activity = getActivity();
+        User currentOrg = ((OrganizationSelectionProvider) activity)
+                .addListener(this);
+        org.set(currentOrg);
+        if (currentOrg != null)
+            recentRepos = new RecentRepositories(activity, currentOrg);
 
         setEmptyText(string.no_repositories);
+
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override

@@ -15,7 +15,7 @@
  */
 package com.github.mobile.ui.user;
 
-import android.app.Activity;
+import android.os.Bundle;
 
 import com.github.mobile.core.user.UserEventMatcher.UserPair;
 import com.github.mobile.ui.NewsFragment;
@@ -35,10 +35,10 @@ public abstract class UserNewsFragment extends NewsFragment implements
     protected User org;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        org = ((OrganizationSelectionProvider) getActivity()).addListener(this);
 
-        org = ((OrganizationSelectionProvider) activity).addListener(this);
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
