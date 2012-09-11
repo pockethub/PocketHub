@@ -130,7 +130,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     protected void configureList(Activity activity, ListView listView) {
         super.configureList(activity, listView);
 
-        getListAdapter().addHeader(filterHeader);
+        getListAdapter().addHeader(filterHeader, filter, true);
     }
 
     private void updateFilterSummary() {
@@ -171,9 +171,14 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        startActivityForResult(
-                IssuesViewActivity.createIntent(items, repository, position
-                        - getListAdapter().getHeadersCount()), ISSUE_VIEW);
+        if (position == 0)
+            startActivityForResult(
+                    EditIssuesFilterActivity.createIntent(filter),
+                    ISSUE_FILTER_EDIT);
+        else
+            startActivityForResult(
+                    IssuesViewActivity.createIntent(items, repository, position
+                            - getListAdapter().getHeadersCount()), ISSUE_VIEW);
     }
 
     @Override
