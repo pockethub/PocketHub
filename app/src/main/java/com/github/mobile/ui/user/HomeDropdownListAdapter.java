@@ -19,9 +19,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R.drawable;
@@ -30,6 +28,7 @@ import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.util.AvatarLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.egit.github.core.User;
@@ -38,7 +37,7 @@ import org.eclipse.egit.github.core.User;
  * Dropdown list adapter to display orgs. and other context-related activity
  * links
  */
-public class HomeDropdownListAdapter extends BaseAdapter {
+public class HomeDropdownListAdapter extends SingleTypeAdapter<Object> {
 
     /**
      * Action for Gists
@@ -55,45 +54,16 @@ public class HomeDropdownListAdapter extends BaseAdapter {
      */
     public static final int ACTION_BOOKMARKS = 2;
 
-    private static class OrgListAdapter extends SingleTypeAdapter<User> {
+    private static final int NON_ORG_ITEMS = 3;
 
-        private final AvatarLoader avatars;
-
-        public OrgListAdapter(final int viewId, final LayoutInflater inflater,
-                final User[] elements, final AvatarLoader avatars) {
-            super(inflater, viewId);
-
-            this.avatars = avatars;
-            setItems(elements);
-        }
-
-        @Override
-        public long getItemId(final int position) {
-            return getItem(position).getId();
-        }
-
-        @Override
-        protected int[] getChildViewIds() {
-            return new int[] { id.tv_org_name, id.iv_avatar };
-        }
-
-        @Override
-        protected void update(int position, User user) {
-            setText(0, user.getLogin());
-            avatars.bind(imageView(1), user);
-        }
-    }
+    private final AvatarLoader avatars;
 
     private int selected;
 
-    private final Context context;
-
-    private final OrgListAdapter listAdapter;
-
-    private final OrgListAdapter dropdownAdapter;
+    private final LayoutInflater inflater;
 
     /**
-     * Create adapter with initial orgs
+     * l Create adapter with initial orgs
      *
      * @param context
      * @param orgs
@@ -101,15 +71,11 @@ public class HomeDropdownListAdapter extends BaseAdapter {
      */
     public HomeDropdownListAdapter(final Context context,
             final List<User> orgs, final AvatarLoader avatars) {
-        this.context = context;
+        super(context, layout.org_item);
 
-        LayoutInflater inflater = LayoutInflater.from(context);
-        User[] orgItems = orgs.toArray(new User[orgs.size()]);
-
-        listAdapter = new OrgListAdapter(layout.org_item, inflater, orgItems,
-                avatars);
-        dropdownAdapter = new OrgListAdapter(layout.org_dropdown_item,
-                inflater, orgItems, avatars);
+        this.avatars = avatars;
+        inflater = LayoutInflater.from(context);
+        setOrgs(orgs);
     }
 
     /**
@@ -119,7 +85,7 @@ public class HomeDropdownListAdapter extends BaseAdapter {
      * @return true if org., false otherwise
      */
     public boolean isOrgPosition(final int position) {
-        return position < listAdapter.getCount();
+        return position < (getCount() - NON_ORG_ITEMS);
     }
 
     /**
@@ -129,7 +95,7 @@ public class HomeDropdownListAdapter extends BaseAdapter {
      * @return action id
      */
     public int getAction(final int position) {
-        return position - listAdapter.getCount();
+        return position - (getCount() - NON_ORG_ITEMS);
     }
 
     /**
@@ -139,11 +105,19 @@ public class HomeDropdownListAdapter extends BaseAdapter {
      * @return this adapter
      */
     public HomeDropdownListAdapter setOrgs(final List<User> orgs) {
-        User[] orgItems = orgs.toArray(new User[orgs.size()]);
-        if (selected >= orgItems.length)
+        int orgCount = orgs != null ? orgs.size() : 0;
+        if (selected >= orgCount)
             selected = 0;
-        listAdapter.setItems(orgItems);
-        dropdownAdapter.setItems(orgItems);
+
+        List<Object> all = new ArrayList<Object>(orgCount + NON_ORG_ITEMS);
+        if (orgCount > 0)
+            all.addAll(orgs);
+
+        // Add dummy objects for gists, issue dashboard, and bookmarks
+        all.add(new Object());
+        all.add(new Object());
+        all.add(new Object());
+        setItems(all);
         notifyDataSetChanged();
         return this;
     }
@@ -165,77 +139,58 @@ public class HomeDropdownListAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
-        return listAdapter.getCount() > 0 ? listAdapter.getCount() + 3 : 0;
-    }
-
-    @Override
-    public Object getItem(int position) {
-        switch (getAction(position)) {
-        case ACTION_GISTS:
-            return context.getString(string.gists);
-        case ACTION_DASHBOARD:
-            return context.getString(string.issue_dashboard);
-        case ACTION_BOOKMARKS:
-            return context.getString(string.bookmarks);
-        default:
-            return listAdapter.getItem(position);
-        }
-    }
-
-    @Override
     public long getItemId(int position) {
-        switch (getAction(position)) {
-        case ACTION_GISTS:
-        case ACTION_DASHBOARD:
-        case ACTION_BOOKMARKS:
-            return getItem(position).hashCode();
-        default:
-            return listAdapter.getItemId(position);
-        }
+        if (isOrgPosition(position))
+            return ((User) getItem(position)).getId();
+        else
+            return super.getItemId(position);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        switch (getAction(position)) {
-        case ACTION_GISTS:
-        case ACTION_DASHBOARD:
-        case ACTION_BOOKMARKS:
-            return listAdapter.getView(selected, null, parent);
-        default:
-            return listAdapter.getView(position, null, parent);
-        }
+    protected int[] getChildViewIds() {
+        return new int[] { id.tv_org_name, id.iv_avatar };
     }
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
+        if (convertView == null)
+            convertView = initialize(inflater.inflate(layout.org_dropdown_item,
+                    null));
+        update(position, convertView, getItem(position));
+        return convertView;
+    }
+
+    private void setActionIcon(ImageView image, int drawable) {
+        image.setImageResource(drawable);
+        image.setTag(id.iv_avatar, null);
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        if (!isOrgPosition(position))
+            position = selected;
+        return super.getView(position, convertView, parent);
+    }
+
+    @Override
+    protected void update(int position, Object item) {
         switch (getAction(position)) {
         case ACTION_GISTS:
-            View gistsRoot = LayoutInflater.from(context).inflate(
-                    layout.org_dropdown_item, null);
-            ((ImageView) gistsRoot.findViewById(id.iv_avatar))
-                    .setBackgroundResource(drawable.dropdown_gist);
-            ((TextView) gistsRoot.findViewById(id.tv_org_name))
-                    .setText(getItem(position).toString());
-            return gistsRoot;
+            setText(0, string.gists);
+            setActionIcon(imageView(1), drawable.dropdown_gist);
+            break;
         case ACTION_DASHBOARD:
-            View dashboardRoot = LayoutInflater.from(context).inflate(
-                    layout.org_dropdown_item, null);
-            ((ImageView) dashboardRoot.findViewById(id.iv_avatar))
-                    .setBackgroundResource(drawable.dropdown_dashboard);
-            ((TextView) dashboardRoot.findViewById(id.tv_org_name))
-                    .setText(getItem(position).toString());
-            return dashboardRoot;
+            setText(0, string.issue_dashboard);
+            setActionIcon(imageView(1), drawable.dropdown_dashboard);
+            break;
         case ACTION_BOOKMARKS:
-            View bookmarksRoot = LayoutInflater.from(context).inflate(
-                    layout.org_dropdown_item, null);
-            ((ImageView) bookmarksRoot.findViewById(id.iv_avatar))
-                    .setBackgroundResource(drawable.dropdown_bookmark);
-            ((TextView) bookmarksRoot.findViewById(id.tv_org_name))
-                    .setText(getItem(position).toString());
-            return bookmarksRoot;
+            setText(0, string.bookmarks);
+            setActionIcon(imageView(1), drawable.dropdown_bookmark);
+            break;
         default:
-            return dropdownAdapter.getDropDownView(position, null, parent);
+            User user = (User) item;
+            setText(0, user.getLogin());
+            avatars.bind(imageView(1), user);
         }
     }
 }
