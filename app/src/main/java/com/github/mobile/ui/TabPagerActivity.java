@@ -70,7 +70,7 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
 
     @Override
     public View createTabContent(String tag) {
-        return ViewUtils.setGone(new View(this), true);
+        return ViewUtils.setGone(new View(getApplication()), true);
     }
 
     /**
