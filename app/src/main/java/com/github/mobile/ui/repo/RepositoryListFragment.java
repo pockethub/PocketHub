@@ -88,13 +88,14 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         if (recentRepos != null)
             recentRepos.saveAsync();
 
-        Activity activity = getActivity();
-        if (activity != null && previousOrgId != organization.getId())
-            recentRepos = new RecentRepositories(activity, organization);
-
         // Only hard refresh if view already created and org is changing
-        if (previousOrgId != organization.getId())
+        if (previousOrgId != organization.getId()) {
+            Activity activity = getActivity();
+            if (activity != null)
+                recentRepos = new RecentRepositories(activity, organization);
+
             refreshWithProgress();
+        }
     }
 
     @Override
