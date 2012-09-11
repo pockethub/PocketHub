@@ -159,8 +159,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         super.onActivityCreated(savedInstanceState);
 
         list.setOnItemClickListener(this);
-        adapter.addHeader(headerView, null, false);
-        adapter.addFooter(footerView, null, false);
+        adapter.addHeader(headerView);
+        adapter.addFooter(footerView);
 
         gist = store.getGist(gistId);
 

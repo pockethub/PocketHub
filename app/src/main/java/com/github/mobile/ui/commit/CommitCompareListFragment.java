@@ -169,7 +169,7 @@ public class CommitCompareListFragment extends DialogFragment implements
             ((TextView) commitHeader.findViewById(id.tv_commit_summary))
                     .setText(MessageFormat.format(
                             getString(string.comparing_commits), commits.size()));
-            adapter.addHeader(commitHeader, null, false);
+            adapter.addHeader(commitHeader);
             adapter.addHeader(inflater.inflate(layout.list_divider, null));
             CommitListAdapter commitAdapter = new CommitListAdapter(
                     layout.commit_item, inflater, commits, avatars);

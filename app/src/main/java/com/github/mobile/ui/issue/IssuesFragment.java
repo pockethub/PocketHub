@@ -130,7 +130,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     protected void configureList(Activity activity, ListView listView) {
         super.configureList(activity, listView);
 
-        getListAdapter().addHeader(filterHeader, null, false);
+        getListAdapter().addHeader(filterHeader);
     }
 
     private void updateFilterSummary() {
