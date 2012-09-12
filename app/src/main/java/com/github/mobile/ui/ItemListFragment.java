@@ -302,6 +302,21 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment
     }
 
     /**
+     * Notify the underlying adapter that the data set has changed
+     *
+     * @return this fragment
+     */
+    protected ItemListFragment<E> notifyDataSetChanged() {
+        HeaderFooterListAdapter<SingleTypeAdapter<E>> root = getListAdapter();
+        if (root != null) {
+            SingleTypeAdapter<E> typeAdapter = root.getWrappedAdapter();
+            if (typeAdapter != null)
+                typeAdapter.notifyDataSetChanged();
+        }
+        return this;
+    }
+
+    /**
      * Set list adapter to use on list view
      *
      * @param adapter

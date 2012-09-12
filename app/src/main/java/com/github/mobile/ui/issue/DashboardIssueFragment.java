@@ -69,7 +69,7 @@ public class DashboardIssueFragment extends PagedItemFragment<RepositoryIssue> {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ISSUE_VIEW) {
-            getListAdapter().getWrappedAdapter().notifyDataSetChanged();
+            notifyDataSetChanged();
             forceRefresh();
             return;
         }

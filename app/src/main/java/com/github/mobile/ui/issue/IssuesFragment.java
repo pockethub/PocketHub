@@ -234,7 +234,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
         }
 
         if (requestCode == ISSUE_VIEW) {
-            getListAdapter().getWrappedAdapter().notifyDataSetChanged();
+            notifyDataSetChanged();
             forceRefresh();
             return;
         }

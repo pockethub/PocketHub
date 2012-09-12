@@ -130,7 +130,7 @@ public class CommitListFragment extends PagedItemFragment<RepositoryCommit> {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == COMMIT_VIEW) {
-            getListAdapter().getWrappedAdapter().notifyDataSetChanged();
+            notifyDataSetChanged();
             return;
         }
 
