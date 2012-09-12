@@ -411,8 +411,10 @@ public class CommitDiffListFragment extends DialogFragment implements
                     public void onClick(View v) {
                         dialog.dismiss();
 
-                        startActivity(CommitFileViewActivity.createIntent(
-                                repository, commit.getSha(), file));
+                        if (!TextUtils.isEmpty(file.getFilename())
+                                && !TextUtils.isEmpty(file.getSha()))
+                            startActivity(CommitFileViewActivity.createIntent(
+                                    repository, commit.getSha(), file));
                     }
                 });
 

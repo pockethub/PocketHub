@@ -20,6 +20,7 @@ import static com.github.mobile.Intents.EXTRA_HEAD;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import android.accounts.Account;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -238,8 +239,10 @@ public class CommitCompareListFragment extends DialogFragment implements
     }
 
     private void openFile(final CommitFile file) {
-        startActivity(CommitFileViewActivity.createIntent(repository, head,
-                file));
+        if (!TextUtils.isEmpty(file.getFilename())
+                && !TextUtils.isEmpty(file.getSha()))
+            startActivity(CommitFileViewActivity.createIntent(repository, head,
+                    file));
     }
 
     private void openLine(AdapterView<?> parent, int position) {
@@ -247,8 +250,7 @@ public class CommitCompareListFragment extends DialogFragment implements
         while (--position >= 0) {
             item = parent.getItemAtPosition(position);
             if (item instanceof CommitFile) {
-                startActivity(CommitFileViewActivity.createIntent(repository,
-                        head, (CommitFile) item));
+                openFile((CommitFile) item);
                 return;
             }
         }
