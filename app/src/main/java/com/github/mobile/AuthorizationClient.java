@@ -16,9 +16,15 @@
 package com.github.mobile;
 
 import java.net.HttpURLConnection;
+import java.io.InputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
+
+import com.github.mobile.AuthorizationResponse;
+import static com.github.mobile.AuthorizationResponse.APP_KEY_URL;
+import static com.github.mobile.AuthorizationResponse.APP_KEY_NAME;
 
 // import static org.eclipse.egit.github.core.client.IGitHubConstants.HOST_API;
 
@@ -35,38 +41,15 @@ public class AuthorizationClient extends DefaultClient {
         setCredentials(username, password);
     }
 
-    public AuthorizationResponse[] getAuthorizations() {
-        createGet("/authorizations");
+    public AuthorizationResponse[] getAuthorizations() throws IOException {
+        HttpURLConnection request = createGet("/authorizations");
+        return parseJson(request.getInputStream(), AuthorizationResponse[].class);
     }
 
-    public class AuthorizationResponse implements Serializable {
-
-      public static String APP_KEY_URL = "url";
-      public static String APP_KEY_NAME = "name";
-      
-      private String[] scopes;
-      private Date createdAt;
-      private String token;
-      private Date updatedAt;
-      private String note;
-      private String noteUrl;
-      private String url;
-      private Map<String, String> app;
-      private int id;
-
-      public String[] getScopes() { return scopes; }
-      public Date getCreatedAt() { return createdAt; }
-      public String getToken() { return token; }
-      public Date getUpdatedAt() { return updatedAt; }
-      public String getNote() { return note; }
-      public String getNoteUrl() { return noteUrl; }
-      public String getUrl() { return url; }
-      public int getId() { return id; }
-     
-      public String getAppData(String appKey) { 
-        return app.containsKey(appKey) ? app.get(appKey) : new String(); 
-      }
-
+    public static boolean isAuthorizedForGitHubAndroid(AuthorizationResponse auth) {
+      if(auth.getAppData(APP_KEY_URL).equals("https://github.com/github/android"))
+        return true;
+      return false;
     }
     
 }

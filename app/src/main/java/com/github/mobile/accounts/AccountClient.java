@@ -54,7 +54,10 @@ public class AccountClient extends DefaultClient {
             Log.d(TAG, "Authenticating using " + account);
 
         // Credentials setting must come before super call
-        setCredentials(account.username, account.password);
+        if(account.authToken != null) // Use token if it exists
+          setOAuth2Token(account.authToken);
+        else
+          setCredentials(account.username, account.password);
 
         return super.configureRequest(request);
     }

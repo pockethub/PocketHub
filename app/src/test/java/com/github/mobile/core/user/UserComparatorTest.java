@@ -33,7 +33,7 @@ public class UserComparatorTest {
      */
     @Test
     public void loginMatch() {
-        GitHubAccount account = new GitHubAccount("m", "n");
+        GitHubAccount account = new GitHubAccount("m", "n", "a");
         UserComparator comparator = new UserComparator(account);
 
         assertTrue(comparator.compare(new User().setLogin("m"),
@@ -55,7 +55,7 @@ public class UserComparatorTest {
      */
     @Test
     public void noLoginMatch() {
-        GitHubAccount account = new GitHubAccount("m", "n");
+        GitHubAccount account = new GitHubAccount("m", "n", "a");
         UserComparator comparator = new UserComparator(account);
 
         assertTrue(comparator.compare(new User().setLogin("a"),

@@ -28,6 +28,8 @@ import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
 import static com.github.mobile.accounts.AccountConstants.PROVIDER_AUTHORITY;
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.accounts.AccountManagerCallback;
+import android.accounts.AccountManagerFuture;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -55,7 +57,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.DefaultClient;
 import com.github.mobile.AuthorizationClient;
 import com.github.mobile.AuthorizationResponse;
-import com.github.mobile.accounts.AuthorizationHelper;
+//import com.github.mobile.accounts.AuthorizationHelper;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
@@ -265,16 +267,28 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
             @Override
             public User call() throws Exception {
               
-                AuthorizationClient ac = new AuthorizationClient(username, password);
-                AuthorizationResponse[] auths = ac.getAuthorizations();
+                AuthorizationClient client = new AuthorizationClient(username, password);
+                AuthorizationResponse[] auths = client.getAuthorizations();
+
+                authToken = null;
+
+                for(AuthorizationResponse ar : auths)
+                {
+                  if(AuthorizationClient.isAuthorizedForGitHubAndroid(ar))
+                    authToken = ar.getToken();
+                }
+
+                Log.d(TAG, "AUTHTOKEN::: "+authToken);
+                Log.d(TAG, "REQUESTNEWACCOUNT::: "+requestNewAccount);
+
+                //// Crash if can't get token
+                //if(authToken == null) throw new Exception("No Token");
               
-                GitHubClient client = new DefaultClient();
-                client.setCredentials(username, password);
+                client.setOAuth2Token(authToken);
                 User user = new UserService(client).getUser();
 
-                String authToken = AuthorizationHelper.requestAuthToken(username, password);
-
                 Account account = new Account(user.getLogin(), ACCOUNT_TYPE);
+
                 if (requestNewAccount) {
                     accountManager.addAccount(
                         ACCOUNT_TYPE,
@@ -286,13 +300,16 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
                         null  // Handler ( default: main thread )
                       );
                     configureSyncFor(account);
+                    //accountManager.setAuthToken(account, authTokenType, authToken);
                     try {
+                        // Test to see if organizations will load
                         new AccountLoader(LoginActivity.this).call();
                     } catch (IOException e) {
                         Log.d(TAG, "Exception loading organizations", e);
                     }
-                } else
+                } else {
                     accountManager.setAuthToken(account, authTokenType, authToken);
+                }
 
                 return user;
             }
@@ -340,7 +357,8 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
      */
     protected void finishConfirmCredentials(boolean result) {
         final Account account = new Account(username, ACCOUNT_TYPE);
-        accountManager.setPassword(account, password);
+        //accountManager.setPassword(account, password);
+        accountManager.setAuthToken(account, authTokenType, authToken);
 
         final Intent intent = new Intent();
         intent.putExtra(KEY_BOOLEAN_RESULT, result);
@@ -357,8 +375,10 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
      */
 
     protected void finishLogin() {
+      // Going to need to change this up
         final Intent intent = new Intent();
-        authToken = password;
+        if(authToken == null && password != null)
+          authToken = password;
         intent.putExtra(KEY_ACCOUNT_NAME, username);
         intent.putExtra(KEY_ACCOUNT_TYPE, ACCOUNT_TYPE);
         if (ACCOUNT_TYPE.equals(authTokenType))

@@ -29,6 +29,11 @@ public class GitHubAccount {
      * Account password
      */
     public final String password;
+    
+    /**
+     * Account password
+     */
+    public final String authToken;
 
     /**
      * Create account with username and password
@@ -36,9 +41,10 @@ public class GitHubAccount {
      * @param username
      * @param password
      */
-    public GitHubAccount(String username, String password) {
+    public GitHubAccount(String username, String password, String authToken) {
         this.username = username;
         this.password = password;
+        this.authToken = authToken;
     }
 
     @Override
