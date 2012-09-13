@@ -42,7 +42,9 @@ import android.widget.TextView;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.core.commit.CommitStore;
@@ -57,9 +59,7 @@ import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.ToastUtils;
-import com.github.mobile.util.ViewUtils;
 import com.google.inject.Inject;
-import com.viewpagerindicator.R.layout;
 
 import java.util.Collections;
 import java.util.Date;
@@ -133,7 +133,6 @@ public class CommitDiffListFragment extends DialogFragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setHasOptionsMenu(true);
         Bundle args = getArguments();
         base = args.getString(EXTRA_BASE);
         repository = (Repository) args.getSerializable(EXTRA_REPOSITORY);
@@ -404,7 +403,7 @@ public class CommitDiffListFragment extends DialogFragment implements
 
         TextView commitText = (TextView) view.findViewById(id.tv_commit);
         commitText.setText(getString(string.commit_prefix)
-                + CommitUtils.abbreviate(commit.getCommit()));
+                + CommitUtils.abbreviate(commit));
 
         view.findViewById(id.ll_view_area).setOnClickListener(
                 new OnClickListener() {
@@ -412,8 +411,10 @@ public class CommitDiffListFragment extends DialogFragment implements
                     public void onClick(View v) {
                         dialog.dismiss();
 
-                        startActivity(CommitFileViewActivity.createIntent(
-                                repository, commit.getCommit().getSha(), file));
+                        if (!TextUtils.isEmpty(file.getFilename())
+                                && !TextUtils.isEmpty(file.getSha()))
+                            startActivity(CommitFileViewActivity.createIntent(
+                                    repository, commit.getSha(), file));
                     }
                 });
 
@@ -423,9 +424,8 @@ public class CommitDiffListFragment extends DialogFragment implements
                     public void onClick(View v) {
                         dialog.dismiss();
 
-                        startActivityForResult(
-                                CreateCommentActivity.createIntent(repository,
-                                        commit.getCommit().getSha(),
+                        startActivityForResult(CreateCommentActivity
+                                .createIntent(repository, commit.getSha(),
                                         file.getFilename(), position),
                                 COMMENT_CREATE);
                     }

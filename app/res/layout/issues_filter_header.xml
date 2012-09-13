@@ -15,7 +15,7 @@
   limitations under the License.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItem"
+    style="@style/HeaderListItem"
     android:orientation="vertical" >
 
     <include layout="@layout/issues_filter_details" />

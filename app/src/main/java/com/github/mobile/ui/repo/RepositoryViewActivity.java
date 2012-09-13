@@ -18,26 +18,29 @@ package com.github.mobile.ui.repo;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
+import static com.github.mobile.ui.repo.RepositoryPagerAdapter.ITEM_CODE;
+import static com.github.mobile.util.TypefaceUtils.ICON_CODE;
+import static com.github.mobile.util.TypefaceUtils.ICON_COMMIT;
+import static com.github.mobile.util.TypefaceUtils.ICON_ISSUE_OPEN;
+import static com.github.mobile.util.TypefaceUtils.ICON_NEWS;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.core.repo.RefreshRepositoryTask;
 import com.github.mobile.core.repo.RepositoryUtils;
+import com.github.mobile.ui.TabPagerActivity;
 import com.github.mobile.ui.user.HomeActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
-import com.github.mobile.util.ViewUtils;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
-import com.viewpagerindicator.TitlePageIndicator;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
@@ -48,7 +51,8 @@ import roboguice.inject.InjectView;
 /**
  * Activity to view a repository
  */
-public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
+public class RepositoryViewActivity extends
+        TabPagerActivity<RepositoryPagerAdapter> {
 
     /**
      * Create intent for this activity
@@ -66,20 +70,12 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
     @Inject
     private AvatarLoader avatars;
 
-    @InjectView(id.vp_pages)
-    private ViewPager pager;
-
     @InjectView(id.pb_loading)
     private ProgressBar loadingBar;
-
-    @InjectView(id.tpi_header)
-    private TitlePageIndicator indicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(layout.pager_with_title);
 
         User owner = repository.getOwner();
 
@@ -94,8 +90,7 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
         else {
             avatars.bind(getSupportActionBar(), owner);
             ViewUtils.setGone(loadingBar, false);
-            ViewUtils.setGone(pager, true);
-            ViewUtils.setGone(indicator, true);
+            setGone(true);
             new RefreshRepositoryTask(this, repository) {
 
                 @Override
@@ -130,16 +125,18 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
             return false;
     }
 
+    @Override
+    public void onBackPressed() {
+        if (adapter == null || pager.getCurrentItem() != ITEM_CODE
+                || !adapter.onBackPressed())
+            super.onBackPressed();
+    }
+
     private void configurePager() {
         avatars.bind(getSupportActionBar(), repository.getOwner());
+        configureTabPager();
         ViewUtils.setGone(loadingBar, true);
-        ViewUtils.setGone(pager, false);
-        ViewUtils.setGone(indicator, false);
-        pager.setAdapter(new RepositoryPagerAdapter(
-                getSupportFragmentManager(), getResources(), repository
-                        .isHasIssues()));
-        indicator.setViewPager(pager);
-        pager.setCurrentItem(1);
+        setGone(false);
     }
 
     @Override
@@ -152,6 +149,38 @@ public class RepositoryViewActivity extends RoboSherlockFragmentActivity {
             return true;
         default:
             return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
+        adapter.onDialogResult(pager.getCurrentItem(), requestCode, resultCode,
+                arguments);
+    }
+
+    @Override
+    protected RepositoryPagerAdapter createAdapter() {
+        return new RepositoryPagerAdapter(this, repository.isHasIssues());
+    }
+
+    @Override
+    protected int getContentView() {
+        return layout.tabbed_progress_pager;
+    }
+
+    @Override
+    protected String getIcon(int position) {
+        switch (position) {
+        case 0:
+            return ICON_NEWS;
+        case 1:
+            return ICON_CODE;
+        case 2:
+            return ICON_COMMIT;
+        case 3:
+            return ICON_ISSUE_OPEN;
+        default:
+            return super.getIcon(position);
         }
     }
 }

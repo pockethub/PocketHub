@@ -90,12 +90,12 @@ public class TypefaceUtils {
     /**
      * Follow icon
      */
-    public static final String ICON_FOLLOW = "\uf228";
+    public static final String ICON_FOLLOW = "\uf21C";
 
     /**
-     * Watch icon
+     * Star icon
      */
-    public static final String ICON_WATCH = "\uf21D";
+    public static final String ICON_STAR = "\uf02A";
 
     /**
      * Pull request icon
@@ -126,6 +126,46 @@ public class TypefaceUtils {
      * Comment icon
      */
     public static final String ICON_COMMENT = "\uf22b";
+
+    /**
+     * News icon
+     */
+    public static final String ICON_NEWS = "\uf234";
+
+    /**
+     * Watch icon
+     */
+    public static final String ICON_WATCH = "\uf04e";
+
+    /**
+     * Team icon
+     */
+    public static final String ICON_TEAM = "\uf019";
+
+    /**
+     * Code icon
+     */
+    public static final String ICON_CODE = "\uf010";
+
+    /**
+     * Commit icon
+     */
+    public static final String ICON_COMMIT = "\uf01f";
+
+    /**
+     * Person icon
+     */
+    public static final String ICON_PERSON = "\uf218";
+
+    /**
+     * Add icon
+     */
+    public static final String ICON_ADD = "\uf05d";
+
+    /**
+     * Broadcast icon
+     */
+    public static final String ICON_BROADCAST = "\uf030";
 
     /**
      * Find the maximum number of digits in the given numbers

@@ -23,8 +23,6 @@ import static com.github.mobile.Intents.EXTRA_GIST_IDS;
 import static com.github.mobile.Intents.EXTRA_POSITION;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
@@ -35,8 +33,10 @@ import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.ui.ConfirmDialogFragment;
-import com.github.mobile.ui.DialogFragmentActivity;
+import com.github.mobile.ui.FragmentProvider;
+import com.github.mobile.ui.PagerActivity;
 import com.github.mobile.ui.UrlLauncher;
+import com.github.mobile.ui.ViewPager;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
@@ -51,8 +51,7 @@ import roboguice.inject.InjectView;
 /**
  * Activity to display a collection of Gists in a pager
  */
-public class GistsViewActivity extends DialogFragmentActivity implements
-        OnPageChangeListener {
+public class GistsViewActivity extends PagerActivity {
 
     private static final int REQUEST_CONFIRM_DELETE = 1;
 
@@ -102,7 +101,9 @@ public class GistsViewActivity extends DialogFragmentActivity implements
     @Inject
     private AvatarLoader avatars;
 
-    private final UrlLauncher urlLauncher = new UrlLauncher();
+    private GistsPagerAdapter adapter;
+
+    private final UrlLauncher urlLauncher = new UrlLauncher(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,10 +125,10 @@ public class GistsViewActivity extends DialogFragmentActivity implements
             gists = new String[] { gist.getId() };
         }
 
-        pager.setAdapter(new GistsPagerAdapter(getSupportFragmentManager(),
-                gists));
+        adapter = new GistsPagerAdapter(this, gists);
+        pager.setAdapter(adapter);
         pager.setOnPageChangeListener(this);
-        pager.setCurrentItem(initialPosition);
+        pager.scheduleSetItem(initialPosition, this);
         onPageSelected(initialPosition);
     }
 
@@ -163,12 +164,10 @@ public class GistsViewActivity extends DialogFragmentActivity implements
         super.onDialogResult(requestCode, resultCode, arguments);
     }
 
-    public void onPageScrolled(int position, float positionOffset,
-            int positionOffsetPixels) {
-        // Intentionally left blank
-    }
-
+    @Override
     public void onPageSelected(int position) {
+        super.onPageSelected(position);
+
         ActionBar actionBar = getSupportActionBar();
         String gistId = gists[position];
         Gist gist = store.getGist(gistId);
@@ -187,10 +186,6 @@ public class GistsViewActivity extends DialogFragmentActivity implements
         actionBar.setTitle(getString(string.gist_title) + gistId);
     }
 
-    public void onPageScrollStateChanged(int state) {
-        // Intentionally left blank
-    }
-
     @Override
     public void startActivity(Intent intent) {
         Intent converted = urlLauncher.convert(intent);
@@ -198,5 +193,9 @@ public class GistsViewActivity extends DialogFragmentActivity implements
             super.startActivity(converted);
         else
             super.startActivity(intent);
+    }
+
+    protected FragmentProvider getProvider() {
+        return adapter;
     }
 }

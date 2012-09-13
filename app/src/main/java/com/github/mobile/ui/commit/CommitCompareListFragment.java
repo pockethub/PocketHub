@@ -20,6 +20,7 @@ import static com.github.mobile.Intents.EXTRA_HEAD;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import android.accounts.Account;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,9 @@ import android.widget.TextView;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.core.commit.CommitCompareTask;
@@ -41,9 +44,7 @@ import com.github.mobile.ui.DialogFragment;
 import com.github.mobile.ui.HeaderFooterListAdapter;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
-import com.github.mobile.util.ViewUtils;
 import com.google.inject.Inject;
-import com.viewpagerindicator.R.layout;
 
 import java.text.MessageFormat;
 import java.util.Collection;
@@ -92,7 +93,6 @@ public class CommitCompareListFragment extends DialogFragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setHasOptionsMenu(true);
         diffStyler = new DiffStyler(getResources());
         compareCommits();
     }
@@ -170,7 +170,7 @@ public class CommitCompareListFragment extends DialogFragment implements
             ((TextView) commitHeader.findViewById(id.tv_commit_summary))
                     .setText(MessageFormat.format(
                             getString(string.comparing_commits), commits.size()));
-            adapter.addHeader(commitHeader, null, false);
+            adapter.addHeader(commitHeader);
             adapter.addHeader(inflater.inflate(layout.list_divider, null));
             CommitListAdapter commitAdapter = new CommitListAdapter(
                     layout.commit_item, inflater, commits, avatars);
@@ -239,8 +239,10 @@ public class CommitCompareListFragment extends DialogFragment implements
     }
 
     private void openFile(final CommitFile file) {
-        startActivity(CommitFileViewActivity.createIntent(repository, head,
-                file));
+        if (!TextUtils.isEmpty(file.getFilename())
+                && !TextUtils.isEmpty(file.getSha()))
+            startActivity(CommitFileViewActivity.createIntent(repository, head,
+                    file));
     }
 
     private void openLine(AdapterView<?> parent, int position) {
@@ -248,8 +250,7 @@ public class CommitCompareListFragment extends DialogFragment implements
         while (--position >= 0) {
             item = parent.getItemAtPosition(position);
             if (item instanceof CommitFile) {
-                startActivity(CommitFileViewActivity.createIntent(repository,
-                        head, (CommitFile) item));
+                openFile((CommitFile) item);
                 return;
             }
         }

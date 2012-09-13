@@ -15,9 +15,11 @@
  */
 package com.github.mobile;
 
+import android.accounts.Account;
 import android.content.Context;
 import android.util.Log;
 
+import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.accounts.AuthenticatedUserLoader;
 
 /**
@@ -51,11 +53,18 @@ public abstract class ThrowableLoader<D> extends AuthenticatedUserLoader<D> {
     }
 
     @Override
-    public D load() {
+    public D load(final Account account) {
         exception = null;
         try {
             return loadData();
         } catch (Exception e) {
+            if (AccountUtils.isUnauthorized(e)
+                    && AccountUtils.updateAccount(account, activity))
+                try {
+                    return loadData();
+                } catch (Exception e2) {
+                    e = e2;
+                }
             Log.d(TAG, "Exception loading data", e);
             exception = e;
             return data;

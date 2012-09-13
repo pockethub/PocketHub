@@ -17,19 +17,24 @@ package com.github.mobile.ui;
 
 import static android.content.Intent.ACTION_VIEW;
 import static android.content.Intent.CATEGORY_BROWSABLE;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.core.commit.CommitMatch;
 import com.github.mobile.core.commit.CommitUrlMatcher;
 import com.github.mobile.core.gist.GistUrlMatcher;
 import com.github.mobile.core.issue.IssueUrlMatcher;
+import com.github.mobile.core.user.UserUrlMatcher;
 import com.github.mobile.ui.commit.CommitViewActivity;
 import com.github.mobile.ui.gist.GistsViewActivity;
 import com.github.mobile.ui.issue.IssuesViewActivity;
+import com.github.mobile.ui.user.UserViewActivity;
 
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.User;
 
 /**
  * Helper to handle any custom activity launching done by selecting URLs
@@ -41,6 +46,21 @@ public class UrlLauncher {
     private final IssueUrlMatcher issueMatcher = new IssueUrlMatcher();
 
     private final CommitUrlMatcher commitMatcher = new CommitUrlMatcher();
+
+    private final UserUrlMatcher userMatcher = new UserUrlMatcher();
+
+    private final Context context;
+
+    /**
+     * @param context
+     */
+    public UrlLauncher(final Context context) {
+        this.context = context;
+    }
+
+    private boolean isValidLogin(final String login) {
+        return login != null && !login.equals(AccountUtils.getLogin(context));
+    }
 
     /**
      * Create intent to launch view of URI
@@ -61,9 +81,17 @@ public class UrlLauncher {
         if (commitMatch != null)
             return createCommitIntent(uri, commitMatch);
 
+        String login = userMatcher.getLogin(uri);
+        if (isValidLogin(login))
+            return createUserIntent(login);
+
         Intent intent = new Intent(ACTION_VIEW, Uri.parse(uri));
         intent.addCategory(CATEGORY_BROWSABLE);
         return intent;
+    }
+
+    private Intent createUserIntent(final String login) {
+        return UserViewActivity.createIntent(new User().setLogin(login));
     }
 
     private Intent createCommitIntent(final String uri, final CommitMatch match) {
@@ -112,6 +140,10 @@ public class UrlLauncher {
         CommitMatch match = commitMatcher.getCommit(uri);
         if (match != null)
             return createCommitIntent(uri, match);
+
+        String login = userMatcher.getLogin(uri);
+        if (isValidLogin(login))
+            return createUserIntent(login);
 
         return null;
     }

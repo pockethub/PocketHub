@@ -13,3 +13,12 @@ body {
   height: auto;
   overflow-y: hidden;
 }
+
+img {
+  display: block;
+  border: 1px solid #999;
+  padding: 1px;
+  margin-top: 10px;
+  margin-left: 10px;
+  background: url("trans_bg.gif") right bottom #EEE;
+}

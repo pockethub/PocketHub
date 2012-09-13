@@ -60,7 +60,7 @@ public class ResourceLoadingIndicator {
     public ResourceLoadingIndicator setList(
             final HeaderFooterListAdapter<?> adapter) {
         this.adapter = adapter;
-        adapter.addFooter(view, null, false);
+        adapter.addFooter(view);
         showing = true;
         return this;
     }
@@ -74,7 +74,7 @@ public class ResourceLoadingIndicator {
     public ResourceLoadingIndicator setVisible(final boolean visible) {
         if (showing != visible && adapter != null)
             if (visible)
-                adapter.addFooter(view, null, false);
+                adapter.addFooter(view);
             else
                 adapter.removeFooter(view);
         showing = visible;

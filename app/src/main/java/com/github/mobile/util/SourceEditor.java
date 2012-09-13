@@ -15,12 +15,21 @@
  */
 package com.github.mobile.util;
 
+import static org.eclipse.egit.github.core.Blob.ENCODING_BASE64;
+import static org.eclipse.egit.github.core.client.IGitHubConstants.CHARSET_UTF8;
+import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.github.mobile.ui.UrlLauncher;
+
+import java.io.UnsupportedEncodingException;
+
+import org.eclipse.egit.github.core.Blob;
+import org.eclipse.egit.github.core.util.EncodingUtils;
 
 /**
  * Utilities for displaying source code in a {@link WebView}
@@ -35,7 +44,9 @@ public class SourceEditor {
 
     private String name;
 
-    private Object content;
+    private String content;
+
+    private boolean encoded;
 
     /**
      * Create source editor using given web view
@@ -51,8 +62,9 @@ public class SourceEditor {
                     view.loadUrl(url);
                     return false;
                 } else {
-                    Intent intent = new UrlLauncher().create(url);
-                    view.getContext().startActivity(intent);
+                    Context context = view.getContext();
+                    Intent intent = new UrlLauncher(context).create(url);
+                    context.startActivity(intent);
                     return true;
                 }
             }
@@ -77,8 +89,23 @@ public class SourceEditor {
     /**
      * @return content
      */
+    public String getRawContent() {
+        return content;
+    }
+
+    /**
+     * @return content
+     */
     public String getContent() {
-        return content.toString();
+        if (encoded)
+            try {
+                return new String(EncodingUtils.fromBase64(content),
+                        CHARSET_UTF8);
+            } catch (UnsupportedEncodingException e) {
+                return getRawContent();
+            }
+        else
+            return getRawContent();
     }
 
     /**
@@ -102,17 +129,36 @@ public class SourceEditor {
     }
 
     /**
-     * Bind {@link Object#toString()} to given {@link WebView}
+     * Bind content to current {@link WebView}
      *
      * @param name
-     * @param provider
+     * @param content
+     * @param encoded
      * @return this editor
      */
-    public SourceEditor setSource(String name, final Object provider) {
+    public SourceEditor setSource(final String name, final String content,
+            final boolean encoded) {
         this.name = name;
-        this.content = provider;
+        this.content = content;
+        this.encoded = encoded;
         view.loadUrl(URL_PAGE);
         return this;
+    }
+
+    /**
+     * Bind blob content to current {@link WebView}
+     *
+     * @param name
+     * @param blob
+     * @return this editor
+     */
+    public SourceEditor setSource(final String name, final Blob blob) {
+        String content = blob.getContent();
+        if (content == null)
+            content = "";
+        boolean encoded = !TextUtils.isEmpty(content)
+                && ENCODING_BASE64.equals(blob.getEncoding());
+        return setSource(name, content, encoded);
     }
 
     /**

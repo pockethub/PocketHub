@@ -26,8 +26,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.mobile.R.drawable;
-import com.viewpagerindicator.R.id;
-import com.viewpagerindicator.R.layout;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 
 /**
  * Progress dialog in Holo Light theme

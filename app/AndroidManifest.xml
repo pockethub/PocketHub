@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.github.mobile"
-    android:versionCode="600"
-    android:versionName="1.1" >
+    android:versionCode="900"
+    android:versionName="1.3.1" >
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="14" />
+        android:targetSdkVersion="16" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -235,7 +235,8 @@
         </activity>
         <activity
             android:name=".ui.user.UriLauncherActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" >
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:excludeFromRecents="true" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -293,6 +294,15 @@
             android:configChanges="orientation|keyboardHidden|screenSize" >
             <intent-filter>
                 <action android:name="com.github.mobile.commit.file.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.ref.BranchFileViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
+            <intent-filter>
+                <action android:name="com.github.mobile.branch.file.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

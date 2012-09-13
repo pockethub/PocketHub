@@ -16,39 +16,41 @@
 package com.github.mobile.ui.user;
 
 import static com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_LIST;
-import static com.github.mobile.Intents.EXTRA_USER;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_BOOKMARKS;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_DASHBOARD;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_GISTS;
+import static com.github.mobile.util.TypefaceUtils.ICON_FOLLOW;
+import static com.github.mobile.util.TypefaceUtils.ICON_NEWS;
+import static com.github.mobile.util.TypefaceUtils.ICON_PUBLIC;
+import static com.github.mobile.util.TypefaceUtils.ICON_TEAM;
+import static com.github.mobile.util.TypefaceUtils.ICON_WATCH;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.core.user.UserComparator;
 import com.github.mobile.persistence.AccountDataManager;
+import com.github.mobile.ui.TabPagerActivity;
 import com.github.mobile.ui.gist.GistsActivity;
-import com.github.mobile.ui.issue.IssueDashboardActivity;
 import com.github.mobile.ui.issue.FiltersViewActivity;
+import com.github.mobile.ui.issue.IssueDashboardActivity;
 import com.github.mobile.ui.repo.OrganizationLoader;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.PreferenceUtils;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.viewpagerindicator.TitlePageIndicator;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -57,12 +59,10 @@ import java.util.Set;
 
 import org.eclipse.egit.github.core.User;
 
-import roboguice.inject.InjectView;
-
 /**
  * Home screen activity
  */
-public class HomeActivity extends RoboSherlockFragmentActivity implements
+public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
         OnNavigationListener, OrganizationSelectionProvider,
         LoaderCallbacks<List<User>> {
 
@@ -86,12 +86,6 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements
 
     private User org;
 
-    @InjectView(id.tpi_header)
-    private TitlePageIndicator indicator;
-
-    @InjectView(id.vp_pages)
-    private ViewPager pager;
-
     @Inject
     private AvatarLoader avatars;
 
@@ -102,23 +96,60 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(layout.pager_with_title);
-
         getSupportLoaderManager().initLoader(0, null, this);
+    }
 
-        User org = (User) getIntent().getSerializableExtra(EXTRA_USER);
-        if (org == null && savedInstanceState != null)
-            org = (User) savedInstanceState.getSerializable(EXTRA_USER);
-        if (org != null)
-            setOrg(org);
+    private void reloadOrgs() {
+        getSupportLoaderManager().restartLoader(0, null,
+                new LoaderCallbacks<List<User>>() {
+
+                    @Override
+                    public Loader<List<User>> onCreateLoader(int id,
+                            Bundle bundle) {
+                        return HomeActivity.this.onCreateLoader(id, bundle);
+                    }
+
+                    @Override
+                    public void onLoadFinished(Loader<List<User>> loader,
+                            final List<User> users) {
+                        HomeActivity.this.onLoadFinished(loader, users);
+                        if (users.isEmpty())
+                            return;
+
+                        Window window = getWindow();
+                        if (window == null)
+                            return;
+                        View view = window.getDecorView();
+                        if (view == null)
+                            return;
+
+                        view.post(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                isDefaultUser = false;
+                                setOrg(users.get(0));
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onLoaderReset(Loader<List<User>> loader) {
+                        HomeActivity.this.onLoaderReset(loader);
+                    }
+                });
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+    protected void onResume() {
+        super.onResume();
 
-        if (org != null)
-            outState.putSerializable(EXTRA_USER, org);
+        // Restart loader if default account doesn't match currently loaded
+        // account
+        List<User> currentOrgs = orgs;
+        if (currentOrgs != null && !currentOrgs.isEmpty()
+                && !AccountUtils.isUser(this, currentOrgs.get(0)))
+            reloadOrgs();
     }
 
     private void configureActionBar() {
@@ -143,23 +174,20 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements
 
         this.org = org;
 
-        boolean isDefaultUser = isDefaultUser(org);
-        PagerAdapter pagerAdater = pager.getAdapter();
-        if (pagerAdater == null) {
-            pager.setAdapter(new HomePagerAdapter(getSupportFragmentManager(),
-                    getResources(), isDefaultUser));
-            indicator.setViewPager(pager);
-        } else if (this.isDefaultUser != isDefaultUser) {
-            int item = pager.getCurrentItem();
-            ((HomePagerAdapter) pagerAdater).clearAdapter(isDefaultUser);
-            pagerAdater.notifyDataSetChanged();
-            if (item >= pagerAdater.getCount())
-                item = pagerAdater.getCount() - 1;
-            indicator.invalidate();
-            indicator.setCurrentItem(item);
-            pager.setCurrentItem(item, false);
-        }
+        boolean isDefaultUser = AccountUtils.isUser(this, org);
+        boolean changed = this.isDefaultUser != isDefaultUser;
         this.isDefaultUser = isDefaultUser;
+        if (adapter == null)
+            configureTabPager();
+        else if (changed) {
+            int item = pager.getCurrentItem();
+            adapter.clearAdapter(isDefaultUser);
+            adapter.notifyDataSetChanged();
+            createTabs();
+            if (item >= adapter.getCount())
+                item = adapter.getCount() - 1;
+            pager.setItem(item);
+        }
 
         for (OrganizationSelectionListener listener : orgSelectionListeners)
             listener.onOrganizationSelected(org);
@@ -169,7 +197,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements
     public boolean onCreateOptionsMenu(Menu optionMenu) {
         getSupportMenuInflater().inflate(menu.home, optionMenu);
 
-        return true;
+        return super.onCreateOptionsMenu(optionMenu);
     }
 
     @Override
@@ -238,12 +266,6 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements
     public void onLoaderReset(Loader<List<User>> listLoader) {
     }
 
-    private boolean isDefaultUser(final User org) {
-        final String accountLogin = AccountUtils.getLogin(this);
-        return org != null && accountLogin != null
-                && accountLogin.equals(org.getLogin());
-    }
-
     @Override
     public User addListener(OrganizationSelectionListener listener) {
         if (listener != null)
@@ -257,5 +279,26 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements
         if (listener != null)
             orgSelectionListeners.remove(listener);
         return this;
+    }
+
+    @Override
+    protected HomePagerAdapter createAdapter() {
+        return new HomePagerAdapter(this, isDefaultUser);
+    }
+
+    @Override
+    protected String getIcon(int position) {
+        switch (position) {
+        case 0:
+            return ICON_NEWS;
+        case 1:
+            return ICON_PUBLIC;
+        case 2:
+            return isDefaultUser ? ICON_WATCH : ICON_TEAM;
+        case 3:
+            return ICON_FOLLOW;
+        default:
+            return super.getIcon(position);
+        }
     }
 }

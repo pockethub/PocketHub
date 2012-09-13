@@ -1,13 +1,19 @@
-function getMode(name) {
-  var mode = {};
+function getExtension(name) {
   if (!name)
-    return mode;
+    return null;
 
-  var lastDot = name.lastIndexOf(".")
+  var lastDot = name.lastIndexOf(".");
   if (lastDot == -1 || lastDot + 1 == name.length)
+    return null;
+  else
+    return name.substring(lastDot + 1).toLowerCase();
+}
+
+function getMode(extension) {
+  var mode = {};
+  if (!extension)
     return mode;
 
-  var extension = name.substring(lastDot + 1).toLowerCase();
   switch (extension) {
   case "cc":
   case "h":
@@ -16,7 +22,7 @@ function getMode(name) {
     break;
   case "clj":
     mode.mode = "text/x-clojure";
-    mode.file = extension;
+    mode.file = "clojure";
     break;
   case "coffee":
     mode.mode = "text/x-coffeescript";
@@ -31,34 +37,37 @@ function getMode(name) {
     mode.file = "clike";
     break;
   case "css":
+  case "sass":
+  case "scss":
     mode.mode = "text/css";
-    mode.file = extension;
+    mode.file = "css";
     break;
   case "erl":
     mode.mode = "text/x-erlang";
+    mode.file = "erlang";
     break;
   case "hs":
   case "hsc":
     mode.mode = "text/x-haskell";
+    mode.file = "haskell";
     break;
   case "html":
     mode.mode = "text/html";
+    mode.file = "htmlmixed";
     break;
   case "ini":
-    mode.mode = "text/x-ini";
-    mode.file = extension;
+  case "prefs":
+    mode.mode = "text/x-properties";
+    mode.file = "properties";
     break;
   case "java":
     mode.mode = "text/x-java";
     mode.file = "clike";
     break;
   case "js":
-    mode.mode = "text/javascript";
-    mode.file = extension;
-    break;
   case "json":
-    mode.mode = "application/json";
-    mode.file = extension;
+    mode.mode = "text/javascript";
+    mode.file = "javascript";
     break;
   case "md":
   case "markdown":
@@ -67,11 +76,11 @@ function getMode(name) {
     break;
   case "pl":
     mode.mode = "text/x-perl";
-    mode.file = extension;
+    mode.file = "perl";
     break;
   case "py":
     mode.mode = "text/x-python";
-    mode.file = extension;
+    mode.file = "python";
     break;
   case "r":
     mode.mode = "text/x-rsrc";
@@ -79,9 +88,10 @@ function getMode(name) {
     break;
   case "rb":
     mode.mode = "text/x-ruby";
-    mode.file = extension;
+    mode.file = "ruby";
     break;
   case "sh":
+  case "zsh":
     mode.mode = "text/x-sh";
     mode.file = "shell";
     break;
@@ -95,9 +105,11 @@ function getMode(name) {
     mode.mode = "application/xquery";
     mode.file = "xquery";
     break;
+  case "project":
+  case "classpath":
   case "xml":
     mode.mode = "application/xml";
-    mode.file = extension;
+    mode.file = "xml";
     break;
   case "yml":
     mode.mode = "text/x-yaml";
@@ -114,12 +126,28 @@ function updateWidth() {
   var lines = document.getElementsByClassName("CodeMirror-lines")[0];
   if (lines) {
     var root = document.getElementsByClassName("CodeMirror")[0];
-    if (root)
+    if (root && lines.scrollWidth > lines.clientWidth)
       root.style.width = lines.scrollWidth + "px";
   }
 }
 
+function loadImage(type, content) {
+  var img = document.createElement("img");
+  img.setAttribute("src", "data:image/" + type + ";base64," + content);
+  document.body.appendChild(img);
+}
+
 function loadEditor() {
+  var name = SourceEditor.getName();
+  var extension = getExtension(name);
+  if ("png" == extension || "gif" == extension) {
+    loadImage(extension, SourceEditor.getRawContent());
+    return;
+  } else if ("jpg" == extension || "jpeg" == extension) {
+    loadImage("jpeg", SourceEditor.getRawContent());
+    return;
+  }
+
   CodeMirror.modeURL = "mode/%N/%N.js";
 
   var config = {};
@@ -130,11 +158,12 @@ function loadEditor() {
   config.lineWrapping = SourceEditor.getWrap();
   var editor = CodeMirror(document.body, config);
 
-  var mode = getMode(SourceEditor.getName());
+  var mode = getMode(extension);
   if (mode.mode)
     editor.setOption("mode", mode.mode);
   if (mode.file)
     CodeMirror.autoLoadMode(editor, mode.file);
 
-  updateWidth();
+  if (!config.lineWrapping)
+    updateWidth();
 }

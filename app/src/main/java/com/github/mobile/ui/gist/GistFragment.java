@@ -38,6 +38,7 @@ import android.widget.TextView;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
@@ -56,7 +57,6 @@ import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.ToastUtils;
 import com.github.mobile.util.TypefaceUtils;
-import com.github.mobile.util.ViewUtils;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -120,8 +120,6 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setHasOptionsMenu(true);
-
         gistId = getArguments().getString(EXTRA_GIST_ID);
     }
 
@@ -161,8 +159,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         super.onActivityCreated(savedInstanceState);
 
         list.setOnItemClickListener(this);
-        adapter.addHeader(headerView, null, false);
-        adapter.addFooter(footerView, null, false);
+        adapter.addHeader(headerView);
+        adapter.addFooter(footerView);
 
         gist = store.getGist(gistId);
 

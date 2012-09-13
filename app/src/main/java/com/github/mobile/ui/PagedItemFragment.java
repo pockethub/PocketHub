@@ -110,7 +110,8 @@ public abstract class PagedItemFragment<E> extends ItemListFragment<E>
             return;
         if (getLoaderManager().hasRunningLoaders())
             return;
-        if (getListView().getLastVisiblePosition() >= pager.size())
+        if (listView != null
+                && listView.getLastVisiblePosition() >= pager.size())
             showMore();
     }
 

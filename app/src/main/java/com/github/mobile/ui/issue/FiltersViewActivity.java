@@ -34,7 +34,6 @@ import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.ConfirmDialogFragment;
 import com.github.mobile.ui.DialogFragmentActivity;
-import com.github.mobile.ui.ItemListFragment;
 import com.github.mobile.ui.user.HomeActivity;
 import com.google.inject.Inject;
 
@@ -60,6 +59,8 @@ public class FiltersViewActivity extends DialogFragmentActivity implements
     @Inject
     private AccountDataManager cache;
 
+    private FilterListFragment fragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,9 +72,9 @@ public class FiltersViewActivity extends DialogFragmentActivity implements
         actionBar.setIcon(drawable.action_bookmark);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        ItemListFragment<?> listFragment = (ItemListFragment<?>) getSupportFragmentManager()
+        fragment = (FilterListFragment) getSupportFragmentManager()
                 .findFragmentById(android.R.id.list);
-        listFragment.getListView().setOnItemLongClickListener(this);
+        fragment.getListView().setOnItemLongClickListener(this);
     }
 
     @Override
@@ -85,8 +86,6 @@ public class FiltersViewActivity extends DialogFragmentActivity implements
 
                 @Override
                 public void success(IssueFilter response) {
-                    FilterListFragment fragment = (FilterListFragment) getSupportFragmentManager()
-                            .findFragmentById(android.R.id.list);
                     if (fragment != null)
                         fragment.refresh();
                 }

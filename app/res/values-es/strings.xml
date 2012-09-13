@@ -211,7 +211,6 @@
     <string name="authenticator_conflict_message">Una de las aplicaciones instaladas está configurada para la autenticación con GitHub.\n\nDebes eliminar la otra aplicación del menú de ajustes Cuentas y sincronizació y desinstalarla antes de poder usar la aplicación de GitHub.</string>
     <string name="opening_repository">Abriendo {0}…</string>
     <string name="commit_compare_title">Comparación de Commits</string>
-    <string name="parent_commit">commit anterior</string>
     <string name="commit_prefix">Commit\u0020</string>
     <string name="parent_prefix">Anterior\u0020</string>
     <string name="authored">autor</string>

@@ -15,7 +15,8 @@
  */
 package com.github.mobile.ui.user;
 
-import android.app.Activity;
+import static com.github.mobile.Intents.EXTRA_USER;
+import android.os.Bundle;
 
 import com.github.mobile.core.user.UserEventMatcher.UserPair;
 import com.github.mobile.ui.NewsFragment;
@@ -35,10 +36,20 @@ public abstract class UserNewsFragment extends NewsFragment implements
     protected User org;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
 
-        org = ((OrganizationSelectionProvider) activity).addListener(this);
+        if (org != null)
+            outState.putSerializable(EXTRA_USER, org);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        org = ((OrganizationSelectionProvider) getActivity()).addListener(this);
+        if (org == null && savedInstanceState != null)
+            org = (User) savedInstanceState.get(EXTRA_USER);
+
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override

@@ -15,15 +15,15 @@
  */
 package com.github.mobile.ui.repo;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.actionbarsherlock.R.color;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 import com.github.mobile.ui.StyledText;
-import com.github.mobile.util.ViewUtils;
-import com.viewpagerindicator.R.layout;
+import com.github.mobile.util.TypefaceUtils;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,7 +38,9 @@ import org.eclipse.egit.github.core.User;
  * Adapter for the default account's repositories
  */
 public class DefaultRepositoryListAdapter extends
-        RepositoryListAdapter<Repository, RepositoryHeaderItemView> {
+        RepositoryListAdapter<Repository> {
+
+    private int descriptionColor;
 
     private final AtomicReference<User> account;
 
@@ -58,17 +60,6 @@ public class DefaultRepositoryListAdapter extends
         super(layout.repo_item, inflater, elements);
 
         this.account = account;
-    }
-
-    /**
-     * Create list adapter for repositories
-     *
-     * @param inflater
-     * @param account
-     */
-    public DefaultRepositoryListAdapter(LayoutInflater inflater,
-            AtomicReference<User> account) {
-        this(inflater, null, account);
     }
 
     /**
@@ -107,42 +98,44 @@ public class DefaultRepositoryListAdapter extends
         return this;
     }
 
+    protected View initialize(View view) {
+        view = super.initialize(view);
+
+        TypefaceUtils.setOcticons(textView(view, 0),
+                (TextView) view.findViewById(id.tv_forks_icon),
+                (TextView) view.findViewById(id.tv_watchers_icon));
+        descriptionColor = view.getResources().getColor(color.text_description);
+        return view;
+    }
+
     @Override
-    protected void update(final int position,
-            final RepositoryHeaderItemView view, final Repository repository) {
+    protected int[] getChildViewIds() {
+        return new int[] { id.tv_repo_icon, id.tv_repo_description,
+                id.tv_language, id.tv_watchers, id.tv_forks, id.ll_header,
+                id.tv_header, id.v_separator, id.tv_repo_name };
+    }
+
+    @Override
+    protected void update(int position, Repository repository) {
         String headerValue = headers.get(repository.getId());
         if (headerValue != null) {
-            view.header.setVisibility(VISIBLE);
-            view.headerText.setText(headerValue);
+            setGone(5, false);
+            setText(6, headerValue);
         } else
-            view.header.setVisibility(GONE);
+            setGone(5, true);
 
-        ViewUtils.setGone(view.separator,
-                noSeparators.contains(repository.getId()));
+        setGone(7, noSeparators.contains(repository.getId()));
 
         StyledText name = new StyledText();
-        if (!account.get().getLogin().equals(repository.getOwner().getLogin())) {
-            int descriptionColor = view.repoName.getResources().getColor(
-                    color.text_description);
+        if (!account.get().getLogin().equals(repository.getOwner().getLogin()))
             name.foreground(repository.getOwner().getLogin(), descriptionColor)
                     .foreground('/', descriptionColor);
-        }
         name.bold(repository.getName());
-        view.repoName.setText(name);
+        setText(8, name);
 
-        updateDetails(view, repository.getDescription(),
-                repository.getLanguage(), repository.getWatchers(),
-                repository.getForks(), repository.isPrivate(),
-                repository.isFork(), repository.getMirrorUrl());
-    }
-
-    @Override
-    protected RepositoryHeaderItemView createView(final View view) {
-        return new RepositoryHeaderItemView(view);
-    }
-
-    @Override
-    public long getItemId(final int position) {
-        return getItem(position).getId();
+        updateDetails(repository.getDescription(), repository.getLanguage(),
+                repository.getWatchers(), repository.getForks(),
+                repository.isPrivate(), repository.isFork(),
+                repository.getMirrorUrl());
     }
 }

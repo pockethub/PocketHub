@@ -75,7 +75,6 @@ import java.util.List;
 
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.client.RequestException;
 import org.eclipse.egit.github.core.service.UserService;
 
 import roboguice.inject.InjectView;
@@ -91,9 +90,12 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
      */
     public static final String PARAM_AUTHTOKEN_TYPE = "authtokenType";
 
-    private static final String PARAM_CONFIRMCREDENTIALS = "confirmCredentials";
+    /**
+     * Initial user name
+     */
+    public static final String PARAM_USERNAME = "username";
 
-    private static final String PARAM_USERNAME = "username";
+    private static final String PARAM_CONFIRMCREDENTIALS = "confirmCredentials";
 
     private static final String TAG = "LoginActivity";
 
@@ -123,7 +125,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
 
         @Override
         protected List<User> run(Account account) throws Exception {
-            return cache.getOrgs();
+            return cache.getOrgs(true);
         }
     }
 
@@ -137,9 +139,8 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
 
     private RoboAsyncTask<User> authenticationTask;
 
-    private String authToken;
-
     private String authTokenType;
+    private String authToken;
 
     private MenuItem loginItem;
 
@@ -176,6 +177,12 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
         TextView signupText = (TextView) findViewById(id.tv_signup);
         signupText.setMovementMethod(LinkMovementMethod.getInstance());
         signupText.setText(Html.fromHtml(getString(string.signup_link)));
+
+        if (!TextUtils.isEmpty(username)) {
+            loginText.setText(username);
+            loginText.setEnabled(false);
+            loginText.setFocusable(false);
+        }
 
         TextWatcher watcher = new TextWatcherAdapter() {
 
@@ -219,6 +226,18 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        // Finish task if valid account exists
+        if (requestNewAccount) {
+            Account existing = AccountUtils.getPasswordAccessibleAccount(this);
+            if (existing != null && !TextUtils.isEmpty(existing.name)) {
+                String password = AccountManager.get(this)
+                        .getPassword(existing);
+                if (!TextUtils.isEmpty(password))
+                    finishLogin(existing.name, password);
+            }
+            return;
+        }
 
         updateEnablement();
     }
@@ -320,18 +339,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
 
                 Log.d(TAG, "Exception requesting authenticated user", e);
 
-                Throwable cause = e.getCause() != null ? e.getCause() : e;
-
-                boolean badCredentials = false;
-                if (e instanceof RequestException
-                        && ((RequestException) e).getStatus() == 401)
-                    badCredentials = true;
-                // A 401 can be returned as an IOException with this message
-                else if ("Received authentication challenge is null"
-                        .equals(cause.getMessage()))
-                    badCredentials = true;
-
-                if (badCredentials)
+                if (AccountUtils.isUnauthorized(e))
                     onAuthenticationResult(false);
                 else
                     ToastUtils.show(LoginActivity.this, e,
@@ -372,17 +380,17 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
      * request. See onAuthenticationResult(). Sets the
      * AccountAuthenticatorResult which is sent back to the caller. Also sets
      * the authToken in AccountManager for this account.
+     *
+     * @param username
+     * @param password
      */
 
-    protected void finishLogin() {
-      // Going to need to change this up
+    protected void finishLogin(final String username, final String password) {
         final Intent intent = new Intent();
-        if(authToken == null && password != null)
-          authToken = password;
         intent.putExtra(KEY_ACCOUNT_NAME, username);
         intent.putExtra(KEY_ACCOUNT_TYPE, ACCOUNT_TYPE);
         if (ACCOUNT_TYPE.equals(authTokenType))
-            intent.putExtra(KEY_AUTHTOKEN, authToken);
+            intent.putExtra(KEY_AUTHTOKEN, password);
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
         finish();
@@ -396,7 +404,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
     public void onAuthenticationResult(boolean result) {
         if (result) {
             if (!confirmCredentials)
-                finishLogin();
+                finishLogin(username, (authToken.equals(null) ? password : authToken ));
             else
                 finishConfirmCredentials(true);
         } else {

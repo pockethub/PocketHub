@@ -15,15 +15,15 @@
  */
 package com.github.mobile.ui.issue;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 import android.view.LayoutInflater;
-import android.view.View;
+import android.widget.TextView;
 
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.github.kevinsawicki.wishlist.ViewUtils;
+import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.core.issue.IssueFilter;
-import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.util.AvatarLoader;
 
 import java.util.Collection;
@@ -35,8 +35,7 @@ import org.eclipse.egit.github.core.User;
 /**
  * Adapter to display a list of {@link IssueFilter} objects
  */
-public class FilterListAdapter extends
-        ItemListAdapter<IssueFilter, FilterItemView> {
+public class FilterListAdapter extends SingleTypeAdapter<IssueFilter> {
 
     private final AvatarLoader avatars;
 
@@ -49,56 +48,47 @@ public class FilterListAdapter extends
      */
     public FilterListAdapter(LayoutInflater inflater, IssueFilter[] elements,
             AvatarLoader avatars) {
-        super(layout.issues_filter_item, inflater, elements);
+        super(inflater, layout.issues_filter_item);
 
         this.avatars = avatars;
-    }
-
-    /**
-     * Create {@link IssueFilter} list adapter
-     *
-     * @param inflater
-     * @param avatars
-     */
-    public FilterListAdapter(LayoutInflater inflater, AvatarLoader avatars) {
-        this(inflater, null, avatars);
+        setItems(elements);
     }
 
     @Override
-    protected void update(final int position, final FilterItemView view,
-            final IssueFilter filter) {
-        avatars.bind(view.avatarView, filter.getRepository().getOwner());
-        view.repoText.setText(filter.getRepository().generateId());
+    protected int[] getChildViewIds() {
+        return new int[] { id.iv_avatar, id.tv_repo_name, id.tv_filter_state,
+                id.tv_filter_labels, id.tv_filter_milestone, id.ll_assignee,
+                id.tv_filter_assignee, id.iv_assignee_avatar };
+    }
+
+    @Override
+    protected void update(int position, IssueFilter filter) {
+        avatars.bind(imageView(0), filter.getRepository().getOwner());
+        setText(1, filter.getRepository().generateId());
         if (filter.isOpen())
-            view.stateText.setText(string.open_issues);
+            setText(2, string.open_issues);
         else
-            view.stateText.setText(string.closed_issues);
+            setText(2, string.closed_issues);
 
         Collection<Label> labels = filter.getLabels();
         if (labels != null && !labels.isEmpty()) {
-            LabelDrawableSpan.setText(view.labelsText, labels);
-            view.labelsText.setVisibility(VISIBLE);
+            TextView labelsText = textView(3);
+            LabelDrawableSpan.setText(labelsText, labels);
+            ViewUtils.setGone(labelsText, false);
         } else
-            view.labelsText.setVisibility(GONE);
+            setGone(3, true);
 
         Milestone milestone = filter.getMilestone();
-        if (milestone != null) {
-            view.milestoneText.setText(milestone.getTitle());
-            view.milestoneText.setVisibility(VISIBLE);
-        } else
-            view.milestoneText.setVisibility(GONE);
+        if (milestone != null)
+            ViewUtils.setGone(setText(4, milestone.getTitle()), false);
+        else
+            setGone(4, true);
 
         User assignee = filter.getAssignee();
         if (assignee != null) {
-            avatars.bind(view.assigneeAvatarView, assignee);
-            view.assigneeText.setText(assignee.getLogin());
-            view.assigneeArea.setVisibility(VISIBLE);
+            avatars.bind(imageView(6), assignee);
+            ViewUtils.setGone(setText(5, assignee.getLogin()), false);
         } else
-            view.assigneeArea.setVisibility(GONE);
-    }
-
-    @Override
-    protected FilterItemView createView(final View view) {
-        return new FilterItemView(view);
+            setGone(5, true);
     }
 }

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<resources>
+
+    <!-- Error messages -->
+    <string name="error_orgs_load">Impossibile caricare account e organizzazioni</string>
+    <string name="error_issues_load">Impossibile caricare le segnalazioni</string>
+    <string name="error_repos_load">Impossibile caricare i repositories</string>
+    <string name="error_repo_load">Impossibile caricare il repository</string>
+    <string name="error_gist_load">Impossibile caricare Gist</string>
+    <string name="error_news_load">Impossibile caricare le news</string>
+    <string name="error_followers_load">Impossibile caricare followers</string>
+    <string name="error_people_load">Impossibile caricare persone</string>
+    <string name="error_person_load">Impossibile caricare la persona</string>
+    <string name="error_gist_file_load">Impossibile caricare il contenuto del file Gist</string>
+    <string name="error_gists_load">Impossibile caricare i Gist</string>
+    <string name="error_issue_load">Impossibile caricare la segnalazione</string>
+    <string name="error_collaborators_load">Impossibile caricare collaboratori</string>
+    <string name="error_milestones_load">Impossibile caricare i milestones</string>
+    <string name="error_labels_load">Impossibile caricare le etichette</string>
+    <string name="error_bookmarks_load">Impossibile caricare i segnalibri</string>
+    <string name="error_members_load">Impossibile caricare membri</string>
+    <string name="error_commits_load">Impossibile caricare i Commits</string>
+    <string name="error_commit_load">Impossibile caricare il Commit</string>
+    <string name="error_file_load">Impossibile caricare il file</string>
+    <!--  -->
+
+
+    <!-- Loading messages -->
+    <string name="loading_gist">Gist in caricamento…</string>
+    <string name="random_gist">Gist Random in caricamento…</string>
+    <string name="loading_more_issues">Altre segnalazioni in caricamento…</string>
+    <string name="loading_issues">Segnalazioni in caricamento…</string>
+    <string name="loading_comments">Commenti in caricamento…</string>
+    <string name="loading_repositories">Repository in caricamento…</string>
+    <string name="loading_issue">Segnalazione in caricamento…</string>
+    <string name="loading_news">News in caricamento…</string>
+    <string name="loading_followers">Followers in caricamento…</string>
+    <string name="loading_people">Persone in caricamento…</string>
+    <string name="loading_gists">Gists in caricamento…</string>
+    <string name="loading_collaborators">Collaboratori in caricamento…</string>
+    <string name="loading_milestones">Milestones in caricamento…</string>
+    <string name="loading_labels">Etichette in caricamento…</string>
+    <string name="loading_commits">Commits in caricamento…</string>
+    <string name="loading_files_and_comments">Files e commenti in caricamento…</string>
+    <!--  -->
+
+
+    <!-- Empty messages -->
+    <string name="no_bookmarks">Nessun Segnalibro</string>
+    <string name="no_repositories">Nessun Repository</string>
+    <string name="no_issues">Nessuna Segnalazione</string>
+    <string name="no_gists">Nessun Gist</string>
+    <string name="no_people">Nessuna Persona</string>
+    <string name="no_followers">Nessun Follower</string>
+    <string name="no_members">Nessun Membro</string>
+    <string name="no_news">Nessuna News</string>
+    <string name="no_commits">Nessun Commit</string>
+    <!--  -->
+
+
+    <!-- Updating messages -->
+    <string name="updating_assignee">Aggiornamento Assegnatario…</string>
+    <string name="updating_issue">Aggiornamento Segnalazione…</string>
+    <string name="updating_labels">Aggiornamento Etichette…</string>
+    <string name="updating_milestone">Aggiornamento Milestone…</string>
+    <!--  -->
+
+    <string name="app_name">GitHub</string>
+    <string name="news">News</string>
+    <string name="issues">Segnalazioni</string>
+    <string name="gists">Gists</string>
+    <string name="commits">Commits</string>
+    <string name="dashboard_issues">Dashboard Segnalazioni</string>
+    <string name="find_repositories">Cerca Repository</string>
+    <string name="find_issues">Cerca Segnalazioni</string>
+    <string name="search_title">Ricerca in corso…</string>
+    <string name="clear_search_history">Cancella Cronologia</string>
+    <string name="search_history_cleared">Cronologia delle Ricerche Cancellata</string>
+    <string name="login_activity_authenticating">Accesso in corso…</string>
+    <string name="creating_gist">Creazione Gist in corso…</string>
+    <string name="create">Crea</string>
+    <string name="create_gist">Crea Gist</string>
+    <string name="gist_content_hint">inserisci \'Ciao Mondo!\'</string>
+    <string name="make_public">Rendi pubblico questo Gist</string>
+    <string name="gist_file_name_hint">file.rb</string>
+    <string name="gist">Gist</string>
+    <string name="comments">Commenti</string>
+    <string name="files">File</string>
+    <string name="open">Apri</string>
+    <string name="random">Random</string>
+    <string name="file_name">Nome del File </string>
+    <string name="file_content">Contenuto del File</string>
+    <string name="new_gist">Nuovo Gist</string>
+    <string name="filter">Filtro</string>
+    <string name="bookmark">Segnalibro</string>
+    <string name="comment">Commento</string>
+    <string name="delete">Cancella</string>
+    <string name="refresh">Ricarica</string>
+    <string name="dashboard_watched">Osservato</string>
+    <string name="dashboard_assigned">Assegnato</string>
+    <string name="dashboard_created">Creato</string>
+    <string name="dashboard_mentioned">Menzionato</string>
+    <string name="dashboard_issues_title">Dashboard Segnalazioni</string>
+    <string name="bookmarks">Segnalibri</string>
+    <string name="gists_title">Gist</string>
+    <string name="issue_title">Segnalazione #</string>
+    <string name="pull_request_title">Richiedi il Pull#</string>
+    <string name="gist_title">Gist\u0020</string>
+    <string name="filter_issues_title">Segnalazione Filtro</string>
+    <string name="create_comment_title">Crea un commento</string>
+    <string name="comment_hint">Inserisci un commento</string>
+    <string name="show_more">Mostra tutto…</string>
+    <string name="repositories">Repository</string>
+    <string name="issues_title">Segnalazioni</string>
+    <string name="edit_labels">Modifica Segnalazioni</string>
+    <string name="milestone_prefix">Milestone:</string>
+    <string name="edit_milestone">Modifica Milestone</string>
+    <string name="edit_assignee">Modifica Assegnatario</string>
+    <string name="my_gists_tab">Miei</string>
+    <string name="starred_gists_tab">Preferiti</string>
+    <string name="all_gists_tab">Tutti</string>
+    <string name="description">Descrizione</string>
+    <string name="gist_description_hint">Gist creato in Android</string>
+    <string name="title">Titolo</string>
+    <string name="edit">Modifica</string>
+    <string name="star">Preferiti</string>
+    <string name="starring_gist">Inserimento Gist tra i preferiti…</string>
+    <string name="unstar">Togli dai preferiti</string>
+    <string name="unstarring_gist">Rimozione del Gist dai preferiti in corso…</string>
+    <string name="accounts_label">Account</string>
+    <string name="select_assignee">Seleziona Assegnatario</string>
+    <string name="select_milestone">Seleziona Milestone</string>
+    <string name="select_labels">Seleziona Etichette</string>
+    <string name="no_milestone">Nessun milestone</string>
+    <string name="unassigned">Non ci sono assegnatari</string>
+    <string name="assigned">E\' assegnatario</string>
+    <string name="no_gists_found">Nessun Gist trovato</string>
+    <string name="confirm_gist_delete_title">Conferma Cancellazione</string>
+    <string name="confirm_gist_delete_message">Sicuro di voler cancellare questo Gist?</string>
+    <string name="deleting_gist">Cancellazione Gist in corso…</string>
+    <string name="creating_comment">Stiamo creando il commento…</string>
+    <string name="confirm_bookmark_delete_message">Sicuro di voler rimuovere questo segnalibro?</string>
+    <string name="issue_dashboard">Dashboard Segnalazioni</string>
+    <string name="new_issue">Nuova segnalazione</string>
+    <string name="anonymous">Anonimo</string>
+    <string name="message_filter_saved">Filtro notifiche salvato tra i segnalibri</string>
+    <string name="recent">Recenti</string>
+    <string name="section_issue_status">Status:</string>
+    <string name="status_open">Aperto</string>
+    <string name="status_closed">Chiuso</string>
+    <string name="section_issue_assigned">Assegnato a:</string>
+    <string name="assignee_anyone">Chiunque</string>
+    <string name="section_issue_milestone">Milestone:</string>
+    <string name="none">Nessuno</string>
+    <string name="section_issue_labels">Etichetta:</string>
+    <string name="log_in">Accedi</string>
+    <string name="signup_link">Nuovo su GitHub? &lt;a href=\"https://github.com/plans\">Clicca qui&lt;/a> per iscriverti</string>
+    <string name="connection_failed">Impossibile connettersi a Github</string>
+    <string name="invalid_login_or_password">Inserisci un nome utente e una password validi</string>
+    <string name="invalid_password">Inserisci una password valida.</string>
+    <string name="password">Password</string>
+    <string name="login_or_email">Login o Email</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="followers_self">Followers</string>
+    <string name="following_self">Following</string>
+    <string name="members">Membri</string>
+    <string name="closing_issue">Chiusura Notifica in corso…</string>
+    <string name="reopening_issue">Riapertura Notifica in corso…</string>
+    <string name="avatar">Avatar</string>
+    <string name="creating_issue">Creazione Notifica in corso…</string>
+    <string name="prefix_created">creato\u0020</string>
+    <string name="prefix_updated">aggiornato\u0020</string>
+    <string name="prefix_opened">aperto\u0020</string>
+    <string name="clear">Cancella</string>
+    <string name="open_issues">Apri Segnalazione</string>
+    <string name="closed_issues">Segnalazioni Chiuse</string>
+    <string name="confirm_bookmark_delete_title">Rimuovi Segnalibro</string>
+    <string name="save">Salva</string>
+    <string name="apply">Applica</string>
+    <string name="labels_prefix">Etichette:</string>
+    <string name="assignee">Assegnatario</string>
+    <string name="milestone">Milestone</string>
+    <string name="labels">Etichette</string>
+    <string name="issue_confirm_close_message">Sicuro di voler chiudere questa segnalazione?</string>
+    <string name="issue_confirm_reopen_message">Sicuro di voler riaprire questa segnalazione?</string>
+    <string name="issue_confirm_close_title">Chiudi Segnalazione</string>
+    <string name="issue_confirm_reopen_title">Riapri Segnalazione</string>
+    <string name="closed">Chiuso</string>
+    <string name="no_description_given">Nessuna descrizione fornita.</string>
+    <string name="close">Chiudi</string>
+    <string name="reopen">Riapri</string>
+    <string name="title_invalid_github_url">URL GitHub non valida</string>
+    <string name="message_invalid_github_url">La applicazione non riesce ad aprire il seguente URL:\n{0}</string>
+    <string name="recently_viewed">VISUALIZZATI RECENTEMENTE</string>
+    <string name="cancel">Cancella</string>
+    <string name="authenticator_conflict_title">Conflitto nell\'applicazione</string>
+    <string name="authenticator_conflict_message">E\' già stata configurata un\' altra applicazione per l\' autenticazione di GitHub.\n\nPer utilizzare l\'app di Github rimuovi l\'altra applicazione dagli Account e dalle impostazioni di sincronizzazione e disintallala.</string>
+    <string name="opening_repository">Apertura in corso {0}…</string>
+    <string name="commit_compare_title">Confronta Commit</string>
+    <string name="commit_prefix">Commit\u0020</string>
+    <string name="parent_prefix">Parent\u0020</string>
+    <string name="authored">Inserito tra gli autori</string>
+    <string name="committed">Eseguito Commit</string>
+    <string name="diff_line_message">Cosa vuoi fare?</string>
+    <string name="comment_on_line">Commenta la riga</string>
+    <string name="view_entire_file">Visualizza il file per intero</string>
+    <string name="comparing_commits">Confronta {0} commits</string>
+    <string name="enable_wrapping">Abilita il wrapping</string>
+    <string name="disable_wrapping">Disabilita il wrapping</string>
+
+</resources>

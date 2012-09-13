@@ -21,12 +21,12 @@ import static com.github.mobile.Intents.EXTRA_REPOSITORY_OWNER;
 import static com.github.mobile.Intents.EXTRA_USER;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.github.mobile.core.issue.IssueStore;
+import com.github.mobile.ui.FragmentStatePagerAdapter;
 
 import java.util.List;
 
@@ -52,14 +52,15 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
     private final IssueStore store;
 
     /**
-     * @param fm
+     * @param activity
      * @param repoIds
      * @param issueNumbers
      * @param issueStore
      */
-    public IssuesPagerAdapter(FragmentManager fm, List<RepositoryId> repoIds,
-            int[] issueNumbers, IssueStore issueStore) {
-        super(fm);
+    public IssuesPagerAdapter(SherlockFragmentActivity activity,
+            List<RepositoryId> repoIds, int[] issueNumbers,
+            IssueStore issueStore) {
+        super(activity);
 
         repos = repoIds;
         repo = null;
@@ -68,13 +69,13 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     /**
-     * @param fm
+     * @param activity
      * @param repository
      * @param issueNumbers
      */
-    public IssuesPagerAdapter(FragmentManager fm, Repository repository,
-            int[] issueNumbers) {
-        super(fm);
+    public IssuesPagerAdapter(SherlockFragmentActivity activity,
+            Repository repository, int[] issueNumbers) {
+        super(activity);
 
         repos = null;
         repo = repository;

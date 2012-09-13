@@ -15,8 +15,6 @@
  */
 package com.github.mobile.ui.repo;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 import static com.github.mobile.util.TypefaceUtils.ICON_FORK;
 import static com.github.mobile.util.TypefaceUtils.ICON_MIRROR_PRIVATE;
 import static com.github.mobile.util.TypefaceUtils.ICON_MIRROR_PUBLIC;
@@ -25,27 +23,15 @@ import static com.github.mobile.util.TypefaceUtils.ICON_PUBLIC;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 
-import com.github.mobile.ui.ItemListAdapter;
-import com.github.mobile.ui.ItemView;
-
-import java.text.NumberFormat;
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.github.kevinsawicki.wishlist.ViewUtils;
 
 /**
  * Adapter for a list of repositories
  *
- * @param <I>
- *            item class
  * @param <V>
- *            view class
  */
-public abstract class RepositoryListAdapter<I, V extends ItemView> extends
-        ItemListAdapter<I, V> {
-
-    /**
-     * Number formatter
-     */
-    protected static final NumberFormat FORMAT = NumberFormat
-            .getIntegerInstance();
+public abstract class RepositoryListAdapter<V> extends SingleTypeAdapter<V> {
 
     /**
      * Create list adapter
@@ -55,24 +41,15 @@ public abstract class RepositoryListAdapter<I, V extends ItemView> extends
      * @param elements
      */
     public RepositoryListAdapter(int viewId, LayoutInflater inflater,
-            I[] elements) {
-        super(viewId, inflater, elements);
-    }
+            Object[] elements) {
+        super(inflater, viewId);
 
-    /**
-     * Create list adapter
-     *
-     * @param viewId
-     * @param inflater
-     */
-    public RepositoryListAdapter(int viewId, LayoutInflater inflater) {
-        super(viewId, inflater);
+        setItems(elements);
     }
 
     /**
      * Update repository details
      *
-     * @param view
      * @param description
      * @param language
      * @param watchers
@@ -81,37 +58,35 @@ public abstract class RepositoryListAdapter<I, V extends ItemView> extends
      * @param isFork
      * @param mirrorUrl
      */
-    protected void updateDetails(final RepositoryItemView view,
-            final String description, final String language,
-            final int watchers, final int forks, final boolean isPrivate,
-            final boolean isFork, final String mirrorUrl) {
+    protected void updateDetails(final String description,
+            final String language, final int watchers, final int forks,
+            final boolean isPrivate, final boolean isFork,
+            final String mirrorUrl) {
         if (TextUtils.isEmpty(mirrorUrl))
             if (isPrivate)
-                view.repoIcon.setText(ICON_PRIVATE);
+                setText(0, ICON_PRIVATE);
             else if (isFork)
-                view.repoIcon.setText(ICON_FORK);
+                setText(0, ICON_FORK);
             else
-                view.repoIcon.setText(ICON_PUBLIC);
+                setText(0, ICON_PUBLIC);
         else {
             if (isPrivate)
-                view.repoIcon.setText(ICON_MIRROR_PRIVATE);
+                setText(0, ICON_MIRROR_PRIVATE);
             else
-                view.repoIcon.setText(ICON_MIRROR_PUBLIC);
+                setText(0, ICON_MIRROR_PUBLIC);
         }
 
-        if (!TextUtils.isEmpty(description)) {
-            view.repoDescription.setText(description);
-            view.repoDescription.setVisibility(VISIBLE);
-        } else
-            view.repoDescription.setVisibility(GONE);
+        if (!TextUtils.isEmpty(description))
+            ViewUtils.setGone(setText(1, description), false);
+        else
+            setGone(1, true);
 
-        if (!TextUtils.isEmpty(language)) {
-            view.language.setText(language);
-            view.language.setVisibility(VISIBLE);
-        } else
-            view.language.setVisibility(GONE);
+        if (!TextUtils.isEmpty(language))
+            ViewUtils.setGone(setText(2, language), false);
+        else
+            setGone(2, true);
 
-        view.watchers.setText(FORMAT.format(watchers));
-        view.forks.setText(FORMAT.format(forks));
+        setNumber(3, watchers);
+        setNumber(4, forks);
     }
 }

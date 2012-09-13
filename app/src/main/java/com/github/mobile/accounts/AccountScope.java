@@ -67,7 +67,10 @@ public class AccountScope extends ScopeBase {
     public void enterWith(final Account account,
             final AccountManager accountManager) {
         enterWith(new GitHubAccount(account.name,
-                accountManager.getPassword(account)));
+                accountManager.getPassword(account),
+                null)); // Need to turn this null into a token
+                        // However the account.getAuthToken methods requires context.
+                        // Is there a "Guice way" of doing this?
     }
 
     /**

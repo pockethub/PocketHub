@@ -211,7 +211,6 @@
     <string name="authenticator_conflict_message">En annan installerad App är redan konfigurerad för GitHub autentisering. \n\nDu måste ta bort den andra appen från konto och synk inställningarna och avinstallera den innan GitHub appen kan användas.</string>
     <string name="opening_repository">Öppnar {0}…</string>
     <string name="commit_compare_title">Jämför Commit</string>
-    <string name="parent_commit">commit till förälder</string>
     <string name="commit_prefix">Commit\u0020</string>
     <string name="parent_prefix">Förälder\u0020</string>
     <string name="authored">skriven av</string>

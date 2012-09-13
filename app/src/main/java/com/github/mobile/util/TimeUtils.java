@@ -15,6 +15,9 @@
  */
 package com.github.mobile.util;
 
+import static android.text.format.DateUtils.FORMAT_NUMERIC_DATE;
+import static android.text.format.DateUtils.FORMAT_SHOW_DATE;
+import static android.text.format.DateUtils.FORMAT_SHOW_YEAR;
 import static android.text.format.DateUtils.MINUTE_IN_MILLIS;
 import android.text.format.DateUtils;
 
@@ -35,7 +38,8 @@ public class TimeUtils {
         long now = System.currentTimeMillis();
         if (Math.abs(now - date.getTime()) > 60000)
             return DateUtils.getRelativeTimeSpanString(date.getTime(), now,
-                    MINUTE_IN_MILLIS);
+                    MINUTE_IN_MILLIS, FORMAT_SHOW_DATE | FORMAT_SHOW_YEAR
+                            | FORMAT_NUMERIC_DATE);
         else
             return "just now";
     }

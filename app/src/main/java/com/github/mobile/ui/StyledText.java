@@ -22,6 +22,9 @@ import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
+import android.text.style.URLSpan;
+import android.view.View;
+import android.view.View.OnClickListener;
 
 import com.github.mobile.util.TimeUtils;
 
@@ -134,13 +137,51 @@ public class StyledText extends SpannableStringBuilder {
     }
 
     /**
+     * Append text as URL
+     *
+     * @param text
+     * @param listener
+     * @return this text
+     */
+    public StyledText url(final CharSequence text,
+            final OnClickListener listener) {
+        return append(text, new URLSpan(text.toString()) {
+
+            @Override
+            public void onClick(View widget) {
+                listener.onClick(widget);
+            }
+        });
+    }
+
+    /**
+     * Append text as URL
+     *
+     * @param text
+     * @return this text
+     */
+    public StyledText url(final CharSequence text) {
+        return append(text, new URLSpan(text.toString()));
+    }
+
+    /**
      * Append given date in relative time format
      *
      * @param date
      * @return this text
      */
     public StyledText append(final Date date) {
-        append(TimeUtils.getRelativeTime(date));
+        final CharSequence time = TimeUtils.getRelativeTime(date);
+        // Un-capitalize time string if there is already a prefix.
+        // So you get "opened in 5 days" instead of "opened In 5 days".
+        final int timeLength = time.length();
+        if (length() > 0 && timeLength > 0
+                && Character.isUpperCase(time.charAt(0))) {
+            append(time.subSequence(0, 1).toString().toLowerCase());
+            append(time.subSequence(1, timeLength));
+        } else
+            append(time);
+
         return this;
     }
 }

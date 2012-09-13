@@ -36,6 +36,7 @@ import com.actionbarsherlock.R.menu;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
@@ -45,8 +46,6 @@ import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.core.issue.IssuePager;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.persistence.AccountDataManager;
-import com.github.mobile.ui.ItemListAdapter;
-import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.PagedItemFragment;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
@@ -106,8 +105,6 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setHasOptionsMenu(true);
-
         if (filter == null)
             filter = new IssueFilter(repository);
     }
@@ -133,7 +130,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     protected void configureList(Activity activity, ListView listView) {
         super.configureList(activity, listView);
 
-        getListAdapter().addHeader(filterHeader, null, false);
+        getListAdapter().addHeader(filterHeader, filter, true);
     }
 
     private void updateFilterSummary() {
@@ -174,9 +171,14 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        startActivityForResult(
-                IssuesViewActivity.createIntent(items, repository, position
-                        - getListAdapter().getHeadersCount()), ISSUE_VIEW);
+        if (position == 0)
+            startActivityForResult(
+                    EditIssuesFilterActivity.createIntent(filter),
+                    ISSUE_FILTER_EDIT);
+        else
+            startActivityForResult(
+                    IssuesViewActivity.createIntent(items, repository, position
+                            - getListAdapter().getHeadersCount()), ISSUE_VIEW);
     }
 
     @Override
@@ -232,7 +234,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
         }
 
         if (requestCode == ISSUE_VIEW) {
-            getListAdapter().getWrappedAdapter().notifyDataSetChanged();
+            notifyDataSetChanged();
             forceRefresh();
             return;
         }
@@ -272,8 +274,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     }
 
     @Override
-    protected ItemListAdapter<Issue, ? extends ItemView> createAdapter(
-            List<Issue> items) {
+    protected SingleTypeAdapter<Issue> createAdapter(List<Issue> items) {
         return new RepositoryIssueListAdapter(
                 getActivity().getLayoutInflater(),
                 items.toArray(new Issue[items.size()]), avatars);
