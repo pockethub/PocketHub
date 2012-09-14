@@ -134,9 +134,6 @@
     <string name="milestone_prefix">Jalon\u00a0:</string>
     <string name="edit_milestone">Modifier le jalon</string>
     <string name="edit_assignee">Modifier l\'assigné</string>
-    <string name="my_gists_tab">Les miens</string>
-    <string name="starred_gists_tab">Favoris</string>
-    <string name="all_gists_tab">Tous</string>
     <string name="description">Description</string>
     <string name="gist_description_hint">Gist créé sur Android</string>
     <string name="title">Titre</string>
@@ -228,5 +225,25 @@
     <string name="enable_wrapping">Activer la coupure</string>
     <string name="disable_wrapping">Désactiver la coupure</string>
     <string name="code">Code</string>
+
+    <!-- Tab titles, should be as short as possible -->
+    <string name="tab_repositories">repositories</string>
+    <string name="tab_news">nouvelles</string>
+    <string name="tab_following_self">abonnements</string>
+    <string name="tab_followers_self">abonnés</string>
+    <string name="tab_following">abonnements</string>
+    <string name="tab_followers">abonnés</string>
+    <string name="tab_members">membres</string>
+    <string name="tab_code">code</string>
+    <string name="tab_commits">commits</string>
+    <string name="tab_issues">tickets</string>
+    <string name="tab_watched">suivis</string>
+    <string name="tab_assigned">assignés</string>
+    <string name="tab_created">créés</string>
+    <string name="tab_mentioned">mentionnés</string>
+    <string name="tab_mine">miens</string>
+    <string name="tab_starred">favoris</string>
+    <string name="tab_all">tous</string>
+    <!--  -->
 
 </resources>
