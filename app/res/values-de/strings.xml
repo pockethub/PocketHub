@@ -231,7 +231,6 @@
     <string name="tab_following">Folgt</string>
     <string name="tab_followers">Anhänger</string>
     <string name="tab_members">Mitglieder</string>
-    <string name="tab_news">Neuigkeiten</string>
     <string name="tab_code">Code</string>
     <string name="tab_commits">Commits</string>
     <string name="tab_issues">Probleme</string>
