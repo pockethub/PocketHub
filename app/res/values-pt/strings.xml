@@ -17,7 +17,7 @@
 <resources>
 
     <!-- Mensagens de erro -->
-    <string name="error_orgs_load">O carregamento das contas e &amp; organizações falhou</string>
+    <string name="error_orgs_load">O carregamento das contas e organizações falhou</string>
     <string name="error_issues_load">O carregamento dos incidentes falhou</string>
     <string name="error_repos_load">O carregamento dos repositórios falhou</string>
     <string name="error_repo_load">O carregamento do repositório falhou</string>
