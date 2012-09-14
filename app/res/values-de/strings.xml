@@ -226,4 +226,25 @@
     <string name="disable_wrapping">Zeilenumbruch deaktivieren</string>
     <string name="code">Code</string>
 
+    <!-- Tab titles, should be as short as possible -->
+    <string name="tab_repositories">Repositories</string>
+    <string name="tab_news">Neuigkeiten</string>
+    <string name="tab_following_self">Ich folge</string>
+    <string name="tab_followers_self">Anhänger</string>
+    <string name="tab_following">Folgt</string>
+    <string name="tab_followers">Anhänger</string>
+    <string name="tab_members">Mitglieder</string>
+    <string name="tab_news">Neuigkeiten</string>
+    <string name="tab_code">Code</string>
+    <string name="tab_commits">Commits</string>
+    <string name="tab_issues">Probleme</string>
+    <string name="tab_watched">beobachtet</string>
+    <string name="tab_assigned">zugewiesen</string>
+    <string name="tab_created">erstellt</string>
+    <string name="tab_mentioned">erwähnt</string>
+    <string name="tab_mine">eigene</string>
+    <string name="tab_starred">favoriten</string>
+    <string name="tab_all">alle</string>
+    <!--  -->
+
 </resources>
