@@ -84,7 +84,6 @@
     <string name="issues">Frågor</string>
     <string name="gists">Gists</string>
     <string name="commits">Commits</string>
-    <string name="dashboard_issues">Frågor</string> <!-- Dashboard -->
     <string name="find_repositories">Hitta Arkiv</string>
     <string name="find_issues">Hitta Frågor</string>
     <string name="search_title">Sök…</string>
@@ -110,10 +109,6 @@
     <string name="comment">Kommentera</string>
     <string name="delete">Ta bort</string>
     <string name="refresh">Uppdatera</string>
-    <string name="dashboard_watched">Iakttagen</string>
-    <string name="dashboard_assigned">Tilldelad</string>
-    <string name="dashboard_created">Skapade</string>
-    <string name="dashboard_mentioned">Nämnd</string>
     <string name="dashboard_issues_title">Frågor</string> <!-- Dashboard -->
     <string name="bookmarks">Bokmärken</string>
     <string name="gists_title">Gists</string>
@@ -129,9 +124,6 @@
     <string name="milestone_prefix">Milstolpe:</string>
     <string name="edit_milestone">Ändra Milstolpe</string>
     <string name="edit_assignee">Ändra Förvärvaren</string>
-    <string name="my_gists_tab">Min</string>
-    <string name="starred_gists_tab">Markerade</string>
-    <string name="all_gists_tab">Alla</string>
     <string name="description">Beskrivning</string>
     <string name="gist_description_hint">Android Skapad Gist</string>
     <string name="title">Titel</string>

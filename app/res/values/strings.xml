@@ -88,7 +88,6 @@
     <string name="issues">Issues</string>
     <string name="gists">Gists</string>
     <string name="commits">Commits</string>
-    <string name="dashboard_issues">Issues Dashboard</string>
     <string name="find_repositories">Find Repositories</string>
     <string name="find_issues">Find Issues</string>
     <string name="search_title">Search…</string>
@@ -114,10 +113,6 @@
     <string name="comment">Comment</string>
     <string name="delete">Delete</string>
     <string name="refresh">Refresh</string>
-    <string name="dashboard_watched">Watched</string>
-    <string name="dashboard_assigned">Assigned</string>
-    <string name="dashboard_created">Created</string>
-    <string name="dashboard_mentioned">Mentioned</string>
     <string name="dashboard_issues_title">Issue Dashboard</string>
     <string name="bookmarks">Bookmarks</string>
     <string name="gists_title">Gists</string>

@@ -85,7 +85,6 @@
     <string name="issues">Sorunlar</string>
     <string name="gists">Gist\'ler</string>
     <string name="commits">Onaylamalar</string>
-    <string name="dashboard_issues">Sorun Kontrol Paneli</string>
     <string name="find_repositories">Depo Bul</string>
     <string name="find_issues">Sorun Bul</string>
     <string name="search_title">Ara…</string>
@@ -111,10 +110,6 @@
     <string name="comment">Yorum</string>
     <string name="delete">Sil</string>
     <string name="refresh">Yenile</string>
-    <string name="dashboard_watched">İzlendi</string>
-    <string name="dashboard_assigned">Atandı</string>
-    <string name="dashboard_created">Oluşturuldu</string>
-    <string name="dashboard_mentioned">Bahsedildi</string>
     <string name="dashboard_issues_title">Sorun Kontrol Paneli</string>
     <string name="bookmarks">Yer İmleri</string>
     <string name="gists_title">Gist\'ler</string>
@@ -131,9 +126,6 @@
     <string name="milestone_prefix">Kilometre Taşı</string>
     <string name="edit_milestone">Kilometre Taşı Düzenle</string>
     <string name="edit_assignee">Atanan Düzenle</string>
-    <string name="my_gists_tab">Benimkiler</string>
-    <string name="starred_gists_tab">Yıldızlılar</string>
-    <string name="all_gists_tab">Tümü</string>
     <string name="description">Tanım</string>
     <string name="gist_description_hint">Android Gist oluşturdu</string>
     <string name="title">Başlık</string>

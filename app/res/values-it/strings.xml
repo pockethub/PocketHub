@@ -85,7 +85,6 @@
     <string name="issues">Segnalazioni</string>
     <string name="gists">Gists</string>
     <string name="commits">Commits</string>
-    <string name="dashboard_issues">Dashboard Segnalazioni</string>
     <string name="find_repositories">Cerca Repository</string>
     <string name="find_issues">Cerca Segnalazioni</string>
     <string name="search_title">Ricerca in corso…</string>
@@ -111,10 +110,6 @@
     <string name="comment">Commento</string>
     <string name="delete">Cancella</string>
     <string name="refresh">Ricarica</string>
-    <string name="dashboard_watched">Osservato</string>
-    <string name="dashboard_assigned">Assegnato</string>
-    <string name="dashboard_created">Creato</string>
-    <string name="dashboard_mentioned">Menzionato</string>
     <string name="dashboard_issues_title">Dashboard Segnalazioni</string>
     <string name="bookmarks">Segnalibri</string>
     <string name="gists_title">Gist</string>
@@ -131,9 +126,6 @@
     <string name="milestone_prefix">Milestone:</string>
     <string name="edit_milestone">Modifica Milestone</string>
     <string name="edit_assignee">Modifica Assegnatario</string>
-    <string name="my_gists_tab">Miei</string>
-    <string name="starred_gists_tab">Preferiti</string>
-    <string name="all_gists_tab">Tutti</string>
     <string name="description">Descrizione</string>
     <string name="gist_description_hint">Gist creato in Android</string>
     <string name="title">Titolo</string>

@@ -88,7 +88,6 @@
     <string name="issues">Tickets</string>
     <string name="gists">Gists</string>
     <string name="commits">Commits</string>
-    <string name="dashboard_issues">Aperçu des tickets</string>
     <string name="find_repositories">Trouver des dépôts</string>
     <string name="find_issues">Trouver des tickets</string>
     <string name="search_title">Chercher…</string>
@@ -114,10 +113,6 @@
     <string name="comment">Commenter</string>
     <string name="delete">Supprimer</string>
     <string name="refresh">Rafraîchir</string>
-    <string name="dashboard_watched">Suivis</string>
-    <string name="dashboard_assigned">Assignés</string>
-    <string name="dashboard_created">Créés</string>
-    <string name="dashboard_mentioned">Mentionnés</string>
     <string name="dashboard_issues_title">Aperçu des tickets</string>
     <string name="bookmarks">Favoris</string>
     <string name="gists_title">Gists</string>

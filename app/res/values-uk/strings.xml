@@ -85,7 +85,6 @@
     <string name="issues">Задачі</string>
     <string name="gists">Gists</string>
     <string name="commits">Коміти</string>
-    <string name="dashboard_issues">Дошка завдань</string>
     <string name="find_repositories">Знайти репозиторії</string>
     <string name="find_issues">Знайти задачі</string>
     <string name="search_title">Пошук…</string>
@@ -111,10 +110,6 @@
     <string name="comment">Коментар</string>
     <string name="delete">Видалити</string>
     <string name="refresh">Оновити</string>
-    <string name="dashboard_watched">Підписки</string>
-    <string name="dashboard_assigned">Призначені</string>
-    <string name="dashboard_created">Створені</string>
-    <string name="dashboard_mentioned">Згаданий</string>
     <string name="dashboard_issues_title">Дошка завдань</string>
     <string name="bookmarks">Закладки</string>
     <string name="gists_title">Gists</string>
@@ -131,9 +126,6 @@
     <string name="milestone_prefix">Етап:</string>
     <string name="edit_milestone">Редагувати етап</string>
     <string name="edit_assignee">Редагувати відповідального</string>
-    <string name="my_gists_tab">Мої</string>
-    <string name="starred_gists_tab">Улюблені</string>
-    <string name="all_gists_tab">Всі</string>
     <string name="description">Опис</string>
     <string name="gist_description_hint">Gist створений на Android</string>
     <string name="title">Заголовок</string>

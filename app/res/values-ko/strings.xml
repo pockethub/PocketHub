@@ -78,7 +78,6 @@
     <string name="news">소식</string>
     <string name="issues">이슈</string>
     <string name="gists">Gists</string>
-    <string name="dashboard_issues">이슈 대쉬보드</string>
     <string name="find_repositories">저장소 찾기</string>
     <string name="find_issues">이슈 찾기</string>
     <string name="search_title">검색…</string>
@@ -104,10 +103,6 @@
     <string name="comment">댓글</string>
     <string name="delete">삭제</string>
     <string name="refresh">새로고침</string>
-    <string name="dashboard_watched">감시중</string>
-    <string name="dashboard_assigned">Assigned</string>
-    <string name="dashboard_created">생성한것</string>
-    <string name="dashboard_mentioned">Mentioned</string>
     <string name="dashboard_issues_title">이슈 대쉬보드</string>
     <string name="bookmarks">책갈피</string>
     <string name="gists_title">Gists</string>
@@ -123,9 +118,6 @@
     <string name="milestone_prefix">마일스톤:</string>
     <string name="edit_milestone">마일스톤 수정</string>
     <string name="edit_assignee">담당자 수정</string>
-    <string name="my_gists_tab">내 것</string>
-    <string name="starred_gists_tab">즐겨찾기</string>
-    <string name="all_gists_tab">전체</string>
     <string name="description">설명</string>
     <string name="gist_description_hint">안드로이드 앱을 통해 생성한 Gist</string>
     <string name="title">제목</string>

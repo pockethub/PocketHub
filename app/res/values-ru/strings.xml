@@ -78,7 +78,6 @@
     <string name="news">Новости</string>
     <string name="issues">Задачи</string>
     <string name="gists">Gists</string>
-    <string name="dashboard_issues">Доска задач</string>
     <string name="find_repositories">Поиск хранилищ</string>
     <string name="find_issues">Поиск задач</string>
     <string name="search_title">Поиск…</string>
@@ -104,10 +103,6 @@
     <string name="comment">Комментарий</string>
     <string name="delete">Удалить</string>
     <string name="refresh">Обновить</string>
-    <string name="dashboard_watched">Подписки</string>
-    <string name="dashboard_assigned">Ответственные</string>
-    <string name="dashboard_created">Созданые</string>
-    <string name="dashboard_mentioned">Упомянутые</string>
     <string name="dashboard_issues_title">Панель задач</string>
     <string name="bookmarks">Закладки</string>
     <string name="gists_title">Gists</string>
@@ -123,9 +118,6 @@
     <string name="milestone_prefix">Цель:</string>
     <string name="edit_milestone">Изменить цель</string>
     <string name="edit_assignee">Назначить ответственного</string>
-    <string name="my_gists_tab">Мои</string>
-    <string name="starred_gists_tab">Любимые</string>
-    <string name="all_gists_tab">Все</string>
     <string name="description">Описание</string>
     <string name="gist_description_hint">Gist созданные на Android</string>
     <string name="title">Заголовок</string>

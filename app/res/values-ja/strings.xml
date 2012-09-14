@@ -78,7 +78,6 @@
     <string name="news">ニュース</string>
     <string name="issues">イシュー</string>
     <string name="gists">Gists</string>
-    <string name="dashboard_issues">イシュー ダッシュボードd</string>
     <string name="find_repositories">レポジトリを検索</string>
     <string name="find_issues">イシューを検索</string>
     <string name="search_title">検索…</string>
@@ -104,10 +103,6 @@
     <string name="comment">コメント</string>
     <string name="delete">削除</string>
     <string name="refresh">更新</string>
-    <string name="dashboard_watched">ウォッチ中</string>
-    <string name="dashboard_assigned">参加中</string>
-    <string name="dashboard_created">自作</string>
-    <string name="dashboard_mentioned">意見交換など</string>
     <string name="dashboard_issues_title">イシュー ダッシュボード</string>
     <string name="bookmarks">ブックマーク</string>
     <string name="gists_title">Gists</string>
@@ -123,9 +118,6 @@
     <string name="milestone_prefix">マイルストーン:</string>
     <string name="edit_milestone">マイルストーンを編集</string>
     <string name="edit_assignee">管理者を編集</string>
-    <string name="my_gists_tab">自作</string>
-    <string name="starred_gists_tab">スター付き</string>
-    <string name="all_gists_tab">すべて</string>
     <string name="description">説明</string>
     <string name="gist_description_hint">Android 作成 Gist</string>
     <string name="title">タイトル</string>

@@ -85,7 +85,6 @@
     <string name="issues">Hibajegyek</string>
     <string name="gists">Gist-ek</string>
     <string name="commits">Commitok</string>
-    <string name="dashboard_issues">Hibajegyek listája</string>
     <string name="find_repositories">Tárolók keresése</string>
     <string name="find_issues">Hibajegyek keresése</string>
     <string name="search_title">Keresés…</string>
@@ -111,10 +110,6 @@
     <string name="comment">Hozzászólás</string>
     <string name="delete">Törlés</string>
     <string name="refresh">Frissítés</string>
-    <string name="dashboard_watched">Megfigyeltek</string>
-    <string name="dashboard_assigned">Kiosztottak</string>
-    <string name="dashboard_created">Általam létrehozottak</string>
-    <string name="dashboard_mentioned">Engem megemlítők</string>
     <string name="dashboard_issues_title">Hibajegyek listája</string>
     <string name="bookmarks">Könyvjelzők</string>
     <string name="gists_title">Gist-ek</string>
@@ -131,9 +126,6 @@
     <string name="milestone_prefix">Mérföldkő:</string>
     <string name="edit_milestone">Mérföldkő szerkesztése</string>
     <string name="edit_assignee">Felelős szerkesztése</string>
-    <string name="my_gists_tab">Sajátjaim</string>
-    <string name="starred_gists_tab">Csillagozottak</string>
-    <string name="all_gists_tab">Mind</string>
     <string name="description">Leírás</string>
     <string name="gist_description_hint">Androidon készített Gist</string>
     <string name="title">Cím</string>

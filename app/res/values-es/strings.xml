@@ -84,7 +84,6 @@
     <string name="issues">Incidencias</string>
     <string name="gists">Gists</string>
     <string name="commits">Commits</string>
-    <string name="dashboard_issues">Panel de Incidencias</string>
     <string name="find_repositories">Buscar Repositorios</string>
     <string name="find_issues">Buscar Incidencias</string>
     <string name="search_title">Buscar…</string>
@@ -110,10 +109,6 @@
     <string name="comment">Comentario</string>
     <string name="delete">Borrar</string>
     <string name="refresh">Recargar</string>
-    <string name="dashboard_watched">Observadas</string>
-    <string name="dashboard_assigned">Asignadas</string>
-    <string name="dashboard_created">Creadas</string>
-    <string name="dashboard_mentioned">Menciones</string>
     <string name="dashboard_issues_title">Panel de Incidencias</string>
     <string name="bookmarks">Marcadores</string>
     <string name="gists_title">Gists</string>
@@ -129,9 +124,6 @@
     <string name="milestone_prefix">Hito:</string>
     <string name="edit_milestone">Editar Hito</string>
     <string name="edit_assignee">Editar Responsable</string>
-    <string name="my_gists_tab">Mios</string>
-    <string name="starred_gists_tab">Destacados</string>
-    <string name="all_gists_tab">Todos</string>
     <string name="description">Descripción</string>
     <string name="gist_description_hint">Gist creado en Android</string>
     <string name="title">Título</string>

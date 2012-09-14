@@ -88,7 +88,6 @@
     <string name="issues">Issues</string>
     <string name="gists">Gisty</string>
     <string name="commits">Commity</string>
-    <string name="dashboard_issues">Issues Panel</string>
     <string name="find_repositories">Nájsť repozitáre</string>
     <string name="find_issues">Nájsť issue</string>
     <string name="search_title">Hľadať…</string>
@@ -114,10 +113,6 @@
     <string name="comment">Komentár</string>
     <string name="delete">Zmazať</string>
     <string name="refresh">Obnoviť</string>
-    <string name="dashboard_watched">Sledované</string>
-    <string name="dashboard_assigned">Priradené</string>
-    <string name="dashboard_created">Vytvorené</string>
-    <string name="dashboard_mentioned">Spomenuté</string>
     <string name="dashboard_issues_title">Prehľad issues</string>
     <string name="bookmarks">Záložky</string>
     <string name="gists_title">Gisty</string>

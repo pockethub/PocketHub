@@ -88,7 +88,6 @@
     <string name="issues">Issues</string>
     <string name="gists">Gists</string>
     <string name="commits">提交</string>
-    <string name="dashboard_issues">Issue 面板</string>
     <string name="find_repositories">查询版本库</string>
     <string name="find_issues">查询 Issue </string>
     <string name="search_title">搜索…</string>
@@ -114,10 +113,6 @@
     <string name="comment">评论</string>
     <string name="delete">删除</string>
     <string name="refresh">刷新</string>
-    <string name="dashboard_watched">我关注的</string>
-    <string name="dashboard_assigned">指派给我的</string>
-    <string name="dashboard_created">我创建的</string>
-    <string name="dashboard_mentioned">提到我的</string>
     <string name="dashboard_issues_title">Issue 面板</string>
     <string name="bookmarks">书签</string>
     <string name="gists_title">Gist 列表</string>
