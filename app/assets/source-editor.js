@@ -167,4 +167,6 @@ function loadEditor() {
 
   if (!config.lineWrapping)
     updateWidth();
+
+  editor.refresh();
 }
