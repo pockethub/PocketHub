@@ -200,6 +200,9 @@ public class AccountUtils {
         if (activity == null)
             throw new IllegalArgumentException("Activity cannot be null");
 
+        if (activity.isFinishing())
+            throw new OperationCanceledException();
+
         Account[] accounts;
         try {
             if (!hasAuthenticator(manager))
