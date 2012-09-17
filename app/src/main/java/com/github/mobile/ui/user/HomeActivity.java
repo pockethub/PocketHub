@@ -216,7 +216,7 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
         if (homeAdapter.isOrgPosition(itemPosition)) {
             homeAdapter.setSelected(itemPosition);
             setOrg(orgs.get(itemPosition));
-        } else {
+        } else if (homeAdapter.getOrgCount() > 0) {
             switch (homeAdapter.getAction(itemPosition)) {
             case ACTION_GISTS:
                 startActivity(new Intent(this, GistsActivity.class));

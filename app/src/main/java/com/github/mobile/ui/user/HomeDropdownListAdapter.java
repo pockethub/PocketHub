@@ -83,7 +83,7 @@ public class HomeDropdownListAdapter extends SingleTypeAdapter<Object> {
      *
      * @return org count
      */
-    private int getOrgCount() {
+    public int getOrgCount() {
         return getCount() - NON_ORG_ITEMS;
     }
 
