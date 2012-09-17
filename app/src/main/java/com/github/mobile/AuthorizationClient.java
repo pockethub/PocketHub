@@ -51,5 +51,7 @@ public class AuthorizationClient extends DefaultClient {
         return true;
       return false;
     }
+
+    //TODO: Need to still implement code to add authorization to accounts
     
 }
