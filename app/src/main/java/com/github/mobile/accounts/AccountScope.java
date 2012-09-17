@@ -17,11 +17,18 @@ package com.github.mobile.accounts;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.accounts.AccountManagerFuture;
+import android.accounts.AuthenticatorException;
+import android.accounts.OperationCanceledException;
+
+import android.os.Bundle;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Key;
 import com.google.inject.Module;
 import com.google.inject.OutOfScopeException;
+
+import java.io.IOException;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -66,11 +73,29 @@ public class AccountScope extends ScopeBase {
      */
     public void enterWith(final Account account,
             final AccountManager accountManager) {
-        enterWith(new GitHubAccount(account.name,
-                accountManager.getPassword(account),
-                null)); // Need to turn this null into a token
-                        // However the account.getAuthToken methods requires context.
-                        // Is there a "Guice way" of doing this?
+        AccountManagerFuture future = 
+                accountManager.getAuthToken(
+                    account,
+                    "accounttype", // AuthTokenType (String)
+                    null, // Options (Bundle)
+                    false, // notifyAuthFailure -- Might need to change this
+                    null, // callback -- null for none
+                    null); // handler -- null for main thread
+        
+        
+        Bundle result = null;
+        String authToken = null;
+        try {
+          result = (Bundle) future.getResult();
+          authToken = result.getString(AccountManager.KEY_AUTHTOKEN);
+        } 
+        catch (AuthenticatorException ae) { }
+        catch (OperationCanceledException oce) { }
+        catch (IOException ioe) { }
+
+        enterWith(new GitHubAccount(account.name, 
+                                    accountManager.getPassword(account),
+                                    authToken));
     }
 
     /**
