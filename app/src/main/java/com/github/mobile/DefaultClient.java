@@ -29,7 +29,7 @@ import org.eclipse.egit.github.core.client.GitHubClient;
  */
 public class DefaultClient extends GitHubClient {
 
-    private static final String USER_AGENT = "GitHubAndroid/1.3";
+    private static final String USER_AGENT = "GitHubAndroid/1.4";
 
     static {
         // Disable http.keepAlive on Froyo and below
