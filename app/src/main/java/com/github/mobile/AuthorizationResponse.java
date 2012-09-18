@@ -21,8 +21,8 @@ import java.util.Map;
 
 public class AuthorizationResponse implements Serializable {
 
-    public static String APP_KEY_URL = "url";
-    public static String APP_KEY_NAME = "name";
+    public static final String APP_KEY_URL = "url";
+    public static final String APP_KEY_NAME = "name";
     
     private String[] scopes;
     private Date createdAt;
