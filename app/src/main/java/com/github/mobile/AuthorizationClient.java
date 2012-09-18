@@ -33,6 +33,14 @@ import static com.github.mobile.AuthorizationResponse.APP_KEY_NAME;
  */
 public class AuthorizationClient extends DefaultClient {
 
+    private final String url = "/authorizations";
+
+    private class AuthorizationRequest {
+      private final String[] scopes = new String[]{"user","repo","repo:status","delete_repo","gist"};
+      private final String note = "Github Android App";
+      private final String note_url = "https://github.com/github/android";
+    }
+
     /**
      * Create client
      */
@@ -42,7 +50,7 @@ public class AuthorizationClient extends DefaultClient {
     }
 
     public AuthorizationResponse[] getAuthorizations() throws IOException {
-        HttpURLConnection request = createGet("/authorizations");
+        HttpURLConnection request = createGet(url);
         return parseJson(request.getInputStream(), AuthorizationResponse[].class);
     }
 
@@ -52,6 +60,9 @@ public class AuthorizationClient extends DefaultClient {
       return false;
     }
 
-    //TODO: Need to still implement code to add authorization to accounts
-    
+    public AuthorizationResponse configureAuthorization() throws IOException {
+      AuthorizationResponse response = post(url, new AuthorizationRequest(), AuthorizationResponse.class);
+      return response;
+    }
+
 }

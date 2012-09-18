@@ -23,12 +23,18 @@ import static com.github.mobile.accounts.LoginActivity.PARAM_AUTHTOKEN_TYPE;
 import static com.github.mobile.accounts.LoginActivity.PARAM_USERNAME;
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+
+import com.github.mobile.AuthorizationClient;
+import com.github.mobile.AuthorizationResponse;
+
+import java.lang.Thread;
 
 class AccountAuthenticator extends AbstractAccountAuthenticator {
 
@@ -75,7 +81,49 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
     public Bundle getAuthToken(AccountAuthenticatorResponse response,
             Account account, String authTokenType, Bundle options)
             throws NetworkErrorException {
-        return null;
+
+        final Bundle bundle = new Bundle();
+
+        if(!authTokenType.equals(ACCOUNT_TYPE)) return bundle;
+
+        AccountManager am = AccountManager.get(context);
+        String username = account.name;
+        String password = am.getPassword(account);
+
+        String authToken = null;
+        // CODE TO GET AUTHORIZATION
+        AuthorizationClient client = new AuthorizationClient(username, password);
+        try {
+          AuthorizationResponse[] auths = client.getAuthorizations();
+          for(AuthorizationResponse ar : auths)
+            if(AuthorizationClient.isAuthorizedForGitHubAndroid(ar))
+              authToken = ar.getToken();
+
+          // Setup authorization for account
+          if(TextUtils.isEmpty(authToken)) {
+            AuthorizationResponse ar = client.configureAuthorization();
+            if(response != null) authToken = ar.getToken();
+          }
+
+          // If couldn't get authToken 
+          if(TextUtils.isEmpty(authToken)) {
+            final Intent intent = new Intent(context, LoginActivity.class);
+            intent.putExtra(PARAM_AUTHTOKEN_TYPE, ACCOUNT_TYPE);
+            intent.putExtra(KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
+            bundle.putParcelable(KEY_INTENT, intent);
+            return bundle;
+          }
+
+          // Assemble and return bundle
+          bundle.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
+          bundle.putString(AccountManager.KEY_ACCOUNT_TYPE, ACCOUNT_TYPE);
+          bundle.putString(AccountManager.KEY_AUTHTOKEN, authToken);
+          
+          // Clear password from account
+          am.clearPassword(account);
+          return bundle;
+        } catch ( Exception e ) { e.printStackTrace(); }
+        return bundle;
     }
 
     @Override
