@@ -17,6 +17,7 @@ package com.github.mobile.accounts;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
 import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
@@ -31,7 +32,10 @@ import com.google.inject.OutOfScopeException;
 import java.io.IOException;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
 
 /**
  * Custom scope that makes an authenticated GitHub account available by
@@ -74,14 +78,7 @@ public class AccountScope extends ScopeBase {
     public void enterWith(final Account account,
             final AccountManager accountManager) {
         AccountManagerFuture future = 
-                accountManager.getAuthToken(
-                    account,
-                    "accounttype", // AuthTokenType (String)
-                    null, // Options (Bundle)
-                    false, // notifyAuthFailure -- Might need to change this
-                    null, // callback -- null for none
-                    null); // handler -- null for main thread
-        
+                accountManager.getAuthToken(account, ACCOUNT_TYPE, null, true, null, null);
         
         Bundle result = null;
         String authToken = null;
@@ -89,9 +86,9 @@ public class AccountScope extends ScopeBase {
           result = (Bundle) future.getResult();
           authToken = result.getString(AccountManager.KEY_AUTHTOKEN);
         } 
-        catch (AuthenticatorException ae) { }
-        catch (OperationCanceledException oce) { }
-        catch (IOException ioe) { }
+        catch (AuthenticatorException ae) { } // Authenticator failed to respond
+        catch (OperationCanceledException oce) { } // User canceled operation
+        catch (IOException ioe) { } // Possible network issues
 
         enterWith(new GitHubAccount(account.name, 
                                     accountManager.getPassword(account),

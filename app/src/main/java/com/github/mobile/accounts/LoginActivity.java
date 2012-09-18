@@ -28,8 +28,6 @@ import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
 import static com.github.mobile.accounts.AccountConstants.PROVIDER_AUTHORITY;
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.accounts.AccountManagerCallback;
-import android.accounts.AccountManagerFuture;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -55,9 +53,6 @@ import android.widget.TextView.OnEditorActionListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.DefaultClient;
-import com.github.mobile.AuthorizationClient;
-import com.github.mobile.AuthorizationResponse;
-//import com.github.mobile.accounts.AuthorizationHelper;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
@@ -140,7 +135,6 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
     private RoboAsyncTask<User> authenticationTask;
 
     private String authTokenType;
-    private String authToken;
 
     private MenuItem loginItem;
 
@@ -285,50 +279,22 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
 
             @Override
             public User call() throws Exception {
-              
-                AuthorizationClient client = new AuthorizationClient(username, password);
-                AuthorizationResponse[] auths = client.getAuthorizations();
-
-                authToken = null;
-
-                for(AuthorizationResponse ar : auths)
-                {
-                  if(AuthorizationClient.isAuthorizedForGitHubAndroid(ar))
-                    authToken = ar.getToken();
-                }
-
-                Log.d(TAG, "AUTHTOKEN::: "+authToken);
-                Log.d(TAG, "REQUESTNEWACCOUNT::: "+requestNewAccount);
-
-                //// Crash if can't get token
-                //if(authToken == null) throw new Exception("No Token");
-              
-                client.setOAuth2Token(authToken);
+                GitHubClient client = new DefaultClient();
+                client.setCredentials(username, password);
                 User user = new UserService(client).getUser();
 
                 Account account = new Account(user.getLogin(), ACCOUNT_TYPE);
-
                 if (requestNewAccount) {
-                    accountManager.addAccount(
-                        ACCOUNT_TYPE,
-                        authTokenType,
-                        null, // Required Features
-                        null, // Account Options
-                        LoginActivity.this,
-                        null, // Callback
-                        null  // Handler ( default: main thread )
-                      );
+                    accountManager
+                            .addAccountExplicitly(account, password, null);
                     configureSyncFor(account);
-                    //accountManager.setAuthToken(account, authTokenType, authToken);
                     try {
-                        // Test to see if organizations will load
                         new AccountLoader(LoginActivity.this).call();
                     } catch (IOException e) {
                         Log.d(TAG, "Exception loading organizations", e);
                     }
-                } else {
-                    accountManager.setAuthToken(account, authTokenType, authToken);
-                }
+                } else
+                    accountManager.setPassword(account, password);
 
                 return user;
             }
@@ -365,8 +331,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
      */
     protected void finishConfirmCredentials(boolean result) {
         final Account account = new Account(username, ACCOUNT_TYPE);
-        //accountManager.setPassword(account, password);
-        accountManager.setAuthToken(account, authTokenType, authToken);
+        accountManager.setPassword(account, password);
 
         final Intent intent = new Intent();
         intent.putExtra(KEY_BOOLEAN_RESULT, result);
@@ -404,7 +369,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
     public void onAuthenticationResult(boolean result) {
         if (result) {
             if (!confirmCredentials)
-                finishLogin(username, (authToken.equals(null) ? password : authToken ));
+                finishLogin(username, password);
             else
                 finishConfirmCredentials(true);
         } else {
