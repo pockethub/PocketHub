@@ -15,6 +15,8 @@
  */
 package com.github.mobile.accounts;
 
+import android.util.Log;
+
 /**
  * GitHub account model
  */
@@ -40,6 +42,7 @@ public class GitHubAccount {
      *
      * @param username
      * @param password
+     * @param authToken
      */
     public GitHubAccount(String username, String password, String authToken) {
         this.username = username;
