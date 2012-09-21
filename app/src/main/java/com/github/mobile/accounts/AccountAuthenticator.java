@@ -19,8 +19,11 @@ import static android.accounts.AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE
 import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 import static android.accounts.AccountManager.KEY_INTENT;
 import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
+import static com.github.mobile.accounts.AccountConstants.ACCOUNT_NAME;
+import static com.github.mobile.accounts.AccountConstants.APP_URL;
 import static com.github.mobile.accounts.LoginActivity.PARAM_AUTHTOKEN_TYPE;
 import static com.github.mobile.accounts.LoginActivity.PARAM_USERNAME;
+import com.github.mobile.DefaultClient;
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -31,12 +34,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.github.mobile.AuthorizationClient;
-import com.github.mobile.AuthorizationResponse;
+import com.google.inject.Inject;
+
+import org.eclipse.egit.github.core.service.OAuthService;
+import org.eclipse.egit.github.core.Authorization;
 
 import java.lang.Thread;
+import java.util.List;
 
 class AccountAuthenticator extends AbstractAccountAuthenticator {
+
+    @Inject 
+    private OAuthService oAuthService;
 
     private Context context;
 
@@ -84,6 +93,11 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
 
         final Bundle bundle = new Bundle();
 
+        if(oAuthService == null) {
+          android.util.Log.d("TREVTEST","\n\n\n\nOAUTH SERVICE IS NULL \n\n\n\n");
+          return bundle;
+        }
+
         if(!authTokenType.equals(ACCOUNT_TYPE)) return bundle;
 
         AccountManager am = AccountManager.get(context);
@@ -92,17 +106,23 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
 
         String authToken = null;
         // CODE TO GET AUTHORIZATION
-        AuthorizationClient client = new AuthorizationClient(username, password);
+        DefaultClient client = new DefaultClient();
+        client.setCredentials(username, password);
         try {
-          AuthorizationResponse[] auths = client.getAuthorizations();
-          for(AuthorizationResponse ar : auths)
-            if(AuthorizationClient.isAuthorizedForGitHubAndroid(ar))
-              authToken = ar.getToken();
+          try {
+            List<Authorization> auths = oAuthService.getAuthorizations();
+            for(Authorization auth : auths)
+              if(auth.getApp().getName().equals(ACCOUNT_NAME))
+                authToken = auth.getToken();
+          } 
+          catch ( NullPointerException npe ) { }
 
           // Setup authorization for account
           if(TextUtils.isEmpty(authToken)) {
-            AuthorizationResponse ar = client.configureAuthorization();
-            if(response != null) authToken = ar.getToken();
+            Authorization auth = oAuthService.createAuthorization(
+                new Authorization().setNote(ACCOUNT_NAME).setUrl(APP_URL)
+            );
+            if(auth != null) authToken = auth.getToken();
           }
 
           // If couldn't get authToken 
