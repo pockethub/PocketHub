@@ -33,6 +33,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import org.eclipse.egit.github.core.service.OAuthService;
 import org.eclipse.egit.github.core.Authorization;
@@ -43,6 +44,8 @@ import java.util.List;
 class AccountAuthenticator extends AbstractAccountAuthenticator {
 
     private Context context;
+
+    private final static String TAG = "GitHubAccountAuthenticator";
 
     public AccountAuthenticator(final Context context) {
         super(context);
@@ -102,13 +105,10 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
 
         // Get authorizations for app if they exist
         try {
-          try {
-            List<Authorization> auths = oAuthService.getAuthorizations();
-            for(Authorization auth : auths)
-              if(auth.getApp().getName().equals(ACCOUNT_NAME))
-                authToken = auth.getToken();
-          } 
-          catch ( NullPointerException npe ) { }
+          List<Authorization> auths = oAuthService.getAuthorizations();
+          for(Authorization auth : auths)
+            if(auth.getApp().getName().equals(ACCOUNT_NAME))
+              authToken = auth.getToken();
 
           // Setup authorization for app if others didn't exist.
           if(TextUtils.isEmpty(authToken)) {
@@ -135,7 +135,7 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
           // Clear password from account
           am.clearPassword(account);
           return bundle;
-        } catch ( Exception e ) { e.printStackTrace(); }
+        } catch ( Exception e ) { Log.e(TAG, e.getMessage()); }
         return bundle;
     }
 
