@@ -34,8 +34,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.google.inject.Inject;
-
 import org.eclipse.egit.github.core.service.OAuthService;
 import org.eclipse.egit.github.core.Authorization;
 
@@ -43,9 +41,6 @@ import java.lang.Thread;
 import java.util.List;
 
 class AccountAuthenticator extends AbstractAccountAuthenticator {
-
-    @Inject 
-    private OAuthService oAuthService;
 
     private Context context;
 
@@ -93,11 +88,6 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
 
         final Bundle bundle = new Bundle();
 
-        if(oAuthService == null) {
-          android.util.Log.d("TREVTEST","\n\n\n\nOAUTH SERVICE IS NULL \n\n\n\n");
-          return bundle;
-        }
-
         if(!authTokenType.equals(ACCOUNT_TYPE)) return bundle;
 
         AccountManager am = AccountManager.get(context);
@@ -105,9 +95,12 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
         String password = am.getPassword(account);
 
         String authToken = null;
-        // CODE TO GET AUTHORIZATION
         DefaultClient client = new DefaultClient();
         client.setCredentials(username, password);
+
+        OAuthService oAuthService = new OAuthService(client);
+
+        // Get authorizations for app if they exist
         try {
           try {
             List<Authorization> auths = oAuthService.getAuthorizations();
@@ -117,7 +110,7 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
           } 
           catch ( NullPointerException npe ) { }
 
-          // Setup authorization for account
+          // Setup authorization for app if others didn't exist.
           if(TextUtils.isEmpty(authToken)) {
             Authorization auth = oAuthService.createAuthorization(
                 new Authorization().setNote(ACCOUNT_NAME).setUrl(APP_URL)

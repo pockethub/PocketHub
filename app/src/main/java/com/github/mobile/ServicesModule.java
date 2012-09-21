@@ -115,9 +115,4 @@ public class ServicesModule extends AbstractModule {
     DataService dataService(GitHubClient client) {
         return new DataService(client);
     }
-
-    @Provides
-    OAuthService oAuthService(GitHubClient client) {
-      return new OAuthService(client);
-    }
 }
