@@ -23,6 +23,7 @@ import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Key;
@@ -45,6 +46,8 @@ public class AccountScope extends ScopeBase {
 
     private static final Key<GitHubAccount> GITHUB_ACCOUNT_KEY = Key
             .get(GitHubAccount.class);
+
+    private static final String TAG = "GitHubAccountScope";
 
     /**
      * Create new module
@@ -86,9 +89,9 @@ public class AccountScope extends ScopeBase {
           result = (Bundle) future.getResult();
           authToken = result.getString(AccountManager.KEY_AUTHTOKEN);
         } 
-        catch (AuthenticatorException ae) { } // Authenticator failed to respond
-        catch (OperationCanceledException oce) { } // User canceled operation
-        catch (IOException ioe) { } // Possible network issues
+        catch (AuthenticatorException ae) { Log.e(TAG, ae.getMessage()); } // Authenticator failed to respond
+        catch (OperationCanceledException oce) { Log.e(TAG, oce.getMessage()); } // User canceled operation
+        catch (IOException ioe) { Log.e(TAG, ioe.getMessage()); } // Possible network issues
 
         enterWith(new GitHubAccount(account.name, 
                                     accountManager.getPassword(account),
