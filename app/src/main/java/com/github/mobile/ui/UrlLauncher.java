@@ -17,9 +17,12 @@ package com.github.mobile.ui;
 
 import static android.content.Intent.ACTION_VIEW;
 import static android.content.Intent.CATEGORY_BROWSABLE;
+import static org.eclipse.egit.github.core.client.IGitHubConstants.HOST_DEFAULT;
+import static org.eclipse.egit.github.core.client.IGitHubConstants.PROTOCOL_HTTPS;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.TextUtils;
 
 import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.core.commit.CommitMatch;
@@ -127,6 +130,13 @@ public class UrlLauncher {
         Uri data = intent.getData();
         if (data == null)
             return null;
+
+        if (TextUtils.isEmpty(data.getHost())
+                && TextUtils.isEmpty(data.getScheme())) {
+            String path = data.getPath();
+            if (!TextUtils.isEmpty(path) && path.charAt(0) == '/')
+                data = Uri.parse(PROTOCOL_HTTPS + "://" + HOST_DEFAULT + path);
+        }
 
         String uri = data.toString();
         int issueNumber = issueMatcher.getNumber(uri);
