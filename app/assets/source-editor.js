@@ -107,6 +107,7 @@ function getMode(extension) {
     break;
   case "project":
   case "classpath":
+  case "xib":
   case "xml":
     mode.mode = "application/xml";
     mode.file = "xml";
