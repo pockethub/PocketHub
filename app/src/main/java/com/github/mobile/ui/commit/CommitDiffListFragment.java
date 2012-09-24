@@ -411,10 +411,7 @@ public class CommitDiffListFragment extends DialogFragment implements
                     public void onClick(View v) {
                         dialog.dismiss();
 
-                        if (!TextUtils.isEmpty(file.getFilename())
-                                && !TextUtils.isEmpty(file.getSha()))
-                            startActivity(CommitFileViewActivity.createIntent(
-                                    repository, commit.getSha(), file));
+                        openFile(file);
                     }
                 });
 
@@ -440,6 +437,13 @@ public class CommitDiffListFragment extends DialogFragment implements
                     }
                 });
         dialog.show();
+    }
+
+    private void openFile(CommitFile file) {
+        if (!TextUtils.isEmpty(file.getFilename())
+                && !TextUtils.isEmpty(file.getSha()))
+            startActivity(CommitFileViewActivity.createIntent(repository, base,
+                    file));
     }
 
     /**
@@ -481,8 +485,7 @@ public class CommitDiffListFragment extends DialogFragment implements
             startActivity(CommitViewActivity.createIntent(repository,
                     ((Commit) item).getSha()));
         else if (item instanceof CommitFile)
-            startActivity(CommitFileViewActivity.createIntent(repository, base,
-                    (CommitFile) item));
+            openFile((CommitFile) item);
         else if (item instanceof CharSequence)
             selectPreviousFile(position, item, parent);
         else if (item instanceof CommitComment)
