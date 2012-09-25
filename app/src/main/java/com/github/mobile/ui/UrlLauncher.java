@@ -132,10 +132,24 @@ public class UrlLauncher {
             return null;
 
         if (TextUtils.isEmpty(data.getHost())
-                && TextUtils.isEmpty(data.getScheme())) {
+                || TextUtils.isEmpty(data.getScheme())) {
+            String host = data.getHost();
+            if (TextUtils.isEmpty(host))
+                host = HOST_DEFAULT;
+            String scheme = data.getScheme();
+            if (TextUtils.isEmpty(scheme))
+                scheme = PROTOCOL_HTTPS;
+            String prefix = scheme + "://" + host;
+
             String path = data.getPath();
-            if (!TextUtils.isEmpty(path) && path.charAt(0) == '/')
-                data = Uri.parse(PROTOCOL_HTTPS + "://" + HOST_DEFAULT + path);
+            if (!TextUtils.isEmpty(path))
+                if (path.charAt(0) == '/')
+                    data = Uri.parse(prefix + path);
+                else
+                    data = Uri.parse(prefix + '/' + path);
+            else
+                data = Uri.parse(prefix);
+            intent.setData(data);
         }
 
         String uri = data.toString();
