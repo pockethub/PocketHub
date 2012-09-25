@@ -48,7 +48,7 @@
     <string name="loading_repositories">正在載入檔案庫…</string>
     <string name="loading_issue">正在載入 Issue…</string>
     <string name="loading_news">正在載入新聞…</string>
-    <string name="loading_followers">正在載入追隨我的用戶列表...</string>
+    <string name="loading_followers">正在載入追隨我的用戶列表…</string>
     <string name="loading_people">正在載入我追隨的用戶列表…</string>
     <string name="loading_gists">正在載入 Gist 列表…</string>
     <string name="loading_collaborators">正在載入協作者…</string>
