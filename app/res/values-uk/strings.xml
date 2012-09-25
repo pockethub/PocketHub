@@ -33,10 +33,12 @@
     <string name="error_milestones_load">Помилка при завантаженні етапів</string>
     <string name="error_labels_load">Помилка при завантаженні тегів</string>
     <string name="error_bookmarks_load">Помилка при завантаженні закладок</string>
-    <string name="error_members_load">Помилка при завантаженні членів</string>
+    <string name="error_members_load">Помилка при завантаженні учасників</string>
     <string name="error_commits_load">Помилка при завантаженні комітів</string>
     <string name="error_commit_load">Помилка при завантаженні коміта</string>
     <string name="error_file_load">Помилка при завантаженні файла</string>
+    <string name="error_code_load">Помилка при завантаженні коду</string>
+    <string name="error_refs_load">Помилка при завантаженні гілок та тегів</string>
     <!--  -->
 
 
@@ -57,6 +59,7 @@
     <string name="loading_labels">Завантаження тегів…</string>
     <string name="loading_commits">Завантаження комітів…</string>
     <string name="loading_files_and_comments">Завантаження файлів та коментарів…</string>
+    <string name="loading_refs">Завантаження гілок та тегів…</string>
     <!--  -->
 
 
@@ -67,7 +70,7 @@
     <string name="no_gists">Немає Gist-ів</string>
     <string name="no_people">Немає профілів</string>
     <string name="no_followers">Немає послідовників</string>
-    <string name="no_members">Немає членів</string>
+    <string name="no_members">Немає учасників</string>
     <string name="no_news">Немає новин</string>
     <string name="no_commits">Немає комітів</string>
     <!--  -->
@@ -138,6 +141,7 @@
     <string name="select_assignee">Відповідальний</string>
     <string name="select_milestone">Етап</string>
     <string name="select_labels">Теги</string>
+    <string name="select_ref">Гілка або тег</string>
     <string name="no_milestone">Не входить до жодного із етапів</string>
     <string name="unassigned">Немає відповідального</string>
     <string name="assigned">відповідальний</string>
@@ -171,7 +175,7 @@
     <string name="following">Підписки</string>
     <string name="followers_self">Послідовники</string>
     <string name="following_self">Підписки</string>
-    <string name="members">Члени</string>
+    <string name="members">Учасники</string>
     <string name="closing_issue">Закриття завдання…</string>
     <string name="reopening_issue">Відкриття завдання…</string>
     <string name="avatar">Аватар</string>
@@ -215,5 +219,26 @@
     <string name="comparing_commits">Порівняння {0} комітів</string>
     <string name="enable_wrapping">Увімкнути перенесення рядків</string>
     <string name="disable_wrapping">Вимкнути перенесення рядків</string>
+    <string name="code">Код</string>
+
+    <!-- Tab titles, should be as short as possible -->
+    <string name="tab_repositories">репозиторії</string>
+    <string name="tab_news">новини</string>
+    <string name="tab_following_self">підписки</string>
+    <string name="tab_followers_self">послідовники</string>
+    <string name="tab_following">підписки</string>
+    <string name="tab_followers">послідовники</string>
+    <string name="tab_members">учасники</string>
+    <string name="tab_code">код</string>
+    <string name="tab_commits">коміти</string>
+    <string name="tab_issues">завдання</string>
+    <string name="tab_watched">слідкую</string>
+    <string name="tab_assigned">відповідальний</string>
+    <string name="tab_created">створені</string>
+    <string name="tab_mentioned">згаданий</string>
+    <string name="tab_mine">мої</string>
+    <string name="tab_starred">улюблені</string>
+    <string name="tab_all">всі</string>
+    <!--  -->
 
 </resources>
