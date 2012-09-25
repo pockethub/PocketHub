@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<resources>
+
+    <!-- Съобщения за грешка -->
+    <string name="error_orgs_load">Грешка при зареждане на профила и организациите</string>
+    <string name="error_issues_load">Грешка при зареждане на заданията</string>
+    <string name="error_repos_load">Грешка при зареждане на хранилищата</string>
+    <string name="error_repo_load">Грешка при зареждане на хранилището</string>
+    <string name="error_gist_load">Грешка при зареждане на Gist</string>
+    <string name="error_news_load">Грешка при зареждане на новините</string>
+    <string name="error_followers_load">Грешка при зареждане на феновете</string>
+    <string name="error_people_load">Грешка при зареждане на хората</string>
+    <string name="error_person_load">Грешка при зареждане на лицето</string>
+    <string name="error_gist_file_load">Грешка при зареждане на съдържанието на Gist</string>
+    <string name="error_gists_load">Грешка при зареждане на наличните Gist</string>
+    <string name="error_issue_load">Грешка при зареждане на заданието</string>
+    <string name="error_collaborators_load">Грешка при зареждане на сътрудниците</string>
+    <string name="error_milestones_load">Грешка при зареждане на етапите</string>
+    <string name="error_labels_load">Грешка при зареждане на етикетите</string>
+    <string name="error_bookmarks_load">Грешка при зареждане на показалците</string>
+    <string name="error_members_load">Грешка при зареждане на членовете</string>
+    <string name="error_commits_load">Грешка при зареждане на промените</string>
+    <string name="error_commit_load">Грешка при зареждане на промяната</string>
+    <string name="error_file_load">Грешка при зареждане на файла</string>
+    <string name="error_code_load">Грешка при зареждане на кода</string>
+    <string name="error_refs_load">Грешка при зареждане на разклоненията и маркерите</string>
+    <!--  -->
+
+
+    <!-- Съобщения за зареждане -->
+    <string name="loading_gist">Зарежда се Gist…</string>
+    <string name="random_gist">Зарежда се произволен Gist…</string>
+    <string name="loading_more_issues">Зареждат се още задания…</string>
+    <string name="loading_issues">Зареждат се заданията…</string>
+    <string name="loading_comments">Зареждат се коментарите…</string>
+    <string name="loading_repositories">Зареждат се хранилищата…</string>
+    <string name="loading_issue">Зарежда се заданието…</string>
+    <string name="loading_news">Зареждат се новините…</string>
+    <string name="loading_followers">Зареждат се феновете…</string>
+    <string name="loading_people">Зареждат се хората…</string>
+    <string name="loading_gists">Зареждат се Gists…</string>
+    <string name="loading_collaborators">Зареждат се сътрудниците…</string>
+    <string name="loading_milestones">Зареждат се етапите…</string>
+    <string name="loading_labels">Зареждат се етикетите…</string>
+    <string name="loading_commits">Зареждат се промените…</string>
+    <string name="loading_files_and_comments">Зареждат се файловете и коментарите…</string>
+    <string name="loading_refs">Зареждат се разклоненията и маркерите…</string>
+    <!--  -->
+
+
+    <!-- Съобщения за липса на съдържание -->
+    <string name="no_bookmarks">Няма показалци</string>
+    <string name="no_repositories">Няма хранилища</string>
+    <string name="no_issues">Няма задания</string>
+    <string name="no_gists">Няма налични Gist</string>
+    <string name="no_people">Няма хора</string>
+    <string name="no_followers">Няма фенове</string>
+    <string name="no_members">Няма членове</string>
+    <string name="no_news">Няма новини</string>
+    <string name="no_commits">Няма промени</string>
+    <!--  -->
+
+
+    <!-- Съобщения за обновяване -->
+    <string name="updating_assignee">Обновяване на изпълнителя…</string>
+    <string name="updating_issue">Обновяване на заданието…</string>
+    <string name="updating_labels">Обновяване на етикетите…</string>
+    <string name="updating_milestone">Обновяване на етапа…</string>
+    <!--  -->
+
+    <string name="app_name">GitHub</string>
+    <string name="news">Новини</string>
+    <string name="issues">Задания</string>
+    <string name="gists">Gists</string>
+    <string name="commits">Промени</string>
+    <string name="find_repositories">Търсене на хранилища</string>
+    <string name="find_issues">Търсене на задания</string>
+    <string name="search_title">Търсене…</string>
+    <string name="clear_search_history">Изтриване на миналите търсения</string>
+    <string name="search_history_cleared">Миналите търсения са изтрити</string>
+    <string name="login_activity_authenticating">Легитимиране…</string>
+    <string name="creating_gist">Създава се нов Gist…</string>
+    <string name="create">Създаване</string>
+    <string name="create_gist">Създаване на Gist</string>
+    <string name="gist_content_hint">puts \'Hello World!\'</string>
+    <string name="make_public">общодостъпен</string>
+    <string name="gist_file_name_hint">file.rb</string>
+    <string name="gist">Gist</string>
+    <string name="comments">Коментари</string>
+    <string name="files">Файлове</string>
+    <string name="open">Отваряне</string>
+    <string name="random">Случаен</string>
+    <string name="file_name">Име на файла</string>
+    <string name="file_content">Съдържание</string>
+    <string name="new_gist">Нов Gist</string>
+    <string name="filter">Филтър</string>
+    <string name="bookmark">Показалец</string>
+    <string name="comment">Добавяне на коментар</string>
+    <string name="delete">Изтриване</string>
+    <string name="refresh">Опресняване</string>
+    <string name="dashboard_issues_title">Табло със задания</string>
+    <string name="bookmarks">Показалци</string>
+    <string name="gists_title">Gists</string>
+    <string name="issue_title">Задание #</string>
+    <string name="pull_request_title">Заявка за промяна #</string>
+    <string name="gist_title">Gist\u0020</string>
+    <string name="filter_issues_title">Филтриране на заданията</string>
+    <string name="create_comment_title">Добавяне на коментар</string>
+    <string name="comment_hint">Напишете коментар</string>
+    <string name="show_more">Още…</string>
+    <string name="repositories">Хранилища</string>
+    <string name="issues_title">Задания</string>
+    <string name="edit_labels">Промяна на етикетите</string>
+    <string name="milestone_prefix">Етап:</string>
+    <string name="edit_milestone">Промяна на етапа</string>
+    <string name="edit_assignee">Промяна на изпълнителя</string>
+    <string name="description">Описание</string>
+    <string name="gist_description_hint">Gist, създаден с Android</string>
+    <string name="title">Заглавие</string>
+    <string name="edit">Редактиране</string>
+    <string name="star">Любим</string>
+    <string name="starring_gist">Отбелязване на този Gist като любим…</string>
+    <string name="unstar">Премахване от любими</string>
+    <string name="unstarring_gist">Премахване на този Gist от любимите…</string>
+    <string name="accounts_label">Accounts</string>
+    <string name="select_assignee">Възлагане</string>
+    <string name="select_milestone">Включване в етап</string>
+    <string name="select_labels">Маркиране с етикети</string>
+    <string name="select_ref">Избиране на разклонение или маркер</string>
+    <string name="no_milestone">Няма етапи</string>
+    <string name="unassigned">Няма изпълнител</string>
+    <string name="assigned">е назначен</string>
+    <string name="no_gists_found">Не е намерен такъв Gist</string>
+    <string name="confirm_gist_delete_title">Потвърдете изтриването</string>
+    <string name="confirm_gist_delete_message">Наистина ли искате да изтриете този Gist?</string>
+    <string name="deleting_gist">Изтрива се Gist…</string>
+    <string name="creating_comment">Добавя се коментар…</string>
+    <string name="confirm_bookmark_delete_message">Наистина ли искате да премахнете този показалец?</string>
+    <string name="issue_dashboard">Табло със задания</string>
+    <string name="new_issue">Ново задание</string>
+    <string name="anonymous">Анонимен</string>
+    <string name="message_filter_saved">Филтърът на заданията е запазаен като показалец</string>
+    <string name="recent">Доскорошни</string>
+    <string name="section_issue_status">Състояние:</string>
+    <string name="status_open">Отворен</string>
+    <string name="status_closed">Приключен</string>
+    <string name="section_issue_assigned">Възложен на:</string>
+    <string name="assignee_anyone">Който и да е</string>
+    <string name="section_issue_milestone">Етап:</string>
+    <string name="none">Няма</string>
+    <string name="section_issue_labels">Етикети:</string>
+    <string name="log_in">Влизане</string>
+    <string name="signup_link">За първи път в GitHub? &lt;a href=\"https://github.com/plans\">Щракнете тук&lt;/a> за записване</string>
+    <string name="connection_failed">Не може да се осъществи връзка с GitHub.</string>
+    <string name="invalid_login_or_password">Моля, въведете коректно име и парола</string>
+    <string name="invalid_password">Моля, въведете коректна парола.</string>
+    <string name="password">Парола</string>
+    <string name="login_or_email">Име или имейл</string>
+    <string name="followers">Фенове</string>
+    <string name="following">Следва</string>
+    <string name="followers_self">Фенове</string>
+    <string name="following_self">Следвате</string>
+    <string name="members">Членове</string>
+    <string name="closing_issue">Заданието се затваря…</string>
+    <string name="reopening_issue">Заданието се връща за доработка…</string>
+    <string name="avatar">Портрет</string>
+    <string name="creating_issue">Заданието се създава…</string>
+    <string name="prefix_created">създаден на\u0020</string>
+    <string name="prefix_updated">обновен на\u0020</string>
+    <string name="prefix_opened">отворено на\u0020</string>
+    <string name="clear">Изчистване</string>
+    <string name="open_issues">Отворени задания</string>
+    <string name="closed_issues">Приключени задания</string>
+    <string name="confirm_bookmark_delete_title">Премахване на показалеца</string>
+    <string name="save">Запис</string>
+    <string name="apply">Прилагане</string>
+    <string name="labels_prefix">Етикети:</string>
+    <string name="assignee">Изпълнител</string>
+    <string name="milestone">Етап</string>
+    <string name="labels">Етикети</string>
+    <string name="issue_confirm_close_message">Наистина ли искате да приключите това задание?</string>
+    <string name="issue_confirm_reopen_message">Наистина ли искате върнете това задание обратно за доработка?</string>
+    <string name="issue_confirm_close_title">Приключване на заданието</string>
+    <string name="issue_confirm_reopen_title">Връщане на заданието за доработка</string>
+    <string name="closed">Приключено</string>
+    <string name="no_description_given">Без описание</string>
+    <string name="close">Приключване</string>
+    <string name="reopen">Връщане за доработка</string>
+    <string name="title_invalid_github_url">Невалиден адрес</string>
+    <string name="message_invalid_github_url">Този адрес не може да бъде зареден:\n{0}</string>
+    <string name="recently_viewed">ПОСЛЕДНО ПОСЕТЕНИ</string>
+    <string name="cancel">Отказ</string>
+    <string name="authenticator_conflict_title">Конфликт между приложенията</string>
+    <string name="authenticator_conflict_message">Друго приложение е вече настроено за удостоверяване към GitHub.\n\nТекущото приложение може да се използва след като премахнете другото приложение от профила си в GitHub и опресните настройките.</string>
+    <string name="opening_repository">Отваряне на {0}…</string>
+    <string name="commit_compare_title">Сравняване на промени</string>
+    <string name="commit_prefix">Промяна\u0020</string>
+    <string name="parent_prefix">Произлязла от\u0020</string>
+    <string name="authored">създадена на</string>
+    <string name="committed">изпратена на</string>
+    <string name="diff_line_message">Какво искаш да направиш?</string>
+    <string name="comment_on_line">Добавяне на коментар към реда</string>
+    <string name="view_entire_file">Показване на целия файл</string>
+    <string name="comparing_commits">Сравняване на {0} промени</string>
+    <string name="enable_wrapping">С пренасяне</string>
+    <string name="disable_wrapping">Без пренасяне</string>
+    <string name="code">Код</string>
+
+    <!-- Етикети на разделите - трябва да са възможно най-кратки -->
+    <string name="tab_repositories">хранилища</string>
+    <string name="tab_news">новини</string>
+    <string name="tab_following_self">следите</string>
+    <string name="tab_followers_self">фенове</string>
+    <string name="tab_following">следи</string>
+    <string name="tab_followers">фенове</string>
+    <string name="tab_members">членове</string>
+    <string name="tab_code">код</string>
+    <string name="tab_commits">промени</string>
+    <string name="tab_issues">задания</string>
+    <string name="tab_watched">наблюдавани</string>
+    <string name="tab_assigned">назначени</string>
+    <string name="tab_created">създадени</string>
+    <string name="tab_mentioned">споменати</string>
+    <string name="tab_mine">мои</string>
+    <string name="tab_starred">любими</string>
+    <string name="tab_all">всички</string>
+    <!--  -->
+
+</resources>
