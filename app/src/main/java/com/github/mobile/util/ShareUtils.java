@@ -42,4 +42,24 @@ public class ShareUtils {
         intent.putExtra(EXTRA_TEXT, body);
         return intent;
     }
+
+    /**
+     * Get body from intent
+     *
+     * @param intent
+     * @return body
+     */
+    public static String getBody(final Intent intent) {
+        return intent != null ? intent.getStringExtra(EXTRA_TEXT) : null;
+    }
+
+    /**
+     * Get subject from intent
+     *
+     * @param intent
+     * @return subject
+     */
+    public static String getSubject(final Intent intent) {
+        return intent != null ? intent.getStringExtra(EXTRA_SUBJECT) : null;
+    }
 }

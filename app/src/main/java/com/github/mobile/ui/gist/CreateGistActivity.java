@@ -15,8 +15,6 @@
  */
 package com.github.mobile.ui.gist;
 
-import static android.content.Intent.EXTRA_SUBJECT;
-import static android.content.Intent.EXTRA_TEXT;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -32,6 +30,7 @@ import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.ui.TextWatcherAdapter;
+import com.github.mobile.util.ShareUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
 import org.eclipse.egit.github.core.Gist;
@@ -67,11 +66,11 @@ public class CreateGistActivity extends RoboSherlockFragmentActivity {
         actionBar.setTitle(string.new_gist);
         actionBar.setIcon(drawable.action_gist);
 
-        String text = getIntent().getStringExtra(EXTRA_TEXT);
+        String text = ShareUtils.getBody(getIntent());
         if (!TextUtils.isEmpty(text))
             contentText.setText(text);
 
-        String subject = getIntent().getStringExtra(EXTRA_SUBJECT);
+        String subject = ShareUtils.getSubject(getIntent());
         if (!TextUtils.isEmpty(subject))
             descriptionText.setText(subject);
 
