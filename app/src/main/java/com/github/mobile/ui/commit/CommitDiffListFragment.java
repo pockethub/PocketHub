@@ -58,6 +58,7 @@ import com.github.mobile.ui.LightAlertDialog;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
+import com.github.mobile.util.ShareUtils;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 
@@ -207,9 +208,18 @@ public class CommitDiffListFragment extends DialogFragment implements
                     CreateCommentActivity.createIntent(repository, base),
                     COMMENT_CREATE);
             return true;
+        case id.m_share:
+            shareCommit();
         default:
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void shareCommit() {
+        String id = repository.generateId();
+        startActivity(ShareUtils.create(
+                "Commit " + CommitUtils.abbreviate(base) + " on " + id,
+                "https://github.com/" + id + "/commit/" + base));
     }
 
     private void refreshCommit() {
