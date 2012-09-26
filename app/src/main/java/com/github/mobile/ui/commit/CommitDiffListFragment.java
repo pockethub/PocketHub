@@ -210,6 +210,7 @@ public class CommitDiffListFragment extends DialogFragment implements
             return true;
         case id.m_share:
             shareCommit();
+            return true;
         default:
             return super.onOptionsItemSelected(item);
         }
