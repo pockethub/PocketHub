@@ -55,6 +55,7 @@ import com.github.mobile.ui.StyledText;
 import com.github.mobile.ui.comment.CommentListAdapter;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
+import com.github.mobile.util.ShareUtils;
 import com.github.mobile.util.ToastUtils;
 import com.github.mobile.util.TypefaceUtils;
 import com.google.inject.Inject;
@@ -260,6 +261,9 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         case id.m_refresh:
             refreshGist();
             return true;
+        case id.m_share:
+            shareGist();
+            return true;
         default:
             return super.onOptionsItemSelected(item);
         }
@@ -285,6 +289,17 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
             }
 
         }.execute();
+    }
+
+    private void shareGist() {
+        StringBuilder subject = new StringBuilder("Gist ");
+        String id = gist.getId();
+        subject.append(id);
+        User user = gist.getUser();
+        if (user != null && !TextUtils.isEmpty(user.getLogin()))
+            subject.append(" by ").append(user.getLogin());
+        startActivity(ShareUtils.create(subject, "https://gist.github.com/"
+                + id));
     }
 
     private void unstarGist() {

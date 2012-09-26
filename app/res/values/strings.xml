@@ -240,5 +240,6 @@
     <string name="tab_starred">starred</string>
     <string name="tab_all">all</string>
     <!--  -->
+    <string name="share">Share</string>
 
 </resources>
