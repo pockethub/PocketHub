@@ -58,6 +58,7 @@ import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.core.issue.FullIssue;
 import com.github.mobile.core.issue.IssueStore;
+import com.github.mobile.core.issue.IssueUtils;
 import com.github.mobile.core.issue.RefreshIssueTask;
 import com.github.mobile.ui.DialogFragment;
 import com.github.mobile.ui.DialogFragmentActivity;
@@ -66,6 +67,7 @@ import com.github.mobile.ui.StyledText;
 import com.github.mobile.ui.comment.CommentListAdapter;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
+import com.github.mobile.util.ShareUtils;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 
@@ -511,6 +513,19 @@ public class IssueFragment extends DialogFragment {
         }
     }
 
+    private void shareIssue() {
+        String id = repositoryId.generateId();
+        if (IssueUtils.isPullRequest(issue))
+            startActivity(ShareUtils.create("Pull Request " + issueNumber
+                    + " on " + id, "https://github.com/" + id + "/pull/"
+                    + issueNumber));
+        else
+            startActivity(ShareUtils
+                    .create("Issue " + issueNumber + " on " + id,
+                            "https://github.com/" + id + "/issues/"
+                                    + issueNumber));
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Don't allow options before issue loads
@@ -529,6 +544,9 @@ public class IssueFragment extends DialogFragment {
             return true;
         case id.m_refresh:
             refreshIssue();
+            return true;
+        case id.m_share:
+            shareIssue();
             return true;
         case id.m_state:
             stateTask.confirm(STATE_OPEN.equals(issue.getState()));
