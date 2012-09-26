@@ -15,6 +15,7 @@
  */
 package com.github.mobile.ui.gist;
 
+import static android.content.Intent.EXTRA_SUBJECT;
 import static android.content.Intent.EXTRA_TEXT;
 import android.os.Bundle;
 import android.text.Editable;
@@ -69,6 +70,10 @@ public class CreateGistActivity extends RoboSherlockFragmentActivity {
         String text = getIntent().getStringExtra(EXTRA_TEXT);
         if (!TextUtils.isEmpty(text))
             contentText.setText(text);
+
+        String subject = getIntent().getStringExtra(EXTRA_SUBJECT);
+        if (!TextUtils.isEmpty(subject))
+            descriptionText.setText(subject);
 
         contentText.addTextChangedListener(new TextWatcherAdapter() {
 
