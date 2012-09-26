@@ -39,6 +39,7 @@ import com.github.mobile.core.code.RefreshBlobTask;
 import com.github.mobile.core.commit.CommitUtils;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.PreferenceUtils;
+import com.github.mobile.util.ShareUtils;
 import com.github.mobile.util.SourceEditor;
 import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockActivity;
@@ -124,7 +125,7 @@ public class CommitFileViewActivity extends RoboSherlockActivity {
 
     @Override
     public boolean onCreateOptionsMenu(final Menu optionsMenu) {
-        getSupportMenuInflater().inflate(menu.code_view, optionsMenu);
+        getSupportMenuInflater().inflate(menu.file_view, optionsMenu);
 
         MenuItem wrapItem = optionsMenu.findItem(id.m_wrap);
         if (PreferenceUtils.getCodePreferences(this).getBoolean(WRAP, false))
@@ -149,9 +150,19 @@ public class CommitFileViewActivity extends RoboSherlockActivity {
             PreferenceUtils.save(PreferenceUtils.getCodePreferences(this)
                     .edit().putBoolean(WRAP, editor.getWrap()));
             return true;
+        case id.m_share:
+            shareFile();
+            return true;
         default:
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void shareFile() {
+        String id = repo.generateId();
+        startActivity(ShareUtils.create(
+                path + " at " + CommitUtils.abbreviate(commit) + " on " + id,
+                "https://github.com/" + id + "/blob/" + commit + '/' + path));
     }
 
     private void loadContent() {

@@ -314,6 +314,6 @@ public class RepositoryCodeFragment extends DialogFragment implements
             setFolder(tree, (Folder) entry);
         else
             startActivity(BranchFileViewActivity.createIntent(repository,
-                    tree.branch, entry.name, entry.entry.getSha()));
+                    tree.branch, entry.entry.getPath(), entry.entry.getSha()));
     }
 }

@@ -36,8 +36,10 @@ import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.core.code.RefreshBlobTask;
+import com.github.mobile.core.commit.CommitUtils;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.PreferenceUtils;
+import com.github.mobile.util.ShareUtils;
 import com.github.mobile.util.SourceEditor;
 import com.github.mobile.util.ToastUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockActivity;
@@ -82,6 +84,8 @@ public class BranchFileViewActivity extends RoboSherlockActivity {
     private String sha;
 
     @InjectExtra(EXTRA_PATH)
+    private String path;
+
     private String file;
 
     @InjectExtra(EXTRA_HEAD)
@@ -104,6 +108,7 @@ public class BranchFileViewActivity extends RoboSherlockActivity {
 
         setContentView(layout.commit_file_view);
 
+        file = CommitUtils.getName(path);
         editor = new SourceEditor(codeView);
         editor.setWrap(PreferenceUtils.getCodePreferences(this).getBoolean(
                 WRAP, false));
@@ -118,7 +123,7 @@ public class BranchFileViewActivity extends RoboSherlockActivity {
 
     @Override
     public boolean onCreateOptionsMenu(final Menu optionsMenu) {
-        getSupportMenuInflater().inflate(menu.code_view, optionsMenu);
+        getSupportMenuInflater().inflate(menu.file_view, optionsMenu);
 
         MenuItem wrapItem = optionsMenu.findItem(id.m_wrap);
         if (PreferenceUtils.getCodePreferences(this).getBoolean(WRAP, false))
@@ -143,9 +148,18 @@ public class BranchFileViewActivity extends RoboSherlockActivity {
             PreferenceUtils.save(PreferenceUtils.getCodePreferences(this)
                     .edit().putBoolean(WRAP, editor.getWrap()));
             return true;
+        case id.m_share:
+            shareFile();
+            return true;
         default:
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void shareFile() {
+        String id = repo.generateId();
+        startActivity(ShareUtils.create(path + " at " + branch + " on " + id,
+                "https://github.com/" + id + "/blob/" + branch + '/' + path));
     }
 
     private void loadContent() {
