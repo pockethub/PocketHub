@@ -17,6 +17,7 @@ package com.github.mobile.ui;
 
 import static android.content.Intent.ACTION_VIEW;
 import static android.content.Intent.CATEGORY_BROWSABLE;
+import static org.eclipse.egit.github.core.event.Event.TYPE_COMMIT_COMMENT;
 import static org.eclipse.egit.github.core.event.Event.TYPE_DOWNLOAD;
 import static org.eclipse.egit.github.core.event.Event.TYPE_PUSH;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R.string;
 import com.github.mobile.core.gist.GistEventMatcher;
 import com.github.mobile.core.issue.IssueEventMatcher;
@@ -44,11 +46,13 @@ import com.google.inject.Inject;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Commit;
+import org.eclipse.egit.github.core.CommitComment;
 import org.eclipse.egit.github.core.Download;
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
+import org.eclipse.egit.github.core.event.CommitCommentPayload;
 import org.eclipse.egit.github.core.event.DownloadPayload;
 import org.eclipse.egit.github.core.event.Event;
 import org.eclipse.egit.github.core.event.PushPayload;
@@ -109,9 +113,16 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
             return;
         }
 
+        if (TYPE_COMMIT_COMMENT.equals(event.getType())) {
+            openCommitComment(event);
+            return;
+        }
+
         Issue issue = issueMatcher.getIssue(event);
         if (issue != null) {
-            viewIssue(issue);
+            Repository repo = RepositoryEventMatcher.getRepository(
+                    event.getRepo(), event.getActor(), event.getOrg());
+            viewIssue(issue, repo);
             return;
         }
 
@@ -145,6 +156,23 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
         startActivity(intent);
     }
 
+    private void openCommitComment(Event event) {
+        Repository repo = RepositoryEventMatcher.getRepository(event.getRepo(),
+                event.getActor(), event.getOrg());
+        if (repo == null)
+            return;
+
+        CommitCommentPayload payload = (CommitCommentPayload) event
+                .getPayload();
+        CommitComment comment = payload.getComment();
+        if (comment == null)
+            return;
+
+        String sha = comment.getCommitId();
+        if (!TextUtils.isEmpty(sha))
+            startActivity(CommitViewActivity.createIntent(repo, sha));
+    }
+
     private void openPush(Event event) {
         Repository repo = RepositoryEventMatcher.getRepository(event.getRepo(),
                 event.getActor(), event.getOrg());
@@ -156,18 +184,18 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
         if (commits == null || commits.isEmpty())
             return;
 
-        String base = commits.get(0).getSha();
-        if (TextUtils.isEmpty(base))
-            return;
-
         if (commits.size() > 1) {
-            String head = commits.get(commits.size() - 1).getSha();
-            if (TextUtils.isEmpty(base) || TextUtils.isEmpty(head))
-                return;
-            startActivity(CommitCompareViewActivity.createIntent(repo, base,
-                    head));
-        } else
-            startActivity(CommitViewActivity.createIntent(repo, base));
+            String base = payload.getBefore();
+            String head = payload.getHead();
+            if (!TextUtils.isEmpty(base) && !TextUtils.isEmpty(head))
+                startActivity(CommitCompareViewActivity.createIntent(repo,
+                        base, head));
+        } else {
+            Commit commit = commits.get(0);
+            String sha = commit != null ? commit.getSha() : null;
+            if (!TextUtils.isEmpty(sha))
+                startActivity(CommitViewActivity.createIntent(repo, sha));
+        }
     }
 
     /**
@@ -193,14 +221,17 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
      * Start an activity to view the given {@link Issue}
      *
      * @param issue
+     * @param repository
      */
-    protected void viewIssue(Issue issue) {
-        startActivity(IssuesViewActivity.createIntent(issue));
+    protected void viewIssue(Issue issue, Repository repository) {
+        if (repository != null)
+            startActivity(IssuesViewActivity.createIntent(issue, repository));
+        else
+            startActivity(IssuesViewActivity.createIntent(issue));
     }
 
     @Override
-    protected ItemListAdapter<Event, ? extends ItemView> createAdapter(
-            List<Event> items) {
+    protected SingleTypeAdapter<Event> createAdapter(List<Event> items) {
         return new NewsListAdapter(getActivity().getLayoutInflater(),
                 items.toArray(new Event[items.size()]), avatars);
     }

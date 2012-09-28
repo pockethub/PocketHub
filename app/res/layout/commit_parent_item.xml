@@ -16,17 +16,15 @@
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/ListItem"
-    android:orientation="vertical" >
+    android:orientation="horizontal"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp" >
 
     <TextView
         android:id="@+id/tv_commit_id"
-        style="@style/ListTitleText"
+        style="@style/SubtitleText"
         android:layout_width="match_parent"
-        android:singleLine="true" />
-
-    <TextView
-        style="@style/ListSubtitleText"
         android:singleLine="true"
-        android:text="@string/parent_commit" />
+        android:textColor="@color/text_link" />
 
 </LinearLayout>

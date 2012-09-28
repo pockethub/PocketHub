@@ -24,11 +24,10 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R.string;
 import com.github.mobile.ThrowableLoader;
-import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
-import com.github.mobile.ui.ItemView;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
@@ -115,7 +114,7 @@ public class SearchIssueListFragment extends ItemListFragment<SearchIssue>
     }
 
     @Override
-    protected ItemListAdapter<SearchIssue, ? extends ItemView> createAdapter(
+    protected SingleTypeAdapter<SearchIssue> createAdapter(
             List<SearchIssue> items) {
         return new SearchIssueListAdapter(getActivity().getLayoutInflater(),
                 items.toArray(new SearchIssue[items.size()]), avatars);

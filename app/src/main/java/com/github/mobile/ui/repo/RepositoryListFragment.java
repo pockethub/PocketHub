@@ -15,6 +15,7 @@
  */
 package com.github.mobile.ui.repo;
 
+import static com.github.mobile.Intents.EXTRA_USER;
 import static java.util.Locale.US;
 import android.app.Activity;
 import android.os.Bundle;
@@ -22,13 +23,12 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R.string;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.HeaderFooterListAdapter;
-import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
-import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.user.OrganizationSelectionListener;
 import com.github.mobile.ui.user.OrganizationSelectionProvider;
 import com.google.inject.Inject;
@@ -54,22 +54,20 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
     private RecentRepositories recentRepos;
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        User org = this.org.get();
+        if (org != null)
+            outState.putSerializable(EXTRA_USER, org);
+    }
+
+    @Override
     protected void configureList(Activity activity, ListView listView) {
         super.configureList(activity, listView);
 
         listView.setDividerHeight(0);
         updateHeaders(items);
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        User currentOrg = ((OrganizationSelectionProvider) activity)
-                .addListener(this);
-        org.set(currentOrg);
-        if (currentOrg != null)
-            recentRepos = new RecentRepositories(activity, currentOrg);
     }
 
     @Override
@@ -90,20 +88,30 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         if (recentRepos != null)
             recentRepos.saveAsync();
 
-        Activity activity = getActivity();
-        if (activity != null && previousOrgId != organization.getId())
-            recentRepos = new RecentRepositories(activity, organization);
-
         // Only hard refresh if view already created and org is changing
-        if (previousOrgId != organization.getId())
+        if (previousOrgId != organization.getId()) {
+            Activity activity = getActivity();
+            if (activity != null)
+                recentRepos = new RecentRepositories(activity, organization);
+
             refreshWithProgress();
+        }
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+        Activity activity = getActivity();
+        User currentOrg = ((OrganizationSelectionProvider) activity)
+                .addListener(this);
+        if (currentOrg == null && savedInstanceState != null)
+            currentOrg = (User) savedInstanceState.getSerializable(EXTRA_USER);
+        org.set(currentOrg);
+        if (currentOrg != null)
+            recentRepos = new RecentRepositories(activity, currentOrg);
 
         setEmptyText(string.no_repositories);
+
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -186,8 +194,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
     }
 
     @Override
-    protected ItemListAdapter<Repository, ? extends ItemView> createAdapter(
-            List<Repository> items) {
+    protected SingleTypeAdapter<Repository> createAdapter(List<Repository> items) {
         return new DefaultRepositoryListAdapter(getActivity()
                 .getLayoutInflater(),
                 items.toArray(new Repository[items.size()]), org);

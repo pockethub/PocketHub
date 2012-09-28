@@ -17,7 +17,6 @@ package com.github.mobile.ui.issue;
 
 import static android.graphics.Color.WHITE;
 import static android.graphics.Typeface.DEFAULT_BOLD;
-import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static java.lang.Integer.MIN_VALUE;
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import static java.util.Locale.US;
@@ -31,12 +30,12 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.PaintDrawable;
 import android.text.style.DynamicDrawableSpan;
-import android.util.TypedValue;
 import android.widget.TextView;
 
 import com.actionbarsherlock.R.drawable;
 import com.github.mobile.R.id;
 import com.github.mobile.ui.StyledText;
+import com.github.mobile.util.ServiceUtils;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -56,11 +55,6 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
     private static final int PADDING_TOP = 8;
 
     private static final int PADDING_BOTTOM = 8;
-
-    private static float getPixels(final Resources resources, final int dp) {
-        return TypedValue.applyDimension(COMPLEX_UNIT_DIP, dp,
-                resources.getDisplayMetrics());
-    }
 
     private static class LabelDrawable extends PaintDrawable {
 
@@ -174,10 +168,13 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
 
     private static void setText(final TextView view, final Label[] labels) {
         final Resources resources = view.getResources();
-        final float paddingTop = getPixels(resources, PADDING_TOP);
-        final float paddingLeft = getPixels(resources, PADDING_LEFT);
-        final float paddingRight = getPixels(resources, PADDING_RIGHT);
-        final float paddingBottom = getPixels(resources, PADDING_BOTTOM);
+        final float paddingTop = ServiceUtils.getPixels(resources, PADDING_TOP);
+        final float paddingLeft = ServiceUtils.getPixels(resources,
+                PADDING_LEFT);
+        final float paddingRight = ServiceUtils.getPixels(resources,
+                PADDING_RIGHT);
+        final float paddingBottom = ServiceUtils.getPixels(resources,
+                PADDING_BOTTOM);
 
         Paint p = new Paint();
         p.setTypeface(DEFAULT_BOLD);

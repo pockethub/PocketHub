@@ -16,19 +16,21 @@
 package com.github.mobile.ui.commit;
 
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
-
+import static com.github.mobile.RequestCodes.COMMIT_VIEW;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.core.ResourcePager;
-import com.github.mobile.ui.ItemListAdapter;
-import com.github.mobile.ui.ItemView;
+import com.github.mobile.core.commit.CommitPager;
+import com.github.mobile.core.commit.CommitStore;
 import com.github.mobile.ui.PagedItemFragment;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
-import com.viewpagerindicator.R.layout;
 
 import java.util.List;
 
@@ -51,11 +53,11 @@ public class CommitListFragment extends PagedItemFragment<RepositoryCommit> {
     @Inject
     protected AvatarLoader avatars;
 
-    /**
-     * Commit service
-     */
     @Inject
-    protected CommitService service;
+    private CommitService service;
+
+    @Inject
+    private CommitStore store;
 
     @InjectExtra(EXTRA_REPOSITORY)
     private Repository repository;
@@ -69,7 +71,7 @@ public class CommitListFragment extends PagedItemFragment<RepositoryCommit> {
 
     @Override
     protected ResourcePager<RepositoryCommit> createPager() {
-        return new ResourcePager<RepositoryCommit>() {
+        return new CommitPager(repository, store) {
 
             private String last;
 
@@ -82,12 +84,8 @@ public class CommitListFragment extends PagedItemFragment<RepositoryCommit> {
                     last = parents.get(0).getSha();
                 else
                     last = null;
-                return super.register(resource);
-            }
 
-            @Override
-            protected Object getId(RepositoryCommit resource) {
-                return resource.getSha();
+                return super.register(resource);
             }
 
             @Override
@@ -115,7 +113,7 @@ public class CommitListFragment extends PagedItemFragment<RepositoryCommit> {
     }
 
     @Override
-    protected ItemListAdapter<RepositoryCommit, ? extends ItemView> createAdapter(
+    protected SingleTypeAdapter<RepositoryCommit> createAdapter(
             List<RepositoryCommit> items) {
         return new CommitListAdapter(layout.commit_item, getActivity()
                 .getLayoutInflater(), items, avatars);
@@ -125,7 +123,17 @@ public class CommitListFragment extends PagedItemFragment<RepositoryCommit> {
     public void onListItemClick(ListView l, View v, int position, long id) {
         Object item = l.getItemAtPosition(position);
         if (item instanceof RepositoryCommit)
-            startActivity(CommitViewActivity.createIntent(repository,
-                    ((RepositoryCommit) item).getSha()));
+            startActivityForResult(CommitViewActivity.createIntent(repository,
+                    position, items), COMMIT_VIEW);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == COMMIT_VIEW) {
+            notifyDataSetChanged();
+            return;
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

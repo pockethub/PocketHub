@@ -15,11 +15,11 @@
  */
 package com.github.mobile.util;
 
-import static android.widget.Toast.LENGTH_LONG;
 import android.app.Activity;
-import android.app.Application;
 import android.text.TextUtils;
 import android.widget.Toast;
+
+import com.github.kevinsawicki.wishlist.Toaster;
 
 import org.eclipse.egit.github.core.client.RequestException;
 
@@ -37,18 +37,7 @@ public class ToastUtils {
      * @param message
      */
     public static void show(final Activity activity, final String message) {
-        if (activity == null)
-            return;
-
-        if (TextUtils.isEmpty(message))
-            return;
-
-        final Application application = activity.getApplication();
-        activity.runOnUiThread(new Runnable() {
-            public void run() {
-                Toast.makeText(application, message, LENGTH_LONG).show();
-            }
-        });
+        Toaster.showLong(activity, message);
     }
 
     /**

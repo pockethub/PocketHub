@@ -28,7 +28,7 @@ import org.eclipse.egit.github.core.User;
 public class UserUriMatcherTest extends AndroidTestCase {
 
     /**
-     * Verity empty URI
+     * Verify empty URI
      */
     public void testEmptyUri() {
         assertNull(UserUriMatcher.getUser(Uri.parse("")));
@@ -45,7 +45,7 @@ public class UserUriMatcherTest extends AndroidTestCase {
     }
 
     /**
-     * Verity URI with name
+     * Verify URI with name
      */
     public void testHttpUriWithName() {
         User user = UserUriMatcher.getUser(Uri
@@ -55,7 +55,7 @@ public class UserUriMatcherTest extends AndroidTestCase {
     }
 
     /**
-     * Verity URI with name
+     * Verify URI with name
      */
     public void testHttpsUriWithName() {
         User user = UserUriMatcher.getUser(Uri
@@ -65,7 +65,7 @@ public class UserUriMatcherTest extends AndroidTestCase {
     }
 
     /**
-     * Verity URI with name
+     * Verify URI with name
      */
     public void testUriWithTrailingSlash() {
         User user = UserUriMatcher.getUser(Uri
@@ -75,7 +75,7 @@ public class UserUriMatcherTest extends AndroidTestCase {
     }
 
     /**
-     * Verity URI with name
+     * Verify URI with name
      */
     public void testUriWithTrailingSlashes() {
         User user = UserUriMatcher.getUser(Uri

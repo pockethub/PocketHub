@@ -124,11 +124,11 @@ public class AvatarLoader {
     /**
      * Get image for user
      *
-     * @param user
+     * @param userId
      * @return image
      */
-    protected BitmapDrawable getImage(final User user) {
-        File avatarFile = new File(avatarDir, Integer.toString(user.getId()));
+    protected BitmapDrawable getImage(final String userId) {
+        File avatarFile = new File(avatarDir, userId);
 
         if (!avatarFile.exists() || avatarFile.length() == 0)
             return null;
@@ -201,7 +201,7 @@ public class AvatarLoader {
             return null;
         }
 
-        File roundedAvatar = new File(avatarDir, userId.toString());
+        File roundedAvatar = new File(avatarDir, userId);
         FileOutputStream output = null;
         try {
             output = new FileOutputStream(roundedAvatar);
@@ -247,14 +247,13 @@ public class AvatarLoader {
             return this;
 
         final User user = userReference.get();
-        if (user == null)
+        final String userId = getId(user);
+        if (userId == null)
             return this;
 
         final String avatarUrl = user.getAvatarUrl();
         if (TextUtils.isEmpty(avatarUrl))
             return this;
-
-        final Integer userId = Integer.valueOf(user.getId());
 
         BitmapDrawable loadedImage = loaded.get(userId);
         if (loadedImage != null) {
@@ -266,17 +265,16 @@ public class AvatarLoader {
 
             @Override
             public BitmapDrawable call() throws Exception {
-                final BitmapDrawable image = getImage(user);
+                final BitmapDrawable image = getImage(userId);
                 if (image != null)
                     return image;
                 else
-                    return fetchAvatar(avatarUrl, userId.toString());
+                    return fetchAvatar(avatarUrl, userId);
             }
 
             @Override
             protected void onSuccess(BitmapDrawable image) throws Exception {
-                final User current = userReference.get();
-                if (current != null && userId.equals(current.getId()))
+                if (userId.equals(getId(userReference.get())))
                     actionBar.setLogo(image);
             }
         }.execute();
@@ -318,6 +316,21 @@ public class AvatarLoader {
         return getAvatarUrl(GravatarUtils.getHash(user.getEmail()));
     }
 
+    private String getId(final User user) {
+        if (user == null)
+            return null;
+
+        int id = user.getId();
+        if (id > 0)
+            return Integer.toString(id);
+
+        String gravatarId = user.getGravatarId();
+        if (!TextUtils.isEmpty(gravatarId))
+            return gravatarId;
+        else
+            return GravatarUtils.getHash(user.getEmail());
+    }
+
     /**
      * Bind view to image at URL
      *
@@ -326,15 +339,13 @@ public class AvatarLoader {
      * @return this helper
      */
     public AvatarLoader bind(final ImageView view, final User user) {
-        if (user == null)
+        final String userId = getId(user);
+        if (userId == null)
             return setImage(loadingAvatar, view);
 
         String avatarUrl = getAvatarUrl(user);
-
         if (TextUtils.isEmpty(avatarUrl))
             return setImage(loadingAvatar, view);
-
-        final Integer userId = Integer.valueOf(user.getId());
 
         BitmapDrawable loadedImage = loaded.get(userId);
         if (loadedImage != null)
@@ -350,11 +361,11 @@ public class AvatarLoader {
                 if (!userId.equals(view.getTag(id.iv_avatar)))
                     return null;
 
-                final BitmapDrawable image = getImage(user);
+                final BitmapDrawable image = getImage(userId);
                 if (image != null)
                     return image;
                 else
-                    return fetchAvatar(loadUrl, userId.toString());
+                    return fetchAvatar(loadUrl, userId);
             }
 
             @Override

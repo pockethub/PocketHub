@@ -17,6 +17,7 @@ package com.github.mobile.ui;
 
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.FROYO;
+import static android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -25,8 +26,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.mobile.R.drawable;
-import com.viewpagerindicator.R.id;
-import com.viewpagerindicator.R.layout;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 
 /**
  * Progress dialog in Holo Light theme
@@ -54,7 +55,7 @@ public class LightProgressDialog extends ProgressDialog {
     public static AlertDialog create(Context context, CharSequence message) {
         if (SDK_INT > FROYO) {
             ProgressDialog dialog;
-            if (SDK_INT >= 14)
+            if (SDK_INT >= ICE_CREAM_SANDWICH)
                 dialog = new LightProgressDialog(context, message);
             else {
                 dialog = new ProgressDialog(context);

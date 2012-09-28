@@ -17,6 +17,8 @@ package com.github.mobile.ui.issue;
 
 import static com.github.mobile.RequestCodes.ISSUE_ASSIGNEE_UPDATE;
 
+import android.accounts.Account;
+
 import com.github.mobile.R.string;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.ui.DialogFragmentActivity;
@@ -92,7 +94,7 @@ public class EditAssigneeTask extends ProgressDialogTask<Issue> {
     }
 
     @Override
-    protected Issue run() throws Exception {
+    protected Issue run(Account account) throws Exception {
         Issue editedIssue = new Issue();
         if (assignee != null)
             editedIssue.setAssignee(assignee);

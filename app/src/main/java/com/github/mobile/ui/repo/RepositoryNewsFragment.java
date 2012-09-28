@@ -60,7 +60,7 @@ public class RepositoryNewsFragment extends NewsFragment {
     }
 
     @Override
-    protected void viewIssue(Issue issue) {
+    protected void viewIssue(Issue issue, Repository repository) {
         startActivity(IssuesViewActivity.createIntent(issue, repo));
     }
 }

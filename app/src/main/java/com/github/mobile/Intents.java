@@ -151,9 +151,19 @@ public class Intents {
     public static final String EXTRA_BASE = INTENT_EXTRA_PREFIX + "BASE";
 
     /**
+     * Base commit names
+     */
+    public static final String EXTRA_BASES = INTENT_EXTRA_PREFIX + "BASES";
+
+    /**
      * Base commit name
      */
     public static final String EXTRA_HEAD = INTENT_EXTRA_PREFIX + "HEAD";
+
+    /**
+     * Handle to a {@link String} path
+     */
+    public static final String EXTRA_PATH = INTENT_EXTRA_PREFIX + "PATH";
 
     /**
      * Resolve the {@link RepositoryId} referenced by the given intent
@@ -301,6 +311,18 @@ public class Intents {
          * @return this builder
          */
         public Builder add(String fieldName, int[] values) {
+            intent.putExtra(fieldName, values);
+            return this;
+        }
+
+        /**
+         * Add extra field data value to intent being built up
+         *
+         * @param fieldName
+         * @param values
+         * @return this builder
+         */
+        public Builder add(String fieldName, boolean[] values) {
             intent.putExtra(fieldName, values);
             return this;
         }

@@ -19,6 +19,7 @@ import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
 import static android.content.DialogInterface.BUTTON_POSITIVE;
 import static android.util.Log.DEBUG;
 import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
+import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerFuture;
@@ -33,6 +34,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.github.mobile.R.string;
@@ -41,8 +43,10 @@ import com.github.mobile.ui.LightAlertDialog;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.egit.github.core.User;
+import org.eclipse.egit.github.core.client.RequestException;
 
 /**
  * Helpers for accessing {@link AccountManager}
@@ -54,6 +58,8 @@ public class AccountUtils {
     private static boolean AUTHENTICATOR_CHECKED;
 
     private static boolean HAS_AUTHENTICATOR;
+
+    private static final AtomicInteger UPDATE_COUNT = new AtomicInteger(0);
 
     private static class AuthenticatorConflictException extends IOException {
 
@@ -138,6 +144,26 @@ public class AccountUtils {
             return new Account[0];
     }
 
+    /**
+     * Get default account where password can be retrieved
+     *
+     * @param context
+     * @return password accessible account or null if none
+     */
+    public static Account getPasswordAccessibleAccount(final Context context) {
+        AccountManager manager = AccountManager.get(context);
+        Account[] accounts = manager.getAccountsByType(ACCOUNT_TYPE);
+        if (accounts == null || accounts.length == 0)
+            return null;
+
+        try {
+            accounts = getPasswordAccessibleAccounts(manager, accounts);
+        } catch (AuthenticatorConflictException e) {
+            return null;
+        }
+        return accounts != null && accounts.length > 0 ? accounts[0] : null;
+    }
+
     private static Account[] getPasswordAccessibleAccounts(
             final AccountManager manager, final Account[] candidates)
             throws AuthenticatorConflictException {
@@ -173,6 +199,9 @@ public class AccountUtils {
 
         if (activity == null)
             throw new IllegalArgumentException("Activity cannot be null");
+
+        if (activity.isFinishing())
+            throw new OperationCanceledException();
 
         Account[] accounts;
         try {
@@ -218,6 +247,52 @@ public class AccountUtils {
     }
 
     /**
+     * Update account
+     *
+     * @param account
+     * @param activity
+     * @return true if account was updated, false otherwise
+     */
+    public static boolean updateAccount(final Account account,
+            final Activity activity) {
+        int count = UPDATE_COUNT.get();
+        synchronized (UPDATE_COUNT) {
+            // Don't update the account if the account was successfully updated
+            // while the lock was being waited for
+            if (count != UPDATE_COUNT.get())
+                return true;
+
+            AccountManager manager = AccountManager.get(activity);
+            try {
+                if (!hasAuthenticator(manager))
+                    throw new AuthenticatorConflictException();
+                manager.updateCredentials(account, ACCOUNT_TYPE, null,
+                        activity, null, null).getResult();
+                UPDATE_COUNT.incrementAndGet();
+                return true;
+            } catch (OperationCanceledException e) {
+                Log.d(TAG, "Excepting retrieving account", e);
+                activity.finish();
+                return false;
+            } catch (AccountsException e) {
+                Log.d(TAG, "Excepting retrieving account", e);
+                return false;
+            } catch (AuthenticatorConflictException e) {
+                activity.runOnUiThread(new Runnable() {
+
+                    public void run() {
+                        showConflictMessage(activity);
+                    }
+                });
+                return false;
+            } catch (IOException e) {
+                Log.d(TAG, "Excepting retrieving account", e);
+                return false;
+            }
+        }
+    }
+
+    /**
      * Show conflict message about previously registered authenticator from
      * another application
      *
@@ -244,5 +319,36 @@ public class AccountUtils {
                     }
                 });
         dialog.show();
+    }
+
+    /**
+     * Is the given {@link Exception} due to a 401 Unauthorized API response?
+     *
+     * @param e
+     * @return true if 401, false otherwise
+     */
+    public static boolean isUnauthorized(final Exception e) {
+        if (e instanceof RequestException)
+            return ((RequestException) e).getStatus() == HTTP_UNAUTHORIZED;
+
+        String message = null;
+        if (e instanceof IOException)
+            message = e.getMessage();
+        final Throwable cause = e.getCause();
+        if (cause instanceof IOException) {
+            String causeMessage = cause.getMessage();
+            if (!TextUtils.isEmpty(causeMessage))
+                message = causeMessage;
+        }
+
+        if (TextUtils.isEmpty(message))
+            return false;
+
+        if ("Received authentication challenge is null".equals(message))
+            return true;
+        if ("No authentication challenges found".equals(message))
+            return true;
+
+        return false;
     }
 }

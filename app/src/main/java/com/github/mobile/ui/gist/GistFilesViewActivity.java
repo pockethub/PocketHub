@@ -21,11 +21,11 @@ import static com.github.mobile.Intents.EXTRA_GIST_ID;
 import static com.github.mobile.Intents.EXTRA_POSITION;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
@@ -33,10 +33,11 @@ import com.github.mobile.R.string;
 import com.github.mobile.core.gist.FullGist;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.core.gist.RefreshGistTask;
+import com.github.mobile.ui.FragmentProvider;
+import com.github.mobile.ui.PagerActivity;
+import com.github.mobile.ui.ViewPager;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
-import com.github.mobile.util.ViewUtils;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 import com.viewpagerindicator.TitlePageIndicator;
 
@@ -49,7 +50,7 @@ import roboguice.inject.InjectView;
 /**
  * Activity to page through the content of all the files in a Gist
  */
-public class GistFilesViewActivity extends RoboSherlockFragmentActivity {
+public class GistFilesViewActivity extends PagerActivity {
 
     /**
      * Create intent to show files with an initial selected file
@@ -88,6 +89,8 @@ public class GistFilesViewActivity extends RoboSherlockFragmentActivity {
 
     @Inject
     private HttpImageGetter imageGetter;
+
+    private GistFilesPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,13 +138,14 @@ public class GistFilesViewActivity extends RoboSherlockFragmentActivity {
         ViewUtils.setGone(pager, false);
         ViewUtils.setGone(indicator, false);
 
-        GistFilesPagerAdapter pagerAdapter = new GistFilesPagerAdapter(
-                getSupportFragmentManager(), gist);
-        pager.setAdapter(pagerAdapter);
+        adapter = new GistFilesPagerAdapter(this, gist);
+        pager.setAdapter(adapter);
         indicator.setViewPager(pager);
 
-        if (initialPosition < pagerAdapter.getCount())
-            pager.setCurrentItem(initialPosition);
+        if (initialPosition < adapter.getCount()) {
+            pager.scheduleSetItem(initialPosition);
+            onPageSelected(initialPosition);
+        }
     }
 
     @Override
@@ -158,5 +162,10 @@ public class GistFilesViewActivity extends RoboSherlockFragmentActivity {
         default:
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected FragmentProvider getProvider() {
+        return adapter;
     }
 }

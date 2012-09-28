@@ -21,13 +21,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Matcher for issue URLS that provides the issue number matched
+ * Matcher for issue URLs that provides the issue number matched
  * <p>
  * This class is not thread-safe
  */
 public class IssueUrlMatcher extends UrlMatcher {
 
-    private static final String REGEX = "https?://.+/[^/]+/[^/]+/issues/(issue/)?(\\d+)";
+    private static final String REGEX = "https?://.+/[^/]+/[^/]+/(issues|pull)/(issue/)?(\\d+)";
 
     private static final Pattern PATTERN = Pattern.compile(REGEX);
 
@@ -37,14 +37,14 @@ public class IssueUrlMatcher extends UrlMatcher {
      * Get issue number from URL
      *
      * @param url
-     * @return issue number of -1 if the given URL is not to an issue
+     * @return issue number or -1 if the given URL is not to an issue
      */
     public int getNumber(final String url) {
         if (!isMatch(url, matcher))
             return -1;
 
         try {
-            return Integer.parseInt(matcher.group(2));
+            return Integer.parseInt(matcher.group(3));
         } catch (NumberFormatException nfe) {
             return -1;
         }

@@ -15,6 +15,7 @@
  */
 package com.github.mobile.ui.gist;
 
+import android.accounts.Account;
 import android.app.Activity;
 import android.util.Log;
 
@@ -67,7 +68,7 @@ public class CreateGistTask extends ProgressDialogTask<Gist> {
     }
 
     @Override
-    public Gist run() throws Exception {
+    public Gist run(Account account) throws Exception {
         Gist gist = new Gist();
         gist.setDescription(description);
         gist.setPublic(isPublic);

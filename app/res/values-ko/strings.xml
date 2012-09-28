@@ -78,7 +78,6 @@
     <string name="news">소식</string>
     <string name="issues">이슈</string>
     <string name="gists">Gists</string>
-    <string name="dashboard_issues">이슈 대쉬보드</string>
     <string name="find_repositories">저장소 찾기</string>
     <string name="find_issues">이슈 찾기</string>
     <string name="search_title">검색…</string>
@@ -104,10 +103,6 @@
     <string name="comment">댓글</string>
     <string name="delete">삭제</string>
     <string name="refresh">새로고침</string>
-    <string name="dasbhoard_watched">감시중</string>
-    <string name="dasbhoard_assigned">Assigned</string>
-    <string name="dasbhoard_created">생성한것</string>
-    <string name="dasbhoard_mentioned">Mentioned</string>
     <string name="dashboard_issues_title">이슈 대쉬보드</string>
     <string name="bookmarks">책갈피</string>
     <string name="gists_title">Gists</string>
@@ -123,9 +118,6 @@
     <string name="milestone_prefix">마일스톤:</string>
     <string name="edit_milestone">마일스톤 수정</string>
     <string name="edit_assignee">담당자 수정</string>
-    <string name="my_gists_tab">내 것</string>
-    <string name="starred_gists_tab">즐겨찾기</string>
-    <string name="all_gists_tab">전체</string>
     <string name="description">설명</string>
     <string name="gist_description_hint">안드로이드 앱을 통해 생성한 Gist</string>
     <string name="title">제목</string>
@@ -152,9 +144,6 @@
     <string name="anonymous">익명</string>
     <string name="message_filter_saved">책갈피에 이슈 필터가 저장됨</string>
     <string name="recent">최근</string>
-    <string name="icon_pull_request">\uf20E</string>
-    <string name="icon_comment">\uf22B</string>
-    <string name="icon_file">\uf211</string>
     <string name="section_issue_status">상태:</string>
     <string name="status_open">열림</string>
     <string name="status_closed">종결됨</string>
@@ -172,11 +161,11 @@
     <string name="login_or_email">로그인계정 또는 이메일주소</string>
     <string name="followers">팔로워</string>
     <string name="following">팔로잉</string>
+    <string name="followers_self">팔로워</string>
+    <string name="following_self">팔로잉</string>
     <string name="members">멤버</string>
     <string name="closing_issue">이슈 종결처리중…</string>
     <string name="reopening_issue">이슈 재오픈중…</string>
-    <string name="icon_watch">\uf04E</string>
-    <string name="icon_fork">\uf020</string>
     <string name="avatar">아바타</string>
     <string name="creating_issue">이슈 생성중…</string>
     <string name="prefix_created">created\u0020</string>

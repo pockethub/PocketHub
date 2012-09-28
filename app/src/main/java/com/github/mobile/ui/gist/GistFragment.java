@@ -38,6 +38,7 @@ import android.widget.TextView;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
@@ -54,9 +55,9 @@ import com.github.mobile.ui.StyledText;
 import com.github.mobile.ui.comment.CommentListAdapter;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
+import com.github.mobile.util.ShareUtils;
 import com.github.mobile.util.ToastUtils;
 import com.github.mobile.util.TypefaceUtils;
-import com.github.mobile.util.ViewUtils;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -120,8 +121,6 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setHasOptionsMenu(true);
-
         gistId = getArguments().getString(EXTRA_GIST_ID);
     }
 
@@ -152,7 +151,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         Activity activity = getActivity();
         adapter = new HeaderFooterListAdapter<CommentListAdapter>(list,
                 new CommentListAdapter(activity.getLayoutInflater(), avatars,
-                        new HttpImageGetter(activity)));
+                        imageGetter));
         list.setAdapter(adapter);
     }
 
@@ -161,8 +160,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         super.onActivityCreated(savedInstanceState);
 
         list.setOnItemClickListener(this);
-        adapter.addHeader(headerView, null, false);
-        adapter.addFooter(footerView, null, false);
+        adapter.addHeader(headerView);
+        adapter.addFooter(footerView);
 
         gist = store.getGist(gistId);
 
@@ -262,6 +261,9 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         case id.m_refresh:
             refreshGist();
             return true;
+        case id.m_share:
+            shareGist();
+            return true;
         default:
             return super.onOptionsItemSelected(item);
         }
@@ -287,6 +289,17 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
             }
 
         }.execute();
+    }
+
+    private void shareGist() {
+        StringBuilder subject = new StringBuilder("Gist ");
+        String id = gist.getId();
+        subject.append(id);
+        User user = gist.getUser();
+        if (user != null && !TextUtils.isEmpty(user.getLogin()))
+            subject.append(" by ").append(user.getLogin());
+        startActivity(ShareUtils.create(subject, "https://gist.github.com/"
+                + id));
     }
 
     private void unstarGist() {
@@ -324,6 +337,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 refreshGist();
             return;
         }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 

@@ -78,7 +78,6 @@
     <string name="news">Новости</string>
     <string name="issues">Задачи</string>
     <string name="gists">Gists</string>
-    <string name="dashboard_issues">Доска задач</string>
     <string name="find_repositories">Поиск хранилищ</string>
     <string name="find_issues">Поиск задач</string>
     <string name="search_title">Поиск…</string>
@@ -104,10 +103,6 @@
     <string name="comment">Комментарий</string>
     <string name="delete">Удалить</string>
     <string name="refresh">Обновить</string>
-    <string name="dasbhoard_watched">Подписки</string>
-    <string name="dasbhoard_assigned">Ответственные</string>
-    <string name="dasbhoard_created">Созданые</string>
-    <string name="dasbhoard_mentioned">Упомянутые</string>
     <string name="dashboard_issues_title">Панель задач</string>
     <string name="bookmarks">Закладки</string>
     <string name="gists_title">Gists</string>
@@ -123,9 +118,6 @@
     <string name="milestone_prefix">Цель:</string>
     <string name="edit_milestone">Изменить цель</string>
     <string name="edit_assignee">Назначить ответственного</string>
-    <string name="my_gists_tab">Мои</string>
-    <string name="starred_gists_tab">Любимые</string>
-    <string name="all_gists_tab">Все</string>
     <string name="description">Описание</string>
     <string name="gist_description_hint">Gist созданные на Android</string>
     <string name="title">Заголовок</string>
@@ -152,9 +144,6 @@
     <string name="anonymous">Анонимно</string>
     <string name="message_filter_saved">Фильтр сохранен в закладки</string>
     <string name="recent">Недавние</string>
-    <string name="icon_pull_request">\uf20E</string>
-    <string name="icon_comment">\uf22B</string>
-    <string name="icon_file">\uf211</string>
     <string name="section_issue_status">Статус:</string>
     <string name="status_open">Открыта</string>
     <string name="status_closed">Закрыта</string>
@@ -172,11 +161,11 @@
     <string name="login_or_email">Логин или почта</string>
     <string name="followers">Подписчики</string>
     <string name="following">Подписки</string>
+    <string name="followers_self">Подписчики</string>
+    <string name="following_self">Подписки</string>
     <string name="members">Члены</string>
     <string name="closing_issue">Закрываем задачу…</string>
     <string name="reopening_issue">Переоткрываем задачу…</string>
-    <string name="icon_watch">\uf04E</string>
-    <string name="icon_fork">\uf020</string>
     <string name="avatar">Аватар</string>
     <string name="creating_issue">Создаем задачу…</string>
     <string name="prefix_created">создан\u0020</string>
@@ -204,5 +193,16 @@
     <string name="message_invalid_github_url">Следующий URL не мог быть открыт приложением:\n{0}</string>
     <string name="recently_viewed">НЕДАВНО ПРОСМОТРЕННЫЕ</string>
     <string name="cancel">Отменить</string>
+    <string name="authenticator_conflict_title">Конфликт приложений</string>
+    <string name="authenticator_conflict_message">Другое приложение уже настроено для аунтификации на GitHub.\n\nВы должны удалить конфликтующее приложение из учётных записей и настроек синхронизации для использования этого приложения.</string>
+    <string name="opening_repository">Загрузка {0}…</string>
+    <string name="commit_compare_title">Сравнить коммиты</string>
+    <string name="commit_prefix">Коммит\u0020</string>
+    <string name="parent_prefix">Родитель\u0020</string>
+    <string name="authored">автор</string>
+    <string name="committed">закоммичен</string>
+    <string name="diff_line_message">Что вы собираетесь сделать?</string>
+    <string name="comment_on_line">Комментировать строку</string>
+    <string name="view_entire_file">Просмотреть весь файл</string>
 
 </resources>

@@ -37,6 +37,7 @@
         style="@style/CodeText"
         android:layout_width="match_parent"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/tv_folder" />
+        android:layout_below="@id/tv_folder"
+        android:lineSpacingExtra="2dp" />
 
 </RelativeLayout>

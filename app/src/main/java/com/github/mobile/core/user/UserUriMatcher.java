@@ -16,7 +16,8 @@
 package com.github.mobile.core.user;
 
 import android.net.Uri;
-import android.text.TextUtils;
+
+import com.github.mobile.core.repo.RepositoryUtils;
 
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class UserUriMatcher {
             return null;
 
         String login = segments.get(0);
-        if (TextUtils.isEmpty(login))
+        if (!RepositoryUtils.isValidOwner(login))
             return null;
 
         return new User().setLogin(login);

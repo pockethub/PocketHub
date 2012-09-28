@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            style="@style/ListItem"
+            android:layout_width="match_parent" >
+
+            <TextView
+                style="@style/ListTitleText"
+                android:text="@string/diff_line_message"
+                android:textStyle="normal" />
+        </FrameLayout>
+
+        <View style="@style/Separator" />
+
+        <LinearLayout
+            android:id="@+id/ll_comment_area"
+            style="@style/ListItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/ListTitleText"
+                android:text="@string/comment_on_line" />
+
+            <TextView
+                android:id="@+id/tv_diff"
+                style="@style/CodeText"
+                android:layout_width="match_parent"
+                android:singleLine="true" />
+        </LinearLayout>
+
+        <View style="@style/Separator" />
+
+        <LinearLayout
+            android:id="@+id/ll_view_area"
+            style="@style/ListItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/ListTitleText"
+                android:text="@string/view_entire_file" />
+
+            <TextView
+                android:id="@+id/tv_commit"
+                style="@style/ListSubtitleText"
+                android:singleLine="true" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

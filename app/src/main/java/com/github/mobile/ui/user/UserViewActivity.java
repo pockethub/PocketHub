@@ -15,23 +15,29 @@
  */
 package com.github.mobile.ui.user;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static com.github.mobile.Intents.EXTRA_USER;
+import static com.github.mobile.util.TypefaceUtils.ICON_FOLLOW;
+import static com.github.mobile.util.TypefaceUtils.ICON_NEWS;
+import static com.github.mobile.util.TypefaceUtils.ICON_PUBLIC;
+import static com.github.mobile.util.TypefaceUtils.ICON_WATCH;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.widget.ProgressBar;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.MenuItem;
+import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.core.user.RefreshUserTask;
+import com.github.mobile.ui.TabPagerActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
-import com.github.mobile.util.ViewUtils;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
-import com.viewpagerindicator.TitlePageIndicator;
 
 import org.eclipse.egit.github.core.User;
 
@@ -41,8 +47,8 @@ import roboguice.inject.InjectView;
 /**
  * Activity to view a user's various pages
  */
-public class UserViewActivity extends RoboSherlockFragmentActivity implements
-        OrganizationSelectionProvider {
+public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
+        implements OrganizationSelectionProvider {
 
     /**
      * Create intent for this activity
@@ -60,29 +66,22 @@ public class UserViewActivity extends RoboSherlockFragmentActivity implements
     @InjectExtra(EXTRA_USER)
     private User user;
 
-    @InjectView(id.vp_pages)
-    private ViewPager pager;
-
     @InjectView(id.pb_loading)
     private ProgressBar loadingBar;
-
-    @InjectView(id.tpi_header)
-    private TitlePageIndicator indicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(layout.pager_with_title);
-
-        getSupportActionBar().setTitle(user.getLogin());
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle(user.getLogin());
 
         if (user.getAvatarUrl() != null)
             configurePager();
         else {
             ViewUtils.setGone(loadingBar, false);
-            ViewUtils.setGone(pager, true);
-            ViewUtils.setGone(indicator, true);
+            setGone(true);
             new RefreshUserTask(this, user.getLogin()) {
 
                 @Override
@@ -99,19 +98,31 @@ public class UserViewActivity extends RoboSherlockFragmentActivity implements
 
                     ToastUtils.show(UserViewActivity.this,
                             string.error_person_load);
+                    ViewUtils.setGone(loadingBar, true);
                 }
             }.execute();
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case android.R.id.home:
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+
+    }
+
     private void configurePager() {
         avatars.bind(getSupportActionBar(), user);
+        configureTabPager();
         ViewUtils.setGone(loadingBar, true);
-        ViewUtils.setGone(pager, false);
-        ViewUtils.setGone(indicator, false);
-        pager.setAdapter(new UserPagerAdapter(getSupportFragmentManager(),
-                getResources()));
-        indicator.setViewPager(pager);
+        setGone(false);
     }
 
     @Override
@@ -123,5 +134,31 @@ public class UserViewActivity extends RoboSherlockFragmentActivity implements
     public OrganizationSelectionProvider removeListener(
             OrganizationSelectionListener listener) {
         return this;
+    }
+
+    @Override
+    protected UserPagerAdapter createAdapter() {
+        return new UserPagerAdapter(this);
+    }
+
+    @Override
+    protected int getContentView() {
+        return layout.tabbed_progress_pager;
+    }
+
+    @Override
+    protected String getIcon(int position) {
+        switch (position) {
+        case 0:
+            return ICON_NEWS;
+        case 1:
+            return ICON_PUBLIC;
+        case 2:
+            return ICON_WATCH;
+        case 3:
+            return ICON_FOLLOW;
+        default:
+            return super.getIcon(position);
+        }
     }
 }

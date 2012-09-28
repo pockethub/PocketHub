@@ -15,6 +15,8 @@
  */
 package com.github.mobile.ui.issue;
 
+import android.accounts.Account;
+
 import com.github.mobile.R.string;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.ui.DialogFragmentActivity;
@@ -51,7 +53,8 @@ public class EditIssueTask extends ProgressDialogTask<Issue> {
         this.issue = issue;
     }
 
-    protected Issue run() throws Exception {
+    @Override
+    protected Issue run(Account account) throws Exception {
         return store.editIssue(repositoryId, issue);
     }
 

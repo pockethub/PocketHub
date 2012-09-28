@@ -31,7 +31,7 @@ public class IssueUtils {
      * @param issue
      * @return true if pull request, false otherwise
      */
-    public static boolean isPullRequest(Issue issue) {
+    public static boolean isPullRequest(final Issue issue) {
         return issue != null && issue.getPullRequest() != null
                 && !TextUtils.isEmpty(issue.getPullRequest().getHtmlUrl());
     }

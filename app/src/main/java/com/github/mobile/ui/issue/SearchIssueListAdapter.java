@@ -15,14 +15,16 @@
  */
 package com.github.mobile.ui.issue;
 
-import static android.view.View.GONE;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
+import com.github.kevinsawicki.wishlist.ViewUtils;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 import com.github.mobile.util.AvatarLoader;
-import com.github.mobile.util.ViewUtils;
-import com.viewpagerindicator.R.layout;
+import com.github.mobile.util.TypefaceUtils;
 
 import org.eclipse.egit.github.core.SearchIssue;
 import org.eclipse.egit.github.core.User;
@@ -30,8 +32,9 @@ import org.eclipse.egit.github.core.User;
 /**
  * Adapter for a list of searched for issues
  */
-public class SearchIssueListAdapter extends
-        IssueListAdapter<SearchIssue, RepositoryIssueItemView> {
+public class SearchIssueListAdapter extends IssueListAdapter<SearchIssue> {
+
+    private int numberPaintFlags;
 
     /**
      * @param inflater
@@ -44,36 +47,6 @@ public class SearchIssueListAdapter extends
     }
 
     @Override
-    protected void update(final int position,
-            final RepositoryIssueItemView view, final SearchIssue issue) {
-        updateNumber(issue.getNumber(), issue.getState(),
-                view.numberPaintFlags, view.number);
-
-        String gravatarId = issue.getGravatarId();
-        User user;
-        if (!TextUtils.isEmpty(gravatarId))
-            user = new User().setGravatarId(gravatarId);
-        else
-            user = null;
-        avatars.bind(view.avatar, user);
-
-        ViewUtils.setGone(view.pullRequestIcon, true);
-
-        view.title.setText(issue.getTitle());
-
-        updateReporter(issue.getUser(), issue.getCreatedAt(), view.reporter);
-        updateComments(issue.getComments(), view.comments);
-    }
-
-    @Override
-    protected RepositoryIssueItemView createView(View view) {
-        RepositoryIssueItemView itemView = new RepositoryIssueItemView(view);
-        for (View label : itemView.labels)
-            label.setVisibility(GONE);
-        return itemView;
-    }
-
-    @Override
     public long getItemId(int position) {
         return getItem(position).getNumber();
     }
@@ -81,5 +54,43 @@ public class SearchIssueListAdapter extends
     @Override
     protected int getNumber(SearchIssue issue) {
         return issue.getNumber();
+    }
+
+    @Override
+    protected View initialize(View view) {
+        view = super.initialize(view);
+
+        numberPaintFlags = textView(view, 0).getPaintFlags();
+        TypefaceUtils.setOcticons(
+                (TextView) view.findViewById(id.tv_pull_request_icon),
+                (TextView) view.findViewById(id.tv_comment_icon));
+        for (int i = 0; i < MAX_LABELS; i++)
+            ViewUtils.setGone(view.findViewById(id.v_label0 + i), true);
+        ViewUtils.setGone(view.findViewById(id.tv_pull_request_icon), true);
+        return view;
+    }
+
+    @Override
+    protected int[] getChildViewIds() {
+        return new int[] { id.tv_issue_number, id.tv_issue_title, id.iv_avatar,
+                id.tv_issue_creation, id.tv_issue_comments };
+    }
+
+    @Override
+    protected void update(int position, SearchIssue issue) {
+        updateNumber(issue.getNumber(), issue.getState(), numberPaintFlags, 0);
+
+        String gravatarId = issue.getGravatarId();
+        User user;
+        if (!TextUtils.isEmpty(gravatarId))
+            user = new User().setGravatarId(gravatarId);
+        else
+            user = null;
+        avatars.bind(imageView(2), user);
+
+        setText(1, issue.getTitle());
+
+        updateReporter(issue.getUser(), issue.getCreatedAt(), 3);
+        setNumber(4, issue.getComments());
     }
 }

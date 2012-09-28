@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<resources>
+
+    <!-- Error messages -->
+    <string name="error_orgs_load">Inläsning av konto &amp; organisationer misslyckades</string>
+    <string name="error_issues_load">Inläsning av frågor misslyckades</string>
+    <string name="error_repos_load">Inläsning av arkiv misslyckades</string>
+    <string name="error_repo_load">Inläsning av arkivet misslyckades</string>
+    <string name="error_gist_load">Inläsning av Gist misslyckades</string>
+    <string name="error_news_load">Inläsning av nyheter misslyckades</string>
+    <string name="error_followers_load">Inläsning av prenumeranter misslyckades</string>
+    <string name="error_people_load">Inläsning av personer misslyckades</string>
+    <string name="error_person_load">Inläsning av personen misslyckades</string>
+    <string name="error_gist_file_load">Inläsning av Gist filens innehåll misslyckades</string>
+    <string name="error_gists_load">Inläsning av Gists misslyckades</string>
+    <string name="error_issue_load">Inläsning av frågan misslyckades</string>
+    <string name="error_collaborators_load">Inläsning av medarbetare misslyckades</string>
+    <string name="error_milestones_load">Inläsningen av milstolpar misslyckades</string>
+    <string name="error_labels_load">Inläsning av etiketter misslyckades</string>
+    <string name="error_bookmarks_load">Inläsning av bokmärken misslyckades</string>
+    <string name="error_members_load">Inläsning av medlemmar misslyckades</string>
+    <string name="error_commits_load">Inläsning av commits misslyckades</string>
+    <string name="error_commit_load">Inläsning av commit misslyckades</string>
+    <string name="error_file_load">Inläsning av filen misslyckades</string>
+    <!--  -->
+
+
+    <!-- Loading messages -->
+    <string name="loading_gist">Laddar Gist…</string>
+    <string name="random_gist">Laddar slumpvald Gist…</string>
+    <string name="loading_more_issues">Laddar flera frågor…</string>
+    <string name="loading_issues">Laddar frågor…</string>
+    <string name="loading_comments">Laddar kommentarer…</string>
+    <string name="loading_repositories">Laddar arkiv…</string>
+    <string name="loading_issue">Laddar frågan…</string>
+    <string name="loading_news">Laddar nyheter…</string>
+    <string name="loading_followers">Laddar prenumeranter…</string>
+    <string name="loading_people">Laddar personer…</string>
+    <string name="loading_gists">Laddar Gists…</string>
+    <string name="loading_collaborators">Laddar medarbetare…</string>
+    <string name="loading_milestones">Laddar milstolpar…</string>
+    <string name="loading_labels">Laddar etiketter…</string>
+    <string name="loading_commits">Laddar Commits…</string>
+    <!--  -->
+
+
+    <!-- Empty messages -->
+    <string name="no_bookmarks">Inga bokmärken</string>
+    <string name="no_repositories">Inga arkiv</string>
+    <string name="no_issues">Inga frågor</string>
+    <string name="no_gists">Inga Gists</string>
+    <string name="no_people">Inga personer</string>
+    <string name="no_followers">Inga prenumeranter</string>
+    <string name="no_members">Inga medlemmar</string>
+    <string name="no_news">Inga nyheter</string>
+    <string name="no_commits">Inga Commits</string>
+    <!--  -->
+
+
+    <!-- Updating messages -->
+    <string name="updating_assignee">Uppdaterar förvärvare…</string>
+    <string name="updating_issue">Uppdaterar frågor…</string>
+    <string name="updating_labels">Uppdaterar etiketter…</string>
+    <string name="updating_milestone">Uppdaterar milstolpar…</string>
+    <!--  -->
+
+    <string name="app_name">GitHub</string>
+    <string name="news">Nyheter</string>
+    <string name="issues">Frågor</string>
+    <string name="gists">Gists</string>
+    <string name="commits">Commits</string>
+    <string name="find_repositories">Hitta Arkiv</string>
+    <string name="find_issues">Hitta Frågor</string>
+    <string name="search_title">Sök…</string>
+    <string name="clear_search_history">Rensa Historik</string>
+    <string name="search_history_cleared">Search history cleared</string>
+    <string name="login_activity_authenticating">Loggar in…</string>
+    <string name="creating_gist">Skapar Gist…</string>
+    <string name="create">Skapa</string>
+    <string name="create_gist">Skapa Gist</string>
+    <string name="gist_content_hint">puts \'Hello World!\'</string>
+    <string name="make_public">Gör den här Gisten allmän</string>
+    <string name="gist_file_name_hint">fil.rb</string>
+    <string name="gist">Gist</string>
+    <string name="comments">Kommentarer</string>
+    <string name="files">Filer</string>
+    <string name="open">Öppna</string>
+    <string name="random">Slumpvald</string>
+    <string name="file_name">Filnamn</string>
+    <string name="file_content">Filinnehållet</string>
+    <string name="new_gist">Ny Gist</string>
+    <string name="filter">Filtrera</string>
+    <string name="bookmark">Bokmarkera</string>
+    <string name="comment">Kommentera</string>
+    <string name="delete">Ta bort</string>
+    <string name="refresh">Uppdatera</string>
+    <string name="dashboard_issues_title">Frågor</string> <!-- Dashboard -->
+    <string name="bookmarks">Bokmärken</string>
+    <string name="gists_title">Gists</string>
+    <string name="issue_title">Fråga #</string>
+    <string name="gist_title">Gist\u0020</string>
+    <string name="filter_issues_title">Filtrera Frågor</string>
+    <string name="create_comment_title">Skapa Kommentar</string>
+    <string name="comment_hint">Skriv en kommentar</string>
+    <string name="show_more">Visa Mer…</string>
+    <string name="repositories">Arkiv</string>
+    <string name="issues_title">Frågor</string>
+    <string name="edit_labels">Ändra Etiketter</string>
+    <string name="milestone_prefix">Milstolpe:</string>
+    <string name="edit_milestone">Ändra Milstolpe</string>
+    <string name="edit_assignee">Ändra Förvärvaren</string>
+    <string name="description">Beskrivning</string>
+    <string name="gist_description_hint">Android Skapad Gist</string>
+    <string name="title">Titel</string>
+    <string name="edit">Ändra</string>
+    <string name="star">Markera</string>
+    <string name="starring_gist">Markerar Gist…</string>
+    <string name="unstar">Avmarkera</string>
+    <string name="unstarring_gist">Avmarkerar Gist…</string>
+    <string name="accounts_label">Konton</string>
+    <string name="select_assignee">Välj Förvärvare</string>
+    <string name="select_milestone">Välj Milstolpe</string>
+    <string name="select_labels">Välj Etiketter</string>
+    <string name="no_milestone">Inga Milstolpar</string>
+    <string name="unassigned">Ingen har tilldelats detta</string>
+    <string name="assigned">är tilldelad</string>
+    <string name="no_gists_found">Inga Gists hittades</string>
+    <string name="confirm_gist_delete_title">Bekräfta Borttagning</string>
+    <string name="confirm_gist_delete_message">Är du säker på att du vill ta bort den här Gisten?</string>
+    <string name="deleting_gist">Tar bort Gist…</string>
+    <string name="creating_comment">Skapar kommentar…</string>
+    <string name="confirm_bookmark_delete_message">Är du säker på att du vill ta bort det här bokmärket?</string>
+    <string name="issue_dashboard">Fråga</string>
+    <string name="new_issue">Ny Fråga</string>
+    <string name="anonymous">Anonym</string>
+    <string name="message_filter_saved">Fråge filter sparat till bokmärken</string>
+    <string name="recent">senaste</string>
+    <string name="section_issue_status">Status:</string>
+    <string name="status_open">Öppen</string>
+    <string name="status_closed">Stängd</string>
+    <string name="section_issue_assigned">Tilldelad:</string>
+    <string name="assignee_anyone">Vem som helst</string>
+    <string name="section_issue_milestone">Milstolpe:</string>
+    <string name="none">Inga</string>
+    <string name="section_issue_labels">Ettiketter:</string>
+    <string name="log_in">Logga in</string>
+    <string name="signup_link">Ny på GitHub? &lt;a href=\"https://github.com/plans\">Klicka här&lt;/a> för att registrera dig</string>
+    <string name="connection_failed">Kan inte ansluta till GitHub</string>
+    <string name="invalid_login_or_password">Ange ett giltligt Användarnamn &amp; lösenord</string>
+    <string name="invalid_password">Ange ett giltligt lösenord.</string>
+    <string name="password">Lösenord</string>
+    <string name="login_or_email">Användarnamn eller Email</string>
+    <string name="followers">Prenumeranter</string>
+    <string name="following">Prenumererar på</string>
+    <string name="followers_self">Prenumeranter</string>
+    <string name="following_self">Prenumererar</string>
+    <string name="members">Medlemmar</string>
+    <string name="closing_issue">Stänger Fråga…</string>
+    <string name="reopening_issue">Öppnar Frågan Igen…</string>
+    <string name="avatar">Avatar</string>
+    <string name="creating_issue">Skapar Fråga…</string>
+    <string name="prefix_created">skapad\u0020</string>
+    <string name="prefix_updated">updaterad\u0020</string>
+    <string name="prefix_opened">öppnad\u0020</string>
+    <string name="clear">Rensa</string>
+    <string name="open_issues">Öppna Frågor</string>
+    <string name="closed_issues">Stängda Frågor</string>
+    <string name="confirm_bookmark_delete_title">Ta Bort Bokmärke</string>
+    <string name="save">Spara</string>
+    <string name="apply">Tillämpa</string>
+    <string name="labels_prefix">Etiketter:</string>
+    <string name="assignee">Innehavare</string>
+    <string name="milestone">Milstolpe</string>
+    <string name="labels">Etiketter</string>
+    <string name="issue_confirm_close_message">Är du säker på att du vill stänga den här frågan?</string>
+    <string name="issue_confirm_reopen_message">Är du säker på att du vill öppna den här frågan igen?</string>
+    <string name="issue_confirm_close_title">Stäng Fråga</string>
+    <string name="issue_confirm_reopen_title">Öppna Fråga Igen</string>
+    <string name="closed">Stängd</string>
+    <string name="no_description_given">Ingen Beskrivning Given.</string>
+    <string name="close">Stäng</string>
+    <string name="reopen">Öppna Igen</string>
+    <string name="title_invalid_github_url">Ej Giltlig GitHub Adress</string>
+    <string name="message_invalid_github_url">Den följande adressen kunde inte öppnas av den här aplikationen:\n{0}</string>
+    <string name="recently_viewed">SENAST LÄSTA</string>
+    <string name="cancel">Avbryt</string>
+    <string name="authenticator_conflict_title">App Konflikt</string>
+    <string name="authenticator_conflict_message">En annan installerad App är redan konfigurerad för GitHub autentisering. \n\nDu måste ta bort den andra appen från konto och synk inställningarna och avinstallera den innan GitHub appen kan användas.</string>
+    <string name="opening_repository">Öppnar {0}…</string>
+    <string name="commit_compare_title">Jämför Commit</string>
+    <string name="commit_prefix">Commit\u0020</string>
+    <string name="parent_prefix">Förälder\u0020</string>
+    <string name="authored">skriven av</string>
+    <string name="committed">committed</string>
+    <string name="diff_line_message">Vad vill du göra?</string>
+    <string name="comment_on_line">Kommentera raden</string>
+    <string name="view_entire_file">Visa hela filen</string>
+    <string name="comparing_commits">Comparing {0} commits</string>
+    <string name="enable_wrapping">Enable wrapping</string>
+    <string name="disable_wrapping">Disable wrapping</string>
+
+</resources>

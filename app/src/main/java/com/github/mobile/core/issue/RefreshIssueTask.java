@@ -15,6 +15,7 @@
  */
 package com.github.mobile.core.issue;
 
+import android.accounts.Account;
 import android.content.Context;
 import android.util.Log;
 
@@ -73,7 +74,7 @@ public class RefreshIssueTask extends AuthenticatedUserTask<FullIssue> {
     }
 
     @Override
-    public FullIssue run() throws Exception {
+    public FullIssue run(Account account) throws Exception {
         Issue issue = store.refreshIssue(repositoryId, issueNumber);
         bodyImageGetter.encode(issue.getId(), issue.getBodyHtml());
         List<Comment> comments;

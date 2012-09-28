@@ -20,6 +20,7 @@ import android.content.Context;
 import com.github.mobile.accounts.AccountClient;
 import com.github.mobile.accounts.AccountScope;
 import com.github.mobile.accounts.GitHubAccount;
+import com.github.mobile.core.commit.CommitStore;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.persistence.OrganizationRepositories;
@@ -34,6 +35,7 @@ import java.io.File;
 import java.lang.ref.WeakReference;
 
 import org.eclipse.egit.github.core.client.GitHubClient;
+import org.eclipse.egit.github.core.service.CommitService;
 import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.PullRequestService;
@@ -46,6 +48,8 @@ public class GitHubModule extends AbstractModule {
     private WeakReference<IssueStore> issues;
 
     private WeakReference<GistStore> gists;
+
+    private WeakReference<CommitStore> commits;
 
     @Override
     protected void configure() {
@@ -84,6 +88,16 @@ public class GitHubModule extends AbstractModule {
         if (store == null) {
             store = new GistStore(service);
             gists = new WeakReference<GistStore>(store);
+        }
+        return store;
+    }
+
+    @Provides
+    CommitStore commitStore(CommitService service) {
+        CommitStore store = commits != null ? commits.get() : null;
+        if (store == null) {
+            store = new CommitStore(service);
+            commits = new WeakReference<CommitStore>(store);
         }
         return store;
     }

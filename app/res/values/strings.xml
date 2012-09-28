@@ -35,6 +35,10 @@
     <string name="error_bookmarks_load">Loading bookmarks failed</string>
     <string name="error_members_load">Loading members failed</string>
     <string name="error_commits_load">Loading commits failed</string>
+    <string name="error_commit_load">Loading commit failed</string>
+    <string name="error_file_load">Loading file failed</string>
+    <string name="error_code_load">Loading code failed</string>
+    <string name="error_refs_load">Loading branches &amp; tags failed</string>
     <!--  -->
 
 
@@ -54,6 +58,8 @@
     <string name="loading_milestones">Loading Milestones…</string>
     <string name="loading_labels">Loading Labels…</string>
     <string name="loading_commits">Loading Commits…</string>
+    <string name="loading_files_and_comments">Loading Files &amp; Comments…</string>
+    <string name="loading_refs">Loading Branches &amp; Tags…</string>
     <!--  -->
 
 
@@ -82,7 +88,6 @@
     <string name="issues">Issues</string>
     <string name="gists">Gists</string>
     <string name="commits">Commits</string>
-    <string name="dashboard_issues">Issues Dashboard</string>
     <string name="find_repositories">Find Repositories</string>
     <string name="find_issues">Find Issues</string>
     <string name="search_title">Search…</string>
@@ -108,14 +113,11 @@
     <string name="comment">Comment</string>
     <string name="delete">Delete</string>
     <string name="refresh">Refresh</string>
-    <string name="dasbhoard_watched">Watched</string>
-    <string name="dasbhoard_assigned">Assigned</string>
-    <string name="dasbhoard_created">Created</string>
-    <string name="dasbhoard_mentioned">Mentioned</string>
     <string name="dashboard_issues_title">Issue Dashboard</string>
     <string name="bookmarks">Bookmarks</string>
     <string name="gists_title">Gists</string>
     <string name="issue_title">Issue #</string>
+    <string name="pull_request_title">Pull Request #</string>
     <string name="gist_title">Gist\u0020</string>
     <string name="filter_issues_title">Filter Issues</string>
     <string name="create_comment_title">Create Comment</string>
@@ -127,9 +129,6 @@
     <string name="milestone_prefix">Milestone:</string>
     <string name="edit_milestone">Edit Milestone</string>
     <string name="edit_assignee">Edit Assignee</string>
-    <string name="my_gists_tab">Mine</string>
-    <string name="starred_gists_tab">Starred</string>
-    <string name="all_gists_tab">All</string>
     <string name="description">Description</string>
     <string name="gist_description_hint">Android created Gist</string>
     <string name="title">Title</string>
@@ -142,6 +141,7 @@
     <string name="select_assignee">Select Assignee</string>
     <string name="select_milestone">Select Milestone</string>
     <string name="select_labels">Select Labels</string>
+    <string name="select_ref">Select Branch or Tag</string>
     <string name="no_milestone">No milestone</string>
     <string name="unassigned">No one is assigned</string>
     <string name="assigned">is assigned</string>
@@ -156,9 +156,6 @@
     <string name="anonymous">Anonymous</string>
     <string name="message_filter_saved">Issue filter saved to bookmarks</string>
     <string name="recent">Recent</string>
-    <string name="icon_pull_request">\uf20E</string>
-    <string name="icon_comment">\uf22B</string>
-    <string name="icon_file">\uf211</string>
     <string name="section_issue_status">Status:</string>
     <string name="status_open">Open</string>
     <string name="status_closed">Closed</string>
@@ -176,11 +173,11 @@
     <string name="login_or_email">Login or Email</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
+    <string name="followers_self">Followers</string>
+    <string name="following_self">Following</string>
     <string name="members">Members</string>
     <string name="closing_issue">Closing Issue…</string>
     <string name="reopening_issue">Reopening Issue…</string>
-    <string name="icon_watch">\uf04E</string>
-    <string name="icon_fork">\uf020</string>
     <string name="avatar">Avatar</string>
     <string name="creating_issue">Creating Issue…</string>
     <string name="prefix_created">created\u0020</string>
@@ -212,7 +209,37 @@
     <string name="authenticator_conflict_message">Another installed app is already configured for GitHub authentication.\n\nYou must remove the other app from the Accounts &amp; sync settings and uninstall it before the GitHub app can be used.</string>
     <string name="opening_repository">Opening {0}…</string>
     <string name="commit_compare_title">Commit Compare</string>
-    <string name="parent_commit">parent commit</string>
     <string name="commit_prefix">Commit\u0020</string>
+    <string name="parent_prefix">Parent\u0020</string>
+    <string name="authored">authored</string>
+    <string name="committed">committed</string>
+    <string name="diff_line_message">What would you like to do?</string>
+    <string name="comment_on_line">Comment on line</string>
+    <string name="view_entire_file">View entire file</string>
+    <string name="comparing_commits">Comparing {0} commits</string>
+    <string name="enable_wrapping">Enable wrapping</string>
+    <string name="disable_wrapping">Disable wrapping</string>
+    <string name="code">Code</string>
+
+    <!-- Tab titles, should be as short as possible -->
+    <string name="tab_repositories">repositories</string>
+    <string name="tab_news">news</string>
+    <string name="tab_following_self">following</string>
+    <string name="tab_followers_self">followers</string>
+    <string name="tab_following">following</string>
+    <string name="tab_followers">followers</string>
+    <string name="tab_members">members</string>
+    <string name="tab_code">code</string>
+    <string name="tab_commits">commits</string>
+    <string name="tab_issues">issues</string>
+    <string name="tab_watched">watched</string>
+    <string name="tab_assigned">assigned</string>
+    <string name="tab_created">created</string>
+    <string name="tab_mentioned">mentioned</string>
+    <string name="tab_mine">mine</string>
+    <string name="tab_starred">starred</string>
+    <string name="tab_all">all</string>
+    <!--  -->
+    <string name="share">Share</string>
 
 </resources>

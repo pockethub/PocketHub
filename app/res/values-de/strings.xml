@@ -35,6 +35,10 @@
     <string name="error_bookmarks_load">Laden der Lesezeichen fehlgeschlagen</string>
     <string name="error_members_load">Laden der Mitglieder fehlgeschlagen</string>
     <string name="error_commits_load">Laden der Commits fehlgeschlagen</string>
+    <string name="error_commit_load">Laden des Commits fehlgeschlagen</string>
+    <string name="error_file_load">Laden der Datei fehlgeschlagen</string>
+    <string name="error_code_load">Laden des Codes fehlgeschlagen</string>
+    <string name="error_refs_load">Laden der Branches &amp; Tags fehlgeschlagen</string>
     <!--  -->
 
     <!-- Loading messages -->
@@ -53,6 +57,8 @@
     <string name="loading_milestones">Lade Meilensteine…</string>
     <string name="loading_labels">Lade Markierungen…</string>
     <string name="loading_commits">Lade Commits…</string>
+    <string name="loading_files_and_comments">Lade Dateien &amp; Kommentare…</string>
+    <string name="loading_refs">Lade Branches &amp; Tags…</string>
     <!--  -->
 
     <!-- Empty messages -->
@@ -79,7 +85,6 @@
     <string name="issues">Probleme</string>
     <string name="gists">Gists</string>
     <string name="commits">Commits</string>
-    <string name="dashboard_issues">Problem-Übersicht</string>
     <string name="find_repositories">Repositories suchen</string>
     <string name="find_issues">Probleme finden</string>
     <string name="search_title">Suchen…</string>
@@ -105,14 +110,11 @@
     <string name="comment">Kommentar</string>
     <string name="delete">löschen</string>
     <string name="refresh">aktualisieren</string>
-    <string name="dasbhoard_watched">beobachtet</string>
-    <string name="dasbhoard_assigned">mir zugewiesen</string>
-    <string name="dasbhoard_created">von mir erstellt</string>
-    <string name="dasbhoard_mentioned">erwähnt</string>
     <string name="dashboard_issues_title">Problem-Übersicht</string>
     <string name="bookmarks">Lesezeichen</string>
     <string name="gists_title">Gists</string>
     <string name="issue_title">Problem #</string>
+    <string name="pull_request_title">Pull Request #</string>
     <string name="gist_title">Gist\u0020</string>
     <string name="filter_issues_title">Probleme filtern</string>
     <string name="create_comment_title">Kommentar erstellen</string>
@@ -124,9 +126,6 @@
     <string name="milestone_prefix">Meilenstein:</string>
     <string name="edit_milestone">Meilenstein bearbeiten</string>
     <string name="edit_assignee">Verantwortlichen bearbeiten</string>
-    <string name="my_gists_tab">Meine Gists</string>
-    <string name="starred_gists_tab">Favoriten</string>
-    <string name="all_gists_tab">alle Gists</string>
     <string name="description">Beschreibung</string>
     <string name="gist_description_hint">erstellt mit Android</string>
     <string name="title">Titel</string>
@@ -139,6 +138,7 @@
     <string name="select_assignee">Verantwortlichen wählen</string>
     <string name="select_milestone">Meilenstein wählen</string>
     <string name="select_labels">Markierung wählen</string>
+    <string name="select_ref">Branch oder Tag wählen</string>
     <string name="no_milestone">keine Meilensteine</string>
     <string name="unassigned">Niemand zugewiesen</string>
     <string name="assigned">ist zugewiesen</string>
@@ -153,9 +153,6 @@
     <string name="anonymous">Anonym</string>
     <string name="message_filter_saved">Filter als Lesezeichen gespeichert</string>
     <string name="recent">Letzte</string>
-    <string name="icon_pull_request">\uf20E</string>
-    <string name="icon_comment">\uf22B</string>
-    <string name="icon_file">\uf211</string>
     <string name="section_issue_status">Status:</string>
     <string name="status_open">offen</string>
     <string name="status_closed">geschlossen</string>
@@ -173,11 +170,11 @@
     <string name="login_or_email">Benutzername oder E-Mail</string>
     <string name="followers">Meine Anhänger</string>
     <string name="following">Ich folge</string>
+    <string name="followers_self">Meine Anhänger</string>
+    <string name="following_self">Ich folge</string>
     <string name="members">Mitglieder</string>
     <string name="closing_issue">Schließe Problem…</string>
     <string name="reopening_issue">Problem neu öffnen…</string>
-    <string name="icon_watch">\uf04E</string>
-    <string name="icon_fork">\uf020</string>
     <string name="avatar">Avatar</string>
     <string name="creating_issue">Erstelle Problem…</string>
     <string name="prefix_created">erstellt\u0020</string>
@@ -209,7 +206,36 @@
     <string name="authenticator_conflict_message">Eine andere App ist derzeit für die Anmeldung bei GitHub konfiguriert.\n\nSie müssen diese App aus dem Bereich Konten &amp; Synchronisierung entfernen und diese App deinstallieren, bevor Sie die GitHub App verwenden können.</string>
     <string name="opening_repository">Öffne {0}…</string>
     <string name="commit_compare_title">Commit-Vergleich</string>
-    <string name="parent_commit">Vorheriger Commit</string>
     <string name="commit_prefix">Commit\u0020</string>
+    <string name="parent_prefix">Vorgänger\u0020</string>
+    <string name="authored">verfasst</string>
+    <string name="committed">eingespielt</string>
+    <string name="diff_line_message">Was möchten Sie nun tun?</string>
+    <string name="comment_on_line">Kommentar zu Zeile</string>
+    <string name="view_entire_file">Zeige gesamte Datei</string>
+    <string name="comparing_commits">Vergleiche {0} Commits</string>
+    <string name="enable_wrapping">Zeilenumbruch aktivieren</string>
+    <string name="disable_wrapping">Zeilenumbruch deaktivieren</string>
+    <string name="code">Code</string>
+
+    <!-- Tab titles, should be as short as possible -->
+    <string name="tab_repositories">Repositories</string>
+    <string name="tab_news">Neuigkeiten</string>
+    <string name="tab_following_self">Ich folge</string>
+    <string name="tab_followers_self">Anhänger</string>
+    <string name="tab_following">Folgt</string>
+    <string name="tab_followers">Anhänger</string>
+    <string name="tab_members">Mitglieder</string>
+    <string name="tab_code">Code</string>
+    <string name="tab_commits">Commits</string>
+    <string name="tab_issues">Probleme</string>
+    <string name="tab_watched">beobachtet</string>
+    <string name="tab_assigned">zugewiesen</string>
+    <string name="tab_created">erstellt</string>
+    <string name="tab_mentioned">erwähnt</string>
+    <string name="tab_mine">eigene</string>
+    <string name="tab_starred">favoriten</string>
+    <string name="tab_all">alle</string>
+    <!--  -->
 
 </resources>

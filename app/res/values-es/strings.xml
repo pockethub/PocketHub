@@ -16,7 +16,7 @@
 -->
 <resources>
 
-    <!-- Mensages de error -->
+    <!-- Mensajes de error -->
     <string name="error_orgs_load">Error al cargar la cuenta y las organizaciones</string>
     <string name="error_issues_load">Error al cargar incidencias</string>
     <string name="error_repos_load">Error al cargar repositorios</string>
@@ -34,10 +34,13 @@
     <string name="error_labels_load">Error al cargar etiquetas</string>
     <string name="error_bookmarks_load">Error al cargar marcadores</string>
     <string name="error_members_load">Error al cargar miembros</string>
+    <string name="error_commits_load">Error al cargar los commits</string>
+    <string name="error_commit_load">Error al cargar el commit</string>
+    <string name="error_file_load">Error al cargar el fichero</string>
     <!--  -->
 
 
-    <!-- Mensages de carga -->
+    <!-- Mensajes de carga -->
     <string name="loading_gist">Cargando Gist…</string>
     <string name="random_gist">Cargando Gist Aleatorio…</string>
     <string name="loading_more_issues">Cargando Más Incidencias…</string>
@@ -52,6 +55,7 @@
     <string name="loading_collaborators">Cargando Colaboradores…</string>
     <string name="loading_milestones">Cargando Hitos…</string>
     <string name="loading_labels">Cargando Etiquetas…</string>
+    <string name="loading_commits">Cargando Commits…</string>
     <!--  -->
 
 
@@ -64,6 +68,7 @@
     <string name="no_followers">No Hay Seguidores</string>
     <string name="no_members">No Hay Miembros</string>
     <string name="no_news">No Hay Actualizaciones</string>
+    <string name="no_commits">No Hay Commits</string>
     <!--  -->
 
 
@@ -78,7 +83,7 @@
     <string name="news">Actualizaciones</string>
     <string name="issues">Incidencias</string>
     <string name="gists">Gists</string>
-    <string name="dashboard_issues">Panel de Incidencias</string>
+    <string name="commits">Commits</string>
     <string name="find_repositories">Buscar Repositorios</string>
     <string name="find_issues">Buscar Incidencias</string>
     <string name="search_title">Buscar…</string>
@@ -104,10 +109,6 @@
     <string name="comment">Comentario</string>
     <string name="delete">Borrar</string>
     <string name="refresh">Recargar</string>
-    <string name="dasbhoard_watched">Observadas</string>
-    <string name="dasbhoard_assigned">Asignadas</string>
-    <string name="dasbhoard_created">Creadas</string>
-    <string name="dasbhoard_mentioned">Menciones</string>
     <string name="dashboard_issues_title">Panel de Incidencias</string>
     <string name="bookmarks">Marcadores</string>
     <string name="gists_title">Gists</string>
@@ -123,9 +124,6 @@
     <string name="milestone_prefix">Hito:</string>
     <string name="edit_milestone">Editar Hito</string>
     <string name="edit_assignee">Editar Responsable</string>
-    <string name="my_gists_tab">Mios</string>
-    <string name="starred_gists_tab">Destacados</string>
-    <string name="all_gists_tab">Todos</string>
     <string name="description">Descripción</string>
     <string name="gist_description_hint">Gist creado en Android</string>
     <string name="title">Título</string>
@@ -152,9 +150,6 @@
     <string name="anonymous">Anónimo</string>
     <string name="message_filter_saved">Filtro de incidencias guardado en marcadores</string>
     <string name="recent">Recientes</string>
-    <string name="icon_pull_request">\uf20E</string>
-    <string name="icon_comment">\uf22B</string>
-    <string name="icon_file">\uf211</string>
     <string name="section_issue_status">Estado:</string>
     <string name="status_open">Abierto</string>
     <string name="status_closed">Cerrado</string>
@@ -172,11 +167,11 @@
     <string name="login_or_email">Usuario o Correo Electrónico</string>
     <string name="followers">Seguidores</string>
     <string name="following">Siguiendo</string>
+    <string name="followers_self">Seguidores</string>
+    <string name="following_self">Siguiendo</string>
     <string name="members">Miembros</string>
     <string name="closing_issue">Cerrando Incidencia…</string>
     <string name="reopening_issue">Reabriendo Incidencia…</string>
-    <string name="icon_watch">\uf04E</string>
-    <string name="icon_fork">\uf020</string>
     <string name="avatar">Avatar</string>
     <string name="creating_issue">Creando Incidencia…</string>
     <string name="prefix_created">creado\u0020</string>
@@ -207,5 +202,16 @@
     <string name="authenticator_conflict_title">Conflicto con la aplicación</string>
     <string name="authenticator_conflict_message">Una de las aplicaciones instaladas está configurada para la autenticación con GitHub.\n\nDebes eliminar la otra aplicación del menú de ajustes Cuentas y sincronizació y desinstalarla antes de poder usar la aplicación de GitHub.</string>
     <string name="opening_repository">Abriendo {0}…</string>
+    <string name="commit_compare_title">Comparación de Commits</string>
+    <string name="commit_prefix">Commit\u0020</string>
+    <string name="parent_prefix">Anterior\u0020</string>
+    <string name="authored">autor</string>
+    <string name="committed">commit enviado</string>
+    <string name="diff_line_message">¿Qué deseas hacer?</string>
+    <string name="comment_on_line">Comentar linea</string>
+    <string name="view_entire_file">Ver fichero completo</string>
+    <string name="comparing_commits">Comparando {0} commits</string>
+    <string name="enable_wrapping">Habilitar ajuste de texto</string>
+    <string name="disable_wrapping">Deshabilitar ajuste de texto</string>
 
 </resources>

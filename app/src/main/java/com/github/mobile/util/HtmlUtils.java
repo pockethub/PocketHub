@@ -16,6 +16,8 @@
 package com.github.mobile.util;
 
 import static android.graphics.Paint.Style.FILL;
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH;
 import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 import static android.text.Spanned.SPAN_MARK_MARK;
 import android.graphics.Canvas;
@@ -316,12 +318,14 @@ public class HtmlUtils {
         strip(formatted, HIDDEN_REPLY_START, HIDDEN_REPLY_END);
 
         // Replace paragraphs with breaks
-        replace(formatted, PARAGRAPH_START, BREAK);
-        replace(formatted, PARAGRAPH_END, BREAK);
+        if (replace(formatted, PARAGRAPH_START, BREAK))
+            replace(formatted, PARAGRAPH_END, BREAK);
 
         formatPres(formatted);
 
         formatEmailFragments(formatted);
+
+        formatIncorrectStyles(formatted);
 
         trim(formatted);
 
@@ -329,6 +333,16 @@ public class HtmlUtils {
         formatted.append(ROOT_END);
 
         return formatted;
+    }
+
+    private static void formatIncorrectStyles(final StringBuilder input) {
+        // em and strong tag styles are swapped on pre-4.0 so swap them back
+        // using alternate tags that don't exhibit the incorrect styling.
+        // http://code.google.com/p/android/issues/detail?id=3473
+        if (SDK_INT < ICE_CREAM_SANDWICH) {
+            replaceTag(input, "em", "i");
+            replaceTag(input, "strong", "b");
+        }
     }
 
     private static StringBuilder strip(final StringBuilder input,
@@ -344,32 +358,42 @@ public class HtmlUtils {
         return input;
     }
 
-    private static StringBuilder replace(final StringBuilder input,
+    private static boolean replace(final StringBuilder input,
             final String from, final String to) {
         int start = input.indexOf(from);
-        int length = from.length();
+        if (start == -1)
+            return false;
+
+        final int fromLength = from.length();
+        final int toLength = to.length();
         while (start != -1) {
-            input.delete(start, start + length);
-            input.insert(start, to);
-            start = input.indexOf(from, start);
+            input.replace(start, start + fromLength, to);
+            start = input.indexOf(from, start + toLength);
         }
-        return input;
+        return true;
+    }
+
+    private static void replaceTag(final StringBuilder input,
+            final String from, final String to) {
+        if (replace(input, '<' + from + '>', '<' + to + '>'))
+            replace(input, "</" + from + '>', "</" + to + '>');
     }
 
     private static StringBuilder replace(final StringBuilder input,
             final String fromStart, final String fromEnd, final String toStart,
             final String toEnd) {
         int start = input.indexOf(fromStart);
+        if (start == -1)
+            return input;
+
+        final int fromStartLength = fromStart.length();
+        final int fromEndLength = fromEnd.length();
+        final int toStartLength = toStart.length();
         while (start != -1) {
-
-            input.delete(start, start + fromStart.length());
-            input.insert(start, toStart);
-
-            int end = input.indexOf(fromEnd, start + toStart.length());
-            if (end != -1) {
-                input.delete(end, end + fromEnd.length());
-                input.insert(end, toEnd);
-            }
+            input.replace(start, start + fromStartLength, toStart);
+            int end = input.indexOf(fromEnd, start + toStartLength);
+            if (end != -1)
+                input.replace(end, end + fromEndLength, toEnd);
 
             start = input.indexOf(fromStart);
         }

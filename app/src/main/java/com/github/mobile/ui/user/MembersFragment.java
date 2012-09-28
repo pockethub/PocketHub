@@ -15,18 +15,17 @@
  */
 package com.github.mobile.ui.user;
 
-import android.app.Activity;
+import static com.github.mobile.Intents.EXTRA_USER;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R.string;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.accounts.AccountUtils;
-import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
-import com.github.mobile.ui.ItemView;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
@@ -49,11 +48,11 @@ public class MembersFragment extends ItemListFragment<User> implements
     @Inject
     private AvatarLoader avatars;
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
 
-        org = ((OrganizationSelectionProvider) activity).addListener(this);
+        if (org != null)
+            outState.putSerializable(EXTRA_USER, org);
     }
 
     @Override
@@ -67,9 +66,12 @@ public class MembersFragment extends ItemListFragment<User> implements
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
+        org = ((OrganizationSelectionProvider) getActivity()).addListener(this);
+        if (org == null && savedInstanceState != null)
+            org = (User) savedInstanceState.getSerializable(EXTRA_USER);
         setEmptyText(string.no_members);
+
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -84,8 +86,7 @@ public class MembersFragment extends ItemListFragment<User> implements
     }
 
     @Override
-    protected ItemListAdapter<User, ? extends ItemView> createAdapter(
-            List<User> items) {
+    protected SingleTypeAdapter<User> createAdapter(List<User> items) {
         User[] users = items.toArray(new User[items.size()]);
         return new UserListAdapter(getActivity().getLayoutInflater(), users,
                 avatars);

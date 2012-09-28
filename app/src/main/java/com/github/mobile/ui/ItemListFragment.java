@@ -34,13 +34,14 @@ import android.widget.Toast;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.util.ToastUtils;
-import com.github.mobile.util.ViewUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
-import com.viewpagerindicator.R.layout;
 
 import java.util.Collections;
 import java.util.List;
@@ -151,13 +152,6 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setHasOptionsMenu(true);
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
         inflater.inflate(menu.refresh, optionsMenu);
     }
@@ -166,6 +160,7 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment
     public boolean onOptionsItemSelected(MenuItem item) {
         if (!isUsable())
             return false;
+
         switch (item.getItemId()) {
         case id.m_refresh:
             forceRefresh();
@@ -224,10 +219,10 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment
      *
      * @return adapter
      */
-    protected HeaderFooterListAdapter<ItemListAdapter<E, ? extends ItemView>> createAdapter() {
-        ItemListAdapter<E, ? extends ItemView> wrapped = createAdapter(items);
-        return new HeaderFooterListAdapter<ItemListAdapter<E, ? extends ItemView>>(
-                getListView(), wrapped);
+    protected HeaderFooterListAdapter<SingleTypeAdapter<E>> createAdapter() {
+        SingleTypeAdapter<E> wrapped = createAdapter(items);
+        return new HeaderFooterListAdapter<SingleTypeAdapter<E>>(getListView(),
+                wrapped);
     }
 
     /**
@@ -236,8 +231,7 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment
      * @param items
      * @return adapter
      */
-    protected abstract ItemListAdapter<E, ? extends ItemView> createAdapter(
-            final List<E> items);
+    protected abstract SingleTypeAdapter<E> createAdapter(final List<E> items);
 
     /**
      * Set the list to be shown
@@ -299,12 +293,27 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment
      * @return list adapter
      */
     @SuppressWarnings("unchecked")
-    protected HeaderFooterListAdapter<ItemListAdapter<E, ? extends ItemView>> getListAdapter() {
+    protected HeaderFooterListAdapter<SingleTypeAdapter<E>> getListAdapter() {
         if (listView != null)
-            return (HeaderFooterListAdapter<ItemListAdapter<E, ? extends ItemView>>) listView
+            return (HeaderFooterListAdapter<SingleTypeAdapter<E>>) listView
                     .getAdapter();
         else
             return null;
+    }
+
+    /**
+     * Notify the underlying adapter that the data set has changed
+     *
+     * @return this fragment
+     */
+    protected ItemListFragment<E> notifyDataSetChanged() {
+        HeaderFooterListAdapter<SingleTypeAdapter<E>> root = getListAdapter();
+        if (root != null) {
+            SingleTypeAdapter<E> typeAdapter = root.getWrappedAdapter();
+            if (typeAdapter != null)
+                typeAdapter.notifyDataSetChanged();
+        }
+        return this;
     }
 
     /**

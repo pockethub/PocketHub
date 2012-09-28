@@ -15,7 +15,9 @@
   limitations under the License.
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItem" >
+    style="@style/ListItem"
+    android:paddingBottom="0dp"
+    android:paddingTop="0dp" >
 
     <TextView
         android:id="@+id/tv_commit_file_summary"

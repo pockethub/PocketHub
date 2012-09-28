@@ -22,6 +22,7 @@ import android.content.Context;
 
 import com.google.inject.Inject;
 
+import java.io.IOException;
 import java.util.concurrent.Executor;
 
 import roboguice.inject.ContextScope;
@@ -29,7 +30,7 @@ import roboguice.util.RoboAsyncTask;
 
 /**
  * Base task class that ensures an authenticated account exists before
- * {@link #run()} is invoked
+ * {@link #run(Account)} is invoked
  *
  * @param <ResultT>
  */
@@ -75,7 +76,15 @@ public abstract class AuthenticatedUserTask<ResultT> extends
         try {
             contextScope.enter(getContext());
             try {
-                return run();
+                return run(account);
+            } catch (IOException e) {
+                // Retry task if authentication failure occurs and account is
+                // successfully updated
+                if (AccountUtils.isUnauthorized(e)
+                        && AccountUtils.updateAccount(account, activity))
+                    return run(account);
+                else
+                    throw e;
             } finally {
                 contextScope.exit(getContext());
             }
@@ -87,8 +96,9 @@ public abstract class AuthenticatedUserTask<ResultT> extends
     /**
      * Execute task with an authenticated account
      *
+     * @param account
      * @return result
      * @throws Exception
      */
-    protected abstract ResultT run() throws Exception;
+    protected abstract ResultT run(Account account) throws Exception;
 }

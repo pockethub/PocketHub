@@ -15,6 +15,7 @@
  */
 package com.github.mobile.ui.gist;
 
+import android.accounts.Account;
 import android.app.Activity;
 import android.util.Log;
 
@@ -68,7 +69,7 @@ public class CreateCommentTask extends ProgressDialogTask<Comment> {
     }
 
     @Override
-    public Comment run() throws Exception {
+    public Comment run(Account account) throws Exception {
         Comment created = service.createComment(id, comment);
         String formatted = HtmlUtils.format(created.getBodyHtml()).toString();
         created.setBodyHtml(formatted);

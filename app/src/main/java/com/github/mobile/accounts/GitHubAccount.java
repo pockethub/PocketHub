@@ -43,6 +43,6 @@ public class GitHubAccount {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "[" + username + "]";
+        return getClass().getSimpleName() + '[' + username + ']';
     }
 }

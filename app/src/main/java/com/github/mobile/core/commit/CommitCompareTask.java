@@ -15,16 +15,14 @@
  */
 package com.github.mobile.core.commit;
 
+import android.accounts.Account;
 import android.content.Context;
+import android.util.Log;
 
 import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.google.inject.Inject;
 
-import java.util.List;
-
-import org.eclipse.egit.github.core.Commit;
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
-import org.eclipse.egit.github.core.RepositoryCommit;
 import org.eclipse.egit.github.core.RepositoryCommitCompare;
 import org.eclipse.egit.github.core.service.CommitService;
 
@@ -33,6 +31,8 @@ import org.eclipse.egit.github.core.service.CommitService;
  */
 public class CommitCompareTask extends
         AuthenticatedUserTask<RepositoryCommitCompare> {
+
+    private static final String TAG = "CommitCompareTask";
 
     @Inject
     private CommitService service;
@@ -59,12 +59,14 @@ public class CommitCompareTask extends
     }
 
     @Override
-    protected RepositoryCommitCompare run() throws Exception {
-        RepositoryCommit commit = service.getCommit(repository, base);
-        List<Commit> parents = commit.getParents();
-        if (parents != null && !parents.isEmpty())
-            return service.compare(repository, parents.get(0).getSha(), head);
-        else
-            return service.compare(repository, base, head);
+    protected RepositoryCommitCompare run(Account account) throws Exception {
+        return service.compare(repository, base, head);
+    }
+
+    @Override
+    protected void onException(Exception e) throws RuntimeException {
+        super.onException(e);
+
+        Log.d(TAG, "Exception loading commit compare", e);
     }
 }

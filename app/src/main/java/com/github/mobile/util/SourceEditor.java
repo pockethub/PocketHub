@@ -15,11 +15,21 @@
  */
 package com.github.mobile.util;
 
+import static org.eclipse.egit.github.core.Blob.ENCODING_BASE64;
+import static org.eclipse.egit.github.core.client.IGitHubConstants.CHARSET_UTF8;
+import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.github.mobile.ui.UrlLauncher;
+
+import java.io.UnsupportedEncodingException;
+
+import org.eclipse.egit.github.core.Blob;
+import org.eclipse.egit.github.core.util.EncodingUtils;
 
 /**
  * Utilities for displaying source code in a {@link WebView}
@@ -28,99 +38,135 @@ public class SourceEditor {
 
     private static final String URL_PAGE = "file:///android_asset/source-editor.html";
 
-    /**
-     * Does the source editor have a highlighter set to match the given file
-     * name extension?
-     *
-     * @param extension
-     * @return true if highlighting available, false otherwise
-     */
-    public static boolean isValid(String extension) {
-        return "actionscript3".equals(extension) //
-                || "applescript".equals(extension) //
-                || "as3".equals(extension) //
-                || "bash".equals(extension) //
-                || "c".equals(extension) //
-                || "cf".equals(extension) //
-                || "coldfusion".equals(extension) //
-                || "cpp".equals(extension) //
-                || "cs".equals(extension) //
-                || "css".equals(extension) //
-                || "delphi".equals(extension) //
-                || "diff".equals(extension) //
-                || "erl".equals(extension) //
-                || "erlang".equals(extension) //
-                || "groovy".equals(extension) //
-                || "html".equals(extension) //
-                || "java".equals(extension) //
-                || "js".equals(extension) //
-                || "pas".equals(extension) //
-                || "pascal".equals(extension) //
-                || "patch".equals(extension) //
-                || "pl".equals(extension) //
-                || "php".equals(extension) //
-                || "py".equals(extension) //
-                || "rb".equals(extension) //
-                || "sass".equals(extension) //
-                || "scala".equals(extension) //
-                || "scss".equals(extension) //
-                || "sh".equals(extension) //
-                || "sql".equals(extension) //
-                || "txt".equals(extension) //
-                || "vb".equals(extension) //
-                || "vbnet".equals(extension) //
-                || "xhtml".equals(extension) //
-                || "xml".equals(extension) //
-                || "xslt".equals(extension);
-    }
+    private final WebView view;
+
+    private boolean wrap;
+
+    private String name;
+
+    private String content;
+
+    private boolean encoded;
 
     /**
-     * Bind {@link Object#toString()} to given {@link WebView}
+     * Create source editor using given web view
      *
      * @param view
-     * @param name
-     * @param provider
-     * @return view
      */
-    public static WebView showSource(WebView view, String name,
-            final Object provider) {
-        view.setWebViewClient(new WebViewClient() {
+    public SourceEditor(final WebView view) {
+        WebViewClient client = new WebViewClient() {
 
+            @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (url.equals(URL_PAGE)) {
+                if (URL_PAGE.equals(url)) {
                     view.loadUrl(url);
                     return false;
                 } else {
-                    Intent intent = new UrlLauncher().create(url);
-                    view.getContext().startActivity(intent);
+                    Context context = view.getContext();
+                    Intent intent = new UrlLauncher(context).create(url);
+                    context.startActivity(intent);
                     return true;
                 }
             }
+        };
+        view.setWebViewClient(client);
 
-        });
-        int suffix = name.lastIndexOf('.');
-        String ext = null;
-        if (suffix != -1 && suffix + 2 < name.length()) {
-            ext = name.substring(suffix + 1);
-            if (!isValid(ext))
-                ext = null;
-        }
-        if (ext == null)
-            ext = "txt";
-        final String brush = "brush: " + ext + ";";
-        view.getSettings().setJavaScriptEnabled(true);
-        view.getSettings().setBuiltInZoomControls(true);
-        view.addJavascriptInterface(new Object() {
-            public String toString() {
-                return "<script type=\"syntaxhighlighter\" class=\"toolbar:false;"
-                        + brush
-                        + "\"><![CDATA[\n"
-                        + provider.toString()
-                        + "\n]]></script>";
+        WebSettings settings = view.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setBuiltInZoomControls(true);
+        view.addJavascriptInterface(this, "SourceEditor");
+
+        this.view = view;
+    }
+
+    /**
+     * @return name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @return content
+     */
+    public String getRawContent() {
+        return content;
+    }
+
+    /**
+     * @return content
+     */
+    public String getContent() {
+        if (encoded)
+            try {
+                return new String(EncodingUtils.fromBase64(content),
+                        CHARSET_UTF8);
+            } catch (UnsupportedEncodingException e) {
+                return getRawContent();
             }
+        else
+            return getRawContent();
+    }
 
-        }, "SourceProvider");
+    /**
+     * @return wrap
+     */
+    public boolean getWrap() {
+        return wrap;
+    }
+
+    /**
+     * Set whether lines should wrap
+     *
+     * @param wrap
+     * @return this editor
+     */
+    public SourceEditor setWrap(final boolean wrap) {
+        this.wrap = wrap;
+        if (name != null && content != null)
+            view.loadUrl(URL_PAGE);
+        return this;
+    }
+
+    /**
+     * Bind content to current {@link WebView}
+     *
+     * @param name
+     * @param content
+     * @param encoded
+     * @return this editor
+     */
+    public SourceEditor setSource(final String name, final String content,
+            final boolean encoded) {
+        this.name = name;
+        this.content = content;
+        this.encoded = encoded;
         view.loadUrl(URL_PAGE);
-        return view;
+        return this;
+    }
+
+    /**
+     * Bind blob content to current {@link WebView}
+     *
+     * @param name
+     * @param blob
+     * @return this editor
+     */
+    public SourceEditor setSource(final String name, final Blob blob) {
+        String content = blob.getContent();
+        if (content == null)
+            content = "";
+        boolean encoded = !TextUtils.isEmpty(content)
+                && ENCODING_BASE64.equals(blob.getEncoding());
+        return setSource(name, content, encoded);
+    }
+
+    /**
+     * Toggle line wrap
+     *
+     * @return this editor
+     */
+    public SourceEditor toggleWrap() {
+        return setWrap(!wrap);
     }
 }

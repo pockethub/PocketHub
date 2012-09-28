@@ -79,4 +79,14 @@ public interface RequestCodes {
      * Request to create a gist
      */
     int GIST_CREATE = 9;
+
+    /**
+     * Request to view a commit
+     */
+    int COMMIT_VIEW = 10;
+
+    /**
+     * Request to update the current reference
+     */
+    int REF_UPDATE = 11;
 }

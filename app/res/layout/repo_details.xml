@@ -44,13 +44,13 @@
         <TextView
             android:id="@+id/tv_watchers_icon"
             style="@style/ListIcon"
-            android:text="@string/icon_watch" />
+            android:text="@string/icon_star" />
 
         <TextView
             android:id="@+id/tv_watchers"
             style="@style/ListNumericSubtitleText"
-            android:paddingLeft="5dp"
-            android:paddingRight="10dp" />
+            android:paddingLeft="3dp"
+            android:paddingRight="15dp" />
 
         <TextView
             android:id="@+id/tv_forks_icon"

@@ -16,10 +16,13 @@
 package com.github.mobile.ui.user;
 
 import static android.content.DialogInterface.BUTTON_POSITIVE;
+import static android.content.Intent.ACTION_VIEW;
+import static android.content.Intent.CATEGORY_BROWSABLE;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -51,7 +54,8 @@ public class UriLauncherActivity extends SherlockActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final Uri data = getIntent().getData();
+        final Intent intent = getIntent();
+        final Uri data = intent.getData();
 
         RepositoryIssue issue = IssueUriMatcher.getIssue(data);
         if (issue != null) {
@@ -83,7 +87,12 @@ public class UriLauncherActivity extends SherlockActivity {
             return;
         }
 
-        showParseError(data.toString());
+        if (!intent.hasCategory(CATEGORY_BROWSABLE)) {
+            startActivity(new Intent(ACTION_VIEW, data)
+                    .addCategory(CATEGORY_BROWSABLE));
+            finish();
+        } else
+            showParseError(data.toString());
     }
 
     private void showParseError(String url) {

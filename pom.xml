@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <version>1.0.4</version>
+    <version>1.5</version>
     <groupId>com.github.github</groupId>
     <artifactId>github-android-parent</artifactId>
     <packaging>pom</packaging>
@@ -18,6 +18,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <android.version>4.0.1.2</android.version>
     </properties>
+    <scm>
+        <connection>scm:git:git://github.com/github/android.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/github/android.git</developerConnection>
+        <url>https://github.com/github/android</url>
+    </scm>
     <build>
         <pluginManagement>
             <plugins>

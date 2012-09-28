@@ -99,6 +99,10 @@
         <item name="android:textSize">28dp</item>
     </style>
 
+    <style name="TabIcon" parent="TextIcon">
+        <item name="android:textSize">20dp</item>
+    </style>
+
     <style name="IssueNumber">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -173,6 +177,13 @@
         <item name="android:background">@drawable/list_item_background</item>
     </style>
 
+    <style name="HeaderListItem" parent="ListItem"></style>
+
+    <style name="CommentListItem" parent="ListItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/background</item>
+    </style>
+
     <style name="DropdownItem">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
@@ -203,6 +214,15 @@
     <style name="FooterSeparator">
         <item name="android:layout_height">10dp</item>
         <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="TabText" parent="Global">
+        <item name="android:textColor">@color/tab_text_colors</item>
+        <item name="android:shadowColor">@color/tab_text_shadow</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:textSize">11sp</item>
     </style>
 
 </resources>
