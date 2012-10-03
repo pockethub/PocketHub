@@ -74,6 +74,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     private ProgressBar loadingBar;
 
     private boolean isFollowing;
+    private boolean followingStatusChecked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +121,13 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem followItem = menu.findItem(id.m_follow);
-        followItem.setTitle(isFollowing ? string.unfollow : string.follow);
+
+        if (!followingStatusChecked) {
+            followItem.setVisible(false);
+        } else {
+            followItem.setVisible(true);
+            followItem.setTitle(isFollowing ? string.unfollow : string.follow);
+        }
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -208,6 +215,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     }
 
     private void checkFollowingUserStatus() {
+        followingStatusChecked = false;
         new CheckFollowingUserTask(this, user.getLogin()) {
 
             @Override
@@ -215,6 +223,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
                 super.onSuccess(following);
 
                 isFollowing = following;
+                followingStatusChecked = true;
                 ViewUtils.setGone(loadingBar, true);
                 setGone(false);
             }
