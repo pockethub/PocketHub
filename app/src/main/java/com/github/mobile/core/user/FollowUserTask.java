@@ -22,13 +22,14 @@ import android.accounts.Account;
 import android.content.Context;
 import android.util.Log;
 
-import com.github.mobile.accounts.AuthenticatedUserTask;
+import com.github.mobile.R.string;
+import com.github.mobile.ui.ProgressDialogTask;
 import com.google.inject.Inject;
 
 /**
  * Task to follow a user
  */
-public class FollowUserTask extends AuthenticatedUserTask<User> {
+public class FollowUserTask extends ProgressDialogTask<User> {
 
     private static final String TAG = "FollowUserTask";
 
@@ -36,22 +37,37 @@ public class FollowUserTask extends AuthenticatedUserTask<User> {
     private UserService service;
 
     private final String login;
+    private final boolean isFollowing;
 
     /**
      * Create task for context and login
      *
      * @param context
      * @param login
+     * @param isFollowing
      */
-    public FollowUserTask(Context context, String login) {
+    public FollowUserTask(Context context, String login, boolean isFollowing) {
         super(context);
 
         this.login = login;
+        this.isFollowing = isFollowing;
+    }
+
+    /**
+     * Execute the task with a progress dialog displaying.
+     * <p>
+     * This method must be called from the main thread.
+     */
+    public void start() {
+        int progressMessage = isFollowing ? string.unfollowing_user : string.following_user;
+        showIndeterminate(progressMessage);
+
+        execute();
     }
 
     @Override
     protected User run(Account account) throws Exception {
-        if (service.isFollowing(login)) {
+        if (isFollowing) {
             service.unfollow(login);
         } else {
             service.follow(login);

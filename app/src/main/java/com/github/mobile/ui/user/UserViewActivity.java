@@ -186,9 +186,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     }
 
     private void followUser() {
-        ViewUtils.setGone(loadingBar, false);
-        setGone(true);
-        new FollowUserTask(this, user.getLogin()) {
+        new FollowUserTask(this, user.getLogin(), isFollowing) {
 
             @Override
             protected void onSuccess(User fullUser) throws Exception {
@@ -196,9 +194,6 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
 
                 isFollowing = !isFollowing;
                 user = fullUser;
-
-                ViewUtils.setGone(loadingBar, true);
-                setGone(false);
             }
 
             @Override
@@ -209,7 +204,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
                         string.error_following_person);
                 ViewUtils.setGone(loadingBar, true);
             }
-        }.execute();
+        }.start();
     }
 
     private void checkFollowingUserStatus() {
