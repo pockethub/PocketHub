@@ -65,8 +65,16 @@
                 android:id="@+id/et_password"
                 style="@style/LoginEditText"
                 android:imeOptions="actionDone"
-                android:inputType="textPassword"
-                android:password="true" />
+                android:inputType="textPassword" />
+            
+            <CheckBox
+              android:id="@+id/cb_show_password"
+              style="@style/SubtitleText"
+              android:layout_marginTop="2dp"
+              android:singleLine="true"
+              android:text="@string/show_password"
+              android:textColor="@color/text" />
+
         </LinearLayout>
     </ScrollView>
 

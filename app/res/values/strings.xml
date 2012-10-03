@@ -241,5 +241,6 @@
     <string name="tab_all">all</string>
     <!--  -->
     <string name="share">Share</string>
+    <string name="show_password">Show password</string>
 
 </resources>
