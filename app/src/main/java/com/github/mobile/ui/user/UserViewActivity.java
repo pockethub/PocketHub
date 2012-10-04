@@ -76,7 +76,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
 
     private boolean isFollowing;
 
-    private boolean followingStatusChecked = false;
+    private boolean followingStatusChecked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
