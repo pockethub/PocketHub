@@ -29,7 +29,7 @@ import com.google.inject.Inject;
  */
 public class CheckFollowingUserTask extends AuthenticatedUserTask<Boolean> {
 
-    private static final String TAG = "RefreshUserTask";
+    private static final String TAG = "CheckFollowingUserTask";
 
     @Inject
     private UserService service;
