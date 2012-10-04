@@ -17,6 +17,7 @@ package com.github.mobile.ui;
 
 import android.os.Bundle;
 
+import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
 /**
@@ -24,6 +25,18 @@ import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmen
  */
 public abstract class DialogFragmentActivity extends
         RoboSherlockFragmentActivity implements DialogResultListener {
+
+    /**
+     * Finder bound to this activity's view
+     */
+    protected ViewFinder finder;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        finder = new ViewFinder(this);
+    }
 
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {

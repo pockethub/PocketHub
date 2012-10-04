@@ -46,9 +46,6 @@ import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.User;
 
-import roboguice.inject.InjectExtra;
-import roboguice.inject.InjectView;
-
 /**
  * Activity to view a user's various pages
  */
@@ -68,10 +65,8 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     @Inject
     private AvatarLoader avatars;
 
-    @InjectExtra(EXTRA_USER)
     private User user;
 
-    @InjectView(id.pb_loading)
     private ProgressBar loadingBar;
 
     private boolean isFollowing;
@@ -81,6 +76,9 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        user = (User) getIntent().getSerializableExtra(EXTRA_USER);
+        loadingBar = finder.find(id.pb_loading);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
