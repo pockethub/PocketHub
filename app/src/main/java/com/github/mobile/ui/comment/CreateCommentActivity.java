@@ -27,20 +27,17 @@ import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
+import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.TextWatcherAdapter;
 import com.github.mobile.util.AvatarLoader;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Comment;
 
-import roboguice.inject.InjectView;
-
 /**
  * Base activity for creating comments
  */
-public abstract class CreateCommentActivity extends
-        RoboSherlockFragmentActivity {
+public abstract class CreateCommentActivity extends DialogFragmentActivity {
 
     /**
      * Avatar loader
@@ -48,7 +45,6 @@ public abstract class CreateCommentActivity extends
     @Inject
     protected AvatarLoader avatars;
 
-    @InjectView(id.et_comment)
     private EditText commentText;
 
     private MenuItem applyItem;
@@ -59,6 +55,7 @@ public abstract class CreateCommentActivity extends
 
         setContentView(layout.comment_create);
 
+        commentText = finder.find(id.et_comment);
         commentText.addTextChangedListener(new TextWatcherAdapter() {
 
             @Override

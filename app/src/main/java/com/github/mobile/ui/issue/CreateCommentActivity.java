@@ -31,8 +31,6 @@ import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.User;
 
-import roboguice.inject.InjectExtra;
-
 /**
  * Activity to create a comment on an {@link Issue}
  */
@@ -58,12 +56,13 @@ public class CreateCommentActivity extends
 
     private RepositoryId repositoryId;
 
-    @InjectExtra(EXTRA_ISSUE_NUMBER)
     private int issueNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        issueNumber = getIntExtra(EXTRA_ISSUE_NUMBER);
 
         ActionBar actionBar = getSupportActionBar();
         Intent intent = getIntent();
