@@ -42,19 +42,19 @@ public class CheckFollowingUserTask extends AuthenticatedUserTask<Boolean> {
      * @param context
      * @param login
      */
-    public CheckFollowingUserTask(Context context, String login) {
+    public CheckFollowingUserTask(final Context context, final String login) {
         super(context);
 
         this.login = login;
     }
 
     @Override
-    protected Boolean run(Account account) throws Exception {
+    protected Boolean run(final Account account) throws Exception {
         return service.isFollowing(login);
     }
 
     @Override
-    protected void onException(Exception e) throws RuntimeException {
+    protected void onException(final Exception e) throws RuntimeException {
         super.onException(e);
 
         Log.d(TAG, "Exception checking user following status", e);
