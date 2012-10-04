@@ -28,6 +28,8 @@ import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.TypefaceUtils;
 
+import java.util.Collection;
+
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.User;
 
@@ -46,7 +48,7 @@ public class GistListAdapter extends SingleTypeAdapter<Gist> {
      * @param elements
      */
     public GistListAdapter(AvatarLoader avatars, LayoutInflater inflater,
-            Gist[] elements) {
+            Collection<Gist> elements) {
         super(inflater, layout.gist_item);
 
         this.avatars = avatars;
