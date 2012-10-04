@@ -39,7 +39,8 @@
     <string name="error_file_load">Loading file failed</string>
     <string name="error_code_load">Loading code failed</string>
     <string name="error_refs_load">Loading branches &amp; tags failed</string>
-    <string name="error_following_person">Following/unfollwing person failed</string>
+    <string name="error_following_person">Following person failed</string>
+    <string name="error_unfollowing_person">Unfollowing person failed</string>
     <string name="error_checking_following_status">Checking following status failed</string>
     <!--  -->
 

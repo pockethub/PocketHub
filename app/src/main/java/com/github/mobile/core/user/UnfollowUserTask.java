@@ -27,11 +27,11 @@ import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.UserService;
 
 /**
- * Task to follow a user
+ * Task to unfollow a user
  */
-public class FollowUserTask extends ProgressDialogTask<User> {
+public class UnfollowUserTask extends ProgressDialogTask<User> {
 
-    private static final String TAG = "FollowUserTask";
+    private static final String TAG = "UnfollowUserTask";
 
     @Inject
     private UserService service;
@@ -44,7 +44,7 @@ public class FollowUserTask extends ProgressDialogTask<User> {
      * @param context
      * @param login
      */
-    public FollowUserTask(final Context context, final String login) {
+    public UnfollowUserTask(final Context context, final String login) {
         super(context);
 
         this.login = login;
@@ -56,14 +56,14 @@ public class FollowUserTask extends ProgressDialogTask<User> {
      * This method must be called from the main thread.
      */
     public void start() {
-        showIndeterminate(string.following_user);
+        showIndeterminate(string.unfollowing_user);
 
         execute();
     }
 
     @Override
     protected User run(final Account account) throws Exception {
-        service.follow(login);
+        service.unfollow(login);
 
         return null;
     }
@@ -72,6 +72,6 @@ public class FollowUserTask extends ProgressDialogTask<User> {
     protected void onException(final Exception e) throws RuntimeException {
         super.onException(e);
 
-        Log.d(TAG, "Exception following user", e);
+        Log.d(TAG, "Exception unfollowing user", e);
     }
 }

@@ -38,6 +38,7 @@ import com.github.mobile.R.string;
 import com.github.mobile.core.user.CheckFollowingUserTask;
 import com.github.mobile.core.user.FollowUserTask;
 import com.github.mobile.core.user.RefreshUserTask;
+import com.github.mobile.core.user.UnfollowUserTask;
 import com.github.mobile.ui.TabPagerActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
@@ -193,25 +194,42 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     }
 
     private void followUser() {
-        new FollowUserTask(this, user.getLogin(), isFollowing) {
+        if (isFollowing)
+            new FollowUserTask(this, user.getLogin()) {
 
-            @Override
-            protected void onSuccess(User fullUser) throws Exception {
-                super.onSuccess(fullUser);
+                @Override
+                protected void onSuccess(User user) throws Exception {
+                    super.onSuccess(user);
 
-                isFollowing = !isFollowing;
-                user = fullUser;
-            }
+                    isFollowing = !isFollowing;
+                }
 
-            @Override
-            protected void onException(Exception e) throws RuntimeException {
-                super.onException(e);
+                @Override
+                protected void onException(Exception e) throws RuntimeException {
+                    super.onException(e);
 
-                ToastUtils.show(UserViewActivity.this,
-                        string.error_following_person);
-                ViewUtils.setGone(loadingBar, true);
-            }
-        }.start();
+                    ToastUtils.show(UserViewActivity.this,
+                            string.error_following_person);
+                }
+            }.start();
+        else
+            new UnfollowUserTask(this, user.getLogin()) {
+
+                @Override
+                protected void onSuccess(User user) throws Exception {
+                    super.onSuccess(user);
+
+                    isFollowing = !isFollowing;
+                }
+
+                @Override
+                protected void onException(Exception e) throws RuntimeException {
+                    super.onException(e);
+
+                    ToastUtils.show(UserViewActivity.this,
+                            string.error_unfollowing_person);
+                }
+            }.start();
     }
 
     private void checkFollowingUserStatus() {
