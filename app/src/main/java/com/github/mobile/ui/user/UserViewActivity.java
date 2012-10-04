@@ -35,8 +35,8 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
-import com.github.mobile.core.user.FollowingUserTask;
 import com.github.mobile.core.user.FollowUserTask;
+import com.github.mobile.core.user.FollowingUserTask;
 import com.github.mobile.core.user.RefreshUserTask;
 import com.github.mobile.core.user.UnfollowUserTask;
 import com.github.mobile.ui.TabPagerActivity;
@@ -123,12 +123,8 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem followItem = menu.findItem(id.m_follow);
 
-        if (!followingStatusChecked) {
-            followItem.setVisible(false);
-        } else {
-            followItem.setVisible(true);
-            followItem.setTitle(isFollowing ? string.unfollow : string.follow);
-        }
+        followItem.setVisible(followingStatusChecked);
+        followItem.setTitle(isFollowing ? string.unfollow : string.follow);
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -153,6 +149,8 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     private void configurePager() {
         avatars.bind(getSupportActionBar(), user);
         configureTabPager();
+        ViewUtils.setGone(loadingBar, true);
+        setGone(false);
         checkFollowingUserStatus();
     }
 
@@ -195,24 +193,6 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
 
     private void followUser() {
         if (isFollowing)
-            new FollowUserTask(this, user.getLogin()) {
-
-                @Override
-                protected void onSuccess(User user) throws Exception {
-                    super.onSuccess(user);
-
-                    isFollowing = !isFollowing;
-                }
-
-                @Override
-                protected void onException(Exception e) throws RuntimeException {
-                    super.onException(e);
-
-                    ToastUtils.show(UserViewActivity.this,
-                            string.error_following_person);
-                }
-            }.start();
-        else
             new UnfollowUserTask(this, user.getLogin()) {
 
                 @Override
@@ -230,6 +210,24 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
                             string.error_unfollowing_person);
                 }
             }.start();
+        else
+            new FollowUserTask(this, user.getLogin()) {
+
+                @Override
+                protected void onSuccess(User user) throws Exception {
+                    super.onSuccess(user);
+
+                    isFollowing = !isFollowing;
+                }
+
+                @Override
+                protected void onException(Exception e) throws RuntimeException {
+                    super.onException(e);
+
+                    ToastUtils.show(UserViewActivity.this,
+                            string.error_following_person);
+                }
+            }.start();
     }
 
     private void checkFollowingUserStatus() {
@@ -242,17 +240,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
 
                 isFollowing = following;
                 followingStatusChecked = true;
-                ViewUtils.setGone(loadingBar, true);
-                setGone(false);
-            }
-
-            @Override
-            protected void onException(Exception e) throws RuntimeException {
-                super.onException(e);
-
-                ToastUtils.show(UserViewActivity.this,
-                        string.error_checking_following_status);
-                ViewUtils.setGone(loadingBar, true);
+                invalidateOptionsMenu();
             }
         }.execute();
     }
