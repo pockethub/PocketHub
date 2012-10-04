@@ -75,6 +75,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     private ProgressBar loadingBar;
 
     private boolean isFollowing;
+
     private boolean followingStatusChecked = false;
 
     @Override
