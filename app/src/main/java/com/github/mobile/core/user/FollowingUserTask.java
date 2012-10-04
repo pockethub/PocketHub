@@ -57,6 +57,6 @@ public class FollowingUserTask extends AuthenticatedUserTask<Boolean> {
     protected void onException(final Exception e) throws RuntimeException {
         super.onException(e);
 
-        Log.d(TAG, "Exception checking user following status", e);
+        Log.d(TAG, "Exception checking if following user", e);
     }
 }
