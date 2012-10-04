@@ -239,5 +239,6 @@
     <!--  -->
 
     <string name="share">Teilen</string>
+    <string name="show_password">Passwort anzeigen</string>
 
 </resources>
