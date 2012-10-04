@@ -20,14 +20,11 @@ import static com.github.mobile.RequestCodes.GIST_CREATE;
 import static com.github.mobile.RequestCodes.GIST_VIEW;
 import android.content.Intent;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.accounts.GitHubAccount;
 import com.github.mobile.core.ResourcePager;
 import com.github.mobile.core.gist.GistPager;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
-import java.util.List;
 
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.client.PageIterator;
@@ -61,11 +58,5 @@ public class MyGistsFragment extends GistsFragment {
                         size);
             }
         };
-    }
-
-    @Override
-    protected SingleTypeAdapter<Gist> createAdapter(List<Gist> items) {
-        return new GistListAdapter(avatars, getActivity().getLayoutInflater(),
-                items.toArray(new Gist[items.size()]));
     }
 }

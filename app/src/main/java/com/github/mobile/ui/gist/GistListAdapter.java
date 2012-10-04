@@ -15,8 +15,8 @@
  */
 package com.github.mobile.ui.gist;
 
+import android.app.Activity;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
@@ -44,12 +44,12 @@ public class GistListAdapter extends SingleTypeAdapter<Gist> {
 
     /**
      * @param avatars
-     * @param inflater
+     * @param activity
      * @param elements
      */
-    public GistListAdapter(AvatarLoader avatars, LayoutInflater inflater,
+    public GistListAdapter(AvatarLoader avatars, Activity activity,
             Collection<Gist> elements) {
-        super(inflater, layout.gist_item);
+        super(activity, layout.gist_item);
 
         this.avatars = avatars;
         setItems(elements);
