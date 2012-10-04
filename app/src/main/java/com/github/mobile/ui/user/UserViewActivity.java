@@ -24,6 +24,7 @@ import static com.github.mobile.util.TypefaceUtils.ICON_PUBLIC;
 import static com.github.mobile.util.TypefaceUtils.ICON_WATCH;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -84,7 +85,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(user.getLogin());
 
-        if (user.getAvatarUrl() != null)
+        if (!TextUtils.isEmpty(user.getAvatarUrl()))
             configurePager();
         else {
             ViewUtils.setGone(loadingBar, false);
