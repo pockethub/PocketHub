@@ -27,7 +27,7 @@ import com.google.inject.Inject;
 /**
  * Task to check user following status
  */
-public class CheckFollowingUserTask extends AuthenticatedUserTask<Boolean> {
+public class FollowingUserTask extends AuthenticatedUserTask<Boolean> {
 
     private static final String TAG = "CheckFollowingUserTask";
 
@@ -42,7 +42,7 @@ public class CheckFollowingUserTask extends AuthenticatedUserTask<Boolean> {
      * @param context
      * @param login
      */
-    public CheckFollowingUserTask(final Context context, final String login) {
+    public FollowingUserTask(final Context context, final String login) {
         super(context);
 
         this.login = login;

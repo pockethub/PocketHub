@@ -35,7 +35,7 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
-import com.github.mobile.core.user.CheckFollowingUserTask;
+import com.github.mobile.core.user.FollowingUserTask;
 import com.github.mobile.core.user.FollowUserTask;
 import com.github.mobile.core.user.RefreshUserTask;
 import com.github.mobile.core.user.UnfollowUserTask;
@@ -234,7 +234,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
 
     private void checkFollowingUserStatus() {
         followingStatusChecked = false;
-        new CheckFollowingUserTask(this, user.getLogin()) {
+        new FollowingUserTask(this, user.getLogin()) {
 
             @Override
             protected void onSuccess(Boolean following) throws Exception {
