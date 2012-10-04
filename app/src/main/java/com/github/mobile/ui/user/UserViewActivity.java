@@ -27,12 +27,16 @@ import android.os.Bundle;
 import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
+import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
+import com.github.mobile.core.user.CheckFollowingUserTask;
+import com.github.mobile.core.user.FollowUserTask;
 import com.github.mobile.core.user.RefreshUserTask;
 import com.github.mobile.ui.TabPagerActivity;
 import com.github.mobile.util.AvatarLoader;
@@ -68,6 +72,9 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
 
     @InjectView(id.pb_loading)
     private ProgressBar loadingBar;
+
+    private boolean isFollowing;
+    private boolean followingStatusChecked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,8 +112,32 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu optionsMenu) {
+        getSupportMenuInflater().inflate(menu.user_follow, optionsMenu);
+
+        return super.onCreateOptionsMenu(optionsMenu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem followItem = menu.findItem(id.m_follow);
+
+        if (!followingStatusChecked) {
+            followItem.setVisible(false);
+        } else {
+            followItem.setVisible(true);
+            followItem.setTitle(isFollowing ? string.unfollow : string.follow);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+        case id.m_follow:
+            followUser();
+            return true;
         case android.R.id.home:
             Intent intent = new Intent(this, HomeActivity.class);
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
@@ -121,8 +152,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     private void configurePager() {
         avatars.bind(getSupportActionBar(), user);
         configureTabPager();
-        ViewUtils.setGone(loadingBar, true);
-        setGone(false);
+        checkFollowingUserStatus();
     }
 
     @Override
@@ -160,5 +190,52 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
         default:
             return super.getIcon(position);
         }
+    }
+
+    private void followUser() {
+        new FollowUserTask(this, user.getLogin(), isFollowing) {
+
+            @Override
+            protected void onSuccess(User fullUser) throws Exception {
+                super.onSuccess(fullUser);
+
+                isFollowing = !isFollowing;
+                user = fullUser;
+            }
+
+            @Override
+            protected void onException(Exception e) throws RuntimeException {
+                super.onException(e);
+
+                ToastUtils.show(UserViewActivity.this,
+                        string.error_following_person);
+                ViewUtils.setGone(loadingBar, true);
+            }
+        }.start();
+    }
+
+    private void checkFollowingUserStatus() {
+        followingStatusChecked = false;
+        new CheckFollowingUserTask(this, user.getLogin()) {
+
+            @Override
+            protected void onSuccess(Boolean following) throws Exception {
+                super.onSuccess(following);
+
+                isFollowing = following;
+                followingStatusChecked = true;
+                ViewUtils.setGone(loadingBar, true);
+                setGone(false);
+            }
+
+            @Override
+            protected void onException(Exception e) throws RuntimeException {
+                super.onException(e);
+
+                ToastUtils.show(UserViewActivity.this,
+                        string.error_checking_following_status);
+                ViewUtils.setGone(loadingBar, true);
+            }
+        }.execute();
     }
 }
