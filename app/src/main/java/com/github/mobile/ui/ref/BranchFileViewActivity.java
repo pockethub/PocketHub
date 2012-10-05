@@ -37,24 +37,21 @@ import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.core.code.RefreshBlobTask;
 import com.github.mobile.core.commit.CommitUtils;
+import com.github.mobile.ui.BaseActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.PreferenceUtils;
 import com.github.mobile.util.ShareUtils;
 import com.github.mobile.util.SourceEditor;
 import com.github.mobile.util.ToastUtils;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockActivity;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Blob;
 import org.eclipse.egit.github.core.Repository;
 
-import roboguice.inject.InjectExtra;
-import roboguice.inject.InjectView;
-
 /**
  * Activity to view a file on a branch
  */
-public class BranchFileViewActivity extends RoboSherlockActivity {
+public class BranchFileViewActivity extends BaseActivity {
 
     private static final String TAG = "BranchFileViewActivity";
 
@@ -77,24 +74,18 @@ public class BranchFileViewActivity extends RoboSherlockActivity {
         return builder.toIntent();
     }
 
-    @InjectExtra(EXTRA_REPOSITORY)
     private Repository repo;
 
-    @InjectExtra(EXTRA_BASE)
     private String sha;
 
-    @InjectExtra(EXTRA_PATH)
     private String path;
 
     private String file;
 
-    @InjectExtra(EXTRA_HEAD)
     private String branch;
 
-    @InjectView(id.pb_loading)
     private ProgressBar loadingBar;
 
-    @InjectView(id.wv_code)
     private WebView codeView;
 
     private SourceEditor editor;
@@ -107,6 +98,14 @@ public class BranchFileViewActivity extends RoboSherlockActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(layout.commit_file_view);
+
+        repo = getSerializableExtra(EXTRA_REPOSITORY);
+        sha = getStringExtra(EXTRA_BASE);
+        path = getStringExtra(EXTRA_PATH);
+        branch = getStringExtra(EXTRA_HEAD);
+
+        loadingBar = finder.find(id.pb_loading);
+        codeView = finder.find(id.wv_code);
 
         file = CommitUtils.getName(path);
         editor = new SourceEditor(codeView);
