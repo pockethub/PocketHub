@@ -15,6 +15,7 @@
  */
 package com.github.mobile.accounts;
 
+import static android.accounts.AccountManager.KEY_AUTHTOKEN;
 import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -22,6 +23,7 @@ import android.accounts.AccountManagerFuture;
 import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.inject.AbstractModule;
@@ -75,22 +77,33 @@ public class AccountScope extends ScopeBase {
      */
     public void enterWith(final Account account,
             final AccountManager accountManager) {
-        AccountManagerFuture future =
-                accountManager.getAuthToken(account, ACCOUNT_TYPE, null, true, null, null);
+        @SuppressWarnings("deprecation")
+        AccountManagerFuture<Bundle> future = accountManager.getAuthToken(
+                account, ACCOUNT_TYPE, false, null, null);
 
-        Bundle result = null;
-        String authToken = null;
+        String authToken;
         try {
-          result = (Bundle) future.getResult();
-          authToken = result.getString(AccountManager.KEY_AUTHTOKEN);
+            authToken = future.getResult().getString(KEY_AUTHTOKEN);
+        } catch (AuthenticatorException ae) {
+            authToken = null;
+            // Authenticator failed to respond
+            Log.e(TAG, ae.getMessage());
+        } catch (OperationCanceledException oce) {
+            authToken = null;
+            // User canceled operation
+            Log.e(TAG, oce.getMessage());
+        } catch (IOException ioe) {
+            authToken = null;
+            // Possible network issues
+            Log.e(TAG, ioe.getMessage());
         }
-        catch (AuthenticatorException ae) { Log.e(TAG, ae.getMessage()); } // Authenticator failed to respond
-        catch (OperationCanceledException oce) { Log.e(TAG, oce.getMessage()); } // User canceled operation
-        catch (IOException ioe) { Log.e(TAG, ioe.getMessage()); } // Possible network issues
 
-        enterWith(new GitHubAccount(account.name,
-                                    accountManager.getPassword(account),
-                                    authToken));
+        String password;
+        if (TextUtils.isEmpty(authToken))
+            password = accountManager.getPassword(account);
+        else
+            password = null;
+        enterWith(new GitHubAccount(account.name, password, authToken));
     }
 
     /**
