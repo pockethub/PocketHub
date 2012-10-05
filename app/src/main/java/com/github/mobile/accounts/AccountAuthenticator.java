@@ -141,8 +141,7 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
 
         // Get authorizations for app if they exist
         try {
-            List<Authorization> auths = oAuthService.getAuthorizations();
-            for (Authorization auth : auths)
+            for (Authorization auth : oAuthService.getAuthorizations())
                 if (isValidAuthorization(auth, requiredScopes)) {
                     authToken = auth.getToken();
                     break;
