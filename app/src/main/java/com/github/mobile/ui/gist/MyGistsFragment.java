@@ -54,8 +54,8 @@ public class MyGistsFragment extends GistsFragment {
 
             @Override
             public PageIterator<Gist> createIterator(int page, int size) {
-                return service.pageGists(accountProvider.get().username, page,
-                        size);
+                return service.pageGists(accountProvider.get().getUsername(),
+                        page, size);
             }
         };
     }

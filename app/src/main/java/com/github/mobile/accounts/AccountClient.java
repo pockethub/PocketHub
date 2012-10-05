@@ -55,10 +55,11 @@ public class AccountClient extends DefaultClient {
             Log.d(TAG, "Authenticating using " + account);
 
         // Credentials setting must come before super call
-        if(!TextUtils.isEmpty(account.authToken)) // Use token if it exists
-          setOAuth2Token(account.authToken);
+        String token = account.getAuthToken();
+        if (!TextUtils.isEmpty(token))
+            setOAuth2Token(token);
         else
-          setCredentials(account.username, account.password);
+            setCredentials(account.getUsername(), account.getPassword());
 
         return super.configureRequest(request);
     }

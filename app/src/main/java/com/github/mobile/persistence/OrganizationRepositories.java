@@ -181,7 +181,7 @@ public class OrganizationRepositories implements
     }
 
     private boolean isAuthenticatedUser() {
-        return org.getLogin().equals(accountProvider.get().username);
+        return org.getLogin().equals(accountProvider.get().getUsername());
     }
 
     @Override

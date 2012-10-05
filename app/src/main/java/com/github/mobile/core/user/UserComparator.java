@@ -39,7 +39,7 @@ public class UserComparator implements Comparator<User> {
      */
     @Inject
     public UserComparator(final GitHubAccount account) {
-        login = account.username;
+        login = account.getUsername();
     }
 
     @Override

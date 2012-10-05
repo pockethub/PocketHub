@@ -15,6 +15,8 @@
  */
 package com.github.mobile.tests.user;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.test.AndroidTestCase;
 
 import com.github.mobile.accounts.GitHubAccount;
@@ -31,7 +33,8 @@ public class UserComparatorTest extends AndroidTestCase {
      * Test sorting of users that match login
      */
     public void testLoginMatch() {
-        GitHubAccount account = new GitHubAccount("m", "n", "a");
+        GitHubAccount account = new GitHubAccount(new Account("m", "t"),
+                AccountManager.get(getContext()));
         UserComparator comparator = new UserComparator(account);
 
         assertTrue(comparator.compare(new User().setLogin("m"),
@@ -52,7 +55,8 @@ public class UserComparatorTest extends AndroidTestCase {
      * Test sorting of users that don't match login
      */
     public void testNoLoginMatch() {
-        GitHubAccount account = new GitHubAccount("m", "n", "a");
+        GitHubAccount account = new GitHubAccount(new Account("m", "t"),
+                AccountManager.get(getContext()));
         UserComparator comparator = new UserComparator(account);
 
         assertTrue(comparator.compare(new User().setLogin("a"),

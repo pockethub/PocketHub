@@ -15,23 +15,14 @@
  */
 package com.github.mobile.accounts;
 
-import static android.accounts.AccountManager.KEY_AUTHTOKEN;
-import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.accounts.AccountManagerFuture;
-import android.accounts.AuthenticatorException;
-import android.accounts.OperationCanceledException;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Key;
 import com.google.inject.Module;
 import com.google.inject.OutOfScopeException;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -43,8 +34,6 @@ public class AccountScope extends ScopeBase {
 
     private static final Key<GitHubAccount> GITHUB_ACCOUNT_KEY = Key
             .get(GitHubAccount.class);
-
-    private static final String TAG = "GitHubAccountScope";
 
     /**
      * Create new module
@@ -77,33 +66,7 @@ public class AccountScope extends ScopeBase {
      */
     public void enterWith(final Account account,
             final AccountManager accountManager) {
-        @SuppressWarnings("deprecation")
-        AccountManagerFuture<Bundle> future = accountManager.getAuthToken(
-                account, ACCOUNT_TYPE, false, null, null);
-
-        String authToken;
-        try {
-            authToken = future.getResult().getString(KEY_AUTHTOKEN);
-        } catch (AuthenticatorException ae) {
-            authToken = null;
-            // Authenticator failed to respond
-            Log.e(TAG, ae.getMessage());
-        } catch (OperationCanceledException oce) {
-            authToken = null;
-            // User canceled operation
-            Log.e(TAG, oce.getMessage());
-        } catch (IOException ioe) {
-            authToken = null;
-            // Possible network issues
-            Log.e(TAG, ioe.getMessage());
-        }
-
-        String password;
-        if (TextUtils.isEmpty(authToken))
-            password = accountManager.getPassword(account);
-        else
-            password = null;
-        enterWith(new GitHubAccount(account.name, password, authToken));
+        enterWith(new GitHubAccount(account, accountManager));
     }
 
     /**

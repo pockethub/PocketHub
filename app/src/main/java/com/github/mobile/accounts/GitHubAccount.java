@@ -15,41 +15,81 @@
  */
 package com.github.mobile.accounts;
 
+import static android.accounts.AccountManager.KEY_AUTHTOKEN;
+import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.accounts.AccountManagerFuture;
+import android.accounts.AccountsException;
+import android.os.Bundle;
+import android.util.Log;
+
+import java.io.IOException;
+
 /**
  * GitHub account model
  */
 public class GitHubAccount {
 
-    /**
-     * Account username
-     */
-    public final String username;
+    private static final String TAG = "GitHubAccount";
+
+    private final Account account;
+
+    private final AccountManager manager;
 
     /**
-     * Account password
-     */
-    public final String password;
-
-    /**
-     * Account OAuth token
-     */
-    public final String authToken;
-
-    /**
-     * Create account with username and password
+     * Create account wrapper
      *
-     * @param username
-     * @param password
-     * @param authToken
+     * @param account
+     * @param manager
      */
-    public GitHubAccount(String username, String password, String authToken) {
-        this.username = username;
-        this.password = password;
-        this.authToken = authToken;
+    public GitHubAccount(final Account account, final AccountManager manager) {
+        this.account = account;
+        this.manager = manager;
+    }
+
+    /**
+     * Get username
+     *
+     * @return username
+     */
+    public String getUsername() {
+        return account.name;
+    }
+
+    /**
+     * Get password
+     *
+     * @return password
+     */
+    public String getPassword() {
+        return manager.getPassword(account);
+    }
+
+    /**
+     * Get auth token
+     *
+     * @return token
+     */
+    public String getAuthToken() {
+        @SuppressWarnings("deprecation")
+        AccountManagerFuture<Bundle> future = manager.getAuthToken(account,
+                ACCOUNT_TYPE, false, null, null);
+
+        try {
+            Bundle result = future.getResult();
+            return result != null ? result.getString(KEY_AUTHTOKEN) : null;
+        } catch (AccountsException e) {
+            Log.e(TAG, "Auth token lookup failed", e);
+            return null;
+        } catch (IOException e) {
+            Log.e(TAG, "Auth token lookup failed", e);
+            return null;
+        }
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + '[' + username + ']';
+        return getClass().getSimpleName() + '[' + account.name + ']';
     }
 }
