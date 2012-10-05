@@ -69,4 +69,14 @@ public class BaseActivity extends RoboSherlockActivity {
     protected String getStringExtra(final String name) {
         return getIntent().getStringExtra(name);
     }
+
+    /**
+     * Get intent extra
+     *
+     * @param name
+     * @return string array
+     */
+    protected String[] getStringArrayExtra(final String name) {
+        return getIntent().getStringArrayExtra(name);
+    }
 }
