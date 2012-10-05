@@ -15,13 +15,12 @@
  */
 package com.github.mobile.accounts;
 
+import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
 import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
-
 import android.os.Bundle;
 import android.util.Log;
 
@@ -31,12 +30,8 @@ import com.google.inject.Module;
 import com.google.inject.OutOfScopeException;
 
 import java.io.IOException;
-
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
 
 /**
  * Custom scope that makes an authenticated GitHub account available by
