@@ -16,18 +16,20 @@
 package com.github.mobile.accounts;
 
 import static android.accounts.AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE;
+import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
+import static android.accounts.AccountManager.KEY_ACCOUNT_TYPE;
+import static android.accounts.AccountManager.KEY_AUTHTOKEN;
 import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 import static android.accounts.AccountManager.KEY_INTENT;
-import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
 import static com.github.mobile.accounts.AccountConstants.ACCOUNT_NAME;
+import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
 import static com.github.mobile.accounts.AccountConstants.APP_URL;
 import static com.github.mobile.accounts.LoginActivity.PARAM_AUTHTOKEN_TYPE;
 import static com.github.mobile.accounts.LoginActivity.PARAM_USERNAME;
-import com.github.mobile.DefaultClient;
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.accounts.AccountAuthenticatorResponse;
+import android.accounts.AccountManager;
 import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.content.Intent;
@@ -35,11 +37,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
-import org.eclipse.egit.github.core.service.OAuthService;
-import org.eclipse.egit.github.core.Authorization;
+import com.github.mobile.DefaultClient;
 
-import java.lang.Thread;
 import java.util.List;
+
+import org.eclipse.egit.github.core.Authorization;
+import org.eclipse.egit.github.core.service.OAuthService;
 
 class AccountAuthenticator extends AbstractAccountAuthenticator {
 
@@ -91,7 +94,8 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
 
         final Bundle bundle = new Bundle();
 
-        if(!authTokenType.equals(ACCOUNT_TYPE)) return bundle;
+        if (!authTokenType.equals(ACCOUNT_TYPE))
+            return bundle;
 
         AccountManager am = AccountManager.get(context);
         String username = account.name;
@@ -105,37 +109,40 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
 
         // Get authorizations for app if they exist
         try {
-          List<Authorization> auths = oAuthService.getAuthorizations();
-          for(Authorization auth : auths)
-            if(auth.getApp().getName().equals(ACCOUNT_NAME))
-              authToken = auth.getToken();
+            List<Authorization> auths = oAuthService.getAuthorizations();
+            for (Authorization auth : auths)
+                if (auth.getApp().getName().equals(ACCOUNT_NAME))
+                    authToken = auth.getToken();
 
-          // Setup authorization for app if others didn't exist.
-          if(TextUtils.isEmpty(authToken)) {
-            Authorization auth = oAuthService.createAuthorization(
-                new Authorization().setNote(ACCOUNT_NAME).setUrl(APP_URL)
-            );
-            if(auth != null) authToken = auth.getToken();
-          }
+            // Setup authorization for app if others didn't exist.
+            if (TextUtils.isEmpty(authToken)) {
+                Authorization auth = oAuthService
+                        .createAuthorization(new Authorization().setNote(
+                                ACCOUNT_NAME).setUrl(APP_URL));
+                if (auth != null)
+                    authToken = auth.getToken();
+            }
 
-          // If couldn't get authToken 
-          if(TextUtils.isEmpty(authToken)) {
-            final Intent intent = new Intent(context, LoginActivity.class);
-            intent.putExtra(PARAM_AUTHTOKEN_TYPE, ACCOUNT_TYPE);
-            intent.putExtra(KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
-            bundle.putParcelable(KEY_INTENT, intent);
+            // If couldn't get authToken
+            if (TextUtils.isEmpty(authToken)) {
+                final Intent intent = new Intent(context, LoginActivity.class);
+                intent.putExtra(PARAM_AUTHTOKEN_TYPE, ACCOUNT_TYPE);
+                intent.putExtra(KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
+                bundle.putParcelable(KEY_INTENT, intent);
+                return bundle;
+            }
+
+            // Assemble and return bundle
+            bundle.putString(KEY_ACCOUNT_NAME, account.name);
+            bundle.putString(KEY_ACCOUNT_TYPE, ACCOUNT_TYPE);
+            bundle.putString(KEY_AUTHTOKEN, authToken);
+
+            // Clear password from account
+            am.clearPassword(account);
             return bundle;
-          }
-
-          // Assemble and return bundle
-          bundle.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
-          bundle.putString(AccountManager.KEY_ACCOUNT_TYPE, ACCOUNT_TYPE);
-          bundle.putString(AccountManager.KEY_AUTHTOKEN, authToken);
-          
-          // Clear password from account
-          am.clearPassword(account);
-          return bundle;
-        } catch ( Exception e ) { Log.e(TAG, e.getMessage()); }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
         return bundle;
     }
 
