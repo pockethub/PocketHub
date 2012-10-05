@@ -15,7 +15,6 @@
  */
 package com.github.mobile.accounts;
 
-
 /**
  * GitHub account model
  */
@@ -32,7 +31,7 @@ public class GitHubAccount {
     public final String password;
 
     /**
-     * Account password
+     * Account OAuth token
      */
     public final String authToken;
 
