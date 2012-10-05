@@ -110,6 +110,13 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
         return true;
     }
 
+    private Intent createLoginIntent(AccountAuthenticatorResponse response) {
+        final Intent intent = new Intent(context, LoginActivity.class);
+        intent.putExtra(PARAM_AUTHTOKEN_TYPE, ACCOUNT_TYPE);
+        intent.putExtra(KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
+        return intent;
+    }
+
     @Override
     public Bundle getAuthToken(AccountAuthenticatorResponse response,
             Account account, String authTokenType, Bundle options)
@@ -125,10 +132,7 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
         String password = am.getPassword(account);
 
         if (TextUtils.isEmpty(password)) {
-            final Intent intent = new Intent(context, LoginActivity.class);
-            intent.putExtra(PARAM_AUTHTOKEN_TYPE, ACCOUNT_TYPE);
-            intent.putExtra(KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
-            bundle.putParcelable(KEY_INTENT, intent);
+            bundle.putParcelable(KEY_INTENT, createLoginIntent(response));
             return bundle;
         }
 
@@ -158,22 +162,14 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
                     authToken = auth.getToken();
             }
 
-            // If couldn't get authToken
-            if (TextUtils.isEmpty(authToken)) {
-                final Intent intent = new Intent(context, LoginActivity.class);
-                intent.putExtra(PARAM_AUTHTOKEN_TYPE, ACCOUNT_TYPE);
-                intent.putExtra(KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
-                bundle.putParcelable(KEY_INTENT, intent);
-                return bundle;
+            if (TextUtils.isEmpty(authToken))
+                bundle.putParcelable(KEY_INTENT, createLoginIntent(response));
+            else {
+                bundle.putString(KEY_ACCOUNT_NAME, account.name);
+                bundle.putString(KEY_ACCOUNT_TYPE, ACCOUNT_TYPE);
+                bundle.putString(KEY_AUTHTOKEN, authToken);
+                am.clearPassword(account);
             }
-
-            // Assemble and return bundle
-            bundle.putString(KEY_ACCOUNT_NAME, account.name);
-            bundle.putString(KEY_ACCOUNT_TYPE, ACCOUNT_TYPE);
-            bundle.putString(KEY_AUTHTOKEN, authToken);
-
-            // Clear password from account
-            am.clearPassword(account);
             return bundle;
         } catch (IOException e) {
             Log.e(TAG, e.getMessage());
