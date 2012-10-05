@@ -116,7 +116,7 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
 
         final Bundle bundle = new Bundle();
 
-        if (!authTokenType.equals(ACCOUNT_TYPE))
+        if (!ACCOUNT_TYPE.equals(authTokenType))
             return bundle;
 
         AccountManager am = AccountManager.get(context);
