@@ -39,6 +39,7 @@ import android.util.Log;
 
 import com.github.mobile.DefaultClient;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -167,10 +168,10 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
             // Clear password from account
             am.clearPassword(account);
             return bundle;
-        } catch (Exception e) {
+        } catch (IOException e) {
             Log.e(TAG, e.getMessage());
+            throw new NetworkErrorException(e);
         }
-        return bundle;
     }
 
     @Override
