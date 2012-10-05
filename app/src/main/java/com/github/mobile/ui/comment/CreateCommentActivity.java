@@ -27,7 +27,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
-import com.github.mobile.ui.DialogFragmentActivity;
+import com.github.mobile.ui.BaseActivity;
 import com.github.mobile.ui.TextWatcherAdapter;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
@@ -37,7 +37,7 @@ import org.eclipse.egit.github.core.Comment;
 /**
  * Base activity for creating comments
  */
-public abstract class CreateCommentActivity extends DialogFragmentActivity {
+public abstract class CreateCommentActivity extends BaseActivity {
 
     /**
      * Avatar loader
