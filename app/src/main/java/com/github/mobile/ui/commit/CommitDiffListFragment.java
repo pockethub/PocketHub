@@ -250,6 +250,7 @@ public class CommitDiffListFragment extends DialogFragment implements
                 super.onException(e);
 
                 ToastUtils.show(getActivity(), e, string.error_commit_load);
+                showLoading(false);
             }
 
         }.execute();
@@ -325,9 +326,13 @@ public class CommitDiffListFragment extends DialogFragment implements
         }
     }
 
+    private void showLoading(final boolean loading) {
+        ViewUtils.setGone(progress, !loading);
+        ViewUtils.setGone(list, loading);
+    }
+
     private void updateHeader(RepositoryCommit commit) {
-        ViewUtils.setGone(progress, true);
-        ViewUtils.setGone(list, false);
+        showLoading(false);
 
         addCommitDetails(commit);
         addCommitParents(commit, getActivity().getLayoutInflater());
