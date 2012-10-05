@@ -16,6 +16,7 @@
 package com.github.mobile.accounts;
 
 import static android.util.Log.DEBUG;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.github.mobile.DefaultClient;
@@ -54,7 +55,10 @@ public class AccountClient extends DefaultClient {
             Log.d(TAG, "Authenticating using " + account);
 
         // Credentials setting must come before super call
-        setCredentials(account.username, account.password);
+        if(!TextUtils.isEmpty(account.authToken)) // Use token if it exists
+          setOAuth2Token(account.authToken);
+        else
+          setCredentials(account.username, account.password);
 
         return super.configureRequest(request);
     }

@@ -34,4 +34,9 @@ public interface AccountConstants {
      * Provider authority
      */
     String PROVIDER_AUTHORITY = "com.github.sync";
+    
+      /**
+     * Application URL 
+     */
+    String APP_URL = "https://github.com/github/android";
 }
