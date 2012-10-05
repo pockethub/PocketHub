@@ -117,6 +117,40 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
         return intent;
     }
 
+    /**
+     * Get existing authorization for this app
+     *
+     * @param service
+     * @param scopes
+     * @return token or null if none found
+     * @throws IOException
+     */
+    private String getAuthorization(OAuthService service,
+            List<String> scopes) throws IOException {
+        for (Authorization auth : service.getAuthorizations())
+            if (isValidAuthorization(auth, scopes))
+                return auth.getToken();
+        return null;
+    }
+
+    /**
+     * Create authorization for this app
+     *
+     * @param service
+     * @param scopes
+     * @return created token
+     * @throws IOException
+     */
+    private String createAuthorization(OAuthService service, List<String> scopes)
+            throws IOException {
+        Authorization auth = new Authorization();
+        auth.setNote(APP_NOTE);
+        auth.setNoteUrl(APP_NOTE_URL);
+        auth.setScopes(scopes);
+        auth = service.createAuthorization(auth);
+        return auth != null ? auth.getToken() : null;
+    }
+
     @Override
     public Bundle getAuthToken(AccountAuthenticatorResponse response,
             Account account, String authTokenType, Bundle options)
@@ -136,31 +170,15 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
             return bundle;
         }
 
-        String authToken = null;
         DefaultClient client = new DefaultClient();
         client.setCredentials(username, password);
-        OAuthService oAuthService = new OAuthService(client);
+        OAuthService service = new OAuthService(client);
+        List<String> scopes = Arrays.asList("repo", "user", "gist");
 
-        List<String> requiredScopes = Arrays.asList("repo", "user", "gist");
-
-        // Get authorizations for app if they exist
         try {
-            for (Authorization auth : oAuthService.getAuthorizations())
-                if (isValidAuthorization(auth, requiredScopes)) {
-                    authToken = auth.getToken();
-                    break;
-                }
-
-            // Setup authorization for app if others didn't exist.
-            if (TextUtils.isEmpty(authToken)) {
-                Authorization auth = new Authorization();
-                auth.setNote(APP_NOTE);
-                auth.setNoteUrl(APP_NOTE_URL);
-                auth.setScopes(requiredScopes);
-                auth = oAuthService.createAuthorization(auth);
-                if (auth != null)
-                    authToken = auth.getToken();
-            }
+            String authToken = getAuthorization(service, scopes);
+            if (TextUtils.isEmpty(authToken))
+                authToken = createAuthorization(service, scopes);
 
             if (TextUtils.isEmpty(authToken))
                 bundle.putParcelable(KEY_INTENT, createLoginIntent(response));
