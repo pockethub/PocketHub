@@ -250,7 +250,7 @@ public class CommitDiffListFragment extends DialogFragment implements
                 super.onException(e);
 
                 ToastUtils.show(getActivity(), e, string.error_commit_load);
-                showLoading(false);
+                ViewUtils.setGone(progress, true);
             }
 
         }.execute();
@@ -326,13 +326,9 @@ public class CommitDiffListFragment extends DialogFragment implements
         }
     }
 
-    private void showLoading(final boolean loading) {
-        ViewUtils.setGone(progress, !loading);
-        ViewUtils.setGone(list, loading);
-    }
-
     private void updateHeader(RepositoryCommit commit) {
-        showLoading(false);
+        ViewUtils.setGone(progress, true);
+        ViewUtils.setGone(list, false);
 
         addCommitDetails(commit);
         addCommitParents(commit, getActivity().getLayoutInflater());
