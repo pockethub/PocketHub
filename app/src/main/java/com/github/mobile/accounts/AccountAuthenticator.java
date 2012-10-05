@@ -21,9 +21,9 @@ import static android.accounts.AccountManager.KEY_ACCOUNT_TYPE;
 import static android.accounts.AccountManager.KEY_AUTHTOKEN;
 import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 import static android.accounts.AccountManager.KEY_INTENT;
-import static com.github.mobile.accounts.AccountConstants.ACCOUNT_NAME;
 import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
-import static com.github.mobile.accounts.AccountConstants.APP_URL;
+import static com.github.mobile.accounts.AccountConstants.APP_NOTE;
+import static com.github.mobile.accounts.AccountConstants.APP_NOTE_URL;
 import static com.github.mobile.accounts.LoginActivity.PARAM_AUTHTOKEN_TYPE;
 import static com.github.mobile.accounts.LoginActivity.PARAM_USERNAME;
 import android.accounts.AbstractAccountAuthenticator;
@@ -39,6 +39,7 @@ import android.util.Log;
 
 import com.github.mobile.DefaultClient;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Authorization;
@@ -46,9 +47,9 @@ import org.eclipse.egit.github.core.service.OAuthService;
 
 class AccountAuthenticator extends AbstractAccountAuthenticator {
 
-    private Context context;
+    private static final String TAG = "GitHubAccountAuthenticator";
 
-    private final static String TAG = "GitHubAccountAuthenticator";
+    private Context context;
 
     public AccountAuthenticator(final Context context) {
         super(context);
@@ -87,6 +88,27 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
         return null;
     }
 
+    private boolean isValidAuthorization(final Authorization auth,
+            final List<String> requiredScopes) {
+        if (auth == null)
+            return false;
+
+        if (!APP_NOTE.equals(auth.getNote()))
+            return false;
+
+        if (!APP_NOTE_URL.equals(auth.getNoteUrl()))
+            return false;
+
+        List<String> scopes = auth.getScopes();
+        if (scopes == null || scopes.size() != requiredScopes.size())
+            return false;
+
+        for (String required : requiredScopes)
+            if (!scopes.contains(required))
+                return false;
+        return true;
+    }
+
     @Override
     public Bundle getAuthToken(AccountAuthenticatorResponse response,
             Account account, String authTokenType, Bundle options)
@@ -104,21 +126,26 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
         String authToken = null;
         DefaultClient client = new DefaultClient();
         client.setCredentials(username, password);
-
         OAuthService oAuthService = new OAuthService(client);
+
+        List<String> requiredScopes = Arrays.asList("repo", "user", "gist");
 
         // Get authorizations for app if they exist
         try {
             List<Authorization> auths = oAuthService.getAuthorizations();
             for (Authorization auth : auths)
-                if (ACCOUNT_NAME.equals(auth.getApp().getName()))
+                if (isValidAuthorization(auth, requiredScopes)) {
                     authToken = auth.getToken();
+                    break;
+                }
 
             // Setup authorization for app if others didn't exist.
             if (TextUtils.isEmpty(authToken)) {
-                Authorization auth = oAuthService
-                        .createAuthorization(new Authorization().setNote(
-                                ACCOUNT_NAME).setUrl(APP_URL));
+                Authorization auth = new Authorization();
+                auth.setNote(APP_NOTE);
+                auth.setNoteUrl(APP_NOTE_URL);
+                auth.setScopes(requiredScopes);
+                auth = oAuthService.createAuthorization(auth);
                 if (auth != null)
                     authToken = auth.getToken();
             }
