@@ -77,7 +77,8 @@ public class RepositoryUtils {
                 || "stars".equals(name) //
                 || "timeline".equals(name) //
                 || "training".equals(name) //
-                || "users".equals(name))
+                || "users".equals(name) //
+                || "watching".equals(name))
             return false;
         else
             return true;
