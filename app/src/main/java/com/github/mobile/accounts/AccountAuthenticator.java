@@ -124,6 +124,14 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
         String username = account.name;
         String password = am.getPassword(account);
 
+        if (TextUtils.isEmpty(password)) {
+            final Intent intent = new Intent(context, LoginActivity.class);
+            intent.putExtra(PARAM_AUTHTOKEN_TYPE, ACCOUNT_TYPE);
+            intent.putExtra(KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
+            bundle.putParcelable(KEY_INTENT, intent);
+            return bundle;
+        }
+
         String authToken = null;
         DefaultClient client = new DefaultClient();
         client.setCredentials(username, password);
