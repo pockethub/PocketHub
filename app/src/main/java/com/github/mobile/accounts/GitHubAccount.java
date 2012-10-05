@@ -15,7 +15,6 @@
  */
 package com.github.mobile.accounts;
 
-import android.util.Log;
 
 /**
  * GitHub account model
@@ -31,7 +30,7 @@ public class GitHubAccount {
      * Account password
      */
     public final String password;
-    
+
     /**
      * Account password
      */
