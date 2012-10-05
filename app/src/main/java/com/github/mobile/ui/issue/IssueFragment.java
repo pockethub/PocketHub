@@ -396,11 +396,8 @@ public class IssueFragment extends DialogFragment {
         else
             state = "";
 
-        if (GONE != progress.getVisibility())
-            progress.setVisibility(GONE);
-        if (VISIBLE != list.getVisibility())
-            list.setVisibility(VISIBLE);
-
+        ViewUtils.setGone(progress, true);
+        ViewUtils.setGone(list, false);
         updateStateItem(issue);
     }
 
@@ -413,6 +410,7 @@ public class IssueFragment extends DialogFragment {
                 super.onException(e);
 
                 ToastUtils.show(getActivity(), e, string.error_issue_load);
+                ViewUtils.setGone(progress, true);
             }
 
             @Override
@@ -528,28 +526,28 @@ public class IssueFragment extends DialogFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Don't allow options before issue loads
-        if (issue == null)
-            return super.onOptionsItemSelected(item);
-
         switch (item.getItemId()) {
         case id.m_edit:
-            startActivityForResult(EditIssueActivity.createIntent(issue,
-                    repositoryId.getOwner(), repositoryId.getName(), user),
-                    ISSUE_EDIT);
+            if (issue != null)
+                startActivityForResult(EditIssueActivity.createIntent(issue,
+                        repositoryId.getOwner(), repositoryId.getName(), user),
+                        ISSUE_EDIT);
             return true;
         case id.m_comment:
-            startActivityForResult(CreateCommentActivity.createIntent(
-                    repositoryId, issueNumber, user), COMMENT_CREATE);
+            if (issue != null)
+                startActivityForResult(CreateCommentActivity.createIntent(
+                        repositoryId, issueNumber, user), COMMENT_CREATE);
             return true;
         case id.m_refresh:
             refreshIssue();
             return true;
         case id.m_share:
-            shareIssue();
+            if (issue != null)
+                shareIssue();
             return true;
         case id.m_state:
-            stateTask.confirm(STATE_OPEN.equals(issue.getState()));
+            if (issue != null)
+                stateTask.confirm(STATE_OPEN.equals(issue.getState()));
             return true;
         default:
             return super.onOptionsItemSelected(item);
