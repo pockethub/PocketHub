@@ -15,6 +15,8 @@
  */
 package com.github.mobile.accounts;
 
+import android.util.Log;
+
 /**
  * GitHub account model
  */
@@ -29,16 +31,23 @@ public class GitHubAccount {
      * Account password
      */
     public final String password;
+    
+    /**
+     * Account password
+     */
+    public final String authToken;
 
     /**
      * Create account with username and password
      *
      * @param username
      * @param password
+     * @param authToken
      */
-    public GitHubAccount(String username, String password) {
+    public GitHubAccount(String username, String password, String authToken) {
         this.username = username;
         this.password = password;
+        this.authToken = authToken;
     }
 
     @Override

@@ -40,6 +40,9 @@ import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.PullRequestService;
 
+import static com.github.mobile.accounts.AccountConstants.ACCOUNT_NAME;
+import static com.github.mobile.accounts.AccountConstants.APP_URL;
+
 /**
  * Main module provide services and clients
  */
