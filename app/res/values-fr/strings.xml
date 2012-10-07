@@ -39,6 +39,9 @@
     <string name="error_file_load">Erreur lors du chargement du fichier</string>
     <string name="error_code_load">Erreur lors du chargement du code</string>
     <string name="error_refs_load">Erreur lors du chargement des branches et tags</string>
+    <string name="error_following_person">Erreur lors de l\'abonnement</string>
+    <string name="error_unfollowing_person">Erreur lors du désabonnement</string>
+    <string name="error_checking_following_status">Erreur lors de la vérification d\'abonnement</string>
     <!--  -->
 
 
@@ -175,6 +178,8 @@
     <string name="following">Abonnements</string>
     <string name="followers_self">Abonnés</string>
     <string name="following_self">Abonnements</string>
+    <string name="follow">S\'abonner</string>
+    <string name="unfollow">Se désabonner</string>
     <string name="members">Membres</string>
     <string name="closing_issue">Fermeture du ticket…</string>
     <string name="reopening_issue">Réouverture du ticket…</string>
@@ -220,6 +225,8 @@
     <string name="enable_wrapping">Activer la coupure</string>
     <string name="disable_wrapping">Désactiver la coupure</string>
     <string name="code">Code</string>
+    <string name="following_user">Abonnement…</string>
+    <string name="unfollowing_user">Désabonnement…</string>
 
     <!-- Tab titles, should be as short as possible -->
     <string name="tab_repositories">repositories</string>
@@ -241,4 +248,5 @@
     <string name="tab_all">tous</string>
     <!--  -->
     <string name="share">Partager</string>
+    <string name="show_password">Voir mot de passe</string>
 </resources>
