@@ -39,6 +39,9 @@
     <string name="error_file_load">Načítavanie súboru zlyhalo</string>
     <string name="error_code_load">Načítavanie kódu zlyhalo</string>
     <string name="error_refs_load">Načítavanie vetiev &amp; značiek zlyhalo</string>
+    <string name="error_following_person">Následovanie zlyhalo</string>
+    <string name="error_unfollowing_person">Prestávanie sledovania zlyhalo</string>
+    <string name="error_checking_following_status">Nepodarilo sa zistiť stav sledovania</string>
     <!--  -->
 
 
@@ -175,6 +178,8 @@
     <string name="following">Sleduje</string>
     <string name="followers_self">Sledujúci</string>
     <string name="following_self">Sledujem</string>
+    <string name="following">Sledovať</string>
+    <string name="unfollow">Prestať sledovať</string>
     <string name="members">Členovia</string>
     <string name="closing_issue">Zatváram issue…</string>
     <string name="reopening_issue">Znovu otváram issue…</string>
@@ -220,6 +225,8 @@
     <string name="enable_wrapping">Zapnúť zalamovanie riadkov</string>
     <string name="disable_wrapping">Vypnúť zalamovanie riadkov</string>
     <string name="code">Kód</string>
+    <string name="following_user">Začínam sledovať…</string>
+    <string name="unfollowing_user">Prestávam sledovať…</string>
 
     <!-- Tab titles, should be as short as possible -->
     <string name="tab_repositories">Repozitáre</string>
@@ -240,5 +247,7 @@
     <string name="tab_starred">Obľúbené</string>
     <string name="tab_all">Všetky</string>
     <!--  -->
+    <string name="share">Zdieľať</string>
+    <string name="show_password">Ukázať heslo</string>
 
 </resources>
