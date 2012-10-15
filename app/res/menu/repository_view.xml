@@ -19,5 +19,10 @@
     <item
         android:id="@+id/m_star"
         android:showAsAction="never" />
+    
+     <item
+        android:id="@+id/m_fork"
+        android:showAsAction="never"
+        android:title="@string/fork" />
 
 </menu>
