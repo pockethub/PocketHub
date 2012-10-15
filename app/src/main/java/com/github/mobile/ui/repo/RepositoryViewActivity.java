@@ -78,7 +78,7 @@ public class RepositoryViewActivity extends
     @InjectView(id.pb_loading)
     private ProgressBar loadingBar;
 
-    private boolean isStarring;
+    private boolean isStarred;
 
     private boolean starringStatusChecked;
 
@@ -135,7 +135,7 @@ public class RepositoryViewActivity extends
         MenuItem followItem = menu.findItem(id.m_star);
 
         followItem.setVisible(starringStatusChecked);
-        followItem.setTitle(isStarring ? string.unstar : string.star);
+        followItem.setTitle(isStarred ? string.unstar : string.star);
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -215,14 +215,14 @@ public class RepositoryViewActivity extends
     }
 
     private void starRepository() {
-        if (isStarring)
+        if (isStarred)
             new UnstarRepositoryTask(this, repository) {
 
                 @Override
                 protected void onSuccess(Void v) throws Exception {
                     super.onSuccess(v);
 
-                    isStarring = !isStarring;
+                    isStarred = !isStarred;
                 }
 
                 @Override
@@ -240,7 +240,7 @@ public class RepositoryViewActivity extends
                 protected void onSuccess(Void v) throws Exception {
                     super.onSuccess(v);
 
-                    isStarring = !isStarring;
+                    isStarred = !isStarred;
                 }
 
                 @Override
@@ -261,7 +261,7 @@ public class RepositoryViewActivity extends
             protected void onSuccess(Boolean watching) throws Exception {
                 super.onSuccess(watching);
 
-                isStarring = watching;
+                isStarred = watching;
                 starringStatusChecked = true;
                 invalidateOptionsMenu();
             }
