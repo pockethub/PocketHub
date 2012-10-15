@@ -136,9 +136,7 @@
     <string name="gist_description_hint">erstellt mit Android</string>
     <string name="title">Titel</string>
     <string name="edit">bearbeiten</string>
-    <string name="star">Favorisieren</string>
     <string name="starring_gist">Füge Gist als Favorit hinzu…</string>
-    <string name="unstar">Favorit entfernen</string>
     <string name="unstarring_gist">Entferne favorisierten Gist…</string>
     <string name="accounts_label">Konten</string>
     <string name="select_assignee">Verantwortlichen wählen</string>
