@@ -23,12 +23,6 @@ import static com.github.mobile.util.TypefaceUtils.ICON_CODE;
 import static com.github.mobile.util.TypefaceUtils.ICON_COMMIT;
 import static com.github.mobile.util.TypefaceUtils.ICON_ISSUE_OPEN;
 import static com.github.mobile.util.TypefaceUtils.ICON_NEWS;
-
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.User;
-
-import roboguice.inject.InjectExtra;
-import roboguice.inject.InjectView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ProgressBar;
@@ -44,14 +38,20 @@ import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.core.repo.RefreshRepositoryTask;
 import com.github.mobile.core.repo.RepositoryUtils;
-import com.github.mobile.core.repo.UnstarRepositoryTask;
 import com.github.mobile.core.repo.StarRepositoryTask;
 import com.github.mobile.core.repo.StarredRepositoryTask;
+import com.github.mobile.core.repo.UnstarRepositoryTask;
 import com.github.mobile.ui.TabPagerActivity;
 import com.github.mobile.ui.user.HomeActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
+
+import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.User;
+
+import roboguice.inject.InjectExtra;
+import roboguice.inject.InjectView;
 
 /**
  * Activity to view a repository
