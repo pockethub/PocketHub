@@ -39,6 +39,9 @@
     <string name="error_file_load">Laden der Datei fehlgeschlagen</string>
     <string name="error_code_load">Laden des Codes fehlgeschlagen</string>
     <string name="error_refs_load">Laden der Branches &amp; Tags fehlgeschlagen</string>
+    <string name="error_following_person">Folgen fehlgeschlagen</string>
+    <string name="error_unfollowing_person">Entfolgen fehlgeschlagen</string>
+    <string name="error_checking_following_status">Prüfen des Folgestatus fehlgeschlagen</string>
     <!--  -->
 
     <!-- Loading messages -->
@@ -172,6 +175,8 @@
     <string name="following">Ich folge</string>
     <string name="followers_self">Meine Anhänger</string>
     <string name="following_self">Ich folge</string>
+    <string name="follow">Folgen</string>
+    <string name="unfollow">Entfolgen</string>
     <string name="members">Mitglieder</string>
     <string name="closing_issue">Schließe Problem…</string>
     <string name="reopening_issue">Problem neu öffnen…</string>
@@ -217,6 +222,8 @@
     <string name="enable_wrapping">Zeilenumbruch aktivieren</string>
     <string name="disable_wrapping">Zeilenumbruch deaktivieren</string>
     <string name="code">Code</string>
+    <string name="following_user">Folgen…</string>
+    <string name="unfollowing_user">Entfolgen…</string>
 
     <!-- Tab titles, should be as short as possible -->
     <string name="tab_repositories">Repositories</string>
