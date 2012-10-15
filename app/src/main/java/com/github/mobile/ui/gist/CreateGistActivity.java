@@ -15,6 +15,9 @@
  */
 package com.github.mobile.ui.gist;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -64,6 +67,7 @@ public class CreateGistActivity extends BaseActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(string.new_gist);
         actionBar.setIcon(drawable.action_gist);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         String text = ShareUtils.getBody(getIntent());
         if (!TextUtils.isEmpty(text))
@@ -106,6 +110,12 @@ public class CreateGistActivity extends BaseActivity {
         switch (item.getItemId()) {
         case id.m_apply:
             createGist();
+            return true;
+        case android.R.id.home:
+            finish();
+            Intent intent = new Intent(this, GistsActivity.class);
+            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
             return true;
         default:
             return super.onOptionsItemSelected(item);
