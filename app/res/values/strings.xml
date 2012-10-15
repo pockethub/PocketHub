@@ -139,9 +139,7 @@
     <string name="gist_description_hint">Android created Gist</string>
     <string name="title">Title</string>
     <string name="edit">Edit</string>
-    <string name="star">Star</string>
     <string name="starring_gist">Starring Gist…</string>
-    <string name="unstar">Unstar</string>
     <string name="unstarring_gist">Unstarring Gist…</string>
     <string name="accounts_label">Accounts</string>
     <string name="select_assignee">Select Assignee</string>
