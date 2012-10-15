@@ -18,6 +18,7 @@ package com.github.mobile.ui.repo;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
+import static com.github.mobile.ResultCodes.RESOURCE_CHANGED;
 import static com.github.mobile.ui.repo.RepositoryPagerAdapter.ITEM_CODE;
 import static com.github.mobile.util.TypefaceUtils.ICON_CODE;
 import static com.github.mobile.util.TypefaceUtils.ICON_COMMIT;
@@ -173,6 +174,7 @@ public class RepositoryViewActivity extends
             starRepository();
             return true;
         case android.R.id.home:
+            finish();
             Intent intent = new Intent(this, HomeActivity.class);
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
@@ -223,6 +225,7 @@ public class RepositoryViewActivity extends
                     super.onSuccess(v);
 
                     isStarred = !isStarred;
+                    setResult(RESOURCE_CHANGED);
                 }
 
                 @Override
@@ -241,6 +244,7 @@ public class RepositoryViewActivity extends
                     super.onSuccess(v);
 
                     isStarred = !isStarred;
+                    setResult(RESOURCE_CHANGED);
                 }
 
                 @Override
