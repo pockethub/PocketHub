@@ -28,7 +28,7 @@ import com.google.inject.Inject;
 /**
  * Task to check repository starring status
  */
-public class StarringRepositoryTask extends AuthenticatedUserTask<Boolean> {
+public class StarredRepositoryTask extends AuthenticatedUserTask<Boolean> {
 
     private static final String TAG = "StarringRepositoryTask";
 
@@ -43,7 +43,7 @@ public class StarringRepositoryTask extends AuthenticatedUserTask<Boolean> {
      * @param context
      * @param repo
      */
-    public StarringRepositoryTask(Context context, IRepositoryIdProvider repo) {
+    public StarredRepositoryTask(Context context, IRepositoryIdProvider repo) {
         super(context);
 
         this.repo = repo;

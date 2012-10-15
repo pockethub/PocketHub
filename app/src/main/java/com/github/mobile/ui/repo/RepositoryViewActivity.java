@@ -46,7 +46,7 @@ import com.github.mobile.core.repo.RefreshRepositoryTask;
 import com.github.mobile.core.repo.RepositoryUtils;
 import com.github.mobile.core.repo.UnstarRepositoryTask;
 import com.github.mobile.core.repo.StarRepositoryTask;
-import com.github.mobile.core.repo.StarringRepositoryTask;
+import com.github.mobile.core.repo.StarredRepositoryTask;
 import com.github.mobile.ui.TabPagerActivity;
 import com.github.mobile.ui.user.HomeActivity;
 import com.github.mobile.util.AvatarLoader;
@@ -255,7 +255,7 @@ public class RepositoryViewActivity extends
 
     private void checkStarringRepositoryStatus() {
         starringStatusChecked = false;
-        new StarringRepositoryTask(this, repository) {
+        new StarredRepositoryTask(this, repository) {
 
             @Override
             protected void onSuccess(Boolean watching) throws Exception {
