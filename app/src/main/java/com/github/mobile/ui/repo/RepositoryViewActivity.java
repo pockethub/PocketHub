@@ -80,7 +80,7 @@ public class RepositoryViewActivity extends
 
     private boolean isStarred;
 
-    private boolean starringStatusChecked;
+    private boolean starredStatusChecked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +134,7 @@ public class RepositoryViewActivity extends
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem followItem = menu.findItem(id.m_star);
 
-        followItem.setVisible(starringStatusChecked);
+        followItem.setVisible(starredStatusChecked);
         followItem.setTitle(isStarred ? string.unstar : string.star);
 
         return super.onPrepareOptionsMenu(menu);
@@ -254,7 +254,7 @@ public class RepositoryViewActivity extends
     }
 
     private void checkStarringRepositoryStatus() {
-        starringStatusChecked = false;
+        starredStatusChecked = false;
         new StarredRepositoryTask(this, repository) {
 
             @Override
@@ -262,7 +262,7 @@ public class RepositoryViewActivity extends
                 super.onSuccess(watching);
 
                 isStarred = watching;
-                starringStatusChecked = true;
+                starredStatusChecked = true;
                 invalidateOptionsMenu();
             }
         }.execute();
