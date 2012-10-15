@@ -163,7 +163,7 @@ public class RepositoryViewActivity extends
         configureTabPager();
         ViewUtils.setGone(loadingBar, true);
         setGone(false);
-        checkStarringRepositoryStatus();
+        checkStarredRepositoryStatus();
     }
 
     @Override
@@ -253,7 +253,7 @@ public class RepositoryViewActivity extends
             }.start();
     }
 
-    private void checkStarringRepositoryStatus() {
+    private void checkStarredRepositoryStatus() {
         starredStatusChecked = false;
         new StarredRepositoryTask(this, repository) {
 
