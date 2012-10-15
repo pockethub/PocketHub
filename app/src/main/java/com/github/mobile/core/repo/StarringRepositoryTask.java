@@ -51,7 +51,6 @@ public class StarringRepositoryTask extends AuthenticatedUserTask<Boolean> {
 
     @Override
     protected Boolean run(Account account) throws Exception {
-
         return service.isWatching(repo);
     }
 
