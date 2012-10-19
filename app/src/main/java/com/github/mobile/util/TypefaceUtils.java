@@ -167,6 +167,8 @@ public class TypefaceUtils {
      */
     public static final String ICON_BROADCAST = "\uf030";
 
+    private static Typeface OCTICONS;
+
     /**
      * Find the maximum number of digits in the given numbers
      *
@@ -203,7 +205,9 @@ public class TypefaceUtils {
      * @return octicons typeface
      */
     public static Typeface getOcticons(final Context context) {
-        return getTypeface(context, "octicons-regular-webfont.ttf");
+        if (OCTICONS == null)
+            OCTICONS = getTypeface(context, "octicons-regular-webfont.ttf");
+        return OCTICONS;
     }
 
     /**
