@@ -139,7 +139,7 @@ function loadImage(type, content) {
 }
 
 function loadEditor() {
-  var name = SourceEditor.getName();
+  var name = new String(SourceEditor.getName());
   var extension = getExtension(name);
   if ("png" == extension || "gif" == extension) {
     loadImage(extension, SourceEditor.getRawContent());
@@ -152,7 +152,7 @@ function loadEditor() {
   CodeMirror.modeURL = "mode/%N/%N.js";
 
   var config = {};
-  config.value = SourceEditor.getContent();
+  config.value = new String(SourceEditor.getContent());
   config.readOnly = "nocursor";
   config.lineNumbers = true;
   config.autofocus = false;
