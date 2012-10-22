@@ -81,6 +81,16 @@ public abstract class DialogFragmentActivity extends
         return getIntent().getStringArrayExtra(name);
     }
 
+    /**
+     * Get intent extra
+     *
+     * @param name
+     * @return char sequence array
+     */
+    protected CharSequence[] getCharSequenceArrayExtra(final String name) {
+        return getIntent().getCharSequenceArrayExtra(name);
+    }
+
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
         // Intentionally left blank
