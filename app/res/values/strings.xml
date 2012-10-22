@@ -254,5 +254,7 @@
     <!--  -->
     <string name="share">Share</string>
     <string name="show_password">Show password</string>
+    <string name="write">Write</string>
+    <string name="preview">Preview</string>
 
 </resources>

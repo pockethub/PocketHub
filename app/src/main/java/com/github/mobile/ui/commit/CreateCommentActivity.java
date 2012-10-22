@@ -27,6 +27,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.string;
 import com.github.mobile.core.commit.CommitUtils;
+import com.github.mobile.ui.comment.CommentPreviewPagerAdapter;
 
 import org.eclipse.egit.github.core.CommitComment;
 import org.eclipse.egit.github.core.Repository;
@@ -81,12 +82,12 @@ public class CreateCommentActivity extends
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         repository = getSerializableExtra(EXTRA_REPOSITORY);
         commit = getStringExtra(EXTRA_BASE);
         position = getIntExtra(EXTRA_POSITION);
         path = getStringExtra(EXTRA_PATH);
+
+        super.onCreate(savedInstanceState);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getString(string.commit_prefix)
@@ -111,5 +112,10 @@ public class CreateCommentActivity extends
             }
 
         }.start();
+    }
+
+    @Override
+    protected CommentPreviewPagerAdapter createAdapter() {
+        return new CommentPreviewPagerAdapter(this, repository);
     }
 }

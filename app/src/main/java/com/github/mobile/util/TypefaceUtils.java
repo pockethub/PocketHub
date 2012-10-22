@@ -167,6 +167,11 @@ public class TypefaceUtils {
      */
     public static final String ICON_BROADCAST = "\uf030";
 
+    /**
+     * Edit icon
+     */
+    public static final String ICON_EDIT = "\uf058";
+
     private static Typeface OCTICONS;
 
     /**
