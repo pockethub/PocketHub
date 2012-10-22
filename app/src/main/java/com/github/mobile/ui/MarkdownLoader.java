@@ -19,6 +19,7 @@ import static org.eclipse.egit.github.core.service.MarkdownService.MODE_GFM;
 import android.accounts.Account;
 import android.content.Context;
 import android.text.Html.ImageGetter;
+import android.util.Log;
 
 import com.github.mobile.accounts.AuthenticatedUserLoader;
 import com.github.mobile.util.HtmlUtils;
@@ -33,6 +34,8 @@ import org.eclipse.egit.github.core.service.MarkdownService;
  * Markdown loader
  */
 public class MarkdownLoader extends AuthenticatedUserLoader<CharSequence> {
+
+    private static final String TAG = "MarkdownLoader";
 
     private final ImageGetter imageGetter;
 
@@ -73,6 +76,7 @@ public class MarkdownLoader extends AuthenticatedUserLoader<CharSequence> {
                 html = service.getHtml(raw, MODE_GFM);
             return HtmlUtils.encode(html, imageGetter);
         } catch (IOException e) {
+            Log.d(TAG, "Loading rendered markdown failed", e);
             return null;
         }
     }
