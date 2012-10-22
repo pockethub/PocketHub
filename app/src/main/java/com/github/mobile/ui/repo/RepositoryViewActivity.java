@@ -51,9 +51,6 @@ import com.google.inject.Inject;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
 
-import roboguice.inject.InjectExtra;
-import roboguice.inject.InjectView;
-
 /**
  * Activity to view a repository
  */
@@ -70,13 +67,11 @@ public class RepositoryViewActivity extends
         return new Builder("repo.VIEW").repo(repository).toIntent();
     }
 
-    @InjectExtra(EXTRA_REPOSITORY)
     private Repository repository;
 
     @Inject
     private AvatarLoader avatars;
 
-    @InjectView(id.pb_loading)
     private ProgressBar loadingBar;
 
     private boolean isStarred;
@@ -86,6 +81,11 @@ public class RepositoryViewActivity extends
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        repository = (Repository) getIntent().getSerializableExtra(
+                EXTRA_REPOSITORY);
+
+        loadingBar = finder.find(id.pb_loading);
 
         User owner = repository.getOwner();
 
