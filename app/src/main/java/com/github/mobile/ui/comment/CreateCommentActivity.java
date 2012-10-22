@@ -16,28 +16,30 @@
 package com.github.mobile.ui.comment;
 
 import static com.github.mobile.Intents.EXTRA_COMMENT;
+import static com.github.mobile.util.TypefaceUtils.ICON_EDIT;
+import static com.github.mobile.util.TypefaceUtils.ICON_WATCH;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.widget.EditText;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
-import com.github.mobile.R.menu;
-import com.github.mobile.ui.BaseActivity;
-import com.github.mobile.ui.TextWatcherAdapter;
+import com.github.mobile.R.string;
+import com.github.mobile.ui.TabPagerActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
+import com.viewpagerindicator.R.menu;
 
 import org.eclipse.egit.github.core.Comment;
 
 /**
  * Base activity for creating comments
  */
-public abstract class CreateCommentActivity extends BaseActivity {
+public abstract class CreateCommentActivity extends
+        TabPagerActivity<CommentPreviewPagerAdapter> {
+
+    private MenuItem applyItem;
 
     /**
      * Avatar loader
@@ -45,32 +47,28 @@ public abstract class CreateCommentActivity extends BaseActivity {
     @Inject
     protected AvatarLoader avatars;
 
-    private EditText commentText;
-
-    private MenuItem applyItem;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(layout.comment_create);
-
-        commentText = finder.find(id.et_comment);
-        commentText.addTextChangedListener(new TextWatcherAdapter() {
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (applyItem != null)
-                    applyItem.setEnabled(!TextUtils.isEmpty(s));
-            }
-        });
+        configureTabPager();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu options) {
-        getSupportMenuInflater().inflate(menu.comment, options);
-        applyItem = options.findItem(id.m_apply);
-        return true;
+    public void invalidateOptionsMenu() {
+        super.invalidateOptionsMenu();
+
+        if (applyItem != null)
+            applyItem.setEnabled(adapter != null
+                    && !TextUtils.isEmpty(adapter.getCommentText()));
+
+    }
+
+    @Override
+    protected void setCurrentItem(int position) {
+        super.setCurrentItem(position);
+
+        adapter.setCurrentItem(position);
     }
 
     /**
@@ -96,10 +94,46 @@ public abstract class CreateCommentActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case id.m_apply:
-            createComment(commentText.getText().toString());
+            createComment(adapter.getCommentText());
             return true;
         default:
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected String getTitle(final int position) {
+        switch (position) {
+        case 0:
+            return getString(string.write);
+        case 1:
+            return getString(string.preview);
+        default:
+            return super.getTitle(position);
+        }
+    }
+
+    @Override
+    protected String getIcon(final int position) {
+        switch (position) {
+        case 0:
+            return ICON_EDIT;
+        case 1:
+            return ICON_WATCH;
+        default:
+            return super.getIcon(position);
+        }
+    }
+
+    @Override
+    protected CommentPreviewPagerAdapter createAdapter() {
+        return new CommentPreviewPagerAdapter(this, null);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu options) {
+        getSupportMenuInflater().inflate(menu.comment, options);
+        applyItem = options.findItem(id.m_apply);
+        return true;
     }
 }

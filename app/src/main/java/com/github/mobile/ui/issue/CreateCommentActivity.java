@@ -25,6 +25,7 @@ import android.os.Bundle;
 import com.actionbarsherlock.app.ActionBar;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.string;
+import com.github.mobile.ui.comment.CommentPreviewPagerAdapter;
 
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Issue;
@@ -60,19 +61,16 @@ public class CreateCommentActivity extends
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        issueNumber = getIntExtra(EXTRA_ISSUE_NUMBER);
+        repositoryId = new RepositoryId(getStringExtra(EXTRA_REPOSITORY_OWNER),
+                getStringExtra(EXTRA_REPOSITORY_NAME));
+
         super.onCreate(savedInstanceState);
 
-        issueNumber = getIntExtra(EXTRA_ISSUE_NUMBER);
-
         ActionBar actionBar = getSupportActionBar();
-        Intent intent = getIntent();
-        repositoryId = new RepositoryId(
-                intent.getStringExtra(EXTRA_REPOSITORY_OWNER),
-                intent.getStringExtra(EXTRA_REPOSITORY_NAME));
         actionBar.setTitle(getString(string.issue_title) + issueNumber);
-
         actionBar.setSubtitle(repositoryId.generateId());
-        avatars.bind(actionBar, (User) intent.getSerializableExtra(EXTRA_USER));
+        avatars.bind(actionBar, (User) getSerializableExtra(EXTRA_USER));
     }
 
     @Override
@@ -86,5 +84,10 @@ public class CreateCommentActivity extends
                 finish(comment);
             }
         }.start();
+    }
+
+    @Override
+    protected CommentPreviewPagerAdapter createAdapter() {
+        return new CommentPreviewPagerAdapter(this, repositoryId);
     }
 }

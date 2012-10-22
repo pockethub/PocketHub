@@ -15,21 +15,30 @@
   limitations under the License.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  style="@style/ListItem"
   android:layout_width="match_parent"
-  android:layout_height="match_parent" >
+  android:layout_alignParentBottom="true"
+  android:layout_alignParentLeft="true"
+  android:background="@drawable/footer_selector"
+  android:paddingBottom="8dp"
+  android:paddingTop="8dp"
+  android:visibility="gone" >
 
-  <EditText
-    android:id="@+id/et_comment"
-    style="@style/FormalMultiLineEditText"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+  <TextView
+    android:id="@+id/tv_branch_icon"
+    style="@style/PrimaryIcon"
     android:layout_alignParentLeft="true"
     android:layout_alignParentTop="true"
-    android:layout_margin="10dp"
-    android:hint="@string/comment_hint"
-    android:scrollbars="horizontal|vertical" >
+    android:text="@string/icon_fork"
+    android:textColor="@color/actionbar_text" />
 
-    <requestFocus />
-  </EditText>
+  <TextView
+    android:id="@+id/tv_branch"
+    style="@style/HeaderTitleText"
+    android:layout_centerVertical="true"
+    android:layout_toRightOf="@id/tv_branch_icon"
+    android:paddingBottom="0dp"
+    android:textColor="@color/actionbar_text"
+    android:textSize="15sp" />
 
 </RelativeLayout>

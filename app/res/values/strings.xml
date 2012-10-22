@@ -46,6 +46,7 @@
     <string name="error_unstarring_repository">Unstarring failed</string>
     <string name="error_checking_starring_status">Checking starring status failed</string>
     <string name="error_forking_repository">Forking failed</string>
+    <string name="error_rendering_markdown">Rendering markdown failed</string>
     <!--  -->
 
 
@@ -257,5 +258,7 @@
     <!--  -->
     <string name="share">Share</string>
     <string name="show_password">Show password</string>
+    <string name="write">Write</string>
+    <string name="preview">Preview</string>
 
 </resources>
