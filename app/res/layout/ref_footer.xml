@@ -15,26 +15,30 @@
   limitations under the License.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  style="@style/ListItem"
   android:layout_width="match_parent"
-  android:layout_height="match_parent" >
+  android:layout_alignParentBottom="true"
+  android:layout_alignParentLeft="true"
+  android:background="@drawable/footer_selector"
+  android:paddingBottom="8dp"
+  android:paddingTop="8dp"
+  android:visibility="gone" >
 
-  <ProgressBar
-    android:id="@+id/pb_loading"
-    style="@style/ListSpinner"
-    android:layout_centerInParent="true" />
-
-  <include
-    android:id="@+id/rl_branch"
-    layout="@layout/ref_footer" />
-
-  <ListView
-    android:id="@android:id/list"
-    style="@style/ListView"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_above="@id/rl_branch"
+  <TextView
+    android:id="@+id/tv_branch_icon"
+    style="@style/PrimaryIcon"
     android:layout_alignParentLeft="true"
     android:layout_alignParentTop="true"
-    android:visibility="gone" />
+    android:text="@string/icon_fork"
+    android:textColor="@color/actionbar_text" />
+
+  <TextView
+    android:id="@+id/tv_branch"
+    style="@style/HeaderTitleText"
+    android:layout_centerVertical="true"
+    android:layout_toRightOf="@id/tv_branch_icon"
+    android:paddingBottom="0dp"
+    android:textColor="@color/actionbar_text"
+    android:textSize="15sp" />
 
 </RelativeLayout>

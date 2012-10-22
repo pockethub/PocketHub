@@ -53,11 +53,17 @@ public class RefUtils {
      * @return true if tag, false otherwise
      */
     public static boolean isTag(final Reference ref) {
-        if (ref != null) {
-            String name = ref.getRef();
-            return !TextUtils.isEmpty(name) && name.startsWith(PREFIX_TAG);
-        } else
-            return false;
+        return ref != null && isTag(ref.getRef());
+    }
+
+    /**
+     * Is reference a tag?
+     *
+     * @param name
+     * @return true if tag, false otherwise
+     */
+    public static boolean isTag(final String name) {
+        return !TextUtils.isEmpty(name) && name.startsWith(PREFIX_TAG);
     }
 
     /**
@@ -83,9 +89,19 @@ public class RefUtils {
      * @return short name
      */
     public static String getName(final Reference ref) {
-        if (ref == null)
+        if (ref != null)
+            return getName(ref.getRef());
+        else
             return null;
-        String name = ref.getRef();
+    }
+
+    /**
+     * Get short name for ref
+     *
+     * @param name
+     * @return short name
+     */
+    public static String getName(final String name) {
         if (TextUtils.isEmpty(name))
             return name;
         if (name.startsWith(PREFIX_HEADS))
