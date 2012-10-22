@@ -125,8 +125,8 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
      * @return token or null if none found
      * @throws IOException
      */
-    private String getAuthorization(OAuthService service,
-            List<String> scopes) throws IOException {
+    private String getAuthorization(OAuthService service, List<String> scopes)
+            throws IOException {
         for (Authorization auth : service.getAuthorizations())
             if (isValidAuthorization(auth, scopes))
                 return auth.getToken();
@@ -190,7 +190,7 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
             }
             return bundle;
         } catch (IOException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, "Authorization retrieval failed", e);
             throw new NetworkErrorException(e);
         }
     }
