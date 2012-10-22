@@ -44,14 +44,14 @@
     <string name="error_commits_load">Impossibile caricare i Commits</string>
     <string name="error_commit_load">Impossibile caricare il Commit</string>
     <string name="error_file_load">Impossibile caricare il file</string>
-    <string name="error_code_load">Loading code failed</string>
-    <string name="error_refs_load">Loading branches &amp; tags failed</string>
-    <string name="error_following_person">Following failed</string>
-    <string name="error_unfollowing_person">Unfollowing failed</string>
-    <string name="error_checking_following_status">Checking following status failed</string>
-    <string name="error_starring_repository">Starring failed</string>
-    <string name="error_unstarring_repository">Unstarring failed</string>
-    <string name="error_checking_starring_status">Checking starring status failed</string>
+    <string name="error_code_load">Impossibile caricare il codice</string>
+    <string name="error_refs_load">Impossibile caricare branch e tag</string>
+    <string name="error_following_person">Impossibile aggiungere la persona</string>
+    <string name="error_unfollowing_person">Impossibile eliminare la persona</string>
+    <string name="error_checking_following_status">Impossibile controllare following</string>
+    <string name="error_starring_repository">Impossibile aggiungere tra i preferiti</string>
+    <string name="error_unstarring_repository">Impossibile eliminare dai preferiti</string>
+    <string name="error_checking_starring_status">Impossibile controllare preferiti</string>
     <!--  -->
 
 
@@ -72,7 +72,7 @@
     <string name="loading_labels">Etichette in caricamento…</string>
     <string name="loading_commits">Commits in caricamento…</string>
     <string name="loading_files_and_comments">Files e commenti in caricamento…</string>
-    <string name="loading_refs">Loading Branches &amp; Tags…</string>
+    <string name="loading_refs">Branch e tag in caricamento</string>
     <!--  -->
 
 
@@ -188,8 +188,8 @@
     <string name="following_self">Following</string>
     <string name="follow">Follow</string>
     <string name="unfollow">Unfollow</string>
-    <string name="star">Star</string>
-    <string name="unstar">Unstar</string>
+    <string name="star">Aggiungi ai preferiti</string>
+    <string name="unstar">Elimina dai preferiti</string>
     <string name="members">Membri</string>
     <string name="closing_issue">Chiusura Notifica in corso…</string>
     <string name="reopening_issue">Riapertura Notifica in corso…</string>
@@ -234,32 +234,32 @@
     <string name="comparing_commits">Confronta {0} commits</string>
     <string name="enable_wrapping">Abilita il wrapping</string>
     <string name="disable_wrapping">Disabilita il wrapping</string>
-    <string name="code">Code</string>
-    <string name="following_user">Following…</string>
-    <string name="unfollowing_user">Unfollowing…</string>
-    <string name="starring_repository">Starring…</string>
-    <string name="unstarring_repository">Unstarring…</string>
+    <string name="code">Codice</string>
+    <string name="following_user">Caricamento tra i following...</string>
+    <string name="unfollowing_user">Cancellazione dai following...</string>
+    <string name="starring_repository">Caricamento tra i preferiti...</string>
+    <string name="unstarring_repository">Cancellazione dai preferiti...</string>
 
     <!-- Tab titles, should be as short as possible -->
-    <string name="tab_repositories">repositories</string>
+    <string name="tab_repositories">Repository</string>
     <string name="tab_news">news</string>
     <string name="tab_following_self">following</string>
     <string name="tab_followers_self">followers</string>
     <string name="tab_following">following</string>
     <string name="tab_followers">followers</string>
-    <string name="tab_members">members</string>
-    <string name="tab_code">code</string>
+    <string name="tab_members">membri</string>
+    <string name="tab_code">codice</string>
     <string name="tab_commits">commits</string>
-    <string name="tab_issues">issues</string>
-    <string name="tab_watched">watched</string>
-    <string name="tab_assigned">assigned</string>
-    <string name="tab_created">created</string>
-    <string name="tab_mentioned">mentioned</string>
-    <string name="tab_mine">mine</string>
-    <string name="tab_starred">starred</string>
-    <string name="tab_all">all</string>
+    <string name="tab_issues">segnalazioni</string>
+    <string name="tab_watched">osservati</string>
+    <string name="tab_assigned">assegnati</string>
+    <string name="tab_created">creati</string>
+    <string name="tab_mentioned">menzionati</string>
+    <string name="tab_mine">miei</string>
+    <string name="tab_starred">preferiti</string>
+    <string name="tab_all">tutti</string>
     <!--  -->
-    <string name="share">Share</string>
-    <string name="show_password">Show password</string>
+    <string name="share">Condividi</string>
+    <string name="show_password">Mostra password</string>
 
 </resources>
