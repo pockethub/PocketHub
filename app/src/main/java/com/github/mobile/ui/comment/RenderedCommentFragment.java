@@ -29,6 +29,7 @@ import com.actionbarsherlock.R.id;
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R.layout;
+import com.github.mobile.R.string;
 import com.github.mobile.ui.MarkdownLoader;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.ToastUtils;
@@ -107,8 +108,7 @@ public class RenderedCommentFragment extends RoboSherlockFragment implements
     public void onLoadFinished(Loader<CharSequence> loader,
             CharSequence rendered) {
         if (rendered == null)
-            ToastUtils.show(getActivity(),
-                    "Rendering comment as markdown failed");
+            ToastUtils.show(getActivity(), string.error_rendering_markdown);
         bodyText.setText(rendered);
         showLoading(false);
     }

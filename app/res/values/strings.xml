@@ -45,6 +45,7 @@
     <string name="error_starring_repository">Starring failed</string>
     <string name="error_unstarring_repository">Unstarring failed</string>
     <string name="error_checking_starring_status">Checking starring status failed</string>
+    <string name="error_rendering_markdown">Rendering markdown failed</string>
     <!--  -->
 
 
