@@ -82,8 +82,7 @@ public class RepositoryViewActivity extends
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        repository = (Repository) getIntent().getSerializableExtra(
-                EXTRA_REPOSITORY);
+        repository = getSerializableExtra(EXTRA_REPOSITORY);
 
         loadingBar = finder.find(id.pb_loading);
 
