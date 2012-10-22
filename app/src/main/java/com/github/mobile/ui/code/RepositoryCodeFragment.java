@@ -227,6 +227,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
         branchIconView = finder.find(id.tv_branch_icon);
         branchFooterView.setOnClickListener(new OnClickListener() {
 
+            @Override
             public void onClick(View v) {
                 switchBranches();
             }
