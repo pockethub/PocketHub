@@ -45,6 +45,7 @@
     <string name="error_starring_repository">Favorisieren fehlgeschlagen</string>
     <string name="error_unstarring_repository">Entfernen des Favoriten fehlgeschlagen</string>
     <string name="error_checking_starring_status">Prüfen des Favoritenstatus fehlgeschlagen</string>
+    <string name="error_rendering_markdown">Rendern der Markdown-Vorschau fehlgeschlagen</string>
     <!--  -->
 
     <!-- Loading messages -->
@@ -252,5 +253,7 @@
 
     <string name="share">Teilen</string>
     <string name="show_password">Passwort anzeigen</string>
+    <string name="write">Schreiben</string>
+    <string name="preview">Vorschau</string>
 
 </resources>
