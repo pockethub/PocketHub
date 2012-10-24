@@ -45,6 +45,7 @@
     <string name="error_starring_repository">Erreur lors de l\'ajout aux favoris</string>
     <string name="error_unstarring_repository">Erreur lors de la suppression des favoris</string>
     <string name="error_checking_starring_status">Erreur lors de la vérification du favoris</string>
+    <string name="error_rendering_markdown">Erreur lors du rendu du markdown</string>
     <!--  -->
 
 
@@ -254,4 +255,6 @@
     <!--  -->
     <string name="share">Partager</string>
     <string name="show_password">Voir mot de passe</string>
+    <string name="write">Ecrire</string>
+    <string name="preview">Pré-visualiser</string>
 </resources>
