@@ -80,6 +80,7 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
         return getItem(position).getId();
     }
 
+    @Override
     protected View initialize(View view) {
         view = super.initialize(view);
 

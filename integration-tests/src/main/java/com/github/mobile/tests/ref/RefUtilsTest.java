@@ -43,7 +43,7 @@ public class RefUtilsTest extends AndroidTestCase {
      * Verify {@link RefUtils#isTag(org.eclipse.egit.github.core.Reference)}
      */
     public void testIsTag() {
-        assertFalse(RefUtils.isTag(null));
+        assertFalse(RefUtils.isTag((Reference) null));
         assertFalse(RefUtils.isTag(new Reference()));
         assertFalse(RefUtils.isTag(new Reference().setRef("")));
         assertFalse(RefUtils.isTag(new Reference().setRef("test")));
@@ -72,7 +72,7 @@ public class RefUtilsTest extends AndroidTestCase {
      * Verify {@link RefUtils#getName(Reference)}
      */
     public void testGetName() {
-        assertNull(RefUtils.getName(null));
+        assertNull(RefUtils.getName((Reference) null));
         assertNull(RefUtils.getName(new Reference()));
         assertEquals("", RefUtils.getName(new Reference().setRef("")));
         assertEquals("unchanged",

@@ -27,8 +27,6 @@ import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.User;
 
-import roboguice.inject.InjectExtra;
-
 /**
  * Activity to create a comment on a {@link Gist}
  */
@@ -47,12 +45,13 @@ public class CreateCommentActivity extends
         return builder.toIntent();
     }
 
-    @InjectExtra(EXTRA_GIST)
     private Gist gist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        gist = getSerializableExtra(EXTRA_GIST);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getString(string.gist_title) + gist.getId());

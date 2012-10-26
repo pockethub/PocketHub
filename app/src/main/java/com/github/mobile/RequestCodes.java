@@ -89,4 +89,9 @@ public interface RequestCodes {
      * Request to update the current reference
      */
     int REF_UPDATE = 11;
+
+    /**
+     * Request to view a repository
+     */
+    int REPOSITORY_VIEW = 12;
 }

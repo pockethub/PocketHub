@@ -37,24 +37,22 @@ import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.core.code.RefreshBlobTask;
 import com.github.mobile.core.commit.CommitUtils;
+import com.github.mobile.ui.BaseActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.PreferenceUtils;
+import com.github.mobile.util.ShareUtils;
 import com.github.mobile.util.SourceEditor;
 import com.github.mobile.util.ToastUtils;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockActivity;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Blob;
 import org.eclipse.egit.github.core.CommitFile;
 import org.eclipse.egit.github.core.Repository;
 
-import roboguice.inject.InjectExtra;
-import roboguice.inject.InjectView;
-
 /**
  * Activity to display the contents of a file in a commit
  */
-public class CommitFileViewActivity extends RoboSherlockActivity {
+public class CommitFileViewActivity extends BaseActivity {
 
     private static final String TAG = "CommitFileViewActivity";
 
@@ -76,22 +74,16 @@ public class CommitFileViewActivity extends RoboSherlockActivity {
         return builder.toIntent();
     }
 
-    @InjectExtra(EXTRA_REPOSITORY)
     private Repository repo;
 
-    @InjectExtra(EXTRA_HEAD)
     private String commit;
 
-    @InjectExtra(EXTRA_BASE)
     private String sha;
 
-    @InjectExtra(EXTRA_PATH)
     private String path;
 
-    @InjectView(id.pb_loading)
     private ProgressBar loadingBar;
 
-    @InjectView(id.wv_code)
     private WebView codeView;
 
     private SourceEditor editor;
@@ -104,6 +96,14 @@ public class CommitFileViewActivity extends RoboSherlockActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(layout.commit_file_view);
+
+        repo = getSerializableExtra(EXTRA_REPOSITORY);
+        commit = getStringExtra(EXTRA_HEAD);
+        sha = getStringExtra(EXTRA_BASE);
+        path = getStringExtra(EXTRA_PATH);
+
+        loadingBar = finder.find(id.pb_loading);
+        codeView = finder.find(id.wv_code);
 
         editor = new SourceEditor(codeView);
         editor.setWrap(PreferenceUtils.getCodePreferences(this).getBoolean(
@@ -124,7 +124,7 @@ public class CommitFileViewActivity extends RoboSherlockActivity {
 
     @Override
     public boolean onCreateOptionsMenu(final Menu optionsMenu) {
-        getSupportMenuInflater().inflate(menu.code_view, optionsMenu);
+        getSupportMenuInflater().inflate(menu.file_view, optionsMenu);
 
         MenuItem wrapItem = optionsMenu.findItem(id.m_wrap);
         if (PreferenceUtils.getCodePreferences(this).getBoolean(WRAP, false))
@@ -135,6 +135,7 @@ public class CommitFileViewActivity extends RoboSherlockActivity {
         return true;
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case id.m_wrap:
@@ -148,9 +149,19 @@ public class CommitFileViewActivity extends RoboSherlockActivity {
             PreferenceUtils.save(PreferenceUtils.getCodePreferences(this)
                     .edit().putBoolean(WRAP, editor.getWrap()));
             return true;
+        case id.m_share:
+            shareFile();
+            return true;
         default:
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void shareFile() {
+        String id = repo.generateId();
+        startActivity(ShareUtils.create(
+                path + " at " + CommitUtils.abbreviate(commit) + " on " + id,
+                "https://github.com/" + id + "/blob/" + commit + '/' + path));
     }
 
     private void loadContent() {

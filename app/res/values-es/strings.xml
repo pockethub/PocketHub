@@ -37,6 +37,11 @@
     <string name="error_commits_load">Error al cargar los commits</string>
     <string name="error_commit_load">Error al cargar el commit</string>
     <string name="error_file_load">Error al cargar el fichero</string>
+    <string name="error_code_load">Error al cargar el código</string>
+    <string name="error_refs_load">Error al cargar las ramas y las etiquetas</string>
+    <string name="error_following_person">Error al seguir</string>
+    <string name="error_unfollowing_person">Error al dejar de seguir</string>
+    <string name="error_checking_following_status">Error al comprobar el estado de seguimiento</string>
     <!--  -->
 
 
@@ -56,6 +61,8 @@
     <string name="loading_milestones">Cargando Hitos…</string>
     <string name="loading_labels">Cargando Etiquetas…</string>
     <string name="loading_commits">Cargando Commits…</string>
+    <string name="loading_files_and_comments">Cargando Ficheros y Comentarios…</string>
+    <string name="loading_refs">Cargando Ramas y Etiquetas…</string>
     <!--  -->
 
 
@@ -113,6 +120,7 @@
     <string name="bookmarks">Marcadores</string>
     <string name="gists_title">Gists</string>
     <string name="issue_title">Incidencia #</string>
+    <string name="pull_request_title">Solicitud de Pull #</string>
     <string name="gist_title">Gist\u0020</string>
     <string name="filter_issues_title">Filtrar Incidencias</string>
     <string name="create_comment_title">Crear Comentario</string>
@@ -136,6 +144,7 @@
     <string name="select_assignee">Seleccionar Responsable</string>
     <string name="select_milestone">Seleccionar Hito</string>
     <string name="select_labels">Seleccionar Etiquetas</string>
+    <string name="select_ref">Seleccionar Rama o Etiqueta</string>
     <string name="no_milestone">No hay hitos</string>
     <string name="unassigned">No asignado</string>
     <string name="assigned">está asignado</string>
@@ -169,6 +178,8 @@
     <string name="following">Siguiendo</string>
     <string name="followers_self">Seguidores</string>
     <string name="following_self">Siguiendo</string>
+    <string name="follow">Seguir</string>
+    <string name="unfollow">Dejar de seguir</string>
     <string name="members">Miembros</string>
     <string name="closing_issue">Cerrando Incidencia…</string>
     <string name="reopening_issue">Reabriendo Incidencia…</string>
@@ -200,7 +211,7 @@
     <string name="recently_viewed">VISTOS RECIENTEMENTE</string>
     <string name="cancel">Cancelar</string>
     <string name="authenticator_conflict_title">Conflicto con la aplicación</string>
-    <string name="authenticator_conflict_message">Una de las aplicaciones instaladas está configurada para la autenticación con GitHub.\n\nDebes eliminar la otra aplicación del menú de ajustes Cuentas y sincronizació y desinstalarla antes de poder usar la aplicación de GitHub.</string>
+    <string name="authenticator_conflict_message">Una de las aplicaciones instaladas está configurada para la autenticación con GitHub.\n\nDebes eliminar la otra aplicación del menú de ajustes Cuentas y sincronización y desinstalar-la antes de poder usar la aplicación de GitHub.</string>
     <string name="opening_repository">Abriendo {0}…</string>
     <string name="commit_compare_title">Comparación de Commits</string>
     <string name="commit_prefix">Commit\u0020</string>
@@ -213,5 +224,30 @@
     <string name="comparing_commits">Comparando {0} commits</string>
     <string name="enable_wrapping">Habilitar ajuste de texto</string>
     <string name="disable_wrapping">Deshabilitar ajuste de texto</string>
+    <string name="code">Código</string>
+    <string name="following_user">Siguiendo…</string>
+    <string name="unfollowing_user">Dejando de seguir…</string>
+
+    <!-- Titulos de las pestañas, lo mas cortos posible -->
+    <string name="tab_repositories">repositorios</string>
+    <string name="tab_news">noticias</string>
+    <string name="tab_following_self">siguiendo</string>
+    <string name="tab_followers_self">seguidores</string>
+    <string name="tab_following">siguiendo</string>
+    <string name="tab_followers">seguidores</string>
+    <string name="tab_members">miembros</string>
+    <string name="tab_code">código</string>
+    <string name="tab_commits">commits</string>
+    <string name="tab_issues">incidencias</string>
+    <string name="tab_watched">seguidas</string>
+    <string name="tab_assigned">asignadas</string>
+    <string name="tab_created">creadas</string>
+    <string name="tab_mentioned">mencionado</string>
+    <string name="tab_mine">mías</string>
+    <string name="tab_starred">favoritas</string>
+    <string name="tab_all">todas</string>
+    <!--  -->
+    <string name="share">Comparte</string>
+    <string name="show_password">Muestra contraseña</string>
 
 </resources>

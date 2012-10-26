@@ -58,6 +58,7 @@ import com.github.mobile.ui.LightAlertDialog;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
+import com.github.mobile.util.ShareUtils;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 
@@ -207,9 +208,19 @@ public class CommitDiffListFragment extends DialogFragment implements
                     CreateCommentActivity.createIntent(repository, base),
                     COMMENT_CREATE);
             return true;
+        case id.m_share:
+            shareCommit();
+            return true;
         default:
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void shareCommit() {
+        String id = repository.generateId();
+        startActivity(ShareUtils.create(
+                "Commit " + CommitUtils.abbreviate(base) + " on " + id,
+                "https://github.com/" + id + "/commit/" + base));
     }
 
     private void refreshCommit() {
@@ -239,6 +250,7 @@ public class CommitDiffListFragment extends DialogFragment implements
                 super.onException(e);
 
                 ToastUtils.show(getActivity(), e, string.error_commit_load);
+                ViewUtils.setGone(progress, true);
             }
 
         }.execute();
@@ -411,10 +423,7 @@ public class CommitDiffListFragment extends DialogFragment implements
                     public void onClick(View v) {
                         dialog.dismiss();
 
-                        if (!TextUtils.isEmpty(file.getFilename())
-                                && !TextUtils.isEmpty(file.getSha()))
-                            startActivity(CommitFileViewActivity.createIntent(
-                                    repository, commit.getSha(), file));
+                        openFile(file);
                     }
                 });
 
@@ -440,6 +449,13 @@ public class CommitDiffListFragment extends DialogFragment implements
                     }
                 });
         dialog.show();
+    }
+
+    private void openFile(CommitFile file) {
+        if (!TextUtils.isEmpty(file.getFilename())
+                && !TextUtils.isEmpty(file.getSha()))
+            startActivity(CommitFileViewActivity.createIntent(repository, base,
+                    file));
     }
 
     /**
@@ -481,8 +497,7 @@ public class CommitDiffListFragment extends DialogFragment implements
             startActivity(CommitViewActivity.createIntent(repository,
                     ((Commit) item).getSha()));
         else if (item instanceof CommitFile)
-            startActivity(CommitFileViewActivity.createIntent(repository, base,
-                    (CommitFile) item));
+            openFile((CommitFile) item);
         else if (item instanceof CharSequence)
             selectPreviousFile(position, item, parent);
         else if (item instanceof CommitComment)

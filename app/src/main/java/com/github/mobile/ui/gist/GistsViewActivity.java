@@ -45,9 +45,6 @@ import java.util.List;
 
 import org.eclipse.egit.github.core.Gist;
 
-import roboguice.inject.InjectExtra;
-import roboguice.inject.InjectView;
-
 /**
  * Activity to display a collection of Gists in a pager
  */
@@ -83,16 +80,12 @@ public class GistsViewActivity extends PagerActivity {
                 .add(EXTRA_POSITION, position).toIntent();
     }
 
-    @InjectView(id.vp_pages)
     private ViewPager pager;
 
-    @InjectExtra(value = EXTRA_GIST_IDS, optional = true)
     private String[] gists;
 
-    @InjectExtra(value = EXTRA_GIST, optional = true)
     private Gist gist;
 
-    @InjectExtra(EXTRA_POSITION)
     private int initialPosition;
 
     @Inject
@@ -110,6 +103,12 @@ public class GistsViewActivity extends PagerActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(layout.pager);
+
+        gists = getStringArrayExtra(EXTRA_GIST_IDS);
+        gist = getSerializableExtra(EXTRA_GIST);
+        initialPosition = getIntExtra(EXTRA_POSITION);
+        pager = finder.find(id.vp_pages);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Support opening this activity with a single Gist that may be present

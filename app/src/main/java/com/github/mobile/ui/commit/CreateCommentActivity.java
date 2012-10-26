@@ -27,11 +27,10 @@ import com.actionbarsherlock.app.ActionBar;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.string;
 import com.github.mobile.core.commit.CommitUtils;
+import com.github.mobile.ui.comment.CommentPreviewPagerAdapter;
 
 import org.eclipse.egit.github.core.CommitComment;
 import org.eclipse.egit.github.core.Repository;
-
-import roboguice.inject.InjectExtra;
 
 /**
  * Activity to create a comment on a commit
@@ -73,20 +72,21 @@ public class CreateCommentActivity extends
         return !TextUtils.isEmpty(path) && position > -1;
     }
 
-    @InjectExtra(EXTRA_REPOSITORY)
     private Repository repository;
 
-    @InjectExtra(EXTRA_BASE)
     private String commit;
 
-    @InjectExtra(value = EXTRA_POSITION, optional = true)
     private int position;
 
-    @InjectExtra(value = EXTRA_PATH, optional = true)
     private String path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        repository = getSerializableExtra(EXTRA_REPOSITORY);
+        commit = getStringExtra(EXTRA_BASE);
+        position = getIntExtra(EXTRA_POSITION);
+        path = getStringExtra(EXTRA_PATH);
+
         super.onCreate(savedInstanceState);
 
         ActionBar actionBar = getSupportActionBar();
@@ -112,5 +112,10 @@ public class CreateCommentActivity extends
             }
 
         }.start();
+    }
+
+    @Override
+    protected CommentPreviewPagerAdapter createAdapter() {
+        return new CommentPreviewPagerAdapter(this, repository);
     }
 }

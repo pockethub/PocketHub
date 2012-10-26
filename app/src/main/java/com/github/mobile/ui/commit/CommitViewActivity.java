@@ -42,9 +42,6 @@ import java.util.Collection;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryCommit;
 
-import roboguice.inject.InjectExtra;
-import roboguice.inject.InjectView;
-
 /**
  * Activity to display a commit
  */
@@ -96,16 +93,12 @@ public class CommitViewActivity extends PagerActivity {
         return builder.toIntent();
     }
 
-    @InjectView(id.vp_pages)
     private ViewPager pager;
 
-    @InjectExtra(EXTRA_REPOSITORY)
     private Repository repository;
 
-    @InjectExtra(EXTRA_BASES)
     private CharSequence[] ids;
 
-    @InjectExtra(EXTRA_POSITION)
     private int initialPosition;
 
     @Inject
@@ -118,6 +111,12 @@ public class CommitViewActivity extends PagerActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(layout.pager);
+
+        pager = finder.find(id.vp_pages);
+
+        repository = getSerializableExtra(EXTRA_REPOSITORY);
+        ids = getCharSequenceArrayExtra(EXTRA_BASES);
+        initialPosition = getIntExtra(EXTRA_POSITION);
 
         adapter = new CommitPagerAdapter(this, repository, ids);
         pager.setAdapter(adapter);

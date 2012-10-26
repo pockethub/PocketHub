@@ -16,21 +16,39 @@
 package com.github.mobile.accounts;
 
 import static android.accounts.AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE;
+import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
+import static android.accounts.AccountManager.KEY_ACCOUNT_TYPE;
+import static android.accounts.AccountManager.KEY_AUTHTOKEN;
 import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 import static android.accounts.AccountManager.KEY_INTENT;
 import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
+import static com.github.mobile.accounts.AccountConstants.APP_NOTE;
+import static com.github.mobile.accounts.AccountConstants.APP_NOTE_URL;
 import static com.github.mobile.accounts.LoginActivity.PARAM_AUTHTOKEN_TYPE;
 import static com.github.mobile.accounts.LoginActivity.PARAM_USERNAME;
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
+import android.accounts.AccountManager;
 import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+
+import com.github.mobile.DefaultClient;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import org.eclipse.egit.github.core.Authorization;
+import org.eclipse.egit.github.core.service.OAuthService;
 
 class AccountAuthenticator extends AbstractAccountAuthenticator {
+
+    private static final String TAG = "GitHubAccountAuthenticator";
 
     private Context context;
 
@@ -71,11 +89,110 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
         return null;
     }
 
+    private boolean isValidAuthorization(final Authorization auth,
+            final List<String> requiredScopes) {
+        if (auth == null)
+            return false;
+
+        if (!APP_NOTE.equals(auth.getNote()))
+            return false;
+
+        if (!APP_NOTE_URL.equals(auth.getNoteUrl()))
+            return false;
+
+        List<String> scopes = auth.getScopes();
+        if (scopes == null || scopes.size() != requiredScopes.size())
+            return false;
+
+        for (String required : requiredScopes)
+            if (!scopes.contains(required))
+                return false;
+        return true;
+    }
+
+    private Intent createLoginIntent(AccountAuthenticatorResponse response) {
+        final Intent intent = new Intent(context, LoginActivity.class);
+        intent.putExtra(PARAM_AUTHTOKEN_TYPE, ACCOUNT_TYPE);
+        intent.putExtra(KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
+        return intent;
+    }
+
+    /**
+     * Get existing authorization for this app
+     *
+     * @param service
+     * @param scopes
+     * @return token or null if none found
+     * @throws IOException
+     */
+    private String getAuthorization(OAuthService service, List<String> scopes)
+            throws IOException {
+        for (Authorization auth : service.getAuthorizations())
+            if (isValidAuthorization(auth, scopes))
+                return auth.getToken();
+        return null;
+    }
+
+    /**
+     * Create authorization for this app
+     *
+     * @param service
+     * @param scopes
+     * @return created token
+     * @throws IOException
+     */
+    private String createAuthorization(OAuthService service, List<String> scopes)
+            throws IOException {
+        Authorization auth = new Authorization();
+        auth.setNote(APP_NOTE);
+        auth.setNoteUrl(APP_NOTE_URL);
+        auth.setScopes(scopes);
+        auth = service.createAuthorization(auth);
+        return auth != null ? auth.getToken() : null;
+    }
+
     @Override
     public Bundle getAuthToken(AccountAuthenticatorResponse response,
             Account account, String authTokenType, Bundle options)
             throws NetworkErrorException {
-        return null;
+
+        final Bundle bundle = new Bundle();
+
+        if (!ACCOUNT_TYPE.equals(authTokenType))
+            return bundle;
+
+        AccountManager am = AccountManager.get(context);
+        String username = account.name;
+        String password = am.getPassword(account);
+
+        if (TextUtils.isEmpty(password)) {
+            bundle.putParcelable(KEY_INTENT, createLoginIntent(response));
+            return bundle;
+        }
+
+        DefaultClient client = new DefaultClient();
+        client.setCredentials(username, password);
+        OAuthService service = new OAuthService(client);
+        List<String> scopes = Arrays.asList("repo", "user", "gist");
+
+        try {
+            String authToken = getAuthorization(service, scopes);
+            if (TextUtils.isEmpty(authToken))
+                authToken = createAuthorization(service, scopes);
+
+            if (TextUtils.isEmpty(authToken))
+                bundle.putParcelable(KEY_INTENT, createLoginIntent(response));
+            else {
+                bundle.putString(KEY_ACCOUNT_NAME, account.name);
+                bundle.putString(KEY_ACCOUNT_TYPE, ACCOUNT_TYPE);
+                bundle.putString(KEY_AUTHTOKEN, authToken);
+                am.clearPassword(account);
+            }
+            return bundle;
+        } catch (IOException e) {
+            Log.e(TAG, "Authorization retrieval failed", e);
+            throw new NetworkErrorException(e);
+        }
     }
 
     @Override

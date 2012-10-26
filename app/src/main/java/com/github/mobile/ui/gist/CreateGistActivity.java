@@ -15,7 +15,9 @@
  */
 package com.github.mobile.ui.gist;
 
-import static android.content.Intent.EXTRA_TEXT;
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -30,28 +32,23 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
+import com.github.mobile.ui.BaseActivity;
 import com.github.mobile.ui.TextWatcherAdapter;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
+import com.github.mobile.util.ShareUtils;
 
 import org.eclipse.egit.github.core.Gist;
-
-import roboguice.inject.InjectView;
 
 /**
  * Activity to share a text selection as a public or private Gist
  */
-public class CreateGistActivity extends RoboSherlockFragmentActivity {
+public class CreateGistActivity extends BaseActivity {
 
-    @InjectView(id.et_gist_description)
     private EditText descriptionText;
 
-    @InjectView(id.et_gist_name)
     private EditText nameText;
 
-    @InjectView(id.et_gist_content)
     private EditText contentText;
 
-    @InjectView(id.cb_public)
     private CheckBox publicCheckBox;
 
     private MenuItem createItem;
@@ -62,13 +59,23 @@ public class CreateGistActivity extends RoboSherlockFragmentActivity {
 
         setContentView(layout.gist_create);
 
+        descriptionText = finder.find(id.et_gist_description);
+        nameText = finder.find(id.et_gist_name);
+        contentText = finder.find(id.et_gist_content);
+        publicCheckBox = finder.find(id.cb_public);
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(string.new_gist);
         actionBar.setIcon(drawable.action_gist);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
-        String text = getIntent().getStringExtra(EXTRA_TEXT);
+        String text = ShareUtils.getBody(getIntent());
         if (!TextUtils.isEmpty(text))
             contentText.setText(text);
+
+        String subject = ShareUtils.getSubject(getIntent());
+        if (!TextUtils.isEmpty(subject))
+            descriptionText.setText(subject);
 
         contentText.addTextChangedListener(new TextWatcherAdapter() {
 
@@ -103,6 +110,12 @@ public class CreateGistActivity extends RoboSherlockFragmentActivity {
         switch (item.getItemId()) {
         case id.m_apply:
             createGist();
+            return true;
+        case android.R.id.home:
+            finish();
+            Intent intent = new Intent(this, GistsActivity.class);
+            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
             return true;
         default:
             return super.onOptionsItemSelected(item);

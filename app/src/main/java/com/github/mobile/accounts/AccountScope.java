@@ -66,8 +66,7 @@ public class AccountScope extends ScopeBase {
      */
     public void enterWith(final Account account,
             final AccountManager accountManager) {
-        enterWith(new GitHubAccount(account.name,
-                accountManager.getPassword(account)));
+        enterWith(new GitHubAccount(account, accountManager));
     }
 
     /**

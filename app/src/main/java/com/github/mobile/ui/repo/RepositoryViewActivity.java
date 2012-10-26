@@ -18,6 +18,7 @@ package com.github.mobile.ui.repo;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
+import static com.github.mobile.ResultCodes.RESOURCE_CHANGED;
 import static com.github.mobile.ui.repo.RepositoryPagerAdapter.ITEM_CODE;
 import static com.github.mobile.util.TypefaceUtils.ICON_CODE;
 import static com.github.mobile.util.TypefaceUtils.ICON_COMMIT;
@@ -28,14 +29,19 @@ import android.os.Bundle;
 import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
+import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.core.repo.RefreshRepositoryTask;
 import com.github.mobile.core.repo.RepositoryUtils;
+import com.github.mobile.core.repo.StarRepositoryTask;
+import com.github.mobile.core.repo.StarredRepositoryTask;
+import com.github.mobile.core.repo.UnstarRepositoryTask;
 import com.github.mobile.ui.TabPagerActivity;
 import com.github.mobile.ui.user.HomeActivity;
 import com.github.mobile.util.AvatarLoader;
@@ -44,9 +50,6 @@ import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
-
-import roboguice.inject.InjectExtra;
-import roboguice.inject.InjectView;
 
 /**
  * Activity to view a repository
@@ -64,18 +67,24 @@ public class RepositoryViewActivity extends
         return new Builder("repo.VIEW").repo(repository).toIntent();
     }
 
-    @InjectExtra(EXTRA_REPOSITORY)
     private Repository repository;
 
     @Inject
     private AvatarLoader avatars;
 
-    @InjectView(id.pb_loading)
     private ProgressBar loadingBar;
+
+    private boolean isStarred;
+
+    private boolean starredStatusChecked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        repository = getSerializableExtra(EXTRA_REPOSITORY);
+
+        loadingBar = finder.find(id.pb_loading);
 
         User owner = repository.getOwner();
 
@@ -115,6 +124,23 @@ public class RepositoryViewActivity extends
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu optionsMenu) {
+        getSupportMenuInflater().inflate(menu.repository_star, optionsMenu);
+
+        return super.onCreateOptionsMenu(optionsMenu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem followItem = menu.findItem(id.m_star);
+
+        followItem.setVisible(starredStatusChecked);
+        followItem.setTitle(isStarred ? string.unstar : string.star);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onSearchRequested() {
         if (pager.getCurrentItem() == 1) {
             Bundle args = new Bundle();
@@ -137,12 +163,17 @@ public class RepositoryViewActivity extends
         configureTabPager();
         ViewUtils.setGone(loadingBar, true);
         setGone(false);
+        checkStarredRepositoryStatus();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+        case id.m_star:
+            starRepository();
+            return true;
         case android.R.id.home:
+            finish();
             Intent intent = new Intent(this, HomeActivity.class);
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
@@ -182,5 +213,61 @@ public class RepositoryViewActivity extends
         default:
             return super.getIcon(position);
         }
+    }
+
+    private void starRepository() {
+        if (isStarred)
+            new UnstarRepositoryTask(this, repository) {
+
+                @Override
+                protected void onSuccess(Void v) throws Exception {
+                    super.onSuccess(v);
+
+                    isStarred = !isStarred;
+                    setResult(RESOURCE_CHANGED);
+                }
+
+                @Override
+                protected void onException(Exception e) throws RuntimeException {
+                    super.onException(e);
+
+                    ToastUtils.show(RepositoryViewActivity.this,
+                            string.error_unstarring_repository);
+                }
+            }.start();
+        else
+            new StarRepositoryTask(this, repository) {
+
+                @Override
+                protected void onSuccess(Void v) throws Exception {
+                    super.onSuccess(v);
+
+                    isStarred = !isStarred;
+                    setResult(RESOURCE_CHANGED);
+                }
+
+                @Override
+                protected void onException(Exception e) throws RuntimeException {
+                    super.onException(e);
+
+                    ToastUtils.show(RepositoryViewActivity.this,
+                            string.error_starring_repository);
+                }
+            }.start();
+    }
+
+    private void checkStarredRepositoryStatus() {
+        starredStatusChecked = false;
+        new StarredRepositoryTask(this, repository) {
+
+            @Override
+            protected void onSuccess(Boolean watching) throws Exception {
+                super.onSuccess(watching);
+
+                isStarred = watching;
+                starredStatusChecked = true;
+                invalidateOptionsMenu();
+            }
+        }.execute();
     }
 }

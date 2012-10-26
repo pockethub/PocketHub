@@ -16,8 +16,11 @@
 package com.github.mobile.ui.repo;
 
 import static com.github.mobile.Intents.EXTRA_USER;
+import static com.github.mobile.RequestCodes.REPOSITORY_VIEW;
+import static com.github.mobile.ResultCodes.RESOURCE_CHANGED;
 import static java.util.Locale.US;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
@@ -115,11 +118,22 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REPOSITORY_VIEW && resultCode == RESOURCE_CHANGED) {
+            forceRefresh();
+            return;
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public void onListItemClick(ListView list, View v, int position, long id) {
         Repository repo = (Repository) list.getItemAtPosition(position);
         if (recentRepos != null)
             recentRepos.add(repo);
-        startActivity(RepositoryViewActivity.createIntent(repo));
+        startActivityForResult(RepositoryViewActivity.createIntent(repo),
+                REPOSITORY_VIEW);
     }
 
     @Override

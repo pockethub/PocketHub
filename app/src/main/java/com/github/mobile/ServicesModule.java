@@ -29,6 +29,7 @@ import org.eclipse.egit.github.core.service.EventService;
 import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.LabelService;
+import org.eclipse.egit.github.core.service.MarkdownService;
 import org.eclipse.egit.github.core.service.MilestoneService;
 import org.eclipse.egit.github.core.service.OrganizationService;
 import org.eclipse.egit.github.core.service.PullRequestService;
@@ -113,5 +114,10 @@ public class ServicesModule extends AbstractModule {
     @Provides
     DataService dataService(GitHubClient client) {
         return new DataService(client);
+    }
+
+    @Provides
+    MarkdownService markdownService(GitHubClient client) {
+        return new MarkdownService(client);
     }
 }

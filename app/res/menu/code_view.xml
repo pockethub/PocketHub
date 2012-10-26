@@ -19,6 +19,6 @@
     <item
         android:id="@+id/m_wrap"
         android:showAsAction="never"
-        android:title="Enable wrapping"/>
+        android:title="@string/enable_wrapping"/>
 
 </menu>

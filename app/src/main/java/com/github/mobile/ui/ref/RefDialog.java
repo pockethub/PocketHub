@@ -118,14 +118,24 @@ public class RefDialog {
             return;
         }
 
-        final ArrayList<Reference> users = new ArrayList<Reference>(
+        final ArrayList<Reference> refList = new ArrayList<Reference>(
                 refs.values());
         int checked = -1;
-        if (selectedRef != null)
-            for (int i = 0; i < users.size(); i++)
-                if (selectedRef.getRef().equals(users.get(i).getRef()))
+        if (selectedRef != null) {
+            String ref = selectedRef.getRef();
+            for (int i = 0; i < refList.size(); i++) {
+                String candidate = refList.get(i).getRef();
+                if (ref.equals(candidate)) {
                     checked = i;
+                    break;
+                } else if (ref.equals(RefUtils.getName(candidate))) {
+                    checked = i;
+                    break;
+                }
+            }
+        }
+
         RefDialogFragment.show(activity, requestCode,
-                activity.getString(string.select_ref), null, users, checked);
+                activity.getString(string.select_ref), null, refList, checked);
     }
 }

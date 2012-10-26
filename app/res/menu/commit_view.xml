@@ -22,6 +22,11 @@
         android:showAsAction="ifRoom"
         android:title="@string/comment"/>
     <item
+        android:id="@+id/m_share"
+        android:icon="@drawable/menu_share"
+        android:showAsAction="never"
+        android:title="@string/share"/>
+    <item
         android:id="@+id/m_refresh"
         android:icon="@drawable/menu_refresh"
         android:showAsAction="never"
