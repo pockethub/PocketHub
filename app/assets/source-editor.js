@@ -139,7 +139,7 @@ function loadImage(type, content) {
   document.body.appendChild(img);
 }
 
-function loadEditor() {
+window.onload = function() {
   var name = new String(SourceEditor.getName());
   var extension = getExtension(name);
   if ("png" == extension || "gif" == extension) {
