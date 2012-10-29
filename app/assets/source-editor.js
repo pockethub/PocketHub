@@ -64,6 +64,7 @@ function getMode(extension) {
     mode.mode = "text/x-java";
     mode.file = "clike";
     break;
+  case "gyp":
   case "js":
   case "json":
     mode.mode = "text/javascript";
