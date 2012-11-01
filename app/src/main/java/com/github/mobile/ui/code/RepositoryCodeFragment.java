@@ -311,6 +311,9 @@ public class RepositoryCodeFragment extends DialogFragment implements
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
         Entry entry = (Entry) parent.getItemAtPosition(position);
+        if (tree == null || entry == null)
+            return;
+
         if (entry instanceof Folder)
             setFolder(tree, (Folder) entry);
         else
