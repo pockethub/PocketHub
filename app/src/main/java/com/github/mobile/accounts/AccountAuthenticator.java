@@ -155,6 +155,7 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
     public Bundle getAuthToken(AccountAuthenticatorResponse response,
             Account account, String authTokenType, Bundle options)
             throws NetworkErrorException {
+        Log.d(TAG, "Retrieving OAuth2 token");
 
         final Bundle bundle = new Bundle();
 
