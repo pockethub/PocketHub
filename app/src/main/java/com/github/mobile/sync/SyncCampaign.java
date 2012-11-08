@@ -94,7 +94,7 @@ public class SyncCampaign implements Runnable {
             if (cancelled)
                 return;
 
-            Log.d(TAG, "Syncing repos for " + org.getLogin() + "...");
+            Log.d(TAG, "Syncing repos for " + org.getLogin());
             try {
                 cache.requestAndStore(repos.under(org));
                 syncResult.stats.numUpdates++;
