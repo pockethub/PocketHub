@@ -34,7 +34,7 @@ import com.github.mobile.R.layout;
 import com.github.mobile.util.TypefaceUtils;
 
 /**
- * Actiivty with tabbed pages
+ * Activity with tabbed pages
  *
  * @param <V>
  */
