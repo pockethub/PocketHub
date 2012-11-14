@@ -140,9 +140,7 @@
     <string name="gist_description_hint">Gist creado en Android</string>
     <string name="title">Título</string>
     <string name="edit">Editar</string>
-    <string name="star">Destacar</string>
     <string name="starring_gist">Destacando Gist…</string>
-    <string name="unstar">No Destacar</string>
     <string name="unstarring_gist">Eliminado Gist de destacados…</string>
     <string name="accounts_label">Cuentas</string>
     <string name="select_assignee">Seleccionar Responsable</string>
@@ -184,6 +182,8 @@
     <string name="following_self">Siguiendo</string>
     <string name="follow">Seguir</string>
     <string name="unfollow">Dejar de seguir</string>
+    <string name="star">Destacar</string>
+    <string name="unstar">No Destacar</string>
     <string name="members">Miembros</string>
     <string name="closing_issue">Cerrando Incidencia…</string>
     <string name="reopening_issue">Reabriendo Incidencia…</string>
