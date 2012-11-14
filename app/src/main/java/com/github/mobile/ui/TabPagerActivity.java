@@ -30,8 +30,8 @@ import android.widget.TextView;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R.drawable;
 import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 import com.github.mobile.util.TypefaceUtils;
-import com.viewpagerindicator.R.layout;
 
 /**
  * Actiivty with tabbed pages
