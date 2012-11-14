@@ -42,6 +42,10 @@
     <string name="error_following_person">Error al seguir</string>
     <string name="error_unfollowing_person">Error al dejar de seguir</string>
     <string name="error_checking_following_status">Error al comprobar el estado de seguimiento</string>
+    <string name="error_starring_repository">Error al marcar como destacado</string>
+    <string name="error_unstarring_repository">Error al desmarcar como destacado</string>
+    <string name="error_checking_starring_status">Error al comprobar el estado de destacado</string>
+    <string name="error_rendering_markdown">Error al renderizar markdown</string>
     <!--  -->
 
 
@@ -227,6 +231,8 @@
     <string name="code">Código</string>
     <string name="following_user">Siguiendo…</string>
     <string name="unfollowing_user">Dejando de seguir…</string>
+    <string name="starring_repository">Marcando como destacado…</string>
+    <string name="unstarring_repository">Desmarcando como destacado…</string>
 
     <!-- Titulos de las pestañas, lo mas cortos posible -->
     <string name="tab_repositories">repositorios</string>
@@ -247,7 +253,9 @@
     <string name="tab_starred">favoritas</string>
     <string name="tab_all">todas</string>
     <!--  -->
-    <string name="share">Comparte</string>
-    <string name="show_password">Muestra contraseña</string>
+    <string name="share">Compartir</string>
+    <string name="show_password">Mostrar contraseña</string>
+    <string name="write">Escribir</string>
+    <string name="preview">Vista previa</string>
 
 </resources>
