@@ -219,6 +219,8 @@ public class CommitDiffListFragment extends DialogFragment implements
     }
 
     private void refreshCommit() {
+        getSherlockActivity().setSupportProgressBarIndeterminateVisibility(true);
+
         new RefreshCommitTask(getActivity(), repository, base,
                 commentImageGetter) {
 
@@ -238,6 +240,7 @@ public class CommitDiffListFragment extends DialogFragment implements
                 super.onSuccess(commit);
 
                 updateList(commit.getCommit(), commit, commit.getFiles());
+                getSherlockActivity().setSupportProgressBarIndeterminateVisibility(false);
             }
 
             @Override
@@ -246,6 +249,8 @@ public class CommitDiffListFragment extends DialogFragment implements
 
                 ToastUtils.show(getActivity(), e, string.error_commit_load);
                 ViewUtils.setGone(progress, true);
+
+                getSherlockActivity().setSupportProgressBarIndeterminateVisibility(false);
             }
 
         }.execute();

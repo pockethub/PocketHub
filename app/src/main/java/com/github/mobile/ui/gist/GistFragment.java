@@ -380,12 +380,15 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     }
 
     private void refreshGist() {
+        getSherlockActivity().setSupportProgressBarIndeterminateVisibility(true);
+
         new RefreshGistTask(getActivity(), gistId, imageGetter) {
 
             @Override
             protected void onException(Exception e) throws RuntimeException {
                 super.onException(e);
 
+                getSherlockActivity().setSupportProgressBarIndeterminateVisibility(false);
                 ToastUtils.show(getActivity(), e, string.error_gist_load);
             }
 
@@ -407,6 +410,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 gist = fullGist.getGist();
                 comments = fullGist;
                 updateList(fullGist.getGist(), fullGist);
+
+                getSherlockActivity().setSupportProgressBarIndeterminateVisibility(false);
             }
 
         }.execute();
