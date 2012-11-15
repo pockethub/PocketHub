@@ -2,8 +2,6 @@ language: java
 
 notifications:
   email: false
-  
-script: "mvn clean package"
 
 before_install:
   - wget http://dl.google.com/android/android-sdk_r20.0.3-linux.tgz
