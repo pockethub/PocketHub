@@ -35,7 +35,7 @@ CodeMirror.multiplexingMode = function(outer /*, others */) {
           if (found == stream.pos) {
             stream.match(other.open);
             state.innerActive = other;
-            state.inner = CodeMirror.startState(other.mode, outer.indent(state.outer, ""));
+            state.inner = CodeMirror.startState(other.mode, outer.indent ? outer.indent(state.outer, "") : 0);
             return other.delimStyle;
           } else if (found != -1 && found < cutOff) {
             cutOff = found;
@@ -68,14 +68,10 @@ CodeMirror.multiplexingMode = function(outer /*, others */) {
       return mode.indent(state.innerActive ? state.inner : state.outer, textAfter);
     },
 
-    compareStates: function(a, b) {
-      if (a.innerActive != b.innerActive) return false;
-      var mode = a.innerActive || outer;
-      if (!mode.compareStates) return CodeMirror.Pass;
-      return mode.compareStates(a.innerActive ? a.inner : a.outer,
-                                b.innerActive ? b.inner : b.outer);
-    },
+    electricChars: outer.electricChars,
 
-    electricChars: outer.electricChars
+    innerMode: function(state) {
+      return state.inner ? {state: state.inner, mode: state.innerActive.mode} : {state: state.outer, mode: outer};
+    }
   };
 };
