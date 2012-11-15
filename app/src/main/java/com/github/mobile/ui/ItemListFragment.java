@@ -190,6 +190,7 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment
         if (!isUsable())
             return;
 
+        getSherlockActivity().setSupportProgressBarIndeterminateVisibility(true);
         getLoaderManager().restartLoader(0, args, this);
     }
 
@@ -212,6 +213,8 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment
         this.items = items;
         getListAdapter().getWrappedAdapter().setItems(items.toArray());
         showList();
+
+        getSherlockActivity().setSupportProgressBarIndeterminateVisibility(false);
     }
 
     /**

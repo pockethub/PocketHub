@@ -402,6 +402,8 @@ public class IssueFragment extends DialogFragment {
     }
 
     private void refreshIssue() {
+        getSherlockActivity().setSupportProgressBarIndeterminateVisibility(true);
+
         new RefreshIssueTask(getActivity(), repositoryId, issueNumber,
                 bodyImageGetter, commentImageGetter) {
 
@@ -411,6 +413,8 @@ public class IssueFragment extends DialogFragment {
 
                 ToastUtils.show(getActivity(), e, string.error_issue_load);
                 ViewUtils.setGone(progress, true);
+
+                getSherlockActivity().setSupportProgressBarIndeterminateVisibility(false);
             }
 
             @Override
@@ -423,6 +427,8 @@ public class IssueFragment extends DialogFragment {
                 issue = fullIssue.getIssue();
                 comments = fullIssue;
                 updateList(fullIssue.getIssue(), fullIssue);
+
+                getSherlockActivity().setSupportProgressBarIndeterminateVisibility(false);
             }
         }.execute();
 
