@@ -31,12 +31,12 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.actionbarsherlock.R.color;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.kevinsawicki.wishlist.ViewUtils;
+import com.github.mobile.R.color;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
