@@ -20,9 +20,9 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
 
+import com.github.mobile.R.id;
 import com.github.mobile.tests.ActivityTest;
 import com.github.mobile.ui.gist.CreateGistActivity;
-import com.viewpagerindicator.R.id;
 
 /**
  * Tests of {@link CreateGistActivity}

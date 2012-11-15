@@ -19,9 +19,9 @@ import static android.view.KeyEvent.KEYCODE_DEL;
 import android.view.View;
 import android.widget.EditText;
 
+import com.github.mobile.R.id;
 import com.github.mobile.tests.ActivityTest;
 import com.github.mobile.ui.issue.EditIssueActivity;
-import com.viewpagerindicator.R.id;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
