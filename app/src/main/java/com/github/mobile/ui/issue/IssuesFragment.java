@@ -32,13 +32,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.R.menu;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
+import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.RequestFuture;
 import com.github.mobile.core.ResourcePager;

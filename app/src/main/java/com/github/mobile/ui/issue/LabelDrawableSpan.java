@@ -32,7 +32,7 @@ import android.graphics.drawable.PaintDrawable;
 import android.text.style.DynamicDrawableSpan;
 import android.widget.TextView;
 
-import com.actionbarsherlock.R.drawable;
+import com.github.mobile.R.drawable;
 import com.github.mobile.R.id;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.ServiceUtils;
