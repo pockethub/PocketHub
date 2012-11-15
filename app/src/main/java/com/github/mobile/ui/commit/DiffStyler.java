@@ -19,8 +19,8 @@ import android.content.res.Resources;
 import android.text.TextUtils;
 import android.widget.TextView;
 
-import com.actionbarsherlock.R.color;
 import com.github.mobile.R.drawable;
+import com.github.mobile.R.color;
 
 import java.util.ArrayList;
 import java.util.Collection;
