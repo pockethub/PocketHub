@@ -1,5 +1,7 @@
 # GitHub Android App
 
+[![Build Status](https://travis-ci.org/github/android.png)](https://travis-ci.org/github/android)
+
 This repository contains the source code for the GitHub Android app.
 
 <a href="https://play.google.com/store/apps/details?id=com.github.mobile" alt="Download from Google Play">
