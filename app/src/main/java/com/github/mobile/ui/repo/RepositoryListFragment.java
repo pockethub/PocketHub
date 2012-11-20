@@ -153,7 +153,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
                 .getWrappedAdapter();
         adapter.clearHeaders();
 
-        char start = 'a';
+        char start = '-';
         Repository previous = null;
         for (int i = 0; i < repos.size(); i++) {
             Repository repository = repos.get(i);
