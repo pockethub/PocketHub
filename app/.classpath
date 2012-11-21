@@ -4,5 +4,25 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry kind="lib" path="libs/http-request-3.0.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/com.github.mobile/libs/http-request-3.0-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="libs/org.eclipse.egit.github.core-2.1.0.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/com.github.mobile/libs/org.eclipse.egit.github.core-2.1.0-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="libs/gson-2.1.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/com.github.mobile/libs/gson-2.1-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="libs/guice-assistedinject-3.0.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/com.github.mobile/libs/guice-assistedinject-3.0-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
