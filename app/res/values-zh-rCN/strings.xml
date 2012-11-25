@@ -182,8 +182,8 @@
     <string name="following_self">我关注的</string>
     <string name="follow">关注</string>
     <string name="unfollow">取消关注</string>
-    <string name="star">Star</string>
-    <string name="unstar">Unstar</string>
+    <string name="star">加注星标</string>
+    <string name="unstar">移除星标</string>
     <string name="members">成员</string>
     <string name="closing_issue">正在关闭 Issue…</string>
     <string name="reopening_issue">正在重新开放 Issue…</string>
