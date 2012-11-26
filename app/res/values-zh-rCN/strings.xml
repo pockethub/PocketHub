@@ -39,6 +39,13 @@
     <string name="error_file_load">文件加载失败</string>
     <string name="error_code_load">代码加载失败</string>
     <string name="error_refs_load">分支与标签加载失败</string>
+    <string name="error_following_person">关注失败</string>
+    <string name="error_unfollowing_person">取消关注失败</string>
+    <string name="error_checking_following_status">关注状态检查失败</string>
+    <string name="error_starring_repository">星标加注失败</string>
+    <string name="error_unstarring_repository">星标移除失败</string>
+    <string name="error_checking_starring_status">加注星标状态检查失败</string>
+    <string name="error_rendering_markdown">Markdown 渲染失败</string>
     <!--  -->
 
 
@@ -133,9 +140,7 @@
     <string name="gist_description_hint">从 Android 创建的 Gist</string>
     <string name="title">标题</string>
     <string name="edit">编辑</string>
-    <string name="star">加注星标</string>
     <string name="starring_gist">为 Gist 加注星标…</string>
-    <string name="unstar">移除星标</string>
     <string name="unstarring_gist">为 Gist 移除星标…</string>
     <string name="accounts_label">账户</string>
     <string name="select_assignee">选择被指派人</string>
@@ -175,6 +180,10 @@
     <string name="following">Ta关注的</string>
     <string name="followers_self">关注我的</string>
     <string name="following_self">我关注的</string>
+    <string name="follow">关注</string>
+    <string name="unfollow">取消关注</string>
+    <string name="star">加注星标</string>
+    <string name="unstar">移除星标</string>
     <string name="members">成员</string>
     <string name="closing_issue">正在关闭 Issue…</string>
     <string name="reopening_issue">正在重新开放 Issue…</string>
@@ -220,6 +229,10 @@
     <string name="enable_wrapping">启用自动折行</string>
     <string name="disable_wrapping">禁用自动折行</string>
     <string name="code">代码</string>
+    <string name="following_user">正在关注…</string>
+    <string name="unfollowing_user">正在取消关注…</string>
+    <string name="starring_repository">正在加注星标…</string>
+    <string name="unstarring_repository">正在移除星标…</string>
 
     <!-- Tab titles, should be as short as possible -->
     <string name="tab_repositories">版本库</string>
@@ -240,5 +253,9 @@
     <string name="tab_starred">已加星标</string>
     <string name="tab_all">所有</string>
     <!--  -->
+    <string name="share">分享</string>
+    <string name="show_password">显示密码</string>
+    <string name="write">书写</string>
+    <string name="preview">预览</string>
 
 </resources>
