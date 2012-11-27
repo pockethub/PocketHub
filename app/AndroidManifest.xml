@@ -4,6 +4,8 @@
     android:versionCode="1100"
     android:versionName="1.5" >
 
+    <!-- Target SDK version must be 16, not 17, or JavaScript bridge for
+         WebView widgets does not work on a 4.2 Nexus 7 -->
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="16" />
