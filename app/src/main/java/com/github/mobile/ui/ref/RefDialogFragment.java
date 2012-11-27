@@ -72,7 +72,7 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
         protected View initialize(View view) {
             view = super.initialize(view);
 
-            TypefaceUtils.setOcticons(textView(view, 0));
+            TypefaceUtils.setOcticons(textView(0));
             return view;
         }
 
