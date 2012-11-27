@@ -18,6 +18,7 @@
 
     <item
         android:id="@+id/m_follow"
-        android:showAsAction="never" />
+        android:showAsAction="never"
+        android:title="@string/follow" />
 
 </menu>
