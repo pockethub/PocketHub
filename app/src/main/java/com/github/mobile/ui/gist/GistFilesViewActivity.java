@@ -44,7 +44,6 @@ import com.viewpagerindicator.TitlePageIndicator;
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.User;
 
-import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
 
 /**
@@ -64,10 +63,8 @@ public class GistFilesViewActivity extends PagerActivity {
                 .add(EXTRA_POSITION, position).toIntent();
     }
 
-    @InjectExtra(EXTRA_GIST_ID)
     private String gistId;
 
-    @InjectExtra(EXTRA_POSITION)
     private int initialPosition;
 
     @InjectView(id.vp_pages)
@@ -95,6 +92,9 @@ public class GistFilesViewActivity extends PagerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        gistId = getStringExtra(EXTRA_GIST_ID);
+        initialPosition = getIntExtra(EXTRA_POSITION);
 
         setContentView(layout.pager_with_title);
 

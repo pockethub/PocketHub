@@ -56,4 +56,18 @@ public abstract class DialogFragment extends RoboSherlockFragment implements
         else
             return null;
     }
+
+    /**
+     * Get string extra from activity's intent
+     *
+     * @param name
+     * @return extra
+     */
+    protected String getStringExtra(final String name) {
+        Activity activity = getActivity();
+        if (activity != null)
+            return activity.getIntent().getStringExtra(name);
+        else
+            return null;
+    }
 }

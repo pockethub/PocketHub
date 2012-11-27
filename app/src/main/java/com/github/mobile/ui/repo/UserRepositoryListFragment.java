@@ -15,15 +15,16 @@
  */
 package com.github.mobile.ui.repo;
 
+import static com.github.mobile.Intents.EXTRA_USER;
 import static com.github.mobile.RequestCodes.REPOSITORY_VIEW;
 import static com.github.mobile.ResultCodes.RESOURCE_CHANGED;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.mobile.Intents;
 import com.github.mobile.R.string;
 import com.github.mobile.core.ResourcePager;
 import com.github.mobile.ui.PagedItemFragment;
@@ -36,8 +37,6 @@ import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.service.RepositoryService;
 
-import roboguice.inject.InjectExtra;
-
 /**
  * Fragment to display a list of repositories for a {@link User}
  */
@@ -46,8 +45,14 @@ public class UserRepositoryListFragment extends PagedItemFragment<Repository> {
     @Inject
     private RepositoryService service;
 
-    @InjectExtra(Intents.EXTRA_USER)
     private User user;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        user = getSerializableExtra(EXTRA_USER);
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

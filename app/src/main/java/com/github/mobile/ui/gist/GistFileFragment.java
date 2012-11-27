@@ -19,6 +19,7 @@ import static com.github.mobile.Intents.EXTRA_GIST_FILE;
 import static com.github.mobile.Intents.EXTRA_GIST_ID;
 import static com.github.mobile.util.PreferenceUtils.WRAP;
 import android.accounts.Account;
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
@@ -36,10 +37,10 @@ import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.core.gist.GistStore;
+import com.github.mobile.ui.DialogFragment;
 import com.github.mobile.util.PreferenceUtils;
 import com.github.mobile.util.SourceEditor;
 import com.github.mobile.util.ToastUtils;
-import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.google.inject.Inject;
 
 import java.io.IOException;
@@ -48,19 +49,17 @@ import java.util.Map;
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.GistFile;
 
-import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
 
 /**
  * Fragment to display the content of a file in a Gist
  */
-public class GistFileFragment extends RoboSherlockFragment implements
+public class GistFileFragment extends DialogFragment implements
         OnSharedPreferenceChangeListener {
 
     @InjectView(id.wv_code)
     private WebView webView;
 
-    @InjectExtra(EXTRA_GIST_ID)
     private String gistId;
 
     private GistFile file;
@@ -75,6 +74,13 @@ public class GistFileFragment extends RoboSherlockFragment implements
     private SharedPreferences codePrefs;
 
     private MenuItem wrapItem;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        gistId = getStringExtra(EXTRA_GIST_ID);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

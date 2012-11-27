@@ -19,6 +19,7 @@ import static com.github.mobile.Intents.EXTRA_BASE;
 import static com.github.mobile.Intents.EXTRA_HEAD;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import android.accounts.Account;
+import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -56,7 +57,6 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryCommit;
 import org.eclipse.egit.github.core.RepositoryCommitCompare;
 
-import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
 
 /**
@@ -73,13 +73,10 @@ public class CommitCompareListFragment extends DialogFragment implements
     @InjectView(id.pb_loading)
     private ProgressBar progress;
 
-    @InjectExtra(EXTRA_REPOSITORY)
     private Repository repository;
 
-    @InjectExtra(EXTRA_BASE)
     private String base;
 
-    @InjectExtra(EXTRA_HEAD)
     private String head;
 
     @Inject
@@ -88,6 +85,15 @@ public class CommitCompareListFragment extends DialogFragment implements
     private HeaderFooterListAdapter<CommitFileListAdapter> adapter;
 
     private RepositoryCommitCompare compare;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        repository = getSerializableExtra(EXTRA_REPOSITORY);
+        base = getStringExtra(EXTRA_BASE);
+        head = getStringExtra(EXTRA_HEAD);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

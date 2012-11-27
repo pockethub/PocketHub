@@ -36,8 +36,6 @@ import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Repository;
 
-import roboguice.inject.InjectExtra;
-
 /**
  * Activity to display a comparison between two commits
  */
@@ -60,7 +58,6 @@ public class CommitCompareViewActivity extends DialogFragmentActivity {
         return builder.toIntent();
     }
 
-    @InjectExtra(EXTRA_REPOSITORY)
     private Repository repository;
 
     @Inject
@@ -71,6 +68,8 @@ public class CommitCompareViewActivity extends DialogFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        repository = getSerializableExtra(EXTRA_REPOSITORY);
 
         setContentView(layout.commit_compare);
 
