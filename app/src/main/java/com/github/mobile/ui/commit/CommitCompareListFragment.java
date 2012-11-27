@@ -34,6 +34,7 @@ import android.widget.TextView;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
@@ -57,8 +58,6 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryCommit;
 import org.eclipse.egit.github.core.RepositoryCommitCompare;
 
-import roboguice.inject.InjectView;
-
 /**
  * Fragment to display a list of commits being compared
  */
@@ -67,10 +66,8 @@ public class CommitCompareListFragment extends DialogFragment implements
 
     private DiffStyler diffStyler;
 
-    @InjectView(android.R.id.list)
     private ListView list;
 
-    @InjectView(id.pb_loading)
     private ProgressBar progress;
 
     private Repository repository;
@@ -210,6 +207,10 @@ public class CommitCompareListFragment extends DialogFragment implements
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        ViewFinder finder = new ViewFinder(view);
+        list = finder.find(android.R.id.list);
+        progress = finder.find(id.pb_loading);
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
 

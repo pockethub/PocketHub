@@ -31,6 +31,7 @@ import android.webkit.WebView;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
@@ -49,15 +50,12 @@ import java.util.Map;
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.GistFile;
 
-import roboguice.inject.InjectView;
-
 /**
  * Fragment to display the content of a file in a Gist
  */
 public class GistFileFragment extends DialogFragment implements
         OnSharedPreferenceChangeListener {
 
-    @InjectView(id.wv_code)
     private WebView webView;
 
     private String gistId;
@@ -192,6 +190,9 @@ public class GistFileFragment extends DialogFragment implements
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        ViewFinder finder = new ViewFinder(view);
+        webView = finder.find(id.wv_code);
 
         editor = new SourceEditor(webView);
         editor.setWrap(PreferenceUtils.getCodePreferences(getActivity())

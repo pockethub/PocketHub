@@ -50,6 +50,7 @@ import android.widget.TextView;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R.drawable;
 import com.github.mobile.R.id;
@@ -83,8 +84,6 @@ import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.User;
 
-import roboguice.inject.InjectView;
-
 /**
  * Fragment to display an issue
  */
@@ -106,10 +105,8 @@ public class IssueFragment extends DialogFragment {
     @Inject
     private IssueStore store;
 
-    @InjectView(android.R.id.list)
     private ListView list;
 
-    @InjectView(id.pb_loading)
     private ProgressBar progress;
 
     private View headerView;
@@ -254,6 +251,10 @@ public class IssueFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        ViewFinder finder = new ViewFinder(view);
+        list = finder.find(android.R.id.list);
+        progress = finder.find(id.pb_loading);
 
         LayoutInflater inflater = getLayoutInflater(savedInstanceState);
 

@@ -38,6 +38,7 @@ import android.widget.TextView;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
@@ -70,8 +71,6 @@ import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.GistFile;
 import org.eclipse.egit.github.core.User;
 
-import roboguice.inject.InjectView;
-
 /**
  * Activity to display an existing Gist
  */
@@ -83,10 +82,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
     private Gist gist;
 
-    @InjectView(android.R.id.list)
     private ListView list;
 
-    @InjectView(id.pb_loading)
     private ProgressBar progress;
 
     @Inject
@@ -147,6 +144,10 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        ViewFinder finder = new ViewFinder(view);
+        list = finder.find(android.R.id.list);
+        progress = finder.find(id.pb_loading);
 
         Activity activity = getActivity();
         adapter = new HeaderFooterListAdapter<CommentListAdapter>(list,
