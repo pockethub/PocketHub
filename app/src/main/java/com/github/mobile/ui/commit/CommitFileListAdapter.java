@@ -15,6 +15,7 @@
  */
 package com.github.mobile.ui.commit;
 
+import static com.github.kevinsawicki.wishlist.ViewUpdater.FORMAT_INT;
 import android.content.res.Resources;
 import android.text.TextUtils;
 import android.view.LayoutInflater;

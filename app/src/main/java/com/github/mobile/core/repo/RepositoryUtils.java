@@ -75,6 +75,7 @@ public class RepositoryUtils {
                 || "security".equals(name) //
                 || "settings".equals(name) //
                 || "stars".equals(name) //
+                || "styleguide".equals(name) //
                 || "timeline".equals(name) //
                 || "training".equals(name) //
                 || "users".equals(name) //

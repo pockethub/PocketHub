@@ -15,6 +15,7 @@
  */
 package com.github.mobile.ui.user;
 
+import static com.github.kevinsawicki.wishlist.ViewUpdater.FORMAT_INT;
 import static com.github.mobile.util.TypefaceUtils.ICON_ADD_MEMBER;
 import static com.github.mobile.util.TypefaceUtils.ICON_COMMENT;
 import static com.github.mobile.util.TypefaceUtils.ICON_CREATE;
