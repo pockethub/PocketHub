@@ -89,15 +89,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.issue.CreateIssueActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" >
-            <intent-filter>
-                <action android:name="com.github.mobile.repo.issues.create.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".ui.issue.EditIssueActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" >
             <intent-filter>
