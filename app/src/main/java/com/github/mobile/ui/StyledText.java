@@ -29,6 +29,7 @@ import android.view.View.OnClickListener;
 import com.github.mobile.util.TimeUtils;
 
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Helpers on top of {@link SpannableStringBuilder}
@@ -177,7 +178,8 @@ public class StyledText extends SpannableStringBuilder {
         final int timeLength = time.length();
         if (length() > 0 && timeLength > 0
                 && Character.isUpperCase(time.charAt(0))) {
-            append(time.subSequence(0, 1).toString().toLowerCase());
+            append(time.subSequence(0, 1).toString()
+                    .toLowerCase(Locale.getDefault()));
             append(time.subSequence(1, timeLength));
         } else
             append(time);
