@@ -173,24 +173,25 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
         OAuthService service = new OAuthService(client);
         List<String> scopes = Arrays.asList("repo", "user", "gist");
 
+        String authToken;
         try {
-            String authToken = getAuthorization(service, scopes);
+            authToken = getAuthorization(service, scopes);
             if (TextUtils.isEmpty(authToken))
                 authToken = createAuthorization(service, scopes);
-
-            if (TextUtils.isEmpty(authToken))
-                bundle.putParcelable(KEY_INTENT, createLoginIntent(response));
-            else {
-                bundle.putString(KEY_ACCOUNT_NAME, account.name);
-                bundle.putString(KEY_ACCOUNT_TYPE, ACCOUNT_TYPE);
-                bundle.putString(KEY_AUTHTOKEN, authToken);
-                am.clearPassword(account);
-            }
-            return bundle;
         } catch (IOException e) {
             Log.e(TAG, "Authorization retrieval failed", e);
             throw new NetworkErrorException(e);
         }
+
+        if (TextUtils.isEmpty(authToken))
+            bundle.putParcelable(KEY_INTENT, createLoginIntent(response));
+        else {
+            bundle.putString(KEY_ACCOUNT_NAME, account.name);
+            bundle.putString(KEY_ACCOUNT_TYPE, ACCOUNT_TYPE);
+            bundle.putString(KEY_AUTHTOKEN, authToken);
+            am.clearPassword(account);
+        }
+        return bundle;
     }
 
     @Override
