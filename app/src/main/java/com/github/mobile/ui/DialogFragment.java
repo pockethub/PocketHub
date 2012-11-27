@@ -17,7 +17,9 @@ package com.github.mobile.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 
+import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 
 import java.io.Serializable;
@@ -27,6 +29,12 @@ import java.io.Serializable;
  */
 public abstract class DialogFragment extends RoboSherlockFragment implements
         DialogResultListener {
+
+    /**
+     * View finder bound to the value last specified to
+     * {@link #onViewCreated(android.view.View, Bundle)}
+     */
+    protected ViewFinder finder;
 
     /**
      * Is this fragment usable from the UI-thread
@@ -69,5 +77,12 @@ public abstract class DialogFragment extends RoboSherlockFragment implements
             return activity.getIntent().getStringExtra(name);
         else
             return null;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        finder = new ViewFinder(view);
     }
 }

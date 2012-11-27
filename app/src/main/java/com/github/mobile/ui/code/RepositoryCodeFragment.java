@@ -34,7 +34,6 @@ import android.widget.TextView;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R.color;
 import com.github.mobile.R.id;
@@ -217,7 +216,6 @@ public class RepositoryCodeFragment extends DialogFragment implements
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ViewFinder finder = new ViewFinder(view);
         progressView = finder.find(id.pb_loading);
         listView = finder.find(android.R.id.list);
         listView.setOnItemClickListener(this);

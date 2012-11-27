@@ -42,7 +42,6 @@ import android.widget.TextView;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
@@ -361,7 +360,6 @@ public class CommitDiffListFragment extends DialogFragment implements
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ViewFinder finder = new ViewFinder(view);
         list = finder.find(android.R.id.list);
         progress = finder.find(id.pb_loading);
 

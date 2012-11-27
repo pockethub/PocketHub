@@ -23,16 +23,15 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
+import com.github.mobile.ui.DialogFragment;
 import com.github.mobile.ui.TextWatcherAdapter;
-import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 
 /**
  * Fragment to display raw comment text
  */
-public class RawCommentFragment extends RoboSherlockFragment {
+public class RawCommentFragment extends DialogFragment {
 
     private EditText commentText;
 
@@ -40,7 +39,6 @@ public class RawCommentFragment extends RoboSherlockFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ViewFinder finder = new ViewFinder(view);
         commentText = finder.find(id.et_comment);
         commentText.addTextChangedListener(new TextWatcherAdapter() {
 

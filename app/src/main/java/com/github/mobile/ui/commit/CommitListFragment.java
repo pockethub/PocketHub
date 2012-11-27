@@ -32,7 +32,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
@@ -263,7 +262,6 @@ public class CommitListFragment extends PagedItemFragment<RepositoryCommit>
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ViewFinder finder = new ViewFinder(view);
         branchFooterView = finder.find(id.rl_branch);
         branchView = finder.find(id.tv_branch);
         branchIconView = finder.find(id.tv_branch_icon);
