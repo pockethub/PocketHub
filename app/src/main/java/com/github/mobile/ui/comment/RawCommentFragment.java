@@ -15,7 +15,6 @@
  */
 package com.github.mobile.ui.comment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.LayoutInflater;
@@ -23,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
@@ -46,7 +46,7 @@ public class RawCommentFragment extends RoboSherlockFragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                Activity activity = getActivity();
+                SherlockFragmentActivity activity = getSherlockActivity();
                 if (activity != null)
                     activity.invalidateOptionsMenu();
             }
