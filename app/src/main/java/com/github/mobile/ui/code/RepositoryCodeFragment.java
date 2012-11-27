@@ -64,8 +64,6 @@ import org.eclipse.egit.github.core.Reference;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.service.DataService;
 
-import roboguice.inject.InjectExtra;
-
 /**
  * Fragment to display a repository's source code tree
  */
@@ -94,13 +92,19 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
     private Folder folder;
 
-    @InjectExtra(EXTRA_REPOSITORY)
     private Repository repository;
 
     @Inject
     private DataService service;
 
     private RefDialog dialog;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        repository = getSerializableExtra(EXTRA_REPOSITORY);
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

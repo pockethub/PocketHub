@@ -15,9 +15,12 @@
  */
 package com.github.mobile.ui;
 
+import android.app.Activity;
+import android.os.Bundle;
+
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 
-import android.os.Bundle;
+import java.io.Serializable;
 
 /**
  * Base fragment capable of receiving dialog callbacks
@@ -37,5 +40,20 @@ public abstract class DialogFragment extends RoboSherlockFragment implements
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
         // Intentionally left blank
+    }
+
+    /**
+     * Get serializable extra from activity's intent
+     *
+     * @param name
+     * @return extra
+     */
+    @SuppressWarnings("unchecked")
+    protected <V extends Serializable> V getSerializableExtra(final String name) {
+        Activity activity = getActivity();
+        if (activity != null)
+            return (V) activity.getIntent().getSerializableExtra(name);
+        else
+            return null;
     }
 }
