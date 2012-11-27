@@ -6,7 +6,6 @@ This repository contains the source code for the GitHub Android app.
   <img src="http://img.skitch.com/20120709-nkdc1yugu2qmdg1ss81m1gr9ty.jpg">
 </a>
 
-
 Please see the [issues](https://github.com/github/android/issues) section to
 report any bugs or feature requests and to see the list of known issues.
 
@@ -63,4 +62,3 @@ Please fork this repository and contribute back using
 Any contributions, large or small, major features, bug fixes, additional
 language translations, unit/integration tests are welcomed and appreciated
 but will be thoroughly reviewed and discussed.
-
