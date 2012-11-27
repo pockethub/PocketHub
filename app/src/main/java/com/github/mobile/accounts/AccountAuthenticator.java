@@ -67,7 +67,7 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
     @Override
     public Bundle addAccount(final AccountAuthenticatorResponse response,
             final String accountType, final String authTokenType,
-            String[] requiredFeatures, Bundle options)
+            final String[] requiredFeatures, final Bundle options)
             throws NetworkErrorException {
         final Intent intent = new Intent(context, LoginActivity.class);
         intent.putExtra(PARAM_AUTHTOKEN_TYPE, authTokenType);
