@@ -78,14 +78,15 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
     }
 
     @Override
-    public Bundle confirmCredentials(AccountAuthenticatorResponse response,
-            Account account, Bundle options) {
+    public Bundle confirmCredentials(
+            final AccountAuthenticatorResponse response, final Account account,
+            final Bundle options) {
         return null;
     }
 
     @Override
-    public Bundle editProperties(AccountAuthenticatorResponse response,
-            String accountType) {
+    public Bundle editProperties(final AccountAuthenticatorResponse response,
+            final String accountType) {
         return null;
     }
 
@@ -107,7 +108,7 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
         return scopes.containsAll(requiredScopes);
     }
 
-    private Intent createLoginIntent(AccountAuthenticatorResponse response) {
+    private Intent createLoginIntent(final AccountAuthenticatorResponse response) {
         final Intent intent = new Intent(context, LoginActivity.class);
         intent.putExtra(PARAM_AUTHTOKEN_TYPE, ACCOUNT_TYPE);
         intent.putExtra(KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
@@ -122,8 +123,8 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
      * @return token or null if none found
      * @throws IOException
      */
-    private String getAuthorization(OAuthService service, List<String> scopes)
-            throws IOException {
+    private String getAuthorization(final OAuthService service,
+            final List<String> scopes) throws IOException {
         for (Authorization auth : service.getAuthorizations())
             if (isValidAuthorization(auth, scopes))
                 return auth.getToken();
@@ -138,8 +139,8 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
      * @return created token
      * @throws IOException
      */
-    private String createAuthorization(OAuthService service, List<String> scopes)
-            throws IOException {
+    private String createAuthorization(final OAuthService service,
+            final List<String> scopes) throws IOException {
         Authorization auth = new Authorization();
         auth.setNote(APP_NOTE);
         auth.setNoteUrl(APP_NOTE_URL);
@@ -149,9 +150,9 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
     }
 
     @Override
-    public Bundle getAuthToken(AccountAuthenticatorResponse response,
-            Account account, String authTokenType, Bundle options)
-            throws NetworkErrorException {
+    public Bundle getAuthToken(final AccountAuthenticatorResponse response,
+            final Account account, final String authTokenType,
+            final Bundle options) throws NetworkErrorException {
         Log.d(TAG, "Retrieving OAuth2 token");
 
         final Bundle bundle = new Bundle();
@@ -193,7 +194,7 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
     }
 
     @Override
-    public String getAuthTokenLabel(String authTokenType) {
+    public String getAuthTokenLabel(final String authTokenType) {
         if (ACCOUNT_TYPE.equals(authTokenType))
             return authTokenType;
         else
@@ -201,16 +202,18 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
     }
 
     @Override
-    public Bundle hasFeatures(AccountAuthenticatorResponse response,
-            Account account, String[] features) throws NetworkErrorException {
+    public Bundle hasFeatures(final AccountAuthenticatorResponse response,
+            final Account account, final String[] features)
+            throws NetworkErrorException {
         final Bundle result = new Bundle();
         result.putBoolean(KEY_BOOLEAN_RESULT, false);
         return result;
     }
 
     @Override
-    public Bundle updateCredentials(AccountAuthenticatorResponse response,
-            Account account, String authTokenType, Bundle options) {
+    public Bundle updateCredentials(
+            final AccountAuthenticatorResponse response, final Account account,
+            final String authTokenType, final Bundle options) {
         final Intent intent = new Intent(context, LoginActivity.class);
         intent.putExtra(PARAM_AUTHTOKEN_TYPE, authTokenType);
         intent.putExtra(KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
