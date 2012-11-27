@@ -157,7 +157,7 @@ window.onload = function() {
   config.readOnly = "nocursor";
   config.lineNumbers = true;
   config.autofocus = false;
-  config.lineWrapping = SourceEditor.getWrap();
+  config.lineWrapping = !!SourceEditor.getWrap();
   config.dragDrop = false;
   var editor = CodeMirror(document.body, config);
 
