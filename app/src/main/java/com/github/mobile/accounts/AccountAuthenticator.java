@@ -160,16 +160,14 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
             return bundle;
 
         AccountManager am = AccountManager.get(context);
-        String username = account.name;
         String password = am.getPassword(account);
-
         if (TextUtils.isEmpty(password)) {
             bundle.putParcelable(KEY_INTENT, createLoginIntent(response));
             return bundle;
         }
 
         DefaultClient client = new DefaultClient();
-        client.setCredentials(username, password);
+        client.setCredentials(account.name, password);
         OAuthService service = new OAuthService(client);
         List<String> scopes = Arrays.asList("repo", "user", "gist");
 
