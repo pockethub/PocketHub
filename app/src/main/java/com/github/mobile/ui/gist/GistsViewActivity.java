@@ -193,6 +193,7 @@ public class GistsViewActivity extends PagerActivity {
             super.startActivity(intent);
     }
 
+    @Override
     protected FragmentProvider getProvider() {
         return adapter;
     }
