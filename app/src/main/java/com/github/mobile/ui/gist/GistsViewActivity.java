@@ -116,9 +116,8 @@ public class GistsViewActivity extends PagerActivity implements
         // Support opening this activity with a single Gist that may be present
         // in the intent but not currently present in the store
         if (gists == null && gist != null) {
-            String id = gist.getId();
             if (gist.getCreatedAt() != null) {
-                Gist stored = store.getGist(id);
+                Gist stored = store.getGist(gist.getId());
                 if (stored == null)
                     store.addGist(gist);
             }
