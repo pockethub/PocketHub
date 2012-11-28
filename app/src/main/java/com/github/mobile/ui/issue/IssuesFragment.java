@@ -62,8 +62,6 @@ import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.service.IssueService;
 
-import roboguice.inject.InjectExtra;
-
 /**
  * Fragment to display a list of issues
  */
@@ -78,10 +76,8 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     @Inject
     private IssueStore store;
 
-    @InjectExtra(value = EXTRA_ISSUE_FILTER, optional = true)
     private IssueFilter filter;
 
-    @InjectExtra(EXTRA_REPOSITORY)
     private Repository repository;
 
     private View filterHeader;
@@ -100,6 +96,14 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
     @Inject
     private AvatarLoader avatars;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        filter = getSerializableExtra(EXTRA_ISSUE_FILTER);
+        repository = getSerializableExtra(EXTRA_REPOSITORY);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

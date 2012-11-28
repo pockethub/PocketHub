@@ -44,9 +44,6 @@ import com.viewpagerindicator.TitlePageIndicator;
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.User;
 
-import roboguice.inject.InjectExtra;
-import roboguice.inject.InjectView;
-
 /**
  * Activity to page through the content of all the files in a Gist
  */
@@ -64,19 +61,14 @@ public class GistFilesViewActivity extends PagerActivity {
                 .add(EXTRA_POSITION, position).toIntent();
     }
 
-    @InjectExtra(EXTRA_GIST_ID)
     private String gistId;
 
-    @InjectExtra(EXTRA_POSITION)
     private int initialPosition;
 
-    @InjectView(id.vp_pages)
     private ViewPager pager;
 
-    @InjectView(id.pb_loading)
     private ProgressBar loadingBar;
 
-    @InjectView(id.tpi_header)
     private TitlePageIndicator indicator;
 
     private Gist gist;
@@ -96,7 +88,14 @@ public class GistFilesViewActivity extends PagerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        gistId = getStringExtra(EXTRA_GIST_ID);
+        initialPosition = getIntExtra(EXTRA_POSITION);
+
         setContentView(layout.pager_with_title);
+
+        pager = finder.find(id.vp_pages);
+        loadingBar = finder.find(id.pb_loading);
+        indicator = finder.find(id.tpi_header);
 
         if (initialPosition < 0)
             initialPosition = 0;

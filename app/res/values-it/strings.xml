@@ -231,10 +231,10 @@
     <string name="enable_wrapping">Abilita il wrapping</string>
     <string name="disable_wrapping">Disabilita il wrapping</string>
     <string name="code">Codice</string>
-    <string name="following_user">Caricamento tra i following...</string>
-    <string name="unfollowing_user">Cancellazione dai following...</string>
-    <string name="starring_repository">Caricamento tra i preferiti...</string>
-    <string name="unstarring_repository">Cancellazione dai preferiti...</string>
+    <string name="following_user">Caricamento tra i following…</string>
+    <string name="unfollowing_user">Cancellazione dai following…</string>
+    <string name="starring_repository">Caricamento tra i preferiti…</string>
+    <string name="unstarring_repository">Cancellazione dai preferiti…</string>
 
     <!-- Tab titles, should be as short as possible -->
     <string name="tab_repositories">Repository</string>

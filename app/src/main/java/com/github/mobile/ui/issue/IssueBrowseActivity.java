@@ -27,18 +27,16 @@ import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.layout;
 import com.github.mobile.core.issue.IssueFilter;
+import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.util.AvatarLoader;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Repository;
 
-import roboguice.inject.InjectExtra;
-
 /**
  * Activity for browsing a list of issues scoped to a single {@link IssueFilter}
  */
-public class IssueBrowseActivity extends RoboSherlockFragmentActivity {
+public class IssueBrowseActivity extends DialogFragmentActivity {
 
     /**
      * Create intent to browse the filtered issues
@@ -51,7 +49,6 @@ public class IssueBrowseActivity extends RoboSherlockFragmentActivity {
                 .add(EXTRA_ISSUE_FILTER, filter).toIntent();
     }
 
-    @InjectExtra(EXTRA_REPOSITORY)
     private Repository repo;
 
     @Inject
@@ -60,6 +57,8 @@ public class IssueBrowseActivity extends RoboSherlockFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        repo = getSerializableExtra(EXTRA_REPOSITORY);
 
         setContentView(layout.repo_issue_list);
 

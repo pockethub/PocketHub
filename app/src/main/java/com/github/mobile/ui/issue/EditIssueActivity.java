@@ -62,8 +62,6 @@ import org.eclipse.egit.github.core.service.CollaboratorService;
 import org.eclipse.egit.github.core.service.LabelService;
 import org.eclipse.egit.github.core.service.MilestoneService;
 
-import roboguice.inject.InjectView;
-
 /**
  * Activity to edit or create an issue
  */
@@ -102,28 +100,20 @@ public class EditIssueActivity extends DialogFragmentActivity {
         return builder.toIntent();
     }
 
-    @InjectView(id.et_issue_title)
     private EditText titleText;
 
-    @InjectView(id.et_issue_body)
     private EditText bodyText;
 
-    @InjectView(id.ll_milestone_graph)
     private View milestoneGraph;
 
-    @InjectView(id.tv_milestone)
     private TextView milestoneText;
 
-    @InjectView(id.v_closed)
     private View milestoneClosed;
 
-    @InjectView(id.iv_assignee_avatar)
     private ImageView assigneeAvatar;
 
-    @InjectView(id.tv_assignee_name)
     private TextView assigneeText;
 
-    @InjectView(id.tv_labels)
     private TextView labelsText;
 
     @Inject
@@ -155,6 +145,15 @@ public class EditIssueActivity extends DialogFragmentActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(layout.issue_edit);
+
+        titleText = finder.find(id.et_issue_title);
+        bodyText = finder.find(id.et_issue_body);
+        milestoneGraph = finder.find(id.ll_milestone_graph);
+        milestoneText = finder.find(id.tv_milestone);
+        milestoneClosed = finder.find(id.v_closed);
+        assigneeAvatar = finder.find(id.iv_assignee_avatar);
+        assigneeText = finder.find(id.tv_assignee_name);
+        labelsText = finder.find(id.tv_labels);
 
         Intent intent = getIntent();
 

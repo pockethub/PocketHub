@@ -50,8 +50,6 @@ import org.eclipse.egit.github.core.service.CollaboratorService;
 import org.eclipse.egit.github.core.service.LabelService;
 import org.eclipse.egit.github.core.service.MilestoneService;
 
-import roboguice.inject.InjectView;
-
 /**
  * Activity to create or edit an issues filter for a repository
  */
@@ -94,16 +92,12 @@ public class EditIssuesFilterActivity extends DialogFragmentActivity {
 
     private IssueFilter filter;
 
-    @InjectView(id.tv_labels)
     private TextView labelsText;
 
-    @InjectView(id.tv_milestone)
     private TextView milestoneText;
 
-    @InjectView(id.tv_assignee)
     private TextView assigneeText;
 
-    @InjectView(id.iv_avatar)
     private ImageView avatarView;
 
     @Override
@@ -111,6 +105,11 @@ public class EditIssuesFilterActivity extends DialogFragmentActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(layout.issues_filter_edit);
+
+        labelsText = finder.find(id.tv_labels);
+        milestoneText = finder.find(id.tv_milestone);
+        assigneeText = finder.find(id.tv_assignee);
+        avatarView = finder.find(id.iv_avatar);
 
         if (savedInstanceState != null)
             filter = (IssueFilter) savedInstanceState

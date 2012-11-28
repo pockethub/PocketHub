@@ -18,6 +18,7 @@
 
     <item
         android:id="@+id/m_star"
-        android:showAsAction="never" />
+        android:showAsAction="never"
+        android:title="@string/star"/>
 
 </menu>

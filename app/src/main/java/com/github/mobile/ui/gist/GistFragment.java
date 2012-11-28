@@ -70,8 +70,6 @@ import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.GistFile;
 import org.eclipse.egit.github.core.User;
 
-import roboguice.inject.InjectView;
-
 /**
  * Activity to display an existing Gist
  */
@@ -83,10 +81,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
     private Gist gist;
 
-    @InjectView(android.R.id.list)
     private ListView list;
 
-    @InjectView(id.pb_loading)
     private ProgressBar progress;
 
     @Inject
@@ -147,6 +143,9 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        list = finder.find(android.R.id.list);
+        progress = finder.find(id.pb_loading);
 
         Activity activity = getActivity();
         adapter = new HeaderFooterListAdapter<CommentListAdapter>(list,

@@ -85,7 +85,7 @@
         <dependency>
             <groupId>com.github.kevinsawicki</groupId>
             <artifactId>wishlist</artifactId>
-            <version>0.6</version>
+            <version>0.7</version>
             <type>apklib</type>
         </dependency>
     </dependencies>

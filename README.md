@@ -1,15 +1,10 @@
-# GitHub Android App [![Build Status](https://travis-ci.org/github/android.png)](https://travis-ci.org/github/android)
+# GitHub Android App  [![Google Play](http://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.github.mobile) [![Build Status](https://travis-ci.org/github/android.png)](https://travis-ci.org/github/android)
 
 This repository contains the source code for the GitHub Android app.
 
 <a href="https://play.google.com/store/apps/details?id=com.github.mobile" alt="Download from Google Play">
-  <img src="http://www.android.com/images/brand/android_app_on_play_large.png">
-</a>
-
-<a href="https://play.google.com/store/apps/details?id=com.github.mobile" alt="Download from Google Play">
   <img src="http://img.skitch.com/20120709-nkdc1yugu2qmdg1ss81m1gr9ty.jpg">
 </a>
-
 
 Please see the [issues](https://github.com/github/android/issues) section to
 report any bugs or feature requests and to see the list of known issues.
@@ -67,4 +62,3 @@ Please fork this repository and contribute back using
 Any contributions, large or small, major features, bug fixes, additional
 language translations, unit/integration tests are welcomed and appreciated
 but will be thoroughly reviewed and discussed.
-

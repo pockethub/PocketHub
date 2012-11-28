@@ -19,6 +19,7 @@ import static com.github.mobile.Intents.EXTRA_BASE;
 import static com.github.mobile.Intents.EXTRA_HEAD;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import android.accounts.Account;
+import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -56,9 +57,6 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryCommit;
 import org.eclipse.egit.github.core.RepositoryCommitCompare;
 
-import roboguice.inject.InjectExtra;
-import roboguice.inject.InjectView;
-
 /**
  * Fragment to display a list of commits being compared
  */
@@ -67,19 +65,14 @@ public class CommitCompareListFragment extends DialogFragment implements
 
     private DiffStyler diffStyler;
 
-    @InjectView(android.R.id.list)
     private ListView list;
 
-    @InjectView(id.pb_loading)
     private ProgressBar progress;
 
-    @InjectExtra(EXTRA_REPOSITORY)
     private Repository repository;
 
-    @InjectExtra(EXTRA_BASE)
     private String base;
 
-    @InjectExtra(EXTRA_HEAD)
     private String head;
 
     @Inject
@@ -88,6 +81,15 @@ public class CommitCompareListFragment extends DialogFragment implements
     private HeaderFooterListAdapter<CommitFileListAdapter> adapter;
 
     private RepositoryCommitCompare compare;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        repository = getSerializableExtra(EXTRA_REPOSITORY);
+        base = getStringExtra(EXTRA_BASE);
+        head = getStringExtra(EXTRA_HEAD);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -204,6 +206,9 @@ public class CommitCompareListFragment extends DialogFragment implements
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        list = finder.find(android.R.id.list);
+        progress = finder.find(id.pb_loading);
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
