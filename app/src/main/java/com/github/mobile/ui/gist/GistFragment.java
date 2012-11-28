@@ -25,6 +25,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +45,7 @@ import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.accounts.AccountUtils;
+import com.github.mobile.core.OnLoadListener;
 import com.github.mobile.core.gist.FullGist;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.core.gist.RefreshGistTask;
@@ -387,12 +389,18 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 ToastUtils.show(getActivity(), e, string.error_gist_load);
             }
 
+            @SuppressWarnings("unchecked")
             @Override
             protected void onSuccess(FullGist fullGist) throws Exception {
                 super.onSuccess(fullGist);
 
                 if (!isUsable())
                     return;
+
+                FragmentActivity activity = getActivity();
+                if (activity instanceof OnLoadListener)
+                    ((OnLoadListener<Gist>) activity)
+                            .loaded(fullGist.getGist());
 
                 starred = fullGist.isStarred();
                 loadFinished = true;

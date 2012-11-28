@@ -31,6 +31,7 @@ import com.github.mobile.R.drawable;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
+import com.github.mobile.core.OnLoadListener;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.ui.ConfirmDialogFragment;
 import com.github.mobile.ui.FragmentProvider;
@@ -48,7 +49,8 @@ import org.eclipse.egit.github.core.Gist;
 /**
  * Activity to display a collection of Gists in a pager
  */
-public class GistsViewActivity extends PagerActivity {
+public class GistsViewActivity extends PagerActivity implements
+        OnLoadListener<Gist> {
 
     private static final int REQUEST_CONFIRM_DELETE = 1;
 
@@ -166,9 +168,27 @@ public class GistsViewActivity extends PagerActivity {
     public void onPageSelected(int position) {
         super.onPageSelected(position);
 
-        ActionBar actionBar = getSupportActionBar();
         String gistId = gists[position];
         Gist gist = store.getGist(gistId);
+        updateActionBar(gist, gistId);
+    }
+
+    @Override
+    public void startActivity(Intent intent) {
+        Intent converted = urlLauncher.convert(intent);
+        if (converted != null)
+            super.startActivity(converted);
+        else
+            super.startActivity(intent);
+    }
+
+    @Override
+    protected FragmentProvider getProvider() {
+        return adapter;
+    }
+
+    private void updateActionBar(Gist gist, String gistId) {
+        ActionBar actionBar = getSupportActionBar();
         if (gist == null) {
             actionBar.setSubtitle(null);
             actionBar.setLogo(null);
@@ -185,16 +205,8 @@ public class GistsViewActivity extends PagerActivity {
     }
 
     @Override
-    public void startActivity(Intent intent) {
-        Intent converted = urlLauncher.convert(intent);
-        if (converted != null)
-            super.startActivity(converted);
-        else
-            super.startActivity(intent);
-    }
-
-    @Override
-    protected FragmentProvider getProvider() {
-        return adapter;
+    public void loaded(Gist gist) {
+        if (gists[pager.getCurrentItem()].equals(gist.getId()))
+            updateActionBar(gist, gist.getId());
     }
 }
