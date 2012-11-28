@@ -112,8 +112,7 @@ public class GistsViewActivity extends PagerActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Support opening this activity with a single Gist that may be present
-        // in the intent but not currently present
-        // in the store
+        // in the intent but not currently present in the store
         if (gists == null && gist != null) {
             String id = gist.getId();
             if (gist.getCreatedAt() != null) {
