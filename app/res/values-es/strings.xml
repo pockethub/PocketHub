@@ -42,6 +42,10 @@
     <string name="error_following_person">Error al seguir</string>
     <string name="error_unfollowing_person">Error al dejar de seguir</string>
     <string name="error_checking_following_status">Error al comprobar el estado de seguimiento</string>
+    <string name="error_starring_repository">Error al marcar como destacado</string>
+    <string name="error_unstarring_repository">Error al desmarcar como destacado</string>
+    <string name="error_checking_starring_status">Error al comprobar el estado de destacado</string>
+    <string name="error_rendering_markdown">Error al renderizar markdown</string>
     <!--  -->
 
 
@@ -136,9 +140,7 @@
     <string name="gist_description_hint">Gist creado en Android</string>
     <string name="title">Título</string>
     <string name="edit">Editar</string>
-    <string name="star">Destacar</string>
     <string name="starring_gist">Destacando Gist…</string>
-    <string name="unstar">No Destacar</string>
     <string name="unstarring_gist">Eliminado Gist de destacados…</string>
     <string name="accounts_label">Cuentas</string>
     <string name="select_assignee">Seleccionar Responsable</string>
@@ -180,6 +182,8 @@
     <string name="following_self">Siguiendo</string>
     <string name="follow">Seguir</string>
     <string name="unfollow">Dejar de seguir</string>
+    <string name="star">Destacar</string>
+    <string name="unstar">No Destacar</string>
     <string name="members">Miembros</string>
     <string name="closing_issue">Cerrando Incidencia…</string>
     <string name="reopening_issue">Reabriendo Incidencia…</string>
@@ -227,6 +231,8 @@
     <string name="code">Código</string>
     <string name="following_user">Siguiendo…</string>
     <string name="unfollowing_user">Dejando de seguir…</string>
+    <string name="starring_repository">Marcando como destacado…</string>
+    <string name="unstarring_repository">Desmarcando como destacado…</string>
 
     <!-- Titulos de las pestañas, lo mas cortos posible -->
     <string name="tab_repositories">repositorios</string>
@@ -247,7 +253,9 @@
     <string name="tab_starred">favoritas</string>
     <string name="tab_all">todas</string>
     <!--  -->
-    <string name="share">Comparte</string>
-    <string name="show_password">Muestra contraseña</string>
+    <string name="share">Compartir</string>
+    <string name="show_password">Mostrar contraseña</string>
+    <string name="write">Escribir</string>
+    <string name="preview">Vista previa</string>
 
 </resources>

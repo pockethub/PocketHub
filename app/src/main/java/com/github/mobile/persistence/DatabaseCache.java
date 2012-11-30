@@ -148,9 +148,9 @@ public class DatabaseCache {
                 return null;
 
             List<E> cached = new ArrayList<E>();
-            do {
+            do
                 cached.add(persistableResource.loadFrom(cursor));
-            } while (cursor.moveToNext());
+            while (cursor.moveToNext());
             return cached;
         } finally {
             cursor.close();

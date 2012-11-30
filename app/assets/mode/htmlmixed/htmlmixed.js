@@ -1,4 +1,4 @@
-CodeMirror.defineMode("htmlmixed", function(config, parserConfig) {
+CodeMirror.defineMode("htmlmixed", function(config) {
   var htmlMode = CodeMirror.getMode(config, {name: "xml", htmlMode: true});
   var jsMode = CodeMirror.getMode(config, "javascript");
   var cssMode = CodeMirror.getMode(config, "css");
@@ -9,27 +9,28 @@ CodeMirror.defineMode("htmlmixed", function(config, parserConfig) {
       if (/^script$/i.test(state.htmlState.context.tagName)) {
         state.token = javascript;
         state.localState = jsMode.startState(htmlMode.indent(state.htmlState, ""));
-        state.mode = "javascript";
       }
       else if (/^style$/i.test(state.htmlState.context.tagName)) {
         state.token = css;
         state.localState = cssMode.startState(htmlMode.indent(state.htmlState, ""));
-        state.mode = "css";
       }
     }
     return style;
   }
   function maybeBackup(stream, pat, style) {
     var cur = stream.current();
-    var close = cur.search(pat);
+    var close = cur.search(pat), m;
     if (close > -1) stream.backUp(cur.length - close);
+    else if (m = cur.match(/<\/?$/)) {
+      stream.backUp(cur[0].length);
+      if (!stream.match(pat, false)) stream.match(cur[0]);
+    }
     return style;
   }
   function javascript(stream, state) {
     if (stream.match(/^<\/\s*script\s*>/i, false)) {
       state.token = html;
       state.localState = null;
-      state.mode = "html";
       return html(stream, state);
     }
     return maybeBackup(stream, /<\/\s*script\s*>/,
@@ -39,7 +40,6 @@ CodeMirror.defineMode("htmlmixed", function(config, parserConfig) {
     if (stream.match(/^<\/\s*style\s*>/i, false)) {
       state.token = html;
       state.localState = null;
-      state.mode = "html";
       return html(stream, state);
     }
     return maybeBackup(stream, /<\/\s*style\s*>/,
@@ -72,14 +72,13 @@ CodeMirror.defineMode("htmlmixed", function(config, parserConfig) {
         return cssMode.indent(state.localState, textAfter);
     },
 
-    compareStates: function(a, b) {
-      if (a.mode != b.mode) return false;
-      if (a.localState) return CodeMirror.Pass;
-      return htmlMode.compareStates(a.htmlState, b.htmlState);
-    },
+    electricChars: "/{}:",
 
-    electricChars: "/{}:"
-  }
+    innerMode: function(state) {
+      var mode = state.token == html ? htmlMode : state.token == javascript ? jsMode : cssMode;
+      return {state: state.localState || state.htmlState, mode: mode};
+    }
+  };
 }, "xml", "javascript", "css");
 
 CodeMirror.defineMIME("text/html", "htmlmixed");

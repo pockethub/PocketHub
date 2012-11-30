@@ -16,6 +16,7 @@
 package com.github.mobile.ui.user;
 
 import static com.github.mobile.Intents.EXTRA_USER;
+import android.app.Activity;
 
 import com.github.mobile.core.ResourcePager;
 import com.github.mobile.core.user.UserPager;
@@ -23,15 +24,19 @@ import com.github.mobile.core.user.UserPager;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.PageIterator;
 
-import roboguice.inject.InjectExtra;
-
 /**
  * Fragment to display a list of followers
  */
 public class UserFollowersFragment extends FollowersFragment {
 
-    @InjectExtra(EXTRA_USER)
     private User user;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        user = getSerializableExtra(EXTRA_USER);
+    }
 
     @Override
     protected ResourcePager<User> createPager() {

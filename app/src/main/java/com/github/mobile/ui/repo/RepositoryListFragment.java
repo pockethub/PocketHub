@@ -153,39 +153,57 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
                 .getWrappedAdapter();
         adapter.clearHeaders();
 
-        char start = 'a';
-        Repository previous = null;
-        for (int i = 0; i < repos.size(); i++) {
-            Repository repository = repos.get(i);
+        if (repos.isEmpty())
+            return;
 
-            if (recentRepos.contains(repository.getId())) {
-                previous = repository;
-                continue;
-            }
+        // Add recent header if at least one recent repository
+        Repository first = repos.get(0);
+        if (recentRepos.contains(first))
+            adapter.registerHeader(first, getString(string.recently_viewed));
 
-            char repoStart = Character.toLowerCase(repository.getName().charAt(
-                    0));
-            if (repoStart < start) {
-                previous = repository;
-                continue;
-            }
-
-            adapter.registerHeader(repository, Character.toString(repoStart)
-                    .toUpperCase(US));
-            if (previous != null)
-                adapter.registerNoSeparator(previous);
-            start = repoStart;
-            if (start == 'z')
+        // Advance past all recent repositories
+        int index;
+        Repository current = null;
+        for (index = 0; index < repos.size(); index++) {
+            Repository repository = repos.get(index);
+            if (recentRepos.contains(repository.getId()))
+                current = repository;
+            else
                 break;
-            start++;
-            previous = repository;
         }
 
-        if (!repos.isEmpty()) {
-            Repository first = repos.get(0);
-            if (recentRepos.contains(first))
-                adapter.registerHeader(first, getString(string.recently_viewed));
+        if (index >= repos.size())
+            return;
+
+        if (current != null)
+            adapter.registerNoSeparator(current);
+
+        // Register header for first character
+        current = repos.get(index);
+        char start = Character.toLowerCase(current.getName().charAt(0));
+        adapter.registerHeader(current,
+                Character.toString(start).toUpperCase(US));
+
+        char previousHeader = start;
+        for (index = index + 1; index < repos.size(); index++) {
+            current = repos.get(index);
+            char repoStart = Character.toLowerCase(current.getName().charAt(0));
+            if (repoStart <= start)
+                continue;
+
+            // Don't include separator for the last element of the previous
+            // character
+            if (previousHeader != repoStart)
+                adapter.registerNoSeparator(repos.get(index - 1));
+
+            adapter.registerHeader(current, Character.toString(repoStart)
+                    .toUpperCase(US));
+            previousHeader = repoStart;
+            start = repoStart++;
         }
+
+        // Don't include separator for last element
+        adapter.registerNoSeparator(repos.get(repos.size() - 1));
     }
 
     @Override

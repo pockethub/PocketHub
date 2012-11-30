@@ -7,7 +7,7 @@
     <groupId>com.github.github</groupId>
     <artifactId>github-android-parent</artifactId>
     <packaging>pom</packaging>
-    <name>Github Android app parent POM project</name>
+    <name>GitHub Android app parent POM project</name>
 
     <modules>
         <module>app</module>
@@ -29,11 +29,11 @@
                 <plugin>
                     <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                     <artifactId>android-maven-plugin</artifactId>
-                    <version>3.3.0</version>
+                    <version>3.4.1</version>
                     <extensions>true</extensions>
                     <configuration>
                         <sdk>
-                            <platform>15</platform>
+                            <platform>16</platform>
                         </sdk>
                         <undeployBeforeDeploy>true</undeployBeforeDeploy>
                         <proguard>

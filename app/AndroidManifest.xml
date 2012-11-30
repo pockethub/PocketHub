@@ -4,6 +4,8 @@
     android:versionCode="1100"
     android:versionName="1.5" >
 
+    <!-- Target SDK version must be 16, not 17, or JavaScript bridge for
+         WebView widgets does not work on a 4.2 Nexus 7 -->
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="16" />
@@ -82,15 +84,6 @@
             android:hardwareAccelerated="true" >
             <intent-filter>
                 <action android:name="com.github.mobile.repo.issues.dashboard.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.issue.CreateIssueActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" >
-            <intent-filter>
-                <action android:name="com.github.mobile.repo.issues.create.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -252,6 +245,24 @@
 
                 <data
                     android:host="github.com"
+                    android:scheme="https" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="gist.github.com"
+                    android:scheme="http" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="gist.github.com"
                     android:scheme="https" />
 
                 <category android:name="android.intent.category.DEFAULT" />

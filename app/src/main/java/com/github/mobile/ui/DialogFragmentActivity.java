@@ -65,6 +65,26 @@ public abstract class DialogFragmentActivity extends
      * Get intent extra
      *
      * @param name
+     * @return int array
+     */
+    protected int[] getIntArrayExtra(final String name) {
+        return getIntent().getIntArrayExtra(name);
+    }
+
+    /**
+     * Get intent extra
+     *
+     * @param name
+     * @return boolean array
+     */
+    protected boolean[] getBooleanArrayExtra(final String name) {
+        return getIntent().getBooleanArrayExtra(name);
+    }
+
+    /**
+     * Get intent extra
+     *
+     * @param name
      * @return string
      */
     protected String getStringExtra(final String name) {

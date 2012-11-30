@@ -15,13 +15,14 @@
  */
 package com.github.mobile.ui.commit;
 
+import static com.github.kevinsawicki.wishlist.ViewUpdater.FORMAT_INT;
 import android.content.res.Resources;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 
-import com.actionbarsherlock.R.color;
 import com.github.kevinsawicki.wishlist.MultiTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
+import com.github.mobile.R.color;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.core.commit.FullCommitFile;

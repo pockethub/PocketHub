@@ -48,9 +48,6 @@ import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.RepositoryIssue;
 import org.eclipse.egit.github.core.User;
 
-import roboguice.inject.InjectExtra;
-import roboguice.inject.InjectView;
-
 /**
  * Activity to display a collection of issues or pull requests in a pager
  */
@@ -147,22 +144,16 @@ public class IssuesViewActivity extends PagerActivity {
         return builder.toIntent();
     }
 
-    @InjectView(id.vp_pages)
     private ViewPager pager;
 
-    @InjectExtra(EXTRA_ISSUE_NUMBERS)
     private int[] issueNumbers;
 
-    @InjectExtra(EXTRA_PULL_REQUESTS)
     private boolean[] pullRequests;
 
-    @InjectExtra(value = EXTRA_REPOSITORIES, optional = true)
     private ArrayList<RepositoryId> repoIds;
 
-    @InjectExtra(value = EXTRA_REPOSITORY, optional = true)
     private Repository repo;
 
-    @InjectExtra(EXTRA_POSITION)
     private int initialPosition;
 
     @Inject
@@ -181,7 +172,15 @@ public class IssuesViewActivity extends PagerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        issueNumbers = getIntArrayExtra(EXTRA_ISSUE_NUMBERS);
+        pullRequests = getBooleanArrayExtra(EXTRA_PULL_REQUESTS);
+        repoIds = getSerializableExtra(EXTRA_REPOSITORIES);
+        repo = getSerializableExtra(EXTRA_REPOSITORY);
+        initialPosition = getIntExtra(EXTRA_POSITION);
+
         setContentView(layout.pager);
+
+        pager = finder.find(id.vp_pages);
 
         if (repo != null)
             adapter = new IssuesPagerAdapter(this, repo, issueNumbers);

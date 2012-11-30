@@ -83,8 +83,6 @@ import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.User;
 
-import roboguice.inject.InjectView;
-
 /**
  * Fragment to display an issue
  */
@@ -106,10 +104,8 @@ public class IssueFragment extends DialogFragment {
     @Inject
     private IssueStore store;
 
-    @InjectView(android.R.id.list)
     private ListView list;
 
-    @InjectView(id.pb_loading)
     private ProgressBar progress;
 
     private View headerView;
@@ -254,6 +250,9 @@ public class IssueFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        list = finder.find(android.R.id.list);
+        progress = finder.find(id.pb_loading);
 
         LayoutInflater inflater = getLayoutInflater(savedInstanceState);
 

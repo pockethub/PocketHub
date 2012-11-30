@@ -240,5 +240,7 @@
     <string name="tab_starred">любими</string>
     <string name="tab_all">всички</string>
     <!--  -->
+    <string name="share">Сподели</string>
+    <string name="show_password">Покажи паролата</string>
 
 </resources>

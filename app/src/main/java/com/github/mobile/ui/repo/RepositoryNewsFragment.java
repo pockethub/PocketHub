@@ -16,6 +16,7 @@
 package com.github.mobile.ui.repo;
 
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
+import android.app.Activity;
 
 import com.github.mobile.core.ResourcePager;
 import com.github.mobile.ui.NewsFragment;
@@ -27,15 +28,19 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.event.Event;
 
-import roboguice.inject.InjectExtra;
-
 /**
  * Fragment to display a news feed for a specific repository
  */
 public class RepositoryNewsFragment extends NewsFragment {
 
-    @InjectExtra(EXTRA_REPOSITORY)
     private Repository repo;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        repo = getSerializableExtra(EXTRA_REPOSITORY);
+    }
 
     @Override
     protected ResourcePager<Event> createPager() {

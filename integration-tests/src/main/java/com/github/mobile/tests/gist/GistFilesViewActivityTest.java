@@ -17,11 +17,11 @@ package com.github.mobile.tests.gist;
 
 import android.support.v4.view.ViewPager;
 
+import com.github.mobile.R.id;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.tests.ActivityTest;
 import com.github.mobile.ui.gist.GistFilesViewActivity;
 import com.google.inject.Inject;
-import com.viewpagerindicator.R.id;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

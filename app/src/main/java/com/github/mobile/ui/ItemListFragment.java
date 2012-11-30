@@ -41,7 +41,6 @@ import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.util.ToastUtils;
-import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 
 import java.util.Collections;
 import java.util.List;
@@ -52,8 +51,8 @@ import java.util.List;
  *
  * @param <E>
  */
-public abstract class ItemListFragment<E> extends RoboSherlockFragment
-        implements LoaderCallbacks<List<E>> {
+public abstract class ItemListFragment<E> extends DialogFragment implements
+        LoaderCallbacks<List<E>> {
 
     private static final String FORCE_REFRESH = "forceRefresh";
 
@@ -430,14 +429,5 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment
      * @param id
      */
     public void onListItemClick(ListView l, View v, int position, long id) {
-    }
-
-    /**
-     * Is this fragment still part of an activity and usable from the UI-thread?
-     *
-     * @return true if usable on the UI-thread, false otherwise
-     */
-    protected boolean isUsable() {
-        return getActivity() != null;
     }
 }

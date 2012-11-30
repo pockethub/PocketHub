@@ -17,7 +17,6 @@ package com.github.mobile.ui.user;
 
 import com.github.mobile.core.ResourcePager;
 import com.github.mobile.core.user.UserPager;
-import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.PageIterator;
@@ -27,7 +26,7 @@ import org.eclipse.egit.github.core.client.PageIterator;
  */
 public class MyFollowingFragment extends FollowingFragment {
 
-    @Inject
+    @Override
     protected ResourcePager<User> createPager() {
         return new UserPager() {
 
