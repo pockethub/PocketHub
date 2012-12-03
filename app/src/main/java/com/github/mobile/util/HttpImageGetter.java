@@ -198,6 +198,7 @@ public class HttpImageGetter implements ImageGetter {
         return request;
     }
 
+    @Override
     public Drawable getDrawable(String source) {
         File output = null;
         try {
