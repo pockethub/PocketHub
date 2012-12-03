@@ -58,6 +58,7 @@ public class HttpImageGetter implements ImageGetter {
             image.setBounds(0, 0, imageSize, imageSize);
         }
 
+        @Override
         public Drawable getDrawable(String source) {
             return image;
         }
