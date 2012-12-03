@@ -124,6 +124,7 @@ public class CommitDiffListFragment extends DialogFragment implements
 
     private HeaderFooterListAdapter<CommitFileListAdapter> adapter;
 
+    @Inject
     private HttpImageGetter commentImageGetter;
 
     @Override
@@ -138,8 +139,6 @@ public class CommitDiffListFragment extends DialogFragment implements
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        commentImageGetter = new HttpImageGetter(getActivity());
 
         commit = store.getCommit(repository, base);
 
@@ -371,7 +370,7 @@ public class CommitDiffListFragment extends DialogFragment implements
 
         adapter = new HeaderFooterListAdapter<CommitFileListAdapter>(list,
                 new CommitFileListAdapter(inflater, diffStyler, avatars,
-                        new HttpImageGetter(getActivity())));
+                        commentImageGetter));
         adapter.addFooter(inflater.inflate(layout.footer_separator, null));
         list.setAdapter(adapter);
 

@@ -18,7 +18,6 @@ package com.github.mobile.ui.comment;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
-import android.text.Html.ImageGetter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +33,7 @@ import com.github.mobile.ui.DialogFragment;
 import com.github.mobile.ui.MarkdownLoader;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.ToastUtils;
+import com.google.inject.Inject;
 
 import java.io.Serializable;
 
@@ -53,13 +53,8 @@ public class RenderedCommentFragment extends DialogFragment implements
 
     private TextView bodyText;
 
-    private ImageGetter imageGetter;
-
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        imageGetter = new HttpImageGetter(getActivity());
-    }
+    @Inject
+    private HttpImageGetter imageGetter;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

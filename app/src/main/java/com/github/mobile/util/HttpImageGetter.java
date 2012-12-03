@@ -15,31 +15,37 @@
  */
 package com.github.mobile.util;
 
+import static android.util.Base64.DEFAULT;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static java.lang.Integer.MAX_VALUE;
+import static org.eclipse.egit.github.core.client.IGitHubConstants.HOST_DEFAULT;
 import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.text.Html.ImageGetter;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.widget.TextView;
 
 import com.github.kevinsawicki.http.HttpRequest;
 import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
 import com.github.mobile.R.drawable;
-import com.github.mobile.accounts.AccountUtils;
+import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.google.inject.Inject;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import roboguice.util.RoboAsyncTask;
+import org.eclipse.egit.github.core.RepositoryContents;
+import org.eclipse.egit.github.core.RepositoryId;
+import org.eclipse.egit.github.core.service.ContentsService;
 
 /**
  * Getter for an image
@@ -79,14 +85,18 @@ public class HttpImageGetter implements ImageGetter {
 
     private final Map<Object, CharSequence> fullHtmlCache = new HashMap<Object, CharSequence>();
 
+    private final ContentsService service;
+
     /**
      * Create image getter for context
      *
      * @param context
+     * @param service
      */
     @Inject
-    public HttpImageGetter(Context context) {
+    public HttpImageGetter(Context context, ContentsService service) {
         this.context = context;
+        this.service = service;
         dir = context.getCacheDir();
         width = ServiceUtils.getDisplayWidth(context);
         loading = new LoadingImageGetter(context, 24);
@@ -165,10 +175,10 @@ public class HttpImageGetter implements ImageGetter {
 
         show(view, encoded);
         view.setTag(id);
-        new RoboAsyncTask<CharSequence>(context) {
+        new AuthenticatedUserTask<CharSequence>(context) {
 
             @Override
-            public CharSequence call() throws Exception {
+            protected CharSequence run(Account account) throws Exception {
                 return HtmlUtils.encode(html, HttpImageGetter.this);
             }
 
@@ -184,26 +194,79 @@ public class HttpImageGetter implements ImageGetter {
         return this;
     }
 
-    private HttpRequest createRequest(String source) {
-        HttpRequest request = HttpRequest.get(source);
-        if (HttpRequestUtils.isSecure(request)) {
-            Account account = AccountUtils.getAccount(context);
-            if (account != null) {
-                String password = AccountManager.get(context).getPassword(
-                        account);
-                if (!TextUtils.isEmpty(password))
-                    request.basic(account.name, password);
-            }
-        }
-        return request;
+    /**
+     * Request an image using the contents API if the source URI is a path to a
+     * file already in the repository
+     *
+     * @param source
+     * @return
+     * @throws IOException
+     */
+    private Drawable requestRepositoryImage(final String source)
+            throws IOException {
+        if (TextUtils.isEmpty(source))
+            return null;
+
+        Uri uri = Uri.parse(source);
+        if (!HOST_DEFAULT.equals(uri.getHost()))
+            return null;
+
+        List<String> segments = uri.getPathSegments();
+        if (segments.size() < 5)
+            return null;
+
+        String prefix = segments.get(2);
+        // Two types of urls supported:
+        // github.com/github/android/raw/master/app/res/drawable-xhdpi/app_icon.png
+        // github.com/github/android/blob/master/app/res/drawable-xhdpi/app_icon.png?raw=true
+        if (!("raw".equals(prefix) || ("blob".equals(prefix) && !TextUtils
+                .isEmpty(uri.getQueryParameter("raw")))))
+            return null;
+
+        String owner = segments.get(0);
+        if (TextUtils.isEmpty(owner))
+            return null;
+        String name = segments.get(1);
+        if (TextUtils.isEmpty(name))
+            return null;
+        String branch = segments.get(3);
+        if (TextUtils.isEmpty(branch))
+            return null;
+
+        StringBuilder path = new StringBuilder(segments.get(4));
+        for (int i = 5; i < segments.size(); i++)
+            path.append('/').append(segments.get(i));
+
+        List<RepositoryContents> contents = service.getContents(
+                RepositoryId.create(owner, name), path.toString(), branch);
+        if (contents != null && contents.size() == 1) {
+            byte[] content = Base64.decode(contents.get(0).getContent(),
+                    DEFAULT);
+            Bitmap bitmap = ImageUtils.getBitmap(content, width, MAX_VALUE);
+            if (bitmap == null)
+                return loading.getDrawable(source);
+            BitmapDrawable drawable = new BitmapDrawable(
+                    context.getResources(), bitmap);
+            drawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
+            return drawable;
+        } else
+            return null;
     }
 
     @Override
-    public Drawable getDrawable(String source) {
+    public Drawable getDrawable(final String source) {
+        try {
+            Drawable repositoryImage = requestRepositoryImage(source);
+            if (repositoryImage != null)
+                return repositoryImage;
+        } catch (Exception e) {
+            // Ignore and attempt request over regular HTTP request
+        }
+
         File output = null;
         try {
             output = File.createTempFile("image", ".jpg", dir);
-            HttpRequest request = createRequest(source);
+            HttpRequest request = HttpRequest.get(source);
             if (!request.ok())
                 throw new IOException("Unexpected response code: "
                         + request.code());

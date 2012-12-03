@@ -152,8 +152,10 @@ public class IssueFragment extends DialogFragment {
 
     private MenuItem stateItem;
 
+    @Inject
     private HttpImageGetter bodyImageGetter;
 
+    @Inject
     private HttpImageGetter commentImageGetter;
 
     @Override
@@ -168,9 +170,6 @@ public class IssueFragment extends DialogFragment {
         user = (User) args.getSerializable(EXTRA_USER);
 
         DialogFragmentActivity dialogActivity = (DialogFragmentActivity) getActivity();
-
-        bodyImageGetter = new HttpImageGetter(dialogActivity);
-        commentImageGetter = new HttpImageGetter(dialogActivity);
 
         milestoneTask = new EditMilestoneTask(dialogActivity, repositoryId,
                 issueNumber) {

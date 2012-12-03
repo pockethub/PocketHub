@@ -24,6 +24,7 @@ import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.CollaboratorService;
 import org.eclipse.egit.github.core.service.CommitService;
+import org.eclipse.egit.github.core.service.ContentsService;
 import org.eclipse.egit.github.core.service.DataService;
 import org.eclipse.egit.github.core.service.EventService;
 import org.eclipse.egit.github.core.service.GistService;
@@ -119,5 +120,10 @@ public class ServicesModule extends AbstractModule {
     @Provides
     MarkdownService markdownService(GitHubClient client) {
         return new MarkdownService(client);
+    }
+
+    @Provides
+    ContentsService contentsService(GitHubClient client) {
+        return new ContentsService(client);
     }
 }
