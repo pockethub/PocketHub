@@ -109,6 +109,17 @@ public class ServiceUtils {
     /**
      * Get pixels from dps
      *
+     * @param context
+     * @param dp
+     * @return pixels
+     */
+    public static int getIntPixels(final Context context, final int dp) {
+        return getIntPixels(context.getResources(), dp);
+    }
+
+    /**
+     * Get pixels from dps
+     *
      * @param resources
      * @param dp
      * @return pixels
