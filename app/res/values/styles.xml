@@ -45,6 +45,7 @@
         <item name="android:dividerHeight">2dp</item>
         <item name="android:divider">@drawable/list_divider</item>
         <item name="android:cacheColorHint">@android:color/transparent</item>
+        <item name="android:fadingEdge">none</item>
     </style>
 
     <style name="CommentListView" parent="ListView">
