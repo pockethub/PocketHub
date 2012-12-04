@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="Theme.GitHub" parent="@style/Theme.Sherlock">
         <item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>
