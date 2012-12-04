@@ -231,7 +231,10 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
                     type |= TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
                 else
                     type |= TYPE_TEXT_VARIATION_PASSWORD;
+                int selection = passwordText.getSelectionStart();
                 passwordText.setInputType(type);
+                if (selection > 0)
+                    passwordText.setSelection(selection);
             }
         });
 
