@@ -132,7 +132,6 @@ public class RepositoryCodeFragment extends DialogFragment implements
         default:
             return super.onOptionsItemSelected(item);
         }
-
     }
 
     private void showLoading(final boolean loading) {
