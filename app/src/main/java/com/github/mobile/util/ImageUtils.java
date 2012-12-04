@@ -103,16 +103,11 @@ public class ImageUtils {
      * @return scale
      */
     public static int getScale(Point size, int width, int height) {
-        int currWidth = size.x;
-        int currHeight = size.y;
-
-        int scale = 1;
-        while (currWidth >= width || currHeight >= height) {
-            currWidth /= 2;
-            currHeight /= 2;
-            scale *= 2;
-        }
-        return scale;
+        if (size.x > width || size.y > height)
+            return Math.max(Math.round((float) size.y / (float) height),
+                    Math.round((float) size.x / (float) width));
+        else
+            return 1;
     }
 
     /**
