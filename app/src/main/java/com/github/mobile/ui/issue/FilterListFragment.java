@@ -6,8 +6,8 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.kevinsawicki.wishlist.AsyncLoader;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.mobile.AsyncLoader;
 import com.github.mobile.R.string;
 import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.persistence.AccountDataManager;
