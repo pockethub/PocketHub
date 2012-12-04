@@ -14,11 +14,6 @@
     <artifactId>github-android</artifactId>
     <url>https://github.com/github/android</url>
 
-    <properties>
-        <abs.version>4.1.0</abs.version>
-        <vpi.version>2.3.1</vpi.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.google.android</groupId>
@@ -35,15 +30,8 @@
         <dependency>
             <groupId>com.actionbarsherlock</groupId>
             <artifactId>library</artifactId>
-            <version>${abs.version}</version>
+            <version>4.1.0</version>
             <type>apklib</type>
-        </dependency>
-        <dependency>
-            <groupId>com.actionbarsherlock</groupId>
-            <artifactId>library</artifactId>
-            <version>${abs.version}</version>
-            <type>jar</type>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.rtyley</groupId>
@@ -69,7 +57,7 @@
         <dependency>
             <groupId>com.viewpagerindicator</groupId>
             <artifactId>library</artifactId>
-            <version>${vpi.version}</version>
+            <version>2.3.1</version>
             <type>apklib</type>
         </dependency>
         <dependency>
