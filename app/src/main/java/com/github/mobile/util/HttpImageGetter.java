@@ -234,8 +234,14 @@ public class HttpImageGetter implements ImageGetter {
             return null;
 
         StringBuilder path = new StringBuilder(segments.get(4));
-        for (int i = 5; i < segments.size(); i++)
-            path.append('/').append(segments.get(i));
+        for (int i = 5; i < segments.size(); i++) {
+            String segment = segments.get(i);
+            if (!TextUtils.isEmpty(segment))
+                path.append('/').append(segment);
+        }
+
+        if (TextUtils.isEmpty(path))
+            return null;
 
         List<RepositoryContents> contents = service.getContents(
                 RepositoryId.create(owner, name), path.toString(), branch);
