@@ -160,7 +160,7 @@
               <zipalign>
                 <skip>false</skip>
                 <verbose>true</verbose>
-                <outputApk>${project.build.directory}/${project.artifactId}-signed-aligned.apk
+                <outputApk>${project.build.directory}/${project.artifactId}-${project.version}-signed-aligned.apk
                 </outputApk>
               </zipalign>
               <manifest>
@@ -183,7 +183,7 @@
             <configuration>
               <artifacts>
                 <artifact>
-                  <file>${project.build.directory}/${project.artifactId}-signed-aligned.apk</file>
+                  <file>${project.build.directory}/${project.artifactId}-${project.version}-signed-aligned.apk</file>
                   <type>apk</type>
                   <classifier>signed-aligned</classifier>
                 </artifact>
