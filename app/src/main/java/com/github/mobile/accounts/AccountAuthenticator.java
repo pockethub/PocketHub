@@ -102,10 +102,7 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
             return false;
 
         List<String> scopes = auth.getScopes();
-        if (scopes == null || scopes.size() != requiredScopes.size())
-            return false;
-
-        return scopes.containsAll(requiredScopes);
+        return scopes != null && scopes.containsAll(requiredScopes);
     }
 
     private Intent createLoginIntent(final AccountAuthenticatorResponse response) {
