@@ -20,6 +20,8 @@ import static android.content.Intent.CATEGORY_BROWSABLE;
 import static org.eclipse.egit.github.core.event.Event.TYPE_COMMIT_COMMENT;
 import static org.eclipse.egit.github.core.event.Event.TYPE_DOWNLOAD;
 import static org.eclipse.egit.github.core.event.Event.TYPE_PUSH;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -40,6 +42,7 @@ import com.github.mobile.ui.gist.GistsViewActivity;
 import com.github.mobile.ui.issue.IssuesViewActivity;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
 import com.github.mobile.ui.user.NewsListAdapter;
+import com.github.mobile.ui.user.UserViewActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
@@ -139,6 +142,44 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
         UserPair users = userMatcher.getUsers(event);
         if (users != null)
             viewUser(users);
+    }
+
+    @Override
+    public boolean onListItemLongClick(ListView l, View v, int position, long id) {
+        if (!isUsable())
+            return false;
+
+        final Event event = (Event) l.getItemAtPosition(position);
+        final Repository repo = RepositoryEventMatcher.getRepository(
+                event.getRepo(), event.getActor(), event.getOrg());
+        final User user = event.getActor();
+
+        if (repo != null && user != null) {
+            final CharSequence[] items = { user.getLogin(),
+                    event.getRepo().getName() };
+
+            final LightAlertDialog.Builder builder = LightAlertDialog.Builder
+                    .create(getActivity());
+            builder.setTitle(string.navigate_to);
+            builder.setItems(items, new OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                    case 0:
+                        startActivity(UserViewActivity.createIntent(user));
+                        break;
+                    case 1:
+                        viewRepository(repo);
+                        break;
+                    }
+                }
+            });
+            builder.create().show();
+
+            return true;
+        }
+
+        return false;
     }
 
     private void openDownload(Event event) {
