@@ -63,6 +63,7 @@ public class RepositoryUtils {
                 || "edu".equals(name) //
                 || "explore".equals(name) //
                 || "features".equals(name) //
+                || "home".equals(name) //
                 || "inbox".equals(name) //
                 || "languages".equals(name) //
                 || "login".equals(name) //
