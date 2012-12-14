@@ -113,6 +113,8 @@
     <string name="gist_content_hint">inserisci \'Ciao Mondo!\'</string>
     <string name="make_public">Rendi pubblico questo Gist</string>
     <string name="gist_file_name_hint">file.rb</string>
+    <string name="file_name">Nome del file</string>
+    <string name="file_content">Contenuto del file</string>
     <string name="gist">Gist</string>
     <string name="comments">Commenti</string>
     <string name="files">File</string>
@@ -238,7 +240,7 @@
 
     <!-- Tab titles, should be as short as possible -->
     <string name="tab_repositories">Repository</string>
-    <string name="tab_news">news</string>
+    <string name="tab_news">Notizie</string>
     <string name="tab_following_self">following</string>
     <string name="tab_followers_self">followers</string>
     <string name="tab_following">following</string>
