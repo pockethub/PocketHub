@@ -45,6 +45,7 @@
     <string name="error_starring_repository">Starring failed</string>
     <string name="error_unstarring_repository">Unstarring failed</string>
     <string name="error_checking_starring_status">Checking starring status failed</string>
+    <string name="error_forking_repository">Forking failed</string>
     <string name="error_rendering_markdown">Rendering markdown failed</string>
     <!--  -->
 
@@ -184,6 +185,7 @@
     <string name="unfollow">Unfollow</string>
     <string name="star">Star</string>
     <string name="unstar">Unstar</string>
+    <string name="fork">Fork</string>
     <string name="members">Members</string>
     <string name="closing_issue">Closing Issue…</string>
     <string name="reopening_issue">Reopening Issue…</string>
@@ -233,6 +235,7 @@
     <string name="unfollowing_user">Unfollowing…</string>
     <string name="starring_repository">Starring…</string>
     <string name="unstarring_repository">Unstarring…</string>
+    <string name="forking_repository">Forking…</string>
 
     <!-- Tab titles, should be as short as possible -->
     <string name="tab_repositories">repositories</string>
