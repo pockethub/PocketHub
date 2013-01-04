@@ -113,7 +113,7 @@
     <string name="dashboard_issues_title">Hibajegyek listája</string>
     <string name="bookmarks">Könyvjelzők</string>
     <string name="gists_title">Gist-ek</string>
-    <string name="issue_title">Hibajegyk #</string>
+    <string name="issue_title">Hibajegy #</string>
     <string name="pull_request_title">Pull kérelem #</string>
     <string name="gist_title">Gist\u0020</string>
     <string name="filter_issues_title">Hibajegyek szűrése</string>
