@@ -8,4 +8,4 @@ before_install:
   - tar -zxf android-sdk_r21-linux.tgz
   - export ANDROID_HOME=~/builds/github/android/android-sdk-linux
   - export PATH=${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools:${PATH}
-  - android update sdk --filter 1,4 --no-ui --force
+  - android update sdk --filter platform-tools,android-16 --no-ui --force
