@@ -22,6 +22,8 @@ import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import static com.github.mobile.util.PreferenceUtils.WRAP;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
@@ -38,22 +40,36 @@ import com.github.mobile.R.string;
 import com.github.mobile.core.code.RefreshBlobTask;
 import com.github.mobile.core.commit.CommitUtils;
 import com.github.mobile.ui.BaseActivity;
+import com.github.mobile.ui.MarkdownLoader;
 import com.github.mobile.util.AvatarLoader;
+import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.PreferenceUtils;
 import com.github.mobile.util.ShareUtils;
 import com.github.mobile.util.SourceEditor;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 
+import java.io.Serializable;
+
 import org.eclipse.egit.github.core.Blob;
+import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.util.EncodingUtils;
 
 /**
  * Activity to view a file on a branch
  */
-public class BranchFileViewActivity extends BaseActivity {
+public class BranchFileViewActivity extends BaseActivity implements
+    LoaderManager.LoaderCallbacks<CharSequence> {
 
     private static final String TAG = "BranchFileViewActivity";
+
+    private static final String ARG_TEXT = "text";
+
+    private static final String ARG_REPO = "repo";
+
+    private static final String[] MARKDOWN_EXTENSIONS =
+            {"md", "mkdn", "mdwn", "mdown", "markdown"};
 
     /**
      * Create intent to show file in commit
@@ -92,6 +108,9 @@ public class BranchFileViewActivity extends BaseActivity {
 
     @Inject
     private AvatarLoader avatars;
+
+    @Inject
+    private HttpImageGetter imageGetter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,6 +174,30 @@ public class BranchFileViewActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public Loader<CharSequence> onCreateLoader(int loader, Bundle args) {
+        final String raw = args.getString(ARG_TEXT);
+        final IRepositoryIdProvider repo = (IRepositoryIdProvider) args
+            .getSerializable(ARG_REPO);
+        return new MarkdownLoader(this, repo, raw, imageGetter, false);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<CharSequence> loader,
+        CharSequence rendered) {
+        if (rendered == null)
+            ToastUtils.show(this, string.error_rendering_markdown);
+
+        ViewUtils.setGone(loadingBar, true);
+        ViewUtils.setGone(codeView, false);
+
+        editor.setMarkdown(true).setSource(file, rendered.toString(), false);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<CharSequence> loader) {
+    }
+
     private void shareFile() {
         String id = repo.generateId();
         startActivity(ShareUtils.create(path + " at " + branch + " on " + id,
@@ -168,10 +211,19 @@ public class BranchFileViewActivity extends BaseActivity {
             protected void onSuccess(Blob blob) throws Exception {
                 super.onSuccess(blob);
 
-                ViewUtils.setGone(loadingBar, true);
-                ViewUtils.setGone(codeView, false);
+                if (isMarkdown(file)) {
+                    String markdown = new String(EncodingUtils.fromBase64(blob.getContent()));
+                    Bundle args = new Bundle();
+                    args.putCharSequence(ARG_TEXT, markdown);
+                    if (repo instanceof Serializable)
+                        args.putSerializable(ARG_REPO, (Serializable) repo);
+                    getSupportLoaderManager().restartLoader(0, args, BranchFileViewActivity.this);
+                } else {
+                    ViewUtils.setGone(loadingBar, true);
+                    ViewUtils.setGone(codeView, false);
 
-                editor.setSource(file, blob);
+                    editor.setMarkdown(false).setSource(file, blob);
+                }
             }
 
             @Override
@@ -186,5 +238,13 @@ public class BranchFileViewActivity extends BaseActivity {
                         string.error_file_load);
             }
         }.execute();
+    }
+
+    private boolean isMarkdown(String name) {
+        for (int i = 0; i < MARKDOWN_EXTENSIONS.length; i++)
+            if (name.endsWith(MARKDOWN_EXTENSIONS[i]))
+                return true;
+
+        return false;
     }
 }

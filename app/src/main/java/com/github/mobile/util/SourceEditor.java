@@ -48,6 +48,8 @@ public class SourceEditor {
 
     private boolean encoded;
 
+    private boolean markdown;
+
     /**
      * Create source editor using given web view
      *
@@ -123,8 +125,23 @@ public class SourceEditor {
      */
     public SourceEditor setWrap(final boolean wrap) {
         this.wrap = wrap;
-        if (name != null && content != null)
-            view.loadUrl(URL_PAGE);
+        if (name != null && content != null) {
+            if (markdown)
+                view.loadData(content, "text/html", null);
+            else
+                view.loadUrl(URL_PAGE);
+        }
+        return this;
+    }
+
+    /**
+     * Sets whether the content is a markdown file
+     *
+     * @param markdown
+     * @return this editor
+     */
+    public SourceEditor setMarkdown(final boolean markdown) {
+        this.markdown = markdown;
         return this;
     }
 
@@ -141,7 +158,11 @@ public class SourceEditor {
         this.name = name;
         this.content = content;
         this.encoded = encoded;
-        view.loadUrl(URL_PAGE);
+        if (markdown)
+            view.loadData(content, "text/html", null);
+        else
+            view.loadUrl(URL_PAGE);
+
         return this;
     }
 
