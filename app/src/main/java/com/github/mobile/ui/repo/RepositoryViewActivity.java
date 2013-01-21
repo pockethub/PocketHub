@@ -37,6 +37,7 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
+import com.github.mobile.core.repo.ForkRepositoryTask;
 import com.github.mobile.core.repo.RefreshRepositoryTask;
 import com.github.mobile.core.repo.RepositoryUtils;
 import com.github.mobile.core.repo.StarRepositoryTask;
@@ -125,7 +126,7 @@ public class RepositoryViewActivity extends
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionsMenu) {
-        getSupportMenuInflater().inflate(menu.repository_star, optionsMenu);
+        getSupportMenuInflater().inflate(menu.repository_view, optionsMenu);
 
         return super.onCreateOptionsMenu(optionsMenu);
     }
@@ -171,6 +172,9 @@ public class RepositoryViewActivity extends
         switch (item.getItemId()) {
         case id.m_star:
             starRepository();
+            return true;
+        case id.m_fork:
+            forkRepository();
             return true;
         case android.R.id.home:
             finish();
@@ -269,5 +273,25 @@ public class RepositoryViewActivity extends
                 invalidateOptionsMenu();
             }
         }.execute();
+    }
+
+    private void forkRepository() {
+        new ForkRepositoryTask(this, repository) {
+
+            @Override
+            protected void onSuccess(Repository e) throws Exception {
+                super.onSuccess(e);
+
+                setResult(RESOURCE_CHANGED);
+            }
+
+            @Override
+            protected void onException(Exception e) throws RuntimeException {
+                super.onException(e);
+
+                ToastUtils.show(RepositoryViewActivity.this,
+                        string.error_forking_repository);
+            }
+        }.start();
     }
 }
