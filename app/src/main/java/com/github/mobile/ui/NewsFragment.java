@@ -42,7 +42,6 @@ import com.github.mobile.ui.gist.GistsViewActivity;
 import com.github.mobile.ui.issue.IssuesViewActivity;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
 import com.github.mobile.ui.user.NewsListAdapter;
-import com.github.mobile.ui.user.UserViewActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
@@ -166,7 +165,7 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
                 public void onClick(DialogInterface dialog, int which) {
                     switch (which) {
                     case 0:
-                        startActivity(UserViewActivity.createIntent(user));
+                        viewUser(user);
                         break;
                     case 1:
                         viewRepository(repo);
@@ -256,6 +255,16 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
      * @param users
      */
     protected void viewUser(UserPair users) {
+    }
+
+    /**
+     * Start an activity to view the given {@link User}
+     *
+     * @param user
+     * @return true if new activity started, false otherwise
+     */
+    protected boolean viewUser(User user) {
+        return false;
     }
 
     /**

@@ -80,10 +80,17 @@ public abstract class UserNewsFragment extends NewsFragment implements
     }
 
     @Override
+    protected boolean viewUser(User user) {
+        if (org.getId() != user.getId()) {
+            startActivity(UserViewActivity.createIntent(user));
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     protected void viewUser(UserPair users) {
-        if (org.getId() != users.from.getId())
-            startActivity(UserViewActivity.createIntent(users.from));
-        else if (org.getId() != users.to.getId())
-            startActivity(UserViewActivity.createIntent(users.to));
+        if (!viewUser(users.from))
+            viewUser(users.to);
     }
 }
