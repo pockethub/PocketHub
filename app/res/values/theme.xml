@@ -30,9 +30,8 @@
     </style>
 
     <style name="IndeterminateProgress" parent="@android:style/Widget.ProgressBar">
-        <item name="android:indeterminateDrawable">@drawable/spinner</item>
-        <item name="android:minWidth">26dp</item>
-        <item name="android:maxWidth">26dp</item>
+        <item name="android:indeterminateDrawable">@drawable/actionbar_spinner</item>
+        <item name="android:minWidth">16dp</item>
     </style>
 
 </resources>
