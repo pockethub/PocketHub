@@ -15,9 +15,9 @@
  */
 package com.github.mobile.ui;
 
+import static com.actionbarsherlock.view.Window.FEATURE_INDETERMINATE_PROGRESS;
 import android.os.Bundle;
 
-import com.actionbarsherlock.view.Window;
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
@@ -36,7 +36,8 @@ public abstract class DialogFragmentActivity extends
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        requestWindowFeature(FEATURE_INDETERMINATE_PROGRESS);
+
         super.onCreate(savedInstanceState);
 
         finder = new ViewFinder(this);
