@@ -278,6 +278,7 @@ public class IssuesViewActivity extends PagerActivity {
             super.startActivity(intent);
     }
 
+    @Override
     protected FragmentProvider getProvider() {
         return adapter;
     }
