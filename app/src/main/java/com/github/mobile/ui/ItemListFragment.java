@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -131,6 +132,14 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
                 onListItemClick((ListView) parent, view, position, id);
+            }
+        });
+        listView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view,
+                    int position, long id) {
+                return onListItemLongClick((ListView) parent, view, position, id);
             }
         });
         progressBar = (ProgressBar) view.findViewById(id.pb_loading);
@@ -432,5 +441,18 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      * @param id
      */
     public void onListItemClick(ListView l, View v, int position, long id) {
+    }
+
+    /**
+     * Callback when a list view item is clicked and held
+     *
+     * @param l
+     * @param v
+     * @param position
+     * @param id
+     * @return true if the callback consumed the long click, false otherwise
+     */
+    public boolean onListItemLongClick(ListView l, View v, int position, long id) {
+        return false;
     }
 }

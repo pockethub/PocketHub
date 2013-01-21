@@ -233,6 +233,7 @@
     <string name="unfollowing_user">Unfollowing…</string>
     <string name="starring_repository">Starring…</string>
     <string name="unstarring_repository">Unstarring…</string>
+    <string name="navigate_to">Navigate to…</string>
 
     <!-- Tab titles, should be as short as possible -->
     <string name="tab_repositories">repositories</string>
