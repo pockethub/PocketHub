@@ -15,6 +15,8 @@
  */
 package com.github.mobile.ui.issue;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static com.github.mobile.Intents.EXTRA_ISSUE_NUMBERS;
 import static com.github.mobile.Intents.EXTRA_POSITION;
 import static com.github.mobile.Intents.EXTRA_REPOSITORIES;
@@ -23,6 +25,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
@@ -34,6 +37,7 @@ import com.github.mobile.ui.FragmentProvider;
 import com.github.mobile.ui.PagerActivity;
 import com.github.mobile.ui.UrlLauncher;
 import com.github.mobile.ui.ViewPager;
+import com.github.mobile.ui.repo.RepositoryViewActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
@@ -172,6 +176,7 @@ public class IssuesViewActivity extends PagerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         issueNumbers = getIntArrayExtra(EXTRA_ISSUE_NUMBERS);
         pullRequests = getBooleanArrayExtra(EXTRA_PULL_REQUESTS);
         repoIds = getSerializableExtra(EXTRA_REPOSITORIES);
@@ -281,5 +286,32 @@ public class IssuesViewActivity extends PagerActivity {
     @Override
     protected FragmentProvider getProvider() {
         return adapter;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case android.R.id.home:
+            Repository repository = repo;
+            if (repository == null) {
+                int position = pager.getCurrentItem();
+                RepositoryId repoId = repoIds.get(position);
+                if (repoId != null) {
+                    RepositoryIssue issue = store.getIssue(repoId,
+                            issueNumbers[position]);
+                    if (issue != null)
+                        repository = issue.getRepository();
+                }
+            }
+            if (repository != null) {
+                Intent intent = RepositoryViewActivity.createIntent(repository);
+                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP
+                        | FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+            }
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
     }
 }
