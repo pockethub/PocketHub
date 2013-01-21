@@ -69,7 +69,7 @@ public class BranchFileViewActivity extends BaseActivity implements
     private static final String ARG_REPO = "repo";
 
     private static final String[] MARKDOWN_EXTENSIONS =
-            {"md", "mkdn", "mdwn", "mdown", "markdown"};
+            {"md", "mkdn", "mdwn", "mdown", "markdown", "mkd", "mkdown", "ron"};
 
     /**
      * Create intent to show file in commit
