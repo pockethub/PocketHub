@@ -45,7 +45,7 @@ import com.github.mobile.core.repo.StarRepositoryTask;
 import com.github.mobile.core.repo.StarredRepositoryTask;
 import com.github.mobile.core.repo.UnstarRepositoryTask;
 import com.github.mobile.ui.TabPagerActivity;
-import com.github.mobile.ui.user.HomeActivity;
+import com.github.mobile.ui.user.UserViewActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
@@ -182,7 +182,7 @@ public class RepositoryViewActivity extends
             return super.onOptionsItemSelected(item);
         case android.R.id.home:
             finish();
-            Intent intent = new Intent(this, HomeActivity.class);
+            Intent intent = UserViewActivity.createIntent(repository.getOwner());
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             return true;
