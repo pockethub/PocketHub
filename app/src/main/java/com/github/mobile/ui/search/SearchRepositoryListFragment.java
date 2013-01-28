@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.ui.repo;
+package com.github.mobile.ui.search;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -27,6 +27,7 @@ import com.github.mobile.R.string;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.core.repo.RefreshRepositoryTask;
 import com.github.mobile.ui.ItemListFragment;
+import com.github.mobile.ui.repo.RepositoryViewActivity;
 import com.google.inject.Inject;
 
 import java.io.IOException;

@@ -30,6 +30,6 @@
     android:layout_height="match_parent"
     android:layout_alignParentLeft="true"
     android:layout_below="@id/v_header_separator"
-    class="com.github.mobile.ui.repo.SearchRepositoryListFragment" />
+    class="com.github.mobile.ui.search.SearchRepositoryListFragment" />
 
 </RelativeLayout>

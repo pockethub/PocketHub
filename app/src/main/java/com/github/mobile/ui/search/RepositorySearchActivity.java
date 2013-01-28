@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.ui.repo;
+package com.github.mobile.ui.search;
 
 import static android.app.SearchManager.QUERY;
 import static android.content.Intent.ACTION_SEARCH;
