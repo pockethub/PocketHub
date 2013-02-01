@@ -32,7 +32,7 @@ import org.eclipse.egit.github.core.SearchRepository;
  * Adapter for a list of searched for repositories
  */
 public class SearchRepositoryListAdapter extends
-    RepositoryListAdapter<SearchRepository> {
+        RepositoryListAdapter<SearchRepository> {
 
     /**
      * Create list adapter for searched for repositories
