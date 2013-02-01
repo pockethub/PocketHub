@@ -15,6 +15,7 @@
  */
 package com.github.mobile.ui.search;
 
+import static android.app.SearchManager.QUERY;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
@@ -56,6 +57,13 @@ public class SearchRepositoryListFragment extends
         super.onActivityCreated(savedInstanceState);
 
         setEmptyText(string.no_repositories);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        query = getStringExtra(QUERY);
     }
 
     /**
