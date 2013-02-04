@@ -97,7 +97,7 @@ public class RenderedCommentFragment extends DialogFragment implements
         final IRepositoryIdProvider repo = (IRepositoryIdProvider) args
                 .getSerializable(ARG_REPO);
         return new MarkdownLoader(getActivity(), repo, raw.toString(),
-                imageGetter);
+                imageGetter, true);
     }
 
     @Override

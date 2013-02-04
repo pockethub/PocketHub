@@ -43,6 +43,8 @@ public class MarkdownLoader extends AuthenticatedUserLoader<CharSequence> {
 
     private final String raw;
 
+    private boolean encode;
+
     @Inject
     private MarkdownService service;
 
@@ -51,14 +53,16 @@ public class MarkdownLoader extends AuthenticatedUserLoader<CharSequence> {
      * @param repository
      * @param raw
      * @param imageGetter
+     * @param encode
      */
     public MarkdownLoader(Context context, IRepositoryIdProvider repository,
-            String raw, ImageGetter imageGetter) {
+            String raw, ImageGetter imageGetter, boolean encode) {
         super(context);
 
         this.repository = repository;
         this.raw = raw;
         this.imageGetter = imageGetter;
+        this.encode = encode;
     }
 
     @Override
@@ -74,7 +78,11 @@ public class MarkdownLoader extends AuthenticatedUserLoader<CharSequence> {
                 html = service.getRepositoryHtml(repository, raw);
             else
                 html = service.getHtml(raw, MODE_GFM);
-            return HtmlUtils.encode(html, imageGetter);
+
+            if (encode)
+                return HtmlUtils.encode(html, imageGetter);
+            else
+                return html;
         } catch (IOException e) {
             Log.d(TAG, "Loading rendered markdown failed", e);
             return null;
