@@ -22,7 +22,7 @@ import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import static com.github.mobile.util.PreferenceUtils.WRAP;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.util.Log;
@@ -61,7 +61,7 @@ import org.eclipse.egit.github.core.util.EncodingUtils;
  * Activity to view a file on a branch
  */
 public class BranchFileViewActivity extends BaseActivity implements
-        LoaderManager.LoaderCallbacks<CharSequence> {
+        LoaderCallbacks<CharSequence> {
 
     private static final String TAG = "BranchFileViewActivity";
 
