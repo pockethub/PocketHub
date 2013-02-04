@@ -139,7 +139,8 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view,
                     int position, long id) {
-                return onListItemLongClick((ListView) parent, view, position, id);
+                return onListItemLongClick((ListView) parent, view, position,
+                        id);
             }
         });
         progressBar = (ProgressBar) view.findViewById(id.pb_loading);
@@ -198,7 +199,8 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
         if (!isUsable())
             return;
 
-        getSherlockActivity().setSupportProgressBarIndeterminateVisibility(true);
+        getSherlockActivity()
+                .setSupportProgressBarIndeterminateVisibility(true);
         getLoaderManager().restartLoader(0, args, this);
     }
 
@@ -211,6 +213,11 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     protected abstract int getErrorMessage(Exception exception);
 
     public void onLoadFinished(Loader<List<E>> loader, List<E> items) {
+        if (!isUsable())
+            return;
+
+        getSherlockActivity().setSupportProgressBarIndeterminateVisibility(
+                false);
         Exception exception = getException(loader);
         if (exception != null) {
             showError(exception, getErrorMessage(exception));
@@ -221,8 +228,6 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
         this.items = items;
         getListAdapter().getWrappedAdapter().setItems(items.toArray());
         showList();
-
-        getSherlockActivity().setSupportProgressBarIndeterminateVisibility(false);
     }
 
     /**
