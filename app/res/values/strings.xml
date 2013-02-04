@@ -258,5 +258,7 @@
     <string name="show_password">Show password</string>
     <string name="write">Write</string>
     <string name="preview">Preview</string>
+    <string name="show_raw_markdown">Show raw markdown</string>
+    <string name="render_markdown">Render markdown</string>
 
 </resources>

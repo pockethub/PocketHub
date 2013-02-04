@@ -33,6 +33,11 @@ public class PreferenceUtils {
     public static final String WRAP = "wrap";
 
     /**
+     * Preference to render markdown
+     */
+    public static final String RENDER_MARKDOWN = "renderMarkdown";
+
+    /**
      * Get code browsing preferences
      *
      * @param context

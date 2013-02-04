@@ -16,14 +16,20 @@
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <item
-        android:id="@+id/m_wrap"
-        android:showAsAction="never"
-        android:title="@string/enable_wrapping"/>
-    <item
-        android:id="@+id/m_share"
-        android:icon="@drawable/menu_share"
-        android:showAsAction="never"
-        android:title="@string/share"/>
+  <item
+    android:id="@+id/m_wrap"
+    android:showAsAction="never"
+    android:title="@string/enable_wrapping"/>
+  <item
+    android:id="@+id/m_render_markdown"
+    android:enabled="false"
+    android:showAsAction="never"
+    android:title="@string/render_markdown"
+    android:visible="false"/>
+  <item
+    android:id="@+id/m_share"
+    android:icon="@drawable/menu_share"
+    android:showAsAction="never"
+    android:title="@string/share"/>
 
 </menu>

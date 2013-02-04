@@ -119,6 +119,13 @@ public class SourceEditor {
     }
 
     /**
+     * @return markdown
+     */
+    public boolean isMarkdown() {
+        return markdown;
+    }
+
+    /**
      * Set whether lines should wrap
      *
      * @param wrap
@@ -126,12 +133,7 @@ public class SourceEditor {
      */
     public SourceEditor setWrap(final boolean wrap) {
         this.wrap = wrap;
-        if (name != null && content != null) {
-            if (markdown)
-                view.loadData(content, "text/html", null);
-            else
-                view.loadUrl(URL_PAGE);
-        }
+        loadSource();
         return this;
     }
 
@@ -159,12 +161,17 @@ public class SourceEditor {
         this.name = name;
         this.content = content;
         this.encoded = encoded;
-        if (markdown)
-            view.loadData(content, "text/html", null);
-        else
-            view.loadUrl(URL_PAGE);
+        loadSource();
 
         return this;
+    }
+
+    private void loadSource() {
+        if (name != null && content != null)
+            if (markdown)
+                view.loadData(content, "text/html", null);
+            else
+                view.loadUrl(URL_PAGE);
     }
 
     /**

@@ -19,6 +19,7 @@ import static com.github.mobile.Intents.EXTRA_BASE;
 import static com.github.mobile.Intents.EXTRA_HEAD;
 import static com.github.mobile.Intents.EXTRA_PATH;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
+import static com.github.mobile.util.PreferenceUtils.RENDER_MARKDOWN;
 import static com.github.mobile.util.PreferenceUtils.WRAP;
 import android.content.Intent;
 import android.os.Bundle;
@@ -112,11 +113,19 @@ public class BranchFileViewActivity extends BaseActivity implements
 
     private String branch;
 
+    private boolean isMarkdownFile;
+
+    private String renderedMarkdown;
+
+    private Blob blob;
+
     private ProgressBar loadingBar;
 
     private WebView codeView;
 
     private SourceEditor editor;
+
+    private MenuItem markdownItem;
 
     @Inject
     private AvatarLoader avatars;
@@ -139,6 +148,7 @@ public class BranchFileViewActivity extends BaseActivity implements
         codeView = finder.find(id.wv_code);
 
         file = CommitUtils.getName(path);
+        isMarkdownFile = isMarkdown(file);
         editor = new SourceEditor(codeView);
         editor.setWrap(PreferenceUtils.getCodePreferences(this).getBoolean(
                 WRAP, false));
@@ -161,6 +171,17 @@ public class BranchFileViewActivity extends BaseActivity implements
         else
             wrapItem.setTitle(string.enable_wrapping);
 
+        markdownItem = optionsMenu.findItem(id.m_render_markdown);
+        if (isMarkdownFile) {
+            markdownItem.setEnabled(blob != null);
+            markdownItem.setVisible(true);
+            if (PreferenceUtils.getCodePreferences(this).getBoolean(
+                    RENDER_MARKDOWN, true))
+                markdownItem.setTitle(string.show_raw_markdown);
+            else
+                markdownItem.setTitle(string.render_markdown);
+        }
+
         return true;
     }
 
@@ -180,6 +201,22 @@ public class BranchFileViewActivity extends BaseActivity implements
             return true;
         case id.m_share:
             shareFile();
+            return true;
+        case id.m_render_markdown:
+            if (editor.isMarkdown()) {
+                item.setTitle(string.render_markdown);
+                editor.setMarkdown(false);
+                editor.setSource(file, blob);
+            } else {
+                item.setTitle(string.show_raw_markdown);
+                editor.setMarkdown(true);
+                if (renderedMarkdown != null)
+                    editor.setSource(file, renderedMarkdown, false);
+                else
+                    loadMarkdown();
+            }
+            PreferenceUtils.save(PreferenceUtils.getCodePreferences(this)
+                    .edit().putBoolean(RENDER_MARKDOWN, editor.isMarkdown()));
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -203,7 +240,12 @@ public class BranchFileViewActivity extends BaseActivity implements
         ViewUtils.setGone(loadingBar, true);
         ViewUtils.setGone(codeView, false);
 
-        editor.setMarkdown(true).setSource(file, rendered.toString(), false);
+        if (!TextUtils.isEmpty(rendered)) {
+            renderedMarkdown = rendered.toString();
+            if (markdownItem != null)
+                markdownItem.setEnabled(true);
+            editor.setMarkdown(true).setSource(file, renderedMarkdown, false);
+        }
     }
 
     @Override
@@ -216,23 +258,39 @@ public class BranchFileViewActivity extends BaseActivity implements
                 "https://github.com/" + id + "/blob/" + branch + '/' + path));
     }
 
+    private void loadMarkdown() {
+        ViewUtils.setGone(loadingBar, false);
+        ViewUtils.setGone(codeView, true);
+
+        String markdown = new String(
+                EncodingUtils.fromBase64(blob.getContent()));
+        Bundle args = new Bundle();
+        args.putCharSequence(ARG_TEXT, markdown);
+        if (repo instanceof Serializable)
+            args.putSerializable(ARG_REPO, (Serializable) repo);
+        getSupportLoaderManager().restartLoader(0, args, this);
+    }
+
     private void loadContent() {
+        ViewUtils.setGone(loadingBar, false);
+        ViewUtils.setGone(codeView, true);
+
         new RefreshBlobTask(repo, sha, this) {
 
             @Override
             protected void onSuccess(Blob blob) throws Exception {
                 super.onSuccess(blob);
 
-                if (isMarkdown(file)) {
-                    String markdown = new String(EncodingUtils.fromBase64(blob
-                            .getContent()));
-                    Bundle args = new Bundle();
-                    args.putCharSequence(ARG_TEXT, markdown);
-                    if (repo instanceof Serializable)
-                        args.putSerializable(ARG_REPO, (Serializable) repo);
-                    getSupportLoaderManager().restartLoader(0, args,
-                            BranchFileViewActivity.this);
-                } else {
+                if (markdownItem != null)
+                    markdownItem.setEnabled(true);
+
+                BranchFileViewActivity.this.blob = blob;
+                if (isMarkdownFile
+                        && PreferenceUtils.getCodePreferences(
+                                BranchFileViewActivity.this).getBoolean(
+                                RENDER_MARKDOWN, true))
+                    loadMarkdown();
+                else {
                     ViewUtils.setGone(loadingBar, true);
                     ViewUtils.setGone(codeView, false);
 
