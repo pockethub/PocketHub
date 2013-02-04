@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
@@ -60,7 +61,7 @@ import org.eclipse.egit.github.core.util.EncodingUtils;
  * Activity to view a file on a branch
  */
 public class BranchFileViewActivity extends BaseActivity implements
-    LoaderManager.LoaderCallbacks<CharSequence> {
+        LoaderManager.LoaderCallbacks<CharSequence> {
 
     private static final String TAG = "BranchFileViewActivity";
 
@@ -68,8 +69,19 @@ public class BranchFileViewActivity extends BaseActivity implements
 
     private static final String ARG_REPO = "repo";
 
-    private static final String[] MARKDOWN_EXTENSIONS =
-            {"md", "mkdn", "mdwn", "mdown", "markdown", "mkd", "mkdown", "ron"};
+    private static final String[] MARKDOWN_EXTENSIONS = { ".md", ".mkdn",
+            ".mdwn", ".mdown", ".markdown", ".mkd", ".mkdown", ".ron" };
+
+    private static boolean isMarkdown(final String name) {
+        if (TextUtils.isEmpty(name))
+            return false;
+
+        for (String extension : MARKDOWN_EXTENSIONS)
+            if (name.endsWith(extension))
+                return true;
+
+        return false;
+    }
 
     /**
      * Create intent to show file in commit
@@ -178,13 +190,13 @@ public class BranchFileViewActivity extends BaseActivity implements
     public Loader<CharSequence> onCreateLoader(int loader, Bundle args) {
         final String raw = args.getString(ARG_TEXT);
         final IRepositoryIdProvider repo = (IRepositoryIdProvider) args
-            .getSerializable(ARG_REPO);
+                .getSerializable(ARG_REPO);
         return new MarkdownLoader(this, repo, raw, imageGetter, false);
     }
 
     @Override
     public void onLoadFinished(Loader<CharSequence> loader,
-        CharSequence rendered) {
+            CharSequence rendered) {
         if (rendered == null)
             ToastUtils.show(this, string.error_rendering_markdown);
 
@@ -212,12 +224,14 @@ public class BranchFileViewActivity extends BaseActivity implements
                 super.onSuccess(blob);
 
                 if (isMarkdown(file)) {
-                    String markdown = new String(EncodingUtils.fromBase64(blob.getContent()));
+                    String markdown = new String(EncodingUtils.fromBase64(blob
+                            .getContent()));
                     Bundle args = new Bundle();
                     args.putCharSequence(ARG_TEXT, markdown);
                     if (repo instanceof Serializable)
                         args.putSerializable(ARG_REPO, (Serializable) repo);
-                    getSupportLoaderManager().restartLoader(0, args, BranchFileViewActivity.this);
+                    getSupportLoaderManager().restartLoader(0, args,
+                            BranchFileViewActivity.this);
                 } else {
                     ViewUtils.setGone(loadingBar, true);
                     ViewUtils.setGone(codeView, false);
@@ -240,11 +254,4 @@ public class BranchFileViewActivity extends BaseActivity implements
         }.execute();
     }
 
-    private boolean isMarkdown(String name) {
-        for (int i = 0; i < MARKDOWN_EXTENSIONS.length; i++)
-            if (name.endsWith(MARKDOWN_EXTENSIONS[i]))
-                return true;
-
-        return false;
-    }
 }
