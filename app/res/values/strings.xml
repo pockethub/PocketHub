@@ -47,6 +47,7 @@
     <string name="error_unstarring_repository">Unstarring failed</string>
     <string name="error_checking_starring_status">Checking starring status failed</string>
     <string name="error_rendering_markdown">Rendering markdown failed</string>
+    <string name="error_users_search">Searching users failed</string>
     <!--  -->
 
 
