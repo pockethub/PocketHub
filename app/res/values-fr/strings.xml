@@ -233,6 +233,7 @@
     <string name="unfollowing_user">Désabonnement…</string>
     <string name="starring_repository">Ajout aux favrois…</string>
     <string name="unstarring_repository">Supprimer des favoris…</string>
+    <string name="navigate_to">Aller à…</string>
 
     <!-- Tab titles, should be as short as possible -->
     <string name="tab_repositories">repositories</string>
@@ -257,4 +258,7 @@
     <string name="show_password">Voir mot de passe</string>
     <string name="write">Ecrire</string>
     <string name="preview">Pré-visualiser</string>
+    <string name="show_raw_markdown">Afficher la syntaxe markdown</string>
+    <string name="render_markdown">Afficher le rendu markdown</string>
+
 </resources>
