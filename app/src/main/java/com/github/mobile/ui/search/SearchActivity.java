@@ -23,6 +23,7 @@ import static com.github.mobile.util.TypefaceUtils.ICON_PERSON;
 import static com.github.mobile.util.TypefaceUtils.ICON_PUBLIC;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -44,6 +45,10 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
 
     private ProgressBar loadingBar;
 
+    private SearchRepositoryListFragment repoFragment;
+
+    private SearchUserListFragment userFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +58,7 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        configurePager();
         handleIntent(getIntent());
     }
 
@@ -118,12 +124,31 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
     private void search(final String query) {
         getSupportActionBar().setTitle(query);
         RepositorySearchSuggestionsProvider.save(this, query);
-        configurePager();
+
+        findFragments();
+
+        if (repoFragment != null && userFragment != null) {
+            repoFragment.setListShown(false);
+            userFragment.setListShown(false);
+
+            repoFragment.refresh();
+            userFragment.refresh();
+        }
     }
 
     private void configurePager() {
         configureTabPager();
         ViewUtils.setGone(loadingBar, true);
         setGone(false);
+    }
+
+    private void findFragments() {
+        if (repoFragment == null || userFragment == null) {
+            FragmentManager fm = getSupportFragmentManager();
+            repoFragment = (SearchRepositoryListFragment) fm.findFragmentByTag(
+                    "android:switcher:" + pager.getId() + ":" + 0);
+            userFragment = (SearchUserListFragment) fm.findFragmentByTag(
+                    "android:switcher:" + pager.getId() + ":" + 1);
+        }
     }
 }

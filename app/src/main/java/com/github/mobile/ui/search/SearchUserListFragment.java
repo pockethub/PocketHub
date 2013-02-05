@@ -35,6 +35,7 @@ import com.google.inject.Inject;
 import org.eclipse.egit.github.core.service.UserService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static android.app.SearchManager.QUERY;
@@ -67,15 +68,26 @@ public class SearchUserListFragment extends ItemListFragment<User> {
     }
 
     @Override
+    public void refresh() {
+        query = getStringExtra(QUERY);
+
+        super.refresh();
+    }
+
+    @Override
     public Loader<List<User>> onCreateLoader(int id, Bundle args) {
         return new ThrowableLoader<List<User>>(getActivity(), items) {
 
             @Override
             public List<User> loadData() throws Exception {
-                List<User> users = new ArrayList<User>();
+                items = Collections.emptyList();
+
                 User user = service.getUser(query);
-                if (user != null)
-                    users.add(user);
+                if (user == null)
+                    return Collections.emptyList();
+
+                List<User> users = new ArrayList<User>();
+                users.add(user);
                 return users;
             }
         };

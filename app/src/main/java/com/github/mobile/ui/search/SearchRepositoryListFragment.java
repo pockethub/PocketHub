@@ -66,13 +66,11 @@ public class SearchRepositoryListFragment extends
         query = getStringExtra(QUERY);
     }
 
-    /**
-     * @param query
-     * @return this fragment
-     */
-    public SearchRepositoryListFragment setQuery(final String query) {
-        this.query = query;
-        return this;
+    @Override
+    public void refresh() {
+        query = getStringExtra(QUERY);
+
+        super.refresh();
     }
 
     @Override
