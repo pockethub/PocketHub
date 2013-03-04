@@ -135,7 +135,7 @@
     <string name="select_milestone">Selecionar Milestone</string>
     <string name="select_labels">Selecionar Rótulos</string>
     <string name="no_milestone">Nenhuma milestone</string>
-    <string name="unassigned">Nenhum resposável</string>
+    <string name="unassigned">Nenhum responsável</string>
     <string name="assigned">é o responsável</string>
     <string name="no_gists_found">Nenhum Gist encontrado</string>
     <string name="confirm_gist_delete_title">Confirmar Exclusão</string>
