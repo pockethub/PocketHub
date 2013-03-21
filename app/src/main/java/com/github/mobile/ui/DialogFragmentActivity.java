@@ -15,6 +15,7 @@
  */
 package com.github.mobile.ui;
 
+import static com.actionbarsherlock.view.Window.FEATURE_INDETERMINATE_PROGRESS;
 import android.os.Bundle;
 
 import com.github.kevinsawicki.wishlist.ViewFinder;
@@ -35,6 +36,8 @@ public abstract class DialogFragmentActivity extends
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(FEATURE_INDETERMINATE_PROGRESS);
+
         super.onCreate(savedInstanceState);
 
         finder = new ViewFinder(this);
@@ -59,6 +62,26 @@ public abstract class DialogFragmentActivity extends
      */
     protected int getIntExtra(final String name) {
         return getIntent().getIntExtra(name, -1);
+    }
+
+    /**
+     * Get intent extra
+     *
+     * @param name
+     * @return int array
+     */
+    protected int[] getIntArrayExtra(final String name) {
+        return getIntent().getIntArrayExtra(name);
+    }
+
+    /**
+     * Get intent extra
+     *
+     * @param name
+     * @return boolean array
+     */
+    protected boolean[] getBooleanArrayExtra(final String name) {
+        return getIntent().getBooleanArrayExtra(name);
     }
 
     /**

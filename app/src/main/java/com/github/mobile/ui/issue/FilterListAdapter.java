@@ -86,8 +86,8 @@ public class FilterListAdapter extends SingleTypeAdapter<IssueFilter> {
 
         User assignee = filter.getAssignee();
         if (assignee != null) {
-            avatars.bind(imageView(6), assignee);
-            ViewUtils.setGone(setText(5, assignee.getLogin()), false);
+            avatars.bind(imageView(7), assignee);
+            ViewUtils.setGone(setText(6, assignee.getLogin()), false);
         } else
             setGone(5, true);
     }

@@ -25,11 +25,11 @@ import android.text.TextUtils;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R.id;
+import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.ui.TabPagerActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
-import com.viewpagerindicator.R.menu;
 
 import org.eclipse.egit.github.core.Comment;
 

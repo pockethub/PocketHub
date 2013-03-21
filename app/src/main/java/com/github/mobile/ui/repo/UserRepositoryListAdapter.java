@@ -19,7 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.actionbarsherlock.R.color;
+import com.github.mobile.R.color;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.ui.StyledText;

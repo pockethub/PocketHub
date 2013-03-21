@@ -19,6 +19,7 @@ import static android.app.Activity.RESULT_OK;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import static com.github.mobile.RequestCodes.COMMIT_VIEW;
 import static com.github.mobile.RequestCodes.REF_UPDATE;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
@@ -31,7 +32,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
@@ -62,8 +62,6 @@ import org.eclipse.egit.github.core.service.CommitService;
 import org.eclipse.egit.github.core.service.DataService;
 import org.eclipse.egit.github.core.service.RepositoryService;
 
-import roboguice.inject.InjectExtra;
-
 /**
  * Fragment to display a list of repository commits
  */
@@ -82,7 +80,6 @@ public class CommitListFragment extends PagedItemFragment<RepositoryCommit>
     @Inject
     private CommitStore store;
 
-    @InjectExtra(EXTRA_REPOSITORY)
     private Repository repository;
 
     private RefDialog dialog;
@@ -100,6 +97,13 @@ public class CommitListFragment extends PagedItemFragment<RepositoryCommit>
     private RepositoryService repoService;
 
     private String ref;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        repository = getSerializableExtra(EXTRA_REPOSITORY);
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -258,7 +262,6 @@ public class CommitListFragment extends PagedItemFragment<RepositoryCommit>
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ViewFinder finder = new ViewFinder(view);
         branchFooterView = finder.find(id.rl_branch);
         branchView = finder.find(id.tv_branch);
         branchIconView = finder.find(id.tv_branch_icon);

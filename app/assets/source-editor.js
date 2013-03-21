@@ -64,6 +64,7 @@ function getMode(extension) {
     mode.mode = "text/x-java";
     mode.file = "clike";
     break;
+  case "gyp":
   case "js":
   case "json":
     mode.mode = "text/javascript";
@@ -138,7 +139,7 @@ function loadImage(type, content) {
   document.body.appendChild(img);
 }
 
-function loadEditor() {
+window.onload = function() {
   var name = new String(SourceEditor.getName());
   var extension = getExtension(name);
   if ("png" == extension || "gif" == extension) {
@@ -156,7 +157,7 @@ function loadEditor() {
   config.readOnly = "nocursor";
   config.lineNumbers = true;
   config.autofocus = false;
-  config.lineWrapping = SourceEditor.getWrap();
+  config.lineWrapping = !!SourceEditor.getWrap();
   config.dragDrop = false;
   var editor = CodeMirror(document.body, config);
 

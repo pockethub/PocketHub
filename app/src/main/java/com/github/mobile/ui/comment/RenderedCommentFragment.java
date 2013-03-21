@@ -18,22 +18,22 @@ package com.github.mobile.ui.comment;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
-import android.text.Html.ImageGetter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.actionbarsherlock.R.id;
-import com.github.kevinsawicki.wishlist.ViewFinder;
+import com.github.kevinsawicki.wishlist.Keyboard;
 import com.github.kevinsawicki.wishlist.ViewUtils;
+import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
+import com.github.mobile.ui.DialogFragment;
 import com.github.mobile.ui.MarkdownLoader;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.ToastUtils;
-import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
+import com.google.inject.Inject;
 
 import java.io.Serializable;
 
@@ -42,7 +42,7 @@ import org.eclipse.egit.github.core.IRepositoryIdProvider;
 /**
  * Fragment to display rendered comment fragment
  */
-public class RenderedCommentFragment extends RoboSherlockFragment implements
+public class RenderedCommentFragment extends DialogFragment implements
         LoaderCallbacks<CharSequence> {
 
     private static final String ARG_TEXT = "text";
@@ -53,18 +53,13 @@ public class RenderedCommentFragment extends RoboSherlockFragment implements
 
     private TextView bodyText;
 
-    private ImageGetter imageGetter;
+    @Inject
+    private HttpImageGetter imageGetter;
 
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        imageGetter = new HttpImageGetter(getActivity());
-    }
-
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ViewFinder finder = new ViewFinder(view);
         progress = finder.find(id.pb_loading);
         bodyText = finder.find(id.tv_comment_body);
     }
@@ -81,6 +76,7 @@ public class RenderedCommentFragment extends RoboSherlockFragment implements
         if (repo instanceof Serializable)
             args.putSerializable(ARG_REPO, (Serializable) repo);
         getLoaderManager().restartLoader(0, args, this);
+        Keyboard.hideSoftInput(bodyText);
         showLoading(true);
     }
 
@@ -101,7 +97,7 @@ public class RenderedCommentFragment extends RoboSherlockFragment implements
         final IRepositoryIdProvider repo = (IRepositoryIdProvider) args
                 .getSerializable(ARG_REPO);
         return new MarkdownLoader(getActivity(), repo, raw.toString(),
-                imageGetter);
+                imageGetter, true);
     }
 
     @Override

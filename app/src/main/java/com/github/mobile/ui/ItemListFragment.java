@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -41,7 +42,6 @@ import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.util.ToastUtils;
-import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 
 import java.util.Collections;
 import java.util.List;
@@ -52,8 +52,8 @@ import java.util.List;
  *
  * @param <E>
  */
-public abstract class ItemListFragment<E> extends RoboSherlockFragment
-        implements LoaderCallbacks<List<E>> {
+public abstract class ItemListFragment<E> extends DialogFragment implements
+        LoaderCallbacks<List<E>> {
 
     private static final String FORCE_REFRESH = "forceRefresh";
 
@@ -134,6 +134,15 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment
                 onListItemClick((ListView) parent, view, position, id);
             }
         });
+        listView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view,
+                    int position, long id) {
+                return onListItemLongClick((ListView) parent, view, position,
+                        id);
+            }
+        });
         progressBar = (ProgressBar) view.findViewById(id.pb_loading);
 
         emptyView = (TextView) view.findViewById(android.R.id.empty);
@@ -190,6 +199,8 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment
         if (!isUsable())
             return;
 
+        getSherlockActivity()
+                .setSupportProgressBarIndeterminateVisibility(true);
         getLoaderManager().restartLoader(0, args, this);
     }
 
@@ -202,6 +213,11 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment
     protected abstract int getErrorMessage(Exception exception);
 
     public void onLoadFinished(Loader<List<E>> loader, List<E> items) {
+        if (!isUsable())
+            return;
+
+        getSherlockActivity().setSupportProgressBarIndeterminateVisibility(
+                false);
         Exception exception = getException(loader);
         if (exception != null) {
             showError(exception, getErrorMessage(exception));
@@ -433,11 +449,15 @@ public abstract class ItemListFragment<E> extends RoboSherlockFragment
     }
 
     /**
-     * Is this fragment still part of an activity and usable from the UI-thread?
+     * Callback when a list view item is clicked and held
      *
-     * @return true if usable on the UI-thread, false otherwise
+     * @param l
+     * @param v
+     * @param position
+     * @param id
+     * @return true if the callback consumed the long click, false otherwise
      */
-    protected boolean isUsable() {
-        return getActivity() != null;
+    public boolean onListItemLongClick(ListView l, View v, int position, long id) {
+        return false;
     }
 }

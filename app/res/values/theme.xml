@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="Theme.GitHub" parent="@style/Theme.Sherlock">
         <item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>
@@ -25,6 +25,13 @@
     <style name="Widget.Styled.ActionBar" parent="Widget.Sherlock.ActionBar.Solid">
         <item name="background">@drawable/actionbar_background</item>
         <item name="android:background">@drawable/actionbar_background</item>
+        <item name="indeterminateProgressStyle">@style/IndeterminateProgress</item>
+        <item name="android:indeterminateProgressStyle">@style/IndeterminateProgress</item>
+    </style>
+
+    <style name="IndeterminateProgress" parent="@android:style/Widget.ProgressBar">
+        <item name="android:indeterminateDrawable">@drawable/actionbar_spinner</item>
+        <item name="android:minWidth">16dp</item>
     </style>
 
 </resources>

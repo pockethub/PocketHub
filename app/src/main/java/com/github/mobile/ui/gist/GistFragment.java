@@ -25,6 +25,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +45,7 @@ import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
 import com.github.mobile.accounts.AccountUtils;
+import com.github.mobile.core.OnLoadListener;
 import com.github.mobile.core.gist.FullGist;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.core.gist.RefreshGistTask;
@@ -70,8 +72,6 @@ import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.GistFile;
 import org.eclipse.egit.github.core.User;
 
-import roboguice.inject.InjectView;
-
 /**
  * Activity to display an existing Gist
  */
@@ -83,10 +83,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
     private Gist gist;
 
-    @InjectView(android.R.id.list)
     private ListView list;
 
-    @InjectView(id.pb_loading)
     private ProgressBar progress;
 
     @Inject
@@ -147,6 +145,9 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        list = finder.find(android.R.id.list);
+        progress = finder.find(id.pb_loading);
 
         Activity activity = getActivity();
         adapter = new HeaderFooterListAdapter<CommentListAdapter>(list,
@@ -379,15 +380,19 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     }
 
     private void refreshGist() {
+        getSherlockActivity().setSupportProgressBarIndeterminateVisibility(true);
+
         new RefreshGistTask(getActivity(), gistId, imageGetter) {
 
             @Override
             protected void onException(Exception e) throws RuntimeException {
                 super.onException(e);
 
+                getSherlockActivity().setSupportProgressBarIndeterminateVisibility(false);
                 ToastUtils.show(getActivity(), e, string.error_gist_load);
             }
 
+            @SuppressWarnings("unchecked")
             @Override
             protected void onSuccess(FullGist fullGist) throws Exception {
                 super.onSuccess(fullGist);
@@ -395,11 +400,18 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 if (!isUsable())
                     return;
 
+                FragmentActivity activity = getActivity();
+                if (activity instanceof OnLoadListener)
+                    ((OnLoadListener<Gist>) activity)
+                            .loaded(fullGist.getGist());
+
                 starred = fullGist.isStarred();
                 loadFinished = true;
                 gist = fullGist.getGist();
                 comments = fullGist;
                 updateList(fullGist.getGist(), fullGist);
+
+                getSherlockActivity().setSupportProgressBarIndeterminateVisibility(false);
             }
 
         }.execute();

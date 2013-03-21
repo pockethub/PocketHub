@@ -81,6 +81,36 @@ public class ImageUtils {
     }
 
     /**
+     * Get a bitmap from the image
+     *
+     * @param image
+     * @param sampleSize
+     * @return bitmap or null if read fails
+     */
+    public static Bitmap getBitmap(final byte[] image, int sampleSize) {
+        final Options options = new Options();
+        options.inDither = false;
+        options.inSampleSize = sampleSize;
+        return BitmapFactory.decodeByteArray(image, 0, image.length, options);
+    }
+
+    /**
+     * Get scale for image of size and max height/width
+     *
+     * @param size
+     * @param width
+     * @param height
+     * @return scale
+     */
+    public static int getScale(Point size, int width, int height) {
+        if (size.x > width || size.y > height)
+            return Math.max(Math.round((float) size.y / (float) height),
+                    Math.round((float) size.x / (float) width));
+        else
+            return 1;
+    }
+
+    /**
      * Get size of image
      *
      * @param imagePath
@@ -109,6 +139,19 @@ public class ImageUtils {
     }
 
     /**
+     * Get size of image
+     *
+     * @param image
+     * @return size
+     */
+    public static Point getSize(final byte[] image) {
+        final Options options = new Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeByteArray(image, 0, image.length, options);
+        return new Point(options.outWidth, options.outHeight);
+    }
+
+    /**
      * Get bitmap with maximum height or width
      *
      * @param imagePath
@@ -118,17 +161,20 @@ public class ImageUtils {
      */
     public static Bitmap getBitmap(final String imagePath, int width, int height) {
         Point size = getSize(imagePath);
-        int currWidth = size.x;
-        int currHeight = size.y;
+        return getBitmap(imagePath, getScale(size, width, height));
+    }
 
-        int scale = 1;
-        while (currWidth >= width || currHeight >= height) {
-            currWidth /= 2;
-            currHeight /= 2;
-            scale *= 2;
-        }
-
-        return getBitmap(imagePath, scale);
+    /**
+     * Get bitmap with maximum height or width
+     *
+     * @param image
+     * @param width
+     * @param height
+     * @return image
+     */
+    public static Bitmap getBitmap(final byte[] image, int width, int height) {
+        Point size = getSize(image);
+        return getBitmap(image, getScale(size, width, height));
     }
 
     /**

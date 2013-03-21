@@ -4,14 +4,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <version>1.5</version>
+        <version>1.6.1</version>
         <groupId>com.github.github</groupId>
         <artifactId>github-android-parent</artifactId>
     </parent>
 
     <packaging>apk</packaging>
     <artifactId>github-android-integration-tests</artifactId>
-    <name>Github-Android integration tests</name>
+    <name>GitHub-Android integration tests</name>
 
     <dependencies>
         <dependency>

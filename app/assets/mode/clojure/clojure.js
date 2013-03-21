@@ -40,9 +40,9 @@ CodeMirror.defineMode("clojure", function (config, mode) {
     var tests = {
         digit: /\d/,
         digit_or_colon: /[\d:]/,
-        hex: /[0-9a-fA-F]/,
+        hex: /[0-9a-f]/i,
         sign: /[+-]/,
-        exponent: /[eE]/,
+        exponent: /e/i,
         keyword_char: /[^\s\(\[\;\)\]]/,
         basic: /[\w\$_\-]/,
         lang_keyword: /[\w*+!\-_?:\/]/
@@ -64,14 +64,13 @@ CodeMirror.defineMode("clojure", function (config, mode) {
 
     function isNumber(ch, stream){
         // hex
-        if ( ch === '0' && 'x' == stream.peek().toLowerCase() ) {
-            stream.eat('x');
+        if ( ch === '0' && stream.eat(/x/i) ) {
             stream.eatWhile(tests.hex);
             return true;
         }
 
         // leading sign
-        if ( ch == '+' || ch == '-' ) {
+        if ( ( ch == '+' || ch == '-' ) && ( tests.digit.test(stream.peek()) ) ) {
           stream.eat(tests.sign);
           ch = stream.next();
         }
@@ -85,8 +84,7 @@ CodeMirror.defineMode("clojure", function (config, mode) {
                 stream.eatWhile(tests.digit);
             }
 
-            if ( 'e' == stream.peek().toLowerCase() ) {
-                stream.eat(tests.exponent);
+            if ( stream.eat(tests.exponent) ) {
                 stream.eat(tests.sign);
                 stream.eatWhile(tests.digit);
             }
@@ -145,7 +143,7 @@ CodeMirror.defineMode("clojure", function (config, mode) {
                     } else if (isNumber(ch,stream)){
                         returnType = NUMBER;
                     } else if (ch == "(" || ch == "[") {
-                        var keyWord = ''; var indentTemp = stream.column();
+                        var keyWord = '', indentTemp = stream.column(), letter;
                         /**
                         Either
                         (indent-word ..
@@ -157,7 +155,8 @@ CodeMirror.defineMode("clojure", function (config, mode) {
                             keyWord += letter;
                         }
 
-                        if (keyWord.length > 0 && indentKeys.propertyIsEnumerable(keyWord)) { // indent-word
+                        if (keyWord.length > 0 && (indentKeys.propertyIsEnumerable(keyWord) ||
+                                                   /^(?:def|with)/.test(keyWord))) { // indent-word
                             pushStack(state, indentTemp + INDENT_WORD_SKIP, ch);
                         } else { // non-indent word
                             // we continue eating the spaces

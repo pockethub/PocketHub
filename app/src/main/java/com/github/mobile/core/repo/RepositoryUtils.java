@@ -63,6 +63,7 @@ public class RepositoryUtils {
                 || "edu".equals(name) //
                 || "explore".equals(name) //
                 || "features".equals(name) //
+                || "home".equals(name) //
                 || "inbox".equals(name) //
                 || "languages".equals(name) //
                 || "login".equals(name) //
@@ -75,6 +76,7 @@ public class RepositoryUtils {
                 || "security".equals(name) //
                 || "settings".equals(name) //
                 || "stars".equals(name) //
+                || "styleguide".equals(name) //
                 || "timeline".equals(name) //
                 || "training".equals(name) //
                 || "users".equals(name) //

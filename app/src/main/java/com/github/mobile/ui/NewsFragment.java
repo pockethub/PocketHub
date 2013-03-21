@@ -20,14 +20,19 @@ import static android.content.Intent.CATEGORY_BROWSABLE;
 import static org.eclipse.egit.github.core.event.Event.TYPE_COMMIT_COMMENT;
 import static org.eclipse.egit.github.core.event.Event.TYPE_DOWNLOAD;
 import static org.eclipse.egit.github.core.event.Event.TYPE_PUSH;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ListView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.github.kevinsawicki.wishlist.ViewFinder;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
 import com.github.mobile.core.gist.GistEventMatcher;
 import com.github.mobile.core.issue.IssueEventMatcher;
@@ -141,6 +146,54 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
             viewUser(users);
     }
 
+    @Override
+    public boolean onListItemLongClick(ListView l, View v, int position,
+            long itemId) {
+        if (!isUsable())
+            return false;
+
+        final Event event = (Event) l.getItemAtPosition(position);
+        final Repository repo = RepositoryEventMatcher.getRepository(
+                event.getRepo(), event.getActor(), event.getOrg());
+        final User user = event.getActor();
+
+        if (repo != null && user != null) {
+            final AlertDialog dialog = LightAlertDialog.create(getActivity());
+            dialog.setTitle(string.navigate_to);
+            dialog.setCanceledOnTouchOutside(true);
+
+            View view = getActivity().getLayoutInflater().inflate(
+                    layout.nav_dialog, null);
+            ViewFinder finder = new ViewFinder(view);
+            avatars.bind(finder.imageView(id.iv_user_avatar), user);
+            avatars.bind(finder.imageView(id.iv_repo_avatar), repo.getOwner());
+            finder.setText(id.tv_login, user.getLogin());
+            finder.setText(id.tv_repo_name, repo.generateId());
+            finder.onClick(id.ll_user_area, new OnClickListener() {
+
+                public void onClick(View v) {
+                    dialog.dismiss();
+
+                    viewUser(user);
+                }
+            });
+            finder.onClick(id.ll_repo_area, new OnClickListener() {
+
+                public void onClick(View v) {
+                    dialog.dismiss();
+
+                    viewRepository(repo);
+                }
+            });
+            dialog.setView(view);
+            dialog.show();
+
+            return true;
+        }
+
+        return false;
+    }
+
     private void openDownload(Event event) {
         Download download = ((DownloadPayload) event.getPayload())
                 .getDownload();
@@ -215,6 +268,16 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
      * @param users
      */
     protected void viewUser(UserPair users) {
+    }
+
+    /**
+     * Start an activity to view the given {@link User}
+     *
+     * @param user
+     * @return true if new activity started, false otherwise
+     */
+    protected boolean viewUser(User user) {
+        return false;
     }
 
     /**

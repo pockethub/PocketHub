@@ -87,6 +87,7 @@ public abstract class PagerActivity extends DialogFragmentActivity implements
         invalidateOptionsMenu();
     }
 
+    @Override
     public void onPageScrollStateChanged(int state) {
         // Intentionally left blank
     }

@@ -31,12 +31,11 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.actionbarsherlock.R.color;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.kevinsawicki.wishlist.ViewUtils;
+import com.github.mobile.R.color;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
@@ -63,8 +62,6 @@ import java.util.LinkedList;
 import org.eclipse.egit.github.core.Reference;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.service.DataService;
-
-import roboguice.inject.InjectExtra;
 
 /**
  * Fragment to display a repository's source code tree
@@ -94,13 +91,19 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
     private Folder folder;
 
-    @InjectExtra(EXTRA_REPOSITORY)
     private Repository repository;
 
     @Inject
     private DataService service;
 
     private RefDialog dialog;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        repository = getSerializableExtra(EXTRA_REPOSITORY);
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -129,7 +132,6 @@ public class RepositoryCodeFragment extends DialogFragment implements
         default:
             return super.onOptionsItemSelected(item);
         }
-
     }
 
     private void showLoading(final boolean loading) {
@@ -213,7 +215,6 @@ public class RepositoryCodeFragment extends DialogFragment implements
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ViewFinder finder = new ViewFinder(view);
         progressView = finder.find(id.pb_loading);
         listView = finder.find(android.R.id.list);
         listView.setOnItemClickListener(this);
@@ -311,6 +312,9 @@ public class RepositoryCodeFragment extends DialogFragment implements
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
         Entry entry = (Entry) parent.getItemAtPosition(position);
+        if (tree == null || entry == null)
+            return;
+
         if (entry instanceof Folder)
             setFolder(tree, (Folder) entry);
         else

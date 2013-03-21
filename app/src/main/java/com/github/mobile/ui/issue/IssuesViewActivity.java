@@ -15,6 +15,8 @@
  */
 package com.github.mobile.ui.issue;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static com.github.mobile.Intents.EXTRA_ISSUE_NUMBERS;
 import static com.github.mobile.Intents.EXTRA_POSITION;
 import static com.github.mobile.Intents.EXTRA_REPOSITORIES;
@@ -23,6 +25,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
@@ -34,6 +37,7 @@ import com.github.mobile.ui.FragmentProvider;
 import com.github.mobile.ui.PagerActivity;
 import com.github.mobile.ui.UrlLauncher;
 import com.github.mobile.ui.ViewPager;
+import com.github.mobile.ui.repo.RepositoryViewActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
@@ -47,9 +51,6 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.RepositoryIssue;
 import org.eclipse.egit.github.core.User;
-
-import roboguice.inject.InjectExtra;
-import roboguice.inject.InjectView;
 
 /**
  * Activity to display a collection of issues or pull requests in a pager
@@ -147,22 +148,16 @@ public class IssuesViewActivity extends PagerActivity {
         return builder.toIntent();
     }
 
-    @InjectView(id.vp_pages)
     private ViewPager pager;
 
-    @InjectExtra(EXTRA_ISSUE_NUMBERS)
     private int[] issueNumbers;
 
-    @InjectExtra(EXTRA_PULL_REQUESTS)
     private boolean[] pullRequests;
 
-    @InjectExtra(value = EXTRA_REPOSITORIES, optional = true)
     private ArrayList<RepositoryId> repoIds;
 
-    @InjectExtra(value = EXTRA_REPOSITORY, optional = true)
     private Repository repo;
 
-    @InjectExtra(EXTRA_POSITION)
     private int initialPosition;
 
     @Inject
@@ -181,7 +176,16 @@ public class IssuesViewActivity extends PagerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        issueNumbers = getIntArrayExtra(EXTRA_ISSUE_NUMBERS);
+        pullRequests = getBooleanArrayExtra(EXTRA_PULL_REQUESTS);
+        repoIds = getSerializableExtra(EXTRA_REPOSITORIES);
+        repo = getSerializableExtra(EXTRA_REPOSITORY);
+        initialPosition = getIntExtra(EXTRA_POSITION);
+
         setContentView(layout.pager);
+
+        pager = finder.find(id.vp_pages);
 
         if (repo != null)
             adapter = new IssuesPagerAdapter(this, repo, issueNumbers);
@@ -279,7 +283,35 @@ public class IssuesViewActivity extends PagerActivity {
             super.startActivity(intent);
     }
 
+    @Override
     protected FragmentProvider getProvider() {
         return adapter;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case android.R.id.home:
+            Repository repository = repo;
+            if (repository == null) {
+                int position = pager.getCurrentItem();
+                RepositoryId repoId = repoIds.get(position);
+                if (repoId != null) {
+                    RepositoryIssue issue = store.getIssue(repoId,
+                            issueNumbers[position]);
+                    if (issue != null)
+                        repository = issue.getRepository();
+                }
+            }
+            if (repository != null) {
+                Intent intent = RepositoryViewActivity.createIntent(repository);
+                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP
+                        | FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+            }
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
     }
 }
