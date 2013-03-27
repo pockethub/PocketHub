@@ -270,7 +270,7 @@ public class IssueFragment extends DialogFragment {
         labelsArea = (TextView) headerView.findViewById(id.tv_labels);
         milestoneArea = headerView.findViewById(id.ll_milestone);
         milestoneText = (TextView) headerView.findViewById(id.tv_milestone);
-        milestoneProgressArea = (View) headerView.findViewById(id.v_closed);
+        milestoneProgressArea = headerView.findViewById(id.v_closed);
         bodyText = (TextView) headerView.findViewById(id.tv_issue_body);
         bodyText.setMovementMethod(LinkMovementMethod.getInstance());
 

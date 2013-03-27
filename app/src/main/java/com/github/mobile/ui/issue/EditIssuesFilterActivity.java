@@ -137,7 +137,7 @@ public class EditIssuesFilterActivity extends DialogFragmentActivity {
             }
         };
 
-        ((TextView) findViewById(id.tv_assignee_label))
+        findViewById(id.tv_assignee_label)
                 .setOnClickListener(assigneeListener);
         assigneeText.setOnClickListener(assigneeListener);
 
@@ -152,7 +152,7 @@ public class EditIssuesFilterActivity extends DialogFragmentActivity {
             }
         };
 
-        ((TextView) findViewById(id.tv_milestone_label))
+        findViewById(id.tv_milestone_label)
                 .setOnClickListener(milestoneListener);
         milestoneText.setOnClickListener(milestoneListener);
 
@@ -167,7 +167,7 @@ public class EditIssuesFilterActivity extends DialogFragmentActivity {
             }
         };
 
-        ((TextView) findViewById(id.tv_labels_label))
+        findViewById(id.tv_labels_label)
                 .setOnClickListener(labelsListener);
         labelsText.setOnClickListener(labelsListener);
 

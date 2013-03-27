@@ -112,7 +112,7 @@ public class ViewPager extends android.support.v4.view.ViewPager {
     protected boolean canScroll(final View v, final boolean checkV,
             final int dx, final int x, final int y) {
         if (SDK_INT < ICE_CREAM_SANDWICH && v instanceof WebView)
-            return ((WebView) v).canScrollHorizontally(-dx);
+            return v.canScrollHorizontally(-dx);
         else
             return super.canScroll(v, checkV, dx, x, y);
     }
