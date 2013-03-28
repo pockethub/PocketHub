@@ -234,6 +234,7 @@
     <string name="starring_repository">Starring…</string>
     <string name="unstarring_repository">Unstarring…</string>
     <string name="navigate_to">Navigate to…</string>
+    <string name="share_repo">Share this Repo!</string>
 
     <!-- Tab titles, should be as short as possible -->
     <string name="tab_repositories">repositories</string>
