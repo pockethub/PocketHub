@@ -17,56 +17,56 @@
 <resources>
 
     <!-- Error messages -->
-    <string name="error_orgs_load">Loading account &amp; organizations failed</string>
-    <string name="error_issues_load">Loading issues failed</string>
-    <string name="error_repos_load">Loading repositories failed</string>
-    <string name="error_repo_load">Loading repository failed</string>
-    <string name="error_gist_load">Loading Gist failed</string>
-    <string name="error_news_load">Loading news failed</string>
-    <string name="error_followers_load">Loading followers failed</string>
-    <string name="error_people_load">Loading people failed</string>
-    <string name="error_person_load">Loading person failed</string>
-    <string name="error_gist_file_load">Loading Gist file content failed</string>
-    <string name="error_gists_load">Loading Gists failed</string>
-    <string name="error_issue_load">Loading issue failed</string>
-    <string name="error_collaborators_load">Loading collaborators failed</string>
-    <string name="error_milestones_load">Loading milestones failed</string>
-    <string name="error_labels_load">Loading labels failed</string>
-    <string name="error_bookmarks_load">Loading bookmarks failed</string>
-    <string name="error_members_load">Loading members failed</string>
-    <string name="error_commits_load">Loading commits failed</string>
-    <string name="error_commit_load">Loading commit failed</string>
+    <string name="error_orgs_load">טעינת ארגון משתמש &amp; נכשלה</string>
+    <string name="error_issues_load">נכשלה טעינת סוגיות</string>
+    <string name="error_repos_load">טעינת מאגרים נכשלה</string>
+    <string name="error_repo_load">טעינת מאגר נכשלה</string>
+    <string name="error_gist_load">טעינת תמצית נכשלה</string>
+    <string name="error_news_load">טעינת חדשות נכשלה</string>
+    <string name="error_followers_load">טעינת עוקבים נכשלה</string>
+    <string name="error_people_load">טעינת אנשים נכשלה</string>
+    <string name="error_person_load">טעינת איש נכשלה</string>
+    <string name="error_gist_file_load">טעינת תוכן תמצית נכשלה</string>
+    <string name="error_gists_load">טעינת תמציות נכשלה</string>
+    <string name="error_issue_load">טעינת סוגיה נכשלה</string>
+    <string name="error_collaborators_load">טעינת מסייעים נכשלה</string>
+    <string name="error_milestones_load">טעינת אבני-דרך נכשלה</string>
+    <string name="error_labels_load">טעינת תבניות נכשלה</string>
+    <string name="error_bookmarks_load">טעינת סימניות נכשלה</string>
+    <string name="error_members_load">טעינת חברים נכשלה</string>
+    <string name="error_commits_load">טעינת רישומים נכשלה</string>
+    <string name="error_commit_load">טעינת רישום נכשלה</string>
     <string name="error_file_load">טעינת הקובץ נכשלה</string>
     <string name="error_code_load">טעינת הקוד נכשלה</string>
-    <string name="error_refs_load">Loading branches &amp; tags failed</string>
+    <string name="error_refs_load">טעינת תגי ענף &amp; נכשלה</string>
     <string name="error_following_person">מעקב נכשל</string>
     <string name="error_unfollowing_person">ביטול מעקב נכשל</string>
-    <string name="error_checking_following_status">Checking following status failed</string>
+    <string name="error_checking_following_status">בדיקת מצב מעקב נכשלה</string>
     <string name="error_starring_repository">סימון בכוכב נכשל</string>
     <string name="error_unstarring_repository">ביטול סימון בכוכב נכשל</string>
-    <string name="error_checking_starring_status">Checking starring status failed</string>
-    <string name="error_rendering_markdown">Rendering markdown failed</string>
+    <string name="error_checking_starring_status">בדיקת מצב סימון בכוכב נכשלה</string>
+    <string name="error_rendering_markdown">עיבוד הוזלה נכשל</string>
     <!--  -->
 
 
     <!-- Loading messages -->
-    <string name="loading_gist">Loading Gist…</string>
-    <string name="random_gist">Loading Random Gist…</string>
-    <string name="loading_more_issues">Loading More Issues…</string>
+    <string name="loading_gist">טוען תמצית...</string>
+    <string name="random_gist">טוען תמצית אקראית...</string>
+    <string name="loading_more_issues">טוען עוד סוגיות...</string>
     <string name="loading_issues">טוען סוגיות…</string>
-    <string name="loading_comments">Loading Comments…</string>
+    <string name="loading_comments">טוען תגובות...</string>
     <string name="loading_repositories">טוען מאגרים…</string>
     <string name="loading_issue">טוען סוגיה…</string>
     <string name="loading_news">טוען חדשות…</string>
     <string name="loading_followers">טוען עוקבים…</string>
     <string name="loading_people">טוען אנשים…</string>
-    <string name="loading_gists">Loading Gists…</string>
-    <string name="loading_collaborators">Loading Collaborators…</string>
-    <string name="loading_milestones">Loading Milestones…</string>
-    <string name="loading_labels">Loading Labels…</string>
-    <string name="loading_commits">Loading Commits…</string>
-    <string name="loading_files_and_comments">Loading Files &amp; Comments…</string>
-    <string name="loading_refs">Loading Branches &amp; Tags…</string>
+    <string name="loading_gists">טוען תמציות...</string>
+    <string name="loading_collaborators">טוען מסייעים...</string>
+    <string name="loading_milestones">טוען אבני-דרך...</string>
+    <string name="loading_labels">טוען תוויות...</string>
+    <string name="loading_commits">טוען רישומים...</string>
+    <string name="loading_files_and_comments">טוען תגובות קבצי &amp;</string>
+    <string name="loading_refs">טוען תגיות ענף &amp;</string>
     <!--  -->
 
 
