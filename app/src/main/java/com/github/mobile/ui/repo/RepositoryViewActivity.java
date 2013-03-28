@@ -30,6 +30,7 @@ import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.Intents.Builder;
@@ -125,7 +126,9 @@ public class RepositoryViewActivity extends
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionsMenu) {
-        getSupportMenuInflater().inflate(menu.repository_star, optionsMenu);
+        MenuInflater inflater = getSupportMenuInflater();
+        inflater.inflate(menu.repository_star, optionsMenu);
+        inflater.inflate(menu.repository_share, optionsMenu);
 
         return super.onCreateOptionsMenu(optionsMenu);
     }
@@ -171,6 +174,9 @@ public class RepositoryViewActivity extends
         switch (item.getItemId()) {
         case id.m_star:
             starRepository();
+            return true;
+        case id.m_share:
+            shareRepositoryURL();
             return true;
         case android.R.id.home:
             finish();
@@ -269,5 +275,13 @@ public class RepositoryViewActivity extends
                 invalidateOptionsMenu();
             }
         }.execute();
+    }
+
+    private void shareRepositoryURL() {
+        Intent sharingIntent = new Intent();
+        sharingIntent.setAction(Intent.ACTION_SEND);
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, repository.getHtmlUrl());
+        sharingIntent.setType("text/plain");
+        startActivity(Intent.createChooser(sharingIntent, getResources().getText(string.share_repo)));
     }
 }
