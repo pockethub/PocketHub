@@ -84,6 +84,18 @@ public class BranchFileViewActivity extends BaseActivity implements
         return false;
     }
 
+    private static final String URL_GOOGLEDOCS = "https://docs.google.com/gview?embedded=true&url=";
+
+    private static boolean isPDF(final String name) {
+        if (TextUtils.isEmpty(name))
+            return false;
+
+        if (name.endsWith(".pdf"))
+            return true;
+
+        return false;
+    }
+
     /**
      * Create intent to show file in commit
      *
@@ -114,6 +126,8 @@ public class BranchFileViewActivity extends BaseActivity implements
     private String branch;
 
     private boolean isMarkdownFile;
+
+    private boolean isPDFFile;
 
     private String renderedMarkdown;
 
@@ -149,6 +163,7 @@ public class BranchFileViewActivity extends BaseActivity implements
 
         file = CommitUtils.getName(path);
         isMarkdownFile = isMarkdown(file);
+        isPDFFile = isPDF(file);
         editor = new SourceEditor(codeView);
         editor.setWrap(PreferenceUtils.getCodePreferences(this).getBoolean(
                 WRAP, false));
@@ -166,10 +181,15 @@ public class BranchFileViewActivity extends BaseActivity implements
         getSupportMenuInflater().inflate(menu.file_view, optionsMenu);
 
         MenuItem wrapItem = optionsMenu.findItem(id.m_wrap);
-        if (PreferenceUtils.getCodePreferences(this).getBoolean(WRAP, false))
-            wrapItem.setTitle(string.disable_wrapping);
-        else
-            wrapItem.setTitle(string.enable_wrapping);
+        if (isPDFFile) {
+            wrapItem.setEnabled(false);
+            wrapItem.setVisible(false);
+        } else {
+            if (PreferenceUtils.getCodePreferences(this).getBoolean(WRAP, false))
+                wrapItem.setTitle(string.disable_wrapping);
+            else
+                wrapItem.setTitle(string.enable_wrapping);
+        }
 
         markdownItem = optionsMenu.findItem(id.m_render_markdown);
         if (isMarkdownFile) {
@@ -271,6 +291,15 @@ public class BranchFileViewActivity extends BaseActivity implements
         getSupportLoaderManager().restartLoader(0, args, this);
     }
 
+    private void loadPDF() {
+        ViewUtils.setGone(loadingBar, true);
+        ViewUtils.setGone(codeView, false);
+
+        String id = repo.generateId();
+        String PDFUrl = "https://github.com/" + id + "/blob/" + branch + '/' + path + "?raw=true";
+        codeView.loadUrl(URL_GOOGLEDOCS + PDFUrl);
+    }
+
     private void loadContent() {
         ViewUtils.setGone(loadingBar, false);
         ViewUtils.setGone(codeView, true);
@@ -290,6 +319,8 @@ public class BranchFileViewActivity extends BaseActivity implements
                                 BranchFileViewActivity.this).getBoolean(
                                 RENDER_MARKDOWN, true))
                     loadMarkdown();
+                else if (isPDFFile)
+                    loadPDF();
                 else {
                     ViewUtils.setGone(loadingBar, true);
                     ViewUtils.setGone(codeView, false);
