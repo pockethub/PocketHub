@@ -21,6 +21,7 @@ import static com.github.mobile.Intents.EXTRA_PATH;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import static com.github.mobile.util.PreferenceUtils.RENDER_MARKDOWN;
 import static com.github.mobile.util.PreferenceUtils.WRAP;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -189,27 +190,27 @@ public class BranchFileViewActivity extends BaseActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case id.m_wrap:
-            if (editor.getWrap()) {
+            if (editor.getWrap())
                 item.setTitle(string.enable_wrapping);
-                editor.setWrap(false);
-            } else {
+            else
                 item.setTitle(string.disable_wrapping);
-                editor.setWrap(true);
-            }
+            editor.toggleWrap();
             PreferenceUtils.save(PreferenceUtils.getCodePreferences(this)
                     .edit().putBoolean(WRAP, editor.getWrap()));
             return true;
+
         case id.m_share:
             shareFile();
             return true;
+
         case id.m_render_markdown:
             if (editor.isMarkdown()) {
                 item.setTitle(string.render_markdown);
-                editor.setMarkdown(false);
+                editor.toggleMarkdown();
                 editor.setSource(file, blob);
             } else {
                 item.setTitle(string.show_raw_markdown);
-                editor.setMarkdown(true);
+                editor.toggleMarkdown();
                 if (renderedMarkdown != null)
                     editor.setSource(file, renderedMarkdown, false);
                 else
@@ -218,6 +219,7 @@ public class BranchFileViewActivity extends BaseActivity implements
             PreferenceUtils.save(PreferenceUtils.getCodePreferences(this)
                     .edit().putBoolean(RENDER_MARKDOWN, editor.isMarkdown()));
             return true;
+
         default:
             return super.onOptionsItemSelected(item);
         }
@@ -281,10 +283,11 @@ public class BranchFileViewActivity extends BaseActivity implements
             protected void onSuccess(Blob blob) throws Exception {
                 super.onSuccess(blob);
 
+                BranchFileViewActivity.this.blob = blob;
+
                 if (markdownItem != null)
                     markdownItem.setEnabled(true);
 
-                BranchFileViewActivity.this.blob = blob;
                 if (isMarkdownFile
                         && PreferenceUtils.getCodePreferences(
                                 BranchFileViewActivity.this).getBoolean(
