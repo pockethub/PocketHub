@@ -97,7 +97,7 @@ public class BranchFileViewActivity extends BaseActivity implements
     }
 
     /**
-     * Create intent to show file in commit
+     * Create intent to show file in branch
      *
      * @param repository
      * @param branch
@@ -164,6 +164,7 @@ public class BranchFileViewActivity extends BaseActivity implements
         file = CommitUtils.getName(path);
         isMarkdownFile = isMarkdown(file);
         isPDFFile = isPDF(file);
+
         editor = new SourceEditor(codeView);
         editor.setWrap(PreferenceUtils.getCodePreferences(this).getBoolean(
                 WRAP, false));
@@ -296,7 +297,8 @@ public class BranchFileViewActivity extends BaseActivity implements
         ViewUtils.setGone(codeView, false);
 
         String id = repo.generateId();
-        String PDFUrl = "https://github.com/" + id + "/blob/" + branch + '/' + path + "?raw=true";
+        String PDFUrl = "https://github.com/" + id + "/blob/" + branch + '/'
+                + path + "?raw=true";
         codeView.loadUrl(URL_GOOGLEDOCS + PDFUrl);
     }
 
@@ -324,7 +326,6 @@ public class BranchFileViewActivity extends BaseActivity implements
                 else {
                     ViewUtils.setGone(loadingBar, true);
                     ViewUtils.setGone(codeView, false);
-
                     editor.setMarkdown(false).setSource(file, blob);
                 }
             }
