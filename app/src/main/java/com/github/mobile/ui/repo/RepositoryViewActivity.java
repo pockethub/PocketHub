@@ -48,6 +48,7 @@ import com.github.mobile.ui.user.HomeActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
+import com.github.mobile.util.ShareUtils;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
@@ -278,10 +279,8 @@ public class RepositoryViewActivity extends
     }
 
     private void shareRepositoryURL() {
-        Intent sharingIntent = new Intent();
-        sharingIntent.setAction(Intent.ACTION_SEND);
-        sharingIntent.putExtra(Intent.EXTRA_TEXT, repository.getHtmlUrl());
-        sharingIntent.setType("text/plain");
-        startActivity(Intent.createChooser(sharingIntent, getResources().getText(string.share_repo)));
+        Intent sharingIntent = ShareUtils.create(null, repository.getHtmlUrl());
+        startActivity(Intent.createChooser(sharingIntent, getResources()
+                .getText(string.share_repo)));
     }
 }
