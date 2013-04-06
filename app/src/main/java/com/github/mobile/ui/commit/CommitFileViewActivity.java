@@ -22,6 +22,7 @@ import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import static com.github.mobile.util.PreferenceUtils.WRAP;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
@@ -56,6 +57,18 @@ public class CommitFileViewActivity extends BaseActivity {
 
     private static final String TAG = "CommitFileViewActivity";
 
+    private static final String URL_GOOGLEDOCS = "https://docs.google.com/gview?embedded=true&url=";
+
+    private static boolean isPDF(final String name) {
+        if (TextUtils.isEmpty(name))
+            return false;
+
+        if (name.endsWith(".pdf"))
+            return true;
+
+        return false;
+    }
+
     /**
      * Create intent to show file in commit
      *
@@ -82,6 +95,8 @@ public class CommitFileViewActivity extends BaseActivity {
 
     private String path;
 
+    private boolean isPDFFile;
+
     private ProgressBar loadingBar;
 
     private WebView codeView;
@@ -105,6 +120,9 @@ public class CommitFileViewActivity extends BaseActivity {
         loadingBar = finder.find(id.pb_loading);
         codeView = finder.find(id.wv_code);
 
+        String file = CommitUtils.getName(path);
+        isPDFFile = isPDF(file);
+
         editor = new SourceEditor(codeView);
         editor.setWrap(PreferenceUtils.getCodePreferences(this).getBoolean(
                 WRAP, false));
@@ -127,10 +145,15 @@ public class CommitFileViewActivity extends BaseActivity {
         getSupportMenuInflater().inflate(menu.file_view, optionsMenu);
 
         MenuItem wrapItem = optionsMenu.findItem(id.m_wrap);
-        if (PreferenceUtils.getCodePreferences(this).getBoolean(WRAP, false))
-            wrapItem.setTitle(string.disable_wrapping);
-        else
-            wrapItem.setTitle(string.enable_wrapping);
+        if (isPDFFile) {
+            wrapItem.setEnabled(false);
+            wrapItem.setVisible(false);
+        } else {
+            if (PreferenceUtils.getCodePreferences(this).getBoolean(WRAP, false))
+                wrapItem.setTitle(string.disable_wrapping);
+            else
+                wrapItem.setTitle(string.enable_wrapping);
+        }
 
         return true;
     }
@@ -164,6 +187,16 @@ public class CommitFileViewActivity extends BaseActivity {
                 "https://github.com/" + id + "/blob/" + commit + '/' + path));
     }
 
+    private void loadPDF() {
+        ViewUtils.setGone(loadingBar, true);
+        ViewUtils.setGone(codeView, false);
+
+        String id = repo.generateId();
+        String PDFUrl = "https://github.com/" + id + "/blob/" + commit + '/'
+                + path + "?raw=true";
+        codeView.loadUrl(URL_GOOGLEDOCS + PDFUrl);
+    }
+
     private void loadContent() {
         new RefreshBlobTask(repo, sha, this) {
 
@@ -171,10 +204,13 @@ public class CommitFileViewActivity extends BaseActivity {
             protected void onSuccess(Blob blob) throws Exception {
                 super.onSuccess(blob);
 
-                ViewUtils.setGone(loadingBar, true);
-                ViewUtils.setGone(codeView, false);
-
-                editor.setSource(path, blob);
+                if (isPDFFile)
+                    loadPDF();
+                else {
+                    ViewUtils.setGone(loadingBar, true);
+                    ViewUtils.setGone(codeView, false);
+                    editor.setSource(path, blob);
+                }
             }
 
             @Override
