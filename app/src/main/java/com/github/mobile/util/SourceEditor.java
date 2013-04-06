@@ -198,4 +198,13 @@ public class SourceEditor {
     public SourceEditor toggleWrap() {
         return setWrap(!wrap);
     }
+
+    /**
+     * Toggle markdown file rendering
+     *
+     * @return this editor
+     */
+    public SourceEditor toggleMarkdown() {
+        return setMarkdown(!markdown);
+    }
 }
