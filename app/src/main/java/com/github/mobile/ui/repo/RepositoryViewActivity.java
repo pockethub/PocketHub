@@ -279,7 +279,7 @@ public class RepositoryViewActivity extends
     }
 
     private void shareRepositoryURL() {
-        Intent sharingIntent = ShareUtils.create(null, repository.getHtmlUrl());
+        Intent sharingIntent = ShareUtils.create(repository.getName(), repository.getHtmlUrl());
         startActivity(Intent.createChooser(sharingIntent, getResources()
                 .getText(string.share_repo)));
     }
