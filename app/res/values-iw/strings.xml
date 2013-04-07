@@ -84,10 +84,10 @@
 
 
     <!-- Updating messages -->
-    <string name="updating_assignee">Updating Assignee…</string>
-    <string name="updating_issue">Updating Issue…</string>
-    <string name="updating_labels">Updating Labels…</string>
-    <string name="updating_milestone">Updating Milestone…</string>
+    <string name="updating_assignee">מעדכן מוצב...</string>
+    <string name="updating_issue">מעדכן סוגייה...</string>
+    <string name="updating_labels">מעדכן תווית...</string>
+    <string name="updating_milestone">מעדכן אבן-דרך...</string>
     <!--  -->
 
     <string name="app_name">GitHub</string>
@@ -104,8 +104,8 @@
     <string name="creating_gist">יוצר תמצית…</string>
     <string name="create">צור</string>
     <string name="create_gist">צור תמצית</string>
-    <string name="gist_content_hint">puts \'Hello World!\'</string>
-    <string name="make_public">Make this Gist public</string>
+    <string name="gist_content_hint">יוצר '\Hello world\'</string>
+    <string name="make_public">הפוך תמצית זו לציבורית</string>
     <string name="gist_file_name_hint">file.rb</string>
     <string name="gist">תמצית</string>
     <string name="comments">תגובות</string>
@@ -135,31 +135,31 @@
     <string name="edit_labels">ערוך תוויות</string>
     <string name="milestone_prefix">אבן דרך:</string>
     <string name="edit_milestone">ערוך אבן דרך</string>
-    <string name="edit_assignee">Edit Assignee</string>
+    <string name="edit_assignee">ערוך הצבה</string>
     <string name="description">תיאור</string>
-    <string name="gist_description_hint">Android created Gist</string>
+    <string name="gist_description_hint">תמצית שנוצרה בAndroid</string>
     <string name="title">כותרת</string>
     <string name="edit">ערוך</string>
-    <string name="starring_gist">Starring Gist…</string>
-    <string name="unstarring_gist">Unstarring Gist…</string>
+    <string name="starring_gist">מסמן תמצית בכוכב</string>
+    <string name="unstarring_gist">מבטל סימון בכוכב...</string>
     <string name="accounts_label">משתמש</string>
-    <string name="select_assignee">Select Assignee</string>
+    <string name="select_assignee">בחר מוצב</string>
     <string name="select_milestone">בחר אבן דרך</string>
     <string name="select_labels">בחר תוויות</string>
     <string name="select_ref">בחר ענף או תג</string>
     <string name="no_milestone">אין אבן דרך</string>
-    <string name="unassigned">No one is assigned</string>
+    <string name="unassigned">אף אחד לא מוצב</string>
     <string name="assigned">משוייך</string>
-    <string name="no_gists_found">No Gists found</string>
+    <string name="no_gists_found">לא נמצאו תמציות</string>
     <string name="confirm_gist_delete_title">אשר מחיקה</string>
-    <string name="confirm_gist_delete_message">Are you sure you want to delete this Gist?</string>
+    <string name="confirm_gist_delete_message">אתה בטוח שברצונך למחוק תמצית זו?</string>
     <string name="deleting_gist">מוחק תמצית…</string>
     <string name="creating_comment">יוצר תגובה…</string>
-    <string name="confirm_bookmark_delete_message">Are you sure you want to remove this bookmark?</string>
+    <string name="confirm_bookmark_delete_message">אתה בטוח שברצונך להמחוק סימנייה זו?</string>
     <string name="issue_dashboard">לוח סוגיות</string>
     <string name="new_issue">סוגייה חדשה</string>
     <string name="anonymous">אנונימי</string>
-    <string name="message_filter_saved">Issue filter saved to bookmarks</string>
+    <string name="message_filter_saved">מסנן סוגיות נשמר במועדפים</string>
     <string name="recent">אחרונים</string>
     <string name="section_issue_status">מצב:</string>
     <string name="status_open">פתוח</string>
