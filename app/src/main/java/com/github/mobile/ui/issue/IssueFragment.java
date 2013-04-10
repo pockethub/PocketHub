@@ -32,6 +32,7 @@ import static com.github.mobile.RequestCodes.ISSUE_LABELS_UPDATE;
 import static com.github.mobile.RequestCodes.ISSUE_MILESTONE_UPDATE;
 import static com.github.mobile.RequestCodes.ISSUE_REOPEN;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
+import static com.github.mobile.util.TypefaceUtils.ICON_COMMIT;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -70,6 +71,7 @@ import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.ShareUtils;
 import com.github.mobile.util.ToastUtils;
+import com.github.mobile.util.TypefaceUtils;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -353,6 +355,10 @@ public class IssueFragment extends DialogFragment {
 
         if (IssueUtils.isPullRequest(issue) && issue.getPullRequest().getCommits() > 0) {
             ViewUtils.setGone(commitsView, false);
+
+            TextView icon = (TextView) commitsView.findViewById(id.tv_commit_icon);
+            TypefaceUtils.setOcticons(icon);
+            icon.setText(ICON_COMMIT);
 
             String commits = getString(string.pull_request_commits,
                 issue.getPullRequest().getCommits());

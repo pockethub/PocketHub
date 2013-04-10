@@ -71,13 +71,19 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/inset_background"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/tv_commit_icon"
+            style="@style/PrimaryIcon"
+            android:paddingRight="5dp" />
 
         <TextView
             android:id="@+id/tv_pull_request_commits"
             style="@style/ListTitleText"
             android:paddingBottom="0dp"
+            android:layout_gravity="center_vertical"
             android:singleLine="true" />
 
     </LinearLayout>
