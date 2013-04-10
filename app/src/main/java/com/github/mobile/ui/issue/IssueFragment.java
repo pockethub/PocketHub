@@ -65,6 +65,7 @@ import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.HeaderFooterListAdapter;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.ui.comment.CommentListAdapter;
+import com.github.mobile.ui.commit.CommitCompareViewActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.ShareUtils;
@@ -80,6 +81,8 @@ import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.Milestone;
+import org.eclipse.egit.github.core.PullRequest;
+import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.User;
 
@@ -137,6 +140,8 @@ public class IssueFragment extends DialogFragment {
     private TextView createdDateText;
 
     private ImageView creatorAvatar;
+
+    private ViewGroup commitsView;
 
     private TextView assigneeText;
 
@@ -264,6 +269,7 @@ public class IssueFragment extends DialogFragment {
         createdDateText = (TextView) headerView
                 .findViewById(id.tv_issue_creation_date);
         creatorAvatar = (ImageView) headerView.findViewById(id.iv_avatar);
+        commitsView = (ViewGroup) headerView.findViewById(id.ll_issue_commits);
         assigneeText = (TextView) headerView.findViewById(id.tv_assignee_name);
         assigneeAvatar = (ImageView) headerView
                 .findViewById(id.iv_assignee_avatar);
@@ -277,6 +283,15 @@ public class IssueFragment extends DialogFragment {
         loadingView = inflater.inflate(layout.loading_item, null);
 
         footerView = inflater.inflate(layout.footer_separator, null);
+
+        commitsView.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (IssueUtils.isPullRequest(issue))
+                    openPullRequestCommits();
+            }
+        });
 
         stateText.setOnClickListener(new OnClickListener() {
 
@@ -335,6 +350,15 @@ public class IssueFragment extends DialogFragment {
         createdDateText.setText(new StyledText().append(
                 getString(string.prefix_opened)).append(issue.getCreatedAt()));
         avatars.bind(creatorAvatar, issue.getUser());
+
+        if (IssueUtils.isPullRequest(issue) && issue.getPullRequest().getCommits() > 0) {
+            ViewUtils.setGone(commitsView, false);
+
+            String commits = getString(string.pull_request_commits,
+                issue.getPullRequest().getCommits());
+            ((TextView) commitsView.findViewById(id.tv_pull_request_commits)).setText(commits);
+        } else
+            ViewUtils.setGone(commitsView, true);
 
         boolean open = STATE_OPEN.equals(issue.getState());
         if (!open) {
@@ -528,6 +552,17 @@ public class IssueFragment extends DialogFragment {
                     .create("Issue " + issueNumber + " on " + id,
                             "https://github.com/" + id + "/issues/"
                                     + issueNumber));
+    }
+
+    private void openPullRequestCommits() {
+        if (IssueUtils.isPullRequest(issue)) {
+            PullRequest pullRequest = issue.getPullRequest();
+
+            String base = pullRequest.getBase().getSha();
+            String head = pullRequest.getHead().getSha();
+            Repository repo = pullRequest.getBase().getRepo();
+            startActivity(CommitCompareViewActivity.createIntent(repo, base, head));
+        }
     }
 
     @Override
