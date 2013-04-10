@@ -170,9 +170,9 @@
     <string name="none">שום דבר</string>
     <string name="section_issue_labels">תוויות:</string>
     <string name="log_in">התחבר</string>
-    <string name="signup_link">New to GitHub? &lt;a href=\"https://github.com/plans\">Click here&lt;/a> to sign up</string>
+    <string name="signup_link">חדש ב-GitHub? &lt; href=\"https://github.com/plans\">לחץ כאן &lt; / > כדי להירשם</string>
     <string name="connection_failed">לא יכול להתחבר ל- GitHub</string>
-    <string name="invalid_login_or_password">Please enter a valid login &amp; password</string>
+    <string name="invalid_login_or_password">נא הכנס סיסמת התחברות &amp; תקינה</string>
     <string name="invalid_password">נא הכנס סיסמה תקינה</string>
     <string name="password">סיסמה</string>
     <string name="login_or_email">התחבר או דוא"\ל</string>
@@ -211,7 +211,7 @@
     <string name="close">סגור</string>
     <string name="reopen">פתח מחדש</string>
     <string name="title_invalid_github_url">כתובת GitHub לא תקינה</string>
-    <string name="message_invalid_github_url">The following URL could not be opened by this application:\n{0}</string>
+    <string name="message_invalid_github_url">לא היתה אפשרות לפתוח את כתובת ה-URL על-ידי יישום זה: \n {0}</string>
     <string name="recently_viewed">נצפה לאחרונה</string>
     <string name="cancel">ביטול</string>
     <string name="authenticator_conflict_title">התנגשות יישום</string>
@@ -222,7 +222,7 @@
     <string name="parent_prefix">הורה\u0020</string>
     <string name="authored">נוצר על-ידי</string>
     <string name="committed">בוצע</string>
-    <string name="diff_line_message">What would you like to do?</string>
+    <string name="diff_line_message">מה תרצה לעשות?</string>
     <string name="comment_on_line">הגב בתוך הקוד</string>
     <string name="view_entire_file">הצג קובץ שלם</string>
     <string name="comparing_commits">משווה {0} רשומות</string>
