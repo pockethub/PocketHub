@@ -177,6 +177,9 @@ public class RepositoryViewActivity extends
         case id.m_share:
             shareRepository();
             return true;
+        case id.m_refresh:
+            checkStarredRepositoryStatus();
+            return super.onOptionsItemSelected(item);
         case android.R.id.home:
             finish();
             Intent intent = new Intent(this, HomeActivity.class);

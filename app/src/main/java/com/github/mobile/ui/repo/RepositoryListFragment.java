@@ -19,22 +19,6 @@ import static com.github.mobile.Intents.EXTRA_USER;
 import static com.github.mobile.RequestCodes.REPOSITORY_VIEW;
 import static com.github.mobile.ResultCodes.RESOURCE_CHANGED;
 import static java.util.Locale.US;
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.content.Loader;
-import android.view.View;
-import android.widget.ListView;
-
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.mobile.R.string;
-import com.github.mobile.ThrowableLoader;
-import com.github.mobile.persistence.AccountDataManager;
-import com.github.mobile.ui.HeaderFooterListAdapter;
-import com.github.mobile.ui.ItemListFragment;
-import com.github.mobile.ui.user.OrganizationSelectionListener;
-import com.github.mobile.ui.user.OrganizationSelectionProvider;
-import com.google.inject.Inject;
 
 import java.util.Collections;
 import java.util.List;
@@ -42,6 +26,31 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.content.Loader;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ListView;
+
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.github.kevinsawicki.wishlist.ViewFinder;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
+import com.github.mobile.R.string;
+import com.github.mobile.ThrowableLoader;
+import com.github.mobile.persistence.AccountDataManager;
+import com.github.mobile.ui.HeaderFooterListAdapter;
+import com.github.mobile.ui.ItemListFragment;
+import com.github.mobile.ui.LightAlertDialog;
+import com.github.mobile.ui.user.OrganizationSelectionListener;
+import com.github.mobile.ui.user.OrganizationSelectionProvider;
+import com.github.mobile.ui.user.UserViewActivity;
+import com.github.mobile.util.AvatarLoader;
+import com.google.inject.Inject;
 
 /**
  * Fragment to display a list of {@link Repository} instances
@@ -51,6 +60,9 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
 
     @Inject
     private AccountDataManager cache;
+
+    @Inject
+    private AvatarLoader avatars;
 
     private final AtomicReference<User> org = new AtomicReference<User>();
 
@@ -119,6 +131,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Refresh if the viewed repository was (un)starred
         if (requestCode == REPOSITORY_VIEW && resultCode == RESOURCE_CHANGED) {
             forceRefresh();
             return;
@@ -132,8 +145,64 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         Repository repo = (Repository) list.getItemAtPosition(position);
         if (recentRepos != null)
             recentRepos.add(repo);
+
         startActivityForResult(RepositoryViewActivity.createIntent(repo),
                 REPOSITORY_VIEW);
+    }
+
+    @Override
+    public boolean onListItemLongClick(ListView list, View v, int position,
+            long itemId) {
+        if (!isUsable())
+            return false;
+
+        final Repository repo = (Repository) list.getItemAtPosition(position);
+        if (repo == null)
+            return false;
+
+        final AlertDialog dialog = LightAlertDialog.create(getActivity());
+        dialog.setCanceledOnTouchOutside(true);
+
+        dialog.setTitle(repo.generateId());
+
+        View view = getActivity().getLayoutInflater().inflate(
+                layout.repo_dialog, null);
+        ViewFinder finder = new ViewFinder(view);
+
+        final User owner = repo.getOwner();
+        avatars.bind(finder.imageView(id.iv_owner_avatar), owner);
+        finder.setText(id.tv_owner_name, "Navigate to " + owner.getLogin());
+        finder.onClick(id.ll_owner_area, new OnClickListener() {
+
+            public void onClick(View v) {
+                dialog.dismiss();
+
+                viewUser(owner);
+            }
+        });
+
+        if ((recentRepos != null) && (recentRepos.contains(repo))) {
+            finder.find(id.ll_recent_repo_area_vis).setVisibility(View.VISIBLE);
+            finder.onClick(id.ll_recent_repo_area, new OnClickListener() {
+
+                public void onClick(View v) {
+                    dialog.dismiss();
+
+                    recentRepos.remove(repo);
+                    refresh();
+                }
+            });
+        }
+
+        dialog.setView(view);
+        dialog.show();
+
+        return true;
+    }
+
+    private void viewUser(User user) {
+        if (org.get().getId() != user.getId())
+            startActivity(UserViewActivity.createIntent(user));
     }
 
     @Override
