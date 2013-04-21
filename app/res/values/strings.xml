@@ -160,7 +160,10 @@
     <string name="new_issue">New Issue</string>
     <string name="anonymous">Anonymous</string>
     <string name="message_filter_saved">Issue filter saved to bookmarks</string>
+    <string name="recently_viewed">RECENTLY VIEWED</string>
     <string name="recent">Recent</string>
+    <string name="recent_remove">Remove Recent</string>
+    <string name="recent_list_remove">Remove from recently used</string>
     <string name="section_issue_status">Status:</string>
     <string name="status_open">Open</string>
     <string name="status_closed">Closed</string>
@@ -212,7 +215,6 @@
     <string name="reopen">Reopen</string>
     <string name="title_invalid_github_url">Invalid GitHub URL</string>
     <string name="message_invalid_github_url">The following URL could not be opened by this application:\n{0}</string>
-    <string name="recently_viewed">RECENTLY VIEWED</string>
     <string name="cancel">Cancel</string>
     <string name="authenticator_conflict_title">App Conflict</string>
     <string name="authenticator_conflict_message">Another installed app is already configured for GitHub authentication.\n\nYou must remove the other app from the Accounts &amp; sync settings and uninstall it before the GitHub app can be used.</string>

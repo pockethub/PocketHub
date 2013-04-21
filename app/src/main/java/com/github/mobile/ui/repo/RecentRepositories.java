@@ -109,6 +109,29 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
     }
 
     /**
+     * Remove repository from recent list
+     *
+     * @param repo
+     * @return this recent list
+     */
+    public RecentRepositories remove(final Repository repo) {
+        return repo != null ? remove(repo.getId()) : this;
+    }
+
+    /**
+     * Remove id from recent list
+     *
+     * @param id
+     * @return this recent list
+     */
+    public RecentRepositories remove(final long id) {
+        if (ids == null)
+            load();
+        ids.remove(id);
+        return this;
+    }
+
+    /**
      * Persist recent list asynchronously on a background thread
      *
      * @return this recent list
