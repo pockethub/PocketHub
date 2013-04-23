@@ -25,6 +25,7 @@ import android.graphics.BitmapFactory.Options;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -39,6 +40,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
@@ -124,11 +126,11 @@ public class AvatarLoader {
     /**
      * Get image for user
      *
-     * @param userId
+     * @param user
      * @return image
      */
-    protected BitmapDrawable getImage(final String userId) {
-        File avatarFile = new File(avatarDir, userId);
+    protected BitmapDrawable getImage(final User user) {
+        File avatarFile = new File(avatarDir, getAvatarFilename(user));
 
         if (!avatarFile.exists() || avatarFile.length() == 0)
             return null;
@@ -149,7 +151,7 @@ public class AvatarLoader {
      * @return image
      */
     protected BitmapDrawable getImage(final CommitUser user) {
-        File avatarFile = new File(avatarDir, user.getEmail());
+        File avatarFile = new File(avatarDir, getAvatarFilename(user));
 
         if (!avatarFile.exists() || avatarFile.length() == 0)
             return null;
@@ -161,6 +163,18 @@ public class AvatarLoader {
             avatarFile.delete();
             return null;
         }
+    }
+
+    private String getAvatarFilename(CommitUser user) {
+        return getAvatarFilenameForUrl(getAvatarUrl(user));
+    }
+
+    private String getAvatarFilename(User user) {
+        return getAvatarFilenameForUrl(getAvatarUrl(user));
+    }
+
+    private String getAvatarFilenameForUrl(String avatarUrl) {
+        return Base64.encodeToString(avatarUrl.getBytes(), Base64.DEFAULT);
     }
 
     /**
@@ -265,7 +279,7 @@ public class AvatarLoader {
 
             @Override
             public BitmapDrawable call() throws Exception {
-                final BitmapDrawable image = getImage(userId);
+                final BitmapDrawable image = getImage(user);
                 if (image != null)
                     return image;
                 else
@@ -361,7 +375,7 @@ public class AvatarLoader {
                 if (!userId.equals(view.getTag(id.iv_avatar)))
                     return null;
 
-                final BitmapDrawable image = getImage(userId);
+                final BitmapDrawable image = getImage(user);
                 if (image != null)
                     return image;
                 else
