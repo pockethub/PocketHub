@@ -16,3 +16,4 @@ gen-external-apklibs
 *.iml
 .DS_Store
 *.swp
+out

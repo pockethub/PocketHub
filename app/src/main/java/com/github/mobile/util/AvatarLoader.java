@@ -25,6 +25,7 @@ import android.graphics.BitmapFactory.Options;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -140,15 +141,19 @@ public class AvatarLoader {
         return BitmapFactory.decodeFile(file.getAbsolutePath(), options);
     }
 
+    private String getAvatarFilenameForUrl(String avatarUrl) {
+        return Base64.encodeToString(avatarUrl.getBytes(), Base64.DEFAULT);
+    }
+
     /**
      * Fetch avatar from URL
      *
      * @param url
-     * @param userId
+     * @param cachedAvatarFilename
      * @return bitmap
      */
-    protected BitmapDrawable fetchAvatar(final String url, final String userId) {
-        File rawAvatar = new File(avatarDir, userId + "-raw");
+    protected BitmapDrawable fetchAvatar(final String url, final String cachedAvatarFilename) {
+        File rawAvatar = new File(avatarDir, cachedAvatarFilename + "-raw");
         HttpRequest request = HttpRequest.get(url);
         if (request.ok())
             request.receive(rawAvatar);
@@ -168,7 +173,7 @@ public class AvatarLoader {
             return null;
         }
 
-        File roundedAvatar = new File(avatarDir, userId);
+        File roundedAvatar = new File(avatarDir, cachedAvatarFilename);
         FileOutputStream output = null;
         try {
             output = new FileOutputStream(roundedAvatar);
@@ -232,11 +237,12 @@ public class AvatarLoader {
 
             @Override
             public BitmapDrawable call() throws Exception {
-                final BitmapDrawable image = getImageBy(userId);
+                final String avatarFilename = getAvatarFilenameForUrl(getAvatarUrl(user));
+                final BitmapDrawable image = getImageBy(avatarFilename);
                 if (image != null)
                     return image;
                 else
-                    return fetchAvatar(avatarUrl, userId);
+                    return fetchAvatar(avatarUrl, avatarFilename);
             }
 
             @Override
@@ -361,16 +367,16 @@ public class AvatarLoader {
                 if (!userId.equals(view.getTag(id.iv_avatar)))
                     return null;
 
-                final BitmapDrawable image = getImageBy(userId);
+                final String avatarFilename = getAvatarFilenameForUrl(avatarUrl);
+                final BitmapDrawable image = getImageBy(avatarFilename);
                 if (image != null)
                     return image;
                 else
-                    return fetchAvatar(avatarUrl, userId);
+                    return fetchAvatar(avatarUrl, avatarFilename);
             }
 
             @Override
-            protected void onSuccess(final BitmapDrawable image)
-                    throws Exception {
+            protected void onSuccess(final BitmapDrawable image) throws Exception {
                 if (image == null)
                     return;
                 loaded.put(userId, image);
