@@ -190,11 +190,11 @@ public class AvatarLoader {
      * Fetch avatar from URL
      *
      * @param url
-     * @param userId
+     * @param cachedAvatarFilename
      * @return bitmap
      */
-    protected BitmapDrawable fetchAvatar(final String url, final String userId) {
-        File rawAvatar = new File(avatarDir, userId + "-raw");
+    protected BitmapDrawable fetchAvatar(final String url, final String cachedAvatarFilename) {
+        File rawAvatar = new File(avatarDir, cachedAvatarFilename + "-raw");
         HttpRequest request = HttpRequest.get(url);
         if (request.ok())
             request.receive(rawAvatar);
@@ -214,7 +214,7 @@ public class AvatarLoader {
             return null;
         }
 
-        File roundedAvatar = new File(avatarDir, userId);
+        File roundedAvatar = new File(avatarDir, cachedAvatarFilename);
         FileOutputStream output = null;
         try {
             output = new FileOutputStream(roundedAvatar);
@@ -282,7 +282,7 @@ public class AvatarLoader {
                 if (image != null)
                     return image;
                 else
-                    return fetchAvatar(avatarUrl, userId);
+                    return fetchAvatar(avatarUrl, getAvatarFilename(user));
             }
 
             @Override
@@ -378,7 +378,7 @@ public class AvatarLoader {
                 if (image != null)
                     return image;
                 else
-                    return fetchAvatar(loadUrl, userId);
+                    return fetchAvatar(loadUrl, getAvatarFilename(user));
             }
 
             @Override
