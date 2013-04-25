@@ -21,6 +21,18 @@ import static com.github.mobile.Intents.EXTRA_PATH;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import static com.github.mobile.util.PreferenceUtils.RENDER_MARKDOWN;
 import static com.github.mobile.util.PreferenceUtils.WRAP;
+
+import java.io.Serializable;
+
+import org.eclipse.egit.github.core.Blob;
+import org.eclipse.egit.github.core.IRepositoryIdProvider;
+import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.util.EncodingUtils;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -33,6 +45,7 @@ import android.widget.ProgressBar;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.kevinsawicki.wishlist.LightDialog;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
@@ -42,21 +55,16 @@ import com.github.mobile.R.string;
 import com.github.mobile.core.code.RefreshBlobTask;
 import com.github.mobile.core.commit.CommitUtils;
 import com.github.mobile.ui.BaseActivity;
+import com.github.mobile.ui.LightProgressDialog;
 import com.github.mobile.ui.MarkdownLoader;
 import com.github.mobile.util.AvatarLoader;
+import com.github.mobile.util.GingerbreadFileGetter;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.PreferenceUtils;
 import com.github.mobile.util.ShareUtils;
 import com.github.mobile.util.SourceEditor;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
-
-import java.io.Serializable;
-
-import org.eclipse.egit.github.core.Blob;
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.util.EncodingUtils;
 
 /**
  * Activity to view a file on a branch
@@ -147,6 +155,8 @@ public class BranchFileViewActivity extends BaseActivity implements
     @Inject
     private HttpImageGetter imageGetter;
 
+    private LightProgressDialog downloading;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,7 +184,10 @@ public class BranchFileViewActivity extends BaseActivity implements
         actionBar.setSubtitle(branch);
         avatars.bind(actionBar, repo.getOwner());
 
-        loadContent();
+        if (isPDFFile)
+            loadPdfContent();
+        else
+            loadContent();
     }
 
     @Override
@@ -186,7 +199,8 @@ public class BranchFileViewActivity extends BaseActivity implements
             wrapItem.setEnabled(false);
             wrapItem.setVisible(false);
         } else {
-            if (PreferenceUtils.getCodePreferences(this).getBoolean(WRAP, false))
+            if (PreferenceUtils.getCodePreferences(this)
+                    .getBoolean(WRAP, false))
                 wrapItem.setTitle(string.disable_wrapping);
             else
                 wrapItem.setTitle(string.enable_wrapping);
@@ -344,4 +358,53 @@ public class BranchFileViewActivity extends BaseActivity implements
         }.execute();
     }
 
+    private void loadPdfContent() {
+        ViewUtils.setGone(loadingBar, false);
+        ViewUtils.setGone(codeView, true);
+
+        LightDialog dialog = LightDialog
+                .create(this, file,
+                        "Do you want to download this file and view it using an installed PDF reader?");
+        dialog.setButton(AlertDialog.BUTTON_POSITIVE, "Download",
+                (OnClickListener) new OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        downloadContent();
+                    }
+                });
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel",
+                (OnClickListener) new OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+        dialog.setOnCancelListener(new OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                finish();
+            }
+        });
+        dialog.show();
+    }
+
+    private void downloadContent() {
+        final GingerbreadFileGetter getter = new GingerbreadFileGetter(this,
+                "https://github.com/" + repo.generateId() + "/raw/" + branch
+                        + '/' + path);
+
+        downloading = (LightProgressDialog) LightProgressDialog.create(
+                BranchFileViewActivity.this, "Downloading\n" + file + "...");
+        downloading.setCancelable(true);
+        downloading.setCanceledOnTouchOutside(false);
+        downloading.setOnCancelListener(new OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                getter.cancelDownload();
+            }
+        });
+        downloading.show();
+
+        getter.beginDownload();
+    }
 }

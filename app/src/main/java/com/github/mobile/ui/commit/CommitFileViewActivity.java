@@ -149,7 +149,8 @@ public class CommitFileViewActivity extends BaseActivity {
             wrapItem.setEnabled(false);
             wrapItem.setVisible(false);
         } else {
-            if (PreferenceUtils.getCodePreferences(this).getBoolean(WRAP, false))
+            if (PreferenceUtils.getCodePreferences(this)
+                    .getBoolean(WRAP, false))
                 wrapItem.setTitle(string.disable_wrapping);
             else
                 wrapItem.setTitle(string.enable_wrapping);

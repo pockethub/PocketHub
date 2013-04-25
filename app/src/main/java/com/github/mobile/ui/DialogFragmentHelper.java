@@ -111,7 +111,7 @@ public abstract class DialogFragmentHelper extends RoboDialogFragment implements
     /**
      * Get message
      *
-     * @return mesage
+     * @return message
      */
     protected String getMessage() {
         return getArguments().getString(ARG_MESSAGE);
