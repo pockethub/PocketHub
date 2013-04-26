@@ -127,10 +127,7 @@ public class RepositoryViewActivity extends
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionsMenu) {
-        MenuInflater inflater = getSupportMenuInflater();
-        inflater.inflate(menu.repository_star, optionsMenu);
-        inflater.inflate(menu.repository_share, optionsMenu);
-
+        getSupportMenuInflater().inflate(menu.repository, optionsMenu);
         return super.onCreateOptionsMenu(optionsMenu);
     }
 
