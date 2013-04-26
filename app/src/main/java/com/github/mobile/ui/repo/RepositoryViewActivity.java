@@ -26,6 +26,7 @@ import static com.github.mobile.util.TypefaceUtils.ICON_ISSUE_OPEN;
 import static com.github.mobile.util.TypefaceUtils.ICON_NEWS;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -174,7 +175,7 @@ public class RepositoryViewActivity extends
             starRepository();
             return true;
         case id.m_share:
-            shareRepositoryURL();
+            shareRepository();
             return true;
         case android.R.id.home:
             finish();
@@ -275,9 +276,12 @@ public class RepositoryViewActivity extends
         }.execute();
     }
 
-    private void shareRepositoryURL() {
+    private void shareRepository() {
+        String repoUrl = repository.getHtmlUrl();
+        if (TextUtils.isEmpty(repoUrl))
+          repoUrl = "https://github.com/" + repository.generateId();
         Intent sharingIntent = ShareUtils.create(repository.generateId(),
-                                                 repository.getHtmlUrl());
+                                                 repoUrl);
         startActivity(sharingIntent);
     }
 }
