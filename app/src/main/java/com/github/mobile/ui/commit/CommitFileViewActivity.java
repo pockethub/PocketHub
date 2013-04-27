@@ -15,12 +15,27 @@
  */
 package com.github.mobile.ui.commit;
 
+import static android.content.Intent.ACTION_VIEW;
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.GINGERBREAD;
 import static com.github.mobile.Intents.EXTRA_BASE;
 import static com.github.mobile.Intents.EXTRA_HEAD;
 import static com.github.mobile.Intents.EXTRA_PATH;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import static com.github.mobile.util.PreferenceUtils.WRAP;
+
+import java.io.File;
+
+import org.eclipse.egit.github.core.Blob;
+import org.eclipse.egit.github.core.CommitFile;
+import org.eclipse.egit.github.core.Repository;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -30,6 +45,7 @@ import android.widget.ProgressBar;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.kevinsawicki.wishlist.LightDialog;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
@@ -40,15 +56,13 @@ import com.github.mobile.core.code.RefreshBlobTask;
 import com.github.mobile.core.commit.CommitUtils;
 import com.github.mobile.ui.BaseActivity;
 import com.github.mobile.util.AvatarLoader;
+import com.github.mobile.util.GingerbreadFileGetter;
+import com.github.mobile.util.GingerbreadFileGetter.FileGetterListener;
 import com.github.mobile.util.PreferenceUtils;
 import com.github.mobile.util.ShareUtils;
 import com.github.mobile.util.SourceEditor;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
-
-import org.eclipse.egit.github.core.Blob;
-import org.eclipse.egit.github.core.CommitFile;
-import org.eclipse.egit.github.core.Repository;
 
 /**
  * Activity to display the contents of a file in a commit
@@ -56,6 +70,8 @@ import org.eclipse.egit.github.core.Repository;
 public class CommitFileViewActivity extends BaseActivity {
 
     private static final String TAG = "CommitFileViewActivity";
+
+    private static final int RESULT_FINISH = 1;
 
     private static final String URL_GOOGLEDOCS = "https://docs.google.com/gview?embedded=true&url=";
 
@@ -95,6 +111,8 @@ public class CommitFileViewActivity extends BaseActivity {
 
     private String path;
 
+    private String file;
+
     private boolean isPDFFile;
 
     private ProgressBar loadingBar;
@@ -120,7 +138,7 @@ public class CommitFileViewActivity extends BaseActivity {
         loadingBar = finder.find(id.pb_loading);
         codeView = finder.find(id.wv_code);
 
-        String file = CommitUtils.getName(path);
+        file = CommitUtils.getName(path);
         isPDFFile = isPDF(file);
 
         editor = new SourceEditor(codeView);
@@ -137,7 +155,10 @@ public class CommitFileViewActivity extends BaseActivity {
                 + CommitUtils.abbreviate(commit));
         avatars.bind(actionBar, repo.getOwner());
 
-        loadContent();
+        if (isPDFFile && (SDK_INT >= GINGERBREAD))
+            loadPdfContent();
+        else
+            loadContent();
     }
 
     @Override
@@ -227,4 +248,74 @@ public class CommitFileViewActivity extends BaseActivity {
             }
         }.execute();
     }
+
+    private void loadPdfContent() {
+        ViewUtils.setGone(loadingBar, false);
+        ViewUtils.setGone(codeView, true);
+
+        LightDialog dialog = LightDialog
+                .create(this,
+                        file,
+                        "Do you want to download this file and view it using an installed viewer application?");
+        dialog.setButton(AlertDialog.BUTTON_POSITIVE, "Download",
+                (OnClickListener) new OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        downloadContent();
+                    }
+                });
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel",
+                (OnClickListener) new OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+        dialog.setOnCancelListener(new OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                finish();
+            }
+        });
+        dialog.show();
+    }
+
+    private void downloadContent() {
+        GingerbreadFileGetter getter = new GingerbreadFileGetter(this,
+                "https://github.com/" + repo.generateId() + "/raw/" + commit
+                        + '/' + path);
+
+        getter.setFileGetterListener(new FileGetterListener() {
+
+            @Override
+            public void onDownloadComplete(boolean success, File file) {
+                if (success) {
+                    Intent intent = new Intent(ACTION_VIEW);
+                    intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivityForResult(intent, RESULT_FINISH);
+                } else {
+                    ToastUtils.show(CommitFileViewActivity.this,
+                            "Download failed, loading internally");
+                    loadContent();
+                }
+            }
+
+            @Override
+            public void onDownloadCancel() {
+                finish();
+            }
+        });
+
+        getter.beginDownload();
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+        case RESULT_FINISH:
+            finish();
+            break;
+        }
+    }
+
 }

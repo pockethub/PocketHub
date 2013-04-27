@@ -15,6 +15,9 @@
  */
 package com.github.mobile.ui.ref;
 
+import static android.content.Intent.ACTION_VIEW;
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.GINGERBREAD;
 import static com.github.mobile.Intents.EXTRA_BASE;
 import static com.github.mobile.Intents.EXTRA_HEAD;
 import static com.github.mobile.Intents.EXTRA_PATH;
@@ -22,7 +25,9 @@ import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import static com.github.mobile.util.PreferenceUtils.RENDER_MARKDOWN;
 import static com.github.mobile.util.PreferenceUtils.WRAP;
 
+import java.io.File;
 import java.io.Serializable;
+import java.util.Locale;
 
 import org.eclipse.egit.github.core.Blob;
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
@@ -34,6 +39,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -55,10 +61,10 @@ import com.github.mobile.R.string;
 import com.github.mobile.core.code.RefreshBlobTask;
 import com.github.mobile.core.commit.CommitUtils;
 import com.github.mobile.ui.BaseActivity;
-import com.github.mobile.ui.LightProgressDialog;
 import com.github.mobile.ui.MarkdownLoader;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.GingerbreadFileGetter;
+import com.github.mobile.util.GingerbreadFileGetter.FileGetterListener;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.PreferenceUtils;
 import com.github.mobile.util.ShareUtils;
@@ -78,6 +84,8 @@ public class BranchFileViewActivity extends BaseActivity implements
 
     private static final String ARG_REPO = "repo";
 
+    private static final int RESULT_FINISH = 1;
+
     private static final String[] MARKDOWN_EXTENSIONS = { ".md", ".mkdn",
             ".mdwn", ".mdown", ".markdown", ".mkd", ".mkdown", ".ron" };
 
@@ -86,7 +94,7 @@ public class BranchFileViewActivity extends BaseActivity implements
             return false;
 
         for (String extension : MARKDOWN_EXTENSIONS)
-            if (name.endsWith(extension))
+            if (name.toLowerCase(Locale.ENGLISH).endsWith(extension))
                 return true;
 
         return false;
@@ -98,7 +106,7 @@ public class BranchFileViewActivity extends BaseActivity implements
         if (TextUtils.isEmpty(name))
             return false;
 
-        if (name.endsWith(".pdf"))
+        if (name.toLowerCase(Locale.ENGLISH).endsWith(".pdf"))
             return true;
 
         return false;
@@ -155,8 +163,6 @@ public class BranchFileViewActivity extends BaseActivity implements
     @Inject
     private HttpImageGetter imageGetter;
 
-    private LightProgressDialog downloading;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -184,7 +190,7 @@ public class BranchFileViewActivity extends BaseActivity implements
         actionBar.setSubtitle(branch);
         avatars.bind(actionBar, repo.getOwner());
 
-        if (isPDFFile)
+        if (isPDFFile && (SDK_INT >= GINGERBREAD))
             loadPdfContent();
         else
             loadContent();
@@ -363,8 +369,9 @@ public class BranchFileViewActivity extends BaseActivity implements
         ViewUtils.setGone(codeView, true);
 
         LightDialog dialog = LightDialog
-                .create(this, file,
-                        "Do you want to download this file and view it using an installed PDF reader?");
+                .create(this,
+                        file,
+                        "Do you want to download this file and view it using an installed viewer application?");
         dialog.setButton(AlertDialog.BUTTON_POSITIVE, "Download",
                 (OnClickListener) new OnClickListener() {
                     @Override
@@ -389,22 +396,40 @@ public class BranchFileViewActivity extends BaseActivity implements
     }
 
     private void downloadContent() {
-        final GingerbreadFileGetter getter = new GingerbreadFileGetter(this,
+        GingerbreadFileGetter getter = new GingerbreadFileGetter(this,
                 "https://github.com/" + repo.generateId() + "/raw/" + branch
                         + '/' + path);
 
-        downloading = (LightProgressDialog) LightProgressDialog.create(
-                BranchFileViewActivity.this, "Downloading\n" + file + "...");
-        downloading.setCancelable(true);
-        downloading.setCanceledOnTouchOutside(false);
-        downloading.setOnCancelListener(new OnCancelListener() {
+        getter.setFileGetterListener(new FileGetterListener() {
+
             @Override
-            public void onCancel(DialogInterface dialog) {
-                getter.cancelDownload();
+            public void onDownloadComplete(boolean success, File file) {
+                if (success) {
+                    Intent intent = new Intent(ACTION_VIEW);
+                    intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivityForResult(intent, RESULT_FINISH);
+                } else {
+                    ToastUtils.show(BranchFileViewActivity.this,
+                            "Download failed, loading internally");
+                    loadContent();
+                }
+            }
+
+            @Override
+            public void onDownloadCancel() {
+                finish();
             }
         });
-        downloading.show();
 
         getter.beginDownload();
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+        case RESULT_FINISH:
+            finish();
+            break;
+        }
     }
 }

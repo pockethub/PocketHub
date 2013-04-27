@@ -14,14 +14,19 @@ import android.app.DownloadManager.Query;
 import android.app.DownloadManager.Request;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import com.github.mobile.core.commit.CommitUtils;
+import com.github.mobile.ui.LightProgressDialog;
 
 /**
  * Getter for a file
@@ -35,17 +40,42 @@ public class GingerbreadFileGetter {
 
     private File destination;
 
+    private LightProgressDialog progress;
+
     private DownloadManager dm;
 
     private BroadcastReceiver receiver;
 
     private long downloadId;
 
-    public interface OnDownloadCompleteListener {
-        public abstract void onDownloadCompleted(boolean result, File file);
+    /**
+     * Listener for {@link GingerbreadFileGetter} complete/cancelled downloads
+     */
+    public interface FileGetterListener {
+        /**
+         * Callback for when download is complete
+         *
+         * @param success
+         * @param file
+         */
+        public abstract void onDownloadComplete(boolean success, File file);
+
+        /**
+         * Callback for when download is cancelled
+         */
+        public abstract void onDownloadCancel();
     }
 
-    OnDownloadCompleteListener onDownloadCompleteListener;
+    FileGetterListener fileGetterLisnener;
+
+    private static LightProgressDialog createProgressDialog(Context context,
+            String title) {
+        LightProgressDialog dialog = (LightProgressDialog) LightProgressDialog
+                .create(context, title);
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(false);
+        return dialog;
+    }
 
     /**
      * Create file getter for context
@@ -56,10 +86,9 @@ public class GingerbreadFileGetter {
     public GingerbreadFileGetter(Context context, String source) {
         this.context = context;
         this.source = source;
-        this.destination = new File(
-                Environment
-                        .getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS),
-                CommitUtils.getName(source));
+        this.destination = getDownloadDestination(CommitUtils.getName(source));
+        this.progress = (LightProgressDialog) LightProgressDialog.create(
+                context, "Downloading\n" + CommitUtils.getName(source) + "...");
         this.dm = (DownloadManager) context.getSystemService(DOWNLOAD_SERVICE);
         this.receiver = new BroadcastReceiver() {
             @Override
@@ -67,30 +96,70 @@ public class GingerbreadFileGetter {
                 GingerbreadFileGetter.this.onReceive(context, intent);
             }
         };
-        registerDownloadReceiver();
     }
 
+    /**
+     * Begin downloading the specified file
+     */
     public void beginDownload() {
+        if (destination == null) {
+            progress.dismiss();
+            fileGetterLisnener.onDownloadComplete(false, null);
+            return;
+        }
+
+        registerDownloadReceiver();
+
+        String title = "Downloading\n" + CommitUtils.getName(source) + "...";
+        progress = createProgressDialog(context, title);
+        progress.setOnCancelListener(new OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                GingerbreadFileGetter.this.cancelDownload();
+            }
+        });
         Request request = new Request(Uri.parse(source));
         request.setDestinationUri(Uri.fromFile(destination));
         request.setVisibleInDownloadsUi(true);
 
+        progress.show();
         downloadId = dm.enqueue(request);
     }
 
+    /**
+     * Cancel currently downloading file and remove it from the download
+     * manager. If there is a downloaded file, partial or complete, it is
+     * deleted.
+     */
     public void cancelDownload() {
+        progress.dismiss();
+
+        Toast toast = Toast.makeText(context, "Download cancelled",
+                Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+
         dm.remove(downloadId);
         unregisterDownloadReceiver();
+
+        fileGetterLisnener.onDownloadCancel();
     }
 
-    public void setDownloadCompleteListener(OnDownloadCompleteListener listener) {
-        onDownloadCompleteListener = listener;
+    /**
+     * Set the {@link FileGetterListener}
+     *
+     * @param listener
+     */
+    public void setFileGetterListener(FileGetterListener listener) {
+        fileGetterLisnener = listener;
     }
 
     private void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         if (!ACTION_DOWNLOAD_COMPLETE.equals(action))
             return;
+
+        progress.dismiss();
 
         Query query = new Query();
         query.setFilterById(downloadId);
@@ -102,12 +171,11 @@ public class GingerbreadFileGetter {
         int colStatus = c.getColumnIndex(COLUMN_STATUS);
         if (STATUS_SUCCESSFUL == c.getInt(colStatus)) {
             if (destination.exists())
-                onDownloadCompleteListener.onDownloadCompleted(true,
-                        destination);
+                fileGetterLisnener.onDownloadComplete(true, destination);
             else
-                onDownloadCompleteListener.onDownloadCompleted(false, null);
+                fileGetterLisnener.onDownloadComplete(false, null);
         } else {
-            onDownloadCompleteListener.onDownloadCompleted(false, null);
+            fileGetterLisnener.onDownloadComplete(false, null);
         }
 
         unregisterDownloadReceiver();
@@ -120,6 +188,17 @@ public class GingerbreadFileGetter {
 
     private void unregisterDownloadReceiver() {
         context.unregisterReceiver(receiver);
+    }
+
+    private File getDownloadDestination(String file) {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state))
+            return new File(
+                    Environment
+                            .getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS),
+                    file);
+        else
+            return null;
     }
 
 }
