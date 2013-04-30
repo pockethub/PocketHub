@@ -395,6 +395,7 @@ public class AvatarLoader {
             return setImage(loadingAvatar, view);
 
         String avatarUrl = getAvatarUrl(user);
+
         if (TextUtils.isEmpty(avatarUrl))
             return setImage(loadingAvatar, view);
 
@@ -407,7 +408,6 @@ public class AvatarLoader {
         setImage(loadingAvatar, view, userId);
 
         final String loadUrl = avatarUrl;
-
         new FetchAvatarTask(context) {
 
             @Override
