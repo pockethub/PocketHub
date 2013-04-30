@@ -46,6 +46,7 @@ import com.github.mobile.ui.BaseActivity;
 import com.github.mobile.ui.MarkdownLoader;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
+import com.github.mobile.util.MarkdownUtils;
 import com.github.mobile.util.PreferenceUtils;
 import com.github.mobile.util.ShareUtils;
 import com.github.mobile.util.SourceEditor;
@@ -70,20 +71,6 @@ public class BranchFileViewActivity extends BaseActivity implements
     private static final String ARG_TEXT = "text";
 
     private static final String ARG_REPO = "repo";
-
-    private static final String[] MARKDOWN_EXTENSIONS = { ".md", ".mkdn",
-            ".mdwn", ".mdown", ".markdown", ".mkd", ".mkdown", ".ron" };
-
-    private static boolean isMarkdown(final String name) {
-        if (TextUtils.isEmpty(name))
-            return false;
-
-        for (String extension : MARKDOWN_EXTENSIONS)
-            if (name.endsWith(extension))
-                return true;
-
-        return false;
-    }
 
     /**
      * Create intent to show file in commit
@@ -149,7 +136,7 @@ public class BranchFileViewActivity extends BaseActivity implements
         codeView = finder.find(id.wv_code);
 
         file = CommitUtils.getName(path);
-        isMarkdownFile = isMarkdown(file);
+        isMarkdownFile = MarkdownUtils.isMarkdown(file);
         editor = new SourceEditor(codeView);
         editor.setWrap(PreferenceUtils.getCodePreferences(this).getBoolean(
                 WRAP, false));
