@@ -15,13 +15,31 @@
  */
 package com.github.mobile.ui.ref;
 
+import static android.content.Intent.ACTION_VIEW;
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.GINGERBREAD;
 import static com.github.mobile.Intents.EXTRA_BASE;
 import static com.github.mobile.Intents.EXTRA_HEAD;
 import static com.github.mobile.Intents.EXTRA_PATH;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import static com.github.mobile.util.PreferenceUtils.RENDER_MARKDOWN;
 import static com.github.mobile.util.PreferenceUtils.WRAP;
+
+import java.io.File;
+import java.io.Serializable;
+import java.util.Locale;
+
+import org.eclipse.egit.github.core.Blob;
+import org.eclipse.egit.github.core.IRepositoryIdProvider;
+import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.util.EncodingUtils;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -33,6 +51,7 @@ import android.widget.ProgressBar;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.kevinsawicki.wishlist.LightDialog;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
@@ -44,19 +63,14 @@ import com.github.mobile.core.commit.CommitUtils;
 import com.github.mobile.ui.BaseActivity;
 import com.github.mobile.ui.MarkdownLoader;
 import com.github.mobile.util.AvatarLoader;
+import com.github.mobile.util.GingerbreadFileGetter;
+import com.github.mobile.util.GingerbreadFileGetter.FileGetterListener;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.PreferenceUtils;
 import com.github.mobile.util.ShareUtils;
 import com.github.mobile.util.SourceEditor;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
-
-import java.io.Serializable;
-
-import org.eclipse.egit.github.core.Blob;
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.util.EncodingUtils;
 
 /**
  * Activity to view a file on a branch
@@ -70,6 +84,8 @@ public class BranchFileViewActivity extends BaseActivity implements
 
     private static final String ARG_REPO = "repo";
 
+    private static final int RESULT_FINISH = 1;
+
     private static final String[] MARKDOWN_EXTENSIONS = { ".md", ".mkdn",
             ".mdwn", ".mdown", ".markdown", ".mkd", ".mkdown", ".ron" };
 
@@ -78,14 +94,26 @@ public class BranchFileViewActivity extends BaseActivity implements
             return false;
 
         for (String extension : MARKDOWN_EXTENSIONS)
-            if (name.endsWith(extension))
+            if (name.toLowerCase(Locale.ENGLISH).endsWith(extension))
                 return true;
 
         return false;
     }
 
+    private static final String URL_GOOGLEDOCS = "https://docs.google.com/gview?embedded=true&url=";
+
+    private static boolean isPDF(final String name) {
+        if (TextUtils.isEmpty(name))
+            return false;
+
+        if (name.toLowerCase(Locale.ENGLISH).endsWith(".pdf"))
+            return true;
+
+        return false;
+    }
+
     /**
-     * Create intent to show file in commit
+     * Create intent to show file in branch
      *
      * @param repository
      * @param branch
@@ -114,6 +142,8 @@ public class BranchFileViewActivity extends BaseActivity implements
     private String branch;
 
     private boolean isMarkdownFile;
+
+    private boolean isPDFFile;
 
     private String renderedMarkdown;
 
@@ -149,6 +179,8 @@ public class BranchFileViewActivity extends BaseActivity implements
 
         file = CommitUtils.getName(path);
         isMarkdownFile = isMarkdown(file);
+        isPDFFile = isPDF(file);
+
         editor = new SourceEditor(codeView);
         editor.setWrap(PreferenceUtils.getCodePreferences(this).getBoolean(
                 WRAP, false));
@@ -158,7 +190,10 @@ public class BranchFileViewActivity extends BaseActivity implements
         actionBar.setSubtitle(branch);
         avatars.bind(actionBar, repo.getOwner());
 
-        loadContent();
+        if (isPDFFile && (SDK_INT >= GINGERBREAD))
+            loadPdfContent();
+        else
+            loadContent();
     }
 
     @Override
@@ -166,10 +201,16 @@ public class BranchFileViewActivity extends BaseActivity implements
         getSupportMenuInflater().inflate(menu.file_view, optionsMenu);
 
         MenuItem wrapItem = optionsMenu.findItem(id.m_wrap);
-        if (PreferenceUtils.getCodePreferences(this).getBoolean(WRAP, false))
-            wrapItem.setTitle(string.disable_wrapping);
-        else
-            wrapItem.setTitle(string.enable_wrapping);
+        if (isPDFFile) {
+            wrapItem.setEnabled(false);
+            wrapItem.setVisible(false);
+        } else {
+            if (PreferenceUtils.getCodePreferences(this)
+                    .getBoolean(WRAP, false))
+                wrapItem.setTitle(string.disable_wrapping);
+            else
+                wrapItem.setTitle(string.enable_wrapping);
+        }
 
         markdownItem = optionsMenu.findItem(id.m_render_markdown);
         if (isMarkdownFile) {
@@ -271,6 +312,16 @@ public class BranchFileViewActivity extends BaseActivity implements
         getSupportLoaderManager().restartLoader(0, args, this);
     }
 
+    private void loadPDF() {
+        ViewUtils.setGone(loadingBar, true);
+        ViewUtils.setGone(codeView, false);
+
+        String id = repo.generateId();
+        String PDFUrl = "https://github.com/" + id + "/blob/" + branch + '/'
+                + path + "?raw=true";
+        codeView.loadUrl(URL_GOOGLEDOCS + PDFUrl);
+    }
+
     private void loadContent() {
         ViewUtils.setGone(loadingBar, false);
         ViewUtils.setGone(codeView, true);
@@ -290,10 +341,11 @@ public class BranchFileViewActivity extends BaseActivity implements
                                 BranchFileViewActivity.this).getBoolean(
                                 RENDER_MARKDOWN, true))
                     loadMarkdown();
+                else if (isPDFFile)
+                    loadPDF();
                 else {
                     ViewUtils.setGone(loadingBar, true);
                     ViewUtils.setGone(codeView, false);
-
                     editor.setMarkdown(false).setSource(file, blob);
                 }
             }
@@ -312,4 +364,72 @@ public class BranchFileViewActivity extends BaseActivity implements
         }.execute();
     }
 
+    private void loadPdfContent() {
+        ViewUtils.setGone(loadingBar, false);
+        ViewUtils.setGone(codeView, true);
+
+        LightDialog dialog = LightDialog
+                .create(this,
+                        file,
+                        "Do you want to download this file and view it using an installed viewer application?");
+        dialog.setButton(AlertDialog.BUTTON_POSITIVE, "Download",
+                (OnClickListener) new OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        downloadContent();
+                    }
+                });
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel",
+                (OnClickListener) new OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+        dialog.setOnCancelListener(new OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                finish();
+            }
+        });
+        dialog.show();
+    }
+
+    private void downloadContent() {
+        GingerbreadFileGetter getter = new GingerbreadFileGetter(this,
+                "https://github.com/" + repo.generateId() + "/raw/" + branch
+                        + '/' + path);
+
+        getter.setFileGetterListener(new FileGetterListener() {
+
+            @Override
+            public void onDownloadComplete(boolean success, File file) {
+                if (success) {
+                    Intent intent = new Intent(ACTION_VIEW);
+                    intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivityForResult(intent, RESULT_FINISH);
+                } else {
+                    ToastUtils.show(BranchFileViewActivity.this,
+                            "Download failed, loading internally");
+                    loadContent();
+                }
+            }
+
+            @Override
+            public void onDownloadCancel() {
+                finish();
+            }
+        });
+
+        getter.beginDownload();
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+        case RESULT_FINISH:
+            finish();
+            break;
+        }
+    }
 }
