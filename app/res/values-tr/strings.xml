@@ -22,21 +22,30 @@
     <string name="error_repos_load">Depoları Yükleme Başarısız Oldu</string>
     <string name="error_repo_load">Depo Yükleme Başarısız Oldu</string>
     <string name="error_gist_load">Gist Yükleme Başarısız Oldu</string>
-    <string name="error_news_load">Haber Yükleme Başarısız Oldu</string>
+    <string name="error_news_load">Haberleri Yükleme Başarısız Oldu</string>
     <string name="error_followers_load">Takipçileri Yükleme Başarısız Oldu</string>
     <string name="error_people_load">Kişileri Yükleme Başarısız Oldu</string>
     <string name="error_person_load">Kişiyi Yükleme Başarısız Oldu</string>
-    <string name="error_gist_file_load">Gist Dosyası İçeriği Yükleme Başarısız Oldu</string>
+    <string name="error_gist_file_load">Gist İçeriği Yükleme Başarısız Oldu</string>
     <string name="error_gists_load">Gist\'leri Yükleme Başarısız Oldu</string>
     <string name="error_issue_load">Sorun Yükleme Başarısız Oldu</string>
     <string name="error_collaborators_load">Ortak Çalışanları Yükleme Başarısız Oldu</string>
-    <string name="error_milestones_load">Kilometre Taşlarını Yükleme Başarısız Oldu</string>
+    <string name="error_milestones_load">Dönüm Noktalarını Yükleme Başarısız Oldu</string>
     <string name="error_labels_load">Etiketleri Yükleme Başarısız Oldu</string>
     <string name="error_bookmarks_load">Yer İmlerini Yükleme Başarısız Oldu</string>
     <string name="error_members_load">Üyeleri Yükleme Başarısız Oldu</string>
     <string name="error_commits_load">Onaylamaları Yükleme Başarısız Oldu</string>
     <string name="error_commit_load">Onaylamayı Yükleme Başarısız Oldu</string>
     <string name="error_file_load">Dosya Yükleme Başarısız Oldu</string>
+    <string name="error_code_load">Kod Yükleme Başarısız Oldu</string>
+    <string name="error_refs_load">Dalları &amp; Etiketleri Yükleme Başarısız Oldu</string>
+    <string name="error_following_person">Takip Etme Başarısız Oldu</string>
+    <string name="error_unfollowing_person">Takip Etmeyi Bırakma Başarısız Oldu</string>
+    <string name="error_checking_following_status">Takip Etme Kontrolü Başarısız Oldu</string>
+    <string name="error_starring_repository">Yıldız Koyma Başarısız Oldu</string>
+    <string name="error_unstarring_repository">Yıldızı Kaldırma Başarısız Oldu</string>
+    <string name="error_checking_starring_status">Yıldız Durumunu Kontrol Etme Başarısız Oldu</string>
+    <string name="error_rendering_markdown">Markdown dosyası render edilemdi</string>
     <!--  -->
 
 
@@ -53,10 +62,11 @@
     <string name="loading_people">Kişiler Yükleniyor…</string>
     <string name="loading_gists">Gist\'ler Yükleniyor…</string>
     <string name="loading_collaborators">Ortak Çalışanlar Yükleniyor…</string>
-    <string name="loading_milestones">Kilometre Taşları Yükleniyor…</string>
+    <string name="loading_milestones">Dönüm Noktaları Yükleniyor…</string>
     <string name="loading_labels">Etiketler Yükleniyor…</string>
     <string name="loading_commits">Onaylamalar Yükleniyor…</string>
     <string name="loading_files_and_comments">Dosya &amp; Yorumlar Yükleniyor…</string>
+	<string name="loading_refs">Dallar &amp; Etiketler Yükleniyor…</string>
     <!--  -->
 
 
@@ -77,7 +87,7 @@
     <string name="updating_assignee">Atanan Güncelleniyor…</string>
     <string name="updating_issue">Sorun Güncelleniyor…</string>
     <string name="updating_labels">Etiketler Güncelleniyor…</string>
-    <string name="updating_milestone">Kilometre Taşı Güncelleniyor…</string>
+    <string name="updating_milestone">Dönüm Noktası Güncelleniyor…</string>
     <!--  -->
 
     <string name="app_name">GitHub</string>
@@ -123,22 +133,21 @@
     <string name="repositories">Depolar</string>
     <string name="issues_title">Sorunlar</string>
     <string name="edit_labels">Etiketleri Düzenle</string>
-    <string name="milestone_prefix">Kilometre Taşı</string>
-    <string name="edit_milestone">Kilometre Taşı Düzenle</string>
+    <string name="milestone_prefix">Dönüm Noktası</string>
+    <string name="edit_milestone">Dönüm Noktası Düzenle</string>
     <string name="edit_assignee">Atanan Düzenle</string>
     <string name="description">Tanım</string>
     <string name="gist_description_hint">Android Gist oluşturdu</string>
     <string name="title">Başlık</string>
     <string name="edit">Düzenle</string>
-    <string name="star">Yıldızla</string>
     <string name="starring_gist">Gist Yıldızlanıyor…</string>
-    <string name="unstar">Yıldızı Kaldır</string>
     <string name="unstarring_gist">Gist\'in Yıldızı Kaldırılıyor…</string>
     <string name="accounts_label">Hesaplar</string>
     <string name="select_assignee">Atanmış Seç</string>
-    <string name="select_milestone">Kilometre Taşı Seç</string>
+    <string name="select_milestone">Dönüm Noktası Seç</string>
     <string name="select_labels">Etiket Seç</string>
-    <string name="no_milestone">Kilometre Taşı Yok</string>
+	<string name="select_ref">Bir Dal Veya Etiket Seç</string>
+    <string name="no_milestone">Dönüm Noktası Yok</string>
     <string name="unassigned">Kimse Atanmamış</string>
     <string name="assigned">atanmış</string>
     <string name="no_gists_found">Hiç Gist bulunamadı</string>
@@ -157,7 +166,7 @@
     <string name="status_closed">Kapanmış</string>
     <string name="section_issue_assigned">Şu Kişiye Atanmış :</string>
     <string name="assignee_anyone">Herhangi Biri</string>
-    <string name="section_issue_milestone">Kilometre Taşı:</string>
+    <string name="section_issue_milestone">Dönüm Noktası:</string>
     <string name="none">Hiç</string>
     <string name="section_issue_labels">Etiketler:</string>
     <string name="log_in">Giriş yap</string>
@@ -171,6 +180,10 @@
     <string name="following">Takip Ettikleri</string>
     <string name="followers_self">Takipçilerim</string>
     <string name="following_self">Takip Ettiklerim</string>
+	<string name="follow">Takip Et</string>
+	<string name="unfollow">Takip Etmeyi Bırak</string>
+    <string name="star">Yıldızlar</string>
+    <string name="unstar">Yıldızı Kaldır</string>
     <string name="members">Üyeler</string>
     <string name="closing_issue">Sorun Kapatılıyor…</string>
     <string name="reopening_issue">Sorun Tekrar Açılıyor…</string>
@@ -187,7 +200,7 @@
     <string name="apply">Uygula</string>
     <string name="labels_prefix">Etiketler:</string>
     <string name="assignee">Atanmış</string>
-    <string name="milestone">Kilometre Taşı</string>
+    <string name="milestone">Dönüm Noktası</string>
     <string name="labels">Etiketler</string>
     <string name="issue_confirm_close_message">Bu sorunu kapatmak istediğinizden emin misiniz?</string>
     <string name="issue_confirm_reopen_message">Bu sorunu tekrar açmak istediğinizden emin misiniz?</string>
@@ -215,5 +228,37 @@
     <string name="comparing_commits">{0} onay karşılaştırılıyor</string>
     <string name="enable_wrapping">Sözcük Kaydır</string>
     <string name="disable_wrapping">Sözcük Kaydırmayı Kapat</string>
+	<string name="code">Kod</string>
+    <string name="following_user">Takip Edilme İşlemi Devam Ediyor…</string>
+    <string name="unfollowing_user">Takip Edilme Kaldırılıyor…</string>
+    <string name="starring_repository">Yıldız Konuyor…</string>
+    <string name="unstarring_repository">Yıldız Kaldırılıyor…</string>
+    <string name="navigate_to">Yönlendiriliyor…</string>
+
+    <!-- Tab titles, should be as short as possible -->
+    <string name="tab_repositories">Depolar</string>
+    <string name="tab_news">Haberler</string>
+    <string name="tab_following_self">Takip Ettiklerim</string>
+    <string name="tab_followers_self">Takip Edenler</string>
+    <string name="tab_following">Takip Ettikleri</string>
+    <string name="tab_followers">Takip Edenler</string>
+    <string name="tab_members">Üyeler</string>
+    <string name="tab_code">Kod</string>
+    <string name="tab_commits">Onaylamalar</string>
+    <string name="tab_issues">Durumlar</string>
+    <string name="tab_watched">İzlediklerim</string>
+    <string name="tab_assigned">Atandıklarım</string>
+    <string name="tab_created">Yaratılanlar</string>
+    <string name="tab_mentioned">Bahsedilenler</string>
+    <string name="tab_mine">Benim</string>
+    <string name="tab_starred">Yıldızladıklarım</string>
+    <string name="tab_all">Hepsi</string>
+    <!--  -->
+    <string name="share">Paylaş</string>
+    <string name="show_password">Şifre Göster</string>
+    <string name="write">Yaz</string>
+    <string name="preview">Önizleme</string>
+    <string name="show_raw_markdown">Ham markdown dosyasını göster</string>
+    <string name="render_markdown">Markdown dosyasını renderla</string>
 
 </resources>
