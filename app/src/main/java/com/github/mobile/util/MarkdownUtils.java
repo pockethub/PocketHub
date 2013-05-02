@@ -15,6 +15,7 @@
  */
 package com.github.mobile.util;
 
+import static java.util.Locale.US;
 import android.text.TextUtils;
 
 /**
@@ -31,10 +32,11 @@ public class MarkdownUtils {
    * @param name
    * @return true if the name has a markdown extension, false otherwise
    */
-  public static boolean isMarkdown(final String name) {
+  public static boolean isMarkdown(String name) {
       if (TextUtils.isEmpty(name))
           return false;
 
+      name = name.toLowerCase(US);
       for (String extension : MARKDOWN_EXTENSIONS)
           if (name.endsWith(extension))
               return true;
