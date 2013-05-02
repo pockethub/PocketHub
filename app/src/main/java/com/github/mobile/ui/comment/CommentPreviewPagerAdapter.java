@@ -16,7 +16,6 @@
 package com.github.mobile.ui.comment;
 
 import android.support.v4.app.Fragment;
-
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.github.mobile.ui.FragmentPagerAdapter;
 

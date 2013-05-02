@@ -136,9 +136,10 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
     }
 
     private void updateCurrentItem(final int newPosition) {
-        if (newPosition > -1 && newPosition < adapter.getCount()
-                && pager.setItem(newPosition))
+        if (newPosition > -1 && newPosition < adapter.getCount()) {
+            pager.setItem(newPosition);
             setCurrentItem(newPosition);
+        }
     }
 
     private void createPager() {

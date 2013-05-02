@@ -61,7 +61,6 @@ public abstract class CreateCommentActivity extends
         if (applyItem != null)
             applyItem.setEnabled(adapter != null
                     && !TextUtils.isEmpty(adapter.getCommentText()));
-
     }
 
     @Override
