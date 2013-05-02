@@ -500,7 +500,9 @@ public class IssueFragment extends DialogFragment {
 
         switch (requestCode) {
         case ISSUE_EDIT:
-            updateHeader((Issue) data.getSerializableExtra(EXTRA_ISSUE));
+            Issue editedIssue = (Issue) data.getSerializableExtra(EXTRA_ISSUE);
+            bodyImageGetter.encode(editedIssue.getId(), editedIssue.getBodyHtml());
+            updateHeader(editedIssue);
             return;
         case COMMENT_CREATE:
             Comment comment = (Comment) data

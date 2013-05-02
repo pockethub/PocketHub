@@ -132,9 +132,13 @@ public class HttpImageGetter implements ImageGetter {
 
         CharSequence encoded = HtmlUtils.encode(html, loading);
         // Use default encoding if no img tags
-        if (containsImages(html))
-            rawHtmlCache.put(id, encoded);
-        else {
+        if (containsImages(html)) {
+            CharSequence currentEncoded = rawHtmlCache.put(id, encoded);
+            // Remove full html if raw html has changed
+            if (currentEncoded == null
+                || !currentEncoded.toString().equals(encoded.toString()))
+              fullHtmlCache.remove(id);
+        } else {
             rawHtmlCache.remove(id);
             fullHtmlCache.put(id, encoded);
         }
@@ -184,7 +188,6 @@ public class HttpImageGetter implements ImageGetter {
 
             @Override
             protected void onSuccess(final CharSequence html) throws Exception {
-                rawHtmlCache.remove(id);
                 fullHtmlCache.put(id, html);
 
                 if (id.equals(view.getTag()))
