@@ -255,8 +255,7 @@ public class BranchFileViewActivity extends BaseActivity implements
                 EncodingUtils.fromBase64(blob.getContent()));
         Bundle args = new Bundle();
         args.putCharSequence(ARG_TEXT, markdown);
-        if (repo instanceof Serializable)
-            args.putSerializable(ARG_REPO, repo);
+        args.putSerializable(ARG_REPO, repo);
         getSupportLoaderManager().restartLoader(0, args, this);
     }
 
