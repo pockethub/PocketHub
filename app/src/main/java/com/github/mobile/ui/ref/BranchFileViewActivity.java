@@ -256,7 +256,7 @@ public class BranchFileViewActivity extends BaseActivity implements
         Bundle args = new Bundle();
         args.putCharSequence(ARG_TEXT, markdown);
         if (repo instanceof Serializable)
-            args.putSerializable(ARG_REPO, (Serializable) repo);
+            args.putSerializable(ARG_REPO, repo);
         getSupportLoaderManager().restartLoader(0, args, this);
     }
 

@@ -70,7 +70,7 @@ public class HttpImageGetter implements ImageGetter {
     }
 
     private static boolean containsImages(final String html) {
-        return html.indexOf("<img") != -1;
+        return html.contains("<img");
     }
 
     private final LoadingImageGetter loading;
