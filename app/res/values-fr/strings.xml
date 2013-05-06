@@ -104,9 +104,9 @@
     <string name="creating_gist">Création d\'un Gist…</string>
     <string name="create">Créer</string>
     <string name="create_gist">Créer un Gist</string>
-    <string name="gist_content_hint">puts \'Hello World!\'</string>
+    <string name="gist_content_hint">\'Hello World!\'</string>
     <string name="make_public">Rendre ce Gist public</string>
-    <string name="gist_file_name_hint">file.rb</string>
+    <string name="gist_file_name_hint">fichier.rb</string>
     <string name="gist">Gist</string>
     <string name="comments">Commentaires</string>
     <string name="files">Fichiers</string>
@@ -129,7 +129,7 @@
     <string name="filter_issues_title">Filtrer les tickets</string>
     <string name="create_comment_title">Ajouter un commentaire</string>
     <string name="comment_hint">Entrer un commentaire</string>
-    <string name="show_more">Affichier plus…</string>
+    <string name="show_more">Afficher plus…</string>
     <string name="repositories">Dépôts</string>
     <string name="issues_title">Tickets</string>
     <string name="edit_labels">Modifier les libellés</string>
@@ -146,7 +146,7 @@
     <string name="select_assignee">Sélectionner l\'assigné</string>
     <string name="select_milestone">Sélectionner le jalon</string>
     <string name="select_labels">Sélectionner les libellés</string>
-    <string name="select_ref">Sélectionner branche ou tag</string>
+    <string name="select_ref">Sélectionner une branche ou un tag</string>
     <string name="no_milestone">Aucun jalon</string>
     <string name="unassigned">Personne n\'est assigné</string>
     <string name="assigned">est assigné</string>
@@ -172,8 +172,8 @@
     <string name="log_in">Se connecter</string>
     <string name="signup_link">Nouveau sur GitHub\u00a0? &lt;a href=\"https://github.com/plans\">Cliquez ici&lt;/a> pour vous inscrire</string>
     <string name="connection_failed">Impossible de se connecter à GitHub</string>
-    <string name="invalid_login_or_password">Veuillez entrer un login et mot de passe valides</string>
-    <string name="invalid_password">Veuillez entrer un mot de passe valide.</string>
+    <string name="invalid_login_or_password">Veuillez entrer un login et un mot de passe valides</string>
+    <string name="invalid_password">Veuillez entrer un mot de passe valide</string>
     <string name="password">Mot de passe</string>
     <string name="login_or_email">Login ou Email</string>
     <string name="followers">Abonnés</string>
@@ -222,7 +222,7 @@
     <string name="parent_prefix">Parent\u0020</string>
     <string name="authored">auteur</string>
     <string name="committed">committé</string>
-    <string name="diff_line_message">Que voulez-vous faire?</string>
+    <string name="diff_line_message">Que voulez-vous faire\u00a0?</string>
     <string name="comment_on_line">Commenter la ligne</string>
     <string name="view_entire_file">Voir fichier complet</string>
     <string name="comparing_commits">Comparaison {0} commits</string>
@@ -231,12 +231,12 @@
     <string name="code">Code</string>
     <string name="following_user">Abonnement…</string>
     <string name="unfollowing_user">Désabonnement…</string>
-    <string name="starring_repository">Ajout aux favrois…</string>
+    <string name="starring_repository">Ajout aux favoris…</string>
     <string name="unstarring_repository">Supprimer des favoris…</string>
     <string name="navigate_to">Aller à…</string>
 
-    <!-- Tab titles, should be as short as possible -->
-    <string name="tab_repositories">repositories</string>
+    <!-- Titres des onglets, doivent être aussi courts que possible -->
+    <string name="tab_repositories">dépôts</string>
     <string name="tab_news">nouvelles</string>
     <string name="tab_following_self">abonnements</string>
     <string name="tab_followers_self">abonnés</string>
@@ -256,7 +256,7 @@
     <!--  -->
     <string name="share">Partager</string>
     <string name="show_password">Voir mot de passe</string>
-    <string name="write">Ecrire</string>
+    <string name="write">Écrire</string>
     <string name="preview">Pré-visualiser</string>
     <string name="show_raw_markdown">Afficher la syntaxe markdown</string>
     <string name="render_markdown">Afficher le rendu markdown</string>
