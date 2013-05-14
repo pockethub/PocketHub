@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<resources>
+
+    <!-- Error messages -->
+    <string name="error_orgs_load">Η φόρτωση λογαριασμού &amp; οργανισμών απέτυχε</string>
+    <string name="error_issues_load">Η φόρτωση ζητημάτων απέτυχε</string>
+    <string name="error_repos_load">Η φόρτωση αποθετηρίων απέτυχε</string>
+    <string name="error_repo_load">Η φόρτωση αποθετηρίου απέτυχε</string>
+    <string name="error_gist_load">Η φόρτωση Gist απέτυχε</string>
+    <string name="error_news_load">Η φόρτωση Νέων απέτυχε</string>
+    <string name="error_followers_load">Η φόρτωση Ακόλουθων απέτυχε</string>
+    <string name="error_people_load">Η φόρτωση κόσμου απέτυχε</string>
+    <string name="error_person_load">Η φόρτωση προσώπου απέτυχε</string>
+    <string name="error_gist_file_load">Η φόρτωση του περιεχομένου του αρχείου Gist απέτυχε</string>
+    <string name="error_gists_load">Η φόρτωση Gists απέτυχε</string>
+    <string name="error_issue_load">Η φόρτωση ζητήματος απέτυχε</string>
+    <string name="error_collaborators_load">Η φόρτωση συνεργατών απέτυχε</string>
+    <string name="error_milestones_load">Η φόρτωση οροσήμων απέτυχε</string>
+    <string name="error_labels_load">Η φόρτωση labels απέτυχε</string>
+    <string name="error_bookmarks_load">Η φόρτωση σελιδοδεικτών απέτυχε</string>
+    <string name="error_members_load">Η φόρτωση μελών απέτυχε</string>
+    <string name="error_commits_load">Η φόρτωση υποβολών απέτυχε</string>
+    <string name="error_commit_load">Η φόρτωση υποβολής απέτυχε</string>
+    <string name="error_file_load">Η φόρτωση αρχείου απέτυχε</string>
+    <string name="error_code_load">Η φόρτωση κώδικα απέτυχε</string>
+    <string name="error_refs_load">Η φόρτωση κλάδων &amp; ετικετών απέτυχε</string>
+    <string name="error_following_person">Η ακολούθηση απέτυχε</string>
+    <string name="error_unfollowing_person">Η αναίρεση ακολούθησης απέτυχε</string>
+    <string name="error_checking_following_status">Ο έλεγχος κατάστασης ακολούθησης απέτυχε</string>
+    <string name="error_starring_repository">Η επισήμανση απέτυχε</string>
+    <string name="error_unstarring_repository">Η αναίρεση επισήμανσης απέτυχε</string>
+    <string name="error_checking_starring_status">Ο έλεγχος κατάστασης επισήμανσης απέτυχε</string>
+    <string name="error_rendering_markdown">Η απόδοση περιεχομένου markdown απέτυχε</string>
+    <!--  -->
+
+
+    <!-- Loading messages -->
+    <string name="loading_gist">Φορτώνεται Gist…</string>
+    <string name="random_gist">Φορτώνεται Τυχαίο Gist…</string>
+    <string name="loading_more_issues">Φορτώνονται Περισσότερα Ζητήματα…</string>
+    <string name="loading_issues">Φορτώνονται Ζητήματα…</string>
+    <string name="loading_comments">Φορτώνονται Σχόλια…</string>
+    <string name="loading_repositories">Φορτώνονται Αποθετήρια…</string>
+    <string name="loading_issue">Φορτώνεται Ζήτημα…</string>
+    <string name="loading_news">Φορτώνονται Νέα…</string>
+    <string name="loading_followers">Φορτώνονται Ακολούθοι…</string>
+    <string name="loading_people">Φορτώνονται Άνθρωποι…</string>
+    <string name="loading_gists">Φορτώνονται Gists…</string>
+    <string name="loading_collaborators">Φορτώνονται Συνεργάτες…</string>
+    <string name="loading_milestones">Φορτώνονται Ορόσημα…</string>
+    <string name="loading_labels">Φορτώνονται Labels…</string>
+    <string name="loading_commits">Φορτώνονται Υποβολές…</string>
+    <string name="loading_files_and_comments">Φορτώνονται Αρχεία &amp; και Σχόλια…</string>
+    <string name="loading_refs">Φορτώνονται Κλάδοι &amp; Tags…</string>
+    <!--  -->
+
+
+    <!-- Empty messages -->
+    <string name="no_bookmarks">Δεν υπάρχουν Σελιδοδείκτες</string>
+    <string name="no_repositories">Δεν υπάρχουν Αποθετήρια</string>
+    <string name="no_issues">Δεν υπάρχουν Ζητήματα</string>
+    <string name="no_gists">Δεν υπάρχουν Gists</string>
+    <string name="no_people">Δεν υπάρχουν Άνθρωποι</string>
+    <string name="no_followers">Δεν υπάρχουν Ακόλουθοι</string>
+    <string name="no_members">Δεν υπάρχουν Μέλη</string>
+    <string name="no_news">Δεν υπάρχουν Νέα</string>
+    <string name="no_commits">Δεν υπάρχουν Υποβολές</string>
+    <!--  -->
+
+
+    <!-- Updating messages -->
+    <string name="updating_assignee">Ενημέρωση Εντολοδόχου…</string>
+    <string name="updating_issue">Ενημέρωση Ζητήματος…</string>
+    <string name="updating_labels">Ενημέρωση Ετικετών…</string>
+    <string name="updating_milestone">Ενημέρωση Οροσήμου…</string>
+    <!--  -->
+
+    <string name="app_name">GitHub</string>
+    <string name="news">Νέα</string>
+    <string name="issues">Ζητήματα</string>
+    <string name="gists">Gists</string>
+    <string name="commits">Υποβολές</string>
+    <string name="find_repositories">Εύρεση Αποθετηρίων</string>
+    <string name="find_issues">Εύρεση Ζητημάτων</string>
+    <string name="search_title">Εύρεση…</string>
+    <string name="clear_search_history">Εkκαθάριση Ιστορικού</string>
+    <string name="search_history_cleared">Καθαρίστηκε το ιστορικό αναζήτησης</string>
+    <string name="login_activity_authenticating">Γίνεται είσοδος…</string>
+    <string name="creating_gist">Δημιουργείται Gist…</string>
+    <string name="create">Δημιουργία</string>
+    <string name="create_gist">Δημιουργία Gist</string>
+    <string name="gist_content_hint">τυπώνει \'Hello World!\'</string>
+    <string name="make_public">Κάνε αυτό το Gist δημόσιο</string>
+    <string name="gist_file_name_hint">file.rb</string>
+    <string name="gist">Gist</string>
+    <string name="comments">Σχόλια</string>
+    <string name="files">Αρχεία</string>
+    <string name="open">Άνοιξε</string>
+    <string name="random">Τυχαία</string>
+    <string name="file_name">Όνομα Αρχείου</string>
+    <string name="file_content">Περιεχόμενο Αρχείου</string>
+    <string name="new_gist">Νέο Gist</string>
+    <string name="filter">Φίλτρο</string>
+    <string name="bookmark">Σελιδοδείκτης</string>
+    <string name="comment">Σχόλιο</string>
+    <string name="delete">Διάγραψε</string>
+    <string name="refresh">Ανανέωσε</string>
+    <string name="dashboard_issues_title">Πίνακας Ζητημάτων</string>
+    <string name="bookmarks">Σελιδοδείκτες</string>
+    <string name="gists_title">Gists</string>
+    <string name="issue_title">Ζήτημα #</string>
+    <string name="pull_request_title">Αίτηση Εξαγωγής #</string>
+    <string name="gist_title">Gist\u0020</string>
+    <string name="filter_issues_title">Φίλτραρε Ζητήματα</string>
+    <string name="create_comment_title">Δημιούργησε Σχόλιο</string>
+    <string name="comment_hint">Εισάγαγε σχόλιο</string>
+    <string name="show_more">Εμφάνισε περισσότερα…</string>
+    <string name="repositories">Αποθετήρια</string>
+    <string name="issues_title">Ζητήματα</string>
+    <string name="edit_labels">Διόρθωσε Ετικέτες</string>
+    <string name="milestone_prefix">Ορόσημο:</string>
+    <string name="edit_milestone">Διόρθωσε Ορόσημο</string>
+    <string name="edit_assignee">Διόρθωσε Εντολοδόχο</string>
+    <string name="description">Περιγραφή</string>
+    <string name="gist_description_hint">Gist δημιουργημένο από Android</string>
+    <string name="title">Τίτλος</string>
+    <string name="edit">Διόρθωσε</string>
+    <string name="starring_gist">Επισήμανε Gist…</string>
+    <string name="unstarring_gist">Αφαίρεσε επισήμανση από Gist…</string>
+    <string name="accounts_label">Λογαριασμοί</string>
+    <string name="select_assignee">Επέλεξε Εντολοδόχο</string>
+    <string name="select_milestone">Επέλεξε Ορόσημο</string>
+    <string name="select_labels">Επέλεξε Ετικέτες</string>
+    <string name="select_ref">Επέλεξε Κλάδο ή Tag</string>
+    <string name="no_milestone">Δεν βρέθηκε ορόσημο</string>
+    <string name="unassigned">Κανείς δεν είναι εντολοδόχος</string>
+    <string name="assigned">έχει γίνει εντολοδόχος</string>
+    <string name="no_gists_found">Δεν βρέθηκαν Gists</string>
+    <string name="confirm_gist_delete_title">Επιβεβαιώστε Διαγραφή</string>
+    <string name="confirm_gist_delete_message">Είστε σίγουρη-ος για τη διαγραφή του Gist?</string>
+    <string name="deleting_gist">Διαγράφεται Gist…</string>
+    <string name="creating_comment">Δημιουργείται σχόλιο…</string>
+    <string name="confirm_bookmark_delete_message">Είστε σίγουρη-ος για τη διαγραφή του Σελιδοδείκτη?</string>
+    <string name="issue_dashboard">Πίνακας Ζητημάτων</string>
+    <string name="new_issue">Νέο Ζήτημα</string>
+    <string name="anonymous">Ανώνυμος</string>
+    <string name="message_filter_saved">Το φίλτρο ζητημάτων αποθηκεύτηκε στους σελιδοδείκτες</string>
+    <string name="recent">Πρόσφατα</string>
+    <string name="section_issue_status">Κατάσταση:</string>
+    <string name="status_open">Ανοικτή</string>
+    <string name="status_closed">Κλειστή</string>
+    <string name="section_issue_assigned">Έχει Ανατεθεί σε:</string>
+    <string name="assignee_anyone">Οποιοσδήποτε</string>
+    <string name="section_issue_milestone">Ορόσημο:</string>
+    <string name="none">Κανείς</string>
+    <string name="section_issue_labels">Ετικέτες:</string>
+    <string name="log_in">Είσοδος</string>
+    <string name="signup_link">Νέα/ος στο GitHub? &lt;a href=\"https://github.com/plans\">Πατήστε εδώ&lt;/a> για είσοδο</string>
+    <string name="connection_failed">Αδυναμία σύνδεσης στο GitHub</string>
+    <string name="invalid_login_or_password">Παρακαλούμε εισάγετε έγκυρο όνομα χρήστη &amp; συνθηματικό</string>
+    <string name="invalid_password">Παρακαλούμε εισάγετε έγκυρο συνθηματικό.</string>
+    <string name="password">Συνθηματικό</string>
+    <string name="login_or_email">Όνομα ή  Email</string>
+    <string name="followers">Ακόλουθοι</string>
+    <string name="following">Ακολουθούν</string>
+    <string name="followers_self">Ακόλουθοι</string>
+    <string name="following_self">Ακολουθώ</string>
+    <string name="follow">Ακολουθώ</string>
+    <string name="unfollow">Αποχωρώ</string>
+    <string name="star">Επισήμανση</string>
+    <string name="unstar">Αποσήμανση</string>
+    <string name="members">Μέλη</string>
+    <string name="closing_issue">Κλείσιμο ζητήματος…</string>
+    <string name="reopening_issue">Ξανάνοιγμα ζητήματος…</string>
+    <string name="avatar">Avatar</string>
+    <string name="creating_issue">Δημιουργείται Ζήτημα…</string>
+    <string name="prefix_created">δημιουργήθηκε\u0020</string>
+    <string name="prefix_updated">ενημερώθηκε\u0020</string>
+    <string name="prefix_opened">άνοιξε\u0020</string>
+    <string name="clear">Καθάρισε</string>
+    <string name="open_issues">Ανοικτά Ζητήματα</string>
+    <string name="closed_issues">Κλειστά Ζητήματα</string>
+    <string name="confirm_bookmark_delete_title">Αφαίρεσε Σελιδοδείκτη</string>
+    <string name="save">Σώσε</string>
+    <string name="apply">Εφάρμοσε</string>
+    <string name="labels_prefix">Ετικέτες:</string>
+    <string name="assignee">Εντολοδόχοι</string>
+    <string name="milestone">Ορόσημο</string>
+    <string name="labels">Ετικέτες</string>
+    <string name="issue_confirm_close_message">Είστε σίγουρη-ος ότι θέλετε να κλείσετε αυτό το ζήτημα?</string>
+    <string name="issue_confirm_reopen_message">Είστε σίγουρη-ος ότι θέλετε να ξανανοίξετε αυτό το ζήτημα?</string>
+    <string name="issue_confirm_close_title">Κλείστε Ζήτημα</string>
+    <string name="issue_confirm_reopen_title">Ξανανοίξτε Ζήτημα</string>
+    <string name="closed">Κλειστή</string>
+    <string name="no_description_given">Δεν δόθηκε περιγραφή.</string>
+    <string name="close">Κλείσε</string>
+    <string name="reopen">Ξανάνοιξε</string>
+    <string name="title_invalid_github_url">Άκυρο GitHub URL</string>
+    <string name="message_invalid_github_url">Το ακόλουθο URL δεν μπορεί να ανοίξει από αυτή την εφαρμογή:\n{0}</string>
+    <string name="recently_viewed">ΠΡΟΣΦΑΤΑ ΑΝΑΓΝΩΣΜΕΝΑ</string>
+    <string name="cancel">Ακύρωση</string>
+    <string name="authenticator_conflict_title">Σύγκρουση εφαρμογών</string>
+    <string name="authenticator_conflict_message">Και άλλη εγκατ. εφαρμογή είναι ήδη ρυθμισμένη για αυθεντικοποίηση GitHub.\n\nΘα πρέπει να αφαιρέσετε την άλλη εφαρμογή από τις ρυθμίσεις Λογαριασμών &amp; συγχρονισμού και να την απεγκαταστήσετε πριν να χρησιμοποιηθεί η εφαρμογή GitHub.</string>
+    <string name="opening_repository">Ανοίγει {0}…</string>
+    <string name="commit_compare_title">Σύγκριση Υποβολής</string>
+    <string name="commit_prefix">Υποβολή\u0020</string>
+    <string name="parent_prefix">Γονέας\u0020</string>
+    <string name="authored">εξουσιοδότημένος</string>
+    <string name="committed">υποβλήθηκε</string>
+    <string name="diff_line_message">Τί θέλετε να κάνετε?</string>
+    <string name="comment_on_line">Σχολιάστε στη γραμμή</string>
+    <string name="view_entire_file">Δείτε όλο το αρχείο</string>
+    <string name="comparing_commits">Συγκρίνονται {0} υποβολές</string>
+    <string name="enable_wrapping">Ενεργοποίησε επικάλυψη</string>
+    <string name="disable_wrapping">Απενεργοποίησε επικάλυψη</string>
+    <string name="code">Κώδικας</string>
+    <string name="following_user">Ακολούθηση…</string>
+    <string name="unfollowing_user">Απο-Ακολούθηση…</string>
+    <string name="starring_repository">Επισήμανση…</string>
+    <string name="unstarring_repository">Αποσήμανση…</string>
+    <string name="navigate_to">Πλοήγηση σε…</string>
+
+    <!-- Tab titles, should be as short as possible -->
+    <string name="tab_repositories">αποθετήρια</string>
+    <string name="tab_news">νέα</string>
+    <string name="tab_following_self">ακολούθηση</string>
+    <string name="tab_followers_self">ακόλουθοι</string>
+    <string name="tab_following">ακολούθηση</string>
+    <string name="tab_followers">ακόλουθοι</string>
+    <string name="tab_members">μέλη</string>
+    <string name="tab_code">κώδικας</string>
+    <string name="tab_commits">υποβολές</string>
+    <string name="tab_issues">ζητήματα</string>
+    <string name="tab_watched">αναγνώσεις</string>
+    <string name="tab_assigned">αναθέσεις</string>
+    <string name="tab_created">δημιουργίες</string>
+    <string name="tab_mentioned">αναφορές</string>
+    <string name="tab_mine">προσωπικά</string>
+    <string name="tab_starred">επισημασμένα</string>
+    <string name="tab_all">όλα</string>
+    <!--  -->
+    <string name="share">Μοίρασε</string>
+    <string name="show_password">Εμφάνισε συνθηματικό</string>
+    <string name="write">Γράψε</string>
+    <string name="preview">Προεπισκόπηση</string>
+    <string name="show_raw_markdown">Εμφάνισε απλή markdown</string>
+    <string name="render_markdown">Απόδοσε markdown</string>
+
+</resources>
