@@ -17,7 +17,6 @@
 <resources>
 
     <!-- Error messages -->
-    <!-- Error messages -->
     <string name="error_orgs_load">Η φόρτωση του λογαριασμού &amp; των οργανισμών απέτυχε</string>
     <string name="error_issues_load">Η φόρτωση των εκδόσεων απέτυχε</string>
     <string name="error_repos_load">Η φόρτωση των αποθετηρίων απέτυχε</string>
