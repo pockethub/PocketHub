@@ -17,35 +17,35 @@
 <resources>
 
     <!-- Error messages -->
-    <string name="error_orgs_load">Loading account &amp; organizations failed</string>
-    <string name="error_issues_load">Loading issues failed</string>
-    <string name="error_repos_load">Loading repositories failed</string>
-    <string name="error_repo_load">Loading repository failed</string>
-    <string name="error_gist_load">Loading Gist failed</string>
-    <string name="error_news_load">Loading news failed</string>
-    <string name="error_followers_load">Loading followers failed</string>
-    <string name="error_people_load">Loading people failed</string>
-    <string name="error_person_load">Loading person failed</string>
-    <string name="error_gist_file_load">Loading Gist file content failed</string>
-    <string name="error_gists_load">Loading Gists failed</string>
-    <string name="error_issue_load">Loading issue failed</string>
-    <string name="error_collaborators_load">Loading collaborators failed</string>
-    <string name="error_milestones_load">Loading milestones failed</string>
-    <string name="error_labels_load">Loading labels failed</string>
-    <string name="error_bookmarks_load">Loading bookmarks failed</string>
-    <string name="error_members_load">Loading members failed</string>
-    <string name="error_commits_load">Loading commits failed</string>
-    <string name="error_commit_load">Loading commit failed</string>
-    <string name="error_file_load">Loading file failed</string>
-    <string name="error_code_load">Loading code failed</string>
-    <string name="error_refs_load">Loading branches &amp; tags failed</string>
-    <string name="error_following_person">Following failed</string>
-    <string name="error_unfollowing_person">Unfollowing failed</string>
-    <string name="error_checking_following_status">Checking following status failed</string>
-    <string name="error_starring_repository">Starring failed</string>
-    <string name="error_unstarring_repository">Unstarring failed</string>
-    <string name="error_checking_starring_status">Checking starring status failed</string>
-    <string name="error_rendering_markdown">Rendering markdown failed</string>
+    <string name="error_orgs_load">Η φόρτιση του λογαριασμού &amp; των οργανώσεων απέτυχε</string>
+    <string name="error_issues_load">Η φόρτιση των προβλημάτων απέτυχε failed</string>
+    <string name="error_repos_load">Η φόρτιση repositories απέτυχε</string>
+    <string name="error_repo_load">Η φόρτιση repository απέτυχε</string>
+    <string name="error_gist_load">Η φόρτιση Gist απέτυχε</string>
+    <string name="error_news_load">Η φόρτιση news απέτυχε</string>
+    <string name="error_followers_load">Η φόρτιση followers failed</string>
+    <string name="error_people_load">Η φόρτιση people απέτυχε</string>
+    <string name="error_person_load">Η φόρτιση person απέτυχε</string>
+    <string name="error_gist_file_load">Η φόρτιση Gist file content απέτυχε</string>
+    <string name="error_gists_load">Loading Gists απέτυχε</string>
+    <string name="error_issue_load">Loading issue απέτυχε</string>
+    <string name="error_collaborators_load">Loading collaborators απέτυχε</string>
+    <string name="error_milestones_load">Loading milestones απέτυχε</string>
+    <string name="error_labels_load">Loading labels απέτυχε</string>
+    <string name="error_bookmarks_load">Loading bookmarks απέτυχε</string>
+    <string name="error_members_load">Loading members απέτυχε</string>
+    <string name="error_commits_load">Loading commits απέτυχε</string>
+    <string name="error_commit_load">Loading commit απέτυχε</string>
+    <string name="error_file_load">Loading file απέτυχε</string>
+    <string name="error_code_load">Loading code απέτυχε</string>
+    <string name="error_refs_load">Loading branches &amp; tags απέτυχε</string>
+    <string name="error_following_person">Following απέτυχε</string>
+    <string name="error_unfollowing_person">Unfollowing απέτυχε</string>
+    <string name="error_checking_following_status">Checking following status απέτυχε</string>
+    <string name="error_starring_repository">Starring απέτυχε</string>
+    <string name="error_unstarring_repository">Unstarring απέτυχε</string>
+    <string name="error_checking_starring_status">Checking starring status απέτυχε</string>
+    <string name="error_rendering_markdown">Rendering markdown απέτυχε</string>
     <!--  -->
 
 
