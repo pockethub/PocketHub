@@ -152,10 +152,10 @@
     <string name="assigned">έχει γίνει εντολοδόχος</string>
     <string name="no_gists_found">Δεν βρέθηκαν Gists</string>
     <string name="confirm_gist_delete_title">Επιβεβαιώστε Διαγραφή</string>
-    <string name="confirm_gist_delete_message">Είστε σίγουρη/ος για τη διαγραφή του Gist?</string>
+    <string name="confirm_gist_delete_message">Είστε σίγουρη-ος για τη διαγραφή του Gist?</string>
     <string name="deleting_gist">Διαγράφεται Gist…</string>
     <string name="creating_comment">Δημιουργείται σχόλιο…</string>
-    <string name="confirm_bookmark_delete_message">Είστε σίγουρη/ος για τη διαγραφή του Σελιδοδείκτη?</string>
+    <string name="confirm_bookmark_delete_message">Είστε σίγουρη-ος για τη διαγραφή του Σελιδοδείκτη?</string>
     <string name="issue_dashboard">Πίνακας Εκδόσεων</string>
     <string name="new_issue">Νέα Έκδοση</string>
     <string name="anonymous">Ανώνυμος</string>
@@ -202,8 +202,8 @@
     <string name="assignee">Εντολοδόχοι</string>
     <string name="milestone">Ορόσημο</string>
     <string name="labels">Ετικέτες</string>
-    <string name="issue_confirm_close_message">Είστε σίγουρη/ος ότι θέλετε να κλείσετε αυτή την έκδοση?</string>
-    <string name="issue_confirm_reopen_message">Είστε σίγουρη/ος ότι θέλετε να ξανανοίξετε αυτή την έκδοση?</string>
+    <string name="issue_confirm_close_message">Είστε σίγουρη-ος ότι θέλετε να κλείσετε αυτή την έκδοση?</string>
+    <string name="issue_confirm_reopen_message">Είστε σίγουρη-ος ότι θέλετε να ξανανοίξετε αυτή την έκδοση?</string>
     <string name="issue_confirm_close_title">Κλείστε Έκδοση</string>
     <string name="issue_confirm_reopen_title">Ξανανοίξτε Έκδοση</string>
     <string name="closed">Κλειστή</string>
