@@ -18,7 +18,7 @@
 
     <!-- Error messages -->
     <string name="error_orgs_load">Η φόρτωση λογαριασμού &amp; οργανισμών απέτυχε</string>
-    <string name="error_issues_load">Η φόρτωση εκδόσεων απέτυχε</string>
+    <string name="error_issues_load">Η φόρτωση ζητημάτων απέτυχε</string>
     <string name="error_repos_load">Η φόρτωση αποθετηρίων απέτυχε</string>
     <string name="error_repo_load">Η φόρτωση αποθετηρίου απέτυχε</string>
     <string name="error_gist_load">Η φόρτωση Gist απέτυχε</string>
@@ -28,7 +28,7 @@
     <string name="error_person_load">Η φόρτωση προσώπου απέτυχε</string>
     <string name="error_gist_file_load">Η φόρτωση του περιεχομένου του αρχείου Gist απέτυχε</string>
     <string name="error_gists_load">Η φόρτωση Gists απέτυχε</string>
-    <string name="error_issue_load">Η φόρτωση έκδοσης απέτυχε</string>
+    <string name="error_issue_load">Η φόρτωση ζητήματος απέτυχε</string>
     <string name="error_collaborators_load">Η φόρτωση συνεργατών απέτυχε</string>
     <string name="error_milestones_load">Η φόρτωση οροσήμων απέτυχε</string>
     <string name="error_labels_load">Η φόρτωση labels απέτυχε</string>
@@ -52,11 +52,11 @@
     <!-- Loading messages -->
     <string name="loading_gist">Φορτώνεται Gist…</string>
     <string name="random_gist">Φορτώνεται Τυχαίο Gist…</string>
-    <string name="loading_more_issues">Φορτώνονται Περισσότερες Εκδόσεις…</string>
-    <string name="loading_issues">Φορτώνονται Εκδόσεις…</string>
+    <string name="loading_more_issues">Φορτώνονται Περισσότερα Ζητήματα…</string>
+    <string name="loading_issues">Φορτώνονται Ζητήματα…</string>
     <string name="loading_comments">Φορτώνονται Σχόλια…</string>
     <string name="loading_repositories">Φορτώνονται Αποθετήρια…</string>
-    <string name="loading_issue">Φορτώνεται Έκδοση…</string>
+    <string name="loading_issue">Φορτώνεται Ζήτημα…</string>
     <string name="loading_news">Φορτώνονται Νέα…</string>
     <string name="loading_followers">Φορτώνονται Ακολούθοι…</string>
     <string name="loading_people">Φορτώνονται Άνθρωποι…</string>
@@ -73,7 +73,7 @@
     <!-- Empty messages -->
     <string name="no_bookmarks">Δεν υπάρχουν Σελιδοδείκτες</string>
     <string name="no_repositories">Δεν υπάρχουν Αποθετήρια</string>
-    <string name="no_issues">Δεν υπάρχουν Εκδόσεις</string>
+    <string name="no_issues">Δεν υπάρχουν Ζητήματα</string>
     <string name="no_gists">Δεν υπάρχουν Gists</string>
     <string name="no_people">Δεν υπάρχουν Άνθρωποι</string>
     <string name="no_followers">Δεν υπάρχουν Ακόλουθοι</string>
@@ -85,18 +85,18 @@
 
     <!-- Updating messages -->
     <string name="updating_assignee">Ενημέρωση Εντολοδόχου…</string>
-    <string name="updating_issue">Ενημέρωση Έκδοσης…</string>
+    <string name="updating_issue">Ενημέρωση Ζητήματος…</string>
     <string name="updating_labels">Ενημέρωση Ετικετών…</string>
     <string name="updating_milestone">Ενημέρωση Οροσήμου…</string>
     <!--  -->
 
     <string name="app_name">GitHub</string>
     <string name="news">Νέα</string>
-    <string name="issues">Εκδόσεις</string>
+    <string name="issues">Ζητήματα</string>
     <string name="gists">Gists</string>
     <string name="commits">Υποβολές</string>
     <string name="find_repositories">Εύρεση Αποθετηρίων</string>
-    <string name="find_issues">Εύρεση Εκδόσεων</string>
+    <string name="find_issues">Εύρεση Ζητημάτων</string>
     <string name="search_title">Εύρεση…</string>
     <string name="clear_search_history">Εkκαθάριση Ιστορικού</string>
     <string name="search_history_cleared">Καθαρίστηκε το ιστορικό αναζήτησης</string>
@@ -120,18 +120,18 @@
     <string name="comment">Σχόλιο</string>
     <string name="delete">Διάγραψε</string>
     <string name="refresh">Ανανέωσε</string>
-    <string name="dashboard_issues_title">Πίνακας Έκδοσης</string>
+    <string name="dashboard_issues_title">Πίνακας Ζητημάτων</string>
     <string name="bookmarks">Σελιδοδείκτες</string>
     <string name="gists_title">Gists</string>
-    <string name="issue_title">Έκδοση #</string>
+    <string name="issue_title">Ζήτημα #</string>
     <string name="pull_request_title">Αίτηση Εξαγωγής #</string>
     <string name="gist_title">Gist\u0020</string>
-    <string name="filter_issues_title">Φίλτραρε Εκδόσεις</string>
+    <string name="filter_issues_title">Φίλτραρε Ζητήματα</string>
     <string name="create_comment_title">Δημιούργησε Σχόλιο</string>
     <string name="comment_hint">Εισάγαγε σχόλιο</string>
     <string name="show_more">Εμφάνισε περισσότερα…</string>
     <string name="repositories">Αποθετήρια</string>
-    <string name="issues_title">Εκδόσεις</string>
+    <string name="issues_title">Ζητήματα</string>
     <string name="edit_labels">Διόρθωσε Ετικέτες</string>
     <string name="milestone_prefix">Ορόσημο:</string>
     <string name="edit_milestone">Διόρθωσε Ορόσημο</string>
@@ -156,10 +156,10 @@
     <string name="deleting_gist">Διαγράφεται Gist…</string>
     <string name="creating_comment">Δημιουργείται σχόλιο…</string>
     <string name="confirm_bookmark_delete_message">Είστε σίγουρη-ος για τη διαγραφή του Σελιδοδείκτη?</string>
-    <string name="issue_dashboard">Πίνακας Εκδόσεων</string>
-    <string name="new_issue">Νέα Έκδοση</string>
+    <string name="issue_dashboard">Πίνακας Ζητημάτων</string>
+    <string name="new_issue">Νέο Ζήτημα</string>
     <string name="anonymous">Ανώνυμος</string>
-    <string name="message_filter_saved">Το φίλτρο εκδόσεων αποθηκεύτηκε στους σελιδοδείκτες</string>
+    <string name="message_filter_saved">Το φίλτρο ζητημάτων αποθηκεύτηκε στους σελιδοδείκτες</string>
     <string name="recent">Πρόσφατα</string>
     <string name="section_issue_status">Κατάσταση:</string>
     <string name="status_open">Ανοικτή</string>
@@ -173,7 +173,7 @@
     <string name="signup_link">Νέα/ος στο GitHub? &lt;a href=\"https://github.com/plans\">Πατήστε εδώ&lt;/a> για είσοδο</string>
     <string name="connection_failed">Αδυναμία σύνδεσης στο GitHub</string>
     <string name="invalid_login_or_password">Παρακαλούμε εισάγετε έγκυρο όνομα χρήστη &amp; συνθηματικό</string>
-    <string name="invalid_password">Παρακαλούμε εισάγετε έγκυρο συνθηματικο.</string>
+    <string name="invalid_password">Παρακαλούμε εισάγετε έγκυρο συνθηματικό.</string>
     <string name="password">Συνθηματικό</string>
     <string name="login_or_email">Όνομα ή  Email</string>
     <string name="followers">Ακόλουθοι</string>
@@ -185,16 +185,16 @@
     <string name="star">Επισήμανση</string>
     <string name="unstar">Αποσήμανση</string>
     <string name="members">Μέλη</string>
-    <string name="closing_issue">Κλείσιμο έκδοσης…</string>
-    <string name="reopening_issue">Ξανάνοιγμα έκδοσης…</string>
+    <string name="closing_issue">Κλείσιμο ζητήματος…</string>
+    <string name="reopening_issue">Ξανάνοιγμα ζητήματος…</string>
     <string name="avatar">Avatar</string>
-    <string name="creating_issue">Δημιουργείται Έκδοση…</string>
+    <string name="creating_issue">Δημιουργείται Ζήτημα…</string>
     <string name="prefix_created">δημιουργήθηκε\u0020</string>
     <string name="prefix_updated">ενημερώθηκε\u0020</string>
     <string name="prefix_opened">άνοιξε\u0020</string>
     <string name="clear">Καθάρισε</string>
-    <string name="open_issues">Ανοικτές Εκδόσεις</string>
-    <string name="closed_issues">Κλειστές Εκδόσεις</string>
+    <string name="open_issues">Ανοικτά Ζητήματα</string>
+    <string name="closed_issues">Κλειστά Ζητήματα</string>
     <string name="confirm_bookmark_delete_title">Αφαίρεσε Σελιδοδείκτη</string>
     <string name="save">Σώσε</string>
     <string name="apply">Εφάρμοσε</string>
@@ -202,10 +202,10 @@
     <string name="assignee">Εντολοδόχοι</string>
     <string name="milestone">Ορόσημο</string>
     <string name="labels">Ετικέτες</string>
-    <string name="issue_confirm_close_message">Είστε σίγουρη-ος ότι θέλετε να κλείσετε αυτή την έκδοση?</string>
-    <string name="issue_confirm_reopen_message">Είστε σίγουρη-ος ότι θέλετε να ξανανοίξετε αυτή την έκδοση?</string>
-    <string name="issue_confirm_close_title">Κλείστε Έκδοση</string>
-    <string name="issue_confirm_reopen_title">Ξανανοίξτε Έκδοση</string>
+    <string name="issue_confirm_close_message">Είστε σίγουρη-ος ότι θέλετε να κλείσετε αυτό το ζήτημα?</string>
+    <string name="issue_confirm_reopen_message">Είστε σίγουρη-ος ότι θέλετε να ξανανοίξετε αυτό το ζήτημα?</string>
+    <string name="issue_confirm_close_title">Κλείστε Ζήτημα</string>
+    <string name="issue_confirm_reopen_title">Ξανανοίξτε Ζήτημα</string>
     <string name="closed">Κλειστή</string>
     <string name="no_description_given">Δεν δόθηκε περιγραφή.</string>
     <string name="close">Κλείσε</string>
@@ -245,12 +245,12 @@
     <string name="tab_members">μέλη</string>
     <string name="tab_code">κώδικας</string>
     <string name="tab_commits">υποβολές</string>
-    <string name="tab_issues">εκδόσεις</string>
-    <string name="tab_watched">είδαν</string>
-    <string name="tab_assigned">εντολοδόχοι</string>
-    <string name="tab_created">δημιουργημένα</string>
-    <string name="tab_mentioned">αναφέρθηκαν</string>
-    <string name="tab_mine">δικά</string>
+    <string name="tab_issues">ζητήματα</string>
+    <string name="tab_watched">αναγνώσεις</string>
+    <string name="tab_assigned">αναθέσεις</string>
+    <string name="tab_created">δημιουργίες</string>
+    <string name="tab_mentioned">αναφορές</string>
+    <string name="tab_mine">προσωπικά</string>
     <string name="tab_starred">επισημασμένα</string>
     <string name="tab_all">όλα</string>
     <!--  -->
