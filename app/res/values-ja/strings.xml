@@ -19,8 +19,8 @@
     <!-- Error messages -->
     <string name="error_orgs_load">アカウントと組織名のロードに失敗しました</string>
     <string name="error_issues_load">イシューのロードに失敗しました</string>
-    <string name="error_repos_load">レポジトリのロードに失敗しました</string>
-    <string name="error_repo_load">レポジトリのロードに失敗しました</string>
+    <string name="error_repos_load">リポジトリのロードに失敗しました</string>
+    <string name="error_repo_load">リポジトリのロードに失敗しました</string>
     <string name="error_gist_load">Gist のロードに失敗しました</string>
     <string name="error_news_load">ニュースのロードに失敗しました</string>
     <string name="error_followers_load">フォロワーのロードに失敗しました</string>
@@ -40,10 +40,10 @@
     <!-- Loading messages -->
     <string name="loading_gist">Gist をロードしています…</string>
     <string name="random_gist">ランダムな Gist をロードしています…</string>
-    <string name="loading_more_issues">さらなるイシューをロードしています…</string>
+    <string name="loading_more_issues">イシューをさらにロードしています…</string>
     <string name="loading_issues">イシューをロードしています…</string>
     <string name="loading_comments">コメントをロードしています…</string>
-    <string name="loading_repositories">レポジトリをロードしています…</string>
+    <string name="loading_repositories">リポジトリをロードしています…</string>
     <string name="loading_issue">イシューをロードしています…</string>
     <string name="loading_news">ニュースをロードしています…</string>
     <string name="loading_followers">フォロワーをロードしています…</string>
@@ -57,7 +57,7 @@
 
     <!-- Empty messages -->
     <string name="no_bookmarks">ブックマークはありません</string>
-    <string name="no_repositories">レポジトリはありません</string>
+    <string name="no_repositories">リポジトリはありません</string>
     <string name="no_issues">イシューはありません</string>
     <string name="no_gists">Gists はありません</string>
     <string name="no_people">人物はいません</string>
@@ -78,7 +78,7 @@
     <string name="news">ニュース</string>
     <string name="issues">イシュー</string>
     <string name="gists">Gists</string>
-    <string name="find_repositories">レポジトリを検索</string>
+    <string name="find_repositories">リポジトリを検索</string>
     <string name="find_issues">イシューを検索</string>
     <string name="search_title">検索…</string>
     <string name="clear_search_history">履歴を消去</string>
@@ -112,7 +112,7 @@
     <string name="create_comment_title">コメント作成</string>
     <string name="comment_hint">コメントを入力して下さい</string>
     <string name="show_more">さらに表示…</string>
-    <string name="repositories">レポジトリ</string>
+    <string name="repositories">リポジトリ</string>
     <string name="issues_title">イシュー</string>
     <string name="edit_labels">ラベルを編集</string>
     <string name="milestone_prefix">マイルストーン:</string>
@@ -131,8 +131,8 @@
     <string name="select_milestone">マイルストーンを選択</string>
     <string name="select_labels">ラベルを選択</string>
     <string name="no_milestone">マイルストーンはありません</string>
-    <string name="unassigned">参加者はいません</string>
-    <string name="assigned">が参加しています</string>
+    <string name="unassigned">管理者はいません</string>
+    <string name="assigned">に割り当てられています</string>
     <string name="no_gists_found">Gists は見つかりませんでした</string>
     <string name="confirm_gist_delete_title">削除の確認</string>
     <string name="confirm_gist_delete_message">本当にこの Gist を削除してもよろしいですか?</string>
