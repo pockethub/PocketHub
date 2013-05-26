@@ -45,7 +45,7 @@
     <string name="error_starring_repository">Η επισήμανση απέτυχε</string>
     <string name="error_unstarring_repository">Η αναίρεση επισήμανσης απέτυχε</string>
     <string name="error_checking_starring_status">Ο έλεγχος κατάστασης επισήμανσης απέτυχε</string>
-    <string name="error_rendering_markdown">Η απόδοση μείωσης τιμής απέτυχε</string>
+    <string name="error_rendering_markdown">Η απόδοση περιεχομένου markdown απέτυχε</string>
     <!--  -->
 
 
@@ -258,7 +258,7 @@
     <string name="show_password">Εμφάνισε συνθηματικό</string>
     <string name="write">Γράψε</string>
     <string name="preview">Προεπισκόπηση</string>
-    <string name="show_raw_markdown">Εμφάνισε raw τιμή</string>
-    <string name="render_markdown">Απόδοσε τιμή</string>
+    <string name="show_raw_markdown">Εμφάνισε απλή markdown</string>
+    <string name="render_markdown">Απόδοσε markdown</string>
 
 </resources>
