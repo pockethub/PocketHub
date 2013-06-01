@@ -19,11 +19,22 @@ import static com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_LIST;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_BOOKMARKS;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_DASHBOARD;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_GISTS;
+import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_LOGOUT;
 import static com.github.mobile.util.TypefaceUtils.ICON_FOLLOW;
 import static com.github.mobile.util.TypefaceUtils.ICON_NEWS;
 import static com.github.mobile.util.TypefaceUtils.ICON_PUBLIC;
 import static com.github.mobile.util.TypefaceUtils.ICON_TEAM;
 import static com.github.mobile.util.TypefaceUtils.ICON_WATCH;
+
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.eclipse.egit.github.core.User;
+
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -51,13 +62,6 @@ import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.PreferenceUtils;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.eclipse.egit.github.core.User;
 
 /**
  * Home screen activity
@@ -91,6 +95,11 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
 
     @Inject
     private SharedPreferences sharedPreferences;
+
+
+    private static String PARAM_AUTHTOKEN_TYPE = "authtokenType";
+
+    private static String ACCOUNT_TYPE = "com.github";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -226,6 +235,20 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
                 break;
             case ACTION_BOOKMARKS:
                 startActivity(FiltersViewActivity.createIntent());
+                break;
+            case ACTION_LOGOUT:
+
+                AccountManager manager = (AccountManager) getSystemService(ACCOUNT_SERVICE);
+                Account[] accountsList = manager.getAccountsByType(ACCOUNT_TYPE);
+
+                for(int i=0;i<accountsList.length;i++)
+                    manager.removeAccount(accountsList[i], null, null);
+
+                finish();
+                startActivity(getIntent());
+
+
+
                 break;
             }
             int orgSelected = homeAdapter.getSelected();
