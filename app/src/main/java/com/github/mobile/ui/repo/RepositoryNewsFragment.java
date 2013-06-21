@@ -74,8 +74,11 @@ public class RepositoryNewsFragment extends NewsFragment {
 
     @Override
     protected boolean viewUser(User user) {
-        startActivity(UserViewActivity.createIntent(user));
-        return true;
+        if (repo.getOwner().getId() != user.getId()) {
+            startActivity(UserViewActivity.createIntent(user));
+            return true;
+        }
+        return false;
     }
 
     @Override
