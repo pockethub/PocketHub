@@ -47,7 +47,7 @@ It also uses many other open source libraries such as:
 
 * [ActionBarSherlock](https://github.com/JakeWharton/ActionBarSherlock)
 * [ViewPagerIndicator](https://github.com/JakeWharton/Android-ViewPagerIndicator)
-* [RoboGuice](http://code.google.com/p/roboguice/)
+* [RoboGuice](https://github.com/roboguice/roboguice)
 * [android-maven-plugin](https://github.com/jayway/maven-android-plugin)
 * [CodeMirror](https://github.com/marijnh/CodeMirror)
 
