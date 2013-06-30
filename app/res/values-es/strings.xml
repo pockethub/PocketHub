@@ -233,6 +233,7 @@
     <string name="unfollowing_user">Dejando de seguir…</string>
     <string name="starring_repository">Marcando como destacado…</string>
     <string name="unstarring_repository">Desmarcando como destacado…</string>
+    <string name="navigate_to">Ir a…</string>
 
     <!-- Titulos de las pestañas, lo mas cortos posible -->
     <string name="tab_repositories">repositorios</string>
@@ -257,5 +258,7 @@
     <string name="show_password">Mostrar contraseña</string>
     <string name="write">Escribir</string>
     <string name="preview">Vista previa</string>
+    <string name="show_raw_markdown">Mostrar markdown</string>
+    <string name="render_markdown">Procesar markdown</string>
 
 </resources>
