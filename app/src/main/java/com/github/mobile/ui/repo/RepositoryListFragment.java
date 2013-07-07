@@ -182,7 +182,8 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         });
 
         if ((recentRepos != null) && (recentRepos.contains(repo))) {
-            finder.find(id.ll_recent_repo_area_vis).setVisibility(View.VISIBLE);
+            finder.find(id.divider).setVisibility(View.VISIBLE);
+            finder.find(id.ll_recent_repo_area).setVisibility(View.VISIBLE);
             finder.onClick(id.ll_recent_repo_area, new OnClickListener() {
 
                 public void onClick(View v) {

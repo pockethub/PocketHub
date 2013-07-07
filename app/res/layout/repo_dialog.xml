@@ -49,41 +49,37 @@
                 android:textStyle="normal" />
         </LinearLayout>
 
+        <View
+            android:id="@+id/divider"
+            style="@style/Separator"
+            android:visibility="gone" />
+
         <LinearLayout
-            android:id="@+id/ll_recent_repo_area_vis"
+            android:id="@+id/ll_recent_repo_area"
+            style="@style/ListItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:visibility="gone" >
 
-            <View style="@style/Separator" />
+            <ImageView
+                android:id="@+id/iv_recent_repo_avatar"
+                style="@style/AvatarLarge"
+                android:src="@drawable/menu_delete_history"
+                android:contentDescription="@string/recent_remove" />
 
-            <LinearLayout
-                android:id="@+id/ll_recent_repo_area"
-                style="@style/ListItem"
+            <TextView
+                android:id="@+id/tv_recent_repo_remove"
+                style="@style/ListTitleText"
+                android:text="@string/recent_list_remove"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal" >
-
-                <ImageView
-                    android:id="@+id/iv_recent_repo_avatar"
-                    style="@style/AvatarLarge"
-                    android:src="@drawable/menu_delete_history"
-                    android:contentDescription="@string/recent_remove" />
-
-                <TextView
-                    android:id="@+id/tv_recent_repo_remove"
-                    style="@style/ListTitleText"
-                    android:text="@string/recent_list_remove"
-                    android:layout_width="match_parent"
-                    android:includeFontPadding="true"
-                    android:maxLines="2"
-                    android:paddingBottom="0dp"
-                    android:paddingLeft="10dp"
-                    android:textStyle="normal" />
-            </LinearLayout>
+                android:includeFontPadding="true"
+                android:maxLines="2"
+                android:paddingBottom="0dp"
+                android:paddingLeft="10dp"
+                android:textStyle="normal" />
         </LinearLayout>
     </LinearLayout>
 
