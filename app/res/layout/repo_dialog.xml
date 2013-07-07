@@ -36,7 +36,7 @@
             <ImageView
                 android:id="@+id/iv_owner_avatar"
                 style="@style/AvatarLarge"
-                android:contentDescription="@string/recent_remove" />
+                android:contentDescription="@string/avatar" />
 
             <TextView
                 android:id="@+id/tv_owner_name"
