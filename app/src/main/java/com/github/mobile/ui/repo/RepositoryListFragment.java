@@ -170,7 +170,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
 
         final User owner = repo.getOwner();
         avatars.bind(finder.imageView(id.iv_owner_avatar), owner);
-        finder.setText(id.tv_owner_name, "Navigate to " + owner.getLogin());
+        finder.setText(id.tv_owner_name, getString(string.navigate_to_user, owner.getLogin()));
         finder.onClick(id.ll_owner_area, new OnClickListener() {
 
             public void onClick(View v) {
