@@ -19,14 +19,6 @@ import static com.github.mobile.Intents.EXTRA_USER;
 import static com.github.mobile.RequestCodes.REPOSITORY_VIEW;
 import static com.github.mobile.ResultCodes.RESOURCE_CHANGED;
 import static java.util.Locale.US;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.User;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -51,6 +43,13 @@ import com.github.mobile.ui.user.OrganizationSelectionProvider;
 import com.github.mobile.ui.user.UserViewActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+
+import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.User;
 
 /**
  * Fragment to display a list of {@link Repository} instances
