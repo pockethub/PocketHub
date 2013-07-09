@@ -127,7 +127,7 @@ public class AvatarLoader {
      * @param userId
      * @return image
      */
-    protected BitmapDrawable getImage(final String userId) {
+    private BitmapDrawable getImage(final String userId) {
         return getImageBy(userId);
     }
 
@@ -137,7 +137,7 @@ public class AvatarLoader {
      * @param user
      * @return image
      */
-    protected BitmapDrawable getImage(final CommitUser user) {
+    private BitmapDrawable getImage(final CommitUser user) {
         return getImageBy(user.getEmail());
     }
 
@@ -162,7 +162,7 @@ public class AvatarLoader {
      * @param file
      * @return bitmap
      */
-    protected Bitmap decode(final File file) {
+    private Bitmap decode(final File file) {
         return BitmapFactory.decodeFile(file.getAbsolutePath(), options);
     }
 
