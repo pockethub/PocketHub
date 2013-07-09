@@ -128,18 +128,7 @@ public class AvatarLoader {
      * @return image
      */
     protected BitmapDrawable getImage(final String userId) {
-        File avatarFile = new File(avatarDir, userId);
-
-        if (!avatarFile.exists() || avatarFile.length() == 0)
-            return null;
-
-        Bitmap bitmap = decode(avatarFile);
-        if (bitmap != null)
-            return new BitmapDrawable(context.getResources(), bitmap);
-        else {
-            avatarFile.delete();
-            return null;
-        }
+        return getImageBy(userId);
     }
 
     /**
@@ -149,7 +138,11 @@ public class AvatarLoader {
      * @return image
      */
     protected BitmapDrawable getImage(final CommitUser user) {
-        File avatarFile = new File(avatarDir, user.getEmail());
+        return getImageBy(user.getEmail());
+    }
+
+    private BitmapDrawable getImageBy(String filename) {
+        File avatarFile = new File(avatarDir, filename);
 
         if (!avatarFile.exists() || avatarFile.length() == 0)
             return null;
