@@ -25,6 +25,7 @@ import android.graphics.BitmapFactory.Options;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -124,11 +125,11 @@ public class AvatarLoader {
     /**
      * Get image for user
      *
-     * @param userId
+     * @param user
      * @return image
      */
-    protected BitmapDrawable getImage(final String userId) {
-        File avatarFile = new File(avatarDir, userId);
+    protected BitmapDrawable getImage(final User user) {
+        File avatarFile = new File(avatarDir, getAvatarFilename(user));
 
         if (!avatarFile.exists() || avatarFile.length() == 0)
             return null;
@@ -149,7 +150,7 @@ public class AvatarLoader {
      * @return image
      */
     protected BitmapDrawable getImage(final CommitUser user) {
-        File avatarFile = new File(avatarDir, user.getEmail());
+        File avatarFile = new File(avatarDir, getAvatarFilename(user));
 
         if (!avatarFile.exists() || avatarFile.length() == 0)
             return null;
@@ -161,6 +162,18 @@ public class AvatarLoader {
             avatarFile.delete();
             return null;
         }
+    }
+
+    private String getAvatarFilename(CommitUser user) {
+        return getAvatarFilenameForUrl(getAvatarUrl(user));
+    }
+
+    private String getAvatarFilename(User user) {
+        return getAvatarFilenameForUrl(getAvatarUrl(user));
+    }
+
+    private String getAvatarFilenameForUrl(String avatarUrl) {
+        return Base64.encodeToString(avatarUrl.getBytes(), Base64.DEFAULT);
     }
 
     /**
@@ -177,11 +190,11 @@ public class AvatarLoader {
      * Fetch avatar from URL
      *
      * @param url
-     * @param userId
+     * @param cachedAvatarFilename
      * @return bitmap
      */
-    protected BitmapDrawable fetchAvatar(final String url, final String userId) {
-        File rawAvatar = new File(avatarDir, userId + "-raw");
+    protected BitmapDrawable fetchAvatar(final String url, final String cachedAvatarFilename) {
+        File rawAvatar = new File(avatarDir, cachedAvatarFilename + "-raw");
         HttpRequest request = HttpRequest.get(url);
         if (request.ok())
             request.receive(rawAvatar);
@@ -201,7 +214,7 @@ public class AvatarLoader {
             return null;
         }
 
-        File roundedAvatar = new File(avatarDir, userId);
+        File roundedAvatar = new File(avatarDir, cachedAvatarFilename);
         FileOutputStream output = null;
         try {
             output = new FileOutputStream(roundedAvatar);
@@ -265,11 +278,11 @@ public class AvatarLoader {
 
             @Override
             public BitmapDrawable call() throws Exception {
-                final BitmapDrawable image = getImage(userId);
+                final BitmapDrawable image = getImage(user);
                 if (image != null)
                     return image;
                 else
-                    return fetchAvatar(avatarUrl, userId);
+                    return fetchAvatar(avatarUrl, getAvatarFilename(user));
             }
 
             @Override
@@ -361,11 +374,11 @@ public class AvatarLoader {
                 if (!userId.equals(view.getTag(id.iv_avatar)))
                     return null;
 
-                final BitmapDrawable image = getImage(userId);
+                final BitmapDrawable image = getImage(user);
                 if (image != null)
                     return image;
                 else
-                    return fetchAvatar(loadUrl, userId);
+                    return fetchAvatar(loadUrl, getAvatarFilename(user));
             }
 
             @Override
