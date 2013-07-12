@@ -172,8 +172,8 @@
     <string name="prefix_updated">更新\u0020</string>
     <string name="prefix_opened">編集\u0020</string>
     <string name="clear">消去</string>
-    <string name="open_issues">イシューを開く</string>
-    <string name="closed_issues">イシューを閉じる</string>
+    <string name="open_issues">開いているイシュー</string>
+    <string name="closed_issues">閉じられたイシュー</string>
     <string name="confirm_bookmark_delete_title">ブックマークを削除</string>
     <string name="save">保存</string>
     <string name="apply">適用</string>
