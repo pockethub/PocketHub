@@ -322,7 +322,7 @@ public class AvatarLoader {
         if (userId == null)
             return setImage(loadingAvatar, view);
 
-        String avatarUrl = getAvatarUrl(user);
+        final String avatarUrl = getAvatarUrl(user);
         if (TextUtils.isEmpty(avatarUrl))
             return setImage(loadingAvatar, view);
 
@@ -373,7 +373,7 @@ public class AvatarLoader {
         if (user == null)
             return setImage(loadingAvatar, view);
 
-        String avatarUrl = getAvatarUrl(user);
+        final String avatarUrl = getAvatarUrl(user);
 
         if (TextUtils.isEmpty(avatarUrl))
             return setImage(loadingAvatar, view);
