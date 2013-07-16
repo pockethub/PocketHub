@@ -166,7 +166,7 @@ public class IssuesViewActivity extends PagerActivity {
     @Inject
     private IssueStore store;
 
-    private AtomicReference<User> user = new AtomicReference<User>();
+    private final AtomicReference<User> user = new AtomicReference<User>();
 
     private IssuesPagerAdapter adapter;
 
