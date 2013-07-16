@@ -394,7 +394,7 @@ public class AvatarLoader {
                 if (!userId.equals(view.getTag(id.iv_avatar)))
                     return null;
 
-                final BitmapDrawable image = getImageBy(user.getEmail());
+                final BitmapDrawable image = getImageBy(userId);
                 if (image != null)
                     return image;
                 else
