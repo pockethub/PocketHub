@@ -331,7 +331,6 @@ public class AvatarLoader {
             return setImage(loadedImage, view);
 
         setImage(loadingAvatar, view, userId);
-
         fetchAvatarTask(avatarUrl, userId, view).execute();
 
         return this;
@@ -348,12 +347,11 @@ public class AvatarLoader {
         if (user == null)
             return setImage(loadingAvatar, view);
 
-        final String avatarUrl = getAvatarUrl(user);
+        final String userId = user.getEmail();
 
+        final String avatarUrl = getAvatarUrl(user);
         if (TextUtils.isEmpty(avatarUrl))
             return setImage(loadingAvatar, view);
-
-        final String userId = user.getEmail();
 
         BitmapDrawable loadedImage = loaded.get(userId);
         if (loadedImage != null)
