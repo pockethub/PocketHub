@@ -124,23 +124,9 @@ public class AvatarLoader {
     /**
      * Get image for user
      *
-     * @param userId
+     * @param filename
      * @return image
      */
-    private BitmapDrawable getImage(final String userId) {
-        return getImageBy(userId);
-    }
-
-    /**
-     * Get image for user
-     *
-     * @param user
-     * @return image
-     */
-    private BitmapDrawable getImage(final CommitUser user) {
-        return getImageBy(user.getEmail());
-    }
-
     private BitmapDrawable getImageBy(String filename) {
         File avatarFile = new File(avatarDir, filename);
 
@@ -258,7 +244,7 @@ public class AvatarLoader {
 
             @Override
             public BitmapDrawable call() throws Exception {
-                final BitmapDrawable image = getImage(userId);
+                final BitmapDrawable image = getImageBy(userId);
                 if (image != null)
                     return image;
                 else
@@ -336,7 +322,7 @@ public class AvatarLoader {
         if (userId == null)
             return setImage(loadingAvatar, view);
 
-        String avatarUrl = getAvatarUrl(user);
+        final String avatarUrl = getAvatarUrl(user);
         if (TextUtils.isEmpty(avatarUrl))
             return setImage(loadingAvatar, view);
 
@@ -345,33 +331,7 @@ public class AvatarLoader {
             return setImage(loadedImage, view);
 
         setImage(loadingAvatar, view, userId);
-
-        final String loadUrl = avatarUrl;
-        new FetchAvatarTask(context) {
-
-            @Override
-            public BitmapDrawable call() throws Exception {
-                if (!userId.equals(view.getTag(id.iv_avatar)))
-                    return null;
-
-                final BitmapDrawable image = getImage(userId);
-                if (image != null)
-                    return image;
-                else
-                    return fetchAvatar(loadUrl, userId);
-            }
-
-            @Override
-            protected void onSuccess(final BitmapDrawable image)
-                    throws Exception {
-                if (image == null)
-                    return;
-                loaded.put(userId, image);
-                if (userId.equals(view.getTag(id.iv_avatar)))
-                    setImage(image, view);
-            }
-
-        }.execute();
+        fetchAvatarTask(avatarUrl, userId, view).execute();
 
         return this;
     }
@@ -387,7 +347,7 @@ public class AvatarLoader {
         if (user == null)
             return setImage(loadingAvatar, view);
 
-        String avatarUrl = getAvatarUrl(user);
+        final String avatarUrl = getAvatarUrl(user);
 
         if (TextUtils.isEmpty(avatarUrl))
             return setImage(loadingAvatar, view);
@@ -399,20 +359,25 @@ public class AvatarLoader {
             return setImage(loadedImage, view);
 
         setImage(loadingAvatar, view, userId);
+        fetchAvatarTask(avatarUrl, userId, view).execute();
 
-        final String loadUrl = avatarUrl;
-        new FetchAvatarTask(context) {
+        return this;
+    }
+
+    private FetchAvatarTask fetchAvatarTask(final String avatarUrl,
+            final String userId, final ImageView view) {
+        return new FetchAvatarTask(context) {
 
             @Override
             public BitmapDrawable call() throws Exception {
                 if (!userId.equals(view.getTag(id.iv_avatar)))
                     return null;
 
-                final BitmapDrawable image = getImage(user);
+                final BitmapDrawable image = getImageBy(userId);
                 if (image != null)
                     return image;
                 else
-                    return fetchAvatar(loadUrl, userId);
+                    return fetchAvatar(avatarUrl, userId);
             }
 
             @Override
@@ -424,9 +389,6 @@ public class AvatarLoader {
                 if (userId.equals(view.getTag(id.iv_avatar)))
                     setImage(image, view);
             }
-
-        }.execute();
-
-        return this;
+        };
     }
 }
