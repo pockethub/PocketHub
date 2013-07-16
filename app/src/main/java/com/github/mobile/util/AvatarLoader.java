@@ -124,26 +124,6 @@ public class AvatarLoader {
     /**
      * Get image for user
      *
-     * @param userId
-     * @return image
-     */
-    private BitmapDrawable getImage(final String userId) {
-        return getImageBy(userId);
-    }
-
-    /**
-     * Get image for user
-     *
-     * @param user
-     * @return image
-     */
-    private BitmapDrawable getImage(final CommitUser user) {
-        return getImageBy(user.getEmail());
-    }
-
-    /**
-     * Get image for user
-     *
      * @param filename
      * @return image
      */
@@ -264,7 +244,7 @@ public class AvatarLoader {
 
             @Override
             public BitmapDrawable call() throws Exception {
-                final BitmapDrawable image = getImage(userId);
+                final BitmapDrawable image = getImageBy(userId);
                 if (image != null)
                     return image;
                 else
@@ -360,7 +340,7 @@ public class AvatarLoader {
                 if (!userId.equals(view.getTag(id.iv_avatar)))
                     return null;
 
-                final BitmapDrawable image = getImage(userId);
+                final BitmapDrawable image = getImageBy(userId);
                 if (image != null)
                     return image;
                 else
@@ -414,7 +394,7 @@ public class AvatarLoader {
                 if (!userId.equals(view.getTag(id.iv_avatar)))
                     return null;
 
-                final BitmapDrawable image = getImage(user);
+                final BitmapDrawable image = getImageBy(user.getEmail());
                 if (image != null)
                     return image;
                 else
