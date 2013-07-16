@@ -141,6 +141,12 @@ public class AvatarLoader {
         return getImageBy(user.getEmail());
     }
 
+    /**
+     * Get image for user
+     *
+     * @param filename
+     * @return image
+     */
     private BitmapDrawable getImageBy(String filename) {
         File avatarFile = new File(avatarDir, filename);
 
