@@ -332,31 +332,7 @@ public class AvatarLoader {
 
         setImage(loadingAvatar, view, userId);
 
-        new FetchAvatarTask(context) {
-
-            @Override
-            public BitmapDrawable call() throws Exception {
-                if (!userId.equals(view.getTag(id.iv_avatar)))
-                    return null;
-
-                final BitmapDrawable image = getImageBy(userId);
-                if (image != null)
-                    return image;
-                else
-                    return fetchAvatar(avatarUrl, userId);
-            }
-
-            @Override
-            protected void onSuccess(final BitmapDrawable image)
-                    throws Exception {
-                if (image == null)
-                    return;
-                loaded.put(userId, image);
-                if (userId.equals(view.getTag(id.iv_avatar)))
-                    setImage(image, view);
-            }
-
-        }.execute();
+        fetchAvatarTask(avatarUrl, userId, view).execute();
 
         return this;
     }
@@ -384,9 +360,15 @@ public class AvatarLoader {
             return setImage(loadedImage, view);
 
         setImage(loadingAvatar, view, userId);
+        fetchAvatarTask(avatarUrl, userId, view).execute();
 
-        new FetchAvatarTask(context) {
+        return this;
+    }
 
+    private FetchAvatarTask fetchAvatarTask(final String avatarUrl,
+            final String userId, final ImageView view) {
+
+        return new FetchAvatarTask(context) {
             @Override
             public BitmapDrawable call() throws Exception {
                 if (!userId.equals(view.getTag(id.iv_avatar)))
@@ -408,9 +390,7 @@ public class AvatarLoader {
                 if (userId.equals(view.getTag(id.iv_avatar)))
                     setImage(image, view);
             }
+        };
 
-        }.execute();
-
-        return this;
     }
 }
