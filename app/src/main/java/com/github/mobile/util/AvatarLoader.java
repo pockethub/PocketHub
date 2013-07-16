@@ -332,7 +332,6 @@ public class AvatarLoader {
 
         setImage(loadingAvatar, view, userId);
 
-        final String loadUrl = avatarUrl;
         new FetchAvatarTask(context) {
 
             @Override
@@ -344,7 +343,7 @@ public class AvatarLoader {
                 if (image != null)
                     return image;
                 else
-                    return fetchAvatar(loadUrl, userId);
+                    return fetchAvatar(avatarUrl, userId);
             }
 
             @Override
@@ -386,7 +385,6 @@ public class AvatarLoader {
 
         setImage(loadingAvatar, view, userId);
 
-        final String loadUrl = avatarUrl;
         new FetchAvatarTask(context) {
 
             @Override
@@ -398,7 +396,7 @@ public class AvatarLoader {
                 if (image != null)
                     return image;
                 else
-                    return fetchAvatar(loadUrl, userId);
+                    return fetchAvatar(avatarUrl, userId);
             }
 
             @Override
