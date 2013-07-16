@@ -158,15 +158,13 @@ public class IssuesViewActivity extends PagerActivity {
 
     private Repository repo;
 
-    private int initialPosition;
-
     @Inject
     private AvatarLoader avatars;
 
     @Inject
     private IssueStore store;
 
-    private AtomicReference<User> user = new AtomicReference<User>();
+    private final AtomicReference<User> user = new AtomicReference<User>();
 
     private IssuesPagerAdapter adapter;
 
@@ -181,7 +179,7 @@ public class IssuesViewActivity extends PagerActivity {
         pullRequests = getBooleanArrayExtra(EXTRA_PULL_REQUESTS);
         repoIds = getSerializableExtra(EXTRA_REPOSITORIES);
         repo = getSerializableExtra(EXTRA_REPOSITORY);
-        initialPosition = getIntExtra(EXTRA_POSITION);
+        int initialPosition = getIntExtra(EXTRA_POSITION);
 
         setContentView(layout.pager);
 
