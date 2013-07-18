@@ -268,32 +268,35 @@ public class CommitDiffListFragment extends DialogFragment implements
     private void addCommitDetails(RepositoryCommit commit) {
         adapter.addHeader(commitHeader);
 
-        String commitAuthor = CommitUtils.getAuthor(commit);
-        Date commitAuthorDate = CommitUtils.getAuthorDate(commit);
-        String commitCommitter = CommitUtils.getCommitter(commit);
-        Date commitCommitterDate = CommitUtils.getCommiterDate(commit);
-
         commitMessage.setText(commit.getCommit().getMessage());
 
+        String commitAuthor = CommitUtils.getAuthor(commit);
         if (commitAuthor != null) {
             CommitUtils.bindAuthor(commit, avatars, authorAvatar);
             authorName.setText(commitAuthor);
             StyledText styledAuthor = new StyledText();
             styledAuthor.append(getString(string.authored));
+
+            Date commitAuthorDate = CommitUtils.getAuthorDate(commit);
             if (commitAuthorDate != null)
                 styledAuthor.append(' ').append(commitAuthorDate);
+
             authorDate.setText(styledAuthor);
             ViewUtils.setGone(authorArea, false);
         } else
             ViewUtils.setGone(authorArea, true);
 
+        String commitCommitter = CommitUtils.getCommitter(commit);
         if (isDifferentCommitter(commitAuthor, commitCommitter)) {
             CommitUtils.bindCommitter(commit, avatars, committerAvatar);
             committerName.setText(commitCommitter);
             StyledText styledCommitter = new StyledText();
             styledCommitter.append(getString(string.committed));
+
+            Date commitCommitterDate = CommitUtils.getCommiterDate(commit);
             if (commitCommitterDate != null)
                 styledCommitter.append(' ').append(commitCommitterDate);
+
             committerDate.setText(styledCommitter);
             ViewUtils.setGone(committerArea, false);
         } else
