@@ -261,8 +261,7 @@ public class CommitDiffListFragment extends DialogFragment implements
     }
 
     private boolean isDifferentCommitter(final String author,
-            final Date authorDate, final String committer,
-            final Date committerDate) {
+            final Date authorDate, final String committer) {
         return committer != null && !committer.equals(author);
     }
 
@@ -289,7 +288,7 @@ public class CommitDiffListFragment extends DialogFragment implements
             ViewUtils.setGone(authorArea, true);
 
         if (isDifferentCommitter(commitAuthor, commitAuthorDate,
-                commitCommitter, commitCommitterDate)) {
+                commitCommitter)) {
             CommitUtils.bindCommitter(commit, avatars, committerAvatar);
             committerName.setText(commitCommitter);
             StyledText styledCommitter = new StyledText();
