@@ -121,12 +121,6 @@ public class AvatarLoader {
         options.inPreferredConfig = ARGB_8888;
     }
 
-    /**
-     * Get image for user
-     *
-     * @param filename
-     * @return image
-     */
     private BitmapDrawable getImageBy(String filename) {
         File avatarFile = new File(avatarDir, filename);
 
@@ -142,12 +136,6 @@ public class AvatarLoader {
         }
     }
 
-    /**
-     * Decode file to bitmap
-     *
-     * @param file
-     * @return bitmap
-     */
     private Bitmap decode(final File file) {
         return BitmapFactory.decodeFile(file.getAbsolutePath(), options);
     }
