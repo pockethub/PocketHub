@@ -356,13 +356,13 @@ public class IssueFragment extends DialogFragment {
         if (IssueUtils.isPullRequest(issue) && issue.getPullRequest().getCommits() > 0) {
             ViewUtils.setGone(commitsView, false);
 
-            TextView icon = (TextView) commitsView.findViewById(id.tv_commit_icon);
+            TextView icon = finder.textView(id.tv_commit_icon);
             TypefaceUtils.setOcticons(icon);
             icon.setText(ICON_COMMIT);
 
             String commits = getString(string.pull_request_commits,
                 issue.getPullRequest().getCommits());
-            ((TextView) commitsView.findViewById(id.tv_pull_request_commits)).setText(commits);
+            finder.setText(id.tv_pull_request_commits, commits);
         } else
             ViewUtils.setGone(commitsView, true);
 
