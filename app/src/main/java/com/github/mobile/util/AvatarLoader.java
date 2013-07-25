@@ -122,8 +122,8 @@ public class AvatarLoader {
         options.inPreferredConfig = ARGB_8888;
     }
 
-    private BitmapDrawable getImageBy(String filename) {
-        File avatarFile = new File(avatarDir, filename);
+    private BitmapDrawable getImageBy(final String userId, final String filename) {
+        File avatarFile = new File(avatarDir + "/" + userId, filename);
 
         if (!avatarFile.exists() || avatarFile.length() == 0)
             return null;
@@ -134,6 +134,15 @@ public class AvatarLoader {
         else {
             avatarFile.delete();
             return null;
+        }
+    }
+
+    private void deleteCachedUserAvatars(File userAvatarDir) {
+        if (!userAvatarDir.isDirectory())
+            return;
+
+        for (File userAvatar : userAvatarDir.listFiles()) {
+            userAvatar.delete();
         }
     }
 
@@ -152,8 +161,15 @@ public class AvatarLoader {
      * @param cachedAvatarFilename
      * @return bitmap
      */
-    protected BitmapDrawable fetchAvatar(final String url, final String cachedAvatarFilename) {
-        File rawAvatar = new File(avatarDir, cachedAvatarFilename + "-raw");
+    protected BitmapDrawable fetchAvatar(final String url,
+            final String userId, final String cachedAvatarFilename) {
+        File userAvatarDir = new File(avatarDir, userId);
+        if (!userAvatarDir.isDirectory())
+            userAvatarDir.mkdirs();
+        else
+            deleteCachedUserAvatars(userAvatarDir);
+
+        File rawAvatar = new File(userAvatarDir, cachedAvatarFilename + "-raw");
         HttpRequest request = HttpRequest.get(url);
         if (request.ok())
             request.receive(rawAvatar);
@@ -173,7 +189,7 @@ public class AvatarLoader {
             return null;
         }
 
-        File roundedAvatar = new File(avatarDir, cachedAvatarFilename);
+        File roundedAvatar = new File(userAvatarDir, cachedAvatarFilename);
         FileOutputStream output = null;
         try {
             output = new FileOutputStream(roundedAvatar);
@@ -238,11 +254,11 @@ public class AvatarLoader {
             @Override
             public BitmapDrawable call() throws Exception {
                 final String avatarFilename = getAvatarFilenameForUrl(getAvatarUrl(user));
-                final BitmapDrawable image = getImageBy(avatarFilename);
+                final BitmapDrawable image = getImageBy(userId, avatarFilename);
                 if (image != null)
                     return image;
                 else
-                    return fetchAvatar(avatarUrl, avatarFilename);
+                    return fetchAvatar(avatarUrl, userId, avatarFilename);
             }
 
             @Override
@@ -368,11 +384,11 @@ public class AvatarLoader {
                     return null;
 
                 final String avatarFilename = getAvatarFilenameForUrl(avatarUrl);
-                final BitmapDrawable image = getImageBy(avatarFilename);
+                final BitmapDrawable image = getImageBy(userId, avatarFilename);
                 if (image != null)
                     return image;
                 else
-                    return fetchAvatar(avatarUrl, avatarFilename);
+                    return fetchAvatar(avatarUrl, userId, avatarFilename);
             }
 
             @Override
