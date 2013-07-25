@@ -159,6 +159,9 @@ public class IssueStore extends ItemStore {
         Issue issue;
         try {
             issue = issueService.getIssue(repository, number);
+            if (IssueUtils.isPullRequest(issue))
+                issue = IssueUtils.toIssue(pullService.getPullRequest(
+                    repository, number));
         } catch (IOException e) {
             if (e instanceof RequestException
                     && 410 == ((RequestException) e).getStatus())
