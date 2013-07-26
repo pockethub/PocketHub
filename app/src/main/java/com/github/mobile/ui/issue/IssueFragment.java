@@ -52,6 +52,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewUtils;
+import com.github.mobile.R;
 import com.github.mobile.R.drawable;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
@@ -356,13 +357,13 @@ public class IssueFragment extends DialogFragment {
         if (IssueUtils.isPullRequest(issue) && issue.getPullRequest().getCommits() > 0) {
             ViewUtils.setGone(commitsView, false);
 
-            TextView icon = finder.textView(id.tv_commit_icon);
+            TextView icon = (TextView) headerView.findViewById(id.tv_commit_icon);
             TypefaceUtils.setOcticons(icon);
             icon.setText(ICON_COMMIT);
 
             String commits = getString(string.pull_request_commits,
                 issue.getPullRequest().getCommits());
-            finder.setText(id.tv_pull_request_commits, commits);
+            ((TextView) headerView.findViewById(id.tv_pull_request_commits)).setText(commits);
         } else
             ViewUtils.setGone(commitsView, true);
 
