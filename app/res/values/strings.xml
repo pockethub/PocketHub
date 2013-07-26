@@ -21,6 +21,7 @@
     <string name="error_issues_load">Loading issues failed</string>
     <string name="error_repos_load">Loading repositories failed</string>
     <string name="error_repo_load">Loading repository failed</string>
+    <string name="error_contributors_load">Loading contributors failed</string>
     <string name="error_gist_load">Loading Gist failed</string>
     <string name="error_news_load">Loading news failed</string>
     <string name="error_followers_load">Loading followers failed</string>
@@ -73,6 +74,7 @@
     <!-- Empty messages -->
     <string name="no_bookmarks">No Bookmarks</string>
     <string name="no_repositories">No Repositories</string>
+    <string name="no_contributors">No contributors</string>
     <string name="no_issues">No Issues</string>
     <string name="no_gists">No Gists</string>
     <string name="no_people">No People</string>
@@ -131,6 +133,7 @@
     <string name="comment_hint">Enter a comment</string>
     <string name="show_more">Show More…</string>
     <string name="repositories">Repositories</string>
+    <string name="contributors">Contributors</string>
     <string name="issues_title">Issues</string>
     <string name="edit_labels">Edit Labels</string>
     <string name="milestone_prefix">Milestone:</string>
@@ -238,6 +241,7 @@
     <string name="unstarring_repository">Unstarring…</string>
     <string name="navigate_to">Navigate to…</string>
     <string name="navigate_to_user">Navigate to %s</string>
+    <string name="contributions">%d commits</string>
 
     <!-- Tab titles, should be as short as possible -->
     <string name="tab_repositories">repositories</string>

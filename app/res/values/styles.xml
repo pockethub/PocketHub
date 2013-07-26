@@ -26,6 +26,11 @@
         <item name="android:layout_height">28dp</item>
     </style>
 
+    <style name="AvatarXLarge">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+    </style>
+
     <style name="AvatarLarge">
         <item name="android:layout_width">32dp</item>
         <item name="android:layout_height">32dp</item>
@@ -176,6 +181,11 @@
         <item name="android:paddingTop">10dp</item>
         <item name="android:paddingBottom">10dp</item>
         <item name="android:background">@drawable/list_item_background</item>
+    </style>
+
+    <style name="ListItemTwoLines" parent="ListItem">
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
     </style>
 
     <style name="HeaderListItem" parent="ListItem"></style>

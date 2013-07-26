@@ -45,6 +45,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.egit.github.core.CommitUser;
+import org.eclipse.egit.github.core.Contributor;
 import org.eclipse.egit.github.core.User;
 
 import roboguice.util.RoboAsyncTask;
@@ -370,6 +371,34 @@ public class AvatarLoader {
 
         setImage(loadingAvatar, view, userId);
         fetchAvatarTask(avatarUrl, userId, view).execute();
+
+        return this;
+    }
+
+    /**
+     * Bind view to image at URL
+     *
+     * @param view
+     * @param contributor
+     * @return this helper
+     */
+    public AvatarLoader bind(final ImageView view, final Contributor contributor) {
+        if (contributor == null)
+            return setImage(loadingAvatar, view);
+
+        final String avatarUrl = contributor.getAvatarUrl();
+
+        if (TextUtils.isEmpty(avatarUrl))
+            return setImage(loadingAvatar, view);
+
+        final String contributorId = contributor.getLogin();
+
+        BitmapDrawable loadedImage = loaded.get(contributorId);
+        if (loadedImage != null)
+            return setImage(loadedImage, view);
+
+        setImage(loadingAvatar, view, contributorId);
+        fetchAvatarTask(avatarUrl, contributorId, view).execute();
 
         return this;
     }
