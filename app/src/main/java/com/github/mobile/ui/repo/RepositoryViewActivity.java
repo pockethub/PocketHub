@@ -180,6 +180,9 @@ public class RepositoryViewActivity extends
         case id.m_refresh:
             checkStarredRepositoryStatus();
             return super.onOptionsItemSelected(item);
+        case id.m_contributors:
+            startActivity(RepositoryContributorsActivity.createIntent(repository));
+            return true;
         case android.R.id.home:
             finish();
             Intent intent = UserViewActivity.createIntent(repository.getOwner());

@@ -186,6 +186,16 @@
                 android:value=".ui.issue.IssueSearchActivity" />
         </activity>
         <activity
+                android:name=".ui.repo.RepositoryContributorsActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:hardwareAccelerated="true" >
+            <intent-filter>
+                <action android:name="com.github.mobile.repo.contributors.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".ui.user.UserViewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true" >
