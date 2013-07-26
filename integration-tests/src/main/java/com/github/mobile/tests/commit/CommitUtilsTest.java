@@ -129,14 +129,14 @@ public class CommitUtilsTest extends AndroidTestCase {
      */
     public void testGetCommitterDate() {
         RepositoryCommit commit = new RepositoryCommit();
-        assertNull(CommitUtils.getCommiterDate(commit));
+        assertNull(CommitUtils.getCommitterDate(commit));
         Commit rawCommit = new Commit();
         commit.setCommit(rawCommit);
-        assertNull(CommitUtils.getCommiterDate(commit));
+        assertNull(CommitUtils.getCommitterDate(commit));
         CommitUser user = new CommitUser();
         rawCommit.setCommitter(user);
-        assertNull(CommitUtils.getCommiterDate(commit));
+        assertNull(CommitUtils.getCommitterDate(commit));
         user.setDate(new Date(12345));
-        assertEquals(new Date(12345), CommitUtils.getCommiterDate(commit));
+        assertEquals(new Date(12345), CommitUtils.getCommitterDate(commit));
     }
 }

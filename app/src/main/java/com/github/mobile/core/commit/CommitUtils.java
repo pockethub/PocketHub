@@ -152,13 +152,13 @@ public class CommitUtils {
      * @param commit
      * @return author name or null if missing
      */
-    public static Date getCommiterDate(final RepositoryCommit commit) {
+    public static Date getCommitterDate(final RepositoryCommit commit) {
         Commit rawCommit = commit.getCommit();
         if (rawCommit == null)
             return null;
 
-        CommitUser commitCommiter = rawCommit.getCommitter();
-        return commitCommiter != null ? commitCommiter.getDate() : null;
+        CommitUser commitCommitter = rawCommit.getCommitter();
+        return commitCommitter != null ? commitCommitter.getDate() : null;
     }
 
     /**
