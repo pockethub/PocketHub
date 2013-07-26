@@ -294,7 +294,7 @@ public class CommitDiffListFragment extends DialogFragment implements
             StyledText styledCommitter = new StyledText();
             styledCommitter.append(getString(string.committed));
 
-            Date commitCommitterDate = CommitUtils.getCommiterDate(commit);
+            Date commitCommitterDate = CommitUtils.getCommitterDate(commit);
             if (commitCommitterDate != null)
                 styledCommitter.append(' ').append(commitCommitterDate);
 
