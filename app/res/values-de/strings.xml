@@ -21,6 +21,7 @@
     <string name="error_issues_load">Laden der Probleme fehlgeschlagen</string>
     <string name="error_repos_load">Laden der Repositories fehlgeschlagen</string>
     <string name="error_repo_load">Laden des Repositories fehlgeschlagen</string>
+    <string name="error_contributors_load">Laden der Mitwirkenden fehlgeschlagen</string>
     <string name="error_gist_load">Laden des Gists fehlgeschlagen</string>
     <string name="error_news_load">Laden der Neuigkeiten fehlgeschlagen</string>
     <string name="error_followers_load">Laden der Anhänger fehlgeschlagen</string>
@@ -71,6 +72,7 @@
     <!-- Empty messages -->
     <string name="no_bookmarks">Keine Lesezeichen</string>
     <string name="no_repositories">Keine Repositories</string>
+    <string name="no_contributors">Keine Mitwirkende</string>
     <string name="no_issues">Keine Probleme</string>
     <string name="no_gists">Keine Gists</string>
     <string name="no_people">Keine Personen</string>
@@ -128,6 +130,7 @@
     <string name="comment_hint">Ihren Kommentar eingeben</string>
     <string name="show_more">Mehr zeigen…</string>
     <string name="repositories">Repositories</string>
+    <string name="contributors">Mitwirkende</string>
     <string name="issues_title">Probleme</string>
     <string name="edit_labels">Markierungen bearbeiten</string>
     <string name="milestone_prefix">Meilenstein:</string>
@@ -157,7 +160,10 @@
     <string name="new_issue">Neues Problem</string>
     <string name="anonymous">Anonym</string>
     <string name="message_filter_saved">Filter als Lesezeichen gespeichert</string>
+    <string name="recently_viewed">ZULETZT ANGESEHEN</string>
     <string name="recent">Letzte</string>
+    <string name="recent_remove">Liste leeren</string>
+    <string name="recent_list_remove">Von Liste entfernen</string>
     <string name="section_issue_status">Status:</string>
     <string name="status_open">Offen</string>
     <string name="status_closed">Geschlossen</string>
@@ -190,6 +196,7 @@
     <string name="prefix_updated">aktualisiert\u0020</string>
     <string name="prefix_opened">eröffnet\u0020</string>
     <string name="clear">Leeren</string>
+    <string name="pull_request_commits">Commits: %d</string>
     <string name="open_issues">Offene Probleme</string>
     <string name="closed_issues">Geschlossene Probleme</string>
     <string name="confirm_bookmark_delete_title">Lesezeichen entfernen</string>
@@ -209,7 +216,6 @@
     <string name="reopen">Neu öffnen</string>
     <string name="title_invalid_github_url">Ungültige GitHub URL</string>
     <string name="message_invalid_github_url">Die folgende URL konnte von der Anwendung nicht geöffnet werden:\n{0}</string>
-    <string name="recently_viewed">Zuletzt Angesehen</string>
     <string name="cancel">Abbrechen</string>
     <string name="authenticator_conflict_title">App Konflikt</string>
     <string name="authenticator_conflict_message">Eine andere App ist derzeit für die Anmeldung bei GitHub konfiguriert.\n\nSie müssen diese App aus dem Bereich Konten &amp; Synchronisierung entfernen und diese App deinstallieren, bevor Sie die GitHub App verwenden können.</string>
@@ -230,6 +236,9 @@
     <string name="unfollowing_user">Entfolgen…</string>
     <string name="starring_repository">Favorisieren…</string>
     <string name="unstarring_repository">Favorit entfernen…</string>
+    <string name="navigate_to">Navigiere zu…</string>
+    <string name="navigate_to_user">Navigiere zu %s</string>
+    <string name="contributions">%d Commits</string>
 
     <!-- Tab titles, should be as short as possible -->
     <string name="tab_repositories">Repositories</string>
@@ -255,5 +264,7 @@
     <string name="show_password">Passwort anzeigen</string>
     <string name="write">Schreiben</string>
     <string name="preview">Vorschau</string>
+    <string name="show_raw_markdown">Zeige reines Markdown</string>
+    <string name="render_markdown">Zeige gerendertes Markdown</string>
 
 </resources>
