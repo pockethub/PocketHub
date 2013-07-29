@@ -110,7 +110,7 @@
 
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/searchable_repos" />
+                android:resource="@xml/searchable_repos_users" />
         </activity>
         <activity
             android:name=".ui.gist.GistsActivity"
