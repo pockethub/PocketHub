@@ -33,6 +33,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.github.mobile.R.drawable;
 import com.github.mobile.R.id;
+import com.github.mobile.core.search.SearchUser;
 import com.google.inject.Inject;
 
 import java.io.File;
@@ -399,6 +400,34 @@ public class AvatarLoader {
 
         setImage(loadingAvatar, view, contributorId);
         fetchAvatarTask(avatarUrl, contributorId, view).execute();
+
+        return this;
+    }
+
+    /**
+     * Bind view to image at URL
+     *
+     * @param view
+     * @param user
+     * @return this helper
+     */
+    public AvatarLoader bind(final ImageView view, final SearchUser user) {
+        if (user == null)
+            return setImage(loadingAvatar, view);
+
+        final String avatarUrl = getAvatarUrl(user.getGravatarId());
+
+        if (TextUtils.isEmpty(avatarUrl))
+            return setImage(loadingAvatar, view);
+
+        final String userId = user.getId();
+
+        BitmapDrawable loadedImage = loaded.get(userId);
+        if (loadedImage != null)
+            return setImage(loadedImage, view);
+
+        setImage(loadingAvatar, view, userId);
+        fetchAvatarTask(avatarUrl, userId, view).execute();
 
         return this;
     }

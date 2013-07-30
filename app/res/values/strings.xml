@@ -47,6 +47,7 @@
     <string name="error_unstarring_repository">Unstarring failed</string>
     <string name="error_checking_starring_status">Checking starring status failed</string>
     <string name="error_rendering_markdown">Rendering markdown failed</string>
+    <string name="error_users_search">Searching users failed</string>
     <!--  -->
 
 
@@ -97,6 +98,7 @@
     <string name="issues">Issues</string>
     <string name="gists">Gists</string>
     <string name="commits">Commits</string>
+    <string name="global_search">GitHub search</string>
     <string name="find_repositories">Find Repositories</string>
     <string name="find_issues">Find Issues</string>
     <string name="search_title">Search…</string>
@@ -245,6 +247,7 @@
 
     <!-- Tab titles, should be as short as possible -->
     <string name="tab_repositories">repositories</string>
+    <string name="tab_users">users</string>
     <string name="tab_news">news</string>
     <string name="tab_following_self">following</string>
     <string name="tab_followers_self">followers</string>

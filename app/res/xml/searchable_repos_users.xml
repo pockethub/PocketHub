@@ -15,7 +15,7 @@
   limitations under the License.
 -->
 <searchable xmlns:android="http://schemas.android.com/apk/res/android"
-    android:hint="@string/find_repositories"
+    android:hint="@string/global_search"
     android:label="@string/app_name"
     android:searchSuggestAuthority="com.github.search.suggest.recent.repos"
     android:searchSuggestSelection=" ?"
