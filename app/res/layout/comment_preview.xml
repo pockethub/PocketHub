@@ -15,34 +15,34 @@
   limitations under the License.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  style="@style/CommentListItem" >
+    style="@style/CommentListItem" >
 
-  <RelativeLayout
-    android:id="@+id/ll_comment_area"
-    style="@style/ListItem"
-    android:layout_width="match_parent"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentTop="true"
-    android:background="@drawable/inset_background"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp" >
+    <RelativeLayout
+        android:id="@+id/ll_comment_area"
+        style="@style/ListItem"
+        android:layout_width="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/inset_background"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" >
 
-    <ProgressBar
-      android:id="@+id/pb_loading"
-      style="@style/ListSpinner"
-      android:layout_centerInParent="true" />
+        <ProgressBar
+            android:id="@+id/pb_loading"
+            style="@style/ListSpinner"
+            android:layout_centerInParent="true" />
 
-    <TextView
-      android:id="@+id/tv_comment_body"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_alignParentLeft="true"
-      android:layout_alignParentTop="true"
-      android:paddingBottom="5dp"
-      android:paddingTop="5dp"
-      android:textColor="@color/text"
-      android:textColorLink="@color/text_link"
-      android:textSize="14dp" />
-  </RelativeLayout>
+        <TextView
+            android:id="@+id/tv_comment_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:textColor="@color/text"
+            android:textColorLink="@color/text_link"
+            android:textSize="14dp" />
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -15,26 +15,26 @@
   limitations under the License.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent" >
-
-  <ProgressBar
-    android:id="@+id/pb_loading"
-    style="@style/ListSpinner"
-    android:layout_centerInParent="true" />
-
-  <include
-    android:id="@+id/rl_branch"
-    layout="@layout/ref_footer" />
-
-  <ListView
-    android:id="@android:id/list"
-    style="@style/ListView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_above="@id/rl_branch"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentTop="true"
-    android:visibility="gone" />
+    android:layout_height="match_parent" >
+
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        style="@style/ListSpinner"
+        android:layout_centerInParent="true" />
+
+    <include
+        android:id="@+id/rl_branch"
+        layout="@layout/ref_footer" />
+
+    <ListView
+        android:id="@android:id/list"
+        style="@style/ListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/rl_branch"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:visibility="gone" />
 
 </RelativeLayout>
