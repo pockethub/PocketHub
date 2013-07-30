@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 GitHub Inc.
+ * Copyright 2013 GitHub Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.ui.repo;
+package com.github.mobile.ui.search;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.ui.StyledText;
+import com.github.mobile.ui.repo.RepositoryListAdapter;
 import com.github.mobile.util.TypefaceUtils;
 
 import org.eclipse.egit.github.core.SearchRepository;

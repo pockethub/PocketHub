@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 GitHub Inc.
+ * Copyright 2013 GitHub Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mobile.ui.repo;
+package com.github.mobile.ui.search;
 
+import static android.app.SearchManager.QUERY;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
@@ -27,6 +28,7 @@ import com.github.mobile.R.string;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.core.repo.RefreshRepositoryTask;
 import com.github.mobile.ui.ItemListFragment;
+import com.github.mobile.ui.repo.RepositoryViewActivity;
 import com.google.inject.Inject;
 
 import java.io.IOException;
@@ -57,13 +59,18 @@ public class SearchRepositoryListFragment extends
         setEmptyText(string.no_repositories);
     }
 
-    /**
-     * @param query
-     * @return this fragment
-     */
-    public SearchRepositoryListFragment setQuery(final String query) {
-        this.query = query;
-        return this;
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        query = getStringExtra(QUERY);
+    }
+
+    @Override
+    public void refresh() {
+        query = getStringExtra(QUERY);
+
+        super.refresh();
     }
 
     @Override
