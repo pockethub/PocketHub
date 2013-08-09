@@ -17,7 +17,6 @@ package com.github.mobile.ui.issue;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import android.accounts.Account;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.github.mobile.R.string;
@@ -104,20 +103,6 @@ public class AssigneeDialog {
                 super.execute();
             }
         }.execute();
-    }
-
-    /**
-     * Get collaborator with login
-     *
-     * @param login
-     * @return collaborator or null if none found with login
-     */
-    public User getCollaborator(String login) {
-        if (collaborators == null)
-            return null;
-        if (TextUtils.isEmpty(login))
-            return null;
-        return collaborators.get(login);
     }
 
     /**

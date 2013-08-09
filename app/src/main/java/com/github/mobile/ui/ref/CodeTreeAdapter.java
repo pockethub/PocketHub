@@ -67,17 +67,6 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
     }
 
     /**
-     * @param context
-     */
-    public CodeTreeAdapter(Context context) {
-        super(context);
-
-        this.context = context;
-        indentedPaddingLeft = ServiceUtils.getIntPixels(context.getResources(),
-                INDENTED_PADDING);
-    }
-
-    /**
      * Set whether views should be indented
      *
      * @param indented
