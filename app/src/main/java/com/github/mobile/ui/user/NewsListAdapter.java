@@ -225,8 +225,7 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
             appendText(details, download.getName());
     }
 
-    private static void formatCreate(Event event, StyledText main,
-            StyledText details) {
+    private static void formatCreate(Event event, StyledText main) {
         boldActor(main, event);
 
         main.append(" created ");
@@ -242,8 +241,7 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
             boldRepoName(main, event);
     }
 
-    private static void formatDelete(Event event, StyledText main,
-            StyledText details) {
+    private static void formatDelete(Event event, StyledText main) {
         boldActor(main, event);
 
         DeletePayload payload = (DeletePayload) event.getPayload();
@@ -256,22 +254,19 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
         boldRepo(main, event);
     }
 
-    private static void formatFollow(Event event, StyledText main,
-            StyledText details) {
+    private static void formatFollow(Event event, StyledText main) {
         boldActor(main, event);
         main.append(" started following ");
         boldUser(main, ((FollowPayload) event.getPayload()).getTarget());
     }
 
-    private static void formatFork(Event event, StyledText main,
-            StyledText details) {
+    private static void formatFork(Event event, StyledText main) {
         boldActor(main, event);
         main.append(" forked repository ");
         boldRepo(main, event);
     }
 
-    private static void formatGist(Event event, StyledText main,
-            StyledText details) {
+    private static void formatGist(Event event, StyledText main) {
         boldActor(main, event);
 
         GistPayload payload = (GistPayload) event.getPayload();
@@ -288,8 +283,7 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
         main.append(payload.getGist().getId());
     }
 
-    private static void formatWiki(Event event, StyledText main,
-            StyledText details) {
+    private static void formatWiki(Event event, StyledText main) {
         boldActor(main, event);
         main.append(" updated the wiki in ");
         boldRepo(main, event);
@@ -336,8 +330,7 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
         appendText(details, issue.getTitle());
     }
 
-    private static void formatAddMember(Event event, StyledText main,
-            StyledText details) {
+    private static void formatAddMember(Event event, StyledText main) {
         boldActor(main, event);
         main.append(" added ");
         User member = ((MemberPayload) event.getPayload()).getMember();
@@ -347,15 +340,13 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
         boldRepo(main, event);
     }
 
-    private static void formatPublic(Event event, StyledText main,
-            StyledText details) {
+    private static void formatPublic(Event event, StyledText main) {
         boldActor(main, event);
         main.append(" open sourced repository ");
         boldRepo(main, event);
     }
 
-    private static void formatWatch(Event event, StyledText main,
-            StyledText details) {
+    private static void formatWatch(Event event, StyledText main) {
         boldActor(main, event);
         main.append(" starred ");
         boldRepo(main, event);
@@ -453,8 +444,7 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
         }
     }
 
-    private static void formatTeamAdd(Event event, StyledText main,
-            StyledText details) {
+    private static void formatTeamAdd(Event event, StyledText main) {
         boldActor(main, event);
 
         TeamAddPayload payload = (TeamAddPayload) event.getPayload();
@@ -538,25 +528,25 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
             formatCommitComment(event, main, details);
         } else if (TYPE_CREATE.equals(type)) {
             icon = ICON_CREATE;
-            formatCreate(event, main, details);
+            formatCreate(event, main);
         } else if (TYPE_DELETE.equals(type)) {
             icon = ICON_DELETE;
-            formatDelete(event, main, details);
+            formatDelete(event, main);
         } else if (TYPE_DOWNLOAD.equals(type)) {
             icon = ICON_UPLOAD;
             formatDownload(event, main, details);
         } else if (TYPE_FOLLOW.equals(type)) {
             icon = ICON_FOLLOW;
-            formatFollow(event, main, details);
+            formatFollow(event, main);
         } else if (TYPE_FORK.equals(type)) {
             icon = ICON_FORK;
-            formatFork(event, main, details);
+            formatFork(event, main);
         } else if (TYPE_GIST.equals(type)) {
             icon = ICON_GIST;
-            formatGist(event, main, details);
+            formatGist(event, main);
         } else if (TYPE_GOLLUM.equals(type)) {
             icon = ICON_WIKI;
-            formatWiki(event, main, details);
+            formatWiki(event, main);
         } else if (TYPE_ISSUE_COMMENT.equals(type)) {
             icon = ICON_ISSUE_COMMENT;
             formatIssueComment(event, main, details);
@@ -571,9 +561,9 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
             formatIssues(event, main, details);
         } else if (TYPE_MEMBER.equals(type)) {
             icon = ICON_ADD_MEMBER;
-            formatAddMember(event, main, details);
+            formatAddMember(event, main);
         } else if (TYPE_PUBLIC.equals(type))
-            formatPublic(event, main, details);
+            formatPublic(event, main);
         else if (TYPE_PULL_REQUEST.equals(type)) {
             icon = ICON_PULL_REQUEST;
             formatPullRequest(event, main, details);
@@ -585,10 +575,10 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
             formatPush(event, main, details);
         } else if (TYPE_TEAM_ADD.equals(type)) {
             icon = ICON_ADD_MEMBER;
-            formatTeamAdd(event, main, details);
+            formatTeamAdd(event, main);
         } else if (TYPE_WATCH.equals(type)) {
             icon = ICON_STAR;
-            formatWatch(event, main, details);
+            formatWatch(event, main);
         }
 
         if (icon != null)
