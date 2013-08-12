@@ -153,7 +153,7 @@ public class AvatarLoader {
     }
 
     private String getAvatarFilenameForUrl(String avatarUrl) {
-        return Base64.encodeToString(avatarUrl.getBytes(), Base64.DEFAULT);
+        return Base64.encodeToString(avatarUrl.getBytes(), Base64.NO_WRAP);
     }
 
     /**
