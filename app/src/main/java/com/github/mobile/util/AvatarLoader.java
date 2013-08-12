@@ -143,9 +143,8 @@ public class AvatarLoader {
         if (!userAvatarDir.isDirectory())
             return;
 
-        for (File userAvatar : userAvatarDir.listFiles()) {
+        for (File userAvatar : userAvatarDir.listFiles())
             userAvatar.delete();
-        }
     }
 
     private Bitmap decode(final File file) {
