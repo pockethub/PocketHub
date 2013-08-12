@@ -167,9 +167,10 @@ public class AvatarLoader {
         File userAvatarDir = new File(avatarDir, userId);
         if (userAvatarDir.isDirectory())
             deleteCachedUserAvatars(userAvatarDir);
-        else
+        else {
             userAvatarDir.delete();
             userAvatarDir.mkdirs();
+        }
 
         File rawAvatar = new File(userAvatarDir, cachedAvatarFilename + "-raw");
         HttpRequest request = HttpRequest.get(url);
