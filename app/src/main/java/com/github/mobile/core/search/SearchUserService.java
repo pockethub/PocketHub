@@ -50,13 +50,6 @@ public class SearchUserService extends UserService {
 
     /**
      * Create search user service
-     */
-    public SearchUserService() {
-        super();
-    }
-
-    /**
-     * Create search user service
      *
      * @param client
      */

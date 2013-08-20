@@ -49,14 +49,6 @@ public class FullGist extends ArrayList<Comment> implements Serializable {
     }
 
     /**
-     * Create empty gist
-     */
-    public FullGist() {
-        this.gist = null;
-        this.starred = false;
-    }
-
-    /**
      * @return starred
      */
     public boolean isStarred() {
