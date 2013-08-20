@@ -158,7 +158,7 @@
     <string name="invalid_login_or_password">正しいログイン &amp; パスワードを入力してください</string>
     <string name="invalid_password">正しいパスワードを入力してください。</string>
     <string name="password">パスワード</string>
-    <string name="login_or_email">ログインまたは Email</string>
+    <string name="username_or_email">ユーザー名 または Email</string>
     <string name="followers">フォロワー</string>
     <string name="following">フォロー</string>
     <string name="followers_self">フォロワー</string>
