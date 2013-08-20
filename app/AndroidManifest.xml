@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.github.mobile"
-    android:versionCode="1400"
-    android:versionName="1.7" >
+    android:versionCode="1500"
+    android:versionName="1.7.1" >
 
     <!-- Target SDK version must be 16, not 17, or JavaScript bridge for
          WebView widgets does not work on a 4.2 Nexus 7 -->
