@@ -25,7 +25,6 @@ import android.graphics.BitmapFactory.Options;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -34,6 +33,7 @@ import com.github.kevinsawicki.http.HttpRequest;
 import com.github.mobile.R.drawable;
 import com.github.mobile.R.id;
 import com.github.mobile.core.search.SearchUser;
+import com.github.mobile.util.GravatarUtils;
 import com.google.inject.Inject;
 
 import java.io.File;
@@ -151,8 +151,8 @@ public class AvatarLoader {
         return BitmapFactory.decodeFile(file.getAbsolutePath(), options);
     }
 
-    private String getAvatarFilenameForUrl(String avatarUrl) {
-        return Base64.encodeToString(avatarUrl.getBytes(), Base64.NO_WRAP);
+    private String getAvatarFilenameForUrl(final String avatarUrl) {
+        return GravatarUtils.getHash(avatarUrl);
     }
 
     /**
