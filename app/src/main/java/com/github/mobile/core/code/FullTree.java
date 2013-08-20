@@ -92,7 +92,6 @@ public class FullTree {
                 CASE_INSENSITIVE_ORDER);
 
         private Folder() {
-            super();
         }
 
         private Folder(TreeEntry entry, Folder parent) {

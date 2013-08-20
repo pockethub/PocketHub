@@ -42,8 +42,6 @@ public class AccountClient extends DefaultClient {
      * @param accountProvider
      */
     public AccountClient(final Provider<GitHubAccount> accountProvider) {
-        super();
-
         this.accountProvider = accountProvider;
     }
 
