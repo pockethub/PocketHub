@@ -21,11 +21,12 @@
     <string name="error_issues_load">イシューのロードに失敗しました</string>
     <string name="error_repos_load">リポジトリのロードに失敗しました</string>
     <string name="error_repo_load">リポジトリのロードに失敗しました</string>
+    <string name="error_contributors_load">貢献者のロードに失敗しました</string>
     <string name="error_gist_load">Gist のロードに失敗しました</string>
     <string name="error_news_load">ニュースのロードに失敗しました</string>
     <string name="error_followers_load">フォロワーのロードに失敗しました</string>
     <string name="error_people_load">人のロードに失敗しました</string>
-    <string name="error_person_load">人物のロードに失敗しました</string>
+    <string name="error_person_load">ユーザーのロードに失敗しました</string>
     <string name="error_gist_file_load">Gist ファイルのロードに失敗しました</string>
     <string name="error_gists_load">Gists のロードに失敗しました</string>
     <string name="error_issue_load">イシューのロードに失敗しました</string>
@@ -34,6 +35,10 @@
     <string name="error_labels_load">ラベルのロードに失敗しました</string>
     <string name="error_bookmarks_load">ブックマークのロードに失敗しました</string>
     <string name="error_members_load">メンバーのロードに失敗しました</string>
+    <string name="error_commits_load">コミットのロードに失敗しました</string>
+    <string name="error_commit_load">コミットのロードに失敗しました</string>
+    <string name="error_file_load">ファイルのロードに失敗しました</string>
+    <string name="error_code_load">コードのロードに失敗しました</string>
     <!-- エラー メッセージ -->
 
 
@@ -47,28 +52,33 @@
     <string name="loading_issue">イシューをロードしています…</string>
     <string name="loading_news">ニュースをロードしています…</string>
     <string name="loading_followers">フォロワーをロードしています…</string>
-    <string name="loading_people">人物をロードしています…</string>
+    <string name="loading_people">ユーザーをロードしています…</string>
     <string name="loading_gists">Gists をロードしています…</string>
     <string name="loading_collaborators">共同作業者をロードしています…</string>
     <string name="loading_milestones">マイルストーンをロードしています…</string>
     <string name="loading_labels">ラベルをロードしています…</string>
+    <string name="loading_commits">コミットをロードしています…</string>
+    <string name="loading_files_and_comments">ファイルとコメントをロードしています…</string>
+    <string name="loading_refs">ブランチとタグをロードしています…</string>
     <!-- ロード中 メッセージ -->
 
 
     <!-- Empty messages -->
     <string name="no_bookmarks">ブックマークはありません</string>
     <string name="no_repositories">リポジトリはありません</string>
+    <string name="no_contributors">貢献者はいません</string>
     <string name="no_issues">イシューはありません</string>
     <string name="no_gists">Gists はありません</string>
-    <string name="no_people">人物はいません</string>
+    <string name="no_people">ユーザーはいません</string>
     <string name="no_followers">フォロワーはいません</string>
     <string name="no_members">メンバーはいません</string>
     <string name="no_news">ニュースはありません</string>
+    <string name="no_commits">コミットはありません</string>
     <!-- 空き メッセージ -->
 
 
     <!-- Updating messages -->
-    <string name="updating_assignee">管理者を更新しています…</string>
+    <string name="updating_assignee">担当者を更新しています…</string>
     <string name="updating_issue">イシューを更新しています…</string>
     <string name="updating_labels">ラベルを更新しています…</string>
     <string name="updating_milestone">マイルストーンを更新しています…</string>
@@ -78,6 +88,8 @@
     <string name="news">ニュース</string>
     <string name="issues">イシュー</string>
     <string name="gists">Gists</string>
+    <string name="commits">コミット</string>
+    <string name="global_search">GitHub 検索</string>
     <string name="find_repositories">リポジトリを検索</string>
     <string name="find_issues">イシューを検索</string>
     <string name="search_title">検索…</string>
@@ -107,31 +119,32 @@
     <string name="bookmarks">ブックマーク</string>
     <string name="gists_title">Gists</string>
     <string name="issue_title">イシュー #</string>
+    <string name="pull_request_title">プルリクエスト #</string>
     <string name="gist_title">Gist\u0020</string>
     <string name="filter_issues_title">イシュー フィルター</string>
     <string name="create_comment_title">コメント作成</string>
     <string name="comment_hint">コメントを入力して下さい</string>
     <string name="show_more">さらに表示…</string>
     <string name="repositories">リポジトリ</string>
+    <string name="contributors">貢献者</string>
     <string name="issues_title">イシュー</string>
     <string name="edit_labels">ラベルを編集</string>
     <string name="milestone_prefix">マイルストーン:</string>
     <string name="edit_milestone">マイルストーンを編集</string>
-    <string name="edit_assignee">管理者を編集</string>
+    <string name="edit_assignee">担当者を編集</string>
     <string name="description">説明</string>
     <string name="gist_description_hint">Android 作成 Gist</string>
     <string name="title">タイトル</string>
     <string name="edit">編集</string>
-    <string name="star">スター</string>
     <string name="starring_gist">Gist にスターを付けています…</string>
-    <string name="unstar">スターを外す</string>
     <string name="unstarring_gist">Gist のスターを解除しています…</string>
     <string name="accounts_label">アカウント</string>
-    <string name="select_assignee">管理者を選択</string>
+    <string name="select_assignee">担当者を選択</string>
     <string name="select_milestone">マイルストーンを選択</string>
     <string name="select_labels">ラベルを選択</string>
+    <string name="select_ref">ブランチまたはタグを選択</string>
     <string name="no_milestone">マイルストーンはありません</string>
-    <string name="unassigned">管理者はいません</string>
+    <string name="unassigned">担当者はいません</string>
     <string name="assigned">に割り当てられています</string>
     <string name="no_gists_found">Gists は見つかりませんでした</string>
     <string name="confirm_gist_delete_title">削除の確認</string>
@@ -143,7 +156,10 @@
     <string name="new_issue">新規イシュー</string>
     <string name="anonymous">匿名</string>
     <string name="message_filter_saved">イシュー フィルターをブックマークに保存しました</string>
-    <string name="recent">最新</string>
+    <string name="recently_viewed">最近表示</string>
+    <string name="recent">履歴</string>
+    <string name="recent_remove">履歴の削除</string>
+    <string name="recent_list_remove">最近使用したものを削除</string>
     <string name="section_issue_status">状態:</string>
     <string name="status_open">開く</string>
     <string name="status_closed">閉じる</string>
@@ -163,6 +179,10 @@
     <string name="following">フォロー</string>
     <string name="followers_self">フォロワー</string>
     <string name="following_self">フォロー</string>
+    <string name="follow">フォローする</string>
+    <string name="unfollow">フォローを解除</string>
+    <string name="star">スター</string>
+    <string name="unstar">スターを解除</string>
     <string name="members">メンバー</string>
     <string name="closing_issue">イシューを閉じる…</string>
     <string name="reopening_issue">イシューを再度開く…</string>
@@ -172,13 +192,14 @@
     <string name="prefix_updated">更新\u0020</string>
     <string name="prefix_opened">編集\u0020</string>
     <string name="clear">消去</string>
+    <string name="pull_request_commits">コミット: %d</string>
     <string name="open_issues">開いているイシュー</string>
     <string name="closed_issues">閉じられたイシュー</string>
     <string name="confirm_bookmark_delete_title">ブックマークを削除</string>
     <string name="save">保存</string>
     <string name="apply">適用</string>
     <string name="labels_prefix">ラベル:</string>
-    <string name="assignee">管理者</string>
+    <string name="assignee">担当者</string>
     <string name="milestone">マイルストーン</string>
     <string name="labels">ラベル</string>
     <string name="issue_confirm_close_message">本当にこのイシューを閉じてもよろしいですか?</string>
@@ -191,10 +212,28 @@
     <string name="reopen">再度開く</string>
     <string name="title_invalid_github_url">不正な GitHub URL です</string>
     <string name="message_invalid_github_url">次の URL はこのアプリケーションでは開くことができませんでした:\n{0}</string>
-    <string name="recently_viewed">最近表示</string>
     <string name="cancel">キャンセル</string>
     <string name="authenticator_conflict_title">App の重複</string>
     <string name="authenticator_conflict_message">他のインストール済みアプリケーションが既に GitHub の認証を使用しています。\n\nGitHub app を利用するには Accounts &amp; sync 設定でそのアプリケーションをアンインストールし無ければなりません。</string>
     <string name="opening_repository">{0} を開いています…</string>
+    <string name="commit_compare_title">コミットの比較</string>
+    <string name="code">コード</string>
+    <string name="contributions">%d コミット</string>
+
+    <!-- Tab titles, should be as short as possible -->
+    <string name="tab_repositories">リポジトリ</string>
+    <string name="tab_users">ユーザー</string>
+    <string name="tab_news">ニュース</string>
+    <string name="tab_following_self">フォロー</string>
+    <string name="tab_followers_self">フォロワー</string>
+    <string name="tab_following">フォロー</string>
+    <string name="tab_followers">フォロワー</string>
+    <string name="tab_members">メンバー</string>
+    <string name="tab_code">コード</string>
+    <string name="tab_commits">コミット</string>
+    <string name="tab_issues">イシュー</string>
+    <!--  -->
+    <string name="share">共有</string>
+    <string name="show_password">パスワードを表示</string>
 
 </resources>
