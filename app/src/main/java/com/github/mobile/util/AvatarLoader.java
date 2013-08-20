@@ -139,12 +139,11 @@ public class AvatarLoader {
         }
     }
 
-    private void deleteCachedUserAvatars(File userAvatarDir) {
-        if (!userAvatarDir.isDirectory())
-            return;
-
-        for (File userAvatar : userAvatarDir.listFiles())
-            userAvatar.delete();
+    private void deleteCachedUserAvatars(final File userAvatarDir) {
+        if (userAvatarDir.isDirectory())
+          for (File userAvatar : userAvatarDir.listFiles())
+              userAvatar.delete();
+        userAvatarDir.delete();
     }
 
     private Bitmap decode(final File file) {
@@ -165,12 +164,8 @@ public class AvatarLoader {
     protected BitmapDrawable fetchAvatar(final String url,
             final String userId, final String cachedAvatarFilename) {
         File userAvatarDir = new File(avatarDir, userId);
-        if (userAvatarDir.isDirectory())
-            deleteCachedUserAvatars(userAvatarDir);
-        else {
-            userAvatarDir.delete();
-            userAvatarDir.mkdirs();
-        }
+        deleteCachedUserAvatars(userAvatarDir);
+        userAvatarDir.mkdirs();
 
         File rawAvatar = new File(userAvatarDir, cachedAvatarFilename + "-raw");
         HttpRequest request = HttpRequest.get(url);
