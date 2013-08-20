@@ -45,7 +45,7 @@
 
             <TextView
                 style="@style/HeaderTitleText"
-                android:text="@string/login_or_email" />
+                android:text="@string/username_or_email" />
 
             <AutoCompleteTextView
                 android:id="@+id/et_login"
