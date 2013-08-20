@@ -72,13 +72,6 @@ public abstract class ThrowableLoader<D> extends AuthenticatedUserLoader<D> {
     }
 
     /**
-     * @return exception
-     */
-    public Exception getException() {
-        return exception;
-    }
-
-    /**
      * Clear the stored exception and return it
      *
      * @return exception

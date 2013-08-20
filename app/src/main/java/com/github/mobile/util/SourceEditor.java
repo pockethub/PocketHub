@@ -90,28 +90,6 @@ public class SourceEditor {
     }
 
     /**
-     * @return content
-     */
-    public String getRawContent() {
-        return content;
-    }
-
-    /**
-     * @return content
-     */
-    public String getContent() {
-        if (encoded)
-            try {
-                return new String(EncodingUtils.fromBase64(content),
-                        CHARSET_UTF8);
-            } catch (UnsupportedEncodingException e) {
-                return getRawContent();
-            }
-        else
-            return getRawContent();
-    }
-
-    /**
      * @return wrap
      */
     public boolean getWrap() {

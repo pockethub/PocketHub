@@ -27,7 +27,6 @@ import android.graphics.Point;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.util.Log;
-import android.widget.ImageView;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,16 +38,6 @@ import java.io.RandomAccessFile;
 public class ImageUtils {
 
     private static final String TAG = "ImageUtils";
-
-    /**
-     * Get a bitmap from the image path
-     *
-     * @param imagePath
-     * @return bitmap or null if read fails
-     */
-    public static Bitmap getBitmap(final String imagePath) {
-        return getBitmap(imagePath, 1);
-    }
 
     /**
      * Get a bitmap from the image path
@@ -187,40 +176,6 @@ public class ImageUtils {
      */
     public static Bitmap getBitmap(final File image, int width, int height) {
         return getBitmap(image.getAbsolutePath(), width, height);
-    }
-
-    /**
-     * Get a bitmap from the image file
-     *
-     * @param image
-     * @return bitmap or null if read fails
-     */
-    public static Bitmap getBitmap(final File image) {
-        return getBitmap(image.getAbsolutePath());
-    }
-
-    /**
-     * Load a {@link Bitmap} from the given path and set it on the given
-     * {@link ImageView}
-     *
-     * @param imagePath
-     * @param view
-     */
-    public static void setImage(final String imagePath, final ImageView view) {
-        setImage(new File(imagePath), view);
-    }
-
-    /**
-     * Load a {@link Bitmap} from the given {@link File} and set it on the given
-     * {@link ImageView}
-     *
-     * @param image
-     * @param view
-     */
-    public static void setImage(final File image, final ImageView view) {
-        Bitmap bitmap = getBitmap(image);
-        if (bitmap != null)
-            view.setImageBitmap(bitmap);
     }
 
     /**
