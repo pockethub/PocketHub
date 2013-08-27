@@ -47,6 +47,7 @@
     <string name="error_unstarring_repository">Entfernen des Favoriten fehlgeschlagen</string>
     <string name="error_checking_starring_status">Prüfen des Favoritenstatus fehlgeschlagen</string>
     <string name="error_rendering_markdown">Rendern der Markdown-Vorschau fehlgeschlagen</string>
+    <string name="error_users_search">Suche nach Usern fehlgeschlagen</string>
     <!--  -->
 
     <!-- Loading messages -->
@@ -242,6 +243,7 @@
 
     <!-- Tab titles, should be as short as possible -->
     <string name="tab_repositories">Repositories</string>
+    <string name="tab_users">User</string>
     <string name="tab_news">Neuigkeiten</string>
     <string name="tab_following_self">Ich folge</string>
     <string name="tab_followers_self">Anhänger</string>
