@@ -56,6 +56,7 @@ public class HtmlUtils {
             return 18;
         }
 
+        @Override
         public void drawLeadingMargin(Canvas c, Paint p, int x, int dir,
                 int top, int baseline, int bottom, CharSequence text,
                 int start, int end, boolean first, Layout layout) {
@@ -161,6 +162,7 @@ public class HtmlUtils {
 
         private LinkedList<ListSeparator> listElements = new LinkedList<ListSeparator>();
 
+        @Override
         public void handleTag(final boolean opening, final String tag,
                 final Editable output, final XMLReader xmlReader) {
             if (TAG_DEL.equalsIgnoreCase(tag)) {
