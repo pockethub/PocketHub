@@ -45,11 +45,7 @@ public class HtmlUtils {
 
     private static class ReplySpan implements LeadingMarginSpan {
 
-        private final int color;
-
-        public ReplySpan() {
-            color = 0xffDDDDDD;
-        }
+        private final int color = 0xffDDDDDD;
 
         @Override
         public int getLeadingMargin(boolean first) {
@@ -135,14 +131,11 @@ public class HtmlUtils {
 
         private int count;
 
-        public ListSeparator(boolean ordered) {
-            if (ordered)
-                count = 1;
-            else
-                count = -1;
+        ListSeparator(boolean ordered) {
+            count = ordered ? 1 : -1;
         }
 
-        public ListSeparator append(Editable output, int indentLevel) {
+        ListSeparator append(Editable output, int indentLevel) {
             output.append('\n');
             for (int i = 0; i < indentLevel * 2; i++)
                 output.append(' ');
