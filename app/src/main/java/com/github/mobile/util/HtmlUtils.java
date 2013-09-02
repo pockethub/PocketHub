@@ -75,18 +75,6 @@ public class HtmlUtils {
 
     private static final String ROOT_END = "</" + TAG_ROOT + '>';
 
-    private static final String TAG_DEL = "del";
-
-    private static final String TAG_UL = "ul";
-
-    private static final String TAG_OL = "ol";
-
-    private static final String TAG_LI = "li";
-
-    private static final String TAG_CODE = "code";
-
-    private static final String TAG_PRE = "pre";
-
     private static final String TOGGLE_START = "<span class=\"email-hidden-toggle\">";
 
     private static final String TOGGLE_END = "</span>";
@@ -150,6 +138,12 @@ public class HtmlUtils {
     }
 
     private static final TagHandler TAG_HANDLER = new TagHandler() {
+        private static final String TAG_DEL = "del";
+        private static final String TAG_UL = "ul";
+        private static final String TAG_OL = "ol";
+        private static final String TAG_LI = "li";
+        private static final String TAG_CODE = "code";
+        private static final String TAG_PRE = "pre";
 
         private int indentLevel;
 
