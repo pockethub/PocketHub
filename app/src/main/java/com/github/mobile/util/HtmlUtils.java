@@ -45,17 +45,14 @@ public class HtmlUtils {
 
     private static class ReplySpan implements LeadingMarginSpan {
 
-        private final int color;
-
-        public ReplySpan() {
-            color = 0xffDDDDDD;
-        }
+        private final int color = 0xffDDDDDD;
 
         @Override
         public int getLeadingMargin(boolean first) {
             return 18;
         }
 
+        @Override
         public void drawLeadingMargin(Canvas c, Paint p, int x, int dir,
                 int top, int baseline, int bottom, CharSequence text,
                 int start, int end, boolean first, Layout layout) {
@@ -77,18 +74,6 @@ public class HtmlUtils {
     private static final String ROOT_START = '<' + TAG_ROOT + '>';
 
     private static final String ROOT_END = "</" + TAG_ROOT + '>';
-
-    private static final String TAG_DEL = "del";
-
-    private static final String TAG_UL = "ul";
-
-    private static final String TAG_OL = "ol";
-
-    private static final String TAG_LI = "li";
-
-    private static final String TAG_CODE = "code";
-
-    private static final String TAG_PRE = "pre";
 
     private static final String TOGGLE_START = "<span class=\"email-hidden-toggle\">";
 
@@ -135,10 +120,7 @@ public class HtmlUtils {
         private int count;
 
         public ListSeparator(boolean ordered) {
-            if (ordered)
-                count = 1;
-            else
-                count = -1;
+            count = ordered ? 1 : -1;
         }
 
         public ListSeparator append(Editable output, int indentLevel) {
@@ -156,11 +138,18 @@ public class HtmlUtils {
     }
 
     private static final TagHandler TAG_HANDLER = new TagHandler() {
+        private static final String TAG_DEL = "del";
+        private static final String TAG_UL = "ul";
+        private static final String TAG_OL = "ol";
+        private static final String TAG_LI = "li";
+        private static final String TAG_CODE = "code";
+        private static final String TAG_PRE = "pre";
 
         private int indentLevel;
 
-        private LinkedList<ListSeparator> listElements = new LinkedList<ListSeparator>();
+        private final LinkedList<ListSeparator> listElements = new LinkedList<ListSeparator>();
 
+        @Override
         public void handleTag(final boolean opening, final String tag,
                 final Editable output, final XMLReader xmlReader) {
             if (TAG_DEL.equalsIgnoreCase(tag)) {
