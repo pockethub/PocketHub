@@ -34,6 +34,7 @@ import android.text.style.QuoteSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.TypefaceSpan;
 
+import java.util.Deque;
 import java.util.LinkedList;
 
 import org.xml.sax.XMLReader;
@@ -147,7 +148,7 @@ public class HtmlUtils {
 
         private int indentLevel;
 
-        private final LinkedList<ListSeparator> listElements = new LinkedList<ListSeparator>();
+        private final Deque<ListSeparator> listElements = new LinkedList<ListSeparator>();
 
         @Override
         public void handleTag(final boolean opening, final String tag,
