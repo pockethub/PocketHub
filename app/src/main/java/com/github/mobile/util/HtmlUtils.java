@@ -259,16 +259,6 @@ public class HtmlUtils {
      * Encode HTML
      *
      * @param html
-     * @return html
-     */
-    public static CharSequence encode(final String html) {
-        return encode(html, null);
-    }
-
-    /**
-     * Encode HTML
-     *
-     * @param html
      * @param imageGetter
      * @return html
      */
