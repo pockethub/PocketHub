@@ -42,16 +42,10 @@ public class SearchUserService extends UserService {
         /**
          * @see org.eclipse.egit.github.core.IResourceProvider#getResources()
          */
+        @Override
         public List<SearchUser> getResources() {
             return users;
         }
-    }
-
-    /**
-     * Create search user service
-     */
-    public SearchUserService() {
-        super();
     }
 
     /**

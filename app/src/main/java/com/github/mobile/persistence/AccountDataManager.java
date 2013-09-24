@@ -195,29 +195,6 @@ public class AccountDataManager {
     }
 
     /**
-     * Get bookmarked issue filters
-     *
-     * @param requestFuture
-     */
-    public void getIssueFilters(
-            final RequestFuture<Collection<IssueFilter>> requestFuture) {
-        new AuthenticatedUserTask<Collection<IssueFilter>>(context, EXECUTOR) {
-
-            @Override
-            public Collection<IssueFilter> run(Account account)
-                    throws Exception {
-                return getIssueFilters();
-            }
-
-            @Override
-            protected void onSuccess(Collection<IssueFilter> filters)
-                    throws Exception {
-                requestFuture.success(filters);
-            }
-        }.execute();
-    }
-
-    /**
      * Add issue filter to store
      * <p/>
      * This method may perform file I/O and should never be called on the

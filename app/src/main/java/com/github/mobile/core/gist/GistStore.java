@@ -103,15 +103,4 @@ public class GistStore extends ItemStore {
     public Gist refreshGist(String id) throws IOException {
         return addGist(service.getGist(id));
     }
-
-    /**
-     * Edit gist
-     *
-     * @param gist
-     * @return edited gist
-     * @throws IOException
-     */
-    public Gist editGist(Gist gist) throws IOException {
-        return addGist(service.updateGist(gist));
-    }
 }

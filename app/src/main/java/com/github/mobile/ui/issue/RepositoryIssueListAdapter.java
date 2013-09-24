@@ -59,6 +59,7 @@ public class RepositoryIssueListAdapter extends IssueListAdapter<Issue> {
         return view;
     }
 
+    @Override
     protected int getNumber(Issue issue) {
         return issue.getNumber();
     }

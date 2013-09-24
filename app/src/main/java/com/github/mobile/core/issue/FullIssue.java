@@ -44,13 +44,6 @@ public class FullIssue extends ArrayList<Comment> implements Serializable {
     }
 
     /**
-     * Create empty wrapper
-     */
-    public FullIssue() {
-        this.issue = null;
-    }
-
-    /**
      * @return issue
      */
     public Issue getIssue() {

@@ -74,6 +74,7 @@ public class SyncCampaign implements Runnable {
         this.syncResult = syncResult;
     }
 
+    @Override
     public void run() {
         List<User> orgs;
         try {

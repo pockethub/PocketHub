@@ -98,6 +98,7 @@ public class DefaultRepositoryListAdapter extends
         return this;
     }
 
+    @Override
     protected View initialize(View view) {
         view = super.initialize(view);
 

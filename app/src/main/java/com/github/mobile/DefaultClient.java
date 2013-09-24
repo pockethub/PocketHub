@@ -41,8 +41,6 @@ public class DefaultClient extends GitHubClient {
      * Create client
      */
     public DefaultClient() {
-        super();
-
         setSerializeNulls(false);
         setUserAgent(USER_AGENT);
     }
