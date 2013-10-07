@@ -138,11 +138,17 @@ public class HtmlUtils {
     }
 
     private static final TagHandler TAG_HANDLER = new TagHandler() {
+
         private static final String TAG_DEL = "del";
+
         private static final String TAG_UL = "ul";
+
         private static final String TAG_OL = "ol";
+
         private static final String TAG_LI = "li";
+
         private static final String TAG_CODE = "code";
+
         private static final String TAG_PRE = "pre";
 
         private int indentLevel;
