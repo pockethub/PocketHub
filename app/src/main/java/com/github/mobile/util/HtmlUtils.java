@@ -34,6 +34,7 @@ import android.text.style.QuoteSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.TypefaceSpan;
 
+import java.util.Deque;
 import java.util.LinkedList;
 
 import org.xml.sax.XMLReader;
@@ -45,17 +46,14 @@ public class HtmlUtils {
 
     private static class ReplySpan implements LeadingMarginSpan {
 
-        private final int color;
-
-        public ReplySpan() {
-            color = 0xffDDDDDD;
-        }
+        private final int color = 0xffDDDDDD;
 
         @Override
         public int getLeadingMargin(boolean first) {
             return 18;
         }
 
+        @Override
         public void drawLeadingMargin(Canvas c, Paint p, int x, int dir,
                 int top, int baseline, int bottom, CharSequence text,
                 int start, int end, boolean first, Layout layout) {
@@ -77,18 +75,6 @@ public class HtmlUtils {
     private static final String ROOT_START = '<' + TAG_ROOT + '>';
 
     private static final String ROOT_END = "</" + TAG_ROOT + '>';
-
-    private static final String TAG_DEL = "del";
-
-    private static final String TAG_UL = "ul";
-
-    private static final String TAG_OL = "ol";
-
-    private static final String TAG_LI = "li";
-
-    private static final String TAG_CODE = "code";
-
-    private static final String TAG_PRE = "pre";
 
     private static final String TOGGLE_START = "<span class=\"email-hidden-toggle\">";
 
@@ -134,14 +120,11 @@ public class HtmlUtils {
 
         private int count;
 
-        public ListSeparator(boolean ordered) {
-            if (ordered)
-                count = 1;
-            else
-                count = -1;
+        ListSeparator(boolean ordered) {
+            count = ordered ? 1 : -1;
         }
 
-        public ListSeparator append(Editable output, int indentLevel) {
+        ListSeparator append(Editable output, int indentLevel) {
             output.append('\n');
             for (int i = 0; i < indentLevel * 2; i++)
                 output.append(' ');
@@ -156,11 +139,18 @@ public class HtmlUtils {
     }
 
     private static final TagHandler TAG_HANDLER = new TagHandler() {
+        private static final String TAG_DEL = "del";
+        private static final String TAG_UL = "ul";
+        private static final String TAG_OL = "ol";
+        private static final String TAG_LI = "li";
+        private static final String TAG_CODE = "code";
+        private static final String TAG_PRE = "pre";
 
         private int indentLevel;
 
-        private LinkedList<ListSeparator> listElements = new LinkedList<ListSeparator>();
+        private final Deque<ListSeparator> listElements = new LinkedList<ListSeparator>();
 
+        @Override
         public void handleTag(final boolean opening, final String tag,
                 final Editable output, final XMLReader xmlReader) {
             if (TAG_DEL.equalsIgnoreCase(tag)) {
@@ -263,16 +253,6 @@ public class HtmlUtils {
         output.removeSpan(span);
         if (start != length)
             output.setSpan(span, start, length, SPAN_EXCLUSIVE_EXCLUSIVE);
-    }
-
-    /**
-     * Encode HTML
-     *
-     * @param html
-     * @return html
-     */
-    public static CharSequence encode(final String html) {
-        return encode(html, null);
     }
 
     /**
