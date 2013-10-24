@@ -21,6 +21,7 @@
     <string name="error_issues_load">Načítavanie issues zlyhalo</string>
     <string name="error_repos_load">Načítavanie repozitárov zlyhalo</string>
     <string name="error_repo_load">Načítavanie repozitára zlyhalo</string>
+    <string name="error_contributors_load">Načítavanie prispievateľov zlyhalo</string>
     <string name="error_gist_load">Načítavanie Gistu zlyhalo</string>
     <string name="error_news_load">Načítavanie noviniek zlyhalo</string>
     <string name="error_followers_load">Načítavanie sledujúcich zlyhalo</string>
@@ -42,6 +43,11 @@
     <string name="error_following_person">Následovanie zlyhalo</string>
     <string name="error_unfollowing_person">Prestávanie sledovania zlyhalo</string>
     <string name="error_checking_following_status">Nepodarilo sa zistiť stav sledovania</string>
+    <string name="error_starring_repository">Označovanie obľúbeného zlyhalo</string>
+    <string name="error_unstarring_repository">Zrušenie obľúbeného zlyhalo</string>
+    <string name="error_checking_starring_status">Kontrola stavu obľubeného zlyhala</string>
+    <string name="error_rendering_markdown">Renderovanie markdownu zlyhalo</string>
+    <string name="error_users_search">Vyhľadávanie užívateľov zlyhalo</string>
     <!--  -->
 
 
@@ -69,6 +75,7 @@
     <!-- Empty messages -->
     <string name="no_bookmarks">Žiadne záložky</string>
     <string name="no_repositories">Žiadne repozitáre</string>
+    <string name="no_contributors">Žiadny prispievatelia</string>
     <string name="no_issues">Žiadne issues</string>
     <string name="no_gists">Žiadne gisty</string>
     <string name="no_people">Žiadny ľudia</string>
@@ -91,6 +98,7 @@
     <string name="issues">Issues</string>
     <string name="gists">Gisty</string>
     <string name="commits">Commity</string>
+    <string name="global_search">GitHub vyhľadávanie</string>
     <string name="find_repositories">Nájsť repozitáre</string>
     <string name="find_issues">Nájsť issue</string>
     <string name="search_title">Hľadať…</string>
@@ -127,6 +135,7 @@
     <string name="comment_hint">Potvrdiť komentár</string>
     <string name="show_more">Ukázať viac…</string>
     <string name="repositories">Repozitáre</string>
+    <string name="contributors">Prispievatelia</string>
     <string name="issues_title">Issues</string>
     <string name="edit_labels">Upraviť štítky</string>
     <string name="milestone_prefix">Míľnik:</string>
@@ -136,9 +145,7 @@
     <string name="gist_description_hint">Android vytvoril gist</string>
     <string name="title">Nadpis</string>
     <string name="edit">Upraviť</string>
-    <string name="star">Označiť obľúbený</string>
     <string name="starring_gist">Označujem ako obľúbený gist…</string>
-    <string name="unstar">Zrušiť obľúbenie</string>
     <string name="unstarring_gist">Ruším obľúbenie…</string>
     <string name="accounts_label">Účty</string>
     <string name="select_assignee">Zvoliť priradenie</string>
@@ -158,7 +165,10 @@
     <string name="new_issue">Nová issue</string>
     <string name="anonymous">Anonymný</string>
     <string name="message_filter_saved">Filter issues uložený do záložiek</string>
-    <string name="recent">Nedávny</string>
+    <string name="recently_viewed">Nedávno prezreté</string>
+    <string name="recent">Nedávne</string>
+    <string name="recent_remove">Vymazať nedávne</string>
+    <string name="recent_list_remove">Vymazať z nedávno použitých</string>
     <string name="section_issue_status">Stav:</string>
     <string name="status_open">Otvoriť</string>
     <string name="status_closed">Zatvoriť</string>
@@ -173,13 +183,15 @@
     <string name="invalid_login_or_password">Prosím, vložte platné užívateľské meno &amp; heslo</string>
     <string name="invalid_password">Prosím, vložte platné heslo.</string>
     <string name="password">Heslo</string>
-    <string name="login_or_email">Užívateľské meno alebo E-mail</string>
+    <string name="username_or_email">Užívateľské meno alebo E-mail</string>
     <string name="followers">Sledujúci</string>
     <string name="following">Sleduje</string>
     <string name="followers_self">Sledujúci</string>
     <string name="following_self">Sledujem</string>
-    <string name="following">Sledovať</string>
+    <string name="follow">Sledovať</string>
     <string name="unfollow">Prestať sledovať</string>
+    <string name="star">Označiť obľúbený</string>
+    <string name="unstar">Zrušiť obľúbený</string>
     <string name="members">Členovia</string>
     <string name="closing_issue">Zatváram issue…</string>
     <string name="reopening_issue">Znovu otváram issue…</string>
@@ -189,6 +201,7 @@
     <string name="prefix_updated">aktualizovaná\u0020</string>
     <string name="prefix_opened">otvorená\u0020</string>
     <string name="clear">Vyčistiť</string>
+    <string name="pull_request_commits">Commity: %d</string>
     <string name="open_issues">Otvoriť issues</string>
     <string name="closed_issues">Uzavreté issues</string>
     <string name="confirm_bookmark_delete_title">Odstrániť záložku</string>
@@ -208,7 +221,6 @@
     <string name="reopen">Znovu otvoriť</string>
     <string name="title_invalid_github_url">Nelatná GitHub URL</string>
     <string name="message_invalid_github_url">Nasledujúca URL nemohla byť otvorená touto aplikáciou:\n{0}</string>
-    <string name="recently_viewed">Naposledy zobrazené</string>
     <string name="cancel">Zrušiť</string>
     <string name="authenticator_conflict_title">App konflikt</string>
     <string name="authenticator_conflict_message">Ďalšia nainštalovaná aplikácia už používa GitHub overenie.\n\nMusíte túto aplikáciu odstrániť z Účtov &amp; synchronizovať nastavenia a odinštalovať ju predtým než môže byť aplikácia GitHub použitá.</string>
@@ -227,9 +239,15 @@
     <string name="code">Kód</string>
     <string name="following_user">Začínam sledovať…</string>
     <string name="unfollowing_user">Prestávam sledovať…</string>
+    <string name="starring_repository">Označujem ako obľúbený…</string>
+    <string name="unstarring_repository">Ruším obľúbený…</string>
+    <string name="navigate_to">Navigovať do…</string>
+    <string name="navigate_to_user">Navigovať na %s</string>
+    <string name="contributions">%d commitov</string>
 
     <!-- Tab titles, should be as short as possible -->
     <string name="tab_repositories">Repozitáre</string>
+    <string name="tab_users">užívatelia</string>
     <string name="tab_news">Novinky</string>
     <string name="tab_following_self">Sledujem</string>
     <string name="tab_followers_self">Sledujúci</string>
@@ -249,5 +267,9 @@
     <!--  -->
     <string name="share">Zdieľať</string>
     <string name="show_password">Ukázať heslo</string>
+    <string name="write">Napísať</string>
+    <string name="preview">Náhľad</string>
+    <string name="show_raw_markdown">Zobraziť surový markdown</string>
+    <string name="render_markdown">Renderovať markdown</string>
 
 </resources>
