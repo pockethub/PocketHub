@@ -44,7 +44,7 @@
     <string name="error_unfollowing_person">Prestávanie sledovania zlyhalo</string>
     <string name="error_checking_following_status">Nepodarilo sa zistiť stav sledovania</string>
     <string name="error_starring_repository">Označovanie obľúbeného zlyhalo</string>
-    <string name="error_unstarring_repository">Zrušenie obľubeného zlyhalo</string>
+    <string name="error_unstarring_repository">Zrušenie obľúbeného zlyhalo</string>
     <string name="error_checking_starring_status">Kontrola stavu obľubeného zlyhala</string>
     <string name="error_rendering_markdown">Renderovanie markdownu zlyhalo</string>
     <string name="error_users_search">Vyhľadávanie užívateľov zlyhalo</string>
