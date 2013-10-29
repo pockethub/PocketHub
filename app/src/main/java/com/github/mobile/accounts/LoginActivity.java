@@ -27,8 +27,11 @@ import static android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
 import static android.view.KeyEvent.ACTION_DOWN;
 import static android.view.KeyEvent.KEYCODE_ENTER;
 import static android.view.inputmethod.EditorInfo.IME_ACTION_DONE;
-import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
-import static com.github.mobile.accounts.AccountConstants.PROVIDER_AUTHORITY;
+import static com.github.mobile.accounts.AccountConstants.*;
+import static com.github.mobile.RequestCodes.OTP_CODE_ENTER;
+import static com.github.mobile.accounts.TwoFactorAuthActivity.PARAM_EXCEPTION;
+import static com.github.mobile.accounts.TwoFactorAuthClient.TWO_FACTOR_AUTH_TYPE_SMS;
+
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
@@ -59,7 +62,6 @@ import android.widget.TextView.OnEditorActionListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewFinder;
-import com.github.mobile.DefaultClient;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
@@ -77,6 +79,7 @@ import java.util.List;
 
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
+import org.eclipse.egit.github.core.service.OAuthService;
 import org.eclipse.egit.github.core.service.UserService;
 
 import roboguice.util.RoboAsyncTask;
@@ -105,7 +108,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
      */
     private static final long SYNC_PERIOD = 8L * 60L * 60L;
 
-    private static void configureSyncFor(Account account) {
+    public static void configureSyncFor(Account account) {
         Log.d(TAG, "Configuring account sync");
 
         ContentResolver.setIsSyncable(account, PROVIDER_AUTHORITY, 1);
@@ -114,7 +117,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
                 new Bundle(), SYNC_PERIOD);
     }
 
-    private static class AccountLoader extends
+    public static class AccountLoader extends
             AuthenticatedUserTask<List<User>> {
 
         @Inject
@@ -198,6 +201,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
 
         passwordText.setOnKeyListener(new OnKeyListener() {
 
+            @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event != null && ACTION_DOWN == event.getAction()
                         && keyCode == KEYCODE_ENTER && loginEnabled()) {
@@ -210,6 +214,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
 
         passwordText.setOnEditorActionListener(new OnEditorActionListener() {
 
+            @Override
             public boolean onEditorAction(TextView v, int actionId,
                     KeyEvent event) {
                 if (actionId == IME_ACTION_DONE && loginEnabled()) {
@@ -305,9 +310,19 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
 
             @Override
             public User call() throws Exception {
-                GitHubClient client = new DefaultClient();
+                GitHubClient client = new TwoFactorAuthClient();
                 client.setCredentials(username, password);
-                User user = new UserService(client).getUser();
+
+                User user;
+                try {
+                    user = new UserService(client).getUser();
+                } catch (TwoFactorAuthException e) {
+                    if (e.twoFactorAuthType == TWO_FACTOR_AUTH_TYPE_SMS)
+                        sendSmsOtpCode(new OAuthService(client));
+                    openTwoFactorAuthActivity();
+
+                    return null;
+                }
 
                 Account account = new Account(user.getLogin(), ACCOUNT_TYPE);
                 if (requestNewAccount) {
@@ -330,22 +345,35 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
                 dialog.dismiss();
 
                 Log.d(TAG, "Exception requesting authenticated user", e);
-
-                if (AccountUtils.isUnauthorized(e))
-                    onAuthenticationResult(false);
-                else
-                    ToastUtils.show(LoginActivity.this, e,
-                            string.connection_failed);
+                handleLoginException(e);
             }
 
             @Override
             public void onSuccess(User user) {
                 dialog.dismiss();
 
-                onAuthenticationResult(true);
+                if (user != null)
+                    onAuthenticationResult(true);
             }
         };
         authenticationTask.execute();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == OTP_CODE_ENTER) {
+            switch (resultCode) {
+                case RESULT_OK:
+                    onAuthenticationResult(true);
+                    break;
+                case RESULT_CANCELED:
+                    Exception e = (Exception) data.getExtras().getSerializable(PARAM_EXCEPTION);
+                    handleLoginException(e);
+                    break;
+            }
+        }
     }
 
     /**
@@ -406,6 +434,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
         }
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case id.m_login:
@@ -431,5 +460,24 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
         for (Account account : accounts)
             addresses.add(account.name);
         return addresses;
+    }
+
+    private void sendSmsOtpCode(final OAuthService service) throws IOException {
+        try {
+            AccountAuthenticator.createAuthorization(service);
+        } catch (TwoFactorAuthException ignored) {
+        }
+    }
+
+    private void openTwoFactorAuthActivity() {
+        Intent intent = TwoFactorAuthActivity.createIntent(this, username, password);
+        startActivityForResult(intent, OTP_CODE_ENTER);
+    }
+
+    private void handleLoginException(final Exception e) {
+        if (AccountUtils.isUnauthorized(e))
+            onAuthenticationResult(false);
+        else
+            ToastUtils.show(LoginActivity.this, e, string.connection_failed);
     }
 }

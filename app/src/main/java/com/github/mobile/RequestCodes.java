@@ -94,4 +94,9 @@ public interface RequestCodes {
      * Request to view a repository
      */
     int REPOSITORY_VIEW = 12;
+
+    /**
+     * Request to enter two-factor authentication OTP code
+     */
+    int OTP_CODE_ENTER = 13;
 }
