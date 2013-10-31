@@ -69,12 +69,12 @@
                 android:typeface="monospace" />
 
             <CheckBox
-              android:id="@+id/cb_show_password"
-              style="@style/SubtitleText"
-              android:layout_marginTop="2dp"
-              android:singleLine="true"
-              android:text="@string/show_password"
-              android:textColor="@color/text" />
+                android:id="@+id/cb_show_password"
+                style="@style/SubtitleText"
+                android:layout_marginTop="2dp"
+                android:singleLine="true"
+                android:text="@string/show_password"
+                android:textColor="@color/text" />
 
         </LinearLayout>
     </ScrollView>
