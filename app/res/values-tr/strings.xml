@@ -66,7 +66,7 @@
     <string name="loading_labels">Etiketler Yükleniyor…</string>
     <string name="loading_commits">Onaylamalar Yükleniyor…</string>
     <string name="loading_files_and_comments">Dosya &amp; Yorumlar Yükleniyor…</string>
-	<string name="loading_refs">Dallar &amp; Etiketler Yükleniyor…</string>
+    <string name="loading_refs">Dallar &amp; Etiketler Yükleniyor…</string>
     <!--  -->
 
 
@@ -146,7 +146,7 @@
     <string name="select_assignee">Atanmış Seç</string>
     <string name="select_milestone">Dönüm Noktası Seç</string>
     <string name="select_labels">Etiket Seç</string>
-	<string name="select_ref">Bir Dal Veya Etiket Seç</string>
+    <string name="select_ref">Bir Dal Veya Etiket Seç</string>
     <string name="no_milestone">Dönüm Noktası Yok</string>
     <string name="unassigned">Kimse Atanmamış</string>
     <string name="assigned">atanmış</string>
@@ -180,8 +180,8 @@
     <string name="following">Takip Ettikleri</string>
     <string name="followers_self">Takipçilerim</string>
     <string name="following_self">Takip Ettiklerim</string>
-	<string name="follow">Takip Et</string>
-	<string name="unfollow">Takip Etmeyi Bırak</string>
+    <string name="follow">Takip Et</string>
+    <string name="unfollow">Takip Etmeyi Bırak</string>
     <string name="star">Yıldızlar</string>
     <string name="unstar">Yıldızı Kaldır</string>
     <string name="members">Üyeler</string>
@@ -228,7 +228,7 @@
     <string name="comparing_commits">{0} onay karşılaştırılıyor</string>
     <string name="enable_wrapping">Sözcük Kaydır</string>
     <string name="disable_wrapping">Sözcük Kaydırmayı Kapat</string>
-	<string name="code">Kod</string>
+    <string name="code">Kod</string>
     <string name="following_user">Takip Edilme İşlemi Devam Ediyor…</string>
     <string name="unfollowing_user">Takip Edilme Kaldırılıyor…</string>
     <string name="starring_repository">Yıldız Konuyor…</string>

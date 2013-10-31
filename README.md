@@ -2,7 +2,7 @@
 
 This repository contains the source code for the GitHub Android app.
 
-<a href="https://play.google.com/store/apps/details?id=com.github.mobile" alt="Download from Google Play">
+<a href="https://play.google.com/store/apps/details?id=com.github.mobile" alt="logo" title="Download from Google Play">
   <img src="http://img.skitch.com/20120709-nkdc1yugu2qmdg1ss81m1gr9ty.jpg">
 </a>
 
@@ -20,7 +20,9 @@ v3.0.3+ and the [Android SDK](http://developer.android.com/sdk/index.html)
 to be installed in your development environment. In addition you'll need to set
 the `ANDROID_HOME` environment variable to the location of your SDK:
 
-    export ANDROID_HOME=/opt/tools/android-sdk
+```bash
+export ANDROID_HOME=/opt/tools/android-sdk
+```
 
 After satisfying those requirements, the build is pretty simple:
 
@@ -46,10 +48,10 @@ built on top of [API v3](http://developer.github.com/).
 It also uses many other open source libraries such as:
 
 * [ActionBarSherlock](https://github.com/JakeWharton/ActionBarSherlock)
-* [ViewPagerIndicator](https://github.com/JakeWharton/Android-ViewPagerIndicator)
-* [RoboGuice](https://github.com/roboguice/roboguice)
 * [android-maven-plugin](https://github.com/jayway/maven-android-plugin)
 * [CodeMirror](https://github.com/marijnh/CodeMirror)
+* [RoboGuice](https://github.com/roboguice/roboguice)
+* [ViewPagerIndicator](https://github.com/JakeWharton/Android-ViewPagerIndicator)
 
 These are just a few of the major dependencies, the entire list of dependencies
 is listed in the [app's POM file](https://github.com/github/android/blob/master/app/pom.xml).
