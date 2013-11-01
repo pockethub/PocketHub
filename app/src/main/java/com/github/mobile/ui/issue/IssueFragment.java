@@ -311,6 +311,7 @@ public class IssueFragment extends DialogFragment {
 
         milestoneArea.setOnClickListener(new OnClickListener() {
 
+            @Override
             public void onClick(View v) {
                 if (issue != null && isCollaborator)
                     milestoneTask.prompt(issue.getMilestone());
@@ -320,6 +321,7 @@ public class IssueFragment extends DialogFragment {
         headerView.findViewById(id.ll_assignee).setOnClickListener(
                 new OnClickListener() {
 
+                    @Override
                     public void onClick(View v) {
                         if (issue != null && isCollaborator)
                             assigneeTask.prompt(issue.getAssignee());
@@ -328,6 +330,7 @@ public class IssueFragment extends DialogFragment {
 
         labelsArea.setOnClickListener(new OnClickListener() {
 
+            @Override
             public void onClick(View v) {
                 if (issue != null && isCollaborator)
                     labelsTask.prompt(issue.getLabels());
