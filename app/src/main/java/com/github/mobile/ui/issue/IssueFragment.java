@@ -21,6 +21,7 @@ import static android.view.View.VISIBLE;
 import static com.github.mobile.Intents.EXTRA_COMMENT;
 import static com.github.mobile.Intents.EXTRA_ISSUE;
 import static com.github.mobile.Intents.EXTRA_ISSUE_NUMBER;
+import static com.github.mobile.Intents.EXTRA_IS_COLLABORATOR;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY_NAME;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY_OWNER;
 import static com.github.mobile.Intents.EXTRA_USER;
@@ -104,6 +105,8 @@ public class IssueFragment extends DialogFragment {
 
     private User user;
 
+    private boolean isCollaborator;
+
     @Inject
     private AvatarLoader avatars;
 
@@ -176,6 +179,7 @@ public class IssueFragment extends DialogFragment {
                 args.getString(EXTRA_REPOSITORY_NAME));
         issueNumber = args.getInt(EXTRA_ISSUE_NUMBER);
         user = (User) args.getSerializable(EXTRA_USER);
+        isCollaborator = args.getBoolean(EXTRA_IS_COLLABORATOR, false);
 
         DialogFragmentActivity dialogActivity = (DialogFragmentActivity) getActivity();
 
@@ -308,7 +312,7 @@ public class IssueFragment extends DialogFragment {
         milestoneArea.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
-                if (issue != null)
+                if (issue != null && isCollaborator)
                     milestoneTask.prompt(issue.getMilestone());
             }
         });
@@ -317,7 +321,7 @@ public class IssueFragment extends DialogFragment {
                 new OnClickListener() {
 
                     public void onClick(View v) {
-                        if (issue != null)
+                        if (issue != null && isCollaborator)
                             assigneeTask.prompt(issue.getAssignee());
                     }
                 });
@@ -325,7 +329,7 @@ public class IssueFragment extends DialogFragment {
         labelsArea.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
-                if (issue != null)
+                if (issue != null && isCollaborator)
                     labelsTask.prompt(issue.getLabels());
             }
         });

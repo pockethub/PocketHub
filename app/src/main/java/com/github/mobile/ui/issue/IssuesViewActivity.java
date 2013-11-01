@@ -189,21 +189,8 @@ public class IssuesViewActivity extends PagerActivity {
         pullRequests = getBooleanArrayExtra(EXTRA_PULL_REQUESTS);
         repoIds = getSerializableExtra(EXTRA_REPOSITORIES);
         repo = getSerializableExtra(EXTRA_REPOSITORY);
-        int initialPosition = getIntExtra(EXTRA_POSITION);
 
         setContentView(layout.pager);
-
-        pager = finder.find(id.vp_pages);
-
-        if (repo != null)
-            adapter = new IssuesPagerAdapter(this, repo, issueNumbers);
-        else
-            adapter = new IssuesPagerAdapter(this, repoIds, issueNumbers, store);
-        pager.setAdapter(adapter);
-
-        pager.setOnPageChangeListener(this);
-        pager.scheduleSetItem(initialPosition, this);
-        onPageSelected(initialPosition);
 
         if (repo != null) {
             ActionBar actionBar = getSupportActionBar();
@@ -231,6 +218,21 @@ public class IssuesViewActivity extends PagerActivity {
 
         isCollaborator = false;
         checkCollaboratorStatus();
+    }
+
+    private void configurePager() {
+        int initialPosition = getIntExtra(EXTRA_POSITION);
+        pager = finder.find(id.vp_pages);
+
+        if (repo != null)
+            adapter = new IssuesPagerAdapter(this, repo, issueNumbers, isCollaborator);
+        else
+            adapter = new IssuesPagerAdapter(this, repoIds, issueNumbers, store, isCollaborator);
+        pager.setAdapter(adapter);
+
+        pager.setOnPageChangeListener(this);
+        pager.scheduleSetItem(initialPosition, this);
+        onPageSelected(initialPosition);
     }
 
     private void updateTitle(final int position) {
@@ -301,8 +303,12 @@ public class IssuesViewActivity extends PagerActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(id.m_edit).setVisible(isCollaborator);
-        menu.findItem(id.m_state).setVisible(isCollaborator);
+        MenuItem editItem = menu.findItem(id.m_edit);
+        MenuItem stateItem = menu.findItem(id.m_state);
+        if (editItem != null && stateItem != null) {
+            editItem.setVisible(isCollaborator);
+            stateItem.setVisible(isCollaborator);
+        }
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -349,6 +355,7 @@ public class IssuesViewActivity extends PagerActivity {
 
                 isCollaborator = collaborator;
                 invalidateOptionsMenu();
+                configurePager();
             }
         }.execute();
     }
