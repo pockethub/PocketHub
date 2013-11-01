@@ -53,10 +53,6 @@
                 style="@style/FormalSingleLineEditText"
                 android:layout_width="match_parent" />
 
-            <!-- We initially hide many of these because we don't know if the
-                the user is a collaborator, so we show them later as necessary
-            -->
-
             <TextView
                 android:id="@+id/tv_labels_label"
                 style="@style/HeaderTitleText"
