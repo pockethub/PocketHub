@@ -21,15 +21,19 @@ import static com.github.mobile.Intents.EXTRA_ISSUE_NUMBERS;
 import static com.github.mobile.Intents.EXTRA_POSITION;
 import static com.github.mobile.Intents.EXTRA_REPOSITORIES;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
+import android.accounts.Account;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.string;
+import com.github.mobile.accounts.AccountUtils;
+import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.core.issue.IssueUtils;
 import com.github.mobile.core.repo.RefreshRepositoryTask;
@@ -51,6 +55,7 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.RepositoryIssue;
 import org.eclipse.egit.github.core.User;
+import org.eclipse.egit.github.core.service.CollaboratorService;
 
 /**
  * Activity to display a collection of issues or pull requests in a pager
@@ -164,7 +169,12 @@ public class IssuesViewActivity extends PagerActivity {
     @Inject
     private IssueStore store;
 
+    @Inject
+    private CollaboratorService collaboratorService;
+
     private final AtomicReference<User> user = new AtomicReference<User>();
+
+    private boolean isCollaborator;
 
     private IssuesPagerAdapter adapter;
 
@@ -218,6 +228,9 @@ public class IssuesViewActivity extends PagerActivity {
                             fullRepository.getOwner());
                 }
             }.execute();
+
+        isCollaborator = false;
+        checkCollaboratorStatus();
     }
 
     private void updateTitle(final int position) {
@@ -287,6 +300,14 @@ public class IssuesViewActivity extends PagerActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(id.m_edit).setVisible(isCollaborator);
+        menu.findItem(id.m_state).setVisible(isCollaborator);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case android.R.id.home:
@@ -311,5 +332,24 @@ public class IssuesViewActivity extends PagerActivity {
         default:
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void checkCollaboratorStatus() {
+        new AuthenticatedUserTask<Boolean>(this) {
+
+            @Override
+            protected Boolean run(Account account) throws Exception {
+                return collaboratorService.isCollaborator(
+                    repo, AccountUtils.getLogin(IssuesViewActivity.this));
+            }
+
+            @Override
+            protected void onSuccess(Boolean collaborator) throws Exception {
+                super.onSuccess(collaborator);
+
+                isCollaborator = collaborator;
+                invalidateOptionsMenu();
+            }
+        }.execute();
     }
 }
