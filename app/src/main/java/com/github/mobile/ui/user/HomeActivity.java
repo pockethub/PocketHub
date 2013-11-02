@@ -37,9 +37,11 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.mobile.R;
 import com.github.mobile.R.id;
 import com.github.mobile.R.menu;
 import com.github.mobile.accounts.AccountUtils;
+import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.core.user.UserComparator;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.TabPagerActivity;
@@ -47,6 +49,7 @@ import com.github.mobile.ui.gist.GistsActivity;
 import com.github.mobile.ui.issue.FiltersViewActivity;
 import com.github.mobile.ui.issue.IssueDashboardActivity;
 import com.github.mobile.ui.repo.OrganizationLoader;
+import com.github.mobile.ui.settings.SettingsActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.PreferenceUtils;
 import com.google.inject.Inject;
@@ -205,6 +208,9 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
         switch (item.getItemId()) {
         case id.m_search:
             onSearchRequested();
+            return true;
+        case id.m_settings:
+            startActivity(SettingsActivity.intentForSettings(this, org));
             return true;
         default:
             return super.onOptionsItemSelected(item);

@@ -132,6 +132,18 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
     }
 
     /**
+     * Clears the list of recent repositories for this organization
+     *
+     * @return this recent list
+     */
+    public RecentRepositories clearAll() {
+        if (ids == null)
+            load();
+        ids.removeAll(ids);
+        return this;
+    }
+
+    /**
      * Persist recent list asynchronously on a background thread
      *
      * @return this recent list
