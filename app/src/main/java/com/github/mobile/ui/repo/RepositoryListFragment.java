@@ -22,7 +22,9 @@ import static java.util.Locale.US;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,6 +44,7 @@ import com.github.mobile.ui.user.OrganizationSelectionListener;
 import com.github.mobile.ui.user.OrganizationSelectionProvider;
 import com.github.mobile.ui.user.UserViewActivity;
 import com.github.mobile.util.AvatarLoader;
+import com.github.mobile.util.PreferenceUtils;
 import com.google.inject.Inject;
 
 import java.util.Collections;
@@ -66,6 +69,8 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
     private final AtomicReference<User> org = new AtomicReference<User>();
 
     private RecentRepositories recentRepos;
+
+    private List<Repository> cachedRepos = Collections.emptyList();
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -131,8 +136,11 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Refresh if the viewed repository was (un)starred
-        if (requestCode == REPOSITORY_VIEW && resultCode == RESOURCE_CHANGED) {
-            forceRefresh();
+        if (requestCode == REPOSITORY_VIEW) {
+            if (resultCode == RESOURCE_CHANGED) {
+                forceRefresh();
+            }
+            reorderRepositories();
             return;
         }
 
@@ -213,6 +221,34 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
             recentRepos.saveAsync();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        SharedPreferences defaultPrefs = PreferenceManager
+            .getDefaultSharedPreferences(getActivity());
+        String recentReposKey = getString(string.key_clear_recent_repositories);
+        String reloadReposKey = getString(string.key_reload_repositories);
+        boolean clearRecents = defaultPrefs.getBoolean(recentReposKey, false);
+        boolean reloadRepos = defaultPrefs.getBoolean(reloadReposKey, false);
+
+        if (reloadRepos && clearRecents) {
+            recentRepos = new RecentRepositories(getActivity(), org.get());
+            refresh();
+        } else if (reloadRepos)
+          refresh();
+        else if (clearRecents) {
+            recentRepos = new RecentRepositories(getActivity(), org.get());
+            reorderRepositories();
+        }
+
+        // Make both preferences false so we don't repeat this action next
+        // onResume
+        SharedPreferences.Editor editor = defaultPrefs.edit();
+        editor.putBoolean(recentReposKey, false)
+            .putBoolean(reloadReposKey, false);
+        PreferenceUtils.save(editor);
+    }
+
     private void updateHeaders(final List<Repository> repos) {
         HeaderFooterListAdapter<?> rootAdapter = getListAdapter();
         if (rootAdapter == null)
@@ -275,6 +311,21 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         adapter.registerNoSeparator(repos.get(repos.size() - 1));
     }
 
+    /**
+     * Reorders the list of current repositories based on which was recently
+     * viewed
+     */
+    private void reorderRepositories() {
+        Collections.sort(cachedRepos, recentRepos);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                getListAdapter().getWrappedAdapter().setItems(cachedRepos.toArray());
+                updateHeaders(cachedRepos);
+            }
+        });
+    }
+
     @Override
     public Loader<List<Repository>> onCreateLoader(int id, final Bundle args) {
         return new ThrowableLoader<List<Repository>>(getActivity(), items) {
@@ -295,6 +346,11 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
     }
 
     @Override
+    public void onLoadFinished(Loader<List<Repository>> loader, List<Repository> data) {
+        cachedRepos = data;
+        super.onLoadFinished(loader, data);
+    }
+
     protected SingleTypeAdapter<Repository> createAdapter(List<Repository> items) {
         return new DefaultRepositoryListAdapter(getActivity()
                 .getLayoutInflater(),

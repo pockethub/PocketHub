@@ -27,6 +27,7 @@ import static com.github.mobile.util.TypefaceUtils.ICON_WATCH;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
@@ -41,7 +42,6 @@ import com.github.mobile.R;
 import com.github.mobile.R.id;
 import com.github.mobile.R.menu;
 import com.github.mobile.accounts.AccountUtils;
-import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.core.user.UserComparator;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.TabPagerActivity;
@@ -147,12 +147,30 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
     protected void onResume() {
         super.onResume();
 
+        SharedPreferences defaultPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean shouldReloadOrgs = defaultPrefs.getBoolean(getString(
+            R.string.key_reload_organizations), false);
+        boolean clearAvatars = defaultPrefs.getBoolean(getString(
+            R.string.key_clear_avatars), false);
+
         // Restart loader if default account doesn't match currently loaded
         // account
         List<User> currentOrgs = orgs;
-        if (currentOrgs != null && !currentOrgs.isEmpty()
-                && !AccountUtils.isUser(this, currentOrgs.get(0)))
+        if ((currentOrgs != null && !currentOrgs.isEmpty()
+                && !AccountUtils.isUser(this, currentOrgs.get(0))) || shouldReloadOrgs)
             reloadOrgs();
+        else if (clearAvatars) {
+            if (homeAdapter != null)
+                homeAdapter.notifyDataSetChanged();
+        }
+
+        // We've done what we need to with this information, resetting them now
+        // Prevents us from changing the UI multiple times
+        SharedPreferences.Editor edit = defaultPrefs.edit();
+        edit.putBoolean(getString(R.string.key_reload_organizations), false)
+            .putBoolean(getString(R.string.key_clear_avatars), false);
+        PreferenceUtils.save(edit);
+
     }
 
     private void configureActionBar() {
