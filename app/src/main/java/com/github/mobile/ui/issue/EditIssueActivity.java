@@ -237,7 +237,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
         finder.find(id.tv_assignee_label).setVisibility(View.VISIBLE);
         finder.find(id.ll_assignee).setVisibility(View.VISIBLE);
 
-        findViewById(id.ll_milestone).setOnClickListener(new OnClickListener() {
+        finder.onClick(id.ll_milestone, new OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -249,7 +249,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
             }
         });
 
-        findViewById(id.ll_assignee).setOnClickListener(new OnClickListener() {
+        finder.onClick(id.ll_assignee, new OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -261,7 +261,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
             }
         });
 
-        findViewById(id.ll_labels).setOnClickListener(new OnClickListener() {
+        finder.onClick(id.ll_labels, new OnClickListener() {
 
             @Override
             public void onClick(View v) {
