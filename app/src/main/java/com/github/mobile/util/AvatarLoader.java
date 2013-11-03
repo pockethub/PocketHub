@@ -39,6 +39,8 @@ import com.google.inject.Inject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
@@ -58,6 +60,8 @@ public class AvatarLoader {
 
     private static final float CORNER_RADIUS_IN_DIP = 3;
 
+    private static final int CACHE_SIZE = 75;
+
     private static abstract class FetchAvatarTask extends
             RoboAsyncTask<BitmapDrawable> {
 
@@ -76,7 +80,17 @@ public class AvatarLoader {
 
     private final float cornerRadius;
 
-    private AvatarCache loaded;
+    private static final Map<Object, BitmapDrawable> loaded = new LinkedHashMap<Object, BitmapDrawable>(
+        CACHE_SIZE, 1.0F) {
+
+        private static final long serialVersionUID = -4191624209581976720L;
+
+        @Override
+        protected boolean removeEldestEntry(
+            Map.Entry<Object, BitmapDrawable> eldest) {
+            return size() >= CACHE_SIZE;
+        }
+    };
 
     private final Context context;
 
@@ -101,8 +115,6 @@ public class AvatarLoader {
         avatarDir = new File(context.getCacheDir(), "avatars/github.com");
         if (!avatarDir.isDirectory())
             avatarDir.mkdirs();
-
-        loaded = AvatarCache.getInstance();
 
         float density = context.getResources().getDisplayMetrics().density;
         cornerRadius = CORNER_RADIUS_IN_DIP * density;
@@ -229,7 +241,7 @@ public class AvatarLoader {
         if (TextUtils.isEmpty(avatarUrl))
             return this;
 
-        BitmapDrawable loadedImage = loaded.getImage(userId);
+        BitmapDrawable loadedImage = loaded.get(userId);
         if (loadedImage != null) {
             actionBar.setLogo(loadedImage);
             return this;
@@ -322,7 +334,7 @@ public class AvatarLoader {
         if (TextUtils.isEmpty(avatarUrl))
             return setImage(loadingAvatar, view);
 
-        BitmapDrawable loadedImage = loaded.getImage(userId);
+        BitmapDrawable loadedImage = loaded.get(userId);
         if (loadedImage != null)
             return setImage(loadedImage, view);
 
@@ -350,7 +362,7 @@ public class AvatarLoader {
 
         final String userId = user.getEmail();
 
-        BitmapDrawable loadedImage = loaded.getImage(userId);
+        BitmapDrawable loadedImage = loaded.get(userId);
         if (loadedImage != null)
             return setImage(loadedImage, view);
 
@@ -378,7 +390,7 @@ public class AvatarLoader {
 
         final String contributorId = contributor.getLogin();
 
-        BitmapDrawable loadedImage = loaded.getImage(contributorId);
+        BitmapDrawable loadedImage = loaded.get(contributorId);
         if (loadedImage != null)
             return setImage(loadedImage, view);
 
@@ -406,7 +418,7 @@ public class AvatarLoader {
 
         final String userId = user.getId();
 
-        BitmapDrawable loadedImage = loaded.getImage(userId);
+        BitmapDrawable loadedImage = loaded.get(userId);
         if (loadedImage != null)
             return setImage(loadedImage, view);
 
@@ -416,10 +428,11 @@ public class AvatarLoader {
         return this;
     }
 
-    public AvatarLoader clearAvatarFiles() {
+    public AvatarLoader clearAvatarCache() {
         for (File userId: avatarDir.listFiles()) {
             deleteCachedUserAvatars(userId);
         }
+        loaded.clear();
         return this;
     }
 
@@ -444,7 +457,7 @@ public class AvatarLoader {
             protected void onSuccess(final BitmapDrawable image) throws Exception {
                 if (image == null)
                     return;
-                loaded.putImage(userId, image);
+                loaded.put(userId, image);
                 if (userId.equals(view.getTag(id.iv_avatar)))
                     setImage(image, view);
             }

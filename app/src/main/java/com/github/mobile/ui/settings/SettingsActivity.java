@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents;
@@ -14,7 +13,6 @@ import com.github.mobile.R;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.github.mobile.ui.repo.RecentRepositories;
-import com.github.mobile.util.AvatarCache;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.PreferenceUtils;
 import com.github.mobile.util.ToastUtils;
@@ -72,8 +70,7 @@ public class SettingsActivity extends RoboSherlockPreferenceActivity implements 
         else if (key.equals(getString(R.string.key_clear_avatars)) &&
             sharedPrefs.getBoolean(key, false)) {
             // First, we clear the files, then the cache itself
-            avatarLoader.clearAvatarFiles();
-            AvatarCache.getInstance().clearCache();
+            avatarLoader.clearAvatarCache();
             ToastUtils.show(this, getString(R.string.success_clearing_avatars));
         } else if (key.equals(getString(R.string.key_reload_repositories)) &&
             sharedPrefs.getBoolean(key, false))
