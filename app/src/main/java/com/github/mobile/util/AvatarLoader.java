@@ -33,7 +33,6 @@ import com.github.kevinsawicki.http.HttpRequest;
 import com.github.mobile.R.drawable;
 import com.github.mobile.R.id;
 import com.github.mobile.core.search.SearchUser;
-import com.github.mobile.util.GravatarUtils;
 import com.google.inject.Inject;
 
 import java.io.File;
