@@ -203,8 +203,7 @@ public class IssuesViewActivity extends PagerActivity {
         // avatar URL
         if (issueNumbers.length == 1
                 && (user.get() == null || user.get().getAvatarUrl() == null))
-            new RefreshRepositoryTask(this, repo != null ? repo
-                    : repoIds.get(0)) {
+            new RefreshRepositoryTask(this, repo != null ? repo : repoIds.get(0)) {
 
                 @Override
                 protected void onSuccess(Repository fullRepository)
@@ -345,8 +344,8 @@ public class IssuesViewActivity extends PagerActivity {
 
             @Override
             protected Boolean run(Account account) throws Exception {
-                return collaboratorService.isCollaborator(
-                    repo, AccountUtils.getLogin(IssuesViewActivity.this));
+                return collaboratorService.isCollaborator(repo != null ? repo : repoIds.get(0),
+                    AccountUtils.getLogin(IssuesViewActivity.this));
             }
 
             @Override
