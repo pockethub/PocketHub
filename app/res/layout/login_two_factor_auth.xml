@@ -39,23 +39,23 @@
 
         <TextView
             style="@style/HeaderTitleText"
-            android:paddingTop="5dp"
+            android:paddingTop="10dp"
             android:text="@string/enter_otp_code_title" />
+
+        <EditText
+            android:id="@+id/et_otp_code"
+            style="@style/LoginEditText"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:maxLength="6" />
 
         <TextView
             style="@style/SubtitleText"
             android:paddingTop="10dp"
             android:text="@string/enter_otp_code_message"
             android:textColor="@color/text" />
-
-        <EditText
-            android:id="@+id/et_otp_code"
-            style="@style/LoginEditText"
-            android:layout_marginTop="15dp"
-            android:gravity="center"
-            android:imeOptions="actionDone"
-            android:inputType="number"
-            android:maxLength="6" />
 
     </LinearLayout>
 
