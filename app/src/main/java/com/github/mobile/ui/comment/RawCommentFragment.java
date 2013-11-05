@@ -18,6 +18,7 @@ package com.github.mobile.ui.comment;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -47,6 +48,14 @@ public class RawCommentFragment extends DialogFragment {
                 SherlockFragmentActivity activity = getSherlockActivity();
                 if (activity != null)
                     activity.invalidateOptionsMenu();
+            }
+        });
+        commentText.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                commentText.requestFocusFromTouch();
+                return false;
             }
         });
     }
