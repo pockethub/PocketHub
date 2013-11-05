@@ -50,6 +50,8 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
 
     private static final String TAG = "GitHubAccountAuthenticator";
 
+    private static final List<String> SCOPES = Arrays.asList("repo", "user", "gist");
+
     private Context context;
 
     public AccountAuthenticator(final Context context) {
@@ -120,10 +122,8 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
      * @throws IOException
      */
     public static String getAuthorization(final OAuthService service) throws IOException {
-        List<String> scopes = Arrays.asList("repo", "user", "gist");
-
         for (Authorization auth : service.getAuthorizations())
-            if (isValidAuthorization(auth, scopes))
+            if (isValidAuthorization(auth, SCOPES))
                 return auth.getToken();
         return null;
     }
@@ -136,12 +136,10 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
      * @throws IOException
      */
     public static String createAuthorization(final OAuthService service) throws IOException {
-        List<String> scopes = Arrays.asList("repo", "user", "gist");
-
         Authorization auth = new Authorization();
         auth.setNote(APP_NOTE);
         auth.setNoteUrl(APP_NOTE_URL);
-        auth.setScopes(scopes);
+        auth.setScopes(SCOPES);
         auth = service.createAuthorization(auth);
         return auth != null ? auth.getToken() : null;
     }
