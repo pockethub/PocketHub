@@ -318,7 +318,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
                     user = new UserService(client).getUser();
                 } catch (TwoFactorAuthException e) {
                     if (e.twoFactorAuthType == TWO_FACTOR_AUTH_TYPE_SMS)
-                        sendSmsOTPCode(new OAuthService(client));
+                        sendSmsOtpCode(new OAuthService(client));
                     openTwoFactorAuthActivity();
 
                     return null;
@@ -462,7 +462,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
         return addresses;
     }
 
-    private void sendSmsOTPCode(final OAuthService service) throws IOException {
+    private void sendSmsOtpCode(final OAuthService service) throws IOException {
         try {
             AccountAuthenticator.createAuthorization(service);
         } catch (TwoFactorAuthException ignored) {
