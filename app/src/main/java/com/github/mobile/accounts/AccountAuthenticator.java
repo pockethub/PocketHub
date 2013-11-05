@@ -50,6 +50,8 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
 
     private static final String TAG = "GitHubAccountAuthenticator";
 
+    private static final List<String> SCOPES = Arrays.asList("repo", "user", "gist");
+
     private Context context;
 
     public AccountAuthenticator(final Context context) {
@@ -90,7 +92,7 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
         return null;
     }
 
-    private boolean isValidAuthorization(final Authorization auth,
+    private static boolean isValidAuthorization(final Authorization auth,
             final List<String> requiredScopes) {
         if (auth == null)
             return false;
@@ -116,14 +118,12 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
      * Get existing authorization for this app
      *
      * @param service
-     * @param scopes
      * @return token or null if none found
      * @throws IOException
      */
-    private String getAuthorization(final OAuthService service,
-            final List<String> scopes) throws IOException {
+    public static String getAuthorization(final OAuthService service) throws IOException {
         for (Authorization auth : service.getAuthorizations())
-            if (isValidAuthorization(auth, scopes))
+            if (isValidAuthorization(auth, SCOPES))
                 return auth.getToken();
         return null;
     }
@@ -132,16 +132,14 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
      * Create authorization for this app
      *
      * @param service
-     * @param scopes
      * @return created token
      * @throws IOException
      */
-    private String createAuthorization(final OAuthService service,
-            final List<String> scopes) throws IOException {
+    public static String createAuthorization(final OAuthService service) throws IOException {
         Authorization auth = new Authorization();
         auth.setNote(APP_NOTE);
         auth.setNoteUrl(APP_NOTE_URL);
-        auth.setScopes(scopes);
+        auth.setScopes(SCOPES);
         auth = service.createAuthorization(auth);
         return auth != null ? auth.getToken() : null;
     }
@@ -167,13 +165,12 @@ class AccountAuthenticator extends AbstractAccountAuthenticator {
         DefaultClient client = new DefaultClient();
         client.setCredentials(account.name, password);
         OAuthService service = new OAuthService(client);
-        List<String> scopes = Arrays.asList("repo", "user", "gist");
 
         String authToken;
         try {
-            authToken = getAuthorization(service, scopes);
+            authToken = getAuthorization(service);
             if (TextUtils.isEmpty(authToken))
-                authToken = createAuthorization(service, scopes);
+                authToken = createAuthorization(service);
         } catch (IOException e) {
             Log.e(TAG, "Authorization retrieval failed", e);
             throw new NetworkErrorException(e);

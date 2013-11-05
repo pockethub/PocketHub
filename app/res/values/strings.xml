@@ -152,6 +152,8 @@
     <string name="select_milestone">Select Milestone</string>
     <string name="select_labels">Select Labels</string>
     <string name="select_ref">Select Branch or Tag</string>
+    <string name="enter_otp_code_title">Authentication Code</string>
+    <string name="enter_otp_code_message">Two-factor authentication is enabled for your account. Enter your authentication code to verify your identity.</string>
     <string name="no_milestone">No milestone</string>
     <string name="unassigned">No one is assigned</string>
     <string name="assigned">is assigned</string>
@@ -179,6 +181,7 @@
     <string name="section_issue_labels">Labels:</string>
     <string name="log_in">Log in</string>
     <string name="signup_link">New to GitHub? &lt;a href=\"https://github.com/plans\">Click here&lt;/a> to sign up</string>
+    <string name="signup_link_two_factor_auth">Not sure what to do? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Get some help.&lt;/a></string>
     <string name="connection_failed">Unable to connect to GitHub</string>
     <string name="invalid_login_or_password">Please enter a valid login &amp; password</string>
     <string name="invalid_password">Please enter a valid password.</string>

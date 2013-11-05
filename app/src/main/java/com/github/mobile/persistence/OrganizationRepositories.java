@@ -162,6 +162,7 @@ public class OrganizationRepositories implements
             Set<Repository> all = new TreeSet<Repository>(
                     new Comparator<Repository>() {
 
+                        @Override
                         public int compare(final Repository repo1,
                                 final Repository repo2) {
                             final long id1 = repo1.getId();

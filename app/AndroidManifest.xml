@@ -239,6 +239,16 @@
             -->
         </activity>
         <activity
+            android:name=".accounts.TwoFactorAuthActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:excludeFromRecents="true" >
+
+            <!--
+                No intent-filter here! This activity is only ever launched by
+                someone who explicitly knows the class name
+            -->
+        </activity>
+        <activity
             android:name=".ui.user.UriLauncherActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:excludeFromRecents="true" >
