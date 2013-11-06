@@ -175,7 +175,7 @@
     <string name="section_issue_labels">Etichetta:</string>
     <string name="log_in">Accedi</string>
     <string name="signup_link">Nuovo su GitHub? &lt;a href=\"https://github.com/plans\">Clicca qui&lt;/a> per iscriverti</string>
-    <string name="connection_failed">Impossibile connettersi a Github</string>
+    <string name="connection_failed">Impossibile connettersi a GitHub</string>
     <string name="invalid_login_or_password">Inserisci un nome utente e una password validi</string>
     <string name="invalid_password">Inserisci una password valida.</string>
     <string name="password">Password</string>
