@@ -37,6 +37,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
+import com.github.mobile.R;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
@@ -92,6 +93,11 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      */
     protected boolean listShown;
 
+    /**
+     * menu to preserve the original menu
+     */
+
+    private Menu optionsMenu;
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -162,7 +168,28 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
 
     @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
+        this.optionsMenu = optionsMenu;
         inflater.inflate(menu.refresh, optionsMenu);
+    }
+
+    /**
+     * Mimics the functionality of getSherlockActivity().setSupportProgressBarIndeterminateVisibility(Boolean)
+     * Replaces the refresh button with a progress bar, whilst the above method would display the progress bar next
+     * to the button.
+     * @param refreshing
+     */
+    public void setRefreshActionButtonState(final boolean refreshing) {
+        if (optionsMenu != null) {
+            final MenuItem refreshItem = optionsMenu
+                .findItem(R.id.m_refresh);
+            if (refreshItem != null) {
+                if (refreshing) {
+                    refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
+                } else {
+                    refreshItem.setActionView(null);
+                }
+            }
+        }
     }
 
     @Override
@@ -199,8 +226,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
         if (!isUsable())
             return;
 
-        getSherlockActivity()
-                .setSupportProgressBarIndeterminateVisibility(true);
+        setRefreshActionButtonState(true);
         getLoaderManager().restartLoader(0, args, this);
     }
 
@@ -216,8 +242,8 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
         if (!isUsable())
             return;
 
-        getSherlockActivity().setSupportProgressBarIndeterminateVisibility(
-                false);
+        setRefreshActionButtonState(false);
+
         Exception exception = getException(loader);
         if (exception != null) {
             showError(exception, getErrorMessage(exception));
