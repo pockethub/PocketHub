@@ -227,16 +227,9 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         SharedPreferences defaultPrefs = PreferenceManager
             .getDefaultSharedPreferences(getActivity());
         String recentReposKey = getString(string.key_clear_recent_repositories);
-        String reloadReposKey = getString(string.key_reload_repositories);
         boolean clearRecents = defaultPrefs.getBoolean(recentReposKey, false);
-        boolean reloadRepos = defaultPrefs.getBoolean(reloadReposKey, false);
 
-        if (reloadRepos && clearRecents) {
-            recentRepos = new RecentRepositories(getActivity(), org.get());
-            refresh();
-        } else if (reloadRepos)
-          refresh();
-        else if (clearRecents) {
+        if (clearRecents) {
             recentRepos = new RecentRepositories(getActivity(), org.get());
             reorderRepositories();
         }
@@ -244,8 +237,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         // Make both preferences false so we don't repeat this action next
         // onResume
         SharedPreferences.Editor editor = defaultPrefs.edit();
-        editor.putBoolean(recentReposKey, false)
-            .putBoolean(reloadReposKey, false);
+        editor.putBoolean(recentReposKey, false);
         PreferenceUtils.save(editor);
     }
 

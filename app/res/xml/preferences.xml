@@ -9,18 +9,6 @@
         android:dialogMessage="@string/message_reload_organizations" />
 
     <com.github.mobile.ui.settings.ConfirmDialogPreference
-        android:key="@string/key_reload_repositories"
-        android:title="@string/title_reload_repositories"
-        android:summary="@string/subtitle_clear_recent_repositories"
-        android:dialogMessage="@string/message_reload_repositories" />
-
-    <com.github.mobile.ui.settings.ConfirmDialogPreference
-        android:key="@string/key_clear_avatars"
-        android:title="@string/title_clear_avatars"
-        android:summary="@string/subtitle_clear_avatars"
-        android:dialogMessage="@string/message_clear_avatars" />
-
-    <com.github.mobile.ui.settings.ConfirmDialogPreference
         android:key="@string/key_clear_recent_repositories"
         android:title="@string/title_clear_recent_repositories"
         android:summary="@string/subtitle_clear_recent_repositories"

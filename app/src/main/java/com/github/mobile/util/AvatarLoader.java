@@ -80,14 +80,14 @@ public class AvatarLoader {
 
     private final float cornerRadius;
 
-    private static final Map<Object, BitmapDrawable> loaded = new LinkedHashMap<Object, BitmapDrawable>(
-        CACHE_SIZE, 1.0F) {
+    private final Map<Object, BitmapDrawable> loaded = new LinkedHashMap<Object, BitmapDrawable>(
+            CACHE_SIZE, 1.0F) {
 
         private static final long serialVersionUID = -4191624209581976720L;
 
         @Override
         protected boolean removeEldestEntry(
-            Map.Entry<Object, BitmapDrawable> eldest) {
+                Map.Entry<Object, BitmapDrawable> eldest) {
             return size() >= CACHE_SIZE;
         }
     };
@@ -425,14 +425,6 @@ public class AvatarLoader {
         setImage(loadingAvatar, view, userId);
         fetchAvatarTask(avatarUrl, userId, view).execute();
 
-        return this;
-    }
-
-    public AvatarLoader clearAvatarCache() {
-        for (File userId: avatarDir.listFiles()) {
-            deleteCachedUserAvatars(userId);
-        }
-        loaded.clear();
         return this;
     }
 

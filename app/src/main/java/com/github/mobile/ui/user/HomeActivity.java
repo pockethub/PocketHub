@@ -150,8 +150,6 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
         SharedPreferences defaultPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean shouldReloadOrgs = defaultPrefs.getBoolean(getString(
             R.string.key_reload_organizations), false);
-        boolean clearAvatars = defaultPrefs.getBoolean(getString(
-            R.string.key_clear_avatars), false);
 
         // Restart loader if default account doesn't match currently loaded
         // account
@@ -159,16 +157,11 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
         if ((currentOrgs != null && !currentOrgs.isEmpty()
                 && !AccountUtils.isUser(this, currentOrgs.get(0))) || shouldReloadOrgs)
             reloadOrgs();
-        else if (clearAvatars) {
-            if (homeAdapter != null)
-                homeAdapter.notifyDataSetChanged();
-        }
 
         // We've done what we need to with this information, resetting them now
         // Prevents us from changing the UI multiple times
         SharedPreferences.Editor edit = defaultPrefs.edit();
-        edit.putBoolean(getString(R.string.key_reload_organizations), false)
-            .putBoolean(getString(R.string.key_clear_avatars), false);
+        edit.putBoolean(getString(R.string.key_reload_organizations), false);
         PreferenceUtils.save(edit);
 
     }

@@ -67,14 +67,6 @@ public class SettingsActivity extends RoboSherlockPreferenceActivity implements 
         if(key.equals(getString(R.string.key_clear_recent_repositories)) &&
             sharedPrefs.getBoolean(key, false))
             reloadRecentRepositories();
-        else if (key.equals(getString(R.string.key_clear_avatars)) &&
-            sharedPrefs.getBoolean(key, false)) {
-            // First, we clear the files, then the cache itself
-            avatarLoader.clearAvatarCache();
-            ToastUtils.show(this, getString(R.string.success_clearing_avatars));
-        } else if (key.equals(getString(R.string.key_reload_repositories)) &&
-            sharedPrefs.getBoolean(key, false))
-            updateRepositories();
         else if (key.equals(getString(R.string.key_reload_organizations)) &&
             sharedPrefs.getBoolean(key, false))
             reloadOrganizations();
@@ -104,13 +96,9 @@ public class SettingsActivity extends RoboSherlockPreferenceActivity implements 
 
     private void setDialogListeners() {
         ConfirmDialogPreference reloadOrganizations = (ConfirmDialogPreference) findPreference(getString(R.string.key_reload_organizations));
-        ConfirmDialogPreference reloadRepositories = (ConfirmDialogPreference) findPreference(getString(R.string.key_reload_repositories));
-        ConfirmDialogPreference clearAvatars = (ConfirmDialogPreference) findPreference(getString(R.string.key_clear_avatars));
         ConfirmDialogPreference clearRecentRepos = (ConfirmDialogPreference) findPreference(getString(R.string.key_clear_recent_repositories));
 
         reloadOrganizations.setOnDialogClosedListener(this);
-        reloadRepositories.setOnDialogClosedListener(this);
-        clearAvatars.setOnDialogClosedListener(this);
         clearRecentRepos.setOnDialogClosedListener(this);
     }
 
@@ -165,31 +153,6 @@ public class SettingsActivity extends RoboSherlockPreferenceActivity implements 
                 super.onSuccess(result);
                 ToastUtils.show(SettingsActivity.this, R.string
                     .success_updating_organizations);
-            }
-        }.execute();
-    }
-
-    private void updateRepositories() {
-        new ProgressDialogTask<Void>(this) {
-            @Override
-            protected Void run(Account account) throws IOException {
-                // We really just want to force a reload, not actually do
-                // anything with the information
-                accountDataManager.getRepos(currentUser, true);
-                return null;
-            }
-
-            @Override
-            public void execute() {
-                showIndeterminate(getString(R.string.updating_repositories));
-                super.execute();
-            }
-
-            @Override
-            protected void onSuccess(Void result) throws Exception {
-                super.onSuccess(result);
-                ToastUtils.show(SettingsActivity.this, R.string
-                    .success_updating_repositories);
             }
         }.execute();
     }

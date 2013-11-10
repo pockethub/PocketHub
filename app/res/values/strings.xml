@@ -92,20 +92,15 @@
     <string name="updating_milestone">Updating Milestone…</string>
     <string name="updating_recent_repositories">Updating Recent Repositories…</string>
     <string name="updating_organizations">Updating Organizations…</string>
-    <string name="updating_repositories">Updating Repositories…</string>
     <!--  -->
 
     <!-- Success messages -->
     <string name="success_updating_organizations">Successfully updated organizations</string>
     <string name="success_clearing_recent_repositories">Successfully cleared recent repositories</string>
-    <string name="success_updating_repositories">Successfully updated your repositories</string>
-    <string name="success_clearing_avatars">Successfully cleared cached avatars</string>
     <!-- -->
 
     <!-- Preference dialog messages -->
     <string name="message_reload_organizations">Are you sure you want to reload your organizations list?</string>
-    <string name="message_reload_repositories">Are you sure you want to reload your repository list?</string>
-    <string name="message_clear_avatars">Are you sure you want to clear your avatar cache?</string>
     <string name="message_clear_recent_repositories">Are you sure you want to clear your recent repositories?</string>
     <!-- -->
 
@@ -291,20 +286,14 @@
 
     <!-- Keys for settings -->
     <string name="key_reload_organizations">key_reload_organizations</string>
-    <string name="key_reload_repositories">key_reload_repositories</string>
-    <string name="key_clear_avatars">key_clear_avatars</string>
     <string name="key_clear_recent_repositories">key_clear_recent_repositories</string>
 
     <!-- Titles for settings -->
     <string name="title_reload_organizations">Reload organizations</string>
-    <string name="title_reload_repositories">Reload repositories</string>
-    <string name="title_clear_avatars">Clear avatars</string>
     <string name="title_clear_recent_repositories">Clear recent repositories</string>
 
     <!-- Subtitles for settings -->
     <string name="subtitle_reload_organizations">Reload the list of organizations you\'re a part of</string>
-    <string name="subtitle_reload_repositories">Reload the list of repositories you\'ve starred</string>
-    <string name="subtitle_clear_avatars">Clear the cached avatars</string>
     <string name="subtitle_clear_recent_repositories">Clear the list of repositories you have recently visited</string>
 
 </resources>
