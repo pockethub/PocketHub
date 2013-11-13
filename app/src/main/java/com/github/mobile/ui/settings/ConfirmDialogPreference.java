@@ -1,6 +1,5 @@
 package com.github.mobile.ui.settings;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
@@ -25,7 +24,6 @@ public class ConfirmDialogPreference extends DialogPreference {
         super(context, attrs);
     }
 
-    @SuppressLint("ResourceAsColor")
     public View onCreateView(ViewGroup viewGroup) {
         View view = super.onCreateView(viewGroup);
         ((TextView)view.findViewById(android.R.id.title))
