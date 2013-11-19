@@ -21,6 +21,7 @@
     <string name="error_issues_load">Issue 列表加载失败</string>
     <string name="error_repos_load">版本库列表加载失败</string>
     <string name="error_repo_load">版本库加载失败</string>
+    <string name="error_contributors_load">贡献者列表加载失败</string>
     <string name="error_gist_load">Gist 加载失败</string>
     <string name="error_news_load">新鲜事加载失败</string>
     <string name="error_followers_load">关注我的用户列表加载失败</string>
@@ -46,6 +47,7 @@
     <string name="error_unstarring_repository">星标移除失败</string>
     <string name="error_checking_starring_status">加注星标状态检查失败</string>
     <string name="error_rendering_markdown">Markdown 渲染失败</string>
+    <string name="error_users_search">搜索用户失败</string>
     <!--  -->
 
 
@@ -73,6 +75,7 @@
     <!-- Empty messages -->
     <string name="no_bookmarks">暂无书签</string>
     <string name="no_repositories">暂无版本库</string>
+    <string name="no_contributors">暂无贡献者</string>
     <string name="no_issues">暂无 Issue</string>
     <string name="no_gists">暂无 Gist</string>
     <string name="no_people">暂无用户</string>
@@ -95,6 +98,7 @@
     <string name="issues">Issues</string>
     <string name="gists">Gists</string>
     <string name="commits">提交</string>
+    <string name="global_search">搜索 GitHub</string>
     <string name="find_repositories">查询版本库</string>
     <string name="find_issues">查询 Issue </string>
     <string name="search_title">搜索…</string>
@@ -131,6 +135,7 @@
     <string name="comment_hint">输入评论</string>
     <string name="show_more">显示更多…</string>
     <string name="repositories">版本库</string>
+    <string name="contributors">贡献者</string>
     <string name="issues_title">Issue</string>
     <string name="edit_labels">编辑 Issue 标签</string>
     <string name="milestone_prefix">里程碑:</string>
@@ -160,6 +165,7 @@
     <string name="new_issue">新 Issue</string>
     <string name="anonymous">匿名</string>
     <string name="message_filter_saved">Issue 过滤器已保存至书签</string>
+    <string name="recently_viewed">近期浏览过的</string>
     <string name="recent">最近的</string>
     <string name="section_issue_status">状态:</string>
     <string name="status_open">开放</string>
@@ -193,6 +199,7 @@
     <string name="prefix_updated">更新了\u0020</string>
     <string name="prefix_opened">开放了\u0020</string>
     <string name="clear">清除</string>
+    <string name="pull_request_commits">提交: %d</string>
     <string name="open_issues">开放中的 Issue</string>
     <string name="closed_issues">已关闭的 Issue</string>
     <string name="confirm_bookmark_delete_title">删除书签</string>
@@ -212,7 +219,6 @@
     <string name="reopen">重新开放</string>
     <string name="title_invalid_github_url">无效的 GitHub URL</string>
     <string name="message_invalid_github_url">无法打开以下 URL:\n{0}</string>
-    <string name="recently_viewed">近期浏览过的</string>
     <string name="cancel">取消</string>
     <string name="authenticator_conflict_title">应用冲突</string>
     <string name="authenticator_conflict_message">GitHub 认证已配置为安装的另一个应用使用。\n\n您必须从“账户与同步”设置中移除那个应用并将其卸载，才能使用本应用。</string>
@@ -233,9 +239,11 @@
     <string name="unfollowing_user">正在取消关注…</string>
     <string name="starring_repository">正在加注星标…</string>
     <string name="unstarring_repository">正在移除星标…</string>
-
+    <string name="contributions">%d 提交</string>
+    
     <!-- Tab titles, should be as short as possible -->
     <string name="tab_repositories">版本库</string>
+    <string name="tab_users">用户</string>
     <string name="tab_news">新鲜事</string>
     <string name="tab_following_self">我关注的</string>
     <string name="tab_followers_self">关注我的</string>
@@ -257,5 +265,7 @@
     <string name="show_password">显示密码</string>
     <string name="write">书写</string>
     <string name="preview">预览</string>
-
+    <string name="show_raw_markdown">显示 markdown 源码</string>
+    <string name="render_markdown">渲染 markdown</string>
+    
 </resources>
