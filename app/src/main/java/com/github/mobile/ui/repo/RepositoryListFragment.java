@@ -309,13 +309,8 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
      */
     private void reorderRepositories() {
         Collections.sort(cachedRepos, recentRepos);
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                getListAdapter().getWrappedAdapter().setItems(cachedRepos.toArray());
-                updateHeaders(cachedRepos);
-            }
-        });
+        getListAdapter().getWrappedAdapter().setItems(cachedRepos.toArray());
+        updateHeaders(cachedRepos);
     }
 
     @Override

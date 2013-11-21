@@ -15,7 +15,7 @@ import com.github.mobile.R;
 public class ConfirmDialogPreference extends DialogPreference {
 
     public interface OnDialogClosed {
-        public void onDiaglogClosed(String key, boolean result);
+        public void onDialogClosed(String key, boolean result);
     }
 
     private OnDialogClosed dialogClosedListener;
@@ -36,7 +36,7 @@ public class ConfirmDialogPreference extends DialogPreference {
         super.onDialogClosed(positiveResult);
         persistBoolean(positiveResult);
         if (dialogClosedListener != null)
-            dialogClosedListener.onDiaglogClosed(getKey(), positiveResult);
+            dialogClosedListener.onDialogClosed(getKey(), positiveResult);
     }
 
     public void setOnDialogClosedListener(OnDialogClosed listener) {

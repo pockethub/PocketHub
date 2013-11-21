@@ -63,7 +63,7 @@ public class SettingsActivity extends RoboSherlockPreferenceActivity implements 
     }
 
     @Override
-    public void onDiaglogClosed(String key, boolean result) {
+    public void onDialogClosed(String key, boolean result) {
         if(key.equals(getString(R.string.key_clear_recent_repositories)) &&
             sharedPrefs.getBoolean(key, false))
             reloadRecentRepositories();
