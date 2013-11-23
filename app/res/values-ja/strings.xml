@@ -39,7 +39,7 @@
     <string name="error_commit_load">コミットのロードに失敗しました</string>
     <string name="error_file_load">ファイルのロードに失敗しました</string>
     <string name="error_code_load">コードのロードに失敗しました</string>
-    <!-- エラー メッセージ -->
+    <!-- エラーメッセージ -->
 
 
     <!-- Loading messages -->
@@ -60,7 +60,7 @@
     <string name="loading_commits">コミットをロードしています…</string>
     <string name="loading_files_and_comments">ファイルとコメントをロードしています…</string>
     <string name="loading_refs">ブランチとタグをロードしています…</string>
-    <!-- ロード中 メッセージ -->
+    <!-- ロード中メッセージ -->
 
 
     <!-- Empty messages -->
@@ -74,7 +74,7 @@
     <string name="no_members">メンバーはいません</string>
     <string name="no_news">ニュースはありません</string>
     <string name="no_commits">コミットはありません</string>
-    <!-- 空き メッセージ -->
+    <!-- 空きメッセージ -->
 
 
     <!-- Updating messages -->
@@ -82,7 +82,7 @@
     <string name="updating_issue">イシューを更新しています…</string>
     <string name="updating_labels">ラベルを更新しています…</string>
     <string name="updating_milestone">マイルストーンを更新しています…</string>
-    <!-- 更新中 メッセージ -->
+    <!-- 更新中メッセージ -->
 
     <string name="app_name">GitHub</string>
     <string name="news">ニュース</string>
@@ -156,10 +156,10 @@
     <string name="new_issue">新規イシュー</string>
     <string name="anonymous">匿名</string>
     <string name="message_filter_saved">イシュー フィルターをブックマークに保存しました</string>
-    <string name="recently_viewed">最近表示</string>
+    <string name="recently_viewed">最近の履歴</string>
     <string name="recent">履歴</string>
     <string name="recent_remove">履歴の削除</string>
-    <string name="recent_list_remove">最近使用したものを削除</string>
+    <string name="recent_list_remove">最近の履歴から削除</string>
     <string name="section_issue_status">状態:</string>
     <string name="status_open">開く</string>
     <string name="status_closed">閉じる</string>
@@ -217,6 +217,8 @@
     <string name="authenticator_conflict_message">他のインストール済みアプリケーションが既に GitHub の認証を使用しています。\n\nGitHub app を利用するには Accounts &amp; sync 設定でそのアプリケーションをアンインストールし無ければなりません。</string>
     <string name="opening_repository">{0} を開いています…</string>
     <string name="commit_compare_title">コミットの比較</string>
+    <string name="enable_wrapping">折返しを有効化</string>
+    <string name="disable_wrapping">折返しを無効化</string>
     <string name="code">コード</string>
     <string name="contributions">%d コミット</string>
 
@@ -232,8 +234,10 @@
     <string name="tab_code">コード</string>
     <string name="tab_commits">コミット</string>
     <string name="tab_issues">イシュー</string>
-    <!--  -->
+    <!-- タブタイトル、できるだけ短い方が望ましい -->
     <string name="share">共有</string>
     <string name="show_password">パスワードを表示</string>
+    <string name="show_raw_markdown">生のmarkdownを表示</string>
+    <string name="render_markdown">markdownをレンダリング</string>
 
 </resources>
