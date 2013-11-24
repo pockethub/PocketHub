@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents;
 import com.github.mobile.R;
+import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.github.mobile.ui.repo.RecentRepositories;
@@ -103,7 +104,7 @@ public class SettingsActivity extends RoboSherlockPreferenceActivity implements 
     }
 
     private void reloadRecentRepositories() {
-        new ProgressDialogTask<Void>(this) {
+        new AuthenticatedUserTask<Void>(this) {
             @Override
             protected Void run(Account account) throws IOException {
                 List<User> orgs = accountDataManager.getOrgs(false);
@@ -118,9 +119,6 @@ public class SettingsActivity extends RoboSherlockPreferenceActivity implements 
 
             @Override
             public void execute() {
-                showIndeterminate(getString(R.string
-                    .updating_recent_repositories));
-
                 super.execute();
             }
 
