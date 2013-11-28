@@ -98,7 +98,7 @@
     <string name="find_repositories">Εύρεση Αποθετηρίων</string>
     <string name="find_issues">Εύρεση Ζητημάτων</string>
     <string name="search_title">Εύρεση…</string>
-    <string name="clear_search_history">Εκκαθάριση Ιστορικού</string>
+    <string name="clear_search_history">Εκκαθάριση Ιστορικού Αναζήτησης</string>
     <string name="search_history_cleared">Καθαρίστηκε το ιστορικό αναζήτησης</string>
     <string name="login_activity_authenticating">Γίνεται είσοδος…</string>
     <string name="creating_gist">Δημιουργείται Gist…</string>
