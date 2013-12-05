@@ -27,6 +27,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -230,11 +231,10 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-        boolean owner = isOwner();
-        if (!owner) {
+        if (!isOwner()) {
             menu.removeItem(id.m_delete);
             MenuItem starItem = menu.findItem(id.m_star);
-            starItem.setEnabled(loadFinished && !owner);
+            starItem.setEnabled(loadFinished);
             if (starred)
                 starItem.setTitle(string.unstar);
             else
@@ -280,6 +280,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 super.onSuccess(gist);
 
                 starred = true;
+                // We invalidate the options menu so that "Unstar" is now shown
+                getActivity().invalidateOptionsMenu();
             }
 
             @Override
@@ -313,6 +315,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 super.onSuccess(gist);
 
                 starred = false;
+                // We invalidate the options menu so that "Star" is now shown
+                getActivity().invalidateOptionsMenu();
             }
 
             protected void onException(Exception e) throws RuntimeException {
@@ -412,6 +416,9 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 updateList(fullGist.getGist(), fullGist);
 
                 getSherlockActivity().setSupportProgressBarIndeterminateVisibility(false);
+
+                // Update the action bar to reflect the newly acquired information
+                getActivity().invalidateOptionsMenu();
             }
 
         }.execute();
