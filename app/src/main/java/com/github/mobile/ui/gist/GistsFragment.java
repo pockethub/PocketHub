@@ -17,6 +17,9 @@ package com.github.mobile.ui.gist;
 
 import static com.github.mobile.RequestCodes.GIST_CREATE;
 import static com.github.mobile.RequestCodes.GIST_VIEW;
+import static com.github.mobile.ui.gist.GistsViewActivity.EXTRA_STARRED_GISTS;
+import static com.github.mobile.ui.gist.GistsViewActivity.EXTRA_UNSTARRED_GISTS;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -59,6 +62,19 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
     @Inject
     protected GistStore store;
 
+    protected GistStarUpdater gistStarUpdater;
+
+    public interface GistStarUpdater {
+        public void onGistsStarsChanged(List<Gist> starred,
+            List<Gist> unstarred);
+
+        public List<Gist> getStarredGists();
+
+        public List<Gist> getUnstarredGists();
+
+        public void clearStarsCache();
+    }
+
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         startActivityForResult(GistsViewActivity.createIntent(items, position),
@@ -70,6 +86,17 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
         super.onActivityCreated(savedInstanceState);
 
         setEmptyText(string.no_gists);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        if (activity instanceof GistStarUpdater)
+            gistStarUpdater = (GistStarUpdater) activity;
+        else
+            throw new ClassCastException("Error, you must attach a " +
+                "GistsFragment to an instance of GistStarUpdater");
     }
 
     @Override
@@ -89,6 +116,20 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == GIST_VIEW || requestCode == GIST_CREATE) {
+            if (data != null) {
+                Bundle extras = data.getExtras();
+                if (extras != null) {
+                    List<Gist> starred = (List<Gist>)extras.get(
+                        EXTRA_STARRED_GISTS);
+                    List<Gist> unStarred = (List<Gist>)extras.get(
+                        EXTRA_UNSTARRED_GISTS);
+
+                    // if starred is non-null that means unstarred is also
+                    if (starred != null)
+                        gistStarUpdater.onGistsStarsChanged(starred,
+                            unStarred);
+                }
+            }
             notifyDataSetChanged();
             forceRefresh();
             return;

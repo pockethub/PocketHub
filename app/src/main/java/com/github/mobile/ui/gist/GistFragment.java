@@ -27,6 +27,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -299,7 +300,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 super.onSuccess(gist);
 
                 starred = true;
-                starListener.onGistStarred(gist);
+                starListener.onGistStarred(GistFragment.this.gist);
                 ToastUtils.show(getActivity(), getString(string.starred_gist));
                 // We invalidate the options menu so that "Unstar" is now shown
                 getActivity().invalidateOptionsMenu();
@@ -336,7 +337,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 super.onSuccess(gist);
 
                 starred = false;
-                starListener.onGistUnstarred(gist);
+                starListener.onGistUnstarred(GistFragment.this.gist);
                 ToastUtils.show(getActivity(), getString(
                     string.unstarred_gist));
                 // We invalidate the options menu so that "Star" is now shown

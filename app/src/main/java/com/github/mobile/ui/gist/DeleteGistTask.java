@@ -18,6 +18,7 @@ package com.github.mobile.ui.gist;
 import static android.app.Activity.RESULT_OK;
 import android.accounts.Account;
 import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 
 import com.github.mobile.R.string;
@@ -34,6 +35,8 @@ import org.eclipse.egit.github.core.service.GistService;
 public class DeleteGistTask extends ProgressDialogTask<Gist> {
 
     private static final String TAG = "DeleteGistTask";
+
+    public static final String EXTRA_DELETED_GIST = "deleted_gist";
 
     private final String id;
 
@@ -74,7 +77,9 @@ public class DeleteGistTask extends ProgressDialogTask<Gist> {
         super.onSuccess(gist);
 
         Activity activity = (Activity) getContext();
-        activity.setResult(RESULT_OK);
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_DELETED_GIST, id);
+        activity.setResult(RESULT_OK, intent);
         activity.finish();
     }
 

@@ -38,9 +38,24 @@ public class MyGistsFragment extends GistsFragment {
     private Provider<GitHubAccount> accountProvider;
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode,
+            Intent data) {
         if ((requestCode == GIST_CREATE || requestCode == GIST_VIEW)
                 && RESULT_OK == resultCode) {
+            if (data != null) {
+                // If we deleted a gist, we want to not display that gist
+                String id = data.getStringExtra(DeleteGistTask
+                    .EXTRA_DELETED_GIST);
+                for (int i = 0; i < items.size(); i++) {
+                    if (items.get(i).getId().equals(id)) {
+                        items.remove(i);
+                        break;
+                    }
+                }
+                getListAdapter().getWrappedAdapter().setItems(items);
+            }
+
+            // In any case, we want to refresh to get the most recent info
             forceRefresh();
             return;
         }
