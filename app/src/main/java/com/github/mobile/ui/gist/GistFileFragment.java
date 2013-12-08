@@ -133,7 +133,7 @@ public class GistFileFragment extends DialogFragment implements
             // toggle it's current value
             editor.setWrap(!editor.getWrap());
             PreferenceUtils.save(codePrefs.edit().putBoolean(WRAP,
-                editor.getWrap()));
+                    editor.getWrap()));
             return true;
         default:
             return super.onOptionsItemSelected(item);

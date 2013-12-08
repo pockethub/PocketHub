@@ -15,8 +15,6 @@
  */
 package com.github.mobile.ui.gist;
 
-import android.os.Bundle;
-
 import com.github.mobile.core.ResourcePager;
 import com.github.mobile.core.gist.GistPager;
 
@@ -31,15 +29,9 @@ import org.eclipse.egit.github.core.client.PageIterator;
 public class StarredGistsFragment extends GistsFragment {
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
-        // Stop gap to auto-refresh as necessary.
-        // TODO: implement logic so that only starred gists are shown
+
         if (gistStarUpdater.getStarredGists().size() != 0 ||
             gistStarUpdater.getUnstarredGists().size() != 0) {
             mergeLocalChanges(gistStarUpdater.getStarredGists(),

@@ -36,7 +36,7 @@ public class DeleteGistTask extends ProgressDialogTask<Gist> {
 
     private static final String TAG = "DeleteGistTask";
 
-    public static final String EXTRA_DELETED_GIST = "deleted_gist";
+    public static final String EXTRA_DELETED_GIST = "extra_deleted_gist";
 
     private final String id;
 

@@ -234,15 +234,23 @@ public class GistsViewActivity extends PagerActivity implements
 
     @Override
     public void onGistStarred(Gist gist) {
-        if (unstarredGists.contains(gist))
-            unstarredGists.remove(gist);
+        for (int i = 0; i < unstarredGists.size(); i++) {
+            if (unstarredGists.get(i).getId().equals(gist.getId())) {
+                unstarredGists.remove(i);
+                break;
+            }
+        }
         starredGists.add(gist);
     }
 
     @Override
     public void onGistUnstarred(Gist gist) {
-        if (starredGists.contains(gist))
-            starredGists.remove(gist);
+        for (int i = 0; i < starredGists.size(); i++) {
+            if (starredGists.get(i).getId().equals(gist.getId())) {
+                starredGists.remove(i);
+                break;
+            }
+        }
         unstarredGists.add(gist);
     }
 }
