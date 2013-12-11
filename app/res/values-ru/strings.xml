@@ -263,7 +263,7 @@
     <string name="tab_watched">наблюдаемые</string>
     <string name="tab_assigned">назначенные</string>
     <string name="tab_created">созданные</string>
-    <string name="tab_mentioned">упомянутые</string>
+    <string name="tab_mentioned">упоминания</string>
     <string name="tab_mine">мои</string>
     <string name="tab_starred">отмеченные</string>
     <string name="tab_all">все</string>
