@@ -155,7 +155,7 @@
     <string name="log_in">로그인</string>
     <string name="signup_link">New to GitHub? &lt;a href=\"https://github.com/plans\">Click here&lt;/a> to sign up</string>
     <string name="connection_failed">GitHub에 연결할 수 없습니다</string>
-    <string name="invalid_login_or_password">계정또는 비밀번호를 확인해주세요</string>
+    <string name="invalid_login_or_password">계정 또는 비밀번호를 확인해주세요</string>
     <string name="invalid_password">비밀번호를 확인해주세요</string>
     <string name="password">비밀번호</string>
     <string name="login_or_email">로그인계정 또는 이메일주소</string>
@@ -190,11 +190,56 @@
     <string name="close">종결</string>
     <string name="reopen">Reopen</string>
     <string name="title_invalid_github_url">GitHub URL이 잘못됨</string>
-    <string name="message_invalid_github_url">The following URL could not be opened by this application:\n{0}</string>
+    <string name="message_invalid_github_url">이 어플리케이션에서는 해당 URL을 열 수 없음\n{0}</string>
     <string name="recently_viewed">최근 열람</string>
     <string name="cancel">취소</string>
-    <string name="authenticator_conflict_title">App Conflict</string>
-    <string name="authenticator_conflict_message">Another installed app is already configured for GitHub authentication.\n\nYou must remove the other app from the Accounts &amp; sync settings and uninstall it before the GitHub app can be used.</string>
-    <string name="opening_repository">"불러오는중 {0}…"</string>
+    <string name="authenticator_conflict_title">앱 충돌</string>
+    <string name="authenticator_conflict_message">다른 앱에서 Github 인증이 설정되었습니다.\n\nGitHub 앱을 사용하기 전에 계정 동기화 설정에서 &amp;다른 앱을 지우고 석제해야합니다.</string>
+    <string name="opening_repository">불러오는중 {0}…</string>
+	<string name="commit_compare_title">커밋 비교</string>
+    <string name="commit_prefix">커밋\u0020</string>
+    <string name="parent_prefix">부모\u0020</string>
+    <string name="authored">작성된</string>
+    <string name="committed">커밋된</string>
+    <string name="diff_line_message">무엇을 하기 원합니까?</string>
+    <string name="comment_on_line">Comment on line</string>
+    <string name="view_entire_file">전체 파일 보기</string>
+    <string name="comparing_commits">커밋 {0} 비교</string>
+    <string name="enable_wrapping">감추기 가능</string>
+    <string name="disable_wrapping">감추기 불가능</string>
+    <string name="code">코드</string>
+    <string name="following_user">팔로윙…</string>
+    <string name="unfollowing_user">팔로윙 취소…</string>
+    <string name="starring_repository">즐겨찾기…</string>
+    <string name="unstarring_repository">즐겨찾기 해제…</string>
+    <string name="navigate_to">Navigate to…</string>
+    <string name="navigate_to_user">Navigate to %s</string>
+    <string name="contributions">%d 커밋</string>
 
+    <!-- Tab titles, should be as short as possible -->
+    <string name="tab_repositories">저장소</string>
+    <string name="tab_users">유저</string>
+    <string name="tab_news">소식</string>
+    <string name="tab_following_self">팔로윙</string>
+    <string name="tab_followers_self">팔로워</string>
+    <string name="tab_following">팔로윙</string>
+    <string name="tab_followers">팔로워</string>
+    <string name="tab_members">멤버</string>
+    <string name="tab_code">코드</string>
+    <string name="tab_commits">커밋</string>
+    <string name="tab_issues">이슈</string>
+    <string name="tab_watched">watched</string>
+    <string name="tab_assigned">assigned</string>
+    <string name="tab_created">created</string>
+    <string name="tab_mentioned">mentioned</string>
+    <string name="tab_mine">mine</string>
+    <string name="tab_starred">즐겨찾기</string>
+    <string name="tab_all">all</string>
+    <!--  -->
+    <string name="share">공유</string>
+    <string name="show_password">비밀번호 보여주기</string>
+    <string name="write">쓰기</string>
+    <string name="preview">미리보기</string>
+    <string name="show_raw_markdown">원본 마크다운 보여주기</string>
+    <string name="render_markdown">마크다운 표현</string>
 </resources>
