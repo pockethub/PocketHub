@@ -149,6 +149,7 @@ public class UrlLauncher {
                     data = Uri.parse(prefix + '/' + path);
             else
                 data = Uri.parse(prefix);
+            intent.setData(data);
         }
 
         String uri = data.toString();
