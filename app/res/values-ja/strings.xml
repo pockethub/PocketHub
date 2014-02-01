@@ -18,7 +18,7 @@
 
     <!-- Error messages -->
     <string name="error_orgs_load">アカウントと組織名のロードに失敗しました</string>
-    <string name="error_issues_load">イシューのロードに失敗しました</string>
+    <string name="error_issues_load">課題のロードに失敗しました</string>
     <string name="error_repos_load">リポジトリのロードに失敗しました</string>
     <string name="error_repo_load">リポジトリのロードに失敗しました</string>
     <string name="error_contributors_load">貢献者のロードに失敗しました</string>
@@ -29,7 +29,7 @@
     <string name="error_person_load">ユーザーのロードに失敗しました</string>
     <string name="error_gist_file_load">Gist ファイルのロードに失敗しました</string>
     <string name="error_gists_load">Gists のロードに失敗しました</string>
-    <string name="error_issue_load">イシューのロードに失敗しました</string>
+    <string name="error_issue_load">課題のロードに失敗しました</string>
     <string name="error_collaborators_load">共同作業者のロードに失敗しました</string>
     <string name="error_milestones_load">マイルストーンのロードに失敗しました</string>
     <string name="error_labels_load">ラベルのロードに失敗しました</string>
@@ -39,17 +39,26 @@
     <string name="error_commit_load">コミットのロードに失敗しました</string>
     <string name="error_file_load">ファイルのロードに失敗しました</string>
     <string name="error_code_load">コードのロードに失敗しました</string>
+    <string name="error_refs_load">ブランチとタグのロードに失敗しました</string>
+    <string name="error_following_person">フォローするのに失敗しました</string>
+    <string name="error_unfollowing_person">フォローを解除するのに失敗しました</string>
+    <string name="error_checking_following_status">フォローの状態を確認するのに失敗しました</string>
+    <string name="error_starring_repository">スターするのに失敗しました</string>
+    <string name="error_unstarring_repository">スターを解除するのに失敗しました</string>
+    <string name="error_checking_starring_status">スターの状態を確認するのに失敗しました</string>
+    <string name="error_rendering_markdown">markdownをレンダリングするのに失敗しました</string>
+    <string name="error_users_search">ユーザーを検索するのに失敗しました</string>
     <!-- エラーメッセージ -->
 
 
     <!-- Loading messages -->
     <string name="loading_gist">Gist をロードしています…</string>
     <string name="random_gist">ランダムな Gist をロードしています…</string>
-    <string name="loading_more_issues">イシューをさらにロードしています…</string>
-    <string name="loading_issues">イシューをロードしています…</string>
+    <string name="loading_more_issues">課題をさらにロードしています…</string>
+    <string name="loading_issues">課題をロードしています…</string>
     <string name="loading_comments">コメントをロードしています…</string>
     <string name="loading_repositories">リポジトリをロードしています…</string>
-    <string name="loading_issue">イシューをロードしています…</string>
+    <string name="loading_issue">課題をロードしています…</string>
     <string name="loading_news">ニュースをロードしています…</string>
     <string name="loading_followers">フォロワーをロードしています…</string>
     <string name="loading_people">ユーザーをロードしています…</string>
@@ -67,7 +76,7 @@
     <string name="no_bookmarks">ブックマークはありません</string>
     <string name="no_repositories">リポジトリはありません</string>
     <string name="no_contributors">貢献者はいません</string>
-    <string name="no_issues">イシューはありません</string>
+    <string name="no_issues">課題はありません</string>
     <string name="no_gists">Gists はありません</string>
     <string name="no_people">ユーザーはいません</string>
     <string name="no_followers">フォロワーはいません</string>
@@ -79,19 +88,19 @@
 
     <!-- Updating messages -->
     <string name="updating_assignee">担当者を更新しています…</string>
-    <string name="updating_issue">イシューを更新しています…</string>
+    <string name="updating_issue">課題を更新しています…</string>
     <string name="updating_labels">ラベルを更新しています…</string>
     <string name="updating_milestone">マイルストーンを更新しています…</string>
     <!-- 更新中メッセージ -->
 
     <string name="app_name">GitHub</string>
     <string name="news">ニュース</string>
-    <string name="issues">イシュー</string>
+    <string name="issues">課題</string>
     <string name="gists">Gists</string>
     <string name="commits">コミット</string>
     <string name="global_search">GitHub 検索</string>
     <string name="find_repositories">リポジトリを検索</string>
-    <string name="find_issues">イシューを検索</string>
+    <string name="find_issues">課題を検索</string>
     <string name="search_title">検索…</string>
     <string name="clear_search_history">履歴を消去</string>
     <string name="search_history_cleared">検索履歴を消去</string>
@@ -115,19 +124,19 @@
     <string name="comment">コメント</string>
     <string name="delete">削除</string>
     <string name="refresh">更新</string>
-    <string name="dashboard_issues_title">イシュー ダッシュボード</string>
+    <string name="dashboard_issues_title">課題ダッシュボード</string>
     <string name="bookmarks">ブックマーク</string>
     <string name="gists_title">Gists</string>
-    <string name="issue_title">イシュー #</string>
+    <string name="issue_title">課題 #</string>
     <string name="pull_request_title">プルリクエスト #</string>
     <string name="gist_title">Gist\u0020</string>
-    <string name="filter_issues_title">イシュー フィルター</string>
+    <string name="filter_issues_title">課題フィルター</string>
     <string name="create_comment_title">コメント作成</string>
     <string name="comment_hint">コメントを入力して下さい</string>
     <string name="show_more">さらに表示…</string>
     <string name="repositories">リポジトリ</string>
     <string name="contributors">貢献者</string>
-    <string name="issues_title">イシュー</string>
+    <string name="issues_title">課題</string>
     <string name="edit_labels">ラベルを編集</string>
     <string name="milestone_prefix">マイルストーン:</string>
     <string name="edit_milestone">マイルストーンを編集</string>
@@ -143,6 +152,8 @@
     <string name="select_milestone">マイルストーンを選択</string>
     <string name="select_labels">ラベルを選択</string>
     <string name="select_ref">ブランチまたはタグを選択</string>
+    <string name="enter_otp_code_title">認証コード</string>
+    <string name="enter_otp_code_message">2要素認証があなたのアカウントでは有効です。認証コードを入力して本人確認を行って下さい。</string>
     <string name="no_milestone">マイルストーンはありません</string>
     <string name="unassigned">担当者はいません</string>
     <string name="assigned">に割り当てられています</string>
@@ -152,10 +163,10 @@
     <string name="deleting_gist">Gist を削除しています…</string>
     <string name="creating_comment">コメントを作成しています…</string>
     <string name="confirm_bookmark_delete_message">本当にこのブックマークを削除してもよろしいですか?</string>
-    <string name="issue_dashboard">イシュー ダッシュボード</string>
-    <string name="new_issue">新規イシュー</string>
+    <string name="issue_dashboard">課題ダッシュボード</string>
+    <string name="new_issue">新規課題</string>
     <string name="anonymous">匿名</string>
-    <string name="message_filter_saved">イシュー フィルターをブックマークに保存しました</string>
+    <string name="message_filter_saved">課題フィルターをブックマークに保存しました</string>
     <string name="recently_viewed">最近の履歴</string>
     <string name="recent">履歴</string>
     <string name="recent_remove">履歴の削除</string>
@@ -184,17 +195,17 @@
     <string name="star">スター</string>
     <string name="unstar">スターを解除</string>
     <string name="members">メンバー</string>
-    <string name="closing_issue">イシューを閉じる…</string>
-    <string name="reopening_issue">イシューを再度開く…</string>
+    <string name="closing_issue">課題を閉じる…</string>
+    <string name="reopening_issue">課題を再度開く…</string>
     <string name="avatar">アバター</string>
-    <string name="creating_issue">イシューを作成しています…</string>
+    <string name="creating_issue">課題を作成しています…</string>
     <string name="prefix_created">作成\u0020</string>
     <string name="prefix_updated">更新\u0020</string>
     <string name="prefix_opened">編集\u0020</string>
     <string name="clear">消去</string>
     <string name="pull_request_commits">コミット: %d</string>
-    <string name="open_issues">開いているイシュー</string>
-    <string name="closed_issues">閉じられたイシュー</string>
+    <string name="open_issues">開いている課題</string>
+    <string name="closed_issues">閉じられた課題</string>
     <string name="confirm_bookmark_delete_title">ブックマークを削除</string>
     <string name="save">保存</string>
     <string name="apply">適用</string>
@@ -202,10 +213,10 @@
     <string name="assignee">担当者</string>
     <string name="milestone">マイルストーン</string>
     <string name="labels">ラベル</string>
-    <string name="issue_confirm_close_message">本当にこのイシューを閉じてもよろしいですか?</string>
-    <string name="issue_confirm_reopen_message">本当にこのイシューを再度開いてもよろしいですか?</string>
-    <string name="issue_confirm_close_title">イシューを閉じる</string>
-    <string name="issue_confirm_reopen_title">イシューを再度開く</string>
+    <string name="issue_confirm_close_message">本当にこの課題を閉じてもよろしいですか?</string>
+    <string name="issue_confirm_reopen_message">本当にこの課題を再度開いてもよろしいですか?</string>
+    <string name="issue_confirm_close_title">課題を閉じる</string>
+    <string name="issue_confirm_reopen_title">課題を再度開く</string>
     <string name="closed">閉じました</string>
     <string name="no_description_given">詳細説明はありません</string>
     <string name="close">閉じる</string>
@@ -217,9 +228,17 @@
     <string name="authenticator_conflict_message">他のインストール済みアプリケーションが既に GitHub の認証を使用しています。\n\nGitHub app を利用するには Accounts &amp; sync 設定でそのアプリケーションをアンインストールし無ければなりません。</string>
     <string name="opening_repository">{0} を開いています…</string>
     <string name="commit_compare_title">コミットの比較</string>
+    <string name="view_entire_file">ファイル全体を閲覧する</string>
+    <string name="comparing_commits">{0} コミットを比較しています</string>
     <string name="enable_wrapping">折返しを有効化</string>
     <string name="disable_wrapping">折返しを無効化</string>
     <string name="code">コード</string>
+    <string name="following_user">フォローしています…</string>
+    <string name="unfollowing_user">フォローを解除しています…</string>
+    <string name="starring_repository">スターしています…</string>
+    <string name="unstarring_repository">スターを解除しています…</string>
+    <string name="navigate_to">移動します…</string>
+    <string name="navigate_to_user">%s に移動します</string>
     <string name="contributions">%d コミット</string>
 
     <!-- Tab titles, should be as short as possible -->
@@ -233,7 +252,7 @@
     <string name="tab_members">メンバー</string>
     <string name="tab_code">コード</string>
     <string name="tab_commits">コミット</string>
-    <string name="tab_issues">イシュー</string>
+    <string name="tab_issues">課題</string>
     <!-- タブタイトル、できるだけ短い方が望ましい -->
     <string name="share">共有</string>
     <string name="show_password">パスワードを表示</string>
