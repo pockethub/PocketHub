@@ -18,7 +18,7 @@
 
     <item
         android:id="@+id/m_refresh"
-        android:icon="@drawable/menu_refresh"
+        android:icon="@drawable/action_refresh"
         android:showAsAction="ifRoom"
         android:title="@string/refresh"/>
 
