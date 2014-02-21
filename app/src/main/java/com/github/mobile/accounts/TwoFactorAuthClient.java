@@ -71,6 +71,9 @@ public class TwoFactorAuthClient extends DefaultClient {
     @Override
     public GitHubResponse get(GitHubRequest request) throws IOException {
         HttpURLConnection httpRequest = createGet(request.generateUri());
+        if (!TextUtils.isEmpty(otpCode))
+            httpRequest.setRequestProperty(HEADER_OTP, otpCode);
+
         try {
             String accept = request.getResponseContentType();
             if (accept != null)
