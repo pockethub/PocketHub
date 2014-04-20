@@ -33,6 +33,11 @@ public class CommentPreviewPagerAdapter extends FragmentPagerAdapter {
     private RenderedCommentFragment htmlFragment;
 
     /**
+     * Text to populate comment window.
+     */
+    private String initComment;
+
+    /**
      * @param activity
      * @param repo
      */
@@ -48,6 +53,7 @@ public class CommentPreviewPagerAdapter extends FragmentPagerAdapter {
         switch (position) {
         case 0:
             textFragment = new RawCommentFragment();
+            textFragment.setText(initComment);
             return textFragment;
         case 1:
             htmlFragment = new RenderedCommentFragment();
@@ -69,6 +75,17 @@ public class CommentPreviewPagerAdapter extends FragmentPagerAdapter {
      */
     public String getCommentText() {
         return textFragment != null ? textFragment.getText() : null;
+    }
+
+    /**
+     * Set comment text
+     *
+     * @return text
+     */
+    public void setCommentText(String comment) {
+        if(textFragment != null)
+            textFragment.setText(comment);
+        initComment = comment;
     }
 
     /**

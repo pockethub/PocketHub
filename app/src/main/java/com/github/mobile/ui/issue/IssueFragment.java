@@ -26,6 +26,8 @@ import static com.github.mobile.Intents.EXTRA_REPOSITORY_NAME;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY_OWNER;
 import static com.github.mobile.Intents.EXTRA_USER;
 import static com.github.mobile.RequestCodes.COMMENT_CREATE;
+import static com.github.mobile.RequestCodes.COMMENT_EDIT;
+import static com.github.mobile.RequestCodes.COMMENT_DELETE;
 import static com.github.mobile.RequestCodes.ISSUE_ASSIGNEE_UPDATE;
 import static com.github.mobile.RequestCodes.ISSUE_CLOSE;
 import static com.github.mobile.RequestCodes.ISSUE_EDIT;
@@ -63,11 +65,14 @@ import com.github.mobile.core.issue.FullIssue;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.core.issue.IssueUtils;
 import com.github.mobile.core.issue.RefreshIssueTask;
+import com.github.mobile.ui.ConfirmDialogFragment;
 import com.github.mobile.ui.DialogFragment;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.HeaderFooterListAdapter;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.ui.comment.CommentListAdapter;
+import com.github.mobile.ui.comment.DeleteCommentListener;
+import com.github.mobile.ui.comment.EditCommentListener;
 import com.github.mobile.ui.commit.CommitCompareViewActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
@@ -77,6 +82,8 @@ import com.github.mobile.util.TypefaceUtils;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -339,8 +346,8 @@ public class IssueFragment extends DialogFragment {
 
         Activity activity = getActivity();
         adapter = new HeaderFooterListAdapter<CommentListAdapter>(list,
-                new CommentListAdapter(activity.getLayoutInflater(), avatars,
-                        commentImageGetter));
+                new CommentListAdapter(activity.getLayoutInflater(), null, avatars,
+                        commentImageGetter, editCommentListener, deleteCommentListener));
         list.setAdapter(adapter);
     }
 
@@ -504,6 +511,29 @@ public class IssueFragment extends DialogFragment {
         case ISSUE_REOPEN:
             stateTask.edit(false);
             break;
+        case COMMENT_DELETE:
+            final Comment comment = (Comment) arguments.getSerializable(EXTRA_COMMENT);
+            new DeleteCommentTask(getActivity(), repositoryId, comment) {
+                @Override
+                protected void onSuccess(Comment comment) throws Exception {
+                    super.onSuccess(comment);
+
+                    // Update comment list
+                    if (comments != null && comment != null) {
+                        int position = Collections.binarySearch(comments,
+                                comment, new Comparator<Comment>() {
+                                    public int compare(Comment lhs, Comment rhs) {
+                                        return Long.valueOf(lhs.getId())
+                                                .compareTo(rhs.getId());
+                                    };
+                                });
+                        comments.remove(position);
+                        updateList(issue, comments);
+                    } else
+                        refreshIssue();
+                }
+            }.start();
+            break;
         }
     }
 
@@ -548,6 +578,21 @@ public class IssueFragment extends DialogFragment {
             if (comments != null) {
                 comments.add(comment);
                 issue.setComments(issue.getComments() + 1);
+                updateList(issue, comments);
+            } else
+                refreshIssue();
+            return;
+        case COMMENT_EDIT:
+            comment = (Comment) data
+                .getSerializableExtra(EXTRA_COMMENT);
+            if (comments != null && comment != null) {
+                int position = Collections.binarySearch(comments, comment, new Comparator<Comment>() {
+                    public int compare(Comment lhs, Comment rhs) {
+                       return Long.valueOf(lhs.getId()).compareTo(rhs.getId());
+                    };
+                });
+                commentImageGetter.removeFromCache(comment.getId());
+                comments.set(position, comment);
                 updateList(issue, comments);
             } else
                 refreshIssue();
@@ -608,4 +653,31 @@ public class IssueFragment extends DialogFragment {
             return super.onOptionsItemSelected(item);
         }
     }
+
+    /**
+     * Edit existing comment
+     */
+    final EditCommentListener editCommentListener = new EditCommentListener() {
+        public void onEditComment(Comment comment) {
+            startActivityForResult(EditCommentActivity.createIntent(
+                    repositoryId, issueNumber, comment, user), COMMENT_EDIT);
+        };
+    };
+
+    /**
+     * Delete existing comment
+     */
+    final DeleteCommentListener deleteCommentListener = new DeleteCommentListener() {
+        public void onDeleteComment(Comment comment) {
+            Bundle args = new Bundle();
+            args.putSerializable(EXTRA_COMMENT, comment);
+            ConfirmDialogFragment.show(
+                    (DialogFragmentActivity) getActivity(),
+                    COMMENT_DELETE,
+                    getActivity()
+                            .getString(string.confirm_comment_delete_title),
+                    getActivity().getString(
+                            string.confirm_comment_delete_message), args);
+        };
+    };
 }

@@ -297,4 +297,13 @@ public class HttpImageGetter implements ImageGetter {
                 output.delete();
         }
     }
+
+    /**
+     * Remove Object from cache store.
+     * @param id
+     */
+    public void removeFromCache(final Object id) {
+        rawHtmlCache.remove(id);
+        fullHtmlCache.remove(id);
+    }
 }

@@ -32,11 +32,13 @@
         <ImageView
             android:id="@+id/iv_avatar"
             style="@style/AvatarMedium"
+            android:layout_weight=".10"
             android:contentDescription="@string/avatar" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight=".70"
             android:orientation="vertical"
             android:paddingLeft="8dp" >
 
@@ -53,6 +55,22 @@
                 style="@style/ListSubtitleText"
                 android:singleLine="true" />
         </LinearLayout>
+
+        <!-- TODO: Use better drawable -->
+        <ImageView
+            android:id="@+id/iv_comment_edit"
+            style="@style/commentEditIcon"
+            android:layout_weight=".10"
+            android:contentDescription="@string/edit"
+            android:src="@drawable/menu_edit" />
+
+        <!-- TODO: Use better drawable -->
+        <ImageView
+            android:id="@+id/iv_comment_delete"
+            style="@style/commentDeleteIcon"
+            android:layout_weight=".10"
+            android:contentDescription="@string/delete"
+            android:src="@drawable/menu_delete" />
     </LinearLayout>
 
     <TextView
