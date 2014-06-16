@@ -21,8 +21,9 @@
     <string name="error_issues_load">Error al cargar incidencias</string>
     <string name="error_repos_load">Error al cargar repositorios</string>
     <string name="error_repo_load">Error al cargar repositorio</string>
+    <string name="error_contributors_load">Error al cargar contribuyentes</string>
     <string name="error_gist_load">Error al cargar Gist</string>
-    <string name="error_news_load">Error al cargar actualizaciones</string>
+    <string name="error_news_load">Error al cargar noticias</string>
     <string name="error_followers_load">Error al cargar seguidores</string>
     <string name="error_people_load">Error al cargar usuarios</string>
     <string name="error_person_load">Error al cargar usuario</string>
@@ -46,6 +47,7 @@
     <string name="error_unstarring_repository">Error al desmarcar como destacado</string>
     <string name="error_checking_starring_status">Error al comprobar el estado de destacado</string>
     <string name="error_rendering_markdown">Error al renderizar markdown</string>
+    <string name="error_users_search">Error al buscar usuarios</string>
     <!--  -->
 
 
@@ -57,7 +59,7 @@
     <string name="loading_comments">Cargando Comentarios…</string>
     <string name="loading_repositories">Cargando Repositorios…</string>
     <string name="loading_issue">Cargando Incidencia…</string>
-    <string name="loading_news">Cargando Actualizaciones…</string>
+    <string name="loading_news">Cargando Noticias...</string>
     <string name="loading_followers">Cargando Seguidores…</string>
     <string name="loading_people">Cargando Usuarios…</string>
     <string name="loading_gists">Cargando Gists…</string>
@@ -73,6 +75,7 @@
     <!-- Mensajes vacíos -->
     <string name="no_bookmarks">No Hay Marcadores</string>
     <string name="no_repositories">No Hay Repositorios</string>
+    <string name="no_contributors">No Hay Colaboradores</string>
     <string name="no_issues">No Hay Incidencias</string>
     <string name="no_gists">No Hay Gists</string>
     <string name="no_people">No Hay Usuarios</string>
@@ -91,10 +94,11 @@
     <!--  -->
 
     <string name="app_name">GitHub</string>
-    <string name="news">Actualizaciones</string>
+    <string name="news">Noticias</string>
     <string name="issues">Incidencias</string>
     <string name="gists">Gists</string>
     <string name="commits">Commits</string>
+    <string name="global_search">Buscar en GitHub</string>
     <string name="find_repositories">Buscar Repositorios</string>
     <string name="find_issues">Buscar Incidencias</string>
     <string name="search_title">Buscar…</string>
@@ -131,6 +135,7 @@
     <string name="comment_hint">Escribe un comentario</string>
     <string name="show_more">Ver Más…</string>
     <string name="repositories">Repositorios</string>
+    <string name="contributors">Colaboradores</string>
     <string name="issues_title">Incidencias</string>
     <string name="edit_labels">Editar Etiquetas</string>
     <string name="milestone_prefix">Hito:</string>
@@ -147,8 +152,10 @@
     <string name="select_milestone">Seleccionar Hito</string>
     <string name="select_labels">Seleccionar Etiquetas</string>
     <string name="select_ref">Seleccionar Rama o Etiqueta</string>
+    <string name="enter_otp_code_title">Codigo de Autenticación</string>
+     <string name="enter_otp_code_message">Autenticación de doble factor está habilitada para su cuenta. Ingrese su código de autenticación para confirmar su identidad</string>
     <string name="no_milestone">No hay hitos</string>
-    <string name="unassigned">No asignado</string>
+    <string name="unassigned">No hay nadie asignado</string>
     <string name="assigned">está asignado</string>
     <string name="no_gists_found">No se han encontrado Gists</string>
     <string name="confirm_gist_delete_title">Confirmar Borrado</string>
@@ -160,7 +167,10 @@
     <string name="new_issue">Nueva Incidencia</string>
     <string name="anonymous">Anónimo</string>
     <string name="message_filter_saved">Filtro de incidencias guardado en marcadores</string>
+     <string name="recently_viewed">VISTO RECIENTEMENTE</string>
     <string name="recent">Recientes</string>
+    <string name="recent_remove">Eliminar Recientes</string>
+    <string name="recent_list_remove">Eliminar los más recientes</string>
     <string name="section_issue_status">Estado:</string>
     <string name="status_open">Abierto</string>
     <string name="status_closed">Cerrado</string>
@@ -171,6 +181,7 @@
     <string name="section_issue_labels">Etiquetas:</string>
     <string name="log_in">Iniciar Sesión</string>
     <string name="signup_link">¿No tienes cuenta en GitHub? &lt;a href=\"https://github.com/plans\">Haz click aquí&lt;/a> para darte de alta</string>
+    <string name="signup_link_two_factor_auth">¿No estás seguro de lo que estás haciendo? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Obtén ayuda.&lt;/a></string>
     <string name="connection_failed">No se ha podido acceder a GitHub</string>
     <string name="invalid_login_or_password">Por favor introduce un usuario y contraseña válidos</string>
     <string name="invalid_password">Por favor introduce una contraseña válida.</string>
@@ -193,10 +204,11 @@
     <string name="prefix_updated">actualizado\u0020</string>
     <string name="prefix_opened">abierto\u0020</string>
     <string name="clear">Limpiar</string>
+    <string name="pull_request_commits">Commits: %d</string>
     <string name="open_issues">Incidencias Abiertas</string>
     <string name="closed_issues">Incidencias Cerradas</string>
     <string name="confirm_bookmark_delete_title">Eliminar Marcador</string>
-    <string name="save">Salvar</string>
+    <string name="save">Guardar</string>
     <string name="apply">Aplicar</string>
     <string name="labels_prefix">Etiquetas:</string>
     <string name="assignee">Responsable</string>
@@ -212,7 +224,6 @@
     <string name="reopen">Reabrir</string>
     <string name="title_invalid_github_url">URL de GitHub Inválida</string>
     <string name="message_invalid_github_url">La aplicación no pudo abrir la siguiente URL:\n{0}</string>
-    <string name="recently_viewed">VISTOS RECIENTEMENTE</string>
     <string name="cancel">Cancelar</string>
     <string name="authenticator_conflict_title">Conflicto con la aplicación</string>
     <string name="authenticator_conflict_message">Una de las aplicaciones instaladas está configurada para la autenticación con GitHub.\n\nDebes eliminar la otra aplicación del menú de ajustes Cuentas y sincronización y desinstalar-la antes de poder usar la aplicación de GitHub.</string>
@@ -234,9 +245,11 @@
     <string name="starring_repository">Marcando como destacado…</string>
     <string name="unstarring_repository">Desmarcando como destacado…</string>
     <string name="navigate_to">Ir a…</string>
-
+    <string name="navigate_to_user">Ir a %s</string>
+     <string name="contributions">%d commits</string>
     <!-- Titulos de las pestañas, lo mas cortos posible -->
     <string name="tab_repositories">repositorios</string>
+    <string name="tab_users">usuarios</string>
     <string name="tab_news">noticias</string>
     <string name="tab_following_self">siguiendo</string>
     <string name="tab_followers_self">seguidores</string>
@@ -246,7 +259,7 @@
     <string name="tab_code">código</string>
     <string name="tab_commits">commits</string>
     <string name="tab_issues">incidencias</string>
-    <string name="tab_watched">seguidas</string>
+    <string name="tab_watched">vistas</string>
     <string name="tab_assigned">asignadas</string>
     <string name="tab_created">creadas</string>
     <string name="tab_mentioned">mencionado</string>
