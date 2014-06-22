@@ -19,6 +19,7 @@ import static android.graphics.Bitmap.CompressFormat.PNG;
 import static android.graphics.Bitmap.Config.ARGB_8888;
 import static android.view.View.VISIBLE;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
@@ -30,6 +31,7 @@ import android.widget.ImageView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.github.kevinsawicki.http.HttpRequest;
+import com.github.mobile.R;
 import com.github.mobile.R.drawable;
 import com.github.mobile.R.id;
 import com.github.mobile.core.search.SearchUser;
@@ -100,6 +102,11 @@ public class AvatarLoader {
     private final Options options;
 
     /**
+     * The maximal size of avatar images, used to rescale images to save memory.
+     */
+    private final int avatarSize;
+
+    /**
      * Create avatar helper
      *
      * @param context
@@ -121,6 +128,15 @@ public class AvatarLoader {
         options = new Options();
         options.inDither = false;
         options.inPreferredConfig = ARGB_8888;
+
+        avatarSize = getMaxAvatarSize(context);
+    }
+
+    private int getMaxAvatarSize(final Context context) {
+        int[] attrs = {android.R.attr.layout_height};
+        TypedArray array = context.obtainStyledAttributes(R.style.AvatarXLarge, attrs);
+        // Default value of 100px, but this should succeed anyways.
+        return array.getLayoutDimension(0, 100);
     }
 
     private BitmapDrawable getImageBy(final String userId, final String filename) {
@@ -145,8 +161,14 @@ public class AvatarLoader {
         userAvatarDir.delete();
     }
 
+    /**
+     * Load an avatar from the given file and automatically rescale it to the
+     * target dimensions to save memory.
+     * @param file The file name to load the avatar from.
+     * @return The rescaled avatar bitmap, or null.
+     */
     private Bitmap decode(final File file) {
-        return BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+        return ImageUtils.getBitmap(file.getAbsolutePath(), avatarSize, avatarSize);
     }
 
     private String getAvatarFilenameForUrl(final String avatarUrl) {
