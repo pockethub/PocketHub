@@ -19,8 +19,8 @@
     <!-- Error messages -->
     <string name="error_orgs_load">Ошибка при загрузке организаций</string>
     <string name="error_issues_load">Ошибка при загрузке задач</string>
-    <string name="error_repos_load">Ошибка при загрузке хранилищ</string>
-    <string name="error_repo_load">Ошибка при загрузке хранилища</string>
+    <string name="error_repos_load">Ошибка при загрузке репозиториев</string>
+    <string name="error_repo_load">Ошибка при загрузке репозитория</string>
     <string name="error_contributors_load">Ошибка при загрузке участников</string>
     <string name="error_gist_load">Ошибка при загрузке Gist</string>
     <string name="error_news_load">Ошибка при загрузке новостей</string>
@@ -57,7 +57,7 @@
     <string name="loading_more_issues">Загружаем больше задач…</string>
     <string name="loading_issues">Загружаем задачи…</string>
     <string name="loading_comments">Загружаем комментарии…</string>
-    <string name="loading_repositories">Загружаем хранилища…</string>
+    <string name="loading_repositories">Загружаем репозитории…</string>
     <string name="loading_issue">Загружаем задачу…</string>
     <string name="loading_news">Загружаем новости…</string>
     <string name="loading_followers">Загружаем подписчиков…</string>
@@ -74,7 +74,7 @@
 
     <!-- Empty messages -->
     <string name="no_bookmarks">Нет закладок</string>
-    <string name="no_repositories">Нет хранилищ</string>
+    <string name="no_repositories">Нет репозиториев</string>
     <string name="no_contributors">Нет участников</string>
     <string name="no_issues">Нет задач</string>
     <string name="no_gists">Нет Gists</string>
@@ -99,7 +99,7 @@
     <string name="gists">Gists</string>
     <string name="commits">Коммиты</string>
     <string name="global_search">Поиск по GitHub</string>
-    <string name="find_repositories">Поиск хранилищ</string>
+    <string name="find_repositories">Поиск репозиториев</string>
     <string name="find_issues">Поиск задач</string>
     <string name="search_title">Поиск…</string>
     <string name="clear_search_history">Очистить историю</string>
@@ -134,7 +134,7 @@
     <string name="create_comment_title">Создать комментарий</string>
     <string name="comment_hint">Введите комментарий</string>
     <string name="show_more">Больше…</string>
-    <string name="repositories">Хранилища</string>
+    <string name="repositories">Репозитории</string>
     <string name="contributors">Участники</string>
     <string name="issues_title">Задачи</string>
     <string name="edit_labels">Редактировать теги</string>
@@ -242,14 +242,14 @@
     <string name="code">Код</string>
     <string name="following_user">Подписываюсь…</string>
     <string name="unfollowing_user">Отписываюсь…</string>
-    <string name="starring_repository">Отмечаем хранилище…</string>
-    <string name="unstarring_repository">Снимаем отметку с хранилища…</string>
+    <string name="starring_repository">Отмечаем репозиторий…</string>
+    <string name="unstarring_repository">Снимаем отметку с репозитория…</string>
     <string name="navigate_to">Перейти к…</string>
     <string name="navigate_to_user">Перейти к %s</string>
     <string name="contributions">%d коммитов</string>
 
     <!-- Tab titles, should be as short as possible -->
-    <string name="tab_repositories">хранилища</string>
+    <string name="tab_repositories">репозитории</string>
     <string name="tab_users">пользователи</string>
     <string name="tab_news">новости</string>
     <string name="tab_following_self">подписки</string>
