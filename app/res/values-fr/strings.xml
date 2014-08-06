@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<resources>
+
+    <!-- Messages d'erreurs -->
+    <string name="error_orgs_load">Erreur lors du chargement du compte et des organisations</string>
+    <string name="error_issues_load">Erreur lors du chargement des tickets</string>
+    <string name="error_repos_load">Erreur lors du chargement des dépôts</string>
+    <string name="error_repo_load">Erreur lors du chargement du dépôt</string>
+    <string name="error_contributors_load">Erreur lors du chargement des contributeurs</string>
+    <string name="error_gist_load">Erreur lors du chargement du Gist</string>
+    <string name="error_news_load">Erreur lors du chargement des nouvelles</string>
+    <string name="error_followers_load">Erreur lors du chargement des abonnés</string>
+    <string name="error_people_load">Erreur lors du chargement des personnes</string>
+    <string name="error_person_load">Erreur lors du chargement de la personne</string>
+    <string name="error_gist_file_load">Erreur lors du chargement du fichier du Gist</string>
+    <string name="error_gists_load">Erreur lors du chargement des Gists</string>
+    <string name="error_issue_load">Erreur lors du chargement du ticket</string>
+    <string name="error_collaborators_load">Erreur lors du chargement des collaborateurs</string>
+    <string name="error_milestones_load">Erreur lors du chargement des jalons</string>
+    <string name="error_labels_load">Erreur lors du chargement des libellés</string>
+    <string name="error_bookmarks_load">Erreur lors du chargement des favoris</string>
+    <string name="error_members_load">Erreur lors du chargement des membres</string>
+    <string name="error_commits_load">Erreur lors du chargement des commits</string>
+    <string name="error_commit_load">Erreur lors du chargement du commit</string>
+    <string name="error_file_load">Erreur lors du chargement du fichier</string>
+    <string name="error_code_load">Erreur lors du chargement du code</string>
+    <string name="error_refs_load">Erreur lors du chargement des branches et tags</string>
+    <string name="error_following_person">Erreur lors de l\'abonnement</string>
+    <string name="error_unfollowing_person">Erreur lors du désabonnement</string>
+    <string name="error_checking_following_status">Erreur lors de la vérification d\'abonnement</string>
+    <string name="error_starring_repository">Erreur lors de l\'ajout aux favoris</string>
+    <string name="error_unstarring_repository">Erreur lors de la suppression des favoris</string>
+    <string name="error_checking_starring_status">Erreur lors de la vérification du favoris</string>
+    <string name="error_rendering_markdown">Erreur lors du rendu du markdown</string>
+    <string name="error_users_search">Erreur lors de la recherche d\'utilisateur</string>
+    <!--  -->
+
+
+    <!-- Messages de chargement -->
+    <string name="loading_gist">Chargement du Gist…</string>
+    <string name="random_gist">Chargement d\'un Gist aléatoire…</string>
+    <string name="loading_more_issues">Chargement de plus de tickets…</string>
+    <string name="loading_issues">Chargement des tickets…</string>
+    <string name="loading_comments">Chargement des commentaires…</string>
+    <string name="loading_repositories">Chargement des dépôts…</string>
+    <string name="loading_issue">Chargement du ticket…</string>
+    <string name="loading_news">Chargement des nouvelles…</string>
+    <string name="loading_followers">Chargement des abonnés…</string>
+    <string name="loading_people">Chargement des personnes…</string>
+    <string name="loading_gists">Chargement des Gists…</string>
+    <string name="loading_collaborators">Chargement des collaborateurs…</string>
+    <string name="loading_milestones">Chargement des jalons…</string>
+    <string name="loading_labels">Chargement des libellés…</string>
+    <string name="loading_commits">Chargement des commits…</string>
+    <string name="loading_files_and_comments">Chargement des fichiers et commentaires…</string>
+    <string name="loading_refs">Chargement des branches et tags</string>
+    <!--  -->
+
+
+    <!-- Messages de listes vides -->
+    <string name="no_bookmarks">Aucun favori</string>
+    <string name="no_repositories">Aucun dépôt</string>
+    <string name="no_contributors">Aucun contributeur</string>
+    <string name="no_issues">Aucun ticket</string>
+    <string name="no_gists">Aucun Gist</string>
+    <string name="no_people">Aucune personne</string>
+    <string name="no_followers">Aucun abonné</string>
+    <string name="no_members">Aucun membre</string>
+    <string name="no_news">Aucune nouvelle</string>
+    <string name="no_commits">Aucun commit</string>
+    <!--  -->
+
+
+    <!-- Messages de mise à jour -->
+    <string name="updating_assignee">Mise à jour de l\'assigné…</string>
+    <string name="updating_issue">Mise à jour du ticket…</string>
+    <string name="updating_labels">Mise à jour des libellés…</string>
+    <string name="updating_milestone">Mise à jour du jalon…</string>
+    <!--  -->
+
+    <string name="app_name">GitHub</string>
+    <string name="news">Nouvelles</string>
+    <string name="issues">Tickets</string>
+    <string name="gists">Gists</string>
+    <string name="commits">Commits</string>
+    <string name="global_search">Recherche GitHub</string>
+    <string name="find_repositories">Trouver des dépôts</string>
+    <string name="find_issues">Trouver des tickets</string>
+    <string name="search_title">Chercher…</string>
+    <string name="clear_search_history">Supprimer l\'historique</string>
+    <string name="search_history_cleared">Historique de recherche supprimé</string>
+    <string name="login_activity_authenticating">Connexion…</string>
+    <string name="creating_gist">Création d\'un Gist…</string>
+    <string name="create">Créer</string>
+    <string name="create_gist">Créer un Gist</string>
+    <string name="make_public">Rendre ce Gist public</string>
+    <string name="gist_file_name_hint">fichier.rb</string>
+    <string name="gist">Gist</string>
+    <string name="comments">Commentaires</string>
+    <string name="files">Fichiers</string>
+    <string name="open">Ouvrir</string>
+    <string name="random">Aléatoire</string>
+    <string name="file_name">Nom du fichier</string>
+    <string name="file_content">Contenu du fichier</string>
+    <string name="new_gist">Nouveau Gist</string>
+    <string name="filter">Filtrer</string>
+    <string name="bookmark">Favoris</string>
+    <string name="comment">Commenter</string>
+    <string name="delete">Supprimer</string>
+    <string name="refresh">Rafraîchir</string>
+    <string name="dashboard_issues_title">Aperçu des tickets</string>
+    <string name="bookmarks">Favoris</string>
+    <string name="gists_title">Gists</string>
+    <string name="issue_title">Ticket #</string>
+    <string name="pull_request_title">Pull Request #</string>
+    <string name="gist_title">Gist\u0020</string>
+    <string name="filter_issues_title">Filtrer les tickets</string>
+    <string name="create_comment_title">Ajouter un commentaire</string>
+    <string name="comment_hint">Entrer un commentaire</string>
+    <string name="show_more">Afficher plus…</string>
+    <string name="repositories">Dépôts</string>
+    <string name="issues_title">Tickets</string>
+    <string name="edit_labels">Modifier les libellés</string>
+    <string name="milestone_prefix">Jalon\u00a0:</string>
+    <string name="edit_milestone">Modifier le jalon</string>
+    <string name="edit_assignee">Modifier l\'assigné</string>
+    <string name="description">Description</string>
+    <string name="gist_description_hint">Gist créé sur Android</string>
+    <string name="title">Titre</string>
+    <string name="edit">Modifier</string>
+    <string name="starring_gist">Ajout du Gist aux favoris…</string>
+    <string name="unstarring_gist">Suppression du Gist des favoris…</string>
+    <string name="accounts_label">Comptes</string>
+    <string name="select_assignee">Sélectionner l\'assigné</string>
+    <string name="select_milestone">Sélectionner le jalon</string>
+    <string name="select_labels">Sélectionner les libellés</string>
+    <string name="select_ref">Sélectionner une branche ou un tag</string>
+    <string name="no_milestone">Aucun jalon</string>
+    <string name="unassigned">Personne n\'est assigné</string>
+    <string name="assigned">est assigné</string>
+    <string name="no_gists_found">Aucun Gist trouvé</string>
+    <string name="confirm_gist_delete_title">Confirmer la suppression</string>
+    <string name="confirm_gist_delete_message">Êtes-vous sûr de vouloir supprimer ce Gist\u00a0?</string>
+    <string name="deleting_gist">Suppression du Gist…</string>
+    <string name="creating_comment">Création d\'un commentaire…</string>
+    <string name="confirm_bookmark_delete_message">Êtes-vous sûr de vouloir supprimer ce favori\u00a0?</string>
+    <string name="issue_dashboard">Aperçu des tickets</string>
+    <string name="new_issue">Nouveau ticket</string>
+    <string name="anonymous">Anonyme</string>
+    <string name="message_filter_saved">Filtre de tickets ajouté aux favoris</string>
+    <string name="recent">Récent</string>
+    <string name="section_issue_status">Statut\u00a0:</string>
+    <string name="status_open">Ouvert</string>
+    <string name="status_closed">Fermé</string>
+    <string name="section_issue_assigned">Assigné à\u00a0:</string>
+    <string name="assignee_anyone">N\'importe qui</string>
+    <string name="section_issue_milestone">Jalon\u00a0:</string>
+    <string name="none">Aucun</string>
+    <string name="section_issue_labels">Libellés\u00a0:</string>
+    <string name="log_in">Se connecter</string>
+    <string name="signup_link">Nouveau sur GitHub\u00a0? &lt;a href=\"https://github.com/plans\">Cliquez ici&lt;/a> pour vous inscrire</string>
+    <string name="connection_failed">Impossible de se connecter à GitHub</string>
+    <string name="invalid_login_or_password">Veuillez entrer un login et un mot de passe valides</string>
+    <string name="invalid_password">Veuillez entrer un mot de passe valide</string>
+    <string name="password">Mot de passe</string>
+    <string name="login_or_email">Login ou Email</string>
+    <string name="followers">Abonnés</string>
+    <string name="following">Abonnements</string>
+    <string name="followers_self">Abonnés</string>
+    <string name="following_self">Abonnements</string>
+    <string name="follow">S\'abonner</string>
+    <string name="unfollow">Se désabonner</string>
+    <string name="star">Ajouter aux favoris</string>
+    <string name="unstar">Supprimer des favoris</string>
+    <string name="members">Membres</string>
+    <string name="closing_issue">Fermeture du ticket…</string>
+    <string name="reopening_issue">Réouverture du ticket…</string>
+    <string name="avatar">Avatar</string>
+    <string name="creating_issue">Création d\'un ticket…</string>
+    <string name="prefix_created">créé\u0020</string>
+    <string name="prefix_updated">mis à jour\u0020</string>
+    <string name="prefix_opened">ouvert\u0020</string>
+    <string name="clear">Vider</string>
+    <string name="open_issues">Tickets ouverts</string>
+    <string name="closed_issues">Tickets fermés</string>
+    <string name="confirm_bookmark_delete_title">Supprimer le favori</string>
+    <string name="save">Sauvegarder</string>
+    <string name="apply">Appliquer</string>
+    <string name="labels_prefix">Libellés:</string>
+    <string name="assignee">Assigné</string>
+    <string name="milestone">Jalon</string>
+    <string name="labels">Libellés</string>
+    <string name="issue_confirm_close_message">Êtes-vous sûr de vouloir fermer ce ticket\u00a0?</string>
+    <string name="issue_confirm_reopen_message">Êtes-vous sûr de vouloir réouvrir ce ticket\u00a0?</string>
+    <string name="issue_confirm_close_title">Fermer le ticket</string>
+    <string name="issue_confirm_reopen_title">Réouvrir le ticket</string>
+    <string name="closed">Fermé</string>
+    <string name="no_description_given">Aucune description donnée.</string>
+    <string name="close">Fermer</string>
+    <string name="reopen">Réouvrir</string>
+    <string name="title_invalid_github_url">URL GitHub invalide</string>
+    <string name="message_invalid_github_url">L\'URL suivante ne peut pas être ouverte par cette application\u00a0:\n{0}</string>
+    <string name="recently_viewed">VUS RÉCEMMENT</string>
+    <string name="cancel">Annuler</string>
+    <string name="authenticator_conflict_title">Conflit d\'application</string>
+    <string name="authenticator_conflict_message">Une autre application est déjà configurée pour l\'authentification GitHub.\n\nVous devez la supprimer des paramètres de Comptes et synchronisation et la désinstaller avant de pouvoir utiliser l\'application GitHub.</string>
+    <string name="opening_repository">Ouverture de {0}…</string>
+    <string name="commit_compare_title">Comparaison de commit</string>
+    <string name="commit_prefix">Commit\u0020</string>
+    <string name="parent_prefix">Parent\u0020</string>
+    <string name="authored">auteur</string>
+    <string name="committed">committé</string>
+    <string name="diff_line_message">Que voulez-vous faire\u00a0?</string>
+    <string name="comment_on_line">Commenter la ligne</string>
+    <string name="view_entire_file">Voir fichier complet</string>
+    <string name="comparing_commits">Comparaison {0} commits</string>
+    <string name="enable_wrapping">Activer la coupure</string>
+    <string name="disable_wrapping">Désactiver la coupure</string>
+    <string name="code">Code</string>
+    <string name="following_user">Abonnement…</string>
+    <string name="unfollowing_user">Désabonnement…</string>
+    <string name="starring_repository">Ajout aux favoris…</string>
+    <string name="unstarring_repository">Supprimer des favoris…</string>
+    <string name="navigate_to">Aller à…</string>
+
+    <!-- Titres des onglets, doivent être aussi courts que possible -->
+    <string name="tab_repositories">dépôts</string>
+    <string name="tab_news">nouvelles</string>
+    <string name="tab_following_self">abonnements</string>
+    <string name="tab_followers_self">abonnés</string>
+    <string name="tab_following">abonnements</string>
+    <string name="tab_followers">abonnés</string>
+    <string name="tab_members">membres</string>
+    <string name="tab_code">code</string>
+    <string name="tab_commits">commits</string>
+    <string name="tab_issues">tickets</string>
+    <string name="tab_watched">suivis</string>
+    <string name="tab_assigned">assignés</string>
+    <string name="tab_created">créés</string>
+    <string name="tab_mentioned">mentionnés</string>
+    <string name="tab_mine">miens</string>
+    <string name="tab_starred">favoris</string>
+    <string name="tab_all">tous</string>
+    <!--  -->
+    <string name="share">Partager</string>
+    <string name="show_password">Voir mot de passe</string>
+    <string name="write">Écrire</string>
+    <string name="preview">Pré-visualiser</string>
+    <string name="show_raw_markdown">Afficher la syntaxe markdown</string>
+    <string name="render_markdown">Afficher le rendu markdown</string>
+
+</resources>

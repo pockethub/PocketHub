@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<resources>
+
+    <!-- Error messages -->
+    <string name="error_orgs_load">Lasting av kontoer og organisasjoner feilet</string>
+    <string name="error_issues_load">Lasting av saker feilet</string>
+    <string name="error_repos_load">Lasting av repos feilet</string>
+    <string name="error_repo_load">Lasting av repo feilet</string>
+    <string name="error_contributors_load">Lasting av bidragsytere feilet</string>
+    <string name="error_gist_load">Lasting av Gist feilet</string>
+    <string name="error_news_load">Lasting av nyheter feilet</string>
+    <string name="error_followers_load">Lasting av følgere feilet</string>
+    <string name="error_people_load">Lasting av personer feilet</string>
+    <string name="error_person_load">Lasting av person feilet</string>
+    <string name="error_gist_file_load">Lasting av Gist-fil feilet</string>
+    <string name="error_gists_load">Lasting av Gister feilet</string>
+    <string name="error_issue_load">Lasting av sak feilet</string>
+    <string name="error_collaborators_load">Lasting av medarbeider feilet</string>
+    <string name="error_milestones_load">Lasting av milepæler feilet</string>
+    <string name="error_labels_load">Lasting av etiketter feilet</string>
+    <string name="error_bookmarks_load">Lasting av bokmerker feilet</string>
+    <string name="error_members_load">Lasting av medlemmer feilet</string>
+    <string name="error_commits_load">Lasting av innsjekkinger feilet</string>
+    <string name="error_commit_load">Lasting av innsjekking feilet</string>
+    <string name="error_file_load">Lasting av fil feilet</string>
+    <string name="error_code_load">Lasting av kode feilet</string>
+    <string name="error_refs_load">Lasting av grener og tagger feilet</string>
+    <string name="error_following_person">Fikk ikke til å følge</string>
+    <string name="error_unfollowing_person">Fikk ikke til å avfølge</string>
+    <string name="error_checking_following_status">Sjekking av følge-status feilet</string>
+    <string name="error_starring_repository">Stjernemerking feilet</string>
+    <string name="error_unstarring_repository">Avstjerning feilet</string>
+    <string name="error_checking_starring_status">Sjekk av stjernestatus feilet</string>
+    <string name="error_rendering_markdown">Visning av markdown feilet</string>
+    <string name="error_users_search">Brukersøk feilet</string>
+    <!--  -->
+
+
+    <!-- Loading messages -->
+    <string name="loading_gist">Laster Gist…</string>
+    <string name="random_gist">Laster tilfeldig Gist…</string>
+    <string name="loading_more_issues">Laster flere Issues…</string>
+    <string name="loading_issues">Laster saker…</string>
+    <string name="loading_comments">Laster kommentarer…</string>
+    <string name="loading_repositories">Laster repo…</string>
+    <string name="loading_issue">Laster sak…</string>
+    <string name="loading_news">Laster nyheter…</string>
+    <string name="loading_followers">Laster følgere…</string>
+    <string name="loading_people">Laster personer…</string>
+    <string name="loading_gists">Laster Gister…</string>
+    <string name="loading_collaborators">Laster medarbeidere…</string>
+    <string name="loading_milestones">Laster milepæler…</string>
+    <string name="loading_labels">Laster etiketter…</string>
+    <string name="loading_commits">Laster innsjekkinger…</string>
+    <string name="loading_files_and_comments">Laster filer og kommentarer…</string>
+    <string name="loading_refs">Laster grener og tagger…</string>
+    <!--  -->
+
+
+    <!-- Empty messages -->
+    <string name="no_bookmarks">Ingen bokmerker</string>
+    <string name="no_repositories">Ingen repos</string>
+    <string name="no_contributors">Ingen bidragsytere</string>
+    <string name="no_issues">Ingen saker</string>
+    <string name="no_gists">Ingen Gister</string>
+    <string name="no_people">Ingen personer</string>
+    <string name="no_followers">Ingen følgere</string>
+    <string name="no_members">Ingen medlemmer</string>
+    <string name="no_news">Ingen nyheter</string>
+    <string name="no_commits">Ingen innsjekkinger</string>
+    <!--  -->
+
+
+    <!-- Updating messages -->
+    <string name="updating_assignee">Oppdaterer oppdragstaker…</string>
+    <string name="updating_issue">Oppdaterer sak…</string>
+    <string name="updating_labels">Oppdaterer etikett…</string>
+    <string name="updating_milestone">Oppdaterer milepæl…</string>
+    <!--  -->
+
+    <string name="app_name">GitHub</string>
+    <string name="news">Nyheter</string>
+    <string name="issues">Saker</string>
+    <string name="gists">Gister</string>
+    <string name="commits">Innsjekkinger</string>
+    <string name="global_search">GitHub-søk</string>
+    <string name="find_repositories">Finn repos</string>
+    <string name="find_issues">Finn saker</string>
+    <string name="search_title">Søk…</string>
+    <string name="clear_search_history">Tøm historikk</string>
+    <string name="search_history_cleared">Søkehistorikk tømt</string>
+    <string name="login_activity_authenticating">Logger inn…</string>
+    <string name="creating_gist">Oppretter Gist…</string>
+    <string name="create">Opprett</string>
+    <string name="create_gist">Opprett Gist</string>
+    <string name="gist_content_hint">puts \'Hello World!\'</string>
+    <string name="make_public">Gjør denne Gisten offentlig</string>
+    <string name="gist_file_name_hint">fil.rb</string>
+    <string name="gist">Gist</string>
+    <string name="comments">Kommentarer</string>
+    <string name="files">Filer</string>
+    <string name="open">Åpne</string>
+    <string name="random">Tilfeldig</string>
+    <string name="file_name">Filenavn</string>
+    <string name="file_content">Filinnhold</string>
+    <string name="new_gist">Ny Gist</string>
+    <string name="filter">Filter</string>
+    <string name="bookmark">Bokmerke</string>
+    <string name="comment">Kommentar</string>
+    <string name="delete">Slett</string>
+    <string name="refresh">Oppfrisk</string>
+    <string name="dashboard_issues_title">Saksoversikt</string>
+    <string name="bookmarks">Bokmerker</string>
+    <string name="gists_title">Gister</string>
+    <string name="issue_title">Sak #</string>
+    <string name="pull_request_title">Trekkforespørsel #</string>
+    <string name="gist_title">Gist\u0020</string>
+    <string name="filter_issues_title">Filtrer saker</string>
+    <string name="create_comment_title">Opprett kommentar</string>
+    <string name="comment_hint">Skriv en kommentar</string>
+    <string name="show_more">Vis mer…</string>
+    <string name="repositories">Repos</string>
+    <string name="contributors">Bidragsytere</string>
+    <string name="issues_title">Saker</string>
+    <string name="edit_labels">Rediger etiketter</string>
+    <string name="milestone_prefix">Milepæl:</string>
+    <string name="edit_milestone">Rediger milepæl</string>
+    <string name="edit_assignee">Rediger oppdragstaker</string>
+    <string name="description">Beskrivelse</string>
+    <string name="gist_description_hint">Gist laget på Android</string>
+    <string name="title">Tittel</string>
+    <string name="edit">Rediger</string>
+    <string name="starring_gist">Stjernemerker Gist…</string>
+    <string name="unstarring_gist">Avstjerner Gist…</string>
+    <string name="accounts_label">Kontoer</string>
+    <string name="select_assignee">Velg oppdragstaker</string>
+    <string name="select_milestone">Velg milepæl</string>
+    <string name="select_labels">Velg etiketter</string>
+    <string name="select_ref">Velg gren eller tagg</string>
+    <string name="enter_otp_code_title">Autentiseringskode</string>
+    <string name="enter_otp_code_message">Tofaktor-autentisering er slått på for din konto. Skriv inn autentiseringskoden for å bekrefte din identitet.</string>
+    <string name="no_milestone">Ingen milepæl</string>
+    <string name="unassigned">Ingen oppdragstaker satt</string>
+    <string name="assigned">er på saken</string>
+    <string name="no_gists_found">Ingen Gister funnet</string>
+    <string name="confirm_gist_delete_title">Bekreft sletting</string>
+    <string name="confirm_gist_delete_message">Er du sikker på at du vil slette denne Gisten?</string>
+    <string name="deleting_gist">Sletter Gist…</string>
+    <string name="creating_comment">Oppretter comment…</string>
+    <string name="confirm_bookmark_delete_message">Er du sikker på at du vil slette dette bokmerket?</string>
+    <string name="issue_dashboard">Saksoversikt</string>
+    <string name="new_issue">Ny sak</string>
+    <string name="anonymous">Anonym</string>
+    <string name="message_filter_saved">Saksfilter lagret i bokmerker</string>
+    <string name="recently_viewed">NYLIG SETT PÅ</string>
+    <string name="recent">Nylig</string>
+    <string name="recent_remove">Fjern nylige</string>
+    <string name="recent_list_remove">Fjern fra nylig brukte</string>
+    <string name="section_issue_status">Status:</string>
+    <string name="status_open">Åpen</string>
+    <string name="status_closed">Lukket</string>
+    <string name="section_issue_assigned">Ansvarlig:</string>
+    <string name="assignee_anyone">Hvem som helst</string>
+    <string name="section_issue_milestone">Milepæl:</string>
+    <string name="none">Ingen</string>
+    <string name="section_issue_labels">Etiketter:</string>
+    <string name="log_in">Logg inn</string>
+    <string name="signup_link">Ny på GitHub? &lt;a href=\"https://github.com/plans\">Klikk her&lt;/a> for å bli med</string>
+    <string name="signup_link_two_factor_auth">Usikker på hva du skal gjøre? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Få litt hjelp.&lt;/a></string>
+    <string name="connection_failed">Kan ikke koble til GitHub</string>
+    <string name="invalid_login_or_password">Vennligst skriv inn et gyldig brukernavn og passord</string>
+    <string name="invalid_password">Vennligst skriv inn et gyldig passord.</string>
+    <string name="password">Passord</string>
+    <string name="username_or_email">Brukernavn eller epost</string>
+    <string name="followers">Følgere</string>
+    <string name="following">Følger</string>
+    <string name="followers_self">Følgere</string>
+    <string name="following_self">Følger</string>
+    <string name="follow">Følg</string>
+    <string name="unfollow">Av-følg</string>
+    <string name="star">Stjerne</string>
+    <string name="unstar">Avstjerne</string>
+    <string name="members">Medlemmer</string>
+    <string name="closing_issue">Lukker sak…</string>
+    <string name="reopening_issue">Gjenåpner sak…</string>
+    <string name="avatar">Avatar</string>
+    <string name="creating_issue">Oppretter sak…</string>
+    <string name="prefix_created">opprettet\u0020</string>
+    <string name="prefix_updated">oppdatert\u0020</string>
+    <string name="prefix_opened">åpnet\u0020</string>
+    <string name="clear">Tøm</string>
+    <string name="pull_request_commits">Innsjekkinger: %d</string>
+    <string name="open_issues">Åpne saker</string>
+    <string name="closed_issues">Lukkede saker</string>
+    <string name="confirm_bookmark_delete_title">Fjern bokmerke</string>
+    <string name="save">Lagre</string>
+    <string name="apply">Gjør gjeldende</string>
+    <string name="labels_prefix">Etiketter:</string>
+    <string name="assignee">Ansvarlig</string>
+    <string name="milestone">Milepæl</string>
+    <string name="labels">Etiketter</string>
+    <string name="issue_confirm_close_message">Er du sikker på at du vil lukke denne saken?</string>
+    <string name="issue_confirm_reopen_message">Er du sikker på at du vil gjenåpne denne saken?</string>
+    <string name="issue_confirm_close_title">Lukk sak</string>
+    <string name="issue_confirm_reopen_title">Gjenåpn sak</string>
+    <string name="closed">Lukker</string>
+    <string name="no_description_given">Ingen beskrivelse.</string>
+    <string name="close">Lukk</string>
+    <string name="reopen">Gjenåpn</string>
+    <string name="title_invalid_github_url">Ugyldig GitHub-URL</string>
+    <string name="message_invalid_github_url">Den følgende URLen kunne ikke bli åpnet av dette programmet:\n{0}</string>
+    <string name="cancel">Avbryt</string>
+    <string name="authenticator_conflict_title">App-konflikt</string>
+    <string name="authenticator_conflict_message">Et annet program er allerede satt opp til å autentisere GitHub.\n\nDu må fjerne det programmet fra Konto- synkroninseringsinstillinger og avinstallere det før GitHub-appen kan brukes.</string>
+    <string name="opening_repository">Åpner {0}…</string>
+    <string name="commit_compare_title">Sammenlign innsjekkinger</string>
+    <string name="commit_prefix">Innsjekking\u0020</string>
+    <string name="parent_prefix">Forelder\u0020</string>
+    <string name="authored">forfattet</string>
+    <string name="committed">innsjekket</string>
+    <string name="diff_line_message">Hva vil du gjøre?</string>
+    <string name="comment_on_line">Kommentér linjen</string>
+    <string name="view_entire_file">Vis hele filen</string>
+    <string name="comparing_commits">Sammenligner {0} innsjekkinger</string>
+    <string name="enable_wrapping">Slå på ombrekking</string>
+    <string name="disable_wrapping">Slå av ombrekking</string>
+    <string name="code">Kode</string>
+    <string name="following_user">Følger…</string>
+    <string name="unfollowing_user">Avfølger…</string>
+    <string name="starring_repository">Stjernemerker…</string>
+    <string name="unstarring_repository">Avstjerner…</string>
+    <string name="navigate_to">Navigér til…</string>
+    <string name="navigate_to_user">Navigér til %s</string>
+    <string name="contributions">%d innsjekkinger</string>
+
+    <!-- Tab titles, should be as short as possible -->
+    <string name="tab_repositories">repos</string>
+    <string name="tab_users">brukere</string>
+    <string name="tab_news">nyheter</string>
+    <string name="tab_following_self">følger</string>
+    <string name="tab_followers_self">følgere</string>
+    <string name="tab_following">følger</string>
+    <string name="tab_followers">følgere</string>
+    <string name="tab_members">medlemmer</string>
+    <string name="tab_code">kode</string>
+    <string name="tab_commits">insjekkinger</string>
+    <string name="tab_issues">saker</string>
+    <string name="tab_watched">overvåket</string>
+    <string name="tab_assigned">tilegnet</string>
+    <string name="tab_created">opprettet</string>
+    <string name="tab_mentioned">nevnt</string>
+    <string name="tab_mine">mine</string>
+    <string name="tab_starred">stjernemerket</string>
+    <string name="tab_all">alle</string>
+    <!--  -->
+    <string name="share">Del</string>
+    <string name="show_password">Vis passord</string>
+    <string name="write">Skriv</string>
+    <string name="preview">Forhåndsvisning</string>
+    <string name="show_raw_markdown">Vis rå markdown</string>
+    <string name="render_markdown">Vis markdown</string>
+
+</resources>

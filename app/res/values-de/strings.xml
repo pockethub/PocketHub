@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<resources>
+
+    <!-- Error messages -->
+    <string name="error_orgs_load">Laden von Konto &amp; Organisation fehlgeschlagen</string>
+    <string name="error_issues_load">Laden der Probleme fehlgeschlagen</string>
+    <string name="error_repos_load">Laden der Repositories fehlgeschlagen</string>
+    <string name="error_repo_load">Laden des Repositories fehlgeschlagen</string>
+    <string name="error_contributors_load">Laden der Mitwirkenden fehlgeschlagen</string>
+    <string name="error_gist_load">Laden des Gists fehlgeschlagen</string>
+    <string name="error_news_load">Laden der Neuigkeiten fehlgeschlagen</string>
+    <string name="error_followers_load">Laden der Anhänger fehlgeschlagen</string>
+    <string name="error_people_load">Laden der Personen fehlgeschlagen</string>
+    <string name="error_person_load">Laden der Person fehlgeschlagen</string>
+    <string name="error_gist_file_load">Laden der Dateiinhalte des Gists fehlgeschlagen</string>
+    <string name="error_gists_load">Laden der Gists fehlgeschlagen</string>
+    <string name="error_issue_load">Laden der Probleme fehlgeschlagen</string>
+    <string name="error_collaborators_load">Laden der Mitarbeiter fehlgeschlagen</string>
+    <string name="error_milestones_load">Laden der Meilensteine fehlgeschlagen</string>
+    <string name="error_labels_load">Laden der Markierungen fehlgeschlagen</string>
+    <string name="error_bookmarks_load">Laden der Lesezeichen fehlgeschlagen</string>
+    <string name="error_members_load">Laden der Mitglieder fehlgeschlagen</string>
+    <string name="error_commits_load">Laden der Commits fehlgeschlagen</string>
+    <string name="error_commit_load">Laden des Commits fehlgeschlagen</string>
+    <string name="error_file_load">Laden der Datei fehlgeschlagen</string>
+    <string name="error_code_load">Laden des Codes fehlgeschlagen</string>
+    <string name="error_refs_load">Laden der Branches &amp; Tags fehlgeschlagen</string>
+    <string name="error_following_person">Folgen fehlgeschlagen</string>
+    <string name="error_unfollowing_person">Entfolgen fehlgeschlagen</string>
+    <string name="error_checking_following_status">Prüfen des Folgestatus fehlgeschlagen</string>
+    <string name="error_starring_repository">Favorisieren fehlgeschlagen</string>
+    <string name="error_unstarring_repository">Entfernen des Favoriten fehlgeschlagen</string>
+    <string name="error_checking_starring_status">Prüfen des Favoritenstatus fehlgeschlagen</string>
+    <string name="error_rendering_markdown">Rendern der Markdown-Vorschau fehlgeschlagen</string>
+    <string name="error_users_search">Suche nach Usern fehlgeschlagen</string>
+    <!--  -->
+
+    <!-- Loading messages -->
+    <string name="loading_gist">Lade Gist…</string>
+    <string name="random_gist">Lade zufälligen Gist…</string>
+    <string name="loading_more_issues">Lade weitere Probleme…</string>
+    <string name="loading_issues">Lade Probleme…</string>
+    <string name="loading_comments">Lade Kommentare…</string>
+    <string name="loading_repositories">Lade Repositories…</string>
+    <string name="loading_issue">Lade Problem…</string>
+    <string name="loading_news">Lade Neuigkeiten…</string>
+    <string name="loading_followers">Lade Anhänger…</string>
+    <string name="loading_people">Lade Personen…</string>
+    <string name="loading_gists">Lade Gists…</string>
+    <string name="loading_collaborators">Lade Mitarbeiter…</string>
+    <string name="loading_milestones">Lade Meilensteine…</string>
+    <string name="loading_labels">Lade Markierungen…</string>
+    <string name="loading_commits">Lade Commits…</string>
+    <string name="loading_files_and_comments">Lade Dateien &amp; Kommentare…</string>
+    <string name="loading_refs">Lade Branches &amp; Tags…</string>
+    <!--  -->
+
+    <!-- Empty messages -->
+    <string name="no_bookmarks">Keine Lesezeichen</string>
+    <string name="no_repositories">Keine Repositories</string>
+    <string name="no_contributors">Keine Mitwirkende</string>
+    <string name="no_issues">Keine Probleme</string>
+    <string name="no_gists">Keine Gists</string>
+    <string name="no_people">Keine Personen</string>
+    <string name="no_followers">Keine Anhänger</string>
+    <string name="no_members">Keine Mitglieder</string>
+    <string name="no_news">Keine Neuigkeiten</string>
+    <string name="no_commits">Keine Commits</string>
+    <!--  -->
+
+    <!-- Updating messages -->
+    <string name="updating_assignee">Aktualisiere Verantwortlichen…</string>
+    <string name="updating_issue">Aktualisiere Problem…</string>
+    <string name="updating_labels">Aktualisiere Markierungen…</string>
+    <string name="updating_milestone">Aktualisiere Meilensteine…</string>
+    <!--  -->
+
+    <string name="app_name">GitHub</string>
+    <string name="news">Neuigkeiten</string>
+    <string name="issues">Probleme</string>
+    <string name="gists">Gists</string>
+    <string name="commits">Commits</string>
+    <string name="find_repositories">Repositories suchen</string>
+    <string name="find_issues">Probleme finden</string>
+    <string name="search_title">Suchen…</string>
+    <string name="clear_search_history">Historie leeren</string>
+    <string name="search_history_cleared">Suchhistorie geleert</string>
+    <string name="login_activity_authenticating">Anmelden…</string>
+    <string name="creating_gist">Erstelle Gist…</string>
+    <string name="create">Erstellen</string>
+    <string name="create_gist">Gist erstellen</string>
+    <string name="gist_content_hint">puts \'Hallo Welt!\'</string>
+    <string name="make_public">Öffentlicher Gist</string>
+    <string name="gist_file_name_hint">dateiname.rb</string>
+    <string name="gist">Gist</string>
+    <string name="comments">Kommentare</string>
+    <string name="files">Dateien</string>
+    <string name="open">Öffnen</string>
+    <string name="random">Zufälliger Eintrag</string>
+    <string name="file_name">Dateiname</string>
+    <string name="file_content">Dateiinhalt</string>
+    <string name="new_gist">Neuen Gist erstellen</string>
+    <string name="filter">Filter</string>
+    <string name="bookmark">Lesezeichen hinzufügen</string>
+    <string name="comment">Kommentar</string>
+    <string name="delete">Löschen</string>
+    <string name="refresh">Aktualisieren</string>
+    <string name="dashboard_issues_title">Problem-Übersicht</string>
+    <string name="bookmarks">Lesezeichen</string>
+    <string name="gists_title">Gists</string>
+    <string name="issue_title">Problem #</string>
+    <string name="pull_request_title">Pull Request #</string>
+    <string name="gist_title">Gist\u0020</string>
+    <string name="filter_issues_title">Probleme filtern</string>
+    <string name="create_comment_title">Kommentar erstellen</string>
+    <string name="comment_hint">Ihren Kommentar eingeben</string>
+    <string name="show_more">Mehr zeigen…</string>
+    <string name="repositories">Repositories</string>
+    <string name="contributors">Mitwirkende</string>
+    <string name="issues_title">Probleme</string>
+    <string name="edit_labels">Markierungen bearbeiten</string>
+    <string name="milestone_prefix">Meilenstein:</string>
+    <string name="edit_milestone">Meilenstein bearbeiten</string>
+    <string name="edit_assignee">Verantwortlichen bearbeiten</string>
+    <string name="description">Beschreibung</string>
+    <string name="gist_description_hint">erstellt mit Android</string>
+    <string name="title">Titel</string>
+    <string name="edit">Bearbeiten</string>
+    <string name="starring_gist">Füge Gist als Favorit hinzu…</string>
+    <string name="unstarring_gist">Entferne favorisierten Gist…</string>
+    <string name="accounts_label">Konten</string>
+    <string name="select_assignee">Verantwortlichen wählen</string>
+    <string name="select_milestone">Meilenstein wählen</string>
+    <string name="select_labels">Markierung wählen</string>
+    <string name="select_ref">Branch oder Tag wählen</string>
+    <string name="no_milestone">Keine Meilensteine</string>
+    <string name="unassigned">Niemand zugewiesen</string>
+    <string name="assigned">ist zugewiesen</string>
+    <string name="no_gists_found">Keine Gists gefunden</string>
+    <string name="confirm_gist_delete_title">Löschen bestätigen</string>
+    <string name="confirm_gist_delete_message">Sind Sie sicher, dass Sie diesen Gist löschen möchten?</string>
+    <string name="deleting_gist">Lösche Gist…</string>
+    <string name="creating_comment">Erstelle Kommentar…</string>
+    <string name="confirm_bookmark_delete_message">Sind Sie sicher, dass Sie dieses Lesezeichen löschen möchten?</string>
+    <string name="issue_dashboard">Problem-Übersicht</string>
+    <string name="new_issue">Neues Problem</string>
+    <string name="anonymous">Anonym</string>
+    <string name="message_filter_saved">Filter als Lesezeichen gespeichert</string>
+    <string name="recently_viewed">ZULETZT ANGESEHEN</string>
+    <string name="recent">Letzte</string>
+    <string name="recent_remove">Liste leeren</string>
+    <string name="recent_list_remove">Von Liste entfernen</string>
+    <string name="section_issue_status">Status:</string>
+    <string name="status_open">Offen</string>
+    <string name="status_closed">Geschlossen</string>
+    <string name="section_issue_assigned">Zugewiesen an:</string>
+    <string name="assignee_anyone">Jeder</string>
+    <string name="section_issue_milestone">Meilenstein:</string>
+    <string name="none">Keine(r)</string>
+    <string name="section_issue_labels">Markierungen:</string>
+    <string name="log_in">Einloggen</string>
+    <string name="signup_link">Neu bei GitHub? &lt;a href=\"https://github.com/plans\">Hier klicken&lt;/a> um sich anzumelden</string>
+    <string name="connection_failed">Kann nicht zu GitHub verbinden</string>
+    <string name="invalid_login_or_password">Bitte geben Sie einen gültigen Login &amp; Passwort an</string>
+    <string name="invalid_password">Bitte geben Sie ein gültiges Passwort an.</string>
+    <string name="password">Passwort</string>
+    <string name="login_or_email">Benutzername oder E-Mail</string>
+    <string name="followers">Meine Anhänger</string>
+    <string name="following">Ich folge</string>
+    <string name="followers_self">Meine Anhänger</string>
+    <string name="following_self">Ich folge</string>
+    <string name="follow">Folgen</string>
+    <string name="unfollow">Entfolgen</string>
+    <string name="star">Favorisieren</string>
+    <string name="unstar">Favorit entfernen</string>
+    <string name="members">Mitglieder</string>
+    <string name="closing_issue">Schließe Problem…</string>
+    <string name="reopening_issue">Problem neu öffnen…</string>
+    <string name="avatar">Avatar</string>
+    <string name="creating_issue">Erstelle Problem…</string>
+    <string name="prefix_created">erstellt\u0020</string>
+    <string name="prefix_updated">aktualisiert\u0020</string>
+    <string name="prefix_opened">eröffnet\u0020</string>
+    <string name="clear">Leeren</string>
+    <string name="pull_request_commits">Commits: %d</string>
+    <string name="open_issues">Offene Probleme</string>
+    <string name="closed_issues">Geschlossene Probleme</string>
+    <string name="confirm_bookmark_delete_title">Lesezeichen entfernen</string>
+    <string name="save">Speichern</string>
+    <string name="apply">Annehmen</string>
+    <string name="labels_prefix">Markierungen:</string>
+    <string name="assignee">Verantwortlicher</string>
+    <string name="milestone">Meilenstein</string>
+    <string name="labels">Markierungen</string>
+    <string name="issue_confirm_close_message">Sind Sie sicher, dass Sie dieses Problem schließen möchten?</string>
+    <string name="issue_confirm_reopen_message">Sind Sie sicher, dass Sie dieses Problem neu öffnen möchten?</string>
+    <string name="issue_confirm_close_title">Problem schließen</string>
+    <string name="issue_confirm_reopen_title">Problem neu öffnen</string>
+    <string name="closed">Geschlossen</string>
+    <string name="no_description_given">Keine Beschreibung angegeben.</string>
+    <string name="close">Schließen</string>
+    <string name="reopen">Neu öffnen</string>
+    <string name="title_invalid_github_url">Ungültige GitHub URL</string>
+    <string name="message_invalid_github_url">Die folgende URL konnte von der Anwendung nicht geöffnet werden:\n{0}</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="authenticator_conflict_title">App Konflikt</string>
+    <string name="authenticator_conflict_message">Eine andere App ist derzeit für die Anmeldung bei GitHub konfiguriert.\n\nSie müssen diese App aus dem Bereich Konten &amp; Synchronisierung entfernen und diese App deinstallieren, bevor Sie die GitHub App verwenden können.</string>
+    <string name="opening_repository">Öffne {0}…</string>
+    <string name="commit_compare_title">Commit-Vergleich</string>
+    <string name="commit_prefix">Commit\u0020</string>
+    <string name="parent_prefix">Vorgänger\u0020</string>
+    <string name="authored">verfasst</string>
+    <string name="committed">eingespielt</string>
+    <string name="diff_line_message">Was möchten Sie nun tun?</string>
+    <string name="comment_on_line">Kommentar zu Zeile</string>
+    <string name="view_entire_file">Zeige gesamte Datei</string>
+    <string name="comparing_commits">Vergleiche {0} Commits</string>
+    <string name="enable_wrapping">Zeilenumbruch aktivieren</string>
+    <string name="disable_wrapping">Zeilenumbruch deaktivieren</string>
+    <string name="code">Code</string>
+    <string name="following_user">Folgen…</string>
+    <string name="unfollowing_user">Entfolgen…</string>
+    <string name="starring_repository">Favorisieren…</string>
+    <string name="unstarring_repository">Favorit entfernen…</string>
+    <string name="navigate_to">Navigiere zu…</string>
+    <string name="navigate_to_user">Navigiere zu %s</string>
+    <string name="contributions">%d Commits</string>
+
+    <!-- Tab titles, should be as short as possible -->
+    <string name="tab_repositories">Repositories</string>
+    <string name="tab_users">User</string>
+    <string name="tab_news">Neuigkeiten</string>
+    <string name="tab_following_self">Ich folge</string>
+    <string name="tab_followers_self">Anhänger</string>
+    <string name="tab_following">Folgt</string>
+    <string name="tab_followers">Anhänger</string>
+    <string name="tab_members">Mitglieder</string>
+    <string name="tab_code">Code</string>
+    <string name="tab_commits">Commits</string>
+    <string name="tab_issues">Probleme</string>
+    <string name="tab_watched">beobachtet</string>
+    <string name="tab_assigned">zugewiesen</string>
+    <string name="tab_created">erstellt</string>
+    <string name="tab_mentioned">erwähnt</string>
+    <string name="tab_mine">eigene</string>
+    <string name="tab_starred">favoriten</string>
+    <string name="tab_all">alle</string>
+    <!--  -->
+
+    <string name="share">Teilen</string>
+    <string name="show_password">Passwort anzeigen</string>
+    <string name="write">Schreiben</string>
+    <string name="preview">Vorschau</string>
+    <string name="show_raw_markdown">Zeige reines Markdown</string>
+    <string name="render_markdown">Zeige gerendertes Markdown</string>
+
+</resources>

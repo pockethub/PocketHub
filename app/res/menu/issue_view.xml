@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/m_comment"
+        android:icon="@drawable/action_comment"
+        android:showAsAction="ifRoom"
+        android:title="@string/comment"/>
+    <item
+        android:id="@+id/m_edit"
+        android:icon="@drawable/menu_edit"
+        android:showAsAction="never"
+        android:title="@string/edit"/>
+    <item
+        android:id="@+id/m_state"
+        android:icon="@drawable/menu_issue_close"
+        android:showAsAction="never"
+        android:title="@string/close"/>
+    <item
+        android:id="@+id/m_share"
+        android:icon="@drawable/menu_share"
+        android:showAsAction="never"
+        android:title="@string/share"/>
+    <item
+        android:id="@+id/m_refresh"
+        android:icon="@drawable/menu_refresh"
+        android:showAsAction="never"
+        android:title="@string/refresh"/>
+
+</menu>

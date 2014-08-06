@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/tv_signup"
+        style="@style/SubtitleText"
+        android:layout_width="match_parent"
+        android:background="@drawable/sign_up_background"
+        android:gravity="center"
+        android:padding="5dp"
+        android:textColor="@color/sign_up_text"
+        android:textColorLink="@color/sign_up_text_link" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="5dp" >
+
+            <TextView
+                style="@style/HeaderTitleText"
+                android:text="@string/username_or_email" />
+
+            <AutoCompleteTextView
+                android:id="@+id/et_login"
+                style="@style/LoginEditText"
+                android:completionThreshold="1"
+                android:imeOptions="actionNext"
+                android:inputType="textEmailAddress"
+                android:nextFocusDown="@+id/et_password" />
+
+            <TextView
+                style="@style/HeaderTitleText"
+                android:paddingRight="5dp"
+                android:paddingTop="10dp"
+                android:text="@string/password" />
+
+            <EditText
+                android:id="@+id/et_password"
+                style="@style/LoginEditText"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:typeface="monospace" />
+
+            <CheckBox
+                android:id="@+id/cb_show_password"
+                style="@style/SubtitleText"
+                android:layout_marginTop="2dp"
+                android:singleLine="true"
+                android:text="@string/show_password"
+                android:textColor="@color/text" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<resources>
+
+    <!-- Error messages -->
+    <string name="error_orgs_load">账户和组织信息加载失败</string>
+    <string name="error_issues_load">Issue 列表加载失败</string>
+    <string name="error_repos_load">版本库列表加载失败</string>
+    <string name="error_repo_load">版本库加载失败</string>
+    <string name="error_contributors_load">贡献者列表加载失败</string>
+    <string name="error_gist_load">Gist 加载失败</string>
+    <string name="error_news_load">新鲜事加载失败</string>
+    <string name="error_followers_load">关注我的用户列表加载失败</string>
+    <string name="error_people_load">用户列表加载失败</string>
+    <string name="error_person_load">用户信息加载失败</string>
+    <string name="error_gist_file_load">Gist 文件内容加载失败</string>
+    <string name="error_gists_load">Gist 列表加载失败</string>
+    <string name="error_issue_load">Issue 信息加载失败</string>
+    <string name="error_collaborators_load">协作者加载失败</string>
+    <string name="error_milestones_load">里程碑加载失败</string>
+    <string name="error_labels_load">Issue 标签加载失败</string>
+    <string name="error_bookmarks_load">书签加载失败</string>
+    <string name="error_members_load">成员加载失败</string>
+    <string name="error_commits_load">提交列表加载失败</string>
+    <string name="error_commit_load">提交加载失败</string>
+    <string name="error_file_load">文件加载失败</string>
+    <string name="error_code_load">代码加载失败</string>
+    <string name="error_refs_load">分支与标签加载失败</string>
+    <string name="error_following_person">关注失败</string>
+    <string name="error_unfollowing_person">取消关注失败</string>
+    <string name="error_checking_following_status">关注状态检查失败</string>
+    <string name="error_starring_repository">星标加注失败</string>
+    <string name="error_unstarring_repository">星标移除失败</string>
+    <string name="error_checking_starring_status">加注星标状态检查失败</string>
+    <string name="error_rendering_markdown">Markdown 渲染失败</string>
+    <string name="error_users_search">搜索用户失败</string>
+    <!--  -->
+
+
+    <!-- Loading messages -->
+    <string name="loading_gist">加载 Gist…</string>
+    <string name="random_gist">加载随机 Gist…</string>
+    <string name="loading_more_issues">加载更多 Issue…</string>
+    <string name="loading_issues">加载 Issue 列表…</string>
+    <string name="loading_comments">加载评论…</string>
+    <string name="loading_repositories">加载版本库列表…</string>
+    <string name="loading_issue">加载 Issue…</string>
+    <string name="loading_news">加载新鲜事…</string>
+    <string name="loading_followers">加载用户列表…</string>
+    <string name="loading_people">加载用户列表…</string>
+    <string name="loading_gists">加载 Gist 列表…</string>
+    <string name="loading_collaborators">加载协作者…</string>
+    <string name="loading_milestones">加载里程碑…</string>
+    <string name="loading_labels">加载 Issue 标签…</string>
+    <string name="loading_commits">加载提交…</string>
+    <string name="loading_files_and_comments">加载文件与评论…</string>
+    <string name="loading_refs">加载分支与标签…</string>
+    <!--  -->
+
+
+    <!-- Empty messages -->
+    <string name="no_bookmarks">暂无书签</string>
+    <string name="no_repositories">暂无版本库</string>
+    <string name="no_contributors">暂无贡献者</string>
+    <string name="no_issues">暂无 Issue</string>
+    <string name="no_gists">暂无 Gist</string>
+    <string name="no_people">暂无用户</string>
+    <string name="no_followers">暂无关注我的用户</string>
+    <string name="no_members">暂无成员</string>
+    <string name="no_news">暂无新鲜事</string>
+    <string name="no_commits">暂无提交</string>
+    <!--  -->
+
+
+    <!-- Updating messages -->
+    <string name="updating_assignee">被指派人信息更新中…</string>
+    <string name="updating_issue">Issue 更新中…</string>
+    <string name="updating_labels">Issue 标签信息更新中…</string>
+    <string name="updating_milestone">里程碑信息更新中…</string>
+    <!--  -->
+
+    <string name="app_name">GitHub</string>
+    <string name="news">新鲜事</string>
+    <string name="issues">Issues</string>
+    <string name="gists">Gists</string>
+    <string name="commits">提交</string>
+    <string name="global_search">搜索 GitHub</string>
+    <string name="find_repositories">查询版本库</string>
+    <string name="find_issues">查询 Issue </string>
+    <string name="search_title">搜索…</string>
+    <string name="clear_search_history">清空搜索历史</string>
+    <string name="search_history_cleared">搜索历史已清空</string>
+    <string name="login_activity_authenticating">登录中…</string>
+    <string name="creating_gist">Gist 创建中…</string>
+    <string name="create">创建</string>
+    <string name="create_gist">创建 Gist</string>
+    <string name="gist_content_hint">puts \'Hello World!\'</string>
+    <string name="make_public">公开这个 Gist</string>
+    <string name="gist_file_name_hint">file.rb</string>
+    <string name="gist">Gist</string>
+    <string name="comments">评论</string>
+    <string name="files">文件</string>
+    <string name="open">打开</string>
+    <string name="random">随机</string>
+    <string name="file_name">文件名</string>
+    <string name="file_content">文件内容</string>
+    <string name="new_gist">新 Gist</string>
+    <string name="filter">过滤器</string>
+    <string name="bookmark">书签</string>
+    <string name="comment">评论</string>
+    <string name="delete">删除</string>
+    <string name="refresh">刷新</string>
+    <string name="dashboard_issues_title">Issue 面板</string>
+    <string name="bookmarks">书签</string>
+    <string name="gists_title">Gist 列表</string>
+    <string name="issue_title">Issue #</string>
+    <string name="pull_request_title">Pull Request #</string>
+    <string name="gist_title">Gist\u0020</string>
+    <string name="filter_issues_title">过滤 Issue</string>
+    <string name="create_comment_title">发表评论</string>
+    <string name="comment_hint">输入评论</string>
+    <string name="show_more">显示更多…</string>
+    <string name="repositories">版本库</string>
+    <string name="contributors">贡献者</string>
+    <string name="issues_title">Issue</string>
+    <string name="edit_labels">编辑 Issue 标签</string>
+    <string name="milestone_prefix">里程碑:</string>
+    <string name="edit_milestone">编辑里程碑</string>
+    <string name="edit_assignee">编辑被指派人</string>
+    <string name="description">描述</string>
+    <string name="gist_description_hint">从 Android 创建的 Gist</string>
+    <string name="title">标题</string>
+    <string name="edit">编辑</string>
+    <string name="starring_gist">为 Gist 加注星标…</string>
+    <string name="unstarring_gist">为 Gist 移除星标…</string>
+    <string name="accounts_label">账户</string>
+    <string name="select_assignee">选择被指派人</string>
+    <string name="select_milestone">选择里程碑</string>
+    <string name="select_labels">选择 Issue 标签</string>
+    <string name="select_ref">选择分支或标签</string>
+    <string name="no_milestone">暂无里程碑</string>
+    <string name="unassigned">无人被指派</string>
+    <string name="assigned">被指派</string>
+    <string name="no_gists_found">找不到 Gist</string>
+    <string name="confirm_gist_delete_title">确认删除</string>
+    <string name="confirm_gist_delete_message">确定要删除这条 Gist 吗?</string>
+    <string name="deleting_gist">正在删除 Gist…</string>
+    <string name="creating_comment">评论发表中…</string>
+    <string name="confirm_bookmark_delete_message">确定要移除这个书签吗?</string>
+    <string name="issue_dashboard"> Issue 面板</string>
+    <string name="new_issue">新 Issue</string>
+    <string name="anonymous">匿名</string>
+    <string name="message_filter_saved">Issue 过滤器已保存至书签</string>
+    <string name="recently_viewed">近期浏览过的</string>
+    <string name="recent">最近的</string>
+    <string name="section_issue_status">状态:</string>
+    <string name="status_open">开放</string>
+    <string name="status_closed">关闭</string>
+    <string name="section_issue_assigned">指派给:</string>
+    <string name="assignee_anyone">任何人</string>
+    <string name="section_issue_milestone">里程碑:</string>
+    <string name="none">无</string>
+    <string name="section_issue_labels">Issue 标签:</string>
+    <string name="log_in">登录</string>
+    <string name="signup_link">刚刚接触 GitHub? &lt;a href=\"https://github.com/plans\">点这里&lt;/a>注册</string>
+    <string name="connection_failed">无法连接到 GitHub</string>
+    <string name="invalid_login_or_password">请输入正确的登录名和密码。</string>
+    <string name="invalid_password">请输入正确的密码。</string>
+    <string name="password">密码</string>
+    <string name="login_or_email">登录名 / 电子邮件</string>
+    <string name="followers">关注Ta的</string>
+    <string name="following">Ta关注的</string>
+    <string name="followers_self">关注我的</string>
+    <string name="following_self">我关注的</string>
+    <string name="follow">关注</string>
+    <string name="unfollow">取消关注</string>
+    <string name="star">加注星标</string>
+    <string name="unstar">移除星标</string>
+    <string name="members">成员</string>
+    <string name="closing_issue">正在关闭 Issue…</string>
+    <string name="reopening_issue">正在重新开放 Issue…</string>
+    <string name="avatar">头像</string>
+    <string name="creating_issue">正在创建 Issue…</string>
+    <string name="prefix_created">创建了\u0020</string>
+    <string name="prefix_updated">更新了\u0020</string>
+    <string name="prefix_opened">开放了\u0020</string>
+    <string name="clear">清除</string>
+    <string name="pull_request_commits">提交: %d</string>
+    <string name="open_issues">开放中的 Issue</string>
+    <string name="closed_issues">已关闭的 Issue</string>
+    <string name="confirm_bookmark_delete_title">删除书签</string>
+    <string name="save">保存</string>
+    <string name="apply">应用</string>
+    <string name="labels_prefix">Issue 标签:</string>
+    <string name="assignee">被指派人</string>
+    <string name="milestone">里程碑</string>
+    <string name="labels">Issue 标签</string>
+    <string name="issue_confirm_close_message">确定要关闭这个 Issue 吗?</string>
+    <string name="issue_confirm_reopen_message">确定要重新开启这个 Issue 吗?</string>
+    <string name="issue_confirm_close_title">关闭 Issue</string>
+    <string name="issue_confirm_reopen_title">重新开放 Issue</string>
+    <string name="closed">关闭的</string>
+    <string name="no_description_given">暂无描述。</string>
+    <string name="close">关闭</string>
+    <string name="reopen">重新开放</string>
+    <string name="title_invalid_github_url">无效的 GitHub URL</string>
+    <string name="message_invalid_github_url">无法打开以下 URL:\n{0}</string>
+    <string name="cancel">取消</string>
+    <string name="authenticator_conflict_title">应用冲突</string>
+    <string name="authenticator_conflict_message">GitHub 认证已配置为安装的另一个应用使用。\n\n您必须从“账户与同步”设置中移除那个应用并将其卸载，才能使用本应用。</string>
+    <string name="opening_repository">正在打开 {0}…</string>
+    <string name="commit_compare_title">提交比较</string>
+    <string name="commit_prefix">提交\u0020</string>
+    <string name="parent_prefix">先导\u0020</string>
+    <string name="authored">作于</string>
+    <string name="committed">提交于</string>
+    <string name="diff_line_message">您想做什么？</string>
+    <string name="comment_on_line">评论此行</string>
+    <string name="view_entire_file">查看整个文件</string>
+    <string name="comparing_commits">比较 {0} 个提交</string>
+    <string name="enable_wrapping">启用自动折行</string>
+    <string name="disable_wrapping">禁用自动折行</string>
+    <string name="code">代码</string>
+    <string name="following_user">正在关注…</string>
+    <string name="unfollowing_user">正在取消关注…</string>
+    <string name="starring_repository">正在加注星标…</string>
+    <string name="unstarring_repository">正在移除星标…</string>
+    <string name="contributions">%d 提交</string>
+    
+    <!-- Tab titles, should be as short as possible -->
+    <string name="tab_repositories">版本库</string>
+    <string name="tab_users">用户</string>
+    <string name="tab_news">新鲜事</string>
+    <string name="tab_following_self">我关注的</string>
+    <string name="tab_followers_self">关注我的</string>
+    <string name="tab_following">Ta关注的</string>
+    <string name="tab_followers">关注Ta的</string>
+    <string name="tab_members">成员</string>
+    <string name="tab_code">代码</string>
+    <string name="tab_commits">提交</string>
+    <string name="tab_issues">issues</string>
+    <string name="tab_watched">我关注的</string>
+    <string name="tab_assigned">指派给我的</string>
+    <string name="tab_created">我创建的</string>
+    <string name="tab_mentioned">提到我的</string>
+    <string name="tab_mine">我的</string>
+    <string name="tab_starred">已加星标</string>
+    <string name="tab_all">所有</string>
+    <!--  -->
+    <string name="share">分享</string>
+    <string name="show_password">显示密码</string>
+    <string name="write">书写</string>
+    <string name="preview">预览</string>
+    <string name="show_raw_markdown">显示 markdown 源码</string>
+    <string name="render_markdown">渲染 markdown</string>
+    
+</resources>

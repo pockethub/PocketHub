@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<resources>
+
+    <!-- Error messages -->
+    <string name="error_orgs_load">Ошибка при загрузке организаций</string>
+    <string name="error_issues_load">Ошибка при загрузке задач</string>
+    <string name="error_repos_load">Ошибка при загрузке хранилищ</string>
+    <string name="error_repo_load">Ошибка при загрузке хранилища</string>
+    <string name="error_contributors_load">Ошибка при загрузке участников</string>
+    <string name="error_gist_load">Ошибка при загрузке Gist</string>
+    <string name="error_news_load">Ошибка при загрузке новостей</string>
+    <string name="error_followers_load">Ошибка при загрузке подписчиков</string>
+    <string name="error_people_load">Ошибка при загрузке профилей</string>
+    <string name="error_person_load">Ошибка при загрузке профиля</string>
+    <string name="error_gist_file_load">Ошибка при загрузке содержимого Gist-файла</string>
+    <string name="error_gists_load">Ошибка при загрузке Gists</string>
+    <string name="error_issue_load">Ошибка при загрузке задачи</string>
+    <string name="error_collaborators_load">Ошибка при загрузке соучастников</string>
+    <string name="error_milestones_load">Ошибка при загрузке целей</string>
+    <string name="error_labels_load">Ошибка при загрузке тегов</string>
+    <string name="error_bookmarks_load">Ошибка при загрузке закладок</string>
+    <string name="error_members_load">Ошибка при загрузке членов</string>
+    <string name="error_commits_load">Ошибка при загрузке коммитов</string>
+    <string name="error_commit_load">Ошибка при загрузке коммита</string>
+    <string name="error_file_load">Ошибка при загрузке файла</string>
+    <string name="error_code_load">Ошибка при загрузке кода</string>
+    <string name="error_refs_load">Ошибка при загрузке веток и меток</string>
+    <string name="error_following_person">Ошибка подписки</string>
+    <string name="error_unfollowing_person">Ошибка отказа от подписки</string>
+    <string name="error_checking_following_status">Ошибка при проверке статуса подписки</string>
+    <string name="error_starring_repository">Ошибка при отмечании</string>
+    <string name="error_unstarring_repository">Ошибка при снятии отметки</string>
+    <string name="error_checking_starring_status">Ошибка при проверке отметки</string>
+    <string name="error_rendering_markdown">Ошибка отображения Markdown</string>
+    <string name="error_users_search">Ошибка поиска пользователей</string>
+    <!--  -->
+
+
+    <!-- Loading messages -->
+    <string name="loading_gist">Загружаем Gist…</string>
+    <string name="random_gist">Загружаем случайный Gist…</string>
+    <string name="loading_more_issues">Загружаем больше задач…</string>
+    <string name="loading_issues">Загружаем задачи…</string>
+    <string name="loading_comments">Загружаем комментарии…</string>
+    <string name="loading_repositories">Загружаем хранилища…</string>
+    <string name="loading_issue">Загружаем задачу…</string>
+    <string name="loading_news">Загружаем новости…</string>
+    <string name="loading_followers">Загружаем подписчиков…</string>
+    <string name="loading_people">Загружаем подписки…</string>
+    <string name="loading_gists">Загружаем Gists…</string>
+    <string name="loading_collaborators">Загружаем соучастников…</string>
+    <string name="loading_milestones">Загружаем цели…</string>
+    <string name="loading_labels">Загружаем теги…</string>
+    <string name="loading_commits">Загружаем коммиты…</string>
+    <string name="loading_files_and_comments">Загружаем файлы и комментарии…</string>
+    <string name="loading_refs">Загружаем ветки и метки…</string>
+    <!--  -->
+
+
+    <!-- Empty messages -->
+    <string name="no_bookmarks">Нет закладок</string>
+    <string name="no_repositories">Нет хранилищ</string>
+    <string name="no_contributors">Нет участников</string>
+    <string name="no_issues">Нет задач</string>
+    <string name="no_gists">Нет Gists</string>
+    <string name="no_people">Нет подписок</string>
+    <string name="no_followers">Нет подписчиков</string>
+    <string name="no_members">Нет членов</string>
+    <string name="no_news">Нет новостей</string>
+    <string name="no_commits">Нет коммитов</string>
+    <!--  -->
+
+
+    <!-- Updating messages -->
+    <string name="updating_assignee">Обновляем ответственного…</string>
+    <string name="updating_issue">Обновляем задачу…</string>
+    <string name="updating_labels">Обновляем теги…</string>
+    <string name="updating_milestone">Обновляем цель…</string>
+    <!--  -->
+
+    <string name="app_name">GitHub</string>
+    <string name="news">Новости</string>
+    <string name="issues">Задачи</string>
+    <string name="gists">Gists</string>
+    <string name="commits">Коммиты</string>
+    <string name="global_search">Поиск по GitHub</string>
+    <string name="find_repositories">Поиск хранилищ</string>
+    <string name="find_issues">Поиск задач</string>
+    <string name="search_title">Поиск…</string>
+    <string name="clear_search_history">Очистить историю</string>
+    <string name="search_history_cleared">История очищена</string>
+    <string name="login_activity_authenticating">Входим…</string>
+    <string name="creating_gist">Создаем Gist…</string>
+    <string name="create">Создать</string>
+    <string name="create_gist">Создать Gist</string>
+    <string name="gist_content_hint">puts \'Hello World!\'</string>
+    <string name="make_public">Сделать этот Gist публичным</string>
+    <string name="gist_file_name_hint">file.rb</string>
+    <string name="gist">Gist</string>
+    <string name="comments">Комментарии</string>
+    <string name="files">Файлы</string>
+    <string name="open">Открыть</string>
+    <string name="random">Случайный</string>
+    <string name="file_name">Имя файла</string>
+    <string name="file_content">Содержимое файла</string>
+    <string name="new_gist">Новый Gist</string>
+    <string name="filter">Фильтр</string>
+    <string name="bookmark">Закладка</string>
+    <string name="comment">Комментарий</string>
+    <string name="delete">Удалить</string>
+    <string name="refresh">Обновить</string>
+    <string name="dashboard_issues_title">Панель задач</string>
+    <string name="bookmarks">Закладки</string>
+    <string name="gists_title">Gists</string>
+    <string name="issue_title">Задача #</string>
+    <string name="pull_request_title">Pull Request #</string>
+    <string name="gist_title">Gist\u0020</string>
+    <string name="filter_issues_title">Фильтровать задачи</string>
+    <string name="create_comment_title">Создать комментарий</string>
+    <string name="comment_hint">Введите комментарий</string>
+    <string name="show_more">Больше…</string>
+    <string name="repositories">Хранилища</string>
+    <string name="contributors">Участники</string>
+    <string name="issues_title">Задачи</string>
+    <string name="edit_labels">Редактировать теги</string>
+    <string name="milestone_prefix">Цель:</string>
+    <string name="edit_milestone">Изменить цель</string>
+    <string name="edit_assignee">Назначить ответственного</string>
+    <string name="description">Описание</string>
+    <string name="gist_description_hint">Gist, созданный на Android</string>
+    <string name="title">Заголовок</string>
+    <string name="edit">Редактировать</string>
+    <string name="starring_gist">Отмечаем Gist…</string>
+    <string name="unstarring_gist">Снимаем отметку с Gist…</string>
+    <string name="accounts_label">Аккаунты</string>
+    <string name="select_assignee">Выбрать ответственного</string>
+    <string name="select_milestone">Выбрать цель</string>
+    <string name="select_labels">Выбрать тег</string>
+    <string name="select_ref">Выбрать ветку или метку</string>
+    <string name="enter_otp_code_title">Код аутентификации</string>
+    <string name="enter_otp_code_message">Для вашего аккаунта включена двухэтапная аутентификация. Введите код аутентификации для подтверждения личности.</string>
+    <string name="no_milestone">Нет целей</string>
+    <string name="unassigned">Никто не ответственен</string>
+    <string name="assigned">ответственен</string>
+    <string name="no_gists_found">Gists не найдены</string>
+    <string name="confirm_gist_delete_title">Подтвердить удаление</string>
+    <string name="confirm_gist_delete_message">Вы действительно хотите удалить этот Gist?</string>
+    <string name="deleting_gist">Удаляем Gist…</string>
+    <string name="creating_comment">Создаем комментарий…</string>
+    <string name="confirm_bookmark_delete_message">Вы действительно хотите удалить эту закладку?</string>
+    <string name="issue_dashboard">Панель задачи</string>
+    <string name="new_issue">Новая задача</string>
+    <string name="anonymous">Анонимно</string>
+    <string name="message_filter_saved">Фильтр сохранен в закладки</string>
+    <string name="recently_viewed">НЕДАВНО ПРОСМОТРЕННЫЕ</string>
+    <string name="recent">Недавние</string>
+    <string name="recent_remove">Удалить недавние</string>
+    <string name="recent_list_remove">Удалить из недавно использованного</string>
+    <string name="section_issue_status">Статус:</string>
+    <string name="status_open">Открыта</string>
+    <string name="status_closed">Закрыта</string>
+    <string name="section_issue_assigned">Ответственный:</string>
+    <string name="assignee_anyone">Кто угодно</string>
+    <string name="section_issue_milestone">Цель:</string>
+    <string name="none">Нет</string>
+    <string name="section_issue_labels">Теги:</string>
+    <string name="log_in">Войти</string>
+    <string name="signup_link">Первый раз на GitHub? &lt;a href=\"https://github.com/plans\">Нажмите здесь&lt;/a>, чтобы зарегистрироваться.</string>
+    <string name="signup_link_two_factor_auth">Не уверены, что делать? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Обратитесь за помощью.&lt;/a></string>
+    <string name="connection_failed">Не можем подключиться к GitHub</string>
+    <string name="invalid_login_or_password">Пожалуйста, проверьте ваш логин и пароль.</string>
+    <string name="invalid_password">Пожалуйста, введите правильный пароль.</string>
+    <string name="password">Пароль</string>
+    <string name="username_or_email">Логин или почта</string>
+    <string name="followers">Подписчики</string>
+    <string name="following">Подписки</string>
+    <string name="followers_self">Подписчики</string>
+    <string name="following_self">Подписки</string>
+    <string name="follow">Подписаться</string>
+    <string name="unfollow">Отписаться</string>
+    <string name="star">Отметить</string>
+    <string name="unstar">Снять отметку</string>
+    <string name="members">Члены</string>
+    <string name="closing_issue">Закрываем задачу…</string>
+    <string name="reopening_issue">Переоткрываем задачу…</string>
+    <string name="avatar">Аватар</string>
+    <string name="creating_issue">Создаем задачу…</string>
+    <string name="prefix_created">создан\u0020</string>
+    <string name="prefix_updated">обновлен\u0020</string>
+    <string name="prefix_opened">открыта\u0020</string>
+    <string name="clear">Очистить</string>
+    <string name="pull_request_commits">Коммиты: %d</string>
+    <string name="open_issues">Открытые задачи</string>
+    <string name="closed_issues">Закрытые задачи</string>
+    <string name="confirm_bookmark_delete_title">Удалить закладку</string>
+    <string name="save">Сохранить</string>
+    <string name="apply">ОК</string>
+    <string name="labels_prefix">Теги:</string>
+    <string name="assignee">Ответственный</string>
+    <string name="milestone">Цель</string>
+    <string name="labels">Теги</string>
+    <string name="issue_confirm_close_message">Вы действительно хотите закрыть эту задачу?</string>
+    <string name="issue_confirm_reopen_message">Вы действительно хотите переоткрыть эту задачу?</string>
+    <string name="issue_confirm_close_title">Закрыть задачу</string>
+    <string name="issue_confirm_reopen_title">Переоткрыть задачу</string>
+    <string name="closed">Закрыта</string>
+    <string name="no_description_given">Описание отсутствует.</string>
+    <string name="close">Закрыть</string>
+    <string name="reopen">Переоткрыть</string>
+    <string name="title_invalid_github_url">Неверный URL GitHub</string>
+    <string name="message_invalid_github_url">Следующий URL не мог быть открыт приложением:\n{0}</string>
+    <string name="cancel">Отменить</string>
+    <string name="authenticator_conflict_title">Конфликт приложений</string>
+    <string name="authenticator_conflict_message">Другое приложение уже настроено для аутентификации на GitHub.\n\nВы должны удалить конфликтующее приложение из учетных записей и настроек синхронизации для использования этого приложения.</string>
+    <string name="opening_repository">Загрузка {0}…</string>
+    <string name="commit_compare_title">Сравнить коммиты</string>
+    <string name="commit_prefix">Коммит\u0020</string>
+    <string name="parent_prefix">Родитель\u0020</string>
+    <string name="authored">автор</string>
+    <string name="committed">закоммичен</string>
+    <string name="diff_line_message">Что вы собираетесь сделать?</string>
+    <string name="comment_on_line">Комментировать строку</string>
+    <string name="view_entire_file">Просмотреть весь файл</string>
+    <string name="comparing_commits">Сравнение {0} коммитов</string>
+    <string name="enable_wrapping">Переносить строки</string>
+    <string name="disable_wrapping">Не переносить строки</string>
+    <string name="code">Код</string>
+    <string name="following_user">Подписываюсь…</string>
+    <string name="unfollowing_user">Отписываюсь…</string>
+    <string name="starring_repository">Отмечаем хранилище…</string>
+    <string name="unstarring_repository">Снимаем отметку с хранилища…</string>
+    <string name="navigate_to">Перейти к…</string>
+    <string name="navigate_to_user">Перейти к %s</string>
+    <string name="contributions">%d коммитов</string>
+
+    <!-- Tab titles, should be as short as possible -->
+    <string name="tab_repositories">хранилища</string>
+    <string name="tab_users">пользователи</string>
+    <string name="tab_news">новости</string>
+    <string name="tab_following_self">подписки</string>
+    <string name="tab_followers_self">подписанные</string>
+    <string name="tab_following">подписки</string>
+    <string name="tab_followers">подписанные</string>
+    <string name="tab_members">члены</string>
+    <string name="tab_code">код</string>
+    <string name="tab_commits">коммиты</string>
+    <string name="tab_issues">задачи</string>
+    <string name="tab_watched">наблюдаемые</string>
+    <string name="tab_assigned">назначенные</string>
+    <string name="tab_created">созданные</string>
+    <string name="tab_mentioned">упоминания</string>
+    <string name="tab_mine">мои</string>
+    <string name="tab_starred">отмеченные</string>
+    <string name="tab_all">все</string>
+    <!--  -->
+    <string name="share">Поделиться</string>
+    <string name="show_password">Показать пароль</string>
+    <string name="write">Написать</string>
+    <string name="preview">Предпросмотр</string>
+    <string name="show_raw_markdown">Показать исходный Markdown</string>
+    <string name="render_markdown">Отобразить Markdown</string>
+
+</resources>

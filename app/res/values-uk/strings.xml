@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<resources>
+
+    <!-- Error messages -->
+    <string name="error_orgs_load">Помилка при завантаженні профіля та організацій</string>
+    <string name="error_issues_load">Помилка при завантаженні завдань</string>
+    <string name="error_repos_load">Помилка при завантаженні репозиторіїв</string>
+    <string name="error_repo_load">Помилка при завантаженні репозиторія</string>
+    <string name="error_gist_load">Помилка при завантаженні Gist</string>
+    <string name="error_news_load">Помилка при завантаженні новин</string>
+    <string name="error_followers_load">Помилка при завантаженні читачів</string>
+    <string name="error_people_load">Помилка при завантаженні профілів</string>
+    <string name="error_person_load">Помилка при завантаженні профіля</string>
+    <string name="error_gist_file_load">Помилка при завантаженні вмісту Gist файла</string>
+    <string name="error_gists_load">Помилка при завантаженні Gist-ів</string>
+    <string name="error_issue_load">Помилка при завантаженні задачі</string>
+    <string name="error_collaborators_load">Помилка при завантаженні учасників</string>
+    <string name="error_milestones_load">Помилка при завантаженні етапів</string>
+    <string name="error_labels_load">Помилка при завантаженні тегів</string>
+    <string name="error_bookmarks_load">Помилка при завантаженні закладок</string>
+    <string name="error_members_load">Помилка при завантаженні учасників</string>
+    <string name="error_commits_load">Помилка при завантаженні комітів</string>
+    <string name="error_commit_load">Помилка при завантаженні коміта</string>
+    <string name="error_file_load">Помилка при завантаженні файла</string>
+    <string name="error_code_load">Помилка при завантаженні коду</string>
+    <string name="error_refs_load">Помилка при завантаженні гілок та тегів</string>
+    <string name="error_following_person">Помилка при підписці</string>
+    <string name="error_unfollowing_person">Помилка при відписці</string>
+    <string name="error_checking_following_status">Помилка при перевірці підписки</string>
+    <string name="error_starring_repository">Помилка при додаванні до улюблених</string>
+    <string name="error_unstarring_repository">Помилка при видаленні із улюблених</string>
+    <string name="error_checking_starring_status">Помилка при перевірці статуса</string>
+    <string name="error_rendering_markdown">Помилка при рендерингу markdown</string>
+    <!--  -->
+
+
+    <!-- Loading messages -->
+    <string name="loading_gist">Завантаження Gist…</string>
+    <string name="random_gist">Завантаження випадкового Gist…</string>
+    <string name="loading_more_issues">Завантаження завдань…</string>
+    <string name="loading_issues">Завантаження завдань…</string>
+    <string name="loading_comments">Завантаження коментарів…</string>
+    <string name="loading_repositories">Завантаження репозиторіїв…</string>
+    <string name="loading_issue">Завантаження задачі…</string>
+    <string name="loading_news">Завантаження новин…</string>
+    <string name="loading_followers">Завантаження читачів…</string>
+    <string name="loading_people">Завантаження профілів…</string>
+    <string name="loading_gists">Завантаження Gist-ів…</string>
+    <string name="loading_collaborators">Завантаження учасників…</string>
+    <string name="loading_milestones">Завантаження етапів…</string>
+    <string name="loading_labels">Завантаження тегів…</string>
+    <string name="loading_commits">Завантаження комітів…</string>
+    <string name="loading_files_and_comments">Завантаження файлів та коментарів…</string>
+    <string name="loading_refs">Завантаження гілок та тегів…</string>
+    <!--  -->
+
+
+    <!-- Empty messages -->
+    <string name="no_bookmarks">Немає закладок</string>
+    <string name="no_repositories">Немає репозиторіїв</string>
+    <string name="no_issues">Немає завдань</string>
+    <string name="no_gists">Немає Gist-ів</string>
+    <string name="no_people">Немає профілів</string>
+    <string name="no_followers">Немає читачів</string>
+    <string name="no_members">Немає учасників</string>
+    <string name="no_news">Немає новин</string>
+    <string name="no_commits">Немає комітів</string>
+    <!--  -->
+
+
+    <!-- Updating messages -->
+    <string name="updating_assignee">Оновлення відповідального…</string>
+    <string name="updating_issue">Оновлення задач…</string>
+    <string name="updating_labels">Оновлення тегів…</string>
+    <string name="updating_milestone">Оновлення етапу…</string>
+    <!--  -->
+
+    <string name="app_name">GitHub</string>
+    <string name="news">Новини</string>
+    <string name="issues">Задачі</string>
+    <string name="gists">Gists</string>
+    <string name="commits">Коміти</string>
+    <string name="find_repositories">Знайти репозиторії</string>
+    <string name="find_issues">Знайти задачі</string>
+    <string name="search_title">Пошук…</string>
+    <string name="clear_search_history">Очистити історію</string>
+    <string name="search_history_cleared">Історія пошуку очищена</string>
+    <string name="login_activity_authenticating">Автентифікація…</string>
+    <string name="creating_gist">Створення Gist…</string>
+    <string name="create">Створити</string>
+    <string name="create_gist">Створити Gist</string>
+    <string name="gist_content_hint">puts \'Hello World!\'</string>
+    <string name="make_public">Зробити цей Gist публічним</string>
+    <string name="gist_file_name_hint">file.rb</string>
+    <string name="gist">Gist</string>
+    <string name="comments">Коментарі</string>
+    <string name="files">Файли</string>
+    <string name="open">Відкрити</string>
+    <string name="random">Випадковий</string>
+    <string name="file_name">Назва файла</string>
+    <string name="file_content">Вміст файла</string>
+    <string name="new_gist">Новий Gist</string>
+    <string name="filter">Фільтр</string>
+    <string name="bookmark">Закладка</string>
+    <string name="comment">Коментар</string>
+    <string name="delete">Видалити</string>
+    <string name="refresh">Оновити</string>
+    <string name="dashboard_issues_title">Дошка завдань</string>
+    <string name="bookmarks">Закладки</string>
+    <string name="gists_title">Gists</string>
+    <string name="issue_title">Завдання #</string>
+    <string name="pull_request_title">Pull Request #</string>
+    <string name="gist_title">Gist\u0020</string>
+    <string name="filter_issues_title">Фільтр завдань</string>
+    <string name="create_comment_title">Створити коментар</string>
+    <string name="comment_hint">Введіть коментар</string>
+    <string name="show_more">Показати більше…</string>
+    <string name="repositories">Репозиторії</string>
+    <string name="issues_title">Завдання</string>
+    <string name="edit_labels">Редагувати теги</string>
+    <string name="milestone_prefix">Етап:</string>
+    <string name="edit_milestone">Редагувати етап</string>
+    <string name="edit_assignee">Редагувати відповідального</string>
+    <string name="description">Опис</string>
+    <string name="gist_description_hint">Gist створений на Android</string>
+    <string name="title">Заголовок</string>
+    <string name="edit">Редагувати</string>
+    <string name="starring_gist">Відмічаємо Gist як улюблений…</string>
+    <string name="unstarring_gist">Видалення Gist із улюблених…</string>
+    <string name="accounts_label">Профілі</string>
+    <string name="select_assignee">Відповідальний</string>
+    <string name="select_milestone">Етап</string>
+    <string name="select_labels">Теги</string>
+    <string name="select_ref">Гілка або тег</string>
+    <string name="no_milestone">Не входить до жодного із етапів</string>
+    <string name="unassigned">Немає відповідального</string>
+    <string name="assigned">відповідальний</string>
+    <string name="no_gists_found">Gist-и не знайдені</string>
+    <string name="confirm_gist_delete_title">Підтвердити видалення</string>
+    <string name="confirm_gist_delete_message">Ви впевнені, що хочете видалити цей Gist?</string>
+    <string name="deleting_gist">Видалення Gist…</string>
+    <string name="creating_comment">Створення коментаря…</string>
+    <string name="confirm_bookmark_delete_message">Ви впевнені, що хочете видалити цю закладку?</string>
+    <string name="issue_dashboard">Дошка завдань</string>
+    <string name="new_issue">Нове завдання</string>
+    <string name="anonymous">Анонім</string>
+    <string name="message_filter_saved">Фільтр завдань збережено до закладок</string>
+    <string name="recent">Нещодавні</string>
+    <string name="section_issue_status">Статус:</string>
+    <string name="status_open">Відкритий</string>
+    <string name="status_closed">Закритий</string>
+    <string name="section_issue_assigned">Відповідальний:</string>
+    <string name="assignee_anyone">Будь-хто</string>
+    <string name="section_issue_milestone">Етап:</string>
+    <string name="none">Немає</string>
+    <string name="section_issue_labels">Теги:</string>
+    <string name="log_in">Увійти</string>
+    <string name="signup_link">Вперше на GitHub? &lt;a href=\"https://github.com/plans\">Натисніть сюди&lt;/a>, щоб зареєструватись</string>
+    <string name="connection_failed">Неможливо з\'єднатись із GitHub</string>
+    <string name="invalid_login_or_password">Введіть правильні логін та пароль</string>
+    <string name="invalid_password">Введіть правильний пароль.</string>
+    <string name="password">Пароль</string>
+    <string name="login_or_email">Логін або пошта</string>
+    <string name="followers">Читачі</string>
+    <string name="following">Підписки</string>
+    <string name="followers_self">Читачі</string>
+    <string name="following_self">Підписки</string>
+    <string name="follow">Підписатись</string>
+    <string name="unfollow">Відписатись</string>
+    <string name="star">Додати до улюблених</string>
+    <string name="unstar">Видалити із улюблених</string>
+    <string name="members">Учасники</string>
+    <string name="closing_issue">Закриття завдання…</string>
+    <string name="reopening_issue">Відкриття завдання…</string>
+    <string name="avatar">Аватар</string>
+    <string name="creating_issue">Створення завдання…</string>
+    <string name="prefix_created">створено\u0020</string>
+    <string name="prefix_updated">оновлено\u0020</string>
+    <string name="prefix_opened">відкрито\u0020</string>
+    <string name="clear">Очистити</string>
+    <string name="open_issues">Відкриті завдання</string>
+    <string name="closed_issues">Закриті завдання</string>
+    <string name="confirm_bookmark_delete_title">Видалити закладку</string>
+    <string name="save">Зберегти</string>
+    <string name="apply">Ок</string>
+    <string name="labels_prefix">Теги:</string>
+    <string name="assignee">Відповідальний</string>
+    <string name="milestone">Етап</string>
+    <string name="labels">Теги</string>
+    <string name="issue_confirm_close_message">Ви впевнені, що хочете закрити це завдання?</string>
+    <string name="issue_confirm_reopen_message">Ви впевнені, що хочете відкрити це завдання?</string>
+    <string name="issue_confirm_close_title">Закрити завдання</string>
+    <string name="issue_confirm_reopen_title">Відкрити завдання</string>
+    <string name="closed">Закрито</string>
+    <string name="no_description_given">Немає опису.</string>
+    <string name="close">Закрити</string>
+    <string name="reopen">Відкрити</string>
+    <string name="title_invalid_github_url">Неправильний URL GitHub</string>
+    <string name="message_invalid_github_url">Цей URL неможливо відкрити додатком:\n{0}</string>
+    <string name="recently_viewed">НЕЩОДАВНО ПЕРЕГЛЯНУТІ</string>
+    <string name="cancel">Скасувати</string>
+    <string name="authenticator_conflict_title">Конфлікт додатка</string>
+    <string name="authenticator_conflict_message">Інший додаток вже налаштовано для автентифікації на GitHub.\n\nВи повинні видалити його із налаштувань "Облікові записи й синхронізація" та видалити його з телефону, щоб використовувати додаток GitHub.</string>
+    <string name="opening_repository">Відкриття {0}…</string>
+    <string name="commit_compare_title">Порівняння комітів</string>
+    <string name="commit_prefix">Коміт\u0020</string>
+    <string name="parent_prefix">Попередній\u0020</string>
+    <string name="authored">автор</string>
+    <string name="committed">закомічено</string>
+    <string name="diff_line_message">Що ви хочете зробити?</string>
+    <string name="comment_on_line">Коментувати рядок</string>
+    <string name="view_entire_file">Переглянути весь файл</string>
+    <string name="comparing_commits">Порівняння {0} комітів</string>
+    <string name="enable_wrapping">Увімкнути перенесення рядків</string>
+    <string name="disable_wrapping">Вимкнути перенесення рядків</string>
+    <string name="code">Код</string>
+    <string name="following_user">Підписка…</string>
+    <string name="unfollowing_user">Відписка…</string>
+    <string name="starring_repository">Додавання до улюблених…</string>
+    <string name="unstarring_repository">Видалення із улюблених…</string>
+    <string name="navigate_to">Перейти до…</string>
+
+    <!-- Tab titles, should be as short as possible -->
+    <string name="tab_repositories">репозиторії</string>
+    <string name="tab_news">новини</string>
+    <string name="tab_following_self">підписки</string>
+    <string name="tab_followers_self">читачі</string>
+    <string name="tab_following">підписки</string>
+    <string name="tab_followers">читачі</string>
+    <string name="tab_members">учасники</string>
+    <string name="tab_code">код</string>
+    <string name="tab_commits">коміти</string>
+    <string name="tab_issues">завдання</string>
+    <string name="tab_watched">слідкую</string>
+    <string name="tab_assigned">призначені</string>
+    <string name="tab_created">створені</string>
+    <string name="tab_mentioned">згаданий</string>
+    <string name="tab_mine">мої</string>
+    <string name="tab_starred">улюблені</string>
+    <string name="tab_all">всі</string>
+    <!--  -->
+    <string name="share">Поділитись</string>
+    <string name="show_password">Показати пароль</string>
+    <string name="write">Написати</string>
+    <string name="preview">Переглянути</string>
+    <string name="show_raw_markdown">Показати код markdown</string>
+    <string name="render_markdown">Відмалювати markdown</string>
+
+</resources>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <View
+        android:id="@+id/v_header_separator"
+        style="@style/HeaderSeparator"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/v_header_separator" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="10dp" >
+
+            <CheckBox
+                android:id="@+id/cb_public"
+                style="@style/SubtitleText"
+                android:layout_gravity="right"
+                android:paddingRight="10dp"
+                android:text="@string/make_public"
+                android:textColor="@color/text" />
+
+            <View style="@style/Separator" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp" >
+
+                <TextView
+                    style="@style/HeaderTitleText"
+                    android:text="@string/description" />
+
+                <EditText
+                    android:id="@+id/et_gist_description"
+                    style="@style/FormalSingleLineEditText"
+                    android:layout_width="match_parent"
+                    android:hint="@string/gist_description_hint" />
+
+                <TextView
+                    style="@style/HeaderTitleText"
+                    android:paddingTop="15dp"
+                    android:text="@string/file_name" />
+
+                <EditText
+                    android:id="@+id/et_gist_name"
+                    style="@style/EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/gist_file_name_hint"
+                    android:singleLine="true" />
+
+                <TextView
+                    style="@style/HeaderTitleText"
+                    android:paddingTop="15dp"
+                    android:text="@string/file_content" />
+
+                <EditText
+                    android:id="@+id/et_gist_content"
+                    style="@style/EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="top"
+                    android:hint="@string/gist_content_hint"
+                    android:inputType="textMultiLine|textAutoComplete"
+                    android:minLines="5"
+                    android:padding="10dp"
+                    android:scrollbars="horizontal|vertical"
+                    android:typeface="monospace" >
+
+                    <requestFocus />
+                </EditText>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
