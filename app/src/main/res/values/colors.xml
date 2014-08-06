@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<resources>
+
+    <color name="background">#F9F9F9</color>
+    <color name="background_id">#E3E3E3</color>
+    <color name="background_selected">#E8E8E8</color>
+    <color name="inset_background">#F8F8F8</color>
+    <color name="inset_outer">#C7C7C7</color>
+    <color name="inset_inner">#FFFFFF</color>
+    <color name="text">#1E1E1E</color>
+    <color name="text_light">#AEAEAE</color>
+    <color name="text_icon">#A8A8A8</color>
+    <color name="text_recent">#3797C7</color>
+    <color name="text_description">#666666</color>
+    <color name="actionbar_background_top">#6E6E6E</color>
+    <color name="actionbar_background_bottom">#181818</color>
+    <color name="actionbar_background_end">#282828</color>
+    <color name="actionbar_background_start">#515252</color>
+    <color name="actionbar_text">#F4F2F1</color>
+    <color name="pager_title_background_top_start">#1A4D6B</color>
+    <color name="pager_title_background_top_end">#1A5373</color>
+    <color name="pager_title_background_bottom">#155A7F</color>
+    <color name="pager_title_background_end">#22688F</color>
+    <color name="pager_title_background_start">#1F5D82</color>
+    <color name="pager_title_text">#E0E6EA</color>
+    <color name="pager_title_selected_text">#FFFFFF</color>
+    <color name="pager_footer">#FFFFFF</color>
+    <color name="edit_text_background">#F8F8F8</color>
+    <color name="edit_text_inner">#EDEDED</color>
+    <color name="edit_text_outer">#959595</color>
+    <color name="edit_text_cursor">#A6A6A6</color>
+    <color name="list_divider_top">#E2E2E2</color>
+    <color name="list_divider_bottom">#FFFFFF</color>
+    <color name="text_link">#4183C4</color>
+    <color name="text_news_details">#666666</color>
+    <color name="label_outer">#55000000</color>
+    <color name="label_inner">#55FFFFFF</color>
+    <color name="milestone_border">#ABABAB</color>
+    <color name="milestone_opened_start">#BEBEBE</color>
+    <color name="milestone_opened_end">#DCDCDC</color>
+    <color name="milestone_closed_start">#6AA811</color>
+    <color name="milestone_closed_end">#6EB807</color>
+    <color name="sign_up_background">#E6E6E5</color>
+    <color name="sign_up_background_bottom">#D4D4D4</color>
+    <color name="sign_up_text">#666666</color>
+    <color name="sign_up_text_link">#3797C7</color>
+    <color name="state_background_closed">#BD2C00</color>
+    <color name="state_text">#FFFFFF</color>
+    <color name="diff_marker_bg">#EAF2F5</color>
+    <color name="diff_marker_text">#999999</color>
+    <color name="diff_add">#DDFFDD</color>
+    <color name="diff_add_text">#528E4C</color>
+    <color name="diff_remove">#FFDDDD</color>
+    <color name="diff_remove_text">#932121</color>
+    <color name="section_border">#D0D0D0</color>
+    <color name="section_start">#F9F9F9</color>
+    <color name="section_end">#E0E0E0</color>
+    <color name="section_subtitle">#555555</color>
+    <color name="tab_selected_text">#FFFFFF</color>
+    <color name="tab_selected_icon">#08D7FF</color>
+    <color name="tab_text">#B3D5E8</color>
+    <color name="tab_icon">#FAFAFA</color>
+    <color name="tab_text_shadow">#245066</color>
+
+</resources>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ListItem" >
+
+    <ImageView
+        android:id="@+id/iv_avatar"
+        style="@style/AvatarLarge"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dp"
+        android:contentDescription="@string/avatar" />
+
+    <TextView
+        android:id="@+id/tv_event"
+        style="@style/ListTitleText"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/iv_avatar"
+        android:paddingBottom="5dp"
+        android:textSize="15dp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/tv_event_details"
+        style="@style/ListTitleText"
+        android:layout_alignLeft="@+id/tv_event"
+        android:layout_below="@+id/tv_event"
+        android:lineSpacingExtra="3dp"
+        android:maxLines="3"
+        android:paddingBottom="5dp"
+        android:textColor="@color/text_news_details"
+        android:textSize="14dp"
+        android:textStyle="normal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tv_event_details"
+        android:layout_below="@+id/tv_event_details"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/tv_event_icon"
+            style="@style/EventIcon" />
+
+        <TextView
+            android:id="@+id/tv_event_date"
+            style="@style/ListSubtitleText"
+            android:paddingLeft="5dp"
+            android:singleLine="true" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<resources>
+
+    <!-- Error messages -->
+    <string name="error_orgs_load">Hesap &amp; Kurumları Yükleme Başarısız Oldu</string>
+    <string name="error_issues_load">Sorunları Yükleme Başarısız Oldu</string>
+    <string name="error_repos_load">Depoları Yükleme Başarısız Oldu</string>
+    <string name="error_repo_load">Depo Yükleme Başarısız Oldu</string>
+    <string name="error_gist_load">Gist Yükleme Başarısız Oldu</string>
+    <string name="error_news_load">Haberleri Yükleme Başarısız Oldu</string>
+    <string name="error_followers_load">Takipçileri Yükleme Başarısız Oldu</string>
+    <string name="error_people_load">Kişileri Yükleme Başarısız Oldu</string>
+    <string name="error_person_load">Kişiyi Yükleme Başarısız Oldu</string>
+    <string name="error_gist_file_load">Gist İçeriği Yükleme Başarısız Oldu</string>
+    <string name="error_gists_load">Gist\'leri Yükleme Başarısız Oldu</string>
+    <string name="error_issue_load">Sorun Yükleme Başarısız Oldu</string>
+    <string name="error_collaborators_load">Ortak Çalışanları Yükleme Başarısız Oldu</string>
+    <string name="error_milestones_load">Dönüm Noktalarını Yükleme Başarısız Oldu</string>
+    <string name="error_labels_load">Etiketleri Yükleme Başarısız Oldu</string>
+    <string name="error_bookmarks_load">Yer İmlerini Yükleme Başarısız Oldu</string>
+    <string name="error_members_load">Üyeleri Yükleme Başarısız Oldu</string>
+    <string name="error_commits_load">Onaylamaları Yükleme Başarısız Oldu</string>
+    <string name="error_commit_load">Onaylamayı Yükleme Başarısız Oldu</string>
+    <string name="error_file_load">Dosya Yükleme Başarısız Oldu</string>
+    <string name="error_code_load">Kod Yükleme Başarısız Oldu</string>
+    <string name="error_refs_load">Dalları &amp; Etiketleri Yükleme Başarısız Oldu</string>
+    <string name="error_following_person">Takip Etme Başarısız Oldu</string>
+    <string name="error_unfollowing_person">Takip Etmeyi Bırakma Başarısız Oldu</string>
+    <string name="error_checking_following_status">Takip Etme Kontrolü Başarısız Oldu</string>
+    <string name="error_starring_repository">Yıldız Koyma Başarısız Oldu</string>
+    <string name="error_unstarring_repository">Yıldızı Kaldırma Başarısız Oldu</string>
+    <string name="error_checking_starring_status">Yıldız Durumunu Kontrol Etme Başarısız Oldu</string>
+    <string name="error_rendering_markdown">Markdown dosyası render edilemdi</string>
+    <!--  -->
+
+
+    <!-- Loading messages -->
+    <string name="loading_gist">Gist Yükleniyor…</string>
+    <string name="random_gist">Rastgele Gist Yükleniyor…</string>
+    <string name="loading_more_issues">Daha Fazla Sorun Yükleniyor…</string>
+    <string name="loading_issues">Sorunlar Yükleniyor…</string>
+    <string name="loading_comments">Yorumlar Yükleniyor…</string>
+    <string name="loading_repositories">Depolar Yükleniyor…</string>
+    <string name="loading_issue">Sorun Yükleniyor…</string>
+    <string name="loading_news">Haberler Yükleniyor…</string>
+    <string name="loading_followers">Takipçiler Yükleniyor…</string>
+    <string name="loading_people">Kişiler Yükleniyor…</string>
+    <string name="loading_gists">Gist\'ler Yükleniyor…</string>
+    <string name="loading_collaborators">Ortak Çalışanlar Yükleniyor…</string>
+    <string name="loading_milestones">Dönüm Noktaları Yükleniyor…</string>
+    <string name="loading_labels">Etiketler Yükleniyor…</string>
+    <string name="loading_commits">Onaylamalar Yükleniyor…</string>
+    <string name="loading_files_and_comments">Dosya &amp; Yorumlar Yükleniyor…</string>
+    <string name="loading_refs">Dallar &amp; Etiketler Yükleniyor…</string>
+    <!--  -->
+
+
+    <!-- Empty messages -->
+    <string name="no_bookmarks">Yer İmi Yok</string>
+    <string name="no_repositories">Depo Yok</string>
+    <string name="no_issues">Sorun Yok</string>
+    <string name="no_gists">Gist Yok</string>
+    <string name="no_people">Kişi Yok</string>
+    <string name="no_followers">Takipçi Yok</string>
+    <string name="no_members">Üye Yok</string>
+    <string name="no_news">Haber</string>
+    <string name="no_commits">Onaylama Yok</string>
+    <!--  -->
+
+
+    <!-- Updating messages -->
+    <string name="updating_assignee">Atanan Güncelleniyor…</string>
+    <string name="updating_issue">Sorun Güncelleniyor…</string>
+    <string name="updating_labels">Etiketler Güncelleniyor…</string>
+    <string name="updating_milestone">Dönüm Noktası Güncelleniyor…</string>
+    <!--  -->
+
+    <string name="app_name">GitHub</string>
+    <string name="news">Haberler</string>
+    <string name="issues">Sorunlar</string>
+    <string name="gists">Gist\'ler</string>
+    <string name="commits">Onaylamalar</string>
+    <string name="find_repositories">Depo Bul</string>
+    <string name="find_issues">Sorun Bul</string>
+    <string name="search_title">Ara…</string>
+    <string name="clear_search_history">Geçmişi Sil</string>
+    <string name="search_history_cleared">Arama geçmişi silindi</string>
+    <string name="login_activity_authenticating">Giriş yapılıyor…</string>
+    <string name="creating_gist">Gist Oluşturuluyor…</string>
+    <string name="create">Oluştur</string>
+    <string name="create_gist">Gist Oluştur</string>
+    <string name="gist_content_hint">puts \'Merhaba Dünya!\'</string>
+    <string name="make_public">Bu Gist\'i herkese açık yap</string>
+    <string name="gist_file_name_hint">dosya.rb</string>
+    <string name="gist">Gist</string>
+    <string name="comments">Yorumlar</string>
+    <string name="files">Dosyalar</string>
+    <string name="open">Aç</string>
+    <string name="random">Rastgele</string>
+    <string name="file_name">Dosya Adı</string>
+    <string name="file_content">Dosya İçeriği</string>
+    <string name="new_gist">Yeni Gist</string>
+    <string name="filter">Filtre</string>
+    <string name="bookmark">Yer İmi</string>
+    <string name="comment">Yorum</string>
+    <string name="delete">Sil</string>
+    <string name="refresh">Yenile</string>
+    <string name="dashboard_issues_title">Sorun Kontrol Paneli</string>
+    <string name="bookmarks">Yer İmleri</string>
+    <string name="gists_title">Gist\'ler</string>
+    <string name="issue_title">Sorun #</string>
+    <string name="pull_request_title">Çekme Talebi #</string>
+    <string name="gist_title">Gist\u0020</string>
+    <string name="filter_issues_title">Sorunları Filtrele</string>
+    <string name="create_comment_title">Yorum Oluştur</string>
+    <string name="comment_hint">Bir yorum gir</string>
+    <string name="show_more">Daha Fazla Göster…</string>
+    <string name="repositories">Depolar</string>
+    <string name="issues_title">Sorunlar</string>
+    <string name="edit_labels">Etiketleri Düzenle</string>
+    <string name="milestone_prefix">Dönüm Noktası</string>
+    <string name="edit_milestone">Dönüm Noktası Düzenle</string>
+    <string name="edit_assignee">Atanan Düzenle</string>
+    <string name="description">Tanım</string>
+    <string name="gist_description_hint">Android Gist oluşturdu</string>
+    <string name="title">Başlık</string>
+    <string name="edit">Düzenle</string>
+    <string name="starring_gist">Gist Yıldızlanıyor…</string>
+    <string name="unstarring_gist">Gist\'in Yıldızı Kaldırılıyor…</string>
+    <string name="accounts_label">Hesaplar</string>
+    <string name="select_assignee">Atanmış Seç</string>
+    <string name="select_milestone">Dönüm Noktası Seç</string>
+    <string name="select_labels">Etiket Seç</string>
+    <string name="select_ref">Bir Dal Veya Etiket Seç</string>
+    <string name="no_milestone">Dönüm Noktası Yok</string>
+    <string name="unassigned">Kimse Atanmamış</string>
+    <string name="assigned">atanmış</string>
+    <string name="no_gists_found">Hiç Gist bulunamadı</string>
+    <string name="confirm_gist_delete_title">Silmeyi Onayla</string>
+    <string name="confirm_gist_delete_message">Bu Gist\'i silmek istediğinizden emin misiniz?</string>
+    <string name="deleting_gist">Gist Siliniyor…</string>
+    <string name="creating_comment">Yorum Oluşturuluyor…</string>
+    <string name="confirm_bookmark_delete_message">Bu yer imini kaldırmak istediğinizden emin misiniz?</string>
+    <string name="issue_dashboard">Sorun Kontrol Paneli</string>
+    <string name="new_issue">Yeni Sorun</string>
+    <string name="anonymous">Anonim</string>
+    <string name="message_filter_saved">Sorun filtresi yer imlerine kaydedildi</string>
+    <string name="recent">Yakın Zamanda</string>
+    <string name="section_issue_status">Durum:</string>
+    <string name="status_open">Açık</string>
+    <string name="status_closed">Kapanmış</string>
+    <string name="section_issue_assigned">Şu Kişiye Atanmış :</string>
+    <string name="assignee_anyone">Herhangi Biri</string>
+    <string name="section_issue_milestone">Dönüm Noktası:</string>
+    <string name="none">Hiç</string>
+    <string name="section_issue_labels">Etiketler:</string>
+    <string name="log_in">Giriş yap</string>
+    <string name="signup_link">GitHub\'ın yenisi misin? &lt;a href=\"https://github.com/plans\">Buraya tıkla&lt;/a> kayıt olmak için</string>
+    <string name="connection_failed">GitHub\'a bağlanılamadı</string>
+    <string name="invalid_login_or_password">Lütfen geçerli bir kullanıcı adı &amp; şifre girin</string>
+    <string name="invalid_password">Lütfen geçerli bir şifre girin.</string>
+    <string name="password">Şifre</string>
+    <string name="login_or_email">Kullanıcı Adı veya Email</string>
+    <string name="followers">Takipçiler</string>
+    <string name="following">Takip Ettikleri</string>
+    <string name="followers_self">Takipçilerim</string>
+    <string name="following_self">Takip Ettiklerim</string>
+    <string name="follow">Takip Et</string>
+    <string name="unfollow">Takip Etmeyi Bırak</string>
+    <string name="star">Yıldızlar</string>
+    <string name="unstar">Yıldızı Kaldır</string>
+    <string name="members">Üyeler</string>
+    <string name="closing_issue">Sorun Kapatılıyor…</string>
+    <string name="reopening_issue">Sorun Tekrar Açılıyor…</string>
+    <string name="avatar">Avatar</string>
+    <string name="creating_issue">Sorun Oluşturuluyor…</string>
+    <string name="prefix_created">oluşturuldu\u0020</string>
+    <string name="prefix_updated">güncellendi\u0020</string>
+    <string name="prefix_opened">açıldı\u0020</string>
+    <string name="clear">Temizle</string>
+    <string name="open_issues">Açık Sorunlar</string>
+    <string name="closed_issues">Kapanmış Sorunlar</string>
+    <string name="confirm_bookmark_delete_title">Yer İmini Kaldır</string>
+    <string name="save">Kaydet</string>
+    <string name="apply">Uygula</string>
+    <string name="labels_prefix">Etiketler:</string>
+    <string name="assignee">Atanmış</string>
+    <string name="milestone">Dönüm Noktası</string>
+    <string name="labels">Etiketler</string>
+    <string name="issue_confirm_close_message">Bu sorunu kapatmak istediğinizden emin misiniz?</string>
+    <string name="issue_confirm_reopen_message">Bu sorunu tekrar açmak istediğinizden emin misiniz?</string>
+    <string name="issue_confirm_close_title">Sorunu Kapat</string>
+    <string name="issue_confirm_reopen_title">Sorunu Tekrar Aç</string>
+    <string name="closed">Kapatıldı</string>
+    <string name="no_description_given">Tanım belirtilmemiş.</string>
+    <string name="close">Kapat</string>
+    <string name="reopen">Tekrar Aç</string>
+    <string name="title_invalid_github_url">Geçersiz GitHub URL\'i</string>
+    <string name="message_invalid_github_url">Belirtilen URL bu uygulama ile açılamadı:\n{0}</string>
+    <string name="recently_viewed">YAKIN ZAMANDA GÖRÜNTÜLENENLER</string>
+    <string name="cancel">İptal</string>
+    <string name="authenticator_conflict_title">Uygulama Çakışması</string>
+    <string name="authenticator_conflict_message">Kurulu olan başka bir uygulama GitHub kimlik doğrulaması için ayarlanmış.\n\nGitHub uygulamasının tekrar kullanılabilmesi için diğer uygulamayı Hesaplardan &amp; eş zamanlama ayarlarından kaldırmanız gerekmekte.</string>
+    <string name="opening_repository">Açılıyor {0}…</string>
+    <string name="commit_compare_title">Onaylama Karşılaştır</string>
+    <string name="commit_prefix">Onay\u0020</string>
+    <string name="parent_prefix">Ana Onay\u0020</string>
+    <string name="authored">yazılmış</string>
+    <string name="committed">onaylanmış</string>
+    <string name="diff_line_message">Ne yapmak istiyorsun?</string>
+    <string name="comment_on_line">Satıra yorum ekle</string>
+    <string name="view_entire_file">Tüm dosyayı görüntüle</string>
+    <string name="comparing_commits">{0} onay karşılaştırılıyor</string>
+    <string name="enable_wrapping">Sözcük Kaydır</string>
+    <string name="disable_wrapping">Sözcük Kaydırmayı Kapat</string>
+    <string name="code">Kod</string>
+    <string name="following_user">Takip Edilme İşlemi Devam Ediyor…</string>
+    <string name="unfollowing_user">Takip Edilme Kaldırılıyor…</string>
+    <string name="starring_repository">Yıldız Konuyor…</string>
+    <string name="unstarring_repository">Yıldız Kaldırılıyor…</string>
+    <string name="navigate_to">Yönlendiriliyor…</string>
+
+    <!-- Tab titles, should be as short as possible -->
+    <string name="tab_repositories">Depolar</string>
+    <string name="tab_news">Haberler</string>
+    <string name="tab_following_self">Takip Ettiklerim</string>
+    <string name="tab_followers_self">Takip Edenler</string>
+    <string name="tab_following">Takip Ettikleri</string>
+    <string name="tab_followers">Takip Edenler</string>
+    <string name="tab_members">Üyeler</string>
+    <string name="tab_code">Kod</string>
+    <string name="tab_commits">Onaylamalar</string>
+    <string name="tab_issues">Durumlar</string>
+    <string name="tab_watched">İzlediklerim</string>
+    <string name="tab_assigned">Atandıklarım</string>
+    <string name="tab_created">Yaratılanlar</string>
+    <string name="tab_mentioned">Bahsedilenler</string>
+    <string name="tab_mine">Benim</string>
+    <string name="tab_starred">Yıldızladıklarım</string>
+    <string name="tab_all">Hepsi</string>
+    <!--  -->
+    <string name="share">Paylaş</string>
+    <string name="show_password">Şifre Göster</string>
+    <string name="write">Yaz</string>
+    <string name="preview">Önizleme</string>
+    <string name="show_raw_markdown">Ham markdown dosyasını göster</string>
+    <string name="render_markdown">Markdown dosyasını renderla</string>
+
+</resources>

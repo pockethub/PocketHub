@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<resources>
+
+    <!-- Error messages -->
+    <string name="error_orgs_load">계정 로딩중 &amp; 인증 실패</string>
+    <string name="error_issues_load">이슈 가져오기 실패</string>
+    <string name="error_repos_load">저장소 가져오기 실패</string>
+    <string name="error_repo_load">저장소 가져오기 실패</string>
+    <string name="error_gist_load">Gist 가져오기 실패</string>
+    <string name="error_news_load">소식 가져오기 실패</string>
+    <string name="error_followers_load">팔로워 가져오기 실패</string>
+    <string name="error_people_load">people 가져오기 실패</string>
+    <string name="error_person_load">person 가져오기 실패</string>
+    <string name="error_gist_file_load">Gist 파일내용 가져오기 실패</string>
+    <string name="error_gists_load">Gists 가져오기 실패</string>
+    <string name="error_issue_load">이슈 가져오기 실패</string>
+    <string name="error_collaborators_load">멤버 가져오기 실패</string>
+    <string name="error_milestones_load">마일스톤 가져오기 실패</string>
+    <string name="error_labels_load">라벨 가져오기 실패</string>
+    <string name="error_bookmarks_load">책갈피 가져오기 실패</string>
+    <string name="error_members_load">멤버 가져오기 실패</string>
+    <!--  -->
+
+
+    <!-- Loading messages -->
+    <string name="loading_gist">Gist 가져오는중…</string>
+    <string name="random_gist">무작위로 Gist 가져오는중…</string>
+    <string name="loading_more_issues">이슈 가져오는중…</string>
+    <string name="loading_issues">이슈 가져오는중…</string>
+    <string name="loading_comments">댓글 가져오는중…</string>
+    <string name="loading_repositories">저장소 가져오는중…</string>
+    <string name="loading_issue">이슈 가져오는중…</string>
+    <string name="loading_news">소식 가져오는중…</string>
+    <string name="loading_followers">팔로워 가져오는중…</string>
+    <string name="loading_people">가져오는중…</string>
+    <string name="loading_gists">Gists 가져오는중…</string>
+    <string name="loading_collaborators">멤버 가져오는중…</string>
+    <string name="loading_milestones">마일스톤 가져오는중…</string>
+    <string name="loading_labels">라벨 가져오는중…</string>
+    <!--  -->
+
+
+    <!-- Empty messages -->
+    <string name="no_bookmarks">책갈피 없음</string>
+    <string name="no_repositories">저장소 없음</string>
+    <string name="no_issues">이슈없음</string>
+    <string name="no_gists">Gists 없음</string>
+    <string name="no_people">없음</string>
+    <string name="no_followers">팔로워 없음</string>
+    <string name="no_members">멤버 없음</string>
+    <string name="no_news">소식 없음</string>
+    <!--  -->
+
+
+    <!-- Updating messages -->
+    <string name="updating_assignee">담당자 갱신중…</string>
+    <string name="updating_issue">이슈 갱신중…</string>
+    <string name="updating_labels">라벨 갱신중…</string>
+    <string name="updating_milestone">마일스톤 갱신중…</string>
+    <!--  -->
+
+    <string name="app_name">GitHub</string>
+    <string name="news">소식</string>
+    <string name="issues">이슈</string>
+    <string name="gists">Gists</string>
+    <string name="find_repositories">저장소 찾기</string>
+    <string name="find_issues">이슈 찾기</string>
+    <string name="search_title">검색…</string>
+    <string name="clear_search_history">검색기록 삭제</string>
+    <string name="search_history_cleared">검색기록 삭제됨</string>
+    <string name="login_activity_authenticating">로그인중…</string>
+    <string name="creating_gist">Gist 생성중…</string>
+    <string name="create">생성</string>
+    <string name="create_gist">Gist 생성</string>
+    <string name="gist_content_hint">puts \'Hello World!\'</string>
+    <string name="make_public">모두 공개로 생성함</string>
+    <string name="gist_file_name_hint">file.rb</string>
+    <string name="gist">Gist</string>
+    <string name="comments">댓글</string>
+    <string name="files">파일</string>
+    <string name="open">열기</string>
+    <string name="random">무작위</string>
+    <string name="file_name">파일명</string>
+    <string name="file_content">파일내용</string>
+    <string name="new_gist">새로운 Gist</string>
+    <string name="filter">필터</string>
+    <string name="bookmark">책갈피</string>
+    <string name="comment">댓글</string>
+    <string name="delete">삭제</string>
+    <string name="refresh">새로고침</string>
+    <string name="dashboard_issues_title">이슈 대쉬보드</string>
+    <string name="bookmarks">책갈피</string>
+    <string name="gists_title">Gists</string>
+    <string name="issue_title">Issue #</string>
+    <string name="gist_title">Gist\u0020</string>
+    <string name="filter_issues_title">이슈 필터</string>
+    <string name="create_comment_title">댓글 작성</string>
+    <string name="comment_hint">내용을 입력해주세요</string>
+    <string name="show_more">더보기…</string>
+    <string name="repositories">저장소</string>
+    <string name="issues_title">이슈</string>
+    <string name="edit_labels">라벨 수정</string>
+    <string name="milestone_prefix">마일스톤:</string>
+    <string name="edit_milestone">마일스톤 수정</string>
+    <string name="edit_assignee">담당자 수정</string>
+    <string name="description">설명</string>
+    <string name="gist_description_hint">안드로이드 앱을 통해 생성한 Gist</string>
+    <string name="title">제목</string>
+    <string name="edit">수정</string>
+    <string name="star">즐겨찾기</string>
+    <string name="starring_gist">Gist 즐겨찾기 등록중…</string>
+    <string name="unstar">즐겨찾기 해제</string>
+    <string name="unstarring_gist">Gist 즐겨찾기 해제중…</string>
+    <string name="accounts_label">계정</string>
+    <string name="select_assignee">담당자 선택</string>
+    <string name="select_milestone">마일스톤 선택</string>
+    <string name="select_labels">라벨 선택</string>
+    <string name="no_milestone">마일스톤 없음</string>
+    <string name="unassigned">담당자 없음</string>
+    <string name="assigned">is assigned</string>
+    <string name="no_gists_found">No Gists found</string>
+    <string name="confirm_gist_delete_title">삭제 확인</string>
+    <string name="confirm_gist_delete_message">Gist를 정말로 삭제하시겠습니까?</string>
+    <string name="deleting_gist">Gist 삭제중…</string>
+    <string name="creating_comment">댓글 등록중…</string>
+    <string name="confirm_bookmark_delete_message">정말로 책갈피에서 삭제하시겠습니까?</string>
+    <string name="issue_dashboard">이슈 대쉬보드</string>
+    <string name="new_issue">신규 이슈</string>
+    <string name="anonymous">익명</string>
+    <string name="message_filter_saved">책갈피에 이슈 필터가 저장됨</string>
+    <string name="recent">최근</string>
+    <string name="section_issue_status">상태:</string>
+    <string name="status_open">열림</string>
+    <string name="status_closed">종결됨</string>
+    <string name="section_issue_assigned">담당자:</string>
+    <string name="assignee_anyone">아무나</string>
+    <string name="section_issue_milestone">마일스톤:</string>
+    <string name="none">없음</string>
+    <string name="section_issue_labels">라벨:</string>
+    <string name="log_in">로그인</string>
+    <string name="signup_link">New to GitHub? &lt;a href=\"https://github.com/plans\">Click here&lt;/a> to sign up</string>
+    <string name="connection_failed">GitHub에 연결할 수 없습니다</string>
+    <string name="invalid_login_or_password">계정또는 비밀번호를 확인해주세요</string>
+    <string name="invalid_password">비밀번호를 확인해주세요</string>
+    <string name="password">비밀번호</string>
+    <string name="login_or_email">로그인계정 또는 이메일주소</string>
+    <string name="followers">팔로워</string>
+    <string name="following">팔로잉</string>
+    <string name="followers_self">팔로워</string>
+    <string name="following_self">팔로잉</string>
+    <string name="members">멤버</string>
+    <string name="closing_issue">이슈 종결처리중…</string>
+    <string name="reopening_issue">이슈 재오픈중…</string>
+    <string name="avatar">아바타</string>
+    <string name="creating_issue">이슈 생성중…</string>
+    <string name="prefix_created">created\u0020</string>
+    <string name="prefix_updated">updated\u0020</string>
+    <string name="prefix_opened">opened\u0020</string>
+    <string name="clear">비우기</string>
+    <string name="open_issues">미처리된 이슈</string>
+    <string name="closed_issues">종결된 이슈</string>
+    <string name="confirm_bookmark_delete_title">책갈피 삭제</string>
+    <string name="save">저장</string>
+    <string name="apply">적용</string>
+    <string name="labels_prefix">라벨:</string>
+    <string name="assignee">담당자</string>
+    <string name="milestone">마일스톤</string>
+    <string name="labels">라벨</string>
+    <string name="issue_confirm_close_message">해당 이슈를 종결하시겠습니까?</string>
+    <string name="issue_confirm_reopen_message">해당 이슈를 다시 열겠습니까?</string>
+    <string name="issue_confirm_close_title">이슈 닫기</string>
+    <string name="issue_confirm_reopen_title">이슈 재오픈</string>
+    <string name="closed">종결됨</string>
+    <string name="no_description_given">설명없음</string>
+    <string name="close">종결</string>
+    <string name="reopen">Reopen</string>
+    <string name="title_invalid_github_url">GitHub URL이 잘못됨</string>
+    <string name="message_invalid_github_url">The following URL could not be opened by this application:\n{0}</string>
+    <string name="recently_viewed">최근 열람</string>
+    <string name="cancel">취소</string>
+    <string name="authenticator_conflict_title">App Conflict</string>
+    <string name="authenticator_conflict_message">Another installed app is already configured for GitHub authentication.\n\nYou must remove the other app from the Accounts &amp; sync settings and uninstall it before the GitHub app can be used.</string>
+    <string name="opening_repository">"불러오는중 {0}…"</string>
+
+</resources>
