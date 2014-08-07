@@ -65,5 +65,7 @@ dependencies {
         exclude group: 'com.google.inject'
     }
     compile 'com.viewpagerindicator:library:2.4.1@aar'
+
+    //Self compiled .aar version of wishlist
     compile (name:'lib', ext:'aar')
 }
