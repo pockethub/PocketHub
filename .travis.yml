@@ -17,7 +17,7 @@ android:
 
 before_install:
   - chmod +x gradlew
-  - chmod -R +rw
+  - chmod 777 /
 
 notifications:
   email: false
