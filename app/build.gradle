@@ -60,7 +60,7 @@ dependencies {
     compile 'com.github.rtyley:roboguice-sherlock:1.5'
     compile 'com.github.kevinsawicki:http-request:5.6'
     compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5'
-    compile 'com.android.support:support-v4:20.0.0'
+    compile 'com.android.support:support-v4:19.1.0'
     compile ('com.google.inject.extensions:guice-assistedinject:3.0'){
         exclude group: 'com.google.inject'
     }

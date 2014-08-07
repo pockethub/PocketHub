@@ -59,8 +59,8 @@
     <orderEntry type="library" exported="" name="org.eclipse.egit.github.core-2.1.5" level="project" />
     <orderEntry type="library" exported="" name="http-request-5.6" level="project" />
     <orderEntry type="library" exported="" name="gson-2.2.2" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-19.1.0" level="project" />
     <orderEntry type="library" exported="" name="aopalliance-1.0" level="project" />
-    <orderEntry type="library" exported="" name="support-v4-20.0.0" level="project" />
     <orderEntry type="library" exported="" name="roboguice-sherlock-1.5" level="project" />
     <orderEntry type="library" exported="" name="actionbarsherlock-4.4.0" level="project" />
     <orderEntry type="library" exported="" name="asm-3.1" level="project" />
@@ -70,7 +70,6 @@
     <orderEntry type="library" exported="" name="roboguice-2.0" level="project" />
     <orderEntry type="library" exported="" name="guice-3.0-no_aop" level="project" />
     <orderEntry type="library" exported="" name="javax.inject-1" level="project" />
-    <orderEntry type="library" exported="" name="support-annotations-20.0.0" level="project" />
     <orderEntry type="library" exported="" name="library-2.4.1" level="project" />
   </component>
 </module>
