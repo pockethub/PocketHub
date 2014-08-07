@@ -15,5 +15,8 @@ android:
     - extra-android-m2repository
     - addon-google_apis-google-16
 
+before_install:
+  - chmod +x gradlew
+
 notifications:
   email: false
