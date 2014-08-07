@@ -41,7 +41,7 @@ android {
             manifest.srcFile 'AndroidManifest.xml'
             assets.srcDirs = ['assets']
         }
-        androidTest.setRoot('src/androidTest')
+        androidTest.setRoot(project(':integration-tests').projectDir.absolutePath + "/src/main")
     }
 }
 

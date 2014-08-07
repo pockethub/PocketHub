@@ -80,7 +80,7 @@ public class DiffStylerTest extends AndroidTestCase {
     /**
      * Test styler for file with only single newline
      *
-     * @throws IOException
+     * @throws java.io.IOException
      */
     public void testOnlyNewline() throws IOException {
         compareStyled("\n");
@@ -89,7 +89,7 @@ public class DiffStylerTest extends AndroidTestCase {
     /**
      * Test styler for file with an empty patch line with other valid lines
      *
-     * @throws IOException
+     * @throws java.io.IOException
      */
     public void testEmptyPatchLineWithOtherValidLines() throws IOException {
         compareStyled("@@ 0,1 0,1 @@\n\n-test\n");
@@ -98,7 +98,7 @@ public class DiffStylerTest extends AndroidTestCase {
     /**
      * Test styler for file with trailing empty line
      *
-     * @throws IOException
+     * @throws java.io.IOException
      */
     public void testTrailingEmptyLine() throws IOException {
         compareStyled("@@ 0,1 0,1 @@\n-test\n\n");
@@ -107,7 +107,7 @@ public class DiffStylerTest extends AndroidTestCase {
     /**
      * Test styler for file with only newlines
      *
-     * @throws IOException
+     * @throws java.io.IOException
      */
     public void testOnlyNewlines() throws IOException {
         compareStyled("\n\n\n");
@@ -116,7 +116,7 @@ public class DiffStylerTest extends AndroidTestCase {
     /**
      * Test styler for patch with no trailing newline after the second line
      *
-     * @throws IOException
+     * @throws java.io.IOException
      */
     public void testNoTrailingNewlineAfterSecondLine() throws IOException {
         compareStyled("@@ 1,2 1,2 @@\n+test");
@@ -125,7 +125,7 @@ public class DiffStylerTest extends AndroidTestCase {
     /**
      * Test styler for patch with no trailing newline
      *
-     * @throws IOException
+     * @throws java.io.IOException
      */
     public void testNoTrailingNewline() throws IOException {
         compareStyled("@@ 1,2 1,2 @@");
@@ -134,7 +134,7 @@ public class DiffStylerTest extends AndroidTestCase {
     /**
      * Test styler for file with valid patch
      *
-     * @throws IOException
+     * @throws java.io.IOException
      */
     public void testFormattedPatch() throws IOException {
         compareStyled("@@ 1,2 1,2 @@\n+test\n");
