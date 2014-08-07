@@ -32,7 +32,7 @@ After satisfying those requirements, the build is pretty simple:
   emulator
 
 You might find that your device doesn't let you install your build if you
-already have the version from the Android Market installed.  This is standard
+already have the version from the Google Play installed.  This is standard
 Android security as it it won't let you directly replace an app that's been
 signed with a different key.  Manually uninstall GitHub from your device and
 you will then be able to install your own built version.
