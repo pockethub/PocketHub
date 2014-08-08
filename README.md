@@ -2,9 +2,8 @@
 
 This repository contains the source code for the GitHub Android app.
 
-<a href="https://play.google.com/store/apps/details?id=com.github.mobile" alt="logo" title="Download from Google Play">
-  <img src="http://img.skitch.com/20120709-nkdc1yugu2qmdg1ss81m1gr9ty.jpg">
-</a>
+[![Download from Google Play](https://cloud.githubusercontent.com/assets/3838734/3855877/4cf2a2dc-1eec-11e4-9634-2a1adf8f1c39.jpg)](https://play.google.com/store/apps/details?id=com.github.mobile)
+
 
 Please see the [issues](https://github.com/github/android/issues) section to
 report any bugs or feature requests and to see the list of known issues.
