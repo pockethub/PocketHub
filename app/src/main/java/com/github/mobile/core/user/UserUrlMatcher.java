@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  */
 public class UserUrlMatcher extends UrlMatcher {
 
-    private static final String REGEX = "^https?://[^/]+/([^/]+)$";
+    private static final String REGEX = "^https?://(www\\.)?github.com/([^/]+)$";
 
     private static final Pattern PATTERN = Pattern.compile(REGEX);
 
