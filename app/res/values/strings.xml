@@ -275,6 +275,6 @@
     <string name="show_raw_markdown">Show raw markdown</string>
     <string name="render_markdown">Render markdown</string>
     <string name="copy_hash">Copy hash</string>
-    <string name="toast_msg_copied">Copied!</string>
+    <string name="toast_msg_copied">Copied to clipboard</string>
 
 </resources>
