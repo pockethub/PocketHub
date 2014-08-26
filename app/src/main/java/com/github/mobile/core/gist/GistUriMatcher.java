@@ -40,19 +40,28 @@ public class GistUriMatcher {
         List<String> segments = uri.getPathSegments();
         if (segments == null)
             return null;
-        if (segments.size() != 1)
-            return null;
 
-        String gistId = segments.get(0);
-        if (TextUtils.isEmpty(gistId))
-            return null;
+        if (segments.size() ==  2) {
+            String gistId = segments.get(1);
+            if (TextUtils.isEmpty(gistId))
+                return null;
 
-        if (TextUtils.isDigitsOnly(gistId))
-            return new Gist().setId(gistId);
+            if (TextUtils.isDigitsOnly(gistId))
+                return new Gist().setId(gistId);
 
-        if (PATTERN.matcher(gistId).matches())
-            return new Gist().setId(gistId);
+            if (PATTERN.matcher(gistId).matches())
+                return new Gist().setId(gistId);
+        } else {
+            String gistId = segments.get(0);
+            if (TextUtils.isEmpty(gistId))
+                return null;
 
+            if (TextUtils.isDigitsOnly(gistId))
+                return new Gist().setId(gistId);
+
+            if (PATTERN.matcher(gistId).matches())
+                return new Gist().setId(gistId);
+        }
         return null;
     }
 }
