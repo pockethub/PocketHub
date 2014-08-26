@@ -20,10 +20,6 @@ function getMode(extension) {
     mode.mode = "text/x-csrc";
     mode.file = "clike";
     break;
-  case "hpp":
-    mode.mode = "text/x-csrc";
-    mode.file = "clike";
-    break;
   case "clj":
     mode.mode = "text/x-clojure";
     mode.file = "clojure";
