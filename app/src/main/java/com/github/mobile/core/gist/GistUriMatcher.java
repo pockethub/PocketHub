@@ -51,7 +51,7 @@ public class GistUriMatcher {
 
             if (PATTERN.matcher(gistId).matches())
                 return new Gist().setId(gistId);
-        } else {
+        } else (segments.size() ==  1){
             String gistId = segments.get(0);
             if (TextUtils.isEmpty(gistId))
                 return null;
