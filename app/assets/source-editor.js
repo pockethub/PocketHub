@@ -28,6 +28,7 @@ function getMode(extension) {
     mode.mode = "text/x-coffeescript";
     mode.file = "coffeescript";
     break;
+  case "cxx":
   case "cpp":
     mode.mode = "text/x-c++src";
     mode.file = "clike";
@@ -51,6 +52,7 @@ function getMode(extension) {
     mode.mode = "text/x-haskell";
     mode.file = "haskell";
     break;
+  case "htm":
   case "html":
     mode.mode = "text/html";
     mode.file = "htmlmixed";
