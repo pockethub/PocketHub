@@ -257,8 +257,10 @@
 
                 <data
                     android:host="github.com"
-                    android:scheme="http" />
+                    android:scheme="http"
+                    android:pathPrefix="/" />
 
+                <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
@@ -266,8 +268,10 @@
 
                 <data
                     android:host="github.com"
-                    android:scheme="https" />
+                    android:scheme="https"
+                    android:pathPrefix="/" />
 
+                <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
@@ -275,8 +279,10 @@
 
                 <data
                     android:host="gist.github.com"
-                    android:scheme="http" />
+                    android:scheme="http"
+                    android:pathPrefix="/" />
 
+                <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
@@ -284,8 +290,10 @@
 
                 <data
                     android:host="gist.github.com"
-                    android:scheme="https" />
+                    android:scheme="https"
+                    android:pathPrefix="/" />
 
+                <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
