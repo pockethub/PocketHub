@@ -179,7 +179,7 @@
     <string name="invalid_login_or_password">Bitte geben Sie einen gültigen Login &amp; Passwort an</string>
     <string name="invalid_password">Bitte geben Sie ein gültiges Passwort an.</string>
     <string name="password">Passwort</string>
-    <string name="login_or_email">Benutzername oder E-Mail</string>
+    <string name="username_or_email">Benutzername oder E-Mail</string>
     <string name="followers">Meine Anhänger</string>
     <string name="following">Ich folge</string>
     <string name="followers_self">Meine Anhänger</string>
