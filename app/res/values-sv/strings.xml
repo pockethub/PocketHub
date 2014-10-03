@@ -19,8 +19,8 @@
     <!-- Error messages -->
     <string name="error_orgs_load">Inläsning av konto &amp; organisationer misslyckades</string>
     <string name="error_issues_load">Inläsning av frågor misslyckades</string>
-    <string name="error_repos_load">Inläsning av arkiv misslyckades</string>
-    <string name="error_repo_load">Inläsning av arkivet misslyckades</string>
+    <string name="error_repos_load">Inläsning av repos misslyckades</string>
+    <string name="error_repo_load">Inläsning av repo misslyckades</string>
     <string name="error_contributors_load">inläsning av medverkande misslyckades</string>
     <string name="error_gist_load">Inläsning av Gist misslyckades</string>
     <string name="error_news_load">Inläsning av nyheter misslyckades</string>
@@ -57,7 +57,7 @@
     <string name="loading_more_issues">Laddar flera frågor…</string>
     <string name="loading_issues">Laddar frågor…</string>
     <string name="loading_comments">Laddar kommentarer…</string>
-    <string name="loading_repositories">Laddar arkiv…</string>
+    <string name="loading_repositories">Laddar repository…</string>
     <string name="loading_issue">Laddar frågan…</string>
     <string name="loading_news">Laddar nyheter…</string>
     <string name="loading_followers">Laddar prenumeranter…</string>
@@ -75,7 +75,7 @@
 
     <!-- Empty messages -->
     <string name="no_bookmarks">Inga bokmärken</string>
-    <string name="no_repositories">Inga arkiv</string>
+    <string name="no_repositories">Inga repositories</string>
     <string name="no_contributors">Inga medverkande</string>
     <string name="no_issues">Inga frågor</string>
     <string name="no_gists">Inga Gists</string>
@@ -100,7 +100,7 @@
     <string name="gists">Gists</string>
     <string name="commits">Commits</string>
     <string name="global_search">GitHub sök</string>
-    <string name="find_repositories">Hitta Arkiv</string>
+    <string name="find_repositories">Hitta Repositories</string>
     <string name="find_issues">Hitta Frågor</string>
     <string name="search_title">Sök…</string>
     <string name="clear_search_history">Rensa Historik</string>
@@ -135,7 +135,7 @@
     <string name="create_comment_title">Skapa Kommentar</string>
     <string name="comment_hint">Skriv en kommentar</string>
     <string name="show_more">Visa Mer…</string>
-    <string name="repositories">Arkiv</string>
+    <string name="repositories">Repositories</string>
     <string name="contributors">Medverkande</string>
     <string name="issues_title">Frågor</string>
     <string name="edit_labels">Ändra Etiketter</string>
@@ -251,7 +251,7 @@
     <string name="contributions">%d commits</string>
 
     <!-- Tab titles, should be as short as possible -->
-    <string name="tab_repositories">arkiv</string>
+    <string name="tab_repositories">repositories</string>
     <string name="tab_users">användare</string>
     <string name="tab_news">nyheter</string>
     <string name="tab_following_self">följer</string>
