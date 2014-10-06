@@ -21,13 +21,13 @@
     <string name="error_issues_load">Inläsning av frågor misslyckades</string>
     <string name="error_repos_load">Inläsning av repos misslyckades</string>
     <string name="error_repo_load">Inläsning av repo misslyckades</string>
-    <string name="error_contributors_load">inläsning av medverkande misslyckades</string>
+    <string name="error_contributors_load">Inläsning av medverkande misslyckades</string>
     <string name="error_gist_load">Inläsning av Gist misslyckades</string>
     <string name="error_news_load">Inläsning av nyheter misslyckades</string>
     <string name="error_followers_load">Inläsning av prenumeranter misslyckades</string>
     <string name="error_people_load">Inläsning av personer misslyckades</string>
-    <string name="error_person_load">Inläsning av personen misslyckades</string>
-    <string name="error_gist_file_load">Inläsning av Gist filens innehåll misslyckades</string>
+    <string name="error_person_load">Inläsning av person misslyckades</string>
+    <string name="error_gist_file_load">Inläsning av Gist-filens innehåll misslyckades</string>
     <string name="error_gists_load">Inläsning av Gists misslyckades</string>
     <string name="error_issue_load">Inläsning av frågan misslyckades</string>
     <string name="error_collaborators_load">Inläsning av medarbetare misslyckades</string>
@@ -47,7 +47,7 @@
     <string name="error_starring_repository">Stjärnmärkning misslyckades</string>
     <string name="error_unstarring_repository">Borttagning av stjärnmärkning misslyckades</string>
     <string name="error_checking_starring_status">Misslyckades att avläsa stjärnmärkning</string>
-    <string name="error_rendering_markdown">Misslyckades med att rendera markdown</string>
+    <string name="error_rendering_markdown">Misslyckades med att rendera sänkning</string>
     <string name="error_users_search">Misslyckades med sökning efter användare</string>
     <!--  -->
 
@@ -88,7 +88,7 @@
 
 
     <!-- Updating messages -->
-    <string name="updating_assignee">Uppdaterar förvärvare…</string>
+    <string name="updating_assignee">Uppdaterar behöriga…</string>
     <string name="updating_issue">Uppdaterar frågor…</string>
     <string name="updating_labels">Uppdaterar etiketter…</string>
     <string name="updating_milestone">Uppdaterar milstolpar…</string>
@@ -116,12 +116,12 @@
     <string name="comments">Kommentarer</string>
     <string name="files">Filer</string>
     <string name="open">Öppna</string>
-    <string name="random">Slumpvald</string>
+    <string name="random">Slumpad</string>
     <string name="file_name">Filnamn</string>
     <string name="file_content">Filinnehåll</string>
     <string name="new_gist">Ny Gist</string>
     <string name="filter">Filtrera</string>
-    <string name="bookmark">Bokmarkera</string>
+    <string name="bookmark">Bokmärka</string>
     <string name="comment">Kommentera</string>
     <string name="delete">Ta bort</string>
     <string name="refresh">Uppdatera</string>
@@ -141,7 +141,7 @@
     <string name="edit_labels">Ändra Etiketter</string>
     <string name="milestone_prefix">Milstolpe:</string>
     <string name="edit_milestone">Ändra Milstolpe</string>
-    <string name="edit_assignee">Ändra Förvärvaren</string>
+    <string name="edit_assignee">Ändra Behöriga</string>
     <string name="description">Beskrivning</string>
     <string name="gist_description_hint">Gist skapad i Android</string>
     <string name="title">Titel</string>
@@ -151,7 +151,7 @@
     <string name="unstar">Ta bort stjärmärkning</string>
     <string name="unstarring_gist">Tar bort stjärmärkning av Gist…</string>
     <string name="accounts_label">Konton</string>
-    <string name="select_assignee">Välj Förvärvare</string>
+    <string name="select_assignee">Välj Behörig</string>
     <string name="select_milestone">Välj Milstolpe</string>
     <string name="select_labels">Välj Etiketter</string>
     <string name="select_ref">Välj branch eller tag</string>
