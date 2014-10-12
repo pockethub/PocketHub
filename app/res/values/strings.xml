@@ -121,6 +121,7 @@
     <string name="new_gist">New Gist</string>
     <string name="filter">Filter</string>
     <string name="bookmark">Bookmark</string>
+    <string name="logout">Logout</string>
     <string name="comment">Comment</string>
     <string name="delete">Delete</string>
     <string name="refresh">Refresh</string>

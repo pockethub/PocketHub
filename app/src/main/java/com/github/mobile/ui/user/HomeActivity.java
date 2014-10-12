@@ -16,22 +16,30 @@
 package com.github.mobile.ui.user;
 
 import static com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_LIST;
+import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_BOOKMARKS;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_DASHBOARD;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_GISTS;
+import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_LOGOUT;
 import static com.github.mobile.util.TypefaceUtils.ICON_FOLLOW;
 import static com.github.mobile.util.TypefaceUtils.ICON_NEWS;
 import static com.github.mobile.util.TypefaceUtils.ICON_PUBLIC;
 import static com.github.mobile.util.TypefaceUtils.ICON_TEAM;
 import static com.github.mobile.util.TypefaceUtils.ICON_WATCH;
+
+import android.accounts.AccountManager;
+import android.accounts.AuthenticatorException;
+import android.accounts.OperationCanceledException;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.accounts.Account;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
@@ -40,6 +48,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R.id;
 import com.github.mobile.R.menu;
 import com.github.mobile.accounts.AccountUtils;
+import com.github.mobile.accounts.LoginActivity;
 import com.github.mobile.core.user.UserComparator;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.TabPagerActivity;
@@ -52,6 +61,7 @@ import com.github.mobile.util.PreferenceUtils;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -227,6 +237,11 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
             case ACTION_BOOKMARKS:
                 startActivity(FiltersViewActivity.createIntent());
                 break;
+            case ACTION_LOGOUT:
+                removeAccount();
+                finish();
+                startActivity(getIntent());
+                break;
             }
             int orgSelected = homeAdapter.getSelected();
             ActionBar actionBar = getSupportActionBar();
@@ -234,6 +249,13 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
                 actionBar.setSelectedNavigationItem(orgSelected);
         }
         return true;
+    }
+
+    //Remove account from account manager
+    private void removeAccount() {
+        AccountManager accountManager = AccountManager.get(HomeActivity.this);
+        Account[] accounts = accountManager.getAccountsByType(ACCOUNT_TYPE);
+        accountManager.removeAccount(accounts[0], null, null);
     }
 
     @Override
