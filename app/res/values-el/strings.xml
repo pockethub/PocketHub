@@ -21,6 +21,7 @@
     <string name="error_issues_load">Η φόρτωση ζητημάτων απέτυχε</string>
     <string name="error_repos_load">Η φόρτωση αποθετηρίων απέτυχε</string>
     <string name="error_repo_load">Η φόρτωση αποθετηρίου απέτυχε</string>
+    <string name="error_contributors_load">Η φόρτωση συνεισφέροντων απέτυχε</string>
     <string name="error_gist_load">Η φόρτωση Gist απέτυχε</string>
     <string name="error_news_load">Η φόρτωση νέων απέτυχε</string>
     <string name="error_followers_load">Η φόρτωση ακόλουθων απέτυχε</string>
@@ -47,7 +48,6 @@
     <string name="error_checking_starring_status">Ο έλεγχος κατάστασης επισήμανσης απέτυχε</string>
     <string name="error_rendering_markdown">Η απόδοση περιεχομένου markdown απέτυχε</string>
     <string name="error_users_search">Η αναζήτηση χρηστών απέτυχε</string>
-
     <!--  -->
 
 
@@ -75,6 +75,7 @@
     <!-- Empty messages -->
     <string name="no_bookmarks">Δεν υπάρχουν Σελιδοδείκτες</string>
     <string name="no_repositories">Δεν υπάρχουν Αποθετήρια</string>
+    <string name="no_contributors">Δεν υπάρχουν συνεισφέροντες</string>
     <string name="no_issues">Δεν υπάρχουν Ζητήματα</string>
     <string name="no_gists">Δεν υπάρχουν Gists</string>
     <string name="no_people">Δεν υπάρχουν Άνθρωποι</string>
@@ -97,6 +98,7 @@
     <string name="issues">Ζητήματα</string>
     <string name="gists">Gists</string>
     <string name="commits">Υποβολές</string>
+    <string name="global_search">Αναζήτηση GitHub</string>
     <string name="find_repositories">Εύρεση Αποθετηρίων</string>
     <string name="find_issues">Εύρεση Ζητημάτων</string>
     <string name="search_title">Αναζήτηση…</string>
@@ -133,6 +135,7 @@
     <string name="comment_hint">Εισήγαγε σχόλιο</string>
     <string name="show_more">Εμφάνισε περισσότερα…</string>
     <string name="repositories">Αποθετήρια</string>
+    <string name="contributors">Συνεισφέροντες</string>
     <string name="issues_title">Ζητήματα</string>
     <string name="edit_labels">Διόρθωσε Ετικέτες</string>
     <string name="milestone_prefix">Ορόσημο:</string>
@@ -164,7 +167,10 @@
     <string name="new_issue">Νέο Ζήτημα</string>
     <string name="anonymous">Ανώνυμος</string>
     <string name="message_filter_saved">Το φίλτρο ζητημάτων αποθηκεύτηκε στους σελιδοδείκτες</string>
+    <string name="recently_viewed">Πρόσφατα Προβληθέντα</string>
     <string name="recent">Πρόσφατα</string>
+    <string name="recent_remove">Διαγραφή Προσφάτων</string>
+    <string name="recent_list_remove">Αφαίρεση από τα πρόσφατα χρησιμοποιημένα</string>
     <string name="section_issue_status">Κατάσταση:</string>
     <string name="status_open">Ανοικτή</string>
     <string name="status_closed">Κλειστή</string>
@@ -198,6 +204,7 @@
     <string name="prefix_updated">ενημερώθηκε\u0020</string>
     <string name="prefix_opened">άνοιξε\u0020</string>
     <string name="clear">Καθάρισε</string>
+    <string name="pull_request_commits">Υποβολές: %d</string>
     <string name="open_issues">Ανοικτά Ζητήματα</string>
     <string name="closed_issues">Κλειστά Ζητήματα</string>
     <string name="confirm_bookmark_delete_title">Αφαίρεσε Σελιδοδείκτη</string>
@@ -217,7 +224,6 @@
     <string name="reopen">Ξανάνοιξε</string>
     <string name="title_invalid_github_url">Λανθασμένο GitHub URL</string>
     <string name="message_invalid_github_url">Το ακόλουθο URL δεν μπορεί να ανοίξει από αυτή την εφαρμογή:\n{0}</string>
-    <string name="recently_viewed">Πρόσαφατα Αναγνωσμένα</string>
     <string name="cancel">Ακύρωση</string>
     <string name="authenticator_conflict_title">Σύγκρουση εφαρμογών</string>
     <string name="authenticator_conflict_message">Κάποια άλλη εφαρμογή είναι ήδη ρυθμισμένη για αυθεντικοποίηση GitHub.\n\nΘα πρέπει να αφαιρέσετε την άλλη εφαρμογή από τις ρυθμίσεις Λογαριασμών &amp; συγχρονισμού και να την απεγκαταστήσετε πριν να χρησιμοποιηθεί η εφαρμογή GitHub.</string>
@@ -239,9 +245,12 @@
     <string name="starring_repository">Επισήμανση…</string>
     <string name="unstarring_repository">Μη Επισήμανση…</string>
     <string name="navigate_to">Πλοήγηση σε…</string>
+    <string name="navigate_to_user">Πλοήγηση σε %s</string>
+    <string name="contributions">%d υποβολές</string>
 
     <!-- Tab titles, should be as short as possible -->
     <string name="tab_repositories">αποθετήρια</string>
+    <string name="tab_users">χρήστες</string>
     <string name="tab_news">νέα</string>
     <string name="tab_following_self">ακολούθηση</string>
     <string name="tab_followers_self">ακόλουθοι</string>
