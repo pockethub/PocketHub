@@ -16,6 +16,7 @@ function getMode(extension) {
 
   switch (extension) {
   case "cc":
+  case "c":
   case "h":
     mode.mode = "text/x-csrc";
     mode.file = "clike";
@@ -29,6 +30,7 @@ function getMode(extension) {
     mode.file = "coffeescript";
     break;
   case "cpp":
+  case "hpp":
     mode.mode = "text/x-c++src";
     mode.file = "clike";
     break;
