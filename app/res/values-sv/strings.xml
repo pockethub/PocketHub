@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-Copyright 2012 GitHub Inc.
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
 -->
 <resources>
+
     <!-- Error messages -->
     <string name="error_orgs_load">Inläsning av konto &amp; organisationer misslyckades</string>
     <string name="error_issues_load">Inläsning av frågor misslyckades</string>
@@ -33,7 +37,9 @@ limitations under the License.
     <string name="error_commits_load">Inläsning av commits misslyckades</string>
     <string name="error_commit_load">Inläsning av commit misslyckades</string>
     <string name="error_file_load">Inläsning av filen misslyckades</string>
-    <!-- -->
+    <!--  -->
+
+
     <!-- Loading messages -->
     <string name="loading_gist">Laddar Gist…</string>
     <string name="random_gist">Laddar slumpvald Gist…</string>
@@ -50,7 +56,9 @@ limitations under the License.
     <string name="loading_milestones">Laddar milstolpar…</string>
     <string name="loading_labels">Laddar etiketter…</string>
     <string name="loading_commits">Laddar Commits…</string>
-    <!-- -->
+    <!--  -->
+
+
     <!-- Empty messages -->
     <string name="no_bookmarks">Inga bokmärken</string>
     <string name="no_repositories">Inga arkiv</string>
@@ -61,13 +69,16 @@ limitations under the License.
     <string name="no_members">Inga medlemmar</string>
     <string name="no_news">Inga nyheter</string>
     <string name="no_commits">Inga Commits</string>
-    <!-- -->
+    <!--  -->
+
+
     <!-- Updating messages -->
     <string name="updating_assignee">Uppdaterar förvärvare…</string>
     <string name="updating_issue">Uppdaterar frågor…</string>
     <string name="updating_labels">Uppdaterar etiketter…</string>
     <string name="updating_milestone">Uppdaterar milstolpar…</string>
-    <!-- -->
+    <!--  -->
+
     <string name="app_name">GitHub</string>
     <string name="news">Nyheter</string>
     <string name="issues">Frågor</string>
@@ -202,4 +213,5 @@ limitations under the License.
     <string name="comparing_commits">Comparing {0} commits</string>
     <string name="enable_wrapping">Enable wrapping</string>
     <string name="disable_wrapping">Disable wrapping</string>
+
 </resources>
