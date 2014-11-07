@@ -21,6 +21,7 @@
     <string name="error_issues_load">Error al cargar incidencias</string>
     <string name="error_repos_load">Error al cargar repositorios</string>
     <string name="error_repo_load">Error al cargar repositorio</string>
+    <string name="error_contributors_load">Error al cargar colaboradores</string>
     <string name="error_gist_load">Error al cargar Gist</string>
     <string name="error_news_load">Error al cargar actualizaciones</string>
     <string name="error_followers_load">Error al cargar seguidores</string>
@@ -46,6 +47,7 @@
     <string name="error_unstarring_repository">Error al desmarcar como destacado</string>
     <string name="error_checking_starring_status">Error al comprobar el estado de destacado</string>
     <string name="error_rendering_markdown">Error al renderizar markdown</string>
+    <string name="error_users_search">Error al buscar usuarios</string>
     <!--  -->
 
 
@@ -73,6 +75,7 @@
     <!-- Mensajes vacíos -->
     <string name="no_bookmarks">No Hay Marcadores</string>
     <string name="no_repositories">No Hay Repositorios</string>
+    <string name="no_contributors">No Hay Colaboradores</string>
     <string name="no_issues">No Hay Incidencias</string>
     <string name="no_gists">No Hay Gists</string>
     <string name="no_people">No Hay Usuarios</string>
@@ -95,6 +98,7 @@
     <string name="issues">Incidencias</string>
     <string name="gists">Gists</string>
     <string name="commits">Commits</string>
+    <string name="global_search">Buscar en GitHub</string>
     <string name="find_repositories">Buscar Repositorios</string>
     <string name="find_issues">Buscar Incidencias</string>
     <string name="search_title">Buscar…</string>
@@ -104,7 +108,7 @@
     <string name="creating_gist">Creando Gist…</string>
     <string name="create">Crear</string>
     <string name="create_gist">Crear Gist</string>
-    <string name="gist_content_hint">puts \'¡Hola Mundo!\'</string>
+    <string name="gist_content_hint">colocar \'¡Hola Mundo!\'</string>
     <string name="make_public">Hacer este Gist público</string>
     <string name="gist_file_name_hint">fichero.rb</string>
     <string name="gist">Gist</string>
@@ -132,6 +136,7 @@
     <string name="show_more">Ver Más…</string>
     <string name="repositories">Repositorios</string>
     <string name="issues_title">Incidencias</string>
+    <string name="contributors">Colaboradores</string>
     <string name="edit_labels">Editar Etiquetas</string>
     <string name="milestone_prefix">Hito:</string>
     <string name="edit_milestone">Editar Hito</string>
@@ -147,6 +152,8 @@
     <string name="select_milestone">Seleccionar Hito</string>
     <string name="select_labels">Seleccionar Etiquetas</string>
     <string name="select_ref">Seleccionar Rama o Etiqueta</string>
+    <string name="enter_otp_code_title">Código de autenticación</string>
+    <string name="enter_otp_code_message">Autenticación de dos pasos está habilitada para su cuenta. Ingrese su código de autenticación para verificar su identidad.</string>
     <string name="no_milestone">No hay hitos</string>
     <string name="unassigned">No asignado</string>
     <string name="assigned">está asignado</string>
@@ -160,7 +167,10 @@
     <string name="new_issue">Nueva Incidencia</string>
     <string name="anonymous">Anónimo</string>
     <string name="message_filter_saved">Filtro de incidencias guardado en marcadores</string>
+    <string name="recently_viewed">VISTOS RECIENTEMENTE</string>
     <string name="recent">Recientes</string>
+    <string name="recent_remove">Eliminar recientes</string>
+    <string name="recent_list_remove">Eliminar de usados recientemente</string>
     <string name="section_issue_status">Estado:</string>
     <string name="status_open">Abierto</string>
     <string name="status_closed">Cerrado</string>
@@ -171,6 +181,7 @@
     <string name="section_issue_labels">Etiquetas:</string>
     <string name="log_in">Iniciar Sesión</string>
     <string name="signup_link">¿No tienes cuenta en GitHub? &lt;a href=\"https://github.com/plans\">Haz click aquí&lt;/a> para darte de alta</string>
+    <string name="signup_link_two_factor_auth">¿No está seguro de qué hacer? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Obtener ayuda.&lt;/a></string>
     <string name="connection_failed">No se ha podido acceder a GitHub</string>
     <string name="invalid_login_or_password">Por favor introduce un usuario y contraseña válidos</string>
     <string name="invalid_password">Por favor introduce una contraseña válida.</string>
@@ -193,6 +204,7 @@
     <string name="prefix_updated">actualizado\u0020</string>
     <string name="prefix_opened">abierto\u0020</string>
     <string name="clear">Limpiar</string>
+    <string name="pull_request_commits">Commits: %d</string>
     <string name="open_issues">Incidencias Abiertas</string>
     <string name="closed_issues">Incidencias Cerradas</string>
     <string name="confirm_bookmark_delete_title">Eliminar Marcador</string>
@@ -212,7 +224,6 @@
     <string name="reopen">Reabrir</string>
     <string name="title_invalid_github_url">URL de GitHub Inválida</string>
     <string name="message_invalid_github_url">La aplicación no pudo abrir la siguiente URL:\n{0}</string>
-    <string name="recently_viewed">VISTOS RECIENTEMENTE</string>
     <string name="cancel">Cancelar</string>
     <string name="authenticator_conflict_title">Conflicto con la aplicación</string>
     <string name="authenticator_conflict_message">Una de las aplicaciones instaladas está configurada para la autenticación con GitHub.\n\nDebes eliminar la otra aplicación del menú de ajustes Cuentas y sincronización y desinstalar-la antes de poder usar la aplicación de GitHub.</string>
@@ -234,9 +245,12 @@
     <string name="starring_repository">Marcando como destacado…</string>
     <string name="unstarring_repository">Desmarcando como destacado…</string>
     <string name="navigate_to">Ir a…</string>
+    <string name="navigate_to_user">Ir a %s</string>
+    <string name="contributions">%d commits</string>
 
     <!-- Titulos de las pestañas, lo mas cortos posible -->
     <string name="tab_repositories">repositorios</string>
+    <string name="tab_users">usuarios</string>
     <string name="tab_news">noticias</string>
     <string name="tab_following_self">siguiendo</string>
     <string name="tab_followers_self">seguidores</string>
