@@ -17,7 +17,8 @@ window.CodeMirror = (function() {
         options[opt] = (givenOptions && givenOptions.hasOwnProperty(opt) ? givenOptions : defaults)[opt];
 
     var input = elt("textarea", null, null, "position: absolute; padding: 0; width: 1px; height: 1em");
-    input.setAttribute("wrap", "off"); input.setAttribute("autocorrect", "off"); input.setAttribute("autocapitalize", "off");
+    input.setAttribute("wrap", "off"); input.setAttribute("autocorrect", "off");
+    input.setAttribute("autocapitalize", "off"); input.setAttribute("readonly", "readonly");
     // Wraps and hides input textarea
     var inputDiv = elt("div", [input], null, "overflow: hidden; position: relative; width: 3px; height: 0px;");
     // The empty scrollbar content, used solely for managing the scrollbar thumb.
