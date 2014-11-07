@@ -33,7 +33,7 @@
                     <extensions>true</extensions>
                     <configuration>
                         <sdk>
-                            <platform>16</platform>
+                            <platform>19</platform>
                         </sdk>
                         <undeployBeforeDeploy>true</undeployBeforeDeploy>
                         <proguard>
