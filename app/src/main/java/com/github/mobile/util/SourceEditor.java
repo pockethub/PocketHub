@@ -169,7 +169,7 @@ public class SourceEditor {
     private void loadSource() {
         if (name != null && content != null)
             if (markdown)
-                view.loadData(content, "text/html", null);
+                view.loadDataWithBaseURL(null, content, "text/html", "UTF-8", null);
             else
                 view.loadUrl(URL_PAGE);
     }
