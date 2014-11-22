@@ -131,9 +131,9 @@ public class UrlLauncher {
         if (data == null)
             return null;
 
-        if (TextUtils.isEmpty(data.getHost())
+        String host = data.getHost();
+        if (TextUtils.isEmpty(host)
                 || TextUtils.isEmpty(data.getScheme())) {
-            String host = data.getHost();
             if (TextUtils.isEmpty(host))
                 host = HOST_DEFAULT;
             String scheme = data.getScheme();
@@ -166,7 +166,7 @@ public class UrlLauncher {
             return createCommitIntent(uri, match);
 
         String login = userMatcher.getLogin(uri);
-        if (isValidLogin(login))
+        if (HOST_DEFAULT.equalsIgnoreCase(host) && isValidLogin(login))
             return createUserIntent(login);
 
         return null;
