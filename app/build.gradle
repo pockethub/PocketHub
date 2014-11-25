@@ -1,0 +1,59 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 16
+    buildToolsVersion '20.0.0'
+    defaultConfig {
+        applicationId 'com.github.mobile'
+        minSdkVersion 8
+        targetSdkVersion 16
+        versionCode 1900
+        versionName '1.9.0'
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java']
+            resources.srcDirs = ['src/main/java']
+            aidl.srcDirs = ['src/main/java']
+            renderscript.srcDirs = ['src/main/java']
+            res.srcDirs = ['res']
+            manifest.srcFile 'AndroidManifest.xml'
+            assets.srcDirs = ['assets']
+        }
+        androidTest.setRoot(project(':integration-tests').projectDir.absolutePath + "/src/main")
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
+    compile 'org.roboguice:roboguice:2.0'
+    compile 'com.github.rtyley:roboguice-sherlock:1.5'
+    compile 'com.github.kevinsawicki:http-request:5.6'
+    compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5'
+    compile 'com.android.support:support-v4:21.0.0'
+    compile ('com.google.inject.extensions:guice-assistedinject:3.0'){
+        exclude group: 'com.google.inject'
+    }
+    compile 'com.viewpagerindicator:library:2.4.1@aar'
+
+    //Self compiled .aar version of wishlist
+    compile (name:'lib', ext:'aar')
+}
