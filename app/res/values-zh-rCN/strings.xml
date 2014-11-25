@@ -93,7 +93,7 @@
     <string name="updating_milestone">里程碑信息更新中…</string>
     <!--  -->
 
-    <string name="app_name">GitHub</string>
+    <string name="app_name">ForkHub</string>
     <string name="news">新鲜事</string>
     <string name="issues">Issues</string>
     <string name="gists">Gists</string>
@@ -240,7 +240,7 @@
     <string name="starring_repository">正在加注星标…</string>
     <string name="unstarring_repository">正在移除星标…</string>
     <string name="contributions">%d 提交</string>
-    
+
     <!-- Tab titles, should be as short as possible -->
     <string name="tab_repositories">版本库</string>
     <string name="tab_users">用户</string>
@@ -267,5 +267,5 @@
     <string name="preview">预览</string>
     <string name="show_raw_markdown">显示 markdown 源码</string>
     <string name="render_markdown">渲染 markdown</string>
-    
+
 </resources>

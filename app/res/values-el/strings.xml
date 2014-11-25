@@ -90,7 +90,7 @@
     <string name="updating_milestone">Ενημέρωση Οροσήμου…</string>
     <!--  -->
 
-    <string name="app_name">GitHub</string>
+    <string name="app_name">ForkHub</string>
     <string name="news">Νέα</string>
     <string name="issues">Ζητήματα</string>
     <string name="gists">Gists</string>

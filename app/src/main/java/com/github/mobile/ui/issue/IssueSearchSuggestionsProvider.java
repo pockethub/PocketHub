@@ -25,7 +25,7 @@ import android.provider.SearchRecentSuggestions;
 public class IssueSearchSuggestionsProvider extends
         SearchRecentSuggestionsProvider {
 
-    private static final String AUTHORITY = "com.github.search.suggest.recent.issues";
+    private static final String AUTHORITY = "jp.forkhub.search.suggest.recent.issues";
 
     /**
      * Save query to history

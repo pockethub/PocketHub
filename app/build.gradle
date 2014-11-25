@@ -4,7 +4,7 @@ android {
     compileSdkVersion 16
     buildToolsVersion '20.0.0'
     defaultConfig {
-        applicationId 'com.github.mobile'
+        applicationId 'jp.forkhub'
         minSdkVersion 8
         targetSdkVersion 16
         versionCode 1900

@@ -90,7 +90,7 @@
     <string name="updating_milestone">מעדכן אבן-דרך...</string>
     <!--  -->
 
-    <string name="app_name">GitHub</string>
+    <string name="app_name">ForkHub</string>
     <string name="news">חדשות</string>
     <string name="issues">סוגיות</string>
     <string name="gists">תמצותים</string>

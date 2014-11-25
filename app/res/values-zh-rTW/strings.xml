@@ -75,7 +75,7 @@
     <string name="updating_labels">正在更新標籤…</string>
     <string name="updating_milestone">正在更新里程碑…</string>
     <!--  -->
-    <string name="app_name">GitHub</string>
+    <string name="app_name">ForkHub</string>
     <string name="news">新聞</string>
     <string name="issues">Issues</string>
     <string name="gists">Gists</string>

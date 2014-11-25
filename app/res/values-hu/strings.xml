@@ -80,7 +80,7 @@
     <string name="updating_milestone">Mérföldkő frissítése…</string>
     <!--  -->
 
-    <string name="app_name">GitHub</string>
+    <string name="app_name">ForkHub</string>
     <string name="news">Újdonságok</string>
     <string name="issues">Hibajegyek</string>
     <string name="gists">Gist-ek</string>

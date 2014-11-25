@@ -74,7 +74,7 @@
     <string name="updating_milestone">마일스톤 갱신중…</string>
     <!--  -->
 
-    <string name="app_name">GitHub</string>
+    <string name="app_name">ForkHub</string>
     <string name="news">소식</string>
     <string name="issues">이슈</string>
     <string name="gists">Gists</string>

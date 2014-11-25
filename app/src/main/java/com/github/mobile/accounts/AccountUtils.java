@@ -81,7 +81,7 @@ public class AccountUtils {
                 for (AuthenticatorDescription descriptor : types)
                     if (descriptor != null
                             && ACCOUNT_TYPE.equals(descriptor.type)) {
-                        HAS_AUTHENTICATOR = "com.github.mobile"
+                        HAS_AUTHENTICATOR = "jp.forkhub"
                                 .equals(descriptor.packageName);
                         break;
                     }
