@@ -9,133 +9,6 @@ function getExtension(name) {
     return name.substring(lastDot + 1).toLowerCase();
 }
 
-function getMode(extension) {
-  var mode = {};
-  if (!extension)
-    return mode;
-
-  switch (extension) {
-  case "c":
-  case "h":
-    mode.mode = "text/x-csrc";
-    mode.file = "clike";
-    break;
-  case "hpp":
-    mode.mode = "text/x-c++src";
-    mode.file = "clike";
-    break;
-  case "clj":
-    mode.mode = "text/x-clojure";
-    mode.file = "clojure";
-    break;
-  case "coffee":
-    mode.mode = "text/x-coffeescript";
-    mode.file = "coffeescript";
-    break;
-  case "cc":
-  case "cxx":
-  case "cpp":
-    mode.mode = "text/x-c++src";
-    mode.file = "clike";
-    break;
-  case "cs":
-    mode.mode = "text/x-csharp";
-    mode.file = "clike";
-    break;
-  case "css":
-  case "sass":
-  case "scss":
-    mode.mode = "text/css";
-    mode.file = "css";
-    break;
-  case "erl":
-    mode.mode = "text/x-erlang";
-    mode.file = "erlang";
-    break;
-  case "hs":
-  case "hsc":
-    mode.mode = "text/x-haskell";
-    mode.file = "haskell";
-    break;
-  case "htm":
-  case "html":
-    mode.mode = "text/html";
-    mode.file = "htmlmixed";
-    break;
-  case "ini":
-  case "prefs":
-    mode.mode = "text/x-properties";
-    mode.file = "properties";
-    break;
-  case "java":
-    mode.mode = "text/x-java";
-    mode.file = "clike";
-    break;
-  case "gyp":
-  case "js":
-  case "json":
-    mode.mode = "text/javascript";
-    mode.file = "javascript";
-    break;
-  case "md":
-  case "markdown":
-    mode.mode = "gfm";
-    mode.file = "gfm";
-    break;
-  case "pl":
-    mode.mode = "text/x-perl";
-    mode.file = "perl";
-    break;
-  case "py":
-    mode.mode = "text/x-python";
-    mode.file = "python";
-    break;
-  case "r":
-    mode.mode = "text/x-rsrc";
-    mode.file = extension;
-    break;
-  case "rb":
-    mode.mode = "text/x-ruby";
-    mode.file = "ruby";
-    break;
-  case "sh":
-  case "zsh":
-    mode.mode = "text/x-sh";
-    mode.file = "shell";
-    break;
-  case "sbt":
-  case "scala":
-    mode.mode = "text/x-scala";
-    mode.file = "clike";
-    break;
-  case "sql":
-    mode.mode = "text/x-mysql";
-    mode.file = "mysql";
-    break;
-  case "xq":
-  case "xqy":
-  case "xquery":
-    mode.mode = "application/xquery";
-    mode.file = "xquery";
-    break;
-  case "project":
-  case "classpath":
-  case "xib":
-  case "xml":
-    mode.mode = "application/xml";
-    mode.file = "xml";
-    break;
-  case "yml":
-    mode.mode = "text/x-yaml";
-    mode.file = "yaml";
-    break;
-  default:
-    mode.mode = "text/x-" + extension;
-    mode.file = extension;
-  }
-  return mode;
-}
-
 function updateWidth() {
   var lines = document.getElementsByClassName("CodeMirror-lines")[0];
   if (lines) {
@@ -152,7 +25,7 @@ function loadImage(type, content) {
 }
 
 window.onload = function () {
-  var name = new String(SourceEditor.getName());
+  var name = SourceEditor.getName();
   var extension = getExtension(name);
   if ("png" == extension || "gif" == extension) {
     loadImage(extension, SourceEditor.getRawContent());
@@ -165,7 +38,7 @@ window.onload = function () {
   CodeMirror.modeURL = "mode/%N/%N.js";
 
   var config = {};
-  config.value = new String(SourceEditor.getContent());
+  config.value = SourceEditor.getContent();
   config.readOnly = "nocursor";
   config.lineNumbers = true;
   config.autofocus = false;
@@ -173,14 +46,19 @@ window.onload = function () {
   config.dragDrop = false;
   var editor = CodeMirror(document.body, config);
 
-  var mode = getMode(extension);
-  if (mode.mode)
-    editor.setOption("mode", mode.mode);
-  if (mode.file)
-    CodeMirror.autoLoadMode(editor, mode.file);
+  var mode, spec;
+
+  var info = CodeMirror.findModeByExtension(extension);
+  if (info) {
+    mode = info.mode;
+    spec = info.mime;
+  }
+
+  if (mode) {
+    editor.setOption("mode", spec);
+    CodeMirror.autoLoadMode(editor, mode);
+  }
 
   if (!config.lineWrapping)
     updateWidth();
-
-  editor.refresh();
 };

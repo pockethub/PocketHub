@@ -1,10 +1,24 @@
+// CodeMirror, copyright (c) by Marijn Haverbeke and others
+// Distributed under an MIT license: http://codemirror.net/LICENSE
+
 /**
  * Author: Koh Zi Han, based on implementation by Koh Zi Chun
  */
-CodeMirror.defineMode("scheme", function (config, mode) {
+
+(function(mod) {
+  if (typeof exports == "object" && typeof module == "object") // CommonJS
+    mod(require("../../lib/codemirror"));
+  else if (typeof define == "function" && define.amd) // AMD
+    define(["../../lib/codemirror"], mod);
+  else // Plain browser env
+    mod(CodeMirror);
+})(function(CodeMirror) {
+"use strict";
+
+CodeMirror.defineMode("scheme", function () {
     var BUILTIN = "builtin", COMMENT = "comment", STRING = "string",
-        ATOM = "atom", NUMBER = "number", BRACKET = "bracket", KEYWORD="keyword";
-    var INDENT_WORD_SKIP = 2, KEYWORDS_SKIP = 1;
+        ATOM = "atom", NUMBER = "number", BRACKET = "bracket";
+    var INDENT_WORD_SKIP = 2;
 
     function makeKeywords(str) {
         var obj = {}, words = str.split(" ");
@@ -220,11 +234,15 @@ CodeMirror.defineMode("scheme", function (config, mode) {
             return (typeof state.sExprComment == "number") ? COMMENT : returnType;
         },
 
-        indent: function (state, textAfter) {
+        indent: function (state) {
             if (state.indentStack == null) return state.indentation;
             return state.indentStack.indent;
-        }
+        },
+
+        lineComment: ";;"
     };
 });
 
 CodeMirror.defineMIME("text/x-scheme", "scheme");
+
+});
