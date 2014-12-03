@@ -1,7 +1,20 @@
+// CodeMirror, copyright (c) by Marijn Haverbeke and others
+// Distributed under an MIT license: http://codemirror.net/LICENSE
+
+(function(mod) {
+  if (typeof exports == "object" && typeof module == "object") // CommonJS
+    mod(require("../../lib/codemirror"));
+  else if (typeof define == "function" && define.amd) // AMD
+    define(["../../lib/codemirror"], mod);
+  else // Plain browser env
+    mod(CodeMirror);
+})(function(CodeMirror) {
+"use strict";
+
 CodeMirror.defineMode("rust", function() {
   var indentUnit = 4, altIndentUnit = 2;
   var valKeywords = {
-    "if": "if-style", "while": "if-style", "else": "else-style",
+    "if": "if-style", "while": "if-style", "loop": "else-style", "else": "else-style",
     "do": "else-style", "ret": "else-style", "fail": "else-style",
     "break": "atom", "cont": "atom", "const": "let", "resource": "fn",
     "let": "let", "fn": "fn", "for": "for", "alt": "alt", "iface": "iface",
@@ -9,7 +22,7 @@ CodeMirror.defineMode("rust", function() {
     "as": "op", "true": "atom", "false": "atom", "assert": "op", "check": "op",
     "claim": "op", "native": "ignore", "unsafe": "ignore", "import": "else-style",
     "export": "else-style", "copy": "op", "log": "op", "log_err": "op",
-    "use": "op", "bind": "op", "self": "atom"
+    "use": "op", "bind": "op", "self": "atom", "struct": "enum"
   };
   var typeKeywords = function() {
     var keywords = {"fn": "fn", "block": "fn", "obj": "obj"};
@@ -209,7 +222,7 @@ CodeMirror.defineMode("rust", function() {
     if (type == "(" || type == "[") return matchBrackets(type, expression);
     return pass();
   }
-  function maybeprop(type) {
+  function maybeprop() {
     if (content.match(/^\w+$/)) {cx.marked = "variable"; return cont(maybeop);}
     return pass(expression);
   }
@@ -304,7 +317,7 @@ CodeMirror.defineMode("rust", function() {
     if (type == "{") return cont(pushlex("}"), block, poplex);
     return pass();
   }
-  function typarams(type) {
+  function typarams() {
     if (content == ">") return cont();
     if (content == ",") return cont(typarams);
     if (content == ":") return cont(rtype, typarams);
@@ -324,7 +337,7 @@ CodeMirror.defineMode("rust", function() {
     if (type == "{") return cont(pushlex("{"), record_of(rtype), poplex);
     return matchBrackets(type, rtype);
   }
-  function rtypemaybeparam(type) {
+  function rtypemaybeparam() {
     if (content == "<") return cont(typarams);
     return pass();
   }
@@ -425,8 +438,14 @@ CodeMirror.defineMode("rust", function() {
       return lexical.indented + (closing ? 0 : (lexical.info == "alt" ? altIndentUnit : indentUnit));
     },
 
-    electricChars: "{}"
+    electricChars: "{}",
+    blockCommentStart: "/*",
+    blockCommentEnd: "*/",
+    lineComment: "//",
+    fold: "brace"
   };
 });
 
 CodeMirror.defineMIME("text/x-rustsrc", "rust");
+
+});
