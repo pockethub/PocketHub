@@ -96,6 +96,11 @@ function getMode(extension) {
     mode.mode = "text/x-sh";
     mode.file = "shell";
     break;
+  case "sbt":
+  case "scala":
+    mode.mode = "text/x-scala";
+    mode.file = "clike";
+    break;
   case "sql":
     mode.mode = "text/x-mysql";
     mode.file = "mysql";
