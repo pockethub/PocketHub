@@ -1,18 +1,29 @@
-CodeMirror.defineMode("velocity", function(config) {
+// CodeMirror, copyright (c) by Marijn Haverbeke and others
+// Distributed under an MIT license: http://codemirror.net/LICENSE
+
+(function(mod) {
+  if (typeof exports == "object" && typeof module == "object") // CommonJS
+    mod(require("../../lib/codemirror"));
+  else if (typeof define == "function" && define.amd) // AMD
+    define(["../../lib/codemirror"], mod);
+  else // Plain browser env
+    mod(CodeMirror);
+})(function(CodeMirror) {
+"use strict";
+
+CodeMirror.defineMode("velocity", function() {
     function parseWords(str) {
         var obj = {}, words = str.split(" ");
         for (var i = 0; i < words.length; ++i) obj[words[i]] = true;
         return obj;
     }
 
-    var indentUnit = config.indentUnit;
     var keywords = parseWords("#end #else #break #stop #[[ #]] " +
                               "#{end} #{else} #{break} #{stop}");
     var functions = parseWords("#if #elseif #foreach #set #include #parse #macro #define #evaluate " +
                                "#{if} #{elseif} #{foreach} #{set} #{include} #{parse} #{macro} #{define} #{evaluate}");
-    var specials = parseWords("$foreach.count $foreach.hasNext $foreach.first $foreach.last $foreach.topmost $foreach.parent $velocityCount");
+    var specials = parseWords("$foreach.count $foreach.hasNext $foreach.first $foreach.last $foreach.topmost $foreach.parent.count $foreach.parent.hasNext $foreach.parent.first $foreach.parent.last $foreach.parent $velocityCount $!bodyContent $bodyContent");
     var isOperatorChar = /[+\-*&%=<>!?:\/|]/;
-    var multiLineStrings =true;
 
     function chain(stream, state, f) {
         state.tokenize = f;
@@ -22,30 +33,50 @@ CodeMirror.defineMode("velocity", function(config) {
         var beforeParams = state.beforeParams;
         state.beforeParams = false;
         var ch = stream.next();
-        // start of string?
-        if ((ch == '"' || ch == "'") && state.inParams)
+        // start of unparsed string?
+        if ((ch == "'") && state.inParams) {
+            state.lastTokenWasBuiltin = false;
             return chain(stream, state, tokenString(ch));
+        }
+        // start of parsed string?
+        else if ((ch == '"')) {
+            state.lastTokenWasBuiltin = false;
+            if (state.inString) {
+                state.inString = false;
+                return "string";
+            }
+            else if (state.inParams)
+                return chain(stream, state, tokenString(ch));
+        }
         // is it one of the special signs []{}().,;? Seperator?
         else if (/[\[\]{}\(\),;\.]/.test(ch)) {
-            if (ch == "(" && beforeParams) state.inParams = true;
-            else if (ch == ")") state.inParams = false;
+            if (ch == "(" && beforeParams)
+                state.inParams = true;
+            else if (ch == ")") {
+                state.inParams = false;
+                state.lastTokenWasBuiltin = true;
+            }
             return null;
         }
         // start of a number value?
         else if (/\d/.test(ch)) {
+            state.lastTokenWasBuiltin = false;
             stream.eatWhile(/[\w\.]/);
             return "number";
         }
         // multi line comment?
         else if (ch == "#" && stream.eat("*")) {
+            state.lastTokenWasBuiltin = false;
             return chain(stream, state, tokenComment);
         }
         // unparsed content?
         else if (ch == "#" && stream.match(/ *\[ *\[/)) {
+            state.lastTokenWasBuiltin = false;
             return chain(stream, state, tokenUnparsed);
         }
         // single line comment?
         else if (ch == "#" && stream.eat("#")) {
+            state.lastTokenWasBuiltin = false;
             stream.skipToEnd();
             return "comment";
         }
@@ -53,33 +84,44 @@ CodeMirror.defineMode("velocity", function(config) {
         else if (ch == "$") {
             stream.eatWhile(/[\w\d\$_\.{}]/);
             // is it one of the specials?
-            if (specials && specials.propertyIsEnumerable(stream.current().toLowerCase())) {
+            if (specials && specials.propertyIsEnumerable(stream.current())) {
                 return "keyword";
             }
             else {
+                state.lastTokenWasBuiltin = true;
                 state.beforeParams = true;
                 return "builtin";
             }
         }
         // is it a operator?
         else if (isOperatorChar.test(ch)) {
+            state.lastTokenWasBuiltin = false;
             stream.eatWhile(isOperatorChar);
             return "operator";
         }
         else {
             // get the whole word
-            stream.eatWhile(/[\w\$_{}]/);
-            var word = stream.current().toLowerCase();
+            stream.eatWhile(/[\w\$_{}@]/);
+            var word = stream.current();
             // is it one of the listed keywords?
             if (keywords && keywords.propertyIsEnumerable(word))
                 return "keyword";
             // is it one of the listed functions?
             if (functions && functions.propertyIsEnumerable(word) ||
-                stream.current().match(/^#[a-z0-9_]+ *$/i) && stream.peek()=="(") {
+                    (stream.current().match(/^#@?[a-z0-9_]+ *$/i) && stream.peek()=="(") &&
+                     !(functions && functions.propertyIsEnumerable(word.toLowerCase()))) {
                 state.beforeParams = true;
+                state.lastTokenWasBuiltin = false;
                 return "keyword";
             }
+            if (state.inString) {
+                state.lastTokenWasBuiltin = false;
+                return "string";
+            }
+            if (stream.pos > word.length && stream.string.charAt(stream.pos-word.length-1)=="." && state.lastTokenWasBuiltin)
+                return "builtin";
             // default: just a "word"
+            state.lastTokenWasBuiltin = false;
             return null;
         }
     }
@@ -88,7 +130,12 @@ CodeMirror.defineMode("velocity", function(config) {
         return function(stream, state) {
             var escaped = false, next, end = false;
             while ((next = stream.next()) != null) {
-                if (next == quote && !escaped) {
+                if ((next == quote) && !escaped) {
+                    end = true;
+                    break;
+                }
+                if (quote=='"' && stream.peek() == '$' && !escaped) {
+                    state.inString = true;
                     end = true;
                     break;
                 }
@@ -128,19 +175,27 @@ CodeMirror.defineMode("velocity", function(config) {
     // Interface
 
     return {
-        startState: function(basecolumn) {
+        startState: function() {
             return {
                 tokenize: tokenBase,
                 beforeParams: false,
-                inParams: false
+                inParams: false,
+                inString: false,
+                lastTokenWasBuiltin: false
             };
         },
 
         token: function(stream, state) {
             if (stream.eatSpace()) return null;
             return state.tokenize(stream, state);
-        }
+        },
+        blockCommentStart: "#*",
+        blockCommentEnd: "*#",
+        lineComment: "##",
+        fold: "velocity"
     };
 });
 
 CodeMirror.defineMIME("text/velocity", "velocity");
+
+});
