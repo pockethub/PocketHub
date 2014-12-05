@@ -85,4 +85,21 @@ public class RepositoryUtils {
         else
             return true;
     }
+
+    /**
+     * Is the given repo name valid?
+     *
+     * @param name
+     * @return true if valid, false otherwise
+     */
+    public static boolean isValidRepo(final String name) {
+        if (TextUtils.isEmpty(name))
+            return false;
+
+        if ("followers".equals(name) //
+                || "following".equals(name))
+            return false;
+        else
+            return true;
+    }
 }

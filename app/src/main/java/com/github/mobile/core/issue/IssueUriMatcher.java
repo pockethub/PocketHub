@@ -18,6 +18,8 @@ package com.github.mobile.core.issue;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.github.mobile.core.repo.RepositoryUtils;
+
 import java.util.List;
 
 import org.eclipse.egit.github.core.Repository;
@@ -42,16 +44,15 @@ public class IssueUriMatcher {
             return null;
         if (segments.size() < 4)
             return null;
-        if (!"issues".equals(segments.get(2))
-                && !"pull".equals(segments.get(2)))
+        if (!"issues".equals(segments.get(2)) && !"pull".equals(segments.get(2)))
             return null;
 
         String repoOwner = segments.get(0);
-        if (TextUtils.isEmpty(repoOwner))
+        if (!RepositoryUtils.isValidOwner(repoOwner))
             return null;
 
         String repoName = segments.get(1);
-        if (TextUtils.isEmpty(repoName))
+        if (!RepositoryUtils.isValidRepo(repoName))
             return null;
 
         String number = segments.get(3);

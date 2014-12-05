@@ -38,7 +38,7 @@ public class UserUriMatcher {
         List<String> segments = uri.getPathSegments();
         if (segments == null)
             return null;
-        if (segments.size() != 1)
+        if (segments.size() < 1)
             return null;
 
         String login = segments.get(0);
