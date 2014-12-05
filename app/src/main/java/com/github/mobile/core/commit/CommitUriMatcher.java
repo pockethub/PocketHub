@@ -16,7 +16,6 @@
 package com.github.mobile.core.commit;
 
 import android.net.Uri;
-import android.text.TextUtils;
 
 import com.github.mobile.core.repo.RepositoryUtils;
 
@@ -40,7 +39,7 @@ public class CommitUriMatcher {
         List<String> segments = uri.getPathSegments();
         if (segments == null)
             return null;
-        if (segments.size() != 4)
+        if (segments.size() < 4)
             return null;
         if (!"commit".equals(segments.get(2)))
             return null;
@@ -50,7 +49,7 @@ public class CommitUriMatcher {
             return null;
 
         String repoName = segments.get(1);
-        if (TextUtils.isEmpty(repoName))
+        if (!RepositoryUtils.isValidRepo(repoName))
             return null;
 
         String commit = segments.get(3);

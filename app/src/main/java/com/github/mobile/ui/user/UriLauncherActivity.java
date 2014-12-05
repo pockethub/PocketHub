@@ -68,6 +68,14 @@ public class UriLauncherActivity extends SherlockActivity {
                 return;
             }
         } else {
+            CommitMatch commit = CommitUriMatcher.getCommit(data);
+            if (commit != null) {
+                startActivity(CommitViewActivity.createIntent(
+                    commit.repository, commit.commit));
+                finish();
+                return;
+            }
+
             RepositoryIssue issue = IssueUriMatcher.getIssue(data);
             if (issue != null) {
                 startActivity(IssuesViewActivity.createIntent(issue,
@@ -86,14 +94,6 @@ public class UriLauncherActivity extends SherlockActivity {
             User user = UserUriMatcher.getUser(data);
             if (user != null) {
                 startActivity(UserViewActivity.createIntent(user));
-                finish();
-                return;
-            }
-
-            CommitMatch commit = CommitUriMatcher.getCommit(data);
-            if (commit != null) {
-                startActivity(CommitViewActivity.createIntent(
-                        commit.repository, commit.commit));
                 finish();
                 return;
             }
