@@ -5,13 +5,10 @@ body {
 }
 
 .CodeMirror {
-  overflow-x: scroll;
-  line-height: 1.4em;
-}
-
-.CodeMirror-scroll {
   height: auto;
   overflow-y: hidden;
+  overflow-x: hidden;
+  line-height: 1.4em;
 }
 
 img {

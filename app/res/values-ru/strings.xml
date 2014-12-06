@@ -93,7 +93,7 @@
     <string name="updating_milestone">Обновляем цель…</string>
     <!--  -->
 
-    <string name="app_name">GitHub</string>
+    <string name="app_name">ForkHub</string>
     <string name="news">Новости</string>
     <string name="issues">Задачи</string>
     <string name="gists">Gists</string>

@@ -16,7 +16,6 @@
 package com.github.mobile.core.repo;
 
 import android.net.Uri;
-import android.text.TextUtils;
 
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class RepositoryUriMatcher {
         List<String> segments = uri.getPathSegments();
         if (segments == null)
             return null;
-        if (segments.size() != 2)
+        if (segments.size() < 2)
             return null;
 
         String repoOwner = segments.get(0);
@@ -46,7 +45,7 @@ public class RepositoryUriMatcher {
             return null;
 
         String repoName = segments.get(1);
-        if (TextUtils.isEmpty(repoName))
+        if (!RepositoryUtils.isValidRepo(repoName))
             return null;
 
         Repository repository = new Repository();

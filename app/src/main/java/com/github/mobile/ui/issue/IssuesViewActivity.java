@@ -39,9 +39,9 @@ import com.github.mobile.core.issue.IssueUtils;
 import com.github.mobile.core.repo.RefreshRepositoryTask;
 import com.github.mobile.ui.FragmentProvider;
 import com.github.mobile.ui.PagerActivity;
-import com.github.mobile.ui.UrlLauncher;
 import com.github.mobile.ui.ViewPager;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
+import com.github.mobile.ui.user.UriLauncherActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
@@ -178,8 +178,6 @@ public class IssuesViewActivity extends PagerActivity {
 
     private IssuesPagerAdapter adapter;
 
-    private final UrlLauncher urlLauncher = new UrlLauncher(this);
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -288,7 +286,7 @@ public class IssuesViewActivity extends PagerActivity {
 
     @Override
     public void startActivity(Intent intent) {
-        Intent converted = urlLauncher.convert(intent);
+        Intent converted = UriLauncherActivity.convert(intent);
         if (converted != null)
             super.startActivity(converted);
         else
@@ -346,6 +344,12 @@ public class IssuesViewActivity extends PagerActivity {
             protected Boolean run(Account account) throws Exception {
                 return collaboratorService.isCollaborator(repo != null ? repo : repoIds.get(0),
                     AccountUtils.getLogin(IssuesViewActivity.this));
+            }
+
+            @Override
+            protected void onThrowable(Throwable t) throws RuntimeException {
+                invalidateOptionsMenu();
+                configurePager();
             }
 
             @Override

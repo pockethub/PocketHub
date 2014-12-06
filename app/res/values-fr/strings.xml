@@ -93,7 +93,7 @@
     <string name="updating_milestone">Mise à jour du jalon…</string>
     <!--  -->
 
-    <string name="app_name">GitHub</string>
+    <string name="app_name">ForkHub</string>
     <string name="news">Nouvelles</string>
     <string name="issues">Tickets</string>
     <string name="gists">Gists</string>

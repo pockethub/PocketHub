@@ -84,7 +84,7 @@
     <string name="updating_milestone">マイルストーンを更新しています…</string>
     <!-- 更新中メッセージ -->
 
-    <string name="app_name">GitHub</string>
+    <string name="app_name">ForkHub</string>
     <string name="news">ニュース</string>
     <string name="issues">イシュー</string>
     <string name="gists">Gists</string>

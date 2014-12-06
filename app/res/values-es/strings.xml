@@ -90,7 +90,7 @@
     <string name="updating_milestone">Actualizando Hitos…</string>
     <!--  -->
 
-    <string name="app_name">GitHub</string>
+    <string name="app_name">ForkHub</string>
     <string name="news">Actualizaciones</string>
     <string name="issues">Incidencias</string>
     <string name="gists">Gists</string>

@@ -90,7 +90,7 @@
     <string name="updating_milestone">Dönüm Noktası Güncelleniyor…</string>
     <!--  -->
 
-    <string name="app_name">GitHub</string>
+    <string name="app_name">ForkHub</string>
     <string name="news">Haberler</string>
     <string name="issues">Sorunlar</string>
     <string name="gists">Gist\'ler</string>

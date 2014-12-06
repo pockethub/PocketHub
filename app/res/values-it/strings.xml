@@ -96,7 +96,7 @@
     <string name="updating_milestone">Aggiornamento Milestone…</string>
     <!--  -->
 
-    <string name="app_name">GitHub</string>
+    <string name="app_name">ForkHub</string>
     <string name="news">News</string>
     <string name="issues">Segnalazioni</string>
     <string name="gists">Gists</string>
