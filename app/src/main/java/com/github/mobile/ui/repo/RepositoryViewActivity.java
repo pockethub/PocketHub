@@ -25,6 +25,7 @@ import static com.github.mobile.util.TypefaceUtils.ICON_COMMIT;
 import static com.github.mobile.util.TypefaceUtils.ICON_ISSUE_OPEN;
 import static com.github.mobile.util.TypefaceUtils.ICON_NEWS;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.ProgressBar;
@@ -45,6 +46,7 @@ import com.github.mobile.core.repo.StarRepositoryTask;
 import com.github.mobile.core.repo.StarredRepositoryTask;
 import com.github.mobile.core.repo.UnstarRepositoryTask;
 import com.github.mobile.ui.TabPagerActivity;
+import com.github.mobile.ui.user.UriLauncherActivity;
 import com.github.mobile.ui.user.UserViewActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ShareUtils;
@@ -292,7 +294,11 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
             protected void onSuccess(Repository e) throws Exception {
                 super.onSuccess(e);
 
-                setResult(RESOURCE_CHANGED);
+                if (e != null) {
+                    UriLauncherActivity.launchUri(getContext(), Uri.parse(e.getHtmlUrl()));
+                } else {
+                    ToastUtils.show(RepositoryViewActivity.this, string.error_forking_repository);
+                }
             }
 
             @Override

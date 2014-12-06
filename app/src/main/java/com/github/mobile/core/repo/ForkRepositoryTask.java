@@ -49,9 +49,7 @@ public class ForkRepositoryTask extends ProgressDialogTask<Repository> {
 
     @Override
     protected Repository run(Account account) throws Exception {
-        service.forkRepository(repo);
-
-        return null;
+        return service.forkRepository(repo);
     }
 
     @Override
