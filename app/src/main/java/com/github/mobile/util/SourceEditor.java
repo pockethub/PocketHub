@@ -20,6 +20,7 @@ import static org.eclipse.egit.github.core.client.IGitHubConstants.CHARSET_UTF8;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -85,6 +86,7 @@ public class SourceEditor {
     /**
      * @return name
      */
+    @JavascriptInterface
     public String getName() {
         return name;
     }
@@ -92,6 +94,7 @@ public class SourceEditor {
     /**
      * @return content
      */
+    @JavascriptInterface
     public String getRawContent() {
         return content;
     }
@@ -99,6 +102,7 @@ public class SourceEditor {
     /**
      * @return content
      */
+    @JavascriptInterface
     public String getContent() {
         if (encoded)
             try {
@@ -114,6 +118,7 @@ public class SourceEditor {
     /**
      * @return wrap
      */
+    @JavascriptInterface
     public boolean getWrap() {
         return wrap;
     }
