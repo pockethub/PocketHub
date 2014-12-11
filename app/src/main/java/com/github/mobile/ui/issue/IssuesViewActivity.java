@@ -349,6 +349,12 @@ public class IssuesViewActivity extends PagerActivity {
             }
 
             @Override
+            protected void onThrowable(Throwable t) throws RuntimeException {
+                invalidateOptionsMenu();
+                configurePager();
+            }
+
+            @Override
             protected void onSuccess(Boolean collaborator) throws Exception {
                 super.onSuccess(collaborator);
 
