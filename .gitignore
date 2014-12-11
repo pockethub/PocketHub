@@ -1,11 +1,12 @@
+.gradle
+/local.properties
+/build
 */target
-target
 tmp
 *~
 bin
 */test-output
 temp-testng-customsuite.xml
-**pom.xml.releaseBackup
 release.properties
 gen
 */seed.txt
