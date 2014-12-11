@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<resources>
+
+    <!-- Error messages -->
+    <string name="error_orgs_load">Ekki tókst að sækja reikning &amp; samtök</string>
+    <string name="error_issues_load">Ekki tókst að sækja vandamál</string>
+    <string name="error_repos_load">Ekki tókst að sækja lindir</string>
+    <string name="error_repo_load">Ekki tókst að sækja lind</string>
+    <string name="error_contributors_load">Ekki tókst að sækja samstarfsaðila</string>
+    <string name="error_gist_load">Ekki tókst að sækja Gist</string>
+    <string name="error_news_load">Ekki tókst að sækja fréttir</string>
+    <string name="error_followers_load">Ekki tókst að sækja fylgjendur</string>
+    <string name="error_people_load">Ekki tókst að sækja fólk</string>
+    <string name="error_person_load">Ekki tókst að sækja einstakling</string>
+    <string name="error_gist_file_load">Ekki tókst að sækja innihald Gist skráar</string>
+    <string name="error_gists_load">Ekki tókst að sækja Gists</string>
+    <string name="error_issue_load">Ekki tókst að sækja vandamál</string>
+    <string name="error_collaborators_load">Ekki tókst að sækja samstarfsaðila</string>
+    <string name="error_milestones_load">Ekki tókst að sækja útgáfur</string>
+    <string name="error_labels_load">Ekki tókst að sækja merki</string>
+    <string name="error_bookmarks_load">Ekki tókst að sækja bókamerki</string>
+    <string name="error_members_load">Ekki tókst að sækja meðlimi</string>
+    <string name="error_commits_load">Ekki tókst að sækja færslur</string>
+    <string name="error_commit_load">Ekki tókst að sækja færslu</string>
+    <string name="error_file_load">Ekki tókst að sækja skrá</string>
+    <string name="error_code_load">Ekki tókst að sækja kóða</string>
+    <string name="error_refs_load">Ekki tókst að sækja greinar &amp; merki</string>
+    <string name="error_following_person">Ekki tókst að fylgjast með</string>
+    <string name="error_unfollowing_person">Ekki tókst að hætta að fylgjast með</string>
+    <string name="error_checking_following_status">Ekki tókst að skoða fylgjendastöðu</string>
+    <string name="error_starring_repository">Ekki tókst að stjörnumerkja</string>
+    <string name="error_unstarring_repository">Ekki tókst að fjarlægja stjörnumerkingu</string>
+    <string name="error_checking_starring_status">Ekki tókst að skoða stjörnumerkingarstöðu</string>
+    <string name="error_rendering_markdown">Ekki tókst að keyra markdown</string>
+    <string name="error_users_search">Ekki tókst að leita eftir notendum</string>
+    <!--  -->
+
+
+    <!-- Loading messages -->
+    <string name="loading_gist">Sækir Gist…</string>
+    <string name="random_gist">Sækir Gist að handahófi…</string>
+    <string name="loading_more_issues">Sækir fleiri vandamál…</string>
+    <string name="loading_issues">Sækir vandamál…</string>
+    <string name="loading_comments">Sækir athugasemdir…</string>
+    <string name="loading_repositories">Sækir lindir…</string>
+    <string name="loading_issue">Sækir vandamál…</string>
+    <string name="loading_news">Sækir fréttir…</string>
+    <string name="loading_followers">Sækir fylgjendur…</string>
+    <string name="loading_people">Sækir fólk…</string>
+    <string name="loading_gists">Sækir Gists…</string>
+    <string name="loading_collaborators">Sækir samstarfsaðila…</string>
+    <string name="loading_milestones">Sækir útgáfur…</string>
+    <string name="loading_labels">Sækir merki…</string>
+    <string name="loading_commits">Sækir færslur…</string>
+    <string name="loading_files_and_comments">Sækir skrár &amp; athugasemdir…</string>
+    <string name="loading_refs">Sækir greinar &amp; merki…</string>
+    <!--  -->
+
+
+    <!-- Empty messages -->
+    <string name="no_bookmarks">Engin bókamerki</string>
+    <string name="no_repositories">Engar lindir</string>
+    <string name="no_contributors">Engir samstarfsaðilar</string>
+    <string name="no_issues">Engin vandamál</string>
+    <string name="no_gists">Engin Gists</string>
+    <string name="no_people">Ekkert fólk</string>
+    <string name="no_followers">Engir fylgjendur</string>
+    <string name="no_members">Engir meðlimir</string>
+    <string name="no_news">Engar fréttir</string>
+    <string name="no_commits">Engar færslur</string>
+    <!--  -->
+
+
+    <!-- Updating messages -->
+    <string name="updating_assignee">Uppfærir útvaldan…</string>
+    <string name="updating_issue">Uppfærir vandamál…</string>
+    <string name="updating_labels">Uppfærir merki…</string>
+    <string name="updating_milestone">Uppfærir útgáfur…</string>
+    <!--  -->
+
+    <string name="app_name">GitHub</string>
+    <string name="news">Fréttir</string>
+    <string name="issues">Vandamál</string>
+    <string name="gists">Gists</string>
+    <string name="commits">Færslur</string>
+    <string name="global_search">GitHub leit</string>
+    <string name="find_repositories">Finna lindir</string>
+    <string name="find_issues">Finna vandamál</string>
+    <string name="search_title">Leit…</string>
+    <string name="clear_search_history">Hreinsa sögu</string>
+    <string name="search_history_cleared">Leitarsaga hefur verið hreinsuð</string>
+    <string name="login_activity_authenticating">Skráir inn…</string>
+    <string name="creating_gist">Skapar Gist…</string>
+    <string name="create">Skapa</string>
+    <string name="create_gist">Skapa Gist</string>
+    <string name="gist_content_hint">setur \'Halló Heim!\'</string>
+    <string name="make_public">Gera þetta Gist opinbert</string>
+    <string name="gist_file_name_hint">file.rb</string>
+    <string name="gist">Gist</string>
+    <string name="comments">Athugasemdir</string>
+    <string name="files">Skrár</string>
+    <string name="open">Opna</string>
+    <string name="random">Handahófskennt</string>
+    <string name="file_name">Skráarnafn</string>
+    <string name="file_content">Innihald skráar</string>
+    <string name="new_gist">Nýtt Gist</string>
+    <string name="filter">Sía</string>
+    <string name="bookmark">Bókamerki</string>
+    <string name="comment">Athugasemd</string>
+    <string name="delete">Eyða</string>
+    <string name="refresh">Endurhlaða</string>
+    <string name="dashboard_issues_title">Yfirlit vandamála</string>
+    <string name="bookmarks">Bókamerki</string>
+    <string name="gists_title">Gists</string>
+    <string name="issue_title">Vandamál #</string>
+    <string name="pull_request_title">Togbeiðni #</string>
+    <string name="gist_title">Gist\u0020</string>
+    <string name="filter_issues_title">Sía vandamál</string>
+    <string name="create_comment_title">Skapa athugasemd</string>
+    <string name="comment_hint">Skrifaðu athugasemd</string>
+    <string name="show_more">Sýna meira…</string>
+    <string name="repositories">Lindir</string>
+    <string name="contributors">Samstarfsaðilar</string>
+    <string name="issues_title">Vandamál</string>
+    <string name="edit_labels">Breyta merkjum</string>
+    <string name="milestone_prefix">Útgáfur:</string>
+    <string name="edit_milestone">Breyta útgáfu</string>
+    <string name="edit_assignee">Breyta útvöldum</string>
+    <string name="description">Lýsing</string>
+    <string name="gist_description_hint">Gist skapað á android</string>
+    <string name="title">Titill</string>
+    <string name="edit">Breyta</string>
+    <string name="starring_gist">Stjörnumerkja Gist…</string>
+    <string name="unstarring_gist">Taka stjörnumerkingu af Gist…</string>
+    <string name="accounts_label">Aðgangar</string>
+    <string name="select_assignee">Velja útvaldan</string>
+    <string name="select_milestone">Velja útgáfu</string>
+    <string name="select_labels">Velja merki</string>
+    <string name="select_ref">Velja greinar eða merki</string>
+    <string name="enter_otp_code_title">Auðkenniskóði</string>
+    <string name="enter_otp_code_message">Tveggja skrefa auðkenning hefur verið gerð virk fyrir aðganginn þinn. Sláðu inn auðkenniskóðann til að gera grein fyrir þér</string>
+    <string name="no_milestone">Engin útgáfa</string>
+    <string name="unassigned">Engin hefur verið útvaldur</string>
+    <string name="assigned">er útvaldur</string>
+    <string name="no_gists_found">Engin Gists fundust</string>
+    <string name="confirm_gist_delete_title">Staðfesta eyðingu</string>
+    <string name="confirm_gist_delete_message">Ertu viss um að þú viljir eyða þessu Gisti?</string>
+    <string name="deleting_gist">Eyðir Gisti…</string>
+    <string name="creating_comment">Skapar athugasemd…</string>
+    <string name="confirm_bookmark_delete_message">Ertu viss um að þú viljir eyða þessu bókamerki?</string>
+    <string name="issue_dashboard">Yfirlit vandamála</string>
+    <string name="new_issue">Nýtt vandamál</string>
+    <string name="anonymous">Nafnlaus</string>
+    <string name="message_filter_saved">Vandamálasía vistuð í bókamerki</string>
+    <string name="recently_viewed">NÝLEGA SKOÐAÐ</string>
+    <string name="recent">Nýlegt</string>
+    <string name="recent_remove">Fjarlægja nýlegt</string>
+    <string name="recent_list_remove">Fjarlægja frá nýlega notuðu</string>
+    <string name="section_issue_status">Staða:</string>
+    <string name="status_open">Opið</string>
+    <string name="status_closed">Lokað</string>
+    <string name="section_issue_assigned">Úthlutað til:</string>
+    <string name="assignee_anyone">Hver sem er</string>
+    <string name="section_issue_milestone">Útgáfa:</string>
+    <string name="none">Enginn</string>
+    <string name="section_issue_labels">Merki:</string>
+    <string name="log_in">Innskráning</string>
+    <string name="signup_link">Hefurðu aldrei notað GitHub? &lt;a href=\"https://github.com/plans\">Ýttu hér&lt;/a> til að skrá þig</string>
+    <string name="signup_link_two_factor_auth">Veistu ekki hvernig git virkar? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Hjálp finnst mér.&lt;/a></string>
+    <string name="connection_failed">Get ekki tengst GitHub</string>
+    <string name="invalid_login_or_password">Skrifaðu inn gilt notendanafn &amp; lykilorð</string>
+    <string name="invalid_password">Skrifaðu inn gilt lykilorð.</string>
+    <string name="password">Lykilorð</string>
+    <string name="username_or_email">Notendanafn eða tölvupóstfang</string>
+    <string name="followers">Fylgjendur</string>
+    <string name="following">Fylgir</string>
+    <string name="followers_self">Fylgjendur</string>
+    <string name="following_self">Fylgir</string>
+    <string name="follow">Fylgjast með</string>
+    <string name="unfollow">Hætta að fylgjast með</string>
+    <string name="star">Stjörnumerkja</string>
+    <string name="unstar">Fjarlægja stjörnumerkingu</string>
+    <string name="members">Meðlimir</string>
+    <string name="closing_issue">Loka vandamáli…</string>
+    <string name="reopening_issue">Enduropna vandamál…</string>
+    <string name="avatar">Deili</string>
+    <string name="creating_issue">Skapar vandamál…</string>
+    <string name="prefix_created">skapað\u0020</string>
+    <string name="prefix_updated">uppfært\u0020</string>
+    <string name="prefix_opened">opnað\u0020</string>
+    <string name="clear">Hreinsa</string>
+    <string name="pull_request_commits">Færslur: %d</string>
+    <string name="open_issues">Opin vandamál</string>
+    <string name="closed_issues">Lokuð vandamál</string>
+    <string name="confirm_bookmark_delete_title">Fjarlægja bókamerki</string>
+    <string name="save">Vista</string>
+    <string name="apply">Staðfesta</string>
+    <string name="labels_prefix">Merki:</string>
+    <string name="assignee">Útvaldur</string>
+    <string name="milestone">Útgáfur</string>
+    <string name="labels">Merki</string>
+    <string name="issue_confirm_close_message">Ertu viss um að þú viljir loka þessu vandamáli?</string>
+    <string name="issue_confirm_reopen_message">Ertu viss um að þú viljir enduropna þetta vandamál?</string>
+    <string name="issue_confirm_close_title">Loka vandamáli</string>
+    <string name="issue_confirm_reopen_title">Enduropna vandamál</string>
+    <string name="closed">Lokað</string>
+    <string name="no_description_given">Engin lýsing gefin.</string>
+    <string name="close">Loka</string>
+    <string name="reopen">Enduropna</string>
+    <string name="title_invalid_github_url">Ógild GitHub slóð</string>
+    <string name="message_invalid_github_url">Eftirfarandi slóð gat ekki opnast af forritinu:\n{0}</string>
+    <string name="cancel">Hætta við</string>
+    <string name="authenticator_conflict_title">Appaárekstur</string>
+    <string name="authenticator_conflict_message">Annað app er nú þegar stillt á GitHub auðkenningu.\n\nÞú verður að fjarlægja þetta app áður en hægt er að nota GitHub appið.</string>
+    <string name="opening_repository">Opnar {0}…</string>
+    <string name="commit_compare_title">Bera saman færslur</string>
+    <string name="commit_prefix">Færsla\u0020</string>
+    <string name="parent_prefix">Foreldri\u0020</string>
+    <string name="authored">skrifað</string>
+    <string name="committed">fært inn</string>
+    <string name="diff_line_message">Hvað vilt þú gera?</string>
+    <string name="comment_on_line">Athugasemd á línu</string>
+    <string name="view_entire_file">Skrifa heila skrá</string>
+    <string name="comparing_commits">Bera saman {0} færslur</string>
+    <string name="enable_wrapping">Leyfa færslu í næstu línu</string>
+    <string name="disable_wrapping">Banna færslu í næstu línu</string>
+    <string name="code">Kóði</string>
+    <string name="following_user">Fylgir…</string>
+    <string name="unfollowing_user">Hættir að fylgjast með…</string>
+    <string name="starring_repository">Stjörnumerkir…</string>
+    <string name="unstarring_repository">Tekur stjörnumerkingu af…</string>
+    <string name="navigate_to">Fer til…</string>
+    <string name="navigate_to_user">Fara til %s</string>
+    <string name="contributions">%d færslur</string>
+
+    <!-- Tab titles, should be as short as possible -->
+    <string name="tab_repositories">Lindir</string>
+    <string name="tab_users">Notendur</string>
+    <string name="tab_news">Fréttir</string>
+    <string name="tab_following_self">Fylgt</string>
+    <string name="tab_followers_self">Fylgjendur</string>
+    <string name="tab_following">Fylgir</string>
+    <string name="tab_followers">Fylgjendur</string>
+    <string name="tab_members">Meðlimir</string>
+    <string name="tab_code">Kóði</string>
+    <string name="tab_commits">Færslur</string>
+    <string name="tab_issues">Vandamál</string>
+    <string name="tab_watched">Fylgst með</string>
+    <string name="tab_assigned">Úthlutað</string>
+    <string name="tab_created">Skapað</string>
+    <string name="tab_mentioned">Minnst á</string>
+    <string name="tab_mine">Mitt</string>
+    <string name="tab_starred">Stjörnumerkt</string>
+    <string name="tab_all">Allt</string>
+    <!--  -->
+    <string name="share">Deila</string>
+    <string name="show_password">Sýna lykilorð</string>
+    <string name="write">Skrifa</string>
+    <string name="preview">Forskoðun</string>
+    <string name="show_raw_markdown">Sýna hrátt markdown</string>
+    <string name="render_markdown">Keyra markdown</string>
+
+</resources>
