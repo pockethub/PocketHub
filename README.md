@@ -14,6 +14,24 @@ report any bugs or feature requests and to see the list of known issues.
 
 ## Building
 
+### With Gradle
+
+The easiest way to build is to install [Android Studio](https://developer.android.com/sdk/index.html) v1.+
+with [Gradle](https://www.gradle.org/) v2.2.1.
+Once installed, then you can import the project into Android Studio:
+
+1. Open `File`
+2. Import Project
+3. Select `build.gradle` under the project directory
+4. Click `OK`
+
+Then, Gradle will do everything for you.
+
+### With Maven
+
+Notes: Although Maven support is not dropped as yet, to say the least, we have shifted our focus to use Gradle as our
+main build system.
+
 The build requires [Maven](http://maven.apache.org/download.html)
 v3.1.1+ and the [Android SDK](http://developer.android.com/sdk/index.html)
 to be installed in your development environment. In addition you'll need to set
