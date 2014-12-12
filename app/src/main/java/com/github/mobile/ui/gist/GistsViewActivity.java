@@ -160,6 +160,9 @@ public class GistsViewActivity extends PagerActivity implements
             return;
         }
 
+        adapter.onDialogResult(pager.getCurrentItem(), requestCode, resultCode,
+                arguments);
+
         super.onDialogResult(requestCode, resultCode, arguments);
     }
 

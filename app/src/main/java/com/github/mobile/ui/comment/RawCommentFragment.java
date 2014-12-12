@@ -36,6 +36,11 @@ public class RawCommentFragment extends DialogFragment {
 
     private EditText commentText;
 
+    /**
+     * Text to populate comment window.
+     */
+    private String initComment;
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -58,6 +63,8 @@ public class RawCommentFragment extends DialogFragment {
                 return false;
             }
         });
+
+        setText(initComment);
     }
 
     @Override
@@ -73,5 +80,19 @@ public class RawCommentFragment extends DialogFragment {
      */
     public String getText() {
         return commentText.getText().toString();
+    }
+
+    /**
+     * Set comment text
+     *
+     * @return text
+     */
+    public void setText(String comment) {
+        if (commentText != null) {
+            commentText.setText(comment);
+            commentText.selectAll();
+        } else {
+            initComment = comment;
+        }
     }
 }

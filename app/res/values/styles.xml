@@ -46,6 +46,9 @@
         <item name="android:layout_height">16dp</item>
     </style>
 
+    <style name="commentEditIcon" parent="AvatarMedium"></style>
+    <style name="commentDeleteIcon" parent="AvatarMedium"></style>
+
     <style name="ListView">
         <item name="android:dividerHeight">2dp</item>
         <item name="android:divider">@drawable/list_divider</item>
