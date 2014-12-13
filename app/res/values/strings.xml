@@ -126,6 +126,7 @@
     <string name="refresh">Refresh</string>
     <string name="dashboard_issues_title">Issue Dashboard</string>
     <string name="bookmarks">Bookmarks</string>
+    <string name="logout">Logout</string>
     <string name="gists_title">Gists</string>
     <string name="issue_title">Issue #</string>
     <string name="pull_request_title">Pull Request #</string>
