@@ -19,6 +19,7 @@ import static org.eclipse.egit.github.core.Blob.ENCODING_BASE64;
 import static org.eclipse.egit.github.core.client.IGitHubConstants.CHARSET_UTF8;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.text.TextUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -75,9 +76,11 @@ public class SourceEditor {
 
         WebSettings settings = view.getSettings();
         settings.setJavaScriptEnabled(true);
-        settings.setBuiltInZoomControls(true);
-        settings.setUseWideViewPort(true);
         view.addJavascriptInterface(this, "SourceEditor");
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN) {
+            settings.setBuiltInZoomControls(true);
+            settings.setUseWideViewPort(true);
+        }
 
         this.view = view;
     }
