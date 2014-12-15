@@ -44,6 +44,7 @@ window.onload = function () {
   config.autofocus = false;
   config.lineWrapping = !!SourceEditor.getWrap();
   config.dragDrop = false;
+  config.fixedGutter = false;
   var editor = CodeMirror(document.body, config);
 
   var mode, spec;
