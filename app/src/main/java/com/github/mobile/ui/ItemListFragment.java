@@ -32,19 +32,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
-import com.github.mobile.R.menu;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.util.ToastUtils;
-
 import java.util.Collections;
 import java.util.List;
+
+import android.support.v4.widget.SwipeRefreshLayout;
+import static android.R.color;
 
 /**
  * Base fragment for displaying a list of items that loads with a progress bar
@@ -53,8 +51,9 @@ import java.util.List;
  * @param <E>
  */
 public abstract class ItemListFragment<E> extends DialogFragment implements
-        LoaderCallbacks<List<E>> {
+        LoaderCallbacks<List<E>>, SwipeRefreshLayout.OnRefreshListener {
 
+    SwipeRefreshLayout swipeLayout;
     private static final String FORCE_REFRESH = "forceRefresh";
 
     /**
@@ -108,6 +107,11 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
         return inflater.inflate(layout.item_list, null);
     }
 
+    @Override
+    public void onRefresh() {
+        forceRefresh();
+        swipeLayout.setRefreshing(false);
+    }
     /**
      * Detach from list view.
      */
@@ -124,6 +128,14 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        swipeLayout = (SwipeRefreshLayout) view.findViewById(id.swipe_item);
+        swipeLayout.setOnRefreshListener(this);
+        swipeLayout.setColorSchemeResources(
+            color.holo_blue_bright,
+            color.holo_green_light,
+            color.holo_orange_light,
+            color.holo_red_light);
 
         listView = (ListView) view.findViewById(android.R.id.list);
         listView.setOnItemClickListener(new OnItemClickListener() {
@@ -158,25 +170,6 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      */
     protected void configureList(Activity activity, ListView listView) {
         listView.setAdapter(createAdapter());
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
-        inflater.inflate(menu.refresh, optionsMenu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (!isUsable())
-            return false;
-
-        switch (item.getItemId()) {
-        case id.m_refresh:
-            forceRefresh();
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
     }
 
     /**
