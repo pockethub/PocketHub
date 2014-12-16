@@ -36,8 +36,8 @@ import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.ui.ConfirmDialogFragment;
 import com.github.mobile.ui.FragmentProvider;
 import com.github.mobile.ui.PagerActivity;
-import com.github.mobile.ui.UrlLauncher;
 import com.github.mobile.ui.ViewPager;
+import com.github.mobile.ui.user.UriLauncherActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
@@ -97,8 +97,6 @@ public class GistsViewActivity extends PagerActivity implements
     private AvatarLoader avatars;
 
     private GistsPagerAdapter adapter;
-
-    private final UrlLauncher urlLauncher = new UrlLauncher(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,7 +175,7 @@ public class GistsViewActivity extends PagerActivity implements
 
     @Override
     public void startActivity(Intent intent) {
-        Intent converted = urlLauncher.convert(intent);
+        Intent converted = UriLauncherActivity.convert(intent);
         if (converted != null)
             super.startActivity(converted);
         else

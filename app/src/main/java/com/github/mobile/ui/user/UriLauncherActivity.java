@@ -18,16 +18,20 @@ package com.github.mobile.ui.user;
 import static android.content.DialogInterface.BUTTON_POSITIVE;
 import static android.content.Intent.ACTION_VIEW;
 import static android.content.Intent.CATEGORY_BROWSABLE;
+import static org.eclipse.egit.github.core.client.IGitHubConstants.HOST_DEFAULT;
 import static org.eclipse.egit.github.core.client.IGitHubConstants.HOST_GISTS;
+import static org.eclipse.egit.github.core.client.IGitHubConstants.PROTOCOL_HTTPS;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.github.mobile.R.string;
 import com.github.mobile.core.commit.CommitMatch;
 import com.github.mobile.core.commit.CommitUriMatcher;
@@ -52,7 +56,57 @@ import org.eclipse.egit.github.core.User;
 /**
  * Activity to launch other activities based on the intent's data {@link URI}
  */
-public class UriLauncherActivity extends SherlockActivity {
+public class UriLauncherActivity extends Activity {
+
+    static public void launchUri(Context context, Uri data) {
+        Intent intent = getIntentForURI(data);
+        if (intent != null) {
+            context.startActivity(intent);
+        } else {
+            context.startActivity(new Intent(ACTION_VIEW, data).addCategory(CATEGORY_BROWSABLE));
+        }
+    }
+
+    /**
+     * Convert global view intent one into one that can be possibly opened
+     * inside the current application.
+     *
+     * @param intent
+     * @return converted intent or null if non-application specific
+     */
+    static public Intent convert(final Intent intent) {
+        if (intent == null)
+            return null;
+
+        if (!ACTION_VIEW.equals(intent.getAction()))
+            return null;
+
+        Uri data = intent.getData();
+        if (data == null)
+            return null;
+
+        if (TextUtils.isEmpty(data.getHost()) || TextUtils.isEmpty(data.getScheme())) {
+            String host = data.getHost();
+            if (TextUtils.isEmpty(host))
+                host = HOST_DEFAULT;
+            String scheme = data.getScheme();
+            if (TextUtils.isEmpty(scheme))
+                scheme = PROTOCOL_HTTPS;
+            String prefix = scheme + "://" + host;
+
+            String path = data.getPath();
+            if (!TextUtils.isEmpty(path))
+                if (path.charAt(0) == '/')
+                    data = Uri.parse(prefix + path);
+                else
+                    data = Uri.parse(prefix + '/' + path);
+            else
+                data = Uri.parse(prefix);
+            intent.setData(data);
+        }
+
+        return getIntentForURI(data);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,58 +114,57 @@ public class UriLauncherActivity extends SherlockActivity {
 
         final Intent intent = getIntent();
         final Uri data = intent.getData();
+
+        final Intent newIntent = getIntentForURI(data);
+        if (newIntent != null) {
+            startActivity(newIntent);
+            finish();
+            return;
+        }
+
+        if (!intent.hasCategory(CATEGORY_BROWSABLE)) {
+            startActivity(new Intent(ACTION_VIEW, data).addCategory(CATEGORY_BROWSABLE));
+            finish();
+        } else {
+            showParseError(data.toString());
+        }
+    }
+
+    static private Intent getIntentForURI(Uri data) {
         if (HOST_GISTS.equals(data.getHost())) {
             Gist gist = GistUriMatcher.getGist(data);
             if (gist != null) {
-                startActivity(GistsViewActivity.createIntent(gist));
-                finish();
-                return;
+                return GistsViewActivity.createIntent(gist);
             }
-        } else {
+        } else if (HOST_DEFAULT.equals(data.getHost())) {
+            CommitMatch commit = CommitUriMatcher.getCommit(data);
+            if (commit != null) {
+                return CommitViewActivity.createIntent(commit.repository, commit.commit);
+            }
+
             RepositoryIssue issue = IssueUriMatcher.getIssue(data);
             if (issue != null) {
-                startActivity(IssuesViewActivity.createIntent(issue,
-                        issue.getRepository()));
-                finish();
-                return;
+                return IssuesViewActivity.createIntent(issue, issue.getRepository());
             }
 
             Repository repository = RepositoryUriMatcher.getRepository(data);
             if (repository != null) {
-                startActivity(RepositoryViewActivity.createIntent(repository));
-                finish();
-                return;
+                return RepositoryViewActivity.createIntent(repository);
             }
 
             User user = UserUriMatcher.getUser(data);
             if (user != null) {
-                startActivity(UserViewActivity.createIntent(user));
-                finish();
-                return;
-            }
-
-            CommitMatch commit = CommitUriMatcher.getCommit(data);
-            if (commit != null) {
-                startActivity(CommitViewActivity.createIntent(
-                        commit.repository, commit.commit));
-                finish();
-                return;
+                return UserViewActivity.createIntent(user);
             }
         }
 
-        if (!intent.hasCategory(CATEGORY_BROWSABLE)) {
-            startActivity(new Intent(ACTION_VIEW, data)
-                    .addCategory(CATEGORY_BROWSABLE));
-            finish();
-        } else
-            showParseError(data.toString());
+        return null;
     }
 
     private void showParseError(String url) {
         AlertDialog dialog = LightAlertDialog.create(this);
         dialog.setTitle(string.title_invalid_github_url);
-        dialog.setMessage(MessageFormat.format(
-                getString(string.message_invalid_github_url), url));
+        dialog.setMessage(MessageFormat.format(getString(string.message_invalid_github_url), url));
         dialog.setOnCancelListener(new OnCancelListener() {
 
             @Override
@@ -120,13 +173,13 @@ public class UriLauncherActivity extends SherlockActivity {
             }
         });
         dialog.setButton(BUTTON_POSITIVE, getString(android.R.string.ok),
-                new OnClickListener() {
+            new OnClickListener() {
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                });
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
         dialog.show();
     }
 }

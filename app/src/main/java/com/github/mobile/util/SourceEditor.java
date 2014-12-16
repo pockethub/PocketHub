@@ -17,16 +17,15 @@ package com.github.mobile.util;
 
 import static org.eclipse.egit.github.core.Blob.ENCODING_BASE64;
 import static org.eclipse.egit.github.core.client.IGitHubConstants.CHARSET_UTF8;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.github.mobile.ui.UrlLauncher;
+import com.github.mobile.ui.user.UriLauncherActivity;
 
 import java.io.UnsupportedEncodingException;
 
@@ -66,9 +65,7 @@ public class SourceEditor {
                     view.loadUrl(url);
                     return false;
                 } else {
-                    Context context = view.getContext();
-                    Intent intent = new UrlLauncher(context).create(url);
-                    context.startActivity(intent);
+                    UriLauncherActivity.launchUri(view.getContext(), Uri.parse(url));
                     return true;
                 }
             }
@@ -109,8 +106,7 @@ public class SourceEditor {
     public String getContent() {
         if (encoded)
             try {
-                return new String(EncodingUtils.fromBase64(content),
-                        CHARSET_UTF8);
+                return new String(EncodingUtils.fromBase64(content), CHARSET_UTF8);
             } catch (UnsupportedEncodingException e) {
                 return getRawContent();
             }
@@ -164,8 +160,7 @@ public class SourceEditor {
      * @param encoded
      * @return this editor
      */
-    public SourceEditor setSource(final String name, final String content,
-            final boolean encoded) {
+    public SourceEditor setSource(final String name, final String content, final boolean encoded) {
         this.name = name;
         this.content = content;
         this.encoded = encoded;
@@ -193,8 +188,7 @@ public class SourceEditor {
         String content = blob.getContent();
         if (content == null)
             content = "";
-        boolean encoded = !TextUtils.isEmpty(content)
-                && ENCODING_BASE64.equals(blob.getEncoding());
+        boolean encoded = !TextUtils.isEmpty(content) && ENCODING_BASE64.equals(blob.getEncoding());
         return setSource(name, content, encoded);
     }
 
