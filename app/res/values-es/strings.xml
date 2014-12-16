@@ -183,6 +183,7 @@
     <string name="signup_link">¿No tienes cuenta en GitHub? &lt;a href=\"https://github.com/plans\">Haz click aquí&lt;/a> para darte de alta</string>
     <string name="signup_link_two_factor_auth">¿No estás seguro de lo que estás haciendo? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Obtén ayuda.&lt;/a></string>
     <string name="connection_failed">No se ha podido acceder a GitHub</string>
+    <string name="code_authentication_failed">¡Error de autenticación! Código de verificación incorrecto.</string>
     <string name="invalid_login_or_password">Por favor introduce un usuario y contraseña válidos</string>
     <string name="invalid_password">Por favor introduce una contraseña válida.</string>
     <string name="password">Contraseña</string>
