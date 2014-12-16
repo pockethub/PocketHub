@@ -45,6 +45,7 @@
     <string name="error_checking_following_status">Nepodarilo sa zistiť stav sledovania</string>
     <string name="error_starring_repository">Označovanie obľúbeného zlyhalo</string>
     <string name="error_unstarring_repository">Zrušenie obľúbeného zlyhalo</string>
+    <string name="error_forking_repository">Forkovanie zlyhalo</string>
     <string name="error_checking_starring_status">Kontrola stavu obľubeného zlyhala</string>
     <string name="error_rendering_markdown">Renderovanie markdownu zlyhalo</string>
     <string name="error_users_search">Vyhľadávanie užívateľov zlyhalo</string>
@@ -152,6 +153,8 @@
     <string name="select_milestone">Zvoliť míľnik</string>
     <string name="select_labels">Zvoliť štítky</string>
     <string name="select_ref">Zvoliť vetvu alebo značku</string>
+    <string name="enter_otp_code_title">Overovací kód</string>
+    <string name="enter_otp_code_message">Dvojfaktorové overovanie je pre váš účet zapnuté. Na overenie vašej identity zadajte váš overovací kód.</string>
     <string name="no_milestone">Žiadny míľnik</string>
     <string name="unassigned">Nikto nie je priradený</string>
     <string name="assigned">je priradený</string>
@@ -160,6 +163,10 @@
     <string name="confirm_gist_delete_message">Ste si istý vymazať tento Gist?</string>
     <string name="deleting_gist">Mažem Gist…</string>
     <string name="creating_comment">Vytváram komentár…</string>
+    <string name="editing_comment">Upravujem komentár…</string>
+    <string name="deleting_comment">Mažem komentár…</string>
+    <string name="confirm_comment_delete_title">Zmazať komentár</string>
+    <string name="confirm_comment_delete_message">Ste si istý vymazať tento komentár?</string>
     <string name="confirm_bookmark_delete_message">Ste si istý vymazať túto záložku?</string>
     <string name="issue_dashboard">Issue panel</string>
     <string name="new_issue">Nová issue</string>
@@ -179,6 +186,7 @@
     <string name="section_issue_labels">Štítky:</string>
     <string name="log_in">Prihlásiť sa</string>
     <string name="signup_link">Ste nový na GitHube? &lt;a href=\"https://github.com/plans\">Kliknite sem&lt;/a> a zaregistrujte sa</string>
+    <string name="signup_link_two_factor_auth">Nie ste si istý čo robiť? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Nájsť pomoc.&lt;/a></string>    
     <string name="connection_failed">Nie je možné pripojiť sa na GitHub</string>
     <string name="invalid_login_or_password">Prosím, vložte platné užívateľské meno &amp; heslo</string>
     <string name="invalid_password">Prosím, vložte platné heslo.</string>
@@ -192,6 +200,7 @@
     <string name="unfollow">Prestať sledovať</string>
     <string name="star">Označiť obľúbený</string>
     <string name="unstar">Zrušiť obľúbený</string>
+    <string name="fork">Forknúť</string>
     <string name="members">Členovia</string>
     <string name="closing_issue">Zatváram issue…</string>
     <string name="reopening_issue">Znovu otváram issue…</string>
@@ -241,6 +250,7 @@
     <string name="unfollowing_user">Prestávam sledovať…</string>
     <string name="starring_repository">Označujem ako obľúbený…</string>
     <string name="unstarring_repository">Ruším obľúbený…</string>
+    <string name="forking_repository">Forkujem…</string>
     <string name="navigate_to">Navigovať do…</string>
     <string name="navigate_to_user">Navigovať na %s</string>
     <string name="contributions">%d commitov</string>
@@ -271,5 +281,7 @@
     <string name="preview">Náhľad</string>
     <string name="show_raw_markdown">Zobraziť surový markdown</string>
     <string name="render_markdown">Renderovať markdown</string>
+    <string name="copy_hash">Kopírovať hash</string>
+    <string name="toast_msg_copied">Skopírovaná do clipboardu</string>
 
 </resources>
