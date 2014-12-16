@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.github.mobile.R;
 import com.github.mobile.R.drawable;
 import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
@@ -54,7 +55,12 @@ public class HomeDropdownListAdapter extends SingleTypeAdapter<Object> {
      */
     public static final int ACTION_BOOKMARKS = 2;
 
-    private static final int NON_ORG_ITEMS = 3;
+    /**
+     * Action for logout
+     */
+    public static final int ACTION_LOGOUT = 3;
+
+    private static final int NON_ORG_ITEMS = 4;
 
     private final AvatarLoader avatars;
 
@@ -70,8 +76,8 @@ public class HomeDropdownListAdapter extends SingleTypeAdapter<Object> {
      * @param avatars
      */
     public HomeDropdownListAdapter(final Context context,
-            final List<User> orgs, final AvatarLoader avatars) {
-        super(context, layout.org_item);
+        final List<User> orgs, final AvatarLoader avatars) {
+        super(context, R.layout.org_item);
 
         this.avatars = avatars;
         inflater = LayoutInflater.from(context);
@@ -163,8 +169,8 @@ public class HomeDropdownListAdapter extends SingleTypeAdapter<Object> {
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         if (convertView == null)
-            convertView = initialize(inflater.inflate(layout.org_dropdown_item,
-                    null));
+            convertView = initialize(inflater.inflate(R.layout.org_dropdown_item,
+                null));
         update(position, convertView, getItem(position));
         return convertView;
     }
@@ -184,22 +190,26 @@ public class HomeDropdownListAdapter extends SingleTypeAdapter<Object> {
     @Override
     protected void update(int position, Object item) {
         switch (getAction(position)) {
-        case ACTION_GISTS:
-            setText(0, string.gists);
-            setActionIcon(imageView(1), drawable.dropdown_gist);
-            break;
-        case ACTION_DASHBOARD:
-            setText(0, string.issue_dashboard);
-            setActionIcon(imageView(1), drawable.dropdown_dashboard);
-            break;
-        case ACTION_BOOKMARKS:
-            setText(0, string.bookmarks);
-            setActionIcon(imageView(1), drawable.dropdown_bookmark);
-            break;
-        default:
-            User user = (User) item;
-            setText(0, user.getLogin());
-            avatars.bind(imageView(1), user);
+            case ACTION_GISTS:
+                setText(0, string.gists);
+                setActionIcon(imageView(1), drawable.dropdown_gist);
+                break;
+            case ACTION_DASHBOARD:
+                setText(0, string.issue_dashboard);
+                setActionIcon(imageView(1), drawable.dropdown_dashboard);
+                break;
+            case ACTION_BOOKMARKS:
+                setText(0, string.bookmarks);
+                setActionIcon(imageView(1), drawable.dropdown_bookmark);
+                break;
+            case ACTION_LOGOUT:
+                setText(0, string.logout);
+                setActionIcon(imageView(1), drawable.dropdown_logout);
+                break;
+            default:
+                User user = (User) item;
+                setText(0, user.getLogin());
+                avatars.bind(imageView(1), user);
         }
     }
 }
