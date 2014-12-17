@@ -104,8 +104,8 @@
     <string name="find_repositories">Cerca Repository</string>
     <string name="find_issues">Cerca Segnalazioni</string>
     <string name="search_title">Ricerca in corso…</string>
-    <string name="clear_search_history">Cancella Cronologia</string>
-    <string name="search_history_cleared">Cronologia delle Ricerche Cancellata</string>
+    <string name="clear_search_history">Elimina Cronologia</string>
+    <string name="search_history_cleared">Cronologia delle Ricerche Eliminata</string>
     <string name="login_activity_authenticating">Accesso in corso…</string>
     <string name="creating_gist">Creazione Gist in corso…</string>
     <string name="create">Crea</string>
@@ -122,7 +122,7 @@
     <string name="random">Random</string>
     <string name="bookmark">Segnalibro</string>
     <string name="comment">Commento</string>
-    <string name="delete">Cancella</string>
+    <string name="delete">Elimina</string>
     <string name="refresh">Ricarica</string>
     <string name="dashboard_issues_title">Dashboard Segnalazioni</string>
     <string name="bookmarks">Segnalibri</string>
@@ -155,9 +155,9 @@
     <string name="unassigned">Non ci sono assegnatari</string>
     <string name="assigned">E\' assegnatario</string>
     <string name="no_gists_found">Nessun Gist trovato</string>
-    <string name="confirm_gist_delete_title">Conferma Cancellazione</string>
-    <string name="confirm_gist_delete_message">Sicuro di voler cancellare questo Gist?</string>
-    <string name="deleting_gist">Cancellazione Gist in corso…</string>
+    <string name="confirm_gist_delete_title">Conferma Eliminazione</string>
+    <string name="confirm_gist_delete_message">Sicuro di voler eliminare questo Gist?</string>
+    <string name="deleting_gist">Eliminazione Gist in corso…</string>
     <string name="creating_comment">Stiamo creando il commento…</string>
     <string name="confirm_bookmark_delete_message">Sicuro di voler rimuovere questo segnalibro?</string>
     <string name="issue_dashboard">Dashboard Segnalazioni</string>
@@ -217,7 +217,7 @@
     <string name="title_invalid_github_url">URL GitHub non valida</string>
     <string name="message_invalid_github_url">La applicazione non riesce ad aprire il seguente URL:\n{0}</string>
     <string name="recently_viewed">VISUALIZZATI RECENTEMENTE</string>
-    <string name="cancel">Cancella</string>
+    <string name="cancel">Annulla</string>
     <string name="authenticator_conflict_title">Conflitto nell\'applicazione</string>
     <string name="authenticator_conflict_message">E\' già stata configurata un\' altra applicazione per l\' autenticazione di GitHub.\n\nPer utilizzare l\'app di Github rimuovi l\'altra applicazione dagli Account e dalle impostazioni di sincronizzazione e disintallala.</string>
     <string name="opening_repository">Apertura in corso {0}…</string>
@@ -234,9 +234,9 @@
     <string name="disable_wrapping">Disabilita il wrapping</string>
     <string name="code">Codice</string>
     <string name="following_user">Caricamento tra i following…</string>
-    <string name="unfollowing_user">Cancellazione dai following…</string>
+    <string name="unfollowing_user">Rimozione dai following…</string>
     <string name="starring_repository">Caricamento tra i preferiti…</string>
-    <string name="unstarring_repository">Cancellazione dai preferiti…</string>
+    <string name="unstarring_repository">Rimozione dai preferiti…</string>
 
     <!-- Tab titles, should be as short as possible -->
     <string name="tab_repositories">Repository</string>
