@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright 2012 GitHub Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<resources>
+
+    <!-- Error messages -->
+    <string name="error_orgs_load">Načítání účtu &amp; organizací selhalo</string>
+    <string name="error_issues_load">Načítání seznamu návrhů selhalo</string>
+    <string name="error_repos_load">Načítání repozitářů selhalo</string>
+    <string name="error_repo_load">Načítání repozitáře selhalo</string>
+    <string name="error_contributors_load">Načítání přispěvatelů selhalo</string>
+    <string name="error_gist_load">Načítání Gistu selhalo</string>
+    <string name="error_news_load">Načítání novinek selhalo</string>
+    <string name="error_followers_load">Načítání followerů selhalo</string>
+    <string name="error_people_load">Načítání lidí selhalo</string>
+    <string name="error_person_load">Načítání osoby selhalo</string>
+    <string name="error_gist_file_load">Načítání obsahu Gistu selhalo</string>
+    <string name="error_gists_load">Načítání Gistů selhalo</string>
+    <string name="error_issue_load">Načítání návrhů selhalo</string>
+    <string name="error_collaborators_load">Načítání spolupracovníků selhalo</string>
+    <string name="error_milestones_load">Načítání milníků selhalo</string>
+    <string name="error_labels_load">Načítání štítků selhalo</string>
+    <string name="error_bookmarks_load">Načítání záložek selhalo</string>
+    <string name="error_members_load">Načítání členů selhalo</string>
+    <string name="error_commits_load">Načítání commitů selhalo</string>
+    <string name="error_commit_load">Načítání commitu selhalo</string>
+    <string name="error_file_load">Načítání souboru selhalo</string>
+    <string name="error_code_load">Načítání kódu selhalo</string>
+    <string name="error_refs_load">Načítání větví &amp; tagů selhalo</string>
+    <string name="error_following_person">Následování selhalo</string>
+    <string name="error_unfollowing_person">Zrušení následování selhalo</string>
+    <string name="error_checking_following_status">Nepodařilo se zjistit stav následování</string>
+    <string name="error_starring_repository">Označování oblíbeného selhalo</string>
+    <string name="error_unstarring_repository">Zrušení oblíbeného selhalo</string>
+    <string name="error_checking_starring_status">Kontrola stavu oblíbeného selhala</string>
+    <string name="error_rendering_markdown">Renderování markdownu selhalo</string>
+    <string name="error_users_search">Vyhledávání uživatelů selhalo</string>
+    <!-- -->
+
+
+    <!-- Loading messages -->
+    <string name="loading_gist">Načítání Gistu…</string>
+    <string name="random_gist">Načítání náhodného Gistu…</string>
+    <string name="loading_more_issues">Načítání více návrhů…</string>
+    <string name="loading_issues">Načítání návrhů…</string>
+    <string name="loading_comments">Načítání komentářů…</string>
+    <string name="loading_repositories">Načítání repozitářů…</string>
+    <string name="loading_issue">Načítání návrhu…</string>
+    <string name="loading_news">Načítání novinek…</string>
+    <string name="loading_followers">Načítání followerů…</string>
+    <string name="loading_people">Načítání lidí…</string>
+    <string name="loading_gists">Načítání Gistů…</string>
+    <string name="loading_collaborators">Načítání spolupracovníků…</string>
+    <string name="loading_milestones">Načítání milníků…</string>
+    <string name="loading_labels">Načítání štítků…</string>
+    <string name="loading_commits">Načítání commitů…</string>
+    <string name="loading_files_and_comments">Načítání souborů &amp; komentářů…</string>
+    <string name="loading_refs">Načítání větví &amp; tagů…</string>
+    <!-- -->
+
+
+    <!-- Empty messages -->
+    <string name="no_bookmarks">Žádné záložky</string>
+    <string name="no_repositories">Žádné repozitáře</string>
+    <string name="no_contributors">Žádní přispěvatelé</string>
+    <string name="no_issues">Žádné návrhy</string>
+    <string name="no_gists">Žádné Gisty</string>
+    <string name="no_people">Žádní lidé</string>
+    <string name="no_followers">Žádní sledující</string>
+    <string name="no_members">Žádní členové</string>
+    <string name="no_news">Žádné novinky</string>
+    <string name="no_commits">Žádné commity</string>
+    <!-- -->
+
+
+    <!-- Updating messages -->
+    <string name="updating_assignee">Aktualizace přiřazených…</string>
+    <string name="updating_issue">Aktualizace návrhu…</string>
+    <string name="updating_labels">Aktualizace štítků…</string>
+    <string name="updating_milestone">Aktualizace milníku…</string>
+    <!-- -->
+
+    <string name="app_name">GitHub</string>
+    <string name="news">Novinky</string>
+    <string name="issues">Návrhy</string>
+    <string name="gists">Gisty</string>
+    <string name="commits">Commity</string>
+    <string name="global_search">GitHub vyhledávání</string>
+    <string name="find_repositories">Hledat v repozitářích</string>
+    <string name="find_issues">Hledat v návrzích</string>
+    <string name="search_title">Hledat…</string>
+    <string name="clear_search_history">Vymazat historii</string>
+    <string name="search_history_cleared">Historie hledání byla vymazána</string>
+    <string name="login_activity_authenticating">Přihlašování…</string>
+    <string name="creating_gist">Vytváření Gistu…</string>
+    <string name="create">Vytvořit</string>
+    <string name="create_gist">Vytvořit Gist</string>
+    <string name="gist_content_hint">například \'Hello World!\'</string>
+    <string name="make_public">Zveřejnit tento Gist</string>
+    <string name="gist_file_name_hint">soubor.rb</string>
+    <string name="gist">Gist</string>
+    <string name="comments">Komentáře</string>
+    <string name="files">Soubory</string>
+    <string name="open">Otevřít</string>
+    <string name="random">Náhodný</string>
+    <string name="file_name">Název souboru</string>
+    <string name="file_content">Obsah souboru</string>
+    <string name="new_gist">Nový Gist</string>
+    <string name="filter">Filtr</string>
+    <string name="bookmark">Záložka</string>
+    <string name="comment">Komentář</string>
+    <string name="delete">Odstranit</string>
+    <string name="refresh">Obnovit</string>
+    <string name="dashboard_issues_title">Přehled návrhů</string>
+    <string name="bookmarks">Záložky</string>
+    <string name="gists_title">Gisty</string>
+    <string name="issue_title">Návrh #</string>
+    <string name="pull_request_title">Požadavek na sloučení #</string>
+    <string name="gist_title">Gist\u0020</string>
+    <string name="filter_issues_title">Filtrovat návrhy</string>
+    <string name="create_comment_title">Vytvořit komentář</string>
+    <string name="comment_hint">Zadejte komentář</string>
+    <string name="show_more">Zobrazit více…</string>
+    <string name="repositories">Repozitáře</string>
+    <string name="contributors">Přispěvatelé</string>
+    <string name="issues_title">Návrhy</string>
+    <string name="edit_labels">Upravit štítky</string>
+    <string name="milestone_prefix">Milník:</string>
+    <string name="edit_milestone">Upravit milník</string>
+    <string name="edit_assignee">Upravit přiřazení</string>
+    <string name="description">Popis</string>
+    <string name="gist_description_hint">Gist vytvořený v Androidu</string>
+    <string name="title">Název</string>
+    <string name="edit">Upravit</string>
+    <string name="starring_gist">Přidávání Gistu do oblíbených…</string>
+    <string name="unstarring_gist">Odebírání Gistu z oblíbených…</string>
+    <string name="accounts_label">Účty</string>
+    <string name="select_assignee">Zvolit přiřazení</string>
+    <string name="select_milestone">Zvolit milník</string>
+    <string name="select_labels">Zvolit štítky</string>
+    <string name="select_ref">Zvolit větev nebo tag</string>
+    <string name="enter_otp_code_title">Ověřovací kód</string>
+    <string name="enter_otp_code_message">Je povoleno dvoufázové ověření vašeho účtu. Zadejte ověřovací kód k ověření vaší identity.</string>
+    <string name="no_milestone">Žádný milník</string>
+    <string name="unassigned">Nikdo není přiřazen</string>
+    <string name="assigned">je přiřazen</string>
+    <string name="no_gists_found">Nebyly nalezeny žádné Gisty</string>
+    <string name="confirm_gist_delete_title">Potvrdit odstranění</string>
+    <string name="confirm_gist_delete_message">Jste si jisti, že chcete odstranit tento Gist?</string>
+    <string name="deleting_gist">Odstraňování Gistu…</string>
+    <string name="creating_comment">Vytváření komentáře…</string>
+    <string name="confirm_bookmark_delete_message">Jste si jisti, že chcete odstranit tuto záložku?</string>
+    <string name="issue_dashboard">Přehled návrhů</string>
+    <string name="new_issue">Nový návrh</string>
+    <string name="anonymous">Anonymní</string>
+    <string name="message_filter_saved">Filtr návrhů uložen do záložek</string>
+    <string name="recently_viewed">NEDÁVNO ZOBRAZENÉ</string>
+    <string name="recent">Nedávné</string>
+    <string name="recent_remove">Odstranit nedávné</string>
+    <string name="recent_list_remove">Odstranit z nedávno použitých</string>
+    <string name="section_issue_status">Stav:</string>
+    <string name="status_open">Otevřené</string>
+    <string name="status_closed">Uzavřené</string>
+    <string name="section_issue_assigned">Přiřazené k:</string>
+    <string name="assignee_anyone">Kdokoliv</string>
+    <string name="section_issue_milestone">Milník:</string>
+    <string name="none">Žádný</string>
+    <string name="section_issue_labels">Štítky:</string>
+    <string name="log_in">Přihlásit se</string>
+    <string name="signup_link">Jste nový na GitHubu? &lt;a href=\"https://github.com/plans\">Klikněte sem&lt;/a> a zaregistrujte se</string>
+    <string name="signup_link_two_factor_auth">Nejste si jistí, co máte dělat? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Zde získáte pomoc.&lt;/a></string>
+    <string name="connection_failed">Není možné se připojit na GitHub</string>
+    <string name="invalid_login_or_password">Zadejte prosím platné uživatelské jméno &amp; heslo</string>
+    <string name="invalid_password">Zadejte prosím platné heslo.</string>
+    <string name="password">Heslo</string>
+    <string name="username_or_email">Uživatelské jméno nebo E-mail</string>
+    <string name="followers">Sledující</string>
+    <string name="following">Sleduje</string>
+    <string name="followers_self">Sledující</string>
+    <string name="following_self">Sleduji</string>
+    <string name="follow">Sledovat</string>
+    <string name="unfollow">Přestat sledovat</string>
+    <string name="star">Označit oblíbený</string>
+    <string name="unstar">Zrušit oblíbený</string>
+    <string name="members">Členové</string>
+    <string name="closing_issue">Uzavírání návrhu…</string>
+    <string name="reopening_issue">Znovu otevření návrhu…</string>
+    <string name="avatar">Avatar</string>
+    <string name="creating_issue">Vytváření návrhu…</string>
+    <string name="prefix_created">vytvořeno\u0020</string>
+    <string name="prefix_updated">aktualizováno\u0020</string>
+    <string name="prefix_opened">otevřeno\u0020</string>
+    <string name="clear">Vyčistit</string>
+    <string name="pull_request_commits">Commity: %d</string>
+    <string name="open_issues">Otevřené návrhy</string>
+    <string name="closed_issues">Uzavřené návrhy</string>
+    <string name="confirm_bookmark_delete_title">Odstranit záložku</string>
+    <string name="save">Uložit</string>
+    <string name="apply">Použít</string>
+    <string name="labels_prefix">Štítky:</string>
+    <string name="assignee">Přiřazení</string>
+    <string name="milestone">Milník</string>
+    <string name="labels">Štítky</string>
+    <string name="issue_confirm_close_message">Jste si jisti, že chcete tento návrh uzavřít?</string>
+    <string name="issue_confirm_reopen_message">Jste si jisti, že chcete znovu otevřít tento návrh?</string>
+    <string name="issue_confirm_close_title">Uzavřít návrh</string>
+    <string name="issue_confirm_reopen_title">Znovu otevřít návrh</string>
+    <string name="closed">Uzavřeno</string>
+    <string name="no_description_given">Žádný dostupný popis.</string>
+    <string name="close">Uzavřít</string>
+    <string name="reopen">Znovu otevřít</string>
+    <string name="title_invalid_github_url">Neplatná GitHub adresa</string>
+    <string name="message_invalid_github_url">Následující adresa nemohla být otevřena touto aplikací:\n{0}</string>
+    <string name="cancel">Zrušit</string>
+    <string name="authenticator_conflict_title">Konflikt aplikací</string>
+    <string name="authenticator_conflict_message">Jiná nainstalovaná aplikace již používá GitHub ověření.\n\nMusíte tuto aplikaci odstranit z účtů &amp; synchronizovat nastavení a odinstalovat jí předtím, než použijete tuto GitHub aplikaci.</string>
+    <string name="opening_repository">Otevírání {0}…</string>
+    <string name="commit_compare_title">Porovnání commitů</string>
+    <string name="commit_prefix">Commit\u0020</string>
+    <string name="parent_prefix">Rodič\u0020</string>
+    <string name="authored">přidal</string>
+    <string name="committed">commitované</string>
+    <string name="diff_line_message">Co byste chtěli udělat?</string>
+    <string name="comment_on_line">Komentář na řádku</string>
+    <string name="view_entire_file">Zobrazit celý soubor</string>
+    <string name="comparing_commits">Porovnávání {0} commitů</string>
+    <string name="enable_wrapping">Zapnout zalamování řádků</string>
+    <string name="disable_wrapping">Vypnout zalamování řádků</string>
+    <string name="code">Kód</string>
+    <string name="following_user">Začíná sledování…</string>
+    <string name="unfollowing_user">Končí sledování…</string>
+    <string name="starring_repository">Přidávání do oblíbených…</string>
+    <string name="unstarring_repository">Odebírání z oblíbených…</string>
+    <string name="navigate_to">Navigovat do…</string>
+    <string name="navigate_to_user">Navigovat na %s</string>
+    <string name="contributions">%d commitů</string>
+
+    <!-- Tab titles, should be as short as possible -->
+    <string name="tab_repositories">repozitáře</string>
+    <string name="tab_users">uživatelé</string>
+    <string name="tab_news">novinky</string>
+    <string name="tab_following_self">sleduji</string>
+    <string name="tab_followers_self">sledující</string>
+    <string name="tab_following">sleduji</string>
+    <string name="tab_followers">sledující</string>
+    <string name="tab_members">členové</string>
+    <string name="tab_code">kód</string>
+    <string name="tab_commits">commity</string>
+    <string name="tab_issues">návrhy</string>
+    <string name="tab_watched">sledováno</string>
+    <string name="tab_assigned">přiřazeno</string>
+    <string name="tab_created">vytvořeno</string>
+    <string name="tab_mentioned">zmíněno</string>
+    <string name="tab_mine">mé</string>
+    <string name="tab_starred">oblíbené</string>
+    <string name="tab_all">vše</string>
+    <!-- -->
+    <string name="share">Sdílet</string>
+    <string name="show_password">Ukázat heslo</string>
+    <string name="write">Napsat</string>
+    <string name="preview">Náhled</string>
+    <string name="show_raw_markdown">Zobrazit surový markdown</string>
+    <string name="render_markdown">Renderovat markdown</string>
+
+</resources>
