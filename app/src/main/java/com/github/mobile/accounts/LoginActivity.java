@@ -478,6 +478,6 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
         if (AccountUtils.isUnauthorized(e))
             onAuthenticationResult(false);
         else
-            ToastUtils.show(LoginActivity.this, e, string.connection_failed);
+            ToastUtils.show(LoginActivity.this, e, string.code_authentication_failed);
     }
 }
