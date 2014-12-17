@@ -36,8 +36,6 @@ public abstract class DialogFragmentActivity extends
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(FEATURE_INDETERMINATE_PROGRESS);
-
         super.onCreate(savedInstanceState);
 
         finder = new ViewFinder(this);
