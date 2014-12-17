@@ -55,6 +55,7 @@
                 android:id="@+id/tv_issue_author"
                 style="@style/ListSubtitleText"
                 android:singleLine="true"
+                android:textIsSelectable="true"
                 android:textStyle="bold" />
 
             <TextView
@@ -72,7 +73,8 @@
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingTop="5dp" />
+        android:paddingTop="5dp"
+        android:textIsSelectable="true" />
 
     <TextView
         android:id="@+id/tv_labels"
@@ -80,7 +82,8 @@
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp" />
+        android:paddingRight="10dp"
+        android:textIsSelectable="true" />
 
     <LinearLayout
         android:id="@+id/ll_milestone"
@@ -140,7 +143,9 @@
         android:paddingRight="10dp"
         android:paddingTop="5dp"
         android:textColor="@color/text"
-        android:textColorLink="@color/text_link" />
+        android:textColorLink="@color/text_link"
+        android:textIsSelectable="true"
+        android:focusable="true" />
 
     <LinearLayout
         android:id="@+id/ll_issue_commits"
@@ -162,7 +167,8 @@
             style="@style/ListTitleText"
             android:paddingBottom="0dp"
             android:layout_gravity="center_vertical"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textIsSelectable="true" />
 
     </LinearLayout>
 
