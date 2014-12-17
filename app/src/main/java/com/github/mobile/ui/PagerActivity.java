@@ -77,6 +77,15 @@ public abstract class PagerActivity extends DialogFragmentActivity implements
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        SherlockFragment fragment = getFragment();
+        if (fragment != null)
+            fragment.onPrepareOptionsMenu(menu);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public void onPageScrolled(int position, float positionOffset,
             int positionOffsetPixels) {
         // Intentionally left blank

@@ -111,25 +111,27 @@ public class GistFileFragment extends DialogFragment implements
         updateWrapItem();
     }
 
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        updateWrapItem();
+    }
+
     private void updateWrapItem() {
-        if (wrapItem != null)
+        if (wrapItem != null) {
             if (codePrefs.getBoolean(WRAP, false))
                 wrapItem.setTitle(string.disable_wrapping);
             else
                 wrapItem.setTitle(string.enable_wrapping);
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case id.m_wrap:
-            if (editor.getWrap()) {
-                item.setTitle(string.enable_wrapping);
-                editor.setWrap(false);
-            } else {
-                item.setTitle(string.disable_wrapping);
-                editor.setWrap(true);
-            }
+            // If the user selected the wrapping options, that mean they want
+            // toggle it's current value
+            editor.setWrap(!editor.getWrap());
             PreferenceUtils.save(codePrefs.edit().putBoolean(WRAP,
                     editor.getWrap()));
             return true;
@@ -206,7 +208,6 @@ public class GistFileFragment extends DialogFragment implements
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
             String key) {
         if (WRAP.equals(key)) {
-            updateWrapItem();
             editor.setWrap(sharedPreferences.getBoolean(WRAP, false));
         }
     }

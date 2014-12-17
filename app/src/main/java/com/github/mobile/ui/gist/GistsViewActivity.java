@@ -21,6 +21,7 @@ import static com.github.mobile.Intents.EXTRA_GIST;
 import static com.github.mobile.Intents.EXTRA_GIST_ID;
 import static com.github.mobile.Intents.EXTRA_GIST_IDS;
 import static com.github.mobile.Intents.EXTRA_POSITION;
+import static com.github.mobile.ui.gist.GistFragment.GistStarListener;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -42,6 +43,7 @@ import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Gist;
@@ -50,9 +52,16 @@ import org.eclipse.egit.github.core.Gist;
  * Activity to display a collection of Gists in a pager
  */
 public class GistsViewActivity extends PagerActivity implements
-        OnLoadListener<Gist> {
+        OnLoadListener<Gist>, GistStarListener {
+
+    public static final String EXTRA_STARRED_GISTS = "extra_starred_gists";
+    public static final String EXTRA_UNSTARRED_GISTS = "extra_unstarred_gists";
 
     private static final int REQUEST_CONFIRM_DELETE = 1;
+
+    private ArrayList<Gist> starredGists;
+
+    private ArrayList<Gist> unstarredGists;
 
     /**
      * Create an intent to show a single gist
@@ -122,6 +131,9 @@ public class GistsViewActivity extends PagerActivity implements
             gists = new String[] { gist.getId() };
         }
 
+        starredGists = new ArrayList<Gist>();
+        unstarredGists = new ArrayList<Gist>();
+
         adapter = new GistsPagerAdapter(this, gists);
         pager.setAdapter(adapter);
         pager.setOnPageChangeListener(this);
@@ -130,11 +142,22 @@ public class GistsViewActivity extends PagerActivity implements
     }
 
     @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_STARRED_GISTS, starredGists);
+        intent.putExtra(EXTRA_UNSTARRED_GISTS, unstarredGists);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case android.R.id.home:
             Intent intent = new Intent(this, GistsActivity.class);
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+            intent.putExtra(EXTRA_STARRED_GISTS, starredGists);
+            intent.putExtra(EXTRA_UNSTARRED_GISTS, unstarredGists);
             startActivity(intent);
             return true;
         case id.m_delete:
@@ -208,5 +231,27 @@ public class GistsViewActivity extends PagerActivity implements
     public void loaded(Gist gist) {
         if (gists[pager.getCurrentItem()].equals(gist.getId()))
             updateActionBar(gist, gist.getId());
+    }
+
+    @Override
+    public void onGistStarred(Gist gist) {
+        for (int i = 0; i < unstarredGists.size(); i++) {
+            if (unstarredGists.get(i).getId().equals(gist.getId())) {
+                unstarredGists.remove(i);
+                break;
+            }
+        }
+        starredGists.add(gist);
+    }
+
+    @Override
+    public void onGistUnstarred(Gist gist) {
+        for (int i = 0; i < starredGists.size(); i++) {
+            if (starredGists.get(i).getId().equals(gist.getId())) {
+                starredGists.remove(i);
+                break;
+            }
+        }
+        unstarredGists.add(gist);
     }
 }

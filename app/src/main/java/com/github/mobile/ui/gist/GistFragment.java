@@ -124,10 +124,30 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
     private List<View> fileHeaders = new ArrayList<View>();
 
+    private GistStarListener starListener;
+
+    public interface GistStarListener {
+        public void onGistStarred(Gist gist);
+
+        public void onGistUnstarred(Gist gist);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         gistId = getArguments().getString(EXTRA_GIST_ID);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        if (activity instanceof GistStarListener)
+            starListener = (GistStarListener) activity;
+        else
+            throw new ClassCastException("You must attach GistsFragment to " +
+                " a GistStarListener");
     }
 
     @Override
@@ -238,11 +258,10 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-        boolean owner = isOwner();
-        if (!owner) {
+        if (!isOwner()) {
             menu.removeItem(id.m_delete);
             MenuItem starItem = menu.findItem(id.m_star);
-            starItem.setEnabled(loadFinished && !owner);
+            starItem.setEnabled(loadFinished);
             if (starred)
                 starItem.setTitle(string.unstar);
             else
@@ -288,6 +307,11 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 super.onSuccess(gist);
 
                 starred = true;
+                starListener.onGistStarred(GistFragment.this.gist);
+                ToastUtils.show(getActivity(), getString(string.starred_gist));
+
+                // We invalidate the options menu so that "Unstar" is now shown
+                getActivity().invalidateOptionsMenu();
             }
 
             @Override
@@ -321,6 +345,13 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 super.onSuccess(gist);
 
                 starred = false;
+                starListener.onGistUnstarred(GistFragment.this.gist);
+                ToastUtils.show(getActivity(), getString(
+                    string.unstarred_gist));
+
+                // We invalidate the options menu so that "Star" is now shown
+                getActivity().invalidateOptionsMenu();
+
             }
 
             protected void onException(Exception e) throws RuntimeException {
@@ -439,6 +470,9 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 updateList(fullGist.getGist(), fullGist);
 
                 getSherlockActivity().setSupportProgressBarIndeterminateVisibility(false);
+
+                // Update the action bar to reflect the newly acquired information
+                getActivity().invalidateOptionsMenu();
             }
 
         }.execute();
