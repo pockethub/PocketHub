@@ -71,6 +71,7 @@ public class RepositoryUtils {
                 || "new".equals(name) //
                 || "notifications".equals(name) //
                 || "organizations".equals(name) //
+                || "orgs".equals(name) //
                 || "repositories".equals(name) //
                 || "search".equals(name) //
                 || "security".equals(name) //
