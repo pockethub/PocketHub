@@ -20,7 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.github.mobile.ui.StyledText;
-import com.viewpagerindicator.R.layout;
+import com.github.mobile.R.layout;
 
 import java.util.List;
 

@@ -34,7 +34,7 @@ import android.text.style.DynamicDrawableSpan;
 import android.util.TypedValue;
 import android.widget.TextView;
 
-import com.actionbarsherlock.R.drawable;
+import com.github.mobile.R.drawable;
 import com.github.mobile.R.id;
 import com.github.mobile.ui.StyledText;
 

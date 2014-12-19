@@ -1,9 +1,7 @@
 */target
-*/project.properties
 target
 tmp
 *~
-lib
 bin
 */test-output
 temp-testng-customsuite.xml
@@ -17,3 +15,8 @@ gen-external-apklibs
 .idea
 *.iml
 .DS_Store
+*.swp
+out
+.gradle
+/local.properties
+/build

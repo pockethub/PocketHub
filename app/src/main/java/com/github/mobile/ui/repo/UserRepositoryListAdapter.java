@@ -18,9 +18,9 @@ package com.github.mobile.ui.repo;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.actionbarsherlock.R.color;
+import com.github.mobile.R.color;
 import com.github.mobile.ui.StyledText;
-import com.viewpagerindicator.R.layout;
+import com.github.mobile.R.layout;
 
 import java.util.List;
 

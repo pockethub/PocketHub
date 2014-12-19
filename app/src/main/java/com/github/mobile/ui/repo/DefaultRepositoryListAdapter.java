@@ -20,11 +20,11 @@ import static android.view.View.VISIBLE;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.actionbarsherlock.R.color;
+import com.github.mobile.R.color;
 import com.github.mobile.ui.ItemFilter;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.ViewUtils;
-import com.viewpagerindicator.R.layout;
+import com.github.mobile.R.layout;
 
 import java.util.HashMap;
 import java.util.HashSet;

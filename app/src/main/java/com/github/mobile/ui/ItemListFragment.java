@@ -40,7 +40,7 @@ import com.github.mobile.ThrowableLoader;
 import com.github.mobile.util.ToastUtils;
 import com.github.mobile.util.ViewUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
-import com.viewpagerindicator.R.layout;
+import com.github.mobile.R.layout;
 
 import java.util.Collections;
 import java.util.List;

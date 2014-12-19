@@ -20,7 +20,7 @@ import android.view.View;
 
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.util.AvatarLoader;
-import com.viewpagerindicator.R.layout;
+import com.github.mobile.R.layout;
 
 import java.util.List;
 
