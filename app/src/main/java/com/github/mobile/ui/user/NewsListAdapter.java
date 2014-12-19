@@ -60,7 +60,7 @@ import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.TimeUtils;
-import com.viewpagerindicator.R.layout;
+import com.github.mobile.R.layout;
 
 import java.text.NumberFormat;
 import java.util.List;

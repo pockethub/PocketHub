@@ -22,7 +22,7 @@ import android.text.TextUtils;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import com.actionbarsherlock.R.drawable;
+import com.github.mobile.R.drawable;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;

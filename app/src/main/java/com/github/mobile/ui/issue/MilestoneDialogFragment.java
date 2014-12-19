@@ -39,8 +39,8 @@ import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.SingleChoiceDialogFragment;
-import com.viewpagerindicator.R.id;
-import com.viewpagerindicator.R.layout;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 
 import java.util.ArrayList;
 import java.util.List;

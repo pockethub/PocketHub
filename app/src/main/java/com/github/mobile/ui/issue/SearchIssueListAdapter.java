@@ -22,7 +22,7 @@ import android.view.View;
 
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ViewUtils;
-import com.viewpagerindicator.R.layout;
+import com.github.mobile.R.layout;
 
 import java.util.List;
 

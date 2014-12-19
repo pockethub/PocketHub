@@ -1,12 +1,9 @@
-# GitHub Android App
+# GitHub Android App  [![Google Play](http://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.github.mobile) [![Build Status](https://travis-ci.org/github/android.png)](https://travis-ci.org/github/android)
 
 This repository contains the source code for the GitHub Android app.
 
-<a href="https://play.google.com/store/apps/details?id=com.github.mobile" alt="Download from Google Play">
-  <img src="http://www.android.com/images/brand/android_app_on_play_large.png">
-</a>
+[![Download from Google Play](https://cloud.githubusercontent.com/assets/3838734/3855877/4cf2a2dc-1eec-11e4-9634-2a1adf8f1c39.jpg)](https://play.google.com/store/apps/details?id=com.github.mobile)
 
-![](http://img.skitch.com/20120709-nkdc1yugu2qmdg1ss81m1gr9ty.jpg)
 
 Please see the [issues](https://github.com/github/android/issues) section to
 report any bugs or feature requests and to see the list of known issues.
@@ -17,12 +14,32 @@ report any bugs or feature requests and to see the list of known issues.
 
 ## Building
 
+### With Gradle
+
+The easiest way to build is to install [Android Studio](https://developer.android.com/sdk/index.html) v1.+
+with [Gradle](https://www.gradle.org/) v2.2.1.
+Once installed, then you can import the project into Android Studio:
+
+1. Open `File`
+2. Import Project
+3. Select `build.gradle` under the project directory
+4. Click `OK`
+
+Then, Gradle will do everything for you.
+
+### With Maven
+
+Notes: Although Maven support is not dropped as yet, to say the least, we have shifted our focus to use Gradle as our
+main build system.
+
 The build requires [Maven](http://maven.apache.org/download.html)
-v3.0.3+ and the [Android SDK](http://developer.android.com/sdk/index.html)
+v3.1.1+ and the [Android SDK](http://developer.android.com/sdk/index.html)
 to be installed in your development environment. In addition you'll need to set
 the `ANDROID_HOME` environment variable to the location of your SDK:
 
-    export ANDROID_HOME=/opt/tools/android-sdk
+```bash
+export ANDROID_HOME=/opt/tools/android-sdk
+```
 
 After satisfying those requirements, the build is pretty simple:
 
@@ -32,10 +49,13 @@ After satisfying those requirements, the build is pretty simple:
   emulator
 
 You might find that your device doesn't let you install your build if you
-already have the version from the Android Market installed.  This is standard
+already have the version from Google Play installed.  This is standard
 Android security as it it won't let you directly replace an app that's been
 signed with a different key.  Manually uninstall GitHub from your device and
 you will then be able to install your own built version.
+
+See [here](https://github.com/github/android/wiki/Building-From-Eclipse) for
+instructions on building from [Eclipse](http://eclipse.org).
 
 ## Acknowledgements
 
@@ -45,10 +65,10 @@ built on top of [API v3](http://developer.github.com/).
 It also uses many other open source libraries such as:
 
 * [ActionBarSherlock](https://github.com/JakeWharton/ActionBarSherlock)
-* [ViewPagerIndicator](https://github.com/JakeWharton/Android-ViewPagerIndicator)
-* [RoboGuice](http://code.google.com/p/roboguice/)
 * [android-maven-plugin](https://github.com/jayway/maven-android-plugin)
-* [SyntaxHighlighter](https://github.com/alexgorbatchev/SyntaxHighlighter)
+* [CodeMirror](https://github.com/codemirror/CodeMirror)
+* [RoboGuice](https://github.com/roboguice/roboguice)
+* [ViewPagerIndicator](https://github.com/JakeWharton/Android-ViewPagerIndicator)
 
 These are just a few of the major dependencies, the entire list of dependencies
 is listed in the [app's POM file](https://github.com/github/android/blob/master/app/pom.xml).
@@ -61,4 +81,3 @@ Please fork this repository and contribute back using
 Any contributions, large or small, major features, bug fixes, additional
 language translations, unit/integration tests are welcomed and appreciated
 but will be thoroughly reviewed and discussed.
-
