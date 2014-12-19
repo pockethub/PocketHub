@@ -358,6 +358,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.settings.SettingsActivity"
+                android:parentActivityName=".ui.user.HomeActivity" >
+                <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".ui.user.HomeActivity" />
+        </activity>
 
         <service
             android:name=".sync.SyncAdapterService"

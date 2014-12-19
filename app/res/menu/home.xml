@@ -22,4 +22,10 @@
         android:showAsAction="ifRoom"
         android:title="@string/find_repositories"/>
 
+    <item
+        android:id="@+id/m_settings"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:showAsAction="never"
+        android:title="@string/settings" />
+
 </menu>

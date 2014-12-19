@@ -27,6 +27,7 @@ import static com.github.mobile.util.TypefaceUtils.ICON_WATCH;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
@@ -37,6 +38,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.mobile.R;
 import com.github.mobile.R.id;
 import com.github.mobile.R.menu;
 import com.github.mobile.accounts.AccountUtils;
@@ -47,6 +49,7 @@ import com.github.mobile.ui.gist.GistsActivity;
 import com.github.mobile.ui.issue.FiltersViewActivity;
 import com.github.mobile.ui.issue.IssueDashboardActivity;
 import com.github.mobile.ui.repo.OrganizationLoader;
+import com.github.mobile.ui.settings.SettingsActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.PreferenceUtils;
 import com.google.inject.Inject;
@@ -144,12 +147,23 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
     protected void onResume() {
         super.onResume();
 
+        SharedPreferences defaultPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean shouldReloadOrgs = defaultPrefs.getBoolean(getString(
+            R.string.key_reload_organizations), false);
+
         // Restart loader if default account doesn't match currently loaded
         // account
         List<User> currentOrgs = orgs;
-        if (currentOrgs != null && !currentOrgs.isEmpty()
-                && !AccountUtils.isUser(this, currentOrgs.get(0)))
+        if ((currentOrgs != null && !currentOrgs.isEmpty()
+                && !AccountUtils.isUser(this, currentOrgs.get(0))) || shouldReloadOrgs)
             reloadOrgs();
+
+        // We've done what we need to with this information, resetting them now
+        // Prevents us from changing the UI multiple times
+        SharedPreferences.Editor edit = defaultPrefs.edit();
+        edit.putBoolean(getString(R.string.key_reload_organizations), false);
+        PreferenceUtils.save(edit);
+
     }
 
     private void configureActionBar() {
@@ -205,6 +219,9 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
         switch (item.getItemId()) {
         case id.m_search:
             onSearchRequested();
+            return true;
+        case id.m_settings:
+            startActivity(SettingsActivity.intentForSettings(this, org));
             return true;
         default:
             return super.onOptionsItemSelected(item);
