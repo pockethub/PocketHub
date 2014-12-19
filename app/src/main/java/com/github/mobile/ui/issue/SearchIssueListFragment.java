@@ -98,10 +98,12 @@ public class SearchIssueListFragment extends ItemListFragment<SearchIssue>
                 if (repository == null)
                     return Collections.emptyList();
                 List<SearchIssue> matches = new ArrayList<SearchIssue>();
-                matches.addAll(service.searchIssues(repository, STATE_OPEN,
-                        query));
-                matches.addAll(service.searchIssues(repository, STATE_CLOSED,
-                        query));
+                /** TODO
+                 *  This request is using a legacy API that is not working properly
+                 *  it needs to be fixed
+                 */
+                matches.addAll(service.searchIssues(repository, STATE_OPEN, query));
+                //matches.addAll(service.searchIssues(repository, STATE_CLOSED, query));
                 Collections.sort(matches, SearchIssueListFragment.this);
                 return matches;
             }
