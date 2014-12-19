@@ -1,0 +1,19 @@
+language: android
+android:
+   components:
+   - platform-tools
+   - android-16
+   - build-tools-21.1.2
+   - extra
+
+jdk: oraclejdk7
+
+notifications:
+  email: false
+
+before_install:
+  - sudo apt-get update -qq
+  - if [ `uname -m` = x86_64 ]; then sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch > /dev/null; fi
+
+script:
+  - ./gradlew clean build
