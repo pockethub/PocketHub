@@ -17,7 +17,8 @@ package com.github.mobile.ui.user;
 
 import android.os.Bundle;
 
-import com.github.mobile.R.string;
+import com.github.mobile.R;
+
 
 /**
  * Fragment to display a list of followers
@@ -28,16 +29,16 @@ public abstract class FollowersFragment extends PagedUserFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setEmptyText(string.no_followers);
+        setEmptyText(R.string.no_followers);
     }
 
     @Override
     protected int getLoadingMessage() {
-        return string.loading_followers;
+        return R.string.loading_followers;
     }
 
     @Override
     protected int getErrorMessage(Exception exception) {
-        return string.error_followers_load;
+        return R.string.error_followers_load;
     }
 }

@@ -23,7 +23,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.core.user.RefreshUserTask;
@@ -69,7 +69,7 @@ public class RepositoryContributorsFragment extends ItemListFragment<Contributor
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setEmptyText(string.no_contributors);
+        setEmptyText(R.string.no_contributors);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class RepositoryContributorsFragment extends ItemListFragment<Contributor
     @Override
     protected SingleTypeAdapter<Contributor> createAdapter(List<Contributor> items) {
         return new ContributorListAdapter(getActivity(),
-            items.toArray(new Contributor[items.size()]), avatars);
+                items.toArray(new Contributor[items.size()]), avatars);
     }
 
     @Override
@@ -106,6 +106,6 @@ public class RepositoryContributorsFragment extends ItemListFragment<Contributor
 
     @Override
     protected int getErrorMessage(Exception exception) {
-        return string.error_contributors_load;
+        return R.string.error_contributors_load;
     }
 }

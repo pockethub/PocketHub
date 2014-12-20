@@ -40,10 +40,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents.Builder;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
-import com.github.mobile.R.menu;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.core.issue.IssueUtils;
@@ -147,16 +144,16 @@ public class EditIssueActivity extends DialogFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(layout.issue_edit);
+        setContentView(R.layout.issue_edit);
 
-        titleText = finder.find(id.et_issue_title);
-        bodyText = finder.find(id.et_issue_body);
-        milestoneGraph = finder.find(id.ll_milestone_graph);
-        milestoneText = finder.find(id.tv_milestone);
-        milestoneClosed = finder.find(id.v_closed);
-        assigneeAvatar = finder.find(id.iv_assignee_avatar);
-        assigneeText = finder.find(id.tv_assignee_name);
-        labelsText = finder.find(id.tv_labels);
+        titleText = finder.find(R.id.et_issue_title);
+        bodyText = finder.find(R.id.et_issue_body);
+        milestoneGraph = finder.find(R.id.ll_milestone_graph);
+        milestoneText = finder.find(R.id.tv_milestone);
+        milestoneClosed = finder.find(R.id.v_closed);
+        assigneeAvatar = finder.find(R.id.iv_assignee_avatar);
+        assigneeText = finder.find(R.id.tv_assignee_name);
+        labelsText = finder.find(R.id.tv_labels);
 
         checkCollaboratorStatus();
 
@@ -176,13 +173,13 @@ public class EditIssueActivity extends DialogFragmentActivity {
         ActionBar actionBar = getSupportActionBar();
         if (issue.getNumber() > 0)
             if (IssueUtils.isPullRequest(issue))
-                actionBar.setTitle(getString(string.pull_request_title)
+                actionBar.setTitle(getString(R.string.pull_request_title)
                         + issue.getNumber());
             else
-                actionBar.setTitle(getString(string.issue_title)
+                actionBar.setTitle(getString(R.string.issue_title)
                         + issue.getNumber());
         else
-            actionBar.setTitle(string.new_issue);
+            actionBar.setTitle(R.string.new_issue);
         actionBar.setSubtitle(repository.generateId());
         avatars.bind(actionBar, (User) intent.getSerializableExtra(EXTRA_USER));
 
@@ -225,49 +222,49 @@ public class EditIssueActivity extends DialogFragmentActivity {
     }
 
     private void showMainContent() {
-        finder.find(id.sv_issue_content).setVisibility(View.VISIBLE);
-        finder.find(id.pb_loading).setVisibility(View.GONE);
+        finder.find(R.id.sv_issue_content).setVisibility(View.VISIBLE);
+        finder.find(R.id.pb_loading).setVisibility(View.GONE);
     }
 
     private void showCollaboratorOptions() {
-        finder.find(id.tv_milestone_label).setVisibility(View.VISIBLE);
-        finder.find(id.ll_milestone).setVisibility(View.VISIBLE);
-        finder.find(id.tv_labels_label).setVisibility(View.VISIBLE);
-        finder.find(id.ll_labels).setVisibility(View.VISIBLE);
-        finder.find(id.tv_assignee_label).setVisibility(View.VISIBLE);
-        finder.find(id.ll_assignee).setVisibility(View.VISIBLE);
+        finder.find(R.id.tv_milestone_label).setVisibility(View.VISIBLE);
+        finder.find(R.id.ll_milestone).setVisibility(View.VISIBLE);
+        finder.find(R.id.tv_labels_label).setVisibility(View.VISIBLE);
+        finder.find(R.id.ll_labels).setVisibility(View.VISIBLE);
+        finder.find(R.id.tv_assignee_label).setVisibility(View.VISIBLE);
+        finder.find(R.id.ll_assignee).setVisibility(View.VISIBLE);
 
-        finder.onClick(id.ll_milestone, new OnClickListener() {
+        finder.onClick(R.id.ll_milestone, new OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 if (milestoneDialog == null)
                     milestoneDialog = new MilestoneDialog(
-                        EditIssueActivity.this, ISSUE_MILESTONE_UPDATE,
-                        repository, milestoneService);
+                            EditIssueActivity.this, ISSUE_MILESTONE_UPDATE,
+                            repository, milestoneService);
                 milestoneDialog.show(issue.getMilestone());
             }
         });
 
-        finder.onClick(id.ll_assignee, new OnClickListener() {
+        finder.onClick(R.id.ll_assignee, new OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 if (assigneeDialog == null)
                     assigneeDialog = new AssigneeDialog(EditIssueActivity.this,
-                        ISSUE_ASSIGNEE_UPDATE, repository,
-                        collaboratorService);
+                            ISSUE_ASSIGNEE_UPDATE, repository,
+                            collaboratorService);
                 assigneeDialog.show(issue.getAssignee());
             }
         });
 
-        finder.onClick(id.ll_labels, new OnClickListener() {
+        finder.onClick(R.id.ll_labels, new OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 if (labelsDialog == null)
                     labelsDialog = new LabelsDialog(EditIssueActivity.this,
-                        ISSUE_LABELS_UPDATE, repository, labelService);
+                            ISSUE_LABELS_UPDATE, repository, labelService);
                 labelsDialog.show(issue.getLabels());
             }
         });
@@ -291,7 +288,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
                 milestoneClosed.setVisibility(GONE);
             milestoneGraph.setVisibility(VISIBLE);
         } else {
-            milestoneText.setText(string.none);
+            milestoneText.setText(R.string.none);
             milestoneGraph.setVisibility(GONE);
         }
     }
@@ -305,7 +302,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
             avatars.bind(assigneeAvatar, assignee);
         } else {
             assigneeAvatar.setVisibility(GONE);
-            assigneeText.setText(string.unassigned);
+            assigneeText.setText(R.string.unassigned);
         }
     }
 
@@ -314,7 +311,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
         if (labels != null && !labels.isEmpty())
             LabelDrawableSpan.setText(labelsText, labels);
         else
-            labelsText.setText(string.none);
+            labelsText.setText(R.string.none);
     }
 
     @Override
@@ -336,8 +333,8 @@ public class EditIssueActivity extends DialogFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
-        getSupportMenuInflater().inflate(menu.issue_edit, options);
-        saveItem = options.findItem(id.m_apply);
+        getSupportMenuInflater().inflate(R.menu.issue_edit, options);
+        saveItem = options.findItem(R.id.m_apply);
         updateSaveMenu();
         return true;
     }
@@ -345,7 +342,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case id.m_apply:
+        case R.id.m_apply:
             issue.setTitle(titleText.getText().toString());
             issue.setBody(bodyText.getText().toString());
             if (issue.getNumber() > 0)
@@ -388,7 +385,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
             @Override
             public Boolean run(Account account) throws Exception {
                 return collaboratorService.isCollaborator(
-                    repository, AccountUtils.getLogin(EditIssueActivity.this));
+                        repository, AccountUtils.getLogin(EditIssueActivity.this));
             }
 
             @Override
@@ -396,7 +393,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
                 super.onSuccess(isCollaborator);
 
                 showMainContent();
-                if(isCollaborator)
+                if (isCollaborator)
                     showCollaboratorOptions();
             }
 

@@ -25,7 +25,7 @@ import android.os.Bundle;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents.Builder;
-import com.github.mobile.R.layout;
+import com.github.mobile.R;
 import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.util.AvatarLoader;
@@ -60,7 +60,7 @@ public class IssueBrowseActivity extends DialogFragmentActivity {
 
         repo = getSerializableExtra(EXTRA_REPOSITORY);
 
-        setContentView(layout.repo_issue_list);
+        setContentView(R.layout.repo_issue_list);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(repo.getName());

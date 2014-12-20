@@ -21,7 +21,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.mobile.R.id;
+import com.github.mobile.R;
 import com.github.mobile.core.commit.CommitUtils;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
@@ -63,8 +63,8 @@ public class CommitListAdapter extends SingleTypeAdapter<RepositoryCommit> {
 
     @Override
     protected int[] getChildViewIds() {
-        return new int[] { id.tv_commit_id, id.tv_commit_author, id.iv_avatar,
-                id.tv_commit_message, id.tv_commit_comments };
+        return new int[] { R.id.tv_commit_id, R.id.tv_commit_author, R.id.iv_avatar,
+                R.id.tv_commit_message, R.id.tv_commit_comments };
     }
 
     @Override
@@ -72,7 +72,7 @@ public class CommitListAdapter extends SingleTypeAdapter<RepositoryCommit> {
         view = super.initialize(view);
 
         TypefaceUtils.setOcticons((TextView) view
-                .findViewById(id.tv_comment_icon));
+                .findViewById(R.id.tv_comment_icon));
         return view;
     }
 

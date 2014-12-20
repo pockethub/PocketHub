@@ -51,10 +51,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
-import com.github.mobile.R.menu;
-import com.github.mobile.R.string;
 import com.github.mobile.core.commit.CommitStore;
 import com.github.mobile.core.commit.CommitUtils;
 import com.github.mobile.core.commit.FullCommit;
@@ -150,8 +146,8 @@ public class CommitDiffListFragment extends DialogFragment implements
 
         commit = store.getCommit(repository, base);
 
-        ((TextView) loadingView.findViewById(id.tv_loading))
-                .setText(string.loading_files_and_comments);
+        ((TextView) loadingView.findViewById(R.id.tv_loading))
+                .setText(R.string.loading_files_and_comments);
 
         if (files == null
                 || (commit != null && commit.getCommit().getCommentCount() > 0 && comments == null))
@@ -194,7 +190,7 @@ public class CommitDiffListFragment extends DialogFragment implements
     @Override
     public void onCreateOptionsMenu(final Menu optionsMenu,
             final MenuInflater inflater) {
-        inflater.inflate(menu.commit_view, optionsMenu);
+        inflater.inflate(R.menu.commit_view, optionsMenu);
     }
 
     @Override
@@ -203,18 +199,18 @@ public class CommitDiffListFragment extends DialogFragment implements
             return false;
 
         switch (item.getItemId()) {
-        case id.m_refresh:
+        case R.id.m_refresh:
             refreshCommit();
             return true;
-        case id.m_copy_hash:
+        case R.id.m_copy_hash:
             copyHashToClipboard();
             return true;
-        case id.m_comment:
+        case R.id.m_comment:
             startActivityForResult(
                     CreateCommentActivity.createIntent(repository, base),
                     COMMENT_CREATE);
             return true;
-        case id.m_share:
+        case R.id.m_share:
             shareCommit();
             return true;
         default:
@@ -222,15 +218,16 @@ public class CommitDiffListFragment extends DialogFragment implements
         }
     }
 
-	@SuppressWarnings("deprecation")
+    @SuppressWarnings("deprecation")
     @SuppressLint("NewApi")
-	private void copyHashToClipboard() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+    private void copyHashToClipboard() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             ClipboardManager manager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData clip = ClipData.newPlainText("hash", commit.getSha());
             manager.setPrimaryClip(clip);
         } else {
-            android.text.ClipboardManager manager = (android.text.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+            android.text.ClipboardManager manager = (android.text.ClipboardManager) getActivity().getSystemService
+                    (Context.CLIPBOARD_SERVICE);
             manager.setText(commit.getSha());
         }
         Toast.makeText(getActivity(), R.string.toast_msg_copied, Toast.LENGTH_SHORT).show();
@@ -267,7 +264,7 @@ public class CommitDiffListFragment extends DialogFragment implements
             @Override
             protected void onException(Exception e) throws RuntimeException {
                 super.onException(e);
-                ToastUtils.show(getActivity(), e, string.error_commit_load);
+                ToastUtils.show(getActivity(), e, R.string.error_commit_load);
                 ViewUtils.setGone(progress, true);
             }
 
@@ -291,7 +288,7 @@ public class CommitDiffListFragment extends DialogFragment implements
             CommitUtils.bindAuthor(commit, avatars, authorAvatar);
             authorName.setText(commitAuthor);
             StyledText styledAuthor = new StyledText();
-            styledAuthor.append(getString(string.authored));
+            styledAuthor.append(getString(R.string.authored));
 
             Date commitAuthorDate = CommitUtils.getAuthorDate(commit);
             if (commitAuthorDate != null)
@@ -306,7 +303,7 @@ public class CommitDiffListFragment extends DialogFragment implements
             CommitUtils.bindCommitter(commit, avatars, committerAvatar);
             committerName.setText(commitCommitter);
             StyledText styledCommitter = new StyledText();
-            styledCommitter.append(getString(string.committed));
+            styledCommitter.append(getString(R.string.committed));
 
             Date commitCommitterDate = CommitUtils.getCommitterDate(commit);
             if (commitCommitterDate != null)
@@ -319,9 +316,9 @@ public class CommitDiffListFragment extends DialogFragment implements
     }
 
     private void addDiffStats(RepositoryCommit commit, LayoutInflater inflater) {
-        View fileHeader = inflater.inflate(layout.commit_file_details_header,
+        View fileHeader = inflater.inflate(R.layout.commit_file_details_header,
                 null);
-        ((TextView) fileHeader.findViewById(id.tv_commit_file_summary))
+        ((TextView) fileHeader.findViewById(R.id.tv_commit_file_summary))
                 .setText(CommitUtils.formatStats(commit.getFiles()));
         adapter.addHeader(fileHeader);
     }
@@ -333,13 +330,13 @@ public class CommitDiffListFragment extends DialogFragment implements
             return;
 
         for (Commit parent : parents) {
-            View parentView = inflater.inflate(layout.commit_parent_item, null);
+            View parentView = inflater.inflate(R.layout.commit_parent_item, null);
             TextView parentIdText = (TextView) parentView
-                    .findViewById(id.tv_commit_id);
+                    .findViewById(R.id.tv_commit_id);
             parentIdText.setPaintFlags(parentIdText.getPaintFlags()
                     | UNDERLINE_TEXT_FLAG);
             StyledText parentText = new StyledText();
-            parentText.append(getString(string.parent_prefix));
+            parentText.append(getString(R.string.parent_prefix));
             parentText.monospace(CommitUtils.abbreviate(parent));
             parentIdText.setText(parentText);
             adapter.addHeader(parentView, parent, true);
@@ -385,7 +382,7 @@ public class CommitDiffListFragment extends DialogFragment implements
         super.onViewCreated(view, savedInstanceState);
 
         list = finder.find(android.R.id.list);
-        progress = finder.find(id.pb_loading);
+        progress = finder.find(R.id.pb_loading);
 
         diffStyler = new DiffStyler(getResources());
 
@@ -396,31 +393,31 @@ public class CommitDiffListFragment extends DialogFragment implements
         adapter = new HeaderFooterListAdapter<CommitFileListAdapter>(list,
                 new CommitFileListAdapter(inflater, diffStyler, avatars,
                         commentImageGetter));
-        adapter.addFooter(inflater.inflate(layout.footer_separator, null));
+        adapter.addFooter(inflater.inflate(R.layout.footer_separator, null));
         list.setAdapter(adapter);
 
-        commitHeader = inflater.inflate(layout.commit_header, null);
+        commitHeader = inflater.inflate(R.layout.commit_header, null);
         commitMessage = (TextView) commitHeader
-                .findViewById(id.tv_commit_message);
+                .findViewById(R.id.tv_commit_message);
 
-        authorArea = commitHeader.findViewById(id.ll_author);
-        authorAvatar = (ImageView) commitHeader.findViewById(id.iv_author);
-        authorName = (TextView) commitHeader.findViewById(id.tv_author);
-        authorDate = (TextView) commitHeader.findViewById(id.tv_author_date);
+        authorArea = commitHeader.findViewById(R.id.ll_author);
+        authorAvatar = (ImageView) commitHeader.findViewById(R.id.iv_author);
+        authorName = (TextView) commitHeader.findViewById(R.id.tv_author);
+        authorDate = (TextView) commitHeader.findViewById(R.id.tv_author_date);
 
-        committerArea = commitHeader.findViewById(id.ll_committer);
+        committerArea = commitHeader.findViewById(R.id.ll_committer);
         committerAvatar = (ImageView) commitHeader
-                .findViewById(id.iv_committer);
-        committerName = (TextView) commitHeader.findViewById(id.tv_committer);
-        committerDate = (TextView) commitHeader.findViewById(id.tv_commit_date);
+                .findViewById(R.id.iv_committer);
+        committerName = (TextView) commitHeader.findViewById(R.id.tv_committer);
+        committerDate = (TextView) commitHeader.findViewById(R.id.tv_commit_date);
 
-        loadingView = inflater.inflate(layout.loading_item, null);
+        loadingView = inflater.inflate(R.layout.loading_item, null);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(layout.commit_diff_list, null);
+        return inflater.inflate(R.layout.commit_diff_list, null);
     }
 
     private void showFileOptions(CharSequence line, final int position,
@@ -430,17 +427,17 @@ public class CommitDiffListFragment extends DialogFragment implements
         dialog.setCanceledOnTouchOutside(true);
 
         View view = getActivity().getLayoutInflater().inflate(
-                layout.diff_line_dialog, null);
+                R.layout.diff_line_dialog, null);
         ViewFinder finder = new ViewFinder(view);
 
-        TextView diff = finder.textView(id.tv_diff);
+        TextView diff = finder.textView(R.id.tv_diff);
         diff.setText(line);
         diffStyler.updateColors(line, diff);
 
-        finder.setText(id.tv_commit, getString(string.commit_prefix)
+        finder.setText(R.id.tv_commit, getString(R.string.commit_prefix)
                 + CommitUtils.abbreviate(commit));
 
-        finder.find(id.ll_view_area).setOnClickListener(new OnClickListener() {
+        finder.find(R.id.ll_view_area).setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
                 dialog.dismiss();
@@ -449,21 +446,21 @@ public class CommitDiffListFragment extends DialogFragment implements
             }
         });
 
-        finder.find(id.ll_comment_area).setOnClickListener(
+        finder.find(R.id.ll_comment_area).setOnClickListener(
                 new OnClickListener() {
 
                     public void onClick(View v) {
                         dialog.dismiss();
 
                         startActivityForResult(CreateCommentActivity
-                                .createIntent(repository, commit.getSha(),
-                                        file.getFilename(), position),
+                                        .createIntent(repository, commit.getSha(),
+                                                file.getFilename(), position),
                                 COMMENT_CREATE);
                     }
                 });
 
         dialog.setView(view);
-        dialog.setButton(BUTTON_NEGATIVE, getString(string.cancel),
+        dialog.setButton(BUTTON_NEGATIVE, getString(R.string.cancel),
                 new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int which) {

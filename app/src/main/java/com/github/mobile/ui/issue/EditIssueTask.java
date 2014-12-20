@@ -17,7 +17,7 @@ package com.github.mobile.ui.issue;
 
 import android.accounts.Account;
 
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.ProgressDialogTask;
@@ -64,7 +64,7 @@ public class EditIssueTask extends ProgressDialogTask<Issue> {
      * @return this task
      */
     public EditIssueTask edit() {
-        showIndeterminate(string.updating_issue);
+        showIndeterminate(R.string.updating_issue);
 
         execute();
         return this;

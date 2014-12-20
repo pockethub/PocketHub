@@ -20,8 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
+import com.github.mobile.R;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.ui.repo.RepositoryListAdapter;
 import com.github.mobile.util.TypefaceUtils;
@@ -42,7 +41,7 @@ public class SearchRepositoryListAdapter extends
      */
     public SearchRepositoryListAdapter(LayoutInflater inflater,
             SearchRepository[] elements) {
-        super(layout.user_repo_item, inflater, elements);
+        super(R.layout.user_repo_item, inflater, elements);
     }
 
     @Override
@@ -57,15 +56,15 @@ public class SearchRepositoryListAdapter extends
         view = super.initialize(view);
 
         TypefaceUtils.setOcticons(textView(view, 0),
-                (TextView) view.findViewById(id.tv_forks_icon),
-                (TextView) view.findViewById(id.tv_watchers_icon));
+                (TextView) view.findViewById(R.id.tv_forks_icon),
+                (TextView) view.findViewById(R.id.tv_watchers_icon));
         return view;
     }
 
     @Override
     protected int[] getChildViewIds() {
-        return new int[] { id.tv_repo_icon, id.tv_repo_description,
-                id.tv_language, id.tv_watchers, id.tv_forks, id.tv_repo_name };
+        return new int[] { R.id.tv_repo_icon, R.id.tv_repo_description,
+                R.id.tv_language, R.id.tv_watchers, R.id.tv_forks, R.id.tv_repo_name };
     }
 
     @Override
