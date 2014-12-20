@@ -19,7 +19,7 @@ import android.accounts.Account;
 import android.app.Activity;
 import android.util.Log;
 
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.accounts.AuthenticatedUserLoader;
 import com.github.mobile.core.user.UserComparator;
 import com.github.mobile.persistence.AccountDataManager;
@@ -73,7 +73,7 @@ public class OrganizationLoader extends AuthenticatedUserLoader<List<User>> {
             orgs = accountDataManager.getOrgs(false);
         } catch (final IOException e) {
             Log.e(TAG, "Exception loading organizations", e);
-            ToastUtils.show(activity, e, string.error_orgs_load);
+            ToastUtils.show(activity, e, R.string.error_orgs_load);
             return Collections.emptyList();
         }
         Collections.sort(orgs, userComparatorProvider.get());

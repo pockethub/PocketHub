@@ -19,9 +19,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.mobile.R.layout;
-import com.github.mobile.R.string;
-import com.github.mobile.R.id;
+import com.github.mobile.R;
 import com.github.mobile.util.AvatarLoader;
 
 import org.eclipse.egit.github.core.Contributor;
@@ -43,8 +41,8 @@ public class ContributorListAdapter extends SingleTypeAdapter<Contributor> {
      * @param avatars
      */
     public ContributorListAdapter(final Context context,
-        final Contributor[] elements, final AvatarLoader avatars) {
-        super(LayoutInflater.from(context), layout.contributor_item);
+            final Contributor[] elements, final AvatarLoader avatars) {
+        super(LayoutInflater.from(context), R.layout.contributor_item);
 
         this.context = context.getApplicationContext();
         this.avatars = avatars;
@@ -58,13 +56,13 @@ public class ContributorListAdapter extends SingleTypeAdapter<Contributor> {
 
     @Override
     protected int[] getChildViewIds() {
-        return new int[] { id.iv_avatar, id.tv_login, id.tv_contributions };
+        return new int[] { R.id.iv_avatar, R.id.tv_login, R.id.tv_contributions };
     }
 
     @Override
     protected void update(int position, Contributor contributor) {
         avatars.bind(imageView(0), contributor);
         setText(1, contributor.getLogin());
-        setText(2, context.getString(string.contributions, contributor.getContributions()));
+        setText(2, context.getString(R.string.contributions, contributor.getContributions()));
     }
 }

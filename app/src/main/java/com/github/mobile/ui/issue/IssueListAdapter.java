@@ -25,7 +25,7 @@ import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
-import com.github.mobile.R.id;
+import com.github.mobile.R;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.TypefaceUtils;
@@ -74,7 +74,7 @@ public abstract class IssueListAdapter<V> extends SingleTypeAdapter<V> {
 
         this.avatars = avatars;
         numberView = (TextView) inflater.inflate(viewId, null).findViewById(
-                id.tv_issue_number);
+                R.id.tv_issue_number);
         setItems(elements);
     }
 

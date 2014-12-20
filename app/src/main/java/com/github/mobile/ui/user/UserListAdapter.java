@@ -18,8 +18,7 @@ package com.github.mobile.ui.user;
 import android.view.LayoutInflater;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
+import com.github.mobile.R;
 import com.github.mobile.util.AvatarLoader;
 
 import org.eclipse.egit.github.core.User;
@@ -40,7 +39,7 @@ public class UserListAdapter extends SingleTypeAdapter<User> {
      */
     public UserListAdapter(final LayoutInflater inflater,
             final User[] elements, final AvatarLoader avatars) {
-        super(inflater, layout.user_item);
+        super(inflater, R.layout.user_item);
 
         this.avatars = avatars;
         setItems(elements);
@@ -53,7 +52,7 @@ public class UserListAdapter extends SingleTypeAdapter<User> {
 
     @Override
     protected int[] getChildViewIds() {
-        return new int[] { id.iv_avatar, id.tv_login };
+        return new int[] { R.id.iv_avatar, R.id.tv_login };
     }
 
     @Override

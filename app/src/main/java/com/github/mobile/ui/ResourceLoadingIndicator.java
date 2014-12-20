@@ -20,8 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
+import com.github.mobile.R;
 
 /**
  * Helper for showing more items are being loaded at the bottom of a list via a
@@ -46,8 +45,8 @@ public class ResourceLoadingIndicator {
      */
     public ResourceLoadingIndicator(final Context context,
             final int loadingResId) {
-        view = LayoutInflater.from(context).inflate(layout.loading_item, null);
-        textView = (TextView) view.findViewById(id.tv_loading);
+        view = LayoutInflater.from(context).inflate(R.layout.loading_item, null);
+        textView = (TextView) view.findViewById(R.id.tv_loading);
         textView.setText(loadingResId);
     }
 

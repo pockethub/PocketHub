@@ -22,7 +22,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.core.ResourcePager;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.ui.PagedItemFragment;
@@ -108,12 +108,12 @@ public class DashboardIssueFragment extends PagedItemFragment<RepositoryIssue> {
 
     @Override
     protected int getLoadingMessage() {
-        return string.loading_issues;
+        return R.string.loading_issues;
     }
 
     @Override
     protected int getErrorMessage(Exception exception) {
-        return string.error_issues_load;
+        return R.string.error_issues_load;
     }
 
     @Override

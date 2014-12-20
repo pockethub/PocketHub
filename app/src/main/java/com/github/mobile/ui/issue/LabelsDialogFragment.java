@@ -32,9 +32,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.DialogFragmentHelper;
 import com.github.mobile.ui.LightAlertDialog;
@@ -69,7 +67,7 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
 
         public LabelListAdapter(LayoutInflater inflater, Label[] labels,
                 boolean[] selected) {
-            super(inflater, layout.label_item);
+            super(inflater, R.layout.label_item);
 
             this.selected = selected;
             setItems(labels);
@@ -84,7 +82,7 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
 
         @Override
         protected int[] getChildViewIds() {
-            return new int[] { id.tv_label_name, id.cb_selected };
+            return new int[] { R.id.tv_label_name, R.id.cb_selected };
         }
 
         @Override
@@ -140,7 +138,7 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
         arguments.putSerializable(ARG_SELECTED, selected);
 
         LayoutInflater inflater = activity.getLayoutInflater();
-        ListView view = (ListView) inflater.inflate(layout.dialog_list_view,
+        ListView view = (ListView) inflater.inflate(R.layout.dialog_list_view,
                 null);
         LabelListAdapter adapter = new LabelListAdapter(inflater,
                 choices.toArray(new Label[choices.size()]), selectedChoices);
@@ -150,10 +148,10 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
         AlertDialog dialog = LightAlertDialog.create(activity);
         dialog.setCancelable(true);
         dialog.setOnCancelListener(this);
-        dialog.setButton(BUTTON_NEGATIVE, activity.getString(string.cancel),
+        dialog.setButton(BUTTON_NEGATIVE, activity.getString(R.string.cancel),
                 this);
-        dialog.setButton(BUTTON_NEUTRAL, activity.getString(string.clear), this);
-        dialog.setButton(BUTTON_POSITIVE, activity.getString(string.apply),
+        dialog.setButton(BUTTON_NEUTRAL, activity.getString(R.string.clear), this);
+        dialog.setButton(BUTTON_POSITIVE, activity.getString(R.string.apply),
                 this);
         dialog.setTitle(getTitle());
         dialog.setMessage(getMessage());

@@ -20,7 +20,6 @@ import android.view.LayoutInflater;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R;
-import com.github.mobile.R.layout;
 import com.github.mobile.core.search.SearchUser;
 import com.github.mobile.util.AvatarLoader;
 
@@ -39,8 +38,8 @@ public class SearchUserListAdapter extends SingleTypeAdapter<SearchUser> {
      * @param avatars
      */
     public SearchUserListAdapter(final Context context,
-        final SearchUser[] elements, final AvatarLoader avatars) {
-        super(LayoutInflater.from(context), layout.user_item);
+            final SearchUser[] elements, final AvatarLoader avatars) {
+        super(LayoutInflater.from(context), R.layout.user_item);
 
         this.avatars = avatars;
         setItems(elements);

@@ -19,7 +19,7 @@ import android.accounts.Account;
 import android.app.Activity;
 import android.util.Log;
 
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
@@ -93,7 +93,7 @@ public class CreateGistTask extends ProgressDialogTask<Gist> {
      * Create the {@link Gist} with the configured values
      */
     public void create() {
-        showIndeterminate(string.creating_gist);
+        showIndeterminate(R.string.creating_gist);
 
         execute();
     }

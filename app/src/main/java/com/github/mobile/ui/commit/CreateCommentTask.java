@@ -19,7 +19,7 @@ import android.accounts.Account;
 import android.app.Activity;
 import android.util.Log;
 
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.github.mobile.util.HtmlUtils;
 import com.github.mobile.util.ToastUtils;
@@ -69,7 +69,7 @@ public class CreateCommentTask extends ProgressDialogTask<CommitComment> {
      * @return this task
      */
     public CreateCommentTask start() {
-        showIndeterminate(string.creating_comment);
+        showIndeterminate(R.string.creating_comment);
         execute();
         return this;
     }

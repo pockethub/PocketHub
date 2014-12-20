@@ -22,9 +22,7 @@ import android.view.LayoutInflater;
 
 import com.github.kevinsawicki.wishlist.MultiTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
-import com.github.mobile.R.color;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
+import com.github.mobile.R;
 import com.github.mobile.core.commit.FullCommitFile;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
@@ -75,8 +73,8 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
         this.imageGetter = imageGetter;
 
         Resources resources = inflater.getContext().getResources();
-        addTextColor = resources.getColor(color.diff_add_text);
-        removeTextColor = resources.getColor(color.diff_remove_text);
+        addTextColor = resources.getColor(R.color.diff_add_text);
+        removeTextColor = resources.getColor(R.color.diff_remove_text);
     }
 
     @Override
@@ -142,13 +140,13 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
     protected int getChildLayoutId(final int type) {
         switch (type) {
         case TYPE_FILE_HEADER:
-            return layout.commit_diff_file_header;
+            return R.layout.commit_diff_file_header;
         case TYPE_FILE_LINE:
-            return layout.commit_diff_line;
+            return R.layout.commit_diff_line;
         case TYPE_LINE_COMMENT:
-            return layout.diff_comment_item;
+            return R.layout.diff_comment_item;
         case TYPE_COMMENT:
-            return layout.commit_comment_item;
+            return R.layout.commit_comment_item;
         default:
             return -1;
         }
@@ -158,13 +156,13 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
     protected int[] getChildViewIds(final int type) {
         switch (type) {
         case TYPE_FILE_HEADER:
-            return new int[] { id.tv_name, id.tv_folder, id.tv_stats };
+            return new int[] { R.id.tv_name, R.id.tv_folder, R.id.tv_stats };
         case TYPE_FILE_LINE:
-            return new int[] { id.tv_diff };
+            return new int[] { R.id.tv_diff };
         case TYPE_LINE_COMMENT:
         case TYPE_COMMENT:
-            return new int[] { id.tv_comment_body, id.iv_avatar,
-                    id.tv_comment_author, id.tv_comment_date };
+            return new int[] { R.id.tv_comment_body, R.id.iv_avatar,
+                    R.id.tv_comment_author, R.id.tv_comment_date };
         default:
             return null;
         }
