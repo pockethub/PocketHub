@@ -19,7 +19,7 @@ import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.github.mobile.R;
+import com.github.mobile.R.string;
 import com.github.mobile.ui.FragmentPagerAdapter;
 
 /**
@@ -63,11 +63,11 @@ public class GistQueriesPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
         case 0:
-            return resources.getString(R.string.tab_mine);
+            return resources.getString(string.tab_mine);
         case 1:
-            return resources.getString(R.string.tab_starred);
+            return resources.getString(string.tab_starred);
         case 2:
-            return resources.getString(R.string.tab_all);
+            return resources.getString(string.tab_all);
         default:
             return null;
         }

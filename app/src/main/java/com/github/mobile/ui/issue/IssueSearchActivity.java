@@ -27,7 +27,10 @@ import android.os.Bundle;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.github.mobile.R;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
+import com.github.mobile.R.menu;
+import com.github.mobile.R.string;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
@@ -50,19 +53,19 @@ public class IssueSearchActivity extends RoboSherlockFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
-        getSupportMenuInflater().inflate(R.menu.search, options);
+        getSupportMenuInflater().inflate(menu.search, options);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_search:
+        case id.m_search:
             onSearchRequested();
             return true;
-        case R.id.m_clear:
+        case id.m_clear:
             IssueSearchSuggestionsProvider.clear(this);
-            ToastUtils.show(this, R.string.search_history_cleared);
+            ToastUtils.show(this, string.search_history_cleared);
             return true;
         case android.R.id.home:
             Intent intent = RepositoryViewActivity.createIntent(repository);
@@ -78,7 +81,7 @@ public class IssueSearchActivity extends RoboSherlockFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.issue_search);
+        setContentView(layout.issue_search);
 
         ActionBar actionBar = getSupportActionBar();
         Bundle appData = getIntent().getBundleExtra(APP_DATA);

@@ -28,7 +28,9 @@ import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.ViewUtils;
-import com.github.mobile.R;
+import com.github.mobile.R.drawable;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 import com.github.mobile.util.TypefaceUtils;
 
 /**
@@ -130,7 +132,7 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
      * @return layout resource id
      */
     protected int getContentView() {
-        return R.layout.pager_with_tabs;
+        return layout.pager_with_tabs;
     }
 
     private void updateCurrentItem(final int newPosition) {
@@ -167,27 +169,27 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
         for (int i = 0; i < count; i++) {
             TabSpec spec = host.newTabSpec("tab" + i);
             spec.setContent(this);
-            View view = inflater.inflate(R.layout.tab, null);
-            TextView icon = (TextView) view.findViewById(R.id.tv_icon);
+            View view = inflater.inflate(layout.tab, null);
+            TextView icon = (TextView) view.findViewById(id.tv_icon);
             String iconText = getIcon(i);
             if (!TextUtils.isEmpty(iconText))
                 icon.setText(getIcon(i));
             else
                 ViewUtils.setGone(icon, true);
             TypefaceUtils.setOcticons(icon);
-            ((TextView) view.findViewById(R.id.tv_tab)).setText(getTitle(i));
+            ((TextView) view.findViewById(id.tv_tab)).setText(getTitle(i));
 
             spec.setIndicator(view);
             host.addTab(spec);
 
             int background;
             if (i == 0)
-                background = R.drawable.tab_selector_right;
+                background = drawable.tab_selector_right;
             else if (i == count - 1)
-                background = R.drawable.tab_selector_left;
+                background = drawable.tab_selector_left;
             else
-                background = R.drawable.tab_selector_left_right;
-            ((ImageView) view.findViewById(R.id.iv_tab))
+                background = drawable.tab_selector_left_right;
+            ((ImageView) view.findViewById(id.iv_tab))
                     .setImageResource(background);
         }
     }
@@ -207,9 +209,9 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
         super.onCreate(savedInstanceState);
 
         setContentView(getContentView());
-        pager = (ViewPager) findViewById(R.id.vp_pages);
+        pager = (ViewPager) findViewById(id.vp_pages);
         pager.setOnPageChangeListener(this);
-        host = (TabHost) findViewById(R.id.th_tabs);
+        host = (TabHost) findViewById(id.th_tabs);
         host.setup();
         host.setOnTabChangedListener(this);
     }

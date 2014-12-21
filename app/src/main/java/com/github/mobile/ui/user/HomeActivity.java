@@ -37,7 +37,8 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.github.mobile.R;
+import com.github.mobile.R.id;
+import com.github.mobile.R.menu;
 import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.core.user.UserComparator;
 import com.github.mobile.persistence.AccountDataManager;
@@ -194,7 +195,7 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionMenu) {
-        getSupportMenuInflater().inflate(R.menu.home, optionMenu);
+        getSupportMenuInflater().inflate(menu.home, optionMenu);
 
         return super.onCreateOptionsMenu(optionMenu);
     }
@@ -202,7 +203,7 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_search:
+        case id.m_search:
             onSearchRequested();
             return true;
         default:

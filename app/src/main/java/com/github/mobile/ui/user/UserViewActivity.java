@@ -32,7 +32,10 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.Intents.Builder;
-import com.github.mobile.R;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
+import com.github.mobile.R.menu;
+import com.github.mobile.R.string;
 import com.github.mobile.core.user.FollowUserTask;
 import com.github.mobile.core.user.FollowingUserTask;
 import com.github.mobile.core.user.RefreshUserTask;
@@ -76,7 +79,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
         super.onCreate(savedInstanceState);
 
         user = (User) getIntent().getSerializableExtra(EXTRA_USER);
-        loadingBar = finder.find(R.id.pb_loading);
+        loadingBar = finder.find(id.pb_loading);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -102,7 +105,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
                     super.onException(e);
 
                     ToastUtils.show(UserViewActivity.this,
-                            R.string.error_person_load);
+                            string.error_person_load);
                     ViewUtils.setGone(loadingBar, true);
                 }
             }.execute();
@@ -111,17 +114,17 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionsMenu) {
-        getSupportMenuInflater().inflate(R.menu.user_follow, optionsMenu);
+        getSupportMenuInflater().inflate(menu.user_follow, optionsMenu);
 
         return super.onCreateOptionsMenu(optionsMenu);
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem followItem = menu.findItem(R.id.m_follow);
+        MenuItem followItem = menu.findItem(id.m_follow);
 
         followItem.setVisible(followingStatusChecked);
-        followItem.setTitle(isFollowing ? R.string.unfollow : R.string.follow);
+        followItem.setTitle(isFollowing ? string.unfollow : string.follow);
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -129,7 +132,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_follow:
+        case id.m_follow:
             followUser();
             return true;
         case android.R.id.home:
@@ -169,7 +172,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
 
     @Override
     protected int getContentView() {
-        return R.layout.tabbed_progress_pager;
+        return layout.tabbed_progress_pager;
     }
 
     @Override
@@ -204,7 +207,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
                     super.onException(e);
 
                     ToastUtils.show(UserViewActivity.this,
-                            R.string.error_unfollowing_person);
+                            string.error_unfollowing_person);
                 }
             }.start();
         else
@@ -222,7 +225,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
                     super.onException(e);
 
                     ToastUtils.show(UserViewActivity.this,
-                            R.string.error_following_person);
+                            string.error_following_person);
                 }
             }.start();
     }

@@ -20,7 +20,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
-import com.github.mobile.R;
+import com.github.mobile.R.string;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.github.mobile.util.HtmlUtils;
 import com.github.mobile.util.ToastUtils;
@@ -75,7 +75,7 @@ public class EditCommentTask extends ProgressDialogTask<Comment> {
      * @return this task
      */
     public EditCommentTask start() {
-        showIndeterminate(R.string.editing_comment);
+        showIndeterminate(string.editing_comment);
 
         execute();
         return this;

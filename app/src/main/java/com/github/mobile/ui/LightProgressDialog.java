@@ -25,8 +25,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.github.mobile.R;
-
+import com.github.mobile.R.drawable;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 
 /**
  * Progress dialog in Holo Light theme
@@ -63,13 +64,15 @@ public class LightProgressDialog extends ProgressDialog {
             dialog.setMessage(message);
             dialog.setIndeterminate(true);
             dialog.setProgressStyle(STYLE_SPINNER);
-            dialog.setIndeterminateDrawable(context.getResources().getDrawable(R.drawable.spinner));
+            dialog.setIndeterminateDrawable(context.getResources().getDrawable(
+                    drawable.spinner));
             return dialog;
         } else {
             AlertDialog dialog = LightAlertDialog.create(context);
             dialog.setInverseBackgroundForced(true);
-            View view = LayoutInflater.from(context).inflate(R.layout.progress_dialog, null);
-            ((TextView) view.findViewById(R.id.tv_loading)).setText(message);
+            View view = LayoutInflater.from(context).inflate(
+                    layout.progress_dialog, null);
+            ((TextView) view.findViewById(id.tv_loading)).setText(message);
             dialog.setView(view);
             return dialog;
         }

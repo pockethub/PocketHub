@@ -17,6 +17,7 @@ package com.github.mobile.ui.issue;
 
 import static android.app.SearchManager.APP_DATA;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
+import static org.eclipse.egit.github.core.service.IssueService.STATE_CLOSED;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
@@ -24,7 +25,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.mobile.R;
+import com.github.mobile.R.string;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.ui.ItemListFragment;
 import com.github.mobile.util.AvatarLoader;
@@ -69,7 +70,7 @@ public class SearchIssueListFragment extends ItemListFragment<SearchIssue>
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setEmptyText(R.string.no_issues);
+        setEmptyText(string.no_issues);
     }
 
     /**
@@ -111,7 +112,7 @@ public class SearchIssueListFragment extends ItemListFragment<SearchIssue>
 
     @Override
     protected int getErrorMessage(Exception exception) {
-        return R.string.error_issues_load;
+        return string.error_issues_load;
     }
 
     @Override

@@ -29,7 +29,9 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents.Builder;
-import com.github.mobile.R;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
+import com.github.mobile.R.string;
 import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.core.issue.IssueStore;
@@ -186,7 +188,7 @@ public class IssuesViewActivity extends PagerActivity {
         repoIds = getSerializableExtra(EXTRA_REPOSITORIES);
         repo = getSerializableExtra(EXTRA_REPOSITORY);
 
-        setContentView(R.layout.pager);
+        setContentView(layout.pager);
 
         if (repo != null) {
             ActionBar actionBar = getSupportActionBar();
@@ -217,7 +219,7 @@ public class IssuesViewActivity extends PagerActivity {
 
     private void configurePager() {
         int initialPosition = getIntExtra(EXTRA_POSITION);
-        pager = finder.find(R.id.vp_pages);
+        pager = finder.find(id.vp_pages);
 
         if (repo != null)
             adapter = new IssuesPagerAdapter(this, repo, issueNumbers, isCollaborator);
@@ -236,10 +238,10 @@ public class IssuesViewActivity extends PagerActivity {
 
         if (pullRequest)
             getSupportActionBar().setTitle(
-                    getString(R.string.pull_request_title) + number);
+                    getString(string.pull_request_title) + number);
         else
             getSupportActionBar().setTitle(
-                    getString(R.string.issue_title) + number);
+                    getString(string.issue_title) + number);
     }
 
     @Override
@@ -298,8 +300,8 @@ public class IssuesViewActivity extends PagerActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem editItem = menu.findItem(R.id.m_edit);
-        MenuItem stateItem = menu.findItem(R.id.m_state);
+        MenuItem editItem = menu.findItem(id.m_edit);
+        MenuItem stateItem = menu.findItem(id.m_state);
         if (editItem != null && stateItem != null) {
             editItem.setVisible(isCollaborator);
             stateItem.setVisible(isCollaborator);
@@ -341,7 +343,7 @@ public class IssuesViewActivity extends PagerActivity {
             @Override
             protected Boolean run(Account account) throws Exception {
                 return collaboratorService.isCollaborator(repo != null ? repo : repoIds.get(0),
-                        AccountUtils.getLogin(IssuesViewActivity.this));
+                    AccountUtils.getLogin(IssuesViewActivity.this));
             }
 
             @Override

@@ -35,7 +35,11 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewUtils;
-import com.github.mobile.R;
+import com.github.mobile.R.color;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
+import com.github.mobile.R.menu;
+import com.github.mobile.R.string;
 import com.github.mobile.core.code.FullTree;
 import com.github.mobile.core.code.FullTree.Entry;
 import com.github.mobile.core.code.FullTree.Folder;
@@ -113,13 +117,13 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
     @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
-        inflater.inflate(R.menu.refresh, optionsMenu);
+        inflater.inflate(menu.refresh, optionsMenu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_refresh:
+        case id.m_refresh:
             if (tree != null)
                 refreshTree(new Reference().setRef(tree.reference.getRef()));
             else
@@ -173,7 +177,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
                 super.onException(e);
 
                 showLoading(false);
-                ToastUtils.show(getActivity(), e, R.string.error_code_load);
+                ToastUtils.show(getActivity(), e, string.error_code_load);
             }
 
         }.execute();
@@ -204,14 +208,14 @@ public class RepositoryCodeFragment extends DialogFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.repo_code, null);
+        return inflater.inflate(layout.repo_code, null);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        progressView = finder.find(R.id.pb_loading);
+        progressView = finder.find(id.pb_loading);
         listView = finder.find(android.R.id.list);
         listView.setOnItemClickListener(this);
 
@@ -219,9 +223,9 @@ public class RepositoryCodeFragment extends DialogFragment implements
         adapter = new HeaderFooterListAdapter<CodeTreeAdapter>(listView,
                 new CodeTreeAdapter(activity));
 
-        branchFooterView = finder.find(R.id.rl_branch);
-        branchView = finder.find(R.id.tv_branch);
-        branchIconView = finder.find(R.id.tv_branch_icon);
+        branchFooterView = finder.find(id.rl_branch);
+        branchView = finder.find(id.tv_branch);
+        branchIconView = finder.find(id.tv_branch_icon);
         branchFooterView.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -230,15 +234,15 @@ public class RepositoryCodeFragment extends DialogFragment implements
             }
         });
 
-        pathHeaderView = activity.getLayoutInflater().inflate(R.layout.path_item,
+        pathHeaderView = activity.getLayoutInflater().inflate(layout.path_item,
                 null);
-        pathView = (TextView) pathHeaderView.findViewById(R.id.tv_path);
+        pathView = (TextView) pathHeaderView.findViewById(id.tv_path);
         pathView.setMovementMethod(LinkMovementMethod.getInstance());
         if (pathShowing)
             adapter.addHeader(pathHeaderView);
 
         TypefaceUtils.setOcticons(branchIconView,
-                (TextView) pathHeaderView.findViewById(R.id.tv_folder_icon));
+                (TextView) pathHeaderView.findViewById(id.tv_folder_icon));
         listView.setAdapter(adapter);
     }
 
@@ -263,14 +267,14 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
         branchView.setText(tree.branch);
         if (RefUtils.isTag(tree.reference))
-            branchIconView.setText(R.string.icon_tag);
+            branchIconView.setText(string.icon_tag);
         else
-            branchIconView.setText(R.string.icon_fork);
+            branchIconView.setText(string.icon_fork);
 
         adapter.getWrappedAdapter().setIndented(folder.entry != null);
 
         if (folder.entry != null) {
-            int textLightColor = getResources().getColor(R.color.text_light);
+            int textLightColor = getResources().getColor(color.text_light);
             final String[] segments = folder.entry.getPath().split("/");
             StyledText text = new StyledText();
             for (int i = 0; i < segments.length - 1; i++) {

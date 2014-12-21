@@ -19,7 +19,8 @@ import android.content.res.Resources;
 import android.text.TextUtils;
 import android.widget.TextView;
 
-import com.github.mobile.R;
+import com.github.mobile.R.color;
+import com.github.mobile.R.drawable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,8 +48,8 @@ public class DiffStyler {
      * @param resources
      */
     public DiffStyler(final Resources resources) {
-        markerColor = resources.getColor(R.color.diff_marker_text);
-        defaultColor = resources.getColor(R.color.text);
+        markerColor = resources.getColor(color.diff_marker_text);
+        defaultColor = resources.getColor(color.text);
     }
 
     private int nextLine(final String patch, final int start, final int length) {
@@ -67,26 +68,26 @@ public class DiffStyler {
      */
     public void updateColors(final CharSequence line, final TextView view) {
         if (TextUtils.isEmpty(line)) {
-            view.setBackgroundResource(R.drawable.list_item_background);
+            view.setBackgroundResource(drawable.list_item_background);
             view.setTextColor(defaultColor);
             return;
         }
 
         switch (line.charAt(0)) {
         case '@':
-            view.setBackgroundResource(R.drawable.diff_marker_background);
+            view.setBackgroundResource(drawable.diff_marker_background);
             view.setTextColor(markerColor);
             return;
         case '+':
-            view.setBackgroundResource(R.drawable.diff_add_background);
+            view.setBackgroundResource(drawable.diff_add_background);
             view.setTextColor(defaultColor);
             return;
         case '-':
-            view.setBackgroundResource(R.drawable.diff_remove_background);
+            view.setBackgroundResource(drawable.diff_remove_background);
             view.setTextColor(defaultColor);
             return;
         default:
-            view.setBackgroundResource(R.drawable.list_item_background);
+            view.setBackgroundResource(drawable.list_item_background);
             view.setTextColor(defaultColor);
         }
     }
@@ -131,6 +132,6 @@ public class DiffStyler {
         if (TextUtils.isEmpty(file))
             return Collections.emptyList();
         List<CharSequence> lines = diffs.get(file);
-        return lines != null ? lines : Collections.<CharSequence>emptyList();
+        return lines != null ? lines : Collections.<CharSequence> emptyList();
     }
 }

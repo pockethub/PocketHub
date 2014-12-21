@@ -22,7 +22,7 @@ import android.os.Bundle;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.github.mobile.Intents.Builder;
-import com.github.mobile.R;
+import com.github.mobile.R.string;
 import com.github.mobile.ui.comment.CommentPreviewPagerAdapter;
 
 import org.eclipse.egit.github.core.Comment;
@@ -62,7 +62,7 @@ public class EditCommentActivity extends
         super.onCreate(savedInstanceState);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(getString(R.string.gist_title) + gist.getId());
+        actionBar.setTitle(getString(string.gist_title) + gist.getId());
         User user = gist.getUser();
         if (user != null)
             actionBar.setSubtitle(user.getLogin());
