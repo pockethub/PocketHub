@@ -15,13 +15,13 @@
  */
 package com.github.mobile.ui.gist;
 
-import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_GISTS;
 import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_COMMENTS;
+import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_GISTS;
 import android.accounts.Account;
 import android.app.Activity;
 import android.util.Log;
 
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.github.mobile.util.HtmlUtils;
 import com.github.mobile.util.ToastUtils;
@@ -64,7 +64,7 @@ public class EditCommentTask extends ProgressDialogTask<Comment> {
      * @return this task
      */
     public EditCommentTask start() {
-        showIndeterminate(string.editing_comment);
+        showIndeterminate(R.string.editing_comment);
         execute();
         return this;
     }

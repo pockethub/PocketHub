@@ -19,7 +19,7 @@ import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import android.accounts.Account;
 import android.util.Log;
 
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.github.mobile.util.ToastUtils;
@@ -93,12 +93,12 @@ public class AssigneeDialog {
                 super.onException(e);
 
                 Log.d(TAG, "Exception loading collaborators", e);
-                ToastUtils.show(activity, e, string.error_collaborators_load);
+                ToastUtils.show(activity, e, R.string.error_collaborators_load);
             }
 
             @Override
             public void execute() {
-                showIndeterminate(string.loading_collaborators);
+                showIndeterminate(R.string.loading_collaborators);
 
                 super.execute();
             }
@@ -124,7 +124,7 @@ public class AssigneeDialog {
                 if (selectedAssignee.getLogin().equals(users.get(i).getLogin()))
                     checked = i;
         AssigneeDialogFragment.show(activity, requestCode,
-                activity.getString(string.select_assignee), null, users,
+                activity.getString(R.string.select_assignee), null, users,
                 checked);
     }
 }

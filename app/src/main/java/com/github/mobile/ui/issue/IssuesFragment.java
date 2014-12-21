@@ -36,10 +36,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
-import com.github.mobile.R.menu;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.RequestFuture;
 import com.github.mobile.core.ResourcePager;
 import com.github.mobile.core.issue.IssueFilter;
@@ -116,15 +113,15 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         filterHeader = getLayoutInflater(savedInstanceState).inflate(
-                layout.issues_filter_header, null);
-        state = (TextView) filterHeader.findViewById(id.tv_filter_state);
-        labels = (TextView) filterHeader.findViewById(id.tv_filter_labels);
+                R.layout.issues_filter_header, null);
+        state = (TextView) filterHeader.findViewById(R.id.tv_filter_state);
+        labels = (TextView) filterHeader.findViewById(R.id.tv_filter_labels);
         milestone = (TextView) filterHeader
-                .findViewById(id.tv_filter_milestone);
-        assigneeArea = filterHeader.findViewById(id.ll_assignee);
-        assignee = (TextView) filterHeader.findViewById(id.tv_filter_assignee);
+                .findViewById(R.id.tv_filter_milestone);
+        assigneeArea = filterHeader.findViewById(R.id.ll_assignee);
+        assignee = (TextView) filterHeader.findViewById(R.id.tv_filter_assignee);
         assigneeAvatar = (ImageView) filterHeader
-                .findViewById(id.iv_assignee_avatar);
+                .findViewById(R.id.iv_assignee_avatar);
         updateFilterSummary();
 
         super.onViewCreated(view, savedInstanceState);
@@ -139,9 +136,9 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
     private void updateFilterSummary() {
         if (filter.isOpen())
-            state.setText(string.open_issues);
+            state.setText(R.string.open_issues);
         else
-            state.setText(string.closed_issues);
+            state.setText(R.string.closed_issues);
 
         Collection<Label> filterLabels = filter.getLabels();
         if (filterLabels != null && !filterLabels.isEmpty()) {
@@ -170,7 +167,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setEmptyText(string.no_issues);
+        setEmptyText(R.string.no_issues);
     }
 
     @Override
@@ -187,7 +184,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
     @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
-        inflater.inflate(menu.issues, optionsMenu);
+        inflater.inflate(R.menu.issues, optionsMenu);
     }
 
     @Override
@@ -195,24 +192,24 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
         if (!isUsable())
             return false;
         switch (item.getItemId()) {
-        case id.create_issue:
+        case R.id.create_issue:
             startActivityForResult(EditIssueActivity.createIntent(repository),
                     ISSUE_CREATE);
             return true;
-        case id.m_filter:
+        case R.id.m_filter:
             startActivityForResult(
                     EditIssuesFilterActivity.createIntent(filter),
                     ISSUE_FILTER_EDIT);
             return true;
-        case id.m_bookmark:
+        case R.id.m_bookmark:
             cache.addIssueFilter(filter, new RequestFuture<IssueFilter>() {
 
                 public void success(IssueFilter response) {
-                    ToastUtils.show(getActivity(), string.message_filter_saved);
+                    ToastUtils.show(getActivity(), R.string.message_filter_saved);
                 }
             });
             return true;
-        case id.m_search:
+        case R.id.m_search:
             Bundle args = new Bundle();
             args.putSerializable(EXTRA_REPOSITORY, repository);
             getActivity().startSearch(null, false, args, false);
@@ -269,12 +266,12 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
     @Override
     protected int getLoadingMessage() {
-        return string.loading_issues;
+        return R.string.loading_issues;
     }
 
     @Override
     protected int getErrorMessage(Exception exception) {
-        return string.error_issues_load;
+        return R.string.error_issues_load;
     }
 
     @Override

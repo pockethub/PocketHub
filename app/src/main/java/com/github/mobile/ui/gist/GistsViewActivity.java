@@ -27,10 +27,7 @@ import android.os.Bundle;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents.Builder;
-import com.github.mobile.R.drawable;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.core.OnLoadListener;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.ui.ConfirmDialogFragment;
@@ -102,12 +99,12 @@ public class GistsViewActivity extends PagerActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(layout.pager);
+        setContentView(R.layout.pager);
 
         gists = getStringArrayExtra(EXTRA_GIST_IDS);
         gist = getSerializableExtra(EXTRA_GIST);
         initialPosition = getIntExtra(EXTRA_POSITION);
-        pager = finder.find(id.vp_pages);
+        pager = finder.find(R.id.vp_pages);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -137,13 +134,13 @@ public class GistsViewActivity extends PagerActivity implements
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             return true;
-        case id.m_delete:
+        case R.id.m_delete:
             String gistId = gists[pager.getCurrentItem()];
             Bundle args = new Bundle();
             args.putString(EXTRA_GIST_ID, gistId);
             ConfirmDialogFragment.show(this, REQUEST_CONFIRM_DELETE,
-                    getString(string.confirm_gist_delete_title),
-                    getString(string.confirm_gist_delete_message), args);
+                    getString(R.string.confirm_gist_delete_title),
+                    getString(R.string.confirm_gist_delete_message), args);
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -192,16 +189,16 @@ public class GistsViewActivity extends PagerActivity implements
         if (gist == null) {
             actionBar.setSubtitle(null);
             actionBar.setLogo(null);
-            actionBar.setIcon(drawable.app_icon);
+            actionBar.setIcon(R.drawable.app_icon);
         } else if (gist.getUser() != null) {
             avatars.bind(actionBar, gist.getUser());
             actionBar.setSubtitle(gist.getUser().getLogin());
         } else {
-            actionBar.setSubtitle(string.anonymous);
+            actionBar.setSubtitle(R.string.anonymous);
             actionBar.setLogo(null);
-            actionBar.setIcon(drawable.app_icon);
+            actionBar.setIcon(R.drawable.app_icon);
         }
-        actionBar.setTitle(getString(string.gist_title) + gistId);
+        actionBar.setTitle(getString(R.string.gist_title) + gistId);
     }
 
     @Override

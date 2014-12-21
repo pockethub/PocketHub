@@ -19,7 +19,7 @@ import android.accounts.Account;
 import android.app.Activity;
 import android.util.Log;
 
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.github.mobile.util.ToastUtils;
@@ -67,7 +67,7 @@ public class CreateIssueTask extends ProgressDialogTask<Issue> {
      * @return this task
      */
     public CreateIssueTask create() {
-        showIndeterminate(string.creating_issue);
+        showIndeterminate(R.string.creating_issue);
 
         execute();
         return this;

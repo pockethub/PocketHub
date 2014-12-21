@@ -29,9 +29,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.core.ref.RefUtils;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.SingleChoiceDialogFragment;
@@ -52,7 +50,7 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
 
         public RefListAdapter(LayoutInflater inflater, Reference[] refs,
                 int selected) {
-            super(inflater, layout.ref_item);
+            super(inflater, R.layout.ref_item);
 
             this.selected = selected;
             setItems(refs);
@@ -65,7 +63,7 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
 
         @Override
         protected int[] getChildViewIds() {
-            return new int[] { id.tv_ref_icon, id.tv_ref, id.rb_selected };
+            return new int[] { R.id.tv_ref_icon, R.id.tv_ref, R.id.rb_selected };
         }
 
         @Override
@@ -79,9 +77,9 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
         @Override
         protected void update(int position, Reference item) {
             if (RefUtils.isTag(item))
-                setText(0, string.icon_tag);
+                setText(0, R.string.icon_tag);
             else
-                setText(0, string.icon_fork);
+                setText(0, R.string.icon_fork);
             setText(1, RefUtils.getName(item));
             setChecked(2, selected == position);
         }
@@ -120,12 +118,12 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
         Bundle arguments = getArguments();
 
         final AlertDialog dialog = createDialog();
-        dialog.setButton(BUTTON_NEGATIVE, activity.getString(string.cancel),
+        dialog.setButton(BUTTON_NEGATIVE, activity.getString(R.string.cancel),
                 this);
 
         LayoutInflater inflater = activity.getLayoutInflater();
 
-        ListView view = (ListView) inflater.inflate(layout.dialog_list_view,
+        ListView view = (ListView) inflater.inflate(R.layout.dialog_list_view,
                 null);
         view.setOnItemClickListener(new OnItemClickListener() {
 

@@ -28,7 +28,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents.Builder;
-import com.github.mobile.R.layout;
+import com.github.mobile.R;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
 import com.github.mobile.util.AvatarLoader;
@@ -71,7 +71,7 @@ public class CommitCompareViewActivity extends DialogFragmentActivity {
 
         repository = getSerializableExtra(EXTRA_REPOSITORY);
 
-        setContentView(layout.commit_compare);
+        setContentView(R.layout.commit_compare);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
