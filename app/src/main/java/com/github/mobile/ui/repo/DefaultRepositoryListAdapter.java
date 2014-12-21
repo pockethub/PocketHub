@@ -19,7 +19,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.github.mobile.R;
+import com.github.mobile.R.color;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.TypefaceUtils;
 
@@ -55,7 +57,7 @@ public class DefaultRepositoryListAdapter extends
      */
     public DefaultRepositoryListAdapter(LayoutInflater inflater,
             Repository[] elements, AtomicReference<User> account) {
-        super(R.layout.repo_item, inflater, elements);
+        super(layout.repo_item, inflater, elements);
 
         this.account = account;
     }
@@ -101,17 +103,17 @@ public class DefaultRepositoryListAdapter extends
         view = super.initialize(view);
 
         TypefaceUtils.setOcticons(textView(view, 0),
-                (TextView) view.findViewById(R.id.tv_forks_icon),
-                (TextView) view.findViewById(R.id.tv_watchers_icon));
-        descriptionColor = view.getResources().getColor(R.color.text_description);
+                (TextView) view.findViewById(id.tv_forks_icon),
+                (TextView) view.findViewById(id.tv_watchers_icon));
+        descriptionColor = view.getResources().getColor(color.text_description);
         return view;
     }
 
     @Override
     protected int[] getChildViewIds() {
-        return new int[] { R.id.tv_repo_icon, R.id.tv_repo_description,
-                R.id.tv_language, R.id.tv_watchers, R.id.tv_forks, R.id.ll_header,
-                R.id.tv_header, R.id.v_separator, R.id.tv_repo_name };
+        return new int[] { id.tv_repo_icon, id.tv_repo_description,
+                id.tv_language, id.tv_watchers, id.tv_forks, id.ll_header,
+                id.tv_header, id.v_separator, id.tv_repo_name };
     }
 
     @Override

@@ -24,7 +24,8 @@ import android.os.Bundle;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents;
-import com.github.mobile.R;
+import com.github.mobile.R.string;
+import com.github.mobile.R.layout;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
@@ -56,13 +57,13 @@ public class RepositoryContributorsActivity extends DialogFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.repo_contributors);
+        setContentView(layout.repo_contributors);
 
         repository = getSerializableExtra(EXTRA_REPOSITORY);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(repository.getName());
-        actionBar.setSubtitle(R.string.contributors);
+        actionBar.setSubtitle(string.contributors);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         User owner = repository.getOwner();
@@ -72,13 +73,13 @@ public class RepositoryContributorsActivity extends DialogFragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case android.R.id.home:
-            Intent intent = RepositoryViewActivity.createIntent(repository);
-            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case android.R.id.home:
+                Intent intent = RepositoryViewActivity.createIntent(repository);
+                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

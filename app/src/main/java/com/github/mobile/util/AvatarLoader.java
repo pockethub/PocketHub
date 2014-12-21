@@ -21,6 +21,7 @@ import static android.view.View.VISIBLE;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -31,6 +32,8 @@ import android.widget.ImageView;
 import com.actionbarsherlock.app.ActionBar;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.github.mobile.R;
+import com.github.mobile.R.drawable;
+import com.github.mobile.R.id;
 import com.github.mobile.core.search.SearchUser;
 import com.google.inject.Inject;
 
@@ -113,7 +116,7 @@ public class AvatarLoader {
         this.context = context;
 
         loadingAvatar = context.getResources().getDrawable(
-                R.drawable.gravatar_icon);
+                drawable.gravatar_icon);
 
         avatarDir = new File(context.getCacheDir(), "avatars/github.com");
         if (!avatarDir.isDirectory())
@@ -130,7 +133,7 @@ public class AvatarLoader {
     }
 
     private int getMaxAvatarSize(final Context context) {
-        int[] attrs = { android.R.attr.layout_height };
+        int[] attrs = {android.R.attr.layout_height};
         TypedArray array = context.obtainStyledAttributes(R.style.AvatarXLarge, attrs);
         // Default value of 100px, but this should succeed anyways.
         return array.getLayoutDimension(0, 100);
@@ -153,8 +156,8 @@ public class AvatarLoader {
 
     private void deleteCachedUserAvatars(final File userAvatarDir) {
         if (userAvatarDir.isDirectory())
-            for (File userAvatar : userAvatarDir.listFiles())
-                userAvatar.delete();
+          for (File userAvatar : userAvatarDir.listFiles())
+              userAvatar.delete();
         userAvatarDir.delete();
     }
 
@@ -294,7 +297,7 @@ public class AvatarLoader {
     private AvatarLoader setImage(final Drawable image, final ImageView view,
             Object tag) {
         view.setImageDrawable(image);
-        view.setTag(R.id.iv_avatar, tag);
+        view.setTag(id.iv_avatar, tag);
         view.setVisibility(VISIBLE);
         return this;
     }
@@ -452,7 +455,7 @@ public class AvatarLoader {
 
             @Override
             public BitmapDrawable call() throws Exception {
-                if (!userId.equals(view.getTag(R.id.iv_avatar)))
+                if (!userId.equals(view.getTag(id.iv_avatar)))
                     return null;
 
                 final String avatarFilename = getAvatarFilenameForUrl(avatarUrl);
@@ -468,7 +471,7 @@ public class AvatarLoader {
                 if (image == null)
                     return;
                 loaded.put(userId, image);
-                if (userId.equals(view.getTag(R.id.iv_avatar)))
+                if (userId.equals(view.getTag(id.iv_avatar)))
                     setImage(image, view);
             }
         };

@@ -15,17 +15,17 @@
  */
 package com.github.mobile.ui.issue;
 
-import static com.github.mobile.Intents.EXTRA_COMMENT;
 import static com.github.mobile.Intents.EXTRA_ISSUE_NUMBER;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY_NAME;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY_OWNER;
 import static com.github.mobile.Intents.EXTRA_USER;
+import static com.github.mobile.Intents.EXTRA_COMMENT;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.github.mobile.Intents.Builder;
-import com.github.mobile.R;
+import com.github.mobile.R.string;
 import com.github.mobile.ui.comment.CommentPreviewPagerAdapter;
 
 import org.eclipse.egit.github.core.Comment;
@@ -76,14 +76,14 @@ public class EditCommentActivity extends
         super.onCreate(savedInstanceState);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(getString(R.string.issue_title) + issueNumber);
+        actionBar.setTitle(getString(string.issue_title) + issueNumber);
         actionBar.setSubtitle(repositoryId.generateId());
         avatars.bind(actionBar, (User) getSerializableExtra(EXTRA_USER));
     }
 
     @Override
     protected void createComment(String comment) {
-        editComment(comment);
+       editComment(comment);
     }
 
     /**

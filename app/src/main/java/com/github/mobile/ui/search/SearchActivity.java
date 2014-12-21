@@ -30,7 +30,10 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewUtils;
-import com.github.mobile.R;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
+import com.github.mobile.R.menu;
+import com.github.mobile.R.string;
 import com.github.mobile.ui.TabPagerActivity;
 import com.github.mobile.ui.user.HomeActivity;
 import com.github.mobile.util.ToastUtils;
@@ -50,7 +53,7 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        loadingBar = finder.find(R.id.pb_loading);
+        loadingBar = finder.find(id.pb_loading);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -61,27 +64,27 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
-        getSupportMenuInflater().inflate(R.menu.search, options);
+        getSupportMenuInflater().inflate(menu.search, options);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_search:
-            onSearchRequested();
-            return true;
-        case R.id.m_clear:
-            RepositorySearchSuggestionsProvider.clear(this);
-            ToastUtils.show(this, R.string.search_history_cleared);
-            return true;
-        case android.R.id.home:
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case id.m_search:
+                onSearchRequested();
+                return true;
+            case id.m_clear:
+                RepositorySearchSuggestionsProvider.clear(this);
+                ToastUtils.show(this, string.search_history_cleared);
+                return true;
+            case android.R.id.home:
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -92,18 +95,18 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
 
     @Override
     protected int getContentView() {
-        return R.layout.tabbed_progress_pager;
+        return layout.tabbed_progress_pager;
     }
 
     @Override
     protected String getIcon(int position) {
         switch (position) {
-        case 0:
-            return ICON_PUBLIC;
-        case 1:
-            return ICON_PERSON;
-        default:
-            return super.getIcon(position);
+            case 0:
+                return ICON_PUBLIC;
+            case 1:
+                return ICON_PERSON;
+            default:
+                return super.getIcon(position);
         }
     }
 

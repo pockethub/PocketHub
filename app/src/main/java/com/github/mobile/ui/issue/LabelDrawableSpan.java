@@ -32,7 +32,8 @@ import android.graphics.drawable.PaintDrawable;
 import android.text.style.DynamicDrawableSpan;
 import android.widget.TextView;
 
-import com.github.mobile.R;
+import com.github.mobile.R.drawable;
+import com.github.mobile.R.id;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.ServiceUtils;
 
@@ -98,14 +99,14 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
                 textColor = WHITE;
 
             layers = (LayerDrawable) resources
-                    .getDrawable(R.drawable.label_background);
+                    .getDrawable(drawable.label_background);
             ((GradientDrawable) ((LayerDrawable) layers
-                    .findDrawableByLayerId(R.id.item_outer_layer))
-                    .findDrawableByLayerId(R.id.item_outer)).setColor(bg);
+                    .findDrawableByLayerId(id.item_outer_layer))
+                    .findDrawableByLayerId(id.item_outer)).setColor(bg);
             ((GradientDrawable) ((LayerDrawable) layers
-                    .findDrawableByLayerId(R.id.item_inner_layer))
-                    .findDrawableByLayerId(R.id.item_inner)).setColor(bg);
-            ((GradientDrawable) layers.findDrawableByLayerId(R.id.item_bg))
+                    .findDrawableByLayerId(id.item_inner_layer))
+                    .findDrawableByLayerId(id.item_inner)).setColor(bg);
+            ((GradientDrawable) layers.findDrawableByLayerId(id.item_bg))
                     .setColor(bg);
 
             Paint p = getPaint();

@@ -33,7 +33,7 @@ import android.widget.TextView;
 
 import com.github.kevinsawicki.http.HttpRequest;
 import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
-import com.github.mobile.R;
+import com.github.mobile.R.drawable;
 import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.google.inject.Inject;
 
@@ -59,7 +59,7 @@ public class HttpImageGetter implements ImageGetter {
         private LoadingImageGetter(final Context context, final int size) {
             int imageSize = ServiceUtils.getIntPixels(context, size);
             image = context.getResources().getDrawable(
-                    R.drawable.image_loading_icon);
+                    drawable.image_loading_icon);
             image.setBounds(0, 0, imageSize, imageSize);
         }
 
@@ -136,8 +136,8 @@ public class HttpImageGetter implements ImageGetter {
             CharSequence currentEncoded = rawHtmlCache.put(id, encoded);
             // Remove full html if raw html has changed
             if (currentEncoded == null
-                    || !currentEncoded.toString().equals(encoded.toString()))
-                fullHtmlCache.remove(id);
+                || !currentEncoded.toString().equals(encoded.toString()))
+              fullHtmlCache.remove(id);
         } else {
             rawHtmlCache.remove(id);
             fullHtmlCache.put(id, encoded);

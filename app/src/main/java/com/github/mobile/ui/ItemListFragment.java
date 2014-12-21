@@ -19,7 +19,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,12 +34,15 @@ import android.widget.Toast;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
-import com.github.mobile.R;
+import com.github.mobile.R.color;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.util.ToastUtils;
-
 import java.util.Collections;
 import java.util.List;
+
+import android.support.v4.widget.SwipeRefreshLayout;
 
 /**
  * Base fragment for displaying a list of items that loads with a progress bar
@@ -103,7 +105,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.item_list, null);
+        return inflater.inflate(layout.item_list, null);
     }
 
     @Override
@@ -128,13 +130,13 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_item);
+        swipeLayout = (SwipeRefreshLayout) view.findViewById(id.swipe_item);
         swipeLayout.setOnRefreshListener(this);
         swipeLayout.setColorSchemeResources(
-                R.color.pager_title_background_top_start,
-                R.color.pager_title_background_end,
-                R.color.text_link,
-                R.color.pager_title_background_end);
+            color.pager_title_background_top_start,
+            color.pager_title_background_end,
+            color.text_link,
+            color.pager_title_background_end);
 
         listView = (ListView) view.findViewById(android.R.id.list);
         listView.setOnItemClickListener(new OnItemClickListener() {
@@ -154,7 +156,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
                         id);
             }
         });
-        progressBar = (ProgressBar) view.findViewById(R.id.pb_loading);
+        progressBar = (ProgressBar) view.findViewById(id.pb_loading);
 
         emptyView = (TextView) view.findViewById(android.R.id.empty);
 

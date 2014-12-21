@@ -20,7 +20,7 @@ import android.accounts.Account;
 import android.app.Activity;
 import android.util.Log;
 
-import com.github.mobile.R;
+import com.github.mobile.R.string;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.github.mobile.util.ToastUtils;
@@ -60,7 +60,7 @@ public class RandomGistTask extends ProgressDialogTask<Gist> {
      * This method must be called from the main thread.
      */
     public void start() {
-        showIndeterminate(R.string.random_gist);
+        showIndeterminate(string.random_gist);
 
         execute();
     }
@@ -81,7 +81,7 @@ public class RandomGistTask extends ProgressDialogTask<Gist> {
 
         if (gists.isEmpty())
             throw new IllegalArgumentException(getContext().getString(
-                    R.string.no_gists_found));
+                    string.no_gists_found));
 
         return store.addGist(gists.iterator().next());
     }

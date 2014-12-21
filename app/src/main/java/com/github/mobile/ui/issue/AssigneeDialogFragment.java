@@ -30,7 +30,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.mobile.R;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
+import com.github.mobile.R.string;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.SingleChoiceDialogFragment;
 import com.github.mobile.util.AvatarLoader;
@@ -53,7 +55,7 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
 
         public UserListAdapter(LayoutInflater inflater, User[] users,
                 int selected, AvatarLoader loader) {
-            super(inflater, R.layout.collaborator_item);
+            super(inflater, layout.collaborator_item);
 
             this.selected = selected;
             this.loader = loader;
@@ -67,7 +69,7 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
 
         @Override
         protected int[] getChildViewIds() {
-            return new int[] { R.id.tv_login, R.id.iv_avatar, R.id.rb_selected };
+            return new int[] { id.tv_login, id.iv_avatar, id.rb_selected };
         }
 
         @Override
@@ -114,13 +116,13 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
         Bundle arguments = getArguments();
 
         final AlertDialog dialog = createDialog();
-        dialog.setButton(BUTTON_NEGATIVE, activity.getString(R.string.cancel),
+        dialog.setButton(BUTTON_NEGATIVE, activity.getString(string.cancel),
                 this);
-        dialog.setButton(BUTTON_NEUTRAL, activity.getString(R.string.clear), this);
+        dialog.setButton(BUTTON_NEUTRAL, activity.getString(string.clear), this);
 
         LayoutInflater inflater = activity.getLayoutInflater();
 
-        ListView view = (ListView) inflater.inflate(R.layout.dialog_list_view,
+        ListView view = (ListView) inflater.inflate(layout.dialog_list_view,
                 null);
         view.setOnItemClickListener(new OnItemClickListener() {
 
