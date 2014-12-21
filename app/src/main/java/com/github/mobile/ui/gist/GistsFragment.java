@@ -24,8 +24,7 @@ import android.widget.ListView;
 
 import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.mobile.R.id;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.ui.PagedItemFragment;
 import com.github.mobile.util.AvatarLoader;
@@ -69,7 +68,7 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setEmptyText(string.no_gists);
+        setEmptyText(R.string.no_gists);
     }
 
     @Override
@@ -77,7 +76,7 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
         if (!isUsable())
             return false;
         switch (item.getItemId()) {
-        case id.m_create:
+        case R.id.m_create:
             startActivityForResult(new Intent(getActivity(),
                     CreateGistActivity.class), GIST_CREATE);
             return true;
@@ -99,12 +98,12 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
 
     @Override
     protected int getErrorMessage(Exception exception) {
-        return string.error_gists_load;
+        return R.string.error_gists_load;
     }
 
     @Override
     protected int getLoadingMessage() {
-        return string.loading_gists;
+        return R.string.loading_gists;
     }
 
     @Override

@@ -1,16 +1,16 @@
 package com.github.mobile.core.repo;
 
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.service.RepositoryService;
-
 import android.accounts.Account;
 import android.content.Context;
 import android.util.Log;
 
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.google.inject.Inject;
+
+import org.eclipse.egit.github.core.IRepositoryIdProvider;
+import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.service.RepositoryService;
 
 /**
  * Task to fork a repository
@@ -42,7 +42,7 @@ public class ForkRepositoryTask extends ProgressDialogTask<Repository> {
      * This method must be called from the main thread.
      */
     public void start() {
-        showIndeterminate(string.forking_repository);
+        showIndeterminate(R.string.forking_repository);
 
         execute();
     }

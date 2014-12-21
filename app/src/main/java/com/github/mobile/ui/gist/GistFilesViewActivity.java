@@ -27,9 +27,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.Intents.Builder;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.core.gist.FullGist;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.core.gist.RefreshGistTask;
@@ -91,16 +89,16 @@ public class GistFilesViewActivity extends PagerActivity {
         gistId = getStringExtra(EXTRA_GIST_ID);
         initialPosition = getIntExtra(EXTRA_POSITION);
 
-        setContentView(layout.pager_with_title);
+        setContentView(R.layout.pager_with_title);
 
-        pager = finder.find(id.vp_pages);
-        loadingBar = finder.find(id.pb_loading);
-        indicator = finder.find(id.tpi_header);
+        pager = finder.find(R.id.vp_pages);
+        loadingBar = finder.find(R.id.pb_loading);
+        indicator = finder.find(R.id.tpi_header);
 
         if (initialPosition < 0)
             initialPosition = 0;
 
-        getSupportActionBar().setTitle(getString(string.gist_title) + gistId);
+        getSupportActionBar().setTitle(getString(R.string.gist_title) + gistId);
 
         gist = store.getGist(gistId);
         if (gist != null)
@@ -131,7 +129,7 @@ public class GistFilesViewActivity extends PagerActivity {
             actionBar.setSubtitle(author.getLogin());
             avatars.bind(actionBar, author);
         } else
-            actionBar.setSubtitle(string.anonymous);
+            actionBar.setSubtitle(R.string.anonymous);
 
         ViewUtils.setGone(loadingBar, true);
         ViewUtils.setGone(pager, false);

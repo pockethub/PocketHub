@@ -22,14 +22,12 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
+import com.github.mobile.R;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.TimeUtils;
 
 import org.eclipse.egit.github.core.Comment;
-import static com.github.mobile.Intents.EXTRA_COMMENT;
 
 /**
  * Adapter for a list of {@link Comment} objects
@@ -86,7 +84,7 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
     public CommentListAdapter(LayoutInflater inflater, Comment[] elements,
             AvatarLoader avatars, HttpImageGetter imageGetter,
             EditCommentListener editCommentListener, DeleteCommentListener deleteCommentListener) {
-        super(inflater, layout.comment_item);
+        super(inflater, R.layout.comment_item);
 
         this.avatars = avatars;
         this.imageGetter = imageGetter;
@@ -104,7 +102,7 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
         setText(2, TimeUtils.getRelativeTime(comment.getUpdatedAt()));
 
         // Edit Comment ImageButton
-        final ImageView ivEdit =  view(4);
+        final ImageView ivEdit = view(4);
         if (editCommentListener != null) {
             ivEdit.setOnClickListener(new OnClickListener() {
                 @Override
@@ -117,7 +115,7 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
         }
 
         // Delete Comment ImageButton
-        final ImageView ivDelete =  view(5);
+        final ImageView ivDelete = view(5);
         if (deleteCommentListener != null) {
             ivDelete.setOnClickListener(new OnClickListener() {
                 @Override
@@ -145,7 +143,7 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
 
     @Override
     protected int[] getChildViewIds() {
-        return new int[] { id.tv_comment_body, id.tv_comment_author,
-                id.tv_comment_date, id.iv_avatar, id.iv_comment_edit, id.iv_comment_delete };
+        return new int[] { R.id.tv_comment_body, R.id.tv_comment_author,
+                R.id.tv_comment_date, R.id.iv_avatar, R.id.iv_comment_edit, R.id.iv_comment_delete };
     }
 }

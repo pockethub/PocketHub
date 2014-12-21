@@ -25,7 +25,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.core.ResourcePager;
 import com.github.mobile.ui.PagedItemFragment;
 import com.google.inject.Inject;
@@ -58,7 +58,7 @@ public class UserRepositoryListFragment extends PagedItemFragment<Repository> {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setEmptyText(string.no_repositories);
+        setEmptyText(R.string.no_repositories);
     }
 
     @Override
@@ -79,12 +79,12 @@ public class UserRepositoryListFragment extends PagedItemFragment<Repository> {
 
     @Override
     protected int getLoadingMessage() {
-        return string.loading_repositories;
+        return R.string.loading_repositories;
     }
 
     @Override
     protected int getErrorMessage(Exception exception) {
-        return string.error_repos_load;
+        return R.string.error_repos_load;
     }
 
     @Override

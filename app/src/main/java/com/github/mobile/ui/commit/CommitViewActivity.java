@@ -26,9 +26,7 @@ import android.os.Bundle;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents.Builder;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.core.commit.CommitUtils;
 import com.github.mobile.ui.FragmentProvider;
 import com.github.mobile.ui.PagerActivity;
@@ -110,9 +108,9 @@ public class CommitViewActivity extends PagerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(layout.pager);
+        setContentView(R.layout.pager);
 
-        pager = finder.find(id.vp_pages);
+        pager = finder.find(R.id.vp_pages);
 
         repository = getSerializableExtra(EXTRA_REPOSITORY);
         ids = getCharSequenceArrayExtra(EXTRA_BASES);
@@ -148,7 +146,7 @@ public class CommitViewActivity extends PagerActivity {
         super.onPageSelected(position);
 
         final String id = CommitUtils.abbreviate(ids[position].toString());
-        getSupportActionBar().setTitle(getString(string.commit_prefix) + id);
+        getSupportActionBar().setTitle(getString(R.string.commit_prefix) + id);
     }
 
     @Override
