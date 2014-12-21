@@ -22,7 +22,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.mobile.R;
+import com.github.mobile.R.drawable;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
+import com.github.mobile.R.string;
 import com.github.mobile.util.AvatarLoader;
 
 import java.util.ArrayList;
@@ -68,7 +71,7 @@ public class HomeDropdownListAdapter extends SingleTypeAdapter<Object> {
      */
     public HomeDropdownListAdapter(final Context context,
             final List<User> orgs, final AvatarLoader avatars) {
-        super(context, R.layout.org_item);
+        super(context, layout.org_item);
 
         this.avatars = avatars;
         inflater = LayoutInflater.from(context);
@@ -154,13 +157,13 @@ public class HomeDropdownListAdapter extends SingleTypeAdapter<Object> {
 
     @Override
     protected int[] getChildViewIds() {
-        return new int[] { R.id.tv_org_name, R.id.iv_avatar };
+        return new int[] { id.tv_org_name, id.iv_avatar };
     }
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         if (convertView == null)
-            convertView = initialize(inflater.inflate(R.layout.org_dropdown_item,
+            convertView = initialize(inflater.inflate(layout.org_dropdown_item,
                     null));
         update(position, convertView, getItem(position));
         return convertView;
@@ -168,7 +171,7 @@ public class HomeDropdownListAdapter extends SingleTypeAdapter<Object> {
 
     private void setActionIcon(ImageView image, int drawable) {
         image.setImageResource(drawable);
-        image.setTag(R.id.iv_avatar, null);
+        image.setTag(id.iv_avatar, null);
     }
 
     @Override
@@ -182,16 +185,16 @@ public class HomeDropdownListAdapter extends SingleTypeAdapter<Object> {
     protected void update(int position, Object item) {
         switch (getAction(position)) {
         case ACTION_GISTS:
-            setText(0, R.string.gists);
-            setActionIcon(imageView(1), R.drawable.dropdown_gist);
+            setText(0, string.gists);
+            setActionIcon(imageView(1), drawable.dropdown_gist);
             break;
         case ACTION_DASHBOARD:
-            setText(0, R.string.issue_dashboard);
-            setActionIcon(imageView(1), R.drawable.dropdown_dashboard);
+            setText(0, string.issue_dashboard);
+            setActionIcon(imageView(1), drawable.dropdown_dashboard);
             break;
         case ACTION_BOOKMARKS:
-            setText(0, R.string.bookmarks);
-            setActionIcon(imageView(1), R.drawable.dropdown_bookmark);
+            setText(0, string.bookmarks);
+            setActionIcon(imageView(1), drawable.dropdown_bookmark);
             break;
         default:
             User user = (User) item;

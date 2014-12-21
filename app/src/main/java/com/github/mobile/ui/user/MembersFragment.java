@@ -22,7 +22,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.mobile.R;
+import com.github.mobile.R.string;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.ui.ItemListFragment;
@@ -69,7 +69,7 @@ public class MembersFragment extends ItemListFragment<User> implements
         org = ((OrganizationSelectionProvider) getActivity()).addListener(this);
         if (org == null && savedInstanceState != null)
             org = (User) savedInstanceState.getSerializable(EXTRA_USER);
-        setEmptyText(R.string.no_members);
+        setEmptyText(string.no_members);
 
         super.onActivityCreated(savedInstanceState);
     }
@@ -110,6 +110,6 @@ public class MembersFragment extends ItemListFragment<User> implements
 
     @Override
     protected int getErrorMessage(Exception exception) {
-        return R.string.error_members_load;
+        return string.error_members_load;
     }
 }

@@ -19,7 +19,7 @@ import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.github.mobile.R;
+import com.github.mobile.R.string;
 import com.github.mobile.ui.FragmentPagerAdapter;
 import com.github.mobile.ui.repo.UserRepositoryListFragment;
 
@@ -64,13 +64,13 @@ public class UserPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
         case 0:
-            return resources.getString(R.string.tab_news);
+            return resources.getString(string.tab_news);
         case 1:
-            return resources.getString(R.string.tab_repositories);
+            return resources.getString(string.tab_repositories);
         case 2:
-            return resources.getString(R.string.tab_followers);
+            return resources.getString(string.tab_followers);
         case 3:
-            return resources.getString(R.string.tab_following);
+            return resources.getString(string.tab_following);
         default:
             return null;
         }
