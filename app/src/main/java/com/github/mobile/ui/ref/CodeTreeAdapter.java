@@ -22,8 +22,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.MultiTypeAdapter;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
+import com.github.mobile.R;
 import com.github.mobile.core.code.FullTree.Entry;
 import com.github.mobile.core.code.FullTree.Folder;
 import com.github.mobile.core.commit.CommitUtils;
@@ -98,9 +97,9 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
     protected int getChildLayoutId(final int type) {
         switch (type) {
         case TYPE_BLOB:
-            return layout.blob_item;
+            return R.layout.blob_item;
         case TYPE_TREE:
-            return layout.folder_item;
+            return R.layout.folder_item;
         default:
             return -1;
         }
@@ -110,9 +109,9 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
     protected int[] getChildViewIds(final int type) {
         switch (type) {
         case TYPE_BLOB:
-            return new int[] { id.tv_file, id.tv_size };
+            return new int[] { R.id.tv_file, R.id.tv_size };
         case TYPE_TREE:
-            return new int[] { id.tv_folder, id.tv_folders, id.tv_files };
+            return new int[] { R.id.tv_folder, R.id.tv_folders, R.id.tv_files };
         default:
             return null;
         }
@@ -130,13 +129,13 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
         switch (type) {
         case TYPE_BLOB:
             TypefaceUtils.setOcticons((TextView) view
-                    .findViewById(id.tv_file_icon));
+                    .findViewById(R.id.tv_file_icon));
             break;
         case TYPE_TREE:
             TypefaceUtils.setOcticons(
-                    (TextView) view.findViewById(id.tv_folder_icon),
-                    (TextView) view.findViewById(id.tv_folders_icon),
-                    (TextView) view.findViewById(id.tv_files_icon));
+                    (TextView) view.findViewById(R.id.tv_folder_icon),
+                    (TextView) view.findViewById(R.id.tv_folders_icon),
+                    (TextView) view.findViewById(R.id.tv_files_icon));
         }
 
         return view;

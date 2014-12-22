@@ -19,9 +19,8 @@ import static android.content.DialogInterface.OnCancelListener;
 import static android.view.KeyEvent.ACTION_DOWN;
 import static android.view.KeyEvent.KEYCODE_ENTER;
 import static android.view.inputmethod.EditorInfo.IME_ACTION_DONE;
-import static com.github.mobile.accounts.AccountConstants.*;
+import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
 import static com.github.mobile.accounts.LoginActivity.configureSyncFor;
-
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
@@ -43,10 +42,7 @@ import android.widget.TextView;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewFinder;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
-import com.github.mobile.R.menu;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.ui.LightProgressDialog;
 import com.github.mobile.ui.TextWatcherAdapter;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockActivity;
@@ -111,20 +107,20 @@ public class TwoFactorAuthActivity extends RoboSherlockActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(layout.login_two_factor_auth);
+        setContentView(R.layout.login_two_factor_auth);
 
         accountManager = AccountManager.get(this);
 
         ViewFinder finder = new ViewFinder(this);
-        otpCodeText = finder.find(id.et_otp_code);
+        otpCodeText = finder.find(R.id.et_otp_code);
 
         final Intent intent = getIntent();
         username = intent.getStringExtra(PARAM_USERNAME);
         password = intent.getStringExtra(PARAM_PASSWORD);
 
-        TextView signupText = finder.find(id.tv_signup);
+        TextView signupText = finder.find(R.id.tv_signup);
         signupText.setMovementMethod(LinkMovementMethod.getInstance());
-        signupText.setText(Html.fromHtml(getString(string.signup_link_two_factor_auth)));
+        signupText.setText(Html.fromHtml(getString(R.string.signup_link_two_factor_auth)));
 
         TextWatcher watcher = new TextWatcherAdapter() {
 
@@ -181,18 +177,18 @@ public class TwoFactorAuthActivity extends RoboSherlockActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case id.m_login:
-                handleLogin();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        case R.id.m_login:
+            handleLogin();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionsMenu) {
-        getSupportMenuInflater().inflate(menu.login, optionsMenu);
-        loginItem = optionsMenu.findItem(id.m_login);
+        getSupportMenuInflater().inflate(R.menu.login, optionsMenu);
+        loginItem = optionsMenu.findItem(R.id.m_login);
         return true;
     }
 
@@ -200,7 +196,7 @@ public class TwoFactorAuthActivity extends RoboSherlockActivity {
         final String otpCode = otpCodeText.getText().toString();
 
         final AlertDialog dialog = LightProgressDialog.create(this,
-                string.login_activity_authenticating);
+                R.string.login_activity_authenticating);
         dialog.setCancelable(true);
         dialog.setOnCancelListener(new OnCancelListener() {
 
@@ -223,7 +219,7 @@ public class TwoFactorAuthActivity extends RoboSherlockActivity {
                 OAuthService service = new OAuthService(client);
                 String authToken = AccountAuthenticator.getAuthorization(service);
                 if (authToken == null)
-                  authToken = AccountAuthenticator.createAuthorization(service);
+                    authToken = AccountAuthenticator.createAuthorization(service);
                 client.setOAuth2Token(authToken);
 
                 User user = new UserService(client).getUser();

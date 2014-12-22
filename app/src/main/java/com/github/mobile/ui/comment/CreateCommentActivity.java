@@ -27,9 +27,7 @@ import android.view.View;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.github.mobile.R.id;
-import com.github.mobile.R.menu;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.ui.TabPagerActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
@@ -109,7 +107,7 @@ public abstract class CreateCommentActivity extends
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case id.m_apply:
+        case R.id.m_apply:
             createComment(adapter.getCommentText());
             return true;
         default:
@@ -121,9 +119,9 @@ public abstract class CreateCommentActivity extends
     protected String getTitle(final int position) {
         switch (position) {
         case 0:
-            return getString(string.write);
+            return getString(R.string.write);
         case 1:
-            return getString(string.preview);
+            return getString(R.string.preview);
         default:
             return super.getTitle(position);
         }
@@ -148,8 +146,8 @@ public abstract class CreateCommentActivity extends
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
-        getSupportMenuInflater().inflate(menu.comment, options);
-        applyItem = options.findItem(id.m_apply);
+        getSupportMenuInflater().inflate(R.menu.comment, options);
+        applyItem = options.findItem(R.id.m_apply);
         return true;
     }
 }

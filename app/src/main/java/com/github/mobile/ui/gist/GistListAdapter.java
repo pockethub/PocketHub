@@ -21,9 +21,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.TypefaceUtils;
@@ -49,7 +47,7 @@ public class GistListAdapter extends SingleTypeAdapter<Gist> {
      */
     public GistListAdapter(AvatarLoader avatars, Activity activity,
             Collection<Gist> elements) {
-        super(activity, layout.gist_item);
+        super(activity, R.layout.gist_item);
 
         this.avatars = avatars;
         setItems(elements);
@@ -64,8 +62,8 @@ public class GistListAdapter extends SingleTypeAdapter<Gist> {
 
     @Override
     protected int[] getChildViewIds() {
-        return new int[] { id.tv_gist_id, id.tv_gist_title, id.tv_gist_author,
-                id.tv_gist_comments, id.tv_gist_files, id.iv_avatar };
+        return new int[] { R.id.tv_gist_id, R.id.tv_gist_title, R.id.tv_gist_author,
+                R.id.tv_gist_comments, R.id.tv_gist_files, R.id.iv_avatar };
     }
 
     @Override
@@ -73,9 +71,9 @@ public class GistListAdapter extends SingleTypeAdapter<Gist> {
         view = super.initialize(view);
 
         TypefaceUtils.setOcticons(
-                (TextView) view.findViewById(id.tv_comment_icon),
-                (TextView) view.findViewById(id.tv_file_icon));
-        anonymous = view.getResources().getString(string.anonymous);
+                (TextView) view.findViewById(R.id.tv_comment_icon),
+                (TextView) view.findViewById(R.id.tv_file_icon));
+        anonymous = view.getResources().getString(R.string.anonymous);
         return view;
     }
 
@@ -87,7 +85,7 @@ public class GistListAdapter extends SingleTypeAdapter<Gist> {
         if (!TextUtils.isEmpty(description))
             setText(1, description);
         else
-            setText(1, string.no_description_given);
+            setText(1, R.string.no_description_given);
 
         User user = gist.getUser();
         avatars.bind(imageView(5), user);

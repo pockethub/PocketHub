@@ -26,9 +26,7 @@ import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.Keyboard;
 import com.github.kevinsawicki.wishlist.ViewUtils;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.ui.DialogFragment;
 import com.github.mobile.ui.MarkdownLoader;
 import com.github.mobile.util.HttpImageGetter;
@@ -60,8 +58,8 @@ public class RenderedCommentFragment extends DialogFragment implements
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        progress = finder.find(id.pb_loading);
-        bodyText = finder.find(id.tv_comment_body);
+        progress = finder.find(R.id.pb_loading);
+        bodyText = finder.find(R.id.tv_comment_body);
     }
 
     /**
@@ -88,7 +86,7 @@ public class RenderedCommentFragment extends DialogFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(layout.comment_preview, null);
+        return inflater.inflate(R.layout.comment_preview, null);
     }
 
     @Override
@@ -104,7 +102,7 @@ public class RenderedCommentFragment extends DialogFragment implements
     public void onLoadFinished(Loader<CharSequence> loader,
             CharSequence rendered) {
         if (rendered == null)
-            ToastUtils.show(getActivity(), string.error_rendering_markdown);
+            ToastUtils.show(getActivity(), R.string.error_rendering_markdown);
         bodyText.setText(rendered);
         showLoading(false);
     }

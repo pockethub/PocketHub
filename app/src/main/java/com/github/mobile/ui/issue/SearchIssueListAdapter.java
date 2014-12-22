@@ -21,8 +21,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.ViewUtils;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
+import com.github.mobile.R;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.TypefaceUtils;
 
@@ -43,7 +42,7 @@ public class SearchIssueListAdapter extends IssueListAdapter<SearchIssue> {
      */
     public SearchIssueListAdapter(LayoutInflater inflater,
             SearchIssue[] elements, AvatarLoader avatars) {
-        super(layout.repo_issue_item, inflater, elements, avatars);
+        super(R.layout.repo_issue_item, inflater, elements, avatars);
     }
 
     @Override
@@ -62,18 +61,18 @@ public class SearchIssueListAdapter extends IssueListAdapter<SearchIssue> {
 
         numberPaintFlags = textView(view, 0).getPaintFlags();
         TypefaceUtils.setOcticons(
-                (TextView) view.findViewById(id.tv_pull_request_icon),
-                (TextView) view.findViewById(id.tv_comment_icon));
+                (TextView) view.findViewById(R.id.tv_pull_request_icon),
+                (TextView) view.findViewById(R.id.tv_comment_icon));
         for (int i = 0; i < MAX_LABELS; i++)
-            ViewUtils.setGone(view.findViewById(id.v_label0 + i), true);
-        ViewUtils.setGone(view.findViewById(id.tv_pull_request_icon), true);
+            ViewUtils.setGone(view.findViewById(R.id.v_label0 + i), true);
+        ViewUtils.setGone(view.findViewById(R.id.tv_pull_request_icon), true);
         return view;
     }
 
     @Override
     protected int[] getChildViewIds() {
-        return new int[] { id.tv_issue_number, id.tv_issue_title, id.iv_avatar,
-                id.tv_issue_creation, id.tv_issue_comments };
+        return new int[] { R.id.tv_issue_number, R.id.tv_issue_title, R.id.iv_avatar,
+                R.id.tv_issue_creation, R.id.tv_issue_comments };
     }
 
     @Override

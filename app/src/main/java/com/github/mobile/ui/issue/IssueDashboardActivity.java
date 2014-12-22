@@ -26,8 +26,7 @@ import android.os.Bundle;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
-import com.github.mobile.R.drawable;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.ui.TabPagerActivity;
 import com.github.mobile.ui.user.HomeActivity;
 
@@ -42,8 +41,8 @@ public class IssueDashboardActivity extends
         super.onCreate(savedInstanceState);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(string.dashboard_issues_title);
-        actionBar.setIcon(drawable.action_dashboard);
+        actionBar.setTitle(R.string.dashboard_issues_title);
+        actionBar.setIcon(R.drawable.action_dashboard);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         configureTabPager();

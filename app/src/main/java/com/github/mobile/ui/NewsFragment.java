@@ -31,9 +31,7 @@ import android.widget.ListView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewFinder;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.core.gist.GistEventMatcher;
 import com.github.mobile.core.issue.IssueEventMatcher;
 import com.github.mobile.core.repo.RepositoryEventMatcher;
@@ -101,7 +99,7 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setEmptyText(string.no_news);
+        setEmptyText(R.string.no_news);
     }
 
     @Override
@@ -159,17 +157,17 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
 
         if (repo != null && user != null) {
             final AlertDialog dialog = LightAlertDialog.create(getActivity());
-            dialog.setTitle(string.navigate_to);
+            dialog.setTitle(R.string.navigate_to);
             dialog.setCanceledOnTouchOutside(true);
 
             View view = getActivity().getLayoutInflater().inflate(
-                    layout.nav_dialog, null);
+                    R.layout.nav_dialog, null);
             ViewFinder finder = new ViewFinder(view);
-            avatars.bind(finder.imageView(id.iv_user_avatar), user);
-            avatars.bind(finder.imageView(id.iv_repo_avatar), repo.getOwner());
-            finder.setText(id.tv_login, user.getLogin());
-            finder.setText(id.tv_repo_name, repo.generateId());
-            finder.onClick(id.ll_user_area, new OnClickListener() {
+            avatars.bind(finder.imageView(R.id.iv_user_avatar), user);
+            avatars.bind(finder.imageView(R.id.iv_repo_avatar), repo.getOwner());
+            finder.setText(R.id.tv_login, user.getLogin());
+            finder.setText(R.id.tv_repo_name, repo.generateId());
+            finder.onClick(R.id.ll_user_area, new OnClickListener() {
 
                 public void onClick(View v) {
                     dialog.dismiss();
@@ -177,7 +175,7 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
                     viewUser(user);
                 }
             });
-            finder.onClick(id.ll_repo_area, new OnClickListener() {
+            finder.onClick(R.id.ll_repo_area, new OnClickListener() {
 
                 public void onClick(View v) {
                     dialog.dismiss();
@@ -301,11 +299,11 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
 
     @Override
     protected int getLoadingMessage() {
-        return string.loading_news;
+        return R.string.loading_news;
     }
 
     @Override
     protected int getErrorMessage(Exception exception) {
-        return string.error_news_load;
+        return R.string.error_news_load;
     }
 }

@@ -35,10 +35,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.Intents.Builder;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
-import com.github.mobile.R.menu;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.core.repo.ForkRepositoryTask;
 import com.github.mobile.core.repo.RefreshRepositoryTask;
 import com.github.mobile.core.repo.RepositoryUtils;
@@ -88,7 +85,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
 
         repository = getSerializableExtra(EXTRA_REPOSITORY);
 
-        loadingBar = finder.find(id.pb_loading);
+        loadingBar = finder.find(R.id.pb_loading);
 
         User owner = repository.getOwner();
 
@@ -117,7 +114,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                 protected void onException(Exception e) throws RuntimeException {
                     super.onException(e);
 
-                    ToastUtils.show(RepositoryViewActivity.this, string.error_repo_load);
+                    ToastUtils.show(RepositoryViewActivity.this, R.string.error_repo_load);
                     ViewUtils.setGone(loadingBar, true);
                 }
             }.execute();
@@ -126,16 +123,16 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionsMenu) {
-        getSupportMenuInflater().inflate(menu.repository, optionsMenu);
+        getSupportMenuInflater().inflate(R.menu.repository, optionsMenu);
         return super.onCreateOptionsMenu(optionsMenu);
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem followItem = menu.findItem(id.m_star);
+        MenuItem followItem = menu.findItem(R.id.m_star);
 
         followItem.setVisible(starredStatusChecked);
-        followItem.setTitle(isStarred ? string.unstar : string.star);
+        followItem.setTitle(isStarred ? R.string.unstar : R.string.star);
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -168,29 +165,29 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case id.m_star:
-                starRepository();
-                return true;
-            case id.m_fork:
-                forkRepository();
-                return true;
-            case id.m_contributors:
-                startActivity(RepositoryContributorsActivity.createIntent(repository));
-                return true;
-            case id.m_share:
-                shareRepository();
-                return true;
-            case id.m_refresh:
-                checkStarredRepositoryStatus();
-                return super.onOptionsItemSelected(item);
-            case android.R.id.home:
-                finish();
-                Intent intent = UserViewActivity.createIntent(repository.getOwner());
-                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        case R.id.m_star:
+            starRepository();
+            return true;
+        case R.id.m_fork:
+            forkRepository();
+            return true;
+        case R.id.m_contributors:
+            startActivity(RepositoryContributorsActivity.createIntent(repository));
+            return true;
+        case R.id.m_share:
+            shareRepository();
+            return true;
+        case R.id.m_refresh:
+            checkStarredRepositoryStatus();
+            return super.onOptionsItemSelected(item);
+        case android.R.id.home:
+            finish();
+            Intent intent = UserViewActivity.createIntent(repository.getOwner());
+            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
         }
     }
 
@@ -206,22 +203,22 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
 
     @Override
     protected int getContentView() {
-        return layout.tabbed_progress_pager;
+        return R.layout.tabbed_progress_pager;
     }
 
     @Override
     protected String getIcon(int position) {
         switch (position) {
-            case 0:
-                return ICON_NEWS;
-            case 1:
-                return ICON_CODE;
-            case 2:
-                return ICON_COMMIT;
-            case 3:
-                return ICON_ISSUE_OPEN;
-            default:
-                return super.getIcon(position);
+        case 0:
+            return ICON_NEWS;
+        case 1:
+            return ICON_CODE;
+        case 2:
+            return ICON_COMMIT;
+        case 3:
+            return ICON_ISSUE_OPEN;
+        default:
+            return super.getIcon(position);
         }
     }
 
@@ -241,7 +238,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                 protected void onException(Exception e) throws RuntimeException {
                     super.onException(e);
 
-                    ToastUtils.show(RepositoryViewActivity.this, string.error_unstarring_repository);
+                    ToastUtils.show(RepositoryViewActivity.this, R.string.error_unstarring_repository);
                 }
             }.start();
         else
@@ -259,7 +256,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                 protected void onException(Exception e) throws RuntimeException {
                     super.onException(e);
 
-                    ToastUtils.show(RepositoryViewActivity.this, string.error_starring_repository);
+                    ToastUtils.show(RepositoryViewActivity.this, R.string.error_starring_repository);
                 }
             }.start();
     }
@@ -297,7 +294,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                 if (e != null) {
                     UriLauncherActivity.launchUri(getContext(), Uri.parse(e.getHtmlUrl()));
                 } else {
-                    ToastUtils.show(RepositoryViewActivity.this, string.error_forking_repository);
+                    ToastUtils.show(RepositoryViewActivity.this, R.string.error_forking_repository);
                 }
             }
 
@@ -305,7 +302,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
             protected void onException(Exception e) throws RuntimeException {
                 super.onException(e);
 
-                ToastUtils.show(RepositoryViewActivity.this, string.error_forking_repository);
+                ToastUtils.show(RepositoryViewActivity.this, R.string.error_forking_repository);
             }
         }.start();
     }

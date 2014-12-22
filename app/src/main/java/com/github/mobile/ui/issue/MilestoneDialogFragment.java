@@ -32,9 +32,7 @@ import android.widget.ListView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.SingleChoiceDialogFragment;
 
@@ -54,7 +52,7 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
 
         public MilestoneListAdapter(LayoutInflater inflater,
                 Milestone[] milestones, int selected) {
-            super(inflater, layout.milestone_item);
+            super(inflater, R.layout.milestone_item);
 
             this.selected = selected;
             setItems(milestones);
@@ -62,8 +60,8 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
 
         @Override
         protected int[] getChildViewIds() {
-            return new int[] { id.rb_selected, id.tv_milestone_title,
-                    id.tv_milestone_description };
+            return new int[] { R.id.rb_selected, R.id.tv_milestone_title,
+                    R.id.tv_milestone_description };
         }
 
         @Override
@@ -118,13 +116,13 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
         Bundle arguments = getArguments();
 
         final AlertDialog dialog = createDialog();
-        dialog.setButton(BUTTON_NEGATIVE, activity.getString(string.cancel),
+        dialog.setButton(BUTTON_NEGATIVE, activity.getString(R.string.cancel),
                 this);
-        dialog.setButton(BUTTON_NEUTRAL, activity.getString(string.clear), this);
+        dialog.setButton(BUTTON_NEUTRAL, activity.getString(R.string.clear), this);
 
         LayoutInflater inflater = activity.getLayoutInflater();
 
-        ListView view = (ListView) inflater.inflate(layout.dialog_list_view,
+        ListView view = (ListView) inflater.inflate(R.layout.dialog_list_view,
                 null);
         view.setOnItemClickListener(new OnItemClickListener() {
 

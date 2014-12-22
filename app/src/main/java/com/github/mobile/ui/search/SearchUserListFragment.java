@@ -15,6 +15,7 @@
  */
 package com.github.mobile.ui.search;
 
+import static android.app.SearchManager.QUERY;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
@@ -22,21 +23,20 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.github.mobile.R;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.core.search.SearchUser;
 import com.github.mobile.core.search.SearchUserService;
 import com.github.mobile.core.user.RefreshUserTask;
 import com.github.mobile.ui.ItemListFragment;
-import org.eclipse.egit.github.core.User;
-import com.github.mobile.R.string;
 import com.github.mobile.ui.user.UserViewActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
 import java.util.List;
 
-import static android.app.SearchManager.QUERY;
+import org.eclipse.egit.github.core.User;
 
 /**
  * Fragment to display a list of {@link SearchUser} instances
@@ -55,7 +55,7 @@ public class SearchUserListFragment extends ItemListFragment<SearchUser> {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setEmptyText(string.no_people);
+        setEmptyText(R.string.no_people);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class SearchUserListFragment extends ItemListFragment<SearchUser> {
     @Override
     protected SingleTypeAdapter<SearchUser> createAdapter(List<SearchUser> items) {
         return new SearchUserListAdapter(getActivity(),
-            items.toArray(new SearchUser[items.size()]), avatars);
+                items.toArray(new SearchUser[items.size()]), avatars);
     }
 
     @Override
@@ -106,6 +106,6 @@ public class SearchUserListFragment extends ItemListFragment<SearchUser> {
 
     @Override
     protected int getErrorMessage(Exception exception) {
-        return string.error_users_search;
+        return R.string.error_users_search;
     }
 }
