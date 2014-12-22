@@ -16,30 +16,22 @@
 package com.github.mobile.ui.user;
 
 import static com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_LIST;
-import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_BOOKMARKS;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_DASHBOARD;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_GISTS;
-import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_LOGOUT;
 import static com.github.mobile.util.TypefaceUtils.ICON_FOLLOW;
 import static com.github.mobile.util.TypefaceUtils.ICON_NEWS;
 import static com.github.mobile.util.TypefaceUtils.ICON_PUBLIC;
 import static com.github.mobile.util.TypefaceUtils.ICON_TEAM;
 import static com.github.mobile.util.TypefaceUtils.ICON_WATCH;
-
-import android.accounts.AccountManager;
-import android.accounts.AuthenticatorException;
-import android.accounts.OperationCanceledException;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.accounts.Account;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
@@ -48,7 +40,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R.id;
 import com.github.mobile.R.menu;
 import com.github.mobile.accounts.AccountUtils;
-import com.github.mobile.accounts.LoginActivity;
 import com.github.mobile.core.user.UserComparator;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.TabPagerActivity;
@@ -61,8 +52,6 @@ import com.github.mobile.util.PreferenceUtils;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import java.io.IOException;
-
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -74,8 +63,8 @@ import org.eclipse.egit.github.core.User;
  * Home screen activity
  */
 public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
-    OnNavigationListener, OrganizationSelectionProvider,
-    LoaderCallbacks<List<User>> {
+        OnNavigationListener, OrganizationSelectionProvider,
+        LoaderCallbacks<List<User>> {
 
     private static final String TAG = "HomeActivity";
 
@@ -112,43 +101,43 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
 
     private void reloadOrgs() {
         getSupportLoaderManager().restartLoader(0, null,
-            new LoaderCallbacks<List<User>>() {
+                new LoaderCallbacks<List<User>>() {
 
-                @Override
-                public Loader<List<User>> onCreateLoader(int id,
-                    Bundle bundle) {
-                    return HomeActivity.this.onCreateLoader(id, bundle);
-                }
+                    @Override
+                    public Loader<List<User>> onCreateLoader(int id,
+                            Bundle bundle) {
+                        return HomeActivity.this.onCreateLoader(id, bundle);
+                    }
 
-                @Override
-                public void onLoadFinished(Loader<List<User>> loader,
-                    final List<User> users) {
-                    HomeActivity.this.onLoadFinished(loader, users);
-                    if (users.isEmpty())
-                        return;
+                    @Override
+                    public void onLoadFinished(Loader<List<User>> loader,
+                            final List<User> users) {
+                        HomeActivity.this.onLoadFinished(loader, users);
+                        if (users.isEmpty())
+                            return;
 
-                    Window window = getWindow();
-                    if (window == null)
-                        return;
-                    View view = window.getDecorView();
-                    if (view == null)
-                        return;
+                        Window window = getWindow();
+                        if (window == null)
+                            return;
+                        View view = window.getDecorView();
+                        if (view == null)
+                            return;
 
-                    view.post(new Runnable() {
+                        view.post(new Runnable() {
 
-                        @Override
-                        public void run() {
-                            isDefaultUser = false;
-                            setOrg(users.get(0));
-                        }
-                    });
-                }
+                            @Override
+                            public void run() {
+                                isDefaultUser = false;
+                                setOrg(users.get(0));
+                            }
+                        });
+                    }
 
-                @Override
-                public void onLoaderReset(Loader<List<User>> loader) {
-                    HomeActivity.this.onLoaderReset(loader);
-                }
-            });
+                    @Override
+                    public void onLoaderReset(Loader<List<User>> loader) {
+                        HomeActivity.this.onLoaderReset(loader);
+                    }
+                });
     }
 
     @Override
@@ -159,7 +148,7 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
         // account
         List<User> currentOrgs = orgs;
         if (currentOrgs != null && !currentOrgs.isEmpty()
-            && !AccountUtils.isUser(this, currentOrgs.get(0)))
+                && !AccountUtils.isUser(this, currentOrgs.get(0)))
             reloadOrgs();
     }
 
@@ -177,7 +166,7 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
         Log.d(TAG, "setOrg : " + org.getLogin());
 
         PreferenceUtils.save(sharedPreferences.edit().putInt(PREF_ORG_ID,
-            org.getId()));
+                org.getId()));
 
         // Don't notify listeners or change pager if org hasn't changed
         if (this.org != null && this.org.getId() == org.getId())
@@ -214,11 +203,11 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case id.m_search:
-                onSearchRequested();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        case id.m_search:
+            onSearchRequested();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
         }
     }
 
@@ -229,20 +218,15 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
             setOrg(orgs.get(itemPosition));
         } else if (homeAdapter.getOrgCount() > 0) {
             switch (homeAdapter.getAction(itemPosition)) {
-                case ACTION_GISTS:
-                    startActivity(new Intent(this, GistsActivity.class));
-                    break;
-                case ACTION_DASHBOARD:
-                    startActivity(new Intent(this, IssueDashboardActivity.class));
-                    break;
-                case ACTION_BOOKMARKS:
-                    startActivity(FiltersViewActivity.createIntent());
-                    break;
-                case ACTION_LOGOUT:
-                    removeAccount();
-                    finish();
-                    startActivity(getIntent());
-                    break;
+            case ACTION_GISTS:
+                startActivity(new Intent(this, GistsActivity.class));
+                break;
+            case ACTION_DASHBOARD:
+                startActivity(new Intent(this, IssueDashboardActivity.class));
+                break;
+            case ACTION_BOOKMARKS:
+                startActivity(FiltersViewActivity.createIntent());
+                break;
             }
             int orgSelected = homeAdapter.getSelected();
             ActionBar actionBar = getSupportActionBar();
@@ -252,17 +236,10 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
         return true;
     }
 
-    //Remove account from account manager
-    private void removeAccount() {
-        AccountManager accountManager = AccountManager.get(HomeActivity.this);
-        Account[] accounts = accountManager.getAccountsByType(ACCOUNT_TYPE);
-        accountManager.removeAccount(accounts[0], null, null);
-    }
-
     @Override
     public Loader<List<User>> onCreateLoader(int i, Bundle bundle) {
         return new OrganizationLoader(this, accountDataManager,
-            userComparatorProvider);
+                userComparatorProvider);
     }
 
     @Override
@@ -298,7 +275,7 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
 
     @Override
     public OrganizationSelectionProvider removeListener(
-        OrganizationSelectionListener listener) {
+            OrganizationSelectionListener listener) {
         if (listener != null)
             orgSelectionListeners.remove(listener);
         return this;
@@ -312,16 +289,16 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
     @Override
     protected String getIcon(int position) {
         switch (position) {
-            case 0:
-                return ICON_NEWS;
-            case 1:
-                return ICON_PUBLIC;
-            case 2:
-                return isDefaultUser ? ICON_WATCH : ICON_TEAM;
-            case 3:
-                return ICON_FOLLOW;
-            default:
-                return super.getIcon(position);
+        case 0:
+            return ICON_NEWS;
+        case 1:
+            return ICON_PUBLIC;
+        case 2:
+            return isDefaultUser ? ICON_WATCH : ICON_TEAM;
+        case 3:
+            return ICON_FOLLOW;
+        default:
+            return super.getIcon(position);
         }
     }
 }
