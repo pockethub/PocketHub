@@ -26,10 +26,7 @@ import android.os.Bundle;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.github.mobile.R.drawable;
-import com.github.mobile.R.id;
-import com.github.mobile.R.menu;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.ui.TabPagerActivity;
 import com.github.mobile.ui.user.HomeActivity;
 
@@ -43,8 +40,8 @@ public class GistsActivity extends TabPagerActivity<GistQueriesPagerAdapter> {
         super.onCreate(savedInstanceState);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(string.gists_title);
-        actionBar.setIcon(drawable.action_gist);
+        actionBar.setTitle(R.string.gists_title);
+        actionBar.setIcon(R.drawable.action_gist);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         configureTabPager();
@@ -56,7 +53,7 @@ public class GistsActivity extends TabPagerActivity<GistQueriesPagerAdapter> {
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionsMenu) {
-        getSupportMenuInflater().inflate(menu.gists, optionsMenu);
+        getSupportMenuInflater().inflate(R.menu.gists, optionsMenu);
 
         return super.onCreateOptionsMenu(optionsMenu);
     }
@@ -64,7 +61,7 @@ public class GistsActivity extends TabPagerActivity<GistQueriesPagerAdapter> {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case id.m_random:
+        case R.id.m_random:
             randomGist();
             return true;
         case android.R.id.home:

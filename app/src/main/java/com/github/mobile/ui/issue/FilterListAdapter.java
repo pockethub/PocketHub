@@ -20,9 +20,7 @@ import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.util.AvatarLoader;
 
@@ -48,7 +46,7 @@ public class FilterListAdapter extends SingleTypeAdapter<IssueFilter> {
      */
     public FilterListAdapter(LayoutInflater inflater, IssueFilter[] elements,
             AvatarLoader avatars) {
-        super(inflater, layout.issues_filter_item);
+        super(inflater, R.layout.issues_filter_item);
 
         this.avatars = avatars;
         setItems(elements);
@@ -56,9 +54,9 @@ public class FilterListAdapter extends SingleTypeAdapter<IssueFilter> {
 
     @Override
     protected int[] getChildViewIds() {
-        return new int[] { id.iv_avatar, id.tv_repo_name, id.tv_filter_state,
-                id.tv_filter_labels, id.tv_filter_milestone, id.ll_assignee,
-                id.tv_filter_assignee, id.iv_assignee_avatar };
+        return new int[] { R.id.iv_avatar, R.id.tv_repo_name, R.id.tv_filter_state,
+                R.id.tv_filter_labels, R.id.tv_filter_milestone, R.id.ll_assignee,
+                R.id.tv_filter_assignee, R.id.iv_assignee_avatar };
     }
 
     @Override
@@ -66,9 +64,9 @@ public class FilterListAdapter extends SingleTypeAdapter<IssueFilter> {
         avatars.bind(imageView(0), filter.getRepository().getOwner());
         setText(1, filter.getRepository().generateId());
         if (filter.isOpen())
-            setText(2, string.open_issues);
+            setText(2, R.string.open_issues);
         else
-            setText(2, string.closed_issues);
+            setText(2, R.string.closed_issues);
 
         Collection<Label> labels = filter.getLabels();
         if (labels != null && !labels.isEmpty()) {

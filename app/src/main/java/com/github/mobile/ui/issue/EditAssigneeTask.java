@@ -16,10 +16,9 @@
 package com.github.mobile.ui.issue;
 
 import static com.github.mobile.RequestCodes.ISSUE_ASSIGNEE_UPDATE;
-
 import android.accounts.Account;
 
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.ProgressDialogTask;
@@ -85,7 +84,7 @@ public class EditAssigneeTask extends ProgressDialogTask<Issue> {
      * @return this task
      */
     public EditAssigneeTask edit(User user) {
-        showIndeterminate(string.updating_assignee);
+        showIndeterminate(R.string.updating_assignee);
 
         this.assignee = user;
 

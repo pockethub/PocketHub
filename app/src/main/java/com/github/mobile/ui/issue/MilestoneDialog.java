@@ -21,7 +21,7 @@ import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 import android.accounts.Account;
 import android.util.Log;
 
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.github.mobile.util.ToastUtils;
@@ -111,12 +111,12 @@ public class MilestoneDialog {
                 super.onException(e);
 
                 Log.d(TAG, "Exception loading milestones", e);
-                ToastUtils.show(activity, e, string.error_milestones_load);
+                ToastUtils.show(activity, e, R.string.error_milestones_load);
             }
 
             @Override
             public void execute() {
-                showIndeterminate(string.loading_milestones);
+                showIndeterminate(R.string.loading_milestones);
 
                 super.execute();
             }
@@ -143,7 +143,7 @@ public class MilestoneDialog {
                     break;
                 }
         MilestoneDialogFragment.show(activity, requestCode,
-                activity.getString(string.select_milestone), null,
+                activity.getString(R.string.select_milestone), null,
                 repositoryMilestones, checked);
     }
 

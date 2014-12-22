@@ -37,7 +37,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.ui.LightAlertDialog;
 
 import java.io.IOException;
@@ -300,9 +300,9 @@ public class AccountUtils {
      */
     private static void showConflictMessage(final Activity activity) {
         AlertDialog dialog = LightAlertDialog.create(activity);
-        dialog.setTitle(activity.getString(string.authenticator_conflict_title));
+        dialog.setTitle(activity.getString(R.string.authenticator_conflict_title));
         dialog.setMessage(activity
-                .getString(string.authenticator_conflict_message));
+                .getString(R.string.authenticator_conflict_message));
         dialog.setOnCancelListener(new OnCancelListener() {
 
             @Override

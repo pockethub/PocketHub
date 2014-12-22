@@ -30,9 +30,7 @@ import android.widget.ListView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewFinder;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.HeaderFooterListAdapter;
@@ -123,7 +121,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         if (currentOrg != null)
             recentRepos = new RecentRepositories(activity, currentOrg);
 
-        setEmptyText(string.no_repositories);
+        setEmptyText(R.string.no_repositories);
 
         super.onActivityCreated(savedInstanceState);
     }
@@ -165,13 +163,13 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         dialog.setTitle(repo.generateId());
 
         View view = getActivity().getLayoutInflater().inflate(
-                layout.repo_dialog, null);
+                R.layout.repo_dialog, null);
         ViewFinder finder = new ViewFinder(view);
 
         final User owner = repo.getOwner();
-        avatars.bind(finder.imageView(id.iv_owner_avatar), owner);
-        finder.setText(id.tv_owner_name, getString(string.navigate_to_user, owner.getLogin()));
-        finder.onClick(id.ll_owner_area, new OnClickListener() {
+        avatars.bind(finder.imageView(R.id.iv_owner_avatar), owner);
+        finder.setText(R.id.tv_owner_name, getString(R.string.navigate_to_user, owner.getLogin()));
+        finder.onClick(R.id.ll_owner_area, new OnClickListener() {
 
             public void onClick(View v) {
                 dialog.dismiss();
@@ -181,9 +179,9 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         });
 
         if ((recentRepos != null) && (recentRepos.contains(repo))) {
-            finder.find(id.divider).setVisibility(View.VISIBLE);
-            finder.find(id.ll_recent_repo_area).setVisibility(View.VISIBLE);
-            finder.onClick(id.ll_recent_repo_area, new OnClickListener() {
+            finder.find(R.id.divider).setVisibility(View.VISIBLE);
+            finder.find(R.id.ll_recent_repo_area).setVisibility(View.VISIBLE);
+            finder.onClick(R.id.ll_recent_repo_area, new OnClickListener() {
 
                 public void onClick(View v) {
                     dialog.dismiss();
@@ -228,7 +226,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         // Add recent header if at least one recent repository
         Repository first = repos.get(0);
         if (recentRepos.contains(first))
-            adapter.registerHeader(first, getString(string.recently_viewed));
+            adapter.registerHeader(first, getString(R.string.recently_viewed));
 
         // Advance past all recent repositories
         int index;
@@ -303,6 +301,6 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
 
     @Override
     protected int getErrorMessage(Exception exception) {
-        return string.error_repos_load;
+        return R.string.error_repos_load;
     }
 }

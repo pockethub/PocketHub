@@ -33,9 +33,7 @@ import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.core.ResourcePager;
 import com.github.mobile.core.commit.CommitPager;
@@ -109,7 +107,7 @@ public class CommitListFragment extends PagedItemFragment<RepositoryCommit>
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setEmptyText(string.no_commits);
+        setEmptyText(R.string.no_commits);
     }
 
     @Override
@@ -182,18 +180,18 @@ public class CommitListFragment extends PagedItemFragment<RepositoryCommit>
 
     @Override
     protected int getLoadingMessage() {
-        return string.loading_commits;
+        return R.string.loading_commits;
     }
 
     @Override
     protected int getErrorMessage(Exception exception) {
-        return string.error_commits_load;
+        return R.string.error_commits_load;
     }
 
     @Override
     protected SingleTypeAdapter<RepositoryCommit> createAdapter(
             List<RepositoryCommit> items) {
-        return new CommitListAdapter(layout.commit_item, getActivity()
+        return new CommitListAdapter(R.layout.commit_item, getActivity()
                 .getLayoutInflater(), items, avatars);
     }
 
@@ -230,9 +228,9 @@ public class CommitListFragment extends PagedItemFragment<RepositoryCommit>
     private void updateRefLabel() {
         branchView.setText(RefUtils.getName(ref));
         if (RefUtils.isTag(ref))
-            branchIconView.setText(string.icon_tag);
+            branchIconView.setText(R.string.icon_tag);
         else
-            branchIconView.setText(string.icon_fork);
+            branchIconView.setText(R.string.icon_fork);
     }
 
     private void setRef(final Reference ref) {
@@ -262,9 +260,9 @@ public class CommitListFragment extends PagedItemFragment<RepositoryCommit>
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        branchFooterView = finder.find(id.rl_branch);
-        branchView = finder.find(id.tv_branch);
-        branchIconView = finder.find(id.tv_branch_icon);
+        branchFooterView = finder.find(R.id.rl_branch);
+        branchView = finder.find(R.id.tv_branch);
+        branchIconView = finder.find(R.id.tv_branch_icon);
         TypefaceUtils.setOcticons(branchIconView);
         branchFooterView.setOnClickListener(new OnClickListener() {
 
@@ -278,6 +276,6 @@ public class CommitListFragment extends PagedItemFragment<RepositoryCommit>
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(layout.commit_list, null);
+        return inflater.inflate(R.layout.commit_list, null);
     }
 }
