@@ -21,6 +21,7 @@ import static org.eclipse.egit.github.core.service.IssueService.STATE_CLOSED;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.ListView;
 
@@ -34,6 +35,7 @@ import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Issue;
@@ -105,9 +107,25 @@ public class SearchIssueListFragment extends ItemListFragment<SearchIssue>
                 matches.addAll(service.searchIssues(repository, STATE_OPEN, query));
                 //matches.addAll(service.searchIssues(repository, STATE_CLOSED, query));
                 Collections.sort(matches, SearchIssueListFragment.this);
-                return matches;
+                return filterSearch(matches);
             }
         };
+    }
+
+    private List<SearchIssue> filterSearch(List<SearchIssue> searchIssueList) {
+        SparseArray<SearchIssue> repeatedIssues = new SparseArray<SearchIssue>();
+        Iterator<SearchIssue> iterator = searchIssueList.iterator();
+        while (iterator.hasNext()) {
+            SearchIssue issue = iterator.next();
+            int issueNumber = issue.getNumber();
+            SearchIssue repeatedIssue = repeatedIssues.get(issueNumber);
+            if(repeatedIssue == null) {
+                repeatedIssues.put(issueNumber, new SearchIssue());
+            } else {
+                iterator.remove();
+            }
+        }
+        return searchIssueList;
     }
 
     @Override
