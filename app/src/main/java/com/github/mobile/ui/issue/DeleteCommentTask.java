@@ -20,9 +20,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.ui.ProgressDialogTask;
-import com.github.mobile.util.HtmlUtils;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 
@@ -73,7 +72,7 @@ public class DeleteCommentTask extends ProgressDialogTask<Comment> {
      * @return this task
      */
     public DeleteCommentTask start() {
-        showIndeterminate(string.deleting_comment);
+        showIndeterminate(R.string.deleting_comment);
 
         execute();
         return this;

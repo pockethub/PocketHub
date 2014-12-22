@@ -24,7 +24,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.core.repo.RefreshRepositoryTask;
 import com.github.mobile.ui.ItemListFragment;
@@ -56,7 +56,7 @@ public class SearchRepositoryListFragment extends
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setEmptyText(string.no_repositories);
+        setEmptyText(R.string.no_repositories);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class SearchRepositoryListFragment extends
             @Override
             public void execute() {
                 showIndeterminate(MessageFormat.format(
-                        getString(string.opening_repository),
+                        getString(R.string.opening_repository),
                         result.generateId()));
 
                 super.execute();
@@ -142,7 +142,7 @@ public class SearchRepositoryListFragment extends
 
     @Override
     protected int getErrorMessage(Exception exception) {
-        return string.error_repos_load;
+        return R.string.error_repos_load;
     }
 
     @Override

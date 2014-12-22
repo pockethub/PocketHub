@@ -8,7 +8,7 @@ import android.widget.ListView;
 
 import com.github.kevinsawicki.wishlist.AsyncLoader;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.ItemListFragment;
@@ -36,7 +36,7 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setEmptyText(string.no_bookmarks);
+        setEmptyText(R.string.no_bookmarks);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> implements
 
     @Override
     protected int getErrorMessage(Exception exception) {
-        return string.error_bookmarks_load;
+        return R.string.error_bookmarks_load;
     }
 
     @Override

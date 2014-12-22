@@ -19,7 +19,7 @@ import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import android.accounts.Account;
 import android.util.Log;
 
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.core.ref.RefUtils;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.ProgressDialogTask;
@@ -95,12 +95,12 @@ public class RefDialog {
                 super.onException(e);
 
                 Log.d(TAG, "Exception loading references", e);
-                ToastUtils.show(activity, e, string.error_refs_load);
+                ToastUtils.show(activity, e, R.string.error_refs_load);
             }
 
             @Override
             public void execute() {
-                showIndeterminate(string.loading_refs);
+                showIndeterminate(R.string.loading_refs);
 
                 super.execute();
             }
@@ -136,6 +136,6 @@ public class RefDialog {
         }
 
         RefDialogFragment.show(activity, requestCode,
-                activity.getString(string.select_ref), null, refList, checked);
+                activity.getString(R.string.select_ref), null, refList, checked);
     }
 }

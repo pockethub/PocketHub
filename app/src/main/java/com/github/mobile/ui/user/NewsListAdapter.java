@@ -56,8 +56,7 @@ import android.view.View;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
+import com.github.mobile.R;
 import com.github.mobile.core.issue.IssueUtils;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
@@ -486,7 +485,7 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
      */
     public NewsListAdapter(LayoutInflater inflater, Event[] elements,
             AvatarLoader avatars) {
-        super(inflater, layout.news_item);
+        super(inflater, R.layout.news_item);
 
         this.avatars = avatars;
         setItems(elements);
@@ -512,8 +511,8 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
 
     @Override
     protected int[] getChildViewIds() {
-        return new int[] { id.iv_avatar, id.tv_event, id.tv_event_details,
-                id.tv_event_icon, id.tv_event_date };
+        return new int[] { R.id.iv_avatar, R.id.tv_event, R.id.tv_event_details,
+                R.id.tv_event_icon, R.id.tv_event_date };
     }
 
     @Override

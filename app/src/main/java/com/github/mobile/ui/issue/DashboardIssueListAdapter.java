@@ -19,8 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
+import com.github.mobile.R;
 import com.github.mobile.core.issue.IssueUtils;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.TypefaceUtils;
@@ -44,7 +43,7 @@ public class DashboardIssueListAdapter extends
      */
     public DashboardIssueListAdapter(AvatarLoader avatars,
             LayoutInflater inflater, RepositoryIssue[] elements) {
-        super(layout.dashboard_issue_item, inflater, elements, avatars);
+        super(R.layout.dashboard_issue_item, inflater, elements, avatars);
     }
 
     @Override
@@ -63,17 +62,17 @@ public class DashboardIssueListAdapter extends
 
         numberPaintFlags = textView(view, 1).getPaintFlags();
         TypefaceUtils.setOcticons(textView(view, 6),
-                (TextView) view.findViewById(id.tv_comment_icon));
+                (TextView) view.findViewById(R.id.tv_comment_icon));
         return view;
     }
 
     @Override
     protected int[] getChildViewIds() {
-        return new int[] { id.tv_issue_repo_name, id.tv_issue_number,
-                id.tv_issue_title, id.iv_avatar, id.tv_issue_creation,
-                id.tv_issue_comments, id.tv_pull_request_icon, id.v_label0,
-                id.v_label1, id.v_label2, id.v_label3, id.v_label4,
-                id.v_label5, id.v_label6, id.v_label7 };
+        return new int[] { R.id.tv_issue_repo_name, R.id.tv_issue_number,
+                R.id.tv_issue_title, R.id.iv_avatar, R.id.tv_issue_creation,
+                R.id.tv_issue_comments, R.id.tv_pull_request_icon, R.id.v_label0,
+                R.id.v_label1, R.id.v_label2, R.id.v_label3, R.id.v_label4,
+                R.id.v_label5, R.id.v_label6, R.id.v_label7 };
     }
 
     @Override

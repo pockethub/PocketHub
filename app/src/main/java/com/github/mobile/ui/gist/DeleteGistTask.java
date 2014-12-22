@@ -20,7 +20,7 @@ import android.accounts.Account;
 import android.app.Activity;
 import android.util.Log;
 
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.ui.ProgressDialogTask;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
@@ -58,7 +58,7 @@ public class DeleteGistTask extends ProgressDialogTask<Gist> {
      * This method must be called from the main thread.
      */
     public void start() {
-        showIndeterminate(string.deleting_gist);
+        showIndeterminate(R.string.deleting_gist);
 
         execute();
     }

@@ -26,9 +26,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents.Builder;
-import com.github.mobile.R.drawable;
-import com.github.mobile.R.layout;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.RequestFuture;
 import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.persistence.AccountDataManager;
@@ -65,11 +63,11 @@ public class FiltersViewActivity extends DialogFragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(layout.issues_filter_list);
+        setContentView(R.layout.issues_filter_list);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(string.bookmarks);
-        actionBar.setIcon(drawable.action_bookmark);
+        actionBar.setTitle(R.string.bookmarks);
+        actionBar.setIcon(R.drawable.action_bookmark);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         fragment = (FilterListFragment) getSupportFragmentManager()
@@ -116,8 +114,8 @@ public class FiltersViewActivity extends DialogFragmentActivity implements
         Bundle args = new Bundle();
         args.putSerializable(ARG_FILTER, filter);
         ConfirmDialogFragment.show(this, REQUEST_DELETE,
-                getString(string.confirm_bookmark_delete_title),
-                getString(string.confirm_bookmark_delete_message), args);
+                getString(R.string.confirm_bookmark_delete_title),
+                getString(R.string.confirm_bookmark_delete_message), args);
         return true;
     }
 }

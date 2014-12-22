@@ -27,11 +27,11 @@ import static android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
 import static android.view.KeyEvent.ACTION_DOWN;
 import static android.view.KeyEvent.KEYCODE_ENTER;
 import static android.view.inputmethod.EditorInfo.IME_ACTION_DONE;
-import static com.github.mobile.accounts.AccountConstants.*;
 import static com.github.mobile.RequestCodes.OTP_CODE_ENTER;
+import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
+import static com.github.mobile.accounts.AccountConstants.PROVIDER_AUTHORITY;
 import static com.github.mobile.accounts.TwoFactorAuthActivity.PARAM_EXCEPTION;
 import static com.github.mobile.accounts.TwoFactorAuthClient.TWO_FACTOR_AUTH_TYPE_SMS;
-
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
@@ -62,10 +62,7 @@ import android.widget.TextView.OnEditorActionListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewFinder;
-import com.github.mobile.R.id;
-import com.github.mobile.R.layout;
-import com.github.mobile.R.menu;
-import com.github.mobile.R.string;
+import com.github.mobile.R;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.LightProgressDialog;
 import com.github.mobile.ui.TextWatcherAdapter;
@@ -164,13 +161,13 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(layout.login);
+        setContentView(R.layout.login);
 
         accountManager = AccountManager.get(this);
 
         ViewFinder finder = new ViewFinder(this);
-        loginText = finder.find(id.et_login);
-        passwordText = finder.find(id.et_password);
+        loginText = finder.find(R.id.et_login);
+        passwordText = finder.find(R.id.et_password);
 
         final Intent intent = getIntent();
         username = intent.getStringExtra(PARAM_USERNAME);
@@ -179,9 +176,9 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
         confirmCredentials = intent.getBooleanExtra(PARAM_CONFIRMCREDENTIALS,
                 false);
 
-        TextView signupText = finder.find(id.tv_signup);
+        TextView signupText = finder.find(R.id.tv_signup);
         signupText.setMovementMethod(LinkMovementMethod.getInstance());
-        signupText.setText(Html.fromHtml(getString(string.signup_link)));
+        signupText.setText(Html.fromHtml(getString(R.string.signup_link)));
 
         if (!TextUtils.isEmpty(username)) {
             loginText.setText(username);
@@ -225,7 +222,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
             }
         });
 
-        CheckBox showPassword = finder.find(id.cb_show_password);
+        CheckBox showPassword = finder.find(R.id.cb_show_password);
         showPassword.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
             @Override
@@ -294,7 +291,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
         password = passwordText.getText().toString();
 
         final AlertDialog dialog = LightProgressDialog.create(this,
-                string.login_activity_authenticating);
+                R.string.login_activity_authenticating);
         dialog.setCancelable(true);
         dialog.setOnCancelListener(new OnCancelListener() {
 
@@ -365,13 +362,13 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
 
         if (requestCode == OTP_CODE_ENTER) {
             switch (resultCode) {
-                case RESULT_OK:
-                    onAuthenticationResult(true);
-                    break;
-                case RESULT_CANCELED:
-                    Exception e = (Exception) data.getExtras().getSerializable(PARAM_EXCEPTION);
-                    handleLoginException(e);
-                    break;
+            case RESULT_OK:
+                onAuthenticationResult(true);
+                break;
+            case RESULT_CANCELED:
+                Exception e = (Exception) data.getExtras().getSerializable(PARAM_EXCEPTION);
+                handleLoginException(e);
+                break;
             }
         }
     }
@@ -428,16 +425,16 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
                 finishConfirmCredentials(true);
         } else {
             if (requestNewAccount)
-                ToastUtils.show(this, string.invalid_login_or_password);
+                ToastUtils.show(this, R.string.invalid_login_or_password);
             else
-                ToastUtils.show(this, string.invalid_password);
+                ToastUtils.show(this, R.string.invalid_password);
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case id.m_login:
+        case R.id.m_login:
             handleLogin();
             return true;
         default:
@@ -448,8 +445,8 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionMenu) {
-        getSupportMenuInflater().inflate(menu.login, optionMenu);
-        loginItem = optionMenu.findItem(id.m_login);
+        getSupportMenuInflater().inflate(R.menu.login, optionMenu);
+        loginItem = optionMenu.findItem(R.id.m_login);
         return true;
     }
 
@@ -478,6 +475,6 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
         if (AccountUtils.isUnauthorized(e))
             onAuthenticationResult(false);
         else
-            ToastUtils.show(LoginActivity.this, e, string.code_authentication_failed);
+            ToastUtils.show(LoginActivity.this, e, R.string.code_authentication_failed);
     }
 }
