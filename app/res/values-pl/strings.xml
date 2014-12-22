@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<resources>
+
+    <!-- Error messages -->
+    <string name="error_orgs_load">Ładowanie konta i organizacji zakończone błędem</string>
+    <string name="error_issues_load">Ładowanie uwag zakończone błędem</string>
+    <string name="error_repos_load">Ładowanie respozytoriów zakończone błędem</string>
+    <string name="error_repo_load">Ładowanie respozytoru zakończone błędem</string>
+    <string name="error_contributors_load">Ładowanie współpracowaników zakończone błędem</string>
+    <string name="error_gist_load">Ładowanie Gistu zakończone błędem</string>
+    <string name="error_news_load">Ładowanie aktualności zakończone błędem</string>
+    <string name="error_followers_load">Ładowanie obserwujących zakończone błędem</string>
+    <string name="error_people_load">Ładowanie ludzi zakończone błędem</string>
+    <string name="error_person_load">Ładowanie człowieka zakończone błedem</string>
+    <string name="error_gist_file_load">Ładowanie pliku Gist zakończone błędem</string>
+    <string name="error_gists_load">Ładowanie Gistu zakończone błędem</string>
+    <string name="error_issue_load">Ładowanie uwagi zakończone błędem</string>
+    <string name="error_collaborators_load">Ładowanie współpracowników zakończone błędem</string>
+    <string name="error_milestones_load">Ładowanie kamieni milowych zakończone błędem</string>
+    <string name="error_labels_load">Ładowanie etykiet zakończone błędem</string>
+    <string name="error_bookmarks_load">Ładowanie zakładek zakończone błędem</string>
+    <string name="error_members_load">Ładowanie członków zakończone błędem</string>
+    <string name="error_commits_load">Ładowanie popełnień zakończone błędem</string>
+    <string name="error_commit_load">Ładowanie popełnienia zakończone błędem</string>
+    <string name="error_file_load">Ładowanie pliku zakończone błędem</string>
+    <string name="error_code_load">Ładowanie kodu zakończone błędem</string>
+    <string name="error_refs_load">Ładowanie branchy i tagów zakończone błędem</string>
+    <string name="error_following_person">Obserwowanie zakończone błędem</string>
+    <string name="error_unfollowing_person">Nie obserwowanie zakończone błędem</string>
+    <string name="error_checking_following_status">Sprawdzanie statusu obserwowania zakończone błędem</string>
+    <string name="error_starring_repository">Gwiazdkowanie zakończone błędem</string>
+    <string name="error_unstarring_repository">Od gwiazdkowywanie zakończone błędem</string>
+    <string name="error_checking_starring_status">Sprawdzanie statusu gwiazdkowania zakończone błędem</string>
+    <string name="error_rendering_markdown">Renderowanie markdownu zakończone błędem</string>
+    <string name="error_users_search">Wyszukiwanie ludzi zakończone błędem</string>
+    <!--  -->
+
+
+    <!-- Loading messages -->
+    <string name="loading_gist">Ładowanie Gistu…</string>
+    <string name="random_gist">Ładowanie losowego Gistu…</string>
+    <string name="loading_more_issues">Ładowanie więcej uwag…</string>
+    <string name="loading_issues">Ładowanie uwag…</string>
+    <string name="loading_comments">Ładowanie komentarzy…</string>
+    <string name="loading_repositories">Ładowanie respozytoriów…</string>
+    <string name="loading_issue">Ładowanie uwagi…</string>
+    <string name="loading_news">Ładowanie aktualności…</string>
+    <string name="loading_followers">Ładowanie obserwujących…</string>
+    <string name="loading_people">Ładowanie ludzi…</string>
+    <string name="loading_gists">Ładowanie Gistów…</string>
+    <string name="loading_collaborators">Ładowanie współpracowników…</string>
+    <string name="loading_milestones">Ładowanie kamieni milowych…</string>
+    <string name="loading_labels">Ładowanie etykiet…</string>
+    <string name="loading_commits">Ładowanie popełnień…</string>
+    <string name="loading_files_and_comments">Ładowanie plików i komentarzy…</string>
+    <string name="loading_refs">Ładowanie branchy i tagów…</string>
+    <!--  -->
+
+
+    <!-- Empty messages -->
+    <string name="no_bookmarks">Brak zakładek</string>
+    <string name="no_repositories">Brak respozytoriów</string>
+    <string name="no_contributors">Brak współpracowników</string>
+    <string name="no_issues">Brak uwag</string>
+    <string name="no_gists">Brak Gistów</string>
+    <string name="no_people">Brak ludzi</string>
+    <string name="no_followers">Brak obserwujących</string>
+    <string name="no_members">Brak członków</string>
+    <string name="no_news">Brak aktualności</string>
+    <string name="no_commits">Brak popełnień</string>
+    <!--  -->
+
+
+    <!-- Updating messages -->
+    <string name="updating_assignee">Aktualizowanie…</string>
+    <string name="updating_issue">Aktualizowanie uwagi…</string>
+    <string name="updating_labels">Aktualizowanie etykiet…</string>
+    <string name="updating_milestone">Aktualizowanie kamieni milowych…</string>
+    <!--  -->
+
+    <string name="app_name">GitHub</string>
+    <string name="news">Aktualności</string>
+    <string name="issues">Uwagi</string>
+    <string name="gists">Gisty</string>
+    <string name="commits">Popełnienia</string>
+    <string name="global_search">Wyszukiwanie w GitHub</string>
+    <string name="find_repositories">Szukanie respozytoriów</string>
+    <string name="find_issues">Szukanie uwag</string>
+    <string name="search_title">Szukanie…</string>
+    <string name="clear_search_history">Wyczyść historię</string>
+    <string name="search_history_cleared">Historia wyszukiwań wyczyszczona</string>
+    <string name="login_activity_authenticating">Logowanie…</string>
+    <string name="creating_gist">Tworzenie Gistu…</string>
+    <string name="create">Stwórz</string>
+    <string name="create_gist">Stwórz Gist</string>
+    <string name="gist_content_hint">puts \'Hello World!\'</string>
+    <string name="make_public">Stwórz to respozytorium jako publiczne</string>
+    <string name="gist_file_name_hint">file.rb</string>
+    <string name="gist">Gist</string>
+    <string name="comments">Komentarze</string>
+    <string name="files">Pliki</string>
+    <string name="open">Otwarte</string>
+    <string name="random">Losowe</string>
+    <string name="file_name">Nazwa pliku</string>
+    <string name="file_content">File Content</string>
+    <string name="new_gist">Nowy Gist</string>
+    <string name="filter">Filtr</string>
+    <string name="bookmark">Zakładka</string>
+    <string name="comment">Komentarz</string>
+    <string name="delete">Usuń</string>
+    <string name="refresh">Odśwież</string>
+    <string name="dashboard_issues_title">Tablica uwag</string>
+    <string name="bookmarks">Zakładki</string>
+    <string name="gists_title">Gisty</string>
+    <string name="issue_title">Uwaga #</string>
+    <string name="pull_request_title">Pull Request #</string>
+    <string name="gist_title">Gist\u0020</string>
+    <string name="filter_issues_title">Filtr uwag</string>
+    <string name="create_comment_title">Dodaj komentarz</string>
+    <string name="comment_hint">Wpisz komentarz</string>
+    <string name="show_more">Pokaz wiecej…</string>
+    <string name="repositories">Respozytoria</string>
+    <string name="contributors">Współpracownicy</string>
+    <string name="issues_title">Uwagi</string>
+    <string name="edit_labels">Edytuj etykiety</string>
+    <string name="milestone_prefix">Kamień milowy:</string>
+    <string name="edit_milestone">Edytuj kamień milowy</string>
+    <string name="edit_assignee">Edytuj Assignee</string>
+    <string name="description">Opis</string>
+    <string name="gist_description_hint">Android stworzył Gist</string>
+    <string name="title">Tytuł</string>
+    <string name="edit">Edytuj</string>
+    <string name="starring_gist">Gwiazdkowanie Gistu…</string>
+    <string name="unstarring_gist">Od gwiazdkowywanie Gistu…</string>
+    <string name="accounts_label">Konta</string>
+    <string name="select_assignee">Zaznacz Assignee</string>
+    <string name="select_milestone">Zaznacz kamień milowy</string>
+    <string name="select_labels">Zaznacz etykietę</string>
+    <string name="select_ref">Zaznacz Branch lub Tag</string>
+    <string name="enter_otp_code_title">Kod autentyzacyjny</string>
+    <string name="enter_otp_code_message">Na Twoim koncie jest włączona autentyzacja 2-etapowa. Wpisz Twój kod autentyzacyjny, aby Cię zweryfikować.</string>
+    <string name="no_milestone">Brak kamieni milowych</string>
+    <string name="unassigned">Brak assignów</string>
+    <string name="assigned">jest assigned</string>
+    <string name="no_gists_found">Nie znaleziono żadnych Gistów</string>
+    <string name="confirm_gist_delete_title">Potwierdź usunięcie Gistu</string>
+    <string name="confirm_gist_delete_message">Czy jesteś pewien usunięcia tego Gistu?</string>
+    <string name="deleting_gist">Usuwanie Gistu…</string>
+    <string name="creating_comment">Tworzenie komentarza…</string>
+    <string name="confirm_bookmark_delete_message">Czy jesteś pewien usunięcia tej zakładki?</string>
+    <string name="issue_dashboard">Tablica uwag</string>
+    <string name="new_issue">Nowa uwaga</string>
+    <string name="anonymous">Anonim</string>
+    <string name="message_filter_saved">Filtr uwagi zapisano w zakładkach</string>
+    <string name="recently_viewed">OSTATNIO OGLĄDANE</string>
+    <string name="recent">Ostatni</string>
+    <string name="recent_remove">Usuń ostatni</string>
+    <string name="recent_list_remove">Usuń z ostatnio używanych</string>
+    <string name="section_issue_status">Status:</string>
+    <string name="status_open">Otwarte</string>
+    <string name="status_closed">Zamknięte</string>
+    <string name="section_issue_assigned">Assigned do:</string>
+    <string name="assignee_anyone">Ktoś</string>
+    <string name="section_issue_milestone">Kamień milowy:</string>
+    <string name="none">Pusto</string>
+    <string name="section_issue_labels">Etykiety:</string>
+    <string name="log_in">Zaloguj</string>
+    <string name="signup_link">Nowy na GitHub? &lt;a href=\"https://github.com/plans\">Kliknij tutaj&lt;/a>, aby się zarejestrować</string>
+    <string name="signup_link_two_factor_auth">Nie wiesz co zrobić? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Zdobodź więcej informacji na ten temat.&lt;/a></string>
+    <string name="connection_failed">Brak połączenia z GitHubem</string>
+    <string name="invalid_login_or_password">Proszę, podaj prawidłową nazwę użytkownika i hasło</string>
+    <string name="invalid_password">Proszę, podaj prawdziwe hasło.</string>
+    <string name="password">Hasło</string>
+    <string name="username_or_email">Nazwa użytkownika lub e-mail</string>
+    <string name="followers">Obserwują</string>
+    <string name="following">Obserwuje</string>
+    <string name="followers_self">Obserwują</string>
+    <string name="following_self">Obserwuje</string>
+    <string name="follow">Obserwuj</string>
+    <string name="unfollow">Nie obserwuj</string>
+    <string name="star">Gwiazdka</string>
+    <string name="unstar">Usuń gwiazdkę</string>
+    <string name="members">Użytkownicy</string>
+    <string name="closing_issue">Zamykanie uwagi…</string>
+    <string name="reopening_issue">Re-otwieranie uwagi…</string>
+    <string name="avatar">Awatar</string>
+    <string name="creating_issue">Tworzenie uwagi…</string>
+    <string name="prefix_created">utworznono\u0020</string>
+    <string name="prefix_updated">zaaktualizowano\u0020</string>
+    <string name="prefix_opened">otwarto\u0020</string>
+    <string name="clear">Wyczyść</string>
+    <string name="pull_request_commits">Popełnienia: %d</string>
+    <string name="open_issues">Otwórz uwagę</string>
+    <string name="closed_issues">Zamknięto uwagę</string>
+    <string name="confirm_bookmark_delete_title">Usuń zakładkę</string>
+    <string name="save">Zapisz</string>
+    <string name="apply">Zastosuj</string>
+    <string name="labels_prefix">Etykity:</string>
+    <string name="assignee">Assignee</string>
+    <string name="milestone">Kamień milowy</string>
+    <string name="labels">Etykity</string>
+    <string name="issue_confirm_close_message">Czy jest jesteś pewnien zamknięcia tej uwagi?</string>
+    <string name="issue_confirm_reopen_message">Czy jesteś?</string>
+    <string name="issue_confirm_close_title">Zamknij uwagę</string>
+    <string name="issue_confirm_reopen_title">Re-otwórz uwagę</string>
+    <string name="closed">Zamknięto</string>
+    <string name="no_description_given">Nie podano opisu.</string>
+    <string name="close">Zamknij</string>
+    <string name="reopen">Re-open</string>
+    <string name="title_invalid_github_url">Błędny adres URL GitHub</string>
+    <string name="message_invalid_github_url">The following URL could not be opened by this application:\n{0}</string>
+    <string name="cancel">Cancel</string>
+    <string name="authenticator_conflict_title">App Conflict</string>
+    <string name="authenticator_conflict_message">Another installed app is already configured for GitHub authentication.\n\nYou must remove the other app from the Accounts &amp; sync settings and uninstall it before the GitHub app can be used.</string>
+    <string name="opening_repository">Otwarto {0}…</string>
+    <string name="commit_compare_title">Połącz popełnienia</string>
+    <string name="commit_prefix">Popełnienie\u0020</string>
+    <string name="parent_prefix">Parent\u0020</string>
+    <string name="authored">authored</string>
+    <string name="committed">committed</string>
+    <string name="diff_line_message">What would you like to do?</string>
+    <string name="comment_on_line">Skomentuj na linii</string>
+    <string name="view_entire_file">View entire file</string>
+    <string name="comparing_commits">Comparing {0} commits</string>
+    <string name="enable_wrapping">Włącz zawijanie</string>
+    <string name="disable_wrapping">Wyłącz zawijanie</string>
+    <string name="code">Code</string>
+    <string name="following_user">Following…</string>
+    <string name="unfollowing_user">Unfollowing…</string>
+    <string name="starring_repository">Starring…</string>
+    <string name="unstarring_repository">Unstarring…</string>
+    <string name="navigate_to">Nawiguj do…</string>
+    <string name="navigate_to_user">Nawiguj do %s</string>
+    <string name="contributions">%d popełnień</string>
+
+    <!-- Tab titles, should be as short as possible -->
+    <string name="tab_repositories">repositories</string>
+    <string name="tab_users">users</string>
+    <string name="tab_news">news</string>
+    <string name="tab_following_self">following</string>
+    <string name="tab_followers_self">followers</string>
+    <string name="tab_following">following</string>
+    <string name="tab_followers">followers</string>
+    <string name="tab_members">members</string>
+    <string name="tab_code">code</string>
+    <string name="tab_commits">commits</string>
+    <string name="tab_issues">issues</string>
+    <string name="tab_watched">watched</string>
+    <string name="tab_assigned">assigned</string>
+    <string name="tab_created">created</string>
+    <string name="tab_mentioned">mentioned</string>
+    <string name="tab_mine">mine</string>
+    <string name="tab_starred">gwiazdkowane</string>
+    <string name="tab_all">wszystko</string>
+    <!--  -->
+    <string name="share">Udostępnij</string>
+    <string name="show_password">Pokaż hasło</string>
+    <string name="write">Napisz</string>
+    <string name="preview">Podgląd</string>
+    <string name="show_raw_markdown">Show raw markdown</string>
+    <string name="render_markdown">Render markdown</string>
+
+</resources>
