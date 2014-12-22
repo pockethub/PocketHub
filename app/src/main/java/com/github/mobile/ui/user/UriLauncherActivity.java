@@ -32,7 +32,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.github.mobile.R;
+import com.github.mobile.R.string;
 import com.github.mobile.core.commit.CommitMatch;
 import com.github.mobile.core.commit.CommitUriMatcher;
 import com.github.mobile.core.gist.GistUriMatcher;
@@ -163,8 +163,8 @@ public class UriLauncherActivity extends Activity {
 
     private void showParseError(String url) {
         AlertDialog dialog = LightAlertDialog.create(this);
-        dialog.setTitle(R.string.title_invalid_github_url);
-        dialog.setMessage(MessageFormat.format(getString(R.string.message_invalid_github_url), url));
+        dialog.setTitle(string.title_invalid_github_url);
+        dialog.setMessage(MessageFormat.format(getString(string.message_invalid_github_url), url));
         dialog.setOnCancelListener(new OnCancelListener() {
 
             @Override
@@ -173,13 +173,13 @@ public class UriLauncherActivity extends Activity {
             }
         });
         dialog.setButton(BUTTON_POSITIVE, getString(android.R.string.ok),
-                new OnClickListener() {
+            new OnClickListener() {
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                });
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
         dialog.show();
     }
 }

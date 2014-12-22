@@ -54,7 +54,11 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewUtils;
-import com.github.mobile.R;
+import com.github.mobile.R.drawable;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
+import com.github.mobile.R.menu;
+import com.github.mobile.R.string;
 import com.github.mobile.core.issue.FullIssue;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.core.issue.IssueUtils;
@@ -239,8 +243,8 @@ public class IssueFragment extends DialogFragment {
         issue = store.getIssue(repositoryId, issueNumber);
 
         TextView loadingText = (TextView) loadingView
-                .findViewById(R.id.tv_loading);
-        loadingText.setText(R.string.loading_comments);
+                .findViewById(id.tv_loading);
+        loadingText.setText(string.loading_comments);
 
         if (issue == null || (issue.getComments() > 0 && comments == null))
             adapter.addHeader(loadingView);
@@ -257,7 +261,7 @@ public class IssueFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.comment_list, null);
+        return inflater.inflate(layout.comment_list, null);
     }
 
     @Override
@@ -265,33 +269,33 @@ public class IssueFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         list = finder.find(android.R.id.list);
-        progress = finder.find(R.id.pb_loading);
+        progress = finder.find(id.pb_loading);
 
         LayoutInflater inflater = getLayoutInflater(savedInstanceState);
 
-        headerView = inflater.inflate(R.layout.issue_header, null);
+        headerView = inflater.inflate(layout.issue_header, null);
 
-        headerSeparator = view.findViewById(R.id.v_header_separator);
-        stateText = (TextView) headerView.findViewById(R.id.tv_state);
-        titleText = (TextView) headerView.findViewById(R.id.tv_issue_title);
-        authorText = (TextView) headerView.findViewById(R.id.tv_issue_author);
+        headerSeparator = view.findViewById(id.v_header_separator);
+        stateText = (TextView) headerView.findViewById(id.tv_state);
+        titleText = (TextView) headerView.findViewById(id.tv_issue_title);
+        authorText = (TextView) headerView.findViewById(id.tv_issue_author);
         createdDateText = (TextView) headerView
-                .findViewById(R.id.tv_issue_creation_date);
-        creatorAvatar = (ImageView) headerView.findViewById(R.id.iv_avatar);
-        commitsView = (ViewGroup) headerView.findViewById(R.id.ll_issue_commits);
-        assigneeText = (TextView) headerView.findViewById(R.id.tv_assignee_name);
+                .findViewById(id.tv_issue_creation_date);
+        creatorAvatar = (ImageView) headerView.findViewById(id.iv_avatar);
+        commitsView = (ViewGroup) headerView.findViewById(id.ll_issue_commits);
+        assigneeText = (TextView) headerView.findViewById(id.tv_assignee_name);
         assigneeAvatar = (ImageView) headerView
-                .findViewById(R.id.iv_assignee_avatar);
-        labelsArea = (TextView) headerView.findViewById(R.id.tv_labels);
-        milestoneArea = headerView.findViewById(R.id.ll_milestone);
-        milestoneText = (TextView) headerView.findViewById(R.id.tv_milestone);
-        milestoneProgressArea = headerView.findViewById(R.id.v_closed);
-        bodyText = (TextView) headerView.findViewById(R.id.tv_issue_body);
+                .findViewById(id.iv_assignee_avatar);
+        labelsArea = (TextView) headerView.findViewById(id.tv_labels);
+        milestoneArea = headerView.findViewById(id.ll_milestone);
+        milestoneText = (TextView) headerView.findViewById(id.tv_milestone);
+        milestoneProgressArea = headerView.findViewById(id.v_closed);
+        bodyText = (TextView) headerView.findViewById(id.tv_issue_body);
         bodyText.setMovementMethod(SelectableLinkMovementMethod.getInstance());
 
-        loadingView = inflater.inflate(R.layout.loading_item, null);
+        loadingView = inflater.inflate(layout.loading_item, null);
 
-        footerView = inflater.inflate(R.layout.footer_separator, null);
+        footerView = inflater.inflate(layout.footer_separator, null);
 
         commitsView.setOnClickListener(new OnClickListener() {
 
@@ -320,7 +324,7 @@ public class IssueFragment extends DialogFragment {
             }
         });
 
-        headerView.findViewById(R.id.ll_assignee).setOnClickListener(
+        headerView.findViewById(id.ll_assignee).setOnClickListener(
                 new OnClickListener() {
 
                     @Override
@@ -356,30 +360,30 @@ public class IssueFragment extends DialogFragment {
         if (!TextUtils.isEmpty(body))
             bodyImageGetter.bind(bodyText, body, issue.getId());
         else
-            bodyText.setText(R.string.no_description_given);
+            bodyText.setText(string.no_description_given);
 
         authorText.setText(issue.getUser().getLogin());
         createdDateText.setText(new StyledText().append(
-                getString(R.string.prefix_opened)).append(issue.getCreatedAt()));
+                getString(string.prefix_opened)).append(issue.getCreatedAt()));
         avatars.bind(creatorAvatar, issue.getUser());
 
         if (IssueUtils.isPullRequest(issue) && issue.getPullRequest().getCommits() > 0) {
             ViewUtils.setGone(commitsView, false);
 
-            TextView icon = (TextView) headerView.findViewById(R.id.tv_commit_icon);
+            TextView icon = (TextView) headerView.findViewById(id.tv_commit_icon);
             TypefaceUtils.setOcticons(icon);
             icon.setText(ICON_COMMIT);
 
-            String commits = getString(R.string.pull_request_commits,
-                    issue.getPullRequest().getCommits());
-            ((TextView) headerView.findViewById(R.id.tv_pull_request_commits)).setText(commits);
+            String commits = getString(string.pull_request_commits,
+                issue.getPullRequest().getCommits());
+            ((TextView) headerView.findViewById(id.tv_pull_request_commits)).setText(commits);
         } else
             ViewUtils.setGone(commitsView, true);
 
         boolean open = STATE_OPEN.equals(issue.getState());
         if (!open) {
             StyledText text = new StyledText();
-            text.bold(getString(R.string.closed));
+            text.bold(getString(string.closed));
             Date closedAt = issue.getClosedAt();
             if (closedAt != null)
                 text.append(' ').append(closedAt);
@@ -392,13 +396,13 @@ public class IssueFragment extends DialogFragment {
         if (assignee != null) {
             StyledText name = new StyledText();
             name.bold(assignee.getLogin());
-            name.append(' ').append(getString(R.string.assigned));
+            name.append(' ').append(getString(string.assigned));
             assigneeText.setText(name);
             assigneeAvatar.setVisibility(VISIBLE);
             avatars.bind(assigneeAvatar, assignee);
         } else {
             assigneeAvatar.setVisibility(GONE);
-            assigneeText.setText(R.string.unassigned);
+            assigneeText.setText(string.unassigned);
         }
 
         List<Label> labels = issue.getLabels();
@@ -411,7 +415,7 @@ public class IssueFragment extends DialogFragment {
         if (issue.getMilestone() != null) {
             Milestone milestone = issue.getMilestone();
             StyledText milestoneLabel = new StyledText();
-            milestoneLabel.append(getString(R.string.milestone_prefix));
+            milestoneLabel.append(getString(string.milestone_prefix));
             milestoneLabel.append(' ');
             milestoneLabel.bold(milestone.getTitle());
             milestoneText.setText(milestoneLabel);
@@ -446,7 +450,7 @@ public class IssueFragment extends DialogFragment {
             @Override
             protected void onException(Exception e) throws RuntimeException {
                 super.onException(e);
-                ToastUtils.show(getActivity(), e, R.string.error_issue_load);
+                ToastUtils.show(getActivity(), e, string.error_issue_load);
                 ViewUtils.setGone(progress, true);
             }
 
@@ -513,7 +517,7 @@ public class IssueFragment extends DialogFragment {
                                     public int compare(Comment lhs, Comment rhs) {
                                         return Long.valueOf(lhs.getId())
                                                 .compareTo(rhs.getId());
-                                    }
+                                    };
                                 });
                         comments.remove(position);
                         updateList(issue, comments);
@@ -528,11 +532,11 @@ public class IssueFragment extends DialogFragment {
     private void updateStateItem(Issue issue) {
         if (issue != null && stateItem != null)
             if (STATE_OPEN.equals(issue.getState()))
-                stateItem.setTitle(R.string.close).setIcon(
-                        R.drawable.menu_issue_close);
+                stateItem.setTitle(string.close).setIcon(
+                        drawable.menu_issue_close);
             else
-                stateItem.setTitle(R.string.reopen).setIcon(
-                        R.drawable.menu_issue_open);
+                stateItem.setTitle(string.reopen).setIcon(
+                        drawable.menu_issue_open);
     }
 
     @Override
@@ -544,8 +548,8 @@ public class IssueFragment extends DialogFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
-        inflater.inflate(R.menu.issue_view, optionsMenu);
-        stateItem = optionsMenu.findItem(R.id.m_state);
+        inflater.inflate(menu.issue_view, optionsMenu);
+        stateItem = optionsMenu.findItem(id.m_state);
         updateStateItem(issue);
     }
 
@@ -572,12 +576,12 @@ public class IssueFragment extends DialogFragment {
             return;
         case COMMENT_EDIT:
             comment = (Comment) data
-                    .getSerializableExtra(EXTRA_COMMENT);
+                .getSerializableExtra(EXTRA_COMMENT);
             if (comments != null && comment != null) {
                 int position = Collections.binarySearch(comments, comment, new Comparator<Comment>() {
                     public int compare(Comment lhs, Comment rhs) {
-                        return Long.valueOf(lhs.getId()).compareTo(rhs.getId());
-                    }
+                       return Long.valueOf(lhs.getId()).compareTo(rhs.getId());
+                    };
                 });
                 commentImageGetter.removeFromCache(comment.getId());
                 comments.set(position, comment);
@@ -615,25 +619,25 @@ public class IssueFragment extends DialogFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_edit:
+        case id.m_edit:
             if (issue != null)
                 startActivityForResult(EditIssueActivity.createIntent(issue,
-                                repositoryId.getOwner(), repositoryId.getName(), user),
+                        repositoryId.getOwner(), repositoryId.getName(), user),
                         ISSUE_EDIT);
             return true;
-        case R.id.m_comment:
+        case id.m_comment:
             if (issue != null)
                 startActivityForResult(CreateCommentActivity.createIntent(
                         repositoryId, issueNumber, user), COMMENT_CREATE);
             return true;
-        case R.id.m_refresh:
+        case id.m_refresh:
             refreshIssue();
             return true;
-        case R.id.m_share:
+        case id.m_share:
             if (issue != null)
                 shareIssue();
             return true;
-        case R.id.m_state:
+        case id.m_state:
             if (issue != null)
                 stateTask.confirm(STATE_OPEN.equals(issue.getState()));
             return true;
@@ -649,7 +653,7 @@ public class IssueFragment extends DialogFragment {
         public void onEditComment(Comment comment) {
             startActivityForResult(EditCommentActivity.createIntent(
                     repositoryId, issueNumber, comment, user), COMMENT_EDIT);
-        }
+        };
     };
 
     /**
@@ -663,9 +667,9 @@ public class IssueFragment extends DialogFragment {
                     (DialogFragmentActivity) getActivity(),
                     COMMENT_DELETE,
                     getActivity()
-                            .getString(R.string.confirm_comment_delete_title),
+                            .getString(string.confirm_comment_delete_title),
                     getActivity().getString(
-                            R.string.confirm_comment_delete_message), args);
-        }
+                            string.confirm_comment_delete_message), args);
+        };
     };
 }

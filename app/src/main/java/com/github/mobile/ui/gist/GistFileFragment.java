@@ -31,7 +31,10 @@ import android.webkit.WebView;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.github.mobile.R;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
+import com.github.mobile.R.menu;
+import com.github.mobile.R.string;
 import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.ui.DialogFragment;
@@ -102,29 +105,29 @@ public class GistFileFragment extends DialogFragment implements
 
     @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
-        inflater.inflate(R.menu.code_view, optionsMenu);
+        inflater.inflate(menu.code_view, optionsMenu);
 
-        wrapItem = optionsMenu.findItem(R.id.m_wrap);
+        wrapItem = optionsMenu.findItem(id.m_wrap);
         updateWrapItem();
     }
 
     private void updateWrapItem() {
         if (wrapItem != null)
             if (codePrefs.getBoolean(WRAP, false))
-                wrapItem.setTitle(R.string.disable_wrapping);
+                wrapItem.setTitle(string.disable_wrapping);
             else
-                wrapItem.setTitle(R.string.enable_wrapping);
+                wrapItem.setTitle(string.enable_wrapping);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_wrap:
+        case id.m_wrap:
             if (editor.getWrap()) {
-                item.setTitle(R.string.enable_wrapping);
+                item.setTitle(string.enable_wrapping);
                 editor.setWrap(false);
             } else {
-                item.setTitle(R.string.disable_wrapping);
+                item.setTitle(string.disable_wrapping);
                 editor.setWrap(true);
             }
             PreferenceUtils.save(codePrefs.edit().putBoolean(WRAP,
@@ -154,7 +157,7 @@ public class GistFileFragment extends DialogFragment implements
             protected void onException(Exception e) throws RuntimeException {
                 super.onException(e);
 
-                ToastUtils.show(getActivity(), e, R.string.error_gist_file_load);
+                ToastUtils.show(getActivity(), e, string.error_gist_file_load);
             }
 
             @Override
@@ -180,14 +183,14 @@ public class GistFileFragment extends DialogFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.gist_file_view, null);
+        return inflater.inflate(layout.gist_file_view, null);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        webView = finder.find(R.id.wv_code);
+        webView = finder.find(id.wv_code);
 
         editor = new SourceEditor(webView);
         editor.setWrap(PreferenceUtils.getCodePreferences(getActivity())

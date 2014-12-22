@@ -19,9 +19,10 @@ import static com.github.mobile.RequestCodes.ISSUE_CLOSE;
 import static com.github.mobile.RequestCodes.ISSUE_REOPEN;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_CLOSED;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
+
 import android.accounts.Account;
 
-import com.github.mobile.R;
+import com.github.mobile.R.string;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.ui.ConfirmDialogFragment;
 import com.github.mobile.ui.DialogFragmentActivity;
@@ -69,12 +70,12 @@ public class EditStateTask extends ProgressDialogTask<Issue> {
     public EditStateTask confirm(boolean close) {
         if (close)
             ConfirmDialogFragment.show((DialogFragmentActivity) getContext(),
-                    ISSUE_CLOSE, getString(R.string.issue_confirm_close_title),
-                    getString(R.string.issue_confirm_close_message));
+                    ISSUE_CLOSE, getString(string.issue_confirm_close_title),
+                    getString(string.issue_confirm_close_message));
         else
             ConfirmDialogFragment.show((DialogFragmentActivity) getContext(),
-                    ISSUE_REOPEN, getString(R.string.issue_confirm_reopen_title),
-                    getString(R.string.issue_confirm_reopen_message));
+                    ISSUE_REOPEN, getString(string.issue_confirm_reopen_title),
+                    getString(string.issue_confirm_reopen_message));
 
         return this;
     }
@@ -98,9 +99,9 @@ public class EditStateTask extends ProgressDialogTask<Issue> {
      */
     public EditStateTask edit(boolean close) {
         if (close)
-            showIndeterminate(R.string.closing_issue);
+            showIndeterminate(string.closing_issue);
         else
-            showIndeterminate(R.string.reopening_issue);
+            showIndeterminate(string.reopening_issue);
 
         this.close = close;
 

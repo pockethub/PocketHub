@@ -24,7 +24,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.github.mobile.R;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
 import com.github.mobile.ui.DialogFragment;
 import com.github.mobile.ui.TextWatcherAdapter;
 
@@ -44,7 +45,7 @@ public class RawCommentFragment extends DialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        commentText = finder.find(R.id.et_comment);
+        commentText = finder.find(id.et_comment);
         commentText.addTextChangedListener(new TextWatcherAdapter() {
 
             @Override
@@ -69,7 +70,7 @@ public class RawCommentFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.comment_create, null);
+        return inflater.inflate(layout.comment_create, null);
     }
 
     /**

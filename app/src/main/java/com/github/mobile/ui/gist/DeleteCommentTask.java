@@ -16,18 +16,22 @@
 package com.github.mobile.ui.gist;
 
 
-import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_COMMENTS;
 import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_GISTS;
+import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_COMMENTS;
+
 import android.accounts.Account;
 import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 
-import com.github.mobile.R;
+import com.github.mobile.R.string;
 import com.github.mobile.ui.ProgressDialogTask;
+import com.github.mobile.util.HtmlUtils;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Comment;
+import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.service.GistService;
 
 /**
@@ -41,7 +45,7 @@ public class DeleteCommentTask extends ProgressDialogTask<Comment> {
 
     @Inject
     private GistService service;
-
+    
     private final String gistId;
 
     /**
@@ -70,7 +74,7 @@ public class DeleteCommentTask extends ProgressDialogTask<Comment> {
      * @return this task
      */
     public DeleteCommentTask start() {
-        showIndeterminate(R.string.deleting_comment);
+        showIndeterminate(string.deleting_comment);
 
         execute();
         return this;
@@ -87,10 +91,10 @@ public class DeleteCommentTask extends ProgressDialogTask<Comment> {
 
     /**
      * Delete the Gist comment with the given id
-     *
+     * 
      * TODO: Remove this method once egit GistService.java Gist Comment APIs are
      * fixed. https://github.com/eclipse/egit-github/pull/7
-     *
+     * 
      * @param commentId
      * @throws IOException
      */

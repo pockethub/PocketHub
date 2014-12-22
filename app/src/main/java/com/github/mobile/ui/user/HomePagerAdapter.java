@@ -22,7 +22,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.ViewGroup;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.github.mobile.R;
+import com.github.mobile.R.string;
 import com.github.mobile.ui.FragmentPagerAdapter;
 import com.github.mobile.ui.repo.RepositoryListFragment;
 
@@ -119,14 +119,14 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
         case 0:
-            return resources.getString(R.string.tab_news);
+            return resources.getString(string.tab_news);
         case 1:
-            return resources.getString(R.string.tab_repositories);
+            return resources.getString(string.tab_repositories);
         case 2:
-            return resources.getString(defaultUser ? R.string.tab_followers_self
-                    : R.string.tab_members);
+            return resources.getString(defaultUser ? string.tab_followers_self
+                    : string.tab_members);
         case 3:
-            return resources.getString(R.string.tab_following_self);
+            return resources.getString(string.tab_following_self);
         default:
             return null;
         }
