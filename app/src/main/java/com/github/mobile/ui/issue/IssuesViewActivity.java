@@ -55,6 +55,7 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.RepositoryIssue;
 import org.eclipse.egit.github.core.User;
+import org.eclipse.egit.github.core.client.RequestException;
 import org.eclipse.egit.github.core.service.CollaboratorService;
 
 /**
@@ -342,8 +343,12 @@ public class IssuesViewActivity extends PagerActivity {
 
             @Override
             protected Boolean run(Account account) throws Exception {
-                return collaboratorService.isCollaborator(repo != null ? repo : repoIds.get(0),
-                    AccountUtils.getLogin(IssuesViewActivity.this));
+                try {
+                    return collaboratorService.isCollaborator(repo != null ? repo : repoIds.get(0),
+                            AccountUtils.getLogin(IssuesViewActivity.this));
+                } catch (RequestException e) {
+                    return false;
+                }
             }
 
             @Override
@@ -359,6 +364,11 @@ public class IssuesViewActivity extends PagerActivity {
                 isCollaborator = collaborator;
                 invalidateOptionsMenu();
                 configurePager();
+            }
+
+            @Override
+            protected void onException(Exception e) throws RuntimeException {
+                super.onException(e);
             }
         }.execute();
     }
