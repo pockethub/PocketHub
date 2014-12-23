@@ -31,6 +31,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/v_header_separator"
         android:dividerHeight="0dp"
+        android:fastScrollEnabled="true"
         android:visibility="gone" />
 
     <ProgressBar
