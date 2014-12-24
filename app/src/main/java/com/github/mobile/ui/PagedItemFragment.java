@@ -84,6 +84,8 @@ public abstract class PagedItemFragment<E> extends ItemListFragment<E>
         super.onActivityCreated(savedInstanceState);
 
         getListView().setOnScrollListener(this);
+
+        getListView().setFastScrollEnabled(true);
     }
 
     @Override
