@@ -16,17 +16,20 @@
 package com.github.mobile.ui.user;
 
 import android.view.LayoutInflater;
+import android.view.View;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R;
+import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.util.AvatarLoader;
+
+import java.util.List;
 
 import org.eclipse.egit.github.core.User;
 
 /**
  * List adapter for a list of users
  */
-public class UserListAdapter extends SingleTypeAdapter<User> {
+public class UserListAdapter extends ItemListAdapter<User, UserItemView> {
 
     private final AvatarLoader avatars;
 
@@ -38,8 +41,8 @@ public class UserListAdapter extends SingleTypeAdapter<User> {
      * @param avatars
      */
     public UserListAdapter(final LayoutInflater inflater,
-            final User[] elements, final AvatarLoader avatars) {
-        super(inflater, R.layout.user_item);
+            final List<User> elements, final AvatarLoader avatars) {
+        super(R.layout.user_item, inflater, elements);
 
         this.avatars = avatars;
         setItems(elements);
@@ -51,13 +54,14 @@ public class UserListAdapter extends SingleTypeAdapter<User> {
     }
 
     @Override
-    protected int[] getChildViewIds() {
-        return new int[] { R.id.iv_avatar, R.id.tv_login };
+    protected void update(final int position, final UserItemView view,
+        final User user) {
+        avatars.bind(view.avatarView, user);
+        view.loginView.setText(user.getLogin());
     }
 
     @Override
-    protected void update(final int position, final User user) {
-        avatars.bind(imageView(0), user);
-        setText(1, user.getLogin());
+    protected UserItemView createView(final View view) {
+        return new UserItemView(view);
     }
 }

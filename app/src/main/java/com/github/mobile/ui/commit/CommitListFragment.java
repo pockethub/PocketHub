@@ -31,7 +31,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R;
 import com.github.mobile.ThrowableLoader;
@@ -41,7 +40,9 @@ import com.github.mobile.core.commit.CommitStore;
 import com.github.mobile.core.ref.RefUtils;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.DialogResultListener;
+import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
+import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.PagedItemFragment;
 import com.github.mobile.ui.ref.RefDialog;
 import com.github.mobile.ui.ref.RefDialogFragment;
@@ -189,9 +190,9 @@ public class CommitListFragment extends PagedItemFragment<RepositoryCommit>
     }
 
     @Override
-    protected SingleTypeAdapter<RepositoryCommit> createAdapter(
+    protected ItemListAdapter<RepositoryCommit, ? extends ItemView> createAdapter(
             List<RepositoryCommit> items) {
-        return new CommitListAdapter(R.layout.commit_item, getActivity()
+        return new CommitListAdapter(getActivity()
                 .getLayoutInflater(), items, avatars);
     }
 

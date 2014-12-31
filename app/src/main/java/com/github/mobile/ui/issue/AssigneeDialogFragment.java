@@ -27,16 +27,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.TextView;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R;
 import com.github.mobile.ui.DialogFragmentActivity;
+import com.github.mobile.ui.ItemListAdapter;
+import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.SingleChoiceDialogFragment;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.egit.github.core.User;
 
@@ -45,15 +50,32 @@ import org.eclipse.egit.github.core.User;
  */
 public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
 
-    private static class UserListAdapter extends SingleTypeAdapter<User> {
+    private static class UserItemView extends ItemView {
+
+        public final TextView login;
+
+        public final ImageView avatar;
+
+        public final RadioButton selected;
+
+        public UserItemView(final View view) {
+            super(view);
+
+            login = (TextView) view.findViewById(R.id.tv_login);
+            avatar = (ImageView) view.findViewById(R.id.iv_avatar);
+            selected = (RadioButton) view.findViewById(R.id.rb_selected);
+        }
+    }
+
+    private static class UserListAdapter extends ItemListAdapter<User, UserItemView> {
 
         private final int selected;
 
         private final AvatarLoader loader;
 
-        public UserListAdapter(LayoutInflater inflater, User[] users,
+        public UserListAdapter(LayoutInflater inflater, List<User> users,
                 int selected, AvatarLoader loader) {
-            super(inflater, R.layout.collaborator_item);
+            super(R.layout.collaborator_item, inflater, users);
 
             this.selected = selected;
             this.loader = loader;
@@ -66,15 +88,16 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
         }
 
         @Override
-        protected int[] getChildViewIds() {
-            return new int[] { R.id.tv_login, R.id.iv_avatar, R.id.rb_selected };
+        protected UserItemView createView(View view) {
+            return new UserItemView(view);
         }
 
         @Override
-        protected void update(int position, User item) {
-            setText(0, item.getLogin());
-            loader.bind(imageView(1), item);
-            setChecked(2, selected == position);
+        protected void update(final int position, final UserItemView view,
+            final User item) {
+            view.login.setText(item.getLogin());
+            loader.bind(view.avatar, item);
+            view.selected.setChecked(selected == position);
         }
     }
 
@@ -134,7 +157,7 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
         ArrayList<User> choices = getChoices();
         int selected = arguments.getInt(ARG_SELECTED_CHOICE);
         UserListAdapter adapter = new UserListAdapter(inflater,
-                choices.toArray(new User[choices.size()]), selected, loader);
+                choices, selected, loader);
         view.setAdapter(adapter);
         if (selected >= 0)
             view.setSelection(selected);

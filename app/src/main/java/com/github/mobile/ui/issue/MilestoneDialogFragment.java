@@ -18,6 +18,8 @@ package com.github.mobile.ui.issue;
 import static android.app.Activity.RESULT_OK;
 import static android.content.DialogInterface.BUTTON_NEGATIVE;
 import static android.content.DialogInterface.BUTTON_NEUTRAL;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -29,14 +31,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.TextView;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R;
 import com.github.mobile.ui.DialogFragmentActivity;
+import com.github.mobile.ui.ItemListAdapter;
+import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.SingleChoiceDialogFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.egit.github.core.Milestone;
 
@@ -45,36 +50,52 @@ import org.eclipse.egit.github.core.Milestone;
  */
 public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
 
+    private static class MilestoneItemView extends ItemView {
+
+        public final RadioButton selected;
+
+        public final TextView title;
+
+        public final TextView description;
+
+        public MilestoneItemView(final View view) {
+            super(view);
+
+            selected = (RadioButton) view.findViewById(R.id.rb_selected);
+            title = (TextView) view.findViewById(R.id.tv_milestone_title);
+            description = (TextView) view
+                .findViewById(R.id.tv_milestone_description);
+        }
+    }
+
     private static class MilestoneListAdapter extends
-            SingleTypeAdapter<Milestone> {
+        ItemListAdapter<Milestone, MilestoneItemView> {
 
         private final int selected;
 
         public MilestoneListAdapter(LayoutInflater inflater,
-                Milestone[] milestones, int selected) {
-            super(inflater, R.layout.milestone_item);
+            List<Milestone> milestones, int selected) {
+            super(R.layout.milestone_item, inflater, milestones);
 
             this.selected = selected;
-            setItems(milestones);
         }
 
         @Override
-        protected int[] getChildViewIds() {
-            return new int[] { R.id.rb_selected, R.id.tv_milestone_title,
-                    R.id.tv_milestone_description };
-        }
-
-        @Override
-        protected void update(int position, Milestone item) {
-            setText(1, item.getTitle());
-
+        protected void update(final int position, final MilestoneItemView view,
+            final Milestone item) {
+            view.title.setText(item.getTitle());
             String description = item.getDescription();
-            if (!TextUtils.isEmpty(description))
-                ViewUtils.setGone(setText(2, description), false);
-            else
-                setGone(2, true);
+            if (!TextUtils.isEmpty(description)) {
+                view.description.setText(description);
+                view.description.setVisibility(VISIBLE);
+            } else
+                view.description.setVisibility(GONE);
+            view.selected.setChecked(selected == position);
+        }
 
-            setChecked(0, selected == position);
+        @Override
+        protected MilestoneItemView createView(View view) {
+            return new MilestoneItemView(view);
         }
 
         @Override
@@ -136,7 +157,7 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
         ArrayList<Milestone> choices = getChoices();
         int selected = arguments.getInt(ARG_SELECTED_CHOICE);
         MilestoneListAdapter adapter = new MilestoneListAdapter(inflater,
-                choices.toArray(new Milestone[choices.size()]), selected);
+                choices, selected);
         view.setAdapter(adapter);
         if (selected >= 0)
             view.setSelection(selected);

@@ -17,21 +17,21 @@ package com.github.mobile.ui.issue;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
+import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R;
 import com.github.mobile.core.issue.IssueUtils;
 import com.github.mobile.util.AvatarLoader;
-import com.github.mobile.util.TypefaceUtils;
+
+import java.util.List;
 
 import org.eclipse.egit.github.core.Issue;
 
 /**
  * Adapter for a list of {@link Issue} objects
  */
-public class RepositoryIssueListAdapter extends IssueListAdapter<Issue> {
-
-    private int numberPaintFlags;
+public class RepositoryIssueListAdapter extends
+    IssueListAdapter<Issue, RepositoryIssueItemView> {
 
     /**
      * @param inflater
@@ -39,7 +39,7 @@ public class RepositoryIssueListAdapter extends IssueListAdapter<Issue> {
      * @param avatars
      */
     public RepositoryIssueListAdapter(LayoutInflater inflater,
-            Issue[] elements, AvatarLoader avatars) {
+        List<Issue> elements, AvatarLoader avatars) {
         super(R.layout.repo_issue_item, inflater, elements, avatars);
     }
 
@@ -49,40 +49,32 @@ public class RepositoryIssueListAdapter extends IssueListAdapter<Issue> {
     }
 
     @Override
-    protected View initialize(View view) {
-        view = super.initialize(view);
-
-        numberPaintFlags = textView(view, 0).getPaintFlags();
-        TypefaceUtils.setOcticons(textView(view, 5),
-                (TextView) view.findViewById(R.id.tv_comment_icon));
-        return view;
-    }
-
-    @Override
     protected int getNumber(Issue issue) {
         return issue.getNumber();
     }
 
     @Override
-    protected int[] getChildViewIds() {
-        return new int[] { R.id.tv_issue_number, R.id.tv_issue_title, R.id.iv_avatar,
-                R.id.tv_issue_creation, R.id.tv_issue_comments,
-                R.id.tv_pull_request_icon, R.id.v_label0, R.id.v_label1, R.id.v_label2,
-                R.id.v_label3, R.id.v_label4, R.id.v_label5, R.id.v_label6, R.id.v_label7 };
+    protected void update(final int position,
+        final RepositoryIssueItemView view, final Issue issue) {
+        updateNumber(issue.getNumber(), issue.getState(),
+            view.numberPaintFlags, view.number);
+
+        avatars.bind(view.avatar, issue.getUser());
+
+        ViewUtils.setGone(view.pullRequestIcon,
+            !IssueUtils.isPullRequest(issue));
+
+        view.title.setText(issue.getTitle());
+
+        updateReporter(issue.getUser().getLogin(), issue.getCreatedAt(),
+            view.reporter);
+        updateComments(issue.getComments(), view.comments);
+        updateLabels(issue.getLabels(), view.labels);
     }
 
     @Override
-    protected void update(int position, Issue issue) {
-        updateNumber(issue.getNumber(), issue.getState(), numberPaintFlags, 0);
-
-        avatars.bind(imageView(2), issue.getUser());
-
-        setGone(5, !IssueUtils.isPullRequest(issue));
-
-        setText(1, issue.getTitle());
-
-        updateReporter(issue.getUser().getLogin(), issue.getCreatedAt(), 3);
-        setNumber(4, issue.getComments());
-        updateLabels(issue.getLabels(), 6);
+    protected RepositoryIssueItemView createView(View view) {
+        return new RepositoryIssueItemView(view);
     }
+
 }

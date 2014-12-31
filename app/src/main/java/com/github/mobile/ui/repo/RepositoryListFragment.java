@@ -15,31 +15,32 @@
  */
 package com.github.mobile.ui.repo;
 
-import static com.github.mobile.Intents.EXTRA_USER;
-import static com.github.mobile.RequestCodes.REPOSITORY_VIEW;
-import static com.github.mobile.ResultCodes.RESOURCE_CHANGED;
 import static java.util.Locale.US;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
+import android.text.Editable;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filter.FilterListener;
 import android.widget.ListView;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.kevinsawicki.wishlist.ViewFinder;
-import com.github.mobile.R;
+import com.github.kevinsawicki.wishlist.ViewUtils;
+import com.github.mobile.R.id;
+import com.github.mobile.R.layout;
+import com.github.mobile.R.string;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.HeaderFooterListAdapter;
+import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
-import com.github.mobile.ui.LightAlertDialog;
+import com.github.mobile.ui.ItemView;
+import com.github.mobile.ui.TextWatcherAdapter;
 import com.github.mobile.ui.user.OrganizationSelectionListener;
 import com.github.mobile.ui.user.OrganizationSelectionProvider;
-import com.github.mobile.ui.user.UserViewActivity;
-import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
 import java.util.Collections;
@@ -53,25 +54,63 @@ import org.eclipse.egit.github.core.User;
  * Fragment to display a list of {@link Repository} instances
  */
 public class RepositoryListFragment extends ItemListFragment<Repository>
-        implements OrganizationSelectionListener {
+    implements OrganizationSelectionListener {
 
     @Inject
     private AccountDataManager cache;
-
-    @Inject
-    private AvatarLoader avatars;
 
     private final AtomicReference<User> org = new AtomicReference<User>();
 
     private RecentRepositories recentRepos;
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+    private EditText filter;
 
-        User org = this.org.get();
-        if (org != null)
-            outState.putSerializable(EXTRA_USER, org);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        Bundle savedInstanceState) {
+        return inflater.inflate(layout.item_filter_list, null);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        final Filter adapterFilter = getListAdapter().getWrappedAdapter()
+            .getFilter();
+
+        if (adapterFilter != null) {
+            filter = (EditText) view.findViewById(id.et_filter);
+            filter.addTextChangedListener(new TextWatcherAdapter() {
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    adapterFilter.filter(s, new FilterListener() {
+
+                        @Override
+                        public void onFilterComplete(int count) {
+                            updateHeaders(getAdapterItems());
+                        }
+                    });
+                }
+
+            });
+        }
+    }
+
+    private List<Repository> getAdapterItems() {
+        DefaultRepositoryListAdapter adapter = getRepositoryAdapter();
+        if (adapter != null)
+            return adapter.getItems();
+        else
+            return Collections.emptyList();
+    }
+
+    @Override
+    public ItemListFragment<Repository> setListShown(boolean shown,
+        boolean animate) {
+        ViewUtils.setGone(filter, !shown);
+
+        return super.setListShown(shown, animate);
     }
 
     @Override
@@ -79,7 +118,17 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         super.configureList(activity, listView);
 
         listView.setDividerHeight(0);
-        updateHeaders(items);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        User currentOrg = ((OrganizationSelectionProvider) activity)
+            .addListener(this);
+        org.set(currentOrg);
+        if (currentOrg != null)
+            recentRepos = new RecentRepositories(activity, currentOrg);
     }
 
     @Override
@@ -100,41 +149,20 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         if (recentRepos != null)
             recentRepos.saveAsync();
 
-        // Only hard refresh if view already created and org is changing
-        if (previousOrgId != organization.getId()) {
-            Activity activity = getActivity();
-            if (activity != null)
-                recentRepos = new RecentRepositories(activity, organization);
+        Activity activity = getActivity();
+        if (activity != null && previousOrgId != organization.getId())
+            recentRepos = new RecentRepositories(activity, organization);
 
+        // Only hard refresh if view already created and org is changing
+        if (previousOrgId != organization.getId())
             refreshWithProgress();
-        }
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        Activity activity = getActivity();
-        User currentOrg = ((OrganizationSelectionProvider) activity)
-                .addListener(this);
-        if (currentOrg == null && savedInstanceState != null)
-            currentOrg = (User) savedInstanceState.getSerializable(EXTRA_USER);
-        org.set(currentOrg);
-        if (currentOrg != null)
-            recentRepos = new RecentRepositories(activity, currentOrg);
-
-        setEmptyText(R.string.no_repositories);
-
         super.onActivityCreated(savedInstanceState);
-    }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Refresh if the viewed repository was (un)starred
-        if (requestCode == REPOSITORY_VIEW && resultCode == RESOURCE_CHANGED) {
-            forceRefresh();
-            return;
-        }
-
-        super.onActivityResult(requestCode, resultCode, data);
+        setEmptyText(string.no_repositories);
     }
 
     @Override
@@ -142,65 +170,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         Repository repo = (Repository) list.getItemAtPosition(position);
         if (recentRepos != null)
             recentRepos.add(repo);
-
-        startActivityForResult(RepositoryViewActivity.createIntent(repo),
-                REPOSITORY_VIEW);
-    }
-
-    @Override
-    public boolean onListItemLongClick(ListView list, View v, int position,
-            long itemId) {
-        if (!isUsable())
-            return false;
-
-        final Repository repo = (Repository) list.getItemAtPosition(position);
-        if (repo == null)
-            return false;
-
-        final AlertDialog dialog = LightAlertDialog.create(getActivity());
-        dialog.setCanceledOnTouchOutside(true);
-
-        dialog.setTitle(repo.generateId());
-
-        View view = getActivity().getLayoutInflater().inflate(
-                R.layout.repo_dialog, null);
-        ViewFinder finder = new ViewFinder(view);
-
-        final User owner = repo.getOwner();
-        avatars.bind(finder.imageView(R.id.iv_owner_avatar), owner);
-        finder.setText(R.id.tv_owner_name, getString(R.string.navigate_to_user, owner.getLogin()));
-        finder.onClick(R.id.ll_owner_area, new OnClickListener() {
-
-            public void onClick(View v) {
-                dialog.dismiss();
-
-                viewUser(owner);
-            }
-        });
-
-        if ((recentRepos != null) && (recentRepos.contains(repo))) {
-            finder.find(R.id.divider).setVisibility(View.VISIBLE);
-            finder.find(R.id.ll_recent_repo_area).setVisibility(View.VISIBLE);
-            finder.onClick(R.id.ll_recent_repo_area, new OnClickListener() {
-
-                public void onClick(View v) {
-                    dialog.dismiss();
-
-                    recentRepos.remove(repo);
-                    refresh();
-                }
-            });
-        }
-
-        dialog.setView(view);
-        dialog.show();
-
-        return true;
-    }
-
-    private void viewUser(User user) {
-        if (org.get().getId() != user.getId())
-            startActivity(UserViewActivity.createIntent(user));
+        startActivity(RepositoryViewActivity.createIntent(repo));
     }
 
     @Override
@@ -211,66 +181,55 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
             recentRepos.saveAsync();
     }
 
-    private void updateHeaders(final List<Repository> repos) {
+    private DefaultRepositoryListAdapter getRepositoryAdapter() {
         HeaderFooterListAdapter<?> rootAdapter = getListAdapter();
-        if (rootAdapter == null)
+        if (rootAdapter != null)
+            return (DefaultRepositoryListAdapter) rootAdapter
+                .getWrappedAdapter();
+        else
+            return null;
+    }
+
+    private void updateHeaders(final List<Repository> repos) {
+        final DefaultRepositoryListAdapter adapter = getRepositoryAdapter();
+        if (adapter == null)
             return;
 
-        DefaultRepositoryListAdapter adapter = (DefaultRepositoryListAdapter) rootAdapter
-                .getWrappedAdapter();
         adapter.clearHeaders();
 
-        if (repos.isEmpty())
-            return;
+        char start = 'a';
+        Repository previous = null;
+        for (int i = 0; i < repos.size(); i++) {
+            Repository repository = repos.get(i);
 
-        // Add recent header if at least one recent repository
-        Repository first = repos.get(0);
-        if (recentRepos.contains(first))
-            adapter.registerHeader(first, getString(R.string.recently_viewed));
-
-        // Advance past all recent repositories
-        int index;
-        Repository current = null;
-        for (index = 0; index < repos.size(); index++) {
-            Repository repository = repos.get(index);
-            if (recentRepos.contains(repository.getId()))
-                current = repository;
-            else
-                break;
-        }
-
-        if (index >= repos.size())
-            return;
-
-        if (current != null)
-            adapter.registerNoSeparator(current);
-
-        // Register header for first character
-        current = repos.get(index);
-        char start = Character.toLowerCase(current.getName().charAt(0));
-        adapter.registerHeader(current,
-                Character.toString(start).toUpperCase(US));
-
-        char previousHeader = start;
-        for (index = index + 1; index < repos.size(); index++) {
-            current = repos.get(index);
-            char repoStart = Character.toLowerCase(current.getName().charAt(0));
-            if (repoStart <= start)
+            if (recentRepos.contains(repository.getId())) {
+                previous = repository;
                 continue;
+            }
 
-            // Don't include separator for the last element of the previous
-            // character
-            if (previousHeader != repoStart)
-                adapter.registerNoSeparator(repos.get(index - 1));
+            char repoStart = Character.toLowerCase(repository.getName().charAt(
+                0));
+            if (repoStart < start) {
+                previous = repository;
+                continue;
+            }
 
-            adapter.registerHeader(current, Character.toString(repoStart)
-                    .toUpperCase(US));
-            previousHeader = repoStart;
-            start = repoStart++;
+            adapter.registerHeader(repository, Character.toString(repoStart)
+                .toUpperCase(US));
+            if (previous != null)
+                adapter.registerNoSeparator(previous);
+            start = repoStart;
+            if (start == 'z')
+                break;
+            start++;
+            previous = repository;
         }
 
-        // Don't include separator for last element
-        adapter.registerNoSeparator(repos.get(repos.size() - 1));
+        if (!repos.isEmpty()) {
+            Repository first = repos.get(0);
+            if (recentRepos.contains(first))
+                adapter.registerHeader(first, getString(string.recently_viewed));
+        }
     }
 
     @Override
@@ -284,7 +243,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
                     return Collections.emptyList();
 
                 List<Repository> repos = cache.getRepos(org,
-                        isForceRefresh(args));
+                    isForceRefresh(args));
                 Collections.sort(repos, recentRepos);
                 updateHeaders(repos);
                 return repos;
@@ -293,14 +252,14 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
     }
 
     @Override
-    protected SingleTypeAdapter<Repository> createAdapter(List<Repository> items) {
+    protected ItemListAdapter<Repository, ? extends ItemView> createAdapter(
+        List<Repository> items) {
         return new DefaultRepositoryListAdapter(getActivity()
-                .getLayoutInflater(),
-                items.toArray(new Repository[items.size()]), org);
+            .getLayoutInflater(), items, org);
     }
 
     @Override
     protected int getErrorMessage(Exception exception) {
-        return R.string.error_repos_load;
+        return string.error_repos_load;
     }
 }
