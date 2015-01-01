@@ -16,9 +16,11 @@
 package com.github.mobile.ui;
 
 import android.os.Bundle;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.PagerAdapter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TabHost;
@@ -37,7 +39,7 @@ import com.github.mobile.util.TypefaceUtils;
  * @param <V>
  */
 public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider>
-        extends PagerActivity implements OnTabChangeListener, TabContentFactory {
+    extends PagerActivity implements OnTabChangeListener, TabContentFactory {
 
     /**
      * View pager
@@ -112,10 +114,10 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
 
     /**
      * Set current item to new position
-     * <p>
+     * <p/>
      * This is guaranteed to only be called when a position changes and the
      * current item of the pager has already been updated to the given position
-     * <p>
+     * <p/>
      * Sub-classes may override this method
      *
      * @param position
@@ -148,7 +150,7 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
 
     /**
      * Create tab using information from current adapter
-     * <p>
+     * <p/>
      * This can be called when the tabs changed but must be called after an
      * initial call to {@link #configureTabPager()}
      */
@@ -188,7 +190,7 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
             else
                 background = R.drawable.tab_selector_left_right;
             ((ImageView) view.findViewById(R.id.iv_tab))
-                    .setImageResource(background);
+                .setImageResource(background);
         }
     }
 
@@ -212,10 +214,13 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
         host = (TabHost) findViewById(R.id.th_tabs);
         host.setup();
         host.setOnTabChangedListener(this);
+
     }
 
     @Override
     protected FragmentProvider getProvider() {
         return adapter;
     }
+
+
 }

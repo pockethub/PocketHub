@@ -16,6 +16,8 @@
 package com.github.mobile.ui;
 
 import android.os.Bundle;
+import android.support.v4.view.GestureDetectorCompat;
+import android.view.MotionEvent;
 
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
@@ -31,12 +33,17 @@ public class BaseActivity extends RoboSherlockFragmentActivity {
      * Finder bound to this activity's view
      */
     protected ViewFinder finder;
+    private GestureDetectorCompat mGestureDetector;
+    private boolean isLeftFlingFinish = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         finder = new ViewFinder(this);
+
+        //extend BaseActivity will be fling left(entire screen) to finish activity
+        mGestureDetector = new GestureDetectorCompat(getApplicationContext(), new GestureListener(this));
     }
 
     /**
@@ -79,4 +86,26 @@ public class BaseActivity extends RoboSherlockFragmentActivity {
     protected String[] getStringArrayExtra(final String name) {
         return getIntent().getStringArrayExtra(name);
     }
+
+    /**
+     * set to whether need left fling finish in this activity screen
+     *
+     * @param isLeftFlingFinish
+     */
+    protected void setLeftFlingFinish(boolean isLeftFlingFinish) {
+        this.isLeftFlingFinish = isLeftFlingFinish;
+    }
+
+    protected boolean getLeftFlingFinishEnable() {
+        return isLeftFlingFinish;
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (getLeftFlingFinishEnable()) {
+            mGestureDetector.onTouchEvent(event);
+        }
+        return super.dispatchTouchEvent(event);
+    }
+
 }
