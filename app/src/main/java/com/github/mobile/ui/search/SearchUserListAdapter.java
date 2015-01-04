@@ -17,16 +17,19 @@ package com.github.mobile.ui.search;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R;
 import com.github.mobile.core.search.SearchUser;
+import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.util.AvatarLoader;
+
+import java.util.List;
 
 /**
  * Adapter for a list of searched users
  */
-public class SearchUserListAdapter extends SingleTypeAdapter<SearchUser> {
+public class SearchUserListAdapter extends ItemListAdapter<SearchUser, SearchUserItemView> {
 
     private final AvatarLoader avatars;
 
@@ -38,8 +41,8 @@ public class SearchUserListAdapter extends SingleTypeAdapter<SearchUser> {
      * @param avatars
      */
     public SearchUserListAdapter(final Context context,
-            final SearchUser[] elements, final AvatarLoader avatars) {
-        super(LayoutInflater.from(context), R.layout.user_item);
+            final List<SearchUser> elements, final AvatarLoader avatars) {
+        super(R.layout.user_item, LayoutInflater.from(context), elements);
 
         this.avatars = avatars;
         setItems(elements);
@@ -52,13 +55,14 @@ public class SearchUserListAdapter extends SingleTypeAdapter<SearchUser> {
     }
 
     @Override
-    protected int[] getChildViewIds() {
-        return new int[] { R.id.iv_avatar, R.id.tv_login };
+    protected void update(final int position, final SearchUserItemView view,
+        final SearchUser user) {
+        avatars.bind(view.avatarView, user);
+        view.loginView.setText(user.getLogin());
     }
 
     @Override
-    protected void update(final int position, final SearchUser user) {
-        avatars.bind(imageView(0), user);
-        setText(1, user.getLogin());
+    protected SearchUserItemView createView(final View view) {
+        return new SearchUserItemView(view);
     }
 }

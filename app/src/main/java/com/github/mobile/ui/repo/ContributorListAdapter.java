@@ -17,17 +17,21 @@ package com.github.mobile.ui.repo;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R;
+import com.github.mobile.ui.ItemListAdapter;
+import com.github.mobile.ui.commit.CommitItemView;
 import com.github.mobile.util.AvatarLoader;
+
+import java.util.List;
 
 import org.eclipse.egit.github.core.Contributor;
 
 /**
  * List adapter for a list of contributors
  */
-public class ContributorListAdapter extends SingleTypeAdapter<Contributor> {
+public class ContributorListAdapter extends ItemListAdapter<Contributor, ContributorItemView> {
 
     private final Context context;
 
@@ -41,8 +45,8 @@ public class ContributorListAdapter extends SingleTypeAdapter<Contributor> {
      * @param avatars
      */
     public ContributorListAdapter(final Context context,
-            final Contributor[] elements, final AvatarLoader avatars) {
-        super(LayoutInflater.from(context), R.layout.contributor_item);
+            final List<Contributor> elements, final AvatarLoader avatars) {
+        super(R.layout.contributor_item, LayoutInflater.from(context), elements);
 
         this.context = context.getApplicationContext();
         this.avatars = avatars;
@@ -55,14 +59,15 @@ public class ContributorListAdapter extends SingleTypeAdapter<Contributor> {
     }
 
     @Override
-    protected int[] getChildViewIds() {
-        return new int[] { R.id.iv_avatar, R.id.tv_login, R.id.tv_contributions };
+    protected void update(final int position, final ContributorItemView view,
+        final Contributor contributor) {
+        avatars.bind(view.avatarView, contributor);
+        view.loginView.setText(contributor.getLogin());
+        view.contributionView.setText(context.getString(R.string.contributions, contributor.getContributions()));
     }
 
     @Override
-    protected void update(int position, Contributor contributor) {
-        avatars.bind(imageView(0), contributor);
-        setText(1, contributor.getLogin());
-        setText(2, context.getString(R.string.contributions, contributor.getContributions()));
+    protected ContributorItemView createView(final View view) {
+        return new ContributorItemView(view);
     }
 }

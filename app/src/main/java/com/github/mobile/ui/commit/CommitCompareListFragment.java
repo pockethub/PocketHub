@@ -172,7 +172,7 @@ public class CommitCompareListFragment extends DialogFragment implements
             adapter.addHeader(commitHeader);
             adapter.addHeader(inflater.inflate(R.layout.list_divider, null));
             CommitListAdapter commitAdapter = new CommitListAdapter(
-                    R.layout.commit_item, inflater, commits, avatars);
+                    inflater, commits, avatars);
             for (int i = 0; i < commits.size(); i++) {
                 RepositoryCommit commit = commits.get(i);
                 View view = commitAdapter.getView(i, null, null);

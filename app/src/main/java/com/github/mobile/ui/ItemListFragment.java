@@ -33,7 +33,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R;
 import com.github.mobile.ThrowableLoader;
@@ -215,7 +214,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
         }
 
         this.items = items;
-        getListAdapter().getWrappedAdapter().setItems(items.toArray());
+        getListAdapter().getWrappedAdapter().setItems(items);
         showList();
     }
 
@@ -224,10 +223,10 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      *
      * @return adapter
      */
-    protected HeaderFooterListAdapter<SingleTypeAdapter<E>> createAdapter() {
-        SingleTypeAdapter<E> wrapped = createAdapter(items);
-        return new HeaderFooterListAdapter<SingleTypeAdapter<E>>(getListView(),
-                wrapped);
+    protected HeaderFooterListAdapter<ItemListAdapter<E, ? extends ItemView>> createAdapter() {
+        ItemListAdapter<E, ? extends ItemView> wrapped = createAdapter(items);
+        return new HeaderFooterListAdapter<ItemListAdapter<E, ? extends ItemView>>(
+            getListView(), wrapped);
     }
 
     /**
@@ -236,7 +235,8 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      * @param items
      * @return adapter
      */
-    protected abstract SingleTypeAdapter<E> createAdapter(final List<E> items);
+    protected abstract ItemListAdapter<E, ? extends ItemView> createAdapter(
+        final List<E> items);
 
     /**
      * Set the list to be shown
@@ -298,10 +298,10 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      * @return list adapter
      */
     @SuppressWarnings("unchecked")
-    protected HeaderFooterListAdapter<SingleTypeAdapter<E>> getListAdapter() {
+    protected HeaderFooterListAdapter<ItemListAdapter<E, ? extends ItemView>> getListAdapter() {
         if (listView != null)
-            return (HeaderFooterListAdapter<SingleTypeAdapter<E>>) listView
-                    .getAdapter();
+            return (HeaderFooterListAdapter<ItemListAdapter<E, ? extends ItemView>>) listView
+                .getAdapter();
         else
             return null;
     }
@@ -312,9 +312,9 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      * @return this fragment
      */
     protected ItemListFragment<E> notifyDataSetChanged() {
-        HeaderFooterListAdapter<SingleTypeAdapter<E>> root = getListAdapter();
+        HeaderFooterListAdapter<ItemListAdapter<E, ? extends ItemView>> root = getListAdapter();
         if (root != null) {
-            SingleTypeAdapter<E> typeAdapter = root.getWrappedAdapter();
+            ItemListAdapter<E, ? extends ItemView> typeAdapter = root.getWrappedAdapter();
             if (typeAdapter != null)
                 typeAdapter.notifyDataSetChanged();
         }

@@ -18,12 +18,13 @@ package com.github.mobile.ui.search;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
 import com.github.mobile.R;
 import com.github.mobile.ui.StyledText;
+import com.github.mobile.ui.repo.RepositoryItemView;
 import com.github.mobile.ui.repo.RepositoryListAdapter;
-import com.github.mobile.util.TypefaceUtils;
+
+import java.util.List;
 
 import org.eclipse.egit.github.core.SearchRepository;
 
@@ -31,7 +32,7 @@ import org.eclipse.egit.github.core.SearchRepository;
  * Adapter for a list of searched for repositories
  */
 public class SearchRepositoryListAdapter extends
-        RepositoryListAdapter<SearchRepository> {
+    RepositoryListAdapter<SearchRepository, RepositoryItemView> {
 
     /**
      * Create list adapter for searched for repositories
@@ -40,7 +41,7 @@ public class SearchRepositoryListAdapter extends
      * @param elements
      */
     public SearchRepositoryListAdapter(LayoutInflater inflater,
-            SearchRepository[] elements) {
+        List<SearchRepository> elements) {
         super(R.layout.user_repo_item, inflater, elements);
     }
 
@@ -52,30 +53,21 @@ public class SearchRepositoryListAdapter extends
     }
 
     @Override
-    protected View initialize(View view) {
-        view = super.initialize(view);
-
-        TypefaceUtils.setOcticons(textView(view, 0),
-                (TextView) view.findViewById(R.id.tv_forks_icon),
-                (TextView) view.findViewById(R.id.tv_watchers_icon));
-        return view;
-    }
-
-    @Override
-    protected int[] getChildViewIds() {
-        return new int[] { R.id.tv_repo_icon, R.id.tv_repo_description,
-                R.id.tv_language, R.id.tv_watchers, R.id.tv_forks, R.id.tv_repo_name };
-    }
-
-    @Override
-    protected void update(int position, SearchRepository repository) {
+    protected void update(final int position, final RepositoryItemView view,
+        final SearchRepository repository) {
         StyledText name = new StyledText();
         name.append(repository.getOwner()).append('/');
         name.bold(repository.getName());
-        setText(5, name);
+        view.repoName.setText(name);
 
-        updateDetails(repository.getDescription(), repository.getLanguage(),
-                repository.getWatchers(), repository.getForks(),
-                repository.isPrivate(), repository.isFork(), null);
+        updateDetails(view, repository.getDescription(),
+            repository.getLanguage(), repository.getWatchers(),
+            repository.getForks(), repository.isPrivate(),
+            repository.isFork(), null);
+    }
+
+    @Override
+    protected RepositoryItemView createView(View view) {
+        return new RepositoryItemView(view);
     }
 }

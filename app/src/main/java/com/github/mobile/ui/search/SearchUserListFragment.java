@@ -22,14 +22,15 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.core.search.SearchUser;
 import com.github.mobile.core.search.SearchUserService;
 import com.github.mobile.core.user.RefreshUserTask;
+import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
+import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.user.UserViewActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
@@ -84,9 +85,9 @@ public class SearchUserListFragment extends ItemListFragment<SearchUser> {
     }
 
     @Override
-    protected SingleTypeAdapter<SearchUser> createAdapter(List<SearchUser> items) {
+    protected ItemListAdapter<SearchUser, ? extends ItemView> createAdapter(List<SearchUser> items) {
         return new SearchUserListAdapter(getActivity(),
-                items.toArray(new SearchUser[items.size()]), avatars);
+                items, avatars);
     }
 
     @Override

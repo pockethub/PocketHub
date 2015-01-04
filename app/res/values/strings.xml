@@ -210,6 +210,7 @@
     <string name="prefix_created">created\u0020</string>
     <string name="prefix_updated">updated\u0020</string>
     <string name="prefix_opened">opened\u0020</string>
+    <string name="find_a_repository">Find a Repository…</string>
     <string name="clear">Clear</string>
     <string name="pull_request_commits">Commits: %d</string>
     <string name="open_issues">Open Issues</string>

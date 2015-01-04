@@ -17,11 +17,11 @@ package com.github.mobile.ui.repo;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
 import com.github.mobile.R;
 import com.github.mobile.ui.StyledText;
-import com.github.mobile.util.TypefaceUtils;
+
+import java.util.List;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
@@ -30,7 +30,7 @@ import org.eclipse.egit.github.core.User;
  * Adapter for a list of repositories
  */
 public class UserRepositoryListAdapter extends
-        RepositoryListAdapter<Repository> {
+    RepositoryListAdapter<Repository, RepositoryItemView> {
 
     private final String login;
 
@@ -44,7 +44,7 @@ public class UserRepositoryListAdapter extends
      * @param user
      */
     public UserRepositoryListAdapter(LayoutInflater inflater,
-            Repository[] elements, User user) {
+        List<Repository> elements, User user) {
         super(R.layout.user_repo_item, inflater, elements);
 
         login = user.getLogin();
@@ -56,34 +56,26 @@ public class UserRepositoryListAdapter extends
     }
 
     @Override
-    protected View initialize(View view) {
-        view = super.initialize(view);
-
-        TypefaceUtils.setOcticons(textView(view, 0),
-                (TextView) view.findViewById(R.id.tv_forks_icon),
-                (TextView) view.findViewById(R.id.tv_watchers_icon));
-        descriptionColor = view.getResources().getColor(R.color.text_description);
-        return view;
-    }
-
-    @Override
-    protected int[] getChildViewIds() {
-        return new int[] { R.id.tv_repo_icon, R.id.tv_repo_description,
-                R.id.tv_language, R.id.tv_watchers, R.id.tv_forks, R.id.tv_repo_name };
-    }
-
-    @Override
-    protected void update(int position, Repository repository) {
+    protected void update(final int position, final RepositoryItemView view,
+        final Repository repository) {
         StyledText name = new StyledText();
-        if (!login.equals(repository.getOwner().getLogin()))
+        if (!login.equals(repository.getOwner().getLogin())) {
+            int descriptionColor = view.repoName.getResources().getColor(
+                R.color.text_description);
             name.foreground(repository.getOwner().getLogin(), descriptionColor)
-                    .foreground('/', descriptionColor);
+                .foreground('/', descriptionColor);
+        }
         name.bold(repository.getName());
-        setText(5, name);
+        view.repoName.setText(name);
 
-        updateDetails(repository.getDescription(), repository.getLanguage(),
-                repository.getWatchers(), repository.getForks(),
-                repository.isPrivate(), repository.isFork(),
-                repository.getMirrorUrl());
+        updateDetails(view, repository.getDescription(),
+            repository.getLanguage(), repository.getWatchers(),
+            repository.getForks(), repository.isPrivate(),
+            repository.isFork(), repository.getMirrorUrl());
+    }
+
+    @Override
+    protected RepositoryItemView createView(final View view) {
+        return new RepositoryItemView(view);
     }
 }

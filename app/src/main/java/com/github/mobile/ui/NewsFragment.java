@@ -29,7 +29,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ListView;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.mobile.R;
 import com.github.mobile.core.gist.GistEventMatcher;
@@ -292,9 +291,10 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
     }
 
     @Override
-    protected SingleTypeAdapter<Event> createAdapter(List<Event> items) {
-        return new NewsListAdapter(getActivity().getLayoutInflater(),
-                items.toArray(new Event[items.size()]), avatars);
+    protected ItemListAdapter<Event, ? extends ItemView> createAdapter(
+        List<Event> items) {
+        return new NewsListAdapter(getActivity().getLayoutInflater(), items,
+            avatars);
     }
 
     @Override

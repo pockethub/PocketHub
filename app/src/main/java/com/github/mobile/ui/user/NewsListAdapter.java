@@ -15,6 +15,8 @@
  */
 package com.github.mobile.ui.user;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.github.kevinsawicki.wishlist.ViewUpdater.FORMAT_INT;
 import static com.github.mobile.util.TypefaceUtils.ICON_ADD_MEMBER;
 import static com.github.mobile.util.TypefaceUtils.ICON_COMMENT;
@@ -54,14 +56,12 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R;
 import com.github.mobile.core.issue.IssueUtils;
+import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.TimeUtils;
-import com.github.mobile.util.TypefaceUtils;
 
 import java.util.List;
 
@@ -93,7 +93,7 @@ import org.eclipse.egit.github.core.event.TeamAddPayload;
 /**
  * Adapter for a list of news events
  */
-public class NewsListAdapter extends SingleTypeAdapter<Event> {
+public class NewsListAdapter extends ItemListAdapter<Event, NewsItemView> {
 
     /**
      * Can the given event be rendered by this view holder?
@@ -483,9 +483,9 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
      * @param elements
      * @param avatars
      */
-    public NewsListAdapter(LayoutInflater inflater, Event[] elements,
+    public NewsListAdapter(LayoutInflater inflater, List<Event> elements,
             AvatarLoader avatars) {
-        super(inflater, R.layout.news_item);
+        super(R.layout.news_item, inflater, elements);
 
         this.avatars = avatars;
         setItems(elements);
@@ -509,23 +509,16 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
                 .getItemId(position);
     }
 
-    @Override
     protected int[] getChildViewIds() {
         return new int[] { R.id.iv_avatar, R.id.tv_event, R.id.tv_event_details,
                 R.id.tv_event_icon, R.id.tv_event_date };
     }
 
-    @Override
-    protected View initialize(View view) {
-        view = super.initialize(view);
-
-        TypefaceUtils.setOcticons(textView(view, 3));
-        return view;
-    }
 
     @Override
-    protected void update(int position, Event event) {
-        avatars.bind(imageView(0), event.getActor());
+    protected void update(final int position, final NewsItemView view,
+        final Event event) {
+        avatars.bind(view.avatarView, event.getActor());
 
         StyledText main = new StyledText();
         StyledText details = new StyledText();
@@ -590,18 +583,25 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
             formatWatch(event, main, details);
         }
 
-        if (icon != null)
-            ViewUtils.setGone(setText(3, icon), false);
-        else
-            setGone(3, true);
+        if (icon != null) {
+            view.iconText.setText(icon);
+            view.iconText.setVisibility(VISIBLE);
+        } else
+            view.iconText.setVisibility(GONE);
 
-        setText(1, main);
+        view.eventText.setText(main);
 
-        if (!TextUtils.isEmpty(details))
-            ViewUtils.setGone(setText(2, details), false);
-        else
-            setGone(2, true);
+        if (!TextUtils.isEmpty(details)) {
+            view.detailsText.setText(details);
+            view.detailsText.setVisibility(VISIBLE);
+        } else
+            view.detailsText.setVisibility(GONE);
 
-        setText(4, TimeUtils.getRelativeTime(event.getCreatedAt()));
+        view.dateText.setText(TimeUtils.getRelativeTime(event.getCreatedAt()));
+    }
+
+    @Override
+    protected NewsItemView createView(final View view) {
+        return new NewsItemView(view);
     }
 }

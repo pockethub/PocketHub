@@ -15,24 +15,25 @@
  */
 package com.github.mobile.ui.comment;
 
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R;
+import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.TimeUtils;
+
+import java.util.List;
 
 import org.eclipse.egit.github.core.Comment;
 
 /**
  * Adapter for a list of {@link Comment} objects
  */
-public class CommentListAdapter extends SingleTypeAdapter<Comment> {
+public class CommentListAdapter extends ItemListAdapter<Comment, CommentItemView> {
 
     private final AvatarLoader avatars;
 
@@ -48,18 +49,6 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
      */
     private final DeleteCommentListener deleteCommentListener;
 
-    /**
-     * Create list adapter
-     *
-     * @param inflater
-     * @param elements
-     * @param avatars
-     * @param imageGetter
-     */
-    public CommentListAdapter(LayoutInflater inflater, Comment[] elements,
-            AvatarLoader avatars, HttpImageGetter imageGetter) {
-        this(inflater, elements, avatars, imageGetter, null, null);
-    }
 
     /**
      * Create list adapter
@@ -70,7 +59,7 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
      */
     public CommentListAdapter(LayoutInflater inflater, AvatarLoader avatars,
             HttpImageGetter imageGetter) {
-        this(inflater, null, avatars, imageGetter);
+        this(inflater, null, avatars, imageGetter, null, null);
     }
 
     /**
@@ -81,10 +70,10 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
      * @param avatars
      * @param imageGetter
      */
-    public CommentListAdapter(LayoutInflater inflater, Comment[] elements,
+    public CommentListAdapter(LayoutInflater inflater, List<Comment> elements,
             AvatarLoader avatars, HttpImageGetter imageGetter,
             EditCommentListener editCommentListener, DeleteCommentListener deleteCommentListener) {
-        super(inflater, R.layout.comment_item);
+        super(R.layout.comment_item, inflater, elements);
 
         this.avatars = avatars;
         this.imageGetter = imageGetter;
@@ -94,15 +83,17 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
     }
 
     @Override
-    protected void update(int position, final Comment comment) {
-        imageGetter.bind(textView(0), comment.getBodyHtml(), comment.getId());
-        avatars.bind(imageView(3), comment.getUser());
+    protected void update(final int position, final CommentItemView view,
+        final Comment comment) {
+        imageGetter.bind(view.bodyView, comment.getBodyHtml(), comment.getId());
+        avatars.bind(view.avatarView, comment.getUser());
 
-        setText(1, comment.getUser().getLogin());
-        setText(2, TimeUtils.getRelativeTime(comment.getUpdatedAt()));
+        view.authorView.setText(comment.getUser().getLogin());
+        view.dateView
+            .setText(TimeUtils.getRelativeTime(comment.getUpdatedAt()));
 
         // Edit Comment ImageButton
-        final ImageView ivEdit = view(4);
+        final ImageView ivEdit = view.editView;
         if (editCommentListener != null) {
             ivEdit.setOnClickListener(new OnClickListener() {
                 @Override
@@ -115,7 +106,7 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
         }
 
         // Delete Comment ImageButton
-        final ImageView ivDelete = view(5);
+        final ImageView ivDelete = view.deleteView;
         if (deleteCommentListener != null) {
             ivDelete.setOnClickListener(new OnClickListener() {
                 @Override
@@ -134,16 +125,7 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
     }
 
     @Override
-    protected View initialize(View view) {
-        view = super.initialize(view);
-
-        textView(view, 0).setMovementMethod(LinkMovementMethod.getInstance());
-        return view;
-    }
-
-    @Override
-    protected int[] getChildViewIds() {
-        return new int[] { R.id.tv_comment_body, R.id.tv_comment_author,
-                R.id.tv_comment_date, R.id.iv_avatar, R.id.iv_comment_edit, R.id.iv_comment_delete };
+    protected CommentItemView createView(final View view) {
+        return new CommentItemView(view);
     }
 }

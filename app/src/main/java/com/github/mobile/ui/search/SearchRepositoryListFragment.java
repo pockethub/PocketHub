@@ -23,11 +23,12 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.core.repo.RefreshRepositoryTask;
+import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
+import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
 import com.google.inject.Inject;
 
@@ -146,10 +147,9 @@ public class SearchRepositoryListFragment extends
     }
 
     @Override
-    protected SingleTypeAdapter<SearchRepository> createAdapter(
-            List<SearchRepository> items) {
+    protected ItemListAdapter<SearchRepository, ? extends ItemView> createAdapter(
+        List<SearchRepository> items) {
         return new SearchRepositoryListAdapter(getActivity()
-                .getLayoutInflater(), items.toArray(new SearchRepository[items
-                .size()]));
+            .getLayoutInflater(), items);
     }
 }

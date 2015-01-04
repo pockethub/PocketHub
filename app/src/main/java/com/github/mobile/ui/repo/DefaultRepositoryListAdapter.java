@@ -15,16 +15,19 @@
  */
 package com.github.mobile.ui.repo;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
+import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R;
+import com.github.mobile.ui.ItemFilter;
 import com.github.mobile.ui.StyledText;
-import com.github.mobile.util.TypefaceUtils;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
@@ -35,8 +38,7 @@ import org.eclipse.egit.github.core.User;
 /**
  * Adapter for the default account's repositories
  */
-public class DefaultRepositoryListAdapter extends
-        RepositoryListAdapter<Repository> {
+public class DefaultRepositoryListAdapter extends RepositoryListAdapter<Repository, RepositoryHeaderItemView> {
 
     private int descriptionColor;
 
@@ -46,6 +48,8 @@ public class DefaultRepositoryListAdapter extends
 
     private final Set<Long> noSeparators = new HashSet<Long>();
 
+    private ItemFilter<Repository> filter;
+
     /**
      * Create list adapter for repositories
      *
@@ -54,7 +58,7 @@ public class DefaultRepositoryListAdapter extends
      * @param account
      */
     public DefaultRepositoryListAdapter(LayoutInflater inflater,
-            Repository[] elements, AtomicReference<User> account) {
+            List<Repository> elements, AtomicReference<User> account) {
         super(R.layout.repo_item, inflater, elements);
 
         this.account = account;
@@ -97,44 +101,52 @@ public class DefaultRepositoryListAdapter extends
     }
 
     @Override
-    protected View initialize(View view) {
-        view = super.initialize(view);
-
-        TypefaceUtils.setOcticons(textView(view, 0),
-                (TextView) view.findViewById(R.id.tv_forks_icon),
-                (TextView) view.findViewById(R.id.tv_watchers_icon));
-        descriptionColor = view.getResources().getColor(R.color.text_description);
-        return view;
-    }
-
-    @Override
-    protected int[] getChildViewIds() {
-        return new int[] { R.id.tv_repo_icon, R.id.tv_repo_description,
-                R.id.tv_language, R.id.tv_watchers, R.id.tv_forks, R.id.ll_header,
-                R.id.tv_header, R.id.v_separator, R.id.tv_repo_name };
-    }
-
-    @Override
-    protected void update(int position, Repository repository) {
+    protected void update(final int position,
+        final RepositoryHeaderItemView view, final Repository repository) {
         String headerValue = headers.get(repository.getId());
         if (headerValue != null) {
-            setGone(5, false);
-            setText(6, headerValue);
+            view.header.setVisibility(VISIBLE);
+            view.headerText.setText(headerValue);
         } else
-            setGone(5, true);
+            view.header.setVisibility(GONE);
 
-        setGone(7, noSeparators.contains(repository.getId()));
+        ViewUtils.setGone(view.separator,
+            noSeparators.contains(repository.getId()));
 
         StyledText name = new StyledText();
-        if (!account.get().getLogin().equals(repository.getOwner().getLogin()))
+        if (!account.get().getLogin().equals(repository.getOwner().getLogin())) {
+            int descriptionColor = view.repoName.getResources().getColor(
+                R.color.text_description);
             name.foreground(repository.getOwner().getLogin(), descriptionColor)
-                    .foreground('/', descriptionColor);
+                .foreground('/', descriptionColor);
+        }
         name.bold(repository.getName());
-        setText(8, name);
+        view.repoName.setText(name);
 
-        updateDetails(repository.getDescription(), repository.getLanguage(),
-                repository.getWatchers(), repository.getForks(),
-                repository.isPrivate(), repository.isFork(),
-                repository.getMirrorUrl());
+        updateDetails(view, repository.getDescription(),
+            repository.getLanguage(), repository.getWatchers(),
+            repository.getForks(), repository.isPrivate(),
+            repository.isFork(), repository.getMirrorUrl());
+    }
+
+    @Override
+    protected RepositoryHeaderItemView createView(final View view) {
+        return new RepositoryHeaderItemView(view);
+    }
+
+    @Override
+    public ItemFilter<Repository> getFilter() {
+        if (filter == null)
+            filter = new ItemFilter<Repository>(this) {
+
+                @Override
+                protected boolean isMatch(CharSequence prefix,
+                    String upperCasePrefix, Repository item) {
+                    return contains(upperCasePrefix, item.getName())
+                        || contains(upperCasePrefix, item.getOwner()
+                        .getLogin());
+                }
+            };
+        return filter;
     }
 }
