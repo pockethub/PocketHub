@@ -24,12 +24,12 @@ import static com.github.mobile.util.TypefaceUtils.ICON_PUBLIC;
 import static com.github.mobile.util.TypefaceUtils.ICON_WATCH;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ProgressBar;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R;
@@ -111,7 +111,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionsMenu) {
-        getSupportMenuInflater().inflate(R.menu.user_follow, optionsMenu);
+        getMenuInflater().inflate(R.menu.user_follow, optionsMenu);
 
         return super.onCreateOptionsMenu(optionsMenu);
     }

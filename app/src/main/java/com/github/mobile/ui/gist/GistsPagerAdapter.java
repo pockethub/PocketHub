@@ -18,10 +18,10 @@ package com.github.mobile.ui.gist;
 import static com.github.mobile.Intents.EXTRA_GIST_ID;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.github.mobile.ui.FragmentStatePagerAdapter;
 
 /**
@@ -37,7 +37,7 @@ public class GistsPagerAdapter extends FragmentStatePagerAdapter {
      * @param activity
      * @param gistIds
      */
-    public GistsPagerAdapter(SherlockFragmentActivity activity, String[] gistIds) {
+    public GistsPagerAdapter(ActionBarActivity activity, String[] gistIds) {
         super(activity);
 
         this.ids = gistIds;

@@ -27,14 +27,14 @@ import static com.github.mobile.RequestCodes.ISSUE_VIEW;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R;
 import com.github.mobile.RequestFuture;

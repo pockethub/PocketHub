@@ -15,7 +15,6 @@
  */
 package com.github.mobile.ui.user;
 
-import static com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_LIST;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_BOOKMARKS;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_DASHBOARD;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_GISTS;
@@ -29,14 +28,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R;
 import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.core.user.UserComparator;
@@ -62,7 +60,7 @@ import org.eclipse.egit.github.core.User;
  * Home screen activity
  */
 public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
-        OnNavigationListener, OrganizationSelectionProvider,
+    ActionBar.OnNavigationListener, OrganizationSelectionProvider,
         LoaderCallbacks<List<User>> {
 
     private static final String TAG = "HomeActivity";
@@ -155,7 +153,9 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setNavigationMode(NAVIGATION_MODE_LIST);
+
+        // TODO This is now deprecated, should look at switching to child spinner view via Toolbar
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 
         homeAdapter = new HomeDropdownListAdapter(this, orgs, avatars);
         actionBar.setListNavigationCallbacks(homeAdapter, this);
@@ -194,7 +194,7 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionMenu) {
-        getSupportMenuInflater().inflate(R.menu.home, optionMenu);
+        getMenuInflater().inflate(R.menu.home, optionMenu);
 
         return super.onCreateOptionsMenu(optionMenu);
     }

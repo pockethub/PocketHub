@@ -19,14 +19,14 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R;
 import com.github.mobile.ui.BaseActivity;
 import com.github.mobile.ui.TextWatcherAdapter;
@@ -95,7 +95,7 @@ public class CreateGistActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
-        getSupportMenuInflater().inflate(R.menu.gist_create, options);
+        getMenuInflater().inflate(R.menu.gist_create, options);
         createItem = options.findItem(R.id.m_apply);
         updateCreateMenu();
         return true;

@@ -18,14 +18,14 @@ package com.github.mobile.ui;
 import android.os.Bundle;
 
 import com.github.kevinsawicki.wishlist.ViewFinder;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
+import com.github.mobile.ui.roboactivities.RoboActionBarActivity;
 
 import java.io.Serializable;
 
 /**
  * Base sherlock activity
  */
-public class BaseActivity extends RoboSherlockFragmentActivity {
+public class BaseActivity extends RoboActionBarActivity {
 
     /**
      * Finder bound to this activity's view

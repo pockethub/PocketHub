@@ -19,6 +19,9 @@ import static android.view.View.GONE;
 import static com.github.mobile.Intents.EXTRA_ISSUE_FILTER;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CompoundButton;
@@ -27,9 +30,6 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R;
 import com.github.mobile.core.issue.IssueFilter;
@@ -202,7 +202,7 @@ public class EditIssuesFilterActivity extends DialogFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
-        getSupportMenuInflater().inflate(R.menu.issue_filter, options);
+        getMenuInflater().inflate(R.menu.issue_filter, options);
         return true;
     }
 

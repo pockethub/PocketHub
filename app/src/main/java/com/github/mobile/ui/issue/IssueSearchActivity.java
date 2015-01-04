@@ -23,15 +23,15 @@ import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
+import com.github.mobile.ui.roboactivities.RoboActionBarActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Repository;
@@ -39,7 +39,7 @@ import org.eclipse.egit.github.core.Repository;
 /**
  * Activity to search issues
  */
-public class IssueSearchActivity extends RoboSherlockFragmentActivity {
+public class IssueSearchActivity extends RoboActionBarActivity {
 
     @Inject
     private AvatarLoader avatars;
@@ -50,7 +50,7 @@ public class IssueSearchActivity extends RoboSherlockFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
-        getSupportMenuInflater().inflate(R.menu.search, options);
+        getMenuInflater().inflate(R.menu.search, options);
         return true;
     }
 

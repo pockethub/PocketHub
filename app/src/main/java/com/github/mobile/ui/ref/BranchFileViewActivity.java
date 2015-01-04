@@ -25,14 +25,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R;
@@ -145,7 +145,7 @@ public class BranchFileViewActivity extends BaseActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(final Menu optionsMenu) {
-        getSupportMenuInflater().inflate(R.menu.file_view, optionsMenu);
+        getMenuInflater().inflate(R.menu.file_view, optionsMenu);
 
         MenuItem wrapItem = optionsMenu.findItem(R.id.m_wrap);
         if (PreferenceUtils.getCodePreferences(this).getBoolean(WRAP, false))

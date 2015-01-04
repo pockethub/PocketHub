@@ -18,8 +18,8 @@ package com.github.mobile.ui.gist;
 import static com.github.mobile.Intents.EXTRA_GIST_FILE;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.github.mobile.ui.FragmentPagerAdapter;
 
 import java.util.Map;
@@ -38,7 +38,7 @@ public class GistFilesPagerAdapter extends FragmentPagerAdapter {
      * @param activity
      * @param gist
      */
-    public GistFilesPagerAdapter(SherlockFragmentActivity activity, Gist gist) {
+    public GistFilesPagerAdapter(ActionBarActivity activity, Gist gist) {
         super(activity);
 
         Map<String, GistFile> gistFiles = gist.getFiles();

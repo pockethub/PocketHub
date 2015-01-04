@@ -20,14 +20,14 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.github.kevinsawicki.wishlist.ViewFinder;
-import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
+import com.github.mobile.ui.roboactivities.RoboSupportFragment;
 
 import java.io.Serializable;
 
 /**
  * Base fragment capable of receiving dialog callbacks
  */
-public abstract class DialogFragment extends RoboSherlockFragment implements
+public abstract class DialogFragment extends RoboSupportFragment implements
         DialogResultListener {
 
     /**

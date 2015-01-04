@@ -19,10 +19,10 @@ import static com.github.mobile.RequestCodes.GIST_CREATE;
 import static com.github.mobile.RequestCodes.GIST_VIEW;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
-import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R;
 import com.github.mobile.core.gist.GistStore;
