@@ -15,8 +15,9 @@
  */
 package com.github.mobile.ui;
 
-import static com.actionbarsherlock.view.Window.FEATURE_INDETERMINATE_PROGRESS;
 import android.os.Bundle;
+import android.support.v4.view.GestureDetectorCompat;
+import android.view.MotionEvent;
 
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
@@ -27,18 +28,27 @@ import java.io.Serializable;
  * Activity that display dialogs
  */
 public abstract class DialogFragmentActivity extends
-        RoboSherlockFragmentActivity implements DialogResultListener {
+    RoboSherlockFragmentActivity implements DialogResultListener {
 
     /**
      * Finder bound to this activity's view
      */
     protected ViewFinder finder;
+    /**
+     * Manager gesture in this activity screen
+     */
+    private GestureDetectorCompat mGestureDetector;
+    private boolean isLeftEdgeFlingFinish = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         finder = new ViewFinder(this);
+
+        //extend DialogFragmentActivity will be fling left edge to finish activity
+        mGestureDetector = new GestureDetectorCompat(getApplicationContext(),
+            new GestureListener(this, GestureListener.FlingBackType.leftEdge));
     }
 
     /**
@@ -115,5 +125,25 @@ public abstract class DialogFragmentActivity extends
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
         // Intentionally left blank
+    }
+
+    /**
+     * set to whether need left edge fling finish in this activity screen
+     * @param isLeftEdgeFlingFinish
+     */
+    protected void setLeftEdgeFlingFinish(boolean isLeftEdgeFlingFinish) {
+        this.isLeftEdgeFlingFinish = isLeftEdgeFlingFinish;
+    }
+
+    protected boolean getLeftEdgeFlingFinish() {
+        return isLeftEdgeFlingFinish;
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (getLeftEdgeFlingFinish()) {
+            mGestureDetector.onTouchEvent(ev);
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }
