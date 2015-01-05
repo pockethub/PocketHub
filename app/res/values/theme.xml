@@ -21,6 +21,7 @@
         <item name="colorPrimary">#3D3D3D</item>
         <item name="colorPrimaryDark">#313131</item>
         <item name="colorAccent">#3797C7</item>
+        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
 
         <item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>
         <item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>
