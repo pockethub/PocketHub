@@ -17,6 +17,11 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="Theme.GitHub" parent="@style/Theme.AppCompat">
+
+        <item name="colorPrimary">#3D3D3D</item>
+        <item name="colorPrimaryDark">#313131</item>
+        <item name="colorAccent">#3797C7</item>
+
         <item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>
         <item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>
         <item name="android:windowBackground">@color/background</item>
