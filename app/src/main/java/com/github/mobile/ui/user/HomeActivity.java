@@ -23,12 +23,16 @@ import static com.github.mobile.util.TypefaceUtils.ICON_NEWS;
 import static com.github.mobile.util.TypefaceUtils.ICON_PUBLIC;
 import static com.github.mobile.util.TypefaceUtils.ICON_TEAM;
 import static com.github.mobile.util.TypefaceUtils.ICON_WATCH;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -196,18 +200,12 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
     public boolean onCreateOptionsMenu(Menu optionMenu) {
         getMenuInflater().inflate(R.menu.home, optionMenu);
 
-        return super.onCreateOptionsMenu(optionMenu);
-    }
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        MenuItem searchItem = optionMenu.findItem(R.id.m_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.m_search:
-            onSearchRequested();
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
+        return super.onCreateOptionsMenu(optionMenu);
     }
 
     @Override

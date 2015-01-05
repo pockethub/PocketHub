@@ -21,10 +21,14 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static com.github.mobile.util.TypefaceUtils.ICON_PERSON;
 import static com.github.mobile.util.TypefaceUtils.ICON_PUBLIC;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
@@ -62,15 +66,18 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
         getMenuInflater().inflate(R.menu.search, options);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        MenuItem searchItem = options.findItem(R.id.m_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_search:
-            onSearchRequested();
-            return true;
         case R.id.m_clear:
             RepositorySearchSuggestionsProvider.clear(this);
             ToastUtils.show(this, R.string.search_history_cleared);
