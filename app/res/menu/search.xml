@@ -25,7 +25,6 @@
         android:title="@string/find_repositories"/>
     <item
         android:id="@+id/m_clear"
-        android:icon="@drawable/menu_delete_history"
         app:showAsAction="never"
         android:title="@string/clear_search_history"/>
 

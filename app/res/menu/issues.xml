@@ -19,7 +19,7 @@
 
     <item
         android:id="@+id/m_bookmark"
-        android:icon="@drawable/menu_bookmark"
+        android:icon="@drawable/action_bookmark"
         app:showAsAction="never"
         android:title="@string/bookmark"/>
     <item
@@ -40,7 +40,7 @@
         android:title="@string/find_issues"/>
     <item
         android:id="@+id/m_refresh"
-        android:icon="@drawable/menu_refresh"
+        android:icon="@drawable/action_refresh"
         app:showAsAction="never"
         android:title="@string/refresh"/>
 
