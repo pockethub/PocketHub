@@ -27,6 +27,7 @@
         android:theme="@style/Theme.GitHub" >
         <activity
             android:name=".ui.user.HomeActivity"
+            android:theme="@style/Theme.GitHub.NoActionBar"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true" >
             <intent-filter>
@@ -75,6 +76,7 @@
         </activity>
         <activity
             android:name=".ui.issue.IssueDashboardActivity"
+            android:theme="@style/Theme.GitHub.NoActionBar"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true" >
             <intent-filter>
@@ -94,6 +96,7 @@
         </activity>
         <activity
             android:name=".ui.search.SearchActivity"
+            android:theme="@style/Theme.GitHub.NoActionBar"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
             android:label="@string/search_title"
@@ -108,6 +111,7 @@
         </activity>
         <activity
             android:name=".ui.gist.GistsActivity"
+            android:theme="@style/Theme.GitHub.NoActionBar"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true" />
         <activity
@@ -140,6 +144,7 @@
         </activity>
         <activity
             android:name=".ui.issue.CreateCommentActivity"
+            android:theme="@style/Theme.GitHub.NoActionBar"
             android:configChanges="orientation|keyboardHidden|screenSize" >
             <intent-filter>
                 <action android:name="com.github.mobile.issue.comment.create.VIEW" />
@@ -158,6 +163,7 @@
         </activity>
         <activity
             android:name=".ui.gist.CreateCommentActivity"
+            android:theme="@style/Theme.GitHub.NoActionBar"
             android:configChanges="orientation|keyboardHidden|screenSize" >
             <intent-filter>
                 <action android:name="com.github.mobile.gist.comment.create.VIEW" />
@@ -176,6 +182,7 @@
         </activity>
         <activity
             android:name=".ui.commit.CreateCommentActivity"
+            android:theme="@style/Theme.GitHub.NoActionBar"
             android:configChanges="orientation|keyboardHidden|screenSize" >
             <intent-filter>
                 <action android:name="com.github.mobile.commit.comment.create.VIEW" />
@@ -185,6 +192,7 @@
         </activity>
         <activity
             android:name=".ui.repo.RepositoryViewActivity"
+            android:theme="@style/Theme.GitHub.NoActionBar"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true" >
             <intent-filter>
@@ -209,6 +217,7 @@
         </activity>
         <activity
             android:name=".ui.user.UserViewActivity"
+            android:theme="@style/Theme.GitHub.NoActionBar"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true" >
             <intent-filter>
