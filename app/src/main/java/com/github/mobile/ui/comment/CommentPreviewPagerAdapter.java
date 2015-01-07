@@ -16,7 +16,8 @@
 package com.github.mobile.ui.comment;
 
 import android.support.v4.app.Fragment;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
+import android.support.v7.app.ActionBarActivity;
+
 import com.github.mobile.ui.FragmentPagerAdapter;
 
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
@@ -41,7 +42,7 @@ public class CommentPreviewPagerAdapter extends FragmentPagerAdapter {
      * @param activity
      * @param repo
      */
-    public CommentPreviewPagerAdapter(SherlockFragmentActivity activity,
+    public CommentPreviewPagerAdapter(ActionBarActivity activity,
             IRepositoryIdProvider repo) {
         super(activity);
 

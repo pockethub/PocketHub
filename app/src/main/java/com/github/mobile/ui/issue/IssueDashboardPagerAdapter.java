@@ -28,8 +28,8 @@ import static org.eclipse.egit.github.core.service.IssueService.SORT_UPDATED;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.github.mobile.R;
 import com.github.mobile.ui.FragmentStatePagerAdapter;
 
@@ -49,7 +49,7 @@ public class IssueDashboardPagerAdapter extends FragmentStatePagerAdapter {
      *
      * @param activity
      */
-    public IssueDashboardPagerAdapter(final SherlockFragmentActivity activity) {
+    public IssueDashboardPagerAdapter(final ActionBarActivity activity) {
         super(activity);
 
         resources = activity.getResources();

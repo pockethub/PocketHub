@@ -22,11 +22,11 @@ import static com.github.mobile.Intents.EXTRA_HEAD;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R;
 import com.github.mobile.ui.DialogFragmentActivity;
@@ -63,7 +63,7 @@ public class CommitCompareViewActivity extends DialogFragmentActivity {
     @Inject
     private AvatarLoader avatars;
 
-    private SherlockFragment fragment;
+    private Fragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,14 +78,14 @@ public class CommitCompareViewActivity extends DialogFragmentActivity {
         actionBar.setSubtitle(repository.generateId());
         avatars.bind(actionBar, repository.getOwner());
 
-        fragment = (SherlockFragment) getSupportFragmentManager()
+        fragment = getSupportFragmentManager()
                 .findFragmentById(android.R.id.list);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionsMenu) {
         if (fragment != null)
-            fragment.onCreateOptionsMenu(optionsMenu, getSupportMenuInflater());
+            fragment.onCreateOptionsMenu(optionsMenu, getMenuInflater());
 
         return super.onCreateOptionsMenu(optionsMenu);
     }

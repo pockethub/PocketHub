@@ -15,10 +15,9 @@
  */
 package com.github.mobile.ui;
 
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.ViewGroup;
-
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 /**
  * Pager that stores current fragment
@@ -27,21 +26,21 @@ public abstract class FragmentStatePagerAdapter extends
         android.support.v4.app.FragmentStatePagerAdapter implements
         FragmentProvider {
 
-    private final SherlockFragmentActivity activity;
+    private final ActionBarActivity activity;
 
-    private SherlockFragment selected;
+    private Fragment selected;
 
     /**
      * @param activity
      */
-    public FragmentStatePagerAdapter(final SherlockFragmentActivity activity) {
+    public FragmentStatePagerAdapter(final ActionBarActivity activity) {
         super(activity.getSupportFragmentManager());
 
         this.activity = activity;
     }
 
     @Override
-    public SherlockFragment getSelected() {
+    public Fragment getSelected() {
         return selected;
     }
 
@@ -51,9 +50,9 @@ public abstract class FragmentStatePagerAdapter extends
         super.setPrimaryItem(container, position, object);
 
         boolean changed = false;
-        if (object instanceof SherlockFragment) {
+        if (object instanceof Fragment) {
             changed = object != selected;
-            selected = (SherlockFragment) object;
+            selected = (Fragment) object;
         } else {
             changed = object != null;
             selected = null;

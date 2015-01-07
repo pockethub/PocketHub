@@ -48,6 +48,8 @@ import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.widget.ArrayAdapter;
@@ -59,15 +61,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.mobile.R;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.LightProgressDialog;
 import com.github.mobile.ui.TextWatcherAdapter;
+import com.github.mobile.ui.roboactivities.RoboActionBarAccountAuthenticatorActivity;
 import com.github.mobile.util.ToastUtils;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockAccountAuthenticatorActivity;
 import com.google.inject.Inject;
 
 import java.io.IOException;
@@ -84,7 +84,7 @@ import roboguice.util.RoboAsyncTask;
 /**
  * Activity to login
  */
-public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
+public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
 
     /**
      * Auth token type parameter
@@ -445,7 +445,7 @@ public class LoginActivity extends RoboSherlockAccountAuthenticatorActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionMenu) {
-        getSupportMenuInflater().inflate(R.menu.login, optionMenu);
+        getMenuInflater().inflate(R.menu.login, optionMenu);
         loginItem = optionMenu.findItem(R.id.m_login);
         return true;
     }

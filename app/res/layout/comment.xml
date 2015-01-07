@@ -56,21 +56,12 @@
                 android:singleLine="true" />
         </LinearLayout>
 
-        <!-- TODO: Use better drawable -->
         <ImageView
-            android:id="@+id/iv_comment_edit"
-            style="@style/commentEditIcon"
+            android:id="@+id/iv_more"
+            style="@style/AvatarMedium"
             android:layout_weight=".10"
-            android:contentDescription="@string/edit"
-            android:src="@drawable/menu_edit" />
-
-        <!-- TODO: Use better drawable -->
-        <ImageView
-            android:id="@+id/iv_comment_delete"
-            style="@style/commentDeleteIcon"
-            android:layout_weight=".10"
-            android:contentDescription="@string/delete"
-            android:src="@drawable/menu_delete" />
+            android:contentDescription="@string/show_more"
+            android:src="@drawable/action_overflow" />
     </LinearLayout>
 
     <TextView

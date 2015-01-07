@@ -25,16 +25,20 @@ import static com.github.mobile.RequestCodes.ISSUE_CREATE;
 import static com.github.mobile.RequestCodes.ISSUE_FILTER_EDIT;
 import static com.github.mobile.RequestCodes.ISSUE_VIEW;
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R;
 import com.github.mobile.RequestFuture;
@@ -185,6 +189,15 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
         inflater.inflate(R.menu.issues, optionsMenu);
+
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        MenuItem searchItem = optionsMenu.findItem(R.id.m_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+
+        Bundle args = new Bundle();
+        args.putSerializable(EXTRA_REPOSITORY, repository);
+        searchView.setAppSearchData(args);
     }
 
     @Override
@@ -208,11 +221,6 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
                     ToastUtils.show(getActivity(), R.string.message_filter_saved);
                 }
             });
-            return true;
-        case R.id.m_search:
-            Bundle args = new Bundle();
-            args.putSerializable(EXTRA_REPOSITORY, repository);
-            getActivity().startSearch(null, false, args, false);
             return true;
         default:
             return super.onOptionsItemSelected(item);

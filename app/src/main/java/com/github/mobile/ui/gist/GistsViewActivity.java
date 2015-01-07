@@ -23,9 +23,9 @@ import static com.github.mobile.Intents.EXTRA_GIST_IDS;
 import static com.github.mobile.Intents.EXTRA_POSITION;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.view.MenuItem;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R;
 import com.github.mobile.core.OnLoadListener;

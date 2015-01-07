@@ -23,10 +23,10 @@ import static com.github.mobile.util.TypefaceUtils.ICON_WATCH;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R;
 import com.github.mobile.ui.TabPagerActivity;
 import com.github.mobile.util.AvatarLoader;
@@ -146,7 +146,7 @@ public abstract class CreateCommentActivity extends
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
-        getSupportMenuInflater().inflate(R.menu.comment, options);
+        getMenuInflater().inflate(R.menu.comment, options);
         applyItem = options.findItem(R.id.m_apply);
         return true;
     }

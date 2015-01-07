@@ -15,11 +15,10 @@
  */
 package com.github.mobile.ui;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuItem;
 
 /**
  * Activity that displays a {@link ViewPager} and has workarounds for
@@ -42,7 +41,7 @@ public abstract class PagerActivity extends DialogFragmentActivity implements
      *
      * @return fragment
      */
-    protected SherlockFragment getFragment() {
+    protected Fragment getFragment() {
         FragmentProvider provider = getProvider();
         if (provider != null)
             return provider.getSelected();
@@ -52,7 +51,7 @@ public abstract class PagerActivity extends DialogFragmentActivity implements
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        SherlockFragment fragment = getFragment();
+        Fragment fragment = getFragment();
         if (fragment != null)
             return fragment.onOptionsItemSelected(item);
 
@@ -67,9 +66,9 @@ public abstract class PagerActivity extends DialogFragmentActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        SherlockFragment fragment = getFragment();
+        Fragment fragment = getFragment();
         if (fragment != null)
-            fragment.onCreateOptionsMenu(menu, getSupportMenuInflater());
+            fragment.onCreateOptionsMenu(menu, getMenuInflater());
 
         boolean created = super.onCreateOptionsMenu(menu);
         menuCreated = true;

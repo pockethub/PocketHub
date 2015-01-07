@@ -35,17 +35,17 @@ import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.mobile.R;
 import com.github.mobile.ui.LightProgressDialog;
+import com.github.mobile.ui.roboactivities.RoboActionBarActivity;
 import com.github.mobile.ui.TextWatcherAdapter;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockActivity;
 
 import java.io.IOException;
 
@@ -58,7 +58,7 @@ import roboguice.util.RoboAsyncTask;
 /**
  * Activity to enter two-factor authentication OTP code
  */
-public class TwoFactorAuthActivity extends RoboSherlockActivity {
+public class TwoFactorAuthActivity extends RoboActionBarActivity {
 
     /**
      * Create intent to enter two-factor authentication code
@@ -187,7 +187,7 @@ public class TwoFactorAuthActivity extends RoboSherlockActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionsMenu) {
-        getSupportMenuInflater().inflate(R.menu.login, optionsMenu);
+        getMenuInflater().inflate(R.menu.login, optionsMenu);
         loginItem = optionsMenu.findItem(R.id.m_login);
         return true;
     }
