@@ -76,4 +76,8 @@
     <color name="tab_icon">#FAFAFA</color>
     <color name="tab_text_shadow">#245066</color>
 
+    <color name="primary">#3D3D3D</color>
+    <color name="primary_dark">#313131</color>
+    <color name="accent">#FFFFFF</color>
+
 </resources>
