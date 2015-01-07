@@ -151,8 +151,6 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
         super.onCreate(savedInstanceState);
 
         setContentView(getContentView());
-        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
-
         pager = (ViewPager) findViewById(R.id.vp_pages);
         pager.setOnPageChangeListener(this);
         slidingTabsLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs_layout);
