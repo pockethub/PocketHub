@@ -20,6 +20,7 @@ import static com.github.mobile.util.TypefaceUtils.ICON_EDIT;
 import static com.github.mobile.util.TypefaceUtils.ICON_WATCH;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -50,6 +51,20 @@ public abstract class CreateCommentActivity extends
         super.onCreate(savedInstanceState);
 
         configureTabPager();
+        slidingTabsLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                adapter.setCurrentItem(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
     }
 
     @Override
