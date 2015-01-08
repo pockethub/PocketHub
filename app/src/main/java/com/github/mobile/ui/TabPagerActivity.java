@@ -151,6 +151,10 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
         super.onCreate(savedInstanceState);
 
         setContentView(getContentView());
+
+        // On Lollipop, the action bar shadow is provided by default, so have to remove it explicitly
+        getSupportActionBar().setElevation(0);
+
         pager = (ViewPager) findViewById(R.id.vp_pages);
         pager.setOnPageChangeListener(this);
         slidingTabsLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs_layout);
