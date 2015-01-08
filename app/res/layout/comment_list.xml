@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2012 GitHub Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,20 +15,14 @@
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
-    <View
-        android:id="@+id/v_header_separator"
-        style="@style/HeaderSeparator"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" />
+    android:layout_height="match_parent">
 
     <ListView
         android:id="@android:id/list"
         style="@style/CommentListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/v_header_separator"
+        android:layout_alignParentTop="true"
         android:visibility="gone" />
 
     <ProgressBar
