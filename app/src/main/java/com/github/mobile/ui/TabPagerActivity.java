@@ -158,6 +158,7 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
         pager = (ViewPager) findViewById(R.id.vp_pages);
         pager.setOnPageChangeListener(this);
         slidingTabsLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs_layout);
+        slidingTabsLayout.setCustomTabView(R.layout.tab, R.id.tv_tab);
         slidingTabsLayout.setSelectedIndicatorColors(getResources().getColor(android.R.color.white));
         slidingTabsLayout.setDividerColors(0);
     }

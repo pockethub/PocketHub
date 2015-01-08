@@ -232,11 +232,10 @@
 
     <style name="TabText" parent="Global">
         <item name="android:textColor">@color/tab_text_colors</item>
-        <item name="android:shadowColor">@color/tab_text_shadow</item>
-        <item name="android:shadowDx">1</item>
-        <item name="android:shadowDy">1</item>
-        <item name="android:shadowRadius">1</item>
-        <item name="android:textSize">11sp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">16dp</item>
     </style>
 
 </resources>
