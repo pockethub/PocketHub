@@ -13,26 +13,34 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <com.github.mobile.ui.SlidingTabLayout
+        android:layout_alignParentTop="true"
         android:id="@+id/sliding_tabs_layout"
         android:background="@color/primary"
         android:layout_width="match_parent"
-        android:elevation="8dp"
         android:layout_height="wrap_content" />
-
-    <FrameLayout
-        android:id="@android:id/tabcontent"
-        android:layout_width="match_parent"
-        android:layout_height="0dp" />
 
     <com.github.mobile.ui.ViewPager
         android:id="@+id/vp_pages"
+        android:layout_below="@id/sliding_tabs_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-</LinearLayout>
+        android:layout_height="match_parent" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_below="@id/sliding_tabs_layout"
+        android:background="@drawable/toolbar_shadow" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@style/ListSpinner"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+</RelativeLayout>
