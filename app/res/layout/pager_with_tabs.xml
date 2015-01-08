@@ -22,7 +22,7 @@
         android:id="@+id/sliding_tabs_layout"
         android:background="@color/primary"
         android:layout_width="match_parent"
-        android:elevation="4dp"
+        android:elevation="8dp"
         android:layout_height="wrap_content" />
 
     <FrameLayout
