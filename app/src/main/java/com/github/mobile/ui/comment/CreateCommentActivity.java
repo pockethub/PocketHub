@@ -36,7 +36,7 @@ import org.eclipse.egit.github.core.Comment;
  * Base activity for creating comments
  */
 public abstract class CreateCommentActivity extends
-        TabPagerActivity<CommentPreviewPagerAdapter> {
+    TabPagerActivity<CommentPreviewPagerAdapter> {
 
     private MenuItem applyItem;
 
@@ -49,6 +49,8 @@ public abstract class CreateCommentActivity extends
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         configureTabPager();
         slidingTabsLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -73,7 +75,7 @@ public abstract class CreateCommentActivity extends
 
         if (applyItem != null)
             applyItem.setEnabled(adapter != null
-                    && !TextUtils.isEmpty(adapter.getCommentText()));
+                && !TextUtils.isEmpty(adapter.getCommentText()));
     }
 
     @Override
@@ -105,35 +107,38 @@ public abstract class CreateCommentActivity extends
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_apply:
-            createComment(adapter.getCommentText());
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.m_apply:
+                createComment(adapter.getCommentText());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
     @Override
     protected String getTitle(final int position) {
         switch (position) {
-        case 0:
-            return getString(R.string.write);
-        case 1:
-            return getString(R.string.preview);
-        default:
-            return super.getTitle(position);
+            case 0:
+                return getString(R.string.write);
+            case 1:
+                return getString(R.string.preview);
+            default:
+                return super.getTitle(position);
         }
     }
 
     @Override
     protected String getIcon(final int position) {
         switch (position) {
-        case 0:
-            return ICON_EDIT;
-        case 1:
-            return ICON_WATCH;
-        default:
-            return super.getIcon(position);
+            case 0:
+                return ICON_EDIT;
+            case 1:
+                return ICON_WATCH;
+            default:
+                return super.getIcon(position);
         }
     }
 
