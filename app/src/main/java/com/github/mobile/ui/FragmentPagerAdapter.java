@@ -19,6 +19,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.ViewGroup;
 
+import com.github.mobile.ui.user.HomePagerFragment;
+
 /**
  * Pager adapter that provides the current fragment
  */

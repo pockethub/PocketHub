@@ -21,6 +21,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import roboguice.fragment.RoboDialogFragment;
@@ -54,7 +55,7 @@ public abstract class DialogFragmentHelper extends RoboDialogFragment implements
      * @param arguments
      * @param tag
      */
-    protected static void show(DialogFragmentActivity activity,
+    protected static void show(FragmentActivity activity,
             DialogFragmentHelper fragment, Bundle arguments, String tag) {
         FragmentManager manager = activity.getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();

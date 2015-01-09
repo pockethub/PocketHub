@@ -95,6 +95,7 @@
     <!--  -->
 
     <string name="app_name">GitHub</string>
+    <string name="home">Home</string>
     <string name="news">News</string>
     <string name="issues">Issues</string>
     <string name="gists">Gists</string>
@@ -284,5 +285,9 @@
     <string name="render_markdown">Render markdown</string>
     <string name="copy_hash">Copy hash</string>
     <string name="toast_msg_copied">Copied to clipboard</string>
+
+    <!-- Navigation drawer strings -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
 </resources>

@@ -353,6 +353,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.MainActivity"/>
+
         <service
             android:name=".sync.SyncAdapterService"
             android:exported="false"
