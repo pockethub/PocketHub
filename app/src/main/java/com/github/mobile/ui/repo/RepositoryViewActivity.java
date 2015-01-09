@@ -85,7 +85,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
 
         repository = getSerializableExtra(EXTRA_REPOSITORY);
 
-        loadingBar = finder.find(R.id.pb_loading);
+        loadingBar = finder.find(R.id.progress_bar);
 
         User owner = repository.getOwner();
 
@@ -154,29 +154,29 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_star:
-            starRepository();
-            return true;
-        case R.id.m_fork:
-            forkRepository();
-            return true;
-        case R.id.m_contributors:
-            startActivity(RepositoryContributorsActivity.createIntent(repository));
-            return true;
-        case R.id.m_share:
-            shareRepository();
-            return true;
-        case R.id.m_refresh:
-            checkStarredRepositoryStatus();
-            return super.onOptionsItemSelected(item);
-        case android.R.id.home:
-            finish();
-            Intent intent = UserViewActivity.createIntent(repository.getOwner());
-            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case R.id.m_star:
+                starRepository();
+                return true;
+            case R.id.m_fork:
+                forkRepository();
+                return true;
+            case R.id.m_contributors:
+                startActivity(RepositoryContributorsActivity.createIntent(repository));
+                return true;
+            case R.id.m_share:
+                shareRepository();
+                return true;
+            case R.id.m_refresh:
+                checkStarredRepositoryStatus();
+                return super.onOptionsItemSelected(item);
+            case android.R.id.home:
+                finish();
+                Intent intent = UserViewActivity.createIntent(repository.getOwner());
+                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -198,16 +198,16 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     @Override
     protected String getIcon(int position) {
         switch (position) {
-        case 0:
-            return ICON_NEWS;
-        case 1:
-            return ICON_CODE;
-        case 2:
-            return ICON_COMMIT;
-        case 3:
-            return ICON_ISSUE_OPEN;
-        default:
-            return super.getIcon(position);
+            case 0:
+                return ICON_NEWS;
+            case 1:
+                return ICON_CODE;
+            case 2:
+                return ICON_COMMIT;
+            case 3:
+                return ICON_ISSUE_OPEN;
+            default:
+                return super.getIcon(position);
         }
     }
 

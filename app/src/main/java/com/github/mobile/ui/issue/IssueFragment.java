@@ -135,8 +135,6 @@ public class IssueFragment extends DialogFragment {
 
     private EditStateTask stateTask;
 
-    private View headerSeparator;
-
     private TextView stateText;
 
     private TextView titleText;
@@ -271,7 +269,6 @@ public class IssueFragment extends DialogFragment {
 
         headerView = inflater.inflate(R.layout.issue_header, null);
 
-        headerSeparator = view.findViewById(R.id.v_header_separator);
         stateText = (TextView) headerView.findViewById(R.id.tv_state);
         titleText = (TextView) headerView.findViewById(R.id.tv_issue_title);
         authorText = (TextView) headerView.findViewById(R.id.tv_issue_author);
@@ -386,7 +383,6 @@ public class IssueFragment extends DialogFragment {
             stateText.setText(text);
         }
         ViewUtils.setGone(stateText, open);
-        ViewUtils.setGone(headerSeparator, !open);
 
         User assignee = issue.getAssignee();
         if (assignee != null) {
