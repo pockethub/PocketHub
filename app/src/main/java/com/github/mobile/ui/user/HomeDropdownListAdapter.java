@@ -51,7 +51,7 @@ public class HomeDropdownListAdapter extends SingleTypeAdapter<Object> {
      */
     public static final int ACTION_BOOKMARKS = 2;
 
-    private static final int NON_ORG_ITEMS = 3;
+    private static final int NON_ORG_ITEMS = 4;
 
     private final AvatarLoader avatars;
 
@@ -120,6 +120,7 @@ public class HomeDropdownListAdapter extends SingleTypeAdapter<Object> {
             all.addAll(orgs);
 
         // Add dummy objects for gists, issue dashboard, and bookmarks
+        all.add(new Object());
         all.add(new Object());
         all.add(new Object());
         all.add(new Object());
@@ -193,6 +194,10 @@ public class HomeDropdownListAdapter extends SingleTypeAdapter<Object> {
             setText(0, R.string.bookmarks);
             setActionIcon(imageView(1), R.drawable.dropdown_bookmark);
             break;
+            case 3:
+                setText(0, R.string.bookmarks);
+                setActionIcon(imageView(1), R.drawable.dropdown_bookmark);
+                break;
         default:
             User user = (User) item;
             setText(0, user.getLogin());

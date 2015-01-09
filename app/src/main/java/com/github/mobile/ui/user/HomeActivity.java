@@ -39,6 +39,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
+import com.github.mobile.ui.MainActivity;
 import com.github.mobile.R;
 import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.core.user.UserComparator;
@@ -65,7 +66,7 @@ import org.eclipse.egit.github.core.User;
  */
 public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
     ActionBar.OnNavigationListener, OrganizationSelectionProvider,
-        LoaderCallbacks<List<User>> {
+    LoaderCallbacks<List<User>>{
 
     private static final String TAG = "HomeActivity";
 
@@ -102,43 +103,43 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
 
     private void reloadOrgs() {
         getSupportLoaderManager().restartLoader(0, null,
-                new LoaderCallbacks<List<User>>() {
+            new LoaderCallbacks<List<User>>() {
 
-                    @Override
-                    public Loader<List<User>> onCreateLoader(int id,
-                            Bundle bundle) {
-                        return HomeActivity.this.onCreateLoader(id, bundle);
-                    }
+                @Override
+                public Loader<List<User>> onCreateLoader(int id,
+                    Bundle bundle) {
+                    return HomeActivity.this.onCreateLoader(id, bundle);
+                }
 
-                    @Override
-                    public void onLoadFinished(Loader<List<User>> loader,
-                            final List<User> users) {
-                        HomeActivity.this.onLoadFinished(loader, users);
-                        if (users.isEmpty())
-                            return;
+                @Override
+                public void onLoadFinished(Loader<List<User>> loader,
+                    final List<User> users) {
+                    HomeActivity.this.onLoadFinished(loader, users);
+                    if (users.isEmpty())
+                        return;
 
-                        Window window = getWindow();
-                        if (window == null)
-                            return;
-                        View view = window.getDecorView();
-                        if (view == null)
-                            return;
+                    Window window = getWindow();
+                    if (window == null)
+                        return;
+                    View view = window.getDecorView();
+                    if (view == null)
+                        return;
 
-                        view.post(new Runnable() {
+                    view.post(new Runnable() {
 
-                            @Override
-                            public void run() {
-                                isDefaultUser = false;
-                                setOrg(users.get(0));
-                            }
-                        });
-                    }
+                        @Override
+                        public void run() {
+                            isDefaultUser = false;
+                            setOrg(users.get(0));
+                        }
+                    });
+                }
 
-                    @Override
-                    public void onLoaderReset(Loader<List<User>> loader) {
-                        HomeActivity.this.onLoaderReset(loader);
-                    }
-                });
+                @Override
+                public void onLoaderReset(Loader<List<User>> loader) {
+                    HomeActivity.this.onLoaderReset(loader);
+                }
+            });
     }
 
     @Override
@@ -223,6 +224,9 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
                 break;
             case ACTION_BOOKMARKS:
                 startActivity(FiltersViewActivity.createIntent());
+                break;
+            case 3:
+                startActivity(new Intent(this, MainActivity.class));
                 break;
             }
             int orgSelected = homeAdapter.getSelected();
