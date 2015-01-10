@@ -39,11 +39,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
-import com.github.mobile.ui.MainActivity;
 import com.github.mobile.R;
 import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.core.user.UserComparator;
 import com.github.mobile.persistence.AccountDataManager;
+import com.github.mobile.ui.MainActivity;
 import com.github.mobile.ui.TabPagerActivity;
 import com.github.mobile.ui.gist.GistsActivity;
 import com.github.mobile.ui.issue.FiltersViewActivity;
@@ -84,7 +84,7 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
 
     private HomeDropdownListAdapter homeAdapter;
 
-    private Set<OrganizationSelectionListener> orgSelectionListeners = new LinkedHashSet<OrganizationSelectionListener>();
+    private Set<OrganizationSelectionListener> orgSelectionListeners = new LinkedHashSet<>();
 
     private User org;
 
@@ -284,7 +284,7 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
 
     @Override
     protected HomePagerAdapter createAdapter() {
-        return new HomePagerAdapter(this, isDefaultUser);
+        return new HomePagerAdapter(this, isDefaultUser, org);
     }
 
     @Override

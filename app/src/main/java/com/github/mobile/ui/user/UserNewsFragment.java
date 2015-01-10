@@ -27,8 +27,7 @@ import org.eclipse.egit.github.core.User;
 /**
  * Fragment to display a news feed for a given user/org
  */
-public abstract class UserNewsFragment extends NewsFragment implements
-        OrganizationSelectionListener {
+public abstract class UserNewsFragment extends NewsFragment {
 
     /**
      * Current organization/user
@@ -45,20 +44,11 @@ public abstract class UserNewsFragment extends NewsFragment implements
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        org = ((OrganizationSelectionProvider) getActivity()).addListener(this);
+        org = (User) getArguments().getSerializable("org");
         if (org == null && savedInstanceState != null)
             org = (User) savedInstanceState.get(EXTRA_USER);
 
         super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onDetach() {
-        OrganizationSelectionProvider selectionProvider = (OrganizationSelectionProvider) getActivity();
-        if (selectionProvider != null)
-            selectionProvider.removeListener(this);
-
-        super.onDetach();
     }
 
     @Override
@@ -68,15 +58,6 @@ public abstract class UserNewsFragment extends NewsFragment implements
             repository.setOwner(org);
 
         super.viewRepository(repository);
-    }
-
-    @Override
-    public void onOrganizationSelected(User organization) {
-        int previousOrgId = org != null ? org.getId() : -1;
-        org = organization;
-        // Only hard refresh if view already created and org is changing
-        if (previousOrgId != org.getId())
-            refreshWithProgress();
     }
 
     @Override

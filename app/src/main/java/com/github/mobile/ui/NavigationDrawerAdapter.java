@@ -1,6 +1,9 @@
 package com.github.mobile.ui;
 
-import static com.github.mobile.ui.NavigationDrawerObject.*;
+import static com.github.mobile.ui.NavigationDrawerObject.TYPE_ITEM_MENU;
+import static com.github.mobile.ui.NavigationDrawerObject.TYPE_ITEM_ORG;
+import static com.github.mobile.ui.NavigationDrawerObject.TYPE_SEPERATOR;
+import static com.github.mobile.ui.NavigationDrawerObject.TYPE_SUBHEADER;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -34,10 +37,10 @@ public class NavigationDrawerAdapter extends BaseAdapter {
         createData();
     }
 
-    private void createData(){
+    private void createData() {
         orgs.remove(0);
-        String[] names = new String[]{context.getString(R.string.home), context.getString(R.string.gist),
-            context.getString(R.string.issue_dashboard), context.getString(R.string.bookmarks)};
+        String[] names = new String[] { context.getString(R.string.home), context.getString(R.string.gist),
+            context.getString(R.string.issue_dashboard), context.getString(R.string.bookmarks) };
         String[] icons = context.getResources().getStringArray(R.array.navigation_drawer_icon_list);
         data = new ArrayList<>();
         int amount = names.length + orgs.size() + 2;
@@ -49,7 +52,8 @@ public class NavigationDrawerAdapter extends BaseAdapter {
             else if (i == names.length + 1)
                 data.add(new NavigationDrawerObject("Organizations", TYPE_SUBHEADER));
             else
-                data.add(new NavigationDrawerObject(orgs.get(i - names.length - 2).getLogin(), TYPE_ITEM_ORG, orgs.get(i - names.length - 2)));
+                data.add(new NavigationDrawerObject(orgs.get(i - names.length - 2).getLogin(), TYPE_ITEM_ORG,
+                    orgs.get(i - names.length - 2)));
         }
     }
 
@@ -65,7 +69,7 @@ public class NavigationDrawerAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public NavigationDrawerObject getItem(int position) {
         return data.get(position);
     }
 
@@ -89,7 +93,8 @@ public class NavigationDrawerAdapter extends BaseAdapter {
                 case TYPE_ITEM_ORG:
                     convertView = inflater.inflate(R.layout.navigation_drawer_list_item_image, null);
                     viewHolder.name = (TextView) convertView.findViewById(R.id.navigation_drawer_item_name);
-                    viewHolder.iconDrawable = (ImageView) convertView.findViewById(R.id.navigation_drawer_item_drawable_icon);
+                    viewHolder.iconDrawable = (ImageView) convertView.findViewById(R.id
+                        .navigation_drawer_item_drawable_icon);
                     break;
                 case TYPE_SUBHEADER:
                     convertView = inflater.inflate(R.layout.navigation_drawer_list_subheader, null);

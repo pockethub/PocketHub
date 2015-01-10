@@ -1,12 +1,14 @@
 package com.github.mobile.ui;
 
-import android.content.SharedPreferences;
+import static com.github.mobile.ui.NavigationDrawerObject.TYPE_SEPERATOR;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.DrawerLayout;
+import android.view.View;
+import android.view.Window;
 
 import com.github.mobile.R;
 import com.github.mobile.accounts.AccountUtils;
@@ -16,30 +18,20 @@ import com.github.mobile.ui.gist.GistsPagerFragment;
 import com.github.mobile.ui.issue.FiltersViewFragment;
 import com.github.mobile.ui.issue.IssueDashboardPagerFragment;
 import com.github.mobile.ui.repo.OrganizationLoader;
-import com.github.mobile.ui.user.HomeActivity;
 import com.github.mobile.ui.user.HomePagerFragment;
-import com.github.mobile.ui.user.OrganizationNewsFragment;
-import com.github.mobile.ui.user.OrganizationSelectionListener;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.egit.github.core.User;
 
-/**
- * Created by Henrik on 2015-01-08.
- */
 public class MainActivity extends BaseActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks,
     LoaderManager.LoaderCallbacks<List<User>> {
 
     private static final String TAG = "MainActivity";
-
-    private static final String PREF_ORG_ID = "orgId";
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
@@ -49,21 +41,14 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
     @Inject
     private Provider<UserComparator> userComparatorProvider;
 
-    private boolean isDefaultUser;
-
     private List<User> orgs = Collections.emptyList();
 
     private NavigationDrawerAdapter navigationAdapter;
-
-    private Set<OrganizationSelectionListener> orgSelectionListeners = new LinkedHashSet<OrganizationSelectionListener>();
 
     private User org;
 
     @Inject
     private AvatarLoader avatars;
-
-    @Inject
-    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,26 +62,7 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
     }
 
     private void reloadOrgs() {
-        getSupportLoaderManager().restartLoader(0, null,
-            new LoaderManager.LoaderCallbacks<List<User>>() {
-
-                @Override
-                public Loader<List<User>> onCreateLoader(int id,
-                    Bundle bundle) {
-                    return MainActivity.this.onCreateLoader(id, bundle);
-                }
-
-                @Override
-                public void onLoadFinished(Loader<List<User>> loader,
-                    final List<User> users) {
-                    MainActivity.this.onLoadFinished(loader, users);
-                }
-
-                @Override
-                public void onLoaderReset(Loader<List<User>> loader) {
-                    MainActivity.this.onLoaderReset(loader);
-                }
-            });
+        getSupportLoaderManager().restartLoader(0, null, this);
     }
 
     @Override
@@ -129,6 +95,21 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
             mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout), navigationAdapter, avatars, org);
+
+            Window window = getWindow();
+            if (window == null)
+                return;
+            View view = window.getDecorView();
+            if (view == null)
+                return;
+
+            view.post(new Runnable() {
+
+                @Override
+                public void run() {
+                    MainActivity.this.onNavigationDrawerItemSelected(0);
+                }
+            });
         }
     }
 
@@ -140,9 +121,9 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        if(((NavigationDrawerObject)navigationAdapter.getItem(position)).getType() == NavigationDrawerObject.TYPE_SEPERATOR)
+        if (navigationAdapter.getItem(position).getType() == TYPE_SEPERATOR)
             return;
-        Fragment fragmet = null;
+        Fragment fragmet;
         Bundle args = new Bundle();
         switch (position) {
             case 0:

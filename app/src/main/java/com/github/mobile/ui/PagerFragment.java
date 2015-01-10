@@ -1,16 +1,12 @@
 package com.github.mobile.ui;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.view.*;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-/**
- * Created by Henrik on 2015-01-07.
- */
-public abstract class PagerFragmant extends Fragment implements
+public abstract class PagerFragment extends Fragment implements
     ViewPager.OnPageChangeListener {
 
     /**

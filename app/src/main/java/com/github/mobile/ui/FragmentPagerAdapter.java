@@ -16,10 +16,13 @@
 package com.github.mobile.ui;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.view.ViewGroup;
 
-import com.github.mobile.ui.user.HomePagerFragment;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Pager adapter that provides the current fragment
@@ -29,7 +32,11 @@ public abstract class FragmentPagerAdapter extends
 
     private final ActionBarActivity activity;
 
+    private final FragmentManager fragmentManager;
+
     private Fragment selected;
+
+    private final Set<String> tags = new HashSet<>();
 
     /**
      * @param activity
@@ -37,12 +44,43 @@ public abstract class FragmentPagerAdapter extends
     public FragmentPagerAdapter(ActionBarActivity activity) {
         super(activity.getSupportFragmentManager());
 
+        fragmentManager = activity.getSupportFragmentManager();
         this.activity = activity;
+    }
+
+    /**
+     * This methods clears any fragments that may not apply to the newly
+     * selected org.
+     *
+     * @return this adapter
+     */
+    public FragmentPagerAdapter clearAdapter() {
+
+        if (tags.isEmpty())
+            return this;
+
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        for (String tag : tags) {
+            Fragment fragment = fragmentManager.findFragmentByTag(tag);
+            if (fragment != null)
+                transaction.remove(fragment);
+        }
+        transaction.commit();
+        tags.clear();
+
+        return this;
     }
 
     @Override
     public Fragment getSelected() {
         return selected;
+    }
+
+    public Object instantiateItem(ViewGroup container, int position) {
+        Object fragment = super.instantiateItem(container, position);
+        if (fragment instanceof Fragment)
+            tags.add(((Fragment) fragment).getTag());
+        return fragment;
     }
 
     @Override

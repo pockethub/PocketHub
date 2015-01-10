@@ -16,10 +16,12 @@
 package com.github.mobile.ui.user;
 
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import com.github.mobile.R;
@@ -29,10 +31,14 @@ import com.github.mobile.ui.repo.RepositoryListFragment;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.egit.github.core.User;
+
 /**
  * Pager adapter for a user's different views
  */
 public class HomePagerAdapter extends FragmentPagerAdapter {
+
+    private final User org;
 
     private boolean defaultUser;
 
@@ -40,16 +46,17 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
 
     private final Resources resources;
 
-    private final Set<String> tags = new HashSet<String>();
+    private final Set<String> tags = new HashSet<>();
 
     /**
      * @param activity
      * @param defaultUser
      */
     public HomePagerAdapter(final ActionBarActivity activity,
-            final boolean defaultUser) {
+        final boolean defaultUser, final User org) {
         super(activity);
 
+        this.org = org;
         fragmentManager = activity.getSupportFragmentManager();
         resources = activity.getResources();
         this.defaultUser = defaultUser;
@@ -57,20 +64,31 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        Fragment fragment = null;
         switch (position) {
         case 0:
-            return defaultUser ? new UserReceivedNewsFragment()
+            fragment = defaultUser ? new UserReceivedNewsFragment()
                     : new OrganizationNewsFragment();
+            break;
         case 1:
-            return new RepositoryListFragment();
+            fragment = new RepositoryListFragment();
+            break;
         case 2:
-            return defaultUser ? new MyFollowersFragment()
+            fragment = defaultUser ? new MyFollowersFragment()
                     : new MembersFragment();
+            break;
         case 3:
-            return new MyFollowingFragment();
-        default:
-            return null;
+            fragment = new MyFollowingFragment();
+            break;
         }
+
+        if (fragment != null) {
+            Bundle args = new Bundle();
+            args.putSerializable("org", org);
+            fragment.setArguments(args);
+        }
+        Log.d("TEST", "getItem ::" + position);
+        return fragment;
     }
 
     /**

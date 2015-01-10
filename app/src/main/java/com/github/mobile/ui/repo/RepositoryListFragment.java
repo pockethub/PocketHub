@@ -36,8 +36,6 @@ import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.HeaderFooterListAdapter;
 import com.github.mobile.ui.ItemListFragment;
 import com.github.mobile.ui.LightAlertDialog;
-import com.github.mobile.ui.user.OrganizationSelectionListener;
-import com.github.mobile.ui.user.OrganizationSelectionProvider;
 import com.github.mobile.ui.user.UserViewActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
@@ -52,8 +50,7 @@ import org.eclipse.egit.github.core.User;
 /**
  * Fragment to display a list of {@link Repository} instances
  */
-public class RepositoryListFragment extends ItemListFragment<Repository>
-        implements OrganizationSelectionListener {
+public class RepositoryListFragment extends ItemListFragment<Repository> {
 
     @Inject
     private AccountDataManager cache;
@@ -61,7 +58,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
     @Inject
     private AvatarLoader avatars;
 
-    private final AtomicReference<User> org = new AtomicReference<User>();
+    private final AtomicReference<User> org = new AtomicReference<>();
 
     private RecentRepositories recentRepos;
 
@@ -83,38 +80,11 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
     }
 
     @Override
-    public void onDetach() {
-        OrganizationSelectionProvider selectionProvider = (OrganizationSelectionProvider) getActivity();
-        if (selectionProvider != null)
-            selectionProvider.removeListener(this);
-
-        super.onDetach();
-    }
-
-    @Override
-    public void onOrganizationSelected(final User organization) {
-        User previousOrg = org.get();
-        int previousOrgId = previousOrg != null ? previousOrg.getId() : -1;
-        org.set(organization);
-
-        if (recentRepos != null)
-            recentRepos.saveAsync();
-
-        // Only hard refresh if view already created and org is changing
-        if (previousOrgId != organization.getId()) {
-            Activity activity = getActivity();
-            if (activity != null)
-                recentRepos = new RecentRepositories(activity, organization);
-
-            refreshWithProgress();
-        }
-    }
-
-    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         Activity activity = getActivity();
-        User currentOrg = ((OrganizationSelectionProvider) activity)
-                .addListener(this);
+/*        User currentOrg = ((OrganizationSelectionProvider) activity)
+                .addListener(this);*/
+        User currentOrg = (User) getArguments().getSerializable("org");
         if (currentOrg == null && savedInstanceState != null)
             currentOrg = (User) savedInstanceState.getSerializable(EXTRA_USER);
         org.set(currentOrg);

@@ -1,11 +1,11 @@
 package com.github.mobile.ui;
 
-import static android.widget.TabHost.*;
+import static android.widget.TabHost.OnTabChangeListener;
+import static android.widget.TabHost.TabContentFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +17,8 @@ import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R;
 import com.github.mobile.util.TypefaceUtils;
 
-/**
- * Created by Henrik on 2015-01-07.
- */
 public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider>
-    extends PagerFragmant implements OnTabChangeListener, TabContentFactory {
+    extends PagerFragment implements OnTabChangeListener, TabContentFactory {
 
 
     /**
@@ -93,6 +90,13 @@ public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider
         ViewUtils.setGone(host, gone);
         ViewUtils.setGone(pager, gone);
         return this;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (adapter instanceof FragmentPagerAdapter)
+            ((FragmentPagerAdapter) adapter).clearAdapter();
     }
 
     /**
@@ -181,10 +185,8 @@ public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider
      * Configure tabs and pager
      */
     protected void configureTabPager() {
-        if (adapter == null) {
-            createPager();
-            createTabs();
-        }
+        createPager();
+        createTabs();
     }
 
     @Override
