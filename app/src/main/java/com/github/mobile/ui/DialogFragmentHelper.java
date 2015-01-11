@@ -24,13 +24,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+
 import roboguice.fragment.RoboDialogFragment;
 
 /**
  * Base dialog fragment helper
  */
 public abstract class DialogFragmentHelper extends RoboDialogFragment implements
-        OnClickListener {
+    OnClickListener {
 
     /**
      * Dialog message
@@ -56,7 +57,7 @@ public abstract class DialogFragmentHelper extends RoboDialogFragment implements
      * @param tag
      */
     protected static void show(FragmentActivity activity,
-            DialogFragmentHelper fragment, Bundle arguments, String tag) {
+        DialogFragmentHelper fragment, Bundle arguments, String tag) {
         FragmentManager manager = activity.getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         Fragment current = manager.findFragmentByTag(tag);
@@ -77,7 +78,7 @@ public abstract class DialogFragmentHelper extends RoboDialogFragment implements
      * @return bundle
      */
     protected static Bundle createArguments(final String title,
-            final String message, final int requestCode) {
+        final String message, final int requestCode) {
         Bundle arguments = new Bundle();
         arguments.putInt(ARG_REQUEST_CODE, requestCode);
         arguments.putString(ARG_TITLE, title);
@@ -96,7 +97,7 @@ public abstract class DialogFragmentHelper extends RoboDialogFragment implements
             final Bundle arguments = getArguments();
             if (arguments != null)
                 activity.onDialogResult(arguments.getInt(ARG_REQUEST_CODE),
-                        resultCode, arguments);
+                    resultCode, arguments);
         }
     }
 

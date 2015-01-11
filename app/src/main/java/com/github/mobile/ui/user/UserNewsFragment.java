@@ -27,7 +27,8 @@ import org.eclipse.egit.github.core.User;
 /**
  * Fragment to display a news feed for a given user/org
  */
-public abstract class UserNewsFragment extends NewsFragment {
+public abstract class UserNewsFragment extends NewsFragment implements
+    OrganizationSelectionListener {
 
     /**
      * Current organization/user
@@ -44,11 +45,26 @@ public abstract class UserNewsFragment extends NewsFragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        org = (User) getArguments().getSerializable("org");
+        if (getActivity() instanceof OrganizationSelectionProvider)
+            org = ((OrganizationSelectionProvider) getActivity()).addListener(this);
+
+        if (getArguments() != null && getArguments().containsKey("org"))
+            org = (User) getArguments().getSerializable("org");
+
         if (org == null && savedInstanceState != null)
             org = (User) savedInstanceState.get(EXTRA_USER);
 
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onDetach() {
+        if (getActivity() != null && getActivity() instanceof OrganizationSelectionProvider) {
+            OrganizationSelectionProvider selectionProvider = (OrganizationSelectionProvider) getActivity();
+            selectionProvider.removeListener(this);
+        }
+
+        super.onDetach();
     }
 
     @Override
@@ -58,6 +74,15 @@ public abstract class UserNewsFragment extends NewsFragment {
             repository.setOwner(org);
 
         super.viewRepository(repository);
+    }
+
+    @Override
+    public void onOrganizationSelected(User organization) {
+        int previousOrgId = org != null ? org.getId() : -1;
+        org = organization;
+        // Only hard refresh if view already created and org is changing
+        if (previousOrgId != org.getId())
+            refreshWithProgress();
     }
 
     @Override

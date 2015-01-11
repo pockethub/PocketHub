@@ -65,6 +65,8 @@ public class FiltersViewActivity extends DialogFragmentActivity implements
 
         setContentView(R.layout.issues_filter_list);
 
+        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.bookmarks);
         actionBar.setIcon(R.drawable.action_bookmark);

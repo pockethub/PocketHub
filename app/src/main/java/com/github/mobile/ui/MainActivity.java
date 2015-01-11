@@ -21,7 +21,7 @@ import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.core.user.UserComparator;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.gist.GistsPagerFragment;
-import com.github.mobile.ui.issue.FiltersViewFragment;
+import com.github.mobile.ui.issue.FilterListFragment;
 import com.github.mobile.ui.issue.IssueDashboardPagerFragment;
 import com.github.mobile.ui.repo.OrganizationLoader;
 import com.github.mobile.ui.user.HomePagerFragment;
@@ -60,6 +60,7 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
         getSupportLoaderManager().initLoader(0, null, this);
 
@@ -155,16 +156,16 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
                 fragmet = new IssueDashboardPagerFragment();
                 break;
             case 3:
-                fragmet = new FiltersViewFragment();
+                fragmet = new FilterListFragment();
                 break;
             default:
                 fragmet = new HomePagerFragment();
-                args.putSerializable("org", orgs.get(position-5));
+                args.putSerializable("org", orgs.get(position - 5));
                 break;
         }
         fragmet.setArguments(args);
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.container,fragmet).commit();
+        manager.beginTransaction().replace(R.id.container, fragmet).commit();
     }
 
 }

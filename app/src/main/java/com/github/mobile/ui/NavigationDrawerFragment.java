@@ -162,11 +162,11 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
     }
 
     private void selectItem(int position) {
-        mCurrentSelectedPosition = position;
-        if (mCallbacks != null && mDrawerListView != null)
+        if (mCallbacks != null && mDrawerListView != null && position != mCurrentSelectedPosition)
             mCallbacks.onNavigationDrawerItemSelected(position);
         if (mDrawerListView != null) mDrawerListView.setItemChecked(position, true);
         if (mDrawerLayout != null) mDrawerLayout.closeDrawer(mFragmentContainerView);
+        mCurrentSelectedPosition = position;
     }
 
     @Override

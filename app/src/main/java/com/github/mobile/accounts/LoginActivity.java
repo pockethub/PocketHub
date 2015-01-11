@@ -111,11 +111,11 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
         ContentResolver.setIsSyncable(account, PROVIDER_AUTHORITY, 1);
         ContentResolver.setSyncAutomatically(account, PROVIDER_AUTHORITY, true);
         ContentResolver.addPeriodicSync(account, PROVIDER_AUTHORITY,
-                new Bundle(), SYNC_PERIOD);
+            new Bundle(), SYNC_PERIOD);
     }
 
     public static class AccountLoader extends
-            AuthenticatedUserTask<List<User>> {
+        AuthenticatedUserTask<List<User>> {
 
         @Inject
         private AccountDataManager cache;
@@ -163,6 +163,8 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
 
         setContentView(R.layout.login);
 
+        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
+
         accountManager = AccountManager.get(this);
 
         ViewFinder finder = new ViewFinder(this);
@@ -174,7 +176,7 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
         authTokenType = intent.getStringExtra(PARAM_AUTHTOKEN_TYPE);
         requestNewAccount = username == null;
         confirmCredentials = intent.getBooleanExtra(PARAM_CONFIRMCREDENTIALS,
-                false);
+            false);
 
         TextView signupText = finder.find(R.id.tv_signup);
         signupText.setMovementMethod(LinkMovementMethod.getInstance());
@@ -201,7 +203,7 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event != null && ACTION_DOWN == event.getAction()
-                        && keyCode == KEYCODE_ENTER && loginEnabled()) {
+                    && keyCode == KEYCODE_ENTER && loginEnabled()) {
                     handleLogin();
                     return true;
                 } else
@@ -213,7 +215,7 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
 
             @Override
             public boolean onEditorAction(TextView v, int actionId,
-                    KeyEvent event) {
+                KeyEvent event) {
                 if (actionId == IME_ACTION_DONE && loginEnabled()) {
                     handleLogin();
                     return true;
@@ -227,7 +229,7 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
-                    boolean isChecked) {
+                boolean isChecked) {
                 int type = TYPE_CLASS_TEXT;
                 if (isChecked)
                     type |= TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
@@ -240,9 +242,9 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
             }
         });
 
-        loginText.setAdapter(new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line,
-                getEmailAddresses()));
+        loginText.setAdapter(new ArrayAdapter<>(this,
+            android.R.layout.simple_dropdown_item_1line,
+            getEmailAddresses()));
     }
 
     @Override
@@ -254,7 +256,7 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
             Account existing = AccountUtils.getPasswordAccessibleAccount(this);
             if (existing != null && !TextUtils.isEmpty(existing.name)) {
                 String password = AccountManager.get(this)
-                        .getPassword(existing);
+                    .getPassword(existing);
                 if (!TextUtils.isEmpty(password))
                     finishLogin(existing.name, password);
             }
@@ -266,7 +268,7 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
 
     private boolean loginEnabled() {
         return !TextUtils.isEmpty(loginText.getText())
-                && !TextUtils.isEmpty(passwordText.getText());
+            && !TextUtils.isEmpty(passwordText.getText());
     }
 
     private void updateEnablement() {
@@ -291,7 +293,7 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
         password = passwordText.getText().toString();
 
         final AlertDialog dialog = LightProgressDialog.create(this,
-                R.string.login_activity_authenticating);
+            R.string.login_activity_authenticating);
         dialog.setCancelable(true);
         dialog.setOnCancelListener(new OnCancelListener() {
 
@@ -324,7 +326,7 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
                 Account account = new Account(user.getLogin(), ACCOUNT_TYPE);
                 if (requestNewAccount) {
                     accountManager
-                            .addAccountExplicitly(account, password, null);
+                        .addAccountExplicitly(account, password, null);
                     configureSyncFor(account);
                     try {
                         new AccountLoader(LoginActivity.this).call();
@@ -362,13 +364,13 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
 
         if (requestCode == OTP_CODE_ENTER) {
             switch (resultCode) {
-            case RESULT_OK:
-                onAuthenticationResult(true);
-                break;
-            case RESULT_CANCELED:
-                Exception e = (Exception) data.getExtras().getSerializable(PARAM_EXCEPTION);
-                handleLoginException(e);
-                break;
+                case RESULT_OK:
+                    onAuthenticationResult(true);
+                    break;
+                case RESULT_CANCELED:
+                    Exception e = (Exception) data.getExtras().getSerializable(PARAM_EXCEPTION);
+                    handleLoginException(e);
+                    break;
             }
         }
     }
@@ -434,11 +436,11 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_login:
-            handleLogin();
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case R.id.m_login:
+                handleLogin();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
     }
@@ -452,8 +454,8 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
 
     private List<String> getEmailAddresses() {
         final Account[] accounts = accountManager
-                .getAccountsByType("com.google");
-        final List<String> addresses = new ArrayList<String>(accounts.length);
+            .getAccountsByType("com.google");
+        final List<String> addresses = new ArrayList<>(accounts.length);
         for (Account account : accounts)
             addresses.add(account.name);
         return addresses;

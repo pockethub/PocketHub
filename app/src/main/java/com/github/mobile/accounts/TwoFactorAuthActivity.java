@@ -44,8 +44,8 @@ import android.widget.TextView;
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.mobile.R;
 import com.github.mobile.ui.LightProgressDialog;
-import com.github.mobile.ui.roboactivities.RoboActionBarActivity;
 import com.github.mobile.ui.TextWatcherAdapter;
+import com.github.mobile.ui.roboactivities.RoboActionBarActivity;
 
 import java.io.IOException;
 
@@ -109,6 +109,8 @@ public class TwoFactorAuthActivity extends RoboActionBarActivity {
 
         setContentView(R.layout.login_two_factor_auth);
 
+        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
+
         accountManager = AccountManager.get(this);
 
         ViewFinder finder = new ViewFinder(this);
@@ -136,7 +138,7 @@ public class TwoFactorAuthActivity extends RoboActionBarActivity {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event != null && ACTION_DOWN == event.getAction()
-                        && keyCode == KEYCODE_ENTER && loginEnabled()) {
+                    && keyCode == KEYCODE_ENTER && loginEnabled()) {
                     handleLogin();
                     return true;
                 } else
@@ -148,7 +150,7 @@ public class TwoFactorAuthActivity extends RoboActionBarActivity {
 
             @Override
             public boolean onEditorAction(TextView v, int actionId,
-                    KeyEvent event) {
+                KeyEvent event) {
                 if (actionId == IME_ACTION_DONE && loginEnabled()) {
                     handleLogin();
                     return true;
@@ -177,11 +179,11 @@ public class TwoFactorAuthActivity extends RoboActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_login:
-            handleLogin();
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case R.id.m_login:
+                handleLogin();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -196,7 +198,7 @@ public class TwoFactorAuthActivity extends RoboActionBarActivity {
         final String otpCode = otpCodeText.getText().toString();
 
         final AlertDialog dialog = LightProgressDialog.create(this,
-                R.string.login_activity_authenticating);
+            R.string.login_activity_authenticating);
         dialog.setCancelable(true);
         dialog.setOnCancelListener(new OnCancelListener() {
 

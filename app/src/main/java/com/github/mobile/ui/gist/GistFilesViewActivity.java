@@ -56,7 +56,7 @@ public class GistFilesViewActivity extends PagerActivity {
      */
     public static Intent createIntent(Gist gist, int position) {
         return new Builder("gist.files.VIEW").gist(gist.getId())
-                .add(EXTRA_POSITION, position).toIntent();
+            .add(EXTRA_POSITION, position).toIntent();
     }
 
     private String gistId;
@@ -90,6 +90,8 @@ public class GistFilesViewActivity extends PagerActivity {
         initialPosition = getIntExtra(EXTRA_POSITION);
 
         setContentView(R.layout.pager_with_title);
+
+        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
         pager = finder.find(R.id.vp_pages);
         loadingBar = finder.find(R.id.pb_loading);
@@ -148,16 +150,16 @@ public class GistFilesViewActivity extends PagerActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case android.R.id.home:
-            if (gist != null) {
-                Intent intent = GistsViewActivity.createIntent(gist);
-                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP
+            case android.R.id.home:
+                if (gist != null) {
+                    Intent intent = GistsViewActivity.createIntent(gist);
+                    intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP
                         | FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-            }
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+                    startActivity(intent);
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

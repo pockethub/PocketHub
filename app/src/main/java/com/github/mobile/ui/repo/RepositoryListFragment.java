@@ -36,6 +36,8 @@ import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.HeaderFooterListAdapter;
 import com.github.mobile.ui.ItemListFragment;
 import com.github.mobile.ui.LightAlertDialog;
+import com.github.mobile.ui.user.OrganizationSelectionListener;
+import com.github.mobile.ui.user.OrganizationSelectionProvider;
 import com.github.mobile.ui.user.UserViewActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
@@ -50,7 +52,8 @@ import org.eclipse.egit.github.core.User;
 /**
  * Fragment to display a list of {@link Repository} instances
  */
-public class RepositoryListFragment extends ItemListFragment<Repository> {
+public class RepositoryListFragment extends ItemListFragment<Repository>
+    implements OrganizationSelectionListener {
 
     @Inject
     private AccountDataManager cache;
@@ -80,11 +83,46 @@ public class RepositoryListFragment extends ItemListFragment<Repository> {
     }
 
     @Override
+    public void onDetach() {
+        if (getActivity() != null && getActivity() instanceof OrganizationSelectionProvider) {
+            OrganizationSelectionProvider selectionProvider = (OrganizationSelectionProvider) getActivity();
+            selectionProvider.removeListener(this);
+        }
+
+        super.onDetach();
+    }
+
+    @Override
+    public void onOrganizationSelected(final User organization) {
+        User previousOrg = org.get();
+        int previousOrgId = previousOrg != null ? previousOrg.getId() : -1;
+        org.set(organization);
+
+        if (recentRepos != null)
+            recentRepos.saveAsync();
+
+        // Only hard refresh if view already created and org is changing
+        if (previousOrgId != organization.getId()) {
+            Activity activity = getActivity();
+            if (activity != null)
+                recentRepos = new RecentRepositories(activity, organization);
+
+            refreshWithProgress();
+        }
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         Activity activity = getActivity();
-/*        User currentOrg = ((OrganizationSelectionProvider) activity)
-                .addListener(this);*/
-        User currentOrg = (User) getArguments().getSerializable("org");
+        User currentOrg = null;
+
+        if (getActivity() instanceof OrganizationSelectionProvider)
+            currentOrg = ((OrganizationSelectionProvider) activity)
+                .addListener(this);
+
+        if (getArguments() != null && getArguments().containsKey("org"))
+            currentOrg = (User) getArguments().getSerializable("org");
+
         if (currentOrg == null && savedInstanceState != null)
             currentOrg = (User) savedInstanceState.getSerializable(EXTRA_USER);
         org.set(currentOrg);
@@ -114,12 +152,12 @@ public class RepositoryListFragment extends ItemListFragment<Repository> {
             recentRepos.add(repo);
 
         startActivityForResult(RepositoryViewActivity.createIntent(repo),
-                REPOSITORY_VIEW);
+            REPOSITORY_VIEW);
     }
 
     @Override
     public boolean onListItemLongClick(ListView list, View v, int position,
-            long itemId) {
+        long itemId) {
         if (!isUsable())
             return false;
 
@@ -133,7 +171,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository> {
         dialog.setTitle(repo.generateId());
 
         View view = getActivity().getLayoutInflater().inflate(
-                R.layout.repo_dialog, null);
+            R.layout.repo_dialog, null);
         ViewFinder finder = new ViewFinder(view);
 
         final User owner = repo.getOwner();
@@ -187,7 +225,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository> {
             return;
 
         DefaultRepositoryListAdapter adapter = (DefaultRepositoryListAdapter) rootAdapter
-                .getWrappedAdapter();
+            .getWrappedAdapter();
         adapter.clearHeaders();
 
         if (repos.isEmpty())
@@ -219,7 +257,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository> {
         current = repos.get(index);
         char start = Character.toLowerCase(current.getName().charAt(0));
         adapter.registerHeader(current,
-                Character.toString(start).toUpperCase(US));
+            Character.toString(start).toUpperCase(US));
 
         char previousHeader = start;
         for (index = index + 1; index < repos.size(); index++) {
@@ -234,7 +272,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository> {
                 adapter.registerNoSeparator(repos.get(index - 1));
 
             adapter.registerHeader(current, Character.toString(repoStart)
-                    .toUpperCase(US));
+                .toUpperCase(US));
             previousHeader = repoStart;
             start = repoStart++;
         }
@@ -254,7 +292,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository> {
                     return Collections.emptyList();
 
                 List<Repository> repos = cache.getRepos(org,
-                        isForceRefresh(args));
+                    isForceRefresh(args));
                 Collections.sort(repos, recentRepos);
                 updateHeaders(repos);
                 return repos;
@@ -265,8 +303,8 @@ public class RepositoryListFragment extends ItemListFragment<Repository> {
     @Override
     protected SingleTypeAdapter<Repository> createAdapter(List<Repository> items) {
         return new DefaultRepositoryListAdapter(getActivity()
-                .getLayoutInflater(),
-                items.toArray(new Repository[items.size()]), org);
+            .getLayoutInflater(),
+            items.toArray(new Repository[items.size()]), org);
     }
 
     @Override

@@ -3,34 +3,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0F0F0"
     tools:context=".NavigationDrawerFragment">
 
-    <ImageView
-        android:layout_margin="16dp"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:id="@+id/user_picture" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/user_name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textColor="#212121"
-        android:layout_alignLeft="@+id/user_email"
-        android:layout_alignStart="@+id/user_email"
-        android:layout_above="@+id/user_email" />
-
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/user_email"
-        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-        android:textColor="#8F8F8F"
-        android:layout_alignBottom="@+id/user_picture"
-        android:layout_toRightOf="@+id/user_picture"
-        android:layout_toEndOf="@id/user_picture" />
+        android:layout_height="100dp"
+        android:background="@drawable/navigation_drawer_header_background"
+        android:id="@+id/navigation_drawer_header">
+
+        <ImageView
+            android:layout_margin="16dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/user_picture" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="#DEDEDE"
+            android:layout_alignLeft="@+id/user_email"
+            android:layout_alignStart="@+id/user_email"
+            android:layout_above="@+id/user_email" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_email"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:textColor="#8A8A8A"
+            android:layout_alignBottom="@+id/user_picture"
+            android:layout_toRightOf="@+id/user_picture"
+            android:layout_toEndOf="@id/user_picture" />
+    </RelativeLayout>
 
     <ListView
         android:paddingTop="8dp"
@@ -42,6 +48,6 @@
         android:dividerHeight="0dp"
         android:background="#fff"
         android:clipToPadding="false"
-        android:layout_below="@id/user_picture" />
+        android:layout_below="@id/navigation_drawer_header" />
 
 </RelativeLayout>

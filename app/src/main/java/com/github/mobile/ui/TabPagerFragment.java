@@ -94,10 +94,10 @@ public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider
 
     /**
      * Set current item to new position
-     * <p>
+     * <p/>
      * This is guaranteed to only be called when a position changes and the
      * current item of the pager has already been updated to the given position
-     * <p>
+     * <p/>
      * Sub-classes may override this method
      *
      * @param position
@@ -132,13 +132,14 @@ public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(getContentView(),null);
+        return inflater.inflate(getContentView(), null);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
+        view.findViewById(R.id.toolbar).setVisibility(View.GONE);
 
         // On Lollipop, the action bar shadow is provided by default, so have to remove it explicitly
         ((ActionBarActivity) getActivity()).getSupportActionBar().setElevation(0);

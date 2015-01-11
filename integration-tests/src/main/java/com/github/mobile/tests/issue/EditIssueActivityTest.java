@@ -32,7 +32,7 @@ import org.eclipse.egit.github.core.User;
 public class EditIssueActivityTest extends ActivityTest<EditIssueActivity> {
 
     /**
-     * Create test
+     * Create navigation_drawer_header_background
      */
     public EditIssueActivityTest() {
         super(EditIssueActivity.class);
