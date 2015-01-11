@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2012 GitHub Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,33 +13,34 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/th_tabs"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <com.github.mobile.ui.SlidingTabLayout
+        android:layout_alignParentTop="true"
+        android:id="@+id/sliding_tabs_layout"
+        android:background="@color/primary"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:layout_height="wrap_content" />
 
-        <TabWidget
-            android:id="@android:id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:dividerPadding="0dp"
-            android:showDividers="none" />
+    <com.github.mobile.ui.ViewPager
+        android:id="@+id/vp_pages"
+        android:layout_below="@id/sliding_tabs_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-        <FrameLayout
-            android:id="@android:id/tabcontent"
-            android:layout_width="match_parent"
-            android:layout_height="0dp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_below="@id/sliding_tabs_layout"
+        android:background="@drawable/toolbar_shadow" />
 
-        <com.github.mobile.ui.ViewPager
-            android:id="@+id/vp_pages"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-    </LinearLayout>
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@style/ListSpinner"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
 
-</TabHost>
+</RelativeLayout>

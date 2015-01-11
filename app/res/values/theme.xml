@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2012 GitHub Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,11 +15,11 @@
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.GitHub" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.GitHub" parent="@style/Theme.AppCompat">
 
-        <item name="colorPrimary">#3D3D3D</item>
-        <item name="colorPrimaryDark">#313131</item>
-        <item name="colorAccent">#3797C7</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
 
         <item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>

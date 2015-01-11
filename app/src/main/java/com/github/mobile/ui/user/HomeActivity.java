@@ -187,7 +187,6 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
             int item = pager.getCurrentItem();
             adapter.clearAdapter(isDefaultUser);
             adapter.notifyDataSetChanged();
-            createTabs();
             if (item >= adapter.getCount())
                 item = adapter.getCount() - 1;
             pager.setItem(item);
