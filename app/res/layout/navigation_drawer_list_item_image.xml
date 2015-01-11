@@ -20,7 +20,6 @@
         android:id="@+id/navigation_drawer_item_name"
         android:layout_marginLeft="72dp"
         android:layout_marginStart="72dp"
-        android:textSize="14sp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="#212121"
         android:layout_centerVertical="true" />
