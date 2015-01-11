@@ -15,17 +15,19 @@
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.GitHub" parent="@style/Theme.AppCompat">
+    <style name="Theme.GitHub" parent="@style/Theme.AppCompat.NoActionBar">
 
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
+
+        <item name="colorControlHighlight">@color/ripple_material_light</item>
+
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
 
         <item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>
         <item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>
         <item name="windowActionBar">false</item>
-        <item name="android:windowActionBar">false</item>
         <item name="android:windowBackground">@color/background</item>
     </style>
 

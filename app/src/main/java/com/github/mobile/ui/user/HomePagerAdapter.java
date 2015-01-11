@@ -19,9 +19,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.ViewGroup;
 
 import com.github.mobile.R;
@@ -66,20 +64,20 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         Fragment fragment = null;
         switch (position) {
-        case 0:
-            fragment = defaultUser ? new UserReceivedNewsFragment()
+            case 0:
+                fragment = defaultUser ? new UserReceivedNewsFragment()
                     : new OrganizationNewsFragment();
-            break;
-        case 1:
-            fragment = new RepositoryListFragment();
-            break;
-        case 2:
-            fragment = defaultUser ? new MyFollowersFragment()
+                break;
+            case 1:
+                fragment = new RepositoryListFragment();
+                break;
+            case 2:
+                fragment = defaultUser ? new MyFollowersFragment()
                     : new MembersFragment();
-            break;
-        case 3:
-            fragment = new MyFollowingFragment();
-            break;
+                break;
+            case 3:
+                fragment = new MyFollowingFragment();
+                break;
         }
 
         if (fragment != null) {
@@ -87,33 +85,7 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
             args.putSerializable("org", org);
             fragment.setArguments(args);
         }
-        Log.d("TEST", "getItem ::" + position);
         return fragment;
-    }
-
-    /**
-     * This methods clears any fragments that may not apply to the newly
-     * selected org.
-     *
-     * @param isDefaultUser
-     * @return this adapter
-     */
-    public HomePagerAdapter clearAdapter(boolean isDefaultUser) {
-        defaultUser = isDefaultUser;
-
-        if (tags.isEmpty())
-            return this;
-
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        for (String tag : tags) {
-            Fragment fragment = fragmentManager.findFragmentByTag(tag);
-            if (fragment != null)
-                transaction.remove(fragment);
-        }
-        transaction.commit();
-        tags.clear();
-
-        return this;
     }
 
     @Override
@@ -136,17 +108,17 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
-        case 0:
-            return resources.getString(R.string.tab_news);
-        case 1:
-            return resources.getString(R.string.tab_repositories);
-        case 2:
-            return resources.getString(defaultUser ? R.string.tab_followers_self
+            case 0:
+                return resources.getString(R.string.tab_news);
+            case 1:
+                return resources.getString(R.string.tab_repositories);
+            case 2:
+                return resources.getString(defaultUser ? R.string.tab_followers_self
                     : R.string.tab_members);
-        case 3:
-            return resources.getString(R.string.tab_following_self);
-        default:
-            return null;
+            case 3:
+                return resources.getString(R.string.tab_following_self);
+            default:
+                return null;
         }
     }
 }

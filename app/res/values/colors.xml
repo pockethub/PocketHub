@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2012 GitHub Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -78,6 +77,6 @@
 
     <color name="primary">#3D3D3D</color>
     <color name="primary_dark">#313131</color>
-    <color name="accent">#FFFFFF</color>
+    <color name="accent">#3797C7</color>
 
 </resources>
