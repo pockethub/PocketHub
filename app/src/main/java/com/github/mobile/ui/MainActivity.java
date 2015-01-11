@@ -1,12 +1,18 @@
 package com.github.mobile.ui;
 
 import static com.github.mobile.ui.NavigationDrawerObject.TYPE_SEPERATOR;
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
@@ -63,6 +69,18 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
 
     private void reloadOrgs() {
         getSupportLoaderManager().restartLoader(0, null, this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu optionMenu) {
+        getMenuInflater().inflate(R.menu.home, optionMenu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        MenuItem searchItem = optionMenu.findItem(R.id.m_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        return super.onCreateOptionsMenu(optionMenu);
     }
 
     @Override

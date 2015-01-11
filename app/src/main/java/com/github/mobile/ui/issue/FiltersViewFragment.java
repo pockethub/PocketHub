@@ -21,8 +21,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,16 +35,14 @@ import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.ConfirmDialogFragment;
 import com.github.mobile.ui.DialogFragment;
-import com.github.mobile.ui.DialogFragmentActivity;
-import com.github.mobile.ui.DialogResultListener;
-import com.github.mobile.ui.user.HomeActivity;
+import com.github.mobile.ui.MainActivity;
 import com.google.inject.Inject;
 
 /**
  * Activity to display a list of saved {@link com.github.mobile.core.issue.IssueFilter} objects
  */
 public class FiltersViewFragment extends DialogFragment implements
-        OnItemLongClickListener {
+    OnItemLongClickListener {
 
     /**
      * Create intent to browse issue filters
@@ -70,7 +66,7 @@ public class FiltersViewFragment extends DialogFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.issues_filter_list,null);
+        return inflater.inflate(R.layout.issues_filter_list, null);
     }
 
     @Override
@@ -84,7 +80,7 @@ public class FiltersViewFragment extends DialogFragment implements
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
         if (requestCode == REQUEST_DELETE && resultCode == Activity.RESULT_OK) {
             IssueFilter filter = (IssueFilter) arguments
-                    .getSerializable(ARG_FILTER);
+                .getSerializable(ARG_FILTER);
             cache.removeIssueFilter(filter, new RequestFuture<IssueFilter>() {
 
                 @Override
@@ -102,25 +98,25 @@ public class FiltersViewFragment extends DialogFragment implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case android.R.id.home:
-            Intent intent = new Intent(getActivity(), HomeActivity.class);
-            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case android.R.id.home:
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view,
-            int position, long id) {
+        int position, long id) {
         IssueFilter filter = (IssueFilter) parent.getItemAtPosition(position);
         Bundle args = new Bundle();
         args.putSerializable(ARG_FILTER, filter);
         ConfirmDialogFragment.show(getActivity(), REQUEST_DELETE,
-                getString(R.string.confirm_bookmark_delete_title),
-                getString(R.string.confirm_bookmark_delete_message), args);
+            getString(R.string.confirm_bookmark_delete_title),
+            getString(R.string.confirm_bookmark_delete_message), args);
         return true;
     }
 }

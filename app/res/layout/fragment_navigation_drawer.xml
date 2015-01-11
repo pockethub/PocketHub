@@ -10,19 +10,27 @@
         android:layout_margin="16dp"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:id="@+id/user_picture"/>
+        android:id="@+id/user_picture" />
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:gravity="center_vertical"
+        android:layout_height="wrap_content"
         android:id="@+id/user_name"
-        android:layout_toRightOf="@id/user_picture"
-        android:layout_toEndOf="@id/user_picture"
-        android:layout_alignBottom="@+id/user_picture"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp" />
+        android:textColor="#212121"
+        android:layout_alignLeft="@+id/user_email"
+        android:layout_alignStart="@+id/user_email"
+        android:layout_above="@+id/user_email" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/user_email"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:textColor="#8F8F8F"
+        android:layout_alignBottom="@+id/user_picture"
+        android:layout_toRightOf="@+id/user_picture"
+        android:layout_toEndOf="@id/user_picture" />
 
     <ListView
         android:paddingTop="8dp"

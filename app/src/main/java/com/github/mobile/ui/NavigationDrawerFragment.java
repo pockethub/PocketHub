@@ -1,7 +1,6 @@
 package com.github.mobile.ui;
 
 
-import static com.github.mobile.ui.NavigationDrawerObject.*;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -14,22 +13,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.mobile.R;
 import com.github.mobile.util.AvatarLoader;
-
 
 import org.eclipse.egit.github.core.User;
 
@@ -51,6 +45,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
 
     private ImageView userImage;
     private TextView userName;
+    private TextView userEmail;
 
     public NavigationDrawerFragment() {
     }
@@ -65,8 +60,6 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
         }
-
-        selectItem(mCurrentSelectedPosition);
     }
 
     @Override
@@ -96,6 +89,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
         super.onViewCreated(view, savedInstanceState);
         userImage = (ImageView) view.findViewById(R.id.user_picture);
         userName = (TextView) view.findViewById(R.id.user_name);
+        userEmail = (TextView) view.findViewById(R.id.user_email);
         mDrawerListView = (ListView) view.findViewById(R.id.navigation_drawer_list);
         mDrawerListView.setOnItemClickListener(this);
     }
@@ -104,26 +98,27 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
     }
 
-    public void setUp(int fragmentId, DrawerLayout drawerLayout, NavigationDrawerAdapter adapter, AvatarLoader avatar, User user) {
+    public void setUp(int fragmentId, DrawerLayout drawerLayout, NavigationDrawerAdapter adapter, AvatarLoader avatar,
+        User user) {
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
-        avatar.bind(userImage,user);
+        avatar.bind(userImage, user);
         userName.setText(user.getLogin());
+        userEmail.setText(user.getEmail());
 
         mDrawerListView.setAdapter(adapter);
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-
 
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
 
         mDrawerToggle = new ActionBarDrawerToggle(
-                getActivity(), mDrawerLayout,
-                R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close) {
+            getActivity(), mDrawerLayout,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close) {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
@@ -144,7 +139,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
                 if (!mUserLearnedDrawer) {
                     mUserLearnedDrawer = true;
                     SharedPreferences sp = PreferenceManager
-                            .getDefaultSharedPreferences(getActivity());
+                        .getDefaultSharedPreferences(getActivity());
                     sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
                 }
 

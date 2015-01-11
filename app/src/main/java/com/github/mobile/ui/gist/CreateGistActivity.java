@@ -29,6 +29,7 @@ import android.widget.EditText;
 
 import com.github.mobile.R;
 import com.github.mobile.ui.BaseActivity;
+import com.github.mobile.ui.MainActivity;
 import com.github.mobile.ui.TextWatcherAdapter;
 import com.github.mobile.util.ShareUtils;
 
@@ -109,7 +110,7 @@ public class CreateGistActivity extends BaseActivity {
             return true;
         case android.R.id.home:
             finish();
-            Intent intent = new Intent(this, GistsActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             return true;

@@ -37,6 +37,7 @@ import com.github.mobile.core.user.FollowUserTask;
 import com.github.mobile.core.user.FollowingUserTask;
 import com.github.mobile.core.user.RefreshUserTask;
 import com.github.mobile.core.user.UnfollowUserTask;
+import com.github.mobile.ui.MainActivity;
 import com.github.mobile.ui.TabPagerActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
@@ -48,7 +49,7 @@ import org.eclipse.egit.github.core.User;
  * Activity to view a user's various pages
  */
 public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
-        implements OrganizationSelectionProvider {
+    implements OrganizationSelectionProvider {
 
     /**
      * Create intent for this activity
@@ -102,7 +103,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
                     super.onException(e);
 
                     ToastUtils.show(UserViewActivity.this,
-                            R.string.error_person_load);
+                        R.string.error_person_load);
                     ViewUtils.setGone(loadingBar, true);
                 }
             }.execute();
@@ -129,16 +130,16 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_follow:
-            followUser();
-            return true;
-        case android.R.id.home:
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case R.id.m_follow:
+                followUser();
+                return true;
+            case android.R.id.home:
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
     }
@@ -158,7 +159,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
 
     @Override
     public OrganizationSelectionProvider removeListener(
-            OrganizationSelectionListener listener) {
+        OrganizationSelectionListener listener) {
         return this;
     }
 
@@ -175,16 +176,16 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     @Override
     protected String getIcon(int position) {
         switch (position) {
-        case 0:
-            return ICON_NEWS;
-        case 1:
-            return ICON_PUBLIC;
-        case 2:
-            return ICON_WATCH;
-        case 3:
-            return ICON_FOLLOW;
-        default:
-            return super.getIcon(position);
+            case 0:
+                return ICON_NEWS;
+            case 1:
+                return ICON_PUBLIC;
+            case 2:
+                return ICON_WATCH;
+            case 3:
+                return ICON_FOLLOW;
+            default:
+                return super.getIcon(position);
         }
     }
 
@@ -204,7 +205,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
                     super.onException(e);
 
                     ToastUtils.show(UserViewActivity.this,
-                            R.string.error_unfollowing_person);
+                        R.string.error_unfollowing_person);
                 }
             }.start();
         else
@@ -222,7 +223,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
                     super.onException(e);
 
                     ToastUtils.show(UserViewActivity.this,
-                            R.string.error_following_person);
+                        R.string.error_following_person);
                 }
             }.start();
     }

@@ -24,14 +24,11 @@ import static com.github.mobile.util.TypefaceUtils.ICON_WATCH;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.github.mobile.R;
-import com.github.mobile.ui.TabPagerActivity;
+import com.github.mobile.ui.MainActivity;
 import com.github.mobile.ui.TabPagerFragment;
-import com.github.mobile.ui.user.HomeActivity;
 
 /**
  * Dashboard activity for issues
@@ -48,13 +45,13 @@ public class IssueDashboardPagerFragment extends
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case android.R.id.home:
-            Intent intent = new Intent(getActivity(), HomeActivity.class);
-            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case android.R.id.home:
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -66,16 +63,16 @@ public class IssueDashboardPagerFragment extends
     @Override
     protected String getIcon(int position) {
         switch (position) {
-        case 0:
-            return ICON_WATCH;
-        case 1:
-            return ICON_FOLLOW;
-        case 2:
-            return ICON_ADD;
-        case 3:
-            return ICON_BROADCAST;
-        default:
-            return super.getIcon(position);
+            case 0:
+                return ICON_WATCH;
+            case 1:
+                return ICON_FOLLOW;
+            case 2:
+                return ICON_ADD;
+            case 3:
+                return ICON_BROADCAST;
+            default:
+                return super.getIcon(position);
         }
     }
 }

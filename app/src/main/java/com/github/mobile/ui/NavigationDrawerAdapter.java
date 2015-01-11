@@ -81,10 +81,10 @@ public class NavigationDrawerAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
-
-        if (convertView == null) {
+        final NavigationDrawerObject obj = data.get(position);
+        if (convertView == null || obj.getType() != ((ViewHolder) convertView.getTag()).type) {
             viewHolder = new ViewHolder();
-            switch (data.get(position).getType()) {
+            switch (obj.getType()) {
                 case TYPE_ITEM_MENU:
                     convertView = inflater.inflate(R.layout.navigation_drawer_list_item_text, null);
                     viewHolder.name = (TextView) convertView.findViewById(R.id.navigation_drawer_item_name);
@@ -108,11 +108,12 @@ public class NavigationDrawerAdapter extends BaseAdapter {
                     convertView.setOnClickListener(null);
                     break;
             }
+            viewHolder.type = obj.getType();
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        final NavigationDrawerObject obj = data.get(position);
+
         switch (obj.getType()) {
             case TYPE_ITEM_MENU:
                 Typeface font = Typeface.createFromAsset(context.getAssets(), "octicons.ttf");
@@ -133,6 +134,7 @@ public class NavigationDrawerAdapter extends BaseAdapter {
     }
 
     private class ViewHolder {
+        int type;
         TextView name;
         TextView iconString;
         ImageView iconDrawable;

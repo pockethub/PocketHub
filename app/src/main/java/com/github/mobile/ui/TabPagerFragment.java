@@ -5,17 +5,13 @@ import static android.widget.TabHost.TabContentFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
-import android.text.TextUtils;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TabHost;
-import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R;
-import com.github.mobile.util.TypefaceUtils;
 
 public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider>
     extends PagerFragment implements OnTabChangeListener, TabContentFactory {
@@ -29,7 +25,7 @@ public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider
     /**
      * Tab host
      */
-    protected TabHost host;
+    protected SlidingTabLayout slidingTabsLayout;
 
     /**
      * Pager adapter
@@ -39,13 +35,10 @@ public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider
     @Override
     public void onPageSelected(final int position) {
         super.onPageSelected(position);
-
-        host.setCurrentTab(position);
     }
 
     @Override
     public void onTabChanged(String tabId) {
-        updateCurrentItem(host.getCurrentTab());
     }
 
     @Override
@@ -87,14 +80,14 @@ public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider
      * @return this activity
      */
     protected TabPagerFragment<V> setGone(boolean gone) {
-        ViewUtils.setGone(host, gone);
+        ViewUtils.setGone(slidingTabsLayout, gone);
         ViewUtils.setGone(pager, gone);
         return this;
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onDestroy() {
+        super.onDestroy();
         if (adapter instanceof FragmentPagerAdapter)
             ((FragmentPagerAdapter) adapter).clearAdapter();
     }
@@ -122,63 +115,11 @@ public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider
         return R.layout.pager_with_tabs;
     }
 
-    private void updateCurrentItem(final int newPosition) {
-        if (newPosition > -1 && newPosition < adapter.getCount()) {
-            pager.setItem(newPosition);
-            setCurrentItem(newPosition);
-        }
-    }
-
     private void createPager() {
         adapter = createAdapter();
         getActivity().supportInvalidateOptionsMenu();
         pager.setAdapter(adapter);
-    }
-
-    /**
-     * Create tab using information from current adapter
-     * <p>
-     * This can be called when the tabs changed but must be called after an
-     * initial call to {@link #configureTabPager()}
-     */
-    protected void createTabs() {
-        if (host.getTabWidget().getTabCount() > 0) {
-            // Crash on Gingerbread if tab isn't set to zero since adding a
-            // new tab removes selection state on the old tab which will be
-            // null unless the current tab index is the same as the first
-            // tab index being added
-            host.setCurrentTab(0);
-            host.clearAllTabs();
-        }
-
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        int count = adapter.getCount();
-        for (int i = 0; i < count; i++) {
-            TabHost.TabSpec spec = host.newTabSpec("tab" + i);
-            spec.setContent(this);
-            View view = inflater.inflate(R.layout.tab, null);
-            TextView icon = (TextView) view.findViewById(R.id.tv_icon);
-            String iconText = getIcon(i);
-            if (!TextUtils.isEmpty(iconText))
-                icon.setText(getIcon(i));
-            else
-                ViewUtils.setGone(icon, true);
-            TypefaceUtils.setOcticons(icon);
-            ((TextView) view.findViewById(R.id.tv_tab)).setText(getTitle(i));
-
-            spec.setIndicator(view);
-            host.addTab(spec);
-
-            int background;
-            if (i == 0)
-                background = R.drawable.tab_selector_right;
-            else if (i == count - 1)
-                background = R.drawable.tab_selector_left;
-            else
-                background = R.drawable.tab_selector_left_right;
-            ((ImageView) view.findViewById(R.id.iv_tab))
-                .setImageResource(background);
-        }
+        slidingTabsLayout.setViewPager(pager);
     }
 
     /**
@@ -186,7 +127,6 @@ public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider
      */
     protected void configureTabPager() {
         createPager();
-        createTabs();
     }
 
     @Override
@@ -199,15 +139,21 @@ public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
+
+        // On Lollipop, the action bar shadow is provided by default, so have to remove it explicitly
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setElevation(0);
+
         pager = (ViewPager) view.findViewById(R.id.vp_pages);
         pager.setOnPageChangeListener(this);
-        host = (TabHost) view.findViewById(R.id.th_tabs);
-        host.setup();
-        host.setOnTabChangedListener(this);
+        slidingTabsLayout = (SlidingTabLayout) view.findViewById(R.id.sliding_tabs_layout);
+        slidingTabsLayout.setCustomTabView(R.layout.tab, R.id.tv_tab);
+        slidingTabsLayout.setSelectedIndicatorColors(getResources().getColor(android.R.color.white));
+        slidingTabsLayout.setDividerColors(0);
     }
 
     @Override
     protected FragmentProvider getProvider() {
         return adapter;
     }
+
 }

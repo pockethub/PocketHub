@@ -32,6 +32,7 @@ import com.github.mobile.core.OnLoadListener;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.ui.ConfirmDialogFragment;
 import com.github.mobile.ui.FragmentProvider;
+import com.github.mobile.ui.MainActivity;
 import com.github.mobile.ui.PagerActivity;
 import com.github.mobile.ui.ViewPager;
 import com.github.mobile.ui.user.UriLauncherActivity;
@@ -130,7 +131,8 @@ public class GistsViewActivity extends PagerActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case android.R.id.home:
-            Intent intent = new Intent(this, GistsActivity.class);
+            finish();
+            Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             return true;

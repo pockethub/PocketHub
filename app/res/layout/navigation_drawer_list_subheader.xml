@@ -4,7 +4,7 @@
     android:layout_width="match_parent">
 
     <TextView
-        android:text="Subheader"
+        android:text="@string/navigation_drawer_subheader"
         android:id="@+id/navigation_drawer_item_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="@color/text_recent"
@@ -13,6 +13,6 @@
         android:layout_marginStart="16dp"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="48dp"/>
+        android:layout_height="48dp" />
 
 </LinearLayout>
