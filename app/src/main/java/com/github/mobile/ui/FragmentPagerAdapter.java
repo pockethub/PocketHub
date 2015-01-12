@@ -28,7 +28,7 @@ import java.util.Set;
  * Pager adapter that provides the current fragment
  */
 public abstract class FragmentPagerAdapter extends
-        android.support.v4.app.FragmentPagerAdapter implements FragmentProvider {
+    android.support.v4.app.FragmentPagerAdapter implements FragmentProvider {
 
     private final ActionBarActivity activity;
 
@@ -48,6 +48,17 @@ public abstract class FragmentPagerAdapter extends
         this.activity = activity;
     }
 
+    public FragmentPagerAdapter(Fragment fragment) {
+        super(fragment.getChildFragmentManager());
+
+        fragmentManager = fragment.getChildFragmentManager();
+        this.activity = (ActionBarActivity) fragment.getActivity();
+    }
+
+    public boolean isEmpty() {
+        return tags.isEmpty();
+    }
+
     /**
      * This methods clears any fragments that may not apply to the newly
      * selected org.
@@ -55,7 +66,6 @@ public abstract class FragmentPagerAdapter extends
      * @return this adapter
      */
     public FragmentPagerAdapter clearAdapter() {
-
         if (tags.isEmpty())
             return this;
 
@@ -85,7 +95,7 @@ public abstract class FragmentPagerAdapter extends
 
     @Override
     public void setPrimaryItem(final ViewGroup container, final int position,
-            final Object object) {
+        final Object object) {
         super.setPrimaryItem(container, position, object);
 
         boolean changed = false;

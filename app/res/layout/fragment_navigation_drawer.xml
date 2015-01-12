@@ -17,31 +17,24 @@
             android:src="@drawable/navigation_drawer_header_background" />
 
         <ImageView
-            android:layout_margin="16dp"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:id="@+id/user_picture"
-            android:layout_centerVertical="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/user_name"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textColor="#DEDEDE"
-            android:layout_alignLeft="@+id/user_extra"
-            android:layout_alignStart="@+id/user_extra"
-            android:layout_above="@+id/user_extra" />
+            android:layout_centerVertical="true"
+            android:layout_margin="16dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/user_extra"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="#8A8A8A"
-            android:layout_alignBottom="@+id/user_picture"
+            android:id="@+id/user_name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="#DEDEDE"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/user_picture"
             android:layout_toEndOf="@id/user_picture" />
+
     </RelativeLayout>
 
     <ListView

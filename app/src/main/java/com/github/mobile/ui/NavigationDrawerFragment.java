@@ -45,7 +45,6 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
 
     private ImageView userImage;
     private TextView userName;
-    private TextView userExtra;
 
     public NavigationDrawerFragment() {
     }
@@ -89,7 +88,6 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
         super.onViewCreated(view, savedInstanceState);
         userImage = (ImageView) view.findViewById(R.id.user_picture);
         userName = (TextView) view.findViewById(R.id.user_name);
-        userExtra = (TextView) view.findViewById(R.id.user_extra);
         mDrawerListView = (ListView) view.findViewById(R.id.navigation_drawer_list);
         mDrawerListView.setOnItemClickListener(this);
     }
@@ -106,7 +104,6 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
 
         avatar.bind(userImage, user);
         userName.setText(user.getLogin());
-        userExtra.setText(user.getEmail());
 
         mDrawerListView.setAdapter(adapter);
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);

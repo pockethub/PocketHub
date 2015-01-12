@@ -44,7 +44,7 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
 
     @Override
     protected GistQueriesPagerAdapter createAdapter() {
-        return new GistQueriesPagerAdapter((android.support.v7.app.ActionBarActivity) getActivity());
+        return new GistQueriesPagerAdapter(this);
     }
 
     @Override

@@ -19,7 +19,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBarActivity;
 import android.view.ViewGroup;
 
 import com.github.mobile.R;
@@ -47,16 +46,16 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
     private final Set<String> tags = new HashSet<>();
 
     /**
-     * @param activity
+     * @param fragment
      * @param defaultUser
      */
-    public HomePagerAdapter(final ActionBarActivity activity,
+    public HomePagerAdapter(final Fragment fragment,
         final boolean defaultUser, final User org) {
-        super(activity);
+        super(fragment);
 
         this.org = org;
-        fragmentManager = activity.getSupportFragmentManager();
-        resources = activity.getResources();
+        fragmentManager = fragment.getChildFragmentManager();
+        resources = fragment.getResources();
         this.defaultUser = defaultUser;
     }
 

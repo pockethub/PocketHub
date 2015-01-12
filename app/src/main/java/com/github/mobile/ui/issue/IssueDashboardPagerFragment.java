@@ -57,7 +57,7 @@ public class IssueDashboardPagerFragment extends
 
     @Override
     protected IssueDashboardPagerAdapter createAdapter() {
-        return new IssueDashboardPagerAdapter((android.support.v7.app.ActionBarActivity) getActivity());
+        return new IssueDashboardPagerAdapter(this);
     }
 
     @Override

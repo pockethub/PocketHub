@@ -41,6 +41,6 @@ public class HomePagerFragment extends TabPagerFragment<HomePagerAdapter> {
 
     @Override
     protected HomePagerAdapter createAdapter() {
-        return new HomePagerAdapter((android.support.v7.app.ActionBarActivity) getActivity(), isDefaultUser, org);
+        return new HomePagerAdapter(this, isDefaultUser, org);
     }
 }

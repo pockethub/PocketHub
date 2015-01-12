@@ -85,13 +85,6 @@ public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider
         return this;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (adapter instanceof FragmentPagerAdapter)
-            ((FragmentPagerAdapter) adapter).clearAdapter();
-    }
-
     /**
      * Set current item to new position
      * <p/>
