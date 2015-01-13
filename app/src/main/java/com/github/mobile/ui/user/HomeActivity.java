@@ -189,6 +189,7 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
             if (item >= adapter.getCount())
                 item = adapter.getCount() - 1;
             pager.setItem(item);
+            updateTabs();
         }
 
         for (OrganizationSelectionListener listener : orgSelectionListeners)

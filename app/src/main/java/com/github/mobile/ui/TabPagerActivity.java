@@ -134,6 +134,9 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
         adapter = createAdapter();
         invalidateOptionsMenu();
         pager.setAdapter(adapter);
+    }
+
+    public void updateTabs() {
         slidingTabsLayout.setViewPager(pager);
     }
 
@@ -143,6 +146,7 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
     protected void configureTabPager() {
         if (adapter == null) {
             createPager();
+            updateTabs();
         }
     }
 
