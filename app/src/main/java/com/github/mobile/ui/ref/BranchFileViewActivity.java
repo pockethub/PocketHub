@@ -129,6 +129,8 @@ public class BranchFileViewActivity extends BaseActivity implements
         loadingBar = finder.find(R.id.pb_loading);
         codeView = finder.find(R.id.wv_code);
 
+        codeView.getSettings().setBuiltInZoomControls(true);
+
         file = CommitUtils.getName(path);
         isMarkdownFile = MarkdownUtils.isMarkdown(file);
         editor = new SourceEditor(codeView);
