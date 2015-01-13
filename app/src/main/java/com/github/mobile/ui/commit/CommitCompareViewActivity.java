@@ -50,7 +50,7 @@ public class CommitCompareViewActivity extends DialogFragmentActivity {
      * @return intent
      */
     public static Intent createIntent(final Repository repository,
-            final String base, final String head) {
+        final String base, final String head) {
         Builder builder = new Builder("commits.compare.VIEW");
         builder.add(EXTRA_BASE, base);
         builder.add(EXTRA_HEAD, head);
@@ -73,13 +73,15 @@ public class CommitCompareViewActivity extends DialogFragmentActivity {
 
         setContentView(R.layout.commit_compare);
 
+        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setSubtitle(repository.generateId());
         avatars.bind(actionBar, repository.getOwner());
 
         fragment = getSupportFragmentManager()
-                .findFragmentById(android.R.id.list);
+            .findFragmentById(android.R.id.list);
     }
 
     @Override
@@ -93,16 +95,16 @@ public class CommitCompareViewActivity extends DialogFragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case android.R.id.home:
-            Intent intent = RepositoryViewActivity.createIntent(repository);
-            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            return true;
-        default:
-            if (fragment != null)
-                return fragment.onOptionsItemSelected(item);
-            else
-                return super.onOptionsItemSelected(item);
+            case android.R.id.home:
+                Intent intent = RepositoryViewActivity.createIntent(repository);
+                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                if (fragment != null)
+                    return fragment.onOptionsItemSelected(item);
+                else
+                    return super.onOptionsItemSelected(item);
         }
     }
 }

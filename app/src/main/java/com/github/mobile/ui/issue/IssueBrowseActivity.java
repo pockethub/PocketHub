@@ -46,7 +46,7 @@ public class IssueBrowseActivity extends DialogFragmentActivity {
      */
     public static Intent createIntent(IssueFilter filter) {
         return new Builder("repo.issues.VIEW").repo(filter.getRepository())
-                .add(EXTRA_ISSUE_FILTER, filter).toIntent();
+            .add(EXTRA_ISSUE_FILTER, filter).toIntent();
     }
 
     private Repository repo;
@@ -62,6 +62,8 @@ public class IssueBrowseActivity extends DialogFragmentActivity {
 
         setContentView(R.layout.repo_issue_list);
 
+        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(repo.getName());
         actionBar.setSubtitle(repo.getOwner().getLogin());
@@ -72,13 +74,13 @@ public class IssueBrowseActivity extends DialogFragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case android.R.id.home:
-            Intent intent = FiltersViewActivity.createIntent();
-            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case android.R.id.home:
+                Intent intent = FiltersViewActivity.createIntent();
+                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

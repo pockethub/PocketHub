@@ -26,10 +26,10 @@ import org.eclipse.egit.github.core.User;
  * Tests of {@link EditIssuesFilterActivity}
  */
 public class EditIssuesFilterActivityTest extends
-        ActivityTest<EditIssuesFilterActivity> {
+    ActivityTest<EditIssuesFilterActivity> {
 
     /**
-     * Create test
+     * Create navigation_drawer_header_background
      */
     public EditIssuesFilterActivityTest() {
         super(EditIssuesFilterActivity.class);

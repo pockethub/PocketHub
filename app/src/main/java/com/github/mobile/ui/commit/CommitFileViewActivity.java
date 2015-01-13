@@ -59,7 +59,7 @@ import org.eclipse.egit.github.core.util.EncodingUtils;
  * Activity to display the contents of a file in a commit
  */
 public class CommitFileViewActivity extends BaseActivity implements
-        LoaderCallbacks<CharSequence> {
+    LoaderCallbacks<CharSequence> {
 
     private static final String TAG = "CommitFileViewActivity";
 
@@ -76,7 +76,7 @@ public class CommitFileViewActivity extends BaseActivity implements
      * @return intent
      */
     public static Intent createIntent(Repository repository, String commit,
-            CommitFile file) {
+        CommitFile file) {
         Builder builder = new Builder("commit.file.VIEW");
         builder.repo(repository);
         builder.add(EXTRA_HEAD, commit);
@@ -121,6 +121,8 @@ public class CommitFileViewActivity extends BaseActivity implements
 
         setContentView(R.layout.commit_file_view);
 
+        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
+
         repo = getSerializableExtra(EXTRA_REPOSITORY);
         commit = getStringExtra(EXTRA_HEAD);
         sha = getStringExtra(EXTRA_BASE);
@@ -134,7 +136,7 @@ public class CommitFileViewActivity extends BaseActivity implements
 
         editor = new SourceEditor(codeView);
         editor.setWrap(PreferenceUtils.getCodePreferences(this).getBoolean(
-                WRAP, false));
+            WRAP, false));
 
         ActionBar actionBar = getSupportActionBar();
         int lastSlash = path.lastIndexOf('/');
@@ -143,7 +145,7 @@ public class CommitFileViewActivity extends BaseActivity implements
         else
             actionBar.setTitle(path);
         actionBar.setSubtitle(getString(R.string.commit_prefix)
-                + CommitUtils.abbreviate(commit));
+            + CommitUtils.abbreviate(commit));
         avatars.bind(actionBar, repo.getOwner());
 
         loadContent();
@@ -164,7 +166,7 @@ public class CommitFileViewActivity extends BaseActivity implements
             markdownItem.setEnabled(blob != null);
             markdownItem.setVisible(true);
             if (PreferenceUtils.getCodePreferences(this).getBoolean(
-                    RENDER_MARKDOWN, true))
+                RENDER_MARKDOWN, true))
                 markdownItem.setTitle(R.string.show_raw_markdown);
             else
                 markdownItem.setTitle(R.string.render_markdown);
@@ -176,39 +178,39 @@ public class CommitFileViewActivity extends BaseActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_wrap:
-            if (editor.getWrap())
-                item.setTitle(R.string.enable_wrapping);
-            else
-                item.setTitle(R.string.disable_wrapping);
-            editor.toggleWrap();
-            PreferenceUtils.save(PreferenceUtils.getCodePreferences(this)
-                    .edit().putBoolean(WRAP, editor.getWrap()));
-            return true;
-
-        case R.id.m_share:
-            shareFile();
-            return true;
-
-        case R.id.m_render_markdown:
-            if (editor.isMarkdown()) {
-                item.setTitle(R.string.render_markdown);
-                editor.toggleMarkdown();
-                editor.setSource(file, blob);
-            } else {
-                item.setTitle(R.string.show_raw_markdown);
-                editor.toggleMarkdown();
-                if (renderedMarkdown != null)
-                    editor.setSource(file, renderedMarkdown, false);
+            case R.id.m_wrap:
+                if (editor.getWrap())
+                    item.setTitle(R.string.enable_wrapping);
                 else
-                    loadMarkdown();
-            }
-            PreferenceUtils.save(PreferenceUtils.getCodePreferences(this)
-                    .edit().putBoolean(RENDER_MARKDOWN, editor.isMarkdown()));
-            return true;
+                    item.setTitle(R.string.disable_wrapping);
+                editor.toggleWrap();
+                PreferenceUtils.save(PreferenceUtils.getCodePreferences(this)
+                    .edit().putBoolean(WRAP, editor.getWrap()));
+                return true;
 
-        default:
-            return super.onOptionsItemSelected(item);
+            case R.id.m_share:
+                shareFile();
+                return true;
+
+            case R.id.m_render_markdown:
+                if (editor.isMarkdown()) {
+                    item.setTitle(R.string.render_markdown);
+                    editor.toggleMarkdown();
+                    editor.setSource(file, blob);
+                } else {
+                    item.setTitle(R.string.show_raw_markdown);
+                    editor.toggleMarkdown();
+                    if (renderedMarkdown != null)
+                        editor.setSource(file, renderedMarkdown, false);
+                    else
+                        loadMarkdown();
+                }
+                PreferenceUtils.save(PreferenceUtils.getCodePreferences(this)
+                    .edit().putBoolean(RENDER_MARKDOWN, editor.isMarkdown()));
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -216,13 +218,13 @@ public class CommitFileViewActivity extends BaseActivity implements
     public Loader<CharSequence> onCreateLoader(int loader, Bundle args) {
         final String raw = args.getString(ARG_TEXT);
         final IRepositoryIdProvider repo = (IRepositoryIdProvider) args
-                .getSerializable(ARG_REPO);
+            .getSerializable(ARG_REPO);
         return new MarkdownLoader(this, repo, raw, imageGetter, false);
     }
 
     @Override
     public void onLoadFinished(Loader<CharSequence> loader,
-            CharSequence rendered) {
+        CharSequence rendered) {
         if (rendered == null)
             ToastUtils.show(this, R.string.error_rendering_markdown);
 
@@ -244,8 +246,8 @@ public class CommitFileViewActivity extends BaseActivity implements
     private void shareFile() {
         String id = repo.generateId();
         startActivity(ShareUtils.create(
-                path + " at " + CommitUtils.abbreviate(commit) + " on " + id,
-                "https://github.com/" + id + "/blob/" + commit + '/' + path));
+            path + " at " + CommitUtils.abbreviate(commit) + " on " + id,
+            "https://github.com/" + id + "/blob/" + commit + '/' + path));
     }
 
     private void loadMarkdown() {
@@ -253,7 +255,7 @@ public class CommitFileViewActivity extends BaseActivity implements
         ViewUtils.setGone(codeView, true);
 
         String markdown = new String(
-                EncodingUtils.fromBase64(blob.getContent()));
+            EncodingUtils.fromBase64(blob.getContent()));
         Bundle args = new Bundle();
         args.putCharSequence(ARG_TEXT, markdown);
         args.putSerializable(ARG_REPO, repo);
@@ -277,9 +279,9 @@ public class CommitFileViewActivity extends BaseActivity implements
                     markdownItem.setEnabled(true);
 
                 if (isMarkdownFile
-                        && PreferenceUtils.getCodePreferences(
-                        CommitFileViewActivity.this).getBoolean(
-                        RENDER_MARKDOWN, true))
+                    && PreferenceUtils.getCodePreferences(
+                    CommitFileViewActivity.this).getBoolean(
+                    RENDER_MARKDOWN, true))
                     loadMarkdown();
                 else {
                     ViewUtils.setGone(loadingBar, true);
@@ -297,7 +299,7 @@ public class CommitFileViewActivity extends BaseActivity implements
                 ViewUtils.setGone(loadingBar, true);
                 ViewUtils.setGone(codeView, false);
                 ToastUtils.show(CommitFileViewActivity.this, e,
-                        R.string.error_file_load);
+                    R.string.error_file_load);
             }
         }.execute();
     }

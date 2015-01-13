@@ -30,7 +30,7 @@ import com.github.mobile.tests.ActivityTest;
 public class LoginActivityTest extends ActivityTest<LoginActivity> {
 
     /**
-     * Create test for {@link LoginActivity}
+     * Create navigation_drawer_header_background for {@link LoginActivity}
      */
     public LoginActivityTest() {
         super(LoginActivity.class);
@@ -41,7 +41,7 @@ public class LoginActivityTest extends ActivityTest<LoginActivity> {
      */
     public void testHasAuthenticator() {
         assertTrue(AccountUtils.hasAuthenticator(AccountManager
-                .get(getActivity())));
+            .get(getActivity())));
     }
 
     /**

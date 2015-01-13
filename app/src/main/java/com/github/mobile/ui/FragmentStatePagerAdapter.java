@@ -23,8 +23,8 @@ import android.view.ViewGroup;
  * Pager that stores current fragment
  */
 public abstract class FragmentStatePagerAdapter extends
-        android.support.v4.app.FragmentStatePagerAdapter implements
-        FragmentProvider {
+    android.support.v4.app.FragmentStatePagerAdapter implements
+    FragmentProvider {
 
     private final ActionBarActivity activity;
 
@@ -39,6 +39,15 @@ public abstract class FragmentStatePagerAdapter extends
         this.activity = activity;
     }
 
+    /**
+     * @param fragment
+     */
+    public FragmentStatePagerAdapter(final Fragment fragment) {
+        super(fragment.getChildFragmentManager());
+
+        this.activity = (ActionBarActivity) fragment.getActivity();
+    }
+
     @Override
     public Fragment getSelected() {
         return selected;
@@ -46,7 +55,7 @@ public abstract class FragmentStatePagerAdapter extends
 
     @Override
     public void setPrimaryItem(final ViewGroup container, final int position,
-            final Object object) {
+        final Object object) {
         super.setPrimaryItem(container, position, object);
 
         boolean changed = false;

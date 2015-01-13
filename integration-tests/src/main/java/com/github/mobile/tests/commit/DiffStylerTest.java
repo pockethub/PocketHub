@@ -59,9 +59,9 @@ public class DiffStylerTest extends AndroidTestCase {
     public void testEmptyFiles() {
         DiffStyler styler = new DiffStyler(getContext().getResources());
         styler.setFiles(null);
-        assertTrue(styler.get("test").isEmpty());
-        styler.setFiles(Collections.<CommitFile> emptyList());
-        assertTrue(styler.get("test").isEmpty());
+        assertTrue(styler.get("navigation_drawer_header_background").isEmpty());
+        styler.setFiles(Collections.<CommitFile>emptyList());
+        assertTrue(styler.get("navigation_drawer_header_background").isEmpty());
     }
 
     /**
@@ -92,7 +92,7 @@ public class DiffStylerTest extends AndroidTestCase {
      * @throws IOException
      */
     public void testEmptyPatchLineWithOtherValidLines() throws IOException {
-        compareStyled("@@ 0,1 0,1 @@\n\n-test\n");
+        compareStyled("@@ 0,1 0,1 @@\n\n-navigation_drawer_header_background\n");
     }
 
     /**
@@ -101,7 +101,7 @@ public class DiffStylerTest extends AndroidTestCase {
      * @throws IOException
      */
     public void testTrailingEmptyLine() throws IOException {
-        compareStyled("@@ 0,1 0,1 @@\n-test\n\n");
+        compareStyled("@@ 0,1 0,1 @@\n-navigation_drawer_header_background\n\n");
     }
 
     /**
@@ -119,7 +119,7 @@ public class DiffStylerTest extends AndroidTestCase {
      * @throws IOException
      */
     public void testNoTrailingNewlineAfterSecondLine() throws IOException {
-        compareStyled("@@ 1,2 1,2 @@\n+test");
+        compareStyled("@@ 1,2 1,2 @@\n+navigation_drawer_header_background");
     }
 
     /**
@@ -137,6 +137,6 @@ public class DiffStylerTest extends AndroidTestCase {
      * @throws IOException
      */
     public void testFormattedPatch() throws IOException {
-        compareStyled("@@ 1,2 1,2 @@\n+test\n");
+        compareStyled("@@ 1,2 1,2 @@\n+navigation_drawer_header_background\n");
     }
 }

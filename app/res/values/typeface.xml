@@ -25,4 +25,10 @@
     <string name="icon_star">\uf02a</string>
     <string name="icon_fork">\uf020</string>
 
+    <string-array name="navigation_drawer_icon_list">
+        <item>\uf08d</item>
+        <item>\uf00e</item>
+        <item>\uf07d</item>
+        <item>\uf07b</item>
+    </string-array>
 </resources>

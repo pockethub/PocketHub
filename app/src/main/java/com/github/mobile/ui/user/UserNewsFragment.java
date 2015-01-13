@@ -28,7 +28,7 @@ import org.eclipse.egit.github.core.User;
  * Fragment to display a news feed for a given user/org
  */
 public abstract class UserNewsFragment extends NewsFragment implements
-        OrganizationSelectionListener {
+    OrganizationSelectionListener {
 
     /**
      * Current organization/user
@@ -45,7 +45,12 @@ public abstract class UserNewsFragment extends NewsFragment implements
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        org = ((OrganizationSelectionProvider) getActivity()).addListener(this);
+        if (getActivity() instanceof OrganizationSelectionProvider)
+            org = ((OrganizationSelectionProvider) getActivity()).addListener(this);
+
+        if (getArguments() != null && getArguments().containsKey("org"))
+            org = (User) getArguments().getSerializable("org");
+
         if (org == null && savedInstanceState != null)
             org = (User) savedInstanceState.get(EXTRA_USER);
 
@@ -54,9 +59,10 @@ public abstract class UserNewsFragment extends NewsFragment implements
 
     @Override
     public void onDetach() {
-        OrganizationSelectionProvider selectionProvider = (OrganizationSelectionProvider) getActivity();
-        if (selectionProvider != null)
+        if (getActivity() != null && getActivity() instanceof OrganizationSelectionProvider) {
+            OrganizationSelectionProvider selectionProvider = (OrganizationSelectionProvider) getActivity();
             selectionProvider.removeListener(this);
+        }
 
         super.onDetach();
     }

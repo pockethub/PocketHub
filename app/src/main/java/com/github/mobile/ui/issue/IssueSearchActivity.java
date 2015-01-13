@@ -70,17 +70,17 @@ public class IssueSearchActivity extends RoboActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_clear:
-            IssueSearchSuggestionsProvider.clear(this);
-            ToastUtils.show(this, R.string.search_history_cleared);
-            return true;
-        case android.R.id.home:
-            Intent intent = RepositoryViewActivity.createIntent(repository);
-            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case R.id.m_clear:
+                IssueSearchSuggestionsProvider.clear(this);
+                ToastUtils.show(this, R.string.search_history_cleared);
+                return true;
+            case android.R.id.home:
+                Intent intent = RepositoryViewActivity.createIntent(repository);
+                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -89,6 +89,8 @@ public class IssueSearchActivity extends RoboActionBarActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.issue_search);
+
+        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
         ActionBar actionBar = getSupportActionBar();
         Bundle appData = getIntent().getBundleExtra(APP_DATA);
@@ -102,7 +104,7 @@ public class IssueSearchActivity extends RoboActionBarActivity {
         avatars.bind(actionBar, repository.getOwner());
 
         issueFragment = (SearchIssueListFragment) getSupportFragmentManager()
-                .findFragmentById(android.R.id.list);
+            .findFragmentById(android.R.id.list);
 
         handleIntent(getIntent());
     }

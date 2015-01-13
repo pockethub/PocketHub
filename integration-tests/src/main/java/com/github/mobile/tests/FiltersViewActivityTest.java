@@ -23,7 +23,7 @@ import com.github.mobile.ui.issue.FiltersViewActivity;
 public class FiltersViewActivityTest extends ActivityTest<FiltersViewActivity> {
 
     /**
-     * Create test
+     * Create navigation_drawer_header_background
      */
     public FiltersViewActivityTest() {
         super(FiltersViewActivity.class);

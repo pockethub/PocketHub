@@ -35,8 +35,8 @@ import android.widget.ProgressBar;
 
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R;
+import com.github.mobile.ui.MainActivity;
 import com.github.mobile.ui.TabPagerActivity;
-import com.github.mobile.ui.user.HomeActivity;
 import com.github.mobile.util.ToastUtils;
 
 /**
@@ -78,17 +78,17 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_clear:
-            RepositorySearchSuggestionsProvider.clear(this);
-            ToastUtils.show(this, R.string.search_history_cleared);
-            return true;
-        case android.R.id.home:
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case R.id.m_clear:
+                RepositorySearchSuggestionsProvider.clear(this);
+                ToastUtils.show(this, R.string.search_history_cleared);
+                return true;
+            case android.R.id.home:
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -105,12 +105,12 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
     @Override
     protected String getIcon(int position) {
         switch (position) {
-        case 0:
-            return ICON_PUBLIC;
-        case 1:
-            return ICON_PERSON;
-        default:
-            return super.getIcon(position);
+            case 0:
+                return ICON_PUBLIC;
+            case 1:
+                return ICON_PERSON;
+            default:
+                return super.getIcon(position);
         }
     }
 
@@ -150,9 +150,9 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
         if (repoFragment == null || userFragment == null) {
             FragmentManager fm = getSupportFragmentManager();
             repoFragment = (SearchRepositoryListFragment) fm.findFragmentByTag(
-                    "android:switcher:" + pager.getId() + ":" + 0);
+                "android:switcher:" + pager.getId() + ":" + 0);
             userFragment = (SearchUserListFragment) fm.findFragmentByTag(
-                    "android:switcher:" + pager.getId() + ":" + 1);
+                "android:switcher:" + pager.getId() + ":" + 1);
         }
     }
 }
