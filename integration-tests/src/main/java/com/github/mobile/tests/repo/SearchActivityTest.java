@@ -26,10 +26,10 @@ import com.github.mobile.ui.search.SearchActivity;
  * Tests of {@link SearchActivity}
  */
 public class SearchActivityTest extends
-        ActivityTest<SearchActivity> {
+    ActivityTest<SearchActivity> {
 
     /**
-     * Create test
+     * Create navigation_drawer_header_background
      */
     public SearchActivityTest() {
         super(SearchActivity.class);
@@ -39,6 +39,6 @@ public class SearchActivityTest extends
     protected void setUp() throws Exception {
         super.setUp();
 
-        setActivityIntent(new Intent(ACTION_SEARCH).putExtra(QUERY, "test"));
+        setActivityIntent(new Intent(ACTION_SEARCH).putExtra(QUERY, "navigation_drawer_header_background"));
     }
 }

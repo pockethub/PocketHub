@@ -28,7 +28,6 @@ import static org.eclipse.egit.github.core.service.IssueService.SORT_UPDATED;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
 
 import com.github.mobile.R;
 import com.github.mobile.ui.FragmentStatePagerAdapter;
@@ -47,12 +46,12 @@ public class IssueDashboardPagerAdapter extends FragmentStatePagerAdapter {
     /**
      * Create pager adapter
      *
-     * @param activity
+     * @param fragment
      */
-    public IssueDashboardPagerAdapter(final ActionBarActivity activity) {
-        super(activity);
+    public IssueDashboardPagerAdapter(final Fragment fragment) {
+        super(fragment);
 
-        resources = activity.getResources();
+        resources = fragment.getResources();
     }
 
     @Override
@@ -64,22 +63,22 @@ public class IssueDashboardPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(final int position) {
         String filter = null;
         switch (position) {
-        case 0:
-            filter = FILTER_SUBSCRIBED;
-            break;
-        case 1:
-            filter = FILTER_ASSIGNED;
-            break;
-        case 2:
-            filter = FILTER_CREATED;
-            break;
-        case 3:
-            filter = FILTER_MENTIONED;
-            break;
-        default:
-            return null;
+            case 0:
+                filter = FILTER_SUBSCRIBED;
+                break;
+            case 1:
+                filter = FILTER_ASSIGNED;
+                break;
+            case 2:
+                filter = FILTER_CREATED;
+                break;
+            case 3:
+                filter = FILTER_MENTIONED;
+                break;
+            default:
+                return null;
         }
-        final Map<String, String> filterData = new HashMap<String, String>();
+        final Map<String, String> filterData = new HashMap<>();
         filterData.put(FIELD_FILTER, filter);
         filterData.put(FIELD_SORT, SORT_UPDATED);
         filterData.put(FIELD_DIRECTION, DIRECTION_DESCENDING);
@@ -93,16 +92,16 @@ public class IssueDashboardPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public CharSequence getPageTitle(final int position) {
         switch (position) {
-        case 0:
-            return resources.getString(R.string.tab_watched);
-        case 1:
-            return resources.getString(R.string.tab_assigned);
-        case 2:
-            return resources.getString(R.string.tab_created);
-        case 3:
-            return resources.getString(R.string.tab_mentioned);
-        default:
-            return null;
+            case 0:
+                return resources.getString(R.string.tab_watched);
+            case 1:
+                return resources.getString(R.string.tab_assigned);
+            case 2:
+                return resources.getString(R.string.tab_created);
+            case 3:
+                return resources.getString(R.string.tab_mentioned);
+            default:
+                return null;
         }
     }
 }

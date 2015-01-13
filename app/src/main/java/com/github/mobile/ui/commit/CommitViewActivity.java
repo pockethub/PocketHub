@@ -53,7 +53,7 @@ public class CommitViewActivity extends PagerActivity {
      * @return intent
      */
     public static Intent createIntent(final Repository repository,
-            final String id) {
+        final String id) {
         return createIntent(repository, 0, id);
     }
 
@@ -66,7 +66,7 @@ public class CommitViewActivity extends PagerActivity {
      * @return intent
      */
     public static Intent createIntent(final Repository repository,
-            final int position, final Collection<RepositoryCommit> commits) {
+        final int position, final Collection<RepositoryCommit> commits) {
         String[] ids = new String[commits.size()];
         int index = 0;
         for (RepositoryCommit commit : commits)
@@ -83,7 +83,7 @@ public class CommitViewActivity extends PagerActivity {
      * @return intent
      */
     public static Intent createIntent(final Repository repository,
-            final int position, final String... ids) {
+        final int position, final String... ids) {
         Builder builder = new Builder("commits.VIEW");
         builder.add(EXTRA_POSITION, position);
         builder.add(EXTRA_BASES, ids);
@@ -110,6 +110,8 @@ public class CommitViewActivity extends PagerActivity {
 
         setContentView(R.layout.pager);
 
+        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
+
         pager = finder.find(R.id.vp_pages);
 
         repository = getSerializableExtra(EXTRA_REPOSITORY);
@@ -131,13 +133,13 @@ public class CommitViewActivity extends PagerActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case android.R.id.home:
-            Intent intent = RepositoryViewActivity.createIntent(repository);
-            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case android.R.id.home:
+                Intent intent = RepositoryViewActivity.createIntent(repository);
+                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

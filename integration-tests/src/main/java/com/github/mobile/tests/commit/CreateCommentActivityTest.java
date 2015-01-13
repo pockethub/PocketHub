@@ -30,10 +30,10 @@ import org.eclipse.egit.github.core.User;
  * Tests of {@link CreateCommentActivity}
  */
 public class CreateCommentActivityTest extends
-        ActivityTest<CreateCommentActivity> {
+    ActivityTest<CreateCommentActivity> {
 
     /**
-     * Create test
+     * Create navigation_drawer_header_background
      */
     public CreateCommentActivityTest() {
         super(CreateCommentActivity.class);

@@ -30,7 +30,7 @@ import com.github.mobile.ui.gist.CreateGistActivity;
 public class CreateGistActivityTest extends ActivityTest<CreateGistActivity> {
 
     /**
-     * Create test
+     * Create navigation_drawer_header_background
      */
     public CreateGistActivityTest() {
         super(CreateGistActivity.class);

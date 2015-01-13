@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2012 GitHub Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,21 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<com.github.mobile.ui.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/vp_pages"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:id="@+id/toolbar" />
+
+    <com.github.mobile.ui.ViewPager
+        android:id="@+id/vp_pages"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

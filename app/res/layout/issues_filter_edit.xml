@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2012 GitHub Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,18 +15,26 @@
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:layout_alignParentTop="true"
+        android:id="@+id/toolbar" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true" >
+        android:layout_below="@id/toolbar">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="10dp" >
+            android:padding="10dp">
 
             <TextView
                 style="@style/HeaderTitleText"
@@ -37,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/inset_background"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/rb_open"
@@ -65,7 +72,7 @@
                 android:background="@drawable/inset_background"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="10dp" >
+                android:padding="10dp">
 
                 <ImageView
                     android:id="@+id/iv_avatar"
@@ -95,7 +102,7 @@
                 android:background="@drawable/inset_background"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
-                android:padding="10dp" >
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/tv_milestone"
@@ -118,7 +125,7 @@
                 android:background="@drawable/inset_background"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
-                android:padding="10dp" >
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/tv_labels"

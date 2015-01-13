@@ -23,41 +23,35 @@ import static com.github.mobile.util.TypefaceUtils.ICON_FOLLOW;
 import static com.github.mobile.util.TypefaceUtils.ICON_WATCH;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
+import android.support.annotation.Nullable;
 import android.view.MenuItem;
+import android.view.View;
 
-import com.github.mobile.R;
-import com.github.mobile.ui.TabPagerActivity;
-import com.github.mobile.ui.user.HomeActivity;
+import com.github.mobile.ui.MainActivity;
+import com.github.mobile.ui.TabPagerFragment;
 
 /**
  * Dashboard activity for issues
  */
-public class IssueDashboardActivity extends
-        TabPagerActivity<IssueDashboardPagerAdapter> {
+public class IssueDashboardPagerFragment extends
+    TabPagerFragment<IssueDashboardPagerAdapter> {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(R.string.dashboard_issues_title);
-        actionBar.setIcon(R.drawable.action_dashboard);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         configureTabPager();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case android.R.id.home:
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case android.R.id.home:
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -69,16 +63,16 @@ public class IssueDashboardActivity extends
     @Override
     protected String getIcon(int position) {
         switch (position) {
-        case 0:
-            return ICON_WATCH;
-        case 1:
-            return ICON_FOLLOW;
-        case 2:
-            return ICON_ADD;
-        case 3:
-            return ICON_BROADCAST;
-        default:
-            return super.getIcon(position);
+            case 0:
+                return ICON_WATCH;
+            case 1:
+                return ICON_FOLLOW;
+            case 2:
+                return ICON_ADD;
+            case 3:
+                return ICON_BROADCAST;
+            default:
+                return super.getIcon(position);
         }
     }
 }

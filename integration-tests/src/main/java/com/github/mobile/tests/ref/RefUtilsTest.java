@@ -33,7 +33,7 @@ public class RefUtilsTest extends AndroidTestCase {
         assertFalse(RefUtils.isBranch(null));
         assertFalse(RefUtils.isBranch(new Reference()));
         assertFalse(RefUtils.isBranch(new Reference().setRef("")));
-        assertFalse(RefUtils.isBranch(new Reference().setRef("test")));
+        assertFalse(RefUtils.isBranch(new Reference().setRef("navigation_drawer_header_background")));
         assertFalse(RefUtils.isBranch(new Reference().setRef("refs/tags/v1")));
         assertFalse(RefUtils.isBranch(new Reference().setRef("refs/b1")));
         assertTrue(RefUtils.isBranch(new Reference().setRef("refs/heads/b2")));
@@ -46,7 +46,7 @@ public class RefUtilsTest extends AndroidTestCase {
         assertFalse(RefUtils.isTag((Reference) null));
         assertFalse(RefUtils.isTag(new Reference()));
         assertFalse(RefUtils.isTag(new Reference().setRef("")));
-        assertFalse(RefUtils.isTag(new Reference().setRef("test")));
+        assertFalse(RefUtils.isTag(new Reference().setRef("navigation_drawer_header_background")));
         assertFalse(RefUtils.isTag(new Reference().setRef("refs/b1")));
         assertFalse(RefUtils.isTag(new Reference().setRef("refs/heads/b2")));
         assertTrue(RefUtils.isTag(new Reference().setRef("refs/tags/v1")));
@@ -60,9 +60,9 @@ public class RefUtilsTest extends AndroidTestCase {
         assertFalse(RefUtils.isValid(new Reference()));
         assertFalse(RefUtils.isValid(new Reference().setRef("")));
         assertFalse(RefUtils.isValid(new Reference()
-                .setRef("refs/pull/6/merge")));
+            .setRef("refs/pull/6/merge")));
         assertFalse(RefUtils
-                .isValid(new Reference().setRef("refs/pull/6/head")));
+            .isValid(new Reference().setRef("refs/pull/6/head")));
         assertTrue(RefUtils.isValid(new Reference().setRef("refs/pull")));
         assertTrue(RefUtils.isValid(new Reference().setRef("refs/heads/b1")));
         assertTrue(RefUtils.isValid(new Reference().setRef("refs/tags/v1")));
@@ -76,13 +76,13 @@ public class RefUtilsTest extends AndroidTestCase {
         assertNull(RefUtils.getName(new Reference()));
         assertEquals("", RefUtils.getName(new Reference().setRef("")));
         assertEquals("unchanged",
-                RefUtils.getName(new Reference().setRef("unchanged")));
+            RefUtils.getName(new Reference().setRef("unchanged")));
         assertEquals("branch",
-                RefUtils.getName(new Reference().setRef("refs/heads/branch")));
+            RefUtils.getName(new Reference().setRef("refs/heads/branch")));
         assertEquals("tag",
-                RefUtils.getName(new Reference().setRef("refs/tags/tag")));
+            RefUtils.getName(new Reference().setRef("refs/tags/tag")));
         assertEquals("notes",
-                RefUtils.getName(new Reference().setRef("refs/notes")));
+            RefUtils.getName(new Reference().setRef("refs/notes")));
 
     }
 
@@ -94,13 +94,13 @@ public class RefUtilsTest extends AndroidTestCase {
         assertNull(RefUtils.getPath(new Reference()));
         assertEquals("", RefUtils.getPath(new Reference().setRef("")));
         assertEquals("unchanged",
-                RefUtils.getPath(new Reference().setRef("unchanged")));
+            RefUtils.getPath(new Reference().setRef("unchanged")));
         assertEquals("heads/branch",
-                RefUtils.getPath(new Reference().setRef("refs/heads/branch")));
+            RefUtils.getPath(new Reference().setRef("refs/heads/branch")));
         assertEquals("tags/tag",
-                RefUtils.getPath(new Reference().setRef("refs/tags/tag")));
+            RefUtils.getPath(new Reference().setRef("refs/tags/tag")));
         assertEquals("notes",
-                RefUtils.getPath(new Reference().setRef("refs/notes")));
+            RefUtils.getPath(new Reference().setRef("refs/notes")));
 
     }
 }

@@ -35,7 +35,7 @@ import roboguice.RoboGuice;
  * Tests of {@link GistFilesViewActivity}
  */
 public class GistFilesViewActivityTest extends
-        ActivityTest<GistFilesViewActivity> {
+    ActivityTest<GistFilesViewActivity> {
 
     @Inject
     private GistStore store;
@@ -43,7 +43,7 @@ public class GistFilesViewActivityTest extends
     private Gist gist;
 
     /**
-     * Create test
+     * Create navigation_drawer_header_background
      */
     public GistFilesViewActivityTest() {
         super(GistFilesViewActivity.class);
@@ -54,11 +54,11 @@ public class GistFilesViewActivityTest extends
         super.setUp();
 
         RoboGuice.injectMembers(getInstrumentation().getTargetContext()
-                .getApplicationContext(), this);
+            .getApplicationContext(), this);
 
         gist = new Gist();
         gist.setId("abcd");
-        Map<String, GistFile> files = new LinkedHashMap<String, GistFile>();
+        Map<String, GistFile> files = new LinkedHashMap<>();
         files.put("a", new GistFile().setFilename("a").setContent("aa"));
         files.put("b", new GistFile().setFilename("b").setContent("bb"));
         gist.setFiles(files);
@@ -73,7 +73,7 @@ public class GistFilesViewActivityTest extends
      */
     public void testChangingPages() throws Throwable {
         final ViewPager pager = (ViewPager) getActivity().findViewById(
-                id.vp_pages);
+            id.vp_pages);
         assertEquals(0, pager.getCurrentItem());
         ui(new Runnable() {
 

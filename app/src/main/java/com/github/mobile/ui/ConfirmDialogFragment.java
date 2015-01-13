@@ -24,6 +24,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 
 /**
  * Helper to display a confirmation dialog
@@ -41,7 +42,7 @@ public class ConfirmDialogFragment extends DialogFragmentHelper implements
      * @param title
      * @param message
      */
-    public static void show(final DialogFragmentActivity activity,
+    public static void show(final FragmentActivity activity,
             final int requestCode, final String title, final String message) {
         show(activity, requestCode, title, message, null);
     }
@@ -55,7 +56,7 @@ public class ConfirmDialogFragment extends DialogFragmentHelper implements
      * @param message
      * @param bundle
      */
-    public static void show(final DialogFragmentActivity activity,
+    public static void show(final FragmentActivity activity,
             final int requestCode, final String title, final String message,
             final Bundle bundle) {
         Bundle arguments = createArguments(title, message, requestCode);

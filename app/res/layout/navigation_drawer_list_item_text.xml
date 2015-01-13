@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.github.mobile.ui.CheckableRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/navigation_drawer_list_item_selector">
+
+    <TextView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:textSize="24sp"
+        android:textColor="#737373"
+        android:gravity="center"
+        android:id="@+id/navigation_drawer_item_text_icon"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_centerVertical="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        android:id="@+id/navigation_drawer_item_name"
+        android:layout_marginLeft="72dp"
+        android:layout_marginStart="72dp"
+        android:textColor="#212121"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:layout_centerVertical="true" />
+
+</com.github.mobile.ui.CheckableRelativeLayout>

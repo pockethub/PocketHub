@@ -29,6 +29,7 @@ import android.widget.EditText;
 
 import com.github.mobile.R;
 import com.github.mobile.ui.BaseActivity;
+import com.github.mobile.ui.MainActivity;
 import com.github.mobile.ui.TextWatcherAdapter;
 import com.github.mobile.util.ShareUtils;
 
@@ -54,6 +55,8 @@ public class CreateGistActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.gist_create);
+
+        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
         descriptionText = finder.find(R.id.et_gist_description);
         nameText = finder.find(R.id.et_gist_name);
@@ -104,17 +107,17 @@ public class CreateGistActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_apply:
-            createGist();
-            return true;
-        case android.R.id.home:
-            finish();
-            Intent intent = new Intent(this, GistsActivity.class);
-            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case R.id.m_apply:
+                createGist();
+                return true;
+            case android.R.id.home:
+                finish();
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -123,11 +126,11 @@ public class CreateGistActivity extends BaseActivity {
 
         String enteredDescription = descriptionText.getText().toString().trim();
         final String description = enteredDescription.length() > 0 ? enteredDescription
-                : getString(R.string.gist_description_hint);
+            : getString(R.string.gist_description_hint);
 
         String enteredName = nameText.getText().toString().trim();
         final String name = enteredName.length() > 0 ? enteredName
-                : getString(R.string.gist_file_name_hint);
+            : getString(R.string.gist_file_name_hint);
 
         final String content = contentText.getText().toString();
 

@@ -60,6 +60,8 @@ public class RepositoryContributorsActivity extends DialogFragmentActivity {
 
         repository = getSerializableExtra(EXTRA_REPOSITORY);
 
+        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(repository.getName());
         actionBar.setSubtitle(R.string.contributors);
@@ -72,13 +74,13 @@ public class RepositoryContributorsActivity extends DialogFragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case android.R.id.home:
-            Intent intent = RepositoryViewActivity.createIntent(repository);
-            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case android.R.id.home:
+                Intent intent = RepositoryViewActivity.createIntent(repository);
+                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

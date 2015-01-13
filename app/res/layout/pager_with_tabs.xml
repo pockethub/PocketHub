@@ -18,8 +18,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.github.mobile.ui.SlidingTabLayout
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:minHeight="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:id="@+id/toolbar" />
+
+    <com.github.mobile.ui.SlidingTabLayout
+        android:layout_below="@id/toolbar"
         android:id="@+id/sliding_tabs_layout"
         android:background="@color/primary"
         android:layout_width="match_parent"
@@ -41,6 +49,6 @@
         android:id="@+id/progress_bar"
         style="@style/ListSpinner"
         android:layout_centerInParent="true"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </RelativeLayout>

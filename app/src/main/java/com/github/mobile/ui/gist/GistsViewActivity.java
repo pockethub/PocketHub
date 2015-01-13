@@ -32,6 +32,7 @@ import com.github.mobile.core.OnLoadListener;
 import com.github.mobile.core.gist.GistStore;
 import com.github.mobile.ui.ConfirmDialogFragment;
 import com.github.mobile.ui.FragmentProvider;
+import com.github.mobile.ui.MainActivity;
 import com.github.mobile.ui.PagerActivity;
 import com.github.mobile.ui.ViewPager;
 import com.github.mobile.ui.user.UriLauncherActivity;
@@ -47,7 +48,7 @@ import org.eclipse.egit.github.core.Gist;
  * Activity to display a collection of Gists in a pager
  */
 public class GistsViewActivity extends PagerActivity implements
-        OnLoadListener<Gist> {
+    OnLoadListener<Gist> {
 
     private static final int REQUEST_CONFIRM_DELETE = 1;
 
@@ -59,7 +60,7 @@ public class GistsViewActivity extends PagerActivity implements
      */
     public static Intent createIntent(Gist gist) {
         return new Builder("gists.VIEW").gist(gist).add(EXTRA_POSITION, 0)
-                .toIntent();
+            .toIntent();
     }
 
     /**
@@ -75,8 +76,8 @@ public class GistsViewActivity extends PagerActivity implements
         for (Gist gist : gists)
             ids[index++] = gist.getId();
         return new Builder("gists.VIEW")
-                .add(EXTRA_GIST_IDS, (Serializable) ids)
-                .add(EXTRA_POSITION, position).toIntent();
+            .add(EXTRA_GIST_IDS, (Serializable) ids)
+            .add(EXTRA_POSITION, position).toIntent();
     }
 
     private ViewPager pager;
@@ -100,6 +101,8 @@ public class GistsViewActivity extends PagerActivity implements
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.pager);
+
+        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
         gists = getStringArrayExtra(EXTRA_GIST_IDS);
         gist = getSerializableExtra(EXTRA_GIST);
@@ -129,21 +132,22 @@ public class GistsViewActivity extends PagerActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case android.R.id.home:
-            Intent intent = new Intent(this, GistsActivity.class);
-            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            return true;
-        case R.id.m_delete:
-            String gistId = gists[pager.getCurrentItem()];
-            Bundle args = new Bundle();
-            args.putString(EXTRA_GIST_ID, gistId);
-            ConfirmDialogFragment.show(this, REQUEST_CONFIRM_DELETE,
+            case android.R.id.home:
+                finish();
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            case R.id.m_delete:
+                String gistId = gists[pager.getCurrentItem()];
+                Bundle args = new Bundle();
+                args.putString(EXTRA_GIST_ID, gistId);
+                ConfirmDialogFragment.show(this, REQUEST_CONFIRM_DELETE,
                     getString(R.string.confirm_gist_delete_title),
                     getString(R.string.confirm_gist_delete_message), args);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -156,7 +160,7 @@ public class GistsViewActivity extends PagerActivity implements
         }
 
         adapter.onDialogResult(pager.getCurrentItem(), requestCode, resultCode,
-                arguments);
+            arguments);
 
         super.onDialogResult(requestCode, resultCode, arguments);
     }
