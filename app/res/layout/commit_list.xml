@@ -38,6 +38,7 @@
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipe_item"
+        android:layout_above="@id/rl_branch"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -46,7 +47,6 @@
             style="@style/ListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/rl_branch"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:visibility="gone" />
