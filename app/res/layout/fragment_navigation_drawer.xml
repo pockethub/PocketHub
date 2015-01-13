@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="@dimen/abc_action_bar_default_height_material"
         android:id="@+id/navigation_drawer_header">
 
         <ImageView
@@ -39,6 +39,7 @@
 
     <ListView
         android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/navigation_drawer_list"
