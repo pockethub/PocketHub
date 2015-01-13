@@ -14,17 +14,18 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <item
         android:id="@+id/m_search"
-        android:icon="@drawable/action_search"
-        android:showAsAction="ifRoom"
+        android:icon="@drawable/abc_ic_search_api_mtrl_alpha"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView"
         android:title="@string/find_repositories"/>
     <item
         android:id="@+id/m_clear"
-        android:icon="@drawable/menu_delete_history"
-        android:showAsAction="never"
+        app:showAsAction="never"
         android:title="@string/clear_search_history"/>
 
 </menu>

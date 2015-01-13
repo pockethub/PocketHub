@@ -27,12 +27,12 @@ import static com.github.mobile.util.TypefaceUtils.ICON_NEWS;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ProgressBar;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R;
@@ -85,7 +85,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
 
         repository = getSerializableExtra(EXTRA_REPOSITORY);
 
-        loadingBar = finder.find(R.id.pb_loading);
+        loadingBar = finder.find(R.id.progress_bar);
 
         User owner = repository.getOwner();
 
@@ -123,7 +123,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionsMenu) {
-        getSupportMenuInflater().inflate(R.menu.repository, optionsMenu);
+        getMenuInflater().inflate(R.menu.repository, optionsMenu);
         return super.onCreateOptionsMenu(optionsMenu);
     }
 
@@ -135,17 +135,6 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
         followItem.setTitle(isStarred ? R.string.unstar : R.string.star);
 
         return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onSearchRequested() {
-        if (pager.getCurrentItem() == 1) {
-            Bundle args = new Bundle();
-            args.putSerializable(EXTRA_REPOSITORY, repository);
-            startSearch(null, false, args, false);
-            return true;
-        } else
-            return false;
     }
 
     @Override
@@ -165,29 +154,29 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_star:
-            starRepository();
-            return true;
-        case R.id.m_fork:
-            forkRepository();
-            return true;
-        case R.id.m_contributors:
-            startActivity(RepositoryContributorsActivity.createIntent(repository));
-            return true;
-        case R.id.m_share:
-            shareRepository();
-            return true;
-        case R.id.m_refresh:
-            checkStarredRepositoryStatus();
-            return super.onOptionsItemSelected(item);
-        case android.R.id.home:
-            finish();
-            Intent intent = UserViewActivity.createIntent(repository.getOwner());
-            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case R.id.m_star:
+                starRepository();
+                return true;
+            case R.id.m_fork:
+                forkRepository();
+                return true;
+            case R.id.m_contributors:
+                startActivity(RepositoryContributorsActivity.createIntent(repository));
+                return true;
+            case R.id.m_share:
+                shareRepository();
+                return true;
+            case R.id.m_refresh:
+                checkStarredRepositoryStatus();
+                return super.onOptionsItemSelected(item);
+            case android.R.id.home:
+                finish();
+                Intent intent = UserViewActivity.createIntent(repository.getOwner());
+                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -209,16 +198,16 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     @Override
     protected String getIcon(int position) {
         switch (position) {
-        case 0:
-            return ICON_NEWS;
-        case 1:
-            return ICON_CODE;
-        case 2:
-            return ICON_COMMIT;
-        case 3:
-            return ICON_ISSUE_OPEN;
-        default:
-            return super.getIcon(position);
+            case 0:
+                return ICON_NEWS;
+            case 1:
+                return ICON_CODE;
+            case 2:
+                return ICON_COMMIT;
+            case 3:
+                return ICON_ISSUE_OPEN;
+            default:
+                return super.getIcon(position);
         }
     }
 

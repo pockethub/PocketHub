@@ -41,6 +41,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -50,9 +53,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R;
 import com.github.mobile.core.issue.FullIssue;
@@ -134,8 +134,6 @@ public class IssueFragment extends DialogFragment {
     private EditLabelsTask labelsTask;
 
     private EditStateTask stateTask;
-
-    private View headerSeparator;
 
     private TextView stateText;
 
@@ -271,7 +269,6 @@ public class IssueFragment extends DialogFragment {
 
         headerView = inflater.inflate(R.layout.issue_header, null);
 
-        headerSeparator = view.findViewById(R.id.v_header_separator);
         stateText = (TextView) headerView.findViewById(R.id.tv_state);
         titleText = (TextView) headerView.findViewById(R.id.tv_issue_title);
         authorText = (TextView) headerView.findViewById(R.id.tv_issue_author);
@@ -386,7 +383,6 @@ public class IssueFragment extends DialogFragment {
             stateText.setText(text);
         }
         ViewUtils.setGone(stateText, open);
-        ViewUtils.setGone(headerSeparator, !open);
 
         User assignee = issue.getAssignee();
         if (assignee != null) {

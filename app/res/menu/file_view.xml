@@ -14,22 +14,23 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
 
   <item
     android:id="@+id/m_wrap"
-    android:showAsAction="never"
+    app:showAsAction="never"
     android:title="@string/enable_wrapping"/>
   <item
     android:id="@+id/m_render_markdown"
     android:enabled="false"
-    android:showAsAction="never"
+    app:showAsAction="never"
     android:title="@string/render_markdown"
     android:visible="false"/>
   <item
     android:id="@+id/m_share"
-    android:icon="@drawable/menu_share"
-    android:showAsAction="never"
+    android:icon="@drawable/abc_ic_menu_share_mtrl_alpha"
+    app:showAsAction="never"
     android:title="@string/share"/>
 
 </menu>

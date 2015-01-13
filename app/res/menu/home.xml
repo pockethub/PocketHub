@@ -14,12 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <item
         android:id="@+id/m_search"
-        android:icon="@drawable/action_search"
-        android:showAsAction="ifRoom"
-        android:title="@string/find_repositories"/>
+        android:icon="@drawable/abc_ic_search_api_mtrl_alpha"
+        app:showAsAction="ifRoom|collapseActionView"
+        android:title="@string/find_repositories"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        />
 
 </menu>

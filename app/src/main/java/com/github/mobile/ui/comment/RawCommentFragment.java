@@ -15,6 +15,7 @@
  */
 package com.github.mobile.ui.comment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.LayoutInflater;
@@ -23,7 +24,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.github.mobile.R;
 import com.github.mobile.ui.DialogFragment;
 import com.github.mobile.ui.TextWatcherAdapter;
@@ -49,7 +49,7 @@ public class RawCommentFragment extends DialogFragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                SherlockFragmentActivity activity = getSherlockActivity();
+                Activity activity = getActivity();
                 if (activity != null)
                     activity.invalidateOptionsMenu();
             }

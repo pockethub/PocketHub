@@ -15,7 +15,7 @@
  */
 package com.github.mobile.ui;
 
-import com.actionbarsherlock.app.SherlockFragment;
+import android.support.v4.app.Fragment;
 
 /**
  * Provides a fragment
@@ -27,5 +27,5 @@ public interface FragmentProvider {
      *
      * @return fragment
      */
-    SherlockFragment getSelected();
+    Fragment getSelected();
 }

@@ -15,8 +15,11 @@
  */
 package com.github.mobile.ui.comment;
 
+import android.content.Context;
+import android.support.v7.widget.PopupMenu;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -48,6 +51,8 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
      */
     private final DeleteCommentListener deleteCommentListener;
 
+    private Context context;
+
     /**
      * Create list adapter
      *
@@ -59,6 +64,7 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
     public CommentListAdapter(LayoutInflater inflater, Comment[] elements,
             AvatarLoader avatars, HttpImageGetter imageGetter) {
         this(inflater, elements, avatars, imageGetter, null, null);
+        this.context = inflater.getContext();
     }
 
     /**
@@ -71,6 +77,7 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
     public CommentListAdapter(LayoutInflater inflater, AvatarLoader avatars,
             HttpImageGetter imageGetter) {
         this(inflater, null, avatars, imageGetter);
+        this.context = inflater.getContext();
     }
 
     /**
@@ -86,6 +93,7 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
             EditCommentListener editCommentListener, DeleteCommentListener deleteCommentListener) {
         super(inflater, R.layout.comment_item);
 
+        this.context = inflater.getContext();
         this.avatars = avatars;
         this.imageGetter = imageGetter;
         this.editCommentListener = editCommentListener;
@@ -101,31 +109,46 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
         setText(1, comment.getUser().getLogin());
         setText(2, TimeUtils.getRelativeTime(comment.getUpdatedAt()));
 
-        // Edit Comment ImageButton
-        final ImageView ivEdit = view(4);
-        if (editCommentListener != null) {
-            ivEdit.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    editCommentListener.onEditComment(comment);
-                }
-            });
-        } else {
-            ivEdit.setVisibility(View.GONE);
-        }
 
-        // Delete Comment ImageButton
-        final ImageView ivDelete = view(5);
-        if (deleteCommentListener != null) {
-            ivDelete.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    deleteCommentListener.onDeleteComment(comment);
+        final ImageView ivMore = view(4);
+        ivMore.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showMorePopup(ivMore, comment);
+            }
+        });
+    }
+
+    private void showMorePopup(View v, final Comment comment) {
+        PopupMenu menu = new PopupMenu(context, v);
+        menu.inflate(R.menu.comment_popup);
+
+        boolean canEdit = editCommentListener != null;
+        boolean canDelete = deleteCommentListener != null;
+
+        menu.getMenu().findItem(R.id.m_edit).setEnabled(canEdit);
+        menu.getMenu().findItem(R.id.m_delete).setEnabled(canDelete);
+
+        menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.m_edit:
+                        if (editCommentListener != null) {
+                            editCommentListener.onEditComment(comment);
+                        }
+                        break;
+                    case R.id.m_delete:
+                        if (deleteCommentListener != null) {
+                            deleteCommentListener.onDeleteComment(comment);
+                        }
+                        break;
                 }
-            });
-        } else {
-            ivDelete.setVisibility(View.GONE);
-        }
+                return false;
+            }
+        });
+
+        menu.show();
     }
 
     @Override
@@ -144,6 +167,6 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
     @Override
     protected int[] getChildViewIds() {
         return new int[] { R.id.tv_comment_body, R.id.tv_comment_author,
-                R.id.tv_comment_date, R.id.iv_avatar, R.id.iv_comment_edit, R.id.iv_comment_delete };
+                R.id.tv_comment_date, R.id.iv_avatar, R.id.iv_more };
     }
 }

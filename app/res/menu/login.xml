@@ -14,12 +14,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <item
         android:id="@+id/m_login"
         android:enabled="false"
-        android:showAsAction="always"
+        app:showAsAction="always"
         android:title="@string/log_in"/>
 
 </menu>

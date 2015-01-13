@@ -14,12 +14,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <item
         android:id="@+id/m_refresh"
-        android:icon="@drawable/menu_refresh"
-        android:showAsAction="never"
+        android:icon="@drawable/action_refresh"
+        app:showAsAction="ifRoom"
         android:title="@string/refresh"/>
 
 </menu>

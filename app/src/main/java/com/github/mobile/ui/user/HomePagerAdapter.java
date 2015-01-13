@@ -19,9 +19,9 @@ import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBarActivity;
 import android.view.ViewGroup;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.github.mobile.R;
 import com.github.mobile.ui.FragmentPagerAdapter;
 import com.github.mobile.ui.repo.RepositoryListFragment;
@@ -46,7 +46,7 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
      * @param activity
      * @param defaultUser
      */
-    public HomePagerAdapter(final SherlockFragmentActivity activity,
+    public HomePagerAdapter(final ActionBarActivity activity,
             final boolean defaultUser) {
         super(activity);
 

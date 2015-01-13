@@ -27,8 +27,11 @@ import static com.github.mobile.RequestCodes.ISSUE_MILESTONE_UPDATE;
 import android.accounts.Account;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -36,9 +39,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R;
 import com.github.mobile.accounts.AccountUtils;
@@ -333,7 +333,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
-        getSupportMenuInflater().inflate(R.menu.issue_edit, options);
+        getMenuInflater().inflate(R.menu.issue_edit, options);
         saveItem = options.findItem(R.id.m_apply);
         updateSaveMenu();
         return true;

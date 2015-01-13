@@ -17,8 +17,8 @@ package com.github.mobile.ui.search;
 
 import android.content.res.Resources;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.github.mobile.R;
 import com.github.mobile.ui.FragmentPagerAdapter;
 
@@ -34,7 +34,7 @@ public class SearchPagerAdapter extends FragmentPagerAdapter {
      *
      * @param activity
      */
-    public SearchPagerAdapter(SherlockFragmentActivity activity) {
+    public SearchPagerAdapter(ActionBarActivity activity) {
         super(activity);
 
         resources = activity.getResources();

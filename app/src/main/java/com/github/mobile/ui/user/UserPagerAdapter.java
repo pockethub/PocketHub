@@ -17,8 +17,8 @@ package com.github.mobile.ui.user;
 
 import android.content.res.Resources;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.github.mobile.R;
 import com.github.mobile.ui.FragmentPagerAdapter;
 import com.github.mobile.ui.repo.UserRepositoryListFragment;
@@ -33,7 +33,7 @@ public class UserPagerAdapter extends FragmentPagerAdapter {
     /**
      * @param activity
      */
-    public UserPagerAdapter(final SherlockFragmentActivity activity) {
+    public UserPagerAdapter(final ActionBarActivity activity) {
         super(activity);
 
         resources = activity.getResources();

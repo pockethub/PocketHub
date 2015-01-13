@@ -22,10 +22,10 @@ import static com.github.mobile.Intents.EXTRA_REPOSITORY_OWNER;
 import static com.github.mobile.Intents.EXTRA_USER;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.ui.FragmentStatePagerAdapter;
 
@@ -61,7 +61,7 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
      * @param issueStore
      * @param collaborator
      */
-    public IssuesPagerAdapter(SherlockFragmentActivity activity,
+    public IssuesPagerAdapter(ActionBarActivity activity,
             List<RepositoryId> repoIds, int[] issueNumbers,
             IssueStore issueStore, boolean collaborator) {
         super(activity);
@@ -79,7 +79,7 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
      * @param issueNumbers
      * @param collaborator
      */
-    public IssuesPagerAdapter(SherlockFragmentActivity activity,
+    public IssuesPagerAdapter(ActionBarActivity activity,
             Repository repository, int[] issueNumbers, boolean collaborator) {
         super(activity);
 
