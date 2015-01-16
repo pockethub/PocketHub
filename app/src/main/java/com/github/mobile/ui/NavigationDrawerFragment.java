@@ -44,6 +44,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
     private boolean mUserLearnedDrawer;
 
     private ImageView userImage;
+    private TextView userRealName;
     private TextView userName;
 
     public NavigationDrawerFragment() {
@@ -87,6 +88,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         userImage = (ImageView) view.findViewById(R.id.user_picture);
+        userRealName = (TextView) view.findViewById(R.id.user_real_name);
         userName = (TextView) view.findViewById(R.id.user_name);
         mDrawerListView = (ListView) view.findViewById(R.id.navigation_drawer_list);
         mDrawerListView.setOnItemClickListener(this);
@@ -104,6 +106,13 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
 
         avatar.bind(userImage, user);
         userName.setText(user.getLogin());
+
+        String name = user.getName();
+        if (name != null) {
+            userRealName.setText(user.getName());
+        } else {
+            userRealName.setVisibility(View.GONE);
+        }
 
         mDrawerListView.setAdapter(adapter);
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);

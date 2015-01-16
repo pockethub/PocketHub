@@ -26,6 +26,7 @@
         android:theme="@style/Theme.GitHub">
         <activity
             android:name=".ui.MainActivity"
+            android:theme="@style/Theme.GitHub.NavigationDrawer"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true">
             <intent-filter>
