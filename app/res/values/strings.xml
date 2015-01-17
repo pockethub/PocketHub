@@ -185,7 +185,7 @@
     <string name="none">None</string>
     <string name="section_issue_labels">Labels:</string>
     <string name="log_in">Log in</string>
-    <string name="signup_link">New to GitHub? &lt;a href=\"https://github.com/plans\">Click here&lt;/a> to sign up</string>
+    <string name="signup_link">New to GitHub? &lt;a href=\"https://github.com/join\">Click here&lt;/a> to sign up</string>
     <string name="signup_link_two_factor_auth">Not sure what to do? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Get some help.&lt;/a></string>
     <string name="connection_failed">Unable to connect to GitHub</string>
     <string name="code_authentication_failed">Authentication failed! Incorrect verification code</string>

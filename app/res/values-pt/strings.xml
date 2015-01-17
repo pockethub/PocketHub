@@ -157,7 +157,7 @@
     <string name="none">Nenhum</string>
     <string name="section_issue_labels">Rótulos:</string>
     <string name="log_in">Entrar</string>
-    <string name="signup_link">Novo no GitHub? &lt;a href=\"https://github.com/plans\">Clique aqui&lt;/a> para se cadastrar</string>
+    <string name="signup_link">Novo no GitHub? &lt;a href=\"https://github.com/join\">Clique aqui&lt;/a> para se cadastrar</string>
     <string name="connection_failed">Não foi possível conectar ao GitHub</string>
     <string name="invalid_login_or_password">Por favor, digite um login e senha válidos.</string>
     <string name="invalid_password">Por favor, digite uma senha válida.</string>

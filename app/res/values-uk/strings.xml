@@ -170,7 +170,7 @@
     <string name="none">Немає</string>
     <string name="section_issue_labels">Теги:</string>
     <string name="log_in">Увійти</string>
-    <string name="signup_link">Вперше на GitHub? &lt;a href=\"https://github.com/plans\">Натисніть сюди&lt;/a>, щоб зареєструватись</string>
+    <string name="signup_link">Вперше на GitHub? &lt;a href=\"https://github.com/join\">Натисніть сюди&lt;/a>, щоб зареєструватись</string>
     <string name="connection_failed">Неможливо з\'єднатись із GitHub</string>
     <string name="invalid_login_or_password">Введіть правильні логін та пароль</string>
     <string name="invalid_password">Введіть правильний пароль.</string>

@@ -173,7 +173,7 @@
     <string name="none">Aucun</string>
     <string name="section_issue_labels">Libellés\u00a0:</string>
     <string name="log_in">Se connecter</string>
-    <string name="signup_link">Nouveau sur GitHub\u00a0? &lt;a href=\"https://github.com/plans\">Cliquez ici&lt;/a> pour vous inscrire</string>
+    <string name="signup_link">Nouveau sur GitHub\u00a0? &lt;a href=\"https://github.com/join\">Cliquez ici&lt;/a> pour vous inscrire</string>
     <string name="connection_failed">Impossible de se connecter à GitHub</string>
     <string name="invalid_login_or_password">Veuillez entrer un login et un mot de passe valides</string>
     <string name="invalid_password">Veuillez entrer un mot de passe valide</string>

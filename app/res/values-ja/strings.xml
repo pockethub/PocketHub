@@ -180,7 +180,7 @@
     <string name="none">なし</string>
     <string name="section_issue_labels">ラベル:</string>
     <string name="log_in">ログイン</string>
-    <string name="signup_link">GitHub は初めてですか? &lt;a href=\"https://github.com/plans\">こちら&lt;/a> からサインアップしてください。</string>
+    <string name="signup_link">GitHub は初めてですか? &lt;a href=\"https://github.com/join\">こちら&lt;/a> からサインアップしてください。</string>
     <string name="connection_failed">GitHub に接続できません</string>
     <string name="invalid_login_or_password">正しいログイン &amp; パスワードを入力してください</string>
     <string name="invalid_password">正しいパスワードを入力してください。</string>

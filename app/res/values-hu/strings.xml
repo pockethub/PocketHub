@@ -161,7 +161,7 @@
     <string name="none">Semelyik</string>
     <string name="section_issue_labels">Címkék:</string>
     <string name="log_in">Bejelentkezés</string>
-    <string name="signup_link">Új vagy a GitHubon? &lt;a href=\"https://github.com/plans\">Kattints ide&lt;/a> a regisztrációhoz</string>
+    <string name="signup_link">Új vagy a GitHubon? &lt;a href=\"https://github.com/join\">Kattints ide&lt;/a> a regisztrációhoz</string>
     <string name="connection_failed">Nem sikerült csatlakozni a GitHubhoz</string>
     <string name="invalid_login_or_password">Adj meg érvényes felhasználónevet &amp; jelszót</string>
     <string name="invalid_password">Adj meg érvényes jelszót.</string>

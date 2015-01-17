@@ -180,7 +180,7 @@
     <string name="none">Κανείς</string>
     <string name="section_issue_labels">Ετικέτες:</string>
     <string name="log_in">Είσοδος</string>
-    <string name="signup_link">Νέα/ος στο GitHub? &lt;a href=\"https://github.com/plans\">Πατήστε εδώ&lt;/a> για είσοδο</string>
+    <string name="signup_link">Νέα/ος στο GitHub? &lt;a href=\"https://github.com/join\">Πατήστε εδώ&lt;/a> για είσοδο</string>
     <string name="signup_link_two_factor_auth">Δεν είστε σίγουρη-ος τι να κάνετε &lt; a href=\"https://help.github.com/articles/about-two-factor-authentication\">Λήψη Βοήθειας.&lt;/a></string>
     <string name="connection_failed">Αδυναμία σύνδεσης στο GitHub</string>
     <string name="invalid_login_or_password">Παρακαλούμε εισάγετε έγκυρο όνομα χρήστη &amp; συνθηματικό</string>

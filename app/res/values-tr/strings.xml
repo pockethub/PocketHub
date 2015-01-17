@@ -170,7 +170,7 @@
     <string name="none">Hiç</string>
     <string name="section_issue_labels">Etiketler:</string>
     <string name="log_in">Giriş yap</string>
-    <string name="signup_link">GitHub\'ın yenisi misin? &lt;a href=\"https://github.com/plans\">Buraya tıkla&lt;/a> kayıt olmak için</string>
+    <string name="signup_link">GitHub\'ın yenisi misin? &lt;a href=\"https://github.com/join\">Buraya tıkla&lt;/a> kayıt olmak için</string>
     <string name="connection_failed">GitHub\'a bağlanılamadı</string>
     <string name="invalid_login_or_password">Lütfen geçerli bir kullanıcı adı &amp; şifre girin</string>
     <string name="invalid_password">Lütfen geçerli bir şifre girin.</string>

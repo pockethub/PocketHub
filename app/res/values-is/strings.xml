@@ -180,7 +180,7 @@
     <string name="none">Enginn</string>
     <string name="section_issue_labels">Merki:</string>
     <string name="log_in">Innskráning</string>
-    <string name="signup_link">Hefurðu aldrei notað GitHub? &lt;a href=\"https://github.com/plans\">Ýttu hér&lt;/a> til að skrá þig</string>
+    <string name="signup_link">Hefurðu aldrei notað GitHub? &lt;a href=\"https://github.com/join\">Ýttu hér&lt;/a> til að skrá þig</string>
     <string name="signup_link_two_factor_auth">Veistu ekki hvernig git virkar? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Hjálp finnst mér.&lt;/a></string>
     <string name="connection_failed">Get ekki tengst GitHub</string>
     <string name="invalid_login_or_password">Skrifaðu inn gilt notendanafn &amp; lykilorð</string>

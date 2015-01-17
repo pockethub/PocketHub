@@ -180,7 +180,7 @@
     <string name="none">Ingen</string>
     <string name="section_issue_labels">Etiketter:</string>
     <string name="log_in">Logg inn</string>
-    <string name="signup_link">Ny på GitHub? &lt;a href=\"https://github.com/plans\">Klikk her&lt;/a> for å bli med</string>
+    <string name="signup_link">Ny på GitHub? &lt;a href=\"https://github.com/join\">Klikk her&lt;/a> for å bli med</string>
     <string name="signup_link_two_factor_auth">Usikker på hva du skal gjøre? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Få litt hjelp.&lt;/a></string>
     <string name="connection_failed">Kan ikke koble til GitHub</string>
     <string name="invalid_login_or_password">Vennligst skriv inn et gyldig brukernavn og passord</string>

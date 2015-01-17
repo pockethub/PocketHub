@@ -153,7 +153,7 @@
     <string name="none">없음</string>
     <string name="section_issue_labels">라벨:</string>
     <string name="log_in">로그인</string>
-    <string name="signup_link">New to GitHub? &lt;a href=\"https://github.com/plans\">Click here&lt;/a> to sign up</string>
+    <string name="signup_link">New to GitHub? &lt;a href=\"https://github.com/join\">Click here&lt;/a> to sign up</string>
     <string name="connection_failed">GitHub에 연결할 수 없습니다</string>
     <string name="invalid_login_or_password">계정 또는 비밀번호를 확인해주세요</string>
     <string name="invalid_password">비밀번호를 확인해주세요</string>

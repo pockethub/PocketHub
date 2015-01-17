@@ -165,7 +165,7 @@
     <string name="none">Няма</string>
     <string name="section_issue_labels">Етикети:</string>
     <string name="log_in">Влизане</string>
-    <string name="signup_link">За първи път в GitHub? &lt;a href=\"https://github.com/plans\">Щракнете тук&lt;/a> за записване</string>
+    <string name="signup_link">За първи път в GitHub? &lt;a href=\"https://github.com/join\">Щракнете тук&lt;/a> за записване</string>
     <string name="connection_failed">Не може да се осъществи връзка с GitHub.</string>
     <string name="invalid_login_or_password">Моля, въведете коректно име и парола</string>
     <string name="invalid_password">Моля, въведете коректна парола.</string>

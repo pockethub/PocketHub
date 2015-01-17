@@ -185,8 +185,8 @@
     <string name="none">Žiadny</string>
     <string name="section_issue_labels">Štítky:</string>
     <string name="log_in">Prihlásiť sa</string>
-    <string name="signup_link">Ste nový na GitHube? &lt;a href=\"https://github.com/plans\">Kliknite sem&lt;/a> a zaregistrujte sa</string>
-    <string name="signup_link_two_factor_auth">Nie ste si istý čo robiť? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Nájsť pomoc.&lt;/a></string>    
+    <string name="signup_link">Ste nový na GitHube? &lt;a href=\"https://github.com/join\">Kliknite sem&lt;/a> a zaregistrujte sa</string>
+    <string name="signup_link_two_factor_auth">Nie ste si istý čo robiť? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Nájsť pomoc.&lt;/a></string>
     <string name="connection_failed">Nie je možné pripojiť sa na GitHub</string>
     <string name="invalid_login_or_password">Prosím, vložte platné užívateľské meno &amp; heslo</string>
     <string name="invalid_password">Prosím, vložte platné heslo.</string>

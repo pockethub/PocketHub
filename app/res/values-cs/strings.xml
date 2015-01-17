@@ -180,7 +180,7 @@ limitations under the License.
     <string name="none">Žádný</string>
     <string name="section_issue_labels">Štítky:</string>
     <string name="log_in">Přihlásit se</string>
-    <string name="signup_link">Jste nový na GitHubu? &lt;a href=\"https://github.com/plans\">Klikněte sem&lt;/a> a zaregistrujte se</string>
+    <string name="signup_link">Jste nový na GitHubu? &lt;a href=\"https://github.com/join\">Klikněte sem&lt;/a> a zaregistrujte se</string>
     <string name="signup_link_two_factor_auth">Nejste si jistí, co máte dělat? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Zde získáte pomoc.&lt;/a></string>
     <string name="connection_failed">Není možné se připojit na GitHub</string>
     <string name="invalid_login_or_password">Zadejte prosím platné uživatelské jméno &amp; heslo</string>

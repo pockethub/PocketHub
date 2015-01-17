@@ -180,7 +180,7 @@
     <string name="none">Pusto</string>
     <string name="section_issue_labels">Etykiety:</string>
     <string name="log_in">Zaloguj</string>
-    <string name="signup_link">Nowy na GitHub? &lt;a href=\"https://github.com/plans\">Kliknij tutaj&lt;/a>, aby się zarejestrować</string>
+    <string name="signup_link">Nowy na GitHub? &lt;a href=\"https://github.com/join\">Kliknij tutaj&lt;/a>, aby się zarejestrować</string>
     <string name="signup_link_two_factor_auth">Nie wiesz co zrobić? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Zdobodź więcej informacji na ten temat.&lt;/a></string>
     <string name="connection_failed">Brak połączenia z GitHubem</string>
     <string name="invalid_login_or_password">Proszę, podaj prawidłową nazwę użytkownika i hasło</string>

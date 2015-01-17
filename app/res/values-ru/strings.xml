@@ -180,7 +180,7 @@
     <string name="none">Нет</string>
     <string name="section_issue_labels">Теги:</string>
     <string name="log_in">Войти</string>
-    <string name="signup_link">Первый раз на GitHub? &lt;a href=\"https://github.com/plans\">Нажмите здесь&lt;/a>, чтобы зарегистрироваться.</string>
+    <string name="signup_link">Первый раз на GitHub? &lt;a href=\"https://github.com/join\">Нажмите здесь&lt;/a>, чтобы зарегистрироваться.</string>
     <string name="signup_link_two_factor_auth">Не уверены, что делать? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Обратитесь за помощью.&lt;/a></string>
     <string name="connection_failed">Не можем подключиться к GitHub</string>
     <string name="invalid_login_or_password">Пожалуйста, проверьте ваш логин и пароль.</string>

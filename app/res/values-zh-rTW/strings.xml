@@ -157,7 +157,7 @@
     <string name="none">無</string>
     <string name="section_issue_labels">標籤:</string>
     <string name="log_in">登入</string>
-    <string name="signup_link">剛接觸 GitHub? &lt;a href=\"https://github.com/plans\">點這裡&lt;/a>註冊</string>
+    <string name="signup_link">剛接觸 GitHub? &lt;a href=\"https://github.com/join\">點這裡&lt;/a>註冊</string>
     <string name="connection_failed">無法連接到 GitHub</string>
     <string name="invalid_login_or_password">請輸入正確的帳號與密碼</string>
     <string name="invalid_password">請輸入正確的密碼.</string>
