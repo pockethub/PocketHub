@@ -179,7 +179,7 @@
     <string name="none">Ninguno</string>
     <string name="section_issue_labels">Etiquetas:</string>
     <string name="log_in">Inicia sesión</string>
-    <string name="signup_link">¿No tienes cuenta en GitHub? &lt;a href=\"https://github.com/join\">Haz click aquí&lt;/a> para darte de alta</string>
+    <string name="signup_link">¿Nuevo en GitHub? &lt;a href=\"https://github.com/join\">Haz click aquí&lt;/a> para registarte</string>
     <string name="signup_link_two_factor_auth">¿No sabes que hacer? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Obtén ayuda.&lt;/a></string>
     <string name="connection_failed">No se ha podido conectar con GitHub</string>
     <string name="invalid_login_or_password">Por favor introduce un usuario y contraseña válidos</string>
@@ -259,7 +259,7 @@
     <string name="tab_code">código</string>
     <string name="tab_commits">commits</string>
     <string name="tab_issues">incidencias</string>
-    <string name="tab_watched">vistas</string>
+    <string name="tab_watched">seguidas</string>
     <string name="tab_assigned">asignadas</string>
     <string name="tab_created">creadas</string>
     <string name="tab_mentioned">mencionado</string>
