@@ -104,6 +104,9 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
 
     @Override
     public void onLoadFinished(Loader<List<User>> listLoader, final List<User> orgs) {
+        if (orgs.isEmpty())
+            return;
+
         org = orgs.get(0);
         this.orgs = orgs;
 
