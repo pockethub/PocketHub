@@ -51,6 +51,10 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
      */
     private final DeleteCommentListener deleteCommentListener;
 
+    private final boolean isOwner;
+
+    private final String userName;
+
     private Context context;
 
     /**
@@ -63,7 +67,7 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
      */
     public CommentListAdapter(LayoutInflater inflater, Comment[] elements,
             AvatarLoader avatars, HttpImageGetter imageGetter) {
-        this(inflater, elements, avatars, imageGetter, null, null);
+        this(inflater, elements, avatars, imageGetter, null, null, null, false);
         this.context = inflater.getContext();
     }
 
@@ -87,12 +91,16 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
      * @param elements
      * @param avatars
      * @param imageGetter
+     * @param userName
+     * @param isOwner
      */
     public CommentListAdapter(LayoutInflater inflater, Comment[] elements,
             AvatarLoader avatars, HttpImageGetter imageGetter,
-            EditCommentListener editCommentListener, DeleteCommentListener deleteCommentListener) {
+            EditCommentListener editCommentListener, DeleteCommentListener deleteCommentListener, String userName, boolean isOwner) {
         super(inflater, R.layout.comment_item);
 
+        this.userName = userName;
+        this.isOwner = isOwner;
         this.context = inflater.getContext();
         this.avatars = avatars;
         this.imageGetter = imageGetter;
@@ -109,22 +117,28 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
         setText(1, comment.getUser().getLogin());
         setText(2, TimeUtils.getRelativeTime(comment.getUpdatedAt()));
 
+        final boolean canEdit = (isOwner || comment.getUser().getLogin().equals(userName))
+            && editCommentListener != null;
+
+        final boolean canDelete = (isOwner || comment.getUser().getLogin().equals(userName))
+            && deleteCommentListener != null;
 
         final ImageView ivMore = view(4);
-        ivMore.setOnClickListener(new OnClickListener() {
+
+        if(!canEdit && !canDelete)
+            ivMore.setVisibility(View.INVISIBLE);
+        else
+            ivMore.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                showMorePopup(ivMore, comment);
+                showMorePopup(ivMore, comment, canEdit, canDelete);
             }
         });
     }
 
-    private void showMorePopup(View v, final Comment comment) {
+    private void showMorePopup(View v, final Comment comment, final boolean canEdit, final boolean canDelete ) {
         PopupMenu menu = new PopupMenu(context, v);
         menu.inflate(R.menu.comment_popup);
-
-        boolean canEdit = editCommentListener != null;
-        boolean canDelete = deleteCommentListener != null;
 
         menu.getMenu().findItem(R.id.m_edit).setEnabled(canEdit);
         menu.getMenu().findItem(R.id.m_delete).setEnabled(canDelete);
