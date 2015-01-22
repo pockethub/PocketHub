@@ -36,6 +36,7 @@ import org.eclipse.egit.github.core.service.MilestoneService;
 import org.eclipse.egit.github.core.service.OrganizationService;
 import org.eclipse.egit.github.core.service.PullRequestService;
 import org.eclipse.egit.github.core.service.RepositoryService;
+import org.eclipse.egit.github.core.service.TeamService;
 import org.eclipse.egit.github.core.service.UserService;
 import org.eclipse.egit.github.core.service.WatcherService;
 
@@ -131,5 +132,10 @@ public class ServicesModule extends AbstractModule {
     @Provides
     ContentsService contentsService(GitHubClient client) {
         return new ContentsService(client);
+    }
+
+    @Provides
+    TeamService teamService(GitHubClient client) {
+        return new TeamService(client);
     }
 }

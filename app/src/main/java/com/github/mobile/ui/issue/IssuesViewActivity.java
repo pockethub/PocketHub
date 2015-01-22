@@ -46,14 +46,17 @@ import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.RepositoryIssue;
+import org.eclipse.egit.github.core.Team;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.CollaboratorService;
+import org.eclipse.egit.github.core.service.TeamService;
 
 /**
  * Activity to display a collection of issues or pull requests in a pager
@@ -168,11 +171,16 @@ public class IssuesViewActivity extends PagerActivity {
     private IssueStore store;
 
     @Inject
+    private TeamService teamService;
+
+    @Inject
     private CollaboratorService collaboratorService;
 
     private final AtomicReference<User> user = new AtomicReference<>();
 
     private boolean isCollaborator;
+
+    private boolean isOwner;
 
     private IssuesPagerAdapter adapter;
 
@@ -213,6 +221,14 @@ public class IssuesViewActivity extends PagerActivity {
                 }
             }.execute();
 
+        isOwner = false;
+        if(repo != null) {
+            if (!AccountUtils.isUser(this, repo.getOwner()))
+                checkOwnerStatus();
+            else
+                isOwner = repo.getOwner().getLogin().equals(AccountUtils.getLogin(this));
+        }
+
         isCollaborator = false;
         checkCollaboratorStatus();
     }
@@ -222,9 +238,9 @@ public class IssuesViewActivity extends PagerActivity {
         pager = finder.find(R.id.vp_pages);
 
         if (repo != null)
-            adapter = new IssuesPagerAdapter(this, repo, issueNumbers, isCollaborator);
+            adapter = new IssuesPagerAdapter(this, repo, issueNumbers, isCollaborator, isOwner);
         else
-            adapter = new IssuesPagerAdapter(this, repoIds, issueNumbers, store, isCollaborator);
+            adapter = new IssuesPagerAdapter(this, repoIds, issueNumbers, store, isCollaborator, isOwner);
         pager.setAdapter(adapter);
 
         pager.setOnPageChangeListener(this);
@@ -300,12 +316,6 @@ public class IssuesViewActivity extends PagerActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem editItem = menu.findItem(R.id.m_edit);
-        MenuItem stateItem = menu.findItem(R.id.m_state);
-        if (editItem != null && stateItem != null) {
-            editItem.setVisible(isCollaborator);
-            stateItem.setVisible(isCollaborator);
-        }
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -357,6 +367,39 @@ public class IssuesViewActivity extends PagerActivity {
                 super.onSuccess(collaborator);
 
                 isCollaborator = collaborator;
+                invalidateOptionsMenu();
+                configurePager();
+            }
+        }.execute();
+    }
+
+    private void checkOwnerStatus() {
+        new AuthenticatedUserTask<Boolean>(this) {
+
+            @Override
+            protected Boolean run(Account account) throws Exception {
+                List<Team> teams = teamService.getTeams(repo.getOwner().getLogin());
+                List<User> users = teamService.getMembers(teams.get(0).getId());
+
+                String userName = AccountUtils.getLogin(IssuesViewActivity.this);
+                for(User user : users)
+                    if(user.getLogin().equals(userName))
+                        return true;
+
+                return false;
+            }
+
+            @Override
+            protected void onThrowable(Throwable t) throws RuntimeException {
+                invalidateOptionsMenu();
+                configurePager();
+            }
+
+            @Override
+            protected void onSuccess(Boolean owner) throws Exception {
+                super.onSuccess(owner);
+
+                isOwner = owner;
                 invalidateOptionsMenu();
                 configurePager();
             }

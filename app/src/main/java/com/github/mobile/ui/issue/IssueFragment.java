@@ -22,6 +22,7 @@ import static com.github.mobile.Intents.EXTRA_COMMENT;
 import static com.github.mobile.Intents.EXTRA_ISSUE;
 import static com.github.mobile.Intents.EXTRA_ISSUE_NUMBER;
 import static com.github.mobile.Intents.EXTRA_IS_COLLABORATOR;
+import static com.github.mobile.Intents.EXTRA_IS_OWNER;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY_NAME;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY_OWNER;
 import static com.github.mobile.Intents.EXTRA_USER;
@@ -55,6 +56,7 @@ import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R;
+import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.core.issue.FullIssue;
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.core.issue.IssueUtils;
@@ -108,6 +110,8 @@ public class IssueFragment extends DialogFragment {
     private User user;
 
     private boolean isCollaborator;
+
+    private boolean isOwner;
 
     @Inject
     private AvatarLoader avatars;
@@ -180,6 +184,7 @@ public class IssueFragment extends DialogFragment {
         issueNumber = args.getInt(EXTRA_ISSUE_NUMBER);
         user = (User) args.getSerializable(EXTRA_USER);
         isCollaborator = args.getBoolean(EXTRA_IS_COLLABORATOR, false);
+        isOwner = args.getBoolean(EXTRA_IS_OWNER, false);
 
         DialogFragmentActivity dialogActivity = (DialogFragmentActivity) getActivity();
 
@@ -337,9 +342,11 @@ public class IssueFragment extends DialogFragment {
         });
 
         Activity activity = getActivity();
+        String userName = AccountUtils.getLogin(activity);
+
         adapter = new HeaderFooterListAdapter<CommentListAdapter>(list,
                 new CommentListAdapter(activity.getLayoutInflater(), null, avatars,
-                        commentImageGetter, editCommentListener, deleteCommentListener));
+                        commentImageGetter, editCommentListener, deleteCommentListener, userName, isOwner));
         list.setAdapter(adapter);
     }
 
@@ -534,7 +541,15 @@ public class IssueFragment extends DialogFragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-
+        MenuItem editItem = menu.findItem(R.id.m_edit);
+        MenuItem stateItem = menu.findItem(R.id.m_state);
+        if (editItem != null && stateItem != null) {
+            boolean isCreator = false;
+            if(issue != null)
+                isCreator = issue.getUser().getLogin().equals(AccountUtils.getLogin(getActivity()));
+            editItem.setVisible(isOwner || isCollaborator || isCreator);
+            stateItem.setVisible(isOwner || isCollaborator || isCreator);
+        }
         updateStateItem(issue);
     }
 
