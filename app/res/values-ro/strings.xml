@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<resources>
+
+    <!-- Mesaje de eroare -->
+    <string name="error_orgs_load">Încărcarea contului și a oraganizațiilor a eșuat</string>
+    <string name="error_issues_load">Încărcarea problemelor a eșuat</string>
+    <string name="error_repos_load">Încărcarea depozitelor a eșuat</string>
+    <string name="error_repo_load">Încărcarea depozitului a eșuat</string>
+    <string name="error_contributors_load">Încărcarea contribuitorilor a eșuat</string>
+    <string name="error_gist_load">Încărcarea Gist a eșuat</string>
+    <string name="error_news_load">Încărcarea noutăților a eșuat</string>
+    <string name="error_followers_load">Încărcarea urmăritorilor a eșuat</string>
+    <string name="error_people_load">Încărcarea oamenilor a eșuat</string>
+    <string name="error_person_load">Încărcarea persoanei a eșuat</string>
+    <string name="error_gist_file_load">Încărcarea conținutului fișierului Gist a eșuat</string>
+    <string name="error_gists_load">Încărcarea Gist-urilor a eșuat</string>
+    <string name="error_issue_load">Încărcarea problemei a eșuat</string>
+    <string name="error_collaborators_load">Încărcarea colaboratorilor a eșuat</string>
+    <string name="error_milestones_load">Încărcarea bornelor a eșuat</string>
+    <string name="error_labels_load">Încărcarea etichetelor a eșuat</string>
+    <string name="error_bookmarks_load">Încărcarea semnelor de carte a eșuat</string>
+    <string name="error_members_load">Încărcarea membrilor a eșuat</string>
+    <string name="error_commits_load">Încărcarea înregistrărilor a eșuat</string>
+    <string name="error_commit_load">Încărcarea înregistrării a eșuat</string>
+    <string name="error_file_load">Încărcarea fișierului a eșuat</string>
+    <string name="error_code_load">Încărcarea codului a eșuat</string>
+    <string name="error_refs_load">Încărcarea ramurilor și etichetelor a eșuat</string>
+    <string name="error_following_person">Urmărirea persoanei a eșuat</string>
+    <string name="error_unfollowing_person">Dezurmărirea persoanei a eșuat</string>
+    <string name="error_checking_following_status">Verificarea stării urmăririi a eșuat</string>
+    <string name="error_starring_repository">Starring a eșuat</string>
+    <string name="error_unstarring_repository">Unstarring a eșuat</string>
+    <string name="error_forking_repository">Ramificarea a eșuat</string>
+    <string name="error_checking_starring_status">Verificarea statusului de starring a eșuat</string>
+    <string name="error_rendering_markdown">Randarea markdown-ului a eșuat</string>
+    <string name="error_users_search">Căutarea utilizatorilor a eșuat</string>
+    <!--  -->
+
+
+<!-- Mesaje de încărcare -->
+    <string name="loading_gist">Se încarcă Gist…</string>
+    <string name="random_gist">Se încarcă Gist aleator…</string>
+    <string name="loading_more_issues">Se încarcă mai multe probleme…</string>
+    <string name="loading_issues">Se încarcă problemele…</string>
+    <string name="loading_comments">Se încarcă comentariile…</string>
+    <string name="loading_repositories">Se încarcă depozitele…</string>
+    <string name="loading_issue">Se încarcă problema…</string>
+    <string name="loading_news">Se încarcă noutățile…</string>
+    <string name="loading_followers">Se încarcă urmăritorii…</string>
+    <string name="loading_people">Se încarcă oamenii…</string>
+    <string name="loading_gists">Se încarcă Gist-urile…</string>
+    <string name="loading_collaborators">Se încarcă colaboratorii…</string>
+    <string name="loading_milestones">Se încarcă bornele…</string>
+    <string name="loading_labels">Se încarcă etichetele…</string>
+    <string name="loading_commits">Se încarcă înregistrările…</string>
+    <string name="loading_files_and_comments">Se încarcă fițierele și comentariile…</string>
+    <string name="loading_refs">Se încarcă ramurile ți etichetele…</string>
+    <!--  -->
+
+
+    <!-- Mesaje goale -->
+    <string name="no_bookmarks">Nu sunt semne de carte</string>
+    <string name="no_repositories">Nu sunt depozite</string>
+    <string name="no_contributors">Nu exista contribuitori</string>
+    <string name="no_issues">Nu sunt probleme</string>
+    <string name="no_gists">Nu sunt Gist-uri</string>
+    <string name="no_people">Nu sunt oameni</string>
+    <string name="no_followers">Nu sunt urmăritori</string>
+    <string name="no_members">Nu există membrii</string>
+    <string name="no_news">Nu sunt noutăți</string>
+    <string name="no_commits">Nu exista înregistrări</string>
+    <!--  -->
+
+
+    <!-- Mesaje de actualizare -->
+    <string name="updating_assignee">Se actualizează reprezentantul…</string>
+    <string name="updating_issue">Se actualizează problema…</string>
+    <string name="updating_labels">Se actualizează etichetele…</string>
+    <string name="updating_milestone">Se actualizează borna…</string>
+    <!--  -->
+
+    <string name="app_name">GitHub</string>
+    <string name="home">Acasă</string>
+    <string name="news">Noutăți</string>
+    <string name="issues">Probleme</string>
+    <string name="gists">Gist-uri</string>
+    <string name="commits">Înregistrări</string>
+    <string name="global_search">Căutare GitHub</string>
+    <string name="find_repositories">Găsește depozite</string>
+    <string name="find_issues">Găsește probleme</string>
+    <string name="search_title">Caută…</string>
+    <string name="clear_search_history">Șterge istoric</string>
+    <string name="search_history_cleared">Istoricul de căutare a fost șters</string>
+    <string name="login_activity_authenticating">Autentificare…</string>
+    <string name="creating_gist">Se creează Gist…</string>
+    <string name="create">Creează</string>
+    <string name="create_gist">Creează Gist</string>
+    <string name="gist_content_hint">puts \'Hello World!\'</string>
+    <string name="make_public">Publică acest Gist</string>
+    <string name="gist_file_name_hint">file.rb</string>
+    <string name="gist">Gist</string>
+    <string name="comments">Comentarii</string>
+    <string name="files">Fițiere</string>
+    <string name="open">Deschide</string>
+    <string name="random">Aleator</string>
+    <string name="file_name">Nume fișier</string>
+    <string name="file_content">Conținut fițier</string>
+    <string name="new_gist">Gist nou</string>
+    <string name="filter">Filtru</string>
+    <string name="bookmark">Semn de carte</string>
+    <string name="comment">Comentariu</string>
+    <string name="delete">Șterge</string>
+    <string name="refresh">Împrospătează</string>
+    <string name="dashboard_issues_title">Tablou de bord problemă</string>
+    <string name="bookmarks">Semne de carte</string>
+    <string name="gists_title">Gists</string>
+    <string name="issue_title">Problema #</string>
+    <string name="pull_request_title">Trage cerere #</string>
+    <string name="gist_title">Gist\u0020</string>
+    <string name="filter_issues_title">Filtrează problemele</string>
+    <string name="create_comment_title">Creează comentariu</string>
+    <string name="comment_hint">Tastează un comentariu</string>
+    <string name="show_more">Arată mai mult…</string>
+    <string name="repositories">Depozite</string>
+    <string name="contributors">Contribuitori</string>
+    <string name="issues_title">Probleme</string>
+    <string name="edit_labels">Editează etichete</string>
+    <string name="milestone_prefix">Borna:</string>
+    <string name="edit_milestone">Editează borna</string>
+    <string name="edit_assignee">Editează reprezentantul</string>
+    <string name="description">Descriere</string>
+    <string name="gist_description_hint">Gist creat de Android</string>
+    <string name="title">Titlu</string>
+    <string name="edit">Editează</string>
+    <string name="starring_gist">Starring Gist…</string>
+    <string name="unstarring_gist">Unstarring Gist…</string>
+    <string name="accounts_label">Conturi</string>
+    <string name="select_assignee">Selectează reprezentant</string>
+    <string name="select_milestone">Selectează bornă</string>
+    <string name="select_labels">Selectează etichete</string>
+    <string name="select_ref">Selectează ramură sau etichetă</string>
+    <string name="enter_otp_code_title">Cod de autentificare</string>
+    <string name="enter_otp_code_message">Autentificarea two-factor este activă pe contul tău. Tastează codul de autentificare pentru a-ți verifica identitatea. </string>
+    <string name="no_milestone">Nu există bornă</string>
+    <string name="unassigned">Niciun reprezentant</string>
+    <string name="assigned">este desemnat</string>
+    <string name="no_gists_found">Nu s-au găsit Gist-uri</string>
+    <string name="confirm_gist_delete_title">Confirmează ștergerea</string>
+    <string name="confirm_gist_delete_message">Ești sigur că vrei să ștergi acest Gist?</string>
+    <string name="deleting_gist">Ștergere Gist…</string>
+    <string name="creating_comment">Creare comentariu…</string>
+    <string name="editing_comment">Editare comentariu…</string>
+    <string name="deleting_comment">Ștergere comentariu</string>
+    <string name="confirm_comment_delete_title">Eliminare comentariu</string>
+    <string name="confirm_comment_delete_message">Ești sigur că vrei să ștergi acest comentariu?</string>
+    <string name="confirm_bookmark_delete_message">Ești sigur că vrei să ștergi acest semn de carte?</string>
+    <string name="issue_dashboard">Tablou de bord problemă</string>
+    <string name="new_issue">Problema</string>
+    <string name="anonymous">Anonim</string>
+    <string name="message_filter_saved">Filtrul preblemei a fost salvat în semnele de carte</string>
+    <string name="recently_viewed">VIZUALIZATE RECENT</string>
+    <string name="recent">Recent</string>
+    <string name="recent_remove">Ștergere Recent</string>
+    <string name="recent_list_remove">Șterge de la utilizate recent</string>
+    <string name="section_issue_status">Status:</string>
+    <string name="status_open">Deschide</string>
+    <string name="status_closed">Închis</string>
+    <string name="section_issue_assigned">Repartizat la:</string>
+    <string name="assignee_anyone">Oricine</string>
+    <string name="section_issue_milestone">Borna:</string>
+    <string name="none">Niciunul</string>
+    <string name="section_issue_labels">Etichete:</string>
+    <string name="log_in">Autentifică-te</string>
+    <string name="signup_link">Nou la GitHub? &lt;a href=\"https://github.com/join\">Click aici&lt;/a> pentru înscriere</string>
+    <string name="signup_link_two_factor_auth">Nu esti sigur ce să faci &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Obține ajutor.&lt;/a></string>
+    <string name="connection_failed">Conectarea la GitHub a eșuat</string>
+    <string name="code_authentication_failed">Autentificarea a eșuat! Cod de verificare incorect</string>
+    <string name="invalid_login_or_password">Te rugăm să introduci date valide</string>
+    <string name="invalid_password">Te rugăm să introduci o parolă validă.</string>
+    <string name="password">Parolă</string>
+    <string name="username_or_email">Nume de utilizator sau email</string>
+    <string name="followers">Urmăritori</string>
+    <string name="following">Urmăriți</string>
+    <string name="followers_self">Urmăritori</string>
+    <string name="following_self">Urmăriți</string>
+    <string name="follow">Urmărește</string>
+    <string name="unfollow">Nu mai urmării</string>
+    <string name="star">Stea</string>
+    <string name="unstar">Unstar</string>
+    <string name="fork">Ramifică</string>
+    <string name="members">Membrii</string>
+    <string name="closing_issue">Închidere problemă…</string>
+    <string name="reopening_issue">Re deschidere problema…</string>
+    <string name="avatar">Avatar</string>
+    <string name="creating_issue">Creare problemă…</string>
+    <string name="prefix_created">created\u0020</string>
+    <string name="prefix_updated">updated\u0020</string>
+    <string name="prefix_opened">opened\u0020</string>
+    <string name="clear">Curăța</string>
+    <string name="pull_request_commits">Înregistrări: %d</string>
+    <string name="open_issues">Probleme deschise</string>
+    <string name="closed_issues">Probleme închise</string>
+    <string name="confirm_bookmark_delete_title">Înlătură semn de carte</string>
+    <string name="save">Salvează</string>
+    <string name="apply">Aplică</string>
+    <string name="labels_prefix">Etichete:</string>
+    <string name="assignee">Reprezentant</string>
+    <string name="milestone">Bornă</string>
+    <string name="labels">Etichete</string>
+    <string name="issue_confirm_close_message">Ești sigur că vrei să închizi această problemă?</string>
+    <string name="issue_confirm_reopen_message">Ești sigur că vrei să redeschizi această problemă?</string>
+    <string name="issue_confirm_close_title">Închide problemă</string>
+    <string name="issue_confirm_reopen_title">Redeschide problemă</string>
+    <string name="closed">Închis</string>
+    <string name="no_description_given">Fără descriere.</string>
+    <string name="close">Închide</string>
+    <string name="reopen">Redeschide</string>
+    <string name="title_invalid_github_url">URL GitHub invalid</string>
+    <string name="message_invalid_github_url">URL-ul nu a putut fi deschis de aplicație:\n{0}</string>
+    <string name="cancel">Anulează</string>
+    <string name="authenticator_conflict_title">Conflict Aplicație</string>
+    <string name="authenticator_conflict_message">O altă aplicație instalată este deja configurată pentru autentificarea pe GitHub.\n\nTrebuie să elimini acea aplicație din setările pentru Conturi și sincronizare și să o dezinstalezi înainte ca aplicația GitHub să poată fi folosită.</string>
+    <string name="opening_repository">Se deschide {0}…</string>
+    <string name="commit_compare_title">Compară înregistrările</string>
+    <string name="commit_prefix">Commit\u0020</string>
+    <string name="parent_prefix">Parent\u0020</string>
+    <string name="authored">authored</string>
+    <string name="committed">committed</string>
+    <string name="diff_line_message">Ce ai dori să faci?</string>
+    <string name="comment_on_line">Comentează această linie</string>
+    <string name="view_entire_file">Vezi întregul fițier</string>
+    <string name="comparing_commits">Se compară {0} înregistrări</string>
+    <string name="enable_wrapping">Activează wrapping</string>
+    <string name="disable_wrapping">Dezactivează wrapping</string>
+    <string name="code">Cod</string>
+    <string name="following_user">Urmăriți…</string>
+    <string name="unfollowing_user">Nu mai urmăriți…</string>
+    <string name="starring_repository">Starring…</string>
+    <string name="unstarring_repository">Unstarring…</string>
+    <string name="forking_repository">Ramificând…</string>
+    <string name="navigate_to">Navighează la…</string>
+    <string name="navigate_to_user">Navighează la %s</string>
+    <string name="contributions">%d înregistrări</string>
+
+    <!-- Tab titles, should be as short as possible -->
+    <string name="tab_repositories">depozite</string>
+    <string name="tab_users">utilizatori</string>
+    <string name="tab_news">noutăți</string>
+    <string name="tab_following_self">urmăriți</string>
+    <string name="tab_followers_self">urmăritori</string>
+    <string name="tab_following">urmăriți</string>
+    <string name="tab_followers">urmăritori</string>
+    <string name="tab_members">membrii</string>
+    <string name="tab_code">cod</string>
+    <string name="tab_commits">înregistrări</string>
+    <string name="tab_issues">probleme</string>
+    <string name="tab_watched">vizionat</string>
+    <string name="tab_assigned">atribuit</string>
+    <string name="tab_created">creat</string>
+    <string name="tab_mentioned">menționat</string>
+    <string name="tab_mine">eu</string>
+    <string name="tab_starred">starred</string>
+    <string name="tab_all">tot</string>
+    <!--  -->
+    <string name="share">Distribuie</string>
+    <string name="show_password">Arată parola</string>
+    <string name="write">Scrie</string>
+    <string name="preview">Previzualizează</string>
+    <string name="show_raw_markdown">Show raw markdown</string>
+    <string name="render_markdown">Randează markdown-ul</string>
+    <string name="copy_hash">Copiază hash</string>
+    <string name="toast_msg_copied">Copiat in clipboard</string>
+
+    <!-- Navigation drawer strings -->
+    <string name="navigation_drawer_open">Deschide navigation drawer</string>
+    <string name="navigation_drawer_close">Închide navigation drawer</string>
+    <string name="navigation_drawer_subheader">Sub antet</string>
+
+</resources>
