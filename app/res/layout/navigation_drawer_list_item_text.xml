@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.github.mobile.ui.CheckableRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="48dp"
     android:background="@drawable/navigation_drawer_list_item_selector">
 
     <TextView
@@ -24,6 +24,8 @@
         android:layout_marginStart="72dp"
         android:textColor="#212121"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:paddingRight="16dp"
+        android:textSize="14sp" />
 
 </com.github.mobile.ui.CheckableRelativeLayout>

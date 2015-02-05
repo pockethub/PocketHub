@@ -22,6 +22,7 @@
         android:layout_marginStart="72dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="#212121"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:textSize="14sp" />
 
 </com.github.mobile.ui.CheckableRelativeLayout>
