@@ -34,7 +34,19 @@
     <string name="error_labels_load">O carregamento dos rótulos falhou</string>
     <string name="error_bookmarks_load">O carregamento dos favoritos falhou</string>
     <string name="error_members_load">O carregamento dos membros falhou</string>
-    <string name="error_commits_load">O carregamento dos commits falhou</string>
+    <string name="error_commits_load">O carregamento de commits falhou</string>
+    <string name="error_commit_load">O carregamento do commit falhou</string>
+    <string name="error_file_load">O carregamento do arquivo falhou</string>
+    <string name="error_code_load">O carregamento do código falhou</string>
+    <string name="error_refs_load">O carregamento de branches e rótulos falharam</string>
+    <string name="error_following_person">Falha ao tentar seguir</string>
+    <string name="error_unfollowing_person">Falha ao tentar parar de seguir</string>
+    <string name="error_checking_following_status">Falha ao verificar status de seguidores</string>
+    <string name="error_starring_repository">Falha ao tentar marcar com estrela</string>
+    <string name="error_unstarring_repository">Falha ao tentar desmarcar a estrela</string>
+    <string name="error_checking_starring_status">Falha ao verificar status de estrela</string>
+    <string name="error_rendering_markdown">Falha ao tentar renderizar markdown</string>
+    <string name="error_users_search">Falha ao buscar usuário</string>
     <!--  -->
 
 
@@ -54,12 +66,15 @@
     <string name="loading_milestones">Carregando Milestones…</string>
     <string name="loading_labels">Carregando Rótulos…</string>
     <string name="loading_commits">Carregando Commits…</string>
+    <string name="loading_files_and_comments">Carregando Arquivos &amp; Comentários…</string>
+    <string name="loading_refs">Carregando Branches &amp; Rótulos…</string>
     <!--  -->
 
 
     <!-- Mensagens "vazias" -->
     <string name="no_bookmarks">Nenhum Favorito</string>
     <string name="no_repositories">Nenhum Repositório</string>
+    <string name="no_contributors">Nenhum contribuidor</string>
     <string name="no_issues">Nenhum Incidente</string>
     <string name="no_gists">Nenhum Gist</string>
     <string name="no_people">Nenhuma Pessoa</string>
@@ -111,12 +126,14 @@
     <string name="bookmarks">Favoritos</string>
     <string name="gists_title">Gists</string>
     <string name="issue_title">Incidente #</string>
+    <string name="pull_request_title">Pull Request #</string>
     <string name="gist_title">Gist\u0020</string>
     <string name="filter_issues_title">Filtrar Incidentes</string>
     <string name="create_comment_title">Criar Comentário</string>
     <string name="comment_hint">Entre um comentário</string>
     <string name="show_more">Mostrar Mais…</string>
     <string name="repositories">Repositórios</string>
+    <string name="contributors">Contribuidores</string>
     <string name="issues_title">Incidentes</string>
     <string name="edit_labels">Editar Rótulos</string>
     <string name="milestone_prefix">Milestone:</string>
@@ -134,6 +151,9 @@
     <string name="select_assignee">Selecionar Responsável</string>
     <string name="select_milestone">Selecionar Milestone</string>
     <string name="select_labels">Selecionar Rótulos</string>
+    <string name="select_ref">Selecionar Branch ou Rótulo</string>
+    <string name="enter_otp_code_title">Código de autenticação</string>
+    <string name="enter_otp_code_message">Dupla autenticação está ativada para sua conta. Entre com o código de autenticação para verificar sua identidade.</string>
     <string name="no_milestone">Nenhuma milestone</string>
     <string name="unassigned">Nenhum responsável</string>
     <string name="assigned">é o responsável</string>
@@ -146,8 +166,10 @@
     <string name="issue_dashboard">Painel de Incidentes</string>
     <string name="new_issue">Novo Incidente</string>
     <string name="anonymous">Anônimo</string>
-    <string name="message_filter_saved">Filtro de incidentes salvo nos favoritos</string>
-    <string name="recent">Recente</string>
+    <string name="message_filter_saved">Filtro de incidente salvo nos favoritos</string>
+    <string name="recent">Recentes</string>
+    <string name="recent_remove">Remover Recentes</string>
+    <string name="recent_list_remove">Remover os usados recentemente</string>
     <string name="section_issue_status">Estado:</string>
     <string name="status_open">Aberto</string>
     <string name="status_closed">Fechado</string>
@@ -165,6 +187,10 @@
     <string name="login_or_email">Login ou Email</string>
     <string name="followers">Seguidores</string>
     <string name="following">Seguindo</string>
+    <string name="followers_self">Seguidores</string>
+    <string name="following_self">Seguindo</string>
+    <string name="follow">Seguir</string>
+    <string name="unfollow">Deixar de seguir</string>
     <string name="members">Membros</string>
     <string name="closing_issue">Fechando Incidente…</string>
     <string name="reopening_issue">Reabrindo Incidente…</string>
@@ -174,6 +200,7 @@
     <string name="prefix_updated">atualizado\u0020</string>
     <string name="prefix_opened">aberto\u0020</string>
     <string name="clear">Limpar</string>
+    <string name="pull_request_commits">Commits: %d</string>
     <string name="open_issues">Incidentes Abertos</string>
     <string name="closed_issues">Incidentes Fechados</string>
     <string name="confirm_bookmark_delete_title">Excluir Favorito</string>
@@ -200,5 +227,49 @@
     <string name="opening_repository">Abrindo {0}…</string>
     <string name="commit_compare_title">Comparar Commit</string>
     <string name="commit_prefix">Commit\u0020</string>
+    <string name="parent_prefix">Parent\u0020</string>
+    <string name="authored">autoria</string>
+    <string name="committed">commitado</string>
+    <string name="diff_line_message">O que você gostaria de fazer?</string>
+    <string name="comment_on_line">Comente na linha</string>
+    <string name="view_entire_file">Ver arquivo completo</string>
+    <string name="comparing_commits">Comparando {0} commits</string>
+    <string name="enable_wrapping">Ativar envolvimento</string>
+    <string name="disable_wrapping">Desabilitar envolvimento</string>
+    <string name="code">Código</string>
+    <string name="following_user">Seguindo…</string>
+    <string name="unfollowing_user">Deixando de seguir…</string>
+    <string name="starring_repository">Marcando estrela…</string>
+    <string name="unstarring_repository">Desmarcando estrela…</string>
+    <string name="navigate_to">Navegando para…</string>
+    <string name="navigate_to_user">Navegando para %s</string>
+    <string name="contributions">%d commits</string>
+
+    <!-- Tab titles, should be as short as possible -->
+    <string name="tab_repositories">repositórios</string>
+    <string name="tab_users">usuários</string>
+    <string name="tab_news">notícias</string>
+    <string name="tab_following_self">seguindo</string>
+    <string name="tab_followers_self">seguidores</string>
+    <string name="tab_following">seguindo</string>
+    <string name="tab_followers">seguidores</string>
+    <string name="tab_members">membros</string>
+    <string name="tab_code">código</string>
+    <string name="tab_commits">commits</string>
+    <string name="tab_issues">incidentes</string>
+    <string name="tab_watched">observado</string>
+    <string name="tab_assigned">atribuído</string>
+    <string name="tab_created">criado</string>
+    <string name="tab_mentioned">mencionado</string>
+    <string name="tab_mine">meu</string>
+    <string name="tab_starred">estrela</string>
+    <string name="tab_all">todos</string>
+    <!--  -->
+    <string name="share">Compartilhado</string>
+    <string name="show_password">Mostrar senha</string>
+    <string name="write">Escrever</string>
+    <string name="preview">Prever</string>
+    <string name="show_raw_markdown">Mostrar markdown puro</string>
+    <string name="render_markdown">Renderizar markdown</string>
 
 </resources>
