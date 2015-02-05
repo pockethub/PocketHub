@@ -21,7 +21,7 @@
     <string name="error_repos_load">Încărcarea depozitelor a eșuat</string>
     <string name="error_repo_load">Încărcarea depozitului a eșuat</string>
     <string name="error_contributors_load">Încărcarea contribuitorilor a eșuat</string>
-    <string name="error_gist_load">Încărcarea Gist a eșuat</string>
+    <string name="error_gist_load">Încărcarea Gist-ului a eșuat</string>
     <string name="error_news_load">Încărcarea noutăților a eșuat</string>
     <string name="error_followers_load">Încărcarea urmăritorilor a eșuat</string>
     <string name="error_people_load">Încărcarea oamenilor a eșuat</string>
@@ -40,8 +40,8 @@
     <string name="error_code_load">Încărcarea codului a eșuat</string>
     <string name="error_refs_load">Încărcarea ramurilor și etichetelor a eșuat</string>
     <string name="error_following_person">Urmărirea persoanei a eșuat</string>
-    <string name="error_unfollowing_person">Dezurmărirea persoanei a eșuat</string>
-    <string name="error_checking_following_status">Verificarea stării urmăririi a eșuat</string>
+    <string name="error_unfollowing_person">Încetarea urmaririi persoanei a eșuat</string>
+    <string name="error_checking_following_status">Verificarea stării de urmărire a eșuat</string>
     <string name="error_starring_repository">Starring a eșuat</string>
     <string name="error_unstarring_repository">Unstarring a eșuat</string>
     <string name="error_forking_repository">Ramificarea a eșuat</string>
@@ -52,37 +52,37 @@
 
 
 <!-- Mesaje de încărcare -->
-    <string name="loading_gist">Se încarcă Gist…</string>
-    <string name="random_gist">Se încarcă Gist aleator…</string>
+    <string name="loading_gist">Încărcare Gist…</string>
+    <string name="random_gist">Încărcare Gist aleator…</string>
     <string name="loading_more_issues">Se încarcă mai multe probleme…</string>
     <string name="loading_issues">Se încarcă problemele…</string>
     <string name="loading_comments">Se încarcă comentariile…</string>
     <string name="loading_repositories">Se încarcă depozitele…</string>
     <string name="loading_issue">Se încarcă problema…</string>
     <string name="loading_news">Se încarcă noutățile…</string>
-    <string name="loading_followers">Se încarcă urmăritorii…</string>
+    <string name="loading_followers">Încărcare urmăritori…</string>
     <string name="loading_people">Se încarcă oamenii…</string>
     <string name="loading_gists">Se încarcă Gist-urile…</string>
     <string name="loading_collaborators">Se încarcă colaboratorii…</string>
     <string name="loading_milestones">Se încarcă bornele…</string>
     <string name="loading_labels">Se încarcă etichetele…</string>
     <string name="loading_commits">Se încarcă înregistrările…</string>
-    <string name="loading_files_and_comments">Se încarcă fițierele și comentariile…</string>
-    <string name="loading_refs">Se încarcă ramurile ți etichetele…</string>
+    <string name="loading_files_and_comments">Se încarcă fișierele și comentariile…</string>
+    <string name="loading_refs">Se încarcă ramurile și etichetele…</string>
     <!--  -->
 
 
     <!-- Mesaje goale -->
-    <string name="no_bookmarks">Nu sunt semne de carte</string>
+    <string name="no_bookmarks">Nu ai semne de carte</string>
     <string name="no_repositories">Nu sunt depozite</string>
-    <string name="no_contributors">Nu exista contribuitori</string>
+    <string name="no_contributors">Nu există contribuitori</string>
     <string name="no_issues">Nu sunt probleme</string>
     <string name="no_gists">Nu sunt Gist-uri</string>
     <string name="no_people">Nu sunt oameni</string>
     <string name="no_followers">Nu sunt urmăritori</string>
     <string name="no_members">Nu există membrii</string>
     <string name="no_news">Nu sunt noutăți</string>
-    <string name="no_commits">Nu exista înregistrări</string>
+    <string name="no_commits">Nu există înregistrări</string>
     <!--  -->
 
 
@@ -114,26 +114,26 @@
     <string name="gist_file_name_hint">file.rb</string>
     <string name="gist">Gist</string>
     <string name="comments">Comentarii</string>
-    <string name="files">Fițiere</string>
+    <string name="files">Fișiere</string>
     <string name="open">Deschide</string>
     <string name="random">Aleator</string>
     <string name="file_name">Nume fișier</string>
-    <string name="file_content">Conținut fițier</string>
+    <string name="file_content">Conținut fișier</string>
     <string name="new_gist">Gist nou</string>
     <string name="filter">Filtru</string>
     <string name="bookmark">Semn de carte</string>
     <string name="comment">Comentariu</string>
     <string name="delete">Șterge</string>
     <string name="refresh">Împrospătează</string>
-    <string name="dashboard_issues_title">Tablou de bord problemă</string>
+    <string name="dashboard_issues_title">Tablou de bord probleme</string>
     <string name="bookmarks">Semne de carte</string>
-    <string name="gists_title">Gists</string>
+    <string name="gists_title">Gist-uri</string>
     <string name="issue_title">Problema #</string>
-    <string name="pull_request_title">Trage cerere #</string>
+    <string name="pull_request_title">Cerere de tragere #</string>
     <string name="gist_title">Gist\u0020</string>
     <string name="filter_issues_title">Filtrează problemele</string>
     <string name="create_comment_title">Creează comentariu</string>
-    <string name="comment_hint">Tastează un comentariu</string>
+    <string name="comment_hint">Introdu un comentariu</string>
     <string name="show_more">Arată mai mult…</string>
     <string name="repositories">Depozite</string>
     <string name="contributors">Contribuitori</string>
@@ -152,14 +152,14 @@
     <string name="select_assignee">Selectează reprezentant</string>
     <string name="select_milestone">Selectează bornă</string>
     <string name="select_labels">Selectează etichete</string>
-    <string name="select_ref">Selectează ramură sau etichetă</string>
+    <string name="select_ref">Selectează ramura sau eticheta</string>
     <string name="enter_otp_code_title">Cod de autentificare</string>
-    <string name="enter_otp_code_message">Autentificarea two-factor este activă pe contul tău. Tastează codul de autentificare pentru a-ți verifica identitatea. </string>
+    <string name="enter_otp_code_message">Autentificarea în doi pași este activă pe contul tău. Introdu codul de autentificare pentru a-ți verifica identitatea.</string>
     <string name="no_milestone">Nu există bornă</string>
     <string name="unassigned">Niciun reprezentant</string>
     <string name="assigned">este desemnat</string>
     <string name="no_gists_found">Nu s-au găsit Gist-uri</string>
-    <string name="confirm_gist_delete_title">Confirmează ștergerea</string>
+    <string name="confirm_gist_delete_title">Confirmă ștergerea</string>
     <string name="confirm_gist_delete_message">Ești sigur că vrei să ștergi acest Gist?</string>
     <string name="deleting_gist">Ștergere Gist…</string>
     <string name="creating_comment">Creare comentariu…</string>
@@ -168,8 +168,8 @@
     <string name="confirm_comment_delete_title">Eliminare comentariu</string>
     <string name="confirm_comment_delete_message">Ești sigur că vrei să ștergi acest comentariu?</string>
     <string name="confirm_bookmark_delete_message">Ești sigur că vrei să ștergi acest semn de carte?</string>
-    <string name="issue_dashboard">Tablou de bord problemă</string>
-    <string name="new_issue">Problema</string>
+    <string name="issue_dashboard">Tablou de bord probleme</string>
+    <string name="new_issue">Problemă nouă</string>
     <string name="anonymous">Anonim</string>
     <string name="message_filter_saved">Filtrul preblemei a fost salvat în semnele de carte</string>
     <string name="recently_viewed">VIZUALIZATE RECENT</string>
@@ -177,7 +177,7 @@
     <string name="recent_remove">Ștergere Recent</string>
     <string name="recent_list_remove">Șterge de la utilizate recent</string>
     <string name="section_issue_status">Status:</string>
-    <string name="status_open">Deschide</string>
+    <string name="status_open">Deschis</string>
     <string name="status_closed">Închis</string>
     <string name="section_issue_assigned">Repartizat la:</string>
     <string name="assignee_anyone">Oricine</string>
@@ -185,7 +185,7 @@
     <string name="none">Niciunul</string>
     <string name="section_issue_labels">Etichete:</string>
     <string name="log_in">Autentifică-te</string>
-    <string name="signup_link">Nou la GitHub? &lt;a href=\"https://github.com/join\">Click aici&lt;/a> pentru înscriere</string>
+    <string name="signup_link">Ești nou la GitHub? &lt;a href=\"https://github.com/join\">Click aici&lt;/a> pentru înscriere</string>
     <string name="signup_link_two_factor_auth">Nu esti sigur ce să faci &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Obține ajutor.&lt;/a></string>
     <string name="connection_failed">Conectarea la GitHub a eșuat</string>
     <string name="code_authentication_failed">Autentificarea a eșuat! Cod de verificare incorect</string>
@@ -194,27 +194,27 @@
     <string name="password">Parolă</string>
     <string name="username_or_email">Nume de utilizator sau email</string>
     <string name="followers">Urmăritori</string>
-    <string name="following">Urmăriți</string>
+    <string name="following">Urmărește</string>
     <string name="followers_self">Urmăritori</string>
-    <string name="following_self">Urmăriți</string>
+    <string name="following_self">Urmărești</string>
     <string name="follow">Urmărește</string>
-    <string name="unfollow">Nu mai urmării</string>
+    <string name="unfollow">Nu mai urmări</string>
     <string name="star">Stea</string>
-    <string name="unstar">Unstar</string>
+    <string name="unstar">Fără stea</string>
     <string name="fork">Ramifică</string>
     <string name="members">Membrii</string>
     <string name="closing_issue">Închidere problemă…</string>
-    <string name="reopening_issue">Re deschidere problema…</string>
+    <string name="reopening_issue">Redeschidere problema…</string>
     <string name="avatar">Avatar</string>
     <string name="creating_issue">Creare problemă…</string>
     <string name="prefix_created">created\u0020</string>
     <string name="prefix_updated">updated\u0020</string>
     <string name="prefix_opened">opened\u0020</string>
-    <string name="clear">Curăța</string>
+    <string name="clear">Curăță</string>
     <string name="pull_request_commits">Înregistrări: %d</string>
     <string name="open_issues">Probleme deschise</string>
     <string name="closed_issues">Probleme închise</string>
-    <string name="confirm_bookmark_delete_title">Înlătură semn de carte</string>
+    <string name="confirm_bookmark_delete_title">Șterge semn de carte</string>
     <string name="save">Salvează</string>
     <string name="apply">Aplică</string>
     <string name="labels_prefix">Etichete:</string>
@@ -272,7 +272,7 @@
     <string name="tab_assigned">atribuit</string>
     <string name="tab_created">creat</string>
     <string name="tab_mentioned">menționat</string>
-    <string name="tab_mine">eu</string>
+    <string name="tab_mine">ale mele</string>
     <string name="tab_starred">starred</string>
     <string name="tab_all">tot</string>
     <!--  -->
@@ -280,14 +280,14 @@
     <string name="show_password">Arată parola</string>
     <string name="write">Scrie</string>
     <string name="preview">Previzualizează</string>
-    <string name="show_raw_markdown">Show raw markdown</string>
+    <string name="show_raw_markdown">Arată markdown</string>
     <string name="render_markdown">Randează markdown-ul</string>
     <string name="copy_hash">Copiază hash</string>
-    <string name="toast_msg_copied">Copiat in clipboard</string>
+    <string name="toast_msg_copied">Copiat în clipboard</string>
 
     <!-- Navigation drawer strings -->
-    <string name="navigation_drawer_open">Deschide navigation drawer</string>
-    <string name="navigation_drawer_close">Închide navigation drawer</string>
+    <string name="navigation_drawer_open">Deschide sertar de navigare</string>
+    <string name="navigation_drawer_close">Închide sertar de navigare</string>
     <string name="navigation_drawer_subheader">Sub antet</string>
 
 </resources>

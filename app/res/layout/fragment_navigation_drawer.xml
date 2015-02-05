@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/abc_action_bar_default_height_material"
+        android:layout_height="144dp"
         android:id="@+id/navigation_drawer_header">
 
         <ImageView
@@ -17,23 +17,24 @@
             android:src="@drawable/navigation_drawer_header_background" />
 
         <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:id="@+id/user_picture"
-            android:layout_centerVertical="true"
-            android:layout_margin="16dp" />
+            android:layout_margin="16dp"
+            android:layout_marginTop="16dp" />
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:id="@+id/user_name"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="#DEDEDE"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/user_picture"
-            android:layout_toEndOf="@id/user_picture" />
+            android:layout_below="@+id/user_picture"
+            android:layout_marginLeft="16dp"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
