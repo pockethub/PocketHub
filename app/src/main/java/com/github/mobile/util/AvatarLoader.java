@@ -96,8 +96,6 @@ public class AvatarLoader {
 
     private final Drawable loadingAvatar;
 
-    private final Options options;
-
     /**
      * The maximal size of avatar images, used to rescale images to save memory.
      */
@@ -106,10 +104,11 @@ public class AvatarLoader {
     /**
      * Create avatar helper
      *
-     * @param context
+     * @param context The context from which you're calling the method.
      */
     @Inject
     public AvatarLoader(final Context context) {
+        final Options options;
         this.context = context;
 
         loadingAvatar = context.getResources().getDrawable(
@@ -131,9 +130,14 @@ public class AvatarLoader {
 
     private int getMaxAvatarSize(final Context context) {
         int[] attrs = { android.R.attr.layout_height };
-        TypedArray array = context.obtainStyledAttributes(R.style.AvatarXLarge, attrs);
-        // Default value of 100px, but this should succeed anyways.
-        return array.getLayoutDimension(0, 100);
+        TypedArray array = context.getTheme().obtainStyledAttributes(R.style.AvatarXLarge, attrs);
+        // Try/finally to make sure array gets recycled
+        try {
+            // Passing default value of 100px, but it shouldn't resolve to default anyway.
+            return array.getLayoutDimension(0, 100);
+        } finally {
+            array.recycle();
+        }
     }
 
     private BitmapDrawable getImageBy(final String userId, final String filename) {
@@ -175,8 +179,8 @@ public class AvatarLoader {
     /**
      * Fetch avatar from URL
      *
-     * @param url
-     * @param cachedAvatarFilename
+     * @param url The URL from which to retrieve the avatar.
+     * @param cachedAvatarFilename The filename under which to store the cached avatar.
      * @return bitmap
      */
     protected BitmapDrawable fetchAvatar(final String url,
@@ -230,8 +234,8 @@ public class AvatarLoader {
     /**
      * Sets the logo on the {@link ActionBar} to the user's avatar.
      *
-     * @param actionBar
-     * @param user
+     * @param actionBar An ActionBar object on which you're placing the user's avatar.
+     * @param user An AtomicReference that points to the desired user.
      * @return this helper
      */
     public AvatarLoader bind(final ActionBar actionBar, final User user) {
@@ -241,8 +245,8 @@ public class AvatarLoader {
     /**
      * Sets the logo on the {@link ActionBar} to the user's avatar.
      *
-     * @param actionBar
-     * @param userReference
+     * @param actionBar An ActionBar object on which you're placing the user's avatar.
+     * @param userReference An AtomicReference that points to the desired user.
      * @return this helper
      */
     public AvatarLoader bind(final ActionBar actionBar,
@@ -339,8 +343,8 @@ public class AvatarLoader {
     /**
      * Bind view to image at URL
      *
-     * @param view
-     * @param user
+     * @param view The ImageView that is to display the user's avatar.
+     * @param user A User object that points to the desired user.
      * @return this helper
      */
     public AvatarLoader bind(final ImageView view, final User user) {
@@ -365,8 +369,8 @@ public class AvatarLoader {
     /**
      * Bind view to image at URL
      *
-     * @param view
-     * @param user
+     * @param view The ImageView that is to display the user's avatar.
+     * @param user A CommitUser object that points to the desired user.
      * @return this helper
      */
     public AvatarLoader bind(final ImageView view, final CommitUser user) {
@@ -393,8 +397,8 @@ public class AvatarLoader {
     /**
      * Bind view to image at URL
      *
-     * @param view
-     * @param contributor
+     * @param view The ImageView that is to display the user's avatar.
+     * @param contributor A Contributor object that points to the desired user.
      * @return this helper
      */
     public AvatarLoader bind(final ImageView view, final Contributor contributor) {
@@ -421,8 +425,8 @@ public class AvatarLoader {
     /**
      * Bind view to image at URL
      *
-     * @param view
-     * @param user
+     * @param view The ImageView that is to display the user's avatar.
+     * @param user a SearchUser object that refers to the desired user.
      * @return this helper
      */
     public AvatarLoader bind(final ImageView view, final SearchUser user) {
