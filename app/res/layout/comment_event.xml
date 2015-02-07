@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ListItem"
+    android:paddingTop="5dp"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_centerVertical="true"
+        style="@style/PrimaryIcon"
+        android:id="@+id/tv_event_icon"/>
+
+    <ImageView
+        android:id="@+id/iv_avatar"
+        style="@style/AvatarSmall"
+        android:layout_toRightOf="@id/tv_event_icon"
+        android:layout_toEndOf="@id/tv_event_icon"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:contentDescription="@string/avatar"
+        android:layout_centerVertical="true"/>
+
+    <TextView
+        android:id="@+id/tv_event"
+        style="@style/ListTitleText"
+        android:layout_toRightOf="@id/iv_avatar"
+        android:layout_toEndOf="@id/iv_avatar"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:textSize="15sp"
+        android:textStyle="normal"
+        android:layout_centerVertical="true"/>
+</RelativeLayout>

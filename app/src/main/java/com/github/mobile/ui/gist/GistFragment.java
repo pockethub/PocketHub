@@ -160,7 +160,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         if(user != null) userName = user.getLogin();
         adapter = new HeaderFooterListAdapter<CommentListAdapter>(list,
                 new CommentListAdapter(activity.getLayoutInflater(), null, avatars,
-                        imageGetter, editCommentListener, deleteCommentListener, userName, false));
+                        imageGetter, editCommentListener, deleteCommentListener, userName, false, null));
         list.setAdapter(adapter);
     }
 
