@@ -141,18 +141,18 @@ public class CommentListAdapter extends MultiTypeAdapter {
         case "closed":
             message += " this ";
             setText(0, ICON_ISSUE_CLOSE);
-            textView(0).setTextColor(Color.rgb(189,44,0));
+            textView(0).setTextColor(context.getResources().getColor(R.color.issue_event_closed));
             break;
         case "reopened":
             message += " this ";
             setText(0, ICON_ISSUE_REOPEN);
-            textView(0).setTextColor(Color.rgb(108,198,68));
+            textView(0).setTextColor(context.getResources().getColor(R.color.issue_event_reopened));
             break;
         case "merged":
             message += String.format(" commit <b>%s</b> into <tt>%s</tt> from <tt>%s</tt> ", event.getCommitId().substring(0,6), issue.getPullRequest().getBase().getRef(),
                     issue.getPullRequest().getHead().getRef());
             setText(0, "\uf023");
-            textView(0).setTextColor(Color.rgb(110,84,148));
+            textView(0).setTextColor(context.getResources().getColor(R.color.issue_event_merged));
             break;
         }
 
