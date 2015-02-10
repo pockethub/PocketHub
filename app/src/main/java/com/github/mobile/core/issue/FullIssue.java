@@ -21,6 +21,7 @@ import java.util.Collection;
 
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.IssueEvent;
 
 /**
  * Issue model with comments
@@ -31,15 +32,19 @@ public class FullIssue extends ArrayList<Comment> implements Serializable {
 
     private final Issue issue;
 
+    private Collection<IssueEvent> events;
+
     /**
-     * Create wrapper for issue and comments
+     * Create wrapper for issue, comments and events
      *
      * @param issue
      * @param comments
+     * @param events
      */
-    public FullIssue(final Issue issue, final Collection<Comment> comments) {
+    public FullIssue(final Issue issue, final Collection<Comment> comments, final Collection<IssueEvent> events) {
         super(comments);
 
+        this.events = events;
         this.issue = issue;
     }
 
@@ -56,4 +61,13 @@ public class FullIssue extends ArrayList<Comment> implements Serializable {
     public Issue getIssue() {
         return issue;
     }
+
+
+    /**
+     * @return events
+     */
+    public Collection<IssueEvent> getEvents() {
+        return events;
+    }
+
 }
