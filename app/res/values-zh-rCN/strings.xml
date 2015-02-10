@@ -152,6 +152,8 @@
     <string name="select_milestone">选择里程碑</string>
     <string name="select_labels">选择 Issue 标签</string>
     <string name="select_ref">选择分支或标签</string>
+	<string name="enter_otp_code_title">验证码</string>
+    <string name="enter_otp_code_message">启用双重身份验证您的帐户。请输入您的验证码来验证您的身份。</string>
     <string name="no_milestone">暂无里程碑</string>
     <string name="unassigned">无人被指派</string>
     <string name="assigned">被指派</string>
@@ -167,6 +169,8 @@
     <string name="message_filter_saved">Issue 过滤器已保存至书签</string>
     <string name="recently_viewed">近期浏览过的</string>
     <string name="recent">最近的</string>
+	<string name="recent_remove">删除最近</string>
+    <string name="recent_list_remove">删除最近使用</string>
     <string name="section_issue_status">状态:</string>
     <string name="status_open">开放</string>
     <string name="status_closed">关闭</string>
@@ -176,12 +180,13 @@
     <string name="none">无</string>
     <string name="section_issue_labels">Issue 标签:</string>
     <string name="log_in">登录</string>
-    <string name="signup_link">刚刚接触 GitHub? &lt;a href=\"https://github.com/join\">点这里&lt;/a>注册</string>
+    <string name="signup_link">刚刚接触 GitHub? &lt;a href=\"https://github.com/plans\">点这里&lt;/a>注册</string>
+	<string name="signup_link_two_factor_auth">不知道该怎么办？ &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">获取帮助。&lt;/a></string>
     <string name="connection_failed">无法连接到 GitHub</string>
     <string name="invalid_login_or_password">请输入正确的登录名和密码。</string>
     <string name="invalid_password">请输入正确的密码。</string>
     <string name="password">密码</string>
-    <string name="login_or_email">登录名 / 电子邮件</string>
+    <string name="username_or_email">登录名 / 电子邮件</string>
     <string name="followers">关注Ta的</string>
     <string name="following">Ta关注的</string>
     <string name="followers_self">关注我的</string>
