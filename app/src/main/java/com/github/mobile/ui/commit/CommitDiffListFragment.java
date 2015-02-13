@@ -218,7 +218,6 @@ public class CommitDiffListFragment extends DialogFragment implements
         }
     }
 
-    @SuppressWarnings("deprecation")
     @SuppressLint("NewApi")
     private void copyHashToClipboard() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
