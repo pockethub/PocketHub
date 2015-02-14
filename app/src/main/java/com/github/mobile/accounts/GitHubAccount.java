@@ -72,7 +72,6 @@ public class GitHubAccount {
      * @return token
      */
     public String getAuthToken() {
-        @SuppressWarnings("deprecation")
         AccountManagerFuture<Bundle> future = manager.getAuthToken(account,
                 ACCOUNT_TYPE, false, null, null);
 
