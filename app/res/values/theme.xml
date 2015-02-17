@@ -29,7 +29,9 @@
         <item name="android:windowBackground">@color/background</item>
     </style>
 
-    <style name="Theme.GitHub.NavigationDrawer" parent="Theme.GitHub" />
+    <style name="Theme.GitHub.NavigationDrawer" parent="Theme.GitHub" >
+        <item name="colorControlHighlight">@color/ripple_material_light</item>
+    </style>
 
     <style name="Widget.Styled.ActionBar" parent="Widget.AppCompat.ActionBar.Solid">
         <item name="background">@drawable/actionbar_background</item>
