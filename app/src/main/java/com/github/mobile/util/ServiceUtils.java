@@ -56,7 +56,6 @@ public class ServiceUtils {
      * @param context
      * @return display
      */
-    @SuppressWarnings("deprecation")
     public static int getDisplayWidth(final Context context) {
         return getDisplay(context).getWidth();
     }
