@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="toolbar_top_padding">24dp</dimen>
+    <dimen name="nav_drawer_header_height">178dp</dimen>
+</resources>
