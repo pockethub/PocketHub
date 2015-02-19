@@ -45,6 +45,7 @@
     <string name="error_starring_repository">Starring failed</string>
     <string name="error_unstarring_repository">Unstarring failed</string>
     <string name="error_forking_repository">Forking failed</string>
+    <string name="error_deleting_repository">Deleting failed</string>
     <string name="error_checking_starring_status">Checking starring status failed</string>
     <string name="error_rendering_markdown">Rendering markdown failed</string>
     <string name="error_users_search">Searching users failed</string>
@@ -252,6 +253,7 @@
     <string name="starring_repository">Starring…</string>
     <string name="unstarring_repository">Unstarring…</string>
     <string name="forking_repository">Forking…</string>
+    <string name="deleting_repository">Deleting…</string>
     <string name="navigate_to">Navigate to…</string>
     <string name="navigate_to_user">Navigate to %s</string>
     <string name="contributions">%d commits</string>

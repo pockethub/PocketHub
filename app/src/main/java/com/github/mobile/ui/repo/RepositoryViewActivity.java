@@ -36,6 +36,7 @@ import android.widget.ProgressBar;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R;
+import com.github.mobile.core.repo.DeleteRepositoryTask;
 import com.github.mobile.core.repo.ForkRepositoryTask;
 import com.github.mobile.core.repo.RefreshRepositoryTask;
 import com.github.mobile.core.repo.RepositoryUtils;
@@ -166,6 +167,9 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
             case R.id.m_share:
                 shareRepository();
                 return true;
+        case R.id.m_delete:
+                deleteRepository();
+                return true;
             case R.id.m_refresh:
                 checkStarredRepositoryStatus();
                 return super.onOptionsItemSelected(item);
@@ -292,6 +296,23 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                 super.onException(e);
 
                 ToastUtils.show(RepositoryViewActivity.this, R.string.error_forking_repository);
+            }
+        }.start();
+    }
+
+    private void deleteRepository() {
+        new DeleteRepositoryTask(this, repository) {
+
+            @Override
+            protected void onSuccess(Void v) throws Exception {
+                super.onSuccess(v);
+            }
+
+            @Override
+            protected void onException(Exception e) throws RuntimeException {
+                super.onException(e);
+
+                ToastUtils.show(RepositoryViewActivity.this, R.string.error_deleting_repository);
             }
         }.start();
     }
