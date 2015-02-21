@@ -21,14 +21,16 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
 
-        <item name="colorControlHighlight">@color/ripple_material_light</item>
-
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
 
         <item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>
         <item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowBackground">@color/background</item>
+    </style>
+
+    <style name="Theme.GitHub.NavigationDrawer" parent="Theme.GitHub" >
+        <item name="colorControlHighlight">@color/ripple_material_light</item>
     </style>
 
     <style name="Widget.Styled.ActionBar" parent="Widget.AppCompat.ActionBar.Solid">
@@ -41,6 +43,11 @@
     <style name="IndeterminateProgress" parent="@android:style/Widget.ProgressBar">
         <item name="android:indeterminateDrawable">@drawable/actionbar_spinner</item>
         <item name="android:minWidth">16dp</item>
+    </style>
+
+    <style name="ToolbarStyle">
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="colorControlHighlight">@color/ripple_material_dark</item>
     </style>
 
 </resources>

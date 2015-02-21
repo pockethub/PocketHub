@@ -86,24 +86,24 @@ public class NavigationDrawerAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             switch (obj.getType()) {
                 case TYPE_ITEM_MENU:
-                    convertView = inflater.inflate(R.layout.navigation_drawer_list_item_text, null);
+                    convertView = inflater.inflate(R.layout.navigation_drawer_list_item_text, parent, false);
                     viewHolder.name = (TextView) convertView.findViewById(R.id.navigation_drawer_item_name);
                     viewHolder.iconString = (TextView) convertView.findViewById(R.id.navigation_drawer_item_text_icon);
                     break;
                 case TYPE_ITEM_ORG:
-                    convertView = inflater.inflate(R.layout.navigation_drawer_list_item_image, null);
+                    convertView = inflater.inflate(R.layout.navigation_drawer_list_item_image, parent, false);
                     viewHolder.name = (TextView) convertView.findViewById(R.id.navigation_drawer_item_name);
                     viewHolder.iconDrawable = (ImageView) convertView.findViewById(R.id
                         .navigation_drawer_item_drawable_icon);
                     break;
                 case TYPE_SUBHEADER:
-                    convertView = inflater.inflate(R.layout.navigation_drawer_list_subheader, null);
+                    convertView = inflater.inflate(R.layout.navigation_drawer_list_subheader, parent, false);
                     viewHolder.name = (TextView) convertView.findViewById(R.id.navigation_drawer_item_name);
                     convertView.setEnabled(false);
                     convertView.setOnClickListener(null);
                     break;
                 default:
-                    convertView = inflater.inflate(R.layout.navigation_drawer_list_seperator, null);
+                    convertView = inflater.inflate(R.layout.navigation_drawer_list_seperator, parent, false);
                     convertView.setEnabled(false);
                     convertView.setOnClickListener(null);
                     break;
