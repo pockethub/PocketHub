@@ -175,7 +175,7 @@
     <string name="recently_viewed">RECENTLY VIEWED</string>
     <string name="recent">Recent</string>
     <string name="recent_remove">Remove Recent</string>
-    <string name="recent_list_remove">Remove from recently used</string>
+    <string name="recent_list_remove">Remove from recently viewed</string>
     <string name="section_issue_status">Status:</string>
     <string name="status_open">Open</string>
     <string name="status_closed">Closed</string>
