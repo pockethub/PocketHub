@@ -15,8 +15,12 @@
  */
 package com.github.mobile.ui.comment;
 
+import static com.github.mobile.util.TypefaceUtils.ICON_ISSUE_CLOSE;
+import static com.github.mobile.util.TypefaceUtils.ICON_ISSUE_REOPEN;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.PopupMenu;
+import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -24,18 +28,23 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.github.kevinsawicki.wishlist.MultiTypeAdapter;
 import com.github.mobile.R;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.TimeUtils;
+import com.github.mobile.util.TypefaceUtils;
+
+import java.util.Collection;
 
 import org.eclipse.egit.github.core.Comment;
+import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.IssueEvent;
 
 /**
  * Adapter for a list of {@link Comment} objects
  */
-public class CommentListAdapter extends SingleTypeAdapter<Comment> {
+public class CommentListAdapter extends MultiTypeAdapter {
 
     private final AvatarLoader avatars;
 
@@ -57,6 +66,8 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
 
     private Context context;
 
+    private Issue issue;
+
     /**
      * Create list adapter
      *
@@ -66,8 +77,8 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
      * @param imageGetter
      */
     public CommentListAdapter(LayoutInflater inflater, Comment[] elements,
-            AvatarLoader avatars, HttpImageGetter imageGetter) {
-        this(inflater, elements, avatars, imageGetter, null, null, null, false);
+            AvatarLoader avatars, HttpImageGetter imageGetter, Issue issue) {
+        this(inflater, elements, avatars, imageGetter, null, null, null, false, issue);
         this.context = inflater.getContext();
     }
 
@@ -79,8 +90,8 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
      * @param imageGetter
      */
     public CommentListAdapter(LayoutInflater inflater, AvatarLoader avatars,
-            HttpImageGetter imageGetter) {
-        this(inflater, null, avatars, imageGetter);
+            HttpImageGetter imageGetter, Issue issue) {
+        this(inflater, null, avatars, imageGetter, issue);
         this.context = inflater.getContext();
     }
 
@@ -96,9 +107,11 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
      */
     public CommentListAdapter(LayoutInflater inflater, Comment[] elements,
             AvatarLoader avatars, HttpImageGetter imageGetter,
-            EditCommentListener editCommentListener, DeleteCommentListener deleteCommentListener, String userName, boolean isOwner) {
-        super(inflater, R.layout.comment_item);
+            EditCommentListener editCommentListener, DeleteCommentListener deleteCommentListener,
+            String userName, boolean isOwner, Issue issue) {
+        super(inflater);
 
+        this.issue = issue;
         this.userName = userName;
         this.isOwner = isOwner;
         this.context = inflater.getContext();
@@ -110,7 +123,44 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
     }
 
     @Override
-    protected void update(int position, final Comment comment) {
+    protected void update(int i, Object o, int type) {
+        if(type == 0)
+            updateComment((Comment)o);
+        else
+            updateEvent((IssueEvent)o);
+    }
+
+    protected void updateEvent(final IssueEvent event) {
+        TypefaceUtils.setOcticons(textView(0));
+        String message = String.format("<b>%s</b> %s", event.getActor().getLogin(), event.getEvent());
+        avatars.bind(imageView(2), event.getActor());
+
+        String eventString = event.getEvent();
+
+        switch (eventString) {
+        case "closed":
+            message += " this ";
+            setText(0, ICON_ISSUE_CLOSE);
+            textView(0).setTextColor(context.getResources().getColor(R.color.issue_event_closed));
+            break;
+        case "reopened":
+            message += " this ";
+            setText(0, ICON_ISSUE_REOPEN);
+            textView(0).setTextColor(context.getResources().getColor(R.color.issue_event_reopened));
+            break;
+        case "merged":
+            message += String.format(" commit <b>%s</b> into <tt>%s</tt> from <tt>%s</tt> ", event.getCommitId().substring(0,6), issue.getPullRequest().getBase().getRef(),
+                    issue.getPullRequest().getHead().getRef());
+            setText(0, "\uf023");
+            textView(0).setTextColor(context.getResources().getColor(R.color.issue_event_merged));
+            break;
+        }
+
+        message += TimeUtils.getRelativeTime(event.getCreatedAt());
+        setText(1, Html.fromHtml(message));
+    }
+
+    protected void updateComment(final Comment comment) {
         imageGetter.bind(textView(0), comment.getBodyHtml(), comment.getId());
         avatars.bind(imageView(3), comment.getUser());
 
@@ -165,22 +215,60 @@ public class CommentListAdapter extends SingleTypeAdapter<Comment> {
         menu.show();
     }
 
-    @Override
-    public long getItemId(final int position) {
-        return getItem(position).getId();
+    public MultiTypeAdapter setItems(Collection<?> items) {
+        if (items == null || items.isEmpty())
+            return this;
+        return setItems(items.toArray());
+    }
+
+    public MultiTypeAdapter setItems(final Object[] items) {
+        if (items == null || items.length == 0)
+            return this;
+
+        this.clear();
+
+        for (Object item : items) {
+            if(item instanceof Comment)
+                this.addItem(0, item);
+            else
+                this.addItem(1, item);
+        }
+
+        notifyDataSetChanged();
+        return this;
+    }
+
+    public void setIssue(Issue issue) {
+        this.issue = issue;
     }
 
     @Override
-    protected View initialize(View view) {
-        view = super.initialize(view);
+    protected View initialize(int type, View view) {
+        view = super.initialize(type, view);
 
         textView(view, 0).setMovementMethod(LinkMovementMethod.getInstance());
         return view;
     }
 
     @Override
-    protected int[] getChildViewIds() {
-        return new int[] { R.id.tv_comment_body, R.id.tv_comment_author,
-                R.id.tv_comment_date, R.id.iv_avatar, R.id.iv_more };
+    public int getViewTypeCount() {
+        return 2;
+    }
+
+    @Override
+    protected int getChildLayoutId(int i) {
+        if(i == 0)
+            return R.layout.comment_item;
+        else
+            return R.layout.comment_event_item;
+    }
+
+    @Override
+    protected int[] getChildViewIds(int i) {
+        if(i == 0)
+            return new int[] { R.id.tv_comment_body, R.id.tv_comment_author,
+                    R.id.tv_comment_date, R.id.iv_avatar, R.id.iv_more };
+        else
+            return new int[]{R.id.tv_event_icon, R.id.tv_event, R.id.iv_avatar};
     }
 }
