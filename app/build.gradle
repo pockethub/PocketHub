@@ -52,7 +52,10 @@ dependencies {
         exclude group: 'com.google.inject'
     }
     compile 'com.viewpagerindicator:library:2.4.1@aar'
-
+    compile 'com.squareup.okio:okio:1.1.0'
+    compile 'com.squareup.okhttp:okhttp:2.2.0'
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    compile 'com.afollestad:material-dialogs:0.6.3.1'
     //Self compiled .aar version of wishlist
     compile (name:'lib', ext:'aar')
 }

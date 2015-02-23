@@ -161,6 +161,12 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
         configureList(getActivity(), getListView());
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshWithProgress();
+    }
+
     /**
      * Configure list after view has been created
      *

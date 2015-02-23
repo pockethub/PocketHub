@@ -125,6 +125,7 @@
     <string name="bookmark">Bookmark</string>
     <string name="comment">Comment</string>
     <string name="delete">Delete</string>
+    <string name="delete_cap">DELETE</string>
     <string name="refresh">Refresh</string>
     <string name="dashboard_issues_title">Issue Dashboard</string>
     <string name="bookmarks">Bookmarks</string>
@@ -233,6 +234,7 @@
     <string name="title_invalid_github_url">Invalid GitHub URL</string>
     <string name="message_invalid_github_url">The following URL could not be opened by this application:\n{0}</string>
     <string name="cancel">Cancel</string>
+    <string name="not_sure">NOT SURE</string>
     <string name="authenticator_conflict_title">App Conflict</string>
     <string name="authenticator_conflict_message">Another installed app is already configured for GitHub authentication.\n\nYou must remove the other app from the Accounts &amp; sync settings and uninstall it before the GitHub app can be used.</string>
     <string name="opening_repository">Opening {0}…</string>
@@ -291,5 +293,13 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="navigation_drawer_subheader">Subheader</string>
+
+    <!-- Deleting repo -->
+    <string name="are_you_sure">Are you absolutely sure?</string>
+    <string name="unexpected_bad_things">This action CANNOT be undone.
+        This will permanently delete the repository, wiki, issues,
+        and comments, and remove all collaborator associations.</string>
+    <string name="delete_successful">Repository is deleted</string>
+
 
 </resources>

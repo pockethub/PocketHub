@@ -33,6 +33,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R;
@@ -53,11 +54,20 @@ import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
+import org.eclipse.egit.github.core.service.RepositoryService;
+import org.eclipse.egit.github.core.service.UserService;
 
 /**
  * Activity to view a repository
  */
 public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdapter> {
+    public static final String TAG = "RepositoryViewActivity";
+
+    @Inject
+    private RepositoryService repositoryService;
+
+    @Inject
+    private UserService userService;
 
     /**
      * Create intent for this activity
@@ -167,7 +177,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
             case R.id.m_share:
                 shareRepository();
                 return true;
-        case R.id.m_delete:
+            case R.id.m_delete:
                 deleteRepository();
                 return true;
             case R.id.m_refresh:
@@ -301,19 +311,41 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     }
 
     private void deleteRepository() {
-        new DeleteRepositoryTask(this, repository) {
+        new MaterialDialog.Builder(this)
+                .title(R.string.are_you_sure)
+                .content(R.string.unexpected_bad_things)
+                .positiveText(R.string.not_sure)
+                .negativeText(R.string.delete_cap)
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        super.onPositive(dialog);
+                        dialog.dismiss();
+                    }
 
-            @Override
-            protected void onSuccess(Void v) throws Exception {
-                super.onSuccess(v);
-            }
+                    @Override
+                    public void onNegative(MaterialDialog dialog) {
+                        super.onNegative(dialog);
+                        dialog.dismiss();
 
-            @Override
-            protected void onException(Exception e) throws RuntimeException {
-                super.onException(e);
+                        new DeleteRepositoryTask(RepositoryViewActivity.this, repository) {
 
-                ToastUtils.show(RepositoryViewActivity.this, R.string.error_deleting_repository);
-            }
-        }.start();
+                            @Override
+                            protected void onSuccess(Void v) throws Exception {
+                                super.onSuccess(v);
+                                onBackPressed();
+                                ToastUtils.show(RepositoryViewActivity.this, R.string.delete_successful);
+                            }
+
+                            @Override
+                            protected void onException(Exception e) throws RuntimeException {
+                                super.onException(e);
+
+                                ToastUtils.show(RepositoryViewActivity.this, R.string.error_deleting_repository);
+                            }
+                        }.start();
+                    }
+                })
+                .show();
     }
 }
