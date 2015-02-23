@@ -45,6 +45,7 @@
     <string name="error_starring_repository">Starring failed</string>
     <string name="error_unstarring_repository">Unstarring failed</string>
     <string name="error_forking_repository">Forking failed</string>
+    <string name="error_deleting_repository">Deleting failed</string>
     <string name="error_checking_starring_status">Checking starring status failed</string>
     <string name="error_rendering_markdown">Rendering markdown failed</string>
     <string name="error_users_search">Searching users failed</string>
@@ -124,6 +125,7 @@
     <string name="bookmark">Bookmark</string>
     <string name="comment">Comment</string>
     <string name="delete">Delete</string>
+    <string name="delete_cap">DELETE</string>
     <string name="refresh">Refresh</string>
     <string name="dashboard_issues_title">Issue Dashboard</string>
     <string name="bookmarks">Bookmarks</string>
@@ -232,6 +234,7 @@
     <string name="title_invalid_github_url">Invalid GitHub URL</string>
     <string name="message_invalid_github_url">The following URL could not be opened by this application:\n{0}</string>
     <string name="cancel">Cancel</string>
+    <string name="not_sure">NOT SURE</string>
     <string name="authenticator_conflict_title">App Conflict</string>
     <string name="authenticator_conflict_message">Another installed app is already configured for GitHub authentication.\n\nYou must remove the other app from the Accounts &amp; sync settings and uninstall it before the GitHub app can be used.</string>
     <string name="opening_repository">Opening {0}…</string>
@@ -252,6 +255,7 @@
     <string name="starring_repository">Starring…</string>
     <string name="unstarring_repository">Unstarring…</string>
     <string name="forking_repository">Forking…</string>
+    <string name="deleting_repository">Deleting…</string>
     <string name="navigate_to">Navigate to…</string>
     <string name="navigate_to_user">Navigate to %s</string>
     <string name="contributions">%d commits</string>
@@ -289,5 +293,13 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="navigation_drawer_subheader">Subheader</string>
+
+    <!-- Deleting repo -->
+    <string name="are_you_sure">Are you absolutely sure?</string>
+    <string name="unexpected_bad_things">This action CANNOT be undone.
+        This will permanently delete the repository, wiki, issues,
+        and comments, and remove all collaborator associations.</string>
+    <string name="delete_successful">Repository is deleted</string>
+
 
 </resources>
