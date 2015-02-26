@@ -6,4 +6,11 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
   </component>
 </project>
+<TextView
+  android:id="+id/@textview"
+  android:Text="文本框"
+  android:layout_height="wrap_content"
+  android:layout_width="wrap_content"
+  >
+  </TextView>
 
