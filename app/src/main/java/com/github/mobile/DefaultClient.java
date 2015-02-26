@@ -52,7 +52,7 @@ public class DefaultClient extends GitHubClient {
         super.configureRequest(request);
 
         request.setRequestProperty(HEADER_ACCEPT,
-                "application/vnd.github.v3.full+json");
+                "application/vnd.github.beta.full+json");
 
         return request;
     }
