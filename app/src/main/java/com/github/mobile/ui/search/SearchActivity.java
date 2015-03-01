@@ -50,6 +50,8 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
 
     private SearchUserListFragment userFragment;
 
+    private String query;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,12 +122,19 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
         handleIntent(intent);
     }
 
+    @Override
+    public boolean onSearchRequested() {
+        startSearch(query, true, null, false);
+        return true;
+    }
+
     private void handleIntent(Intent intent) {
         if (ACTION_SEARCH.equals(intent.getAction()))
             search(intent.getStringExtra(QUERY));
     }
 
     private void search(final String query) {
+        this.query = query;
         getSupportActionBar().setTitle(query);
         RepositorySearchSuggestionsProvider.save(this, query);
 
