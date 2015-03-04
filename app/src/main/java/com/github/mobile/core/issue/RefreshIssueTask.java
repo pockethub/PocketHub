@@ -98,11 +98,8 @@ public class RefreshIssueTask extends AuthenticatedUserTask<FullIssue> {
         Iterator<Collection<IssueEvent>> eventsIterator = service.pageIssueEvents(repo[0], repo[1], issueNumber).iterator();
         List<IssueEvent> events = new ArrayList<>();
 
-        if (eventsIterator != null)
-            while (eventsIterator.hasNext())
-                events.addAll(eventsIterator.next());
-        else
-            events = Collections.emptyList();
+        while (eventsIterator.hasNext())
+            events.addAll(eventsIterator.next());
 
         return new FullIssue(issue, comments, events);
     }

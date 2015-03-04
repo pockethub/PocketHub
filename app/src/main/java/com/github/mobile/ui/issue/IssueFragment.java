@@ -95,6 +95,8 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.User;
 
+import retrofit.http.HEAD;
+
 /**
  * Fragment to display an issue
  */
@@ -103,8 +105,6 @@ public class IssueFragment extends DialogFragment {
     private int issueNumber;
 
     private List<Comment> comments;
-
-    private List<IssueEvent> events;
 
     private List<Object> items;
 
@@ -466,27 +466,30 @@ public class IssueFragment extends DialogFragment {
 
                 issue = fullIssue.getIssue();
                 comments = fullIssue;
-                events = (List<IssueEvent>) fullIssue.getEvents();
+
+                List<IssueEvent> events = (List<IssueEvent>) fullIssue.getEvents();
+                int numEvents = events.size();
+
                 List<Object> allItems = new ArrayList<>();
 
                 int start = 0;
-                for (Comment comment : comments) {
-                    for(int e = start; e < events.size(); e++) {
+                for (Comment comment : fullIssue) {
+                    for (int e = start; e < numEvents; e++) {
                         IssueEvent event = events.get(e);
                         if (comment.getCreatedAt().after(event.getCreatedAt())) {
-                            if(event.getEvent().equals("closed") || event.getEvent().equals("reopened") || event.getEvent().equals("merged"))
-                                allItems.add(event);
+                            allItems.add(event);
                             start++;
+                        } else {
+                            e = events.size();
                         }
                     }
                     allItems.add(comment);
                 }
 
-                //Adding the last events or if there are no comments
+                // Adding the last events or if there are no comments
                 for(int e = start; e < events.size(); e++) {
                     IssueEvent event = events.get(e);
-                    if(event.getEvent().equals("closed") || event.getEvent().equals("reopened") || event.getEvent().equals("merged"))
-                        allItems.add(event);
+                    allItems.add(event);
                 }
 
                 items = allItems;
@@ -536,7 +539,6 @@ public class IssueFragment extends DialogFragment {
                 @Override
                 protected void onSuccess(Comment comment) throws Exception {
                     super.onSuccess(comment);
-
                     // Update comment list
                     if (comments != null && comment != null) {
                         int position = Collections.binarySearch(comments,
@@ -602,8 +604,8 @@ public class IssueFragment extends DialogFragment {
         case COMMENT_CREATE:
             Comment comment = (Comment) data
                     .getSerializableExtra(EXTRA_COMMENT);
-            if (comments != null) {
-                comments.add(comment);
+            if (items != null) {
+                items.add(comment);
                 issue.setComments(issue.getComments() + 1);
                 updateList(issue, items);
             } else

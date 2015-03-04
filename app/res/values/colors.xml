@@ -77,6 +77,8 @@
     <color name="issue_event_merged">#6e5494</color>
     <color name="issue_event_closed">#bd2c00</color>
     <color name="issue_event_reopened">#6cc644</color>
+    <color name="issue_event_lock">#333333</color>
+    <color name="issue_event_unlock">#333333</color>
 
     <color name="primary">#3D3D3D</color>
     <color name="primary_dark">#313131</color>

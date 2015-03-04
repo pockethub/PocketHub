@@ -15,10 +15,7 @@
  */
 package com.github.mobile.ui.comment;
 
-import static com.github.mobile.util.TypefaceUtils.ICON_ISSUE_CLOSE;
-import static com.github.mobile.util.TypefaceUtils.ICON_ISSUE_REOPEN;
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.PopupMenu;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -123,11 +120,11 @@ public class CommentListAdapter extends MultiTypeAdapter {
     }
 
     @Override
-    protected void update(int i, Object o, int type) {
+    protected void update(int position, Object obj, int type) {
         if(type == 0)
-            updateComment((Comment)o);
+            updateComment((Comment) obj);
         else
-            updateEvent((IssueEvent)o);
+            updateEvent((IssueEvent) obj);
     }
 
     protected void updateEvent(final IssueEvent event) {
@@ -138,25 +135,64 @@ public class CommentListAdapter extends MultiTypeAdapter {
         String eventString = event.getEvent();
 
         switch (eventString) {
+        case "assigned":
+        case "unassigned":
+            setText(0, TypefaceUtils.ICON_PERSON);
+            textView(0).setTextColor(
+                    context.getResources().getColor(R.color.text_description));
+            break;
+        case "labeled":
+        case "unlabeled":
+            setText(0, TypefaceUtils.ICON_TAG);
+            textView(0).setTextColor(
+                    context.getResources().getColor(R.color.text_description));
+            break;
+        case "referenced":
+            setText(0, TypefaceUtils.ICON_BOOKMARK);
+            textView(0).setTextColor(
+                    context.getResources().getColor(R.color.text_description));
+            break;
+        case "milestoned":
+        case "demilestoned":
+            setText(0, TypefaceUtils.ICON_MILESTONE);
+            textView(0).setTextColor(
+                    context.getResources().getColor(R.color.text_description));
+            break;
         case "closed":
-            message += " this ";
-            setText(0, ICON_ISSUE_CLOSE);
-            textView(0).setTextColor(context.getResources().getColor(R.color.issue_event_closed));
+            setText(0, TypefaceUtils.ICON_ISSUE_CLOSE);
+            textView(0).setTextColor(
+                    context.getResources().getColor(R.color.issue_event_closed));
             break;
         case "reopened":
-            message += " this ";
-            setText(0, ICON_ISSUE_REOPEN);
-            textView(0).setTextColor(context.getResources().getColor(R.color.issue_event_reopened));
+            setText(0, TypefaceUtils.ICON_ISSUE_REOPEN);
+            textView(0).setTextColor(
+                    context.getResources().getColor(R.color.issue_event_reopened));
+            break;
+        case "renamed":
+            setText(0, TypefaceUtils.ICON_EDIT);
+            textView(0).setTextColor(
+                    context.getResources().getColor(R.color.text_description));
             break;
         case "merged":
-            message += String.format(" commit <b>%s</b> into <tt>%s</tt> from <tt>%s</tt> ", event.getCommitId().substring(0,6), issue.getPullRequest().getBase().getRef(),
-                    issue.getPullRequest().getHead().getRef());
-            setText(0, "\uf023");
-            textView(0).setTextColor(context.getResources().getColor(R.color.issue_event_merged));
+            message += String.format(" commit <b>%s</b> into <tt>%s</tt> from <tt>%s</tt>", event.getCommitId().substring(0,6), issue.getPullRequest().getBase().getRef(),
+                issue.getPullRequest().getHead().getRef());
+            setText(0, TypefaceUtils.ICON_MERGE);
+            textView(0).setTextColor(
+                    context.getResources().getColor(R.color.issue_event_merged));
+            break;
+        case "locked":
+            setText(0, TypefaceUtils.ICON_LOCK);
+            textView(0).setTextColor(
+                    context.getResources().getColor(R.color.issue_event_lock));
+            break;
+        case "unlocked":
+            setText(0, TypefaceUtils.ICON_KEY);
+            textView(0).setTextColor(
+                    context.getResources().getColor(R.color.issue_event_lock));
             break;
         }
 
-        message += TimeUtils.getRelativeTime(event.getCreatedAt());
+        message += " " + TimeUtils.getRelativeTime(event.getCreatedAt());
         setText(1, Html.fromHtml(message));
     }
 
@@ -256,16 +292,16 @@ public class CommentListAdapter extends MultiTypeAdapter {
     }
 
     @Override
-    protected int getChildLayoutId(int i) {
-        if(i == 0)
+    protected int getChildLayoutId(int type) {
+        if(type == 0)
             return R.layout.comment_item;
         else
             return R.layout.comment_event_item;
     }
 
     @Override
-    protected int[] getChildViewIds(int i) {
-        if(i == 0)
+    protected int[] getChildViewIds(int type) {
+        if(type == 0)
             return new int[] { R.id.tv_comment_body, R.id.tv_comment_author,
                     R.id.tv_comment_date, R.id.iv_avatar, R.id.iv_more };
         else
