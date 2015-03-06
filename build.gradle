@@ -15,6 +15,7 @@ buildscript {
 allprojects {
     repositories {
         maven { url "http://dl.bintray.com/populov/maven" }
+        maven { url "https://repo.eclipse.org/content/groups/releases" }
         jcenter()
     }
 }
