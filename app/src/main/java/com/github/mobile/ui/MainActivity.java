@@ -129,7 +129,7 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
 
                 @Override
                 public void run() {
-                    MainActivity.this.onNavigationDrawerItemSelected(0);
+                    MainActivity.this.onNavigationDrawerItemSelected(1);
                 }
             });
         }
@@ -148,22 +148,22 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
         Fragment fragmet;
         Bundle args = new Bundle();
         switch (position) {
-            case 0:
+            case 1:
                 fragmet = new HomePagerFragment();
                 args.putSerializable("org", org);
                 break;
-            case 1:
+            case 2:
                 fragmet = new GistsPagerFragment();
                 break;
-            case 2:
+            case 3:
                 fragmet = new IssueDashboardPagerFragment();
                 break;
-            case 3:
+            case 4:
                 fragmet = new FilterListFragment();
                 break;
             default:
                 fragmet = new HomePagerFragment();
-                args.putSerializable("org", orgs.get(position - 5));
+                args.putSerializable("org", orgs.get(position - 6));
                 break;
         }
         fragmet.setArguments(args);

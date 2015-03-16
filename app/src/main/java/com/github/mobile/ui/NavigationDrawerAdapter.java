@@ -70,7 +70,7 @@ public class NavigationDrawerAdapter extends BaseAdapter {
 
     @Override
     public NavigationDrawerObject getItem(int position) {
-        return data.get(position);
+        return data.get(position-1);
     }
 
     @Override
