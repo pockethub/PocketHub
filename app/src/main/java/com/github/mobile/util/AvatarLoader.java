@@ -33,6 +33,7 @@ import com.github.kevinsawicki.http.HttpRequest;
 import com.github.mobile.R;
 import com.github.mobile.core.search.SearchUser;
 import com.google.inject.Inject;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -91,17 +92,16 @@ public class AvatarLoader {
     };
 
     private final Context context;
+    private final Picasso p;
 
     private final File avatarDir;
 
     private final Drawable loadingAvatar;
 
-    private final Options options;
-
     /**
      * The maximal size of avatar images, used to rescale images to save memory.
      */
-    private final int avatarSize;
+    private static int avatarSize = 0;
 
     /**
      * Create avatar helper
@@ -111,9 +111,10 @@ public class AvatarLoader {
     @Inject
     public AvatarLoader(final Context context) {
         this.context = context;
+        p = Picasso.with(context);
+        p.setIndicatorsEnabled(true);
 
-        loadingAvatar = context.getResources().getDrawable(
-                R.drawable.gravatar_icon);
+        loadingAvatar = context.getResources().getDrawable(R.drawable.gravatar_icon);
 
         avatarDir = new File(context.getCacheDir(), "avatars/github.com");
         if (!avatarDir.isDirectory())
@@ -122,11 +123,9 @@ public class AvatarLoader {
         float density = context.getResources().getDisplayMetrics().density;
         cornerRadius = CORNER_RADIUS_IN_DIP * density;
 
-        options = new Options();
-        options.inDither = false;
-        options.inPreferredConfig = ARGB_8888;
-
-        avatarSize = getMaxAvatarSize(context);
+        if (avatarSize == 0) {
+            avatarSize = getMaxAvatarSize(context);
+        }
     }
 
     private int getMaxAvatarSize(final Context context) {
@@ -339,27 +338,11 @@ public class AvatarLoader {
     /**
      * Bind view to image at URL
      *
-     * @param view
-     * @param user
-     * @return this helper
+     * @param view The ImageView that is to display the user's avatar.
+     * @param user A User object that points to the desired user.
      */
-    public AvatarLoader bind(final ImageView view, final User user) {
-        final String userId = getId(user);
-        if (userId == null)
-            return setImage(loadingAvatar, view);
-
-        final String avatarUrl = getAvatarUrl(user);
-        if (TextUtils.isEmpty(avatarUrl))
-            return setImage(loadingAvatar, view);
-
-        BitmapDrawable loadedImage = loaded.get(userId);
-        if (loadedImage != null)
-            return setImage(loadedImage, view);
-
-        setImage(loadingAvatar, view, userId);
-        fetchAvatarTask(avatarUrl, userId, view).execute();
-
-        return this;
+    public void bind(final ImageView view, final User user) {
+        p.load(user.getAvatarUrl()).placeholder(R.drawable.gravatar_icon).resize(avatarSize, avatarSize).into(view);
     }
 
     /**
