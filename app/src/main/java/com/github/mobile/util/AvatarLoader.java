@@ -16,12 +16,10 @@
 package com.github.mobile.util;
 
 import static android.graphics.Bitmap.CompressFormat.PNG;
-import static android.graphics.Bitmap.Config.ARGB_8888;
 import static android.view.View.VISIBLE;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory.Options;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBar;
@@ -342,18 +340,18 @@ public class AvatarLoader {
      * @param user A User object that points to the desired user.
      */
     public void bind(final ImageView view, final User user) {
-        p.load(user.getAvatarUrl()).placeholder(R.drawable.gravatar_icon).resize(avatarSize, avatarSize).into(view);
+        bind(view, user.getAvatarUrl());
     }
 
     /**
      * Bind view to image at URL
      *
-     * @param view
-     * @param user
-     * @return this helper
+     * @param view The ImageView that is to display the user's avatar.
+     * @param user A CommitUser object that points to the desired user.
      */
-    public AvatarLoader bind(final ImageView view, final CommitUser user) {
-        if (user == null)
+    public void bind(final ImageView view, final CommitUser user) {
+        p.load(R.drawable.spinner_inner).resize(avatarSize, avatarSize).into(view);
+        /*if (user == null)
             return setImage(loadingAvatar, view);
 
         final String avatarUrl = getAvatarUrl(user);
@@ -368,48 +366,28 @@ public class AvatarLoader {
             return setImage(loadedImage, view);
 
         setImage(loadingAvatar, view, userId);
-        fetchAvatarTask(avatarUrl, userId, view).execute();
-
-        return this;
+        fetchAvatarTask(avatarUrl, userId, view).execute();*/
     }
 
     /**
      * Bind view to image at URL
      *
-     * @param view
-     * @param contributor
-     * @return this helper
+     * @param view The ImageView that is to display the user's avatar.
+     * @param contributor A Contributor object that points to the desired user.
      */
-    public AvatarLoader bind(final ImageView view, final Contributor contributor) {
-        if (contributor == null)
-            return setImage(loadingAvatar, view);
-
-        final String avatarUrl = contributor.getAvatarUrl();
-
-        if (TextUtils.isEmpty(avatarUrl))
-            return setImage(loadingAvatar, view);
-
-        final String contributorId = contributor.getLogin();
-
-        BitmapDrawable loadedImage = loaded.get(contributorId);
-        if (loadedImage != null)
-            return setImage(loadedImage, view);
-
-        setImage(loadingAvatar, view, contributorId);
-        fetchAvatarTask(avatarUrl, contributorId, view).execute();
-
-        return this;
+    public void bind(final ImageView view, final Contributor contributor) {
+        bind(view, contributor.getAvatarUrl());
     }
 
     /**
      * Bind view to image at URL
      *
-     * @param view
-     * @param user
-     * @return this helper
+     * @param view The ImageView that is to display the user's avatar.
+     * @param user a SearchUser object that refers to the desired user.
      */
-    public AvatarLoader bind(final ImageView view, final SearchUser user) {
-        if (user == null)
+    public void bind(final ImageView view, final SearchUser user) {
+        p.load(R.drawable.spinner_inner).resize(avatarSize, avatarSize).into(view);
+        /*if (user == null)
             return setImage(loadingAvatar, view);
 
         final String avatarUrl = getAvatarUrl(user.getGravatarId());
@@ -424,9 +402,20 @@ public class AvatarLoader {
             return setImage(loadedImage, view);
 
         setImage(loadingAvatar, view, userId);
-        fetchAvatarTask(avatarUrl, userId, view).execute();
+        fetchAvatarTask(avatarUrl, userId, view).execute();*/
+    }
 
-        return this;
+    /**
+     * Bind view to image at URL
+     *
+     * @param view
+     * @param url
+     */
+    private void bind(final ImageView view, String url) {
+        if (url.contains("?")) {
+            url = url.substring(0, url.indexOf("?"));
+        }
+        p.load(url).placeholder(R.drawable.gravatar_icon).resize(avatarSize, avatarSize).into(view);
     }
 
     private FetchAvatarTask fetchAvatarTask(final String avatarUrl,
