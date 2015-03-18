@@ -31,6 +31,9 @@ import com.github.kevinsawicki.http.HttpRequest;
 import com.github.mobile.R;
 import com.github.mobile.core.search.SearchUser;
 import com.google.inject.Inject;
+import com.squareup.okhttp.Cache;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -52,6 +55,7 @@ import roboguice.util.RoboAsyncTask;
  * Avatar utilities
  */
 public class AvatarLoader {
+    static final int DISK_CACHE_SIZE = 50 * 1024 * 1024; // 50MB
 
     private static final String TAG = "AvatarLoader";
 
@@ -109,7 +113,15 @@ public class AvatarLoader {
     @Inject
     public AvatarLoader(final Context context) {
         this.context = context;
-        p = Picasso.with(context);
+
+        OkHttpClient client = new OkHttpClient();
+
+        // Install an HTTP cache in the application cache directory.
+        File cacheDir = new File(context.getCacheDir(), "http");
+        Cache cache = new Cache(cacheDir, DISK_CACHE_SIZE);
+        client.setCache(cache);
+
+        p = new Picasso.Builder(context).downloader(new OkHttpDownloader(client)).build();
         p.setIndicatorsEnabled(true);
 
         loadingAvatar = context.getResources().getDrawable(R.drawable.gravatar_icon);
