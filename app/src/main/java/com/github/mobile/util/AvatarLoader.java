@@ -117,6 +117,8 @@ public class AvatarLoader {
         avatarDir = new File(context.getCacheDir(), "avatars/github.com");
         if (!avatarDir.isDirectory())
             avatarDir.mkdirs();
+        else
+            clearAvatarCache();
 
         float density = context.getResources().getDisplayMetrics().density;
         cornerRadius = CORNER_RADIUS_IN_DIP * density;
@@ -421,6 +423,13 @@ public class AvatarLoader {
             url = url.substring(0, url.indexOf("?"));
         }
         p.load(url).placeholder(R.drawable.gravatar_icon).resize(avatarSize, avatarSize).into(view);
+    }
+
+    private void clearAvatarCache() {
+        for (File userId: avatarDir.listFiles()) {
+            deleteCachedUserAvatars(userId);
+        }
+        loaded.clear();
     }
 
     private FetchAvatarTask fetchAvatarTask(final String avatarUrl,
