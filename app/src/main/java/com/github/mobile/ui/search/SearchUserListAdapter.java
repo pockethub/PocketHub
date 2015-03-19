@@ -58,7 +58,6 @@ public class SearchUserListAdapter extends SingleTypeAdapter<SearchUser> {
 
     @Override
     protected void update(final int position, final SearchUser user) {
-        avatars.bind(imageView(0), user);
         setText(1, user.getLogin());
     }
 }

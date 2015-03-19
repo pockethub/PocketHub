@@ -396,32 +396,6 @@ public class AvatarLoader {
     /**
      * Bind view to image at URL
      *
-     * @param view The ImageView that is to display the user's avatar.
-     * @param user a SearchUser object that refers to the desired user.
-     */
-    public void bind(final ImageView view, final SearchUser user) {
-        bind(view, "");
-        /*if (user == null)
-            return setImage(loadingAvatar, view);
-
-        final String avatarUrl = getAvatarUrl(user.getGravatarId());
-
-        if (TextUtils.isEmpty(avatarUrl))
-            return setImage(loadingAvatar, view);
-
-        final String userId = user.getId();
-
-        BitmapDrawable loadedImage = loaded.get(userId);
-        if (loadedImage != null)
-            return setImage(loadedImage, view);
-
-        setImage(loadingAvatar, view, userId);
-        fetchAvatarTask(avatarUrl, userId, view).execute();*/
-    }
-
-    /**
-     * Bind view to image at URL
-     *
      * @param view
      * @param url
      */

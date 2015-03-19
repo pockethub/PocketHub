@@ -17,11 +17,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/ListItem"
     android:gravity="center_vertical"
-    android:orientation="horizontal" >
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/iv_avatar"
         style="@style/AvatarLarge"
+        android:src="@drawable/gravatar_icon"
         android:contentDescription="@string/avatar" />
 
     <TextView
