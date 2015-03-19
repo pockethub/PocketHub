@@ -19,15 +19,15 @@
     <!-- Error messages -->
     <string name="error_orgs_load">Inläsning av konto &amp; organisationer misslyckades</string>
     <string name="error_issues_load">Inläsning av frågor misslyckades</string>
-    <string name="error_repos_load">Inläsning av repos misslyckades</string>
-    <string name="error_repo_load">Inläsning av repo misslyckades</string>
-    <string name="error_contributors_load">inläsning av medverkande misslyckades</string>
+    <string name="error_repos_load">Inläsning av repositories misslyckades</string>
+    <string name="error_repo_load">Inläsning av repository misslyckades</string>
+    <string name="error_contributors_load">Inläsning av medverkande misslyckades</string>
     <string name="error_gist_load">Inläsning av Gist misslyckades</string>
     <string name="error_news_load">Inläsning av nyheter misslyckades</string>
     <string name="error_followers_load">Inläsning av prenumeranter misslyckades</string>
     <string name="error_people_load">Inläsning av personer misslyckades</string>
     <string name="error_person_load">Inläsning av personen misslyckades</string>
-    <string name="error_gist_file_load">Inläsning av Gist filens innehåll misslyckades</string>
+    <string name="error_gist_file_load">Inläsning av Gistfilens innehåll misslyckades</string>
     <string name="error_gists_load">Inläsning av Gists misslyckades</string>
     <string name="error_issue_load">Inläsning av frågan misslyckades</string>
     <string name="error_collaborators_load">Inläsning av medarbetare misslyckades</string>
@@ -66,7 +66,7 @@
     <string name="loading_collaborators">Laddar medarbetare…</string>
     <string name="loading_milestones">Laddar milstolpar…</string>
     <string name="loading_labels">Laddar etiketter…</string>
-    <string name="loading_commits">Laddar Commits…</string>
+    <string name="loading_commits">Laddar commits…</string>
     <string name="loading_files_and_comments">Läser in filer &amp; commits…</string>
     <string name="loading_refs">Läser in brancher &amp; taggar…</string>
     <!--  -->
@@ -82,7 +82,7 @@
     <string name="no_followers">Inga prenumeranter</string>
     <string name="no_members">Inga medlemmar</string>
     <string name="no_news">Inga nyheter</string>
-    <string name="no_commits">Inga Commits</string>
+    <string name="no_commits">Inga commits</string>
     <!--  -->
 
 
@@ -125,6 +125,7 @@
     <string name="bookmark">Bokmärka</string>
     <string name="comment">Kommentera</string>
     <string name="delete">Ta bort</string>
+    <string name="delete_cap">TA BORT</string>
     <string name="refresh">Uppdatera</string>
     <string name="dashboard_issues_title">Frågor</string> <!-- Dashboard -->
     <string name="bookmarks">Bokmärken</string>
@@ -153,9 +154,9 @@
     <string name="select_assignee">Välj Förvärvare</string>
     <string name="select_milestone">Välj Milstolpe</string>
     <string name="select_labels">Välj Etiketter</string>
-    <string name="select_ref">Välj branch eller tag</string>
+    <string name="select_ref">Välj Branch eller Tag</string>
     <string name="enter_otp_code_title">Autentiseringskod</string>
-    <string name="enter_otp_code_message">Tvåfaktor autentisering är aktiverad för ditt konto. Ange autentiseringskod för att verifiera din identitet.</string>
+    <string name="enter_otp_code_message">Tvåfaktor-autentisering är aktiverad för ditt konto. Ange autentiseringskod för att verifiera din identitet.</string>
     <string name="no_milestone">Inga Milstolpar</string>
     <string name="unassigned">Ingen har tilldelats detta</string>
     <string name="assigned">är tilldelad</string>
@@ -168,9 +169,9 @@
     <string name="issue_dashboard">Fråga</string>
     <string name="new_issue">Ny Fråga</string>
     <string name="anonymous">Anonym</string>
-    <string name="message_filter_saved">Fråge filter sparat till bokmärken</string>
+    <string name="message_filter_saved">Frågefilter sparat till bokmärken</string>
     <string name="recently_viewed">NYLIGEN VISADE</string>
-    <string name="recent">senaste</string>
+    <string name="recent">Senaste</string>
     <string name="recent_remove">Ta bort senaste</string>
     <string name="recent_list_remove">Ta bort från senast använt</string>
     <string name="section_issue_status">Status:</string>
@@ -212,7 +213,7 @@
     <string name="save">Spara</string>
     <string name="apply">Tillämpa</string>
     <string name="labels_prefix">Etiketter:</string>
-    <string name="assignee">Innehavare</string>
+    <string name="assignee">Förvärvare</string>
     <string name="milestone">Milstolpe</string>
     <string name="labels">Etiketter</string>
     <string name="issue_confirm_close_message">Är du säker på att du vill stänga den här frågan?</string>
@@ -223,10 +224,11 @@
     <string name="no_description_given">Ingen Beskrivning Given.</string>
     <string name="close">Stäng</string>
     <string name="reopen">Öppna Igen</string>
-    <string name="title_invalid_github_url">Ej Giltlig GitHub Adress</string>
+    <string name="title_invalid_github_url">Ogiltlig GitHub-adress</string>
     <string name="message_invalid_github_url">Den följande adressen kunde inte öppnas av den här aplikationen:\n{0}</string>
     <string name="cancel">Avbryt</string>
-    <string name="authenticator_conflict_title">App Konflikt</string>
+    <string name="not_sure">OSÄKER</string>
+    <string name="authenticator_conflict_title">App-konflikt</string>
     <string name="authenticator_conflict_message">En annan installerad App är redan konfigurerad för GitHub autentisering. \n\nDu måste ta bort den andra appen från konto och synk inställningarna och avinstallera den innan GitHub appen kan användas.</string>
     <string name="opening_repository">Öppnar {0}…</string>
     <string name="commit_compare_title">Jämför Commit</string>
@@ -241,10 +243,11 @@
     <string name="enable_wrapping">Aktivera wrapping</string>
     <string name="disable_wrapping">Inaktivera wrapping</string>
     <string name="code">Kod</string>
-    <string name="following_user">Följer användare…</string>
-    <string name="unfollowing_user">Slutar följa användare…</string>
+    <string name="following_user">Följer personer…</string>
+    <string name="unfollowing_user">Slutar följa personer…</string>
     <string name="starring_repository">Stjärnmärk…</string>
     <string name="unstarring_repository">Ta bort stjärnmärkning…</string>
+    <string name="deleting_repository">Raderar repository…</string>
     <string name="navigate_to">Navigera till…</string>
     <string name="navigate_to_user">Navigera till %s</string>
     <string name="contributions">%d commits</string>
@@ -254,9 +257,9 @@
     <string name="tab_users">användare</string>
     <string name="tab_news">nyheter</string>
     <string name="tab_following_self">följer</string>
-    <string name="tab_followers_self">följeslagare</string>
+    <string name="tab_followers_self">följare</string>
     <string name="tab_following">följer</string>
-    <string name="tab_followers">följeslagare</string>
+    <string name="tab_followers">följare</string>
     <string name="tab_members">medlemmar</string>
     <string name="tab_code">kod</string>
     <string name="tab_commits">commits</string>
@@ -275,5 +278,15 @@
     <string name="preview">Förhandsvisa</string>
     <string name="show_raw_markdown">Visa rå markdown</string>
     <string name="render_markdown">Rendera markdown</string>
+    <string name="copy_hash">Kopiera hash</string>
+    <string name="toast_msg_copied">Kopierad till clipboard</string>
+
+    <!-- Deleting repo -->
+    <string name="are_you_sure">Är du helt säker?</string>
+    <string name="unexpected_bad_things">Du kan INTE ångra detta.
+        Detta kommer att radera repository, wiki, frågor, kommentarer och
+        alla medverkarkopplingar permanent.
+    </string>
+    <string name="delete_successful">Repository har raderats</string>
 
 </resources>
