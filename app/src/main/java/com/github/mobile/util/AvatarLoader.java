@@ -17,6 +17,7 @@ package com.github.mobile.util;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
@@ -29,6 +30,7 @@ import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.io.File;
 import java.util.concurrent.Executor;
@@ -54,6 +56,10 @@ public class AvatarLoader {
     private final Context context;
     private final Picasso p;
 
+    private final float cornerRadius;
+
+    private final RoundedCornersTransformation transformation = new RoundedCornersTransformation();
+
     /**
      * The max size of avatar images, used to rescale images to save memory.
      */
@@ -78,8 +84,8 @@ public class AvatarLoader {
         p = new Picasso.Builder(context).downloader(new OkHttpDownloader(client)).build();
         p.setIndicatorsEnabled(true);
 
-        //float density = context.getResources().getDisplayMetrics().density;
-        //final float cornerRadius = CORNER_RADIUS_IN_DIP * density;
+        float density = context.getResources().getDisplayMetrics().density;
+        cornerRadius = CORNER_RADIUS_IN_DIP * density;
 
         if (avatarSize == 0) {
             avatarSize = getMaxAvatarSize(context);
@@ -134,7 +140,8 @@ public class AvatarLoader {
 
             @Override
             public BitmapDrawable call() throws Exception {
-                return new BitmapDrawable(p.load(url).get());
+                Bitmap image = Bitmap.createScaledBitmap(p.load(url).get(), avatarSize, avatarSize, false);
+                return new BitmapDrawable(context.getResources(), ImageUtils.roundCorners(image, cornerRadius));
             }
 
             @Override
@@ -183,7 +190,11 @@ public class AvatarLoader {
         if (url.contains("?")) {
             url = url.substring(0, url.indexOf("?"));
         }
-        p.load(url).placeholder(R.drawable.gravatar_icon).resize(avatarSize, avatarSize).into(view);
+        p.load(url)
+                .placeholder(R.drawable.gravatar_icon)
+                .resize(avatarSize, avatarSize)
+                .transform(transformation)
+                .into(view);
     }
 
     private String getAvatarUrl(User user) {
@@ -232,6 +243,17 @@ public class AvatarLoader {
         @Override
         protected void onException(Exception e) throws RuntimeException {
             Log.d(TAG, "Avatar load failed", e);
+        }
+    }
+
+    public class RoundedCornersTransformation implements Transformation {
+        @Override
+        public Bitmap transform(Bitmap source) {
+            return ImageUtils.roundCorners(source, cornerRadius);
+        }
+
+        @Override public String key() {
+            return "RoundedCornersTransformation";
         }
     }
 }
