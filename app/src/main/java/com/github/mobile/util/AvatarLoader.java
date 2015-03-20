@@ -15,21 +15,15 @@
  */
 package com.github.mobile.util;
 
-import static android.graphics.Bitmap.CompressFormat.PNG;
-import static android.view.View.VISIBLE;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.github.kevinsawicki.http.HttpRequest;
 import com.github.mobile.R;
-import com.github.mobile.core.search.SearchUser;
 import com.google.inject.Inject;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
@@ -37,10 +31,6 @@ import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
@@ -61,45 +51,11 @@ public class AvatarLoader {
 
     private static final float CORNER_RADIUS_IN_DIP = 3;
 
-    private static final int CACHE_SIZE = 75;
-
-    private static abstract class FetchAvatarTask extends
-            RoboAsyncTask<BitmapDrawable> {
-
-        private static final Executor EXECUTOR = Executors
-                .newFixedThreadPool(1);
-
-        private FetchAvatarTask(Context context) {
-            super(context, EXECUTOR);
-        }
-
-        @Override
-        protected void onException(Exception e) throws RuntimeException {
-            Log.d(TAG, "Avatar load failed", e);
-        }
-    }
-
-    private final float cornerRadius;
-
-    private final Map<Object, BitmapDrawable> loaded = new LinkedHashMap<Object, BitmapDrawable>(
-            CACHE_SIZE, 1.0F) {
-
-        private static final long serialVersionUID = -4191624209581976720L;
-
-        @Override
-        protected boolean removeEldestEntry(
-                Map.Entry<Object, BitmapDrawable> eldest) {
-            return size() >= CACHE_SIZE;
-        }
-    };
-
     private final Context context;
     private final Picasso p;
 
-    private final File avatarDir;
-
     /**
-     * The maximal size of avatar images, used to rescale images to save memory.
+     * The max size of avatar images, used to rescale images to save memory.
      */
     private static int avatarSize = 0;
 
@@ -122,225 +78,70 @@ public class AvatarLoader {
         p = new Picasso.Builder(context).downloader(new OkHttpDownloader(client)).build();
         p.setIndicatorsEnabled(true);
 
-        avatarDir = new File(context.getCacheDir(), "avatars/github.com");
-        if (!avatarDir.isDirectory())
-            avatarDir.mkdirs();
-        else
-            clearAvatarCache();
-
-        float density = context.getResources().getDisplayMetrics().density;
-        cornerRadius = CORNER_RADIUS_IN_DIP * density;
+        //float density = context.getResources().getDisplayMetrics().density;
+        //final float cornerRadius = CORNER_RADIUS_IN_DIP * density;
 
         if (avatarSize == 0) {
             avatarSize = getMaxAvatarSize(context);
         }
-    }
 
-    private int getMaxAvatarSize(final Context context) {
-        int[] attrs = { android.R.attr.layout_height };
-        TypedArray array = context.obtainStyledAttributes(R.style.AvatarXLarge, attrs);
-        // Default value of 100px, but this should succeed anyways.
-        return array.getLayoutDimension(0, 100);
-    }
-
-    private BitmapDrawable getImageBy(final String userId, final String filename) {
-        File avatarFile = new File(avatarDir + "/" + userId, filename);
-
-        if (!avatarFile.exists() || avatarFile.length() == 0)
-            return null;
-
-        Bitmap bitmap = decode(avatarFile);
-        if (bitmap != null)
-            return new BitmapDrawable(context.getResources(), bitmap);
-        else {
-            avatarFile.delete();
-            return null;
-        }
-    }
-
-    private void deleteCachedUserAvatars(final File userAvatarDir) {
-        if (userAvatarDir.isDirectory())
-            for (File userAvatar : userAvatarDir.listFiles())
-                userAvatar.delete();
-        userAvatarDir.delete();
-    }
-
-    /**
-     * Load an avatar from the given file and automatically rescale it to the
-     * target dimensions to save memory.
-     * @param file The file name to load the avatar from.
-     * @return The rescaled avatar bitmap, or null.
-     */
-    private Bitmap decode(final File file) {
-        return ImageUtils.getBitmap(file.getAbsolutePath(), avatarSize, avatarSize);
-    }
-
-    private String getAvatarFilenameForUrl(final String avatarUrl) {
-        return GravatarUtils.getHash(avatarUrl);
-    }
-
-    /**
-     * Fetch avatar from URL
-     *
-     * @param url
-     * @param cachedAvatarFilename
-     * @return bitmap
-     */
-    protected BitmapDrawable fetchAvatar(final String url,
-            final String userId, final String cachedAvatarFilename) {
-        File userAvatarDir = new File(avatarDir, userId);
-        deleteCachedUserAvatars(userAvatarDir);
-        userAvatarDir.mkdirs();
-
-        File rawAvatar = new File(userAvatarDir, cachedAvatarFilename + "-raw");
-        HttpRequest request = HttpRequest.get(url);
-        if (request.ok())
-            request.receive(rawAvatar);
-
-        if (!rawAvatar.exists() || rawAvatar.length() == 0)
-            return null;
-
-        Bitmap bitmap = decode(rawAvatar);
-        if (bitmap == null) {
-            rawAvatar.delete();
-            return null;
-        }
-
-        bitmap = ImageUtils.roundCorners(bitmap, cornerRadius);
-        if (bitmap == null) {
-            rawAvatar.delete();
-            return null;
-        }
-
-        File roundedAvatar = new File(userAvatarDir, cachedAvatarFilename);
-        FileOutputStream output = null;
-        try {
-            output = new FileOutputStream(roundedAvatar);
-            if (bitmap.compress(PNG, 100, output))
-                return new BitmapDrawable(context.getResources(), bitmap);
-            else
-                return null;
-        } catch (IOException e) {
-            Log.d(TAG, "Exception writing rounded avatar", e);
-            return null;
-        } finally {
-            if (output != null)
-                try {
-                    output.close();
-                } catch (IOException e) {
-                    // Ignored
-                }
-            rawAvatar.delete();
-        }
+        // TODO remove this eventually
+        // Delete the old cache
+        final File avatarDir = new File(context.getCacheDir(), "avatars/github.com");
+        if (avatarDir.isDirectory())
+            deleteCache(avatarDir);
     }
 
     /**
      * Sets the logo on the {@link ActionBar} to the user's avatar.
      *
-     * @param actionBar
-     * @param user
+     * @param actionBar An ActionBar object on which you're placing the user's avatar.
+     * @param user      An AtomicReference that points to the desired user.
      * @return this helper
      */
-    public AvatarLoader bind(final ActionBar actionBar, final User user) {
-        return bind(actionBar, new AtomicReference<User>(user));
+    public void bind(final ActionBar actionBar, final User user) {
+        bind(actionBar, new AtomicReference<User>(user));
     }
 
     /**
      * Sets the logo on the {@link ActionBar} to the user's avatar.
      *
-     * @param actionBar
-     * @param userReference
+     * @param actionBar     An ActionBar object on which you're placing the user's avatar.
+     * @param userReference An AtomicReference that points to the desired user.
      * @return this helper
      */
-    public AvatarLoader bind(final ActionBar actionBar,
+    public void bind(final ActionBar actionBar,
             final AtomicReference<User> userReference) {
         if (userReference == null)
-            return this;
+            return;
 
         final User user = userReference.get();
-        final String userId = getId(user);
-        if (userId == null)
-            return this;
+        if (user == null)
+            return;
 
-        final String avatarUrl = user.getAvatarUrl();
+        String avatarUrl = user.getAvatarUrl();
         if (TextUtils.isEmpty(avatarUrl))
-            return this;
+            return;
 
-        BitmapDrawable loadedImage = loaded.get(userId);
-        if (loadedImage != null) {
-            actionBar.setLogo(loadedImage);
-            return this;
+        // Remove the URL params as they are not needed and break cache
+        if (avatarUrl.contains("?")) {
+            avatarUrl = avatarUrl.substring(0, avatarUrl.indexOf("?"));
         }
+
+        final String url = avatarUrl;
 
         new FetchAvatarTask(context) {
 
             @Override
             public BitmapDrawable call() throws Exception {
-                final String avatarFilename = getAvatarFilenameForUrl(getAvatarUrl(user));
-                final BitmapDrawable image = getImageBy(userId, avatarFilename);
-                if (image != null)
-                    return image;
-                else
-                    return fetchAvatar(avatarUrl, userId, avatarFilename);
+                return new BitmapDrawable(p.load(url).get());
             }
 
             @Override
             protected void onSuccess(BitmapDrawable image) throws Exception {
-                if (userId.equals(getId(userReference.get())))
-                    actionBar.setLogo(image);
+                actionBar.setLogo(image);
             }
         }.execute();
-
-        return this;
-    }
-
-    private AvatarLoader setImage(final Drawable image, final ImageView view) {
-        return setImage(image, view, null);
-    }
-
-    private AvatarLoader setImage(final Drawable image, final ImageView view,
-            Object tag) {
-        view.setImageDrawable(image);
-        view.setTag(R.id.iv_avatar, tag);
-        view.setVisibility(VISIBLE);
-        return this;
-    }
-
-    private String getAvatarUrl(String id) {
-        if (!TextUtils.isEmpty(id))
-            return "http://gravatar.com/avatar/" + id;
-        else
-            return null;
-    }
-
-    private String getAvatarUrl(User user) {
-        String avatarUrl = user.getAvatarUrl();
-        if (TextUtils.isEmpty(avatarUrl)) {
-            String gravatarId = user.getGravatarId();
-            if (TextUtils.isEmpty(gravatarId))
-                gravatarId = GravatarUtils.getHash(user.getEmail());
-            avatarUrl = getAvatarUrl(gravatarId);
-        }
-        return avatarUrl;
-    }
-
-    private String getAvatarUrl(CommitUser user) {
-        return getAvatarUrl(GravatarUtils.getHash(user.getEmail()));
-    }
-
-    private String getId(final User user) {
-        if (user == null)
-            return null;
-
-        int id = user.getId();
-        if (id > 0)
-            return Integer.toString(id);
-
-        String gravatarId = user.getGravatarId();
-        if (!TextUtils.isEmpty(gravatarId))
-            return gravatarId;
-        else
-            return GravatarUtils.getHash(user.getEmail());
     }
 
     /**
@@ -350,7 +151,7 @@ public class AvatarLoader {
      * @param user A User object that points to the desired user.
      */
     public void bind(final ImageView view, final User user) {
-        bind(view, user.getAvatarUrl());
+        bind(view, getAvatarUrl(user));
     }
 
     /**
@@ -366,19 +167,13 @@ public class AvatarLoader {
     /**
      * Bind view to image at URL
      *
-     * @param view The ImageView that is to display the user's avatar.
+     * @param view        The ImageView that is to display the user's avatar.
      * @param contributor A Contributor object that points to the desired user.
      */
     public void bind(final ImageView view, final Contributor contributor) {
         bind(view, contributor.getAvatarUrl());
     }
 
-    /**
-     * Bind view to image at URL
-     *
-     * @param view
-     * @param url
-     */
     private void bind(final ImageView view, String url) {
         if (url == null) {
             p.load(R.drawable.spinner_inner).resize(avatarSize, avatarSize).into(view);
@@ -391,38 +186,52 @@ public class AvatarLoader {
         p.load(url).placeholder(R.drawable.gravatar_icon).resize(avatarSize, avatarSize).into(view);
     }
 
-    private void clearAvatarCache() {
-        for (File userId: avatarDir.listFiles()) {
-            deleteCachedUserAvatars(userId);
+    private String getAvatarUrl(User user) {
+        String avatarUrl = user.getAvatarUrl();
+        if (TextUtils.isEmpty(avatarUrl)) {
+            avatarUrl = getAvatarUrl(GravatarUtils.getHash(user.getEmail()));
         }
-        loaded.clear();
+        return avatarUrl;
     }
 
-    private FetchAvatarTask fetchAvatarTask(final String avatarUrl,
-            final String userId, final ImageView view) {
-        return new FetchAvatarTask(context) {
+    private String getAvatarUrl(CommitUser user) {
+        return getAvatarUrl(GravatarUtils.getHash(user.getEmail()));
+    }
 
-            @Override
-            public BitmapDrawable call() throws Exception {
-                if (!userId.equals(view.getTag(R.id.iv_avatar)))
-                    return null;
+    private String getAvatarUrl(String id) {
+        if (!TextUtils.isEmpty(id))
+            return "http://gravatar.com/avatar/" + id;
+        else
+            return null;
+    }
 
-                final String avatarFilename = getAvatarFilenameForUrl(avatarUrl);
-                final BitmapDrawable image = getImageBy(userId, avatarFilename);
-                if (image != null)
-                    return image;
-                else
-                    return fetchAvatar(avatarUrl, userId, avatarFilename);
-            }
+    private int getMaxAvatarSize(final Context context) {
+        int[] attrs = { android.R.attr.layout_height };
+        TypedArray array = context.getTheme().obtainStyledAttributes(R.style.AvatarXLarge, attrs);
+        // Passing default value of 100px, but it shouldn't resolve to default anyway.
+        int size = array.getLayoutDimension(0, 100);
+        array.recycle();
+        return size;
+    }
 
-            @Override
-            protected void onSuccess(final BitmapDrawable image) throws Exception {
-                if (image == null)
-                    return;
-                loaded.put(userId, image);
-                if (userId.equals(view.getTag(R.id.iv_avatar)))
-                    setImage(image, view);
-            }
-        };
+    private boolean deleteCache(final File cache) {
+        if (cache.isDirectory())
+            for (File f : cache.listFiles())
+                deleteCache(f);
+        return cache.delete();
+    }
+
+    private static abstract class FetchAvatarTask extends RoboAsyncTask<BitmapDrawable> {
+
+        private static final Executor EXECUTOR = Executors.newFixedThreadPool(1);
+
+        private FetchAvatarTask(Context context) {
+            super(context, EXECUTOR);
+        }
+
+        @Override
+        protected void onException(Exception e) throws RuntimeException {
+            Log.d(TAG, "Avatar load failed", e);
+        }
     }
 }
