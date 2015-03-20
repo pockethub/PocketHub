@@ -98,8 +98,6 @@ public class AvatarLoader {
 
     private final File avatarDir;
 
-    private final Drawable loadingAvatar;
-
     /**
      * The maximal size of avatar images, used to rescale images to save memory.
      */
@@ -123,8 +121,6 @@ public class AvatarLoader {
 
         p = new Picasso.Builder(context).downloader(new OkHttpDownloader(client)).build();
         p.setIndicatorsEnabled(true);
-
-        loadingAvatar = context.getResources().getDrawable(R.drawable.gravatar_icon);
 
         avatarDir = new File(context.getCacheDir(), "avatars/github.com");
         if (!avatarDir.isDirectory())
@@ -312,7 +308,7 @@ public class AvatarLoader {
 
     private String getAvatarUrl(String id) {
         if (!TextUtils.isEmpty(id))
-            return "https://secure.gravatar.com/avatar/" + id + "?d=404";
+            return "http://gravatar.com/avatar/" + id;
         else
             return null;
     }
@@ -364,23 +360,7 @@ public class AvatarLoader {
      * @param user A CommitUser object that points to the desired user.
      */
     public void bind(final ImageView view, final CommitUser user) {
-        bind(view, "");
-        /*if (user == null)
-            return setImage(loadingAvatar, view);
-
-        final String avatarUrl = getAvatarUrl(user);
-
-        if (TextUtils.isEmpty(avatarUrl))
-            return setImage(loadingAvatar, view);
-
-        final String userId = user.getEmail();
-
-        BitmapDrawable loadedImage = loaded.get(userId);
-        if (loadedImage != null)
-            return setImage(loadedImage, view);
-
-        setImage(loadingAvatar, view, userId);
-        fetchAvatarTask(avatarUrl, userId, view).execute();*/
+        bind(view, getAvatarUrl(user));
     }
 
     /**
