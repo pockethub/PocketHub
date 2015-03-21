@@ -130,7 +130,7 @@ public class AvatarLoader {
             return;
 
         // Remove the URL params as they are not needed and break cache
-        if (avatarUrl.contains("?")) {
+        if (avatarUrl.contains("?") && !avatarUrl.contains("gravatar")) {
             avatarUrl = avatarUrl.substring(0, avatarUrl.indexOf("?"));
         }
 
@@ -187,7 +187,7 @@ public class AvatarLoader {
             return;
         }
 
-        if (url.contains("?")) {
+        if (url.contains("?") && !url.contains("gravatar")) {
             url = url.substring(0, url.indexOf("?"));
         }
         p.load(url)
@@ -211,7 +211,7 @@ public class AvatarLoader {
 
     private String getAvatarUrl(String id) {
         if (!TextUtils.isEmpty(id))
-            return "http://gravatar.com/avatar/" + id;
+            return "http://gravatar.com/avatar/" + id + "?d=404";
         else
             return null;
     }
