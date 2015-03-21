@@ -82,7 +82,6 @@ public class AvatarLoader {
         client.setCache(cache);
 
         p = new Picasso.Builder(context).downloader(new OkHttpDownloader(client)).build();
-        p.setIndicatorsEnabled(true);
 
         float density = context.getResources().getDisplayMetrics().density;
         cornerRadius = CORNER_RADIUS_IN_DIP * density;
@@ -116,8 +115,7 @@ public class AvatarLoader {
      * @param userReference An AtomicReference that points to the desired user.
      * @return this helper
      */
-    public void bind(final ActionBar actionBar,
-            final AtomicReference<User> userReference) {
+    public void bind(final ActionBar actionBar, final AtomicReference<User> userReference) {
         if (userReference == null)
             return;
 
@@ -190,6 +188,7 @@ public class AvatarLoader {
         if (url.contains("?") && !url.contains("gravatar")) {
             url = url.substring(0, url.indexOf("?"));
         }
+
         p.load(url)
                 .placeholder(R.drawable.gravatar_icon)
                 .resize(avatarSize, avatarSize)
