@@ -187,8 +187,8 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
         return text;
     }
 
-    private static void formatCommitComment(Event event, StyledText main,
-            StyledText details) {
+    static void formatCommitComment(Event event, StyledText main,
+                                    StyledText details) {
         boldActor(main, event);
         main.append(" commented on ");
         boldRepo(main, event);
@@ -198,8 +198,8 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
         appendCommitComment(details, payload.getComment());
     }
 
-    private static void formatDownload(Event event, StyledText main,
-            StyledText details) {
+    static void formatDownload(Event event, StyledText main,
+                               StyledText details) {
         boldActor(main, event);
         main.append(" uploaded a file to ");
         boldRepo(main, event);
@@ -210,8 +210,8 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
             appendText(details, download.getName());
     }
 
-    private static void formatCreate(Event event, StyledText main,
-            StyledText details) {
+    static void formatCreate(Event event, StyledText main,
+                             StyledText details) {
         boldActor(main, event);
 
         main.append(" created ");
@@ -227,8 +227,8 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
             boldRepoName(main, event);
     }
 
-    private static void formatDelete(Event event, StyledText main,
-            StyledText details) {
+    static void formatDelete(Event event, StyledText main,
+                             StyledText details) {
         boldActor(main, event);
 
         DeletePayload payload = (DeletePayload) event.getPayload();
@@ -241,22 +241,22 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
         boldRepo(main, event);
     }
 
-    private static void formatFollow(Event event, StyledText main,
-            StyledText details) {
+    static void formatFollow(Event event, StyledText main,
+                             StyledText details) {
         boldActor(main, event);
         main.append(" started following ");
         boldUser(main, ((FollowPayload) event.getPayload()).getTarget());
     }
 
-    private static void formatFork(Event event, StyledText main,
-            StyledText details) {
+    static void formatFork(Event event, StyledText main,
+                           StyledText details) {
         boldActor(main, event);
         main.append(" forked repository ");
         boldRepo(main, event);
     }
 
-    private static void formatGist(Event event, StyledText main,
-            StyledText details) {
+    static void formatGist(Event event, StyledText main,
+                           StyledText details) {
         boldActor(main, event);
 
         GistPayload payload = (GistPayload) event.getPayload();
@@ -273,15 +273,15 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
         main.append(payload.getGist().getId());
     }
 
-    private static void formatWiki(Event event, StyledText main,
-            StyledText details) {
+    static void formatWiki(Event event, StyledText main,
+                           StyledText details) {
         boldActor(main, event);
         main.append(" updated the wiki in ");
         boldRepo(main, event);
     }
 
-    private static void formatIssueComment(Event event, StyledText main,
-            StyledText details) {
+    static void formatIssueComment(Event event, StyledText main,
+                                   StyledText details) {
         boldActor(main, event);
 
         main.append(" commented on ");
@@ -303,8 +303,8 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
         appendComment(details, payload.getComment());
     }
 
-    private static void formatIssues(Event event, StyledText main,
-            StyledText details) {
+    static void formatIssues(Event event, StyledText main,
+                             StyledText details) {
         boldActor(main, event);
 
         IssuesPayload payload = (IssuesPayload) event.getPayload();
@@ -321,8 +321,8 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
         appendText(details, issue.getTitle());
     }
 
-    private static void formatAddMember(Event event, StyledText main,
-            StyledText details) {
+    static void formatAddMember(Event event, StyledText main,
+                                StyledText details) {
         boldActor(main, event);
         main.append(" added ");
         User member = ((MemberPayload) event.getPayload()).getMember();
@@ -332,22 +332,22 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
         boldRepo(main, event);
     }
 
-    private static void formatPublic(Event event, StyledText main,
-            StyledText details) {
+    static void formatPublic(Event event, StyledText main,
+                             StyledText details) {
         boldActor(main, event);
         main.append(" open sourced repository ");
         boldRepo(main, event);
     }
 
-    private static void formatWatch(Event event, StyledText main,
-            StyledText details) {
+    static void formatWatch(Event event, StyledText main,
+                            StyledText details) {
         boldActor(main, event);
         main.append(" starred ");
         boldRepo(main, event);
     }
 
-    private static void formatReviewComment(Event event, StyledText main,
-            StyledText details) {
+    static void formatReviewComment(Event event, StyledText main,
+                                    StyledText details) {
         boldActor(main, event);
         main.append(" commented on ");
         boldRepo(main, event);
@@ -357,8 +357,8 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
         appendCommitComment(details, payload.getComment());
     }
 
-    private static void formatPullRequest(Event event, StyledText main,
-            StyledText details) {
+    static void formatPullRequest(Event event, StyledText main,
+                                  StyledText details) {
         boldActor(main, event);
 
         PullRequestPayload payload = (PullRequestPayload) event.getPayload();
@@ -383,8 +383,8 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
         }
     }
 
-    private static void formatPush(Event event, StyledText main,
-            StyledText details) {
+    static void formatPush(Event event, StyledText main,
+                           StyledText details) {
         boldActor(main, event);
 
         main.append(" pushed to ");
@@ -438,8 +438,8 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
         }
     }
 
-    private static void formatTeamAdd(Event event, StyledText main,
-            StyledText details) {
+    static void formatTeamAdd(Event event, StyledText main,
+                              StyledText details) {
         boldActor(main, event);
 
         TeamAddPayload payload = (TeamAddPayload) event.getPayload();

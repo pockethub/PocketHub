@@ -1,5 +1,6 @@
 package com.github.mobile.ui.user;
 
+import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.TypefaceUtils;
 
