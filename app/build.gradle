@@ -44,8 +44,6 @@ repositories {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
-    testCompile 'junit:junit:4.12'
-    testCompile "org.mockito:mockito-core:1.9.5"
     compile 'org.roboguice:roboguice:2.0'
     compile 'com.github.kevinsawicki:http-request:5.6'
     compile 'com.google.code.gson:gson:2.3.1'
@@ -61,4 +59,6 @@ dependencies {
     compile 'com.afollestad:material-dialogs:0.6.3.1'
     //Self compiled .aar version of wishlist
     compile (name:'lib', ext:'aar')
+    testCompile 'junit:junit:4.12'
+    testCompile "org.mockito:mockito-core:1.9.5"
 }
