@@ -29,7 +29,9 @@ import static org.eclipse.egit.github.core.event.Event.TYPE_PULL_REQUEST;
 import static org.eclipse.egit.github.core.event.Event.TYPE_PUSH;
 import static org.eclipse.egit.github.core.event.Event.TYPE_TEAM_ADD;
 import static org.eclipse.egit.github.core.event.Event.TYPE_WATCH;
-import android.test.AndroidTestCase;
+import android.content.Context;
+import android.test.InstrumentationTestCase;
+import android.test.UiThreadTest;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -61,7 +63,7 @@ import org.eclipse.egit.github.core.event.TeamAddPayload;
 /**
  * Tests of the news text rendering
  */
-public class NewsEventTextTest extends AndroidTestCase {
+public class NewsEventTextTest extends InstrumentationTestCase {
 
     private NewsListAdapter adapter;
 
@@ -81,8 +83,9 @@ public class NewsEventTextTest extends AndroidTestCase {
         actor = new User().setLogin("user");
         repo = new EventRepository().setName("user/repo");
 
-        adapter = new NewsListAdapter(LayoutInflater.from(mContext),
-                new AvatarLoader(mContext));
+        Context context = getInstrumentation().getTargetContext();
+        adapter = new NewsListAdapter(LayoutInflater.from(context),
+                new AvatarLoader(context));
     }
 
     private Event createEvent(String type) {
@@ -111,19 +114,19 @@ public class NewsEventTextTest extends AndroidTestCase {
     /**
      * Verify text of commit comment event
      */
+    @UiThreadTest
     public void testCommitCommentEvent() {
         Event event = createEvent(TYPE_COMMIT_COMMENT);
         event.setPayload(new CommitCommentPayload());
         updateView(event);
 
-        CharSequence content = text.getText();
-        assertNotNull(content);
-        assertEquals("user commented on user/repo", content.toString());
+        verify("user commented on user/repo");
     }
 
     /**
      * Verify text of create event
      */
+    @UiThreadTest
     public void testCreateRepositoryEvent() {
         Event event = createEvent(TYPE_CREATE);
         CreatePayload payload = new CreatePayload();
@@ -137,6 +140,7 @@ public class NewsEventTextTest extends AndroidTestCase {
     /**
      * Verify text of create event
      */
+    @UiThreadTest
     public void testCreateBranchEvent() {
         Event event = createEvent(TYPE_CREATE);
         CreatePayload payload = new CreatePayload();
@@ -151,6 +155,7 @@ public class NewsEventTextTest extends AndroidTestCase {
     /**
      * Verify text of deleve event
      */
+    @UiThreadTest
     public void testDelete() {
         Event event = createEvent(TYPE_DELETE);
         DeletePayload payload = new DeletePayload();
@@ -165,6 +170,7 @@ public class NewsEventTextTest extends AndroidTestCase {
     /**
      * Verify text of follow event
      */
+    @UiThreadTest
     public void testFollow() {
         Event event = createEvent(TYPE_FOLLOW);
         FollowPayload payload = new FollowPayload();
@@ -178,6 +184,7 @@ public class NewsEventTextTest extends AndroidTestCase {
     /**
      * Verify text of Gist event
      */
+    @UiThreadTest
     public void testGist() {
         Event event = createEvent(TYPE_GIST);
         GistPayload payload = new GistPayload();
@@ -192,6 +199,7 @@ public class NewsEventTextTest extends AndroidTestCase {
     /**
      * Verify text of wiki event
      */
+    @UiThreadTest
     public void testWiki() {
         Event event = createEvent(TYPE_GOLLUM);
         updateView(event);
@@ -202,6 +210,7 @@ public class NewsEventTextTest extends AndroidTestCase {
     /**
      * Verify text of issue comment event
      */
+    @UiThreadTest
     public void testIssueComment() {
         Event event = createEvent(TYPE_ISSUE_COMMENT);
         IssueCommentPayload payload = new IssueCommentPayload();
@@ -215,6 +224,7 @@ public class NewsEventTextTest extends AndroidTestCase {
     /**
      * Verify text of issue event
      */
+    @UiThreadTest
     public void testIssue() {
         Event event = createEvent(TYPE_ISSUES);
         IssuesPayload payload = new IssuesPayload();
@@ -229,6 +239,7 @@ public class NewsEventTextTest extends AndroidTestCase {
     /**
      * Verify text of member event
      */
+    @UiThreadTest
     public void testAddMember() {
         Event event = createEvent(TYPE_MEMBER);
         event.setPayload(new MemberPayload().setMember(new User()
@@ -241,6 +252,7 @@ public class NewsEventTextTest extends AndroidTestCase {
     /**
      * Verify text of open sourced event
      */
+    @UiThreadTest
     public void testOpenSourced() {
         Event event = createEvent(TYPE_PUBLIC);
         updateView(event);
@@ -251,6 +263,7 @@ public class NewsEventTextTest extends AndroidTestCase {
     /**
      * Verify text of watch event
      */
+    @UiThreadTest
     public void testWatch() {
         Event event = createEvent(TYPE_WATCH);
         updateView(event);
@@ -261,6 +274,7 @@ public class NewsEventTextTest extends AndroidTestCase {
     /**
      * Verify text of pull request event
      */
+    @UiThreadTest
     public void testPullRequest() {
         Event event = createEvent(TYPE_PULL_REQUEST);
         PullRequestPayload payload = new PullRequestPayload();
@@ -275,6 +289,7 @@ public class NewsEventTextTest extends AndroidTestCase {
     /**
      * Verify text of push event
      */
+    @UiThreadTest
     public void testPush() {
         Event event = createEvent(TYPE_PUSH);
         PushPayload payload = new PushPayload();
@@ -288,6 +303,7 @@ public class NewsEventTextTest extends AndroidTestCase {
     /**
      * Verify text of push event
      */
+    @UiThreadTest
     public void testTeamAdd() {
         Event event = createEvent(TYPE_TEAM_ADD);
         TeamAddPayload payload = new TeamAddPayload();
