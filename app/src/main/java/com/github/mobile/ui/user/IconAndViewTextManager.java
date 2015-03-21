@@ -15,7 +15,7 @@ public class IconAndViewTextManager {
 
     @Override
     protected void update(int position, Event event) {
-        newsListAdapter.getAvatars().bind(newsListAdapter.imageView(0), event.getActor());
+        newsListAdapter.getAvatars().bind(newsListAdapter.imageViewAgent(0), event.getActor());
 
         StyledText main = new StyledText();
         StyledText details = new StyledText();

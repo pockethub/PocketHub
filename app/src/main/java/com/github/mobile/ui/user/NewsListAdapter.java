@@ -18,6 +18,7 @@ package com.github.mobile.ui.user;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R;
@@ -516,5 +517,9 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
 
     public AvatarLoader getAvatars() {
         return avatars;
+    }
+
+    ImageView imageViewAgent(int childViewIndex) {
+        return this.imageView(childViewIndex);
     }
 }
