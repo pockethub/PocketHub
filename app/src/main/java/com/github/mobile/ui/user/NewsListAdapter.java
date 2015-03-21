@@ -15,55 +15,16 @@
  */
 package com.github.mobile.ui.user;
 
-import static com.github.kevinsawicki.wishlist.ViewUpdater.FORMAT_INT;
-import static com.github.mobile.util.TypefaceUtils.ICON_ADD_MEMBER;
-import static com.github.mobile.util.TypefaceUtils.ICON_COMMENT;
-import static com.github.mobile.util.TypefaceUtils.ICON_CREATE;
-import static com.github.mobile.util.TypefaceUtils.ICON_DELETE;
-import static com.github.mobile.util.TypefaceUtils.ICON_FOLLOW;
-import static com.github.mobile.util.TypefaceUtils.ICON_FORK;
-import static com.github.mobile.util.TypefaceUtils.ICON_GIST;
-import static com.github.mobile.util.TypefaceUtils.ICON_ISSUE_CLOSE;
-import static com.github.mobile.util.TypefaceUtils.ICON_ISSUE_COMMENT;
-import static com.github.mobile.util.TypefaceUtils.ICON_ISSUE_OPEN;
-import static com.github.mobile.util.TypefaceUtils.ICON_ISSUE_REOPEN;
-import static com.github.mobile.util.TypefaceUtils.ICON_PULL_REQUEST;
-import static com.github.mobile.util.TypefaceUtils.ICON_PUSH;
-import static com.github.mobile.util.TypefaceUtils.ICON_STAR;
-import static com.github.mobile.util.TypefaceUtils.ICON_UPLOAD;
-import static com.github.mobile.util.TypefaceUtils.ICON_WIKI;
-import static org.eclipse.egit.github.core.event.Event.TYPE_COMMIT_COMMENT;
-import static org.eclipse.egit.github.core.event.Event.TYPE_CREATE;
-import static org.eclipse.egit.github.core.event.Event.TYPE_DELETE;
-import static org.eclipse.egit.github.core.event.Event.TYPE_DOWNLOAD;
-import static org.eclipse.egit.github.core.event.Event.TYPE_FOLLOW;
-import static org.eclipse.egit.github.core.event.Event.TYPE_FORK;
-import static org.eclipse.egit.github.core.event.Event.TYPE_FORK_APPLY;
-import static org.eclipse.egit.github.core.event.Event.TYPE_GIST;
-import static org.eclipse.egit.github.core.event.Event.TYPE_GOLLUM;
-import static org.eclipse.egit.github.core.event.Event.TYPE_ISSUES;
-import static org.eclipse.egit.github.core.event.Event.TYPE_ISSUE_COMMENT;
-import static org.eclipse.egit.github.core.event.Event.TYPE_MEMBER;
-import static org.eclipse.egit.github.core.event.Event.TYPE_PUBLIC;
-import static org.eclipse.egit.github.core.event.Event.TYPE_PULL_REQUEST;
-import static org.eclipse.egit.github.core.event.Event.TYPE_PULL_REQUEST_REVIEW_COMMENT;
-import static org.eclipse.egit.github.core.event.Event.TYPE_PUSH;
-import static org.eclipse.egit.github.core.event.Event.TYPE_TEAM_ADD;
-import static org.eclipse.egit.github.core.event.Event.TYPE_WATCH;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R;
 import com.github.mobile.core.issue.IssueUtils;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
-import com.github.mobile.util.TimeUtils;
 import com.github.mobile.util.TypefaceUtils;
-
-import java.util.List;
 
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Commit;
@@ -90,10 +51,34 @@ import org.eclipse.egit.github.core.event.PullRequestReviewCommentPayload;
 import org.eclipse.egit.github.core.event.PushPayload;
 import org.eclipse.egit.github.core.event.TeamAddPayload;
 
+import java.util.List;
+
+import static com.github.kevinsawicki.wishlist.ViewUpdater.FORMAT_INT;
+import static org.eclipse.egit.github.core.event.Event.TYPE_COMMIT_COMMENT;
+import static org.eclipse.egit.github.core.event.Event.TYPE_CREATE;
+import static org.eclipse.egit.github.core.event.Event.TYPE_DELETE;
+import static org.eclipse.egit.github.core.event.Event.TYPE_DOWNLOAD;
+import static org.eclipse.egit.github.core.event.Event.TYPE_FOLLOW;
+import static org.eclipse.egit.github.core.event.Event.TYPE_FORK;
+import static org.eclipse.egit.github.core.event.Event.TYPE_FORK_APPLY;
+import static org.eclipse.egit.github.core.event.Event.TYPE_GIST;
+import static org.eclipse.egit.github.core.event.Event.TYPE_GOLLUM;
+import static org.eclipse.egit.github.core.event.Event.TYPE_ISSUES;
+import static org.eclipse.egit.github.core.event.Event.TYPE_ISSUE_COMMENT;
+import static org.eclipse.egit.github.core.event.Event.TYPE_MEMBER;
+import static org.eclipse.egit.github.core.event.Event.TYPE_PUBLIC;
+import static org.eclipse.egit.github.core.event.Event.TYPE_PULL_REQUEST;
+import static org.eclipse.egit.github.core.event.Event.TYPE_PULL_REQUEST_REVIEW_COMMENT;
+import static org.eclipse.egit.github.core.event.Event.TYPE_PUSH;
+import static org.eclipse.egit.github.core.event.Event.TYPE_TEAM_ADD;
+import static org.eclipse.egit.github.core.event.Event.TYPE_WATCH;
+
 /**
  * Adapter for a list of news events
  */
 public class NewsListAdapter extends SingleTypeAdapter<Event> {
+
+    private final IconAndViewTextManager iconAndViewTextManager = new IconAndViewTextManager(this);
 
     /**
      * Can the given event be rendered by this view holder?
@@ -525,83 +510,11 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
 
     @Override
     protected void update(int position, Event event) {
-        avatars.bind(imageView(0), event.getActor());
 
-        StyledText main = new StyledText();
-        StyledText details = new StyledText();
-        String icon = null;
+        iconAndViewTextManager.update(position, event);
+    }
 
-        String type = event.getType();
-        if (TYPE_COMMIT_COMMENT.equals(type)) {
-            icon = ICON_COMMENT;
-            formatCommitComment(event, main, details);
-        } else if (TYPE_CREATE.equals(type)) {
-            icon = ICON_CREATE;
-            formatCreate(event, main, details);
-        } else if (TYPE_DELETE.equals(type)) {
-            icon = ICON_DELETE;
-            formatDelete(event, main, details);
-        } else if (TYPE_DOWNLOAD.equals(type)) {
-            icon = ICON_UPLOAD;
-            formatDownload(event, main, details);
-        } else if (TYPE_FOLLOW.equals(type)) {
-            icon = ICON_FOLLOW;
-            formatFollow(event, main, details);
-        } else if (TYPE_FORK.equals(type)) {
-            icon = ICON_FORK;
-            formatFork(event, main, details);
-        } else if (TYPE_GIST.equals(type)) {
-            icon = ICON_GIST;
-            formatGist(event, main, details);
-        } else if (TYPE_GOLLUM.equals(type)) {
-            icon = ICON_WIKI;
-            formatWiki(event, main, details);
-        } else if (TYPE_ISSUE_COMMENT.equals(type)) {
-            icon = ICON_ISSUE_COMMENT;
-            formatIssueComment(event, main, details);
-        } else if (TYPE_ISSUES.equals(type)) {
-            String action = ((IssuesPayload) event.getPayload()).getAction();
-            if ("opened".equals(action))
-                icon = ICON_ISSUE_OPEN;
-            else if ("reopened".equals(action))
-                icon = ICON_ISSUE_REOPEN;
-            else if ("closed".equals(action))
-                icon = ICON_ISSUE_CLOSE;
-            formatIssues(event, main, details);
-        } else if (TYPE_MEMBER.equals(type)) {
-            icon = ICON_ADD_MEMBER;
-            formatAddMember(event, main, details);
-        } else if (TYPE_PUBLIC.equals(type))
-            formatPublic(event, main, details);
-        else if (TYPE_PULL_REQUEST.equals(type)) {
-            icon = ICON_PULL_REQUEST;
-            formatPullRequest(event, main, details);
-        } else if (TYPE_PULL_REQUEST_REVIEW_COMMENT.equals(type)) {
-            icon = ICON_COMMENT;
-            formatReviewComment(event, main, details);
-        } else if (TYPE_PUSH.equals(type)) {
-            icon = ICON_PUSH;
-            formatPush(event, main, details);
-        } else if (TYPE_TEAM_ADD.equals(type)) {
-            icon = ICON_ADD_MEMBER;
-            formatTeamAdd(event, main, details);
-        } else if (TYPE_WATCH.equals(type)) {
-            icon = ICON_STAR;
-            formatWatch(event, main, details);
-        }
-
-        if (icon != null)
-            ViewUtils.setGone(setText(3, icon), false);
-        else
-            setGone(3, true);
-
-        setText(1, main);
-
-        if (!TextUtils.isEmpty(details))
-            ViewUtils.setGone(setText(2, details), false);
-        else
-            setGone(2, true);
-
-        setText(4, TimeUtils.getRelativeTime(event.getCreatedAt()));
+    public AvatarLoader getAvatars() {
+        return avatars;
     }
 }
