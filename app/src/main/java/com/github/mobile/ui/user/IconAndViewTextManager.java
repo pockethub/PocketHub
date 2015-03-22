@@ -37,6 +37,9 @@ import java.util.List;
 import static com.github.kevinsawicki.wishlist.ViewUpdater.FORMAT_INT;
 
 public class IconAndViewTextManager {
+    public static final String ISSUES_PAYLOAD_ACTION_OPENED = "opened";
+    public static final String ISSUES_PAYLOAD_ACTION_REOPENED = "reopened";
+    public static final String ISSUES_PAYLOAD_ACTION_CLOSED = "closed";
     private final NewsListAdapter newsListAdapter;
 
     public IconAndViewTextManager(NewsListAdapter newsListAdapter) {
@@ -293,7 +296,7 @@ public class IconAndViewTextManager {
 
         boldRepo(main, event);
 
-        if ("opened".equals(action) || "closed".equals(action)) {
+        if (ISSUES_PAYLOAD_ACTION_OPENED.equals(action) || "closed".equals(action)) {
             PullRequest request = payload.getPullRequest();
             if (request != null) {
                 String title = request.getTitle();
@@ -435,11 +438,11 @@ public class IconAndViewTextManager {
             formatIssueComment(event, main, details);
         } else if (Event.TYPE_ISSUES.equals(type)) {
             String action = ((IssuesPayload) event.getPayload()).getAction();
-            if ("opened".equals(action))
+            if (ISSUES_PAYLOAD_ACTION_OPENED.equals(action))
                 icon = TypefaceUtils.ICON_ISSUE_OPEN;
-            else if ("reopened".equals(action))
+            else if (ISSUES_PAYLOAD_ACTION_REOPENED.equals(action))
                 icon = TypefaceUtils.ICON_ISSUE_REOPEN;
-            else if ("closed".equals(action))
+            else if (ISSUES_PAYLOAD_ACTION_CLOSED.equals(action))
                 icon = TypefaceUtils.ICON_ISSUE_CLOSE;
             formatIssues(event, main, details);
         } else if (Event.TYPE_MEMBER.equals(type)) {
