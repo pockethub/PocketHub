@@ -22,6 +22,24 @@ public class IconAndViewTextManager {
 
         StyledText main = new StyledText();
         StyledText details = new StyledText();
+        String icon = setIconAndFormatStyledText(event, main, details);
+
+        if (icon != null)
+            ViewUtils.setGone(newsListAdapter.setTextAgent(3, icon), false);
+        else
+            newsListAdapter.setGoneAgent(3, true);
+
+        newsListAdapter.setTextAgent(1, main);
+
+        if (!TextUtils.isEmpty(details))
+            ViewUtils.setGone(newsListAdapter.setTextAgent(2, details), false);
+        else
+            newsListAdapter.setGoneAgent(2, true);
+
+        newsListAdapter.setTextAgent(4, TimeUtils.getRelativeTime(event.getCreatedAt()));
+    }
+
+    String setIconAndFormatStyledText(Event event, StyledText main, StyledText details) {
         String icon = null;
 
         String type = event.getType();
@@ -82,19 +100,6 @@ public class IconAndViewTextManager {
             icon = TypefaceUtils.ICON_STAR;
             NewsListAdapter.formatWatch(event, main, details);
         }
-
-        if (icon != null)
-            ViewUtils.setGone(newsListAdapter.setTextAgent(3, icon), false);
-        else
-            newsListAdapter.setGoneAgent(3, true);
-
-        newsListAdapter.setTextAgent(1, main);
-
-        if (!TextUtils.isEmpty(details))
-            ViewUtils.setGone(newsListAdapter.setTextAgent(2, details), false);
-        else
-            newsListAdapter.setGoneAgent(2, true);
-
-        newsListAdapter.setTextAgent(4, TimeUtils.getRelativeTime(event.getCreatedAt()));
+        return icon;
     }
 }
