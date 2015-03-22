@@ -8,11 +8,12 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 public class IconAndViewTextManagerTest {
 
     @Test
-    public void when_event_type_is_commit_comment_then_icon_should_be_comment() throws Exception {
+    public void when_event_type_is_commit_comment_then_icon_should_be_comment_and_commit_comment_should_be_formatted() throws Exception {
         // Arrange
         Event event = new Event();
         event.setType(Event.TYPE_COMMIT_COMMENT);
@@ -26,5 +27,6 @@ public class IconAndViewTextManagerTest {
 
         // Assert
         assertEquals(TypefaceUtils.ICON_COMMENT, icon);
+        verify(spyIconAndViewTextManager).formatCommitComment(event, null, null);
     }
 }
