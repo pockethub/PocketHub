@@ -12,7 +12,7 @@ public class IconAndViewTextManagerTest {
     @Test
     public void when_event_type_is_commit_comment_then_icon_should_be_comment() throws Exception {
         // Arrange
-        IconAndViewTextManager iconAndViewTextManager = new IconAndViewTextManager(null);
+        IconAndViewTextManager iconAndViewTextManager = new TestingIconAndViewTextManager(null);
         Event event = new Event();
         event.setType(Event.TYPE_COMMIT_COMMENT);
 
