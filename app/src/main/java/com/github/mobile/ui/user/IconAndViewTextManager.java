@@ -1,7 +1,10 @@
 package com.github.mobile.ui.user;
 
+import android.text.TextUtils;
+
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.ui.StyledText;
+import com.github.mobile.util.TimeUtils;
 import com.github.mobile.util.TypefaceUtils;
 
 import org.eclipse.egit.github.core.event.Event;
@@ -14,7 +17,6 @@ public class IconAndViewTextManager {
         this.newsListAdapter = newsListAdapter;
     }
 
-    @Override
     protected void update(int position, Event event) {
         newsListAdapter.getAvatars().bind(newsListAdapter.imageViewAgent(0), event.getActor());
 
@@ -82,17 +84,17 @@ public class IconAndViewTextManager {
         }
 
         if (icon != null)
-            ViewUtils.setGone(newsListAdapter.setText(3, icon), false);
+            ViewUtils.setGone(newsListAdapter.setTextAgent(3, icon), false);
         else
-            newsListAdapter.setGone(3, true);
+            newsListAdapter.setGoneAgent(3, true);
 
-        newsListAdapter.setText(1, main);
+        newsListAdapter.setTextAgent(1, main);
 
         if (!TextUtils.isEmpty(details))
-            ViewUtils.setGone(newsListAdapter.setText(2, details), false);
+            ViewUtils.setGone(newsListAdapter.setTextAgent(2, details), false);
         else
-            newsListAdapter.setGone(2, true);
+            newsListAdapter.setGoneAgent(2, true);
 
-        newsListAdapter.setText(4, TimeUtils.getRelativeTime(event.getCreatedAt()));
+        newsListAdapter.setTextAgent(4, TimeUtils.getRelativeTime(event.getCreatedAt()));
     }
 }

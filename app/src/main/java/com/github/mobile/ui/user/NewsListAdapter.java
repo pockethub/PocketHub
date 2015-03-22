@@ -19,6 +19,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R;
@@ -521,5 +522,13 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
 
     ImageView imageViewAgent(int childViewIndex) {
         return this.imageView(childViewIndex);
+    }
+
+    TextView setTextAgent(int childViewIndex, CharSequence text) {
+        return this.setText(childViewIndex, text);
+    }
+
+    View setGoneAgent(int childViewIndex, boolean gone) {
+        return this.setGone(childViewIndex, gone);
     }
 }
