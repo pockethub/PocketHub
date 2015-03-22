@@ -445,9 +445,9 @@ public class IconAndViewTextManager {
         } else if (Event.TYPE_MEMBER.equals(type)) {
             icon = TypefaceUtils.ICON_ADD_MEMBER;
             formatAddMember(event, main, details);
-        } else if (Event.TYPE_PUBLIC.equals(type))
+        } else if (Event.TYPE_PUBLIC.equals(type)) {
             formatPublic(event, main, details);
-        else if (Event.TYPE_PULL_REQUEST.equals(type)) {
+        } else if (Event.TYPE_PULL_REQUEST.equals(type)) {
             icon = TypefaceUtils.ICON_PULL_REQUEST;
             formatPullRequest(event, main, details);
         } else if (Event.TYPE_PULL_REQUEST_REVIEW_COMMENT.equals(type)) {
