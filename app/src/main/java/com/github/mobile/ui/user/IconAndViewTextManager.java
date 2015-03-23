@@ -6,7 +6,6 @@ import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.core.issue.IssueUtils;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.TimeUtils;
-import com.github.mobile.util.TypefaceUtils;
 
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Commit;
@@ -406,66 +405,7 @@ public class IconAndViewTextManager {
     }
 
     String setIconAndFormatStyledText(Event event, StyledText main, StyledText details) {
-        String icon = null;
 
-        String type = event.getType();
-        if (Event.TYPE_COMMIT_COMMENT.equals(type)) {
-            icon = TypefaceUtils.ICON_COMMENT;
-            formatCommitComment(event, main, details);
-        } else if (Event.TYPE_CREATE.equals(type)) {
-            icon = TypefaceUtils.ICON_CREATE;
-            formatCreate(event, main, details);
-        } else if (Event.TYPE_DELETE.equals(type)) {
-            icon = TypefaceUtils.ICON_DELETE;
-            formatDelete(event, main, details);
-        } else if (Event.TYPE_DOWNLOAD.equals(type)) {
-            icon = TypefaceUtils.ICON_UPLOAD;
-            formatDownload(event, main, details);
-        } else if (Event.TYPE_FOLLOW.equals(type)) {
-            icon = TypefaceUtils.ICON_FOLLOW;
-            formatFollow(event, main, details);
-        } else if (Event.TYPE_FORK.equals(type)) {
-            icon = TypefaceUtils.ICON_FORK;
-            formatFork(event, main, details);
-        } else if (Event.TYPE_GIST.equals(type)) {
-            icon = TypefaceUtils.ICON_GIST;
-            formatGist(event, main, details);
-        } else if (Event.TYPE_GOLLUM.equals(type)) {
-            icon = TypefaceUtils.ICON_WIKI;
-            formatWiki(event, main, details);
-        } else if (Event.TYPE_ISSUE_COMMENT.equals(type)) {
-            icon = TypefaceUtils.ICON_ISSUE_COMMENT;
-            formatIssueComment(event, main, details);
-        } else if (Event.TYPE_ISSUES.equals(type)) {
-            String action = ((IssuesPayload) event.getPayload()).getAction();
-            if (ISSUES_PAYLOAD_ACTION_OPENED.equals(action))
-                icon = TypefaceUtils.ICON_ISSUE_OPEN;
-            else if (ISSUES_PAYLOAD_ACTION_REOPENED.equals(action))
-                icon = TypefaceUtils.ICON_ISSUE_REOPEN;
-            else if (ISSUES_PAYLOAD_ACTION_CLOSED.equals(action))
-                icon = TypefaceUtils.ICON_ISSUE_CLOSE;
-            formatIssues(event, main, details);
-        } else if (Event.TYPE_MEMBER.equals(type)) {
-            icon = TypefaceUtils.ICON_ADD_MEMBER;
-            formatAddMember(event, main, details);
-        } else if (Event.TYPE_PUBLIC.equals(type)) {
-            formatPublic(event, main, details);
-        } else if (Event.TYPE_PULL_REQUEST.equals(type)) {
-            icon = TypefaceUtils.ICON_PULL_REQUEST;
-            formatPullRequest(event, main, details);
-        } else if (Event.TYPE_PULL_REQUEST_REVIEW_COMMENT.equals(type)) {
-            icon = TypefaceUtils.ICON_COMMENT;
-            formatReviewComment(event, main, details);
-        } else if (Event.TYPE_PUSH.equals(type)) {
-            icon = TypefaceUtils.ICON_PUSH;
-            formatPush(event, main, details);
-        } else if (Event.TYPE_TEAM_ADD.equals(type)) {
-            icon = TypefaceUtils.ICON_ADD_MEMBER;
-            formatTeamAdd(event, main, details);
-        } else if (Event.TYPE_WATCH.equals(type)) {
-            icon = TypefaceUtils.ICON_STAR;
-            formatWatch(event, main, details);
-        }
-        return icon;
+        return EventType.valueOf(event.getType()).generateIconAndFormatStyledText(this, event, main, details);
     }
 }
