@@ -197,6 +197,9 @@ public class AvatarLoader {
     }
 
     private String getAvatarUrl(User user) {
+        if (user == null)
+            return null;
+
         String avatarUrl = user.getAvatarUrl();
         if (TextUtils.isEmpty(avatarUrl)) {
             avatarUrl = getAvatarUrl(GravatarUtils.getHash(user.getEmail()));
