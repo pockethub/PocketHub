@@ -196,7 +196,7 @@
     <string name="authenticator_conflict_title">앱 충돌</string>
     <string name="authenticator_conflict_message">다른 앱에서 Github 인증이 설정되었습니다.\n\nGitHub 앱을 사용하기 전에 계정 동기화 설정에서 &amp;다른 앱을 지우고 석제해야합니다.</string>
     <string name="opening_repository">불러오는중 {0}…</string>
-	<string name="commit_compare_title">커밋 비교</string>
+    <string name="commit_compare_title">커밋 비교</string>
     <string name="commit_prefix">커밋\u0020</string>
     <string name="parent_prefix">부모\u0020</string>
     <string name="authored">작성된</string>
