@@ -4,10 +4,6 @@
     android:versionCode="100"
     android:versionName="1.0" >
 
-    <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="16" />
-
     <application>
         <uses-library android:name="android.test.runner" />
     </application>
