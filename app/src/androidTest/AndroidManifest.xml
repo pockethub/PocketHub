@@ -12,9 +12,4 @@
         <uses-library android:name="android.test.runner" />
     </application>
 
-    <instrumentation
-        android:name="android.test.InstrumentationTestRunner"
-        android:label="GitHub for Android - Integration Tests"
-        android:targetPackage="com.github.mobile" />
-
 </manifest>
