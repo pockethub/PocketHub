@@ -286,6 +286,7 @@
     <string name="preview">Vorschau</string>
     <string name="show_raw_markdown">Zeige reines Markdown</string>
     <string name="render_markdown">Zeige gerendertes Markdown</string>
+
     <string name="copy_hash">Hash kopieren</string>
     <string name="toast_msg_copied">In Zwischenablage kopiert</string>
 
@@ -297,9 +298,10 @@
     <!-- Deleting repo -->
     <string name="are_you_sure">Sind sich absolut sicher?</string>
     <string name="unexpected_bad_things">Diese Aktion kann NICHT rückgängig gemacht werden.
-        Dies wird dauerhaft das Repository, das Wiki, die Probleme, Kommentare
+        Dies wird dauerhaft das Repository, das Wiki, die Tickets, Kommentare
         und zusätzlich alle Mitarbeiterverbände löschen.</string>
     <string name="delete_successful">Repository ist gelöscht</string>
 
+    <string name="login_or_email">Benutzername oder E-Mail-Adresse</string>
 
 </resources>
