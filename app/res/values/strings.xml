@@ -300,6 +300,6 @@
         This will permanently delete the repository, wiki, issues,
         and comments, and remove all collaborator associations.</string>
     <string name="delete_successful">Repository is deleted</string>
-
+    <string name="login_or_email">Login or Email</string>
 
 </resources>
