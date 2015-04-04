@@ -1,17 +1,27 @@
 language: android
+
 android:
   components:
     - platform-tools
+    - android-21
+    - build-tools-21.1.2
+    - extra
     - tools
-
     - sys-img-armeabi-v7a-android-19
 
 # Emulator Management: Create, Start and Wait
 before_script:
   - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
   - emulator -avd test -no-skin -no-audio -no-window &
+  - ./gradlew clean build     # download all the dependencies and compile everything while we are waiting for the emulator
   - android-wait-for-emulator
   - ./gradlew assembleDebugTest -i
-  - adb shell input keyevent 82 &
 
-script: ./gradlew connectedCheck -i
+before_install:
+  - sudo apt-get update -qq
+  - if [ `uname -m` = x86_64 ]; then sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch > /dev/null; fi
+
+script: ./gradlew check connectedCheck
+
+after_script: 
+  - adb shell input keyevent 82 &
