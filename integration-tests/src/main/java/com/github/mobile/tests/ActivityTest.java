@@ -96,6 +96,8 @@ public abstract class ActivityTest<T extends Activity> extends
      * @param text
      */
     protected void send(final String text) {
+        getInstrumentation().waitForIdleSync();
         getInstrumentation().sendStringSync(text);
+        getInstrumentation().waitForIdleSync();
     }
 }
