@@ -12,6 +12,10 @@ report any bugs or feature requests and to see the list of known issues.
 
 * [Apache Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
 
+## News
+
+As you all know, it has been quite a while since a new version of this project has been released to the Google Play store.  At this time I am saddened to announce that we have received word that they're no plans for any future releases of this application at this time.  While we hope that things change in the future, we do invite you continue to developing here or in a fork.
+
 ## Building
 
 ### With Gradle
