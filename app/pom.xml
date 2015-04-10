@@ -12,7 +12,7 @@
   <packaging>apk</packaging>
   <name>GitHub for Android</name>
   <artifactId>github-android</artifactId>
-  <url>https://github.com/github/android</url>
+  <url>https://github.com/forkhubs/android</url>
 
   <dependencies>
     <dependency>
