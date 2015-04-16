@@ -1,4 +1,4 @@
-# GitHub Android App
+# GitHub Android App [![Build Status](https://travis-ci.org/forkhubs/android.svg?branch=master)](https://travis-ci.org/forkhubs/android)
 
 This repository contains the source code for the GitHub Android app.
 
