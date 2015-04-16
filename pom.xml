@@ -19,9 +19,9 @@
         <android.version>4.0.1.2</android.version>
     </properties>
     <scm>
-        <connection>scm:git:git://github.com/github/android.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/github/android.git</developerConnection>
-        <url>https://github.com/github/android</url>
+        <connection>scm:git:git://github.com/forkhubs/android.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/forkhubs/android.git</developerConnection>
+        <url>https://github.com/forkhubs/android</url>
     </scm>
     <build>
         <pluginManagement>

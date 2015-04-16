@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2012 GitHub Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -45,10 +44,13 @@
     <string name="error_checking_following_status">Prüfen des Folgestatus fehlgeschlagen</string>
     <string name="error_starring_repository">Favorisieren fehlgeschlagen</string>
     <string name="error_unstarring_repository">Entfernen des Favoriten fehlgeschlagen</string>
+    <string name="error_forking_repository">Forking fehlgeschlagen</string>
+    <string name="error_deleting_repository">Löschen fehlgeschlagen</string>
     <string name="error_checking_starring_status">Prüfen des Favoritenstatus fehlgeschlagen</string>
     <string name="error_rendering_markdown">Rendern der Markdown-Vorschau fehlgeschlagen</string>
     <string name="error_users_search">Suche nach Usern fehlgeschlagen</string>
     <!--  -->
+
 
     <!-- Loading messages -->
     <string name="loading_gist">Lade Gist…</string>
@@ -70,6 +72,7 @@
     <string name="loading_refs">Lade Branches &amp; Tags…</string>
     <!--  -->
 
+
     <!-- Empty messages -->
     <string name="no_bookmarks">Keine Lesezeichen</string>
     <string name="no_repositories">Keine Repositories</string>
@@ -83,6 +86,7 @@
     <string name="no_commits">Keine Commits</string>
     <!--  -->
 
+
     <!-- Updating messages -->
     <string name="updating_assignee">Aktualisiere Verantwortlichen…</string>
     <string name="updating_issue">Aktualisiere Problem…</string>
@@ -91,10 +95,12 @@
     <!--  -->
 
     <string name="app_name">GitHub</string>
+    <string name="home">Home</string>
     <string name="news">Neuigkeiten</string>
     <string name="issues">Probleme</string>
     <string name="gists">Gists</string>
     <string name="commits">Commits</string>
+    <string name="global_search">GitHub Suche</string>
     <string name="find_repositories">Repositories suchen</string>
     <string name="find_issues">Probleme finden</string>
     <string name="search_title">Suchen…</string>
@@ -119,6 +125,7 @@
     <string name="bookmark">Lesezeichen hinzufügen</string>
     <string name="comment">Kommentar</string>
     <string name="delete">Löschen</string>
+    <string name="delete_cap">LÖSCHEN</string>
     <string name="refresh">Aktualisieren</string>
     <string name="dashboard_issues_title">Problem-Übersicht</string>
     <string name="bookmarks">Lesezeichen</string>
@@ -148,6 +155,8 @@
     <string name="select_milestone">Meilenstein wählen</string>
     <string name="select_labels">Markierung wählen</string>
     <string name="select_ref">Branch oder Tag wählen</string>
+    <string name="enter_otp_code_title">Authentifizierungsschlüssel</string>
+    <string name="enter_otp_code_message">Zwei-Fakto Authentifizierung ist für Ihren Account aktiviert.Geben Sie Ihren Authentifizierungschlüssel zur Verifizierung Ihrer Identität ein.</string>
     <string name="no_milestone">Keine Meilensteine</string>
     <string name="unassigned">Niemand zugewiesen</string>
     <string name="assigned">ist zugewiesen</string>
@@ -156,6 +165,10 @@
     <string name="confirm_gist_delete_message">Sind Sie sicher, dass Sie diesen Gist löschen möchten?</string>
     <string name="deleting_gist">Lösche Gist…</string>
     <string name="creating_comment">Erstelle Kommentar…</string>
+    <string name="editing_comment">Editiere Kommentar…</string>
+    <string name="deleting_comment">Lösche Kommentar…</string>
+    <string name="confirm_comment_delete_title">Remove Comment</string>
+    <string name="confirm_comment_delete_message">Are you sure you want to delete this Comment?</string>
     <string name="confirm_bookmark_delete_message">Sind Sie sicher, dass Sie dieses Lesezeichen löschen möchten?</string>
     <string name="issue_dashboard">Problem-Übersicht</string>
     <string name="new_issue">Neues Problem</string>
@@ -175,7 +188,9 @@
     <string name="section_issue_labels">Markierungen:</string>
     <string name="log_in">Einloggen</string>
     <string name="signup_link">Neu bei GitHub? &lt;a href=\"https://github.com/join\">Hier klicken&lt;/a> um sich anzumelden</string>
+    <string name="signup_link_two_factor_auth">Nicht sicher was zu tun ist? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Hilfe bekommen.&lt;/a></string>
     <string name="connection_failed">Kann nicht zu GitHub verbinden</string>
+    <string name="code_authentication_failed">Authentifizierung fehlgeschlagen! Falscher Verifizierungsschlüssel</string>
     <string name="invalid_login_or_password">Bitte geben Sie einen gültigen Login &amp; Passwort an</string>
     <string name="invalid_password">Bitte geben Sie ein gültiges Passwort an.</string>
     <string name="password">Passwort</string>
@@ -188,6 +203,7 @@
     <string name="unfollow">Entfolgen</string>
     <string name="star">Favorisieren</string>
     <string name="unstar">Favorit entfernen</string>
+    <string name="fork">Fork</string>
     <string name="members">Mitglieder</string>
     <string name="closing_issue">Schließe Problem…</string>
     <string name="reopening_issue">Problem neu öffnen…</string>
@@ -218,6 +234,7 @@
     <string name="title_invalid_github_url">Ungültige GitHub URL</string>
     <string name="message_invalid_github_url">Die folgende URL konnte von der Anwendung nicht geöffnet werden:\n{0}</string>
     <string name="cancel">Abbrechen</string>
+    <string name="not_sure">NICHT SICHER</string>
     <string name="authenticator_conflict_title">App Konflikt</string>
     <string name="authenticator_conflict_message">Eine andere App ist derzeit für die Anmeldung bei GitHub konfiguriert.\n\nSie müssen diese App aus dem Bereich Konten &amp; Synchronisierung entfernen und diese App deinstallieren, bevor Sie die GitHub App verwenden können.</string>
     <string name="opening_repository">Öffne {0}…</string>
@@ -237,6 +254,8 @@
     <string name="unfollowing_user">Entfolgen…</string>
     <string name="starring_repository">Favorisieren…</string>
     <string name="unstarring_repository">Favorit entfernen…</string>
+    <string name="forking_repository">Forking…</string>
+    <string name="deleting_repository">Löschen…</string>
     <string name="navigate_to">Navigiere zu…</string>
     <string name="navigate_to_user">Navigiere zu %s</string>
     <string name="contributions">%d Commits</string>
@@ -261,12 +280,26 @@
     <string name="tab_starred">favoriten</string>
     <string name="tab_all">alle</string>
     <!--  -->
-
     <string name="share">Teilen</string>
     <string name="show_password">Passwort anzeigen</string>
     <string name="write">Schreiben</string>
     <string name="preview">Vorschau</string>
     <string name="show_raw_markdown">Zeige reines Markdown</string>
     <string name="render_markdown">Zeige gerendertes Markdown</string>
+    <string name="copy_hash">Hash kopieren</string>
+    <string name="toast_msg_copied">In Zwischenablage kopiert</string>
+
+    <!-- Navigation drawer strings -->
+    <string name="navigation_drawer_open">Öffne navigation drawer</string>
+    <string name="navigation_drawer_close">Schließe navigation drawer</string>
+    <string name="navigation_drawer_subheader">Untertitel</string>
+
+    <!-- Deleting repo -->
+    <string name="are_you_sure">Sind sich absolut sicher?</string>
+    <string name="unexpected_bad_things">Diese Aktion kann NICHT rückgängig gemacht werden.
+        Dies wird dauerhaft das Repository, das Wiki, die Probleme, Kommentare
+        und zusätzlich alle Mitarbeiterverbände löschen.</string>
+    <string name="delete_successful">Repository ist gelöscht</string>
+
 
 </resources>

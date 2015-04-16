@@ -1,11 +1,11 @@
-# GitHub Android App  [![Google Play](http://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.github.mobile) [![Build Status](https://travis-ci.org/github/android.png)](https://travis-ci.org/github/android)
+# GitHub Android App [![Build Status](https://travis-ci.org/forkhubs/android.svg?branch=master)](https://travis-ci.org/forkhubs/android)
 
 This repository contains the source code for the GitHub Android app.
 
 [![Download from Google Play](https://cloud.githubusercontent.com/assets/3838734/3855877/4cf2a2dc-1eec-11e4-9634-2a1adf8f1c39.jpg)](https://play.google.com/store/apps/details?id=com.github.mobile)
 
 
-Please see the [issues](https://github.com/github/android/issues) section to
+Please see the [issues](https://github.com/forkhubs/android/issues) section to
 report any bugs or feature requests and to see the list of known issues.
 
 ## License
@@ -54,7 +54,7 @@ Android security as it it won't let you directly replace an app that's been
 signed with a different key.  Manually uninstall GitHub from your device and
 you will then be able to install your own built version.
 
-See [here](https://github.com/github/android/wiki/Building-From-Eclipse) for
+See [here](https://github.com/forkhubs/android/wiki/Building-From-Eclipse) for
 instructions on building from [Eclipse](http://eclipse.org).
 
 ## Acknowledgements
@@ -70,12 +70,12 @@ It also uses many other open source libraries such as:
 * [ViewPagerIndicator](https://github.com/JakeWharton/Android-ViewPagerIndicator)
 
 These are just a few of the major dependencies, the entire list of dependencies
-is listed in the [app's POM file](https://github.com/github/android/blob/master/app/pom.xml).
+is listed in the [app's POM file](https://github.com/forkhubs/android/blob/master/app/pom.xml).
 
 ## Contributing
 
 Please fork this repository and contribute back using
-[pull requests](https://github.com/github/android/pulls).
+[pull requests](https://github.com/github/forkhubs/pulls).
 
 Any contributions, large or small, major features, bug fixes, additional
 language translations, unit/integration tests are welcomed and appreciated
