@@ -52,7 +52,7 @@ public class CreateCommentActivityTest extends
      *
      * @throws Throwable
      */
-    public void testEmptyCommentIsProhitibed() throws Throwable {
+    public void testEmptyCommentIsProhibited() throws Throwable {
         View createMenu = view(id.m_apply);
         assertFalse(createMenu.isEnabled());
         final EditText comment = editText(id.et_comment);
