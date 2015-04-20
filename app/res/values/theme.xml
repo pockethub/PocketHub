@@ -27,6 +27,18 @@
         <item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowBackground">@color/background</item>
+
+        <item name="ic_action_add">@drawable/ic_add_white_24dp</item>
+        <item name="ic_action_bookmark">@drawable/ic_bookmark_white_24dp</item>
+        <item name="ic_action_comment">@drawable/ic_comment_white_24dp</item>
+        <item name="ic_action_delete">@drawable/ic_delete_white_24dp</item>
+        <item name="ic_action_delete_history">@drawable/ic_history_white_24dp</item>
+        <item name="ic_action_done">@drawable/ic_done_white_24dp</item>
+        <item name="ic_action_edit">@drawable/ic_edit_white_24dp</item>
+        <item name="ic_action_filter">@drawable/ic_filter_list_white_24dp</item>
+        <item name="ic_action_random">@drawable/ic_shuffle_white_24dp</item>
+        <item name="ic_action_refresh">@drawable/ic_refresh_white_24dp</item>
+        <item name="ic_action_star">@drawable/ic_star_white_24dp</item>
     </style>
 
     <style name="Theme.GitHub.NavigationDrawer" parent="Theme.GitHub" >

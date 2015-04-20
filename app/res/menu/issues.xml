@@ -19,17 +19,17 @@
 
     <item
         android:id="@+id/m_bookmark"
-        android:icon="@drawable/action_bookmark"
+        android:icon="?attr/ic_action_bookmark"
         app:showAsAction="never"
         android:title="@string/bookmark"/>
     <item
         android:id="@+id/m_filter"
-        android:icon="@drawable/menu_filter"
+        android:icon="?attr/ic_action_filter"
         app:showAsAction="never"
         android:title="@string/filter"/>
     <item
         android:id="@+id/create_issue"
-        android:icon="@drawable/action_create"
+        android:icon="?attr/ic_action_add"
         app:showAsAction="ifRoom"
         android:title="@string/create"/>
     <item
@@ -40,7 +40,7 @@
         android:title="@string/find_issues"/>
     <item
         android:id="@+id/m_refresh"
-        android:icon="@drawable/action_refresh"
+        android:icon="?attr/ic_action_refresh"
         app:showAsAction="never"
         android:title="@string/refresh"/>
 

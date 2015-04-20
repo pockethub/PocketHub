@@ -18,7 +18,7 @@
 
   <item>
     <rotate
-      android:drawable="@drawable/action_refresh"
+      android:drawable="?attr/ic_action_refresh"
       android:fromDegrees="0"
       android:interpolator="@android:anim/linear_interpolator"
       android:pivotX="50%"

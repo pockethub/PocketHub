@@ -20,6 +20,7 @@ import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -69,7 +70,9 @@ public class FiltersViewActivity extends DialogFragmentActivity implements
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.bookmarks);
-        actionBar.setIcon(R.drawable.action_bookmark);
+        TypedValue bookmarkIcon = new TypedValue();
+        getTheme().resolveAttribute(R.attr.ic_action_bookmark, bookmarkIcon, true);
+        actionBar.setIcon(bookmarkIcon.resourceId);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         fragment = (FilterListFragment) getSupportFragmentManager()

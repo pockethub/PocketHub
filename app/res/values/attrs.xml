@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="ic_action_add" format="reference" />
+    <attr name="ic_action_bookmark" format="reference"/>
+    <attr name="ic_action_comment" format="reference"/>
+    <attr name="ic_action_delete" format="reference"/>
+    <attr name="ic_action_delete_history" format="reference"/>
+    <attr name="ic_action_done" format="reference"/>
+    <attr name="ic_action_edit" format="reference"/>
+    <attr name="ic_action_filter" format="reference"/>
+    <attr name="ic_action_random" format="reference"/>
+    <attr name="ic_action_refresh" format="reference"/>
+    <attr name="ic_action_star" format="reference" />
+</resources>
