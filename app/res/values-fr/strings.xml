@@ -158,7 +158,7 @@
     <string name="confirm_gist_delete_message">Êtes-vous sûr de vouloir supprimer ce Gist\u00a0?</string>
     <string name="deleting_gist">Suppression du Gist…</string>
     <string name="creating_comment">Création d\'un commentaire…</string>
-    <string name="confirm_bookmark_delete_message">Êtes-vous sûr de vouloir supprimer ce favori\u00a0?</string>
+    <string name="confirm_bookmark_delete_message">Êtes-vous sûr(e) de vouloir supprimer ce favori\u00a0?</string>
     <string name="issue_dashboard">Aperçu des tickets</string>
     <string name="new_issue">Nouveau ticket</string>
     <string name="anonymous">Anonyme</string>
@@ -263,5 +263,31 @@
     <string name="preview">Pré-visualiser</string>
     <string name="show_raw_markdown">Afficher la syntaxe markdown</string>
     <string name="render_markdown">Afficher le rendu markdown</string>
+    <string name="are_you_sure">Êtes-vous vraiment sûr(e) ?</string>
+    <string name="code_authentication_failed">L\'authentification a échoué! Code de vérification incorrect</string>
+    <string name="confirm_comment_delete_message">Êtes-vous sur(e) de vouloir supprimer ce commentaire?</string>
+    <string name="confirm_comment_delete_title">Supprimer le commentaire</string>
+    <string name="contributions">%d commits</string>
+    <string name="contributors">Contributeurs</string>
+    <string name="copy_hash">Copier le hash</string>
+    <string name="delete_cap">SUPPRIMER</string>
+    <string name="deleting_comment">Suppression du commentaire…</string>
+    <string name="deleting_repository">Suppression…</string>
+    <string name="editing_comment">Édition du commentaire…</string>
+    <string name="enter_otp_code_title">Code d\'authentification</string>
+    <string name="error_deleting_repository">Erreur lors de la suppression</string>
+    <string name="error_forking_repository">Erreur lors du fork</string>
+    <string name="fork">Fork</string>
+    <string name="forking_repository">Fork en cours…</string>
+    <string name="home">Accueil</string>
+    <string name="navigate_to_user">Aller à %s</string>
+    <string name="navigation_drawer_close">Fermer le panneau de navigation</string>
+    <string name="navigation_drawer_open">Ouvrir le panneau de navigation</string>
+    <string name="pull_request_commits">Commits : %d</string>
+    <string name="recent_list_remove">Supprimer des éléments récents</string>
+    <string name="recent_remove">Supprimer les éléments récents</string>
+    <string name="tab_users">utilisateurs</string>
+    <string name="toast_msg_copied">Copié dans le presse-papiers</string>
+    <string name="username_or_email">Nom d\'utilisateur ou email</string>
 
 </resources>
