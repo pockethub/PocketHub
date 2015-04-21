@@ -95,8 +95,6 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.User;
 
-import retrofit.http.HEAD;
-
 /**
  * Fragment to display an issue
  */
