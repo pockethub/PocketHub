@@ -29,7 +29,7 @@ import org.eclipse.egit.github.core.CommitFile;
  */
 public class FullCommitFile {
 
-    private final SparseArray<List<CommitComment>> comments = new SparseArray<List<CommitComment>>(
+    private final SparseArray<List<CommitComment>> comments = new SparseArray<>(
             4);
 
     private final CommitFile file;
@@ -66,7 +66,7 @@ public class FullCommitFile {
         if (line >= 0) {
             List<CommitComment> lineComments = comments.get(line);
             if (lineComments == null) {
-                lineComments = new ArrayList<CommitComment>(4);
+                lineComments = new ArrayList<>(4);
                 comments.put(line, lineComments);
             }
             lineComments.add(comment);

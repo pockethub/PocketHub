@@ -130,7 +130,7 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
         ArrayList<Label> choices = getChoices();
         boolean[] selectedChoices = arguments
                 .getBooleanArray(ARG_SELECTED_CHOICES);
-        HashSet<String> selected = new HashSet<String>();
+        HashSet<String> selected = new HashSet<>();
         if (selectedChoices != null)
             for (int i = 0; i < choices.size(); i++)
                 if (selectedChoices[i])
@@ -167,7 +167,7 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
     @Override
     protected void onResult(int resultCode) {
         Bundle arguments = getArguments();
-        ArrayList<Label> selected = new ArrayList<Label>();
+        ArrayList<Label> selected = new ArrayList<>();
         boolean[] selectedChoices = arguments
                 .getBooleanArray(ARG_SELECTED_CHOICES);
         ArrayList<Label> choices = getChoices();

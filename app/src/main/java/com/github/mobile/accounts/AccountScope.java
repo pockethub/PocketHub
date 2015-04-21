@@ -54,9 +54,9 @@ public class AccountScope extends ScopeBase {
         };
     }
 
-    private final ThreadLocal<GitHubAccount> currentAccount = new ThreadLocal<GitHubAccount>();
+    private final ThreadLocal<GitHubAccount> currentAccount = new ThreadLocal<>();
 
-    private final Map<GitHubAccount, Map<Key<?>, Object>> repoScopeMaps = new ConcurrentHashMap<GitHubAccount, Map<Key<?>, Object>>();
+    private final Map<GitHubAccount, Map<Key<?>, Object>> repoScopeMaps = new ConcurrentHashMap<>();
 
     /**
      * Enters scope using a GitHubAccount derived from the supplied account
@@ -101,7 +101,7 @@ public class AccountScope extends ScopeBase {
 
         Map<Key<?>, Object> scopeMap = repoScopeMaps.get(account);
         if (scopeMap == null) {
-            scopeMap = new ConcurrentHashMap<Key<?>, Object>();
+            scopeMap = new ConcurrentHashMap<>();
             scopeMap.put(GITHUB_ACCOUNT_KEY, account);
             repoScopeMaps.put(account, scopeMap);
         }

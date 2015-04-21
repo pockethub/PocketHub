@@ -49,7 +49,7 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
 
     private final int[] issues;
 
-    private final SparseArray<IssueFragment> fragments = new SparseArray<IssueFragment>();
+    private final SparseArray<IssueFragment> fragments = new SparseArray<>();
 
     private final IssueStore store;
 

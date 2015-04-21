@@ -153,7 +153,7 @@ public class HtmlUtils {
 
         private int indentLevel;
 
-        private final LinkedList<ListSeparator> listElements = new LinkedList<ListSeparator>();
+        private final LinkedList<ListSeparator> listElements = new LinkedList<>();
 
         @Override
         public void handleTag(final boolean opening, final String tag,

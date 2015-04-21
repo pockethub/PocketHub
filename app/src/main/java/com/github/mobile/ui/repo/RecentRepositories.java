@@ -70,7 +70,7 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
     private void load() {
         LinkedHashSet<Long> loaded = new RequestReader(file, VERSION).read();
         if (loaded == null)
-            loaded = new LinkedHashSet<Long>();
+            loaded = new LinkedHashSet<>();
         ids = loaded;
         trim();
     }

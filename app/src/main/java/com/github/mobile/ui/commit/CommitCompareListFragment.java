@@ -211,7 +211,7 @@ public class CommitCompareListFragment extends DialogFragment implements
 
         list.setOnItemClickListener(this);
 
-        adapter = new HeaderFooterListAdapter<CommitFileListAdapter>(list,
+        adapter = new HeaderFooterListAdapter<>(list,
                 new CommitFileListAdapter(inflater, diffStyler, null, null));
         adapter.addFooter(inflater.inflate(R.layout.footer_separator, null));
         list.setAdapter(adapter);

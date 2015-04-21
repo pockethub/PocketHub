@@ -35,7 +35,7 @@ import org.eclipse.egit.github.core.CommitFile;
  */
 public class DiffStyler {
 
-    private final Map<String, List<CharSequence>> diffs = new HashMap<String, List<CharSequence>>();
+    private final Map<String, List<CharSequence>> diffs = new HashMap<>();
 
     private final int markerColor;
 
@@ -110,7 +110,7 @@ public class DiffStyler {
             int start = 0;
             int length = patch.length();
             int end = nextLine(patch, start, length);
-            List<CharSequence> lines = new ArrayList<CharSequence>();
+            List<CharSequence> lines = new ArrayList<>();
             while (start < length) {
                 lines.add(patch.substring(start, end));
                 start = end + 1;
