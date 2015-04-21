@@ -80,11 +80,7 @@ public class SyncCampaign implements Runnable {
         try {
             orgs = cache.requestAndStore(persistedOrgs);
             syncResult.stats.numUpdates++;
-        } catch (IOException e) {
-            syncResult.stats.numIoExceptions++;
-            Log.d(TAG, "Exception requesting users and orgs", e);
-            return;
-        } catch (SQLException e) {
+        } catch (IOException | SQLException e) {
             syncResult.stats.numIoExceptions++;
             Log.d(TAG, "Exception requesting users and orgs", e);
             return;
@@ -99,10 +95,7 @@ public class SyncCampaign implements Runnable {
             try {
                 cache.requestAndStore(repos.under(org));
                 syncResult.stats.numUpdates++;
-            } catch (IOException e) {
-                syncResult.stats.numIoExceptions++;
-                Log.d(TAG, "Exception requesting repositories", e);
-            } catch (SQLException e) {
+            } catch (IOException | SQLException e) {
                 syncResult.stats.numIoExceptions++;
                 Log.d(TAG, "Exception requesting repositories", e);
             }
