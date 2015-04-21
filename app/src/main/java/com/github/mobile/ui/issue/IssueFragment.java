@@ -701,7 +701,7 @@ public class IssueFragment extends DialogFragment {
             Bundle args = new Bundle();
             args.putSerializable(EXTRA_COMMENT, comment);
             ConfirmDialogFragment.show(
-                    (DialogFragmentActivity) getActivity(),
+                    getActivity(),
                     COMMENT_DELETE,
                     getActivity()
                             .getString(R.string.confirm_comment_delete_title),
