@@ -39,6 +39,10 @@
         <item name="ic_action_random">@drawable/ic_shuffle_white_24dp</item>
         <item name="ic_action_refresh">@drawable/ic_refresh_white_24dp</item>
         <item name="ic_action_star">@drawable/ic_star_white_24dp</item>
+
+        <item name="ic_action_issue_close">@drawable/ic_github_issue_closed_white_24dp</item>
+        <item name="ic_action_issue_open">@drawable/ic_github_issue_opened_white_24dp</item>
+        <item name="ic_action_issue_reopen">@drawable/ic_github_issue_reopened_white_24dp</item>
     </style>
 
     <style name="Theme.GitHub.NavigationDrawer" parent="Theme.GitHub" >

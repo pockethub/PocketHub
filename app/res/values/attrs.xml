@@ -11,4 +11,8 @@
     <attr name="ic_action_random" format="reference"/>
     <attr name="ic_action_refresh" format="reference"/>
     <attr name="ic_action_star" format="reference" />
+
+    <attr name="ic_action_issue_close" format="reference" />
+    <attr name="ic_action_issue_open" format="reference" />
+    <attr name="ic_action_issue_reopen" format="reference"/>
 </resources>

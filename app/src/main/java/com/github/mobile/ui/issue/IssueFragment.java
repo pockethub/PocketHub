@@ -41,6 +41,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -557,13 +558,17 @@ public class IssueFragment extends DialogFragment {
     }
 
     private void updateStateItem(Issue issue) {
-        if (issue != null && stateItem != null)
-            if (STATE_OPEN.equals(issue.getState()))
-                stateItem.setTitle(R.string.close).setIcon(
-                        R.drawable.menu_issue_close);
-            else
-                stateItem.setTitle(R.string.reopen).setIcon(
-                        R.drawable.menu_issue_open);
+        TypedValue icon = new TypedValue();
+        if (issue != null && stateItem != null) {
+            if (STATE_OPEN.equals(issue.getState())) {
+                stateItem.setTitle(R.string.close);
+                getActivity().getTheme().resolveAttribute(R.attr.ic_action_issue_close, icon, true);
+            } else {
+                stateItem.setTitle(R.string.reopen);
+                getActivity().getTheme().resolveAttribute(R.attr.ic_action_issue_reopen, icon, true);
+            }
+            stateItem.setIcon(icon.resourceId);
+        }
     }
 
     @Override

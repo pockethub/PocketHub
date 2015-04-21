@@ -29,7 +29,7 @@
         android:title="@string/edit"/>
     <item
         android:id="@+id/m_state"
-        android:icon="@drawable/menu_issue_close"
+        android:icon="?attr/ic_action_issue_close"
         app:showAsAction="never"
         android:title="@string/close"/>
     <item
