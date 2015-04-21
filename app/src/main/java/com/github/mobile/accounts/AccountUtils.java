@@ -346,9 +346,7 @@ public class AccountUtils {
 
         if ("Received authentication challenge is null".equals(message))
             return true;
-        if ("No authentication challenges found".equals(message))
-            return true;
+        return "No authentication challenges found".equals(message);
 
-        return false;
     }
 }
