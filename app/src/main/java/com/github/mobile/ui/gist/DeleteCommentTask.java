@@ -95,10 +95,6 @@ public class DeleteCommentTask extends ProgressDialogTask<Comment> {
      * @throws IOException
      */
     private void deleteComment(String gistId, long commentId) throws Exception {
-        StringBuilder uri = new StringBuilder(SEGMENT_GISTS);
-        uri.append('/').append(gistId);
-        uri.append(SEGMENT_COMMENTS);
-        uri.append('/').append(commentId);
-        service.getClient().delete(uri.toString());
+        service.getClient().delete(SEGMENT_GISTS + '/' + gistId + SEGMENT_COMMENTS + '/' + commentId);
     }
 }
