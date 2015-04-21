@@ -236,7 +236,6 @@ public class HtmlUtils {
                     output.setSpan(new ReplySpan(), start, end,
                             SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
-                return;
             }
         }
     };

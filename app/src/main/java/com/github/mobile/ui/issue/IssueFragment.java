@@ -623,7 +623,6 @@ public class IssueFragment extends DialogFragment {
                 updateList(issue, items);
             } else
                 refreshIssue();
-            return;
         }
     }
 

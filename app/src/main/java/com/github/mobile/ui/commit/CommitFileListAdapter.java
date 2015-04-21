@@ -206,7 +206,6 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
             setText(3, TimeUtils.getRelativeTime(comment.getUpdatedAt()));
             imageGetter.bind(textView(0), comment.getBodyHtml(),
                     comment.getId());
-            return;
         }
     }
 }
