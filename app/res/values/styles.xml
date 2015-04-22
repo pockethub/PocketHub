@@ -46,8 +46,8 @@
         <item name="android:layout_height">16dp</item>
     </style>
 
-    <style name="commentEditIcon" parent="AvatarMedium"></style>
-    <style name="commentDeleteIcon" parent="AvatarMedium"></style>
+    <style name="commentEditIcon" parent="AvatarMedium"/>
+    <style name="commentDeleteIcon" parent="AvatarMedium"/>
 
     <style name="ListView">
         <item name="android:dividerHeight">2dp</item>
@@ -153,7 +153,7 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="ListTitleText" parent="TitleText"></style>
+    <style name="ListTitleText" parent="TitleText"/>
 
     <style name="SubtitleText">
         <item name="android:textSize">14sp</item>
@@ -162,7 +162,7 @@
         <item name="android:layout_width">wrap_content</item>
     </style>
 
-    <style name="ListSubtitleText" parent="SubtitleText"></style>
+    <style name="ListSubtitleText" parent="SubtitleText"/>
 
     <style name="CodeText">
         <item name="android:textSize">12sp</item>
@@ -191,7 +191,7 @@
         <item name="android:paddingBottom">5dp</item>
     </style>
 
-    <style name="HeaderListItem" parent="ListItem"></style>
+    <style name="HeaderListItem" parent="ListItem"/>
 
     <style name="CommentListItem" parent="ListItem">
         <item name="android:layout_width">match_parent</item>

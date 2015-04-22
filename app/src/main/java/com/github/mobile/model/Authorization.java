@@ -15,8 +15,8 @@ public class Authorization {
     private Object noteUrl;
     private String createdAt;
     private String updatedAt;
-    private List<String> scopes = new ArrayList<String>();
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private List<String> scopes = new ArrayList<>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     /**
      *

@@ -45,7 +45,7 @@ public abstract class ResourcePager<E> {
     /**
      * All resources retrieved
      */
-    protected final Map<Object, E> resources = new LinkedHashMap<Object, E>();
+    protected final Map<Object, E> resources = new LinkedHashMap<>();
 
     /**
      * Are more pages available?
@@ -92,7 +92,7 @@ public abstract class ResourcePager<E> {
      * @return resources
      */
     public List<E> getResources() {
-        return new ArrayList<E>(resources.values());
+        return new ArrayList<>(resources.values());
     }
 
     /**

@@ -105,7 +105,7 @@ public class AvatarLoader {
      * @return this helper
      */
     public void bind(final ActionBar actionBar, final User user) {
-        bind(actionBar, new AtomicReference<User>(user));
+        bind(actionBar, new AtomicReference<>(user));
     }
 
     /**

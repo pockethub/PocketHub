@@ -95,8 +95,6 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.User;
 
-import retrofit.http.HEAD;
-
 /**
  * Fragment to display an issue
  */
@@ -625,7 +623,6 @@ public class IssueFragment extends DialogFragment {
                 updateList(issue, items);
             } else
                 refreshIssue();
-            return;
         }
     }
 
@@ -701,7 +698,7 @@ public class IssueFragment extends DialogFragment {
             Bundle args = new Bundle();
             args.putSerializable(EXTRA_COMMENT, comment);
             ConfirmDialogFragment.show(
-                    (DialogFragmentActivity) getActivity(),
+                    getActivity(),
                     COMMENT_DELETE,
                     getActivity()
                             .getString(R.string.confirm_comment_delete_title),

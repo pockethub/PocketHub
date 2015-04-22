@@ -8,7 +8,7 @@ public class App {
     private String name;
     private String url;
     private String clientId;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     /**
      *

@@ -13,6 +13,7 @@ import com.github.mobile.ui.ProgressDialogTask;
 import com.google.inject.Inject;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
@@ -94,7 +95,7 @@ public class DeleteRepositoryTask extends ProgressDialogTask<Void> {
         } else {
             Authorization authorization = new Authorization();
             authorization.setNote("Token for deleting repositories");
-            authorization.setScopes(Arrays.asList("delete_repo"));
+            authorization.setScopes(Collections.singletonList("delete_repo"));
 
             Authorization authorizationResponse = GitHubClientV2.getServiceClient().
                     createDeleteAuthorization(credentials, authorization);
