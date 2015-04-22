@@ -69,15 +69,11 @@
     <color name="section_end">#E0E0E0</color>
     <color name="section_subtitle">#555555</color>
     <color name="tab_selected_text">#FFFFFF</color>
-    <color name="tab_selected_icon">#08D7FF</color>
     <color name="tab_text">#999999</color>
-    <color name="tab_icon">#FAFAFA</color>
-    <color name="tab_text_shadow">#245066</color>
     <color name="issue_event_merged">#6e5494</color>
     <color name="issue_event_closed">#bd2c00</color>
     <color name="issue_event_reopened">#6cc644</color>
     <color name="issue_event_lock">#333333</color>
-    <color name="issue_event_unlock">#333333</color>
 
     <color name="primary">#3D3D3D</color>
     <color name="primary_dark">#313131</color>
