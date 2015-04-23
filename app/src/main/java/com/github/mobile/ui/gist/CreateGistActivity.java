@@ -65,7 +65,7 @@ public class CreateGistActivity extends BaseActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.new_gist);
-        actionBar.setIcon(R.drawable.action_gist);
+        actionBar.setIcon(R.drawable.ic_github_gist_white_32dp);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         String text = ShareUtils.getBody(getIntent());
