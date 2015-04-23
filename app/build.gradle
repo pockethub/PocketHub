@@ -58,7 +58,7 @@ dependencies {
     compile 'com.squareup.okio:okio:1.1.0'
     compile 'com.squareup.okhttp:okhttp:2.2.0'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
-    compile 'com.afollestad:material-dialogs:0.6.3.1'
+    compile 'com.afollestad:material-dialogs:0.7.2.7'
     //Self compiled .aar version of wishlist
     compile (name:'lib', ext:'aar')
     testCompile 'junit:junit:4.12'
