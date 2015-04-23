@@ -160,8 +160,8 @@
   <string name="none">ריק</string>
   <string name="section_issue_labels">תוויות:</string>
   <string name="log_in">התחבר</string>
-  <string name="signup_link">חדש ב-GitHub? &lt; href=\"https://github.com/join\"&gt;לחץ כאן &lt; / &gt; כדי להירשם</string>
-  <string name="signup_link_two_factor_auth">לא בטוח מה לעשות? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\"&gt;קבל קצת עזרה.&lt;/a&gt;</string>
+  <string name="signup_link">חדש ב-GitHub? &lt;a href=\"https://github.com/plans\">לחץ כאן&lt;/a> כדי להירשם</string>
+  <string name="signup_link_two_factor_auth">לא בטוח מה לעשות? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">קבל קצת עזרה.&lt;/a></string>
   <string name="connection_failed">לא יכול להתחבר ל- GitHub</string>
   <string name="invalid_login_or_password">נא הכנס סיסמת התחברות &amp; תקינה</string>
   <string name="invalid_password">נא הכנס סיסמה תקינה</string>
