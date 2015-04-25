@@ -25,6 +25,7 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.github.mobile.R;
+import com.github.mobile.core.search.SearchUser;
 import com.google.inject.Inject;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
@@ -163,6 +164,16 @@ public class AvatarLoader {
      * Bind view to image at URL
      *
      * @param view The ImageView that is to display the user's avatar.
+     * @param user A SearchtUser object that points to the desired user.
+     */
+    public void bind(final ImageView view, final SearchUser user) {
+        bind(view, getAvatarUrl(user));
+    }
+
+    /**
+     * Bind view to image at URL
+     *
+     * @param view The ImageView that is to display the user's avatar.
      * @param user A CommitUser object that points to the desired user.
      */
     public void bind(final ImageView view, final CommitUser user) {
@@ -209,6 +220,10 @@ public class AvatarLoader {
 
     private String getAvatarUrl(CommitUser user) {
         return getAvatarUrl(GravatarUtils.getHash(user.getEmail()));
+    }
+
+    private String getAvatarUrl(SearchUser user) {
+        return getAvatarUrl(GravatarUtils.getHash(user.getId()));
     }
 
     private String getAvatarUrl(String id) {

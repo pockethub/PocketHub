@@ -175,7 +175,7 @@ public class CommentListAdapter extends MultiTypeAdapter {
             break;
         case "merged":
             message += String.format(" commit <b>%s</b> into <tt>%s</tt> from <tt>%s</tt>", event.getCommitId().substring(0,6), issue.getPullRequest().getBase().getRef(),
-                issue.getPullRequest().getHead().getRef());
+                    issue.getPullRequest().getHead().getRef());
             setText(0, TypefaceUtils.ICON_MERGE);
             textView(0).setTextColor(
                     context.getResources().getColor(R.color.issue_event_merged));
@@ -204,10 +204,10 @@ public class CommentListAdapter extends MultiTypeAdapter {
         setText(2, TimeUtils.getRelativeTime(comment.getUpdatedAt()));
 
         final boolean canEdit = (isOwner || comment.getUser().getLogin().equals(userName))
-            && editCommentListener != null;
+                && editCommentListener != null;
 
         final boolean canDelete = (isOwner || comment.getUser().getLogin().equals(userName))
-            && deleteCommentListener != null;
+                && deleteCommentListener != null;
 
         final ImageView ivMore = view(4);
 
@@ -215,11 +215,11 @@ public class CommentListAdapter extends MultiTypeAdapter {
             ivMore.setVisibility(View.INVISIBLE);
         else
             ivMore.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showMorePopup(ivMore, comment, canEdit, canDelete);
-            }
-        });
+                @Override
+                public void onClick(View v) {
+                    showMorePopup(ivMore, comment, canEdit, canDelete);
+                }
+            });
     }
 
     private void showMorePopup(View v, final Comment comment, final boolean canEdit, final boolean canDelete ) {
@@ -233,16 +233,16 @@ public class CommentListAdapter extends MultiTypeAdapter {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
-                    case R.id.m_edit:
-                        if (editCommentListener != null) {
-                            editCommentListener.onEditComment(comment);
-                        }
-                        break;
-                    case R.id.m_delete:
-                        if (deleteCommentListener != null) {
-                            deleteCommentListener.onDeleteComment(comment);
-                        }
-                        break;
+                case R.id.m_edit:
+                    if (editCommentListener != null) {
+                        editCommentListener.onEditComment(comment);
+                    }
+                    break;
+                case R.id.m_delete:
+                    if (deleteCommentListener != null) {
+                        deleteCommentListener.onDeleteComment(comment);
+                    }
+                    break;
                 }
                 return false;
             }
