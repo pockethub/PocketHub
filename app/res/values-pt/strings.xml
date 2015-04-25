@@ -271,5 +271,22 @@
     <string name="preview">Prever</string>
     <string name="show_raw_markdown">Mostrar markdown puro</string>
     <string name="render_markdown">Renderizar markdown</string>
+    <string name="are_you_sure">Você está absolutamente certo?</string>
+    <string name="code_authentication_failed">Falha de autenticação! Código de verificação incorreto</string>
+    <string name="confirm_comment_delete_message">Tem certeza de que deseja apagar este comentário?</string>
+    <string name="confirm_comment_delete_title">Apagar Comentário</string>
+    <string name="copy_hash">Copiar hash</string>
+    <string name="delete_successful">Repositório excluído</string>
+    <string name="deleting_comment">Apagando comentário...</string>
+    <string name="deleting_repository">Excluindo...</string>
+    <string name="editing_comment">Editando comentário...</string>
+    <string name="error_contributors_load">Carregamento dos contribuidores falhou</string>
+    <string name="error_deleting_repository">Exclusão falhou</string>
+    <string name="global_search">Pesquisa GitHub</string>
+    <string name="not_sure">NÃO TENHO CERTEZA</string>
+    <string name="signup_link_two_factor_auth">Não tenho certeza o que fazer? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Obter alguma ajuda.&lt;/a></string>
+    <string name="unexpected_bad_things">Esta ação NÃO poderá ser desfeita. Isto irá apagar permanentemente o repositório, wiki, questões e comentários, e remover todas as associações dos colaboradores.</string>
+    <string name="username_or_email">Nome do usuário ou Email</string>
+    <string name="delete_cap">APAGAR</string>
 
 </resources>
