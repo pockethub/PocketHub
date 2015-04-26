@@ -70,9 +70,7 @@ public class FiltersViewActivity extends DialogFragmentActivity implements
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.bookmarks);
-        TypedValue bookmarkIcon = new TypedValue();
-        getTheme().resolveAttribute(R.attr.ic_action_bookmark, bookmarkIcon, true);
-        actionBar.setIcon(bookmarkIcon.resourceId);
+        actionBar.setIcon(R.drawable.ic_bookmark_white_24dp);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         fragment = (FilterListFragment) getSupportFragmentManager()

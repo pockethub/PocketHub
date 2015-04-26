@@ -558,16 +558,14 @@ public class IssueFragment extends DialogFragment {
     }
 
     private void updateStateItem(Issue issue) {
-        TypedValue icon = new TypedValue();
         if (issue != null && stateItem != null) {
             if (STATE_OPEN.equals(issue.getState())) {
                 stateItem.setTitle(R.string.close);
-                getActivity().getTheme().resolveAttribute(R.attr.ic_action_issue_close, icon, true);
+                stateItem.setIcon(R.drawable.ic_github_issue_closed_white_24dp);
             } else {
                 stateItem.setTitle(R.string.reopen);
-                getActivity().getTheme().resolveAttribute(R.attr.ic_action_issue_reopen, icon, true);
+                stateItem.setIcon(R.drawable.ic_github_issue_reopened_white_24dp);
             }
-            stateItem.setIcon(icon.resourceId);
         }
     }
 
