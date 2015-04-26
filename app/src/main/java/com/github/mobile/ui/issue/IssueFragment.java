@@ -41,6 +41,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -557,13 +558,15 @@ public class IssueFragment extends DialogFragment {
     }
 
     private void updateStateItem(Issue issue) {
-        if (issue != null && stateItem != null)
-            if (STATE_OPEN.equals(issue.getState()))
-                stateItem.setTitle(R.string.close).setIcon(
-                        R.drawable.menu_issue_close);
-            else
-                stateItem.setTitle(R.string.reopen).setIcon(
-                        R.drawable.menu_issue_open);
+        if (issue != null && stateItem != null) {
+            if (STATE_OPEN.equals(issue.getState())) {
+                stateItem.setTitle(R.string.close);
+                stateItem.setIcon(R.drawable.ic_github_issue_closed_white_24dp);
+            } else {
+                stateItem.setTitle(R.string.reopen);
+                stateItem.setIcon(R.drawable.ic_github_issue_reopened_white_24dp);
+            }
+        }
     }
 
     @Override

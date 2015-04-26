@@ -19,7 +19,7 @@
 
     <item
         android:id="@+id/m_apply"
-        android:icon="@drawable/action_done"
+        android:icon="@drawable/ic_done_white_24dp"
         app:showAsAction="ifRoom"
         android:title="@string/save"/>
 

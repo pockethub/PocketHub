@@ -67,7 +67,7 @@
             <ImageView
                 android:id="@+id/iv_recent_repo_avatar"
                 style="@style/AvatarLarge"
-                android:src="@drawable/menu_delete_history"
+                android:src="@drawable/ic_history_white_24dp"
                 android:contentDescription="@string/recent_remove" />
 
             <TextView

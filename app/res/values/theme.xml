@@ -27,6 +27,7 @@
         <item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowBackground">@color/background</item>
+
     </style>
 
     <style name="Theme.GitHub.NavigationDrawer" parent="Theme.GitHub" >
