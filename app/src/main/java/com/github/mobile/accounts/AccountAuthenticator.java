@@ -48,7 +48,7 @@ import org.eclipse.egit.github.core.service.OAuthService;
 
 public class AccountAuthenticator extends AbstractAccountAuthenticator {
 
-    private static final String TAG = "GitHubAccountAuthenticator";
+    private static final String TAG = "GHAccountAuthenticator";
 
     private static final List<String> SCOPES = Arrays.asList("repo", "user", "gist");
 
