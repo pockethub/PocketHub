@@ -16,8 +16,7 @@ report any bugs or feature requests and to see the list of known issues.
 
 ### With Gradle
 
-The easiest way to build is to install [Android Studio](https://developer.android.com/sdk/index.html) v1.+
-with [Gradle](https://www.gradle.org/) v2.2.1.
+The easiest way to build is to install [Android Studio](https://developer.android.com/sdk/index.html) v1.+.
 Once installed, then you can import the project into Android Studio:
 
 1. Open `File`
