@@ -42,11 +42,11 @@
     <string name="error_following_person">Folgen fehlgeschlagen</string>
     <string name="error_unfollowing_person">Entfolgen fehlgeschlagen</string>
     <string name="error_checking_following_status">Prüfen des Folgestatus fehlgeschlagen</string>
-    <string name="error_starring_repository">Hervorheben fehlgeschlagen</string>
-    <string name="error_unstarring_repository">Entfernen der Hervorhebung fehlgeschlagen</string>
+    <string name="error_starring_repository">Favorisieren fehlgeschlagen</string>
+    <string name="error_unstarring_repository">Defavorisieren fehlgeschlagen</string>
     <string name="error_forking_repository">Forking fehlgeschlagen</string>
     <string name="error_deleting_repository">Löschen fehlgeschlagen</string>
-    <string name="error_checking_starring_status">Prüfen des Hervorhebungsstatus fehlgeschlagen</string>
+    <string name="error_checking_starring_status">Prüfen des Favoritenstatus fehlgeschlagen</string>
     <string name="error_rendering_markdown">Rendern der Markdown-Vorschau fehlgeschlagen</string>
     <string name="error_users_search">Suche nach Usern fehlgeschlagen</string>
     <!--  -->
@@ -148,8 +148,8 @@
     <string name="gist_description_hint">erstellt mit Android</string>
     <string name="title">Titel</string>
     <string name="edit">Bearbeiten</string>
-    <string name="starring_gist">Füge Gist als Hervorhebung hinzu…</string>
-    <string name="unstarring_gist">Entferne hervorgehobenen Gist…</string>
+    <string name="starring_gist">Favorisiere Gist…</string>
+    <string name="unstarring_gist">Defavorisiere Gist…</string>
     <string name="accounts_label">Konten</string>
     <string name="select_assignee">Verantwortlichen wählen</string>
     <string name="select_milestone">Meilenstein wählen</string>
@@ -201,8 +201,8 @@
     <string name="following_self">Ich folge</string>
     <string name="follow">Folgen</string>
     <string name="unfollow">Entfolgen</string>
-    <string name="star">Hervorheben</string>
-    <string name="unstar">Hervorhebung entfernen</string>
+    <string name="star">Favorisieren</string>
+    <string name="unstar">Defavorisieren</string>
     <string name="fork">Fork</string>
     <string name="members">Mitglieder</string>
     <string name="closing_issue">Schließe Ticket…</string>
@@ -252,8 +252,8 @@
     <string name="code">Code</string>
     <string name="following_user">Folgen…</string>
     <string name="unfollowing_user">Entfolgen…</string>
-    <string name="starring_repository">Hervorheben…</string>
-    <string name="unstarring_repository">Hervorhebung entfernen…</string>
+    <string name="starring_repository">Favorisiere Repository…</string>
+    <string name="unstarring_repository">Defavorisiere Repository…</string>
     <string name="forking_repository">Forking…</string>
     <string name="deleting_repository">Löschen…</string>
     <string name="navigate_to">Navigiere zu…</string>
