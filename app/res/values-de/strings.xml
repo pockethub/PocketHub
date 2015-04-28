@@ -201,8 +201,8 @@
     <string name="following_self">Ich folge</string>
     <string name="follow">Folgen</string>
     <string name="unfollow">Entfolgen</string>
-    <string name="star">Hervorheben</string>
-    <string name="unstar">Hervorhebung entfernen</string>
+    <string name="star">Star</string>
+    <string name="unstar">Unstar</string>
     <string name="fork">Fork</string>
     <string name="members">Mitglieder</string>
     <string name="closing_issue">Schließe Ticket…</string>
