@@ -12,8 +12,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -99,14 +99,13 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
     }
 
     public void setUp(int fragmentId, DrawerLayout drawerLayout, NavigationDrawerAdapter adapter, AvatarLoader avatar,
-        User user) {
+            User user) {
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
         //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
         int drawerWidth = checkTabletOrLandscape() ? R.dimen.navigation_drawer_width : materializedWidth();
         mDrawerListView.getLayoutParams().width = drawerWidth;
-
 
         View header = getActivity().getLayoutInflater().inflate(R.layout.drawer_header, mDrawerListView, false);
         userImage = (ImageView) header.findViewById(R.id.user_picture);
@@ -132,9 +131,9 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
         actionBar.setHomeButtonEnabled(true);
 
         mDrawerToggle = new ActionBarDrawerToggle(
-            getActivity(), mDrawerLayout,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close) {
+                getActivity(), mDrawerLayout,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close) {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
@@ -155,7 +154,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
                 if (!mUserLearnedDrawer) {
                     mUserLearnedDrawer = true;
                     SharedPreferences sp = PreferenceManager
-                        .getDefaultSharedPreferences(getActivity());
+                            .getDefaultSharedPreferences(getActivity());
                     sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
                 }
 
@@ -214,7 +213,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
     }
 
     private ActionBar getActionBar() {
-        return ((ActionBarActivity) getActivity()).getSupportActionBar();
+        return ((AppCompatActivity) getActivity()).getSupportActionBar();
     }
 
     @Override
@@ -222,17 +221,17 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
         selectItem(position);
     }
 
-    public static interface NavigationDrawerCallbacks {
+    public interface NavigationDrawerCallbacks {
         void onNavigationDrawerItemSelected(int position);
     }
 
     public boolean checkTabletOrLandscape() {
         boolean landscape = getActivity().getResources()
-                                         .getConfiguration()
-                                         .orientation == Configuration.ORIENTATION_LANDSCAPE;
+                .getConfiguration()
+                .orientation == Configuration.ORIENTATION_LANDSCAPE;
         boolean tablet =
                 (getActivity().getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
-                == Configuration.SCREENLAYOUT_SIZE_XLARGE;
+                        == Configuration.SCREENLAYOUT_SIZE_XLARGE;
 
         return landscape || tablet;
     }

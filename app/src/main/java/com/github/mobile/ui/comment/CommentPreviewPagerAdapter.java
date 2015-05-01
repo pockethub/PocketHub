@@ -17,7 +17,7 @@ package com.github.mobile.ui.comment;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import com.github.mobile.R;
 import com.github.mobile.ui.FragmentPagerAdapter;
@@ -46,7 +46,7 @@ public class CommentPreviewPagerAdapter extends FragmentPagerAdapter {
      * @param activity
      * @param repo
      */
-    public CommentPreviewPagerAdapter(ActionBarActivity activity,
+    public CommentPreviewPagerAdapter(AppCompatActivity activity,
             IRepositoryIdProvider repo) {
         super(activity);
         this.context = activity.getApplicationContext();
@@ -88,7 +88,7 @@ public class CommentPreviewPagerAdapter extends FragmentPagerAdapter {
      * @return text
      */
     public void setCommentText(String comment) {
-        if(textFragment != null)
+        if (textFragment != null)
             textFragment.setText(comment);
         initComment = comment;
     }
@@ -108,12 +108,12 @@ public class CommentPreviewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
-            case 0:
-                return context.getResources().getString(R.string.write);
-            case 1:
-                return context.getResources().getString(R.string.preview);
-            default:
-                return "";
+        case 0:
+            return context.getResources().getString(R.string.write);
+        case 1:
+            return context.getResources().getString(R.string.preview);
+        default:
+            return "";
         }
     }
 }

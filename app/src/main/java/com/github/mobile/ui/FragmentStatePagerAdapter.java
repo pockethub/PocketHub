@@ -16,24 +16,24 @@
 package com.github.mobile.ui;
 
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.ViewGroup;
 
 /**
  * Pager that stores current fragment
  */
 public abstract class FragmentStatePagerAdapter extends
-    android.support.v4.app.FragmentStatePagerAdapter implements
-    FragmentProvider {
+        android.support.v4.app.FragmentStatePagerAdapter implements
+        FragmentProvider {
 
-    private final ActionBarActivity activity;
+    private final AppCompatActivity activity;
 
     private Fragment selected;
 
     /**
      * @param activity
      */
-    public FragmentStatePagerAdapter(final ActionBarActivity activity) {
+    public FragmentStatePagerAdapter(AppCompatActivity activity) {
         super(activity.getSupportFragmentManager());
 
         this.activity = activity;
@@ -45,7 +45,7 @@ public abstract class FragmentStatePagerAdapter extends
     public FragmentStatePagerAdapter(final Fragment fragment) {
         super(fragment.getChildFragmentManager());
 
-        this.activity = (ActionBarActivity) fragment.getActivity();
+        this.activity = (AppCompatActivity) fragment.getActivity();
     }
 
     @Override
@@ -55,7 +55,7 @@ public abstract class FragmentStatePagerAdapter extends
 
     @Override
     public void setPrimaryItem(final ViewGroup container, final int position,
-        final Object object) {
+            final Object object) {
         super.setPrimaryItem(container, position, object);
 
         boolean changed = false;
