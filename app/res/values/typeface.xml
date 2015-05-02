@@ -16,14 +16,14 @@
 -->
 <resources>
 
-    <string name="icon_pull_request">\uf20E</string>
-    <string name="icon_comment">\uf04f</string>
-    <string name="icon_file">\uf011</string>
-    <string name="icon_tag">\uf215</string>
-    <string name="icon_folder">\uf216</string>
-    <string name="icon_folders">\uf217</string>
-    <string name="icon_star">\uf02a</string>
-    <string name="icon_fork">\uf020</string>
+    <string name="icon_pull_request" translatable="false">\uf20E</string>
+    <string name="icon_comment" translatable="false">\uf04f</string>
+    <string name="icon_file" translatable="false">\uf011</string>
+    <string name="icon_tag" translatable="false">\uf215</string>
+    <string name="icon_folder" translatable="false">\uf216</string>
+    <string name="icon_folders" translatable="false">\uf217</string>
+    <string name="icon_star" translatable="false">\uf02a</string>
+    <string name="icon_fork" translatable="false">\uf020</string>
 
     <string-array name="navigation_drawer_icon_list">
         <item>\uf08d</item>
