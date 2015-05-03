@@ -15,12 +15,6 @@
  */
 package com.github.mobile.ui.ref;
 
-import static com.github.mobile.Intents.EXTRA_BASE;
-import static com.github.mobile.Intents.EXTRA_HEAD;
-import static com.github.mobile.Intents.EXTRA_PATH;
-import static com.github.mobile.Intents.EXTRA_REPOSITORY;
-import static com.github.mobile.util.PreferenceUtils.RENDER_MARKDOWN;
-import static com.github.mobile.util.PreferenceUtils.WRAP;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -53,6 +47,13 @@ import org.eclipse.egit.github.core.Blob;
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.util.EncodingUtils;
+
+import static com.github.mobile.Intents.EXTRA_BASE;
+import static com.github.mobile.Intents.EXTRA_HEAD;
+import static com.github.mobile.Intents.EXTRA_PATH;
+import static com.github.mobile.Intents.EXTRA_REPOSITORY;
+import static com.github.mobile.util.PreferenceUtils.RENDER_MARKDOWN;
+import static com.github.mobile.util.PreferenceUtils.WRAP;
 
 /**
  * Activity to view a file on a branch
@@ -130,6 +131,7 @@ public class BranchFileViewActivity extends BaseActivity implements
         codeView = finder.find(R.id.wv_code);
 
         codeView.getSettings().setBuiltInZoomControls(true);
+        codeView.getSettings().setUseWideViewPort(true);
 
         file = CommitUtils.getName(path);
         isMarkdownFile = MarkdownUtils.isMarkdown(file);
