@@ -33,7 +33,7 @@ import android.view.MenuItem;
 
 import com.github.mobile.R;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
-import com.github.mobile.ui.roboactivities.RoboActionBarActivity;
+import com.github.mobile.ui.roboactivities.RoboAppCompatActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
@@ -43,7 +43,7 @@ import org.eclipse.egit.github.core.Repository;
 /**
  * Activity to search issues
  */
-public class IssueSearchActivity extends RoboActionBarActivity {
+public class IssueSearchActivity extends RoboAppCompatActivity {
 
     @Inject
     private AvatarLoader avatars;

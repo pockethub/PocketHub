@@ -23,7 +23,6 @@ public class NavigationDrawerObject {
         this.title = title;
         this.type = type;
         this.user = user;
-
     }
 
     public NavigationDrawerObject(String title, int type) {
@@ -38,7 +37,6 @@ public class NavigationDrawerObject {
     public User getUser() {
         return user;
     }
-
 
     public int getType() {
         return type;
