@@ -49,7 +49,7 @@ is listed in the [app's build.gradle file](https://github.com/forkhubs/android/b
 ## Contributing
 
 Please fork this repository and contribute back using
-[pull requests](https://github.com/github/forkhubs/pulls).
+[pull requests](https://github.com/forkhubs/android/pulls).
 
 Any contributions, large or small, major features, bug fixes, additional
 language translations, unit/integration tests are welcomed and appreciated
