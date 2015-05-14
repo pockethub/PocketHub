@@ -15,8 +15,6 @@
  */
 package com.github.mobile.ui;
 
-import static android.os.Build.VERSION.SDK_INT;
-import static android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
@@ -44,7 +42,7 @@ public class ViewPager extends android.support.v4.view.ViewPager {
 
     /**
      * Set current item and return whether the item changed
-     * <p>
+     * <p/>
      * This method does not call {@link #setCurrentItem(int)} unless the item
      * parameter differs from the current item
      *
@@ -61,7 +59,7 @@ public class ViewPager extends android.support.v4.view.ViewPager {
     /**
      * Set current item, invoke the listener if changes, and return whether the
      * item changed
-     * <p>
+     * <p/>
      * This method does not call {@link #setCurrentItem(int)} unless the item
      * parameter differs from the current item
      *
@@ -83,7 +81,7 @@ public class ViewPager extends android.support.v4.view.ViewPager {
      * @param listener
      */
     public void scheduleSetItem(final int item,
-            final OnPageChangeListener listener) {
+                                final OnPageChangeListener listener) {
         post(new Runnable() {
 
             @Override
@@ -110,10 +108,7 @@ public class ViewPager extends android.support.v4.view.ViewPager {
 
     @Override
     protected boolean canScroll(final View v, final boolean checkV,
-            final int dx, final int x, final int y) {
-        if (SDK_INT < ICE_CREAM_SANDWICH && v instanceof WebView)
-            return v.canScrollHorizontally(-dx);
-        else
-            return super.canScroll(v, checkV, dx, x, y);
+                                final int dx, final int x, final int y) {
+        return super.canScroll(v, checkV, dx, x, y);
     }
 }
