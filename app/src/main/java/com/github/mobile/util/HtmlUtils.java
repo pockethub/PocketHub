@@ -15,11 +15,6 @@
  */
 package com.github.mobile.util;
 
-import static android.graphics.Paint.Style.FILL;
-import static android.os.Build.VERSION.SDK_INT;
-import static android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH;
-import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
-import static android.text.Spanned.SPAN_MARK_MARK;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
@@ -34,9 +29,13 @@ import android.text.style.QuoteSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.TypefaceSpan;
 
+import org.xml.sax.XMLReader;
+
 import java.util.LinkedList;
 
-import org.xml.sax.XMLReader;
+import static android.graphics.Paint.Style.FILL;
+import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
+import static android.text.Spanned.SPAN_MARK_MARK;
 
 /**
  * HTML Utilities
@@ -54,8 +53,8 @@ public class HtmlUtils {
 
         @Override
         public void drawLeadingMargin(Canvas c, Paint p, int x, int dir,
-                int top, int baseline, int bottom, CharSequence text,
-                int start, int end, boolean first, Layout layout) {
+                                      int top, int baseline, int bottom, CharSequence text,
+                                      int start, int end, boolean first, Layout layout) {
             final Style style = p.getStyle();
             final int color = p.getColor();
 
@@ -157,7 +156,7 @@ public class HtmlUtils {
 
         @Override
         public void handleTag(final boolean opening, final String tag,
-                final Editable output, final XMLReader xmlReader) {
+                              final Editable output, final XMLReader xmlReader) {
             if (TAG_DEL.equalsIgnoreCase(tag)) {
                 if (opening)
                     startSpan(new StrikethroughSpan(), output);
@@ -277,7 +276,7 @@ public class HtmlUtils {
      * @return html
      */
     public static CharSequence encode(final String html,
-            final ImageGetter imageGetter) {
+                                      final ImageGetter imageGetter) {
         if (TextUtils.isEmpty(html))
             return "";
 
@@ -319,8 +318,6 @@ public class HtmlUtils {
 
         formatEmailFragments(formatted);
 
-        formatIncorrectStyles(formatted);
-
         trim(formatted);
 
         formatted.insert(0, ROOT_START);
@@ -329,18 +326,8 @@ public class HtmlUtils {
         return formatted;
     }
 
-    private static void formatIncorrectStyles(final StringBuilder input) {
-        // em and strong tag styles are swapped on pre-4.0 so swap them back
-        // using alternate tags that don't exhibit the incorrect styling.
-        // http://code.google.com/p/android/issues/detail?id=3473
-        if (SDK_INT < ICE_CREAM_SANDWICH) {
-            replaceTag(input, "em", "i");
-            replaceTag(input, "strong", "b");
-        }
-    }
-
     private static StringBuilder strip(final StringBuilder input,
-            final String prefix, final String suffix) {
+                                       final String prefix, final String suffix) {
         int start = input.indexOf(prefix);
         while (start != -1) {
             int end = input.indexOf(suffix, start + prefix.length());
@@ -353,7 +340,7 @@ public class HtmlUtils {
     }
 
     private static boolean replace(final StringBuilder input,
-            final String from, final String to) {
+                                   final String from, final String to) {
         int start = input.indexOf(from);
         if (start == -1)
             return false;
@@ -368,14 +355,14 @@ public class HtmlUtils {
     }
 
     private static void replaceTag(final StringBuilder input,
-            final String from, final String to) {
+                                   final String from, final String to) {
         if (replace(input, '<' + from + '>', '<' + to + '>'))
             replace(input, "</" + from + '>', "</" + to + '>');
     }
 
     private static StringBuilder replace(final StringBuilder input,
-            final String fromStart, final String fromEnd, final String toStart,
-            final String toEnd) {
+                                         final String fromStart, final String fromEnd, final String toStart,
+                                         final String toEnd) {
         int start = input.indexOf(fromStart);
         if (start == -1)
             return input;
@@ -411,32 +398,32 @@ public class HtmlUtils {
 
             for (int i = start; i < end; i++) {
                 switch (input.charAt(i)) {
-                case ' ':
-                    input.deleteCharAt(i);
-                    input.insert(i, SPACE);
-                    start += spaceAdvance;
-                    end += spaceAdvance;
-                    break;
-                case '\t':
-                    input.deleteCharAt(i);
-                    input.insert(i, SPACE);
-                    start += spaceAdvance;
-                    end += spaceAdvance;
-                    for (int j = 0; j < 3; j++) {
+                    case ' ':
+                        input.deleteCharAt(i);
                         input.insert(i, SPACE);
-                        start += spaceAdvance + 1;
-                        end += spaceAdvance + 1;
-                    }
-                    break;
-                case '\n':
-                    input.deleteCharAt(i);
-                    // Ignore if last character is a newline
-                    if (i + 1 < end) {
-                        input.insert(i, BREAK);
-                        start += breakAdvance;
-                        end += breakAdvance;
-                    }
-                    break;
+                        start += spaceAdvance;
+                        end += spaceAdvance;
+                        break;
+                    case '\t':
+                        input.deleteCharAt(i);
+                        input.insert(i, SPACE);
+                        start += spaceAdvance;
+                        end += spaceAdvance;
+                        for (int j = 0; j < 3; j++) {
+                            input.insert(i, SPACE);
+                            start += spaceAdvance + 1;
+                            end += spaceAdvance + 1;
+                        }
+                        break;
+                    case '\n':
+                        input.deleteCharAt(i);
+                        // Ignore if last character is a newline
+                        if (i + 1 < end) {
+                            input.insert(i, BREAK);
+                            start += breakAdvance;
+                            end += breakAdvance;
+                        }
+                        break;
                 }
             }
             start = input.indexOf(PRE_START, end + PRE_END.length());

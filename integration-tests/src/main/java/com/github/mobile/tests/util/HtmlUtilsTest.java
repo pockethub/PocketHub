@@ -15,8 +15,6 @@
  */
 package com.github.mobile.tests.util;
 
-import static android.os.Build.VERSION.SDK_INT;
-import static android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH;
 import android.test.AndroidTestCase;
 
 import com.github.mobile.util.HtmlUtils;
@@ -127,10 +125,7 @@ public class HtmlUtilsTest extends AndroidTestCase {
      */
     public void testEmReplacedWithI() {
         String html = "a<em>b</em>c";
-        if (SDK_INT < ICE_CREAM_SANDWICH)
-            assertEquals("a<i>b</i>c", format(html));
-        else
-            assertEquals(html, format(html));
+        assertEquals(html, format(html));
     }
 
     /**
@@ -138,10 +133,7 @@ public class HtmlUtilsTest extends AndroidTestCase {
      */
     public void testStrongReplacedWithB() {
         String html = "<strong>a</strong>";
-        if (SDK_INT < ICE_CREAM_SANDWICH)
-            assertEquals("<b>a</b>", format(html));
-        else
-            assertEquals(html, format(html));
+        assertEquals(html, format(html));
     }
 
     /**
