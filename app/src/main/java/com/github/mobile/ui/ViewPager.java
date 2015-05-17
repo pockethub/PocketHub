@@ -42,7 +42,7 @@ public class ViewPager extends android.support.v4.view.ViewPager {
 
     /**
      * Set current item and return whether the item changed
-     * <p/>
+     * <p>
      * This method does not call {@link #setCurrentItem(int)} unless the item
      * parameter differs from the current item
      *
@@ -59,7 +59,7 @@ public class ViewPager extends android.support.v4.view.ViewPager {
     /**
      * Set current item, invoke the listener if changes, and return whether the
      * item changed
-     * <p/>
+     * <p>
      * This method does not call {@link #setCurrentItem(int)} unless the item
      * parameter differs from the current item
      *
