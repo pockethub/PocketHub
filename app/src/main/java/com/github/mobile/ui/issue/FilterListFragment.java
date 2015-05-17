@@ -7,11 +7,12 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.github.kevinsawicki.wishlist.AsyncLoader;
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R;
 import com.github.mobile.core.issue.IssueFilter;
 import com.github.mobile.persistence.AccountDataManager;
+import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
+import com.github.mobile.ui.ItemView;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
@@ -72,10 +73,10 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> implements
     }
 
     @Override
-    protected SingleTypeAdapter<IssueFilter> createAdapter(
-            List<IssueFilter> items) {
-        return new FilterListAdapter(getActivity().getLayoutInflater(),
-                items.toArray(new IssueFilter[items.size()]), avatars);
+    protected ItemListAdapter<IssueFilter, ? extends ItemView> createAdapter(
+        List<IssueFilter> items) {
+        return new FilterListAdapter(getActivity().getLayoutInflater(), items,
+            avatars);
     }
 
     @Override

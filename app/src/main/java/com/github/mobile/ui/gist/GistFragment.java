@@ -392,8 +392,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     }
 
     private void updateList(Gist gist, List<Comment> comments) {
-        adapter.getWrappedAdapter().setItems(
-                comments.toArray(new Comment[comments.size()]));
+        adapter.getWrappedAdapter().setItems(comments);
         adapter.removeHeader(loadingView);
 
         headerView.setVisibility(VISIBLE);

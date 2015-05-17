@@ -22,12 +22,13 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R;
 import com.github.mobile.ThrowableLoader;
 import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.core.user.RefreshUserTask;
+import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.ItemListFragment;
+import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.user.UserViewActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
@@ -84,9 +85,9 @@ public class RepositoryContributorsFragment extends ItemListFragment<Contributor
     }
 
     @Override
-    protected SingleTypeAdapter<Contributor> createAdapter(List<Contributor> items) {
+    protected ItemListAdapter<Contributor, ? extends ItemView> createAdapter(List<Contributor> items) {
         return new ContributorListAdapter(getActivity(),
-                items.toArray(new Contributor[items.size()]), avatars);
+                items, avatars);
     }
 
     @Override

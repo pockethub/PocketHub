@@ -1,6 +1,4 @@
 /*
- * Copyright 2012 GitHub Inc.
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,9 +21,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R;
 import com.github.mobile.core.gist.GistStore;
+import com.github.mobile.ui.ItemListAdapter;
+import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.PagedItemFragment;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
@@ -107,7 +106,9 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
     }
 
     @Override
-    protected SingleTypeAdapter<Gist> createAdapter(List<Gist> items) {
-        return new GistListAdapter(avatars, getActivity(), items);
+    protected ItemListAdapter<Gist, ? extends ItemView> createAdapter(
+        List<Gist> items) {
+        return new GistListAdapter(avatars, getActivity().getLayoutInflater(),
+            items);
     }
 }

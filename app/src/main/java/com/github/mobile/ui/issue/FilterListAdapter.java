@@ -15,16 +15,18 @@
  */
 package com.github.mobile.ui.issue;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import android.view.LayoutInflater;
-import android.widget.TextView;
+import android.view.View;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R;
 import com.github.mobile.core.issue.IssueFilter;
+import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.util.AvatarLoader;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.Milestone;
@@ -33,7 +35,7 @@ import org.eclipse.egit.github.core.User;
 /**
  * Adapter to display a list of {@link IssueFilter} objects
  */
-public class FilterListAdapter extends SingleTypeAdapter<IssueFilter> {
+public class FilterListAdapter extends ItemListAdapter<IssueFilter, FilterItemView> {
 
     private final AvatarLoader avatars;
 
@@ -44,49 +46,58 @@ public class FilterListAdapter extends SingleTypeAdapter<IssueFilter> {
      * @param elements
      * @param avatars
      */
-    public FilterListAdapter(LayoutInflater inflater, IssueFilter[] elements,
-            AvatarLoader avatars) {
-        super(inflater, R.layout.issues_filter_item);
+    public FilterListAdapter(LayoutInflater inflater,
+        List<IssueFilter> elements, AvatarLoader avatars) {
+        super(R.layout.issues_filter_item, inflater, elements);
 
         this.avatars = avatars;
-        setItems(elements);
+    }
+
+    /**
+     * Create {@link IssueFilter} list adapter
+     *
+     * @param inflater
+     * @param avatars
+     */
+    public FilterListAdapter(LayoutInflater inflater, AvatarLoader avatars) {
+        this(inflater, null, avatars);
     }
 
     @Override
-    protected int[] getChildViewIds() {
-        return new int[] { R.id.iv_avatar, R.id.tv_repo_name, R.id.tv_filter_state,
-                R.id.tv_filter_labels, R.id.tv_filter_milestone, R.id.ll_assignee,
-                R.id.tv_filter_assignee, R.id.iv_assignee_avatar };
-    }
-
-    @Override
-    protected void update(int position, IssueFilter filter) {
-        avatars.bind(imageView(0), filter.getRepository().getOwner());
-        setText(1, filter.getRepository().generateId());
+    protected void update(final int position, final FilterItemView view,
+        final IssueFilter filter) {
+        avatars.bind(view.avatarView, filter.getRepository().getOwner());
+        view.repoText.setText(filter.getRepository().generateId());
         if (filter.isOpen())
-            setText(2, R.string.open_issues);
+            view.stateText.setText(R.string.open_issues);
         else
-            setText(2, R.string.closed_issues);
+            view.stateText.setText(R.string.closed_issues);
 
         Collection<Label> labels = filter.getLabels();
         if (labels != null && !labels.isEmpty()) {
-            TextView labelsText = textView(3);
-            LabelDrawableSpan.setText(labelsText, labels);
-            ViewUtils.setGone(labelsText, false);
+            LabelDrawableSpan.setText(view.labelsText, labels);
+            view.labelsText.setVisibility(VISIBLE);
         } else
-            setGone(3, true);
+            view.labelsText.setVisibility(GONE);
 
         Milestone milestone = filter.getMilestone();
-        if (milestone != null)
-            ViewUtils.setGone(setText(4, milestone.getTitle()), false);
-        else
-            setGone(4, true);
+        if (milestone != null) {
+            view.milestoneText.setText(milestone.getTitle());
+            view.milestoneText.setVisibility(VISIBLE);
+        } else
+            view.milestoneText.setVisibility(GONE);
 
         User assignee = filter.getAssignee();
         if (assignee != null) {
-            avatars.bind(imageView(7), assignee);
-            ViewUtils.setGone(setText(6, assignee.getLogin()), false);
+            avatars.bind(view.assigneeAvatarView, assignee);
+            view.assigneeText.setText(assignee.getLogin());
+            view.assigneeArea.setVisibility(VISIBLE);
         } else
-            setGone(5, true);
+            view.assigneeArea.setVisibility(GONE);
+    }
+
+    @Override
+    protected FilterItemView createView(final View view) {
+        return new FilterItemView(view);
     }
 }

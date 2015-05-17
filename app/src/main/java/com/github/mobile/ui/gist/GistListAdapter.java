@@ -15,18 +15,17 @@
  */
 package com.github.mobile.ui.gist;
 
-import android.app.Activity;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R;
+import com.github.mobile.ui.ItemListAdapter;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
-import com.github.mobile.util.TypefaceUtils;
 
-import java.util.Collection;
+import java.text.NumberFormat;
+import java.util.List;
 
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.User;
@@ -34,7 +33,9 @@ import org.eclipse.egit.github.core.User;
 /**
  * Adapter to display a list of {@link Gist} objects
  */
-public class GistListAdapter extends SingleTypeAdapter<Gist> {
+public class GistListAdapter extends ItemListAdapter<Gist, GistView> {
+    private static final NumberFormat NUMBER_FORMAT = NumberFormat
+        .getIntegerInstance();
 
     private final AvatarLoader avatars;
 
@@ -42,12 +43,12 @@ public class GistListAdapter extends SingleTypeAdapter<Gist> {
 
     /**
      * @param avatars
-     * @param activity
+     * @param inflater
      * @param elements
      */
-    public GistListAdapter(AvatarLoader avatars, Activity activity,
-            Collection<Gist> elements) {
-        super(activity, R.layout.gist_item);
+    public GistListAdapter(AvatarLoader avatars, LayoutInflater inflater,
+        List<Gist> elements) {
+        super(R.layout.gist_item, inflater, elements);
 
         this.avatars = avatars;
         setItems(elements);
@@ -61,34 +62,18 @@ public class GistListAdapter extends SingleTypeAdapter<Gist> {
     }
 
     @Override
-    protected int[] getChildViewIds() {
-        return new int[] { R.id.tv_gist_id, R.id.tv_gist_title, R.id.tv_gist_author,
-                R.id.tv_gist_comments, R.id.tv_gist_files, R.id.iv_avatar };
-    }
-
-    @Override
-    protected View initialize(View view) {
-        view = super.initialize(view);
-
-        TypefaceUtils.setOcticons(
-                (TextView) view.findViewById(R.id.tv_comment_icon),
-                (TextView) view.findViewById(R.id.tv_file_icon));
-        anonymous = view.getResources().getString(R.string.anonymous);
-        return view;
-    }
-
-    @Override
-    protected void update(int position, Gist gist) {
-        setText(0, gist.getId());
+    protected void update(final int position, final GistView view,
+        final Gist gist) {
+        view.gistId.setText(gist.getId());
 
         String description = gist.getDescription();
         if (!TextUtils.isEmpty(description))
-            setText(1, description);
+            view.title.setText(description);
         else
-            setText(1, R.string.no_description_given);
+            view.title.setText(R.string.no_description_given);
 
         User user = gist.getUser();
-        avatars.bind(imageView(5), user);
+        avatars.bind(view.avatar, user);
 
         StyledText authorText = new StyledText();
         if (user != null)
@@ -97,9 +82,14 @@ public class GistListAdapter extends SingleTypeAdapter<Gist> {
             authorText.bold(anonymous);
         authorText.append(' ');
         authorText.append(gist.getCreatedAt());
-        setText(2, authorText);
+        view.author.setText(authorText);
 
-        setNumber(3, gist.getComments());
-        setNumber(4, gist.getFiles().size());
+        view.files.setText(NUMBER_FORMAT.format(gist.getFiles().size()));
+        view.comments.setText(NUMBER_FORMAT.format(gist.getComments()));
+    }
+
+    @Override
+    protected GistView createView(final View view) {
+        return new GistView(view);
     }
 }

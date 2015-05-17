@@ -21,10 +21,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R;
 import com.github.mobile.core.ResourcePager;
 import com.github.mobile.core.issue.IssueStore;
+import com.github.mobile.ui.ItemListAdapter;
+import com.github.mobile.ui.ItemView;
 import com.github.mobile.ui.PagedItemFragment;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
@@ -117,10 +118,9 @@ public class DashboardIssueFragment extends PagedItemFragment<RepositoryIssue> {
     }
 
     @Override
-    protected SingleTypeAdapter<RepositoryIssue> createAdapter(
-            List<RepositoryIssue> items) {
+    protected ItemListAdapter<RepositoryIssue, ? extends ItemView> createAdapter(
+        List<RepositoryIssue> items) {
         return new DashboardIssueListAdapter(avatars, getActivity()
-                .getLayoutInflater(), items.toArray(new RepositoryIssue[items
-                .size()]));
+            .getLayoutInflater(), items);
     }
 }
