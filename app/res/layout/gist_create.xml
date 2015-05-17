@@ -19,13 +19,13 @@
     android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:theme="@style/ToolbarStyle"
         android:layout_alignParentTop="true"
-        android:minHeight="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:id="@+id/toolbar" />
+        android:minHeight="?attr/actionBarSize"
+        app:theme="@style/ToolbarStyle" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -41,10 +41,12 @@
             <CheckBox
                 android:id="@+id/cb_public"
                 style="@style/SubtitleText"
+                android:layout_height="45dp"
                 android:layout_gravity="right"
                 android:paddingRight="10dp"
                 android:text="@string/make_public"
-                android:textColor="@color/text" />
+                android:textColor="@color/text"
+                android:theme="@style/Theme.GitHub.CheckBoxLight" />
 
             <View style="@style/Separator" />
 
