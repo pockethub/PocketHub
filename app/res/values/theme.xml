@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   Copyright 2012 GitHub Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,6 +48,12 @@
     <style name="ToolbarStyle">
         <item name="colorControlNormal">@android:color/white</item>
         <item name="colorControlHighlight">@color/ripple_material_dark</item>
+    </style>
+
+    <style name="Theme.GitHub.CheckBoxLight" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
     </style>
 
 </resources>
