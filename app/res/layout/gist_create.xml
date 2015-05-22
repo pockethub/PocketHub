@@ -46,7 +46,7 @@
                 android:paddingRight="10dp"
                 android:text="@string/make_public"
                 android:textColor="@color/text"
-                android:theme="@style/Theme.GitHub.CheckBoxLight" />
+                android:theme="@style/Theme.GitHub.Light" />
 
             <View style="@style/Separator" />
 

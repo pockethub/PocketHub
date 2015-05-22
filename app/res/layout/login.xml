@@ -84,7 +84,7 @@
                 android:singleLine="true"
                 android:text="@string/show_password"
                 android:textColor="@color/text"
-                android:theme="@style/Theme.GitHub.CheckBoxLight" />
+                android:theme="@style/Theme.GitHub.Light" />
 
         </LinearLayout>
     </ScrollView>
