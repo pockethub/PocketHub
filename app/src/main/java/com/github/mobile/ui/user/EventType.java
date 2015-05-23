@@ -6,9 +6,6 @@ import com.github.mobile.util.TypefaceUtils;
 import org.eclipse.egit.github.core.event.Event;
 import org.eclipse.egit.github.core.event.IssuesPayload;
 
-/**
- * Created by twer on 3/22/15.
- */
 public enum EventType {
     CommitCommentEvent {
         @Override
