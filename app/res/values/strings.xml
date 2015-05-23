@@ -289,6 +289,10 @@
     <string name="copy_hash">Copy hash</string>
     <string name="toast_msg_copied">Copied to clipboard</string>
 
+    <!-- issue events -->
+    <string name="event_mentioned" translatable="false">mentioned</string>
+    <string name="event_subscribed" translatable="false">subscribed</string>
+
     <!-- Navigation drawer strings -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
