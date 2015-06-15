@@ -3,4 +3,8 @@
     <dimen name="navigation_drawer_width">304dp</dimen>
     <dimen name="toolbar_top_padding">0dp</dimen>
     <dimen name="nav_drawer_header_height">152dp</dimen>
+
+    <dimen name="item_margin_8dps">8dp</dimen>
+    <dimen name="item_margin_24dps">24dp</dimen>
+    <dimen name="item_margin_16dps">16dp</dimen>
 </resources>
