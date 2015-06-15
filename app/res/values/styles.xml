@@ -21,8 +21,8 @@
     </style>
 
     <style name="AvatarActionBar">
-        <item name="android:layout_width">28dp</item>
-        <item name="android:layout_height">28dp</item>
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
     </style>
 
     <style name="AvatarXLarge">
@@ -36,8 +36,8 @@
     </style>
 
     <style name="AvatarMedium">
-        <item name="android:layout_width">24dp</item>
-        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_width">18dp</item>
+        <item name="android:layout_height">18dp</item>
     </style>
 
     <style name="AvatarSmall">
@@ -57,7 +57,7 @@
     </style>
 
     <style name="CommentListView" parent="ListView">
-        <item name="android:dividerHeight">5dp</item>
+        <item name="android:dividerHeight">4dp</item>
         <item name="android:divider">@null</item>
     </style>
 
@@ -97,19 +97,19 @@
     </style>
 
     <style name="ListIcon" parent="TextIcon">
-        <item name="android:textSize">14dp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="EventIcon" parent="TextIcon">
-        <item name="android:textSize">22dp</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="PrimaryIcon" parent="TextIcon">
-        <item name="android:textSize">28dp</item>
+        <item name="android:textSize">22sp</item>
     </style>
 
     <style name="TabIcon" parent="TextIcon">
-        <item name="android:textSize">20dp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="IssueNumber">
@@ -119,11 +119,11 @@
         <item name="android:gravity">right</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:paddingBottom">2dp</item>
-        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingLeft">4dp</item>
         <item name="android:paddingRight">2dp</item>
         <item name="android:paddingTop">2dp</item>
         <item name="android:singleLine">true</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/text</item>
     </style>
 
@@ -135,12 +135,12 @@
 
     <style name="Separator">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">2dp</item>
+        <item name="android:layout_height">1dp</item>
         <item name="android:background">@drawable/list_divider</item>
     </style>
 
     <style name="TitleText">
-        <item name="android:textSize">17sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:paddingBottom">2dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/text</item>
@@ -149,7 +149,7 @@
     </style>
 
     <style name="HeaderTitleText" parent="TitleText">
-        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingLeft">8dp</item>
         <item name="android:singleLine">true</item>
     </style>
 
@@ -179,16 +179,16 @@
     <style name="ListItem">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">10dp</item>
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
         <item name="android:background">@drawable/list_item_background</item>
     </style>
 
     <style name="ListItemTwoLines" parent="ListItem">
-        <item name="android:paddingTop">5dp</item>
-        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
     </style>
 
     <style name="HeaderListItem" parent="ListItem" />
@@ -201,10 +201,10 @@
     <style name="DropdownItem">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">10dp</item>
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
     </style>
 
     <style name="Spinner">

@@ -26,6 +26,7 @@
 
         <item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>
         <item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>
+        <item name="toolbarStyle">@style/toolbar</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowBackground">@color/background</item>
 
@@ -40,6 +41,14 @@
         <item name="android:indeterminateProgressStyle">@style/IndeterminateProgress</item>
     </style>
 
+    <style name="toolbar" parent="Widget.AppCompat.Toolbar">
+        <!--<item name="contentInsetStart">72dp</item>-->
+        <item name="subtitleTextAppearance">@style/SubtitleText</item>
+
+        <!--<item name="colorControlNormal">@android:color/white</item>-->
+        <!--<item name="colorControlHighlight">@color/ripple_material_dark</item>-->
+    </style>
+
     <style name="IndeterminateProgress" parent="@android:style/Widget.ProgressBar">
         <item name="android:indeterminateDrawable">@drawable/actionbar_spinner</item>
         <item name="android:minWidth">16dp</item>
@@ -48,6 +57,7 @@
     <style name="ToolbarStyle">
         <item name="colorControlNormal">@android:color/white</item>
         <item name="colorControlHighlight">@color/ripple_material_dark</item>
+        <item name="subtitleTextAppearance">@style/SubtitleText</item>
     </style>
 
     <style name="Theme.GitHub.CheckBoxLight" parent="@style/Theme.AppCompat.Light.NoActionBar">

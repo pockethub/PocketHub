@@ -22,17 +22,21 @@
         android:id="@+id/tv_repo_icon"
         style="@style/PrimaryIcon"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/item_margin_8dps"
+        android:layout_marginRight="28dp"
+        android:layout_marginTop="@dimen/item_margin_8dps"
+        android:layout_marginBottom="@dimen/item_margin_8dps" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/tv_repo_icon"
-        android:orientation="vertical"
-        android:paddingLeft="10dp" >
+        android:orientation="vertical">
 
         <include layout="@layout/repo_details" />
+
     </LinearLayout>
 
 </RelativeLayout>

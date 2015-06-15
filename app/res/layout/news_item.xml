@@ -22,7 +22,10 @@
         style="@style/AvatarLarge"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="@dimen/item_margin_8dps"
+        android:layout_marginRight="@dimen/item_margin_24dps"
+        android:layout_marginTop="@dimen/item_margin_8dps"
+        android:layout_marginBottom="@dimen/item_margin_8dps"
         android:contentDescription="@string/avatar" />
 
     <TextView
@@ -30,9 +33,9 @@
         style="@style/ListTitleText"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/iv_avatar"
-        android:paddingBottom="5dp"
-        android:textSize="15dp"
-        android:textStyle="normal" />
+        android:paddingBottom="4dp"
+        android:textStyle="normal"
+        android:gravity="top" />
 
     <TextView
         android:id="@+id/tv_event_details"
@@ -41,9 +44,8 @@
         android:layout_below="@+id/tv_event"
         android:lineSpacingExtra="3dp"
         android:maxLines="3"
-        android:paddingBottom="5dp"
+        android:paddingBottom="4dp"
         android:textColor="@color/text_news_details"
-        android:textSize="14dp"
         android:textStyle="normal" />
 
     <LinearLayout
@@ -61,7 +63,7 @@
         <TextView
             android:id="@+id/tv_event_date"
             style="@style/ListSubtitleText"
-            android:paddingLeft="5dp"
+            android:paddingLeft="4dp"
             android:singleLine="true" />
     </LinearLayout>
 

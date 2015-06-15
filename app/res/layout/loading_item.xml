@@ -23,12 +23,14 @@
         android:id="@+id/pb_loading"
         style="@style/Spinner"
         android:layout_width="32dp"
-        android:layout_height="32dp" />
+        android:layout_height="32dp"
+        android:layout_marginLeft="@dimen/item_margin_8dps"
+        android:layout_marginRight="@dimen/item_margin_24dps" />
 
     <TextView
         android:id="@+id/tv_loading"
         style="@style/ListSubtitleText"
-        android:paddingLeft="10dp"
+        android:paddingLeft="8dp"
         android:textSize="18sp" />
 
 </LinearLayout>
