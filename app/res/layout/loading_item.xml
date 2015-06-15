@@ -30,7 +30,6 @@
     <TextView
         android:id="@+id/tv_loading"
         style="@style/ListSubtitleText"
-        android:paddingLeft="8dp"
         android:textSize="18sp" />
 
 </LinearLayout>

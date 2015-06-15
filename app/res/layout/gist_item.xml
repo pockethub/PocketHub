@@ -79,7 +79,8 @@
         <TextView
             android:id="@+id/tv_gist_comments"
             style="@style/ListNumericSubtitleText"
-            android:paddingLeft="4dp" />
+            android:paddingLeft="4dp"
+            android:layout_marginRight="@dimen/item_margin_8dps" />
     </LinearLayout>
 
 </RelativeLayout>

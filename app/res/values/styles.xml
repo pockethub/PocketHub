@@ -36,8 +36,8 @@
     </style>
 
     <style name="AvatarMedium">
-        <item name="android:layout_width">18dp</item>
-        <item name="android:layout_height">18dp</item>
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">20dp</item>
     </style>
 
     <style name="AvatarSmall">
@@ -119,7 +119,7 @@
         <item name="android:gravity">right</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:paddingBottom">2dp</item>
-        <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingLeft">8dp</item>
         <item name="android:paddingRight">2dp</item>
         <item name="android:paddingTop">2dp</item>
         <item name="android:singleLine">true</item>
