@@ -30,6 +30,7 @@
         android:layout_alignTop="@id/ll_issue_number"
         android:layout_toRightOf="@id/ll_issue_number"
         android:paddingLeft="24dp"
+        android:paddingRight="@dimen/item_margin_8dps"
         android:singleLine="true" />
 
     <LinearLayout

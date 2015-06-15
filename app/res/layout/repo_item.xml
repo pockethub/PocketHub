@@ -63,7 +63,8 @@
         android:layout_toRightOf="@id/tv_repo_icon"
         android:orientation="vertical"
         android:paddingBottom="8dp"
-        android:paddingTop="8dp">
+        android:paddingTop="8dp"
+        android:paddingRight="@dimen/item_margin_8dps">
 
         <include layout="@layout/repo_details" />
     </LinearLayout>

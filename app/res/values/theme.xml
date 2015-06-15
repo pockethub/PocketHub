@@ -44,7 +44,6 @@
     <style name="toolbar" parent="Widget.AppCompat.Toolbar">
         <!--<item name="contentInsetStart">72dp</item>-->
         <item name="subtitleTextAppearance">@style/SubtitleText</item>
-
         <!--<item name="colorControlNormal">@android:color/white</item>-->
         <!--<item name="colorControlHighlight">@color/ripple_material_dark</item>-->
     </style>

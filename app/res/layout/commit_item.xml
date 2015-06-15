@@ -44,7 +44,8 @@
         android:layout_below="@id/tv_commit_id"
         android:ellipsize="end"
         android:maxLines="2"
-        android:singleLine="false" />
+        android:singleLine="false"
+        android:paddingRight="@dimen/item_margin_8dps"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -52,7 +53,8 @@
         android:layout_alignLeft="@id/tv_commit_message"
         android:layout_below="@id/tv_commit_message"
         android:gravity="center_vertical"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:paddingRight="@dimen/item_margin_8dps">
 
         <TextView
             android:id="@+id/tv_commit_author"
@@ -69,7 +71,7 @@
         <TextView
             android:id="@+id/tv_commit_comments"
             style="@style/ListNumericSubtitleText"
-            android:paddingLeft="5dp" />
+            android:paddingLeft="4dp" />
     </LinearLayout>
 
 </RelativeLayout>

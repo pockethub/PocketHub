@@ -94,6 +94,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:singleLine">true</item>
         <item name="android:textColor">@color/text_icon</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 
     <style name="ListIcon" parent="TextIcon">
@@ -105,7 +106,7 @@
     </style>
 
     <style name="PrimaryIcon" parent="TextIcon">
-        <item name="android:textSize">22sp</item>
+        <item name="android:textSize">24sp</item>
     </style>
 
     <style name="TabIcon" parent="TextIcon">

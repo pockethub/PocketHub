@@ -34,6 +34,7 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/iv_avatar"
         android:paddingBottom="4dp"
+        android:paddingRight="@dimen/item_margin_8dps"
         android:textStyle="normal"
         android:gravity="top" />
 
@@ -45,6 +46,7 @@
         android:lineSpacingExtra="3dp"
         android:maxLines="3"
         android:paddingBottom="4dp"
+        android:paddingRight="@dimen/item_margin_8dps"
         android:textColor="@color/text_news_details"
         android:textStyle="normal" />
 

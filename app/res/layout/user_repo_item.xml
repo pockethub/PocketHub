@@ -33,7 +33,8 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/tv_repo_icon"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingRight="@dimen/item_margin_8dps">
 
         <include layout="@layout/repo_details" />
 
