@@ -137,6 +137,28 @@
                     android:text="@string/none"
                     android:textColor="@color/text" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_date_label"
+                style="@style/HeaderTitleText"
+                android:paddingTop="15dp"
+                android:text="Date:" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/inset_background"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <DatePicker
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp"
+                    android:id="@+id/datePicker"
+                    android:layout_gravity="center_horizontal" />
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
