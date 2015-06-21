@@ -17,8 +17,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/ListItem"
     android:orientation="horizontal"
-    android:paddingBottom="5dp"
-    android:paddingTop="5dp" >
+    android:paddingBottom="4dp"
+    android:paddingTop="4dp">
 
     <TextView
         android:id="@+id/tv_commit_id"

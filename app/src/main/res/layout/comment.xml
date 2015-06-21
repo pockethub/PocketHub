@@ -19,8 +19,8 @@
     android:layout_width="match_parent"
     android:background="@drawable/inset_background"
     android:orientation="vertical"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp" >
+    android:paddingLeft="@dimen/item_margin_8dps"
+    android:paddingRight="@dimen/item_margin_8dps">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,7 +31,7 @@
 
         <ImageView
             android:id="@+id/iv_avatar"
-            style="@style/AvatarMedium"
+            style="@style/AvatarLarge"
             android:layout_weight=".10"
             android:contentDescription="@string/avatar" />
 
@@ -39,15 +39,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight=".70"
-            android:orientation="vertical"
-            android:paddingLeft="8dp" >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_comment_author"
                 style="@style/ListTitleText"
                 android:paddingBottom="0dp"
                 android:singleLine="true"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -68,10 +67,12 @@
         android:id="@+id/tv_comment_body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="10dp"
         android:textColor="@color/text"
         android:textColorLink="@color/text_link"
-        android:textSize="14dp" />
+        android:textSize="14sp" />
 
 </LinearLayout>

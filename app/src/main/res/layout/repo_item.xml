@@ -30,13 +30,13 @@
         android:layout_alignParentTop="true"
         android:background="@color/background"
         android:orientation="vertical"
-        android:paddingTop="10dp" >
+        android:paddingTop="8dp">
 
         <TextView
             android:id="@+id/tv_header"
             style="@style/ListSubtitleText"
-            android:paddingBottom="5dp"
-            android:paddingLeft="10dp"
+            android:paddingBottom="4dp"
+            android:paddingLeft="8dp"
             android:textColor="@color/text_recent" />
 
         <View
@@ -50,8 +50,10 @@
         style="@style/PrimaryIcon"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/ll_header"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginLeft="@dimen/item_margin_16dps"
+        android:layout_marginRight="28dp"
+        android:layout_marginTop="@dimen/item_margin_8dps"
+        android:layout_marginBottom="@dimen/item_margin_8dps" />
 
     <LinearLayout
         android:id="@+id/ll_details"
@@ -60,10 +62,9 @@
         android:layout_below="@id/ll_header"
         android:layout_toRightOf="@id/tv_repo_icon"
         android:orientation="vertical"
-        android:paddingBottom="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="10dp" >
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:paddingRight="@dimen/item_margin_8dps">
 
         <include layout="@layout/repo_details" />
     </LinearLayout>
@@ -71,10 +72,10 @@
     <View
         android:id="@+id/v_separator"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/ll_details"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="4dp"
         android:background="@drawable/list_divider" />
 
 </RelativeLayout>

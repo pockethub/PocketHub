@@ -20,18 +20,23 @@
     <TextView
         android:id="@+id/tv_file_icon"
         style="@style/PrimaryIcon"
+        android:textSize="20sp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:gravity="center_vertical"
+        android:layout_marginRight="@dimen/item_margin_24dps"
+        android:layout_marginLeft="@dimen/item_margin_8dps"
         android:text="@string/icon_file" />
 
     <TextView
         android:id="@+id/tv_file"
         style="@style/ListTitleText"
+        android:textStyle="italic"
         android:layout_width="match_parent"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/tv_file_icon"
         android:paddingBottom="0dp"
-        android:paddingLeft="10dp"
+        android:paddingLeft="8dp"
         android:singleLine="true" />
 
 </RelativeLayout>

@@ -15,14 +15,16 @@
   limitations under the License.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItem" >
+    style="@style/ListItem">
 
     <TextView
         android:id="@+id/tv_folder_icon"
         style="@style/EventIcon"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:text="@string/icon_folder" />
+        android:text="@string/icon_folder"
+        android:layout_marginLeft="@dimen/item_margin_8dps"
+        android:layout_marginRight="@dimen/item_margin_24dps" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,14 +32,15 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/tv_folder_icon"
         android:orientation="horizontal"
-        android:paddingLeft="10dp" >
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
 
         <TextView
             android:id="@+id/tv_folder"
             style="@style/ListTitleText"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:paddingRight="5dp" />
+            android:paddingRight="4dp" />
 
         <TextView
             android:id="@+id/tv_folders_icon"
@@ -47,19 +50,19 @@
         <TextView
             android:id="@+id/tv_folders"
             style="@style/ListNumericSubtitleText"
-            android:paddingLeft="5dp"
-            android:paddingRight="10dp" />
+            android:paddingLeft="4dp"
+            android:paddingRight="8dp" />
 
         <TextView
             android:id="@+id/tv_files_icon"
             style="@style/ListIcon"
-            android:paddingLeft="5dp"
+            android:paddingLeft="4dp"
             android:text="@string/icon_file" />
 
         <TextView
             android:id="@+id/tv_files"
             style="@style/ListNumericSubtitleText"
-            android:paddingLeft="5dp" />
+            android:paddingLeft="4dp" />
     </LinearLayout>
 
 </RelativeLayout>
