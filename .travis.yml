@@ -16,4 +16,4 @@ before_install:
   - if [ `uname -m` = x86_64 ]; then sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch > /dev/null; fi
 
 script:
-  - ./gradlew clean build
+  - ./gradlew build check
