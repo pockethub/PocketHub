@@ -23,15 +23,18 @@
         android:id="@+id/iv_avatar"
         style="@style/AvatarLarge"
         android:src="@drawable/gravatar_icon"
-        android:contentDescription="@string/avatar" />
+        android:contentDescription="@string/avatar"
+        android:layout_marginLeft="@dimen/item_margin_8dps"
+        android:layout_marginRight="@dimen/item_margin_16dps" />
 
     <TextView
         android:id="@+id/tv_login"
         style="@style/ListTitleText"
         android:layout_width="match_parent"
-        android:paddingLeft="10dp"
+        android:paddingLeft="8dp"
         android:paddingTop="4dp"
         android:singleLine="true"
-        android:textStyle="normal" />
+        android:textStyle="normal"
+        android:layout_gravity="center_vertical" />
 
 </LinearLayout>

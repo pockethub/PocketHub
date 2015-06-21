@@ -16,7 +16,7 @@
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/ListItem"
-    android:paddingLeft="0dp" >
+    android:paddingLeft="0dp">
 
     <include
         android:id="@+id/ll_issue_number"
@@ -29,7 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/ll_issue_number"
         android:layout_toRightOf="@id/ll_issue_number"
-        android:paddingLeft="10dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="@dimen/item_margin_8dps"
         android:singleLine="true" />
 
     <LinearLayout
@@ -41,7 +42,8 @@
         android:gravity="center_vertical"
         android:includeFontPadding="false"
         android:orientation="horizontal"
-        android:paddingLeft="10dp"
+        android:paddingLeft="@dimen/item_margin_24dps"
+        android:paddingRight="@dimen/item_margin_8dps"
         android:paddingTop="2dp" >
 
         <include layout="@layout/issue_details" />

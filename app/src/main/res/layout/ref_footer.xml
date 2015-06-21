@@ -30,7 +30,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:text="@string/icon_fork"
-        android:textColor="@color/actionbar_text" />
+        android:textColor="@color/actionbar_text"
+        android:layout_marginRight="@dimen/item_margin_24dps" />
 
     <TextView
         android:id="@+id/tv_branch"
@@ -39,6 +40,6 @@
         android:layout_toRightOf="@id/tv_branch_icon"
         android:paddingBottom="0dp"
         android:textColor="@color/actionbar_text"
-        android:textSize="15sp" />
+        android:textSize="14sp" />
 
 </RelativeLayout>

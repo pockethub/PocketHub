@@ -19,26 +19,25 @@
     android:layout_height="match_parent"
     android:background="@drawable/list_item_background"
     android:orientation="vertical"
-    android:paddingTop="5dp" >
+    android:paddingTop="5dp"
+    android:paddingRight="@dimen/item_margin_16dps"
+    android:paddingLeft="@dimen/item_margin_16dps">
 
     <TextView
         android:id="@+id/tv_gist_creation"
         style="@style/ListSubtitleText"
         android:layout_width="match_parent"
         android:gravity="center_vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         android:singleLine="true" />
 
     <TextView
         android:id="@+id/tv_gist_description"
         style="@style/ListTitleText"
+        android:textStyle="normal"
         android:layout_width="match_parent"
         android:autoLink="web"
-        android:paddingBottom="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="5dp"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
         android:textColorLink="@color/text_link" />
 
     <TextView
@@ -46,9 +45,7 @@
         style="@style/ListSubtitleText"
         android:layout_width="match_parent"
         android:gravity="center_vertical"
-        android:paddingBottom="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingBottom="4dp"
         android:singleLine="true" />
 
     <View style="@style/Separator" />
