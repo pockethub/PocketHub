@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_type">com.github</string>
+
+    <!--The values below are needed for running the app-->
+    <string name="github_client"></string>
+
+    <string name="github_secret"></string>
+
+    <string name="github_oauth"></string>
+
+    //The thing before the "://..." in github_oauth, used for identifying the intent call
+    <string name="github_oauth_scheme"></string>
+</resources>

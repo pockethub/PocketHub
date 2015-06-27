@@ -16,6 +16,7 @@ allprojects {
     repositories {
         maven { url "http://dl.bintray.com/populov/maven" }
         maven { url "https://repo.eclipse.org/content/groups/releases" }
+        maven { url "http://dl.bintray.com/alorma/maven"}
         jcenter()
     }
 }
