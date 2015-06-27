@@ -19,7 +19,6 @@
 
     <item
         android:id="@+id/m_login"
-        android:enabled="false"
         app:showAsAction="always"
         android:title="@string/log_in"/>
 

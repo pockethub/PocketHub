@@ -42,6 +42,8 @@ dependencies {
     compile ('com.google.inject.extensions:guice-assistedinject:3.0'){
         exclude group: 'com.google.inject'
     }
+
+    compile 'com.github.alorma:github-sdk:1.0.1@aar'
     compile 'com.viewpagerindicator:library:2.4.1@aar'
     compile 'com.squareup.okio:okio:1.1.0'
     compile 'com.squareup.retrofit:retrofit:1.9.0'

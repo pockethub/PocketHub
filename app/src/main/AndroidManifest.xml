@@ -24,11 +24,13 @@
         android:icon="@drawable/app_icon"
         android:label="@string/app_name"
         android:theme="@style/Theme.GitHub">
+
         <activity
             android:name=".ui.MainActivity"
             android:theme="@style/Theme.GitHub.NavigationDrawer"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -229,12 +231,17 @@
         <activity
             android:name=".accounts.LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:excludeFromRecents="true">
+            android:launchMode="singleInstance">
 
-            <!--
-                No intent-filter here! This activity is only ever launched by
-                someone who explicitly knows the class name
-            -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data android:scheme="@string/github_oauth_scheme" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+
         </activity>
         <activity
             android:name=".accounts.TwoFactorAuthActivity"
@@ -252,8 +259,8 @@
             android:excludeFromRecents="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.BROWSABLE" />
-				<category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
 
                 <data
                     android:host="github.com"
@@ -261,8 +268,8 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.BROWSABLE" />
-				<category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
 
                 <data
                     android:host="github.com"
@@ -270,8 +277,8 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.BROWSABLE" />
-				<category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
 
                 <data
                     android:host="gist.github.com"
@@ -279,8 +286,8 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.BROWSABLE" />
-				<category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
 
                 <data
                     android:host="gist.github.com"
@@ -366,6 +373,18 @@
             android:name=".ui.issue.IssueSearchSuggestionsProvider"
             android:authorities="com.github.search.suggest.recent.issues"
             android:exported="false" />
+
+        <meta-data
+            android:name="com.alorma.github.sdk.client"
+            android:value="@string/github_client"/>
+
+        <meta-data
+            android:name="com.alorma.github.sdk.secret"
+            android:value="@string/github_secret"/>
+
+        <meta-data
+            android:name="com.alorma.github.sdk.oauth"
+            android:value="@string/github_oauth"/>
     </application>
 
 </manifest>
