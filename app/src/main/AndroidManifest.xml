@@ -229,7 +229,8 @@
         <activity
             android:name=".accounts.LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:excludeFromRecents="true">
+            android:excludeFromRecents="true"
+            android:noHistory="true">
 
             <!--
                 No intent-filter here! This activity is only ever launched by

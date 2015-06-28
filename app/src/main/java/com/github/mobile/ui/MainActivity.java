@@ -3,10 +3,13 @@ package com.github.mobile.ui;
 import static com.github.mobile.ui.NavigationDrawerObject.TYPE_SEPERATOR;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.IntentCompat;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,6 +21,7 @@ import android.view.Window;
 
 import com.github.mobile.R;
 import com.github.mobile.accounts.AccountUtils;
+import com.github.mobile.accounts.LoginActivity;
 import com.github.mobile.core.user.UserComparator;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.gist.GistsPagerFragment;
@@ -38,6 +42,8 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
     LoaderManager.LoaderCallbacks<List<User>> {
 
     private static final String TAG = "MainActivity";
+    public static final String STRING_LOGGED_IN = "log";
+    public static boolean RESULT_LOG_IN = false;
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
@@ -53,6 +59,8 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
 
     private User org;
 
+    private SharedPreferences sp;
+
     @Inject
     private AvatarLoader avatars;
 
@@ -60,6 +68,14 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sp = getSharedPreferences(STRING_LOGGED_IN,0);
+        boolean result = sp.getBoolean(STRING_LOGGED_IN, false);
+        if (result) {
+            Intent in = new Intent(this, LoginActivity.class);
+            startActivity(in);
+        }
+
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
         getSupportLoaderManager().initLoader(0, null, this);
@@ -161,6 +177,17 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
             case 4:
                 fragment = new FilterListFragment();
                 break;
+            case 5:
+                RESULT_LOG_IN = true;
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putBoolean(STRING_LOGGED_IN, RESULT_LOG_IN);
+                editor.commit();
+                Intent in = new Intent(this, LoginActivity.class);
+                in.addFlags(IntentCompat.FLAG_ACTIVITY_CLEAR_TASK
+                        | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(in);
+                finish();
+                return;
             default:
                 fragment = new HomePagerFragment();
                 args.putSerializable("org", orgs.get(position - 6));

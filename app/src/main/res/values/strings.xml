@@ -96,6 +96,7 @@
 
     <string name="app_name">GitHub</string>
     <string name="home">Home</string>
+    <string name="log_out">Log Out</string>
     <string name="news">News</string>
     <string name="issues">Issues</string>
     <string name="gists">Gists</string>
