@@ -49,6 +49,7 @@ import com.github.mobile.ui.LightProgressDialog;
 import com.github.mobile.ui.MainActivity;
 import com.github.mobile.ui.roboactivities.RoboActionBarAccountAuthenticatorActivity;
 import com.google.inject.Inject;
+import com.squareup.okhttp.HttpUrl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +75,7 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity imp
      */
     public static final String PARAM_USERNAME = "username";
 
-    public static final String OAUTH_URL = "https://github.com/login/oauth/authorize";
+    public static final String OAUTH_HOST = "www.github.com";
 
     private static final String TAG = "LoginActivity";
 
@@ -195,15 +196,21 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity imp
 
     private void openLoginInBrowser(ApiClient client) {
         String initialScope = "user,public_repo,repo,delete_repo,notifications,gist";
-        final String url = String.format("%s?client_id=%s&scope=%s",
-                OAUTH_URL, client.getApiClient(), initialScope);
+        HttpUrl.Builder url = new HttpUrl.Builder()
+                .scheme("https")
+                .host(OAUTH_HOST)
+                .addPathSegment("login")
+                .addPathSegment("oauth")
+                .addPathSegment("authorize")
+                .addQueryParameter("client_id", client.getApiClient())
+                .addQueryParameter("scope", initialScope);
 
         final List<ResolveInfo> browserList = getBrowserList();
 
         final List<LabeledIntent> intentList = new ArrayList<>();
 
         for (final ResolveInfo resolveInfo : browserList) {
-            final Intent newIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            final Intent newIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url.build().toString()));
             newIntent.setComponent(new ComponentName(resolveInfo.activityInfo.packageName,
                     resolveInfo.activityInfo.name));
 
