@@ -21,19 +21,6 @@ android {
         warning 'MissingTranslation'
         abortOnError false
     }
-
-    sourceSets {
-        main {
-            java.srcDirs = ['src/main/java']
-            resources.srcDirs = ['src/main/java']
-            aidl.srcDirs = ['src/main/java']
-            renderscript.srcDirs = ['src/main/java']
-            res.srcDirs = ['res']
-            manifest.srcFile 'AndroidManifest.xml'
-            assets.srcDirs = ['assets']
-        }
-        androidTest.setRoot(project(':integration-tests').projectDir.absolutePath + "/src/main")
-    }
 }
 
 repositories {
