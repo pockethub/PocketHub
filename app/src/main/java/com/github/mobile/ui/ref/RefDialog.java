@@ -74,7 +74,7 @@ public class RefDialog {
             @Override
             public List<Reference> run(Account account) throws Exception {
                 List<Reference> allRefs = service.getReferences(repository);
-                Map<String, Reference> loadedRefs = new TreeMap<String, Reference>(
+                Map<String, Reference> loadedRefs = new TreeMap<>(
                         CASE_INSENSITIVE_ORDER);
                 for (Reference ref : allRefs)
                     if (RefUtils.isValid(ref))
@@ -118,7 +118,7 @@ public class RefDialog {
             return;
         }
 
-        final ArrayList<Reference> refList = new ArrayList<Reference>(
+        final ArrayList<Reference> refList = new ArrayList<>(
                 refs.values());
         int checked = -1;
         if (selectedRef != null) {

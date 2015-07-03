@@ -24,12 +24,16 @@ import com.github.mobile.util.HtmlUtils;
 import com.github.mobile.util.HttpImageGetter;
 import com.google.inject.Inject;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.IssueEvent;
 import org.eclipse.egit.github.core.service.IssueService;
 
 /**
@@ -82,13 +86,22 @@ public class RefreshIssueTask extends AuthenticatedUserTask<FullIssue> {
             comments = service.getComments(repositoryId, issueNumber);
         else
             comments = Collections.emptyList();
+
         for (Comment comment : comments) {
             String formatted = HtmlUtils.format(comment.getBodyHtml())
                     .toString();
             comment.setBodyHtml(formatted);
             commentImageGetter.encode(comment.getId(), formatted);
         }
-        return new FullIssue(issue, comments);
+
+        String[] repo = repositoryId.generateId().split("/");
+        Iterator<Collection<IssueEvent>> eventsIterator = service.pageIssueEvents(repo[0], repo[1], issueNumber).iterator();
+        List<IssueEvent> events = new ArrayList<>();
+
+        while (eventsIterator.hasNext())
+            events.addAll(eventsIterator.next());
+
+        return new FullIssue(issue, comments, events);
     }
 
     @Override

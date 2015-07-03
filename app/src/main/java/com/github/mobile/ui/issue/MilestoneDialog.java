@@ -83,7 +83,7 @@ public class MilestoneDialog {
 
             @Override
             public ArrayList<Milestone> run(Account account) throws Exception {
-                ArrayList<Milestone> milestones = new ArrayList<Milestone>();
+                ArrayList<Milestone> milestones = new ArrayList<>();
                 milestones
                         .addAll(service.getMilestones(repository, STATE_OPEN));
                 milestones.addAll(service.getMilestones(repository,

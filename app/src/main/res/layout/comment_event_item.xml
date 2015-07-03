@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/CommentListItem"
+    android:paddingBottom="5dp"
+    android:paddingTop="0dp" >
+
+    <include layout="@layout/comment_event" />
+
+</FrameLayout>

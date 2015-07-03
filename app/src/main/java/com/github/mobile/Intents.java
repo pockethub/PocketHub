@@ -122,6 +122,11 @@ public class Intents {
     public static final String EXTRA_IS_COLLABORATOR = INTENT_EXTRA_PREFIX + "IS_COLLABORATOR";
 
     /**
+     * Boolean value which indicates if a user is owner of the repo
+     */
+    public static final String EXTRA_IS_OWNER = INTENT_EXTRA_PREFIX + "IS_OWNER";
+
+    /**
      * Issue filter handle
      */
     public static final String EXTRA_ISSUE_FILTER = INTENT_EXTRA_PREFIX

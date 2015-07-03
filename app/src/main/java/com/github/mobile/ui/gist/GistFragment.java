@@ -119,12 +119,12 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     @Inject
     private AvatarLoader avatars;
 
-    private List<View> fileHeaders = new ArrayList<View>();
+    private List<View> fileHeaders = new ArrayList<>();
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         gistId = getArguments().getString(EXTRA_GIST_ID);
+        gist = store.getGist(gistId);
     }
 
     @Override
@@ -155,9 +155,12 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         progress = finder.find(R.id.pb_loading);
 
         Activity activity = getActivity();
-        adapter = new HeaderFooterListAdapter<CommentListAdapter>(list,
+        User user = gist.getUser();
+        String userName = null;
+        if(user != null) userName = user.getLogin();
+        adapter = new HeaderFooterListAdapter<>(list,
                 new CommentListAdapter(activity.getLayoutInflater(), null, avatars,
-                        imageGetter, editCommentListener, deleteCommentListener));
+                        imageGetter, editCommentListener, deleteCommentListener, userName, false, null));
         list.setAdapter(adapter);
     }
 
@@ -168,8 +171,6 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         list.setOnItemClickListener(this);
         adapter.addHeader(headerView);
         adapter.addFooter(footerView);
-
-        gist = store.getGist(gistId);
 
         if (gist != null) {
             updateHeader(gist);
@@ -233,8 +234,6 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-
         boolean owner = isOwner();
         if (!owner) {
             menu.removeItem(R.id.m_delete);
@@ -496,7 +495,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
             Bundle args = new Bundle();
             args.putSerializable(EXTRA_COMMENT, comment);
             ConfirmDialogFragment.show(
-                    (DialogFragmentActivity) getActivity(),
+                    getActivity(),
                     COMMENT_DELETE,
                     getActivity()
                             .getString(R.string.confirm_comment_delete_title),

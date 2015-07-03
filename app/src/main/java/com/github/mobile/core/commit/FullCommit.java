@@ -49,7 +49,7 @@ public class FullCommit extends ArrayList<CommitComment> implements
         this.commit = commit;
         List<CommitFile> rawFiles = commit.getFiles();
         if (rawFiles != null && !rawFiles.isEmpty()) {
-            files = new ArrayList<FullCommitFile>(rawFiles.size());
+            files = new ArrayList<>(rawFiles.size());
             for (CommitFile file : rawFiles)
                 files.add(new FullCommitFile(file));
         } else
@@ -70,7 +70,7 @@ public class FullCommit extends ArrayList<CommitComment> implements
         boolean hasComments = comments != null && !comments.isEmpty();
         boolean hasFiles = rawFiles != null && !rawFiles.isEmpty();
         if (hasFiles) {
-            files = new ArrayList<FullCommitFile>(rawFiles.size());
+            files = new ArrayList<>(rawFiles.size());
             if (hasComments) {
                 for (CommitFile file : rawFiles) {
                     Iterator<CommitComment> iterator = comments.iterator();

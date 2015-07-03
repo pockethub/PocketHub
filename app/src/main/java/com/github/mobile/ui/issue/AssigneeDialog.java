@@ -73,7 +73,7 @@ public class AssigneeDialog {
             @Override
             public List<User> run(Account account) throws Exception {
                 List<User> users = service.getCollaborators(repository);
-                Map<String, User> loadedCollaborators = new TreeMap<String, User>(
+                Map<String, User> loadedCollaborators = new TreeMap<>(
                         CASE_INSENSITIVE_ORDER);
                 for (User user : users)
                     loadedCollaborators.put(user.getLogin(), user);
@@ -116,7 +116,7 @@ public class AssigneeDialog {
             return;
         }
 
-        final ArrayList<User> users = new ArrayList<User>(
+        final ArrayList<User> users = new ArrayList<>(
                 collaborators.values());
         int checked = -1;
         if (selectedAssignee != null)

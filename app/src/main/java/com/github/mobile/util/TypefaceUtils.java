@@ -148,9 +148,39 @@ public class TypefaceUtils {
     public static final String ICON_CODE = "\uf010";
 
     /**
+     * Tag icon
+     */
+    public static final String ICON_TAG = "\uf015";
+
+    /**
      * Commit icon
      */
     public static final String ICON_COMMIT = "\uf01f";
+
+    /**
+     * Merge icon
+     */
+    public static final String ICON_MERGE = "\uf023";
+
+    /**
+     * Key icon
+     */
+    public static final String ICON_KEY = "\uf049";
+
+    /**
+     * Lock icon
+     */
+    public static final String ICON_LOCK = "\uf06a";
+
+    /**
+     * Milestone icon
+     */
+    public static final String ICON_MILESTONE = "\uf075";
+
+    /**
+     * Bookmark icon
+     */
+    public static final String ICON_BOOKMARK = "\uf07b";
 
     /**
      * Person icon

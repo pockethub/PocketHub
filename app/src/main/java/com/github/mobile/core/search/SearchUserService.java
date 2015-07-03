@@ -100,7 +100,7 @@ public class SearchUserService extends UserService {
 
         PagedRequest<SearchUser> request = createPagedRequest();
 
-        Map<String, String> params = new HashMap<String, String>(2, 1);
+        Map<String, String> params = new HashMap<>(2, 1);
         if (startPage > 0)
             params.put(PARAM_START_PAGE, Integer.toString(startPage));
         if (!params.isEmpty())

@@ -35,7 +35,7 @@ import org.eclipse.egit.github.core.service.PullRequestService;
  */
 public class IssueStore extends ItemStore {
 
-    private final Map<String, ItemReferences<RepositoryIssue>> repos = new HashMap<String, ItemReferences<RepositoryIssue>>();
+    private final Map<String, ItemReferences<RepositoryIssue>> repos = new HashMap<>();
 
     private final IssueService issueService;
 
@@ -137,7 +137,7 @@ public class IssueStore extends ItemStore {
             String repoId = repository.generateId();
             ItemReferences<RepositoryIssue> repoIssues = repos.get(repoId);
             if (repoIssues == null) {
-                repoIssues = new ItemReferences<RepositoryIssue>();
+                repoIssues = new ItemReferences<>();
                 repos.put(repoId, repoIssues);
             }
             RepositoryIssue repoIssue = createRepositoryIssue(issue);

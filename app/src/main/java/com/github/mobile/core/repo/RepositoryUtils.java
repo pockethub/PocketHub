@@ -51,7 +51,7 @@ public class RepositoryUtils {
         if (TextUtils.isEmpty(name))
             return false;
 
-        if ("about".equals(name) //
+        return !("about".equals(name) //
                 || "account".equals(name) //
                 || "admin".equals(name) //
                 || "api".equals(name) //
@@ -81,10 +81,7 @@ public class RepositoryUtils {
                 || "timeline".equals(name) //
                 || "training".equals(name) //
                 || "users".equals(name) //
-                || "watching".equals(name))
-            return false;
-        else
-            return true;
+                || "watching".equals(name));
     }
 
     /**
@@ -97,10 +94,6 @@ public class RepositoryUtils {
         if (TextUtils.isEmpty(name))
             return false;
 
-        if ("followers".equals(name) //
-                || "following".equals(name))
-            return false;
-        else
-            return true;
+        return !("followers".equals(name) || "following".equals(name));
     }
 }

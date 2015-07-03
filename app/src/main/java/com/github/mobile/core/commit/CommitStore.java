@@ -30,7 +30,7 @@ import org.eclipse.egit.github.core.service.CommitService;
  */
 public class CommitStore extends ItemStore {
 
-    private final Map<String, ItemReferences<RepositoryCommit>> commits = new HashMap<String, ItemReferences<RepositoryCommit>>();
+    private final Map<String, ItemReferences<RepositoryCommit>> commits = new HashMap<>();
 
     private final CommitService service;
 
@@ -81,7 +81,7 @@ public class CommitStore extends ItemStore {
             String repoId = repo.generateId();
             ItemReferences<RepositoryCommit> repoCommits = commits.get(repoId);
             if (repoCommits == null) {
-                repoCommits = new ItemReferences<RepositoryCommit>();
+                repoCommits = new ItemReferences<>();
                 commits.put(repoId, repoCommits);
             }
             repoCommits.put(commit.getSha(), commit);

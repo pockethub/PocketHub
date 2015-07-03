@@ -218,7 +218,6 @@ public class CommitDiffListFragment extends DialogFragment implements
         }
     }
 
-    @SuppressWarnings("deprecation")
     @SuppressLint("NewApi")
     private void copyHashToClipboard() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -390,7 +389,7 @@ public class CommitDiffListFragment extends DialogFragment implements
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        adapter = new HeaderFooterListAdapter<CommitFileListAdapter>(list,
+        adapter = new HeaderFooterListAdapter<>(list,
                 new CommitFileListAdapter(inflater, diffStyler, avatars,
                         commentImageGetter));
         adapter.addFooter(inflater.inflate(R.layout.footer_separator, null));

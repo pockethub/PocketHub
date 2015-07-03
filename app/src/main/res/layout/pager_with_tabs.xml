@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:theme="@style/ToolbarStyle"
+        android:layout_alignParentTop="true"
+        android:minHeight="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:id="@+id/toolbar" />
+
+    <com.github.mobile.ui.SlidingTabLayout
+        android:layout_below="@id/toolbar"
+        android:id="@+id/sliding_tabs_layout"
+        android:background="@color/primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.github.mobile.ui.ViewPager
+        android:id="@+id/vp_pages"
+        android:layout_below="@id/sliding_tabs_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_below="@id/sliding_tabs_layout"
+        android:background="@drawable/toolbar_shadow" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@style/ListSpinner"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+</RelativeLayout>
