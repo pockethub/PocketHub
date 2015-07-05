@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 /**
  * Base class for implementing an Activity that is used to help implement an
  * AbstractAccountAuthenticator. If the AbstractAccountAuthenticator needs to use an activity
- * to handle the request then it can have the activity extend ActionBarAccountAuthenticatorActivity.
+ * to handle the request then it can have the activity extend AppCompatAccountAuthenticatorActivity.
  * The AbstractAccountAuthenticator passes in the response to the intent using the following:
  * <pre>
  *      intent.putExtra({@link android.accounts.AccountManager#KEY_ACCOUNT_AUTHENTICATOR_RESPONSE}, response);
@@ -21,7 +21,7 @@ import android.support.v7.app.AppCompatActivity;
  *
  * Based on <a href="https://github.com/mccrajs">@mccrajs's</a> implementation <a href="https://github.com/rtyley/roboguice-sherlock/blob/master/src/main/java/com/github/rtyley/android/sherlock/android/accounts/SherlockAccountAuthenticatorActivity.java">here</a>.
  */
-public class ActionBarAccountAuthenticatorActivity extends AppCompatActivity {
+public class AppCompatAccountAuthenticatorActivity extends AppCompatActivity {
     private AccountAuthenticatorResponse mAccountAuthenticatorResponse = null;
     private Bundle mResultBundle = null;
 
