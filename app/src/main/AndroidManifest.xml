@@ -254,10 +254,12 @@
                 <action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.BROWSABLE" />
 				<category android:name="android.intent.category.DEFAULT" />
-
                 <data
                     android:host="github.com"
-                    android:scheme="http" />
+                    android:scheme="http"
+                    android:pathPrefix="/" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -266,7 +268,11 @@
 
                 <data
                     android:host="github.com"
-                    android:scheme="https" />
+                    android:scheme="https"
+                    android:pathPrefix="/" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -275,7 +281,11 @@
 
                 <data
                     android:host="gist.github.com"
-                    android:scheme="http" />
+                    android:scheme="http"
+                    android:pathPrefix="/" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -284,7 +294,11 @@
 
                 <data
                     android:host="gist.github.com"
-                    android:scheme="https" />
+                    android:scheme="https"
+                    android:pathPrefix="/" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
