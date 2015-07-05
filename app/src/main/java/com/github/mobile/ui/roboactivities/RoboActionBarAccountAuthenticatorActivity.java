@@ -32,7 +32,7 @@ import roboguice.util.RoboContext;
  *
  * @author Marcus Better
  */
-public class RoboActionBarAccountAuthenticatorActivity extends ActionBarAccountAuthenticatorActivity implements RoboContext {
+public class RoboActionBarAccountAuthenticatorActivity extends AppCompatAccountAuthenticatorActivity implements RoboContext {
     protected EventManager eventManager;
     protected HashMap<Key<?>, Object> scopedObjects = new HashMap<>();
 

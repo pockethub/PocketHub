@@ -167,7 +167,7 @@ public class AccountUtils {
     private static Account[] getPasswordAccessibleAccounts(
             final AccountManager manager, final Account[] candidates)
             throws AuthenticatorConflictException {
-        final List<Account> accessible = new ArrayList<Account>(
+        final List<Account> accessible = new ArrayList<>(
                 candidates.length);
         boolean exceptionThrown = false;
         for (Account account : candidates)
@@ -346,9 +346,7 @@ public class AccountUtils {
 
         if ("Received authentication challenge is null".equals(message))
             return true;
-        if ("No authentication challenges found".equals(message))
-            return true;
+        return "No authentication challenges found".equals(message);
 
-        return false;
     }
 }

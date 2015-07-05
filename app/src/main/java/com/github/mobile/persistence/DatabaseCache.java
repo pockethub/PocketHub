@@ -147,7 +147,7 @@ public class DatabaseCache {
             if (!cursor.moveToFirst())
                 return null;
 
-            List<E> cached = new ArrayList<E>();
+            List<E> cached = new ArrayList<>();
             do
                 cached.add(persistableResource.loadFrom(cursor));
             while (cursor.moveToNext());

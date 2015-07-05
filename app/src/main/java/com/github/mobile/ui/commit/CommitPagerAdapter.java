@@ -15,15 +15,16 @@
  */
 package com.github.mobile.ui.commit;
 
-import static com.github.mobile.Intents.EXTRA_BASE;
-import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.FragmentActivity;
 
 import com.github.mobile.ui.FragmentStatePagerAdapter;
 
 import org.eclipse.egit.github.core.Repository;
+
+import static com.github.mobile.Intents.EXTRA_BASE;
+import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 
 /**
  * Pager over commits
@@ -39,7 +40,7 @@ public class CommitPagerAdapter extends FragmentStatePagerAdapter {
      * @param repository
      * @param ids
      */
-    public CommitPagerAdapter(ActionBarActivity activity,
+    public CommitPagerAdapter(FragmentActivity activity,
             Repository repository, CharSequence[] ids) {
         super(activity);
 

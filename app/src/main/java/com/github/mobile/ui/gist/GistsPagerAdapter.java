@@ -15,14 +15,15 @@
  */
 package com.github.mobile.ui.gist;
 
-import static com.github.mobile.Intents.EXTRA_GIST_ID;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.FragmentActivity;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
 import com.github.mobile.ui.FragmentStatePagerAdapter;
+
+import static com.github.mobile.Intents.EXTRA_GIST_ID;
 
 /**
  * Adapter to page through an array of Gists
@@ -31,13 +32,13 @@ public class GistsPagerAdapter extends FragmentStatePagerAdapter {
 
     private final String[] ids;
 
-    private final SparseArray<GistFragment> fragments = new SparseArray<GistFragment>();
+    private final SparseArray<GistFragment> fragments = new SparseArray<>();
 
     /**
      * @param activity
      * @param gistIds
      */
-    public GistsPagerAdapter(ActionBarActivity activity, String[] gistIds) {
+    public GistsPagerAdapter(FragmentActivity activity, String[] gistIds) {
         super(activity);
 
         this.ids = gistIds;

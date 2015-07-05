@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_drawer_header"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/nav_drawer_header_height">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/navigation_drawer_header_background" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/toolbar_top_padding"
+        android:layout_margin="16dp"
+        android:paddingBottom="8dp"
+        android:orientation="vertical"
+        android:layout_gravity="bottom"
+        >
+
+        <ImageView
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:id="@+id/user_picture"
+            android:contentDescription="user_avatar"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_real_name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="#DEDEDE"
+            android:layout_marginTop="16dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="#DEDEDE"
+            android:layout_marginTop="16dp"
+            />
+
+    </LinearLayout>
+
+</FrameLayout>

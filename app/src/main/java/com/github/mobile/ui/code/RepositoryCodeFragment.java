@@ -149,7 +149,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
                 else {
                     // Look for current folder in new tree or else reset to root
                     Folder current = folder;
-                    LinkedList<Folder> stack = new LinkedList<Folder>();
+                    LinkedList<Folder> stack = new LinkedList<>();
                     while (current != null && current.parent != null) {
                         stack.addFirst(current);
                         current = current.parent;
@@ -216,7 +216,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
         listView.setOnItemClickListener(this);
 
         Activity activity = getActivity();
-        adapter = new HeaderFooterListAdapter<CodeTreeAdapter>(listView,
+        adapter = new HeaderFooterListAdapter<>(listView,
                 new CodeTreeAdapter(activity));
 
         branchFooterView = finder.find(R.id.rl_branch);

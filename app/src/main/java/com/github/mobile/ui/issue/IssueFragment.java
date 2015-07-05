@@ -41,6 +41,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -103,8 +104,6 @@ public class IssueFragment extends DialogFragment {
     private int issueNumber;
 
     private List<Comment> comments;
-
-    private List<IssueEvent> events;
 
     private List<Object> items;
 
@@ -466,27 +465,30 @@ public class IssueFragment extends DialogFragment {
 
                 issue = fullIssue.getIssue();
                 comments = fullIssue;
-                events = (List<IssueEvent>) fullIssue.getEvents();
+
+                List<IssueEvent> events = (List<IssueEvent>) fullIssue.getEvents();
+                int numEvents = events.size();
+
                 List<Object> allItems = new ArrayList<>();
 
                 int start = 0;
-                for (Comment comment : comments) {
-                    for(int e = start; e < events.size(); e++) {
+                for (Comment comment : fullIssue) {
+                    for (int e = start; e < numEvents; e++) {
                         IssueEvent event = events.get(e);
                         if (comment.getCreatedAt().after(event.getCreatedAt())) {
-                            if(event.getEvent().equals("closed") || event.getEvent().equals("reopened") || event.getEvent().equals("merged"))
-                                allItems.add(event);
+                            allItems.add(event);
                             start++;
+                        } else {
+                            e = events.size();
                         }
                     }
                     allItems.add(comment);
                 }
 
-                //Adding the last events or if there are no comments
+                // Adding the last events or if there are no comments
                 for(int e = start; e < events.size(); e++) {
                     IssueEvent event = events.get(e);
-                    if(event.getEvent().equals("closed") || event.getEvent().equals("reopened") || event.getEvent().equals("merged"))
-                        allItems.add(event);
+                    allItems.add(event);
                 }
 
                 items = allItems;
@@ -536,7 +538,6 @@ public class IssueFragment extends DialogFragment {
                 @Override
                 protected void onSuccess(Comment comment) throws Exception {
                     super.onSuccess(comment);
-
                     // Update comment list
                     if (comments != null && comment != null) {
                         int position = Collections.binarySearch(comments,
@@ -557,13 +558,15 @@ public class IssueFragment extends DialogFragment {
     }
 
     private void updateStateItem(Issue issue) {
-        if (issue != null && stateItem != null)
-            if (STATE_OPEN.equals(issue.getState()))
-                stateItem.setTitle(R.string.close).setIcon(
-                        R.drawable.menu_issue_close);
-            else
-                stateItem.setTitle(R.string.reopen).setIcon(
-                        R.drawable.menu_issue_open);
+        if (issue != null && stateItem != null) {
+            if (STATE_OPEN.equals(issue.getState())) {
+                stateItem.setTitle(R.string.close);
+                stateItem.setIcon(R.drawable.ic_github_issue_closed_white_24dp);
+            } else {
+                stateItem.setTitle(R.string.reopen);
+                stateItem.setIcon(R.drawable.ic_github_issue_reopened_white_24dp);
+            }
+        }
     }
 
     @Override
@@ -602,8 +605,8 @@ public class IssueFragment extends DialogFragment {
         case COMMENT_CREATE:
             Comment comment = (Comment) data
                     .getSerializableExtra(EXTRA_COMMENT);
-            if (comments != null) {
-                comments.add(comment);
+            if (items != null) {
+                items.add(comment);
                 issue.setComments(issue.getComments() + 1);
                 updateList(issue, items);
             } else
@@ -623,7 +626,6 @@ public class IssueFragment extends DialogFragment {
                 updateList(issue, items);
             } else
                 refreshIssue();
-            return;
         }
     }
 
@@ -699,7 +701,7 @@ public class IssueFragment extends DialogFragment {
             Bundle args = new Bundle();
             args.putSerializable(EXTRA_COMMENT, comment);
             ConfirmDialogFragment.show(
-                    (DialogFragmentActivity) getActivity(),
+                    getActivity(),
                     COMMENT_DELETE,
                     getActivity()
                             .getString(R.string.confirm_comment_delete_title),

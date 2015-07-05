@@ -159,7 +159,7 @@ public class OrganizationRepositories implements
     @Override
     public List<Repository> request() throws IOException {
         if (isAuthenticatedUser()) {
-            Set<Repository> all = new TreeSet<Repository>(
+            Set<Repository> all = new TreeSet<>(
                     new Comparator<Repository>() {
 
                         @Override
@@ -176,7 +176,7 @@ public class OrganizationRepositories implements
                     });
             all.addAll(repos.getRepositories());
             all.addAll(watcher.getWatched());
-            return new ArrayList<Repository>(all);
+            return new ArrayList<>(all);
         } else
             return repos.getOrgRepositories(org.getLogin());
     }

@@ -96,7 +96,7 @@ public class SearchIssueListFragment extends ItemListFragment<SearchIssue>
             public List<SearchIssue> loadData() throws Exception {
                 if (repository == null)
                     return Collections.emptyList();
-                List<SearchIssue> matches = new ArrayList<SearchIssue>();
+                List<SearchIssue> matches = new ArrayList<>();
                 /** TODO
                  *  This request is using a legacy API that is not working properly
                  *  it needs to be fixed

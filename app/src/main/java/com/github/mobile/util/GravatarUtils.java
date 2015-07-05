@@ -77,8 +77,7 @@ public class GravatarUtils {
 
         char[] zeros = new char[padding];
         Arrays.fill(zeros, '0');
-        return new StringBuilder(HASH_LENGTH).append(zeros).append(hashed)
-                .toString();
+        return String.valueOf(zeros) + hashed;
     }
 
     /**
