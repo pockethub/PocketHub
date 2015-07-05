@@ -16,9 +16,9 @@
 package com.github.mobile.ui;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
 import android.view.ViewGroup;
 
 import java.util.HashSet;
@@ -30,7 +30,7 @@ import java.util.Set;
 public abstract class FragmentPagerAdapter extends
     android.support.v4.app.FragmentPagerAdapter implements FragmentProvider {
 
-    private final ActionBarActivity activity;
+    private final FragmentActivity activity;
 
     private final FragmentManager fragmentManager;
 
@@ -41,7 +41,7 @@ public abstract class FragmentPagerAdapter extends
     /**
      * @param activity
      */
-    public FragmentPagerAdapter(ActionBarActivity activity) {
+    public FragmentPagerAdapter(FragmentActivity activity) {
         super(activity.getSupportFragmentManager());
 
         fragmentManager = activity.getSupportFragmentManager();
@@ -52,7 +52,7 @@ public abstract class FragmentPagerAdapter extends
         super(fragment.getChildFragmentManager());
 
         fragmentManager = fragment.getChildFragmentManager();
-        this.activity = (ActionBarActivity) fragment.getActivity();
+        this.activity = fragment.getActivity();
     }
 
     public boolean isEmpty() {

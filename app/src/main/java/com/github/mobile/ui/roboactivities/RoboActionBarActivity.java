@@ -3,7 +3,7 @@ package com.github.mobile.ui.roboactivities;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import com.google.inject.Key;
 
@@ -31,7 +31,7 @@ import roboguice.util.RoboContext;
  * <p>
  * Based on <a href="https://github.com/mccrajs">@mccrajs's</a> implementation <a href="https://github.com/metova/roboguice-appcompat/blob/master/src/com/metova/roboguice/appcompat/RoboActionBarActivity.java">here</a>.
  */
-public class RoboActionBarActivity extends ActionBarActivity implements RoboContext {
+public class RoboActionBarActivity extends AppCompatActivity implements RoboContext {
 
     protected EventManager eventManager;
     protected HashMap<Key<?>, Object> scopedObjects = new HashMap<>();

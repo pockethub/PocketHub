@@ -15,28 +15,29 @@
  */
 package com.github.mobile.ui.issue;
 
-import static com.github.mobile.Intents.EXTRA_ISSUE_NUMBER;
-import static com.github.mobile.Intents.EXTRA_IS_COLLABORATOR;
-import static com.github.mobile.Intents.EXTRA_IS_OWNER;
-import static com.github.mobile.Intents.EXTRA_REPOSITORY_NAME;
-import static com.github.mobile.Intents.EXTRA_REPOSITORY_OWNER;
-import static com.github.mobile.Intents.EXTRA_USER;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.FragmentActivity;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
 import com.github.mobile.core.issue.IssueStore;
 import com.github.mobile.ui.FragmentStatePagerAdapter;
 
-import java.util.List;
-
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.RepositoryIssue;
 import org.eclipse.egit.github.core.User;
+
+import java.util.List;
+
+import static com.github.mobile.Intents.EXTRA_ISSUE_NUMBER;
+import static com.github.mobile.Intents.EXTRA_IS_COLLABORATOR;
+import static com.github.mobile.Intents.EXTRA_IS_OWNER;
+import static com.github.mobile.Intents.EXTRA_REPOSITORY_NAME;
+import static com.github.mobile.Intents.EXTRA_REPOSITORY_OWNER;
+import static com.github.mobile.Intents.EXTRA_USER;
 
 /**
  * Adapter to page through an {@link Issue} array
@@ -64,7 +65,7 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
      * @param issueStore
      * @param collaborator
      */
-    public IssuesPagerAdapter(ActionBarActivity activity,
+    public IssuesPagerAdapter(FragmentActivity activity,
             List<RepositoryId> repoIds, int[] issueNumbers,
             IssueStore issueStore, boolean collaborator, boolean owner) {
         super(activity);
@@ -83,7 +84,7 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
      * @param issueNumbers
      * @param collaborator
      */
-    public IssuesPagerAdapter(ActionBarActivity activity,
+    public IssuesPagerAdapter(FragmentActivity activity,
             Repository repository, int[] issueNumbers,
             boolean collaborator, boolean owner) {
         super(activity);

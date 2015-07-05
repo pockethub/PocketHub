@@ -15,17 +15,18 @@
  */
 package com.github.mobile.ui.gist;
 
-import static com.github.mobile.Intents.EXTRA_GIST_FILE;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.FragmentActivity;
 
 import com.github.mobile.ui.FragmentPagerAdapter;
 
-import java.util.Map;
-
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.GistFile;
+
+import java.util.Map;
+
+import static com.github.mobile.Intents.EXTRA_GIST_FILE;
 
 /**
  * Pager adapter for all the files in a given gist
@@ -38,7 +39,7 @@ public class GistFilesPagerAdapter extends FragmentPagerAdapter {
      * @param activity
      * @param gist
      */
-    public GistFilesPagerAdapter(ActionBarActivity activity, Gist gist) {
+    public GistFilesPagerAdapter(FragmentActivity activity, Gist gist) {
         super(activity);
 
         Map<String, GistFile> gistFiles = gist.getFiles();
