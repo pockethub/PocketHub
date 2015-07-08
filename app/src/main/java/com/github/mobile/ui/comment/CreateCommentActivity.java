@@ -15,12 +15,8 @@
  */
 package com.github.mobile.ui.comment;
 
-import static com.github.mobile.Intents.EXTRA_COMMENT;
-import static com.github.mobile.util.TypefaceUtils.ICON_EDIT;
-import static com.github.mobile.util.TypefaceUtils.ICON_WATCH;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +27,10 @@ import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Comment;
+
+import static com.github.mobile.Intents.EXTRA_COMMENT;
+import static com.github.mobile.util.TypefaceUtils.ICON_EDIT;
+import static com.github.mobile.util.TypefaceUtils.ICON_WATCH;
 
 /**
  * Base activity for creating comments
@@ -53,20 +53,12 @@ public abstract class CreateCommentActivity extends
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         configureTabPager();
-        slidingTabsLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
+    }
 
-            @Override
-            public void onPageSelected(int position) {
-                adapter.setCurrentItem(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
+    @Override
+    public void onPageSelected(int position) {
+        super.onPageSelected(position);
+        adapter.setCurrentItem(position);
     }
 
     @Override
