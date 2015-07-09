@@ -45,7 +45,7 @@ import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.mobile.R;
 import com.github.mobile.ui.LightProgressDialog;
 import com.github.mobile.ui.TextWatcherAdapter;
-import com.github.mobile.ui.roboactivities.RoboActionBarActivity;
+import com.github.mobile.ui.roboactivities.RoboAppCompatActivity;
 
 import java.io.IOException;
 
@@ -58,7 +58,7 @@ import roboguice.util.RoboAsyncTask;
 /**
  * Activity to enter two-factor authentication OTP code
  */
-public class TwoFactorAuthActivity extends RoboActionBarActivity {
+public class TwoFactorAuthActivity extends RoboAppCompatActivity {
 
     /**
      * Create intent to enter two-factor authentication code

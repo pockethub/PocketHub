@@ -66,7 +66,7 @@ import com.github.mobile.R;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.LightProgressDialog;
 import com.github.mobile.ui.TextWatcherAdapter;
-import com.github.mobile.ui.roboactivities.RoboActionBarAccountAuthenticatorActivity;
+import com.github.mobile.ui.roboactivities.RoboAppCompatAccountAuthenticatorActivity;
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 
@@ -84,7 +84,7 @@ import roboguice.util.RoboAsyncTask;
 /**
  * Activity to login
  */
-public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
+public class LoginActivity extends RoboAppCompatAccountAuthenticatorActivity {
 
     /**
      * Auth token type parameter
