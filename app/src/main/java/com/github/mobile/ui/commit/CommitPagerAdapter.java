@@ -48,9 +48,9 @@ public class CommitPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override
-    public Fragment getItem(final int item) {
+    public Fragment getItem(final int position) {
         Bundle arguments = new Bundle();
-        arguments.putString(EXTRA_BASE, ids[item].toString());
+        arguments.putString(EXTRA_BASE, ids[position].toString());
         arguments.putSerializable(EXTRA_REPOSITORY, repository);
         CommitDiffListFragment fragment = new CommitDiffListFragment();
         fragment.setArguments(arguments);
