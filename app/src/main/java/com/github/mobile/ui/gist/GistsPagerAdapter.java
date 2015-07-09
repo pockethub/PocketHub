@@ -18,7 +18,7 @@ package com.github.mobile.ui.gist;
 import static com.github.mobile.Intents.EXTRA_GIST_ID;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.FragmentActivity;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
@@ -37,7 +37,7 @@ public class GistsPagerAdapter extends FragmentStatePagerAdapter {
      * @param activity
      * @param gistIds
      */
-    public GistsPagerAdapter(ActionBarActivity activity, String[] gistIds) {
+    public GistsPagerAdapter(FragmentActivity activity, String[] gistIds) {
         super(activity);
 
         this.ids = gistIds;
