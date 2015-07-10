@@ -215,5 +215,20 @@
     <string name="comparing_commits">{0} commit összehasonlítása</string>
     <string name="enable_wrapping">Sortörés engedélyezése</string>
     <string name="disable_wrapping">Sortörés tiltása</string>
+    <string name="home">Főoldal</string>
+    <string name="username_or_email">Felhasynálónév vagy E-mail cím</string>
+    <string name="tab_news">Hírek</string>
+    <string name="tab_repositories">Tárolók</string>
+    <string name="tab_users">Felhasználók</string>
+    <string name="tab_followers">Követők</string>
+    <string name="tab_code">Kód</string>
+    <string name="tab_all">Minden</string>
+    <string name="tab_starred">Csillagozottak</string>
+    <string name="tab_members">Tagok</string>
+    <string name="follow">Követés</string>
+    <string name="following_user">Követett felhasználók</string>
+    <string name="are_you_sure">Teljesen biztos vagy benne?</string>
+    <string name="code">Kód</string>
+    <string name="copy_hash">Hash másolása</string>
 
 </resources>
