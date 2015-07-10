@@ -76,7 +76,7 @@ public class LabelsDialog {
             @Override
             public List<Label> run(Account account) throws Exception {
                 List<Label> repositoryLabels = service.getLabels(repository);
-                Map<String, Label> loadedLabels = new TreeMap<String, Label>(
+                Map<String, Label> loadedLabels = new TreeMap<>(
                         CASE_INSENSITIVE_ORDER);
                 for (Label label : repositoryLabels)
                     loadedLabels.put(label.getName(), label);
@@ -119,10 +119,10 @@ public class LabelsDialog {
             return;
         }
 
-        final ArrayList<Label> names = new ArrayList<Label>(labels.values());
+        final ArrayList<Label> names = new ArrayList<>(labels.values());
         final boolean[] checked = new boolean[names.size()];
         if (selectedLabels != null && !selectedLabels.isEmpty()) {
-            Set<String> selectedNames = new HashSet<String>();
+            Set<String> selectedNames = new HashSet<>();
             for (Label label : selectedLabels)
                 selectedNames.add(label.getName());
             for (int i = 0; i < checked.length; i++)

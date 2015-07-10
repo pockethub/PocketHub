@@ -32,7 +32,7 @@ import org.eclipse.egit.github.core.service.GistService;
  */
 public class GistStore extends ItemStore {
 
-    private final ItemReferences<Gist> gists = new ItemReferences<Gist>();
+    private final ItemReferences<Gist> gists = new ItemReferences<>();
 
     private final GistService service;
 
@@ -66,7 +66,7 @@ public class GistStore extends ItemStore {
         if (files == null || files.size() < 2)
             return files;
 
-        Map<String, GistFile> sorted = new TreeMap<String, GistFile>(
+        Map<String, GistFile> sorted = new TreeMap<>(
                 CASE_INSENSITIVE_ORDER);
         sorted.putAll(files);
         return sorted;

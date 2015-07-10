@@ -232,7 +232,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      */
     protected HeaderFooterListAdapter<SingleTypeAdapter<E>> createAdapter() {
         SingleTypeAdapter<E> wrapped = createAdapter(items);
-        return new HeaderFooterListAdapter<SingleTypeAdapter<E>>(getListView(),
+        return new HeaderFooterListAdapter<>(getListView(),
                 wrapped);
     }
 

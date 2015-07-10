@@ -42,9 +42,9 @@ public class DefaultRepositoryListAdapter extends
 
     private final AtomicReference<User> account;
 
-    private final Map<Long, String> headers = new HashMap<Long, String>();
+    private final Map<Long, String> headers = new HashMap<>();
 
-    private final Set<Long> noSeparators = new HashSet<Long>();
+    private final Set<Long> noSeparators = new HashSet<>();
 
     /**
      * Create list adapter for repositories

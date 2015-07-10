@@ -119,7 +119,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     @Inject
     private AvatarLoader avatars;
 
-    private List<View> fileHeaders = new ArrayList<View>();
+    private List<View> fileHeaders = new ArrayList<>();
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,7 +158,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         User user = gist.getUser();
         String userName = null;
         if(user != null) userName = user.getLogin();
-        adapter = new HeaderFooterListAdapter<CommentListAdapter>(list,
+        adapter = new HeaderFooterListAdapter<>(list,
                 new CommentListAdapter(activity.getLayoutInflater(), null, avatars,
                         imageGetter, editCommentListener, deleteCommentListener, userName, false, null));
         list.setAdapter(adapter);
@@ -495,7 +495,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
             Bundle args = new Bundle();
             args.putSerializable(EXTRA_COMMENT, comment);
             ConfirmDialogFragment.show(
-                    (DialogFragmentActivity) getActivity(),
+                    getActivity(),
                     COMMENT_DELETE,
                     getActivity()
                             .getString(R.string.confirm_comment_delete_title),

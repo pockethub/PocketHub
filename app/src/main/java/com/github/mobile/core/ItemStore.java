@@ -57,8 +57,8 @@ public abstract class ItemStore {
          * Create reference store
          */
         public ItemReferences() {
-            queue = new ReferenceQueue<V>();
-            items = new ConcurrentHashMap<Object, ItemReference<V>>();
+            queue = new ReferenceQueue<>();
+            items = new ConcurrentHashMap<>();
         }
 
         @SuppressWarnings("rawtypes")
@@ -88,7 +88,7 @@ public abstract class ItemStore {
          */
         public void put(Object id, V item) {
             expungeEntries();
-            items.put(id, new ItemReference<V>(item, id, queue));
+            items.put(id, new ItemReference<>(item, id, queue));
         }
     }
 }

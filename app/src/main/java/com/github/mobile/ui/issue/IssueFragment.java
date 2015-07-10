@@ -41,6 +41,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -94,8 +95,6 @@ import org.eclipse.egit.github.core.PullRequest;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.User;
-
-import retrofit.http.HEAD;
 
 /**
  * Fragment to display an issue
@@ -559,13 +558,15 @@ public class IssueFragment extends DialogFragment {
     }
 
     private void updateStateItem(Issue issue) {
-        if (issue != null && stateItem != null)
-            if (STATE_OPEN.equals(issue.getState()))
-                stateItem.setTitle(R.string.close).setIcon(
-                        R.drawable.menu_issue_close);
-            else
-                stateItem.setTitle(R.string.reopen).setIcon(
-                        R.drawable.menu_issue_open);
+        if (issue != null && stateItem != null) {
+            if (STATE_OPEN.equals(issue.getState())) {
+                stateItem.setTitle(R.string.close);
+                stateItem.setIcon(R.drawable.ic_github_issue_closed_white_24dp);
+            } else {
+                stateItem.setTitle(R.string.reopen);
+                stateItem.setIcon(R.drawable.ic_github_issue_reopened_white_24dp);
+            }
+        }
     }
 
     @Override
@@ -625,7 +626,6 @@ public class IssueFragment extends DialogFragment {
                 updateList(issue, items);
             } else
                 refreshIssue();
-            return;
         }
     }
 
@@ -701,7 +701,7 @@ public class IssueFragment extends DialogFragment {
             Bundle args = new Bundle();
             args.putSerializable(EXTRA_COMMENT, comment);
             ConfirmDialogFragment.show(
-                    (DialogFragmentActivity) getActivity(),
+                    getActivity(),
                     COMMENT_DELETE,
                     getActivity()
                             .getString(R.string.confirm_comment_delete_title),

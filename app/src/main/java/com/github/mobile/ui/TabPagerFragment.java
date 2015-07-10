@@ -1,9 +1,8 @@
 package com.github.mobile.ui;
 
-import static android.widget.TabHost.OnTabChangeListener;
-import static android.widget.TabHost.TabContentFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
@@ -12,6 +11,9 @@ import android.view.ViewGroup;
 
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R;
+
+import static android.widget.TabHost.OnTabChangeListener;
+import static android.widget.TabHost.TabContentFactory;
 
 public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider>
     extends PagerFragment implements OnTabChangeListener, TabContentFactory {
@@ -25,7 +27,7 @@ public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider
     /**
      * Tab host
      */
-    protected SlidingTabLayout slidingTabsLayout;
+    protected TabLayout slidingTabsLayout;
 
     /**
      * Pager adapter
@@ -112,7 +114,7 @@ public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider
         adapter = createAdapter();
         getActivity().supportInvalidateOptionsMenu();
         pager.setAdapter(adapter);
-        slidingTabsLayout.setViewPager(pager);
+        slidingTabsLayout.setupWithViewPager(pager);
     }
 
     /**
@@ -139,10 +141,7 @@ public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider
 
         pager = (ViewPager) view.findViewById(R.id.vp_pages);
         pager.setOnPageChangeListener(this);
-        slidingTabsLayout = (SlidingTabLayout) view.findViewById(R.id.sliding_tabs_layout);
-        slidingTabsLayout.setCustomTabView(R.layout.tab, R.id.tv_tab);
-        slidingTabsLayout.setSelectedIndicatorColors(getResources().getColor(android.R.color.white));
-        slidingTabsLayout.setDividerColors(0);
+        slidingTabsLayout = (TabLayout) view.findViewById(R.id.sliding_tabs_layout);
     }
 
     @Override

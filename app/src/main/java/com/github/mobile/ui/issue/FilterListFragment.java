@@ -45,7 +45,7 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> implements
 
             @Override
             public List<IssueFilter> loadInBackground() {
-                List<IssueFilter> filters = new ArrayList<IssueFilter>(
+                List<IssueFilter> filters = new ArrayList<>(
                         cache.getIssueFilters());
                 Collections.sort(filters, FilterListFragment.this);
                 return filters;

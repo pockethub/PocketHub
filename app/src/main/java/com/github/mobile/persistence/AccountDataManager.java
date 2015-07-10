@@ -229,7 +229,7 @@ public class AccountDataManager {
         final File cache = new File(root, "issue_filters.ser");
         Collection<IssueFilter> filters = read(cache);
         if (filters == null)
-            filters = new HashSet<IssueFilter>();
+            filters = new HashSet<>();
         if (filters.add(filter))
             write(cache, filters);
     }

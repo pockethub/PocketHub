@@ -31,7 +31,7 @@ public class GistsPagerAdapter extends FragmentStatePagerAdapter {
 
     private final String[] ids;
 
-    private final SparseArray<GistFragment> fragments = new SparseArray<GistFragment>();
+    private final SparseArray<GistFragment> fragments = new SparseArray<>();
 
     /**
      * @param activity

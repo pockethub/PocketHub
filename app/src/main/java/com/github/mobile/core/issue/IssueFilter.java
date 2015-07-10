@@ -93,7 +93,7 @@ public class IssueFilter implements Serializable, Cloneable, Comparator<Label> {
         if (label == null)
             return this;
         if (labels == null)
-            labels = new TreeSet<Label>(this);
+            labels = new TreeSet<>(this);
         labels.add(label);
         return this;
     }
@@ -105,7 +105,7 @@ public class IssueFilter implements Serializable, Cloneable, Comparator<Label> {
     public IssueFilter setLabels(Collection<Label> labels) {
         if (labels != null && !labels.isEmpty()) {
             if (this.labels == null)
-                this.labels = new TreeSet<Label>(this);
+                this.labels = new TreeSet<>(this);
             else
                 this.labels.clear();
             this.labels.addAll(labels);
@@ -175,7 +175,7 @@ public class IssueFilter implements Serializable, Cloneable, Comparator<Label> {
      * @return non-null map of filter request parameters
      */
     public Map<String, String> toFilterMap() {
-        final Map<String, String> filter = new HashMap<String, String>();
+        final Map<String, String> filter = new HashMap<>();
 
         filter.put(FIELD_SORT, SORT_CREATED);
         filter.put(FIELD_DIRECTION, DIRECTION_DESCENDING);
@@ -207,7 +207,7 @@ public class IssueFilter implements Serializable, Cloneable, Comparator<Label> {
      * @return display
      */
     public CharSequence toDisplay() {
-        List<String> segments = new ArrayList<String>();
+        List<String> segments = new ArrayList<>();
         if (open)
             segments.add("Open issues");
         else

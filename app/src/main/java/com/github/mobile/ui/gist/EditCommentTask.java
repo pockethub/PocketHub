@@ -99,10 +99,6 @@ public class EditCommentTask extends ProgressDialogTask<Comment> {
      */
     private Comment editComment(String gistId, Comment comment)
             throws Exception {
-        StringBuilder uri = new StringBuilder(SEGMENT_GISTS);
-        uri.append('/').append(gistId);
-        uri.append(SEGMENT_COMMENTS);
-        uri.append('/').append(comment.getId());
-        return service.getClient().post(uri.toString(), comment, Comment.class);
+        return service.getClient().post(SEGMENT_GISTS + '/' + gistId + SEGMENT_COMMENTS + '/' + comment.getId(), comment, Comment.class);
     }
 }

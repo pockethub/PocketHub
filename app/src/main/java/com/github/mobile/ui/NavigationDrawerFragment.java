@@ -2,21 +2,24 @@ package com.github.mobile.ui;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -39,7 +42,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
     private ListView mDrawerListView;
     private View mFragmentContainerView;
 
-    private int mCurrentSelectedPosition = 0;
+    private int mCurrentSelectedPosition = 1;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
@@ -87,9 +90,6 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        userImage = (ImageView) view.findViewById(R.id.user_picture);
-        userRealName = (TextView) view.findViewById(R.id.user_real_name);
-        userName = (TextView) view.findViewById(R.id.user_name);
         mDrawerListView = (ListView) view.findViewById(R.id.navigation_drawer_list);
         mDrawerListView.setOnItemClickListener(this);
     }
@@ -102,7 +102,16 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
         User user) {
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+
+        int drawerWidth = checkTabletOrLandscape() ? R.dimen.navigation_drawer_width : materializedWidth();
+        mDrawerListView.getLayoutParams().width = drawerWidth;
+
+
+        View header = getActivity().getLayoutInflater().inflate(R.layout.drawer_header, mDrawerListView, false);
+        userImage = (ImageView) header.findViewById(R.id.user_picture);
+        userRealName = (TextView) header.findViewById(R.id.user_real_name);
+        userName = (TextView) header.findViewById(R.id.user_name);
 
         avatar.bind(userImage, user);
         userName.setText(user.getLogin());
@@ -114,6 +123,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
             userRealName.setVisibility(View.GONE);
         }
 
+        mDrawerListView.addHeaderView(header, null, false);
         mDrawerListView.setAdapter(adapter);
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 
@@ -214,5 +224,29 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
 
     public static interface NavigationDrawerCallbacks {
         void onNavigationDrawerItemSelected(int position);
+    }
+
+    public boolean checkTabletOrLandscape() {
+        boolean landscape = getActivity().getResources()
+                                         .getConfiguration()
+                                         .orientation == Configuration.ORIENTATION_LANDSCAPE;
+        boolean tablet =
+                (getActivity().getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                == Configuration.SCREENLAYOUT_SIZE_XLARGE;
+
+        return landscape || tablet;
+    }
+
+    public int materializedWidth() {
+        //screenSize - actionBar Height
+        WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point screenSize = new Point();
+        display.getSize(screenSize);
+
+        int actionBarHeight = getActionBar().getHeight();
+
+        return screenSize.x - actionBarHeight;
+
     }
 }

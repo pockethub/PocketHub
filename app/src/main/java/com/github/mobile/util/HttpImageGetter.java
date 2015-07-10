@@ -81,9 +81,9 @@ public class HttpImageGetter implements ImageGetter {
 
     private final int width;
 
-    private final Map<Object, CharSequence> rawHtmlCache = new HashMap<Object, CharSequence>();
+    private final Map<Object, CharSequence> rawHtmlCache = new HashMap<>();
 
-    private final Map<Object, CharSequence> fullHtmlCache = new HashMap<Object, CharSequence>();
+    private final Map<Object, CharSequence> fullHtmlCache = new HashMap<>();
 
     private final ContentsService service;
 

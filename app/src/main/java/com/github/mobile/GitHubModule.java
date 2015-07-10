@@ -77,7 +77,7 @@ public class GitHubModule extends AbstractModule {
         IssueStore store = issues != null ? issues.get() : null;
         if (store == null) {
             store = new IssueStore(issueService, pullService);
-            issues = new WeakReference<IssueStore>(store);
+            issues = new WeakReference<>(store);
         }
         return store;
     }
@@ -87,7 +87,7 @@ public class GitHubModule extends AbstractModule {
         GistStore store = gists != null ? gists.get() : null;
         if (store == null) {
             store = new GistStore(service);
-            gists = new WeakReference<GistStore>(store);
+            gists = new WeakReference<>(store);
         }
         return store;
     }
@@ -97,7 +97,7 @@ public class GitHubModule extends AbstractModule {
         CommitStore store = commits != null ? commits.get() : null;
         if (store == null) {
             store = new CommitStore(service);
-            commits = new WeakReference<CommitStore>(store);
+            commits = new WeakReference<>(store);
         }
         return store;
     }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.GitHub.NavigationDrawer" parent="Theme.GitHub">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="colorControlHighlight">@color/ripple_material_light</item>
+    </style>
+
+</resources>

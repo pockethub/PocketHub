@@ -16,6 +16,7 @@
 package com.github.mobile.ui;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.widget.TabHost.OnTabChangeListener;
@@ -40,7 +41,7 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
     /**
      * Tab host
      */
-    protected SlidingTabLayout slidingTabsLayout;
+    protected TabLayout slidingTabsLayout;
 
     /**
      * Pager adapter
@@ -137,7 +138,7 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
     }
 
     public void updateTabs() {
-        slidingTabsLayout.setViewPager(pager);
+        slidingTabsLayout.setupWithViewPager(pager);
     }
 
     /**
@@ -163,10 +164,7 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
 
         pager = (ViewPager) findViewById(R.id.vp_pages);
         pager.setOnPageChangeListener(this);
-        slidingTabsLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs_layout);
-        slidingTabsLayout.setCustomTabView(R.layout.tab, R.id.tv_tab);
-        slidingTabsLayout.setSelectedIndicatorColors(getResources().getColor(android.R.color.white));
-        slidingTabsLayout.setDividerColors(0);
+        slidingTabsLayout = (TabLayout) findViewById(R.id.sliding_tabs_layout);
     }
 
     @Override
