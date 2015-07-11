@@ -346,6 +346,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".accounts.LoginWebViewActivity"/>
+
         <service
             android:name=".sync.SyncAdapterService"
             android:exported="false"

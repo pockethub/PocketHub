@@ -15,19 +15,13 @@
  */
 package com.github.mobile.accounts;
 
-import static android.content.Intent.ACTION_VIEW;
-import static android.content.Intent.CATEGORY_BROWSABLE;
 import static com.github.mobile.accounts.AccountConstants.PROVIDER_AUTHORITY;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
-import android.app.Application;
-import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.LabeledIntent;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -51,12 +45,10 @@ import com.github.mobile.ui.roboactivities.RoboActionBarAccountAuthenticatorActi
 import com.google.inject.Inject;
 import com.squareup.okhttp.HttpUrl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.egit.github.core.User;
 
-import retrofit.ErrorHandler;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
@@ -76,6 +68,10 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity imp
     public static final String PARAM_USERNAME = "username";
 
     public static final String OAUTH_HOST = "www.github.com";
+
+    public static final String INTENT_EXTRA_URL = "url";
+
+    private static int WEBVIEW_REQUEST_CODE = 0;
 
     private static final String TAG = "LoginActivity";
 
@@ -142,17 +138,20 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity imp
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         Uri uri = intent.getData();
-        if(uri != null && uri.getScheme().equals(getString(R.string.github_oauth_scheme))){
+        onUserLoggedIn(uri);
+    }
+
+    private void onUserLoggedIn(Uri uri) {
+        if (uri != null && uri.getScheme().equals(getString(R.string.github_oauth_scheme))) {
             openLoadingDialog();
             String code = uri.getQueryParameter("code");
-
             if (requestTokenClient == null) {
                 requestTokenClient = new RequestTokenClient(LoginActivity.this, code);
                 requestTokenClient.setOnResultCallback(new BaseClient.OnResultCallback<Token>() {
                     @Override
                     public void onResponseOk(Token token, Response r) {
                         if (token.access_token != null) {
-                            endAccess(token.access_token, token.scope);
+                            endAuth(token.access_token, token.scope);
                         } else if (token.error != null) {
                             Toast.makeText(LoginActivity.this, token.error, Toast.LENGTH_LONG).show();
                             progressDialog.dismiss();
@@ -170,7 +169,8 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity imp
     }
 
     private void openMain() {
-        progressDialog.dismiss();
+        if(progressDialog != null)
+            progressDialog.dismiss();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -180,14 +180,6 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity imp
         progressDialog = LightProgressDialog.create(this,
                 R.string.login_activity_authenticating);
         progressDialog.show();
-    }
-
-    @Override
-    public void startActivity(Intent intent) {
-        if (intent != null && ACTION_VIEW.equals(intent.getAction()))
-            intent.addCategory(CATEGORY_BROWSABLE);
-
-        super.startActivity(intent);
     }
 
     public void handleLogin() {
@@ -205,32 +197,16 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity imp
                 .addQueryParameter("client_id", client.getApiClient())
                 .addQueryParameter("scope", initialScope);
 
-        final List<ResolveInfo> browserList = getBrowserList();
-
-        final List<LabeledIntent> intentList = new ArrayList<>();
-
-        for (final ResolveInfo resolveInfo : browserList) {
-            final Intent newIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url.build().toString()));
-            newIntent.setComponent(new ComponentName(resolveInfo.activityInfo.packageName,
-                    resolveInfo.activityInfo.name));
-
-            intentList.add(new LabeledIntent(newIntent,
-                    resolveInfo.resolvePackageName,
-                    resolveInfo.labelRes,
-                    resolveInfo.icon));
-        }
-
-        final Intent chooser = Intent.createChooser(intentList.remove(0), "Choose your favorite browser");
-        LabeledIntent[] extraIntents = intentList.toArray( new LabeledIntent[ intentList.size() ]);
-        chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents);
-
-        startActivity(chooser);
+        Intent intent = new Intent(this, LoginWebViewActivity.class);
+        intent.putExtra(INTENT_EXTRA_URL, url.toString());
+        startActivityForResult(intent, WEBVIEW_REQUEST_CODE);
     }
 
-    private List<ResolveInfo> getBrowserList() {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://sometesturl.com"));
-
-        return getPackageManager().queryIntentActivities(intent, 0);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == WEBVIEW_REQUEST_CODE && resultCode == RESULT_OK)
+            onUserLoggedIn(data.getData());
     }
 
     @Override
@@ -242,7 +218,6 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity imp
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }
 
     @Override
@@ -269,7 +244,7 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity imp
         error.printStackTrace();
     }
 
-    private void endAccess(String accessToken, String scope) {
+    private void endAuth(String accessToken, String scope) {
         this.accessToken = accessToken;
         this.scope = scope;
 
