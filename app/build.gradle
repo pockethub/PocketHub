@@ -68,7 +68,7 @@ dependencies {
         exclude group: 'com.google.inject'
     }
 
-    compile 'com.github.alorma:github-sdk:1.0.1@aar'
+    compile 'com.github.alorma:github-sdk:1.0.1'
     compile 'com.viewpagerindicator:library:2.4.1@aar'
     compile 'com.squareup.okio:okio:1.1.0'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
@@ -83,4 +83,3 @@ dependencies {
 
     compile 'com.android.support:design:22.2.0'
 }
-}}
