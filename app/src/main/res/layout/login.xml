@@ -34,5 +34,7 @@
         android:gravity="center_horizontal"
         android:textColor="@color/primary_dark"
         style="@style/TextAppearance.AppCompat.Subhead"
-        android:text="@string/temporary_login_message"/>
+        android:text="@string/temporary_login_message"
+        android:linksClickable="true"
+        android:autoLink="web"/>
 </LinearLayout>
