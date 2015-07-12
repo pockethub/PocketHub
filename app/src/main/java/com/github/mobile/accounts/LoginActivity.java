@@ -15,76 +15,47 @@
  */
 package com.github.mobile.accounts;
 
-import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
-import static android.accounts.AccountManager.KEY_ACCOUNT_TYPE;
-import static android.accounts.AccountManager.KEY_AUTHTOKEN;
-import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
-import static android.content.Intent.ACTION_VIEW;
-import static android.content.Intent.CATEGORY_BROWSABLE;
-import static android.text.InputType.TYPE_CLASS_TEXT;
-import static android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD;
-import static android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
-import static android.view.KeyEvent.ACTION_DOWN;
-import static android.view.KeyEvent.KEYCODE_ENTER;
-import static android.view.inputmethod.EditorInfo.IME_ACTION_DONE;
-import static com.github.mobile.RequestCodes.OTP_CODE_ENTER;
-import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
 import static com.github.mobile.accounts.AccountConstants.PROVIDER_AUTHORITY;
-import static com.github.mobile.accounts.TwoFactorAuthActivity.PARAM_EXCEPTION;
-import static com.github.mobile.accounts.TwoFactorAuthClient.TWO_FACTOR_AUTH_TYPE_SMS;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.Html;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.text.method.LinkMovementMethod;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnKeyListener;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
-import com.github.kevinsawicki.wishlist.ViewFinder;
+import com.alorma.github.basesdk.ApiClient;
+import com.alorma.github.basesdk.client.BaseClient;
+import com.alorma.github.sdk.bean.dto.response.Token;
+import com.alorma.github.sdk.login.AccountsHelper;
+import com.alorma.github.sdk.security.GitHub;
+import com.alorma.github.sdk.services.login.RequestTokenClient;
+import com.alorma.github.sdk.services.user.GetAuthUserClient;
 import com.github.mobile.R;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.LightProgressDialog;
-import com.github.mobile.ui.TextWatcherAdapter;
+import com.github.mobile.ui.MainActivity;
 import com.github.mobile.ui.roboactivities.RoboActionBarAccountAuthenticatorActivity;
-import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
+import com.squareup.okhttp.HttpUrl;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.OAuthService;
-import org.eclipse.egit.github.core.service.UserService;
 
-import roboguice.util.RoboAsyncTask;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Activity to login
  */
-public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
+public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity implements BaseClient.OnResultCallback<com.alorma.github.sdk.bean.dto.response.User> {
 
     /**
      * Auth token type parameter
@@ -96,7 +67,11 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
      */
     public static final String PARAM_USERNAME = "username";
 
-    private static final String PARAM_CONFIRMCREDENTIALS = "confirmCredentials";
+    public static final String OAUTH_HOST = "www.github.com";
+
+    public static final String INTENT_EXTRA_URL = "url";
+
+    private static int WEBVIEW_REQUEST_CODE = 0;
 
     private static final String TAG = "LoginActivity";
 
@@ -132,30 +107,15 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
 
     private AccountManager accountManager;
 
-    private AutoCompleteTextView loginText;
+    private Account[] accounts;
 
-    private EditText passwordText;
+    private String accessToken;
 
-    private RoboAsyncTask<User> authenticationTask;
+    private String scope;
 
-    private String authTokenType;
+    private RequestTokenClient requestTokenClient;
 
-    private MenuItem loginItem;
-
-    /**
-     * If set we are just checking that the user knows their credentials; this
-     * doesn't cause the user's password to be changed on the device.
-     */
-    private Boolean confirmCredentials = false;
-
-    private String password;
-
-    /**
-     * Was the original caller asking for an entirely new account?
-     */
-    protected boolean requestNewAccount = false;
-
-    private String username;
+    private AlertDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -163,274 +123,90 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
 
         setContentView(R.layout.login);
 
-        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         accountManager = AccountManager.get(this);
 
-        ViewFinder finder = new ViewFinder(this);
-        loginText = finder.find(R.id.et_login);
-        passwordText = finder.find(R.id.et_password);
+        accounts = accountManager.getAccountsByType(getString(R.string.account_type));
 
-        final Intent intent = getIntent();
-        username = intent.getStringExtra(PARAM_USERNAME);
-        authTokenType = intent.getStringExtra(PARAM_AUTHTOKEN_TYPE);
-        requestNewAccount = username == null;
-        confirmCredentials = intent.getBooleanExtra(PARAM_CONFIRMCREDENTIALS,
-            false);
-
-        TextView signupText = finder.find(R.id.tv_signup);
-        signupText.setMovementMethod(LinkMovementMethod.getInstance());
-        signupText.setText(Html.fromHtml(getString(R.string.signup_link)));
-
-        if (!TextUtils.isEmpty(username)) {
-            loginText.setText(username);
-            loginText.setEnabled(false);
-            loginText.setFocusable(false);
-        }
-
-        TextWatcher watcher = new TextWatcherAdapter() {
-
-            @Override
-            public void afterTextChanged(Editable gitDirEditText) {
-                updateEnablement();
-            }
-        };
-        loginText.addTextChangedListener(watcher);
-        passwordText.addTextChangedListener(watcher);
-
-        passwordText.setOnKeyListener(new OnKeyListener() {
-
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event != null && ACTION_DOWN == event.getAction()
-                    && keyCode == KEYCODE_ENTER && loginEnabled()) {
-                    handleLogin();
-                    return true;
-                } else
-                    return false;
-            }
-        });
-
-        passwordText.setOnEditorActionListener(new OnEditorActionListener() {
-
-            @Override
-            public boolean onEditorAction(TextView v, int actionId,
-                KeyEvent event) {
-                if (actionId == IME_ACTION_DONE && loginEnabled()) {
-                    handleLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        CheckBox showPassword = finder.find(R.id.cb_show_password);
-        showPassword.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                boolean isChecked) {
-                int type = TYPE_CLASS_TEXT;
-                if (isChecked)
-                    type |= TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
-                else
-                    type |= TYPE_TEXT_VARIATION_PASSWORD;
-                int selection = passwordText.getSelectionStart();
-                passwordText.setInputType(type);
-                if (selection > 0)
-                    passwordText.setSelection(selection);
-            }
-        });
-
-        loginText.setAdapter(new ArrayAdapter<>(this,
-            android.R.layout.simple_dropdown_item_1line,
-            getEmailAddresses()));
+        if (accounts != null && accounts.length > 0)
+            openMain();
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-
-        // Finish task if valid account exists
-        if (requestNewAccount) {
-            Account existing = AccountUtils.getPasswordAccessibleAccount(this);
-            if (existing != null && !TextUtils.isEmpty(existing.name)) {
-                String password = AccountManager.get(this)
-                    .getPassword(existing);
-                if (!TextUtils.isEmpty(password))
-                    finishLogin(existing.name, password);
-            }
-            return;
-        }
-
-        updateEnablement();
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Uri uri = intent.getData();
+        onUserLoggedIn(uri);
     }
 
-    private boolean loginEnabled() {
-        return !TextUtils.isEmpty(loginText.getText())
-            && !TextUtils.isEmpty(passwordText.getText());
-    }
-
-    private void updateEnablement() {
-        if (loginItem != null)
-            loginItem.setEnabled(loginEnabled());
-    }
-
-    @Override
-    public void startActivity(Intent intent) {
-        if (intent != null && ACTION_VIEW.equals(intent.getAction()))
-            intent.addCategory(CATEGORY_BROWSABLE);
-
-        super.startActivity(intent);
-    }
-
-    /**
-     * Authenticate login & password
-     */
-    public void handleLogin() {
-        if (requestNewAccount)
-            username = loginText.getText().toString();
-        password = passwordText.getText().toString();
-
-        final AlertDialog dialog = LightProgressDialog.create(this,
-            R.string.login_activity_authenticating);
-        dialog.setCancelable(true);
-        dialog.setOnCancelListener(new OnCancelListener() {
-
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                if (authenticationTask != null)
-                    authenticationTask.cancel(true);
-            }
-        });
-        dialog.show();
-
-        authenticationTask = new RoboAsyncTask<User>(this) {
-
-            @Override
-            public User call() throws Exception {
-                GitHubClient client = new TwoFactorAuthClient();
-                client.setCredentials(username, password);
-
-                User user;
-                try {
-                    user = new UserService(client).getUser();
-                } catch (TwoFactorAuthException e) {
-                    if (e.twoFactorAuthType == TWO_FACTOR_AUTH_TYPE_SMS)
-                        sendSmsOtpCode(new OAuthService(client));
-                    openTwoFactorAuthActivity();
-
-                    return null;
-                }
-
-                Account account = new Account(user.getLogin(), ACCOUNT_TYPE);
-                if (requestNewAccount) {
-                    accountManager
-                        .addAccountExplicitly(account, password, null);
-                    configureSyncFor(account);
-                    try {
-                        new AccountLoader(LoginActivity.this).call();
-                    } catch (IOException e) {
-                        Log.d(TAG, "Exception loading organizations", e);
+    private void onUserLoggedIn(Uri uri) {
+        if (uri != null && uri.getScheme().equals(getString(R.string.github_oauth_scheme))) {
+            openLoadingDialog();
+            String code = uri.getQueryParameter("code");
+            if (requestTokenClient == null) {
+                requestTokenClient = new RequestTokenClient(LoginActivity.this, code);
+                requestTokenClient.setOnResultCallback(new BaseClient.OnResultCallback<Token>() {
+                    @Override
+                    public void onResponseOk(Token token, Response r) {
+                        if (token.access_token != null) {
+                            endAuth(token.access_token, token.scope);
+                        } else if (token.error != null) {
+                            Toast.makeText(LoginActivity.this, token.error, Toast.LENGTH_LONG).show();
+                            progressDialog.dismiss();
+                        }
                     }
-                } else
-                    accountManager.setPassword(account, password);
 
-                return user;
+                    @Override
+                    public void onFail(RetrofitError error) {
+                        error.printStackTrace();
+                    }
+                });
+                requestTokenClient.execute();
             }
+        }
+    }
 
-            @Override
-            protected void onException(Exception e) throws RuntimeException {
-                dialog.dismiss();
+    private void openMain() {
+        if(progressDialog != null)
+            progressDialog.dismiss();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
-                Log.d(TAG, "Exception requesting authenticated user", e);
-                handleLoginException(e);
-            }
+    private void openLoadingDialog() {
+        progressDialog = LightProgressDialog.create(this,
+                R.string.login_activity_authenticating);
+        progressDialog.show();
+    }
 
-            @Override
-            public void onSuccess(User user) {
-                dialog.dismiss();
+    public void handleLogin() {
+        openLoginInBrowser(new GitHub(this));
+    }
 
-                if (user != null)
-                    onAuthenticationResult(true);
-            }
-        };
-        authenticationTask.execute();
+    private void openLoginInBrowser(ApiClient client) {
+        String initialScope = "user,public_repo,repo,delete_repo,notifications,gist";
+        HttpUrl.Builder url = new HttpUrl.Builder()
+                .scheme("https")
+                .host(OAUTH_HOST)
+                .addPathSegment("login")
+                .addPathSegment("oauth")
+                .addPathSegment("authorize")
+                .addQueryParameter("client_id", client.getApiClient())
+                .addQueryParameter("scope", initialScope);
+
+        Intent intent = new Intent(this, LoginWebViewActivity.class);
+        intent.putExtra(INTENT_EXTRA_URL, url.toString());
+        startActivityForResult(intent, WEBVIEW_REQUEST_CODE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == OTP_CODE_ENTER) {
-            switch (resultCode) {
-                case RESULT_OK:
-                    onAuthenticationResult(true);
-                    break;
-                case RESULT_CANCELED:
-                    Exception e = (Exception) data.getExtras().getSerializable(PARAM_EXCEPTION);
-                    handleLoginException(e);
-                    break;
-            }
-        }
-    }
-
-    /**
-     * Called when response is received from the server for confirm credentials
-     * request. See onAuthenticationResult(). Sets the
-     * AccountAuthenticatorResult which is sent back to the caller.
-     *
-     * @param result
-     */
-    protected void finishConfirmCredentials(boolean result) {
-        final Account account = new Account(username, ACCOUNT_TYPE);
-        accountManager.setPassword(account, password);
-
-        final Intent intent = new Intent();
-        intent.putExtra(KEY_BOOLEAN_RESULT, result);
-        setAccountAuthenticatorResult(intent.getExtras());
-        setResult(RESULT_OK, intent);
-        finish();
-    }
-
-    /**
-     * Called when response is received from the server for authentication
-     * request. See onAuthenticationResult(). Sets the
-     * AccountAuthenticatorResult which is sent back to the caller. Also sets
-     * the authToken in AccountManager for this account.
-     *
-     * @param username
-     * @param password
-     */
-
-    protected void finishLogin(final String username, final String password) {
-        final Intent intent = new Intent();
-        intent.putExtra(KEY_ACCOUNT_NAME, username);
-        intent.putExtra(KEY_ACCOUNT_TYPE, ACCOUNT_TYPE);
-        if (ACCOUNT_TYPE.equals(authTokenType))
-            intent.putExtra(KEY_AUTHTOKEN, password);
-        setAccountAuthenticatorResult(intent.getExtras());
-        setResult(RESULT_OK, intent);
-        finish();
-    }
-
-    /**
-     * Called when the authentication process completes (see attemptLogin()).
-     *
-     * @param result
-     */
-    public void onAuthenticationResult(boolean result) {
-        if (result) {
-            if (!confirmCredentials)
-                finishLogin(username, password);
-            else
-                finishConfirmCredentials(true);
-        } else {
-            if (requestNewAccount)
-                ToastUtils.show(this, R.string.invalid_login_or_password);
-            else
-                ToastUtils.show(this, R.string.invalid_password);
-        }
+        if(requestCode == WEBVIEW_REQUEST_CODE && resultCode == RESULT_OK)
+            onUserLoggedIn(data.getData());
     }
 
     @Override
@@ -442,41 +218,46 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
 
+    @Override
+    public void onResponseOk(com.alorma.github.sdk.bean.dto.response.User user, Response r) {
+        Account account = new Account(user.login, getString(R.string.account_type));
+        Bundle userData = AccountsHelper.buildBundle(user.name, user.email, user.avatar_url, scope);
+        userData.putString(AccountManager.KEY_AUTHTOKEN, accessToken);
+
+        accountManager.addAccountExplicitly(account, null, userData);
+        accountManager.setAuthToken(account, getString(R.string.account_type), accessToken);
+
+        Bundle result = new Bundle();
+        result.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
+        result.putString(AccountManager.KEY_ACCOUNT_TYPE, account.type);
+        result.putString(AccountManager.KEY_AUTHTOKEN, accessToken);
+
+        setAccountAuthenticatorResult(result);
+
+        openMain();
+    }
+
+    @Override
+    public void onFail(RetrofitError error) {
+        error.printStackTrace();
+    }
+
+    private void endAuth(String accessToken, String scope) {
+        this.accessToken = accessToken;
+        this.scope = scope;
+
+        progressDialog.setMessage(getString(R.string.loading_user));
+
+        GetAuthUserClient userClient = new GetAuthUserClient(this, accessToken);
+        userClient.setOnResultCallback(this);
+        userClient.execute();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionMenu) {
         getMenuInflater().inflate(R.menu.login, optionMenu);
-        loginItem = optionMenu.findItem(R.id.m_login);
         return true;
-    }
-
-    private List<String> getEmailAddresses() {
-        final Account[] accounts = accountManager
-            .getAccountsByType("com.google");
-        final List<String> addresses = new ArrayList<>(accounts.length);
-        for (Account account : accounts)
-            addresses.add(account.name);
-        return addresses;
-    }
-
-    private void sendSmsOtpCode(final OAuthService service) throws IOException {
-        try {
-            AccountAuthenticator.createAuthorization(service);
-        } catch (TwoFactorAuthException ignored) {
-        }
-    }
-
-    private void openTwoFactorAuthActivity() {
-        Intent intent = TwoFactorAuthActivity.createIntent(this, username, password);
-        startActivityForResult(intent, OTP_CODE_ENTER);
-    }
-
-    private void handleLoginException(final Exception e) {
-        if (AccountUtils.isUnauthorized(e))
-            onAuthenticationResult(false);
-        else
-            ToastUtils.show(LoginActivity.this, e, R.string.code_authentication_failed);
     }
 }

@@ -127,3 +127,6 @@ tmp/
 
 # TeXlipse plugin
 .texlipse
+
+#GitHub application codes (local and personal)
+github.properties
