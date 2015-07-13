@@ -216,7 +216,7 @@
     <string name="enable_wrapping">Sortörés engedélyezése</string>
     <string name="disable_wrapping">Sortörés tiltása</string>
     <string name="home">Főoldal</string>
-    <string name="username_or_email">Felhasynálónév vagy E-mail cím</string>
+    <string name="username_or_email">Felhasználónév vagy e-mail cím</string>
     <string name="tab_news">Hírek</string>
     <string name="tab_repositories">Tárolók</string>
     <string name="tab_users">Felhasználók</string>
