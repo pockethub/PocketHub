@@ -49,8 +49,7 @@
 
     <com.github.mobile.ui.ViewPager
         android:id="@+id/vp_pages"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_below="@id/sliding_tabs_layout"
+        app:layout_behavior="com.github.mobile.ui.PatchedScrollingViewBehavior"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
