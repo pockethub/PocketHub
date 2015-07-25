@@ -1,6 +1,12 @@
 Contributing
 ============
 
+## Reporting issues
+
+* Make sure there's not already an issue (open or closed) regarding your issue.
+* Include detailed information and steps to reproduce. Any issues opened with no description will be ignored.
+* Include a screenshot(s) of the issue. Brownie points for a screen recording of the issue.
+
 ## ALL pull requests
 
 Please include a descriptive title and description. If you changed anything with the UI, please include screenshots of how
