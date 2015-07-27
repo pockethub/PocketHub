@@ -36,7 +36,7 @@ will do our best to respond in a timely fashion.  If you'd like to contribute, p
 Any contributions, large or small, major features, bug fixes, additional language translations, unit/integration tests
 are welcomed and appreciated but will be thoroughly reviewed and discussed. **Please read `CONTRIBUTING.md` first!**
 
-## Install
+## Setup Environment
 
 1. Create a github application (https://github.com/settings/applications/new)
 2. Create a github.properties in the root folder of the repo
