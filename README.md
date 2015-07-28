@@ -1,6 +1,8 @@
-# GitHub Android App [![Build Status](https://travis-ci.org/pockethub/PocketHub.svg?branch=master)](https://travis-ci.org/pockethub/PocketHub)
+# PocketHub [![Build Status](https://travis-ci.org/pockethub/PocketHub.svg?branch=master)](https://travis-ci.org/pockethub/PocketHub)
 
-This repository contains the source code for the GitHub Android app.
+This repository contains the source code for the PocketHub Android app.
+
+This is the *same* repository as the now-defunct official GitHub Android app.
 
 ## What's going on here?
 
@@ -28,10 +30,10 @@ and it's time we take advantage of those changes.
 
 > How can I help?
 
-Please see the [issues](https://github.com/forkhubs/android/issues) section to report any bugs or feature requests and
+Please see the [issues](https://github.com/pockethub/PocketHub/issues) section to report any bugs or feature requests and
 to see the list of known issues. We can't promise fast response times since we all have full time jobs of our own, but we
 will do our best to respond in a timely fashion.  If you'd like to contribute, please fork this repository and contribute back using
-[pull requests](https://github.com/forkhubs/android/pulls).
+[pull requests](https://github.com/pockethub/PocketHub/pulls).
 
 Any contributions, large or small, major features, bug fixes, additional language translations, unit/integration tests
 are welcomed and appreciated but will be thoroughly reviewed and discussed. **Please read `CONTRIBUTING.md` first!**
