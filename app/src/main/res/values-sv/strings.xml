@@ -22,13 +22,13 @@
     <string name="error_repos_load">Inläsning av repon misslyckades</string>
     <string name="error_repo_load">Inläsning av repot misslyckades</string>
     <string name="error_contributors_load">Inläsning av medverkande misslyckades</string>
-    <string name="error_gist_load">Inläsning av Gist misslyckades</string>
+    <string name="error_gist_load">Inläsning av gist misslyckades</string>
     <string name="error_news_load">Inläsning av nyheter misslyckades</string>
     <string name="error_followers_load">Inläsning av prenumeranter misslyckades</string>
     <string name="error_people_load">Inläsning av personer misslyckades</string>
     <string name="error_person_load">Inläsning av personen misslyckades</string>
-    <string name="error_gist_file_load">Inläsning av Gistfilens innehåll misslyckades</string>
-    <string name="error_gists_load">Inläsning av Gists misslyckades</string>
+    <string name="error_gist_file_load">Inläsning av gistfilens innehåll misslyckades</string>
+    <string name="error_gists_load">Inläsning av gists misslyckades</string>
     <string name="error_issue_load">Inläsning av ärendet misslyckades</string>
     <string name="error_collaborators_load">Inläsning av medarbetare misslyckades</string>
     <string name="error_milestones_load">Inläsningen av milstolpar misslyckades</string>
@@ -36,12 +36,12 @@
     <string name="error_bookmarks_load">Inläsning av bokmärken misslyckades</string>
     <string name="error_members_load">Inläsning av medlemmar misslyckades</string>
     <string name="error_commits_load">Inläsning av commits misslyckades</string>
-    <string name="error_commit_load">Inläsning av commit misslyckades</string>
+    <string name="error_commit_load">Inläsning av commiten misslyckades</string>
     <string name="error_file_load">Inläsning av filen misslyckades</string>
     <string name="error_code_load">Inläsning av kod misslyckades</string>
     <string name="error_refs_load">Inläsning av brancher &amp; taggar misslyckades</string>
     <string name="error_following_person">Misslyckades att följa personen</string>
-    <string name="error_unfollowing_person">Misslyckades att sluta följa personen</string>
+    <string name="error_unfollowing_person">Misslyckades att avfölja personen</string>
     <string name="error_checking_following_status">Misslyckades att avläsa följar-status</string>
     <string name="error_starring_repository">Stjärnmärkning misslyckades</string>
     <string name="error_unstarring_repository">Borttagning av stjärnmärkning misslyckades</string>
@@ -54,8 +54,8 @@
 
 
     <!-- Loading messages -->
-    <string name="loading_gist">Laddar Gist&#8230;</string>
-    <string name="random_gist">Laddar slumpvald Gist&#8230;</string>
+    <string name="loading_gist">Laddar gist&#8230;</string>
+    <string name="random_gist">Laddar slumpvald gist&#8230;</string>
     <string name="loading_more_issues">Laddar fler ärenden&#8230;</string>
     <string name="loading_issues">Laddar ärenden&#8230;</string>
     <string name="loading_comments">Laddar kommentarer&#8230;</string>
@@ -64,7 +64,7 @@
     <string name="loading_news">Laddar nyheter&#8230;</string>
     <string name="loading_followers">Laddar prenumeranter&#8230;</string>
     <string name="loading_people">Laddar personer&#8230;</string>
-    <string name="loading_gists">Laddar Gists&#8230;</string>
+    <string name="loading_gists">Laddar gists&#8230;</string>
     <string name="loading_collaborators">Laddar medarbetare&#8230;</string>
     <string name="loading_milestones">Laddar milstolpar&#8230;</string>
     <string name="loading_labels">Laddar etiketter&#8230;</string>
@@ -78,8 +78,8 @@
     <string name="no_bookmarks">Inga bokmärken</string>
     <string name="no_repositories">Inga repon</string>
     <string name="no_contributors">Inga medverkande</string>
-    <string name="no_issues">Inga frågor</string>
-    <string name="no_gists">Inga Gists</string>
+    <string name="no_issues">Inga ärenden</string>
+    <string name="no_gists">Inga gists</string>
     <string name="no_people">Inga personer</string>
     <string name="no_followers">Inga prenumeranter</string>
     <string name="no_members">Inga medlemmar</string>
@@ -104,16 +104,16 @@
     <string name="find_repositories">Hitta repon</string>
     <string name="find_issues">Hitta ärenden</string>
     <string name="search_title">Sök&#8230;</string>
-    <string name="pull_request_title">Pull Request #</string>
+    <string name="pull_request_title">Pull request #</string>
     <string name="clear_search_history">Rensa sökhistorik</string>
     <string name="search_history_cleared">Sökhistorik rensad</string>
     <string name="login_activity_authenticating">Loggar in&#8230;</string>
     <string name="loading_user">Laddar användarprofil&#8230;</string>
-    <string name="creating_gist">Skapar Gist&#8230;</string>
+    <string name="creating_gist">Skapar gist&#8230;</string>
     <string name="create">Skapa</string>
-    <string name="create_gist">Skapa Gist</string>
+    <string name="create_gist">Skapa gist</string>
     <string name="gist_content_hint">puts \'Hello World!\'</string>
-    <string name="make_public">Gör den här Gisten publik</string>
+    <string name="make_public">Gör den här gisten publik</string>
     <string name="contributors">Medverkande</string>
     <string name="gist_file_name_hint">fil.rb</string>
     <string name="gist">Gist</string>
@@ -123,7 +123,7 @@
     <string name="random">Slumpad</string>
     <string name="file_name">Filnamn</string>
     <string name="file_content">Filinnehållet</string>
-    <string name="new_gist">Ny Gist</string>
+    <string name="new_gist">Ny gist</string>
     <string name="filter">Filtrera</string>
     <string name="bookmark">Bokmärka</string>
     <string name="comment">Kommentera</string>
@@ -150,10 +150,10 @@
     <string name="title">Titel</string>
     <string name="edit">Ändra</string>
     <string name="star">Stjärnmärk</string>
-    <string name="starring_gist">Stärnmärker Gist&#8230;</string>
+    <string name="starring_gist">Stärnmärker gist&#8230;</string>
     <string name="unstar">Ta bort stjärmärkning</string>
     <string name="fork">Forka</string>
-    <string name="unstarring_gist">Tar bort stjärmärkning av Gist&#8230;</string>
+    <string name="unstarring_gist">Tar bort stjärmärkning av gist&#8230;</string>
     <string name="accounts_label">Konton</string>
     <string name="select_assignee">Välj förvärvare</string>
     <string name="select_milestone">Välj milstolpe</string>
@@ -164,10 +164,10 @@
     <string name="no_milestone">Inga milstolpar</string>
     <string name="unassigned">Ingen har tilldelats detta</string>
     <string name="assigned">är tilldelad</string>
-    <string name="no_gists_found">Inga Gists hittades</string>
+    <string name="no_gists_found">Inga gists hittades</string>
     <string name="confirm_gist_delete_title">Bekräfta borttagning</string>
-    <string name="confirm_gist_delete_message">Är du säker på att du vill ta bort den här Gisten?</string>
-    <string name="deleting_gist">Tar bort Gist&#8230;</string>
+    <string name="confirm_gist_delete_message">Är du säker på att du vill ta bort den här gisten?</string>
+    <string name="deleting_gist">Tar bort gist&#8230;</string>
     <string name="confirm_comment_delete_message">Är du säker på att du vill radera denna kommentar?</string>
     <string name="confirm_comment_delete_title">Radera kommentar</string>
     <string name="creating_comment">Skapar kommentar&#8230;</string>
@@ -207,7 +207,7 @@
     <string name="following_self">Prenumererar</string>
     <string name="members">Medlemmar</string>
     <string name="closing_issue">Stänger ärende&#8230;</string>
-    <string name="reopening_issue">Öppnar Frågan Igen&#8230;</string>
+    <string name="reopening_issue">Öppnar ärendet igen&#8230;</string>
     <string name="avatar">Avatar</string>
     <string name="creating_issue">Skapar ärende&#8230;</string>
     <string name="prefix_created">skapad\u0020</string>
@@ -233,7 +233,7 @@
     <string name="close">Stäng</string>
     <string name="reopen">Öppna Igen</string>
     <string name="title_invalid_github_url">Ogiltlig GitHub-adress</string>
-    <string name="message_invalid_github_url">Den följande adressen kunde inte öppnas av den här aplikationen:\n{0}</string>
+    <string name="message_invalid_github_url">Den följande adressen kunde inte öppnas av den här applikationen:\n{0}</string>
     <string name="cancel">Avbryt</string>
     <string name="not_sure">OSÄKER</string>
     <string name="authenticator_conflict_title">App-konflikt</string>
@@ -298,7 +298,7 @@
     <!-- Deleting repo -->
     <string name="are_you_sure">Är du helt säker?</string>
     <string name="unexpected_bad_things">Du kan INTE ångra detta.
-        Detta kommer att radera repot, wiki, frågor, kommentarer och
+        Detta kommer att radera repot, wiki, ärenden, kommentarer och
         alla medverkarkopplingar permanent.
     </string>
     <string name="delete_successful">Repot har raderats</string>
