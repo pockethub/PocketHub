@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="account_type">com.github</string>
+    <string name="account_type" translatable="false">com.github</string>
 </resources>
