@@ -94,7 +94,7 @@
     <string name="updating_milestone">Updating Milestone…</string>
     <!--  -->
 
-    <string name="app_name">GitHub</string>
+    <string name="app_name" translatable="false">PocketHub</string>
     <string name="home">Home</string>
     <string name="news">News</string>
     <string name="issues">Issues</string>
