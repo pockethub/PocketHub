@@ -89,7 +89,7 @@
 
 
     <!-- Updating messages -->
-    <string name="updating_assignee">Uppdaterar förvärvare&#8230;</string>
+    <string name="updating_assignee">Uppdaterar ansvarig&#8230;</string>
     <string name="updating_issue">Uppdaterar ärenden&#8230;</string>
     <string name="updating_labels">Uppdaterar etiketter&#8230;</string>
     <string name="updating_milestone">Uppdaterar milstolpar&#8230;</string>
@@ -144,18 +144,18 @@
     <string name="edit_labels">Ändra etiketter</string>
     <string name="milestone_prefix">Milstolpe:</string>
     <string name="edit_milestone">Ändra milstolpe</string>
-    <string name="edit_assignee">Ändra Förvärvaren</string>
+    <string name="edit_assignee">Ändra ansvarig</string>
     <string name="description">Beskrivning</string>
     <string name="gist_description_hint">Gist skapad i Android</string>
     <string name="title">Titel</string>
     <string name="edit">Ändra</string>
     <string name="star">Stjärnmärk</string>
-    <string name="starring_gist">Stärnmärker gist&#8230;</string>
+    <string name="starring_gist">Stjärnmärker gist&#8230;</string>
     <string name="unstar">Ta bort stjärmärkning</string>
     <string name="fork">Forka</string>
     <string name="unstarring_gist">Tar bort stjärmärkning av gist&#8230;</string>
     <string name="accounts_label">Konton</string>
-    <string name="select_assignee">Välj förvärvare</string>
+    <string name="select_assignee">Välj ansvarig</string>
     <string name="select_milestone">Välj milstolpe</string>
     <string name="select_labels">Välj etiketter</string>
     <string name="select_ref">Välj branch eller tag</string>
@@ -202,7 +202,7 @@
     <string name="followers">Prenumeranter</string>
     <string name="following">Prenumererar på</string>
     <string name="follow">Följ</string>
-    <string name="unfollow">Avfölja</string>
+    <string name="unfollow">Avfölj</string>
     <string name="followers_self">Prenumeranter</string>
     <string name="following_self">Prenumererar</string>
     <string name="members">Medlemmar</string>
@@ -221,7 +221,7 @@
     <string name="save">Spara</string>
     <string name="apply">Tillämpa</string>
     <string name="labels_prefix">Etiketter:</string>
-    <string name="assignee">Förvärvare</string>
+    <string name="assignee">Ansvarig</string>
     <string name="milestone">Milstolpe</string>
     <string name="labels">Etiketter</string>
     <string name="issue_confirm_close_message">Är du säker på att du vill stänga det här ärendet?</string>
@@ -251,10 +251,10 @@
     <string name="enable_wrapping">Aktivera wrapping</string>
     <string name="disable_wrapping">Inaktivera wrapping</string>
     <string name="code">Kod</string>
-    <string name="following_user">Följer personer&#8230;</string>
-    <string name="unfollowing_user">Avföljer personer&#8230;</string>
-    <string name="starring_repository">Stjärnmärk&#8230;</string>
-    <string name="unstarring_repository">Ta bort stjärnmärkning&#8230;</string>
+    <string name="following_user">Följer användare&#8230;</string>
+    <string name="unfollowing_user">Avföljer användare&#8230;</string>
+    <string name="starring_repository">Stjärnmärker&#8230;</string>
+    <string name="unstarring_repository">Tar bort stjärnmärkning&#8230;</string>
     <string name="forking_repository">Forkar repot&#8230;</string>
     <string name="deleting_repository">Raderar repot&#8230;</string>
     <string name="navigate_to">Navigera till&#8230;</string>
