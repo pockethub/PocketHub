@@ -38,7 +38,7 @@ android {
             resValue "string", "github_secret", getValue(githubProps, "GITHUB_SECRET")
             resValue "string", "github_client", getValue(githubProps, "GITHUB_CLIENT")
 
-            def oauth = getValue(githubProps, "GITHUB_CALLBACK")
+            String oauth = getValue(githubProps, "GITHUB_CALLBACK")
             resValue "string", "github_oauth", oauth
             resValue "string", "github_oauth_scheme", oauth != "DEFAULT" ? oauth.split("://")[0] : "DEFAULT"
         }
@@ -67,12 +67,12 @@ android {
     }
 }
 
-def getValue(def props, def name){
-    if(props && props[name])
+def String getValue(Properties props, String name) {
+    if (props && props[name]) {
         return props[name]
-    else if(System.getenv(name))
+    } else if (System.getenv(name)) {
         return System.getenv(name)
-    else {
+    } else {
         logger.log(LogLevel.ERROR, name + " has not been provided, add it to your github.properties file")
         return "DEFAULT"
     }
