@@ -33,6 +33,6 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/toolbar"
-        class="com.github.mobile.ui.issue.IssuesFragment" />
+        class="com.github.pockethub.ui.issue.IssuesFragment" />
 
 </RelativeLayout>

@@ -32,6 +32,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
-        class="com.github.mobile.ui.issue.FilterListFragment" />
+        class="com.github.pockethub.ui.issue.FilterListFragment" />
 
 </RelativeLayout>

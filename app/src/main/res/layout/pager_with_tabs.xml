@@ -47,7 +47,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <com.github.mobile.ui.ViewPager
+    <com.github.pockethub.ui.ViewPager
         android:id="@+id/vp_pages"
         app:layout_behavior="com.github.mobile.ui.PatchedScrollingViewBehavior"
         android:layout_width="match_parent"
