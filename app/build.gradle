@@ -1,28 +1,50 @@
 apply plugin: 'com.android.application'
 
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+// Manifest version information!
+def versionMajor = 0
+def versionMinor = 1
+def versionPatch = 0
+def versionBuild = 0 // bump for dogfood builds, public betas, etc.
+
+def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
+def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("UTC"))
+
+def isTravis = "true".equals(System.getenv("TRAVIS"))
+def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
+
 android {
     compileSdkVersion 22
     buildToolsVersion '22.0.1'
 
     defaultConfig {
-        applicationId 'com.github.mobile'
+        applicationId 'com.github.pockethub'
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 1900
-        versionName '1.9.0'
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
         def Properties githubProps = new Properties()
-        if(file('../github.properties').exists())
+        if (file('../github.properties').exists()) {
             githubProps.load(new FileInputStream(file('../github.properties')))
-        else
+        } else {
             logger.log(LogLevel.ERROR, "github.properties can not be found, please add it to the project root")
 
             resValue "string", "github_secret", getValue(githubProps, "GITHUB_SECRET")
             resValue "string", "github_client", getValue(githubProps, "GITHUB_CLIENT")
 
-            def oauth = getValue(githubProps, "GITHUB_CALLBACK")
+            String oauth = getValue(githubProps, "GITHUB_CALLBACK")
             resValue "string", "github_oauth", oauth
             resValue "string", "github_oauth_scheme", oauth != "DEFAULT" ? oauth.split("://")[0] : "DEFAULT"
+        }
+
+        buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
+        buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
     }
 
     packagingOptions {
@@ -35,20 +57,22 @@ android {
         warning 'MissingTranslation'
         abortOnError false
     }
-}
 
-repositories {
-    flatDir {
-        dirs 'libs'
+    dexOptions {
+        // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
+//        preDexLibraries = preDexEnabled && !isTravis
+
+        // False for now until we set up Travis CI for this
+        preDexLibraries = false
     }
 }
 
-def getValue(def props, def name){
-    if(props && props[name])
+def String getValue(Properties props, String name) {
+    if (props && props[name]) {
         return props[name]
-    else if(System.getenv(name))
+    } else if (System.getenv(name)) {
         return System.getenv(name)
-    else {
+    } else {
         logger.log(LogLevel.ERROR, name + " has not been provided, add it to your github.properties file")
         return "DEFAULT"
     }
@@ -56,14 +80,14 @@ def getValue(def props, def name){
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.squareup.picasso:picasso:2.5.0'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
     compile 'org.roboguice:roboguice:2.0'
     compile 'com.github.kevinsawicki:http-request:5.6'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:3.7.0.201502260915-r'
-    compile 'com.android.support:support-v4:22.2.0'
+    compile 'com.android.support:support-v4:22.2.1'
     compile ('com.google.inject.extensions:guice-assistedinject:3.0'){
         exclude group: 'com.google.inject'
     }
@@ -82,5 +106,5 @@ dependencies {
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
 
-    compile 'com.android.support:design:22.2.0'
+    compile 'com.android.support:design:22.2.1'
 }
