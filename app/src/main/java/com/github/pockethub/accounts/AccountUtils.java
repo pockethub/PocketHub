@@ -15,11 +15,6 @@
  */
 package com.github.pockethub.accounts;
 
-import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
-import static android.content.DialogInterface.BUTTON_POSITIVE;
-import static android.util.Log.DEBUG;
-import static com.github.pockethub.accounts.AccountConstants.ACCOUNT_TYPE;
-import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerFuture;
@@ -40,13 +35,19 @@ import android.util.Log;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.LightAlertDialog;
 
+import org.eclipse.egit.github.core.User;
+import org.eclipse.egit.github.core.client.RequestException;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.client.RequestException;
+import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
+import static android.content.DialogInterface.BUTTON_POSITIVE;
+import static android.util.Log.DEBUG;
+import static com.github.pockethub.accounts.AccountConstants.ACCOUNT_TYPE;
+import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 
 /**
  * Helpers for accessing {@link AccountManager}
@@ -81,7 +82,7 @@ public class AccountUtils {
                 for (AuthenticatorDescription descriptor : types)
                     if (descriptor != null
                             && ACCOUNT_TYPE.equals(descriptor.type)) {
-                        HAS_AUTHENTICATOR = "com.github.mobile"
+                        HAS_AUTHENTICATOR = "com.github.pockethub"
                                 .equals(descriptor.packageName);
                         break;
                     }

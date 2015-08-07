@@ -49,7 +49,7 @@
 
     <com.github.pockethub.ui.ViewPager
         android:id="@+id/vp_pages"
-        app:layout_behavior="com.github.mobile.ui.PatchedScrollingViewBehavior"
+        app:layout_behavior="com.github.pockethub.ui.PatchedScrollingViewBehavior"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

@@ -15,11 +15,7 @@
  */
 package com.github.pockethub;
 
-import static org.eclipse.egit.github.core.RepositoryId.createFromUrl;
 import android.content.Intent;
-
-import java.io.Serializable;
-import java.util.ArrayList;
 
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.GistFile;
@@ -27,6 +23,11 @@ import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.User;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+
+import static org.eclipse.egit.github.core.RepositoryId.createFromUrl;
 
 /**
  * Helper for creating intents
@@ -36,7 +37,7 @@ public class Intents {
     /**
      * Prefix for all intents created
      */
-    public static final String INTENT_PREFIX = "com.github.mobile.";
+    public static final String INTENT_PREFIX = "com.github.pockethub.";
 
     /**
      * Prefix for all extra data added to intents
