@@ -34,14 +34,14 @@ android {
             githubProps.load(new FileInputStream(file('../github.properties')))
         } else {
             logger.log(LogLevel.ERROR, "github.properties can not be found, please add it to the project root")
-
-            resValue "string", "github_secret", getValue(githubProps, "GITHUB_SECRET")
-            resValue "string", "github_client", getValue(githubProps, "GITHUB_CLIENT")
-
-            String oauth = getValue(githubProps, "GITHUB_CALLBACK")
-            resValue "string", "github_oauth", oauth
-            resValue "string", "github_oauth_scheme", oauth != "DEFAULT" ? oauth.split("://")[0] : "DEFAULT"
         }
+            
+        resValue "string", "github_secret", getValue(githubProps, "GITHUB_SECRET")
+        resValue "string", "github_client", getValue(githubProps, "GITHUB_CLIENT")
+
+        String oauth = getValue(githubProps, "GITHUB_CALLBACK")
+        resValue "string", "github_oauth", oauth
+        resValue "string", "github_oauth_scheme", oauth != "DEFAULT" ? oauth.split("://")[0] : "DEFAULT"
 
         buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
         buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
