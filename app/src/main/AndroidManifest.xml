@@ -231,7 +231,7 @@
         <activity
             android:name="com.github.pockethub.accounts.LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleInstance">
+            android:launchMode="singleTop">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -346,7 +346,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.github.pockethub.accounts.LoginWebViewActivity"/>
+        <activity android:name="com.github.pockethub.accounts.LoginWebViewActivity"
+            android:launchMode="singleTop"/>
 
         <service
             android:name="com.github.pockethub.sync.SyncAdapterService"
