@@ -70,6 +70,7 @@
     <string name="loading_commits">Loading Commits…</string>
     <string name="loading_files_and_comments">Loading Files &amp; Comments…</string>
     <string name="loading_refs">Loading Branches &amp; Tags…</string>
+    <string name="loading">Loading…</string>
     <!--  -->
 
 
