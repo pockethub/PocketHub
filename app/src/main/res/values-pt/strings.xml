@@ -276,9 +276,9 @@
     <string name="confirm_comment_delete_title">Apagar Comentário</string>
     <string name="copy_hash">Copiar hash</string>
     <string name="delete_successful">Repositório excluído</string>
-    <string name="deleting_comment">Apagando comentário...</string>
-    <string name="deleting_repository">Excluindo...</string>
-    <string name="editing_comment">Editando comentário...</string>
+    <string name="deleting_comment">Apagando comentário…</string>
+    <string name="deleting_repository">Excluindo…</string>
+    <string name="editing_comment">Editando comentário…</string>
     <string name="error_contributors_load">Carregamento dos contribuidores falhou</string>
     <string name="error_deleting_repository">Exclusão falhou</string>
     <string name="global_search">Pesquisa GitHub</string>
