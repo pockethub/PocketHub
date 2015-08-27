@@ -53,12 +53,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="8dp"
-        android:layout_below="@id/sliding_tabs_layout"
-        android:background="@drawable/toolbar_shadow" />
-
     <ProgressBar
         android:id="@+id/progress_bar"
         style="@style/ListSpinner"
