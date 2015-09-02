@@ -1,6 +1,5 @@
 package com.github.pockethub.ui;
 
-import static com.github.pockethub.ui.NavigationDrawerObject.TYPE_SEPERATOR;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
@@ -16,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
+import com.bugsnag.android.Bugsnag;
 import com.github.pockethub.R;
 import com.github.pockethub.accounts.AccountUtils;
 import com.github.pockethub.core.user.UserComparator;
@@ -29,10 +29,12 @@ import com.github.pockethub.util.AvatarLoader;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import org.eclipse.egit.github.core.User;
+
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.egit.github.core.User;
+import static com.github.pockethub.ui.NavigationDrawerObject.TYPE_SEPERATOR;
 
 public class MainActivity extends BaseActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks,
     LoaderManager.LoaderCallbacks<List<User>> {
@@ -59,6 +61,7 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bugsnag.init(this);
         setContentView(R.layout.activity_main);
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
