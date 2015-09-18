@@ -32,6 +32,9 @@ import android.widget.Toast;
 
 import com.alorma.github.basesdk.ApiClient;
 import com.alorma.github.basesdk.client.BaseClient;
+import com.alorma.github.basesdk.client.GithubDeveloperCredentialsProvider;
+import com.alorma.github.basesdk.client.credentials.GithubDeveloperCredentials;
+import com.alorma.github.sdk.bean.dto.response.Organization;
 import com.alorma.github.sdk.bean.dto.response.Token;
 import com.alorma.github.sdk.login.AccountsHelper;
 import com.alorma.github.sdk.security.GitHub;
@@ -47,7 +50,7 @@ import com.squareup.okhttp.HttpUrl;
 
 import java.util.List;
 
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -90,7 +93,7 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity imp
     }
 
     public static class AccountLoader extends
-        AuthenticatedUserTask<List<User>> {
+        AuthenticatedUserTask<List<Organization>> {
 
         @Inject
         private AccountDataManager cache;
@@ -100,7 +103,7 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity imp
         }
 
         @Override
-        protected List<User> run(Account account) throws Exception {
+        protected List<Organization> run(Account account) throws Exception {
             return cache.getOrgs(true);
         }
     }
@@ -183,10 +186,10 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity imp
     }
 
     public void handleLogin() {
-        openLoginInBrowser(new GitHub(this));
+        openLoginInBrowser(GithubDeveloperCredentials.getInstance().getProvider());
     }
 
-    private void openLoginInBrowser(ApiClient client) {
+    private void openLoginInBrowser(GithubDeveloperCredentialsProvider client) {
         String initialScope = "user,public_repo,repo,delete_repo,notifications,gist";
         HttpUrl.Builder url = new HttpUrl.Builder()
                 .scheme("https")
