@@ -15,7 +15,6 @@
  */
 package com.github.pockethub.accounts;
 
-import static com.github.pockethub.accounts.AccountConstants.PROVIDER_AUTHORITY;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
@@ -45,12 +44,14 @@ import com.github.pockethub.ui.roboactivities.RoboActionBarAccountAuthenticatorA
 import com.google.inject.Inject;
 import com.squareup.okhttp.HttpUrl;
 
-import java.util.List;
-
 import org.eclipse.egit.github.core.User;
+
+import java.util.List;
 
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+
+import static com.github.pockethub.accounts.AccountConstants.PROVIDER_AUTHORITY;
 
 /**
  * Activity to login
@@ -130,8 +131,9 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity imp
 
         accounts = accountManager.getAccountsByType(getString(R.string.account_type));
 
-        if (accounts != null && accounts.length > 0)
+        if (accounts != null && accounts.length > 0) {
             openMain();
+        }
     }
 
     @Override
@@ -169,8 +171,10 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity imp
     }
 
     private void openMain() {
-        if(progressDialog != null)
+        if (progressDialog != null) {
             progressDialog.dismiss();
+        }
+
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
