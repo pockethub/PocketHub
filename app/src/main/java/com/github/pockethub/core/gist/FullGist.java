@@ -20,12 +20,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.eclipse.egit.github.core.Comment;
-import org.eclipse.egit.github.core.Gist;
+import com.alorma.github.sdk.bean.dto.response.Gist;
+import com.alorma.github.sdk.bean.dto.response.GithubComment;
 
 /**
  * Gist model with comments and starred status
  */
-public class FullGist extends ArrayList<Comment> implements Serializable {
+public class FullGist extends ArrayList<GithubComment> implements Serializable {
 
     private static final long serialVersionUID = -5966699489498437000L;
 
@@ -41,7 +42,7 @@ public class FullGist extends ArrayList<Comment> implements Serializable {
      * @param comments
      */
     public FullGist(final Gist gist, final boolean starred,
-            final Collection<Comment> comments) {
+            final Collection<GithubComment> comments) {
         super(comments);
 
         this.starred = starred;

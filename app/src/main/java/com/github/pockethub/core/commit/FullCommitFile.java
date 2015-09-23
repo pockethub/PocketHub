@@ -17,12 +17,12 @@ package com.github.pockethub.core.commit;
 
 import android.util.SparseArray;
 
+import com.alorma.github.sdk.bean.dto.response.CommitComment;
+import com.alorma.github.sdk.bean.dto.response.CommitFile;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.eclipse.egit.github.core.CommitComment;
-import org.eclipse.egit.github.core.CommitFile;
 
 /**
  * Commit file with comments
@@ -62,7 +62,7 @@ public class FullCommitFile {
      * @return this file
      */
     public FullCommitFile add(final CommitComment comment) {
-        int line = comment.getPosition();
+        int line = comment.position;
         if (line >= 0) {
             List<CommitComment> lineComments = comments.get(line);
             if (lineComments == null) {
