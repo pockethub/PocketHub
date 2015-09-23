@@ -20,7 +20,7 @@ import android.test.AndroidTestCase;
 
 import com.github.pockethub.core.user.UserUriMatcher;
 
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * Unit tests of {@link UserUriMatcher}
@@ -51,7 +51,7 @@ public class UserUriMatcherTest extends AndroidTestCase {
         User user = UserUriMatcher.getUser(Uri
                 .parse("http://github.com/defunkt"));
         assertNotNull(user);
-        assertEquals("defunkt", user.getLogin());
+        assertEquals("defunkt", user.login);
     }
 
     /**
@@ -61,7 +61,7 @@ public class UserUriMatcherTest extends AndroidTestCase {
         User user = UserUriMatcher.getUser(Uri
                 .parse("https://github.com/mojombo"));
         assertNotNull(user);
-        assertEquals("mojombo", user.getLogin());
+        assertEquals("mojombo", user.login);
     }
 
     /**
@@ -71,7 +71,7 @@ public class UserUriMatcherTest extends AndroidTestCase {
         User user = UserUriMatcher.getUser(Uri
                 .parse("http://github.com/defunkt/"));
         assertNotNull(user);
-        assertEquals("defunkt", user.getLogin());
+        assertEquals("defunkt", user.login);
     }
 
     /**
@@ -81,6 +81,6 @@ public class UserUriMatcherTest extends AndroidTestCase {
         User user = UserUriMatcher.getUser(Uri
                 .parse("http://github.com/defunkt//"));
         assertNotNull(user);
-        assertEquals("defunkt", user.getLogin());
+        assertEquals("defunkt", user.login);
     }
 }

@@ -22,7 +22,7 @@ import android.test.AndroidTestCase;
 import com.github.pockethub.accounts.GitHubAccount;
 import com.github.pockethub.core.user.UserComparator;
 
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * Unit tests of {@link UserComparator}
@@ -37,18 +37,18 @@ public class UserComparatorTest extends AndroidTestCase {
                 AccountManager.get(getContext()));
         UserComparator comparator = new UserComparator(account);
 
-        assertTrue(comparator.compare(new User().setLogin("m"),
-                new User().setLogin("a")) < 0);
-        assertTrue(comparator.compare(new User().setLogin("a"),
-                new User().setLogin("m")) > 0);
-        assertTrue(comparator.compare(new User().setLogin("m"),
-                new User().setLogin("z")) < 0);
-        assertTrue(comparator.compare(new User().setLogin("z"),
-                new User().setLogin("m")) > 0);
+        assertTrue(comparator.compare(createUser("m"),
+                createUser("a")) < 0);
+        assertTrue(comparator.compare(createUser("a"),
+                createUser("m")) > 0);
+        assertTrue(comparator.compare(createUser("m"),
+                createUser("z")) < 0);
+        assertTrue(comparator.compare(createUser("z"),
+                createUser("m")) > 0);
         assertEquals(
                 0,
-                comparator.compare(new User().setLogin("m"),
-                        new User().setLogin("m")));
+                comparator.compare(createUser("m"),
+                        createUser("m")));
     }
 
     /**
@@ -59,9 +59,15 @@ public class UserComparatorTest extends AndroidTestCase {
                 AccountManager.get(getContext()));
         UserComparator comparator = new UserComparator(account);
 
-        assertTrue(comparator.compare(new User().setLogin("a"),
-                new User().setLogin("c")) < 0);
-        assertTrue(comparator.compare(new User().setLogin("db"),
-                new User().setLogin("da")) > 0);
+        assertTrue(comparator.compare(createUser("a"),
+                createUser("c")) < 0);
+        assertTrue(comparator.compare(createUser("db"),
+                createUser("da")) > 0);
+    }
+
+    private User createUser(String login){
+        User user = new User();
+        user.login = login;
+        return user;
     }
 }

@@ -23,8 +23,9 @@ import com.github.pockethub.R.id;
 import com.github.pockethub.tests.ActivityTest;
 import com.github.pockethub.ui.issue.EditIssueActivity;
 
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
+import com.github.pockethub.util.InfoUtils;
 
 /**
  * Tests of {@link EditIssueActivity}
@@ -42,9 +43,7 @@ public class EditIssueActivityTest extends ActivityTest<EditIssueActivity> {
     protected void setUp() throws Exception {
         super.setUp();
 
-        Repository repo = new Repository();
-        repo.setName("repo");
-        repo.setOwner(new User().setLogin("owner"));
+        Repo repo = InfoUtils.createRepoFromData("owner", "repo");
         setActivityIntent(EditIssueActivity.createIntent(repo));
     }
 

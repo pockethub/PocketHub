@@ -17,12 +17,13 @@ package com.github.pockethub.tests.repo;
 
 import android.test.AndroidTestCase;
 
+import com.alorma.github.sdk.bean.dto.response.GithubEvent;
+import com.alorma.github.sdk.bean.dto.response.events.EventType;
+import com.alorma.github.sdk.bean.dto.response.events.payload.ForkEventPayload;
 import com.github.pockethub.core.repo.RepositoryEventMatcher;
 
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.event.Event;
-import org.eclipse.egit.github.core.event.ForkPayload;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * Unit tests of {@link RepositoryEventMatcher}
@@ -34,19 +35,23 @@ public class RepositoryEventMatcherTest extends AndroidTestCase {
      */
     public void testIncompleteRepositoryFork() {
         RepositoryEventMatcher matcher = new RepositoryEventMatcher();
-        Event event = new Event();
-        event.setType(Event.TYPE_FORK);
-        ForkPayload payload = new ForkPayload();
-        event.setPayload(payload);
+        GithubEvent event = new GithubEvent();
+        event.type = (EventType.ForkEvent);
+        ForkEventPayload payload = new ForkEventPayload();
+        event.payload = payload;
         assertNull(matcher.getRepository(event));
-        Repository repository = new Repository();
-        payload.setForkee(repository);
+
+        Repo repository = new Repo();
+        payload.forkee = repository;
         assertNull(matcher.getRepository(event));
-        repository.setName("repo");
+
+        repository.name = "repo";
         assertNull(matcher.getRepository(event));
-        repository.setOwner(new User());
+
+        repository.owner = new User();
         assertNull(matcher.getRepository(event));
-        repository.getOwner().setLogin("owner");
+
+        repository.owner.login = "owner";
         assertEquals(repository, matcher.getRepository(event));
     }
 

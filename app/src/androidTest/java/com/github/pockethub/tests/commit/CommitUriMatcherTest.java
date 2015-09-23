@@ -50,9 +50,9 @@ public class CommitUriMatcherTest extends AndroidTestCase {
         assertNotNull(commit);
         assertEquals("abcd", commit.commit);
         assertNotNull(commit.repository);
-        assertEquals("resque", commit.repository.getName());
-        assertNotNull(commit.repository.getOwner());
-        assertEquals("defunkt", commit.repository.getOwner().getLogin());
+        assertEquals("resque", commit.repository.name);
+        assertNotNull(commit.repository.owner);
+        assertEquals("defunkt", commit.repository.owner.login);
     }
 
     /**
@@ -64,9 +64,9 @@ public class CommitUriMatcherTest extends AndroidTestCase {
         assertNotNull(commit);
         assertEquals("1234", commit.commit);
         assertNotNull(commit.repository);
-        assertEquals("resque", commit.repository.getName());
-        assertNotNull(commit.repository.getOwner());
-        assertEquals("defunkt", commit.repository.getOwner().getLogin());
+        assertEquals("resque", commit.repository.name);
+        assertNotNull(commit.repository.owner);
+        assertEquals("defunkt", commit.repository.owner.login);
     }
 
     /**
@@ -79,8 +79,8 @@ public class CommitUriMatcherTest extends AndroidTestCase {
         assertNotNull(commit);
         assertEquals("a1b2", commit.commit);
         assertNotNull(commit.repository);
-        assertEquals("resque", commit.repository.getName());
-        assertNotNull(commit.repository.getOwner());
-        assertEquals("defunkt", commit.repository.getOwner().getLogin());
+        assertEquals("resque", commit.repository.name);
+        assertNotNull(commit.repository.owner);
+        assertEquals("defunkt", commit.repository.owner.login);
     }
 }

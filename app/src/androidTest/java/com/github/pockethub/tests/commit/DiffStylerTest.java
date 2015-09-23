@@ -17,6 +17,7 @@ package com.github.pockethub.tests.commit;
 
 import android.test.AndroidTestCase;
 
+import com.alorma.github.sdk.bean.dto.response.CommitFile;
 import com.github.pockethub.ui.commit.DiffStyler;
 
 import java.io.BufferedReader;
@@ -24,8 +25,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.Collections;
 import java.util.List;
-
-import org.eclipse.egit.github.core.CommitFile;
 
 /**
  * Tests of {@link DiffStyler}
@@ -37,8 +36,8 @@ public class DiffStylerTest extends AndroidTestCase {
         String fileName = "file.txt";
         DiffStyler styler = new DiffStyler(getContext().getResources());
         CommitFile file = new CommitFile();
-        file.setFilename(fileName);
-        file.setPatch(patch);
+        file.filename = fileName;
+        file.patch = patch;
         styler.setFiles(Collections.singletonList(file));
         List<CharSequence> styled = styler.get(fileName);
         assertNotNull(styled);
@@ -70,10 +69,10 @@ public class DiffStylerTest extends AndroidTestCase {
     public void testEmptyPatch() {
         DiffStyler styler = new DiffStyler(getContext().getResources());
         CommitFile file = new CommitFile();
-        file.setFilename("file.txt");
+        file.filename = "file.txt";
         styler.setFiles(Collections.singletonList(file));
         assertTrue(styler.get("file.txt").isEmpty());
-        file.setPatch("");
+        file.patch = "";
         assertTrue(styler.get("file.txt").isEmpty());
     }
 

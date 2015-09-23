@@ -19,12 +19,14 @@ import static android.view.KeyEvent.KEYCODE_DEL;
 import android.view.View;
 import android.widget.EditText;
 
+import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.github.pockethub.R.id;
 import com.github.pockethub.tests.ActivityTest;
 import com.github.pockethub.ui.issue.CreateCommentActivity;
 
 import org.eclipse.egit.github.core.RepositoryId;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.User;
+import com.github.pockethub.util.InfoUtils;
 
 /**
  * Tests of {@link CreateCommentActivity}
@@ -43,8 +45,11 @@ public class CreateCommentActivityTest extends
     protected void setUp() throws Exception {
         super.setUp();
 
-        setActivityIntent(CreateCommentActivity.createIntent(new RepositoryId(
-            "o", "n"), 1, new User().setLogin("u")));
+        User user = new User();
+        user.login = "u";
+
+        setActivityIntent(CreateCommentActivity.createIntent(InfoUtils.createRepoFromData("o", "u")
+                , 1, user));
     }
 
     /**

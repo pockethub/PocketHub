@@ -19,7 +19,7 @@ import android.test.AndroidTestCase;
 
 import com.github.pockethub.core.gist.GistStore;
 
-import org.eclipse.egit.github.core.Gist;
+import com.alorma.github.sdk.bean.dto.response.Gist;
 import org.eclipse.egit.github.core.service.GistService;
 
 /**
@@ -31,18 +31,20 @@ public class GistStoreTest extends AndroidTestCase {
      * Verify issue is updated when re-added
      */
     public void testReuseIssue() {
-        GistStore store = new GistStore(new GistService());
+        GistStore store = new GistStore(mContext);
         assertNull(store.getGist("abcd"));
 
         Gist gist = new Gist();
-        gist.setId("abcd").setDescription("description");
+        gist.id = "abcd";
+        gist.description = "description";
         assertSame(gist, store.addGist(gist));
         assertSame(gist, store.getGist("abcd"));
 
         Gist gist2 = new Gist();
-        gist2.setId("abcd").setDescription("description2");
+        gist2.id = "abcd";
+        gist.description = "description2";
         assertSame(gist, store.addGist(gist2));
-        assertEquals(gist2.getDescription(), gist.getDescription());
+        assertEquals(gist2.description, gist.description);
         assertSame(gist, store.getGist("abcd"));
     }
 }
