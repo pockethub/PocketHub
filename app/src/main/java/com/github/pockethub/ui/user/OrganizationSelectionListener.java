@@ -15,7 +15,7 @@
  */
 package com.github.pockethub.ui.user;
 
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * Callback interface when the selected organization changes
