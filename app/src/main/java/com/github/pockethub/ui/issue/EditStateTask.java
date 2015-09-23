@@ -21,6 +21,7 @@ import static org.eclipse.egit.github.core.service.IssueService.STATE_CLOSED;
 import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 import android.accounts.Account;
 
+import com.alorma.github.sdk.bean.dto.response.IssueState;
 import com.github.pockethub.R;
 import com.github.pockethub.core.issue.IssueStore;
 import com.github.pockethub.ui.ConfirmDialogFragment;
@@ -28,8 +29,8 @@ import com.github.pockethub.ui.DialogFragmentActivity;
 import com.github.pockethub.ui.ProgressDialogTask;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
-import org.eclipse.egit.github.core.Issue;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.Issue;
 
 /**
  * Task to close or reopen an issue
@@ -39,7 +40,7 @@ public class EditStateTask extends ProgressDialogTask<Issue> {
     @Inject
     private IssueStore store;
 
-    private final IRepositoryIdProvider repositoryId;
+    private final Repo repositoryId;
 
     private final int issueNumber;
 
@@ -53,7 +54,7 @@ public class EditStateTask extends ProgressDialogTask<Issue> {
      * @param issueNumber
      */
     public EditStateTask(final DialogFragmentActivity activity,
-            final IRepositoryIdProvider repositoryId, final int issueNumber) {
+            final Repo repositoryId, final int issueNumber) {
         super(activity);
 
         this.repositoryId = repositoryId;
@@ -81,13 +82,12 @@ public class EditStateTask extends ProgressDialogTask<Issue> {
 
     @Override
     protected Issue run(Account account) throws Exception {
-        Issue editedIssue = new Issue();
-        editedIssue.setNumber(issueNumber);
+        IssueState state;
         if (close)
-            editedIssue.setState(STATE_CLOSED);
+            state = IssueState.closed;
         else
-            editedIssue.setState(STATE_OPEN);
-        return store.editIssue(repositoryId, editedIssue);
+            state = IssueState.open;
+        return store.changeState(repositoryId, issueNumber, state);
     }
 
     /**

@@ -19,15 +19,18 @@ import android.accounts.Account;
 import android.app.Activity;
 import android.util.Log;
 
+import com.alorma.github.sdk.bean.dto.request.CommitCommentRequest;
+import com.alorma.github.sdk.bean.dto.response.CommitComment;
+import com.alorma.github.sdk.services.commit.PublishCommitCommentClient;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.ProgressDialogTask;
 import com.github.pockethub.util.HtmlUtils;
+import com.github.pockethub.util.InfoUtils;
+import com.github.pockethub.util.RequestUtils;
 import com.github.pockethub.util.ToastUtils;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.CommitComment;
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
-import org.eclipse.egit.github.core.service.CommitService;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 
 /**
  * Task to comment on a commit
@@ -36,14 +39,11 @@ public class CreateCommentTask extends ProgressDialogTask<CommitComment> {
 
     private static final String TAG = "CreateCommentTask";
 
-    @Inject
-    private CommitService service;
-
-    private final IRepositoryIdProvider repository;
+    private final Repo repository;
 
     private final String commit;
 
-    private final CommitComment comment;
+    private final CommitCommentRequest comment;
 
     /**
      * Create task to create a comment
@@ -54,8 +54,8 @@ public class CreateCommentTask extends ProgressDialogTask<CommitComment> {
      * @param comment
      */
     protected CreateCommentTask(final Activity activity,
-            final IRepositoryIdProvider repository, final String commit,
-            final CommitComment comment) {
+            final Repo repository, final String commit,
+            final CommitCommentRequest comment) {
         super(activity);
 
         this.repository = repository;
@@ -76,9 +76,10 @@ public class CreateCommentTask extends ProgressDialogTask<CommitComment> {
 
     @Override
     public CommitComment run(final Account account) throws Exception {
-        CommitComment created = service.addComment(repository, commit, comment);
-        String formatted = HtmlUtils.format(created.getBodyHtml()).toString();
-        created.setBodyHtml(formatted);
+        CommitComment created = new PublishCommitCommentClient(context,
+                InfoUtils.createCommitInfo(repository, commit), comment).executeSync();
+
+        created.body_html = HtmlUtils.format(created.body_html).toString();
         return created;
 
     }

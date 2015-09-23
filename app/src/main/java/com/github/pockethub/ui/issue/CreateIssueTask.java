@@ -19,14 +19,18 @@ import android.accounts.Account;
 import android.app.Activity;
 import android.util.Log;
 
+import com.alorma.github.sdk.bean.dto.request.IssueRequest;
+import com.alorma.github.sdk.services.issues.PostNewIssueClient;
 import com.github.pockethub.R;
 import com.github.pockethub.core.issue.IssueStore;
 import com.github.pockethub.ui.ProgressDialogTask;
+import com.github.pockethub.util.InfoUtils;
+import com.github.pockethub.util.RequestUtils;
 import com.github.pockethub.util.ToastUtils;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
-import org.eclipse.egit.github.core.Issue;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.Issue;
 import org.eclipse.egit.github.core.service.IssueService;
 
 /**
@@ -37,28 +41,23 @@ public class CreateIssueTask extends ProgressDialogTask<Issue> {
     private static final String TAG = "CreateIssueTask";
 
     @Inject
-    private IssueService service;
-
-    @Inject
     private IssueStore store;
 
-    private final IRepositoryIdProvider repository;
+    private final Repo repository;
 
-    private final Issue issue;
+    private final IssueRequest request;
 
     /**
      * Create task to create an {@link Issue}
      *
      * @param activity
      * @param repository
-     * @param issue
-     */
-    public CreateIssueTask(final Activity activity,
-            final IRepositoryIdProvider repository, final Issue issue) {
+    request     */
+    public CreateIssueTask(final Activity activity, final Repo repository, final IssueRequest request) {
         super(activity);
 
         this.repository = repository;
-        this.issue = issue;
+        this.request = request;
     }
 
     /**
@@ -75,7 +74,7 @@ public class CreateIssueTask extends ProgressDialogTask<Issue> {
 
     @Override
     public Issue run(Account account) throws Exception {
-        return store.addIssue(service.createIssue(repository, issue));
+        return new PostNewIssueClient(context, InfoUtils.createRepoInfo(repository), request).executeSync();
     }
 
     @Override

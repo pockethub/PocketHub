@@ -18,6 +18,8 @@ package com.github.pockethub.ui.issue;
 import static com.github.pockethub.RequestCodes.ISSUE_LABELS_UPDATE;
 import android.accounts.Account;
 
+import com.alorma.github.sdk.bean.dto.request.EditIssueLabelsRequestDTO;
+import com.alorma.github.sdk.bean.dto.response.Label;
 import com.github.pockethub.R;
 import com.github.pockethub.core.issue.IssueStore;
 import com.github.pockethub.ui.DialogFragmentActivity;
@@ -27,9 +29,8 @@ import com.google.inject.Inject;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.Label;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.Issue;
 import org.eclipse.egit.github.core.service.LabelService;
 
 /**
@@ -40,12 +41,9 @@ public class EditLabelsTask extends ProgressDialogTask<Issue> {
     @Inject
     private IssueStore store;
 
-    @Inject
-    private LabelService service;
-
     private final LabelsDialog labelsDialog;
 
-    private final IRepositoryIdProvider repositoryId;
+    private final Repo repositoryId;
 
     private final int issueNumber;
 
@@ -59,13 +57,13 @@ public class EditLabelsTask extends ProgressDialogTask<Issue> {
      * @param issueNumber
      */
     public EditLabelsTask(final DialogFragmentActivity activity,
-            final IRepositoryIdProvider repositoryId, final int issueNumber) {
+            final Repo repositoryId, final int issueNumber) {
         super(activity);
 
         this.repositoryId = repositoryId;
         this.issueNumber = issueNumber;
         labelsDialog = new LabelsDialog(activity, ISSUE_LABELS_UPDATE,
-                repositoryId, service);
+                repositoryId);
     }
 
     /**
@@ -97,10 +95,11 @@ public class EditLabelsTask extends ProgressDialogTask<Issue> {
 
     @Override
     public Issue run(Account account) throws Exception {
-        Issue editedIssue = new Issue();
-        editedIssue.setNumber(issueNumber);
-        if (labels != null && labels.length > 0)
-            editedIssue.setLabels(Arrays.asList(labels));
-        return store.editIssue(repositoryId, editedIssue);
+        EditIssueLabelsRequestDTO requestDTO = new EditIssueLabelsRequestDTO();
+        requestDTO.labels = new String[labels.length];
+        for (int i = 0; i < labels.length; i++)
+            requestDTO.labels[i] = labels[i].name;
+
+        return store.editIssue(repositoryId, issueNumber, requestDTO);
     }
 }

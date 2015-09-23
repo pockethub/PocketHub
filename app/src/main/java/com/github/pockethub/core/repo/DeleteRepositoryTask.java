@@ -10,12 +10,13 @@ import com.github.pockethub.accounts.AccountAuthenticator;
 import com.github.pockethub.api.GitHubClientV2;
 import com.github.pockethub.model.Authorization;
 import com.github.pockethub.ui.ProgressDialogTask;
+import com.github.pockethub.util.InfoUtils;
 import com.google.inject.Inject;
 
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 import org.eclipse.egit.github.core.service.OAuthService;
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.eclipse.egit.github.core.util.EncodingUtils;
@@ -32,7 +33,7 @@ public class DeleteRepositoryTask extends ProgressDialogTask<Void> {
     @Inject
     private OAuthService oAuthService;
 
-    private final IRepositoryIdProvider repo;
+    private final Repo repo;
 
     /**
      * Create task for context and id provider
@@ -40,7 +41,7 @@ public class DeleteRepositoryTask extends ProgressDialogTask<Void> {
      * @param context
      * @param repo
      */
-    public DeleteRepositoryTask(Context context, IRepositoryIdProvider repo) {
+    public DeleteRepositoryTask(Context context, Repo repo) {
         super(context);
         this.repo = repo;
     }
@@ -58,7 +59,7 @@ public class DeleteRepositoryTask extends ProgressDialogTask<Void> {
 
     @Override
     protected Void run(Account account) throws Exception {
-        final String id = repo.generateId();
+        final String id = InfoUtils.createRepoId(repo);
         String[] paths = id.split("/");
         final String owner = paths[0];
         final String repository = paths[1];

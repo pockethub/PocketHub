@@ -19,10 +19,11 @@ import android.accounts.Account;
 import android.content.Context;
 import android.util.Log;
 
+import com.alorma.github.sdk.services.user.RequestUserClient;
 import com.github.pockethub.accounts.AuthenticatedUserTask;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.User;
 import org.eclipse.egit.github.core.service.UserService;
 
 /**
@@ -51,7 +52,7 @@ public class RefreshUserTask extends AuthenticatedUserTask<User> {
 
     @Override
     protected User run(Account account) throws Exception {
-        return service.getUser(login);
+        return new RequestUserClient(context, login).executeSync();
     }
 
     @Override

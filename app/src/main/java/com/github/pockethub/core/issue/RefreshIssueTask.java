@@ -19,37 +19,29 @@ import android.accounts.Account;
 import android.content.Context;
 import android.util.Log;
 
+import com.alorma.github.sdk.bean.dto.response.Issue;
+import com.alorma.github.sdk.bean.dto.response.IssueState;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.issue.IssueStory;
+import com.alorma.github.sdk.bean.issue.PullRequestStory;
+import com.alorma.github.sdk.services.issues.story.IssueStoryLoader;
+import com.alorma.github.sdk.services.pullrequest.story.PullRequestStoryLoader;
 import com.github.pockethub.accounts.AuthenticatedUserTask;
-import com.github.pockethub.util.HtmlUtils;
 import com.github.pockethub.util.HttpImageGetter;
+import com.github.pockethub.util.InfoUtils;
 import com.google.inject.Inject;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
-import org.eclipse.egit.github.core.Comment;
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.IssueEvent;
-import org.eclipse.egit.github.core.service.IssueService;
 
 /**
  * Task to load and store an {@link Issue}
  */
-public class RefreshIssueTask extends AuthenticatedUserTask<FullIssue> {
+public class RefreshIssueTask extends AuthenticatedUserTask<IssueStory> {
 
     private static final String TAG = "RefreshIssueTask";
 
     @Inject
-    private IssueService service;
-
-    @Inject
     private IssueStore store;
 
-    private final IRepositoryIdProvider repositoryId;
+    private final Repo repo;
 
     private final int issueNumber;
 
@@ -61,47 +53,37 @@ public class RefreshIssueTask extends AuthenticatedUserTask<FullIssue> {
      * Create task to refresh given issue
      *
      * @param context
-     * @param repositoryId
+     * @param repo
      * @param issueNumber
      * @param bodyImageGetter
      * @param commentImageGetter
      */
     public RefreshIssueTask(Context context,
-            IRepositoryIdProvider repositoryId, int issueNumber,
+            Repo repo, int issueNumber,
             HttpImageGetter bodyImageGetter, HttpImageGetter commentImageGetter) {
         super(context);
 
-        this.repositoryId = repositoryId;
+        this.repo = repo;
         this.issueNumber = issueNumber;
         this.bodyImageGetter = bodyImageGetter;
         this.commentImageGetter = commentImageGetter;
     }
 
     @Override
-    public FullIssue run(Account account) throws Exception {
-        Issue issue = store.refreshIssue(repositoryId, issueNumber);
-        bodyImageGetter.encode(issue.getId(), issue.getBodyHtml());
-        List<Comment> comments;
-        if (issue.getComments() > 0)
-            comments = service.getComments(repositoryId, issueNumber);
-        else
-            comments = Collections.emptyList();
+    public IssueStory run(Account account) throws Exception {
+        Issue issue = store.refreshIssue(repo, issueNumber);
+        bodyImageGetter.encode(issue.id, issue.body_html);
 
-        for (Comment comment : comments) {
-            String formatted = HtmlUtils.format(comment.getBodyHtml())
-                    .toString();
-            comment.setBodyHtml(formatted);
-            commentImageGetter.encode(comment.getId(), formatted);
+        if(issue.pullRequest != null) {
+            PullRequestStory story = new PullRequestStoryLoader(context, InfoUtils.createIssueInfo(repo, issue)).executeSync();
+            IssueStory issueStory = new IssueStory();
+            issueStory.issue = story.pullRequest;
+            issueStory.issue.pullRequest = story.pullRequest;
+            issueStory.details = story.details;
+            return issueStory;
+        }else {
+            return new IssueStoryLoader(context, InfoUtils.createIssueInfo(repo, issue)).executeSync();
         }
-
-        String[] repo = repositoryId.generateId().split("/");
-        Iterator<Collection<IssueEvent>> eventsIterator = service.pageIssueEvents(repo[0], repo[1], issueNumber).iterator();
-        List<IssueEvent> events = new ArrayList<>();
-
-        while (eventsIterator.hasNext())
-            events.addAll(eventsIterator.next());
-
-        return new FullIssue(issue, comments, events);
     }
 
     @Override

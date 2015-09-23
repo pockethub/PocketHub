@@ -19,11 +19,12 @@ import android.accounts.Account;
 import android.content.Context;
 import android.util.Log;
 
+import com.alorma.github.sdk.services.repo.actions.UnstarRepoClient;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.ProgressDialogTask;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 import org.eclipse.egit.github.core.service.WatcherService;
 
 /**
@@ -36,7 +37,7 @@ public class UnstarRepositoryTask extends ProgressDialogTask<Void> {
     @Inject
     private WatcherService service;
 
-    private final IRepositoryIdProvider repo;
+    private final Repo repo;
 
     /**
      * Create task for context and id provider
@@ -44,7 +45,7 @@ public class UnstarRepositoryTask extends ProgressDialogTask<Void> {
      * @param context
      * @param repo
      */
-    public UnstarRepositoryTask(Context context, IRepositoryIdProvider repo) {
+    public UnstarRepositoryTask(Context context, Repo repo) {
         super(context);
 
         this.repo = repo;
@@ -63,8 +64,7 @@ public class UnstarRepositoryTask extends ProgressDialogTask<Void> {
 
     @Override
     protected Void run(Account account) throws Exception {
-        service.unwatch(repo);
-
+        new UnstarRepoClient(context, repo.owner.login, repo.name).executeSync();
         return null;
     }
 

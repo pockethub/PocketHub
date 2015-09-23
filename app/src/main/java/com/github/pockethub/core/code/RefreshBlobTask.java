@@ -18,31 +18,28 @@ package com.github.pockethub.core.code;
 import android.accounts.Account;
 import android.content.Context;
 
+import com.alorma.github.sdk.bean.dto.response.GitBlob;
+import com.alorma.github.sdk.services.git.GetGitBlobClient;
 import com.github.pockethub.accounts.AuthenticatedUserTask;
-import com.google.inject.Inject;
+import com.github.pockethub.util.InfoUtils;
 
-import org.eclipse.egit.github.core.Blob;
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.service.DataService;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 
 /**
  * Task to refresh a blob
  */
-public class RefreshBlobTask extends AuthenticatedUserTask<Blob> {
+public class RefreshBlobTask extends AuthenticatedUserTask<GitBlob> {
 
-    private final Repository repository;
+    private final Repo repository;
 
     private final String blobSha;
-
-    @Inject
-    private DataService service;
 
     /**
      * @param repository
      * @param blobSha
      * @param context
      */
-    public RefreshBlobTask(Repository repository, String blobSha,
+    public RefreshBlobTask(Repo repository, String blobSha,
             Context context) {
         super(context);
 
@@ -51,7 +48,7 @@ public class RefreshBlobTask extends AuthenticatedUserTask<Blob> {
     }
 
     @Override
-    protected Blob run(Account account) throws Exception {
-        return service.getBlob(repository, blobSha);
+    protected GitBlob run(Account account) throws Exception {
+        return new GetGitBlobClient(context, InfoUtils.createCommitInfo(repository, blobSha)).executeSync();
     }
 }

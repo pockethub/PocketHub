@@ -20,18 +20,19 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.alorma.github.sdk.bean.dto.response.GitCommit;
+import com.alorma.github.sdk.bean.dto.response.GitReference;
+import com.alorma.github.sdk.bean.dto.response.GitTree;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.services.git.GetGitCommitClient;
+import com.alorma.github.sdk.services.git.GetGitTreeClient;
+import com.alorma.github.sdk.services.git.GetReferenceClient;
+import com.alorma.github.sdk.services.repo.GetRepoClient;
 import com.github.pockethub.accounts.AuthenticatedUserTask;
 import com.github.pockethub.core.ref.RefUtils;
-import com.google.inject.Inject;
+import com.github.pockethub.util.InfoUtils;
 
 import java.io.IOException;
-
-import org.eclipse.egit.github.core.Commit;
-import org.eclipse.egit.github.core.Reference;
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.Tree;
-import org.eclipse.egit.github.core.service.DataService;
-import org.eclipse.egit.github.core.service.RepositoryService;
 
 /**
  * Task to load the tree for a repository's default branch
@@ -40,15 +41,9 @@ public class RefreshTreeTask extends AuthenticatedUserTask<FullTree> {
 
     private static final String TAG = "RefreshTreeTask";
 
-    private final Repository repository;
+    private final Repo repository;
 
-    private final Reference reference;
-
-    @Inject
-    private RepositoryService repoService;
-
-    @Inject
-    private DataService dataService;
+    private final GitReference reference;
 
     /**
      * Create task to refresh repository's tree
@@ -57,50 +52,50 @@ public class RefreshTreeTask extends AuthenticatedUserTask<FullTree> {
      * @param reference
      * @param context
      */
-    public RefreshTreeTask(final Repository repository,
-            final Reference reference, final Context context) {
+    public RefreshTreeTask(final Repo repository,
+            final GitReference reference, final Context context) {
         super(context);
 
         this.repository = repository;
         this.reference = reference;
     }
 
-    private boolean isValidRef(Reference ref) {
-        return ref != null && ref.getObject() != null
-                && !TextUtils.isEmpty(ref.getObject().getSha());
+    private boolean isValidRef(GitReference ref) {
+        return ref != null && ref.object != null
+                && !TextUtils.isEmpty(ref.object.sha);
     }
 
     @Override
     protected FullTree run(Account account) throws Exception {
-        Reference ref = reference;
+        GitReference ref = reference;
         String branch = RefUtils.getPath(ref);
         if (branch == null) {
-            branch = repository.getMasterBranch();
+            branch = repository.default_branch;
             if (TextUtils.isEmpty(branch)) {
-                branch = repoService.getRepository(repository)
-                        .getMasterBranch();
+                branch = new GetRepoClient(context, 
+                        InfoUtils.createRepoInfo(repository))
+                        .executeSync().default_branch;
                 if (TextUtils.isEmpty(branch))
                     throw new IOException(
-                            "Repository does not have master branch");
+                            "Repo does not have master branch");
             }
-            branch = "heads/" + branch;
+            branch = "refs/heads/" + branch;
         }
 
         if (!isValidRef(ref)) {
-            ref = dataService.getReference(repository, branch);
+            ref = new GetReferenceClient(context, InfoUtils.createRepoInfo(repository, branch)).executeSync();
             if (!isValidRef(ref))
                 throw new IOException(
                         "Reference does not have associated commit SHA-1");
         }
 
-        Commit commit = dataService.getCommit(repository, ref.getObject()
-                .getSha());
-        if (commit == null || commit.getTree() == null
-                || TextUtils.isEmpty(commit.getTree().getSha()))
+        GitCommit commit = new GetGitCommitClient(context,
+                InfoUtils.createRepoInfo(repository, ref.object.sha)).executeSync();
+        if (commit == null || commit.tree == null
+                || TextUtils.isEmpty(commit.tree.sha))
             throw new IOException("Commit does not have associated tree SHA-1");
 
-        Tree tree = dataService.getTree(repository, commit.getTree().getSha(),
-                true);
+        GitTree tree = new GetGitTreeClient(context, InfoUtils.createRepoInfo(repository, commit.tree.sha),true).executeSync();
         return new FullTree(tree, ref);
     }
 

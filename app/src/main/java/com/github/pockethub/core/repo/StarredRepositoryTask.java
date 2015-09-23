@@ -15,13 +15,14 @@
  */
 package com.github.pockethub.core.repo;
 
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 import org.eclipse.egit.github.core.service.WatcherService;
 
 import android.accounts.Account;
 import android.content.Context;
 import android.util.Log;
 
+import com.alorma.github.sdk.services.repo.actions.CheckRepoStarredClient;
 import com.github.pockethub.accounts.AuthenticatedUserTask;
 import com.google.inject.Inject;
 
@@ -35,7 +36,7 @@ public class StarredRepositoryTask extends AuthenticatedUserTask<Boolean> {
     @Inject
     private WatcherService service;
 
-    private final IRepositoryIdProvider repo;
+    private final Repo repo;
 
     /**
      * Create task for context and id provider
@@ -43,7 +44,7 @@ public class StarredRepositoryTask extends AuthenticatedUserTask<Boolean> {
      * @param context
      * @param repo
      */
-    public StarredRepositoryTask(Context context, IRepositoryIdProvider repo) {
+    public StarredRepositoryTask(Context context, Repo repo) {
         super(context);
 
         this.repo = repo;
@@ -51,7 +52,7 @@ public class StarredRepositoryTask extends AuthenticatedUserTask<Boolean> {
 
     @Override
     protected Boolean run(Account account) throws Exception {
-        return service.isWatching(repo);
+        return new CheckRepoStarredClient(context, repo.owner.login, repo.name).executeSync().getStatus() == 204;
     }
 
     @Override
