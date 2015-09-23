@@ -18,6 +18,8 @@ package com.github.pockethub.ui.issue;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 
+import com.alorma.github.sdk.bean.dto.response.Label;
+import com.alorma.github.sdk.bean.dto.response.Milestone;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.R;
@@ -26,9 +28,8 @@ import com.github.pockethub.util.AvatarLoader;
 
 import java.util.Collection;
 
-import org.eclipse.egit.github.core.Label;
-import org.eclipse.egit.github.core.Milestone;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.User;
+import com.github.pockethub.util.InfoUtils;
 
 /**
  * Adapter to display a list of {@link IssueFilter} objects
@@ -61,8 +62,8 @@ public class FilterListAdapter extends SingleTypeAdapter<IssueFilter> {
 
     @Override
     protected void update(int position, IssueFilter filter) {
-        avatars.bind(imageView(0), filter.getRepository().getOwner());
-        setText(1, filter.getRepository().generateId());
+        avatars.bind(imageView(0), filter.getRepository().owner);
+        setText(1, InfoUtils.createRepoId(filter.getRepository()));
         if (filter.isOpen())
             setText(2, R.string.open_issues);
         else
@@ -78,14 +79,14 @@ public class FilterListAdapter extends SingleTypeAdapter<IssueFilter> {
 
         Milestone milestone = filter.getMilestone();
         if (milestone != null)
-            ViewUtils.setGone(setText(4, milestone.getTitle()), false);
+            ViewUtils.setGone(setText(4, milestone.title), false);
         else
             setGone(4, true);
 
         User assignee = filter.getAssignee();
         if (assignee != null) {
             avatars.bind(imageView(7), assignee);
-            ViewUtils.setGone(setText(6, assignee.getLogin()), false);
+            ViewUtils.setGone(setText(6, assignee.login), false);
         } else
             setGone(5, true);
     }

@@ -23,14 +23,14 @@ import com.github.pockethub.R;
 import com.github.pockethub.ui.StyledText;
 import com.github.pockethub.util.TypefaceUtils;
 
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * Adapter for a list of repositories
  */
 public class UserRepositoryListAdapter extends
-        RepositoryListAdapter<Repository> {
+        RepositoryListAdapter<Repo> {
 
     private final String login;
 
@@ -44,15 +44,15 @@ public class UserRepositoryListAdapter extends
      * @param user
      */
     public UserRepositoryListAdapter(LayoutInflater inflater,
-            Repository[] elements, User user) {
+            Repo[] elements, User user) {
         super(R.layout.user_repo_item, inflater, elements);
 
-        login = user.getLogin();
+        login = user.login;
     }
 
     @Override
     public long getItemId(final int position) {
-        return getItem(position).getId();
+        return getItem(position).id;
     }
 
     @Override
@@ -73,17 +73,17 @@ public class UserRepositoryListAdapter extends
     }
 
     @Override
-    protected void update(int position, Repository repository) {
+    protected void update(int position, Repo repository) {
         StyledText name = new StyledText();
-        if (!login.equals(repository.getOwner().getLogin()))
-            name.foreground(repository.getOwner().getLogin(), descriptionColor)
+        if (!login.equals(repository.owner.login))
+            name.foreground(repository.owner.login, descriptionColor)
                     .foreground('/', descriptionColor);
-        name.bold(repository.getName());
+        name.bold(repository.name);
         setText(5, name);
 
-        updateDetails(repository.getDescription(), repository.getLanguage(),
-                repository.getWatchers(), repository.getForks(),
-                repository.isPrivate(), repository.isFork(),
-                repository.getMirrorUrl());
+        updateDetails(repository.description, repository.language,
+                repository.watchers_count, repository.forks_count,
+                repository.isPrivate, repository.fork,
+                repository.mirror_url);
     }
 }

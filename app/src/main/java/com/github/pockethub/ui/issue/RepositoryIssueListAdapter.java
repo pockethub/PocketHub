@@ -22,9 +22,12 @@ import android.widget.TextView;
 import com.github.pockethub.R;
 import com.github.pockethub.core.issue.IssueUtils;
 import com.github.pockethub.util.AvatarLoader;
+import com.github.pockethub.util.TimeUtils;
 import com.github.pockethub.util.TypefaceUtils;
 
-import org.eclipse.egit.github.core.Issue;
+import com.alorma.github.sdk.bean.dto.response.Issue;
+
+import java.sql.Time;
 
 /**
  * Adapter for a list of {@link Issue} objects
@@ -45,7 +48,7 @@ public class RepositoryIssueListAdapter extends IssueListAdapter<Issue> {
 
     @Override
     public long getItemId(int position) {
-        return getItem(position).getId();
+        return Long.parseLong(getItem(position).id);
     }
 
     @Override
@@ -60,7 +63,7 @@ public class RepositoryIssueListAdapter extends IssueListAdapter<Issue> {
 
     @Override
     protected int getNumber(Issue issue) {
-        return issue.getNumber();
+        return issue.number;
     }
 
     @Override
@@ -73,16 +76,16 @@ public class RepositoryIssueListAdapter extends IssueListAdapter<Issue> {
 
     @Override
     protected void update(int position, Issue issue) {
-        updateNumber(issue.getNumber(), issue.getState(), numberPaintFlags, 0);
+        updateNumber(issue.number, issue.state, numberPaintFlags, 0);
 
-        avatars.bind(imageView(2), issue.getUser());
+        avatars.bind(imageView(2), issue.user);
 
         setGone(5, !IssueUtils.isPullRequest(issue));
 
-        setText(1, issue.getTitle());
+        setText(1, issue.title);
 
-        updateReporter(issue.getUser().getLogin(), issue.getCreatedAt(), 3);
-        setNumber(4, issue.getComments());
-        updateLabels(issue.getLabels(), 6);
+        updateReporter(issue.user.login, TimeUtils.stringToDate(issue.created_at), 3);
+        setNumber(4, issue.comments);
+        updateLabels(issue.labels, 6);
     }
 }

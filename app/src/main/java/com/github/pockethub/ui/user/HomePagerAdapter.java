@@ -28,7 +28,7 @@ import com.github.pockethub.ui.repo.RepositoryListFragment;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * Pager adapter for a user's different views
@@ -81,7 +81,7 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
 
         if (fragment != null) {
             Bundle args = new Bundle();
-            args.putSerializable("org", org);
+            args.putParcelable("org", org);
             fragment.setArguments(args);
         }
         return fragment;

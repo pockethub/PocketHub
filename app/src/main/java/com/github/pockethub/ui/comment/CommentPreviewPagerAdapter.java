@@ -22,14 +22,14 @@ import android.support.v7.app.ActionBarActivity;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.FragmentPagerAdapter;
 
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 
 /**
  * Pager of a raw and rendered comment text
  */
 public class CommentPreviewPagerAdapter extends FragmentPagerAdapter {
 
-    private final IRepositoryIdProvider repo;
+    private final Repo repo;
 
     private RawCommentFragment textFragment;
 
@@ -47,7 +47,7 @@ public class CommentPreviewPagerAdapter extends FragmentPagerAdapter {
      * @param repo
      */
     public CommentPreviewPagerAdapter(ActionBarActivity activity,
-            IRepositoryIdProvider repo) {
+            Repo repo) {
         super(activity);
         this.context = activity.getApplicationContext();
         this.repo = repo;

@@ -20,6 +20,8 @@ import android.content.res.Resources;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 
+import com.alorma.github.sdk.bean.dto.response.CommitComment;
+import com.alorma.github.sdk.bean.dto.response.CommitFile;
 import com.github.kevinsawicki.wishlist.MultiTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.R;
@@ -31,8 +33,6 @@ import com.github.pockethub.util.TimeUtils;
 
 import java.util.List;
 
-import org.eclipse.egit.github.core.CommitComment;
-import org.eclipse.egit.github.core.CommitFile;
 
 /**
  * Adapter to display a list of files changed in commits
@@ -86,14 +86,14 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
     public long getItemId(int position) {
         switch (getItemViewType(position)) {
         case TYPE_FILE_HEADER:
-            String sha = ((CommitFile) getItem(position)).getSha();
+            String sha = ((CommitFile) getItem(position)).sha;
             if (!TextUtils.isEmpty(sha))
                 return sha.hashCode();
             else
                 return super.getItemId(position);
         case TYPE_COMMENT:
         case TYPE_LINE_COMMENT:
-            return ((CommitComment) getItem(position)).getId();
+            return Long.parseLong(((CommitComment) getItem(position)).id);
         default:
             return super.getItemId(position);
         }
@@ -107,7 +107,7 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
      */
     public void addItem(final FullCommitFile file) {
         addItem(TYPE_FILE_HEADER, file.getFile());
-        List<CharSequence> lines = diffStyler.get(file.getFile().getFilename());
+        List<CharSequence> lines = diffStyler.get(file.getFile().filename);
         int number = 0;
         for (CharSequence line : lines) {
             addItem(TYPE_FILE_LINE, line);
@@ -124,7 +124,7 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
      */
     public void addItem(final CommitFile file) {
         addItem(TYPE_FILE_HEADER, file);
-        addItems(TYPE_FILE_LINE, diffStyler.get(file.getFilename()));
+        addItems(TYPE_FILE_LINE, diffStyler.get(file.filename));
     }
 
     /**
@@ -173,7 +173,7 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
         switch (type) {
         case TYPE_FILE_HEADER:
             CommitFile file = (CommitFile) item;
-            String path = file.getFilename();
+            String path = file.filename;
             int lastSlash = path.lastIndexOf('/');
             if (lastSlash != -1) {
                 setText(0, path.substring(lastSlash + 1));
@@ -186,11 +186,11 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
 
             StyledText stats = new StyledText();
             stats.foreground('+', addTextColor);
-            stats.foreground(FORMAT_INT.format(file.getAdditions()),
+            stats.foreground(FORMAT_INT.format(file.additions),
                     addTextColor);
             stats.append(' ').append(' ').append(' ');
             stats.foreground('-', removeTextColor);
-            stats.foreground(FORMAT_INT.format(file.getDeletions()),
+            stats.foreground(FORMAT_INT.format(file.deletions),
                     removeTextColor);
             setText(2, stats);
             return;
@@ -201,11 +201,11 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
         case TYPE_LINE_COMMENT:
         case TYPE_COMMENT:
             CommitComment comment = (CommitComment) item;
-            avatars.bind(imageView(1), comment.getUser());
-            setText(2, comment.getUser().getLogin());
-            setText(3, TimeUtils.getRelativeTime(comment.getUpdatedAt()));
-            imageGetter.bind(textView(0), comment.getBodyHtml(),
-                    comment.getId());
+            avatars.bind(imageView(1), comment.user);
+            setText(2, comment.user.login);
+            setText(3, TimeUtils.getRelativeTime(comment.updated_at));
+            imageGetter.bind(textView(0), comment.body_html,
+                    comment.id);
         }
     }
 }

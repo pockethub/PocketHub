@@ -29,14 +29,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * Adapter for the default account's repositories
  */
 public class DefaultRepositoryListAdapter extends
-        RepositoryListAdapter<Repository> {
+        RepositoryListAdapter<Repo> {
 
     private int descriptionColor;
 
@@ -54,7 +54,7 @@ public class DefaultRepositoryListAdapter extends
      * @param account
      */
     public DefaultRepositoryListAdapter(LayoutInflater inflater,
-            Repository[] elements, AtomicReference<User> account) {
+            Repo[] elements, AtomicReference<User> account) {
         super(R.layout.repo_item, inflater, elements);
 
         this.account = account;
@@ -78,9 +78,9 @@ public class DefaultRepositoryListAdapter extends
      * @param text
      * @return this adapter
      */
-    public DefaultRepositoryListAdapter registerHeader(Repository repository,
+    public DefaultRepositoryListAdapter registerHeader(Repo repository,
             String text) {
-        headers.put(repository.getId(), text);
+        headers.put(repository.id, text);
         return this;
     }
 
@@ -91,8 +91,8 @@ public class DefaultRepositoryListAdapter extends
      * @return this adapter
      */
     public DefaultRepositoryListAdapter registerNoSeparator(
-            Repository repository) {
-        noSeparators.add(repository.getId());
+            Repo repository) {
+        noSeparators.add(repository.id);
         return this;
     }
 
@@ -115,26 +115,26 @@ public class DefaultRepositoryListAdapter extends
     }
 
     @Override
-    protected void update(int position, Repository repository) {
-        String headerValue = headers.get(repository.getId());
+    protected void update(int position, Repo repository) {
+        String headerValue = headers.get(repository.id);
         if (headerValue != null) {
             setGone(5, false);
             setText(6, headerValue);
         } else
             setGone(5, true);
 
-        setGone(7, noSeparators.contains(repository.getId()));
+        setGone(7, noSeparators.contains(repository.id));
 
         StyledText name = new StyledText();
-        if (!account.get().getLogin().equals(repository.getOwner().getLogin()))
-            name.foreground(repository.getOwner().getLogin(), descriptionColor)
+        if (!account.get().login.equals(repository.owner.login))
+            name.foreground(repository.owner.login, descriptionColor)
                     .foreground('/', descriptionColor);
-        name.bold(repository.getName());
+        name.bold(repository.name);
         setText(8, name);
 
-        updateDetails(repository.getDescription(), repository.getLanguage(),
-                repository.getWatchers(), repository.getForks(),
-                repository.isPrivate(), repository.isFork(),
-                repository.getMirrorUrl());
+        updateDetails(repository.description, repository.language,
+                repository.watchers_count, repository.forks_count,
+                repository.isPrivate, repository.fork,
+                repository.mirror_url);
     }
 }

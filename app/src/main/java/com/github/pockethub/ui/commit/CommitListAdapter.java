@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.alorma.github.sdk.bean.dto.response.Commit;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
 import com.github.pockethub.core.commit.CommitUtils;
@@ -34,7 +35,7 @@ import org.eclipse.egit.github.core.RepositoryCommit;
 /**
  * Adapter to display commits
  */
-public class CommitListAdapter extends SingleTypeAdapter<RepositoryCommit> {
+public class CommitListAdapter extends SingleTypeAdapter<Commit> {
 
     private final AvatarLoader avatars;
 
@@ -45,7 +46,7 @@ public class CommitListAdapter extends SingleTypeAdapter<RepositoryCommit> {
      * @param avatars
      */
     public CommitListAdapter(int viewId, LayoutInflater inflater,
-            Collection<RepositoryCommit> elements, AvatarLoader avatars) {
+            Collection<Commit> elements, AvatarLoader avatars) {
         super(inflater, viewId);
 
         this.avatars = avatars;
@@ -54,7 +55,7 @@ public class CommitListAdapter extends SingleTypeAdapter<RepositoryCommit> {
 
     @Override
     public long getItemId(int position) {
-        String sha = getItem(position).getSha();
+        String sha = getItem(position).sha;
         if (!TextUtils.isEmpty(sha))
             return sha.hashCode();
         else
@@ -77,8 +78,8 @@ public class CommitListAdapter extends SingleTypeAdapter<RepositoryCommit> {
     }
 
     @Override
-    protected void update(int position, RepositoryCommit item) {
-        setText(0, CommitUtils.abbreviate(item.getSha()));
+    protected void update(int position, Commit item) {
+        setText(0, CommitUtils.abbreviate(item.sha));
 
         StyledText authorText = new StyledText();
         authorText.bold(CommitUtils.getAuthor(item));
@@ -87,7 +88,7 @@ public class CommitListAdapter extends SingleTypeAdapter<RepositoryCommit> {
         setText(1, authorText);
 
         CommitUtils.bindAuthor(item, avatars, imageView(2));
-        setText(3, item.getCommit().getMessage());
+        setText(3, item.commit.message);
         setText(4, CommitUtils.getCommentCount(item));
     }
 }

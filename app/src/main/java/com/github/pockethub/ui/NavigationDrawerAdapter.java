@@ -13,23 +13,23 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alorma.github.sdk.bean.dto.response.Organization;
+import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.R;
 import com.github.pockethub.util.AvatarLoader;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.egit.github.core.User;
-
 public class NavigationDrawerAdapter extends BaseAdapter {
 
     private final Context context;
     private final AvatarLoader avatars;
     private final LayoutInflater inflater;
-    private List<User> orgs = new ArrayList<>();
+    private List<Organization> orgs = new ArrayList<>();
     private List<NavigationDrawerObject> data;
 
-    public NavigationDrawerAdapter(Context context, List<User> orgs, final AvatarLoader avatars) {
+    public NavigationDrawerAdapter(Context context, List<Organization> orgs, final AvatarLoader avatars) {
         this.orgs.addAll(orgs);
         this.context = context;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -52,12 +52,12 @@ public class NavigationDrawerAdapter extends BaseAdapter {
             else if (i == names.length + 1)
                 data.add(new NavigationDrawerObject("Organizations", TYPE_SUBHEADER));
             else
-                data.add(new NavigationDrawerObject(orgs.get(i - names.length - 2).getLogin(), TYPE_ITEM_ORG,
+                data.add(new NavigationDrawerObject(orgs.get(i - names.length - 2).login, TYPE_ITEM_ORG,
                     orgs.get(i - names.length - 2)));
         }
     }
 
-    public void setOrgs(List<User> orgs) {
+    public void setOrgs(List<Organization> orgs) {
         this.orgs.addAll(orgs);
         this.orgs.remove(0);
         notifyDataSetChanged();

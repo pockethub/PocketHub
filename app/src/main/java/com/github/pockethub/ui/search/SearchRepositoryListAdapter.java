@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.StyledText;
 import com.github.pockethub.ui.repo.RepositoryListAdapter;
@@ -31,7 +32,7 @@ import org.eclipse.egit.github.core.SearchRepository;
  * Adapter for a list of searched for repositories
  */
 public class SearchRepositoryListAdapter extends
-        RepositoryListAdapter<SearchRepository> {
+        RepositoryListAdapter<Repo> {
 
     /**
      * Create list adapter for searched for repositories
@@ -40,13 +41,13 @@ public class SearchRepositoryListAdapter extends
      * @param elements
      */
     public SearchRepositoryListAdapter(LayoutInflater inflater,
-            SearchRepository[] elements) {
+            Repo[] elements) {
         super(R.layout.user_repo_item, inflater, elements);
     }
 
     @Override
     public long getItemId(final int position) {
-        final String id = getItem(position).getId();
+        final String id = String.valueOf(getItem(position).id);
         return !TextUtils.isEmpty(id) ? id.hashCode() : super
                 .getItemId(position);
     }
@@ -68,14 +69,14 @@ public class SearchRepositoryListAdapter extends
     }
 
     @Override
-    protected void update(int position, SearchRepository repository) {
+    protected void update(int position, Repo repository) {
         StyledText name = new StyledText();
-        name.append(repository.getOwner()).append('/');
-        name.bold(repository.getName());
+        name.append(repository.owner.login).append('/');
+        name.bold(repository.name);
         setText(5, name);
 
-        updateDetails(repository.getDescription(), repository.getLanguage(),
-                repository.getWatchers(), repository.getForks(),
-                repository.isPrivate(), repository.isFork(), null);
+        updateDetails(repository.description, repository.language,
+                repository.watchers_count, repository.forks_count,
+                repository.isPrivate, repository.fork, null);
     }
 }
