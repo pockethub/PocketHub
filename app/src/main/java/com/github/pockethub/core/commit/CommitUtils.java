@@ -18,18 +18,17 @@ package com.github.pockethub.core.commit;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
+import com.alorma.github.sdk.bean.dto.response.Commit;
+import com.alorma.github.sdk.bean.dto.response.CommitFile;
+import com.alorma.github.sdk.bean.dto.response.GitCommit;
+import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.ui.StyledText;
 import com.github.pockethub.util.AvatarLoader;
+import com.github.pockethub.util.TimeUtils;
 
 import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.Date;
-
-import org.eclipse.egit.github.core.Commit;
-import org.eclipse.egit.github.core.CommitFile;
-import org.eclipse.egit.github.core.CommitUser;
-import org.eclipse.egit.github.core.RepositoryCommit;
-import org.eclipse.egit.github.core.User;
 
 /**
  * Utilities for working with commits
@@ -50,8 +49,8 @@ public class CommitUtils {
      * @param commit
      * @return abbreviated sha
      */
-    public static String abbreviate(final RepositoryCommit commit) {
-        return commit != null ? abbreviate(commit.getSha()) : null;
+    public static String abbreviate(final Commit commit) {
+        return commit != null ? abbreviate(commit.sha) : null;
     }
 
     /**
@@ -60,8 +59,8 @@ public class CommitUtils {
      * @param commit
      * @return abbreviated sha
      */
-    public static String abbreviate(final Commit commit) {
-        return commit != null ? abbreviate(commit.getSha()) : null;
+    public static String abbreviate(final GitCommit commit) {
+        return commit != null ? abbreviate(commit.sha) : null;
     }
 
     /**
@@ -90,45 +89,45 @@ public class CommitUtils {
     /**
      * Get author of commit
      * <p>
-     * This checks both the {@link RepositoryCommit} and the underlying
+     * This checks both the {@link Commit} and the underlying
      * {@link Commit} to retrieve a name
      *
      * @param commit
      * @return author name or null if missing
      */
-    public static String getAuthor(final RepositoryCommit commit) {
-        User author = commit.getAuthor();
+    public static String getAuthor(final Commit commit) {
+        User author = commit.author;
         if (author != null)
-            return author.getLogin();
+            return author.login;
 
-        Commit rawCommit = commit.getCommit();
+        GitCommit rawCommit = commit.commit;
         if (rawCommit == null)
             return null;
 
-        CommitUser commitAuthor = rawCommit.getAuthor();
-        return commitAuthor != null ? commitAuthor.getName() : null;
+        User commitAuthor = rawCommit.author;
+        return commitAuthor != null ? commitAuthor.login : null;
     }
 
     /**
      * Get committer of commit
      * <p>
-     * This checks both the {@link RepositoryCommit} and the underlying
+     * This checks both the {@link Commit} and the underlying
      * {@link Commit} to retrieve a name
      *
      * @param commit
      * @return committer name or null if missing
      */
-    public static String getCommitter(final RepositoryCommit commit) {
-        User committer = commit.getCommitter();
+    public static String getCommitter(final Commit commit) {
+        User committer = commit.committer;
         if (committer != null)
-            return committer.getLogin();
+            return committer.login;
 
-        Commit rawCommit = commit.getCommit();
+        GitCommit rawCommit = commit.commit;
         if (rawCommit == null)
             return null;
 
-        CommitUser commitCommitter = rawCommit.getCommitter();
-        return commitCommitter != null ? commitCommitter.getName() : null;
+        User commitCommitter = rawCommit.committer;
+        return commitCommitter != null ? commitCommitter.login : null;
     }
 
     /**
@@ -137,13 +136,13 @@ public class CommitUtils {
      * @param commit
      * @return author name or null if missing
      */
-    public static Date getAuthorDate(final RepositoryCommit commit) {
-        Commit rawCommit = commit.getCommit();
+    public static Date getAuthorDate(final Commit commit) {
+        GitCommit rawCommit = commit.commit;
         if (rawCommit == null)
             return null;
 
-        CommitUser commitAuthor = rawCommit.getAuthor();
-        return commitAuthor != null ? commitAuthor.getDate() : null;
+        User commitAuthor = rawCommit.author;
+        return commitAuthor != null && commitAuthor.date != null ? TimeUtils.stringToDate(commitAuthor.date) : null;
     }
 
     /**
@@ -152,13 +151,13 @@ public class CommitUtils {
      * @param commit
      * @return author name or null if missing
      */
-    public static Date getCommitterDate(final RepositoryCommit commit) {
-        Commit rawCommit = commit.getCommit();
+    public static Date getCommitterDate(final Commit commit) {
+        GitCommit rawCommit = commit.commit;
         if (rawCommit == null)
             return null;
 
-        CommitUser commitCommitter = rawCommit.getCommitter();
-        return commitCommitter != null ? commitCommitter.getDate() : null;
+        User commitCommitter = rawCommit.committer;
+        return commitCommitter != null && commitCommitter.date != null? TimeUtils.stringToDate(commitCommitter.date): null;
     }
 
     /**
@@ -169,15 +168,15 @@ public class CommitUtils {
      * @param view
      * @return view
      */
-    public static ImageView bindAuthor(final RepositoryCommit commit,
+    public static ImageView bindAuthor(final Commit commit,
             final AvatarLoader avatars, final ImageView view) {
-        User author = commit.getAuthor();
+        User author = commit.author;
         if (author != null)
             avatars.bind(view, author);
         else {
-            Commit rawCommit = commit.getCommit();
+            GitCommit rawCommit = commit.commit;
             if (rawCommit != null)
-                avatars.bind(view, rawCommit.getAuthor());
+                avatars.bind(view, rawCommit.author);
         }
         return view;
     }
@@ -190,15 +189,15 @@ public class CommitUtils {
      * @param view
      * @return view
      */
-    public static ImageView bindCommitter(final RepositoryCommit commit,
+    public static ImageView bindCommitter(final Commit commit,
             final AvatarLoader avatars, final ImageView view) {
-        User committer = commit.getCommitter();
+        User committer = commit.committer;
         if (committer != null)
             avatars.bind(view, committer);
         else {
-            Commit rawCommit = commit.getCommit();
+            GitCommit rawCommit = commit.commit;
             if (rawCommit != null)
-                avatars.bind(view, rawCommit.getCommitter());
+                avatars.bind(view, rawCommit.committer);
         }
         return view;
     }
@@ -209,10 +208,10 @@ public class CommitUtils {
      * @param commit
      * @return count
      */
-    public static String getCommentCount(final RepositoryCommit commit) {
-        final Commit rawCommit = commit.getCommit();
+    public static String getCommentCount(final Commit commit) {
+        final GitCommit rawCommit = commit.commit;
         if (rawCommit != null)
-            return FORMAT.format(rawCommit.getCommentCount());
+            return FORMAT.format(rawCommit.comment_count);
         else
             return "0";
     }
@@ -230,8 +229,8 @@ public class CommitUtils {
         int changed = 0;
         if (files != null)
             for (CommitFile file : files) {
-                added += file.getAdditions();
-                deleted += file.getDeletions();
+                added += file.additions;
+                deleted += file.deletions;
                 changed++;
             }
 
@@ -262,7 +261,7 @@ public class CommitUtils {
      * @return last segment of commit file path
      */
     public static String getName(final CommitFile file) {
-        return file != null ? getName(file.getFilename()) : null;
+        return file != null ? getName(file.getFileName()) : null;
     }
 
     /**
