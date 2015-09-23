@@ -34,6 +34,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.alorma.github.sdk.bean.dto.response.GitReference;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.R;
 import com.github.pockethub.core.code.FullTree;
@@ -56,7 +57,7 @@ import com.google.inject.Inject;
 import java.util.LinkedList;
 
 import org.eclipse.egit.github.core.Reference;
-import org.eclipse.egit.github.core.Repository;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 import org.eclipse.egit.github.core.service.DataService;
 
 /**
@@ -87,7 +88,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
     private Folder folder;
 
-    private Repository repository;
+    private Repo repository;
 
     @Inject
     private DataService service;
@@ -97,8 +98,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
-        repository = getSerializableExtra(EXTRA_REPOSITORY);
+        repository = activity.getIntent().getParcelableExtra(EXTRA_REPOSITORY);
     }
 
     @Override
@@ -120,9 +120,11 @@ public class RepositoryCodeFragment extends DialogFragment implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.m_refresh:
-            if (tree != null)
-                refreshTree(new Reference().setRef(tree.reference.getRef()));
-            else
+            if (tree != null) {
+                GitReference ref = new GitReference();
+                ref.ref = tree.reference.ref;
+                refreshTree(ref);
+            }else
                 refreshTree(null);
             return true;
         default:
@@ -136,7 +138,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
         ViewUtils.setGone(branchFooterView, loading);
     }
 
-    private void refreshTree(final Reference reference) {
+    private void refreshTree(final GitReference reference) {
         showLoading(true);
         new RefreshTreeTask(repository, reference, getActivity()) {
 
@@ -150,7 +152,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
                     // Look for current folder in new tree or else reset to root
                     Folder current = folder;
                     LinkedList<Folder> stack = new LinkedList<>();
-                    while (current != null && current.parent != null) {
+                    while (current.parent != null) {
                         stack.addFirst(current);
                         current = current.parent;
                     }
@@ -185,7 +187,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
         if (dialog == null)
             dialog = new RefDialog((DialogFragmentActivity) getActivity(),
-                    REF_UPDATE, repository, service);
+                    REF_UPDATE, repository);
         dialog.show(tree.reference);
     }
 
@@ -271,7 +273,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
         if (folder.entry != null) {
             int textLightColor = getResources().getColor(R.color.text_light);
-            final String[] segments = folder.entry.getPath().split("/");
+            final String[] segments = folder.entry.path.split("/");
             StyledText text = new StyledText();
             for (int i = 0; i < segments.length - 1; i++) {
                 final int index = i;
@@ -315,6 +317,6 @@ public class RepositoryCodeFragment extends DialogFragment implements
             setFolder(tree, (Folder) entry);
         else
             startActivity(BranchFileViewActivity.createIntent(repository,
-                    tree.branch, entry.entry.getPath(), entry.entry.getSha()));
+                    tree.branch, entry.entry.path, entry.entry.sha));
     }
 }
