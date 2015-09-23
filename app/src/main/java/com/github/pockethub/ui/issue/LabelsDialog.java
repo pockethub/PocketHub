@@ -16,12 +16,16 @@
 package com.github.pockethub.ui.issue;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
-import android.accounts.Account;
+
 import android.util.Log;
 
+import com.alorma.github.basesdk.client.BaseClient;
+import com.alorma.github.sdk.bean.dto.response.Label;
+import com.alorma.github.sdk.services.issues.GithubIssueLabelsClient;
 import com.github.pockethub.R;
+import com.github.pockethub.ui.BaseProgressDialog;
 import com.github.pockethub.ui.DialogFragmentActivity;
-import com.github.pockethub.ui.ProgressDialogTask;
+import com.github.pockethub.util.InfoUtils;
 import com.github.pockethub.util.ToastUtils;
 
 import java.util.ArrayList;
@@ -32,24 +36,23 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
-import org.eclipse.egit.github.core.Label;
-import org.eclipse.egit.github.core.service.LabelService;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Dialog helper to display a list of possibly selected issue labels
  */
-public class LabelsDialog {
+public class LabelsDialog extends BaseProgressDialog {
 
     private static final String TAG = "LabelsDialog";
-
-    private final LabelService service;
 
     private final int requestCode;
 
     private final DialogFragmentActivity activity;
 
-    private final IRepositoryIdProvider repository;
+    private final Repo repository;
 
     private Map<String, Label> labels;
 
@@ -59,53 +62,39 @@ public class LabelsDialog {
      * @param activity
      * @param requestCode
      * @param repository
-     * @param service
      */
     public LabelsDialog(final DialogFragmentActivity activity,
-            final int requestCode, final IRepositoryIdProvider repository,
-            final LabelService service) {
+            final int requestCode, final Repo repository) {
+        super(activity);
         this.activity = activity;
         this.requestCode = requestCode;
         this.repository = repository;
-        this.service = service;
     }
 
     private void load(final Collection<Label> selectedLabels) {
-        new ProgressDialogTask<List<Label>>(activity) {
-
+        showIndeterminate(R.string.loading_labels);
+        GithubIssueLabelsClient getLabelsClient = new GithubIssueLabelsClient(activity, InfoUtils.createRepoInfo(repository));
+        getLabelsClient.setOnResultCallback(new BaseClient.OnResultCallback<List<Label>>() {
             @Override
-            public List<Label> run(Account account) throws Exception {
-                List<Label> repositoryLabels = service.getLabels(repository);
+            public void onResponseOk(List<Label> repositoryLabels, Response r) {
                 Map<String, Label> loadedLabels = new TreeMap<>(
                         CASE_INSENSITIVE_ORDER);
                 for (Label label : repositoryLabels)
-                    loadedLabels.put(label.getName(), label);
+                    loadedLabels.put(label.name, label);
                 labels = loadedLabels;
-                return repositoryLabels;
-            }
 
-            @Override
-            protected void onSuccess(List<Label> all) throws Exception {
-                super.onSuccess(all);
-
+                dismissProgress();
                 show(selectedLabels);
             }
 
             @Override
-            protected void onException(Exception e) throws RuntimeException {
-                super.onException(e);
-
-                Log.d(TAG, "Exception loading labels", e);
-                ToastUtils.show(activity, e, R.string.error_labels_load);
+            public void onFail(RetrofitError error) {
+                dismissProgress();
+                Log.d(TAG, "Exception loading labels", error);
+                ToastUtils.show(activity, error, R.string.error_labels_load);
             }
-
-            @Override
-            public void execute() {
-                showIndeterminate(R.string.loading_labels);
-
-                super.execute();
-            }
-        }.execute();
+        });
+        getLabelsClient.execute();
     }
 
     /**
@@ -124,9 +113,9 @@ public class LabelsDialog {
         if (selectedLabels != null && !selectedLabels.isEmpty()) {
             Set<String> selectedNames = new HashSet<>();
             for (Label label : selectedLabels)
-                selectedNames.add(label.getName());
+                selectedNames.add(label.name);
             for (int i = 0; i < checked.length; i++)
-                if (selectedNames.contains(names.get(i).getName()))
+                if (selectedNames.contains(names.get(i).name))
                     checked[i] = true;
         }
         LabelsDialogFragment.show(activity, requestCode,

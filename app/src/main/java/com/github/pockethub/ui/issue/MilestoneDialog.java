@@ -21,9 +21,15 @@ import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 import android.accounts.Account;
 import android.util.Log;
 
+import com.alorma.github.basesdk.client.BaseClient;
+import com.alorma.github.sdk.bean.dto.response.Milestone;
+import com.alorma.github.sdk.bean.dto.response.MilestoneState;
+import com.alorma.github.sdk.services.issues.GetMilestonesClient;
 import com.github.pockethub.R;
+import com.github.pockethub.ui.BaseProgressDialog;
 import com.github.pockethub.ui.DialogFragmentActivity;
 import com.github.pockethub.ui.ProgressDialogTask;
+import com.github.pockethub.util.InfoUtils;
 import com.github.pockethub.util.ToastUtils;
 
 import java.util.ArrayList;
@@ -31,18 +37,18 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
-import org.eclipse.egit.github.core.Milestone;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 import org.eclipse.egit.github.core.service.MilestoneService;
+
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Dialog helper to display a list of milestones to select one from
  */
-public class MilestoneDialog {
+public class MilestoneDialog extends BaseProgressDialog {
 
     private static final String TAG = "MilestoneDialog";
-
-    private MilestoneService service;
 
     private ArrayList<Milestone> repositoryMilestones;
 
@@ -50,7 +56,7 @@ public class MilestoneDialog {
 
     private final DialogFragmentActivity activity;
 
-    private final IRepositoryIdProvider repository;
+    private final Repo repository;
 
     /**
      * Create dialog helper to display milestones
@@ -58,15 +64,13 @@ public class MilestoneDialog {
      * @param activity
      * @param requestCode
      * @param repository
-     * @param service
      */
     public MilestoneDialog(final DialogFragmentActivity activity,
-            final int requestCode, final IRepositoryIdProvider repository,
-            final MilestoneService service) {
+            final int requestCode, final Repo repository) {
+        super(activity);
         this.activity = activity;
         this.requestCode = requestCode;
         this.repository = repository;
-        this.service = service;
     }
 
     /**
@@ -79,48 +83,32 @@ public class MilestoneDialog {
     }
 
     private void load(final Milestone selectedMilestone) {
-        new ProgressDialogTask<ArrayList<Milestone>>(activity) {
+        showIndeterminate(R.string.loading_milestones);
+        GetMilestonesClient getMilestonesClient = new GetMilestonesClient(activity, InfoUtils.createRepoInfo(repository), MilestoneState.open);
+        getMilestonesClient.setOnResultCallback(new BaseClient.OnResultCallback<List<Milestone>>() {
 
             @Override
-            public ArrayList<Milestone> run(Account account) throws Exception {
-                ArrayList<Milestone> milestones = new ArrayList<>();
-                milestones
-                        .addAll(service.getMilestones(repository, STATE_OPEN));
-                milestones.addAll(service.getMilestones(repository,
-                        STATE_CLOSED));
+            public void onResponseOk(List<Milestone> milestones, Response r) {
                 Collections.sort(milestones, new Comparator<Milestone>() {
-
                     public int compare(Milestone m1, Milestone m2) {
-                        return CASE_INSENSITIVE_ORDER.compare(m1.getTitle(),
-                                m2.getTitle());
+                        return CASE_INSENSITIVE_ORDER.compare(m1.title,
+                                m2.title);
                     }
                 });
-                return milestones;
-            }
+                repositoryMilestones = (ArrayList<Milestone>) milestones;
 
-            @Override
-            protected void onSuccess(ArrayList<Milestone> all) throws Exception {
-                super.onSuccess(all);
-
-                repositoryMilestones = all;
+                dismissProgress();
                 show(selectedMilestone);
             }
 
             @Override
-            protected void onException(Exception e) throws RuntimeException {
-                super.onException(e);
-
-                Log.d(TAG, "Exception loading milestones", e);
-                ToastUtils.show(activity, e, R.string.error_milestones_load);
+            public void onFail(RetrofitError error) {
+                dismissProgress();
+                Log.d(TAG, "Exception loading milestones", error);
+                ToastUtils.show(activity, error, R.string.error_milestones_load);
             }
-
-            @Override
-            public void execute() {
-                showIndeterminate(R.string.loading_milestones);
-
-                super.execute();
-            }
-        }.execute();
+        });
+        getMilestonesClient.execute();
     }
 
     /**
@@ -137,8 +125,7 @@ public class MilestoneDialog {
         int checked = -1;
         if (selectedMilestone != null)
             for (int i = 0; i < repositoryMilestones.size(); i++)
-                if (selectedMilestone.getNumber() == repositoryMilestones
-                        .get(i).getNumber()) {
+                if (selectedMilestone.number == repositoryMilestones.get(i).number) {
                     checked = i;
                     break;
                 }
@@ -157,8 +144,8 @@ public class MilestoneDialog {
         if (repositoryMilestones == null)
             return -1;
         for (Milestone milestone : repositoryMilestones)
-            if (title.equals(milestone.getTitle()))
-                return milestone.getNumber();
+            if (title.equals(milestone.title))
+                return milestone.number;
         return -1;
     }
 }
