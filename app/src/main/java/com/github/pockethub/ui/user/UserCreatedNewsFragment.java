@@ -15,10 +15,16 @@
  */
 package com.github.pockethub.ui.user;
 
+import com.alorma.github.sdk.bean.dto.response.GithubEvent;
+import com.alorma.github.sdk.services.client.GithubClient;
+import com.alorma.github.sdk.services.user.events.GetUserCreatedEventsClient;
 import com.github.pockethub.core.ResourcePager;
 
-import org.eclipse.egit.github.core.client.PageIterator;
-import org.eclipse.egit.github.core.event.Event;
+import com.github.pockethub.core.PageIterator;
+
+import org.eclipse.egit.github.core.Commit;
+
+import java.util.List;
 
 /**
  * News that a given user has created
@@ -26,13 +32,17 @@ import org.eclipse.egit.github.core.event.Event;
 public class UserCreatedNewsFragment extends UserNewsFragment {
 
     @Override
-    protected ResourcePager<Event> createPager() {
+    protected ResourcePager<GithubEvent> createPager() {
         return new EventPager() {
 
             @Override
-            public PageIterator<Event> createIterator(int page, int size) {
-                return service
-                        .pageUserEvents(org.getLogin(), false, page, size);
+            public PageIterator<GithubEvent> createIterator(int page, int size) {
+                return new PageIterator<>(new PageIterator.GitHubRequest<List<GithubEvent>>() {
+                    @Override
+                    public GithubClient<List<GithubEvent>> execute(int page) {
+                        return new GetUserCreatedEventsClient(getActivity(), org.login, page);
+                    }
+                }, page);
             }
         };
     }

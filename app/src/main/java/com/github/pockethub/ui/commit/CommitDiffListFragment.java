@@ -48,6 +48,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alorma.github.sdk.bean.dto.response.Commit;
+import com.alorma.github.sdk.bean.dto.response.CommitComment;
+import com.alorma.github.sdk.bean.dto.response.CommitFile;
+import com.alorma.github.sdk.bean.dto.response.GitCommit;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.ShaUrl;
+import com.alorma.github.sdk.bean.info.IssueInfo;
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.R;
@@ -62,6 +69,7 @@ import com.github.pockethub.ui.LightAlertDialog;
 import com.github.pockethub.ui.StyledText;
 import com.github.pockethub.util.AvatarLoader;
 import com.github.pockethub.util.HttpImageGetter;
+import com.github.pockethub.util.InfoUtils;
 import com.github.pockethub.util.ShareUtils;
 import com.github.pockethub.util.ToastUtils;
 import com.google.inject.Inject;
@@ -69,12 +77,6 @@ import com.google.inject.Inject;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
-import org.eclipse.egit.github.core.Commit;
-import org.eclipse.egit.github.core.CommitComment;
-import org.eclipse.egit.github.core.CommitFile;
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.RepositoryCommit;
 
 /**
  * Fragment to display commit details with diff output
@@ -88,11 +90,11 @@ public class CommitDiffListFragment extends DialogFragment implements
 
     private ProgressBar progress;
 
-    private Repository repository;
+    private Repo repository;
 
     private String base;
 
-    private RepositoryCommit commit;
+    private Commit commit;
 
     private List<CommitComment> comments;
 
@@ -137,7 +139,7 @@ public class CommitDiffListFragment extends DialogFragment implements
 
         Bundle args = getArguments();
         base = args.getString(EXTRA_BASE);
-        repository = (Repository) args.getSerializable(EXTRA_REPOSITORY);
+        repository = args.getParcelable(EXTRA_REPOSITORY);
     }
 
     @Override
@@ -150,7 +152,7 @@ public class CommitDiffListFragment extends DialogFragment implements
                 .setText(R.string.loading_files_and_comments);
 
         if (files == null
-                || (commit != null && commit.getCommit().getCommentCount() > 0 && comments == null))
+                || (commit != null && commit.commit.comment_count > 0 && comments == null))
             adapter.addFooter(loadingView);
 
         if (commit != null && comments != null && files != null)
@@ -165,10 +167,10 @@ public class CommitDiffListFragment extends DialogFragment implements
     private void addComment(final CommitComment comment) {
         if (comments != null && files != null) {
             comments.add(comment);
-            Commit rawCommit = commit.getCommit();
+            GitCommit rawCommit = commit.commit;
             if (rawCommit != null)
-                rawCommit.setCommentCount(rawCommit.getCommentCount() + 1);
-            commentImageGetter.encode(comment, comment.getBodyHtml());
+                rawCommit.comment_count = rawCommit.comment_count + 1;
+            commentImageGetter.encode(comment, comment.body_html);
             updateItems(comments, files);
         } else
             refreshCommit();
@@ -179,7 +181,7 @@ public class CommitDiffListFragment extends DialogFragment implements
         if (RESULT_OK == resultCode && COMMENT_CREATE == requestCode
                 && data != null) {
             CommitComment comment = (CommitComment) data
-                    .getSerializableExtra(EXTRA_COMMENT);
+                    .getParcelableExtra(EXTRA_COMMENT);
             addComment(comment);
             return;
         }
@@ -222,18 +224,18 @@ public class CommitDiffListFragment extends DialogFragment implements
     private void copyHashToClipboard() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             ClipboardManager manager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText("hash", commit.getSha());
+            ClipData clip = ClipData.newPlainText("hash", commit.sha);
             manager.setPrimaryClip(clip);
         } else {
             android.text.ClipboardManager manager = (android.text.ClipboardManager) getActivity().getSystemService
                     (Context.CLIPBOARD_SERVICE);
-            manager.setText(commit.getSha());
+            manager.setText(commit.sha);
         }
         Toast.makeText(getActivity(), R.string.toast_msg_copied, Toast.LENGTH_SHORT).show();
     }
 
     private void shareCommit() {
-        String id = repository.generateId();
+        String id = InfoUtils.createRepoId(repository);
         startActivity(ShareUtils.create(
                 "Commit " + CommitUtils.abbreviate(base) + " on " + id,
                 "https://github.com/" + id + "/commit/" + base));
@@ -247,7 +249,7 @@ public class CommitDiffListFragment extends DialogFragment implements
             protected FullCommit run(Account account) throws Exception {
                 FullCommit full = super.run(account);
 
-                List<CommitFile> files = full.getCommit().getFiles();
+                List<CommitFile> files = full.getCommit().files;
                 diffStyler.setFiles(files);
                 if (files != null)
                     Collections.sort(files, new CommitFileComparator());
@@ -275,10 +277,10 @@ public class CommitDiffListFragment extends DialogFragment implements
         return committer != null && !committer.equals(author);
     }
 
-    private void addCommitDetails(RepositoryCommit commit) {
+    private void addCommitDetails(Commit commit) {
         adapter.addHeader(commitHeader);
 
-        commitMessage.setText(commit.getCommit().getMessage());
+        commitMessage.setText(commit.commit.message);
 
         String commitAuthor = CommitUtils.getAuthor(commit);
         String commitCommitter = CommitUtils.getCommitter(commit);
@@ -314,21 +316,21 @@ public class CommitDiffListFragment extends DialogFragment implements
             ViewUtils.setGone(committerArea, true);
     }
 
-    private void addDiffStats(RepositoryCommit commit, LayoutInflater inflater) {
+    private void addDiffStats(Commit commit, LayoutInflater inflater) {
         View fileHeader = inflater.inflate(R.layout.commit_file_details_header,
                 null);
         ((TextView) fileHeader.findViewById(R.id.tv_commit_file_summary))
-                .setText(CommitUtils.formatStats(commit.getFiles()));
+                .setText(CommitUtils.formatStats(commit.files));
         adapter.addHeader(fileHeader);
     }
 
-    private void addCommitParents(RepositoryCommit commit,
+    private void addCommitParents(Commit commit,
             LayoutInflater inflater) {
-        List<Commit> parents = commit.getParents();
+        List<ShaUrl> parents = commit.parents;
         if (parents == null || parents.isEmpty())
             return;
 
-        for (Commit parent : parents) {
+        for (ShaUrl parent : parents) {
             View parentView = inflater.inflate(R.layout.commit_parent_item, null);
             TextView parentIdText = (TextView) parentView
                     .findViewById(R.id.tv_commit_id);
@@ -336,13 +338,13 @@ public class CommitDiffListFragment extends DialogFragment implements
                     | UNDERLINE_TEXT_FLAG);
             StyledText parentText = new StyledText();
             parentText.append(getString(R.string.parent_prefix));
-            parentText.monospace(CommitUtils.abbreviate(parent));
+            parentText.monospace(CommitUtils.abbreviate(parent.sha));
             parentIdText.setText(parentText);
             adapter.addHeader(parentView, parent, true);
         }
     }
 
-    private void updateHeader(RepositoryCommit commit) {
+    private void updateHeader(Commit commit) {
         ViewUtils.setGone(progress, true);
         ViewUtils.setGone(list, false);
 
@@ -350,7 +352,7 @@ public class CommitDiffListFragment extends DialogFragment implements
         addCommitParents(commit, getActivity().getLayoutInflater());
     }
 
-    private void updateList(RepositoryCommit commit,
+    private void updateList(Commit commit,
             List<CommitComment> comments, List<FullCommitFile> files) {
         if (!isUsable())
             return;
@@ -452,8 +454,8 @@ public class CommitDiffListFragment extends DialogFragment implements
                         dialog.dismiss();
 
                         startActivityForResult(CreateCommentActivity
-                                        .createIntent(repository, commit.getSha(),
-                                                file.getFilename(), position),
+                                        .createIntent(repository, commit.sha,
+                                                file.filename, position),
                                 COMMENT_CREATE);
                     }
                 });
@@ -470,8 +472,8 @@ public class CommitDiffListFragment extends DialogFragment implements
     }
 
     private void openFile(CommitFile file) {
-        if (!TextUtils.isEmpty(file.getFilename())
-                && !TextUtils.isEmpty(file.getSha()))
+        if (!TextUtils.isEmpty(file.filename)
+                && !TextUtils.isEmpty(file.sha))
             startActivity(CommitFileViewActivity.createIntent(repository, base,
                     file));
     }
@@ -513,13 +515,13 @@ public class CommitDiffListFragment extends DialogFragment implements
         Object item = parent.getItemAtPosition(position);
         if (item instanceof Commit)
             startActivity(CommitViewActivity.createIntent(repository,
-                    ((Commit) item).getSha()));
+                    ((Commit) item).sha));
         else if (item instanceof CommitFile)
             openFile((CommitFile) item);
         else if (item instanceof CharSequence)
             selectPreviousFile(position, item, parent);
         else if (item instanceof CommitComment)
-            if (!TextUtils.isEmpty(((CommitComment) item).getPath()))
+            if (!TextUtils.isEmpty(((CommitComment) item).path))
                 selectPreviousFile(position, item, parent);
     }
 }

@@ -22,6 +22,8 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
+import com.alorma.github.sdk.bean.dto.response.Contributor;
+import com.alorma.github.sdk.services.repo.GetRepoContributorsClient;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
 import com.github.pockethub.ThrowableLoader;
@@ -30,14 +32,13 @@ import com.github.pockethub.core.user.RefreshUserTask;
 import com.github.pockethub.ui.ItemListFragment;
 import com.github.pockethub.ui.user.UserViewActivity;
 import com.github.pockethub.util.AvatarLoader;
+import com.github.pockethub.util.InfoUtils;
 import com.google.inject.Inject;
 
 import java.util.List;
 
-import org.eclipse.egit.github.core.Contributor;
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.service.RepositoryService;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * Fragment to display a list of contributors for a specific repository
@@ -50,19 +51,13 @@ public class RepositoryContributorsFragment extends ItemListFragment<Contributor
     @Inject
     protected AvatarLoader avatars;
 
-    /**
-     * Repository service
-     */
-    @Inject
-    protected RepositoryService service;
-
-    private Repository repo;
+    private Repo repo;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        repo = getSerializableExtra(EXTRA_REPOSITORY);
+        repo = getParcelableExtra(EXTRA_REPOSITORY);
     }
 
     @Override
@@ -78,7 +73,7 @@ public class RepositoryContributorsFragment extends ItemListFragment<Contributor
 
             @Override
             public List<Contributor> loadData() throws Exception {
-                return service.getContributors(repo, false);
+                return new GetRepoContributorsClient(getContext(), InfoUtils.createRepoInfo(repo)).executeSync();
             }
         };
     }
@@ -92,7 +87,7 @@ public class RepositoryContributorsFragment extends ItemListFragment<Contributor
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         final Contributor contributor = (Contributor) l.getItemAtPosition(position);
-        new RefreshUserTask(getActivity(), contributor.getLogin()) {
+        new RefreshUserTask(getActivity(), contributor.author.login) {
 
             @Override
             protected void onSuccess(User user) throws Exception {

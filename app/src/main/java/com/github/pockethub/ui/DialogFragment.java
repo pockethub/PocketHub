@@ -17,6 +17,7 @@ package com.github.pockethub.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 
 import com.github.kevinsawicki.wishlist.ViewFinder;
@@ -57,10 +58,10 @@ public abstract class DialogFragment extends RoboSupportFragment implements
      * @return extra
      */
     @SuppressWarnings("unchecked")
-    protected <V extends Serializable> V getSerializableExtra(final String name) {
+    protected <V extends Parcelable> V getParcelableExtra(final String name) {
         Activity activity = getActivity();
         if (activity != null)
-            return (V) activity.getIntent().getSerializableExtra(name);
+            return (V) activity.getIntent().getParcelableExtra(name);
         else
             return null;
     }

@@ -28,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.alorma.github.sdk.bean.dto.response.GitReference;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
 import com.github.pockethub.core.ref.RefUtils;
@@ -37,18 +38,16 @@ import com.github.pockethub.util.TypefaceUtils;
 
 import java.util.ArrayList;
 
-import org.eclipse.egit.github.core.Reference;
-
 /**
  * Dialog fragment to select a branch or tag
  */
 public class RefDialogFragment extends SingleChoiceDialogFragment {
 
-    private static class RefListAdapter extends SingleTypeAdapter<Reference> {
+    private static class RefListAdapter extends SingleTypeAdapter<GitReference> {
 
         private final int selected;
 
-        public RefListAdapter(LayoutInflater inflater, Reference[] refs,
+        public RefListAdapter(LayoutInflater inflater, GitReference[] refs,
                 int selected) {
             super(inflater, R.layout.ref_item);
 
@@ -58,7 +57,7 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
 
         @Override
         public long getItemId(int position) {
-            return getItem(position).getRef().hashCode();
+            return getItem(position).ref.hashCode();
         }
 
         @Override
@@ -75,7 +74,7 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
         }
 
         @Override
-        protected void update(int position, Reference item) {
+        protected void update(int position, GitReference item) {
             if (RefUtils.isTag(item))
                 setText(0, R.string.icon_tag);
             else
@@ -91,8 +90,8 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
      * @param arguments
      * @return user
      */
-    public static Reference getSelected(Bundle arguments) {
-        return (Reference) arguments.getSerializable(ARG_SELECTED);
+    public static GitReference getSelected(Bundle arguments) {
+        return (GitReference) arguments.getParcelable(ARG_SELECTED);
     }
 
     /**
@@ -107,7 +106,7 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
      */
     public static void show(final DialogFragmentActivity activity,
             final int requestCode, final String title, final String message,
-            ArrayList<Reference> choices, final int selectedChoice) {
+            ArrayList<GitReference> choices, final int selectedChoice) {
         show(activity, requestCode, title, message, choices, selectedChoice,
                 new RefDialogFragment());
     }
@@ -134,10 +133,10 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
             }
         });
 
-        ArrayList<Reference> choices = getChoices();
+        ArrayList<GitReference> choices = getChoices();
         int selected = arguments.getInt(ARG_SELECTED_CHOICE);
         RefListAdapter adapter = new RefListAdapter(inflater,
-                choices.toArray(new Reference[choices.size()]), selected);
+                choices.toArray(new GitReference[choices.size()]), selected);
         view.setAdapter(adapter);
         if (selected >= 0)
             view.setSelection(selected);
@@ -147,9 +146,8 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
     }
 
     @SuppressWarnings("unchecked")
-    private ArrayList<Reference> getChoices() {
-        return (ArrayList<Reference>) getArguments().getSerializable(
-                ARG_CHOICES);
+    private ArrayList<GitReference> getChoices() {
+        return getArguments().getParcelableArrayList(ARG_CHOICES);
     }
 
     @Override
@@ -160,7 +158,7 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
         case BUTTON_NEGATIVE:
             break;
         default:
-            getArguments().putSerializable(ARG_SELECTED,
+            getArguments().putParcelable(ARG_SELECTED,
                     getChoices().get(which));
             onResult(RESULT_OK);
         }

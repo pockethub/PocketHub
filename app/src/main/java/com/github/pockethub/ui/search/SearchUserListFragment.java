@@ -22,26 +22,34 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.services.client.GithubClient;
+import com.alorma.github.sdk.services.search.RepoSearchClient;
+import com.alorma.github.sdk.services.search.UsersSearchClient;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
 import com.github.pockethub.ThrowableLoader;
 import com.github.pockethub.accounts.AccountUtils;
+import com.github.pockethub.core.PageIterator;
+import com.github.pockethub.core.ResourcePager;
 import com.github.pockethub.core.search.SearchUser;
 import com.github.pockethub.core.search.SearchUserService;
 import com.github.pockethub.core.user.RefreshUserTask;
 import com.github.pockethub.ui.ItemListFragment;
+import com.github.pockethub.ui.PagedItemFragment;
 import com.github.pockethub.ui.user.UserViewActivity;
 import com.github.pockethub.util.AvatarLoader;
 import com.google.inject.Inject;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * Fragment to display a list of {@link SearchUser} instances
  */
-public class SearchUserListFragment extends ItemListFragment<SearchUser> {
+public class SearchUserListFragment extends PagedItemFragment<User> {
 
     private String query;
 
@@ -50,6 +58,31 @@ public class SearchUserListFragment extends ItemListFragment<SearchUser> {
 
     @Inject
     private AvatarLoader avatars;
+
+    @Override
+    protected ResourcePager<User> createPager() {
+        return new ResourcePager<User>() {
+            @Override
+            protected Object getId(User resource) {
+                return resource.id;
+            }
+
+            @Override
+            public PageIterator<User> createIterator(int page, int size) {
+                return new PageIterator<>(new PageIterator.GitHubRequest<List<User>>() {
+                    @Override
+                    public GithubClient<List<User>> execute(int page) {
+                        return new UsersSearchClient(getContext(), query, page);
+                    }
+                }, page);
+            }
+        };
+    }
+
+    @Override
+    protected int getLoadingMessage() {
+        return R.string.loading_user;
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -73,26 +106,15 @@ public class SearchUserListFragment extends ItemListFragment<SearchUser> {
     }
 
     @Override
-    public Loader<List<SearchUser>> onCreateLoader(int id, Bundle args) {
-        return new ThrowableLoader<List<SearchUser>>(getActivity(), items) {
-
-            @Override
-            public List<SearchUser> loadData() throws Exception {
-                return service.searchUsers(query);
-            }
-        };
-    }
-
-    @Override
-    protected SingleTypeAdapter<SearchUser> createAdapter(List<SearchUser> items) {
+    protected SingleTypeAdapter<User> createAdapter(List<User> items) {
         return new SearchUserListAdapter(getActivity(),
-                items.toArray(new SearchUser[items.size()]), avatars);
+                items.toArray(new User[items.size()]), avatars);
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        final SearchUser result = (SearchUser) l.getItemAtPosition(position);
-        new RefreshUserTask(getActivity(), result.getLogin()) {
+        final User result = (User) l.getItemAtPosition(position);
+        new RefreshUserTask(getActivity(), result.login) {
 
             @Override
             protected void onSuccess(User user) throws Exception {

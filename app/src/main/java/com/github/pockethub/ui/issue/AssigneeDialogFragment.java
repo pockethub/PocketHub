@@ -38,7 +38,7 @@ import com.google.inject.Inject;
 
 import java.util.ArrayList;
 
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * Dialog fragment to select an issue assignee from a list of collaborators
@@ -62,7 +62,7 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
 
         @Override
         public long getItemId(int position) {
-            return getItem(position).getId();
+            return getItem(position).id;
         }
 
         @Override
@@ -72,7 +72,7 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
 
         @Override
         protected void update(int position, User item) {
-            setText(0, item.getLogin());
+            setText(0, item.login);
             loader.bind(imageView(1), item);
             setChecked(2, selected == position);
         }
@@ -85,7 +85,7 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
      * @return user
      */
     public static User getSelected(Bundle arguments) {
-        return (User) arguments.getSerializable(ARG_SELECTED);
+        return (User) arguments.getParcelable(ARG_SELECTED);
     }
 
     /**
@@ -145,7 +145,7 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
 
     @SuppressWarnings("unchecked")
     private ArrayList<User> getChoices() {
-        return (ArrayList<User>) getArguments().getSerializable(ARG_CHOICES);
+        return getArguments().getParcelableArrayList(ARG_CHOICES);
     }
 
     @Override
@@ -159,8 +159,7 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
             onResult(RESULT_OK);
             break;
         default:
-            getArguments().putSerializable(ARG_SELECTED,
-                    getChoices().get(which));
+            getArguments().putParcelable(ARG_SELECTED, getChoices().get(which));
             onResult(RESULT_OK);
         }
     }

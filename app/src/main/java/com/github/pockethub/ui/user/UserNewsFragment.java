@@ -21,8 +21,8 @@ import android.os.Bundle;
 import com.github.pockethub.core.user.UserEventMatcher.UserPair;
 import com.github.pockethub.ui.NewsFragment;
 
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * Fragment to display a news feed for a given user/org
@@ -40,7 +40,7 @@ public abstract class UserNewsFragment extends NewsFragment implements
         super.onSaveInstanceState(outState);
 
         if (org != null)
-            outState.putSerializable(EXTRA_USER, org);
+            outState.putParcelable(EXTRA_USER, org);
     }
 
     @Override
@@ -49,7 +49,7 @@ public abstract class UserNewsFragment extends NewsFragment implements
             org = ((OrganizationSelectionProvider) getActivity()).addListener(this);
 
         if (getArguments() != null && getArguments().containsKey("org"))
-            org = (User) getArguments().getSerializable("org");
+            org = getArguments().getParcelable("org");
 
         if (org == null && savedInstanceState != null)
             org = (User) savedInstanceState.get(EXTRA_USER);
@@ -68,26 +68,26 @@ public abstract class UserNewsFragment extends NewsFragment implements
     }
 
     @Override
-    protected void viewRepository(Repository repository) {
-        User owner = repository.getOwner();
-        if (owner != null && org.getLogin().equals(owner.getLogin()))
-            repository.setOwner(org);
+    protected void viewRepository(Repo repository) {
+        User owner = repository.owner;
+        if (owner != null && org.login.equals(owner.login))
+            repository.owner = org;
 
         super.viewRepository(repository);
     }
 
     @Override
     public void onOrganizationSelected(User organization) {
-        int previousOrgId = org != null ? org.getId() : -1;
+        int previousOrgId = org != null ? org.id : -1;
         org = organization;
         // Only hard refresh if view already created and org is changing
-        if (previousOrgId != org.getId())
+        if (previousOrgId != org.id)
             refreshWithProgress();
     }
 
     @Override
     protected boolean viewUser(User user) {
-        if (org.getId() != user.getId()) {
+        if (org.id != user.id) {
             startActivity(UserViewActivity.createIntent(user));
             return true;
         }

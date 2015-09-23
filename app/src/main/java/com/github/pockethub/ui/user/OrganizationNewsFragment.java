@@ -15,11 +15,17 @@
  */
 package com.github.pockethub.ui.user;
 
+import com.alorma.github.sdk.bean.dto.response.GithubEvent;
+import com.alorma.github.sdk.services.client.GithubClient;
+import com.alorma.github.sdk.services.orgs.GetOrgEventsClient;
 import com.github.pockethub.accounts.AccountUtils;
 import com.github.pockethub.core.ResourcePager;
 
-import org.eclipse.egit.github.core.client.PageIterator;
-import org.eclipse.egit.github.core.event.Event;
+import com.github.pockethub.core.PageIterator;
+
+import org.eclipse.egit.github.core.Commit;
+
+import java.util.List;
 
 /**
  * Fragment to display an organization's news
@@ -27,14 +33,18 @@ import org.eclipse.egit.github.core.event.Event;
 public class OrganizationNewsFragment extends UserNewsFragment {
 
     @Override
-    protected ResourcePager<Event> createPager() {
+    protected ResourcePager<GithubEvent> createPager() {
         return new EventPager() {
 
             @Override
-            public PageIterator<Event> createIterator(int page, int size) {
-                String account = AccountUtils.getLogin(getActivity());
-                return service.pageUserOrgEvents(account, org.getLogin(), page,
-                        size);
+            public PageIterator<GithubEvent> createIterator(int page, int size) {
+                return new PageIterator<>(new PageIterator.GitHubRequest<List<GithubEvent>>() {
+                    @Override
+                    public GithubClient<List<GithubEvent>> execute(int page) {
+                        String account = AccountUtils.getLogin(getActivity());
+                        return new GetOrgEventsClient(getActivity(), account, org.login, page);
+                    }
+                }, page);
             }
         };
     }

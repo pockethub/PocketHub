@@ -18,11 +18,15 @@ package com.github.pockethub.ui.user;
 import static com.github.pockethub.Intents.EXTRA_USER;
 import android.app.Activity;
 
+import com.alorma.github.sdk.services.client.GithubClient;
+import com.alorma.github.sdk.services.user.UserFollowersClient;
 import com.github.pockethub.core.ResourcePager;
 import com.github.pockethub.core.user.UserPager;
 
-import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.client.PageIterator;
+import com.alorma.github.sdk.bean.dto.response.User;
+import com.github.pockethub.core.PageIterator;
+
+import java.util.List;
 
 /**
  * Fragment to display a list of followers
@@ -35,7 +39,7 @@ public class UserFollowersFragment extends FollowersFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        user = getSerializableExtra(EXTRA_USER);
+        user = getParcelableExtra(EXTRA_USER);
     }
 
     @Override
@@ -44,7 +48,12 @@ public class UserFollowersFragment extends FollowersFragment {
 
             @Override
             public PageIterator<User> createIterator(int page, int size) {
-                return service.pageFollowers(user.getLogin(), page, size);
+                return new PageIterator<>(new PageIterator.GitHubRequest<List<User>>() {
+                    @Override
+                    public GithubClient<List<User>> execute(int page) {
+                        return new UserFollowersClient(getActivity(), user.login, page);
+                    }
+                }, page);
             }
         };
     }

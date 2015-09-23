@@ -15,6 +15,7 @@
  */
 package com.github.pockethub.ui.comment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -35,7 +36,7 @@ import com.google.inject.Inject;
 
 import java.io.Serializable;
 
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 
 /**
  * Fragment to display rendered comment fragment
@@ -68,11 +69,11 @@ public class RenderedCommentFragment extends DialogFragment implements
      * @param raw
      * @param repo
      */
-    public void setText(final String raw, final IRepositoryIdProvider repo) {
+    public void setText(final String raw, final Repo repo) {
         Bundle args = new Bundle();
         args.putCharSequence(ARG_TEXT, raw);
         if (repo instanceof Serializable)
-            args.putSerializable(ARG_REPO, (Serializable) repo);
+            args.putParcelable(ARG_REPO, repo);
         getLoaderManager().restartLoader(0, args, this);
         Keyboard.hideSoftInput(bodyText);
         showLoading(true);
@@ -92,8 +93,7 @@ public class RenderedCommentFragment extends DialogFragment implements
     @Override
     public Loader<CharSequence> onCreateLoader(int loader, Bundle args) {
         final CharSequence raw = args.getCharSequence(ARG_TEXT);
-        final IRepositoryIdProvider repo = (IRepositoryIdProvider) args
-                .getSerializable(ARG_REPO);
+        final Repo repo = args.getParcelable(ARG_REPO);
         return new MarkdownLoader(getActivity(), repo, raw.toString(),
                 imageGetter, true);
     }

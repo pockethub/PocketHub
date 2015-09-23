@@ -17,6 +17,7 @@ package com.github.pockethub.ui;
 
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.os.Parcelable;
 
 import java.util.ArrayList;
 
@@ -59,10 +60,10 @@ public class SingleChoiceDialogFragment extends DialogFragmentHelper implements
      */
     protected static void show(final DialogFragmentActivity activity,
             final int requestCode, final String title, final String message,
-            ArrayList<?> choices, final int selectedChoice,
+            ArrayList<? extends Parcelable> choices, final int selectedChoice,
             final DialogFragmentHelper helper) {
         Bundle arguments = createArguments(title, message, requestCode);
-        arguments.putSerializable(ARG_CHOICES, choices);
+        arguments.putParcelableArrayList(ARG_CHOICES, choices);
         arguments.putInt(ARG_SELECTED_CHOICE, selectedChoice);
         show(activity, helper, arguments, TAG);
     }

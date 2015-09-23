@@ -13,6 +13,7 @@ import com.github.pockethub.core.issue.IssueFilter;
 import com.github.pockethub.persistence.AccountDataManager;
 import com.github.pockethub.ui.ItemListFragment;
 import com.github.pockethub.util.AvatarLoader;
+import com.github.pockethub.util.InfoUtils;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -80,8 +81,7 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> implements
 
     @Override
     public int compare(final IssueFilter lhs, final IssueFilter rhs) {
-        int compare = CASE_INSENSITIVE_ORDER.compare(lhs.getRepository()
-                .generateId(), rhs.getRepository().generateId());
+        int compare = CASE_INSENSITIVE_ORDER.compare(InfoUtils.createRepoId(lhs.getRepository()),InfoUtils.createRepoId(rhs.getRepository()));
         if (compare == 0)
             compare = CASE_INSENSITIVE_ORDER.compare(
                     lhs.toDisplay().toString(), rhs.toDisplay().toString());

@@ -26,6 +26,7 @@ import static com.github.pockethub.Intents.EXTRA_IS_OWNER;
 import static com.github.pockethub.Intents.EXTRA_REPOSITORY_NAME;
 import static com.github.pockethub.Intents.EXTRA_REPOSITORY_OWNER;
 import static com.github.pockethub.Intents.EXTRA_USER;
+import static com.github.pockethub.Intents.INTENT_EXTRA_PREFIX;
 import static com.github.pockethub.RequestCodes.COMMENT_CREATE;
 import static com.github.pockethub.RequestCodes.COMMENT_DELETE;
 import static com.github.pockethub.RequestCodes.COMMENT_EDIT;
@@ -41,6 +42,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -54,10 +56,19 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.alorma.github.sdk.PullRequest;
+import com.alorma.github.sdk.bean.dto.response.GithubComment;
+import com.alorma.github.sdk.bean.dto.response.IssueState;
+import com.alorma.github.sdk.bean.dto.response.Label;
+import com.alorma.github.sdk.bean.dto.response.Milestone;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
+import com.alorma.github.sdk.bean.issue.IssueEvent;
+import com.alorma.github.sdk.bean.issue.IssueStory;
+import com.alorma.github.sdk.bean.issue.IssueStoryDetail;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.R;
 import com.github.pockethub.accounts.AccountUtils;
-import com.github.pockethub.core.issue.FullIssue;
 import com.github.pockethub.core.issue.IssueStore;
 import com.github.pockethub.core.issue.IssueUtils;
 import com.github.pockethub.core.issue.RefreshIssueTask;
@@ -73,7 +84,9 @@ import com.github.pockethub.ui.comment.EditCommentListener;
 import com.github.pockethub.ui.commit.CommitCompareViewActivity;
 import com.github.pockethub.util.AvatarLoader;
 import com.github.pockethub.util.HttpImageGetter;
+import com.github.pockethub.util.InfoUtils;
 import com.github.pockethub.util.ShareUtils;
+import com.github.pockethub.util.TimeUtils;
 import com.github.pockethub.util.ToastUtils;
 import com.github.pockethub.util.TypefaceUtils;
 import com.google.inject.Inject;
@@ -84,16 +97,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import org.eclipse.egit.github.core.Comment;
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.IssueEvent;
-import org.eclipse.egit.github.core.Label;
-import org.eclipse.egit.github.core.Milestone;
-import org.eclipse.egit.github.core.PullRequest;
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.RepositoryId;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.Issue;
 
 /**
  * Fragment to display an issue
@@ -102,11 +106,11 @@ public class IssueFragment extends DialogFragment {
 
     private int issueNumber;
 
-    private List<Comment> comments;
+    private List<GithubComment> comments;
 
     private List<Object> items;
 
-    private RepositoryId repositoryId;
+    private Repo repositoryId;
 
     private Issue issue;
 
@@ -181,11 +185,11 @@ public class IssueFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
-        repositoryId = RepositoryId.create(
+        repositoryId = InfoUtils.createRepoFromData(
                 args.getString(EXTRA_REPOSITORY_OWNER),
                 args.getString(EXTRA_REPOSITORY_NAME));
         issueNumber = args.getInt(EXTRA_ISSUE_NUMBER);
-        user = (User) args.getSerializable(EXTRA_USER);
+        user = args.getParcelable(EXTRA_USER);
         isCollaborator = args.getBoolean(EXTRA_IS_COLLABORATOR, false);
         isOwner = args.getBoolean(EXTRA_IS_OWNER, false);
 
@@ -248,7 +252,7 @@ public class IssueFragment extends DialogFragment {
                 .findViewById(R.id.tv_loading);
         loadingText.setText(R.string.loading_comments);
 
-        if (issue == null || (issue.getComments() > 0 && items == null))
+        if (issue == null || (issue.comments > 0 && items == null))
             adapter.addHeader(loadingView);
 
         if (issue != null && items != null)
@@ -312,7 +316,7 @@ public class IssueFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if (issue != null)
-                    stateTask.confirm(STATE_OPEN.equals(issue.getState()));
+                    stateTask.confirm(IssueState.open.equals(issue.state));
             }
         });
 
@@ -321,7 +325,7 @@ public class IssueFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if (issue != null && isCollaborator)
-                    milestoneTask.prompt(issue.getMilestone());
+                    milestoneTask.prompt(issue.milestone);
             }
         });
 
@@ -331,7 +335,7 @@ public class IssueFragment extends DialogFragment {
                     @Override
                     public void onClick(View v) {
                         if (issue != null && isCollaborator)
-                            assigneeTask.prompt(issue.getAssignee());
+                            assigneeTask.prompt(issue.assignee);
                     }
                 });
 
@@ -340,7 +344,7 @@ public class IssueFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if (issue != null && isCollaborator)
-                    labelsTask.prompt(issue.getLabels());
+                    labelsTask.prompt(issue.labels);
             }
         });
 
@@ -357,20 +361,20 @@ public class IssueFragment extends DialogFragment {
         if (!isUsable())
             return;
 
-        titleText.setText(issue.getTitle());
+        titleText.setText(issue.title);
 
-        String body = issue.getBodyHtml();
+        String body = issue.body_html;
         if (!TextUtils.isEmpty(body))
-            bodyImageGetter.bind(bodyText, body, issue.getId());
+            bodyImageGetter.bind(bodyText, body, issue.id);
         else
             bodyText.setText(R.string.no_description_given);
 
-        authorText.setText(issue.getUser().getLogin());
+        authorText.setText(issue.user.login);
         createdDateText.setText(new StyledText().append(
-                getString(R.string.prefix_opened)).append(issue.getCreatedAt()));
-        avatars.bind(creatorAvatar, issue.getUser());
+                getString(R.string.prefix_opened)).append(TimeUtils.stringToDate(issue.created_at)));
+        avatars.bind(creatorAvatar, issue.user);
 
-        if (IssueUtils.isPullRequest(issue) && issue.getPullRequest().getCommits() > 0) {
+        if (IssueUtils.isPullRequest(issue) && issue.pullRequest.commits > 0) {
             ViewUtils.setGone(commitsView, false);
 
             TextView icon = (TextView) headerView.findViewById(R.id.tv_commit_icon);
@@ -378,26 +382,26 @@ public class IssueFragment extends DialogFragment {
             icon.setText(ICON_COMMIT);
 
             String commits = getString(R.string.pull_request_commits,
-                    issue.getPullRequest().getCommits());
+                    issue.pullRequest.commits);
             ((TextView) headerView.findViewById(R.id.tv_pull_request_commits)).setText(commits);
         } else
             ViewUtils.setGone(commitsView, true);
 
-        boolean open = STATE_OPEN.equals(issue.getState());
+        boolean open = IssueState.open.equals(issue.state);
         if (!open) {
             StyledText text = new StyledText();
             text.bold(getString(R.string.closed));
-            Date closedAt = issue.getClosedAt();
+            Date closedAt = TimeUtils.stringToDate(issue.closedAt);
             if (closedAt != null)
                 text.append(' ').append(closedAt);
             stateText.setText(text);
         }
         ViewUtils.setGone(stateText, open);
 
-        User assignee = issue.getAssignee();
+        User assignee = issue.assignee;
         if (assignee != null) {
             StyledText name = new StyledText();
-            name.bold(assignee.getLogin());
+            name.bold(assignee.login);
             name.append(' ').append(getString(R.string.assigned));
             assigneeText.setText(name);
             assigneeAvatar.setVisibility(VISIBLE);
@@ -407,22 +411,22 @@ public class IssueFragment extends DialogFragment {
             assigneeText.setText(R.string.unassigned);
         }
 
-        List<Label> labels = issue.getLabels();
+        List<Label> labels = issue.labels;
         if (labels != null && !labels.isEmpty()) {
             LabelDrawableSpan.setText(labelsArea, labels);
             labelsArea.setVisibility(VISIBLE);
         } else
             labelsArea.setVisibility(GONE);
 
-        if (issue.getMilestone() != null) {
-            Milestone milestone = issue.getMilestone();
+        if (issue.milestone != null) {
+            Milestone milestone = issue.milestone;
             StyledText milestoneLabel = new StyledText();
             milestoneLabel.append(getString(R.string.milestone_prefix));
             milestoneLabel.append(' ');
-            milestoneLabel.bold(milestone.getTitle());
+            milestoneLabel.bold(milestone.title);
             milestoneText.setText(milestoneLabel);
-            float closed = milestone.getClosedIssues();
-            float total = closed + milestone.getOpenIssues();
+            float closed = milestone.closedIssues;
+            float total = closed + milestone.openIssues;
             if (total > 0) {
                 ((LayoutParams) milestoneProgressArea.getLayoutParams()).weight = closed
                         / total;
@@ -432,13 +436,6 @@ public class IssueFragment extends DialogFragment {
             milestoneArea.setVisibility(VISIBLE);
         } else
             milestoneArea.setVisibility(GONE);
-
-        String state = issue.getState();
-        if (state != null && state.length() > 0)
-            state = state.substring(0, 1).toUpperCase(Locale.US)
-                    + state.substring(1);
-        else
-            state = "";
 
         ViewUtils.setGone(progress, true);
         ViewUtils.setGone(list, false);
@@ -457,41 +454,18 @@ public class IssueFragment extends DialogFragment {
             }
 
             @Override
-            protected void onSuccess(FullIssue fullIssue) throws Exception {
+            protected void onSuccess(IssueStory fullIssue) throws Exception {
                 super.onSuccess(fullIssue);
                 if (!isUsable())
                     return;
 
-                issue = fullIssue.getIssue();
-                comments = fullIssue;
+                issue = fullIssue.issue;
+                comments = new ArrayList<>();
+                items = new ArrayList<>();
 
-                List<IssueEvent> events = (List<IssueEvent>) fullIssue.getEvents();
-                int numEvents = events.size();
+                items.addAll(fullIssue.details);
 
-                List<Object> allItems = new ArrayList<>();
-
-                int start = 0;
-                for (Comment comment : fullIssue) {
-                    for (int e = start; e < numEvents; e++) {
-                        IssueEvent event = events.get(e);
-                        if (comment.getCreatedAt().after(event.getCreatedAt())) {
-                            allItems.add(event);
-                            start++;
-                        } else {
-                            e = events.size();
-                        }
-                    }
-                    allItems.add(comment);
-                }
-
-                // Adding the last events or if there are no comments
-                for(int e = start; e < events.size(); e++) {
-                    IssueEvent event = events.get(e);
-                    allItems.add(event);
-                }
-
-                items = allItems;
-                updateList(fullIssue.getIssue(), allItems);
+                updateList(fullIssue.issue, items);
             }
         }.execute();
     }
@@ -532,18 +506,17 @@ public class IssueFragment extends DialogFragment {
             stateTask.edit(false);
             break;
         case COMMENT_DELETE:
-            final Comment comment = (Comment) arguments.getSerializable(EXTRA_COMMENT);
+            final GithubComment comment = arguments.getParcelable(EXTRA_COMMENT);
             new DeleteCommentTask(getActivity(), repositoryId, comment) {
                 @Override
-                protected void onSuccess(Comment comment) throws Exception {
+                protected void onSuccess(GithubComment comment) throws Exception {
                     super.onSuccess(comment);
                     // Update comment list
                     if (comments != null && comment != null) {
                         int position = Collections.binarySearch(comments,
-                                comment, new Comparator<Comment>() {
-                                    public int compare(Comment lhs, Comment rhs) {
-                                        return Long.valueOf(lhs.getId())
-                                                .compareTo(rhs.getId());
+                                comment, new Comparator<GithubComment>() {
+                                    public int compare(GithubComment lhs, GithubComment rhs) {
+                                        return lhs.id.compareTo(rhs.id);
                                     }
                                 });
                         comments.remove(position);
@@ -558,7 +531,7 @@ public class IssueFragment extends DialogFragment {
 
     private void updateStateItem(Issue issue) {
         if (issue != null && stateItem != null) {
-            if (STATE_OPEN.equals(issue.getState())) {
+            if (IssueState.open.equals(issue.state)) {
                 stateItem.setTitle(R.string.close);
                 stateItem.setIcon(R.drawable.ic_github_issue_closed_white_24dp);
             } else {
@@ -576,7 +549,7 @@ public class IssueFragment extends DialogFragment {
         if (editItem != null && stateItem != null) {
             boolean isCreator = false;
             if(issue != null)
-                isCreator = issue.getUser().getLogin().equals(AccountUtils.getLogin(getActivity()));
+                isCreator = issue.user.login.equals(AccountUtils.getLogin(getActivity()));
             editItem.setVisible(isOwner || isCollaborator || isCreator);
             stateItem.setVisible(isOwner || isCollaborator || isCreator);
         }
@@ -597,30 +570,30 @@ public class IssueFragment extends DialogFragment {
 
         switch (requestCode) {
         case ISSUE_EDIT:
-            Issue editedIssue = (Issue) data.getSerializableExtra(EXTRA_ISSUE);
-            bodyImageGetter.encode(editedIssue.getId(), editedIssue.getBodyHtml());
+            Issue editedIssue = data.getParcelableExtra(EXTRA_ISSUE);
+            bodyImageGetter.encode(editedIssue.id, editedIssue.body_html);
             updateHeader(editedIssue);
             return;
         case COMMENT_CREATE:
-            Comment comment = (Comment) data
-                    .getSerializableExtra(EXTRA_COMMENT);
+            GithubComment comment = data
+                    .getParcelableExtra(EXTRA_COMMENT);
             if (items != null) {
                 items.add(comment);
-                issue.setComments(issue.getComments() + 1);
+                issue.comments = issue.comments + 1;
                 updateList(issue, items);
             } else
                 refreshIssue();
             return;
         case COMMENT_EDIT:
-            comment = (Comment) data
-                    .getSerializableExtra(EXTRA_COMMENT);
+            comment = data
+                    .getParcelableExtra(EXTRA_COMMENT);
             if (comments != null && comment != null) {
-                int position = Collections.binarySearch(comments, comment, new Comparator<Comment>() {
-                    public int compare(Comment lhs, Comment rhs) {
-                        return Long.valueOf(lhs.getId()).compareTo(rhs.getId());
+                int position = Collections.binarySearch(comments, comment, new Comparator<GithubComment>() {
+                    public int compare(GithubComment lhs, GithubComment rhs) {
+                        return lhs.id.compareTo(rhs.id);
                     }
                 });
-                commentImageGetter.removeFromCache(comment.getId());
+                commentImageGetter.removeFromCache(comment.id);
                 comments.set(position, comment);
                 updateList(issue, items);
             } else
@@ -629,7 +602,7 @@ public class IssueFragment extends DialogFragment {
     }
 
     private void shareIssue() {
-        String id = repositoryId.generateId();
+        String id = InfoUtils.createRepoId(repositoryId);
         if (IssueUtils.isPullRequest(issue))
             startActivity(ShareUtils.create("Pull Request " + issueNumber
                     + " on " + id, "https://github.com/" + id + "/pull/"
@@ -643,11 +616,11 @@ public class IssueFragment extends DialogFragment {
 
     private void openPullRequestCommits() {
         if (IssueUtils.isPullRequest(issue)) {
-            PullRequest pullRequest = issue.getPullRequest();
+            PullRequest pullRequest = issue.pullRequest;
 
-            String base = pullRequest.getBase().getSha();
-            String head = pullRequest.getHead().getSha();
-            Repository repo = pullRequest.getBase().getRepo();
+            String base = pullRequest.base.sha;
+            String head = pullRequest.head.sha;
+            Repo repo = pullRequest.base.repo;
             startActivity(CommitCompareViewActivity.createIntent(repo, base, head));
         }
     }
@@ -658,7 +631,7 @@ public class IssueFragment extends DialogFragment {
         case R.id.m_edit:
             if (issue != null)
                 startActivityForResult(EditIssueActivity.createIntent(issue,
-                                repositoryId.getOwner(), repositoryId.getName(), user),
+                                repositoryId.owner.login, repositoryId.name, user),
                         ISSUE_EDIT);
             return true;
         case R.id.m_comment:
@@ -675,7 +648,7 @@ public class IssueFragment extends DialogFragment {
             return true;
         case R.id.m_state:
             if (issue != null)
-                stateTask.confirm(STATE_OPEN.equals(issue.getState()));
+                stateTask.confirm(IssueState.open.equals(issue.state));
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -686,7 +659,7 @@ public class IssueFragment extends DialogFragment {
      * Edit existing comment
      */
     final EditCommentListener editCommentListener = new EditCommentListener() {
-        public void onEditComment(Comment comment) {
+        public void onEditComment(GithubComment comment) {
             startActivityForResult(EditCommentActivity.createIntent(
                     repositoryId, issueNumber, comment, user), COMMENT_EDIT);
         }
@@ -696,9 +669,9 @@ public class IssueFragment extends DialogFragment {
      * Delete existing comment
      */
     final DeleteCommentListener deleteCommentListener = new DeleteCommentListener() {
-        public void onDeleteComment(Comment comment) {
+        public void onDeleteComment(GithubComment comment) {
             Bundle args = new Bundle();
-            args.putSerializable(EXTRA_COMMENT, comment);
+            args.putParcelable(EXTRA_COMMENT, comment);
             ConfirmDialogFragment.show(
                     getActivity(),
                     COMMENT_DELETE,
