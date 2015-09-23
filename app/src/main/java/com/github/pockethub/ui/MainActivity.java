@@ -1,15 +1,18 @@
 package com.github.pockethub.ui;
 
+
 import static com.github.pockethub.ui.NavigationDrawerObject.TYPE_SEPERATOR;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.IntentCompat;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -23,8 +26,10 @@ import com.alorma.github.basesdk.client.StoreCredentials;
 import com.alorma.github.sdk.bean.dto.response.Organization;
 import com.alorma.github.sdk.bean.dto.response.User;
 import com.alorma.github.sdk.login.AccountsHelper;
+import com.bugsnag.android.Bugsnag;
 import com.github.pockethub.R;
 import com.github.pockethub.accounts.AccountUtils;
+import com.github.pockethub.accounts.LoginActivity;
 import com.github.pockethub.core.user.UserComparator;
 import com.github.pockethub.persistence.AccountDataManager;
 import com.github.pockethub.ui.gist.GistsPagerFragment;
@@ -38,6 +43,8 @@ import com.google.inject.Provider;
 
 import java.util.Collections;
 import java.util.List;
+
+import static com.github.pockethub.ui.NavigationDrawerObject.TYPE_SEPERATOR;
 
 public class MainActivity extends BaseActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks,
     LoaderManager.LoaderCallbacks<List<Organization>> {
@@ -64,7 +71,9 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bugsnag.init(this);
         setContentView(R.layout.activity_main);
+
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
         getSupportLoaderManager().initLoader(0, null, this);
@@ -180,6 +189,19 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
             case 4:
                 fragment = new FilterListFragment();
                 break;
+            case 5:
+                Account[] allAccounts = AccountManager.get(this).getAccounts();
+
+                for (Account account : allAccounts) {
+                    AccountManager.get(this).removeAccount(account, null, null);
+                }
+
+                Intent in = new Intent(this, LoginActivity.class);
+                in.addFlags(IntentCompat.FLAG_ACTIVITY_CLEAR_TASK
+                        | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(in);
+                finish();
+                return;
             default:
                 fragment = new HomePagerFragment();
                 args.putParcelable("org", orgs.get(position - 6));

@@ -4,6 +4,7 @@
 
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
@@ -232,7 +233,7 @@
         <activity
             android:name="com.github.pockethub.accounts.LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleInstance">
+            android:launchMode="singleTop">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -337,7 +338,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.github.pockethub.accounts.LoginWebViewActivity"/>
+        <activity android:name="com.github.pockethub.accounts.LoginWebViewActivity"
+            android:launchMode="singleTop"/>
 
         <service
             android:name="com.github.pockethub.sync.SyncAdapterService"
@@ -378,6 +380,10 @@
         <meta-data
             android:name="com.alorma.github.sdk.oauth"
             android:value="@string/github_oauth"/>
+
+        <meta-data
+            android:name="com.bugsnag.android.API_KEY"
+            android:value="@string/bugsnag_api_key"/>
     </application>
 
 </manifest>

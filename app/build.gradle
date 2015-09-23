@@ -95,7 +95,11 @@ dependencies {
     compile 'com.viewpagerindicator:library:2.4.1@aar'
     compile 'com.squareup.okio:okio:1.1.0'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
-    compile 'com.afollestad:material-dialogs:0.7.3.2'
+    compile('com.afollestad.material-dialogs:core:0.8.0.1@aar') {
+        transitive = true
+    }
+    compile 'com.bugsnag:bugsnag-android:+'
+
     //Self compiled .aar version of wishlist
     compile (name:'lib', ext:'aar')
     testCompile 'junit:junit:4.12'
@@ -104,5 +108,6 @@ dependencies {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
+
     compile 'com.android.support:design:23.0.1'
 }

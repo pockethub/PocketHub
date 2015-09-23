@@ -42,7 +42,7 @@ are welcomed and appreciated but will be thoroughly reviewed and discussed. **Pl
 
 1. Create a github application (https://github.com/settings/applications/new)
 2. Create a github.properties in the root folder of the repo
-3. Add these three value too the github.properties
+3. Add these three values to the github.properties
 
 ```
 GITHUB_CLIENT=your_application_client_id

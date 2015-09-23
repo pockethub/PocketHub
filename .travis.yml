@@ -2,7 +2,7 @@ language: android
 android:
    components:
    - platform-tools
-   - android-22
+   - android-23
    - build-tools-22.0.1
    - extra
 
@@ -13,5 +13,7 @@ notifications:
 
 sudo: false
 
+before_script:
+  -  openssl aes-256-cbc -K $encrypted_7e1c958561a2_key -iv $encrypted_7e1c958561a2_iv -in github.properties.enc -out github.properties -d
 script:
   - ./gradlew clean build

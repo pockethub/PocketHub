@@ -7,6 +7,7 @@ public class NavigationDrawerObject {
     public static final int TYPE_SUBHEADER = 0;
     public static final int TYPE_ITEM_MENU = 1;
     public static final int TYPE_ITEM_ORG = 2;
+    public static final int TYPE_LOG_OUT = 3;
 
     private String title;
     private String iconString;

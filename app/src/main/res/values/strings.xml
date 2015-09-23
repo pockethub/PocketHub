@@ -14,6 +14,8 @@
   limitations under the License.
 -->
 <resources>
+    <!-- Bugsnag -->
+    <string name="bugsnag_api_key">071042af7240b1a939bfe921b07ccc6d</string>
 
     <!-- Error messages -->
     <string name="error_orgs_load">Loading account &amp; organizations failed</string>
@@ -70,6 +72,7 @@
     <string name="loading_commits">Loading Commits…</string>
     <string name="loading_files_and_comments">Loading Files &amp; Comments…</string>
     <string name="loading_refs">Loading Branches &amp; Tags…</string>
+    <string name="loading">Loading…</string>
     <!--  -->
 
 
@@ -96,6 +99,7 @@
 
     <string name="app_name" translatable="false">PocketHub</string>
     <string name="home">Home</string>
+    <string name="log_out">Log Out</string>
     <string name="news">News</string>
     <string name="issues">Issues</string>
     <string name="gists">Gists</string>
