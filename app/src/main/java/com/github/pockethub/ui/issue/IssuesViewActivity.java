@@ -28,19 +28,28 @@ import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.alorma.github.basesdk.client.BaseClient;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.Team;
+import com.alorma.github.sdk.bean.dto.response.User;
+import com.alorma.github.sdk.services.orgs.teams.GetOrgTeamsClient;
+import com.alorma.github.sdk.services.orgs.teams.GetTeamMembersClient;
+import com.alorma.github.sdk.services.repo.GetRepoClient;
+import com.alorma.github.sdk.services.user.actions.CheckUserCollaboratorClient;
+import com.alorma.github.sdk.services.user.actions.OnCheckUserIsCollaborator;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
 import com.github.pockethub.accounts.AccountUtils;
 import com.github.pockethub.accounts.AuthenticatedUserTask;
 import com.github.pockethub.core.issue.IssueStore;
 import com.github.pockethub.core.issue.IssueUtils;
-import com.github.pockethub.core.repo.RefreshRepositoryTask;
 import com.github.pockethub.ui.FragmentProvider;
 import com.github.pockethub.ui.PagerActivity;
 import com.github.pockethub.ui.ViewPager;
 import com.github.pockethub.ui.repo.RepositoryViewActivity;
 import com.github.pockethub.ui.user.UriLauncherActivity;
 import com.github.pockethub.util.AvatarLoader;
+import com.github.pockethub.util.InfoUtils;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -49,14 +58,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.RepositoryId;
-import org.eclipse.egit.github.core.RepositoryIssue;
-import org.eclipse.egit.github.core.Team;
-import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.service.CollaboratorService;
-import org.eclipse.egit.github.core.service.TeamService;
+import com.alorma.github.sdk.bean.dto.response.Issue;
+
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Activity to display a collection of issues or pull requests in a pager
@@ -83,7 +88,7 @@ public class IssuesViewActivity extends PagerActivity {
      * @return intent
      */
     public static Intent createIntent(final Issue issue,
-        final Repository repository) {
+        final Repo repository) {
         return createIntent(Collections.singletonList(issue), repository, 0);
     }
 
@@ -96,12 +101,12 @@ public class IssuesViewActivity extends PagerActivity {
      * @return intent
      */
     public static Intent createIntent(final Collection<? extends Issue> issues,
-        final Repository repository, final int position) {
+        final Repo repository, final int position) {
         int[] numbers = new int[issues.size()];
         boolean[] pullRequests = new boolean[issues.size()];
         int index = 0;
         for (Issue issue : issues) {
-            numbers[index] = issue.getNumber();
+            numbers[index] = issue.number;
             pullRequests[index] = IssueUtils.isPullRequest(issue);
             index++;
         }
@@ -123,26 +128,22 @@ public class IssuesViewActivity extends PagerActivity {
         final int count = issues.size();
         int[] numbers = new int[count];
         boolean[] pullRequests = new boolean[count];
-        ArrayList<RepositoryId> repos = new ArrayList<>(count);
+        ArrayList<Repo> repos = new ArrayList<>(count);
         int index = 0;
         for (Issue issue : issues) {
-            numbers[index] = issue.getNumber();
+            numbers[index] = issue.number;
             pullRequests[index] = IssueUtils.isPullRequest(issue);
             index++;
 
-            RepositoryId repoId = null;
-            if (issue instanceof RepositoryIssue) {
-                Repository issueRepo = ((RepositoryIssue) issue)
-                    .getRepository();
-                if (issueRepo != null) {
-                    User owner = issueRepo.getOwner();
-                    if (owner != null)
-                        repoId = RepositoryId.create(owner.getLogin(),
-                            issueRepo.getName());
-                }
+            Repo repoId = null;
+            Repo issueRepo = issue.repository;
+            if (issueRepo != null) {
+                User owner = issueRepo.owner;
+                if (owner != null)
+                    repoId = InfoUtils.createRepoFromData(owner.login, issueRepo.name);
             }
             if (repoId == null)
-                repoId = RepositoryId.createFromUrl(issue.getHtmlUrl());
+                repoId = InfoUtils.createRepoFromUrl(issue.html_url);
             repos.add(repoId);
         }
 
@@ -160,21 +161,15 @@ public class IssuesViewActivity extends PagerActivity {
 
     private boolean[] pullRequests;
 
-    private ArrayList<RepositoryId> repoIds;
+    private ArrayList<Repo> repoIds;
 
-    private Repository repo;
+    private Repo repo;
 
     @Inject
     private AvatarLoader avatars;
 
     @Inject
     private IssueStore store;
-
-    @Inject
-    private TeamService teamService;
-
-    @Inject
-    private CollaboratorService collaboratorService;
 
     private final AtomicReference<User> user = new AtomicReference<>();
 
@@ -190,8 +185,8 @@ public class IssuesViewActivity extends PagerActivity {
 
         issueNumbers = getIntArrayExtra(EXTRA_ISSUE_NUMBERS);
         pullRequests = getBooleanArrayExtra(EXTRA_PULL_REQUESTS);
-        repoIds = getSerializableExtra(EXTRA_REPOSITORIES);
-        repo = getSerializableExtra(EXTRA_REPOSITORY);
+        repoIds = getIntent().getParcelableArrayListExtra(EXTRA_REPOSITORIES);
+        repo = getParcelableExtra(EXTRA_REPOSITORY);
 
         setContentView(R.layout.pager);
 
@@ -200,33 +195,36 @@ public class IssuesViewActivity extends PagerActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (repo != null) {
             ActionBar actionBar = getSupportActionBar();
-            actionBar.setSubtitle(repo.generateId());
-            user.set(repo.getOwner());
+            actionBar.setSubtitle(InfoUtils.createRepoId(repo));
+            user.set(repo.owner);
             avatars.bind(actionBar, user);
         }
 
         // Load avatar if single issue and user is currently unset or missing
         // avatar URL
-        if (issueNumbers.length == 1
-            && (user.get() == null || user.get().getAvatarUrl() == null))
-            new RefreshRepositoryTask(this, repo != null ? repo : repoIds.get(0)) {
+        if (issueNumbers.length == 1 && (user.get() == null || user.get().avatar_url == null)) {
+            GetRepoClient repoClient = new GetRepoClient(this,
+                    InfoUtils.createRepoInfo(repo != null ? repo : repoIds.get(0)));
+            repoClient.setOnResultCallback(new BaseClient.OnResultCallback<Repo>() {
+                @Override
+                public void onResponseOk(Repo repo, Response r) {
+                    avatars.bind(getSupportActionBar(), repo.owner);
+                }
 
                 @Override
-                protected void onSuccess(Repository fullRepository)
-                    throws Exception {
-                    super.onSuccess(fullRepository);
+                public void onFail(RetrofitError error) {
 
-                    avatars.bind(getSupportActionBar(),
-                        fullRepository.getOwner());
                 }
-            }.execute();
+            });
+            repoClient.execute();
+        }
 
         isOwner = false;
         if(repo != null) {
-            if (!AccountUtils.isUser(this, repo.getOwner()))
+            if (!AccountUtils.isUser(this, repo.owner))
                 checkOwnerStatus();
             else
-                isOwner = repo.getOwner().getLogin().equals(AccountUtils.getLogin(this));
+                isOwner = repo.owner.login.equals(AccountUtils.getLogin(this));
         }
 
         isCollaborator = false;
@@ -273,16 +271,15 @@ public class IssuesViewActivity extends PagerActivity {
             return;
 
         ActionBar actionBar = getSupportActionBar();
-        RepositoryId repoId = repoIds.get(position);
+        Repo repoId = repoIds.get(position);
         if (repoId != null) {
             updateTitle(position);
-            actionBar.setSubtitle(repoId.generateId());
-            RepositoryIssue issue = store.getIssue(repoId,
-                issueNumbers[position]);
+            actionBar.setSubtitle(InfoUtils.createRepoId(repoId));
+            Issue issue = store.getIssue(repoId, issueNumbers[position]);
             if (issue != null) {
-                Repository fullRepo = issue.getRepository();
-                if (fullRepo != null && fullRepo.getOwner() != null) {
-                    user.set(fullRepo.getOwner());
+                Repo fullRepo = issue.repository;
+                if (fullRepo != null && fullRepo.owner != null) {
+                    user.set(fullRepo.owner);
                     avatars.bind(actionBar, user);
                 } else
                     actionBar.setLogo(null);
@@ -324,15 +321,15 @@ public class IssuesViewActivity extends PagerActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Repository repository = repo;
+                Repo repository = repo;
                 if (repository == null) {
                     int position = pager.getCurrentItem();
-                    RepositoryId repoId = repoIds.get(position);
+                    Repo repoId = repoIds.get(position);
                     if (repoId != null) {
-                        RepositoryIssue issue = store.getIssue(repoId,
+                        Issue issue = store.getIssue(repoId,
                             issueNumbers[position]);
                         if (issue != null)
-                            repository = issue.getRepository();
+                            repository = issue.repository;
                     }
                 }
                 if (repository != null) {
@@ -348,29 +345,19 @@ public class IssuesViewActivity extends PagerActivity {
     }
 
     private void checkCollaboratorStatus() {
-        new AuthenticatedUserTask<Boolean>(this) {
+        CheckUserCollaboratorClient collaboratorClient = new CheckUserCollaboratorClient(this,
+                InfoUtils.createRepoInfo(repo != null ? repo : repoIds.get(0)),
+                AccountUtils.getLogin(IssuesViewActivity.this));
 
+        collaboratorClient.setOnCheckUserIsCollaborator(new OnCheckUserIsCollaborator() {
             @Override
-            protected Boolean run(Account account) throws Exception {
-                return collaboratorService.isCollaborator(repo != null ? repo : repoIds.get(0),
-                    AccountUtils.getLogin(IssuesViewActivity.this));
-            }
-
-            @Override
-            protected void onThrowable(Throwable t) throws RuntimeException {
-                invalidateOptionsMenu();
-                configurePager();
-            }
-
-            @Override
-            protected void onSuccess(Boolean collaborator) throws Exception {
-                super.onSuccess(collaborator);
-
+            public void onCheckUserIsCollaborator(String user, boolean collaborator) {
                 isCollaborator = collaborator;
                 invalidateOptionsMenu();
                 configurePager();
             }
-        }.execute();
+        });
+        collaboratorClient.execute();
     }
 
     private void checkOwnerStatus() {
@@ -378,12 +365,12 @@ public class IssuesViewActivity extends PagerActivity {
 
             @Override
             protected Boolean run(Account account) throws Exception {
-                List<Team> teams = teamService.getTeams(repo.getOwner().getLogin());
-                List<User> users = teamService.getMembers(teams.get(0).getId());
+                List<Team> teams =  new GetOrgTeamsClient(context, repo.owner.login).executeSync();
+                List<User> users = new GetTeamMembersClient(context, String.valueOf(teams.get(0).id)).executeSync();
 
                 String userName = AccountUtils.getLogin(IssuesViewActivity.this);
                 for(User user : users)
-                    if(user.getLogin().equals(userName))
+                    if(user.login.equals(userName))
                         return true;
 
                 return false;

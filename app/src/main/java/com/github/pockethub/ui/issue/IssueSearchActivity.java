@@ -35,10 +35,11 @@ import com.github.pockethub.R;
 import com.github.pockethub.ui.repo.RepositoryViewActivity;
 import com.github.pockethub.ui.roboactivities.RoboActionBarActivity;
 import com.github.pockethub.util.AvatarLoader;
+import com.github.pockethub.util.InfoUtils;
 import com.github.pockethub.util.ToastUtils;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.Repository;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 
 /**
  * Activity to search issues
@@ -48,7 +49,7 @@ public class IssueSearchActivity extends RoboActionBarActivity {
     @Inject
     private AvatarLoader avatars;
 
-    private Repository repository;
+    private Repo repository;
 
     private SearchIssueListFragment issueFragment;
 
@@ -62,7 +63,7 @@ public class IssueSearchActivity extends RoboActionBarActivity {
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         Bundle args = new Bundle();
-        args.putSerializable(EXTRA_REPOSITORY, repository);
+        args.putParcelable(EXTRA_REPOSITORY, repository);
         searchView.setAppSearchData(args);
         return true;
     }
@@ -95,13 +96,13 @@ public class IssueSearchActivity extends RoboActionBarActivity {
         ActionBar actionBar = getSupportActionBar();
         Bundle appData = getIntent().getBundleExtra(APP_DATA);
         if (appData != null) {
-            repository = (Repository) appData.getSerializable(EXTRA_REPOSITORY);
+            repository = (Repo) appData.getParcelable(EXTRA_REPOSITORY);
             if (repository != null) {
-                actionBar.setSubtitle(repository.generateId());
+                actionBar.setSubtitle(InfoUtils.createRepoId(repository));
                 actionBar.setDisplayHomeAsUpEnabled(true);
             }
         }
-        avatars.bind(actionBar, repository.getOwner());
+        avatars.bind(actionBar, repository.owner);
 
         issueFragment = (SearchIssueListFragment) getSupportFragmentManager()
             .findFragmentById(android.R.id.list);

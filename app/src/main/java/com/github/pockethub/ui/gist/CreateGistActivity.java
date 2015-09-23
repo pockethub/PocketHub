@@ -33,7 +33,7 @@ import com.github.pockethub.ui.MainActivity;
 import com.github.pockethub.ui.TextWatcherAdapter;
 import com.github.pockethub.util.ShareUtils;
 
-import org.eclipse.egit.github.core.Gist;
+import com.alorma.github.sdk.bean.dto.response.Gist;
 
 /**
  * Activity to share a text selection as a public or private Gist
@@ -79,7 +79,7 @@ public class CreateGistActivity extends BaseActivity {
         contentText.addTextChangedListener(new TextWatcherAdapter() {
 
             @Override
-            public void afterTextChanged(Editable s) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 updateCreateMenu(s);
             }
         });

@@ -39,6 +39,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
+import com.alorma.github.sdk.bean.dto.request.IssueRequest;
+import com.alorma.github.sdk.bean.dto.response.Label;
+import com.alorma.github.sdk.bean.dto.response.Milestone;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.services.user.actions.CheckUserCollaboratorClient;
+import com.alorma.github.sdk.services.user.actions.OnCheckUserIsCollaborator;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
 import com.github.pockethub.accounts.AccountUtils;
@@ -48,19 +54,14 @@ import com.github.pockethub.ui.DialogFragmentActivity;
 import com.github.pockethub.ui.StyledText;
 import com.github.pockethub.ui.TextWatcherAdapter;
 import com.github.pockethub.util.AvatarLoader;
+import com.github.pockethub.util.InfoUtils;
+import com.github.pockethub.util.RequestUtils;
 import com.google.inject.Inject;
 
 import java.util.List;
 
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.Label;
-import org.eclipse.egit.github.core.Milestone;
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.RepositoryId;
-import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.service.CollaboratorService;
-import org.eclipse.egit.github.core.service.LabelService;
-import org.eclipse.egit.github.core.service.MilestoneService;
+import com.alorma.github.sdk.bean.dto.response.Issue;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * Activity to edit or create an issue
@@ -73,9 +74,9 @@ public class EditIssueActivity extends DialogFragmentActivity {
      * @param repository
      * @return intent
      */
-    public static Intent createIntent(Repository repository) {
-        return createIntent(null, repository.getOwner().getLogin(),
-            repository.getName(), repository.getOwner());
+    public static Intent createIntent(Repo repository) {
+        return createIntent(null, repository.owner.login,
+            repository.name, repository.owner);
     }
 
     /**
@@ -119,18 +120,9 @@ public class EditIssueActivity extends DialogFragmentActivity {
     @Inject
     private AvatarLoader avatars;
 
-    @Inject
-    private MilestoneService milestoneService;
-
-    @Inject
-    private CollaboratorService collaboratorService;
-
-    @Inject
-    private LabelService labelService;
-
     private Issue issue;
 
-    private RepositoryId repository;
+    private Repo repository;
 
     private MenuItem saveItem;
 
@@ -155,47 +147,48 @@ public class EditIssueActivity extends DialogFragmentActivity {
         assigneeText = finder.find(R.id.tv_assignee_name);
         labelsText = finder.find(R.id.tv_labels);
 
-        checkCollaboratorStatus();
-
         Intent intent = getIntent();
 
         if (savedInstanceState != null)
-            issue = (Issue) savedInstanceState.getSerializable(EXTRA_ISSUE);
+            issue = savedInstanceState.getParcelable(EXTRA_ISSUE);
         if (issue == null)
-            issue = (Issue) intent.getSerializableExtra(EXTRA_ISSUE);
+            issue = intent.getParcelableExtra(EXTRA_ISSUE);
         if (issue == null)
             issue = new Issue();
 
-        repository = RepositoryId.create(
+        repository = InfoUtils.createRepoFromData(
             intent.getStringExtra(EXTRA_REPOSITORY_OWNER),
             intent.getStringExtra(EXTRA_REPOSITORY_NAME));
+
+        checkCollaboratorStatus();
 
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
         ActionBar actionBar = getSupportActionBar();
-        if (issue.getNumber() > 0)
+        if (issue.number > 0)
             if (IssueUtils.isPullRequest(issue))
                 actionBar.setTitle(getString(R.string.pull_request_title)
-                    + issue.getNumber());
+                    + issue.number);
             else
                 actionBar.setTitle(getString(R.string.issue_title)
-                    + issue.getNumber());
+                    + issue.number);
         else
             actionBar.setTitle(R.string.new_issue);
-        actionBar.setSubtitle(repository.generateId());
-        avatars.bind(actionBar, (User) intent.getSerializableExtra(EXTRA_USER));
+        actionBar.setSubtitle(InfoUtils.createRepoId(repository));
+        avatars.bind(actionBar, (User) intent.getParcelableExtra(EXTRA_USER));
 
         titleText.addTextChangedListener(new TextWatcherAdapter() {
 
             @Override
-            public void afterTextChanged(Editable s) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                super.onTextChanged(s, start, before, count);
                 updateSaveMenu(s);
             }
         });
 
         updateSaveMenu();
-        titleText.setText(issue.getTitle());
-        bodyText.setText(issue.getBody());
+        titleText.setText(issue.title);
+        bodyText.setText(issue.body);
     }
 
     @Override
@@ -205,19 +198,22 @@ public class EditIssueActivity extends DialogFragmentActivity {
 
         switch (requestCode) {
             case ISSUE_MILESTONE_UPDATE:
-                issue.setMilestone(MilestoneDialogFragment.getSelected(arguments));
+                issue.milestone = MilestoneDialogFragment.getSelected(arguments);
                 updateMilestone();
                 break;
             case ISSUE_ASSIGNEE_UPDATE:
                 User assignee = AssigneeDialogFragment.getSelected(arguments);
                 if (assignee != null)
-                    issue.setAssignee(assignee);
-                else
-                    issue.setAssignee(new User().setLogin(""));
+                    issue.assignee = assignee;
+                else {
+                    User user = new User();
+                    user.login = "";
+                    issue.assignee = user;
+                }
                 updateAssignee();
                 break;
             case ISSUE_LABELS_UPDATE:
-                issue.setLabels(LabelsDialogFragment.getSelected(arguments));
+                issue.labels = LabelsDialogFragment.getSelected(arguments);
                 updateLabels();
                 break;
         }
@@ -243,8 +239,8 @@ public class EditIssueActivity extends DialogFragmentActivity {
                 if (milestoneDialog == null)
                     milestoneDialog = new MilestoneDialog(
                         EditIssueActivity.this, ISSUE_MILESTONE_UPDATE,
-                        repository, milestoneService);
-                milestoneDialog.show(issue.getMilestone());
+                        repository);
+                milestoneDialog.show(issue.milestone);
             }
         });
 
@@ -254,9 +250,8 @@ public class EditIssueActivity extends DialogFragmentActivity {
             public void onClick(View v) {
                 if (assigneeDialog == null)
                     assigneeDialog = new AssigneeDialog(EditIssueActivity.this,
-                        ISSUE_ASSIGNEE_UPDATE, repository,
-                        collaboratorService);
-                assigneeDialog.show(issue.getAssignee());
+                        ISSUE_ASSIGNEE_UPDATE, repository);
+                assigneeDialog.show(issue.assignee);
             }
         });
 
@@ -266,8 +261,8 @@ public class EditIssueActivity extends DialogFragmentActivity {
             public void onClick(View v) {
                 if (labelsDialog == null)
                     labelsDialog = new LabelsDialog(EditIssueActivity.this,
-                        ISSUE_LABELS_UPDATE, repository, labelService);
-                labelsDialog.show(issue.getLabels());
+                        ISSUE_LABELS_UPDATE, repository);
+                labelsDialog.show(issue.labels);
             }
         });
 
@@ -277,11 +272,11 @@ public class EditIssueActivity extends DialogFragmentActivity {
     }
 
     private void updateMilestone() {
-        Milestone milestone = issue.getMilestone();
+        Milestone milestone = issue.milestone;
         if (milestone != null) {
-            milestoneText.setText(milestone.getTitle());
-            float closed = milestone.getClosedIssues();
-            float total = closed + milestone.getOpenIssues();
+            milestoneText.setText(milestone.title);
+            float closed = milestone.closedIssues;
+            float total = closed + milestone.openIssues;
             if (total > 0) {
                 ((LayoutParams) milestoneClosed.getLayoutParams()).weight = closed
                     / total;
@@ -296,8 +291,8 @@ public class EditIssueActivity extends DialogFragmentActivity {
     }
 
     private void updateAssignee() {
-        User assignee = issue.getAssignee();
-        String login = assignee != null ? assignee.getLogin() : null;
+        User assignee = issue.assignee;
+        String login = assignee != null ? assignee.login : null;
         if (!TextUtils.isEmpty(login)) {
             assigneeText.setText(new StyledText().bold(login));
             assigneeAvatar.setVisibility(VISIBLE);
@@ -309,7 +304,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
     }
 
     private void updateLabels() {
-        List<Label> labels = issue.getLabels();
+        List<Label> labels = issue.labels;
         if (labels != null && !labels.isEmpty())
             LabelDrawableSpan.setText(labelsText, labels);
         else
@@ -320,7 +315,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putSerializable(EXTRA_ISSUE, issue);
+        outState.putParcelable(EXTRA_ISSUE, issue);
     }
 
     private void updateSaveMenu() {
@@ -338,17 +333,17 @@ public class EditIssueActivity extends DialogFragmentActivity {
         getMenuInflater().inflate(R.menu.issue_edit, options);
         saveItem = options.findItem(R.id.m_apply);
         updateSaveMenu();
-        return true;
+        return super.onCreateOptionsMenu(options);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.m_apply:
-                issue.setTitle(titleText.getText().toString());
-                issue.setBody(bodyText.getText().toString());
-                if (issue.getNumber() > 0)
-                    new EditIssueTask(this, repository, issue) {
+                IssueRequest request = RequestUtils.issueFull(issue,
+                        bodyText.getText().toString(), titleText.getText().toString());
+                if (issue.number > 0)
+                    new EditIssueTask(this, repository, issue.number, request) {
 
                         @Override
                         protected void onSuccess(Issue editedIssue)
@@ -362,7 +357,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
                         }
                     }.edit();
                 else
-                    new CreateIssueTask(this, repository, issue) {
+                    new CreateIssueTask(this, repository, request) {
 
                         @Override
                         protected void onSuccess(Issue created) throws Exception {
@@ -382,29 +377,16 @@ public class EditIssueActivity extends DialogFragmentActivity {
     }
 
     private void checkCollaboratorStatus() {
-        new AuthenticatedUserTask<Boolean>(this) {
-
+        CheckUserCollaboratorClient collaboratorClient = new CheckUserCollaboratorClient(this,
+                InfoUtils.createRepoInfo(repository), AccountUtils.getLogin(this));
+        collaboratorClient.setOnCheckUserIsCollaborator(new OnCheckUserIsCollaborator() {
             @Override
-            public Boolean run(Account account) throws Exception {
-                return collaboratorService.isCollaborator(
-                    repository, AccountUtils.getLogin(EditIssueActivity.this));
-            }
-
-            @Override
-            protected void onSuccess(Boolean isCollaborator) throws Exception {
-                super.onSuccess(isCollaborator);
-
+            public void onCheckUserIsCollaborator(String user, boolean collaborator) {
                 showMainContent();
-                if (isCollaborator)
+                if (collaborator)
                     showCollaboratorOptions();
             }
-
-            @Override
-            protected void onException(Exception e) throws RuntimeException {
-                super.onException(e);
-
-                showMainContent();
-            }
-        }.execute();
+        });
+        collaboratorClient.execute();
     }
 }
