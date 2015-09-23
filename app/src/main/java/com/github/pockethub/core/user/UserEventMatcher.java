@@ -15,20 +15,21 @@
  */
 package com.github.pockethub.core.user;
 
-import static org.eclipse.egit.github.core.event.Event.TYPE_FOLLOW;
 
-import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.event.Event;
-import org.eclipse.egit.github.core.event.EventPayload;
-import org.eclipse.egit.github.core.event.FollowPayload;
+import com.alorma.github.sdk.bean.dto.response.GithubEvent;
+import com.alorma.github.sdk.bean.dto.response.User;
+import com.alorma.github.sdk.bean.dto.response.events.EventType;
+import com.github.pockethub.api.FollowEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.GithubEventPayload;
+import com.google.gson.Gson;
 
 /**
- * Matches a {@link User} in an {@link Event}
+ * Matches a {@link User} in an {@link GithubEvent}
  */
 public class UserEventMatcher {
 
     /**
-     * Pair of users in an {@link Event}
+     * Pair of users in an {@link GithubEvent}
      */
     public static class UserPair {
 
@@ -54,18 +55,20 @@ public class UserEventMatcher {
      * @param event
      * @return user or null if event doesn't apply
      */
-    public UserPair getUsers(final Event event) {
+    public UserPair getUsers(final GithubEvent event) {
         if (event == null)
             return null;
 
-        EventPayload payload = event.getPayload();
-        if (payload == null)
+        if (event.payload == null)
             return null;
 
-        String type = event.getType();
-        if (TYPE_FOLLOW.equals(type)) {
-            User from = event.getActor();
-            User to = ((FollowPayload) event.getPayload()).getTarget();
+        Gson gson = new Gson();
+        String json = gson.toJson(event.payload);
+
+        EventType type = event.getType();
+        if (EventType.FollowEvent.equals(type)) {
+            User from = event.actor;
+            User to = gson.fromJson(json, FollowEventPayload.class).target;
             if (from != null && to != null)
                 return new UserPair(from, to);
         }

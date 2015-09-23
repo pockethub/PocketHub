@@ -18,13 +18,14 @@ package com.github.pockethub.core.issue;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.github.pockethub.core.repo.RepositoryUtils;
 
 import java.util.List;
 
-import org.eclipse.egit.github.core.Repository;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 import org.eclipse.egit.github.core.RepositoryIssue;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * Parses a {@link RepositoryIssue} from a {@link Uri}
@@ -38,7 +39,7 @@ public class IssueUriMatcher {
      * @return {@link RepositoryIssue} or null if none found in given
      *         {@link Uri}
      */
-    public static RepositoryIssue getIssue(Uri uri) {
+    public static Issue getIssue(Uri uri) {
         List<String> segments = uri.getPathSegments();
         if (segments == null)
             return null;
@@ -68,12 +69,15 @@ public class IssueUriMatcher {
         if (issueNumber < 1)
             return null;
 
-        Repository repo = new Repository();
-        repo.setName(repoName);
-        repo.setOwner(new User().setLogin(repoOwner));
-        RepositoryIssue issue = new RepositoryIssue();
-        issue.setRepository(repo);
-        issue.setNumber(issueNumber);
+        Repo repo = new Repo();
+        User owner = new User();
+        owner.login = repoOwner;
+        repo.name = repoName;
+        repo.owner = owner;
+
+        Issue issue = new Issue();
+        issue.repository = repo;
+        issue.number = issueNumber;
         return issue;
     }
 }
