@@ -27,12 +27,18 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
+import com.alorma.github.basesdk.client.BaseClient;
+import com.alorma.github.sdk.bean.dto.response.CommitFile;
+import com.alorma.github.sdk.bean.dto.response.GitBlob;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.services.git.GetGitBlobClient;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
@@ -42,6 +48,7 @@ import com.github.pockethub.ui.BaseActivity;
 import com.github.pockethub.ui.MarkdownLoader;
 import com.github.pockethub.util.AvatarLoader;
 import com.github.pockethub.util.HttpImageGetter;
+import com.github.pockethub.util.InfoUtils;
 import com.github.pockethub.util.MarkdownUtils;
 import com.github.pockethub.util.PreferenceUtils;
 import com.github.pockethub.util.ShareUtils;
@@ -49,11 +56,10 @@ import com.github.pockethub.util.SourceEditor;
 import com.github.pockethub.util.ToastUtils;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.Blob;
-import org.eclipse.egit.github.core.CommitFile;
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
-import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.util.EncodingUtils;
+
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Activity to display the contents of a file in a commit
@@ -75,17 +81,17 @@ public class CommitFileViewActivity extends BaseActivity implements
      * @param file
      * @return intent
      */
-    public static Intent createIntent(Repository repository, String commit,
+    public static Intent createIntent(Repo repository, String commit,
         CommitFile file) {
         Builder builder = new Builder("commit.file.VIEW");
         builder.repo(repository);
         builder.add(EXTRA_HEAD, commit);
-        builder.add(EXTRA_PATH, file.getFilename());
-        builder.add(EXTRA_BASE, file.getSha());
+        builder.add(EXTRA_PATH, file.filename);
+        builder.add(EXTRA_BASE, file.sha);
         return builder.toIntent();
     }
 
-    private Repository repo;
+    private Repo repo;
 
     private String commit;
 
@@ -99,7 +105,7 @@ public class CommitFileViewActivity extends BaseActivity implements
 
     private String renderedMarkdown;
 
-    private Blob blob;
+    private GitBlob blob;
 
     private ProgressBar loadingBar;
 
@@ -123,7 +129,7 @@ public class CommitFileViewActivity extends BaseActivity implements
 
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
-        repo = getSerializableExtra(EXTRA_REPOSITORY);
+        repo = getIntent().getParcelableExtra(EXTRA_REPOSITORY);
         commit = getStringExtra(EXTRA_HEAD);
         sha = getStringExtra(EXTRA_BASE);
         path = getStringExtra(EXTRA_PATH);
@@ -146,7 +152,7 @@ public class CommitFileViewActivity extends BaseActivity implements
             actionBar.setTitle(path);
         actionBar.setSubtitle(getString(R.string.commit_prefix)
             + CommitUtils.abbreviate(commit));
-        avatars.bind(actionBar, repo.getOwner());
+        avatars.bind(actionBar, repo.owner);
 
         loadContent();
     }
@@ -217,8 +223,7 @@ public class CommitFileViewActivity extends BaseActivity implements
     @Override
     public Loader<CharSequence> onCreateLoader(int loader, Bundle args) {
         final String raw = args.getString(ARG_TEXT);
-        final IRepositoryIdProvider repo = (IRepositoryIdProvider) args
-            .getSerializable(ARG_REPO);
+        final Repo repo = args.getParcelable(ARG_REPO);
         return new MarkdownLoader(this, repo, raw, imageGetter, false);
     }
 
@@ -244,7 +249,7 @@ public class CommitFileViewActivity extends BaseActivity implements
     }
 
     private void shareFile() {
-        String id = repo.generateId();
+        String id = InfoUtils.createRepoId(repo);
         startActivity(ShareUtils.create(
             path + " at " + CommitUtils.abbreviate(commit) + " on " + id,
             "https://github.com/" + id + "/blob/" + commit + '/' + path));
@@ -254,54 +259,51 @@ public class CommitFileViewActivity extends BaseActivity implements
         ViewUtils.setGone(loadingBar, false);
         ViewUtils.setGone(codeView, true);
 
-        String markdown = new String(
-            EncodingUtils.fromBase64(blob.getContent()));
+        String markdown = new String(Base64.decode(blob.content, Base64.DEFAULT));
         Bundle args = new Bundle();
         args.putCharSequence(ARG_TEXT, markdown);
-        args.putSerializable(ARG_REPO, repo);
+        args.putParcelable(ARG_REPO, repo);
         getSupportLoaderManager().restartLoader(0, args, this);
     }
 
     private void loadContent() {
-        new RefreshBlobTask(repo, sha, this) {
-
+        GetGitBlobClient gitBlobClient = new GetGitBlobClient(this,
+                InfoUtils.createCommitInfo(repo, sha));
+        gitBlobClient.setOnResultCallback(new BaseClient.OnResultCallback<GitBlob>() {
             @Override
-            protected void onSuccess(Blob blob) throws Exception {
-                super.onSuccess(blob);
-
+            public void onResponseOk(GitBlob gitBlob, Response r) {
                 ViewUtils.setGone(loadingBar, true);
                 ViewUtils.setGone(codeView, false);
 
-                editor.setSource(path, blob);
-                CommitFileViewActivity.this.blob = blob;
+                editor.setSource(path, gitBlob);
+                CommitFileViewActivity.this.blob = gitBlob;
 
                 if (markdownItem != null)
                     markdownItem.setEnabled(true);
 
                 if (isMarkdownFile
-                    && PreferenceUtils.getCodePreferences(
-                    CommitFileViewActivity.this).getBoolean(
-                    RENDER_MARKDOWN, true))
+                        && PreferenceUtils.getCodePreferences(
+                        CommitFileViewActivity.this).getBoolean(
+                        RENDER_MARKDOWN, true))
                     loadMarkdown();
                 else {
                     ViewUtils.setGone(loadingBar, true);
                     ViewUtils.setGone(codeView, false);
-                    editor.setSource(path, blob);
+                    editor.setSource(path, gitBlob);
                 }
             }
 
             @Override
-            protected void onException(Exception e) throws RuntimeException {
-                super.onException(e);
-
-                Log.d(TAG, "Loading commit file contents failed", e);
+            public void onFail(RetrofitError error) {
+                Log.d(TAG, "Loading commit file contents failed", error);
 
                 ViewUtils.setGone(loadingBar, true);
                 ViewUtils.setGone(codeView, false);
-                ToastUtils.show(CommitFileViewActivity.this, e,
-                    R.string.error_file_load);
+                ToastUtils.show(CommitFileViewActivity.this, error,
+                        R.string.error_file_load);
             }
-        }.execute();
+        });
+        gitBlobClient.execute();
     }
 
 }

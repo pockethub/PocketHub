@@ -19,9 +19,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.github.pockethub.R;
 import com.github.pockethub.core.issue.IssueUtils;
 import com.github.pockethub.util.AvatarLoader;
+import com.github.pockethub.util.TimeUtils;
 import com.github.pockethub.util.TypefaceUtils;
 
 import org.eclipse.egit.github.core.RepositoryIssue;
@@ -30,7 +32,7 @@ import org.eclipse.egit.github.core.RepositoryIssue;
  * Adapter to display a list of dashboard issues
  */
 public class DashboardIssueListAdapter extends
-        IssueListAdapter<RepositoryIssue> {
+        IssueListAdapter<Issue> {
 
     private int numberPaintFlags;
 
@@ -42,18 +44,18 @@ public class DashboardIssueListAdapter extends
      * @param elements
      */
     public DashboardIssueListAdapter(AvatarLoader avatars,
-            LayoutInflater inflater, RepositoryIssue[] elements) {
+            LayoutInflater inflater, Issue[] elements) {
         super(R.layout.dashboard_issue_item, inflater, elements, avatars);
     }
 
     @Override
     public long getItemId(final int position) {
-        return getItem(position).getId();
+        return Long.parseLong(getItem(position).id);
     }
 
     @Override
-    protected int getNumber(final RepositoryIssue issue) {
-        return issue.getNumber();
+    protected int getNumber(final Issue issue) {
+        return issue.number;
     }
 
     @Override
@@ -76,12 +78,12 @@ public class DashboardIssueListAdapter extends
     }
 
     @Override
-    protected void update(int position, RepositoryIssue issue) {
-        updateNumber(issue.getNumber(), issue.getState(), numberPaintFlags, 1);
+    protected void update(int position, Issue issue) {
+        updateNumber(issue.number, issue.state, numberPaintFlags, 1);
 
-        avatars.bind(imageView(3), issue.getUser());
+        avatars.bind(imageView(3), issue.user);
 
-        String[] segments = issue.getUrl().split("/");
+        String[] segments = issue.url.split("/");
         int length = segments.length;
         if (length >= 4)
             setText(0, segments[length - 4] + '/' + segments[length - 3]);
@@ -90,10 +92,10 @@ public class DashboardIssueListAdapter extends
 
         setGone(6, !IssueUtils.isPullRequest(issue));
 
-        setText(2, issue.getTitle());
+        setText(2, issue.title);
 
-        updateReporter(issue.getUser().getLogin(), issue.getCreatedAt(), 4);
-        setNumber(5, issue.getComments());
-        updateLabels(issue.getLabels(), 7);
+        updateReporter(issue.user.login, TimeUtils.stringToDate(issue.created_at), 4);
+        setNumber(5, issue.comments);
+        updateLabels(issue.labels, 7);
     }
 }

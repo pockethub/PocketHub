@@ -23,6 +23,7 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
+import com.alorma.github.sdk.services.search.IssuesSearchClient;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
 import com.github.pockethub.ThrowableLoader;
@@ -35,16 +36,16 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.Repository;
+import com.alorma.github.sdk.bean.dto.response.Issue;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 import org.eclipse.egit.github.core.SearchIssue;
 import org.eclipse.egit.github.core.service.IssueService;
 
 /**
  * Fragment to display a list of {@link SearchIssue} instances
  */
-public class SearchIssueListFragment extends ItemListFragment<SearchIssue>
-        implements Comparator<SearchIssue> {
+public class SearchIssueListFragment extends ItemListFragment<Issue>
+        implements Comparator<Issue> {
 
     @Inject
     private IssueService service;
@@ -52,7 +53,7 @@ public class SearchIssueListFragment extends ItemListFragment<SearchIssue>
     @Inject
     private AvatarLoader avatars;
 
-    private Repository repository;
+    private Repo repository;
 
     private String query;
 
@@ -62,7 +63,7 @@ public class SearchIssueListFragment extends ItemListFragment<SearchIssue>
 
         Bundle appData = getActivity().getIntent().getBundleExtra(APP_DATA);
         if (appData != null)
-            repository = (Repository) appData.getSerializable(EXTRA_REPOSITORY);
+            repository = (Repo) appData.getParcelable(EXTRA_REPOSITORY);
     }
 
     @Override
@@ -83,26 +84,26 @@ public class SearchIssueListFragment extends ItemListFragment<SearchIssue>
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        final SearchIssue searchIssue = (SearchIssue) l
-                .getItemAtPosition(position);
-        Issue issue = new Issue().setNumber(searchIssue.getNumber());
-        startActivity(IssuesViewActivity.createIntent(issue, repository));
+        final Issue searchIssue = (Issue) l.getItemAtPosition(position);
+
+        startActivity(IssuesViewActivity.createIntent(searchIssue, repository));
     }
 
     @Override
-    public Loader<List<SearchIssue>> onCreateLoader(int id, Bundle args) {
-        return new ThrowableLoader<List<SearchIssue>>(getActivity(), items) {
+    public Loader<List<Issue>> onCreateLoader(int id, Bundle args) {
+        return new ThrowableLoader<List<Issue>>(getActivity(), items) {
 
-            public List<SearchIssue> loadData() throws Exception {
+            public List<Issue> loadData() throws Exception {
                 if (repository == null)
                     return Collections.emptyList();
-                List<SearchIssue> matches = new ArrayList<>();
-                /** TODO
-                 *  This request is using a legacy API that is not working properly
-                 *  it needs to be fixed
-                 */
-                matches.addAll(service.searchIssues(repository, STATE_OPEN, query));
-                //matches.addAll(service.searchIssues(repository, STATE_CLOSED, query));
+                List<Issue> matches = new ArrayList<>();
+
+                int page = 1;
+                boolean hasMore = true;
+                while(hasMore){
+                    hasMore = matches.addAll(new IssuesSearchClient(getContext(), query, page).executeSync());
+                    page++;
+                }
                 Collections.sort(matches, SearchIssueListFragment.this);
                 return matches;
             }
@@ -115,14 +116,14 @@ public class SearchIssueListFragment extends ItemListFragment<SearchIssue>
     }
 
     @Override
-    protected SingleTypeAdapter<SearchIssue> createAdapter(
-            List<SearchIssue> items) {
+    protected SingleTypeAdapter<Issue> createAdapter(
+            List<Issue> items) {
         return new SearchIssueListAdapter(getActivity().getLayoutInflater(),
-                items.toArray(new SearchIssue[items.size()]), avatars);
+                items.toArray(new Issue[items.size()]), avatars);
     }
 
     @Override
-    public int compare(SearchIssue lhs, SearchIssue rhs) {
-        return rhs.getNumber() - lhs.getNumber();
+    public int compare(Issue lhs, Issue rhs) {
+        return rhs.number - lhs.number;
     }
 }

@@ -80,8 +80,7 @@ public class FiltersViewActivity extends DialogFragmentActivity implements
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
         if (requestCode == REQUEST_DELETE && resultCode == RESULT_OK) {
-            IssueFilter filter = (IssueFilter) arguments
-                .getSerializable(ARG_FILTER);
+            IssueFilter filter = arguments.getParcelable(ARG_FILTER);
             cache.removeIssueFilter(filter, new RequestFuture<IssueFilter>() {
 
                 @Override
@@ -114,7 +113,7 @@ public class FiltersViewActivity extends DialogFragmentActivity implements
         int position, long id) {
         IssueFilter filter = (IssueFilter) parent.getItemAtPosition(position);
         Bundle args = new Bundle();
-        args.putSerializable(ARG_FILTER, filter);
+        args.putParcelable(ARG_FILTER, filter);
         ConfirmDialogFragment.show(this, REQUEST_DELETE,
             getString(R.string.confirm_bookmark_delete_title),
             getString(R.string.confirm_bookmark_delete_message), args);

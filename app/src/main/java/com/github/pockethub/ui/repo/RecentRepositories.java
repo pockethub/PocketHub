@@ -28,13 +28,13 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * Model class for the repositories recently selected under an organization
  */
-public class RecentRepositories implements Comparator<Repository>, Serializable {
+public class RecentRepositories implements Comparator<Repo>, Serializable {
 
     /**
      * Number of repositories retained per organization
@@ -47,7 +47,7 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
 
     private static File getFile(final Context context, final User organization) {
         return new File(context.getFilesDir(), "recent-repos-"
-                + organization.getId() + ".ser");
+                + organization.id + ".ser");
     }
 
     private LinkedHashSet<Long> ids;
@@ -64,7 +64,7 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
      */
     public RecentRepositories(final Context context, final User organization) {
         file = getFile(context, organization);
-        id = organization.getId();
+        id = organization.id;
     }
 
     private void load() {
@@ -89,8 +89,8 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
      * @param repo
      * @return this recent list
      */
-    public RecentRepositories add(final Repository repo) {
-        return repo != null ? add(repo.getId()) : this;
+    public RecentRepositories add(final Repo repo) {
+        return repo != null ? add(repo.id) : this;
     }
 
     /**
@@ -114,8 +114,8 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
      * @param repo
      * @return this recent list
      */
-    public RecentRepositories remove(final Repository repo) {
-        return repo != null ? remove(repo.getId()) : this;
+    public RecentRepositories remove(final Repo repo) {
+        return repo != null ? remove(repo.id) : this;
     }
 
     /**
@@ -167,8 +167,8 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
      * @param repository
      * @return true if in recent list, false otherwise
      */
-    public boolean contains(Repository repository) {
-        return repository != null && contains(repository.getId());
+    public boolean contains(Repo repository) {
+        return repository != null && contains(repository.id);
     }
 
     /**
@@ -184,7 +184,7 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
     }
 
     @Override
-    public int compare(final Repository lhs, final Repository rhs) {
+    public int compare(final Repo lhs, final Repo rhs) {
         final boolean lRecent = contains(lhs);
         final boolean rRecent = contains(rhs);
         if (lRecent && !rRecent)
@@ -192,16 +192,16 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
         if (!lRecent && rRecent)
             return 1;
 
-        final int order = CASE_INSENSITIVE_ORDER.compare(lhs.getName(),
-                rhs.getName());
+        final int order = CASE_INSENSITIVE_ORDER.compare(lhs.name,
+                rhs.name);
         if (order == 0)
-            if (id == lhs.getOwner().getId())
+            if (id == lhs.owner.id)
                 return -1;
-            else if (id == rhs.getOwner().getId())
+            else if (id == rhs.owner.id)
                 return 1;
             else
                 return CASE_INSENSITIVE_ORDER.compare(
-                        lhs.getOwner().getLogin(), rhs.getOwner().getLogin());
+                        lhs.owner.login, rhs.owner.login);
         else
             return order;
     }

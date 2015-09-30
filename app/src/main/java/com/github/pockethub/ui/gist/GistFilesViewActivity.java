@@ -39,8 +39,8 @@ import com.github.pockethub.util.HttpImageGetter;
 import com.google.inject.Inject;
 import com.viewpagerindicator.TitlePageIndicator;
 
-import org.eclipse.egit.github.core.Gist;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.Gist;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * Activity to page through the content of all the files in a Gist
@@ -55,7 +55,7 @@ public class GistFilesViewActivity extends PagerActivity {
      * @return intent
      */
     public static Intent createIntent(Gist gist, int position) {
-        return new Builder("gist.files.VIEW").gist(gist.getId())
+        return new Builder("gist.files.VIEW").gist(gist.id)
             .add(EXTRA_POSITION, position).toIntent();
     }
 
@@ -126,9 +126,9 @@ public class GistFilesViewActivity extends PagerActivity {
     private void configurePager() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        User author = gist.getUser();
+        User author = gist.user;
         if (author != null) {
-            actionBar.setSubtitle(author.getLogin());
+            actionBar.setSubtitle(author.login);
             avatars.bind(actionBar, author);
         } else
             actionBar.setSubtitle(R.string.anonymous);

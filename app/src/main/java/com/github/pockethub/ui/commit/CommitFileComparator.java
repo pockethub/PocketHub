@@ -15,11 +15,12 @@
  */
 package com.github.pockethub.ui.commit;
 
+import com.alorma.github.sdk.bean.dto.response.CommitFile;
+
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
 import java.util.Comparator;
 
-import org.eclipse.egit.github.core.CommitFile;
 
 /**
  * Comparator for commit files
@@ -28,12 +29,12 @@ public class CommitFileComparator implements Comparator<CommitFile> {
 
     @Override
     public int compare(final CommitFile lhs, final CommitFile rhs) {
-        String lPath = lhs.getFilename();
+        String lPath = lhs.filename;
         final int lSlash = lPath.lastIndexOf('/');
         if (lSlash != -1)
             lPath = lPath.substring(lSlash + 1);
 
-        String rPath = rhs.getFilename();
+        String rPath = rhs.filename;
         final int rSlash = rPath.lastIndexOf('/');
         if (rSlash != -1)
             rPath = rPath.substring(rSlash + 1);

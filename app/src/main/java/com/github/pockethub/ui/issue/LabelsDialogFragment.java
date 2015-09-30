@@ -31,6 +31,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.alorma.github.sdk.bean.dto.response.Label;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.DialogFragmentActivity;
@@ -40,8 +41,7 @@ import com.github.pockethub.ui.LightAlertDialog;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-
-import org.eclipse.egit.github.core.Label;
+import java.util.List;
 
 /**
  * Dialog fragment to present labels where one or more can be selected
@@ -100,7 +100,7 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
      */
     @SuppressWarnings("unchecked")
     public static ArrayList<Label> getSelected(Bundle arguments) {
-        return (ArrayList<Label>) arguments.getSerializable(ARG_SELECTED);
+        return (ArrayList<Label>) arguments.getParcelable(ARG_SELECTED);
     }
 
     /**
@@ -117,7 +117,7 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
             final int requestCode, final String title, final String message,
             final ArrayList<Label> choices, final boolean[] selectedChoices) {
         Bundle arguments = createArguments(title, message, requestCode);
-        arguments.putSerializable(ARG_CHOICES, choices);
+        arguments.putParcelableArrayList(ARG_CHOICES, choices);
         arguments.putBooleanArray(ARG_SELECTED_CHOICES, selectedChoices);
         show(activity, new LabelsDialogFragment(), arguments, TAG);
     }
@@ -130,12 +130,12 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
         ArrayList<Label> choices = getChoices();
         boolean[] selectedChoices = arguments
                 .getBooleanArray(ARG_SELECTED_CHOICES);
-        HashSet<String> selected = new HashSet<>();
+        List<String> selected = new ArrayList<>();
         if (selectedChoices != null)
             for (int i = 0; i < choices.size(); i++)
                 if (selectedChoices[i])
-                    selected.add(choices.get(i).getName());
-        arguments.putSerializable(ARG_SELECTED, selected);
+                    selected.add(choices.get(i).name);
+        arguments.putStringArrayList(ARG_SELECTED, (ArrayList<String>) selected);
 
         LayoutInflater inflater = activity.getLayoutInflater();
         ListView view = (ListView) inflater.inflate(R.layout.dialog_list_view,
@@ -161,7 +161,7 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
 
     @SuppressWarnings("unchecked")
     private ArrayList<Label> getChoices() {
-        return (ArrayList<Label>) getArguments().getSerializable(ARG_CHOICES);
+        return getArguments().getParcelableArrayList(ARG_CHOICES);
     }
 
     @Override
@@ -171,10 +171,12 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
         boolean[] selectedChoices = arguments
                 .getBooleanArray(ARG_SELECTED_CHOICES);
         ArrayList<Label> choices = getChoices();
-        for (int i = 0; i < selectedChoices.length; i++)
-            if (selectedChoices[i])
-                selected.add(choices.get(i));
-        arguments.putSerializable(ARG_SELECTED, selected);
+        if (selectedChoices != null) {
+            for (int i = 0; i < selectedChoices.length; i++)
+                if (selectedChoices[i])
+                    selected.add(choices.get(i));
+        }
+        arguments.putParcelableArrayList(ARG_SELECTED, selected);
 
         super.onResult(resultCode);
     }
@@ -185,8 +187,7 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
 
         switch (which) {
         case BUTTON_NEUTRAL:
-            Arrays.fill(getArguments().getBooleanArray(ARG_SELECTED_CHOICES),
-                    false);
+            Arrays.fill(getArguments().getBooleanArray(ARG_SELECTED_CHOICES), false);
         case BUTTON_POSITIVE:
             onResult(RESULT_OK);
         }

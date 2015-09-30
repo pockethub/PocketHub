@@ -19,14 +19,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.eclipse.egit.github.core.Comment;
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.IssueEvent;
+import com.alorma.github.sdk.bean.dto.response.GithubComment;
+import com.alorma.github.sdk.bean.dto.response.Issue;
+import com.alorma.github.sdk.bean.issue.IssueEvent;
 
 /**
  * Issue model with comments
  */
-public class FullIssue extends ArrayList<Comment> implements Serializable {
+public class FullIssue extends ArrayList<GithubComment> implements Serializable {
 
     private static final long serialVersionUID = 4586476132467323827L;
 
@@ -41,7 +41,7 @@ public class FullIssue extends ArrayList<Comment> implements Serializable {
      * @param comments
      * @param events
      */
-    public FullIssue(final Issue issue, final Collection<Comment> comments, final Collection<IssueEvent> events) {
+    public FullIssue(final Issue issue, final Collection<GithubComment> comments, final Collection<IssueEvent> events) {
         super(comments);
 
         this.events = events;

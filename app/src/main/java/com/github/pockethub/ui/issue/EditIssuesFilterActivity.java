@@ -30,19 +30,22 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.alorma.github.sdk.bean.dto.response.Label;
+import com.alorma.github.sdk.bean.dto.response.Milestone;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
 import com.github.pockethub.core.issue.IssueFilter;
 import com.github.pockethub.ui.DialogFragmentActivity;
 import com.github.pockethub.util.AvatarLoader;
+import com.github.pockethub.util.InfoUtils;
 import com.google.inject.Inject;
 
+import java.util.List;
 import java.util.Set;
 
-import org.eclipse.egit.github.core.Label;
-import org.eclipse.egit.github.core.Milestone;
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
+
 import org.eclipse.egit.github.core.service.CollaboratorService;
 import org.eclipse.egit.github.core.service.LabelService;
 import org.eclipse.egit.github.core.service.MilestoneService;
@@ -109,21 +112,19 @@ public class EditIssuesFilterActivity extends DialogFragmentActivity {
         avatarView = finder.find(R.id.iv_avatar);
 
         if (savedInstanceState != null)
-            filter = (IssueFilter) savedInstanceState
-                .getSerializable(EXTRA_ISSUE_FILTER);
+            filter = savedInstanceState.getParcelable(EXTRA_ISSUE_FILTER);
 
         if (filter == null)
-            filter = (IssueFilter) getIntent().getSerializableExtra(
-                EXTRA_ISSUE_FILTER);
+            filter = getIntent().getParcelableExtra(EXTRA_ISSUE_FILTER);
 
-        final Repository repository = filter.getRepository();
+        final Repo repository = filter.getRepository();
 
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.filter_issues_title);
-        actionBar.setSubtitle(repository.generateId());
-        avatars.bind(actionBar, repository.getOwner());
+        actionBar.setSubtitle(InfoUtils.createRepoId(repository));
+        avatars.bind(actionBar, repository.owner);
 
         OnClickListener assigneeListener = new OnClickListener() {
 
@@ -131,7 +132,7 @@ public class EditIssuesFilterActivity extends DialogFragmentActivity {
                 if (assigneeDialog == null)
                     assigneeDialog = new AssigneeDialog(
                         EditIssuesFilterActivity.this, REQUEST_ASSIGNEE,
-                        repository, collaborators);
+                        repository);
                 assigneeDialog.show(filter.getAssignee());
             }
         };
@@ -146,7 +147,7 @@ public class EditIssuesFilterActivity extends DialogFragmentActivity {
                 if (milestoneDialog == null)
                     milestoneDialog = new MilestoneDialog(
                         EditIssuesFilterActivity.this, REQUEST_MILESTONE,
-                        repository, milestones);
+                        repository);
                 milestoneDialog.show(filter.getMilestone());
             }
         };
@@ -161,7 +162,7 @@ public class EditIssuesFilterActivity extends DialogFragmentActivity {
                 if (labelsDialog == null)
                     labelsDialog = new LabelsDialog(
                         EditIssuesFilterActivity.this, REQUEST_LABELS,
-                        repository, labels);
+                        repository);
                 labelsDialog.show(filter.getLabels());
             }
         };
@@ -226,11 +227,11 @@ public class EditIssuesFilterActivity extends DialogFragmentActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putSerializable(EXTRA_ISSUE_FILTER, filter);
+        outState.putParcelable(EXTRA_ISSUE_FILTER, filter);
     }
 
     private void updateLabels() {
-        Set<Label> selected = filter.getLabels();
+        List<Label> selected = filter.getLabels();
         if (selected != null)
             LabelDrawableSpan.setText(labelsText, selected);
         else
@@ -240,7 +241,7 @@ public class EditIssuesFilterActivity extends DialogFragmentActivity {
     private void updateMilestone() {
         Milestone selected = filter.getMilestone();
         if (selected != null)
-            milestoneText.setText(selected.getTitle());
+            milestoneText.setText(selected.title);
         else
             milestoneText.setText(R.string.none);
     }
@@ -249,7 +250,7 @@ public class EditIssuesFilterActivity extends DialogFragmentActivity {
         User selected = filter.getAssignee();
         if (selected != null) {
             avatars.bind(avatarView, selected);
-            assigneeText.setText(selected.getLogin());
+            assigneeText.setText(selected.login);
         } else {
             avatarView.setVisibility(GONE);
             assigneeText.setText(R.string.assignee_anyone);

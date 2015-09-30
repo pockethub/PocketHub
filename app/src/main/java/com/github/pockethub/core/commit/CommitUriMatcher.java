@@ -21,8 +21,8 @@ import com.github.pockethub.core.repo.RepositoryUtils;
 
 import java.util.List;
 
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * Parses a {@link CommitMatch} from a {@link Uri}
@@ -56,9 +56,11 @@ public class CommitUriMatcher {
         if (!CommitUtils.isValidCommit(commit))
             return null;
 
-        Repository repository = new Repository();
-        repository.setName(repoName);
-        repository.setOwner(new User().setLogin(repoOwner));
+        Repo repository = new Repo();
+        User owner = new User();
+        owner.login = repoOwner;
+        repository.name = repoName;
+        repository.owner = owner;
         return new CommitMatch(repository, commit);
     }
 }

@@ -21,7 +21,7 @@ import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
 import com.github.pockethub.util.AvatarLoader;
 
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * List adapter for a list of users
@@ -47,7 +47,7 @@ public class UserListAdapter extends SingleTypeAdapter<User> {
 
     @Override
     public long getItemId(final int position) {
-        return getItem(position).getId();
+        return getItem(position).id;
     }
 
     @Override
@@ -58,6 +58,6 @@ public class UserListAdapter extends SingleTypeAdapter<User> {
     @Override
     protected void update(final int position, final User user) {
         avatars.bind(imageView(0), user);
-        setText(1, user.getLogin());
+        setText(1, user.login);
     }
 }

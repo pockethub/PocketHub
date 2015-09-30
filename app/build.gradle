@@ -20,7 +20,7 @@ def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '22.0.1'
+    buildToolsVersion '23.0.1'
 
     defaultConfig {
         applicationId 'com.github.pockethub'
@@ -91,8 +91,7 @@ dependencies {
     compile ('com.google.inject.extensions:guice-assistedinject:3.0'){
         exclude group: 'com.google.inject'
     }
-
-    compile 'com.github.alorma:github-sdk:1.0.1'
+    compile 'com.github.alorma:github-sdk:1.2.0'
     compile 'com.viewpagerindicator:library:2.4.1@aar'
     compile 'com.squareup.okio:okio:1.1.0'
     compile 'com.squareup.retrofit:retrofit:1.9.0'

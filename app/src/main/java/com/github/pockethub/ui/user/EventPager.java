@@ -15,6 +15,7 @@
  */
 package com.github.pockethub.ui.user;
 
+import com.alorma.github.sdk.bean.dto.response.GithubEvent;
 import com.github.pockethub.core.ResourcePager;
 
 import org.eclipse.egit.github.core.event.Event;
@@ -22,15 +23,15 @@ import org.eclipse.egit.github.core.event.Event;
 /**
  * Pager over events
  */
-public abstract class EventPager extends ResourcePager<Event> {
+public abstract class EventPager extends ResourcePager<GithubEvent> {
 
     @Override
-    protected Object getId(Event resource) {
-        return resource.getId();
+    protected Object getId(GithubEvent resource) {
+        return resource.id;
     }
 
     @Override
-    protected Event register(Event resource) {
+    protected GithubEvent register(GithubEvent resource) {
         return NewsListAdapter.isValid(resource) ? resource : null;
     }
 }

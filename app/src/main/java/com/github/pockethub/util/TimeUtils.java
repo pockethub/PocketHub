@@ -21,7 +21,11 @@ import static android.text.format.DateUtils.FORMAT_SHOW_YEAR;
 import static android.text.format.DateUtils.MINUTE_IN_MILLIS;
 import android.text.format.DateUtils;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Utilities for dealing with dates and times
@@ -42,5 +46,25 @@ public class TimeUtils {
                             | FORMAT_NUMERIC_DATE);
         else
             return "just now";
+    }
+
+    public static CharSequence getRelativeTime(final String date) {
+        return getRelativeTime(stringToDate(date));
+    }
+
+    public static Date stringToDate(String value){
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
+        Date date = null;
+        try {
+            date = format.parse(value);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    public static String dateToString(Date value){
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
+        return format.format(value);
     }
 }

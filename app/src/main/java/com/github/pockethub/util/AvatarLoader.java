@@ -24,6 +24,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.alorma.github.sdk.bean.dto.response.Contributor;
+import com.alorma.github.sdk.bean.dto.response.Organization;
+import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.R;
 import com.google.inject.Inject;
 import com.squareup.okhttp.Cache;
@@ -36,10 +39,6 @@ import java.io.File;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
-
-import org.eclipse.egit.github.core.CommitUser;
-import org.eclipse.egit.github.core.Contributor;
-import org.eclipse.egit.github.core.User;
 
 import roboguice.util.RoboAsyncTask;
 
@@ -123,7 +122,7 @@ public class AvatarLoader {
         if (user == null)
             return;
 
-        String avatarUrl = user.getAvatarUrl();
+        String avatarUrl = user.avatar_url;
         if (TextUtils.isEmpty(avatarUrl))
             return;
 
@@ -163,10 +162,10 @@ public class AvatarLoader {
      * Bind view to image at URL
      *
      * @param view The ImageView that is to display the user's avatar.
-     * @param user A CommitUser object that points to the desired user.
+     * @param org A User object that points to the desired user.
      */
-    public void bind(final ImageView view, final CommitUser user) {
-        bind(view, getAvatarUrl(user));
+    public void bind(final ImageView view, final Organization org) {
+        bind(view, getAvatarUrl(org));
     }
 
     /**
@@ -176,7 +175,7 @@ public class AvatarLoader {
      * @param contributor A Contributor object that points to the desired user.
      */
     public void bind(final ImageView view, final Contributor contributor) {
-        bind(view, contributor.getAvatarUrl());
+        bind(view, contributor.author.avatar_url);
     }
 
     private void bind(final ImageView view, String url) {
@@ -200,15 +199,22 @@ public class AvatarLoader {
         if (user == null)
             return null;
 
-        String avatarUrl = user.getAvatarUrl();
+        String avatarUrl = user.avatar_url;
         if (TextUtils.isEmpty(avatarUrl)) {
-            avatarUrl = getAvatarUrl(GravatarUtils.getHash(user.getEmail()));
+            avatarUrl = getAvatarUrl(GravatarUtils.getHash(user.email));
         }
         return avatarUrl;
     }
 
-    private String getAvatarUrl(CommitUser user) {
-        return getAvatarUrl(GravatarUtils.getHash(user.getEmail()));
+    private String getAvatarUrl(Organization org) {
+        if (org == null)
+            return null;
+
+        String avatarUrl = org.avatar_url;
+        if (TextUtils.isEmpty(avatarUrl)) {
+            avatarUrl = getAvatarUrl(GravatarUtils.getHash(org.email));
+        }
+        return avatarUrl;
     }
 
     private String getAvatarUrl(String id) {

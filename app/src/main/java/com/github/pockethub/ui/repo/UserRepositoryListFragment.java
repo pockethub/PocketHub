@@ -24,6 +24,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
+import com.alorma.github.sdk.services.client.GithubClient;
+import com.alorma.github.sdk.services.repos.UserReposClient;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
 import com.github.pockethub.core.ResourcePager;
@@ -32,15 +34,15 @@ import com.google.inject.Inject;
 
 import java.util.List;
 
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.client.PageIterator;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
+import com.github.pockethub.core.PageIterator;
 import org.eclipse.egit.github.core.service.RepositoryService;
 
 /**
  * Fragment to display a list of repositories for a {@link User}
  */
-public class UserRepositoryListFragment extends PagedItemFragment<Repository> {
+public class UserRepositoryListFragment extends PagedItemFragment<Repo> {
 
     @Inject
     private RepositoryService service;
@@ -51,7 +53,7 @@ public class UserRepositoryListFragment extends PagedItemFragment<Repository> {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        user = getSerializableExtra(EXTRA_USER);
+        user = getParcelableExtra(EXTRA_USER);
     }
 
     @Override
@@ -62,17 +64,22 @@ public class UserRepositoryListFragment extends PagedItemFragment<Repository> {
     }
 
     @Override
-    protected ResourcePager<Repository> createPager() {
-        return new ResourcePager<Repository>() {
+    protected ResourcePager<Repo> createPager() {
+        return new ResourcePager<Repo>() {
 
             @Override
-            protected Object getId(Repository resource) {
-                return resource.getId();
+            protected Object getId(Repo resource) {
+                return resource.id;
             }
 
             @Override
-            public PageIterator<Repository> createIterator(int page, int size) {
-                return service.pageRepositories(user.getLogin(), page, size);
+            public PageIterator<Repo> createIterator(int page, int size) {
+                return new PageIterator<>(new PageIterator.GitHubRequest<List<Repo>>() {
+                    @Override
+                    public GithubClient<List<Repo>> execute(int page) {
+                        return new UserReposClient(getActivity(), user.login, page);
+                    }
+                }, page);
             }
         };
     }
@@ -88,9 +95,9 @@ public class UserRepositoryListFragment extends PagedItemFragment<Repository> {
     }
 
     @Override
-    protected SingleTypeAdapter<Repository> createAdapter(List<Repository> items) {
+    protected SingleTypeAdapter<Repo> createAdapter(List<Repo> items) {
         return new UserRepositoryListAdapter(getActivity().getLayoutInflater(),
-                items.toArray(new Repository[items.size()]), user);
+                items.toArray(new Repo[items.size()]), user);
     }
 
     @Override
@@ -105,7 +112,7 @@ public class UserRepositoryListFragment extends PagedItemFragment<Repository> {
 
     @Override
     public void onListItemClick(ListView list, View v, int position, long id) {
-        Repository repo = (Repository) list.getItemAtPosition(position);
+        Repo repo = (Repo) list.getItemAtPosition(position);
         startActivityForResult(RepositoryViewActivity.createIntent(repo),
                 REPOSITORY_VIEW);
     }

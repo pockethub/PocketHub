@@ -15,9 +15,8 @@
  */
 package com.github.pockethub.core.gist;
 
+import com.alorma.github.sdk.bean.dto.response.Gist;
 import com.github.pockethub.core.ResourcePager;
-
-import org.eclipse.egit.github.core.Gist;
 
 /**
  * Pager over Gists
@@ -37,7 +36,7 @@ public abstract class GistPager extends ResourcePager<Gist> {
 
     @Override
     protected Object getId(Gist resource) {
-        return resource.getId();
+        return resource.id;
     }
 
     @Override

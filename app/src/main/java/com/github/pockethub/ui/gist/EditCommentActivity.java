@@ -21,13 +21,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 
+import com.alorma.github.sdk.bean.dto.response.GithubComment;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.comment.CommentPreviewPagerAdapter;
 
-import org.eclipse.egit.github.core.Comment;
-import org.eclipse.egit.github.core.Gist;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.Gist;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * Activity to edit a comment on a {@link Gist}
@@ -41,7 +41,7 @@ public class EditCommentActivity extends
      * @param gist
      * @return intent
      */
-    public static Intent createIntent(Gist gist, Comment comment) {
+    public static Intent createIntent(Gist gist, GithubComment comment) {
         Builder builder = new Builder("gist.comment.edit.VIEW");
         builder.gist(gist);
         builder.add(EXTRA_COMMENT, comment);
@@ -53,19 +53,19 @@ public class EditCommentActivity extends
     /**
      * Comment to edit.
      */
-    private Comment comment;
+    private GithubComment comment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        gist = getSerializableExtra(EXTRA_GIST);
-        comment = getSerializableExtra(EXTRA_COMMENT);
+        gist = getParcelableExtra(EXTRA_GIST);
+        comment = getIntent().getParcelableExtra(EXTRA_COMMENT);
         super.onCreate(savedInstanceState);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(getString(R.string.gist_title) + gist.getId());
-        User user = gist.getUser();
+        actionBar.setTitle(getString(R.string.gist_title) + gist.id);
+        User user = gist.user;
         if (user != null)
-            actionBar.setSubtitle(user.getLogin());
+            actionBar.setSubtitle(user.login);
         avatars.bind(actionBar, user);
     }
 
@@ -80,11 +80,9 @@ public class EditCommentActivity extends
      * @param commentText
      */
     protected void editComment(String commentText) {
-        comment.setBody(commentText);
-
-        new EditCommentTask(this, gist.getId(), comment) {
+        new EditCommentTask(this, gist.id, commentText, comment.id) {
             @Override
-            protected void onSuccess(Comment comment) throws Exception {
+            protected void onSuccess(GithubComment comment) throws Exception {
                 super.onSuccess(comment);
 
                 finish(comment);
@@ -95,7 +93,7 @@ public class EditCommentActivity extends
     @Override
     protected CommentPreviewPagerAdapter createAdapter() {
         CommentPreviewPagerAdapter commentPreviewPagerAdapter = new CommentPreviewPagerAdapter(this, null);
-        commentPreviewPagerAdapter.setCommentText(comment != null ? comment.getBody() : null);
+        commentPreviewPagerAdapter.setCommentText(comment != null ? comment.body : null);
         return commentPreviewPagerAdapter;
     }
 }

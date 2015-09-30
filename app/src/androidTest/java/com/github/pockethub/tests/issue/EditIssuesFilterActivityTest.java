@@ -19,8 +19,9 @@ import com.github.pockethub.core.issue.IssueFilter;
 import com.github.pockethub.tests.ActivityTest;
 import com.github.pockethub.ui.issue.EditIssuesFilterActivity;
 
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
+import com.github.pockethub.util.InfoUtils;
 
 /**
  * Tests of {@link EditIssuesFilterActivity}
@@ -39,9 +40,7 @@ public class EditIssuesFilterActivityTest extends
     protected void setUp() throws Exception {
         super.setUp();
 
-        Repository repo = new Repository();
-        repo.setName("name");
-        repo.setOwner(new User().setLogin("owner"));
+        Repo repo = InfoUtils.createRepoFromData("owner", "name");
         IssueFilter filter = new IssueFilter(repo);
         setActivityIntent(EditIssuesFilterActivity.createIntent(filter));
     }

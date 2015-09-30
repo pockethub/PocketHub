@@ -17,13 +17,11 @@ package com.github.pockethub.tests.issue;
 
 import android.test.AndroidTestCase;
 
+import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.github.pockethub.core.issue.IssueStore;
 
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.RepositoryIssue;
-import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.service.IssueService;
-import org.eclipse.egit.github.core.service.PullRequestService;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.github.pockethub.util.InfoUtils;
 
 /**
  * Unit tests of {@link IssueStore}
@@ -34,23 +32,24 @@ public class IssueStoreTest extends AndroidTestCase {
      * Verify issue is updated when re-added
      */
     public void testReuseIssue() {
-        IssueStore store = new IssueStore(new IssueService(),
-                new PullRequestService());
-        Repository repo = new Repository();
-        repo.setName("name");
-        repo.setOwner(new User().setLogin("owner"));
+        IssueStore store = new IssueStore(mContext);
+        Repo repo = InfoUtils.createRepoFromData("owner", "name");
 
         assertNull(store.getIssue(repo, 1));
 
-        RepositoryIssue issue = new RepositoryIssue();
-        issue.setRepository(repo).setNumber(1).setBody("body");
+        Issue issue = new Issue();
+        issue.repository = repo;
+        issue.number = 1;
+        issue.body = "body";
         assertSame(issue, store.addIssue(issue));
         assertSame(issue, store.getIssue(repo, 1));
 
-        RepositoryIssue issue2 = new RepositoryIssue();
-        issue2.setRepository(repo).setNumber(1).setBody("body2");
+        Issue issue2 = new Issue();
+        issue2.repository = repo;
+        issue2.number = 1;
+        issue2.body = "body2";
         assertSame(issue, store.addIssue(issue2));
-        assertEquals(issue2.getBody(), issue.getBody());
+        assertEquals(issue2.body, issue.body);
         assertSame(issue, store.getIssue(repo, 1));
     }
 }

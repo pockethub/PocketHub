@@ -23,14 +23,13 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.Intents;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.DialogFragmentActivity;
 import com.github.pockethub.util.AvatarLoader;
 import com.google.inject.Inject;
-
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.User;
 
 /**
  * Activity to view repository contributors
@@ -43,11 +42,11 @@ public class RepositoryContributorsActivity extends DialogFragmentActivity {
      * @param repository
      * @return intent
      */
-    public static Intent createIntent(Repository repository) {
+    public static Intent createIntent(Repo repository) {
         return new Intents.Builder("repo.contributors.VIEW").repo(repository).toIntent();
     }
 
-    private Repository repository;
+    private Repo repository;
 
     @Inject
     private AvatarLoader avatars;
@@ -58,16 +57,16 @@ public class RepositoryContributorsActivity extends DialogFragmentActivity {
 
         setContentView(R.layout.repo_contributors);
 
-        repository = getSerializableExtra(EXTRA_REPOSITORY);
+        repository = getParcelableExtra(EXTRA_REPOSITORY);
 
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(repository.getName());
+        actionBar.setTitle(repository.name);
         actionBar.setSubtitle(R.string.contributors);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        User owner = repository.getOwner();
+        User owner = repository.owner;
         avatars.bind(getSupportActionBar(), owner);
     }
 

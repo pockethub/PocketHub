@@ -17,6 +17,7 @@ package com.github.pockethub;
 
 import android.content.Context;
 
+import com.alorma.github.sdk.bean.dto.response.Commit;
 import com.github.pockethub.accounts.AccountClient;
 import com.github.pockethub.accounts.AccountScope;
 import com.github.pockethub.accounts.GitHubAccount;
@@ -72,31 +73,30 @@ public class GitHubModule extends AbstractModule {
     }
 
     @Provides
-    IssueStore issueStore(IssueService issueService,
-            PullRequestService pullService) {
+    IssueStore issueStore(Context context) {
         IssueStore store = issues != null ? issues.get() : null;
         if (store == null) {
-            store = new IssueStore(issueService, pullService);
+            store = new IssueStore(context);
             issues = new WeakReference<>(store);
         }
         return store;
     }
 
     @Provides
-    GistStore gistStore(GistService service) {
+    GistStore gistStore(Context context) {
         GistStore store = gists != null ? gists.get() : null;
         if (store == null) {
-            store = new GistStore(service);
+            store = new GistStore(context);
             gists = new WeakReference<>(store);
         }
         return store;
     }
 
     @Provides
-    CommitStore commitStore(CommitService service) {
+    CommitStore commitStore(Context context) {
         CommitStore store = commits != null ? commits.get() : null;
         if (store == null) {
-            store = new CommitStore(service);
+            store = new CommitStore(context);
             commits = new WeakReference<>(store);
         }
         return store;

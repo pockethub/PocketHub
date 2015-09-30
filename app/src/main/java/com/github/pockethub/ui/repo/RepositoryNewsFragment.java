@@ -18,6 +18,9 @@ package com.github.pockethub.ui.repo;
 import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
 import android.app.Activity;
 
+import com.alorma.github.sdk.bean.dto.response.GithubEvent;
+import com.alorma.github.sdk.services.client.GithubClient;
+import com.alorma.github.sdk.services.repo.GetRepoEventsClient;
 import com.github.pockethub.core.ResourcePager;
 import com.github.pockethub.core.user.UserEventMatcher.UserPair;
 import com.github.pockethub.ui.NewsFragment;
@@ -25,33 +28,42 @@ import com.github.pockethub.ui.issue.IssuesViewActivity;
 import com.github.pockethub.ui.user.EventPager;
 import com.github.pockethub.ui.user.UserViewActivity;
 
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.client.PageIterator;
-import org.eclipse.egit.github.core.event.Event;
+import com.alorma.github.sdk.bean.dto.response.Issue;
+
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
+import com.github.pockethub.core.PageIterator;
+import com.github.pockethub.util.InfoUtils;
+
+import java.util.List;
 
 /**
  * Fragment to display a news feed for a specific repository
  */
 public class RepositoryNewsFragment extends NewsFragment {
 
-    private Repository repo;
+    private Repo repo;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        repo = getSerializableExtra(EXTRA_REPOSITORY);
+        repo = getParcelableExtra(EXTRA_REPOSITORY);
     }
 
     @Override
-    protected ResourcePager<Event> createPager() {
+    protected ResourcePager<GithubEvent> createPager() {
         return new EventPager() {
 
             @Override
-            public PageIterator<Event> createIterator(int page, int size) {
-                return service.pageEvents(repo, page, size);
+            public PageIterator<GithubEvent> createIterator(int page, int size) {
+                return new PageIterator<>(new PageIterator.GitHubRequest<List<GithubEvent>>() {
+                    @Override
+                    public GithubClient<List<GithubEvent>> execute(int page) {
+                        return new GetRepoEventsClient(getActivity(),
+                                InfoUtils.createRepoInfo(repo), page);
+                    }
+                }, page);
             }
         };
     }
@@ -62,19 +74,19 @@ public class RepositoryNewsFragment extends NewsFragment {
      * @param repository
      */
     @Override
-    protected void viewRepository(Repository repository) {
-        if (!repo.generateId().equals(repository.generateId()))
+    protected void viewRepository(Repo repository) {
+        if (!InfoUtils.createRepoId(repo).equals(InfoUtils.createRepoId(repository)))
             super.viewRepository(repository);
     }
 
     @Override
-    protected void viewIssue(Issue issue, Repository repository) {
+    protected void viewIssue(Issue issue, Repo repository) {
         startActivity(IssuesViewActivity.createIntent(issue, repo));
     }
 
     @Override
     protected boolean viewUser(User user) {
-        if (repo.getOwner().getId() != user.getId()) {
+        if (repo.owner.id != user.id) {
             startActivity(UserViewActivity.createIntent(user));
             return true;
         }

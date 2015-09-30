@@ -21,7 +21,7 @@ import com.github.pockethub.core.repo.RepositoryUtils;
 
 import java.util.List;
 
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * Parses a {@link User} from a {@link Uri}
@@ -44,7 +44,8 @@ public class UserUriMatcher {
         String login = segments.get(0);
         if (!RepositoryUtils.isValidOwner(login))
             return null;
-
-        return new User().setLogin(login);
+        User user = new User();
+        user.login = login;
+        return user;
     }
 }

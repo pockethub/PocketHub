@@ -23,8 +23,8 @@ import com.github.pockethub.R.id;
 import com.github.pockethub.tests.ActivityTest;
 import com.github.pockethub.ui.gist.CreateCommentActivity;
 
-import org.eclipse.egit.github.core.Gist;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.Gist;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * Tests of {@link CreateCommentActivity}
@@ -43,8 +43,14 @@ public class CreateCommentActivityTest extends
     protected void setUp() throws Exception {
         super.setUp();
 
-        setActivityIntent(CreateCommentActivity.createIntent(new Gist().setId(
-            "123").setUser(new User().setLogin("abc"))));
+        Gist gist = new Gist();
+        User user = new User();
+
+        user.login = "abc";
+        gist.user = user;
+        gist.id = "123";
+
+        setActivityIntent(CreateCommentActivity.createIntent(gist));
     }
 
     /**

@@ -27,25 +27,24 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.core.issue.IssueStore;
 import com.github.pockethub.ui.FragmentStatePagerAdapter;
 
 import java.util.List;
 
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.RepositoryId;
-import org.eclipse.egit.github.core.RepositoryIssue;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.Issue;
+
 
 /**
  * Adapter to page through an {@link Issue} array
  */
 public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
 
-    private final Repository repo;
+    private final Repo repo;
 
-    private final List<RepositoryId> repos;
+    private final List<Repo> repos;
 
     private final int[] issues;
 
@@ -65,7 +64,7 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
      * @param collaborator
      */
     public IssuesPagerAdapter(ActionBarActivity activity,
-            List<RepositoryId> repoIds, int[] issueNumbers,
+            List<Repo> repoIds, int[] issueNumbers,
             IssueStore issueStore, boolean collaborator, boolean owner) {
         super(activity);
 
@@ -84,7 +83,7 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
      * @param collaborator
      */
     public IssuesPagerAdapter(ActionBarActivity activity,
-            Repository repository, int[] issueNumbers,
+            Repo repository, int[] issueNumbers,
             boolean collaborator, boolean owner) {
         super(activity);
 
@@ -101,19 +100,19 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
         IssueFragment fragment = new IssueFragment();
         Bundle args = new Bundle();
         if (repo != null) {
-            args.putString(EXTRA_REPOSITORY_NAME, repo.getName());
-            User owner = repo.getOwner();
-            args.putString(EXTRA_REPOSITORY_OWNER, owner.getLogin());
-            args.putSerializable(EXTRA_USER, owner);
+            args.putString(EXTRA_REPOSITORY_NAME, repo.name);
+            User owner = repo.owner;
+            args.putString(EXTRA_REPOSITORY_OWNER, owner.login);
+            args.putParcelable(EXTRA_USER, owner);
         } else {
-            RepositoryId repo = repos.get(position);
-            args.putString(EXTRA_REPOSITORY_NAME, repo.getName());
-            args.putString(EXTRA_REPOSITORY_OWNER, repo.getOwner());
-            RepositoryIssue issue = store.getIssue(repo, issues[position]);
-            if (issue != null && issue.getUser() != null) {
-                Repository fullRepo = issue.getRepository();
-                if (fullRepo != null && fullRepo.getOwner() != null)
-                    args.putSerializable(EXTRA_USER, fullRepo.getOwner());
+            Repo repo = repos.get(position);
+            args.putString(EXTRA_REPOSITORY_NAME, repo.name);
+            args.putString(EXTRA_REPOSITORY_OWNER, repo.owner.login);
+            Issue issue = store.getIssue(repo, issues[position]);
+            if (issue != null && issue.user != null) {
+                Repo fullRepo = issue.repository;
+                if (fullRepo != null && fullRepo.owner != null)
+                    args.putParcelable(EXTRA_USER, fullRepo.owner);
             }
         }
         args.putInt(EXTRA_ISSUE_NUMBER, issues[position]);

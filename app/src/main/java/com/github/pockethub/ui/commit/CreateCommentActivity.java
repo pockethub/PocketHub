@@ -24,13 +24,15 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 
+import com.alorma.github.sdk.bean.dto.request.CommitCommentRequest;
+import com.alorma.github.sdk.bean.dto.response.CommitComment;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
 import com.github.pockethub.core.commit.CommitUtils;
 import com.github.pockethub.ui.comment.CommentPreviewPagerAdapter;
 
-import org.eclipse.egit.github.core.CommitComment;
-import org.eclipse.egit.github.core.Repository;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.github.pockethub.util.InfoUtils;
 
 /**
  * Activity to create a comment on a commit
@@ -45,7 +47,7 @@ public class CreateCommentActivity extends
      * @param commit
      * @return intent
      */
-    public static Intent createIntent(Repository repository, String commit) {
+    public static Intent createIntent(Repo repository, String commit) {
         return createIntent(repository, commit, null, -1);
     }
 
@@ -58,7 +60,7 @@ public class CreateCommentActivity extends
      * @param position
      * @return intent
      */
-    public static Intent createIntent(Repository repository, String commit,
+    public static Intent createIntent(Repo repository, String commit,
             String path, int position) {
         Builder builder = new Builder("commit.comment.create.VIEW");
         builder.repo(repository);
@@ -72,7 +74,7 @@ public class CreateCommentActivity extends
         return !TextUtils.isEmpty(path) && position > -1;
     }
 
-    private Repository repository;
+    private Repo repository;
 
     private String commit;
 
@@ -82,7 +84,7 @@ public class CreateCommentActivity extends
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        repository = getSerializableExtra(EXTRA_REPOSITORY);
+        repository = getIntent().getParcelableExtra(EXTRA_REPOSITORY);
         commit = getStringExtra(EXTRA_BASE);
         position = getIntExtra(EXTRA_POSITION);
         path = getStringExtra(EXTRA_PATH);
@@ -92,16 +94,18 @@ public class CreateCommentActivity extends
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getString(R.string.commit_prefix)
                 + CommitUtils.abbreviate(commit));
-        actionBar.setSubtitle(repository.generateId());
-        avatars.bind(actionBar, repository.getOwner());
+        actionBar.setSubtitle(InfoUtils.createRepoId(repository));
+        avatars.bind(actionBar, repository.owner);
     }
 
     @Override
     protected void createComment(String comment) {
-        CommitComment commitComment = new CommitComment();
-        commitComment.setBody(comment);
-        if (isLineComment(path, position))
-            commitComment.setPath(path).setPosition(position);
+        CommitCommentRequest commitComment = new CommitCommentRequest();
+        commitComment.body = comment;
+        if (isLineComment(path, position)) {
+            commitComment.path = path;
+            commitComment.position = position;
+        }
         new CreateCommentTask(this, repository, commit, commitComment) {
 
             @Override

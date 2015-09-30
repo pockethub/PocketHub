@@ -20,12 +20,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 
+import com.alorma.github.sdk.bean.dto.response.GistFile;
 import com.github.pockethub.ui.FragmentPagerAdapter;
 
 import java.util.Map;
 
-import org.eclipse.egit.github.core.Gist;
-import org.eclipse.egit.github.core.GistFile;
+import com.alorma.github.sdk.bean.dto.response.Gist;
 
 /**
  * Pager adapter for all the files in a given gist
@@ -41,7 +41,7 @@ public class GistFilesPagerAdapter extends FragmentPagerAdapter {
     public GistFilesPagerAdapter(ActionBarActivity activity, Gist gist) {
         super(activity);
 
-        Map<String, GistFile> gistFiles = gist.getFiles();
+        Map<String, GistFile> gistFiles = gist.files;
         if (gistFiles != null && !gistFiles.isEmpty())
             files = gistFiles.values().toArray(new GistFile[gistFiles.size()]);
         else
@@ -50,7 +50,7 @@ public class GistFilesPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return files[position].getFilename();
+        return files[position].filename;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class GistFilesPagerAdapter extends FragmentPagerAdapter {
         GistFile file = files[position];
         Fragment fragment = new GistFileFragment();
         Bundle args = new Bundle();
-        args.putSerializable(EXTRA_GIST_FILE, file);
+        args.putParcelable(EXTRA_GIST_FILE, file);
         fragment.setArguments(args);
         return fragment;
     }

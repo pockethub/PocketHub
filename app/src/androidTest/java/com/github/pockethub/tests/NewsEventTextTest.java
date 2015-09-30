@@ -15,20 +15,6 @@
  */
 package com.github.pockethub.tests;
 
-import static org.eclipse.egit.github.core.event.Event.TYPE_COMMIT_COMMENT;
-import static org.eclipse.egit.github.core.event.Event.TYPE_CREATE;
-import static org.eclipse.egit.github.core.event.Event.TYPE_DELETE;
-import static org.eclipse.egit.github.core.event.Event.TYPE_FOLLOW;
-import static org.eclipse.egit.github.core.event.Event.TYPE_GIST;
-import static org.eclipse.egit.github.core.event.Event.TYPE_GOLLUM;
-import static org.eclipse.egit.github.core.event.Event.TYPE_ISSUES;
-import static org.eclipse.egit.github.core.event.Event.TYPE_ISSUE_COMMENT;
-import static org.eclipse.egit.github.core.event.Event.TYPE_MEMBER;
-import static org.eclipse.egit.github.core.event.Event.TYPE_PUBLIC;
-import static org.eclipse.egit.github.core.event.Event.TYPE_PULL_REQUEST;
-import static org.eclipse.egit.github.core.event.Event.TYPE_PUSH;
-import static org.eclipse.egit.github.core.event.Event.TYPE_TEAM_ADD;
-import static org.eclipse.egit.github.core.event.Event.TYPE_WATCH;
 import android.content.Context;
 import android.test.InstrumentationTestCase;
 import android.test.UiThreadTest;
@@ -36,29 +22,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.alorma.github.sdk.bean.dto.response.GithubEvent;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.Team;
+import com.alorma.github.sdk.bean.dto.response.User;
+import com.alorma.github.sdk.bean.dto.response.events.EventType;
+import com.alorma.github.sdk.bean.dto.response.events.payload.CommitCommentEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.CreatedEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.DeleteEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.IssueCommentEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.IssueEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.MemberEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.PullRequestEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.PushEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.TeamAddEventPayload;
 import com.github.pockethub.R.id;
+import com.github.pockethub.api.FollowEventPayload;
+import com.github.pockethub.api.GistEventPayload;
 import com.github.pockethub.ui.user.NewsListAdapter;
 import com.github.pockethub.util.AvatarLoader;
 
-import java.util.Date;
-
-import org.eclipse.egit.github.core.Gist;
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.Team;
-import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.event.CommitCommentPayload;
-import org.eclipse.egit.github.core.event.CreatePayload;
-import org.eclipse.egit.github.core.event.DeletePayload;
-import org.eclipse.egit.github.core.event.Event;
-import org.eclipse.egit.github.core.event.EventRepository;
-import org.eclipse.egit.github.core.event.FollowPayload;
-import org.eclipse.egit.github.core.event.GistPayload;
-import org.eclipse.egit.github.core.event.IssueCommentPayload;
-import org.eclipse.egit.github.core.event.IssuesPayload;
-import org.eclipse.egit.github.core.event.MemberPayload;
-import org.eclipse.egit.github.core.event.PullRequestPayload;
-import org.eclipse.egit.github.core.event.PushPayload;
-import org.eclipse.egit.github.core.event.TeamAddPayload;
+import com.alorma.github.sdk.bean.dto.response.Gist;
+import com.alorma.github.sdk.bean.dto.response.Issue;
 
 /**
  * Tests of the news text rendering
@@ -71,29 +56,28 @@ public class NewsEventTextTest extends InstrumentationTestCase {
 
     private User actor;
 
-    private EventRepository repo;
-
-    private Date date;
+    private Repo repo;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
 
-        date = new Date();
-        actor = new User().setLogin("user");
-        repo = new EventRepository().setName("user/repo");
+        actor = new User();
+        actor.login = "user";
+        repo = new Repo();
+        repo.name = "user/repo";
 
         Context context = getInstrumentation().getTargetContext();
         adapter = new NewsListAdapter(LayoutInflater.from(context),
                 new AvatarLoader(context));
     }
 
-    private Event createEvent(String type) {
-        Event event = new Event();
-        event.setCreatedAt(date);
-        event.setType(type);
-        event.setActor(actor);
-        event.setRepo(repo);
+    private GithubEvent createEvent(EventType type) {
+        GithubEvent event = new GithubEvent();
+        event.created_at = "2015-01-01T00:00:00Z";
+        event.type = type;
+        event.actor = actor;
+        event.repo = repo;
         return event;
     }
 
@@ -103,7 +87,7 @@ public class NewsEventTextTest extends InstrumentationTestCase {
         assertEquals(expected, actual.toString());
     }
 
-    private void updateView(Event event) {
+    private void updateView(GithubEvent event) {
         adapter.setItems(new Object[] { event });
         View view = adapter.getView(0, null, null);
         assertNotNull(view);
@@ -116,8 +100,8 @@ public class NewsEventTextTest extends InstrumentationTestCase {
      */
     @UiThreadTest
     public void testCommitCommentEvent() {
-        Event event = createEvent(TYPE_COMMIT_COMMENT);
-        event.setPayload(new CommitCommentPayload());
+        GithubEvent event = createEvent(EventType.CommitCommentEvent);
+        event.payload = new CommitCommentEventPayload();
         updateView(event);
 
         verify("user commented on user/repo");
@@ -128,10 +112,10 @@ public class NewsEventTextTest extends InstrumentationTestCase {
      */
     @UiThreadTest
     public void testCreateRepositoryEvent() {
-        Event event = createEvent(TYPE_CREATE);
-        CreatePayload payload = new CreatePayload();
-        payload.setRefType("repository");
-        event.setPayload(payload);
+        GithubEvent event = createEvent(EventType.CreateEvent);
+        CreatedEventPayload payload = new CreatedEventPayload();
+        payload.ref_type = "repository";
+        event.payload = payload;
         updateView(event);
 
         verify("user created repository repo");
@@ -142,11 +126,11 @@ public class NewsEventTextTest extends InstrumentationTestCase {
      */
     @UiThreadTest
     public void testCreateBranchEvent() {
-        Event event = createEvent(TYPE_CREATE);
-        CreatePayload payload = new CreatePayload();
-        payload.setRefType("branch");
-        payload.setRef("b1");
-        event.setPayload(payload);
+        GithubEvent event = createEvent(EventType.CreateEvent);
+        CreatedEventPayload payload = new CreatedEventPayload();
+        payload.ref_type = "branch";
+        payload.ref = "b1";
+        event.payload = payload;
         updateView(event);
 
         verify("user created branch b1 at user/repo");
@@ -157,11 +141,11 @@ public class NewsEventTextTest extends InstrumentationTestCase {
      */
     @UiThreadTest
     public void testDelete() {
-        Event event = createEvent(TYPE_DELETE);
-        DeletePayload payload = new DeletePayload();
-        payload.setRefType("branch");
-        payload.setRef("b1");
-        event.setPayload(payload);
+        GithubEvent event = createEvent(EventType.DeleteEvent);
+        DeleteEventPayload payload = new DeleteEventPayload();
+        payload.ref_type = "branch";
+        payload.ref = "b1";
+        event.payload = payload;
         updateView(event);
 
         verify("user deleted branch b1 at user/repo");
@@ -172,10 +156,14 @@ public class NewsEventTextTest extends InstrumentationTestCase {
      */
     @UiThreadTest
     public void testFollow() {
-        Event event = createEvent(TYPE_FOLLOW);
-        FollowPayload payload = new FollowPayload();
-        payload.setTarget(new User().setLogin("user2"));
-        event.setPayload(payload);
+        GithubEvent event = createEvent(EventType.FollowEvent);
+        FollowEventPayload payload = new FollowEventPayload();
+
+        User target = new User();
+        target.login = "user2";
+        payload.target = target;
+
+        event.payload = payload;
         updateView(event);
 
         verify("user started following user2");
@@ -186,11 +174,13 @@ public class NewsEventTextTest extends InstrumentationTestCase {
      */
     @UiThreadTest
     public void testGist() {
-        Event event = createEvent(TYPE_GIST);
-        GistPayload payload = new GistPayload();
-        payload.setAction("create");
-        payload.setGist(new Gist().setId("1"));
-        event.setPayload(payload);
+        GithubEvent event = createEvent(EventType.GistEvent);
+        GistEventPayload payload = new GistEventPayload();
+        payload.action = "create";
+        Gist gist = new Gist();
+        gist.id = "1";
+        payload.gist = gist;
+        event.payload = payload;
         updateView(event);
 
         verify("user created Gist 1");
@@ -201,7 +191,7 @@ public class NewsEventTextTest extends InstrumentationTestCase {
      */
     @UiThreadTest
     public void testWiki() {
-        Event event = createEvent(TYPE_GOLLUM);
+        GithubEvent event = createEvent(EventType.GollumEvent);
         updateView(event);
 
         verify("user updated the wiki in user/repo");
@@ -212,10 +202,12 @@ public class NewsEventTextTest extends InstrumentationTestCase {
      */
     @UiThreadTest
     public void testIssueComment() {
-        Event event = createEvent(TYPE_ISSUE_COMMENT);
-        IssueCommentPayload payload = new IssueCommentPayload();
-        payload.setIssue(new Issue().setNumber(5));
-        event.setPayload(payload);
+        GithubEvent event = createEvent(EventType.IssueCommentEvent);
+        IssueCommentEventPayload payload = new IssueCommentEventPayload();
+        Issue issue = new Issue();
+        issue.number = 5;
+        payload.issue = issue;
+        event.payload = payload;
         updateView(event);
 
         verify("user commented on issue 5 on user/repo");
@@ -226,11 +218,13 @@ public class NewsEventTextTest extends InstrumentationTestCase {
      */
     @UiThreadTest
     public void testIssue() {
-        Event event = createEvent(TYPE_ISSUES);
-        IssuesPayload payload = new IssuesPayload();
-        payload.setAction("closed");
-        payload.setIssue(new Issue().setNumber(8));
-        event.setPayload(payload);
+        GithubEvent event = createEvent(EventType.IssuesEvent);
+        IssueEventPayload payload = new IssueEventPayload();
+        payload.action = "closed";
+        Issue issue = new Issue();
+        issue.number = 8;
+        payload.issue = issue;
+        event.payload = payload;
         updateView(event);
 
         verify("user closed issue 8 on user/repo");
@@ -241,9 +235,12 @@ public class NewsEventTextTest extends InstrumentationTestCase {
      */
     @UiThreadTest
     public void testAddMember() {
-        Event event = createEvent(TYPE_MEMBER);
-        event.setPayload(new MemberPayload().setMember(new User()
-                .setLogin("person")));
+        GithubEvent event = createEvent(EventType.MemberEvent);
+        MemberEventPayload payload = new MemberEventPayload();
+        User user = new User();
+        user.login = "person";
+        payload.member = user;
+        event.payload = payload;
         updateView(event);
 
         verify("user added person as a collaborator to user/repo");
@@ -254,7 +251,7 @@ public class NewsEventTextTest extends InstrumentationTestCase {
      */
     @UiThreadTest
     public void testOpenSourced() {
-        Event event = createEvent(TYPE_PUBLIC);
+        GithubEvent event = createEvent(EventType.PublicEvent);
         updateView(event);
 
         verify("user open sourced repository user/repo");
@@ -265,7 +262,7 @@ public class NewsEventTextTest extends InstrumentationTestCase {
      */
     @UiThreadTest
     public void testWatch() {
-        Event event = createEvent(TYPE_WATCH);
+        GithubEvent event = createEvent(EventType.WatchEvent);
         updateView(event);
 
         verify("user starred user/repo");
@@ -276,11 +273,11 @@ public class NewsEventTextTest extends InstrumentationTestCase {
      */
     @UiThreadTest
     public void testPullRequest() {
-        Event event = createEvent(TYPE_PULL_REQUEST);
-        PullRequestPayload payload = new PullRequestPayload();
-        payload.setNumber(30);
-        payload.setAction("merged");
-        event.setPayload(payload);
+        GithubEvent event = createEvent(EventType.PullRequestEvent);
+        PullRequestEventPayload payload = new PullRequestEventPayload();
+        payload.number = 30;
+        payload.action = "merged";
+        event.payload = payload;
         updateView(event);
 
         verify("user merged pull request 30 on user/repo");
@@ -291,10 +288,10 @@ public class NewsEventTextTest extends InstrumentationTestCase {
      */
     @UiThreadTest
     public void testPush() {
-        Event event = createEvent(TYPE_PUSH);
-        PushPayload payload = new PushPayload();
-        payload.setRef("refs/heads/master");
-        event.setPayload(payload);
+        GithubEvent event = createEvent(EventType.PushEvent);
+        PushEventPayload payload = new PushEventPayload();
+        payload.ref = "refs/heads/master";
+        event.payload = payload;
         updateView(event);
 
         verify("user pushed to master at user/repo");
@@ -305,13 +302,22 @@ public class NewsEventTextTest extends InstrumentationTestCase {
      */
     @UiThreadTest
     public void testTeamAdd() {
-        Event event = createEvent(TYPE_TEAM_ADD);
-        TeamAddPayload payload = new TeamAddPayload();
-        payload.setTeam(new Team().setName("t1"));
-        payload.setUser(new User().setLogin("u2"));
-        event.setPayload(payload);
+        GithubEvent event = createEvent(EventType.TeamAddEvent);
+        TeamAddEventPayload payload = new TeamAddEventPayload();
+
+        Team team = new Team();
+        team.name = "t1";
+
+        Repo repo = new Repo();
+        repo.name = "r2";
+
+        payload.team = team;
+        payload.repository = repo;
+
+        event.payload = payload;
+
         updateView(event);
 
-        verify("user added u2 to team t1");
+        verify("user added r2 to team t1");
     }
 }

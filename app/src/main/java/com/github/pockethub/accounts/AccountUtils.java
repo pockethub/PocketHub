@@ -32,10 +32,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.alorma.github.sdk.bean.dto.response.Organization;
+import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.LightAlertDialog;
 
-import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.RequestException;
 
 import java.io.IOException;
@@ -103,7 +104,25 @@ public class AccountUtils {
         if (user == null)
             return false;
 
-        String login = user.getLogin();
+        String login = user.login;
+        if (login == null)
+            return false;
+
+        return login.equals(getLogin(context));
+    }
+
+    /**
+     * Is the given user the owner of the default account?
+     *
+     * @param context
+     * @param user
+     * @return true if default account user, false otherwise
+     */
+    public static boolean isUser(final Context context, final Organization user) {
+        if (user == null)
+            return false;
+
+        String login = user.login;
         if (login == null)
             return false;
 

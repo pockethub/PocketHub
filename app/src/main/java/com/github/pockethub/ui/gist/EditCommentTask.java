@@ -15,33 +15,30 @@
  */
 package com.github.pockethub.ui.gist;
 
-import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_COMMENTS;
-import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_GISTS;
 import android.accounts.Account;
 import android.app.Activity;
 import android.util.Log;
 
+import com.alorma.github.sdk.bean.dto.request.CommentRequest;
+import com.alorma.github.sdk.bean.dto.response.GithubComment;
+import com.alorma.github.sdk.services.gists.EditGistCommentClient;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.ProgressDialogTask;
 import com.github.pockethub.util.HtmlUtils;
 import com.github.pockethub.util.ToastUtils;
-import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.Comment;
-import org.eclipse.egit.github.core.Gist;
-import org.eclipse.egit.github.core.service.GistService;
+import com.alorma.github.sdk.bean.dto.response.Gist;
 
 /**
  * Task to edit a comment on a {@link Gist}
  */
-public class EditCommentTask extends ProgressDialogTask<Comment> {
+public class EditCommentTask extends ProgressDialogTask<GithubComment> {
 
     private static final String TAG = "EditCommentTask";
 
-    @Inject
-    private GistService service;
+    private final String commentId;
 
-    private final Comment comment;
+    private final String body;
 
     private final String gistId;
 
@@ -49,13 +46,14 @@ public class EditCommentTask extends ProgressDialogTask<Comment> {
      * Edit task for editing a comment on a {@link Gist}
      *
      * @param activity
-     * @param comment
+     * @param commentId
      */
-    protected EditCommentTask(Activity activity, String gistId, Comment comment) {
+    protected EditCommentTask(Activity activity, String gistId, String commentId, String body) {
         super(activity);
 
         this.gistId = gistId;
-        this.comment = comment;
+        this.commentId = commentId;
+        this.body = body;
     }
 
     /**
@@ -70,10 +68,9 @@ public class EditCommentTask extends ProgressDialogTask<Comment> {
     }
 
     @Override
-    public Comment run(Account account) throws Exception {
-        Comment edited = editComment(gistId, comment);
-        String formatted = HtmlUtils.format(edited.getBodyHtml()).toString();
-        edited.setBodyHtml(formatted);
+    public GithubComment run(Account account) throws Exception {
+        GithubComment edited = new EditGistCommentClient(context, gistId, commentId, new CommentRequest(body)).executeSync();
+        edited.body_html = HtmlUtils.format(edited.body_html).toString();
         return edited;
 
     }
@@ -85,20 +82,5 @@ public class EditCommentTask extends ProgressDialogTask<Comment> {
         Log.d(TAG, "Exception editing comment on gist", e);
 
         ToastUtils.show((Activity) getContext(), e.getMessage());
-    }
-
-    /**
-     * Edit gist comment.
-     *
-     * TODO: Remove this method once egit GistService.java Gist Comment APIs are
-     * fixed. https://github.com/eclipse/egit-github/pull/7
-     *
-     * @param comment
-     * @return edited comment
-     * @throws IOException
-     */
-    private Comment editComment(String gistId, Comment comment)
-            throws Exception {
-        return service.getClient().post(SEGMENT_GISTS + '/' + gistId + SEGMENT_COMMENTS + '/' + comment.getId(), comment, Comment.class);
     }
 }

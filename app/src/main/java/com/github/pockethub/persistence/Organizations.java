@@ -16,39 +16,39 @@
 package com.github.pockethub.persistence;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 
+import com.alorma.github.sdk.bean.dto.response.Organization;
+import com.alorma.github.sdk.services.orgs.GetOrgsClient;
+import com.alorma.github.sdk.services.user.GetAuthUserClient;
 import com.google.inject.Inject;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.User;
 import org.eclipse.egit.github.core.service.OrganizationService;
 import org.eclipse.egit.github.core.service.UserService;
 
 /**
  * Cache of organization under an account
  */
-public class Organizations implements PersistableResource<User> {
+public class Organizations implements PersistableResource<Organization> {
 
-    private final UserService userService;
-
-    private final OrganizationService orgService;
+    private final Context context;
 
     /**
      * Create organizations cache with services to load from
      *
-     * @param orgService
-     * @param userService
+     * @param context
      */
     @Inject
-    public Organizations(OrganizationService orgService, UserService userService) {
-        this.orgService = orgService;
-        this.userService = userService;
+    public Organizations(Context context) {
+        this.context = context;
     }
 
     @Override
@@ -64,36 +64,36 @@ public class Organizations implements PersistableResource<User> {
     @Override
     public User loadFrom(Cursor cursor) {
         User user = new User();
-        user.setId(cursor.getInt(0));
-        user.setLogin(cursor.getString(1));
-        user.setAvatarUrl(cursor.getString(2));
+        user.id = cursor.getInt(0);
+        user.login = cursor.getString(1);
+        user.avatar_url = cursor.getString(2);
         return user;
     }
 
     @Override
-    public void store(SQLiteDatabase db, List<User> orgs) {
+    public void store(SQLiteDatabase db, List<Organization> orgs) {
         db.delete("orgs", null, null);
         if (orgs.isEmpty())
             return;
 
         ContentValues values = new ContentValues(3);
-        for (User user : orgs) {
+        for (Organization user : orgs) {
             values.clear();
 
-            values.put("id", user.getId());
+            values.put("id", user.id);
             db.replace("orgs", null, values);
 
-            values.put("name", user.getLogin());
-            values.put("avatarurl", user.getAvatarUrl());
+            values.put("name", user.login);
+            values.put("avatarurl", user.avatar_url);
             db.replace("users", null, values);
         }
     }
 
     @Override
-    public List<User> request() throws IOException {
-        User user = userService.getUser();
-        List<User> orgs = orgService.getOrganizations();
-        List<User> all = new ArrayList<>(orgs.size() + 1);
+    public List<Organization> request() throws IOException {
+        User user = new GetAuthUserClient(context).executeSync();
+        List<Organization> orgs = new GetOrgsClient(context, null).executeSync();
+        List<Organization> all = new ArrayList<>(orgs.size() + 1);
         all.add(user);
         all.addAll(orgs);
         return all;

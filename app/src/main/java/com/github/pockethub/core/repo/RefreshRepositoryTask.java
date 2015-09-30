@@ -19,24 +19,26 @@ import android.accounts.Account;
 import android.content.Context;
 import android.util.Log;
 
+import com.alorma.github.sdk.services.repo.GetRepoClient;
 import com.github.pockethub.ui.ProgressDialogTask;
+import com.github.pockethub.util.InfoUtils;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
-import org.eclipse.egit.github.core.Repository;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 import org.eclipse.egit.github.core.service.RepositoryService;
 
 /**
  * Task to refresh a repository
  */
-public class RefreshRepositoryTask extends ProgressDialogTask<Repository> {
+public class RefreshRepositoryTask extends ProgressDialogTask<Repo> {
 
     private static final String TAG = "RefreshRepositoryTask";
 
     @Inject
     private RepositoryService service;
 
-    private final IRepositoryIdProvider repo;
+    private final Repo repo;
 
     /**
      * Create task for context and id provider
@@ -44,15 +46,15 @@ public class RefreshRepositoryTask extends ProgressDialogTask<Repository> {
      * @param context
      * @param repo
      */
-    public RefreshRepositoryTask(Context context, IRepositoryIdProvider repo) {
+    public RefreshRepositoryTask(Context context, Repo repo) {
         super(context);
 
         this.repo = repo;
     }
 
     @Override
-    protected Repository run(Account account) throws Exception {
-        return service.getRepository(repo);
+    protected Repo run(Account account) throws Exception {
+        return new GetRepoClient(context, InfoUtils.createRepoInfo(repo)).executeSync();
     }
 
     @Override

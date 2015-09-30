@@ -21,13 +21,16 @@ import android.content.Context;
 import android.text.Html.ImageGetter;
 import android.util.Log;
 
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.services.content.GetMarkdownClient;
 import com.github.pockethub.accounts.AuthenticatedUserLoader;
 import com.github.pockethub.util.HtmlUtils;
+import com.github.pockethub.util.RequestUtils;
 import com.google.inject.Inject;
 
 import java.io.IOException;
 
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 import org.eclipse.egit.github.core.service.MarkdownService;
 
 /**
@@ -39,14 +42,11 @@ public class MarkdownLoader extends AuthenticatedUserLoader<CharSequence> {
 
     private final ImageGetter imageGetter;
 
-    private final IRepositoryIdProvider repository;
+    private final Repo repository;
 
     private final String raw;
 
     private boolean encode;
-
-    @Inject
-    private MarkdownService service;
 
     /**
      * @param context
@@ -55,7 +55,7 @@ public class MarkdownLoader extends AuthenticatedUserLoader<CharSequence> {
      * @param imageGetter
      * @param encode
      */
-    public MarkdownLoader(Context context, IRepositoryIdProvider repository,
+    public MarkdownLoader(Context context, Repo repository,
             String raw, ImageGetter imageGetter, boolean encode) {
         super(context);
 
@@ -72,20 +72,16 @@ public class MarkdownLoader extends AuthenticatedUserLoader<CharSequence> {
 
     @Override
     public CharSequence load(Account account) {
-        try {
-            String html;
-            if (repository != null)
+        GetMarkdownClient markdownClient = new GetMarkdownClient(getContext(), RequestUtils.markdown(raw));
+        String html = markdownClient.executeSync();
+/*            if (repository != null)
                 html = service.getRepositoryHtml(repository, raw);
             else
-                html = service.getHtml(raw, MODE_GFM);
+                html = service.getHtml(raw, MODE_GFM);*/
 
-            if (encode)
-                return HtmlUtils.encode(html, imageGetter);
-            else
-                return html;
-        } catch (IOException e) {
-            Log.d(TAG, "Loading rendered markdown failed", e);
-            return null;
-        }
+        if (encode)
+            return HtmlUtils.encode(html, imageGetter);
+        else
+            return html;
     }
 }

@@ -20,18 +20,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.R;
 import com.github.pockethub.util.AvatarLoader;
+import com.github.pockethub.util.TimeUtils;
 import com.github.pockethub.util.TypefaceUtils;
 
 import org.eclipse.egit.github.core.SearchIssue;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * Adapter for a list of searched for issues
  */
-public class SearchIssueListAdapter extends IssueListAdapter<SearchIssue> {
+public class SearchIssueListAdapter extends IssueListAdapter<Issue> {
 
     private int numberPaintFlags;
 
@@ -40,19 +42,19 @@ public class SearchIssueListAdapter extends IssueListAdapter<SearchIssue> {
      * @param elements
      * @param avatars
      */
-    public SearchIssueListAdapter(LayoutInflater inflater,
-            SearchIssue[] elements, AvatarLoader avatars) {
+    public SearchIssueListAdapter(LayoutInflater inflater, Issue[] elements,
+                                  AvatarLoader avatars) {
         super(R.layout.repo_issue_item, inflater, elements, avatars);
     }
 
     @Override
     public long getItemId(int position) {
-        return getItem(position).getNumber();
+        return getItem(position).number;
     }
 
     @Override
-    protected int getNumber(SearchIssue issue) {
-        return issue.getNumber();
+    protected int getNumber(Issue issue) {
+        return issue.number;
     }
 
     @Override
@@ -76,20 +78,14 @@ public class SearchIssueListAdapter extends IssueListAdapter<SearchIssue> {
     }
 
     @Override
-    protected void update(int position, SearchIssue issue) {
-        updateNumber(issue.getNumber(), issue.getState(), numberPaintFlags, 0);
+    protected void update(int position, Issue issue) {
+        updateNumber(issue.number, issue.state, numberPaintFlags, 0);
 
-        String gravatarId = issue.getGravatarId();
-        User user;
-        if (!TextUtils.isEmpty(gravatarId))
-            user = new User().setGravatarId(gravatarId);
-        else
-            user = null;
-        avatars.bind(imageView(2), user);
+        avatars.bind(imageView(2), issue.user);
 
-        setText(1, issue.getTitle());
+        setText(1, issue.title);
 
-        updateReporter(issue.getUser(), issue.getCreatedAt(), 3);
-        setNumber(4, issue.getComments());
+        updateReporter(issue.user.login, TimeUtils.stringToDate(issue.created_at), 3);
+        setNumber(4, issue.comments);
     }
 }

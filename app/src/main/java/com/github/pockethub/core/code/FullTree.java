@@ -20,16 +20,19 @@ import static org.eclipse.egit.github.core.TreeEntry.TYPE_BLOB;
 import static org.eclipse.egit.github.core.TreeEntry.TYPE_TREE;
 import android.text.TextUtils;
 
+import com.alorma.github.sdk.bean.dto.response.GitReference;
+import com.alorma.github.sdk.bean.dto.response.GitTree;
+import com.alorma.github.sdk.bean.dto.response.GitTreeEntry;
+import com.alorma.github.sdk.bean.dto.response.GitTreeType;
 import com.github.pockethub.core.commit.CommitUtils;
 import com.github.pockethub.core.ref.RefUtils;
+import com.google.gson.Gson;
+
+import org.eclipse.egit.github.core.Tree;
 
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-import org.eclipse.egit.github.core.Reference;
-import org.eclipse.egit.github.core.Tree;
-import org.eclipse.egit.github.core.TreeEntry;
 
 /**
  * {@link Tree} with additional information
@@ -49,7 +52,7 @@ public class FullTree {
         /**
          * Raw tree entry
          */
-        public final TreeEntry entry;
+        public final GitTreeEntry entry;
 
         /**
          * Name
@@ -62,10 +65,10 @@ public class FullTree {
             this.name = null;
         }
 
-        private Entry(TreeEntry entry, Folder parent) {
+        private Entry(GitTreeEntry entry, Folder parent) {
             this.entry = entry;
             this.parent = parent;
-            this.name = CommitUtils.getName(entry.getPath());
+            this.name = CommitUtils.getName(entry.path);
         }
 
         @Override
@@ -95,11 +98,11 @@ public class FullTree {
             super();
         }
 
-        private Folder(TreeEntry entry, Folder parent) {
+        private Folder(GitTreeEntry entry, Folder parent) {
             super(entry, parent);
         }
 
-        private void addFile(TreeEntry entry, String[] pathSegments, int index) {
+        private void addFile(GitTreeEntry entry, String[] pathSegments, int index) {
             if (index == pathSegments.length - 1) {
                 Entry file = new Entry(entry, this);
                 files.put(file.name, file);
@@ -110,7 +113,7 @@ public class FullTree {
             }
         }
 
-        private void addFolder(TreeEntry entry, String[] pathSegments, int index) {
+        private void addFolder(GitTreeEntry entry, String[] pathSegments, int index) {
             if (index == pathSegments.length - 1) {
                 Folder folder = new Folder(entry, this);
                 folders.put(folder.name, folder);
@@ -121,9 +124,9 @@ public class FullTree {
             }
         }
 
-        private void add(final TreeEntry entry) {
-            String type = entry.getType();
-            String path = entry.getPath();
+        private void add(final GitTreeEntry entry) {
+            String type = entry.type.toString();
+            String path = entry.path;
             if (TextUtils.isEmpty(path))
                 return;
 
@@ -154,7 +157,7 @@ public class FullTree {
     /**
      * Tree
      */
-    public final Tree tree;
+    public final GitTree tree;
 
     /**
      * Root folder
@@ -164,7 +167,7 @@ public class FullTree {
     /**
      * Reference
      */
-    public final Reference reference;
+    public final GitReference reference;
 
     /**
      * Branch where tree is present
@@ -177,15 +180,16 @@ public class FullTree {
      * @param tree
      * @param reference
      */
-    public FullTree(final Tree tree, final Reference reference) {
+    public FullTree(final GitTree tree, final GitReference reference) {
         this.tree = tree;
         this.reference = reference;
         this.branch = RefUtils.getName(reference);
 
         root = new Folder();
-        List<TreeEntry> entries = tree.getTree();
+        List<GitTreeEntry> entries = tree.tree;
         if (entries != null && !entries.isEmpty())
-            for (TreeEntry entry : entries)
+            for (GitTreeEntry entry : entries) {
                 root.add(entry);
+            }
     }
 }

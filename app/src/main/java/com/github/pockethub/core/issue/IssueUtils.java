@@ -17,8 +17,9 @@ package com.github.pockethub.core.issue;
 
 import android.text.TextUtils;
 
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.PullRequest;
+import com.alorma.github.sdk.PullRequest;
+import com.alorma.github.sdk.bean.dto.response.Issue;
+
 
 /**
  * Utilities for working with {@link Issue} models
@@ -32,8 +33,8 @@ public class IssueUtils {
      * @return true if pull request, false otherwise
      */
     public static boolean isPullRequest(final Issue issue) {
-        return issue != null && issue.getPullRequest() != null
-                && !TextUtils.isEmpty(issue.getPullRequest().getHtmlUrl());
+        return issue != null && issue.pullRequest != null
+                && !TextUtils.isEmpty(issue.pullRequest.html_url);
     }
 
     /**
@@ -47,23 +48,23 @@ public class IssueUtils {
             return null;
 
         Issue issue = new Issue();
-        issue.setAssignee(pullRequest.getAssignee());
-        issue.setBody(pullRequest.getBody());
-        issue.setBodyHtml(pullRequest.getBodyHtml());
-        issue.setBodyText(pullRequest.getBodyText());
-        issue.setClosedAt(pullRequest.getClosedAt());
-        issue.setComments(pullRequest.getComments());
-        issue.setCreatedAt(pullRequest.getCreatedAt());
-        issue.setHtmlUrl(pullRequest.getHtmlUrl());
-        issue.setId(pullRequest.getId());
-        issue.setMilestone(pullRequest.getMilestone());
-        issue.setNumber(pullRequest.getNumber());
-        issue.setPullRequest(pullRequest);
-        issue.setState(pullRequest.getState());
-        issue.setTitle(pullRequest.getTitle());
-        issue.setUpdatedAt(pullRequest.getUpdatedAt());
-        issue.setUrl(pullRequest.getUrl());
-        issue.setUser(pullRequest.getUser());
+        issue.assignee = pullRequest.assignee;
+        issue.body = pullRequest.body;
+        issue.body_html = pullRequest.body_html;
+        issue.body = pullRequest.body;
+        issue.closedAt = pullRequest.closedAt;
+        issue.comments = pullRequest.comments;
+        issue.created_at = pullRequest.created_at;
+        issue.html_url = pullRequest.html_url;
+        issue.number = pullRequest.number;
+        issue.milestone = pullRequest.milestone;
+        issue.id = pullRequest.id;
+        issue.pullRequest = pullRequest;
+        issue.state = pullRequest.state;
+        issue.title = pullRequest.title;
+        issue.updated_at = pullRequest.updated_at;
+        issue.url = pullRequest.url;
+        issue.user = pullRequest.user;
         return issue;
     }
 }

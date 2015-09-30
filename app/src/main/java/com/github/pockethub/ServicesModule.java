@@ -15,13 +15,17 @@
  */
 package com.github.pockethub;
 
+import android.content.Context;
+
+import com.alorma.github.sdk.bean.dto.response.Content;
+import com.alorma.github.sdk.services.user.GetAuthUserClient;
 import com.github.pockethub.core.search.SearchUserService;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 
 import java.io.IOException;
 
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.CollaboratorService;
 import org.eclipse.egit.github.core.service.CommitService;
@@ -85,8 +89,8 @@ public class ServicesModule extends AbstractModule {
     }
 
     @Provides
-    User currentUser(UserService userService) throws IOException {
-        return userService.getUser();
+    User currentUser(Context context) throws IOException {
+        return new GetAuthUserClient(context).executeSync();
     }
 
     @Provides

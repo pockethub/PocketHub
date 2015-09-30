@@ -21,7 +21,7 @@ import android.text.TextUtils;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.eclipse.egit.github.core.Gist;
+import com.alorma.github.sdk.bean.dto.response.Gist;
 
 /**
  * Parses a {@link Gist} from a {@link Uri}
@@ -47,11 +47,13 @@ public class GistUriMatcher {
         if (TextUtils.isEmpty(gistId))
             return null;
 
+        Gist gist = new Gist();
+        gist.id = gistId;
         if (TextUtils.isDigitsOnly(gistId))
-            return new Gist().setId(gistId);
+            return gist;
 
         if (PATTERN.matcher(gistId).matches())
-            return new Gist().setId(gistId);
+            return gist;
 
         return null;
     }

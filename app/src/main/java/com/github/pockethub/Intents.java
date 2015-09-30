@@ -16,18 +16,17 @@
 package com.github.pockethub;
 
 import android.content.Intent;
+import android.os.Parcelable;
 
-import org.eclipse.egit.github.core.Gist;
-import org.eclipse.egit.github.core.GistFile;
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.RepositoryId;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.Gist;
+import com.alorma.github.sdk.bean.dto.response.GistFile;
+import com.alorma.github.sdk.bean.dto.response.Issue;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
+import com.github.pockethub.util.InfoUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
-import static org.eclipse.egit.github.core.RepositoryId.createFromUrl;
 
 /**
  * Helper for creating intents
@@ -45,25 +44,25 @@ public class Intents {
     public static final String INTENT_EXTRA_PREFIX = INTENT_PREFIX + "extra.";
 
     /**
-     * Repository handle
+     * Repo handle
      */
     public static final String EXTRA_REPOSITORY = INTENT_EXTRA_PREFIX
             + "REPOSITORY";
 
     /**
-     * Repository ids collection handle
+     * Repo ids collection handle
      */
     public static final String EXTRA_REPOSITORIES = INTENT_EXTRA_PREFIX
             + "REPOSITORIES";
 
     /**
-     * Repository name
+     * Repo name
      */
     public static final String EXTRA_REPOSITORY_NAME = INTENT_EXTRA_PREFIX
             + "REPOSITORY_NAME";
 
     /**
-     * Repository owner
+     * Repo owner
      */
     public static final String EXTRA_REPOSITORY_OWNER = INTENT_EXTRA_PREFIX
             + "REPOSITORY_OWNER";
@@ -177,15 +176,15 @@ public class Intents {
     public static final String EXTRA_PATH = INTENT_EXTRA_PREFIX + "PATH";
 
     /**
-     * Resolve the {@link RepositoryId} referenced by the given intent
+     * Resolve the {@link Repo} referenced by the given intent
      *
      * @param intent
      * @return repository id
      */
-    public static RepositoryId repoFrom(Intent intent) {
+    public static Repo repoFrom(Intent intent) {
         String repoName = intent.getStringExtra(EXTRA_REPOSITORY_NAME);
         String repoOwner = intent.getStringExtra(EXTRA_REPOSITORY_OWNER);
-        return RepositoryId.create(repoOwner, repoName);
+        return InfoUtils.createRepoFromData(repoOwner, repoName);
     }
 
     /**
@@ -207,23 +206,12 @@ public class Intents {
         }
 
         /**
-         * Add repository id to intent being built up
-         *
-         * @param repositoryId
-         * @return this builder
-         */
-        public Builder repo(RepositoryId repositoryId) {
-            return add(EXTRA_REPOSITORY_NAME, repositoryId.getName()).add(
-                    EXTRA_REPOSITORY_OWNER, repositoryId.getOwner());
-        }
-
-        /**
          * Add repository to intent being built up
          *
          * @param repository
          * @return this builder
          */
-        public Builder repo(Repository repository) {
+        public Builder repo(Repo repository) {
             return add(EXTRA_REPOSITORY, repository);
         }
 
@@ -234,8 +222,8 @@ public class Intents {
          * @return this builder
          */
         public Builder issue(Issue issue) {
-            return repo(createFromUrl(issue.getHtmlUrl())).add(EXTRA_ISSUE,
-                    issue).add(EXTRA_ISSUE_NUMBER, issue.getNumber());
+            return repo(InfoUtils.createRepoFromUrl(issue.html_url)).add(EXTRA_ISSUE,
+                    issue).add(EXTRA_ISSUE_NUMBER, issue.number);
         }
 
         /**
@@ -347,6 +335,31 @@ public class Intents {
          */
         public Builder add(String fieldName, Serializable value) {
             intent.putExtra(fieldName, value);
+            return this;
+        }
+
+
+        /**
+         * Add extra field data value to intent being built up
+         *
+         * @param fieldName
+         * @param value
+         * @return this builder
+         */
+        public Builder add(String fieldName, Parcelable value) {
+            intent.putExtra(fieldName, value);
+            return this;
+        }
+
+        /**
+         * Add extra field data value to intent being built up
+         *
+         * @param fieldName
+         * @param value
+         * @return this builder
+         */
+        public Builder add(String fieldName, ArrayList<? extends Parcelable> value) {
+            intent.putParcelableArrayListExtra(fieldName, value);
             return this;
         }
 

@@ -16,22 +16,39 @@
 package com.github.pockethub.ui.user;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alorma.github.sdk.bean.dto.response.GithubEvent;
+import com.alorma.github.sdk.bean.dto.response.events.EventType;
+import com.alorma.github.sdk.bean.dto.response.events.payload.CommitCommentEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.CreatedEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.DeleteEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.ForkEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.GithubEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.IssueCommentEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.IssueEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.MemberEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.PublicEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.PullRequestEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.PullRequestReviewCommentEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.PushEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.ReleaseEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.TeamAddEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.UnhandledPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.WatchedEventPayload;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
+import com.github.pockethub.api.FollowEventPayload;
+import com.github.pockethub.api.GistEventPayload;
 import com.github.pockethub.util.AvatarLoader;
 import com.github.pockethub.util.TypefaceUtils;
+import com.google.gson.Gson;
 
-import org.eclipse.egit.github.core.event.CreatePayload;
-import org.eclipse.egit.github.core.event.Event;
-import org.eclipse.egit.github.core.event.EventPayload;
-import org.eclipse.egit.github.core.event.GistPayload;
-import org.eclipse.egit.github.core.event.IssueCommentPayload;
-import org.eclipse.egit.github.core.event.IssuesPayload;
+import java.util.Objects;
 
 import static org.eclipse.egit.github.core.event.Event.TYPE_COMMIT_COMMENT;
 import static org.eclipse.egit.github.core.event.Event.TYPE_CREATE;
@@ -55,7 +72,7 @@ import static org.eclipse.egit.github.core.event.Event.TYPE_WATCH;
 /**
  * Adapter for a list of news events
  */
-public class NewsListAdapter extends SingleTypeAdapter<Event> {
+public class NewsListAdapter extends SingleTypeAdapter<GithubEvent> {
 
     private final IconAndViewTextManager iconAndViewTextManager = new IconAndViewTextManager(this);
 
@@ -65,33 +82,35 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
      * @param event
      * @return true if renderable, false otherwise
      */
-    public static boolean isValid(final Event event) {
+    public static boolean isValid(final GithubEvent event) {
         if (event == null)
             return false;
 
-        final EventPayload payload = event.getPayload();
-        if (payload == null || EventPayload.class.equals(payload.getClass()))
+        if (event.payload == null)
             return false;
 
-        final String type = event.getType();
+        Gson gson = new Gson();
+        final String json = gson.toJson(event.payload);
+
+        final String type = event.type.toString();
         if (TextUtils.isEmpty(type))
             return false;
 
         return TYPE_COMMIT_COMMENT.equals(type) //
                 || (TYPE_CREATE.equals(type) //
-                && ((CreatePayload) payload).getRefType() != null) //
+                && (gson.fromJson(json, CreatedEventPayload.class)).ref_type != null) //
                 || TYPE_DELETE.equals(type) //
                 || TYPE_DOWNLOAD.equals(type) //
                 || TYPE_FOLLOW.equals(type) //
                 || TYPE_FORK.equals(type) //
                 || TYPE_FORK_APPLY.equals(type) //
-                || (TYPE_GIST.equals(type) //
-                && ((GistPayload) payload).getGist() != null) //
+                || (TYPE_GIST.equals(type)
+                && (gson.fromJson(json, GistEventPayload.class)).gist != null)
                 || TYPE_GOLLUM.equals(type) //
                 || (TYPE_ISSUE_COMMENT.equals(type) //
-                && ((IssueCommentPayload) payload).getIssue() != null) //
+                && (gson.fromJson(json, IssueCommentEventPayload.class)).issue != null) //
                 || (TYPE_ISSUES.equals(type) //
-                && ((IssuesPayload) payload).getIssue() != null) //
+                && (gson.fromJson(json, IssueEventPayload.class)).issue != null) //
                 || TYPE_MEMBER.equals(type) //
                 || TYPE_PUBLIC.equals(type) //
                 || TYPE_PULL_REQUEST.equals(type) //
@@ -110,12 +129,73 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
      * @param elements
      * @param avatars
      */
-    public NewsListAdapter(LayoutInflater inflater, Event[] elements,
+    public NewsListAdapter(LayoutInflater inflater, GithubEvent[] elements,
             AvatarLoader avatars) {
         super(inflater, R.layout.news_item);
 
         this.avatars = avatars;
         setItems(elements);
+    }
+
+    private Class getClassFromType(EventType type) {
+        switch (type){
+            case WatchEvent:
+                return WatchedEventPayload.class;
+            case CreateEvent:
+                return CreatedEventPayload.class;
+            case CommitCommentEvent:
+                return CommitCommentEventPayload.class;
+            case DownloadEvent:
+                return ReleaseEventPayload.class;
+            case FollowEvent:
+                return FollowEventPayload.class;
+            case ForkEvent:
+                return ForkEventPayload.class;
+            case GistEvent:
+                return GistEventPayload.class;
+            case IssueCommentEvent:
+                return IssueCommentEventPayload.class;
+            case IssuesEvent:
+                return IssueEventPayload.class;
+            case MemberEvent:
+                return MemberEventPayload.class;
+            case PublicEvent:
+                return PublicEventPayload.class;
+            case PullRequestEvent:
+                return PullRequestEventPayload.class;
+            case PullRequestReviewCommentEvent:
+                return PullRequestReviewCommentEventPayload.class;
+            case PushEvent:
+                return PushEventPayload.class;
+            case TeamAddEvent:
+                return TeamAddEventPayload.class;
+            case DeleteEvent:
+                return DeleteEventPayload.class;
+            case ReleaseEvent:
+                return ReleaseEventPayload.class;
+            case Unhandled:
+                return UnhandledPayload.class;
+
+            default:
+                return GithubEventPayload.class;
+        }
+    }
+
+    @Override
+    public void setItems(Object[] items) {
+        if(items != null) {
+            GithubEvent[] elements = new GithubEvent[items.length];
+            Gson gson = new Gson();
+            for (int i = 0; i < items.length; i++) {
+                GithubEvent element = (GithubEvent) items[i];
+                String json = gson.toJson(element.payload);
+                element.payload = gson.fromJson(json, getClassFromType(element.type));
+                elements[i] = element;
+            }
+            super.setItems(elements);
+        }else{
+            super.setItems(items);
+        }
     }
 
     /**
@@ -131,7 +211,7 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
 
     @Override
     public long getItemId(final int position) {
-        final String id = getItem(position).getId();
+        final String id = String.valueOf(getItem(position).id);
         return !TextUtils.isEmpty(id) ? id.hashCode() : super
                 .getItemId(position);
     }
@@ -151,7 +231,7 @@ public class NewsListAdapter extends SingleTypeAdapter<Event> {
     }
 
     @Override
-    protected void update(int position, Event event) {
+    protected void update(int position, GithubEvent event) {
 
         iconAndViewTextManager.update(position, event);
     }

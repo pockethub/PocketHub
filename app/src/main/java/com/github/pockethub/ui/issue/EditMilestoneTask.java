@@ -18,15 +18,17 @@ package com.github.pockethub.ui.issue;
 import static com.github.pockethub.RequestCodes.ISSUE_MILESTONE_UPDATE;
 import android.accounts.Account;
 
+import com.alorma.github.sdk.bean.dto.request.EditIssueMilestoneRequestDTO;
+import com.alorma.github.sdk.bean.dto.response.Milestone;
 import com.github.pockethub.R;
 import com.github.pockethub.core.issue.IssueStore;
 import com.github.pockethub.ui.DialogFragmentActivity;
 import com.github.pockethub.ui.ProgressDialogTask;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.Milestone;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.Issue;
+
 import org.eclipse.egit.github.core.service.MilestoneService;
 
 /**
@@ -42,7 +44,7 @@ public class EditMilestoneTask extends ProgressDialogTask<Issue> {
 
     private final MilestoneDialog milestoneDialog;
 
-    private final IRepositoryIdProvider repositoryId;
+    private final Repo repositoryId;
 
     private final int issueNumber;
 
@@ -56,21 +58,20 @@ public class EditMilestoneTask extends ProgressDialogTask<Issue> {
      * @param issueNumber
      */
     public EditMilestoneTask(final DialogFragmentActivity activity,
-            final IRepositoryIdProvider repositoryId, final int issueNumber) {
+            final Repo repositoryId, final int issueNumber) {
         super(activity);
 
         this.repositoryId = repositoryId;
         this.issueNumber = issueNumber;
         milestoneDialog = new MilestoneDialog(activity, ISSUE_MILESTONE_UPDATE,
-                repositoryId, service);
+                repositoryId);
     }
 
     @Override
     protected Issue run(Account account) throws Exception {
-        Issue editedIssue = new Issue();
-        editedIssue.setNumber(issueNumber);
-        editedIssue.setMilestone(new Milestone().setNumber(milestoneNumber));
-        return store.editIssue(repositoryId, editedIssue);
+        EditIssueMilestoneRequestDTO editedIssue = new EditIssueMilestoneRequestDTO();
+        editedIssue.milestone = milestoneNumber;
+        return store.editIssue(repositoryId, issueNumber, editedIssue);
     }
 
     /**
@@ -93,8 +94,7 @@ public class EditMilestoneTask extends ProgressDialogTask<Issue> {
      */
     public EditMilestoneTask edit(Milestone milestone) {
         if (milestone != null)
-            milestoneNumber = milestone.getNumber();
-        else
+            milestoneNumber = milestone.number;
             milestoneNumber = -1;
 
         showIndeterminate(R.string.updating_milestone);

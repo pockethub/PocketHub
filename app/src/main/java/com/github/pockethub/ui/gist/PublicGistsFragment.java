@@ -15,11 +15,17 @@
  */
 package com.github.pockethub.ui.gist;
 
+import com.alorma.github.sdk.bean.dto.response.Gist;
+import com.alorma.github.sdk.bean.dto.response.GithubEvent;
+import com.alorma.github.sdk.services.client.GithubClient;
+import com.alorma.github.sdk.services.gists.PublicGistsClient;
+import com.alorma.github.sdk.services.gists.UserGistsClient;
 import com.github.pockethub.core.ResourcePager;
 import com.github.pockethub.core.gist.GistPager;
 
-import org.eclipse.egit.github.core.Gist;
-import org.eclipse.egit.github.core.client.PageIterator;
+import com.github.pockethub.core.PageIterator;
+
+import java.util.List;
 
 /**
  * Fragment to display a list of public Gists
@@ -32,7 +38,12 @@ public class PublicGistsFragment extends GistsFragment {
 
             @Override
             public PageIterator<Gist> createIterator(int page, int size) {
-                return service.pagePublicGists(page, size);
+                return new PageIterator<>(new PageIterator.GitHubRequest<List<Gist>>() {
+                    @Override
+                    public GithubClient<List<Gist>> execute(int page) {
+                        return new PublicGistsClient(getActivity(), page);
+                    }
+                }, page);
             }
         };
     }

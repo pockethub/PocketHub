@@ -15,43 +15,37 @@
  */
 package com.github.pockethub.ui.gist;
 
-
-import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_COMMENTS;
-import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_GISTS;
 import android.accounts.Account;
 import android.app.Activity;
 import android.util.Log;
 
+import com.alorma.github.sdk.bean.dto.response.Gist;
+import com.alorma.github.sdk.bean.dto.response.GithubComment;
+import com.alorma.github.sdk.services.gists.DeleteGistCommentClient;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.ProgressDialogTask;
 import com.github.pockethub.util.ToastUtils;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.Comment;
-import org.eclipse.egit.github.core.service.GistService;
-
 /**
  * Task to delete a comment on  a {@link Gist}
  */
-public class DeleteCommentTask extends ProgressDialogTask<Comment> {
+public class DeleteCommentTask extends ProgressDialogTask<GithubComment> {
 
     private static final String TAG = "DeleteCommentTask";
 
-    private final Comment comment;
-
-    @Inject
-    private GistService service;
+    private final GithubComment comment;
 
     private final String gistId;
 
     /**
      * Delete task for deleting a comment on a {@link Gist}
      *
-     * @param context
-     * @param repository
+     * @param activity
+     * @param gistId
      * @param comment
      */
-    public DeleteCommentTask(Activity activity, String gistId, Comment comment) {
+    public DeleteCommentTask(Activity activity, String gistId, GithubComment comment) {
         super(activity);
 
         this.gistId = gistId;
@@ -59,8 +53,8 @@ public class DeleteCommentTask extends ProgressDialogTask<Comment> {
     }
 
     @Override
-    protected Comment run(Account account) throws Exception {
-        deleteComment(gistId, comment.getId());
+    protected GithubComment run(Account account) throws Exception {
+        new DeleteGistCommentClient(context, gistId, comment.id);
         return comment;
     }
 
@@ -83,18 +77,5 @@ public class DeleteCommentTask extends ProgressDialogTask<Comment> {
         Log.d(TAG, "Exception deleting comment on gist", e);
 
         ToastUtils.show((Activity) getContext(), e.getMessage());
-    }
-
-    /**
-     * Delete the Gist comment with the given id
-     *
-     * TODO: Remove this method once egit GistService.java Gist Comment APIs are
-     * fixed. https://github.com/eclipse/egit-github/pull/7
-     *
-     * @param commentId
-     * @throws IOException
-     */
-    private void deleteComment(String gistId, long commentId) throws Exception {
-        service.getClient().delete(SEGMENT_GISTS + '/' + gistId + SEGMENT_COMMENTS + '/' + commentId);
     }
 }

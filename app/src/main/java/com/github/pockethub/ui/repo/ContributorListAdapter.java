@@ -18,11 +18,10 @@ package com.github.pockethub.ui.repo;
 import android.content.Context;
 import android.view.LayoutInflater;
 
+import com.alorma.github.sdk.bean.dto.response.Contributor;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
 import com.github.pockethub.util.AvatarLoader;
-
-import org.eclipse.egit.github.core.Contributor;
 
 /**
  * List adapter for a list of contributors
@@ -51,7 +50,7 @@ public class ContributorListAdapter extends SingleTypeAdapter<Contributor> {
 
     @Override
     public long getItemId(final int position) {
-        return getItem(position).getId();
+        return getItem(position).id;
     }
 
     @Override
@@ -62,7 +61,7 @@ public class ContributorListAdapter extends SingleTypeAdapter<Contributor> {
     @Override
     protected void update(int position, Contributor contributor) {
         avatars.bind(imageView(0), contributor);
-        setText(1, contributor.getLogin());
-        setText(2, context.getString(R.string.contributions, contributor.getContributions()));
+        setText(1, contributor.author.login);
+        setText(2, context.getString(R.string.contributions, contributor.total));
     }
 }

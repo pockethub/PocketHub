@@ -20,28 +20,28 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
+import com.alorma.github.sdk.bean.dto.response.GithubComment;
+import com.alorma.github.sdk.services.issues.DeleteIssueCommentClient;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.ProgressDialogTask;
+import com.github.pockethub.util.InfoUtils;
 import com.github.pockethub.util.ToastUtils;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Comment;
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 import org.eclipse.egit.github.core.service.IssueService;
 
 /**
  * Task to delete a comment on an issue in a repository
  */
-public class DeleteCommentTask extends ProgressDialogTask<Comment> {
+public class DeleteCommentTask extends ProgressDialogTask<GithubComment> {
 
     private static final String TAG = "DeleteCommentTask";
 
-    private final IRepositoryIdProvider repository;
+    private final Repo repository;
 
-    private final Comment comment;
-
-    @Inject
-    private IssueService service;
+    private final GithubComment comment;
 
     /**
      * Delete task for deleting a comment on the given issue in the given
@@ -52,8 +52,8 @@ public class DeleteCommentTask extends ProgressDialogTask<Comment> {
      * @param comment
      */
     public DeleteCommentTask(final Context context,
-            final IRepositoryIdProvider repository,
-            final Comment comment) {
+            final Repo repository,
+            final GithubComment comment) {
         super(context);
 
         this.repository = repository;
@@ -61,8 +61,8 @@ public class DeleteCommentTask extends ProgressDialogTask<Comment> {
     }
 
     @Override
-    protected Comment run(Account account) throws Exception {
-        service.deleteComment(repository, comment.getId());
+    protected GithubComment run(Account account) throws Exception {
+        new DeleteIssueCommentClient(context, InfoUtils.createRepoInfo(repository), comment.id);
         return comment;
     }
 

@@ -27,6 +27,7 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
+import com.alorma.github.sdk.bean.dto.response.GitBlob;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
@@ -36,6 +37,7 @@ import com.github.pockethub.ui.BaseActivity;
 import com.github.pockethub.ui.MarkdownLoader;
 import com.github.pockethub.util.AvatarLoader;
 import com.github.pockethub.util.HttpImageGetter;
+import com.github.pockethub.util.InfoUtils;
 import com.github.pockethub.util.MarkdownUtils;
 import com.github.pockethub.util.PreferenceUtils;
 import com.github.pockethub.util.ShareUtils;
@@ -43,9 +45,7 @@ import com.github.pockethub.util.SourceEditor;
 import com.github.pockethub.util.ToastUtils;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.Blob;
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
-import org.eclipse.egit.github.core.Repository;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 import org.eclipse.egit.github.core.util.EncodingUtils;
 
 import static com.github.pockethub.Intents.EXTRA_BASE;
@@ -76,7 +76,7 @@ public class BranchFileViewActivity extends BaseActivity implements
      * @param blobSha
      * @return intent
      */
-    public static Intent createIntent(Repository repository, String branch,
+    public static Intent createIntent(Repo repository, String branch,
         String file, String blobSha) {
         Builder builder = new Builder("branch.file.VIEW");
         builder.repo(repository);
@@ -86,7 +86,7 @@ public class BranchFileViewActivity extends BaseActivity implements
         return builder.toIntent();
     }
 
-    private Repository repo;
+    private Repo repo;
 
     private String sha;
 
@@ -100,7 +100,7 @@ public class BranchFileViewActivity extends BaseActivity implements
 
     private String renderedMarkdown;
 
-    private Blob blob;
+    private GitBlob blob;
 
     private ProgressBar loadingBar;
 
@@ -122,7 +122,7 @@ public class BranchFileViewActivity extends BaseActivity implements
 
         setContentView(R.layout.commit_file_view);
 
-        repo = getSerializableExtra(EXTRA_REPOSITORY);
+        repo = getParcelableExtra(EXTRA_REPOSITORY);
         sha = getStringExtra(EXTRA_BASE);
         path = getStringExtra(EXTRA_PATH);
         branch = getStringExtra(EXTRA_HEAD);
@@ -144,7 +144,7 @@ public class BranchFileViewActivity extends BaseActivity implements
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(file);
         actionBar.setSubtitle(branch);
-        avatars.bind(actionBar, repo.getOwner());
+        avatars.bind(actionBar, repo.owner);
 
         loadContent();
     }
@@ -215,8 +215,8 @@ public class BranchFileViewActivity extends BaseActivity implements
     @Override
     public Loader<CharSequence> onCreateLoader(int loader, Bundle args) {
         final String raw = args.getString(ARG_TEXT);
-        final IRepositoryIdProvider repo = (IRepositoryIdProvider) args
-            .getSerializable(ARG_REPO);
+        final Repo repo = (Repo) args
+            .getParcelable(ARG_REPO);
         return new MarkdownLoader(this, repo, raw, imageGetter, false);
     }
 
@@ -242,7 +242,7 @@ public class BranchFileViewActivity extends BaseActivity implements
     }
 
     private void shareFile() {
-        String id = repo.generateId();
+        String id = InfoUtils.createRepoId(repo);
         startActivity(ShareUtils.create(path + " at " + branch + " on " + id,
             "https://github.com/" + id + "/blob/" + branch + '/' + path));
     }
@@ -252,10 +252,10 @@ public class BranchFileViewActivity extends BaseActivity implements
         ViewUtils.setGone(codeView, true);
 
         String markdown = new String(
-            EncodingUtils.fromBase64(blob.getContent()));
+            EncodingUtils.fromBase64(blob.content));
         Bundle args = new Bundle();
         args.putCharSequence(ARG_TEXT, markdown);
-        args.putSerializable(ARG_REPO, repo);
+        args.putParcelable(ARG_REPO, repo);
         getSupportLoaderManager().restartLoader(0, args, this);
     }
 
@@ -266,7 +266,7 @@ public class BranchFileViewActivity extends BaseActivity implements
         new RefreshBlobTask(repo, sha, this) {
 
             @Override
-            protected void onSuccess(Blob blob) throws Exception {
+            protected void onSuccess(GitBlob blob) throws Exception {
                 super.onSuccess(blob);
 
                 BranchFileViewActivity.this.blob = blob;

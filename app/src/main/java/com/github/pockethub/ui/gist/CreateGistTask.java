@@ -19,6 +19,8 @@ import android.accounts.Account;
 import android.app.Activity;
 import android.util.Log;
 
+import com.alorma.github.sdk.bean.dto.response.GistFile;
+import com.alorma.github.sdk.services.gists.PublishGistClient;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.ProgressDialogTask;
 import com.github.pockethub.util.ToastUtils;
@@ -26,8 +28,8 @@ import com.google.inject.Inject;
 
 import java.util.Collections;
 
-import org.eclipse.egit.github.core.Gist;
-import org.eclipse.egit.github.core.GistFile;
+import com.alorma.github.sdk.bean.dto.response.Gist;
+
 import org.eclipse.egit.github.core.service.GistService;
 
 /**
@@ -70,15 +72,15 @@ public class CreateGistTask extends ProgressDialogTask<Gist> {
     @Override
     public Gist run(Account account) throws Exception {
         Gist gist = new Gist();
-        gist.setDescription(description);
-        gist.setPublic(isPublic);
+        gist.description = description;
+        gist.isPublic = isPublic;
 
         GistFile file = new GistFile();
-        file.setContent(content);
-        file.setFilename(name);
-        gist.setFiles(Collections.singletonMap(name, file));
+        file.content = content;
+        file.filename = name;
+        gist.files = Collections.singletonMap(name, file);
 
-        return service.createGist(gist);
+        return new PublishGistClient(context, gist).executeSync();
     }
 
     @Override

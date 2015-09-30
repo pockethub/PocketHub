@@ -19,25 +19,24 @@ import android.accounts.Account;
 import android.content.Context;
 import android.util.Log;
 
+import com.alorma.github.sdk.bean.dto.response.CompareCommit;
+import com.alorma.github.sdk.services.repo.CompareCommitsClient;
 import com.github.pockethub.accounts.AuthenticatedUserTask;
+import com.github.pockethub.util.InfoUtils;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 import org.eclipse.egit.github.core.RepositoryCommitCompare;
 import org.eclipse.egit.github.core.service.CommitService;
 
 /**
  * Task to compare two commits
  */
-public class CommitCompareTask extends
-        AuthenticatedUserTask<RepositoryCommitCompare> {
+public class CommitCompareTask extends AuthenticatedUserTask<CompareCommit> {
 
     private static final String TAG = "CommitCompareTask";
 
-    @Inject
-    private CommitService service;
-
-    private final IRepositoryIdProvider repository;
+    private final Repo repository;
 
     private final String base;
 
@@ -49,7 +48,7 @@ public class CommitCompareTask extends
      * @param base
      * @param head
      */
-    public CommitCompareTask(Context context, IRepositoryIdProvider repository,
+    public CommitCompareTask(Context context, Repo repository,
             String base, String head) {
         super(context);
 
@@ -59,8 +58,9 @@ public class CommitCompareTask extends
     }
 
     @Override
-    protected RepositoryCommitCompare run(Account account) throws Exception {
-        return service.compare(repository, base, head);
+    protected CompareCommit run(Account account) throws Exception {
+        return new CompareCommitsClient(context,
+                InfoUtils.createRepoInfo(repository), base, head).executeSync();
     }
 
     @Override

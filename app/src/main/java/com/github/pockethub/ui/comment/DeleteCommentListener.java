@@ -15,6 +15,8 @@
  */
 package com.github.pockethub.ui.comment;
 
+import com.alorma.github.sdk.bean.dto.response.GithubComment;
+
 import org.eclipse.egit.github.core.Comment;
 
 /**
@@ -27,5 +29,5 @@ public interface DeleteCommentListener {
      *
      * @param comment
      */
-    void onDeleteComment(Comment comment);
+    void onDeleteComment(GithubComment comment);
 }

@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
+import com.alorma.github.sdk.bean.dto.response.Gist;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
 import com.github.pockethub.core.OnLoadListener;
@@ -41,8 +42,6 @@ import com.google.inject.Inject;
 
 import java.io.Serializable;
 import java.util.List;
-
-import org.eclipse.egit.github.core.Gist;
 
 /**
  * Activity to display a collection of Gists in a pager
@@ -74,7 +73,7 @@ public class GistsViewActivity extends PagerActivity implements
         String[] ids = new String[gists.size()];
         int index = 0;
         for (Gist gist : gists)
-            ids[index++] = gist.getId();
+            ids[index++] = gist.id;
         return new Builder("gists.VIEW")
             .add(EXTRA_GIST_IDS, (Serializable) ids)
             .add(EXTRA_POSITION, position).toIntent();
@@ -105,7 +104,7 @@ public class GistsViewActivity extends PagerActivity implements
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
         gists = getStringArrayExtra(EXTRA_GIST_IDS);
-        gist = getSerializableExtra(EXTRA_GIST);
+        gist = getParcelableExtra(EXTRA_GIST);
         initialPosition = getIntExtra(EXTRA_POSITION);
         pager = finder.find(R.id.vp_pages);
 
@@ -114,12 +113,12 @@ public class GistsViewActivity extends PagerActivity implements
         // Support opening this activity with a single Gist that may be present
         // in the intent but not currently present in the store
         if (gists == null && gist != null) {
-            if (gist.getCreatedAt() != null) {
-                Gist stored = store.getGist(gist.getId());
+            if (gist.created_at != null) {
+                Gist stored = store.getGist(gist.id);
                 if (stored == null)
                     store.addGist(gist);
             }
-            gists = new String[] { gist.getId() };
+            gists = new String[] { gist.id };
         }
 
         adapter = new GistsPagerAdapter(this, gists);
@@ -194,9 +193,9 @@ public class GistsViewActivity extends PagerActivity implements
             actionBar.setSubtitle(null);
             actionBar.setLogo(null);
             actionBar.setIcon(R.drawable.app_icon);
-        } else if (gist.getUser() != null) {
-            avatars.bind(actionBar, gist.getUser());
-            actionBar.setSubtitle(gist.getUser().getLogin());
+        } else if (gist.user != null) {
+            avatars.bind(actionBar, gist.user);
+            actionBar.setSubtitle(gist.user.login);
         } else {
             actionBar.setSubtitle(R.string.anonymous);
             actionBar.setLogo(null);
@@ -207,7 +206,7 @@ public class GistsViewActivity extends PagerActivity implements
 
     @Override
     public void loaded(Gist gist) {
-        if (gists[pager.getCurrentItem()].equals(gist.getId()))
-            updateActionBar(gist, gist.getId());
+        if (gists[pager.getCurrentItem()].equals(gist.id))
+            updateActionBar(gist, gist.id);
     }
 }

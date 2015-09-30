@@ -25,10 +25,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.alorma.github.sdk.bean.dto.response.Organization;
+import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.R;
 import com.github.pockethub.util.AvatarLoader;
-
-import org.eclipse.egit.github.core.User;
 
 public class NavigationDrawerFragment extends Fragment implements AdapterView.OnItemClickListener {
 
@@ -99,7 +99,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
     }
 
     public void setUp(int fragmentId, DrawerLayout drawerLayout, NavigationDrawerAdapter adapter, AvatarLoader avatar,
-        User user) {
+        Organization user) {
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
         //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
@@ -114,11 +114,11 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
         userName = (TextView) header.findViewById(R.id.user_name);
 
         avatar.bind(userImage, user);
-        userName.setText(user.getLogin());
+        userName.setText(user.login);
 
-        String name = user.getName();
+        String name = user.name;
         if (name != null) {
-            userRealName.setText(user.getName());
+            userRealName.setText(user.name);
         } else {
             userRealName.setVisibility(View.GONE);
         }

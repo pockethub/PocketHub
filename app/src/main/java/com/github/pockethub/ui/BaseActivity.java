@@ -16,6 +16,7 @@
 package com.github.pockethub.ui;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.pockethub.ui.roboactivities.RoboActionBarActivity;
@@ -46,8 +47,8 @@ public class BaseActivity extends RoboActionBarActivity {
      * @return serializable
      */
     @SuppressWarnings("unchecked")
-    protected <V extends Serializable> V getSerializableExtra(final String name) {
-        return (V) getIntent().getSerializableExtra(name);
+    protected <V extends Parcelable> V getParcelableExtra(final String name) {
+        return (V) getIntent().getParcelableExtra(name);
     }
 
     /**

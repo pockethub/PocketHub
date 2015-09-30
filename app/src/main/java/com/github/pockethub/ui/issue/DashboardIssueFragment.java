@@ -21,6 +21,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
+import com.alorma.github.sdk.bean.dto.response.Issue;
+import com.alorma.github.sdk.services.client.GithubClient;
+import com.alorma.github.sdk.services.issues.GetIssuesClient;
+import com.alorma.github.sdk.services.search.IssuesSearchClient;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
 import com.github.pockethub.core.ResourcePager;
@@ -32,14 +36,13 @@ import com.google.inject.Inject;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.egit.github.core.RepositoryIssue;
-import org.eclipse.egit.github.core.client.PageIterator;
+import com.github.pockethub.core.PageIterator;
 import org.eclipse.egit.github.core.service.IssueService;
 
 /**
  * Fragment to display a pageable list of dashboard issues
  */
-public class DashboardIssueFragment extends PagedItemFragment<RepositoryIssue> {
+public class DashboardIssueFragment extends PagedItemFragment<Issue> {
 
     /**
      * Filter data argument
@@ -62,8 +65,7 @@ public class DashboardIssueFragment extends PagedItemFragment<RepositoryIssue> {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        filterData = (Map<String, String>) getArguments().getSerializable(
-                ARG_FILTER);
+        filterData = (Map<String, String>) getArguments().getSerializable(ARG_FILTER);
     }
 
     @Override
@@ -85,23 +87,27 @@ public class DashboardIssueFragment extends PagedItemFragment<RepositoryIssue> {
     }
 
     @Override
-    protected ResourcePager<RepositoryIssue> createPager() {
-        return new ResourcePager<RepositoryIssue>() {
+    protected ResourcePager<Issue> createPager() {
+        return new ResourcePager<Issue>() {
 
             @Override
-            protected RepositoryIssue register(RepositoryIssue resource) {
+            protected Issue register(Issue resource) {
                 return store.addIssue(resource);
             }
 
             @Override
-            protected Object getId(RepositoryIssue resource) {
-                return resource.getId();
+            protected Object getId(Issue resource) {
+                return resource.id;
             }
 
             @Override
-            public PageIterator<RepositoryIssue> createIterator(int page,
-                    int size) {
-                return service.pageIssues(filterData, page, size);
+            public PageIterator<Issue> createIterator(int page, int size) {
+                return new PageIterator<>(new PageIterator.GitHubRequest<List<Issue>>() {
+                    @Override
+                    public GithubClient<List<Issue>> execute(int page) {
+                        return new GetIssuesClient(getActivity(), filterData, page);
+                    }
+                }, page);
             }
         };
     }
@@ -117,10 +123,9 @@ public class DashboardIssueFragment extends PagedItemFragment<RepositoryIssue> {
     }
 
     @Override
-    protected SingleTypeAdapter<RepositoryIssue> createAdapter(
-            List<RepositoryIssue> items) {
+    protected SingleTypeAdapter<Issue> createAdapter(
+            List<Issue> items) {
         return new DashboardIssueListAdapter(avatars, getActivity()
-                .getLayoutInflater(), items.toArray(new RepositoryIssue[items
-                .size()]));
+                .getLayoutInflater(), items.toArray(new Issue[items.size()]));
     }
 }

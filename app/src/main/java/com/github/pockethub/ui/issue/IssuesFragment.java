@@ -39,6 +39,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.alorma.github.sdk.bean.dto.response.Label;
+import com.alorma.github.sdk.bean.dto.response.Milestone;
+import com.alorma.github.sdk.services.client.GithubClient;
+import com.alorma.github.sdk.services.issues.GetIssuesClient;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
 import com.github.pockethub.RequestFuture;
@@ -49,19 +53,18 @@ import com.github.pockethub.core.issue.IssueStore;
 import com.github.pockethub.persistence.AccountDataManager;
 import com.github.pockethub.ui.PagedItemFragment;
 import com.github.pockethub.util.AvatarLoader;
+import com.github.pockethub.util.InfoUtils;
 import com.github.pockethub.util.ToastUtils;
 import com.google.inject.Inject;
 
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.Label;
-import org.eclipse.egit.github.core.Milestone;
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.client.PageIterator;
-import org.eclipse.egit.github.core.service.IssueService;
+import com.alorma.github.sdk.bean.dto.response.Issue;
+
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
+import com.github.pockethub.core.PageIterator;
 
 /**
  * Fragment to display a list of issues
@@ -72,14 +75,11 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     private AccountDataManager cache;
 
     @Inject
-    private IssueService service;
-
-    @Inject
     private IssueStore store;
 
     private IssueFilter filter;
 
-    private Repository repository;
+    private Repo repository;
 
     private View filterHeader;
 
@@ -102,8 +102,8 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        filter = getSerializableExtra(EXTRA_ISSUE_FILTER);
-        repository = getSerializableExtra(EXTRA_REPOSITORY);
+        filter = getParcelableExtra(EXTRA_ISSUE_FILTER);
+        repository = getParcelableExtra(EXTRA_REPOSITORY);
     }
 
     @Override
@@ -153,7 +153,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
         Milestone filterMilestone = filter.getMilestone();
         if (filterMilestone != null) {
-            milestone.setText(filterMilestone.getTitle());
+            milestone.setText(filterMilestone.title);
             milestone.setVisibility(VISIBLE);
         } else
             milestone.setVisibility(GONE);
@@ -161,7 +161,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
         User user = filter.getAssignee();
         if (user != null) {
             avatars.bind(assigneeAvatar, user);
-            assignee.setText(user.getLogin());
+            assignee.setText(user.login);
             assigneeArea.setVisibility(VISIBLE);
         } else
             assigneeArea.setVisibility(GONE);
@@ -196,7 +196,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
 
         Bundle args = new Bundle();
-        args.putSerializable(EXTRA_REPOSITORY, repository);
+        args.putParcelable(EXTRA_REPOSITORY, repository);
         searchView.setAppSearchData(args);
     }
 
@@ -232,7 +232,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
         if (resultCode == RESULT_OK && requestCode == ISSUE_FILTER_EDIT
                 && data != null) {
             IssueFilter newFilter = (IssueFilter) data
-                    .getSerializableExtra(EXTRA_ISSUE_FILTER);
+                    .getParcelableExtra(EXTRA_ISSUE_FILTER);
             if (!filter.equals(newFilter)) {
                 filter = newFilter;
                 updateFilterSummary();
@@ -249,7 +249,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
         }
 
         if (requestCode == ISSUE_CREATE && resultCode == RESULT_OK) {
-            Issue created = (Issue) data.getSerializableExtra(EXTRA_ISSUE);
+            Issue created = data.getParcelableExtra(EXTRA_ISSUE);
             forceRefresh();
             startActivityForResult(
                     IssuesViewActivity.createIntent(created, repository),
@@ -266,8 +266,13 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
             @Override
             public PageIterator<Issue> createIterator(int page, int size) {
-                return service.pageIssues(repository, filter.toFilterMap(),
-                        page, size);
+                return new PageIterator<>(new PageIterator.GitHubRequest<List<Issue>>() {
+                    @Override
+                    public GithubClient<List<Issue>> execute(int page) {
+                        return new GetIssuesClient(getActivity(), InfoUtils.createIssueInfo(repository, null), filter.toFilterMap(),
+                                page);
+                    }
+                }, page);
             }
         };
     }

@@ -19,6 +19,7 @@ import static android.util.Base64.DEFAULT;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static java.lang.Integer.MAX_VALUE;
+import static java.lang.Integer.valueOf;
 import static org.eclipse.egit.github.core.client.IGitHubConstants.HOST_DEFAULT;
 import android.accounts.Account;
 import android.content.Context;
@@ -26,11 +27,15 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.text.Html;
 import android.text.Html.ImageGetter;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.widget.TextView;
 
+import com.alorma.github.basesdk.client.BaseClient;
+import com.alorma.github.sdk.bean.dto.request.RequestMarkdownDTO;
+import com.alorma.github.sdk.services.content.GetMarkdownClient;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
 import com.github.pockethub.R;
@@ -46,6 +51,9 @@ import java.util.Map;
 import org.eclipse.egit.github.core.RepositoryContents;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.service.ContentsService;
+
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Getter for an image
@@ -106,7 +114,7 @@ public class HttpImageGetter implements ImageGetter {
         if (TextUtils.isEmpty(html))
             return hide(view);
 
-        view.setText(html);
+        view.setText(trim(html));
         view.setVisibility(VISIBLE);
         view.setTag(null);
         return this;
@@ -117,6 +125,13 @@ public class HttpImageGetter implements ImageGetter {
         view.setVisibility(GONE);
         view.setTag(null);
         return this;
+    }
+
+    //All comments end with "\n\n" removing 2 chars
+    private CharSequence trim(CharSequence val){
+        if(val.charAt(val.length()-1) == '\n' && val.charAt(val.length()-2) == '\n')
+            val = val.subSequence(0, val.length()-2);
+        return val;
     }
 
     /**
@@ -164,14 +179,37 @@ public class HttpImageGetter implements ImageGetter {
 
         encoded = rawHtmlCache.get(id);
         if (encoded == null) {
-            encoded = HtmlUtils.encode(html, loading);
-            if (containsImages(html))
-                rawHtmlCache.put(id, encoded);
-            else {
-                rawHtmlCache.remove(id);
-                fullHtmlCache.put(id, encoded);
-                return show(view, encoded);
+            if (!html.matches("<[a-z][\\s\\S]*>")) {
+                RequestMarkdownDTO markdownDTO = new RequestMarkdownDTO();
+                markdownDTO.text = html;
+                GetMarkdownClient markdownClient = new GetMarkdownClient(context, markdownDTO);
+                markdownClient.setOnResultCallback(new BaseClient.OnResultCallback<String>() {
+                    @Override
+                    public void onResponseOk(String data, Response response) {
+                        continueBind(view, data, id);
+                    }
+
+                    @Override
+                    public void onFail(RetrofitError retrofitError) {
+                        continueBind(view, html, id);
+                    }
+                });
+                markdownClient.execute();
+            } else {
+                return continueBind(view, html, id);
             }
+        }
+        return this;
+    }
+
+    private HttpImageGetter continueBind(final TextView view, final String html, final Object id){
+        CharSequence encoded = HtmlUtils.encode(html, loading);
+        if (containsImages(html))
+            rawHtmlCache.put(id, encoded);
+        else {
+            rawHtmlCache.remove(id);
+            fullHtmlCache.put(id, encoded);
+            return show(view, encoded);
         }
 
         if (TextUtils.isEmpty(encoded))

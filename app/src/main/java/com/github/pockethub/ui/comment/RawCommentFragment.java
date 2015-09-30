@@ -48,7 +48,7 @@ public class RawCommentFragment extends DialogFragment {
         commentText.addTextChangedListener(new TextWatcherAdapter() {
 
             @Override
-            public void afterTextChanged(Editable s) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Activity activity = getActivity();
                 if (activity != null)
                     activity.invalidateOptionsMenu();

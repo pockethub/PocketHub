@@ -19,6 +19,8 @@ import android.accounts.Account;
 import android.content.Context;
 import android.util.Log;
 
+import com.alorma.github.sdk.bean.dto.response.GithubComment;
+import com.alorma.github.sdk.services.gists.GetGistCommentsClient;
 import com.github.pockethub.accounts.AuthenticatedUserTask;
 import com.github.pockethub.util.HtmlUtils;
 import com.github.pockethub.util.HttpImageGetter;
@@ -28,7 +30,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Comment;
-import org.eclipse.egit.github.core.Gist;
+import com.alorma.github.sdk.bean.dto.response.Gist;
 import org.eclipse.egit.github.core.service.GistService;
 
 /**
@@ -66,15 +68,15 @@ public class RefreshGistTask extends AuthenticatedUserTask<FullGist> {
     @Override
     public FullGist run(Account account) throws Exception {
         Gist gist = store.refreshGist(id);
-        List<Comment> comments;
-        if (gist.getComments() > 0)
-            comments = service.getComments(id);
+        List<GithubComment> comments;
+        if (gist.comments > 0)
+            comments = new GetGistCommentsClient(context, id).executeSync();
         else
             comments = Collections.emptyList();
-        for (Comment comment : comments) {
-            String formatted = HtmlUtils.format(comment.getBodyHtml())
+        for (GithubComment comment : comments) {
+            String formatted = HtmlUtils.format(comment.body_html)
                     .toString();
-            comment.setBodyHtml(formatted);
+            comment.body_html = formatted;
             imageGetter.encode(comment, formatted);
         }
         return new FullGist(gist, service.isStarred(id), comments);

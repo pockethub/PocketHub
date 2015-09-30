@@ -30,6 +30,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.alorma.github.sdk.bean.dto.response.Milestone;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.R;
@@ -38,7 +39,6 @@ import com.github.pockethub.ui.SingleChoiceDialogFragment;
 
 import java.util.ArrayList;
 
-import org.eclipse.egit.github.core.Milestone;
 
 /**
  * Dialog fragment to select an issue milestone
@@ -66,9 +66,9 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
 
         @Override
         protected void update(int position, Milestone item) {
-            setText(1, item.getTitle());
+            setText(1, item.title);
 
-            String description = item.getDescription();
+            String description = item.description;
             if (!TextUtils.isEmpty(description))
                 ViewUtils.setGone(setText(2, description), false);
             else
@@ -79,7 +79,7 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
 
         @Override
         public long getItemId(int position) {
-            return getItem(position).getNumber();
+            return getItem(position).number;
         }
     }
 
@@ -90,7 +90,7 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
      * @return milestone
      */
     public static Milestone getSelected(Bundle arguments) {
-        return (Milestone) arguments.getSerializable(ARG_SELECTED);
+        return (Milestone) arguments.getParcelable(ARG_SELECTED);
     }
 
     /**
@@ -147,8 +147,7 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
 
     @SuppressWarnings("unchecked")
     private ArrayList<Milestone> getChoices() {
-        return (ArrayList<Milestone>) getArguments().getSerializable(
-                ARG_CHOICES);
+        return getArguments().getParcelableArrayList(ARG_CHOICES);
     }
 
     @Override
@@ -162,7 +161,7 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
             onResult(RESULT_OK);
             break;
         default:
-            getArguments().putSerializable(ARG_SELECTED,
+            getArguments().putParcelable(ARG_SELECTED,
                     getChoices().get(which));
             onResult(RESULT_OK);
         }
