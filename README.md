@@ -51,6 +51,12 @@ GITHUB_CALLBACK=your_callback_url
 ```
 (The callback url needs to be in the format "your_schema://whatever_you_want")
 
+## Legacy Notes
+
+If you had a current installation of the Github App installed and then enabled 2FA (2 Factor Authentication), then you must delete
+the Personal Access Token (PAT) from your configuration (via the web interface).
+     A thanks to @landstander668 for posting this work around.
+
 ## License
 
 * [Apache Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
