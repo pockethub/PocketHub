@@ -109,7 +109,6 @@
     <string name="creating_gist">Erstelle Gist…</string>
     <string name="create">Erstellen</string>
     <string name="create_gist">Gist erstellen</string>
-    <string name="gist_content_hint">puts \'Hallo Welt!\'</string>
     <string name="make_public">Öffentlicher Gist</string>
     <string name="gist_file_name_hint">dateiname.rb</string>
     <string name="gist">Gist</string>

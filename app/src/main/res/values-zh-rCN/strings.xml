@@ -107,7 +107,6 @@
     <string name="creating_gist">Gist 创建中…</string>
     <string name="create">创建</string>
     <string name="create_gist">创建 Gist</string>
-    <string name="gist_content_hint">puts \'Hello World!\'</string>
     <string name="make_public">公开这个 Gist</string>
     <string name="gist_file_name_hint">file.rb</string>
     <string name="gist">Gist</string>

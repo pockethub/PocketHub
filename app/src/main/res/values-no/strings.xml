@@ -107,7 +107,6 @@
     <string name="creating_gist">Oppretter Gist…</string>
     <string name="create">Opprett</string>
     <string name="create_gist">Opprett Gist</string>
-    <string name="gist_content_hint">puts \'Hello World!\'</string>
     <string name="make_public">Gjør denne Gisten offentlig</string>
     <string name="gist_file_name_hint">fil.rb</string>
     <string name="gist">Gist</string>
