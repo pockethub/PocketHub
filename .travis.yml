@@ -3,7 +3,7 @@ android:
    components:
    - platform-tools
    - android-23
-   - build-tools-22.0.1
+   - build-tools-23.0.1
    - extra
 
 jdk: oraclejdk7
