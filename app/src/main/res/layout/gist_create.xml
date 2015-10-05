@@ -40,7 +40,7 @@
             <CheckBox
                 android:id="@+id/cb_public"
                 style="@style/SubtitleText"
-                android:layout_height="48dp"
+                android:layout_height="@dimen/touch_target"
                 android:layout_gravity="right"
                 android:paddingRight="10dp"
                 android:text="@string/make_public"
