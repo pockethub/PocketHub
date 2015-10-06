@@ -29,17 +29,10 @@ android {
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
-        def Properties githubProps = new Properties()
-        if (file('../github.properties').exists()) {
-            githubProps.load(new FileInputStream(file('../github.properties')))
-        } else {
-            logger.log(LogLevel.ERROR, "github.properties can not be found, please add it to the project root")
-        }
-            
-        resValue "string", "github_secret", getValue(githubProps, "GITHUB_SECRET")
-        resValue "string", "github_client", getValue(githubProps, "GITHUB_CLIENT")
+        resValue "string", "github_secret", pockethub_github_secret
+        resValue "string", "github_client", pockethub_github_client
 
-        String oauth = getValue(githubProps, "GITHUB_CALLBACK")
+        String oauth = pockethub_github_callback
         resValue "string", "github_oauth", oauth
         resValue "string", "github_oauth_scheme", oauth != "DEFAULT" ? oauth.split("://")[0] : "DEFAULT"
 
@@ -64,17 +57,6 @@ android {
 
         // False for now until we set up Travis CI for this
         preDexLibraries = false
-    }
-}
-
-def String getValue(Properties props, String name) {
-    if (props && props[name]) {
-        return props[name]
-    } else if (System.getenv(name)) {
-        return System.getenv(name)
-    } else {
-        logger.log(LogLevel.ERROR, name + " has not been provided, add it to your github.properties file")
-        return "DEFAULT"
     }
 }
 

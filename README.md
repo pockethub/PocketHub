@@ -41,14 +41,11 @@ are welcomed and appreciated but will be thoroughly reviewed and discussed. **Pl
 ## Setup Environment
 
 1. Create a github application (https://github.com/settings/applications/new)
-2. Create a github.properties in the root folder of the repo
-3. Add these three values to the github.properties
+2. Set the following gradle properties via one of the ways described [here](https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_properties_and_system_properties):
+  - ```pockethub_github_client```=your_application_client_id
+  - ```pockethub_github_secret```=your_application_client_secret
+  - ```pockethub_github_callback```=your_callback_url
 
-```
-GITHUB_CLIENT=your_application_client_id
-GITHUB_SECRET=your_application_client_secret
-GITHUB_CALLBACK=your_callback_url
-```
 (The callback url needs to be in the format "your_schema://whatever_you_want")
 
 ## Legacy Notes
