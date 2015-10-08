@@ -6,20 +6,32 @@ import android.accounts.AccountManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
+
+import android.preference.PreferenceManager;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.IntentCompat;
 import android.support.v4.content.Loader;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.alorma.github.basesdk.client.StoreCredentials;
 import com.alorma.github.sdk.bean.dto.response.Organization;
@@ -41,16 +53,16 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import static com.github.pockethub.ui.NavigationDrawerObject.TYPE_SEPERATOR;
 
-public class MainActivity extends BaseActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks,
-        LoaderManager.LoaderCallbacks<List<Organization>> {
+public class MainActivity extends BaseActivity implements
+    LoaderManager.LoaderCallbacks<List<Organization>>, NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
-
-    private NavigationDrawerFragment mNavigationDrawerFragment;
+    private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
     @Inject
     private AccountDataManager accountDataManager;
@@ -60,12 +72,16 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
 
     private List<Organization> orgs = Collections.emptyList();
 
-    private NavigationDrawerAdapter navigationAdapter;
-
     private Organization org;
+
+    private NavigationView navigationView;
 
     @Inject
     private AvatarLoader avatars;
+    private DrawerLayout drawerLayout;
+    private boolean userLearnedDrawer;
+    private Toolbar toolbar;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,12 +89,36 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
         Bugsnag.init(this);
         setContentView(R.layout.activity_main);
 
-        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        userLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+
+                if (!userLearnedDrawer) {
+                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                    sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
+                    userLearnedDrawer = true;
+                    Log.d(TAG, "User learned drawer");
+                }
+            }
+        };
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
+
+        navigationView.setNavigationItemSelectedListener(this);
 
         getSupportLoaderManager().initLoader(0, null, this);
-
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
         StoreCredentials storeCredentials = new StoreCredentials(this);
 
@@ -93,6 +133,26 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
                 storeCredentials.storeScopes(AccountsHelper.getUserScopes(this, account));
             }
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        actionBarDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(actionBarDrawerToggle.onOptionsItemSelected(item)){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        actionBarDrawerToggle.syncState();
     }
 
     private void reloadOrgs() {
@@ -129,6 +189,8 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
                 userComparatorProvider);
     }
 
+    Map<MenuItem,Organization> menuItemOrganizationMap = new HashMap<>();
+
     @Override
     public void onLoadFinished(Loader<List<Organization>> listLoader, final List<Organization> orgs) {
         if (orgs.isEmpty())
@@ -137,29 +199,68 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
         org = orgs.get(0);
         this.orgs = orgs;
 
-        if (navigationAdapter != null)
-            navigationAdapter.setOrgs(orgs);
-        else {
-            navigationAdapter = new NavigationDrawerAdapter(MainActivity.this, orgs, avatars);
-            mNavigationDrawerFragment.setUp(
-                    R.id.navigation_drawer,
-                    (DrawerLayout) findViewById(R.id.drawer_layout), navigationAdapter, avatars, org);
+        setUpNavigationView();
 
-            Window window = getWindow();
-            if (window == null)
-                return;
-            View view = window.getDecorView();
-            if (view == null)
-                return;
+        Window window = getWindow();
+        if (window == null)
+            return;
+        View view = window.getDecorView();
+        if (view == null)
+            return;
 
-            view.post(new Runnable() {
+        view.post(new Runnable() {
 
-                @Override
-                public void run() {
-                    MainActivity.this.onNavigationDrawerItemSelected(1);
-                }
-            });
+            @Override
+            public void run() {
+                MainActivity.this.switchFragment(new HomePagerFragment(), org);
+                if(!userLearnedDrawer)
+                    drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+
+    }
+
+    private void setUpHeaderView() {
+        ImageView userImage;
+        TextView userRealName;
+        TextView userName;
+        userImage = (ImageView) navigationView.findViewById(R.id.user_picture);
+        userRealName = (TextView) navigationView.findViewById(R.id.user_real_name);
+        userName = (TextView) navigationView.findViewById(R.id.user_name);
+
+        avatars.bind(userImage, org);
+        userName.setText(org.login);
+
+        String name = org.name;
+        if (name != null) {
+            userRealName.setText(org.name);
+        } else {
+            userRealName.setVisibility(View.GONE);
         }
+    }
+
+    private void setUpNavigationView() {
+        if (navigationView != null) {
+
+            setUpHeaderView();
+            setUpNavigationMenu();
+        }
+    }
+
+    private void setUpNavigationMenu() {
+        MenuItem item = navigationView.getMenu().findItem(R.id.navigation_organizations);
+        if(item.hasSubMenu()){
+			SubMenu organizationsMenu = item.getSubMenu();
+			for (Organization o : orgs) {
+				if(organizationsMenu.findItem(o.id) == null){
+					MenuItem orgMenuItem = organizationsMenu.add(Menu.NONE, o.id, Menu.NONE, o.name != null ? o.name : o.login);
+					menuItemOrganizationMap.put(orgMenuItem, o);
+				}
+			}
+
+		} else {
+			throw new IllegalStateException("Menu item " + item + " should have a submenu");
+		}
     }
 
     @Override
@@ -167,60 +268,60 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
 
     }
 
-
     @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        if (navigationAdapter.getItem(position).getType() == TYPE_SEPERATOR) {
-            return;
-        }
-        Fragment fragment;
-        Bundle args = new Bundle();
-        switch (position) {
-            case 1:
-                fragment = new HomePagerFragment();
-                args.putParcelable("org", org);
-                break;
-            case 2:
-                fragment = new GistsPagerFragment();
-                break;
-            case 3:
-                fragment = new IssueDashboardPagerFragment();
-                break;
-            case 4:
-                fragment = new FilterListFragment();
-                break;
-            case 5:
-                AccountManager accountManager = getAccountManager();
-                Account[] allGitHubAccounts = accountManager.getAccountsByType(getString(R.string.account_type));
+    public boolean onNavigationItemSelected(MenuItem menuItem) {
+        int itemId = menuItem.getItemId();
 
-                for (Account account : allGitHubAccounts) {
-                    accountManager.removeAccount(account, null, null);
-                }
+        if (itemId == R.id.navigation_home) {
+            switchFragment(new HomePagerFragment(), org);
+            return true;
+        } else if (itemId == R.id.navigation_gists) {
+            switchFragment(new GistsPagerFragment(), null);
+            return true;
+        } else if (itemId == R.id.navigation_issue_dashboard) {
+            switchFragment(new IssueDashboardPagerFragment(), null);
+            return true;
+        } else if (itemId == R.id.navigation_bookmarks) {
+            switchFragment(new FilterListFragment(), null);
+            return true;
+        } else if (itemId == R.id.navigation_log_out) {
+            AccountManager accountManager = getAccountManager();
+            Account[] allGitHubAccounts = accountManager.getAccountsByType(getString(R.string.account_type));
 
-                Intent in = new Intent(this, LoginActivity.class);
-                in.addFlags(IntentCompat.FLAG_ACTIVITY_CLEAR_TASK
-                        | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(in);
-                finish();
-                return;
-            default:
-                fragment = new HomePagerFragment();
-                args.putParcelable("org", orgs.get(position - 6));
-                break;
+            for (Account account : allGitHubAccounts) {
+                accountManager.removeAccount(account, null, null);
+            }
+
+            Intent in = new Intent(this, LoginActivity.class);
+            in.addFlags(IntentCompat.FLAG_ACTIVITY_CLEAR_TASK
+                                | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(in);
+            finish();
+            return false;
+
+        } else if (menuItemOrganizationMap.containsKey(menuItem)) {
+            switchFragment(new HomePagerFragment(), menuItemOrganizationMap.get(menuItem));
+            navigationView.getMenu().findItem(R.id.navigation_home).setChecked(true);
+            return false;
+        } else {
+            throw new IllegalStateException("MenuItem " + menuItem + " not known");
         }
-        putFragmentToContainer(fragment, args);
+    }
+
+    @VisibleForTesting
+    void switchFragment(Fragment fragment, Organization organization) {
+        if (organization != null) {
+            Bundle args = new Bundle();
+            args.putParcelable("org", organization);
+            fragment.setArguments(args);
+        }
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.container, fragment).commit();
+        drawerLayout.closeDrawer(GravityCompat.START);
     }
 
     @VisibleForTesting
     AccountManager getAccountManager() {
         return AccountManager.get(this);
     }
-
-    @VisibleForTesting
-    void putFragmentToContainer(Fragment fragment, Bundle args) {
-        fragment.setArguments(args);
-        FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.container, fragment).commit();
-    }
-
 }

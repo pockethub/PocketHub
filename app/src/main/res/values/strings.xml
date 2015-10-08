@@ -311,5 +311,6 @@
         \n\n Since GitHub has added third-party restrictions we are unable to write
         to certain organizations. You can read more here:\n
         https://help.github.com/articles/about-third-party-application-restrictions/</string>
+    <string name="organizations">Organizations</string>
 
 </resources>

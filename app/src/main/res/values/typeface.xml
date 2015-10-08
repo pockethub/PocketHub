@@ -25,11 +25,4 @@
     <string name="icon_star" translatable="false">\uf02a</string>
     <string name="icon_fork" translatable="false">\uf020</string>
 
-    <string-array name="navigation_drawer_icon_list">
-        <item>\uf08d</item>
-        <item>\uf00e</item>
-        <item>\uf07d</item>
-        <item>\uf07b</item>
-        <item>\uf07e</item>
-    </string-array>
 </resources>

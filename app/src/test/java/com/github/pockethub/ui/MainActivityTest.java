@@ -6,6 +6,7 @@ import android.accounts.AccountManagerCallback;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.view.MenuItem;
 
 import com.alorma.github.sdk.bean.dto.response.Organization;
 import com.github.pockethub.BuildConfig;
@@ -43,7 +44,6 @@ public class MainActivityTest {
 
     private MockMainActivity mockMainActivity;
     static Fragment fragment;
-    static Bundle bundle;
     static AccountManager mockManager;
     private ArgumentCaptor<Account> argumentCaptor;
     private Account[] accounts;
@@ -62,38 +62,43 @@ public class MainActivityTest {
         argumentCaptor = ArgumentCaptor.forClass(Account.class);
     }
 
+    private MenuItem getMockMenuItem(int id) {
+        MenuItem mockedMenuItem = mock(MenuItem.class);
+        when(mockedMenuItem.getItemId()).thenReturn(id);
+        return mockedMenuItem;
+    }
+
     @Test
     public void testNavigationDrawerClickListenerPos1_ShouldReplaceHomePagerFragmentToContainer() {
-        mockMainActivity.onNavigationDrawerItemSelected(1);
+        mockMainActivity.onNavigationItemSelected(getMockMenuItem(R.id.navigation_home));
 
         assertThat(fragment, is(instanceOf(HomePagerFragment.class)));
-        assertThat(bundle.containsKey("org"), is(true));
     }
 
     @Test
     public void testNavigationDrawerClickListenerPos2_ShouldReplaceGistsPagerFragmentToContainer() {
-        mockMainActivity.onNavigationDrawerItemSelected(2);
+        mockMainActivity.onNavigationItemSelected(getMockMenuItem(R.id.navigation_gists));
 
         assertThat(fragment, is(instanceOf(GistsPagerFragment.class)));
     }
 
     @Test
     public void testNavigationDrawerClickListenerPos3_ShouldReplaceIssueDashboardPagerFragmentToContainer() {
-        mockMainActivity.onNavigationDrawerItemSelected(3);
+        mockMainActivity.onNavigationItemSelected(getMockMenuItem(R.id.navigation_issue_dashboard));
 
         assertThat(fragment, is(instanceOf(IssueDashboardPagerFragment.class)));
     }
 
     @Test
     public void testNavigationDrawerClickListenerPos4_ShouldReplaceFilterListFragmentToContainer() {
-        mockMainActivity.onNavigationDrawerItemSelected(4);
+        mockMainActivity.onNavigationItemSelected(getMockMenuItem(R.id.navigation_bookmarks));
 
         assertThat(fragment, is(instanceOf(FilterListFragment.class)));
     }
 
     @Test
     public void test() {
-        mockMainActivity.onNavigationDrawerItemSelected(5);
+        mockMainActivity.onNavigationItemSelected(getMockMenuItem(R.id.navigation_log_out));
 
         verify(mockManager, times(2)).removeAccount(argumentCaptor.capture(), (AccountManagerCallback<Boolean>) anyObject(), (Handler) anyObject());
         List<Account> values = argumentCaptor.getAllValues();
@@ -104,9 +109,9 @@ public class MainActivityTest {
     public static class MockMainActivity extends MainActivity {
 
         @Override
-        void putFragmentToContainer(Fragment frag, Bundle args) {
+        void switchFragment(Fragment frag, Organization org) {
+            super.switchFragment(frag, org);
             fragment = frag;
-            bundle = args;
         }
 
         @Override
