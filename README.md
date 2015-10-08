@@ -42,11 +42,13 @@ are welcomed and appreciated but will be thoroughly reviewed and discussed. **Pl
 
 1. Create a github application (https://github.com/settings/applications/new)
 2. Set the following gradle properties via one of the ways described [here](https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_properties_and_system_properties):
-  - ```pockethub_github_client```=your_application_client_id
-  - ```pockethub_github_secret```=your_application_client_secret
-  - ```pockethub_github_callback```=your_callback_url
+  - `pockethub_github_client`=your_application_client_id
+  - `pockethub_github_secret`=your_application_client_secret
+  - `pockethub_github_callback`=your_callback_url
 
-(The callback url needs to be in the format "your_schema://whatever_you_want")
+### Callbak URL
+- The callback url needs to be in the format `your_schema://whatever_you_want`
+- Use a custom schema like `myawesomeschema` (not `http` or `https`)
 
 ## Legacy Notes
 
