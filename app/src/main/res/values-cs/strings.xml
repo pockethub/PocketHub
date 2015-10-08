@@ -107,7 +107,6 @@ limitations under the License.
     <string name="creating_gist">Vytváření Gistu…</string>
     <string name="create">Vytvořit</string>
     <string name="create_gist">Vytvořit Gist</string>
-    <string name="gist_content_hint">například \'Hello World!\'</string>
     <string name="make_public">Zveřejnit tento Gist</string>
     <string name="gist_file_name_hint">soubor.rb</string>
     <string name="gist">Gist</string>

@@ -86,7 +86,6 @@
     <string name="creating_gist">Gist 생성중…</string>
     <string name="create">생성</string>
     <string name="create_gist">Gist 생성</string>
-    <string name="gist_content_hint">puts \'Hello World!\'</string>
     <string name="make_public">모두 공개로 생성함</string>
     <string name="gist_file_name_hint">file.rb</string>
     <string name="gist">Gist</string>

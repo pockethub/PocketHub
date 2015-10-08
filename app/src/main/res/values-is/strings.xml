@@ -107,7 +107,6 @@
     <string name="creating_gist">Skapar Gist…</string>
     <string name="create">Skapa</string>
     <string name="create_gist">Skapa Gist</string>
-    <string name="gist_content_hint">setur \'Halló Heim!\'</string>
     <string name="make_public">Gera þetta Gist opinbert</string>
     <string name="gist_file_name_hint">file.rb</string>
     <string name="gist">Gist</string>

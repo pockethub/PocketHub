@@ -106,7 +106,6 @@
     <string name="creating_gist">Creando gist&#8230;</string>
     <string name="create">Crear</string>
     <string name="create_gist">Crear gist</string>
-    <string name="gist_content_hint">puts \'¡Hola Mundo!\'</string>
     <string name="make_public">Hacer este gist público</string>
     <string name="gist_file_name_hint">fichero.rb</string>
     <string name="gist">Gist</string>

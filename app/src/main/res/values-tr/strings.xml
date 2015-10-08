@@ -109,7 +109,6 @@
     <string name="creating_gist">Gist oluşturuluyor…</string>
     <string name="create">Oluştur</string>
     <string name="create_gist">Gist Oluştur</string>
-    <string name="gist_content_hint">\'Hello World!\' yazar</string>
     <string name="make_public">Bu Gist\'i herkese açık yap</string>
     <string name="gist_file_name_hint">file.rb</string>
     <string name="gist">Gist</string>

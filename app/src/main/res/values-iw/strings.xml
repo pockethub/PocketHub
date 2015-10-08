@@ -90,7 +90,6 @@
   <string name="creating_gist">יוצר תמצית…</string>
   <string name="create">צור</string>
   <string name="create_gist">צור תמצית</string>
-  <string name="gist_content_hint">שים \"שלום עולם!\"</string>
   <string name="make_public">הפוך תמצית זו לציבורית</string>
   <string name="gist">תמצית</string>
   <string name="comments">תגובות</string>
