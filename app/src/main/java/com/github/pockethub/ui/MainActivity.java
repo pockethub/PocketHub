@@ -1,14 +1,13 @@
 package com.github.pockethub.ui;
 
 
-import static com.github.pockethub.ui.NavigationDrawerObject.TYPE_SEPERATOR;
-
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
@@ -24,10 +23,10 @@ import android.view.Window;
 
 import com.alorma.github.basesdk.client.StoreCredentials;
 import com.alorma.github.sdk.bean.dto.response.Organization;
-import com.alorma.github.sdk.bean.dto.response.User;
 import com.alorma.github.sdk.login.AccountsHelper;
 import com.bugsnag.android.Bugsnag;
 import com.github.pockethub.R;
+import com.github.pockethub.accounts.AccountConstants;
 import com.github.pockethub.accounts.AccountUtils;
 import com.github.pockethub.accounts.LoginActivity;
 import com.github.pockethub.core.user.UserComparator;
@@ -47,7 +46,7 @@ import java.util.List;
 import static com.github.pockethub.ui.NavigationDrawerObject.TYPE_SEPERATOR;
 
 public class MainActivity extends BaseActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks,
-    LoaderManager.LoaderCallbacks<List<Organization>> {
+        LoaderManager.LoaderCallbacks<List<Organization>> {
 
     private static final String TAG = "MainActivity";
 
@@ -79,14 +78,14 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
         getSupportLoaderManager().initLoader(0, null, this);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
-            getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
         StoreCredentials storeCredentials = new StoreCredentials(this);
 
-        if(storeCredentials.token() == null){
+        if (storeCredentials.token() == null) {
             AccountManager manager = AccountManager.get(this);
             Account[] accounts = manager.getAccountsByType(getString(R.string.account_type));
-            if(accounts.length > 0) {
+            if (accounts.length > 0) {
                 Account account = accounts[0];
                 AccountsHelper.getUserToken(this, account);
                 storeCredentials.storeToken(AccountsHelper.getUserToken(this, account));
@@ -120,14 +119,14 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
         // account
         List<Organization> currentOrgs = orgs;
         if (currentOrgs != null && !currentOrgs.isEmpty()
-            && !AccountUtils.isUser(this, currentOrgs.get(0)))
+                && !AccountUtils.isUser(this, currentOrgs.get(0)))
             reloadOrgs();
     }
 
     @Override
     public Loader<List<Organization>> onCreateLoader(int i, Bundle bundle) {
         return new OrganizationLoader(this, accountDataManager,
-            userComparatorProvider);
+                userComparatorProvider);
     }
 
     @Override
@@ -143,8 +142,8 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
         else {
             navigationAdapter = new NavigationDrawerAdapter(MainActivity.this, orgs, avatars);
             mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout), navigationAdapter, avatars, org);
+                    R.id.navigation_drawer,
+                    (DrawerLayout) findViewById(R.id.drawer_layout), navigationAdapter, avatars, org);
 
             Window window = getWindow();
             if (window == null)
@@ -171,8 +170,9 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        if (navigationAdapter.getItem(position).getType() == TYPE_SEPERATOR)
+        if (navigationAdapter.getItem(position).getType() == TYPE_SEPERATOR) {
             return;
+        }
         Fragment fragment;
         Bundle args = new Bundle();
         switch (position) {
@@ -190,10 +190,11 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
                 fragment = new FilterListFragment();
                 break;
             case 5:
-                Account[] allAccounts = AccountManager.get(this).getAccounts();
+                AccountManager accountManager = getAccountManager();
+                Account[] allGitHubAccounts = accountManager.getAccountsByType(getString(R.string.account_type));
 
-                for (Account account : allAccounts) {
-                    AccountManager.get(this).removeAccount(account, null, null);
+                for (Account account : allGitHubAccounts) {
+                    accountManager.removeAccount(account, null, null);
                 }
 
                 Intent in = new Intent(this, LoginActivity.class);
@@ -207,6 +208,16 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
                 args.putParcelable("org", orgs.get(position - 6));
                 break;
         }
+        putFragmentToContainer(fragment, args);
+    }
+
+    @VisibleForTesting
+    AccountManager getAccountManager() {
+        return AccountManager.get(this);
+    }
+
+    @VisibleForTesting
+    void putFragmentToContainer(Fragment fragment, Bundle args) {
         fragment.setArguments(args);
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.container, fragment).commit();
