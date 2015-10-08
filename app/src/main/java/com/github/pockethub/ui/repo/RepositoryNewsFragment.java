@@ -17,6 +17,7 @@ package com.github.pockethub.ui.repo;
 
 import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
 import android.app.Activity;
+import android.content.Context;
 
 import com.alorma.github.sdk.bean.dto.response.GithubEvent;
 import com.alorma.github.sdk.services.client.GithubClient;
@@ -45,8 +46,8 @@ public class RepositoryNewsFragment extends NewsFragment {
     private Repo repo;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
         repo = getParcelableExtra(EXTRA_REPOSITORY);
     }

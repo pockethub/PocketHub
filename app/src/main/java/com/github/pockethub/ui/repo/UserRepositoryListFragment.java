@@ -19,6 +19,7 @@ import static com.github.pockethub.Intents.EXTRA_USER;
 import static com.github.pockethub.RequestCodes.REPOSITORY_VIEW;
 import static com.github.pockethub.ResultCodes.RESOURCE_CHANGED;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -50,8 +51,8 @@ public class UserRepositoryListFragment extends PagedItemFragment<Repo> {
     private User user;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
         user = getParcelableExtra(EXTRA_USER);
     }

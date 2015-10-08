@@ -21,6 +21,7 @@ import static com.github.pockethub.util.PreferenceUtils.WRAP;
 import android.accounts.Account;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
@@ -71,8 +72,8 @@ public class GistFileFragment extends DialogFragment implements
     private MenuItem wrapItem;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
         gistId = getStringExtra(EXTRA_GIST_ID);
     }
