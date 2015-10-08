@@ -19,9 +19,16 @@ def isTravis = "true".equals(System.getenv("TRAVIS"))
 def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 
 android {
+    signingConfigs {
+        releaseSigningConfig {
+            keyAlias 'pockethub-release-alias'
+            keyPassword pockethub_keystore_password
+            storeFile file('keystore.jks')
+            storePassword pockethub_keystore_password
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion '23.0.1'
-
     defaultConfig {
         applicationId 'com.github.pockethub'
         minSdkVersion 15
@@ -39,18 +46,15 @@ android {
         buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
         buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
     }
-
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
     }
-
     lintOptions {
         warning 'MissingTranslation'
         abortOnError false
     }
-
     dexOptions {
         // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
 //        preDexLibraries = preDexEnabled && !isTravis
@@ -58,10 +62,17 @@ android {
         // False for now until we set up Travis CI for this
         preDexLibraries = false
     }
+    buildTypes {
+        release {
+            def String dummyPassword = pockethub_keystore_password_dummy
+            def String givenPassword = pockethub_keystore_password
+            signingConfig givenPassword.equals(dummyPassword) ? null : signingConfigs.releaseSigningConfig
+        }
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:design:23.0.1'
     compile 'com.squareup.picasso:picasso:2.5.0'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
@@ -69,7 +80,7 @@ dependencies {
     compile 'com.github.kevinsawicki:http-request:5.6'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:3.7.0.201502260915-r'
-    compile ('com.google.inject.extensions:guice-assistedinject:3.0'){
+    compile('com.google.inject.extensions:guice-assistedinject:3.0') {
         exclude group: 'com.google.inject'
     }
     compile 'com.github.alorma:github-sdk:1.2.0'
@@ -80,11 +91,10 @@ dependencies {
         transitive = true
     }
     compile 'com.bugsnag:bugsnag-android:+'
-
     //Self compiled .aar version of wishlist
-    compile (name:'lib', ext:'aar')
+    compile(name: 'lib', ext: 'aar')
     testCompile 'junit:junit:4.12'
-    testCompile "org.mockito:mockito-core:1.9.5"
+    testCompile 'org.mockito:mockito-core:1.9.5'
     testCompile('org.robolectric:robolectric:3.0') {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
