@@ -19,7 +19,7 @@ import static com.github.pockethub.Intents.EXTRA_BASE;
 import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.github.pockethub.ui.FragmentStatePagerAdapter;
@@ -40,7 +40,7 @@ public class CommitPagerAdapter extends FragmentStatePagerAdapter {
      * @param repository
      * @param ids
      */
-    public CommitPagerAdapter(ActionBarActivity activity,
+    public CommitPagerAdapter(AppCompatActivity activity,
             Repo repository, CharSequence[] ids) {
         super(activity);
 

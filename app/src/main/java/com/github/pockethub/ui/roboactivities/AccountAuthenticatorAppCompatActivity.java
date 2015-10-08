@@ -3,7 +3,7 @@ package com.github.pockethub.ui.roboactivities;
 import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 /**
  * Base class for implementing an Activity that is used to help implement an
@@ -21,7 +21,7 @@ import android.support.v7.app.ActionBarActivity;
  *
  * Based on <a href="https://github.com/mccrajs">@mccrajs's</a> implementation <a href="https://github.com/rtyley/roboguice-sherlock/blob/master/src/main/java/com/github/rtyley/android/sherlock/android/accounts/SherlockAccountAuthenticatorActivity.java">here</a>.
  */
-public class ActionBarAccountAuthenticatorActivity extends ActionBarActivity {
+public class AccountAuthenticatorAppCompatActivity extends AppCompatActivity {
     private AccountAuthenticatorResponse mAccountAuthenticatorResponse = null;
     private Bundle mResultBundle = null;
 

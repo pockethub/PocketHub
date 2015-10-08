@@ -17,7 +17,7 @@ package com.github.pockethub.ui.comment;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import com.github.pockethub.R;
 import com.github.pockethub.ui.FragmentPagerAdapter;
@@ -46,7 +46,7 @@ public class CommentPreviewPagerAdapter extends FragmentPagerAdapter {
      * @param activity
      * @param repo
      */
-    public CommentPreviewPagerAdapter(ActionBarActivity activity,
+    public CommentPreviewPagerAdapter(AppCompatActivity activity,
             Repo repo) {
         super(activity);
         this.context = activity.getApplicationContext();

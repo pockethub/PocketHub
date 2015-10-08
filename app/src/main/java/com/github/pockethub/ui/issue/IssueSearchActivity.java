@@ -33,7 +33,7 @@ import android.view.MenuItem;
 
 import com.github.pockethub.R;
 import com.github.pockethub.ui.repo.RepositoryViewActivity;
-import com.github.pockethub.ui.roboactivities.RoboActionBarActivity;
+import com.github.pockethub.ui.roboactivities.RoboAppCompatActivity;
 import com.github.pockethub.util.AvatarLoader;
 import com.github.pockethub.util.InfoUtils;
 import com.github.pockethub.util.ToastUtils;
@@ -44,7 +44,7 @@ import com.alorma.github.sdk.bean.dto.response.Repo;
 /**
  * Activity to search issues
  */
-public class IssueSearchActivity extends RoboActionBarActivity {
+public class IssueSearchActivity extends RoboAppCompatActivity {
 
     @Inject
     private AvatarLoader avatars;

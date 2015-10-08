@@ -19,14 +19,12 @@ import android.os.Bundle;
 import android.os.Parcelable;
 
 import com.github.kevinsawicki.wishlist.ViewFinder;
-import com.github.pockethub.ui.roboactivities.RoboActionBarActivity;
-
-import java.io.Serializable;
+import com.github.pockethub.ui.roboactivities.RoboAppCompatActivity;
 
 /**
  * Base sherlock activity
  */
-public class BaseActivity extends RoboActionBarActivity {
+public class BaseActivity extends RoboAppCompatActivity {
 
     /**
      * Finder bound to this activity's view

@@ -29,21 +29,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.alorma.github.basesdk.ApiClient;
 import com.alorma.github.basesdk.client.BaseClient;
 import com.alorma.github.basesdk.client.GithubDeveloperCredentialsProvider;
 import com.alorma.github.basesdk.client.credentials.GithubDeveloperCredentials;
 import com.alorma.github.sdk.bean.dto.response.Organization;
 import com.alorma.github.sdk.bean.dto.response.Token;
 import com.alorma.github.sdk.login.AccountsHelper;
-import com.alorma.github.sdk.security.GitHub;
 import com.alorma.github.sdk.services.login.RequestTokenClient;
 import com.alorma.github.sdk.services.user.GetAuthUserClient;
 import com.github.pockethub.R;
 import com.github.pockethub.persistence.AccountDataManager;
 import com.github.pockethub.ui.LightProgressDialog;
 import com.github.pockethub.ui.MainActivity;
-import com.github.pockethub.ui.roboactivities.RoboActionBarAccountAuthenticatorActivity;
+import com.github.pockethub.ui.roboactivities.RoboAccountAuthenticatorAppCompatActivity;
 import com.google.inject.Inject;
 import com.squareup.okhttp.HttpUrl;
 
@@ -57,7 +55,7 @@ import static com.github.pockethub.accounts.AccountConstants.PROVIDER_AUTHORITY;
 /**
  * Activity to login
  */
-public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity implements BaseClient.OnResultCallback<com.alorma.github.sdk.bean.dto.response.User> {
+public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity implements BaseClient.OnResultCallback<com.alorma.github.sdk.bean.dto.response.User> {
 
     /**
      * Auth token type parameter
