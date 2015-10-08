@@ -205,7 +205,7 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
                 return;
             default:
                 fragment = new HomePagerFragment();
-                args.putParcelable("org", orgs.get(position - 6));
+                args.putParcelable("org", orgs.get(position - 7));
                 break;
         }
         putFragmentToContainer(fragment, args);
