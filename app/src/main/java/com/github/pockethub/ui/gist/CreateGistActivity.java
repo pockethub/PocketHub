@@ -15,24 +15,19 @@
  */
 package com.github.pockethub.ui.gist;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.alorma.github.sdk.bean.dto.response.Gist;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.BaseActivity;
-import com.github.pockethub.ui.MainActivity;
 import com.github.pockethub.ui.TextWatcherAdapter;
 import com.github.pockethub.util.ShareUtils;
-
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
-import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 
 /**
  * Activity to share a text selection as a public or private Gist
@@ -47,7 +42,7 @@ public class CreateGistActivity extends BaseActivity {
 
     private CheckBox publicCheckBox;
 
-    private MenuItem createItem;
+    private FloatingActionButton floatingActionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +56,7 @@ public class CreateGistActivity extends BaseActivity {
         nameText = finder.find(R.id.et_gist_name);
         contentText = finder.find(R.id.et_gist_content);
         publicCheckBox = finder.find(R.id.cb_public);
+        floatingActionButton = finder.find(R.id.fab);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setIcon(R.drawable.ic_github_gist_white_32dp);
@@ -82,6 +78,13 @@ public class CreateGistActivity extends BaseActivity {
             }
         });
         updateCreateMenu();
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createGist();
+            }
+        });
     }
 
     private void updateCreateMenu() {
@@ -90,27 +93,8 @@ public class CreateGistActivity extends BaseActivity {
     }
 
     private void updateCreateMenu(CharSequence text) {
-        if (createItem != null)
-            createItem.setEnabled(!TextUtils.isEmpty(text));
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu options) {
-        getMenuInflater().inflate(R.menu.activity_gist_create, options);
-        createItem = options.findItem(R.id.m_apply);
-        updateCreateMenu();
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.m_apply:
-                createGist();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        if (floatingActionButton != null)
+            floatingActionButton.setEnabled(!TextUtils.isEmpty(text));
     }
 
     private void createGist() {
