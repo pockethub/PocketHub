@@ -108,12 +108,6 @@ public class CreateGistActivity extends BaseActivity {
             case R.id.m_apply:
                 createGist();
                 return true;
-            case android.R.id.home:
-                finish();
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
