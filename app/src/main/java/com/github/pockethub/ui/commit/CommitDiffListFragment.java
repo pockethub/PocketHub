@@ -15,16 +15,8 @@
  */
 package com.github.pockethub.ui.commit;
 
-import static android.app.Activity.RESULT_OK;
-import static android.content.DialogInterface.BUTTON_NEGATIVE;
-import static android.graphics.Paint.UNDERLINE_TEXT_FLAG;
-import static com.github.pockethub.Intents.EXTRA_BASE;
-import static com.github.pockethub.Intents.EXTRA_COMMENT;
-import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
-import static com.github.pockethub.RequestCodes.COMMENT_CREATE;
 import android.accounts.Account;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -32,6 +24,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -54,7 +47,6 @@ import com.alorma.github.sdk.bean.dto.response.CommitFile;
 import com.alorma.github.sdk.bean.dto.response.GitCommit;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.ShaUrl;
-import com.alorma.github.sdk.bean.info.IssueInfo;
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.R;
@@ -65,7 +57,6 @@ import com.github.pockethub.core.commit.FullCommitFile;
 import com.github.pockethub.core.commit.RefreshCommitTask;
 import com.github.pockethub.ui.DialogFragment;
 import com.github.pockethub.ui.HeaderFooterListAdapter;
-import com.github.pockethub.ui.LightAlertDialog;
 import com.github.pockethub.ui.StyledText;
 import com.github.pockethub.util.AvatarLoader;
 import com.github.pockethub.util.HttpImageGetter;
@@ -77,6 +68,13 @@ import com.google.inject.Inject;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
+import static android.graphics.Paint.UNDERLINE_TEXT_FLAG;
+import static com.github.pockethub.Intents.EXTRA_BASE;
+import static com.github.pockethub.Intents.EXTRA_COMMENT;
+import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
+import static com.github.pockethub.RequestCodes.COMMENT_CREATE;
 
 /**
  * Fragment to display commit details with diff output
@@ -421,10 +419,15 @@ public class CommitDiffListFragment extends DialogFragment implements
         return inflater.inflate(R.layout.commit_diff_list, null);
     }
 
-    private void showFileOptions(CharSequence line, final int position,
-            final CommitFile file) {
-        final AlertDialog dialog = LightAlertDialog.create(getActivity());
-        dialog.setTitle(CommitUtils.getName(file));
+    private void showFileOptions(CharSequence line, final int position, final CommitFile file) {
+        final AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                                           .setTitle(CommitUtils.getName(file))
+                                           .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                               public void onClick(DialogInterface dialog, int which) {
+                                                   dialog.dismiss();
+                                               }
+                                           })
+                                           .create();
         dialog.setCanceledOnTouchOutside(true);
 
         View view = getActivity().getLayoutInflater().inflate(
@@ -436,7 +439,7 @@ public class CommitDiffListFragment extends DialogFragment implements
         diffStyler.updateColors(line, diff);
 
         finder.setText(R.id.tv_commit, getString(R.string.commit_prefix)
-                + CommitUtils.abbreviate(commit));
+                                               + CommitUtils.abbreviate(commit));
 
         finder.find(R.id.ll_view_area).setOnClickListener(new OnClickListener() {
 
@@ -447,27 +450,14 @@ public class CommitDiffListFragment extends DialogFragment implements
             }
         });
 
-        finder.find(R.id.ll_comment_area).setOnClickListener(
-                new OnClickListener() {
-
-                    public void onClick(View v) {
-                        dialog.dismiss();
-
-                        startActivityForResult(CreateCommentActivity
-                                        .createIntent(repository, commit.sha,
-                                                file.filename, position),
-                                COMMENT_CREATE);
-                    }
-                });
+        finder.find(R.id.ll_comment_area).setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                dialog.dismiss();
+                startActivityForResult(CreateCommentActivity.createIntent(repository, commit.sha, file.filename, position), COMMENT_CREATE);
+            }
+        });
 
         dialog.setView(view);
-        dialog.setButton(BUTTON_NEGATIVE, getString(R.string.cancel),
-                new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
         dialog.show();
     }
 
