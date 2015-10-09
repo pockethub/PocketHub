@@ -238,4 +238,10 @@
         <item name="itemIconTint">@color/color_navigation_view_icon</item>
     </style>
 
+    <style name="InputTextLayout" parent="Widget.Design.TextInputLayout">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingTop">16dp</item>
+    </style>
+
 </resources>

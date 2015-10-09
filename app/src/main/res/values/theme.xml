@@ -27,7 +27,6 @@
         <item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>
         <item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>
         <item name="windowActionBar">false</item>
-        <item name="android:windowBackground">@color/background</item>
 
     </style>
 

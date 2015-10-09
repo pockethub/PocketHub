@@ -44,70 +44,54 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="10dp">
+            android:paddingLeft="@dimen/activity_content_padding"
+            android:paddingRight="@dimen/activity_content_padding"
+            android:paddingTop="8dp">
 
             <CheckBox
                 android:id="@+id/cb_public"
-                style="@style/SubtitleText"
-                android:layout_height="@dimen/touch_target"
-                android:layout_gravity="end"
-                android:paddingRight="10dp"
-                android:paddingEnd="10dp"
-                android:text="@string/make_public"
-                android:textColor="@color/text"
-                android:theme="@style/Theme.GitHub.CheckBoxLight" />
-
-            <View style="@style/Separator" />
-
-            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="5dp">
+                android:minHeight="@dimen/touch_target"
+                android:text="@string/make_public"/>
 
-                <TextView
-                    style="@style/TitleText"
-                    android:text="@string/description" />
+            <android.support.design.widget.TextInputLayout
+                style="@style/InputTextLayout">
 
                 <EditText
                     android:id="@+id/et_gist_description"
-                    style="@style/FormalSingleLineEditText"
-                    android:layout_width="match_parent" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/description"/>
+            </android.support.design.widget.TextInputLayout>
 
-                <TextView
-                    style="@style/TitleText"
-                    android:paddingTop="15dp"
-                    android:text="@string/file_name" />
+            <android.support.design.widget.TextInputLayout
+                style="@style/InputTextLayout">
 
                 <EditText
                     android:id="@+id/et_gist_name"
-                    style="@style/EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:singleLine="true" />
+                    android:hint="@string/file_name"
+                    android:singleLine="true"/>
+            </android.support.design.widget.TextInputLayout>
 
-                <TextView
-                    style="@style/TitleText"
-                    android:paddingTop="15dp"
-                    android:text="@string/file_content" />
+
+            <android.support.design.widget.TextInputLayout
+                style="@style/InputTextLayout">
 
                 <EditText
                     android:id="@+id/et_gist_content"
-                    style="@style/EditText"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="top"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/file_content"
                     android:inputType="textMultiLine|textAutoComplete"
-                    android:minLines="5"
-                    android:padding="10dp"
                     android:scrollbars="horizontal|vertical"
                     android:typeface="monospace">
 
-                    <requestFocus />
+                    <requestFocus/>
                 </EditText>
-            </LinearLayout>
+            </android.support.design.widget.TextInputLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
@@ -117,7 +101,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_done_white_24dp"
-        />
+        android:src="@drawable/ic_done_white_24dp" />
 
 </android.support.design.widget.CoordinatorLayout>
