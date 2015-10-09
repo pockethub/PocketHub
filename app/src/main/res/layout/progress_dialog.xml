@@ -14,25 +14,31 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:padding="10dp" >
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content">
 
-    <ProgressBar
-        android:id="@+id/pb_loading"
-        style="@style/Spinner"
-        android:layout_width="48dp"
-        android:layout_height="48dp" />
+    <LinearLayout android:id="@+id/body"
+                  android:orientation="horizontal"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:baselineAligned="false"
+                  android:paddingStart="8dip"
+                  android:paddingTop="10dip"
+                  android:paddingEnd="8dip"
+                  android:paddingBottom="10dip">
 
-    <TextView
-        android:id="@+id/tv_loading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:textColor="@color/text"
-        android:textSize="16sp" />
+        <ProgressBar android:id="@+id/progress"
+                     style="?android:attr/progressBarStyle"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:max="10000"
+                     android:layout_marginRight="12dip"
+                     android:layout_marginEnd="12dip" />
 
-</LinearLayout>
+        <TextView android:id="@+id/message"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="center_vertical" />
+    </LinearLayout>
+</FrameLayout>

@@ -15,19 +15,17 @@
  */
 package com.github.pockethub.ui.repo;
 
-import static com.github.pockethub.Intents.EXTRA_USER;
-import static com.github.pockethub.RequestCodes.REPOSITORY_VIEW;
-import static com.github.pockethub.ResultCodes.RESOURCE_CHANGED;
-import static java.util.Locale.US;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ListView;
 
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.pockethub.R;
@@ -35,7 +33,6 @@ import com.github.pockethub.ThrowableLoader;
 import com.github.pockethub.persistence.AccountDataManager;
 import com.github.pockethub.ui.HeaderFooterListAdapter;
 import com.github.pockethub.ui.ItemListFragment;
-import com.github.pockethub.ui.LightAlertDialog;
 import com.github.pockethub.ui.user.OrganizationSelectionListener;
 import com.github.pockethub.ui.user.OrganizationSelectionProvider;
 import com.github.pockethub.ui.user.UserViewActivity;
@@ -47,8 +44,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
+import static com.github.pockethub.Intents.EXTRA_USER;
+import static com.github.pockethub.RequestCodes.REPOSITORY_VIEW;
+import static com.github.pockethub.ResultCodes.RESOURCE_CHANGED;
+import static java.util.Locale.US;
 
 /**
  * Fragment to display a list of {@link Repo} instances
@@ -166,10 +165,10 @@ public class RepositoryListFragment extends ItemListFragment<Repo>
         if (repo == null)
             return false;
 
-        final AlertDialog dialog = LightAlertDialog.create(getActivity());
+        final AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                                           .setTitle(InfoUtils.createRepoId(repo))
+                                           .create();
         dialog.setCanceledOnTouchOutside(true);
-
-        dialog.setTitle(InfoUtils.createRepoId(repo));
 
         View view = getActivity().getLayoutInflater().inflate(
             R.layout.repo_dialog, null);
