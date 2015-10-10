@@ -301,7 +301,7 @@
     <string name="delete_successful">Repository ist gelöscht</string>
 
     <string name="login_or_email">Benutzername oder E-Mail-Adresse</string>
-    <string name="loading_user">Lade Benutzerprofil...</string>
+    <string name="loading_user">Lade Benutzerprofil…</string>
     <string name="temporary_login_message"><b>Die Authentifizierung wird nun über die Website durchgeführt,
         drücke den Einloggen-Button um fortzufahren.</b>
         \n\n Da GitHub Restriktionen für Drittanbieter hinzugefügt hat,
