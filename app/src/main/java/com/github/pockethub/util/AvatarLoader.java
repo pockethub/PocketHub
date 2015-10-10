@@ -22,6 +22,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.alorma.github.sdk.bean.dto.response.Contributor;
@@ -36,6 +37,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
@@ -193,6 +195,36 @@ public class AvatarLoader {
                 .resize(avatarSize, avatarSize)
                 .transform(transformation)
                 .into(view);
+    }
+
+    public void bind(MenuItem menuItem, Organization organization) {
+        bind(menuItem, getAvatarUrl(organization));
+    }
+
+    private void bind(final MenuItem orgMenuItem, final String url) {
+
+        //MenuItem icons can not be set async,
+        //but we have to use a different Thread because picasso fails if we are using the main thread
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    int _24dp = ServiceUtils.getIntPixels(context, 24);
+                    Bitmap image = p.load(url).resize(_24dp, _24dp).get();
+                    BitmapDrawable drawable = new BitmapDrawable(context.getResources(), ImageUtils.roundCorners(image, cornerRadius));
+                    orgMenuItem.setIcon(drawable);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private String getAvatarUrl(User user) {
