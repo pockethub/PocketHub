@@ -249,24 +249,28 @@ public class MainActivity extends BaseActivity implements
 
     private void setUpNavigationMenu() {
         MenuItem organizationContainer = navigationView.getMenu().findItem(R.id.navigation_organizations);
-        if(organizationContainer.hasSubMenu()){
+        if (organizationContainer.hasSubMenu()) {
             SubMenu organizationsMenu = organizationContainer.getSubMenu();
             for (Organization organization : orgs) {
-                if (organizationsMenu.findItem(organization.id) == null) {
+                if (isRealOrganization(organization) && organizationsMenu.findItem(organization.id) == null) {
                     MenuItem organizationMenuItem = organizationsMenu.add(Menu.NONE, organization.id, Menu.NONE, organization.name != null ? organization.name : organization.login);
-                    if (organization.type == UserType.User || organization instanceof User) {
-                        organizationMenuItem.setIcon(R.drawable.ic_github_person_black_24dp);
-                    } else {
-                        organizationMenuItem.setIcon(R.drawable.ic_github_organization_black_24dp);
-                    }
+                    organizationMenuItem.setIcon(R.drawable.ic_github_organization_black_24dp);
                     //Because of tinting the real image would became a grey block
                     //avatars.bind(organizationMenuItem, organization);
                     menuItemOrganizationMap.put(organizationMenuItem, organization);
                 }
             }
-		} else {
-			throw new IllegalStateException("Menu item " + organizationContainer + " should have a submenu");
-		}
+        } else {
+            throw new IllegalStateException("Menu item " + organizationContainer + " should have a submenu");
+        }
+    }
+
+    private boolean isRealOrganization(Organization organization) {
+        if(organization.type == null)
+            return !(organization instanceof User);
+        else {
+            return organization.type == UserType.Organization;
+        }
     }
 
     @Override
