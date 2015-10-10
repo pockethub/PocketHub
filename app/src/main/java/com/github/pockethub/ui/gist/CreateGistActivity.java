@@ -16,9 +16,11 @@
 package com.github.pockethub.ui.gist;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -42,7 +44,7 @@ public class CreateGistActivity extends BaseActivity {
 
     private CheckBox publicCheckBox;
 
-    private FloatingActionButton floatingActionButton;
+    private MenuItem menuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +52,12 @@ public class CreateGistActivity extends BaseActivity {
 
         setContentView(R.layout.activity_gist_create);
 
-        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         descriptionText = finder.find(R.id.et_gist_description);
         nameText = finder.find(R.id.et_gist_name);
         contentText = finder.find(R.id.et_gist_content);
         publicCheckBox = finder.find(R.id.cb_public);
-        floatingActionButton = finder.find(R.id.fab);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setIcon(R.drawable.ic_github_gist_white_32dp);
@@ -78,13 +79,26 @@ public class CreateGistActivity extends BaseActivity {
             }
         });
         updateCreateMenu();
+    }
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.activity_create_gist, menu);
+        menuItem = menu.findItem(R.id.create_gist);
+        updateCreateMenu();
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.create_gist:
                 createGist();
-            }
-        });
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void updateCreateMenu() {
@@ -93,8 +107,8 @@ public class CreateGistActivity extends BaseActivity {
     }
 
     private void updateCreateMenu(CharSequence text) {
-        if (floatingActionButton != null)
-            floatingActionButton.setEnabled(!TextUtils.isEmpty(text));
+        if (menuItem != null)
+            menuItem.setEnabled(!TextUtils.isEmpty(text));
     }
 
     private void createGist() {
