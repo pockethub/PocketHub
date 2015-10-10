@@ -515,6 +515,7 @@ public class IssueFragment extends DialogFragment {
                     if (items != null && comment != null) {
                         int commentPosition = findCommentPositionInItems(comment);
                         if (commentPosition >= 0) {
+                            issue.comments--;
                             items.remove(commentPosition);
                             updateList(issue, items);
                         }
@@ -575,7 +576,8 @@ public class IssueFragment extends DialogFragment {
             GithubComment comment = data
                     .getParcelableExtra(EXTRA_COMMENT);
             if (items != null) {
-                items.add(comment);
+                IssueStoryComment storyComment = new IssueStoryComment(comment);
+                items.add(storyComment);
                 issue.comments = issue.comments + 1;
                 updateList(issue, items);
             } else
