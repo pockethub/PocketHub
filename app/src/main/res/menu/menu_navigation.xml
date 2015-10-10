@@ -4,6 +4,7 @@
         <item
             android:id="@+id/navigation_home"
             android:icon="@drawable/ic_github_home_black_24dp"
+            android:checked="true"
             android:title="@string/home" />
         <item
             android:id="@+id/navigation_gists"
