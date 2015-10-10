@@ -31,7 +31,7 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/iv_avatar"
         android:paddingBottom="5dp"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:textStyle="normal" />
 
     <TextView
@@ -43,7 +43,7 @@
         android:maxLines="3"
         android:paddingBottom="5dp"
         android:textColor="@color/text_news_details"
-        android:textSize="14dp"
+        android:textSize="14sp"
         android:textStyle="normal" />
 
     <LinearLayout
