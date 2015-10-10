@@ -21,6 +21,7 @@
         android:id="@+id/tv_folder_icon"
         style="@style/EventIcon"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:text="@string/icon_folder" />
 
@@ -29,7 +30,9 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/tv_folder_icon"
+        android:layout_toEndOf="@id/tv_folder_icon"
         android:orientation="horizontal"
+        android:paddingStart="10dp"
         android:paddingLeft="10dp" >
 
         <TextView
@@ -37,6 +40,7 @@
             style="@style/ListTitleText"
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:paddingEnd="5dp"
             android:paddingRight="5dp" />
 
         <TextView
@@ -48,17 +52,21 @@
             android:id="@+id/tv_folders"
             style="@style/ListNumericSubtitleText"
             android:paddingLeft="5dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="10dp"
             android:paddingRight="10dp" />
 
         <TextView
             android:id="@+id/tv_files_icon"
             style="@style/ListIcon"
             android:paddingLeft="5dp"
+            android:paddingStart="5dp"
             android:text="@string/icon_file" />
 
         <TextView
             android:id="@+id/tv_files"
             style="@style/ListNumericSubtitleText"
+            android:paddingStart="5dp"
             android:paddingLeft="5dp" />
     </LinearLayout>
 

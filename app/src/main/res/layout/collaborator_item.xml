@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2012 GitHub Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +16,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/ListItem"
     android:gravity="center_vertical"
-    android:orientation="horizontal" >
+    android:orientation="horizontal">
 
     <RadioButton
         android:id="@+id/rb_selected"
@@ -39,6 +38,7 @@
         android:includeFontPadding="true"
         android:paddingBottom="0dp"
         android:paddingLeft="10dp"
+        android:paddingStart="10dp"
         android:singleLine="true"
         android:textStyle="normal" />
 

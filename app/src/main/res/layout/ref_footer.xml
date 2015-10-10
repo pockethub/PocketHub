@@ -19,6 +19,7 @@
     android:layout_width="match_parent"
     android:layout_alignParentBottom="true"
     android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
     android:background="@drawable/footer_selector"
     android:paddingBottom="8dp"
     android:paddingTop="8dp"
@@ -28,6 +29,7 @@
         android:id="@+id/tv_branch_icon"
         style="@style/PrimaryIcon"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:text="@string/icon_fork"
         android:textColor="@color/actionbar_text" />
@@ -37,6 +39,7 @@
         style="@style/HeaderTitleText"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/tv_branch_icon"
+        android:layout_toEndOf="@id/tv_branch_icon"
         android:paddingBottom="0dp"
         android:textColor="@color/actionbar_text"
         android:textSize="15sp" />

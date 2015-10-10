@@ -21,8 +21,10 @@
         android:id="@+id/iv_avatar"
         style="@style/AvatarLarge"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:contentDescription="@string/avatar" />
 
     <TextView
@@ -30,6 +32,7 @@
         style="@style/ListSubtitleText"
         android:layout_width="match_parent"
         android:layout_alignParentTop="true"
+        android:layout_toEndOf="@id/iv_avatar"
         android:layout_toRightOf="@id/iv_avatar"
         android:singleLine="true" />
 
@@ -38,6 +41,7 @@
         style="@style/ListTitleText"
         android:layout_width="match_parent"
         android:layout_alignLeft="@id/tv_commit_id"
+        android:layout_alignStart="@id/tv_commit_id"
         android:layout_below="@id/tv_commit_id"
         android:ellipsize="end"
         android:maxLines="2"
@@ -47,6 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignLeft="@id/tv_commit_message"
+        android:layout_alignStart="@id/tv_commit_message"
         android:layout_below="@id/tv_commit_message"
         android:gravity="center_vertical"
         android:orientation="horizontal" >
@@ -66,6 +71,7 @@
         <TextView
             android:id="@+id/tv_commit_comments"
             style="@style/ListNumericSubtitleText"
+            android:paddingStart="5dp"
             android:paddingLeft="5dp" />
     </LinearLayout>
 
