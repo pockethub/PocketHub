@@ -37,6 +37,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
@@ -201,19 +202,29 @@ public class AvatarLoader {
     }
 
     private void bind(final MenuItem orgMenuItem, final String url) {
-        new FetchAvatarTask(context) {
 
+        //MenuItem icons can not be set async,
+        //but we have to use a different Thread because picasso fails if we are using the main thread
+        Thread thread = new Thread(new Runnable() {
             @Override
-            public BitmapDrawable call() throws Exception {
-                Bitmap image = p.load(url).resizeDimen(24, 24).get();
-                return new BitmapDrawable(context.getResources(), ImageUtils.roundCorners(image, cornerRadius));
+            public void run() {
+                try {
+                    int _24dp = ServiceUtils.getIntPixels(context, 24);
+                    Bitmap image = p.load(url).resize(_24dp, _24dp).get();
+                    BitmapDrawable drawable = new BitmapDrawable(context.getResources(), ImageUtils.roundCorners(image, cornerRadius));
+                    orgMenuItem.setIcon(drawable);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+        });
+        thread.start();
+        try {
+            thread.join(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-            @Override
-            protected void onSuccess(BitmapDrawable drawable) throws Exception {
-                orgMenuItem.setIcon(drawable);
-            }
-        }.execute();
     }
 
     private String getAvatarUrl(User user) {
