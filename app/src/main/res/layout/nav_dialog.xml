@@ -44,6 +44,7 @@
                 android:includeFontPadding="true"
                 android:paddingBottom="0dp"
                 android:paddingLeft="10dp"
+                android:paddingStart="10dp"
                 android:singleLine="true"
                 android:textStyle="normal" />
         </LinearLayout>
@@ -71,6 +72,7 @@
                 android:includeFontPadding="true"
                 android:paddingBottom="0dp"
                 android:paddingLeft="10dp"
+                android:paddingStart="10dp"
                 android:singleLine="true"
                 android:textStyle="normal" />
         </LinearLayout>

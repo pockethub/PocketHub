@@ -1,5 +1,6 @@
 package com.github.pockethub.ui.user;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ public class HomePagerFragment extends TabPagerFragment<HomePagerAdapter> {
         setOrg((Organization) getArguments().getParcelable("org"));
     }
 
+    @SuppressLint("CommitPrefEdits")
     private void setOrg(Organization org) {
         PreferenceUtils.save(sharedPreferences.edit().putInt(PREF_ORG_ID, org.id));
         this.org = org;

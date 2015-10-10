@@ -22,6 +22,7 @@
         style="@style/ListItem"
         android:layout_width="match_parent"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="@drawable/inset_background"
         android:paddingLeft="10dp"
@@ -37,12 +38,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
             android:textColor="@color/text"
             android:textColorLink="@color/text_link"
-            android:textSize="14dp" />
+            android:textSize="14sp" />
     </RelativeLayout>
 
 </RelativeLayout>

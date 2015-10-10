@@ -58,6 +58,7 @@
                     android:id="@+id/rb_closed"
                     style="@style/SubtitleText"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:text="@string/status_closed"
                     android:textColor="@color/text" />
             </RadioGroup>
@@ -80,6 +81,7 @@
                     android:id="@+id/iv_avatar"
                     style="@style/AvatarLarge"
                     android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp"
                     android:contentDescription="@string/avatar" />
 
                 <TextView

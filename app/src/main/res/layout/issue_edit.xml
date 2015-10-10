@@ -101,6 +101,7 @@
                     android:id="@+id/iv_assignee_avatar"
                     style="@style/AvatarMedium"
                     android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"
                     android:contentDescription="@string/avatar" />
 
                 <TextView

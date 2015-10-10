@@ -41,8 +41,9 @@
                 android:id="@+id/cb_public"
                 style="@style/SubtitleText"
                 android:layout_height="@dimen/touch_target"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:paddingRight="10dp"
+                android:paddingEnd="10dp"
                 android:text="@string/make_public"
                 android:textColor="@color/text"
                 android:theme="@style/Theme.GitHub.CheckBoxLight" />

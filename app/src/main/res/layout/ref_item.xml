@@ -22,10 +22,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:clickable="false"
         android:focusable="false"
         android:focusableInTouchMode="false"
+        android:paddingEnd="10dp"
         android:paddingRight="10dp" />
 
     <TextView
@@ -33,6 +35,7 @@
         style="@style/PrimaryIcon"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/rb_selected"
+        android:layout_toEndOf="@id/rb_selected"
         android:text="@string/icon_fork" />
 
     <TextView
@@ -41,7 +44,9 @@
         android:layout_width="match_parent"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/tv_ref_icon"
+        android:layout_toEndOf="@id/tv_ref_icon"
         android:paddingBottom="0dp"
+        android:paddingStart="10dp"
         android:paddingLeft="10dp" />
 
 </RelativeLayout>

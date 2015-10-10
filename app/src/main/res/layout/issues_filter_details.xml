@@ -39,12 +39,14 @@
             android:id="@+id/tv_filter_assignee"
             style="@style/ListSubtitleText"
             android:paddingLeft="5dp"
+            android:paddingStart="5dp"
             android:singleLine="true"
             android:textStyle="bold" />
 
         <TextView
             style="@style/ListSubtitleText"
             android:paddingLeft="5dp"
+            android:paddingStart="5dp"
             android:singleLine="true"
             android:text="@string/assigned" />
     </LinearLayout>
