@@ -19,6 +19,7 @@ import static com.github.pockethub.Intents.EXTRA_GIST_FILE;
 import static com.github.pockethub.Intents.EXTRA_GIST_ID;
 import static com.github.pockethub.util.PreferenceUtils.WRAP;
 import android.accounts.Account;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -118,6 +119,7 @@ public class GistFileFragment extends DialogFragment implements
                 wrapItem.setTitle(R.string.enable_wrapping);
     }
 
+    @SuppressLint("CommitPrefEdits")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
