@@ -9,9 +9,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.VisibleForTesting;
-
 import android.preference.PreferenceManager;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -35,10 +34,11 @@ import android.widget.TextView;
 
 import com.alorma.github.basesdk.client.StoreCredentials;
 import com.alorma.github.sdk.bean.dto.response.Organization;
+import com.alorma.github.sdk.bean.dto.response.User;
+import com.alorma.github.sdk.bean.dto.response.UserType;
 import com.alorma.github.sdk.login.AccountsHelper;
 import com.bugsnag.android.Bugsnag;
 import com.github.pockethub.R;
-import com.github.pockethub.accounts.AccountConstants;
 import com.github.pockethub.accounts.AccountUtils;
 import com.github.pockethub.accounts.LoginActivity;
 import com.github.pockethub.core.user.UserComparator;
@@ -248,19 +248,24 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void setUpNavigationMenu() {
-        MenuItem item = navigationView.getMenu().findItem(R.id.navigation_organizations);
-        if(item.hasSubMenu()){
-			SubMenu organizationsMenu = item.getSubMenu();
-			for (Organization o : orgs) {
-				if(organizationsMenu.findItem(o.id) == null){
-					MenuItem orgMenuItem = organizationsMenu.add(Menu.NONE, o.id, Menu.NONE, o.name != null ? o.name : o.login);
-                    avatars.bind(orgMenuItem, o);
-					menuItemOrganizationMap.put(orgMenuItem, o);
-				}
-			}
-
+        MenuItem organizationContainer = navigationView.getMenu().findItem(R.id.navigation_organizations);
+        if(organizationContainer.hasSubMenu()){
+            SubMenu organizationsMenu = organizationContainer.getSubMenu();
+            for (Organization organization : orgs) {
+                if (organizationsMenu.findItem(organization.id) == null) {
+                    MenuItem organizationMenuItem = organizationsMenu.add(Menu.NONE, organization.id, Menu.NONE, organization.name != null ? organization.name : organization.login);
+                    if (organization.type == UserType.User || organization instanceof User) {
+                        organizationMenuItem.setIcon(R.drawable.ic_github_person_black_24dp);
+                    } else {
+                        organizationMenuItem.setIcon(R.drawable.ic_github_organization_black_24dp);
+                    }
+                    //Because of tinting the real image would became a grey block
+                    //avatars.bind(organizationMenuItem, organization);
+                    menuItemOrganizationMap.put(organizationMenuItem, organization);
+                }
+            }
 		} else {
-			throw new IllegalStateException("Menu item " + item + " should have a submenu");
+			throw new IllegalStateException("Menu item " + organizationContainer + " should have a submenu");
 		}
     }
 
