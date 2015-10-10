@@ -17,7 +17,7 @@ package com.github.pockethub.ui.user;
 
 import android.content.res.Resources;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import com.github.pockethub.R;
 import com.github.pockethub.ui.FragmentPagerAdapter;
@@ -33,7 +33,7 @@ public class UserPagerAdapter extends FragmentPagerAdapter {
     /**
      * @param activity
      */
-    public UserPagerAdapter(final ActionBarActivity activity) {
+    public UserPagerAdapter(final AppCompatActivity activity) {
         super(activity);
 
         resources = activity.getResources();

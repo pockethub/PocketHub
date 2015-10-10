@@ -18,7 +18,7 @@ package com.github.pockethub.ui.repo;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import com.github.pockethub.R;
 import com.github.pockethub.ui.FragmentPagerAdapter;
@@ -55,7 +55,7 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
      * @param activity
      * @param hasIssues
      */
-    public RepositoryPagerAdapter(ActionBarActivity activity,
+    public RepositoryPagerAdapter(AppCompatActivity activity,
             boolean hasIssues) {
         super(activity);
 

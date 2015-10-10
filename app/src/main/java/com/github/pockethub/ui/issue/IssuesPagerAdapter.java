@@ -23,7 +23,7 @@ import static com.github.pockethub.Intents.EXTRA_REPOSITORY_OWNER;
 import static com.github.pockethub.Intents.EXTRA_USER;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
@@ -63,7 +63,7 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
      * @param issueStore
      * @param collaborator
      */
-    public IssuesPagerAdapter(ActionBarActivity activity,
+    public IssuesPagerAdapter(AppCompatActivity activity,
             List<Repo> repoIds, int[] issueNumbers,
             IssueStore issueStore, boolean collaborator, boolean owner) {
         super(activity);
@@ -82,7 +82,7 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
      * @param issueNumbers
      * @param collaborator
      */
-    public IssuesPagerAdapter(ActionBarActivity activity,
+    public IssuesPagerAdapter(AppCompatActivity activity,
             Repo repository, int[] issueNumbers,
             boolean collaborator, boolean owner) {
         super(activity);

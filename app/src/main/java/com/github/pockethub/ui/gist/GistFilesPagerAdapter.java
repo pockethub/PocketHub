@@ -18,7 +18,7 @@ package com.github.pockethub.ui.gist;
 import static com.github.pockethub.Intents.EXTRA_GIST_FILE;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import com.alorma.github.sdk.bean.dto.response.GistFile;
 import com.github.pockethub.ui.FragmentPagerAdapter;
@@ -38,7 +38,7 @@ public class GistFilesPagerAdapter extends FragmentPagerAdapter {
      * @param activity
      * @param gist
      */
-    public GistFilesPagerAdapter(ActionBarActivity activity, Gist gist) {
+    public GistFilesPagerAdapter(AppCompatActivity activity, Gist gist) {
         super(activity);
 
         Map<String, GistFile> gistFiles = gist.files;
