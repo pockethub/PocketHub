@@ -15,32 +15,32 @@
  */
 package com.github.pockethub.util;
 
-import static android.util.Base64.DEFAULT;
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static java.lang.Integer.MAX_VALUE;
-import static java.lang.Integer.valueOf;
-import static org.eclipse.egit.github.core.client.IGitHubConstants.HOST_DEFAULT;
 import android.accounts.Account;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.text.Html;
 import android.text.Html.ImageGetter;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.alorma.github.basesdk.client.BaseClient;
 import com.alorma.github.sdk.bean.dto.request.RequestMarkdownDTO;
 import com.alorma.github.sdk.services.content.GetMarkdownClient;
-import com.github.kevinsawicki.http.HttpRequest;
-import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
+import com.bugsnag.android.Bugsnag;
 import com.github.pockethub.R;
 import com.github.pockethub.accounts.AuthenticatedUserTask;
 import com.google.inject.Inject;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+
+import org.eclipse.egit.github.core.RepositoryContents;
+import org.eclipse.egit.github.core.RepositoryId;
+import org.eclipse.egit.github.core.service.ContentsService;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,12 +48,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.egit.github.core.RepositoryContents;
-import org.eclipse.egit.github.core.RepositoryId;
-import org.eclipse.egit.github.core.service.ContentsService;
-
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+
+import static android.util.Base64.DEFAULT;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static java.lang.Integer.MAX_VALUE;
+import static org.eclipse.egit.github.core.client.IGitHubConstants.HOST_DEFAULT;
 
 /**
  * Getter for an image
@@ -95,6 +97,8 @@ public class HttpImageGetter implements ImageGetter {
 
     private final ContentsService service;
 
+    private final OkHttpClient okHttpClient;
+
     /**
      * Create image getter for context
      *
@@ -108,6 +112,7 @@ public class HttpImageGetter implements ImageGetter {
         dir = context.getCacheDir();
         width = ServiceUtils.getDisplayWidth(context);
         loading = new LoadingImageGetter(context, 24);
+        okHttpClient = new OkHttpClient();
     }
 
     private HttpImageGetter show(final TextView view, final CharSequence html) {
@@ -310,29 +315,30 @@ public class HttpImageGetter implements ImageGetter {
             // Ignore and attempt request over regular HTTP request
         }
 
-        File output = null;
         try {
-            output = File.createTempFile("image", ".jpg", dir);
-            HttpRequest request = HttpRequest.get(source);
-            if (!request.ok())
-                throw new IOException("Unexpected response code: "
-                        + request.code());
-            request.receive(output);
-            Bitmap bitmap = ImageUtils.getBitmap(output, width, MAX_VALUE);
+            String logMessage = "Loading image: " + source;
+            Log.d(getClass().getSimpleName(), logMessage);
+            Bugsnag.leaveBreadcrumb(logMessage);
+
+            Request request = new Request.Builder().get().url(source).build();
+
+            com.squareup.okhttp.Response response = okHttpClient.newCall(request).execute();
+
+            if (!response.isSuccessful())
+                throw new IOException("Unexpected response code: " + response.code());
+
+            Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+
             if (bitmap == null)
                 return loading.getDrawable(source);
 
-            BitmapDrawable drawable = new BitmapDrawable(
-                    context.getResources(), bitmap);
+            BitmapDrawable drawable = new BitmapDrawable( context.getResources(), bitmap);
             drawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
             return drawable;
         } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "Error loading image", e);
+            Bugsnag.notify(e);
             return loading.getDrawable(source);
-        } catch (HttpRequestException e) {
-            return loading.getDrawable(source);
-        } finally {
-            if (output != null)
-                output.delete();
         }
     }
 
