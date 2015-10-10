@@ -23,9 +23,13 @@
         android:title="@string/organizations">
         <menu/>
     </item>
-    <item
-        android:id="@+id/navigation_log_out"
-        android:icon="@drawable/ic_github_sign_out_black_24dp"
-        android:checkable="false"
-        android:title="@string/log_out"/>
+    <group
+        android:id="@+id/navigation_secondary"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/navigation_log_out"
+            android:checkable="false"
+            android:icon="@drawable/ic_github_sign_out_black_24dp"
+            android:title="@string/log_out"/>
+    </group>
 </menu>
