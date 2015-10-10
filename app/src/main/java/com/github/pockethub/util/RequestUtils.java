@@ -27,13 +27,21 @@ public class RequestUtils {
         IssueRequest request = new IssueRequest();
         request.body = body;
         request.title = title;
-        request.assignee = issue.user.login;
-        request.milestone = issue.milestone.number;
+        if (issue.assignee != null) {
+            request.assignee = issue.assignee.login;
+        }
+        if (issue.milestone != null) {
+            request.milestone = issue.milestone.number;
+        }
         request.state = issue.state;
-        request.labels = new String[request.labels.length];
-
-        for (int i = 0; i < request.labels.length; i++)
+        int nrLabels = 0;
+        if (issue.labels != null) {
+            nrLabels = issue.labels.size();
+        }
+        request.labels = new String[nrLabels];
+        for (int i = 0; i < nrLabels; i++) {
             request.labels[i] = issue.labels.get(i).name;
+        }
         return request;
     }
 
