@@ -254,6 +254,7 @@ public class MainActivity extends BaseActivity implements
 			for (Organization o : orgs) {
 				if(organizationsMenu.findItem(o.id) == null){
 					MenuItem orgMenuItem = organizationsMenu.add(Menu.NONE, o.id, Menu.NONE, o.name != null ? o.name : o.login);
+                    avatars.bind(orgMenuItem, o);
 					menuItemOrganizationMap.put(orgMenuItem, o);
 				}
 			}

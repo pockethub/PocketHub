@@ -22,6 +22,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.alorma.github.sdk.bean.dto.response.Contributor;
@@ -193,6 +194,26 @@ public class AvatarLoader {
                 .resize(avatarSize, avatarSize)
                 .transform(transformation)
                 .into(view);
+    }
+
+    public void bind(MenuItem menuItem, Organization organization) {
+        bind(menuItem, getAvatarUrl(organization));
+    }
+
+    private void bind(final MenuItem orgMenuItem, final String url) {
+        new FetchAvatarTask(context) {
+
+            @Override
+            public BitmapDrawable call() throws Exception {
+                Bitmap image = p.load(url).resizeDimen(24, 24).get();
+                return new BitmapDrawable(context.getResources(), ImageUtils.roundCorners(image, cornerRadius));
+            }
+
+            @Override
+            protected void onSuccess(BitmapDrawable drawable) throws Exception {
+                orgMenuItem.setIcon(drawable);
+            }
+        }.execute();
     }
 
     private String getAvatarUrl(User user) {
