@@ -3,7 +3,6 @@ package com.github.pockethub.ui;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
@@ -72,38 +71,47 @@ public class MainActivityTest {
     public void testNavigationDrawerClickListenerPos1_ShouldReplaceHomePagerFragmentToContainer() {
         mockMainActivity.onNavigationItemSelected(getMockMenuItem(R.id.navigation_home));
 
-        assertThat(fragment, is(instanceOf(HomePagerFragment.class)));
+        String expectedString = RuntimeEnvironment.application.getString(R.string.app_name);
+        assertFragmentInstanceAndSupportActionBarTitle(HomePagerFragment.class, expectedString);
     }
 
     @Test
     public void testNavigationDrawerClickListenerPos2_ShouldReplaceGistsPagerFragmentToContainer() {
         mockMainActivity.onNavigationItemSelected(getMockMenuItem(R.id.navigation_gists));
 
-        assertThat(fragment, is(instanceOf(GistsPagerFragment.class)));
+        String expectedString = RuntimeEnvironment.application.getString(R.string.gists);
+        assertFragmentInstanceAndSupportActionBarTitle(GistsPagerFragment.class, expectedString);
     }
 
     @Test
     public void testNavigationDrawerClickListenerPos3_ShouldReplaceIssueDashboardPagerFragmentToContainer() {
         mockMainActivity.onNavigationItemSelected(getMockMenuItem(R.id.navigation_issue_dashboard));
 
-        assertThat(fragment, is(instanceOf(IssueDashboardPagerFragment.class)));
+        String expectedString = RuntimeEnvironment.application.getString(R.string.issue_dashboard);
+        assertFragmentInstanceAndSupportActionBarTitle(IssueDashboardPagerFragment.class, expectedString);
     }
 
     @Test
     public void testNavigationDrawerClickListenerPos4_ShouldReplaceFilterListFragmentToContainer() {
         mockMainActivity.onNavigationItemSelected(getMockMenuItem(R.id.navigation_bookmarks));
 
-        assertThat(fragment, is(instanceOf(FilterListFragment.class)));
+        String expectedString = RuntimeEnvironment.application.getString(R.string.bookmarks);
+        assertFragmentInstanceAndSupportActionBarTitle(FilterListFragment.class, expectedString);
     }
 
     @Test
-    public void test() {
+    public void testNavigationDrawerClickListenerPos5_ShouldLogoutUser() {
         mockMainActivity.onNavigationItemSelected(getMockMenuItem(R.id.navigation_log_out));
 
         verify(mockManager, times(2)).removeAccount(argumentCaptor.capture(), (AccountManagerCallback<Boolean>) anyObject(), (Handler) anyObject());
         List<Account> values = argumentCaptor.getAllValues();
         assertThat(values.get(0), is(equalTo(accounts[0])));
         assertThat(values.get(1), is(equalTo(accounts[1])));
+    }
+
+    private void assertFragmentInstanceAndSupportActionBarTitle(Class expectedInstance, String expectedSupportActionBarTitle) {
+        assertThat(fragment, is(instanceOf(expectedInstance)));
+        assertThat(mockMainActivity.getSupportActionBar().getTitle().toString(), is(equalTo(expectedSupportActionBarTitle)));
     }
 
     public static class MockMainActivity extends MainActivity {
