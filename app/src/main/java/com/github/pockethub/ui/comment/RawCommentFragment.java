@@ -69,7 +69,7 @@ public class RawCommentFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.comment_create, null);
+        return inflater.inflate(R.layout.comment_create, container, false);
     }
 
     /**
