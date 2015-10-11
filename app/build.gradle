@@ -32,6 +32,11 @@ android {
         resValue "string", "github_secret", pockethub_github_secret
         resValue "string", "github_client", pockethub_github_client
 
+        if("dummy_secret".equals(pockethub_github_secret) || "dummy_client".equals(pockethub_github_client)){
+            logger.warn("You won't be able to login, because the oauth client and secret aren't set")
+            logger.warn("Read the README.md: https://github.com/pockethub/PocketHub#setup-environment")
+        }
+
         String oauth = pockethub_github_callback
         resValue "string", "github_oauth", oauth
         resValue "string", "github_oauth_scheme", oauth != "DEFAULT" ? oauth.split("://")[0] : "DEFAULT"
