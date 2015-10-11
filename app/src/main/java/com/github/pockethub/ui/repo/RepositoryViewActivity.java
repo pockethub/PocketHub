@@ -15,15 +15,7 @@
  */
 package com.github.pockethub.ui.repo;
 
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
-import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
-import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
-import static com.github.pockethub.ResultCodes.RESOURCE_CHANGED;
-import static com.github.pockethub.ui.repo.RepositoryPagerAdapter.ITEM_CODE;
-import static com.github.pockethub.util.TypefaceUtils.ICON_CODE;
-import static com.github.pockethub.util.TypefaceUtils.ICON_COMMIT;
-import static com.github.pockethub.util.TypefaceUtils.ICON_ISSUE_OPEN;
-import static com.github.pockethub.util.TypefaceUtils.ICON_NEWS;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,7 +25,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.alorma.github.basesdk.client.BaseClient;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.User;
@@ -48,11 +39,11 @@ import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
 import com.github.pockethub.core.repo.RepositoryUtils;
+import com.github.pockethub.ui.LightAlertDialog;
 import com.github.pockethub.ui.TabPagerActivity;
 import com.github.pockethub.ui.user.UriLauncherActivity;
 import com.github.pockethub.ui.user.UserViewActivity;
 import com.github.pockethub.util.AvatarLoader;
-import com.github.pockethub.util.ConvertUtils;
 import com.github.pockethub.util.InfoUtils;
 import com.github.pockethub.util.ShareUtils;
 import com.github.pockethub.util.ToastUtils;
@@ -61,10 +52,20 @@ import com.google.inject.Inject;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
+import static com.github.pockethub.ResultCodes.RESOURCE_CHANGED;
+import static com.github.pockethub.ui.repo.RepositoryPagerAdapter.ITEM_CODE;
+import static com.github.pockethub.util.TypefaceUtils.ICON_CODE;
+import static com.github.pockethub.util.TypefaceUtils.ICON_COMMIT;
+import static com.github.pockethub.util.TypefaceUtils.ICON_ISSUE_OPEN;
+import static com.github.pockethub.util.TypefaceUtils.ICON_NEWS;
+
 /**
  * Activity to view a repository
  */
-public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdapter>{
+public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdapter> {
     public static final String TAG = "RepositoryViewActivity";
 
     /**
@@ -237,7 +238,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                 }
             });
             unstarRepoClient.execute();
-        }else {
+        } else {
             StarRepoClient starRepoClient = new StarRepoClient(this, repository.owner.login, repository.name);
             starRepoClient.setOnResultCallback(new BaseClient.OnResultCallback<Response>() {
                 @Override
@@ -298,40 +299,30 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     }
 
     private void deleteRepository() {
-        new MaterialDialog.Builder(this)
-                .title(R.string.are_you_sure)
-                .content(R.string.unexpected_bad_things)
-                .positiveText(R.string.not_sure)
-                .negativeText(R.string.delete_cap)
-                .callback(new MaterialDialog.ButtonCallback() {
+        LightAlertDialog.Builder builder = LightAlertDialog.Builder.create(getApplicationContext());
+        builder.setTitle(R.string.are_you_sure);
+        builder.setMessage(getString(R.string.unexpected_bad_things));
+        builder.setPositiveButton(R.string.not_sure, null);
+        builder.setNegativeButton(R.string.delete_cap, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                DeleteRepoClient repoClient = new DeleteRepoClient(RepositoryViewActivity.this,
+                        InfoUtils.createRepoInfo(repository));
+                repoClient.setOnResultCallback(new BaseClient.OnResultCallback<Response>() {
                     @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        super.onPositive(dialog);
-                        dialog.dismiss();
+                    public void onResponseOk(Response response, Response r) {
+                        onBackPressed();
+                        ToastUtils.show(RepositoryViewActivity.this, R.string.delete_successful);
                     }
 
                     @Override
-                    public void onNegative(MaterialDialog dialog) {
-                        super.onNegative(dialog);
-                        dialog.dismiss();
-
-                        DeleteRepoClient repoClient = new DeleteRepoClient(RepositoryViewActivity.this,
-                                InfoUtils.createRepoInfo(repository));
-                        repoClient.setOnResultCallback(new BaseClient.OnResultCallback<Response>() {
-                            @Override
-                            public void onResponseOk(Response response, Response r) {
-                                onBackPressed();
-                                ToastUtils.show(RepositoryViewActivity.this, R.string.delete_successful);
-                            }
-
-                            @Override
-                            public void onFail(RetrofitError error) {
-                                ToastUtils.show(RepositoryViewActivity.this, R.string.error_deleting_repository);
-                            }
-                        });
-                        repoClient.execute();
+                    public void onFail(RetrofitError error) {
+                        ToastUtils.show(RepositoryViewActivity.this, R.string.error_deleting_repository);
                     }
-                })
-                .show();
+                });
+                repoClient.execute();
+            }
+        });
+        builder.create().show();
     }
 }

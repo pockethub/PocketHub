@@ -15,8 +15,10 @@
  */
 package com.github.pockethub.ui;
 
-import android.app.AlertDialog;
 import android.content.Context;
+import android.support.v7.app.AlertDialog;
+
+import com.github.pockethub.R;
 
 /**
  * Alert dialog using the Holo Light theme
@@ -30,7 +32,7 @@ public class LightAlertDialog extends AlertDialog {
      * @return dialog
      */
     public static AlertDialog create(final Context context) {
-        return new LightAlertDialog(context, THEME_HOLO_LIGHT);
+        return new LightAlertDialog(context, R.style.Theme_GitHub_Alert_Dialog_Style);
     }
 
     private LightAlertDialog(final Context context, final int theme) {
@@ -53,7 +55,7 @@ public class LightAlertDialog extends AlertDialog {
          * @return dialog builder
          */
         public static LightAlertDialog.Builder create(final Context context) {
-            return new LightAlertDialog.Builder(context, THEME_HOLO_LIGHT);
+            return new LightAlertDialog.Builder(context, R.style.Theme_GitHub_Alert_Dialog_Style);
         }
 
         private Builder(Context context) {
