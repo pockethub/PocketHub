@@ -133,6 +133,12 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity imp
         if (accounts != null && accounts.length > 0) {
             openMain();
         }
+        checkOauthConfig();
+    }
+
+    private void checkOauthConfig() {
+        if (getString(R.string.github_client).equals("dummy_client") || getString(R.string.github_secret).equals("dummy_secret"))
+            Toast.makeText(this, R.string.error_oauth_not_configured, Toast.LENGTH_LONG).show();
     }
 
     @Override
