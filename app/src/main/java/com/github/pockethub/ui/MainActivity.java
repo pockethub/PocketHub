@@ -288,15 +288,15 @@ public class MainActivity extends BaseActivity implements
             return true;
         } else if (itemId == R.id.navigation_gists) {
             switchFragment(new GistsPagerFragment(), null);
-            getSupportActionBar().setTitle(getString(R.string.gists));
+            getSupportActionBar().setTitle(menuItem.getTitle());
             return true;
         } else if (itemId == R.id.navigation_issue_dashboard) {
             switchFragment(new IssueDashboardPagerFragment(), null);
-            getSupportActionBar().setTitle(getString(R.string.issue_dashboard));
+            getSupportActionBar().setTitle(menuItem.getTitle());
             return true;
         } else if (itemId == R.id.navigation_bookmarks) {
             switchFragment(new FilterListFragment(), null);
-            getSupportActionBar().setTitle(getString(R.string.bookmarks));
+            getSupportActionBar().setTitle(menuItem.getTitle());
             return true;
         } else if (itemId == R.id.navigation_log_out) {
             AccountManager accountManager = getAccountManager();
