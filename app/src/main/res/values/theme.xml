@@ -55,7 +55,6 @@
     </style>
 
     <style name="Theme.GitHub.Alert.Dialog.Style" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorAccent">@color/accent</item>
         <item name="android:textColorPrimary">@color/accent</item>
     </style>
 
