@@ -140,7 +140,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
     private void refreshTree(final GitReference reference) {
         showLoading(true);
-        new RefreshTreeTask(repository, reference, getActivity()) {
+        new RefreshTreeTask(repository, reference, getContext().getApplicationContext()) {
 
             @Override
             protected void onSuccess(final FullTree fullTree) throws Exception {
