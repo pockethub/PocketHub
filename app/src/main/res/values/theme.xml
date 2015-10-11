@@ -16,7 +16,7 @@
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.GitHub" parent="@style/Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.PocketHub" parent="@style/Theme.AppCompat.Light.NoActionBar">
 
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
@@ -31,7 +31,7 @@
 
     </style>
 
-    <style name="Theme.GitHub.NavigationDrawer" parent="Theme.GitHub" />
+    <style name="Theme.PocketHub.NavigationDrawer" parent="Theme.PocketHub" />
 
     <style name="Widget.Styled.ActionBar" parent="Widget.AppCompat.ActionBar.Solid">
         <item name="indeterminateProgressStyle">@style/IndeterminateProgress</item>

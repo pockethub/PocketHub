@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.GitHub.NavigationDrawer" parent="Theme.GitHub">
+    <style name="Theme.PocketHub.NavigationDrawer" parent="Theme.PocketHub">
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>

@@ -44,7 +44,7 @@ import org.eclipse.egit.github.core.service.PullRequestService;
 /**
  * Main module provide services and clients
  */
-public class GitHubModule extends AbstractModule {
+public class PocketHubModule extends AbstractModule {
 
     private WeakReference<IssueStore> issues;
 
