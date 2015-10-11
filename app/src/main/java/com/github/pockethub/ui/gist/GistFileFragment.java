@@ -184,7 +184,7 @@ public class GistFileFragment extends DialogFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.gist_file_view, null);
+        return inflater.inflate(R.layout.gist_file_view, container, false);
     }
 
     @Override

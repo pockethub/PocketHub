@@ -280,6 +280,6 @@ public class CommitListFragment extends PagedItemFragment<Commit>
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.commit_list, null);
+        return inflater.inflate(R.layout.commit_list, container, false);
     }
 }

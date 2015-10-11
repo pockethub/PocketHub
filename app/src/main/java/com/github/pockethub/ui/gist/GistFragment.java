@@ -130,7 +130,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.comment_list, null);
+        View root = inflater.inflate(R.layout.comment_list, container, false);
 
         headerView = inflater.inflate(R.layout.gist_header, null);
         created = (TextView) headerView.findViewById(R.id.tv_gist_creation);

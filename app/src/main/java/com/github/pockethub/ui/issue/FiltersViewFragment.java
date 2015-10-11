@@ -66,7 +66,7 @@ public class FiltersViewFragment extends DialogFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.issues_filter_list, null);
+        return inflater.inflate(R.layout.issues_filter_list, container, false);
     }
 
     @Override

@@ -267,7 +267,7 @@ public class IssueFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.comment_list, null);
+        return inflater.inflate(R.layout.comment_list, container, false);
     }
 
     @Override
