@@ -21,7 +21,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
@@ -60,7 +59,6 @@ public class CreateGistActivity extends BaseActivity {
         publicCheckBox = finder.find(R.id.cb_public);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setIcon(R.drawable.ic_github_gist_white_32dp);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         String text = ShareUtils.getBody(getIntent());
