@@ -251,8 +251,9 @@ public class MainActivity extends BaseActivity implements
         MenuItem organizationContainer = navigationView.getMenu().findItem(R.id.navigation_organizations);
         if (organizationContainer.hasSubMenu()) {
             SubMenu organizationsMenu = organizationContainer.getSubMenu();
-            for (Organization organization : orgs) {
-                if (isRealOrganization(organization) && organizationsMenu.findItem(organization.id) == null) {
+            for (int i = 1; i < orgs.size(); i++) {
+                Organization organization = orgs.get(i);
+                if (organizationsMenu.findItem(organization.id) == null) {
                     MenuItem organizationMenuItem = organizationsMenu.add(Menu.NONE, organization.id, Menu.NONE, organization.name != null ? organization.name : organization.login);
                     organizationMenuItem.setIcon(R.drawable.ic_github_organization_black_24dp);
                     //Because of tinting the real image would became a grey block
@@ -262,14 +263,6 @@ public class MainActivity extends BaseActivity implements
             }
         } else {
             throw new IllegalStateException("Menu item " + organizationContainer + " should have a submenu");
-        }
-    }
-
-    private boolean isRealOrganization(Organization organization) {
-        if(organization.type == null)
-            return !(organization instanceof User);
-        else {
-            return organization.type == UserType.Organization;
         }
     }
 
