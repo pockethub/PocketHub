@@ -41,6 +41,7 @@ import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -65,6 +66,7 @@ import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.User;
 import com.alorma.github.sdk.bean.issue.IssueEvent;
 import com.alorma.github.sdk.bean.issue.IssueStory;
+import com.alorma.github.sdk.bean.issue.IssueStoryComment;
 import com.alorma.github.sdk.bean.issue.IssueStoryDetail;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.R;
@@ -105,8 +107,6 @@ import com.alorma.github.sdk.bean.dto.response.Issue;
 public class IssueFragment extends DialogFragment {
 
     private int issueNumber;
-
-    private List<GithubComment> comments;
 
     private List<Object> items;
 
@@ -460,7 +460,7 @@ public class IssueFragment extends DialogFragment {
                     return;
 
                 issue = fullIssue.issue;
-                comments = new ArrayList<>();
+
                 items = new ArrayList<>();
 
                 items.addAll(fullIssue.details);
@@ -512,15 +512,13 @@ public class IssueFragment extends DialogFragment {
                 protected void onSuccess(GithubComment comment) throws Exception {
                     super.onSuccess(comment);
                     // Update comment list
-                    if (comments != null && comment != null) {
-                        int position = Collections.binarySearch(comments,
-                                comment, new Comparator<GithubComment>() {
-                                    public int compare(GithubComment lhs, GithubComment rhs) {
-                                        return lhs.id.compareTo(rhs.id);
-                                    }
-                                });
-                        comments.remove(position);
-                        updateList(issue, items);
+                    if (items != null && comment != null) {
+                        int commentPosition = findCommentPositionInItems(comment);
+                        if (commentPosition >= 0) {
+                            issue.comments--;
+                            items.remove(commentPosition);
+                            updateList(issue, items);
+                        }
                     } else
                         refreshIssue();
                 }
@@ -578,7 +576,8 @@ public class IssueFragment extends DialogFragment {
             GithubComment comment = data
                     .getParcelableExtra(EXTRA_COMMENT);
             if (items != null) {
-                items.add(comment);
+                IssueStoryComment storyComment = new IssueStoryComment(comment);
+                items.add(storyComment);
                 issue.comments = issue.comments + 1;
                 updateList(issue, items);
             } else
@@ -587,15 +586,13 @@ public class IssueFragment extends DialogFragment {
         case COMMENT_EDIT:
             comment = data
                     .getParcelableExtra(EXTRA_COMMENT);
-            if (comments != null && comment != null) {
-                int position = Collections.binarySearch(comments, comment, new Comparator<GithubComment>() {
-                    public int compare(GithubComment lhs, GithubComment rhs) {
-                        return lhs.id.compareTo(rhs.id);
-                    }
-                });
-                commentImageGetter.removeFromCache(comment.id);
-                comments.set(position, comment);
-                updateList(issue, items);
+            if (items != null && comment != null) {
+                int commentPosition = findCommentPositionInItems(comment);
+                if (commentPosition >= 0) {
+                    commentImageGetter.removeFromCache(comment.id);
+                    replaceCommentInItems(commentPosition, comment);
+                    updateList(issue, items);
+                }
             } else
                 refreshIssue();
         }
@@ -681,4 +678,42 @@ public class IssueFragment extends DialogFragment {
                             R.string.confirm_comment_delete_message), args);
         }
     };
+
+    /**
+     * Finds the position of the given comment in the list of this issue's items.
+     *
+     * @param comment The comment to look for.
+     * @return The position of the comment in the list, or -1 if not found.
+     */
+    private int findCommentPositionInItems(@NonNull GithubComment comment) {
+        int commentPosition = -1;
+        Object currentItem = null;
+        for (int currentPosition = 0; currentPosition < items.size(); currentPosition++) {
+            currentItem = items.get(currentPosition);
+            if (currentItem instanceof IssueStoryComment &&
+                comment.id.equals((((IssueStoryComment) currentItem).comment).id)) {
+                commentPosition = currentPosition;
+                break;
+            }
+        }
+        return commentPosition;
+    }
+
+    /**
+     * Replaces a comment in the list by another
+     *
+     * @param commentPosition The position of the comment in the list
+     * @param comment         The comment to replace
+     * @return True if successfully removed, false otherwise.
+     */
+    private boolean replaceCommentInItems(int commentPosition, @NonNull GithubComment comment) {
+        Object item = items.get(commentPosition);
+        boolean result = false;
+        if (item instanceof IssueStoryComment) {
+            ((IssueStoryComment) item).comment = comment;
+            result = true;
+        }
+        return result;
+    }
+
 }

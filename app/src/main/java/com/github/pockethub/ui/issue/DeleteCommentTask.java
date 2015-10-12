@@ -62,7 +62,7 @@ public class DeleteCommentTask extends ProgressDialogTask<GithubComment> {
 
     @Override
     protected GithubComment run(Account account) throws Exception {
-        new DeleteIssueCommentClient(context, InfoUtils.createRepoInfo(repository), comment.id);
+        new DeleteIssueCommentClient(context, InfoUtils.createRepoInfo(repository), comment.id).executeSync();
         return comment;
     }
 
