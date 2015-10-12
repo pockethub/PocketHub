@@ -234,6 +234,7 @@
 
     <style name="NavigationView">
         <item name="android:textColorSecondary">?attr/colorAccent</item>
+        <item name="itemTextColor">@android:color/black</item>
         <item name="itemIconTint">@color/color_navigation_view_icon</item>
     </style>
 
