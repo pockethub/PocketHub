@@ -17,6 +17,7 @@ package com.github.pockethub.ui.search;
 
 import static android.app.SearchManager.QUERY;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
@@ -92,8 +93,8 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
         query = getStringExtra(QUERY);
     }

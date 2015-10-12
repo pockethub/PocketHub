@@ -99,8 +99,8 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     private AvatarLoader avatars;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
         filter = getParcelableExtra(EXTRA_ISSUE_FILTER);
         repository = getParcelableExtra(EXTRA_REPOSITORY);

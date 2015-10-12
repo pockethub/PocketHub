@@ -17,6 +17,7 @@ package com.github.pockethub.ui.user;
 
 import static com.github.pockethub.Intents.EXTRA_USER;
 import android.app.Activity;
+import android.content.Context;
 
 import com.alorma.github.sdk.services.client.GithubClient;
 import com.alorma.github.sdk.services.user.UserFollowingClient;
@@ -36,8 +37,8 @@ public class UserFollowingFragment extends FollowingFragment {
     private User user;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
         user = getParcelableExtra(EXTRA_USER);
     }

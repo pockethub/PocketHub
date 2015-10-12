@@ -21,6 +21,7 @@ import static com.github.pockethub.Intents.repoFrom;
 import static com.github.pockethub.RequestCodes.COMMIT_VIEW;
 import static com.github.pockethub.RequestCodes.REF_UPDATE;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
@@ -93,9 +94,10 @@ public class CommitListFragment extends PagedItemFragment<Commit>
     private String ref;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
+        Activity activity = (Activity) context;
         repository = activity.getIntent().getParcelableExtra(EXTRA_REPOSITORY);
     }
 

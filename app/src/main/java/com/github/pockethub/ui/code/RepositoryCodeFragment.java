@@ -19,6 +19,7 @@ import static android.app.Activity.RESULT_OK;
 import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
 import static com.github.pockethub.RequestCodes.REF_UPDATE;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -96,8 +97,9 @@ public class RepositoryCodeFragment extends DialogFragment implements
     private RefDialog dialog;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Activity activity = (Activity) context;
         repository = activity.getIntent().getParcelableExtra(EXTRA_REPOSITORY);
     }
 

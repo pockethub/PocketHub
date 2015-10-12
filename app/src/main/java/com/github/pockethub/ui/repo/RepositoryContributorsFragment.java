@@ -17,6 +17,7 @@ package com.github.pockethub.ui.repo;
 
 import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
@@ -54,8 +55,8 @@ public class RepositoryContributorsFragment extends ItemListFragment<Contributor
     private Repo repo;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
         repo = getParcelableExtra(EXTRA_REPOSITORY);
     }
