@@ -549,7 +549,7 @@ public class IssueFragment extends DialogFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
-        inflater.inflate(R.menu.issue_view, optionsMenu);
+        inflater.inflate(R.menu.fragment_issue_view, optionsMenu);
         stateItem = optionsMenu.findItem(R.id.m_state);
         updateStateItem(issue);
     }

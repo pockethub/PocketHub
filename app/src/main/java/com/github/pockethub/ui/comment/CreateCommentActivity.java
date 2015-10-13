@@ -140,7 +140,7 @@ public abstract class CreateCommentActivity extends
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
-        getMenuInflater().inflate(R.menu.comment, options);
+        getMenuInflater().inflate(R.menu.activity_comment, options);
         applyItem = options.findItem(R.id.m_apply);
         return true;
     }

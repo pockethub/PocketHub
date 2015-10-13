@@ -115,7 +115,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
     @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
-        inflater.inflate(R.menu.refresh, optionsMenu);
+        inflater.inflate(R.menu.fragment_refresh, optionsMenu);
     }
 
     @Override

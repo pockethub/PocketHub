@@ -116,7 +116,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionsMenu) {
-        getMenuInflater().inflate(R.menu.user_follow, optionsMenu);
+        getMenuInflater().inflate(R.menu.activity_user_follow, optionsMenu);
 
         return super.onCreateOptionsMenu(optionsMenu);
     }

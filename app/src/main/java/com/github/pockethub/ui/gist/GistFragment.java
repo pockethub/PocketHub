@@ -229,7 +229,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
     @Override
     public void onCreateOptionsMenu(Menu options, MenuInflater inflater) {
-        inflater.inflate(R.menu.gist_view, options);
+        inflater.inflate(R.menu.fragment_gist_view, options);
     }
 
     @Override

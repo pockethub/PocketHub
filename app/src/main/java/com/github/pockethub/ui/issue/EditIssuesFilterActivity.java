@@ -204,7 +204,7 @@ public class EditIssuesFilterActivity extends DialogFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
-        getMenuInflater().inflate(R.menu.issue_filter, options);
+        getMenuInflater().inflate(R.menu.activity_issue_filter, options);
         return true;
     }
 

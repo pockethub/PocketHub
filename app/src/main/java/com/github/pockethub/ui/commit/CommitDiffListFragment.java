@@ -187,9 +187,8 @@ public class CommitDiffListFragment extends DialogFragment implements
     }
 
     @Override
-    public void onCreateOptionsMenu(final Menu optionsMenu,
-                                    final MenuInflater inflater) {
-        inflater.inflate(R.menu.commit_view, optionsMenu);
+    public void onCreateOptionsMenu(final Menu optionsMenu, final MenuInflater inflater) {
+        inflater.inflate(R.menu.fragment_commit_view, optionsMenu);
     }
 
     @Override

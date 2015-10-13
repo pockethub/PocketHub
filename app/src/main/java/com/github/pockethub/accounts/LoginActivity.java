@@ -266,7 +266,7 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity imp
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionMenu) {
-        getMenuInflater().inflate(R.menu.login, optionMenu);
+        getMenuInflater().inflate(R.menu.activity_login, optionMenu);
         return true;
     }
 }

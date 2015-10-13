@@ -97,7 +97,7 @@ public class CreateGistActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
-        getMenuInflater().inflate(R.menu.gist_create, options);
+        getMenuInflater().inflate(R.menu.activity_gist_create, options);
         createItem = options.findItem(R.id.m_apply);
         updateCreateMenu();
         return true;

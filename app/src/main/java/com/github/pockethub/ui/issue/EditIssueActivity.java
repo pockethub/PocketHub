@@ -327,7 +327,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
-        getMenuInflater().inflate(R.menu.issue_edit, options);
+        getMenuInflater().inflate(R.menu.activity_issue_edit, options);
         saveItem = options.findItem(R.id.m_apply);
         updateSaveMenu();
         return super.onCreateOptionsMenu(options);

@@ -105,7 +105,7 @@ public class CommitCompareListFragment extends DialogFragment implements
     @Override
     public void onCreateOptionsMenu(final Menu optionsMenu,
             final MenuInflater inflater) {
-        inflater.inflate(R.menu.refresh, optionsMenu);
+        inflater.inflate(R.menu.fragment_refresh, optionsMenu);
     }
 
     @Override

@@ -129,7 +129,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionsMenu) {
-        getMenuInflater().inflate(R.menu.repository, optionsMenu);
+        getMenuInflater().inflate(R.menu.activity_repository, optionsMenu);
         return super.onCreateOptionsMenu(optionsMenu);
     }
 
