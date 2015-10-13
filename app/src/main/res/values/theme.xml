@@ -43,7 +43,7 @@
         <item name="android:minWidth">16dp</item>
     </style>
 
-    <style name="ToolbarStyle" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="colorControlNormal">@android:color/white</item>
         <item name="colorControlHighlight">@color/ripple_material_dark</item>
     </style>

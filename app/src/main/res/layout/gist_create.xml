@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ToolbarStyle" />
+        android:theme="@style/ToolbarTheme" />
 
     <ScrollView
         android:layout_width="match_parent"
