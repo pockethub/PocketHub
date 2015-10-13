@@ -89,7 +89,7 @@ public class GistFilesViewActivity extends PagerActivity {
         gistId = getStringExtra(EXTRA_GIST_ID);
         initialPosition = getIntExtra(EXTRA_POSITION);
 
-        setContentView(R.layout.pager_with_title);
+        setContentView(R.layout.activity_pager_with_title);
 
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 

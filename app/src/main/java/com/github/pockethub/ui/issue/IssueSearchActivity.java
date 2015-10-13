@@ -89,7 +89,7 @@ public class IssueSearchActivity extends RoboAppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.issue_search);
+        setContentView(R.layout.activity_issue_search);
 
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 

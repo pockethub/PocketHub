@@ -103,7 +103,7 @@ public class EditIssuesFilterActivity extends DialogFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.issues_filter_edit);
+        setContentView(R.layout.activity_issues_filter_edit);
 
         labelsText = finder.find(R.id.tv_labels);
         milestoneText = finder.find(R.id.tv_milestone);

@@ -214,7 +214,7 @@ public class CommitCompareListFragment extends DialogFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.commit_diff_list, container);
+        return inflater.inflate(R.layout.fragment_commit_diff_list, container);
     }
 
     private void openCommit(final Commit commit) {

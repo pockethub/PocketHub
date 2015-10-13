@@ -120,7 +120,7 @@ public class BranchFileViewActivity extends BaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.commit_file_view);
+        setContentView(R.layout.activity_commit_file_view);
 
         repo = getParcelableExtra(EXTRA_REPOSITORY);
         sha = getStringExtra(EXTRA_BASE);

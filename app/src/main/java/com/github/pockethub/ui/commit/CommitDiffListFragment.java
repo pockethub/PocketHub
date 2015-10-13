@@ -406,9 +406,8 @@ public class CommitDiffListFragment extends DialogFragment implements
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.commit_diff_list, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_commit_diff_list, container, false);
     }
 
     private void showFileOptions(CharSequence line, final int position,

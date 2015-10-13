@@ -123,7 +123,7 @@ public class CommitFileViewActivity extends BaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.commit_file_view);
+        setContentView(R.layout.activity_commit_file_view);
 
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 

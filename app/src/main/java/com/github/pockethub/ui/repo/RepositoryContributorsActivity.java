@@ -56,7 +56,7 @@ public class RepositoryContributorsActivity extends DialogFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.repo_contributors);
+        setContentView(R.layout.activity_repo_contributors);
 
         repository = getParcelableExtra(EXTRA_REPOSITORY);
 
