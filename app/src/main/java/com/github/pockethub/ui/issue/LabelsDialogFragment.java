@@ -100,7 +100,7 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
      */
     @SuppressWarnings("unchecked")
     public static ArrayList<Label> getSelected(Bundle arguments) {
-        return (ArrayList<Label>) arguments.getParcelable(ARG_SELECTED);
+        return arguments.getParcelableArrayList(ARG_SELECTED);
     }
 
     /**
