@@ -15,7 +15,8 @@
   ~ limitations under the License.
   -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItem" >
+                xmlns:tools="http://schemas.android.com/tools"
+                style="@style/ListItem">
 
     <TextView
         android:id="@+id/tv_folder_icon"
@@ -54,20 +55,23 @@
             android:paddingLeft="5dp"
             android:paddingStart="5dp"
             android:paddingEnd="10dp"
-            android:paddingRight="10dp" />
+            android:paddingRight="10dp"
+            tools:ignore="NewApi"/>
 
         <TextView
             android:id="@+id/tv_files_icon"
             style="@style/ListIcon"
             android:paddingLeft="5dp"
             android:paddingStart="5dp"
-            android:text="@string/icon_file" />
+            android:text="@string/icon_file"
+            tools:ignore="NewApi"/>
 
         <TextView
             android:id="@+id/tv_files"
             style="@style/ListNumericSubtitleText"
             android:paddingStart="5dp"
-            android:paddingLeft="5dp" />
+            android:paddingLeft="5dp"
+            tools:ignore="NewApi"/>
     </LinearLayout>
 
 </RelativeLayout>

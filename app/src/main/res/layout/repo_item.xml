@@ -15,12 +15,13 @@
   ~ limitations under the License.
   -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItem"
-    android:gravity="center_vertical"
-    android:paddingBottom="0dp"
-    android:paddingLeft="0dp"
-    android:paddingRight="0dp"
-    android:paddingTop="0dp" >
+                xmlns:tools="http://schemas.android.com/tools"
+                style="@style/ListItem"
+                android:gravity="center_vertical"
+                android:paddingBottom="0dp"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:paddingTop="0dp">
 
     <LinearLayout
         android:id="@+id/ll_header"
@@ -39,7 +40,8 @@
             android:paddingBottom="5dp"
             android:paddingLeft="10dp"
             android:paddingStart="10dp"
-            android:textColor="@color/text_recent" />
+            android:textColor="@color/text_recent"
+            tools:ignore="NewApi"/>
 
         <View
             android:layout_width="match_parent"

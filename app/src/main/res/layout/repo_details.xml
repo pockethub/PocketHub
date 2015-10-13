@@ -14,7 +14,8 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
         android:id="@+id/tv_repo_name"
@@ -53,7 +54,8 @@
             android:paddingLeft="3dp"
             android:paddingStart="3dp"
             android:paddingEnd="15dp"
-            android:paddingRight="15dp" />
+            android:paddingRight="15dp"
+            tools:ignore="NewApi"/>
 
         <TextView
             android:id="@+id/tv_forks_icon"
@@ -64,7 +66,8 @@
             android:id="@+id/tv_forks"
             style="@style/ListNumericSubtitleText"
             android:paddingStart="3dp"
-            android:paddingLeft="3dp" />
+            android:paddingLeft="3dp"
+            tools:ignore="NewApi"/>
     </LinearLayout>
 
 </merge>

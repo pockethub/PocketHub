@@ -15,11 +15,12 @@
   ~ limitations under the License.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:padding="10dp" >
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:gravity="center_vertical"
+              android:orientation="horizontal"
+              android:padding="10dp">
 
     <ProgressBar
         android:id="@+id/pb_loading"
@@ -34,6 +35,7 @@
         android:paddingLeft="10dp"
         android:paddingStart="10dp"
         android:textColor="@color/text"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        tools:ignore="NewApi"/>
 
 </LinearLayout>

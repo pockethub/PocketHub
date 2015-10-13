@@ -15,7 +15,8 @@
   ~ limitations under the License.
   -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItem" >
+                xmlns:tools="http://schemas.android.com/tools"
+                style="@style/ListItem">
 
     <RadioButton
         android:id="@+id/rb_selected"
@@ -47,6 +48,7 @@
         android:layout_toEndOf="@id/tv_ref_icon"
         android:paddingBottom="0dp"
         android:paddingStart="10dp"
-        android:paddingLeft="10dp" />
+        android:paddingLeft="10dp"
+        tools:ignore="NewApi"/>
 
 </RelativeLayout>

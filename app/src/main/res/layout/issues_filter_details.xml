@@ -14,7 +14,8 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
         android:id="@+id/tv_filter_state"
@@ -41,14 +42,16 @@
             android:paddingLeft="5dp"
             android:paddingStart="5dp"
             android:singleLine="true"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="NewApi"/>
 
         <TextView
             style="@style/ListSubtitleText"
             android:paddingLeft="5dp"
             android:paddingStart="5dp"
             android:singleLine="true"
-            android:text="@string/assigned" />
+            android:text="@string/assigned"
+            tools:ignore="NewApi"/>
     </LinearLayout>
 
     <TextView

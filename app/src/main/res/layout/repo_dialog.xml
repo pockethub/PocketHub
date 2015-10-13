@@ -15,9 +15,10 @@
   ~ limitations under the License.
   -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:overScrollMode="ifContentScrolls" >
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:overScrollMode="ifContentScrolls">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,7 +48,8 @@
                 android:paddingBottom="0dp"
                 android:paddingLeft="10dp"
                 android:paddingStart="10dp"
-                android:textStyle="normal" />
+                android:textStyle="normal"
+                tools:ignore="NewApi"/>
         </LinearLayout>
 
         <View
@@ -81,7 +83,8 @@
                 android:paddingBottom="0dp"
                 android:paddingLeft="10dp"
                 android:paddingStart="10dp"
-                android:textStyle="normal" />
+                android:textStyle="normal"
+                tools:ignore="NewApi"/>
         </LinearLayout>
     </LinearLayout>
 
