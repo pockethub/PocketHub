@@ -28,6 +28,11 @@
         android:id="@+id/navigation_secondary"
         android:checkableBehavior="none">
         <item
+            android:id="@+id/navigation_settings"
+            android:checkable="false"
+            android:icon="@drawable/ic_github_gear_black_24dp"
+            android:title="@string/settings"/>
+        <item
             android:id="@+id/navigation_log_out"
             android:checkable="false"
             android:icon="@drawable/ic_github_sign_out_black_24dp"

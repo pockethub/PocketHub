@@ -344,7 +344,7 @@
             android:launchMode="singleTop"/>
 
         <activity
-            android:name=".ui.SettingsActivity"
+            android:name=".ui.settings.SettingsActivity"
             android:label="@string/settings"
             android:parentActivityName=".ui.MainActivity"
             tools:ignore="UnusedAttribute">

@@ -84,7 +84,6 @@ dependencies {
         transitive = true
     }
     compile 'com.bugsnag:bugsnag-android:+'
-    compile 'com.github.freefair.android-library:appcompat-preference:0.9.3-2'
 
     //Self compiled .aar version of wishlist
     compile (name:'lib', ext:'aar')
