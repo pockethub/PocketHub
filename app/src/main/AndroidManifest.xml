@@ -46,7 +46,8 @@
         </activity>
         <activity
             android:name="com.github.pockethub.ui.gist.CreateGistActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/create_gist">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
