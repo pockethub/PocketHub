@@ -318,5 +318,6 @@ Read the README.md: https://github.com/pockethub/PocketHub#setup-environment</st
     <string name="pref_cat_about_title">About</string>
     <string name="pref_version_title">Version</string>
     <string name="pref_build_title">Build</string>
+    <string name="pref_bugreport_title">Report a bug</string>
 
 </resources>

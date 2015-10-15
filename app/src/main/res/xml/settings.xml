@@ -8,5 +8,9 @@
         <Preference
             android:key="pref_build"
             android:title="@string/pref_build_title"/>
+        <Preference
+            android:key="pref_bugreport"
+            android:title="@string/pref_bugreport_title">
+        </Preference>
     </PreferenceCategory>
 </PreferenceScreen>
