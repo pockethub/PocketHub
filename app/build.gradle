@@ -19,7 +19,7 @@ def isTravis = "true".equals(System.getenv("TRAVIS"))
 def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 
 android {
-    compileSdkVersion 22
+    compileSdkVersion 23
     buildToolsVersion '22.0.1'
 
     defaultConfig {
@@ -80,7 +80,7 @@ def String getValue(Properties props, String name) {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'com.squareup.picasso:picasso:2.5.0'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
     compile 'org.roboguice:roboguice:2.0'
