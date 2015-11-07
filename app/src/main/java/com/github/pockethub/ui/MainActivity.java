@@ -277,15 +277,19 @@ public class MainActivity extends BaseActivity implements
 
         if (itemId == R.id.navigation_home) {
             switchFragment(new HomePagerFragment(), org);
+            getSupportActionBar().setTitle(getString(R.string.app_name));
             return true;
         } else if (itemId == R.id.navigation_gists) {
             switchFragment(new GistsPagerFragment(), null);
+            getSupportActionBar().setTitle(menuItem.getTitle());
             return true;
         } else if (itemId == R.id.navigation_issue_dashboard) {
             switchFragment(new IssueDashboardPagerFragment(), null);
+            getSupportActionBar().setTitle(menuItem.getTitle());
             return true;
         } else if (itemId == R.id.navigation_bookmarks) {
             switchFragment(new FilterListFragment(), null);
+            getSupportActionBar().setTitle(menuItem.getTitle());
             return true;
         } else if (itemId == R.id.navigation_log_out) {
             AccountManager accountManager = getAccountManager();
