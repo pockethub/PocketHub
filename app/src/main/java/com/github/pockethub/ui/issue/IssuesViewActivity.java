@@ -15,12 +15,6 @@
  */
 package com.github.pockethub.ui.issue;
 
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
-import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
-import static com.github.pockethub.Intents.EXTRA_ISSUE_NUMBERS;
-import static com.github.pockethub.Intents.EXTRA_POSITION;
-import static com.github.pockethub.Intents.EXTRA_REPOSITORIES;
-import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
 import android.accounts.Account;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.alorma.github.basesdk.client.BaseClient;
+import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.Team;
 import com.alorma.github.sdk.bean.dto.response.User;
@@ -58,10 +53,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.alorma.github.sdk.bean.dto.response.Issue;
-
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+import static com.github.pockethub.Intents.EXTRA_ISSUE_NUMBERS;
+import static com.github.pockethub.Intents.EXTRA_POSITION;
+import static com.github.pockethub.Intents.EXTRA_REPOSITORIES;
+import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
 
 /**
  * Activity to display a collection of issues or pull requests in a pager
@@ -271,11 +271,11 @@ public class IssuesViewActivity extends PagerActivity {
             return;
 
         ActionBar actionBar = getSupportActionBar();
-        Repo repoId = repoIds.get(position);
-        if (repoId != null) {
+        repo = repoIds.get(position);
+        if (repo != null) {
             updateTitle(position);
-            actionBar.setSubtitle(InfoUtils.createRepoId(repoId));
-            Issue issue = store.getIssue(repoId, issueNumbers[position]);
+            actionBar.setSubtitle(InfoUtils.createRepoId(repo));
+            Issue issue = store.getIssue(repo, issueNumbers[position]);
             if (issue != null) {
                 Repo fullRepo = issue.repository;
                 if (fullRepo != null && fullRepo.owner != null) {
