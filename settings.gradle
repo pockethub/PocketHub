@@ -1,1 +1,1 @@
-include ':app', ':GithubAndroidSdk'
+include ':app'
