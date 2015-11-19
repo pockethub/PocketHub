@@ -3,12 +3,15 @@
     <PreferenceCategory
         android:title="@string/pref_cat_about_title">
         <Preference
+            android:icon="@drawable/ic_github_versions"
             android:key="pref_version"
             android:title="@string/pref_version_title"/>
         <Preference
+            android:icon="@drawable/ic_github_git_commit"
             android:key="pref_build"
             android:title="@string/pref_build_title"/>
         <Preference
+            android:icon="@drawable/ic_github_bug"
             android:key="pref_bugreport"
             android:title="@string/pref_bugreport_title">
         </Preference>
