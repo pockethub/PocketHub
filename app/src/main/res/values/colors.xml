@@ -81,5 +81,6 @@
 
     <color name="appcompat_secondary_text_default_material_light">#8a000000</color>
     <color name="appcompat_secondary_text_disabled_material_light">#24000000</color>
+    <color name="material_black">#212121</color>
 
 </resources>
