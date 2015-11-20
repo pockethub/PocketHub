@@ -15,13 +15,6 @@
  */
 package com.github.pockethub.ui.user;
 
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
-import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
-import static com.github.pockethub.Intents.EXTRA_USER;
-import static com.github.pockethub.util.TypefaceUtils.ICON_FOLLOW;
-import static com.github.pockethub.util.TypefaceUtils.ICON_NEWS;
-import static com.github.pockethub.util.TypefaceUtils.ICON_PUBLIC;
-import static com.github.pockethub.util.TypefaceUtils.ICON_WATCH;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -33,7 +26,6 @@ import android.widget.ProgressBar;
 import com.alorma.github.basesdk.client.BaseClient;
 import com.alorma.github.sdk.bean.dto.response.User;
 import com.alorma.github.sdk.services.user.RequestUserClient;
-import com.alorma.github.sdk.services.user.UserFollowingClient;
 import com.alorma.github.sdk.services.user.follow.CheckFollowingUser;
 import com.alorma.github.sdk.services.user.follow.FollowUserClient;
 import com.alorma.github.sdk.services.user.follow.OnCheckFollowingUser;
@@ -41,9 +33,7 @@ import com.alorma.github.sdk.services.user.follow.UnfollowUserClient;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
-import com.github.pockethub.core.user.FollowUserTask;
-import com.github.pockethub.core.user.FollowingUserTask;
-import com.github.pockethub.core.user.UnfollowUserTask;
+import com.github.pockethub.accounts.AccountUtils;
 import com.github.pockethub.ui.MainActivity;
 import com.github.pockethub.ui.TabPagerActivity;
 import com.github.pockethub.util.AvatarLoader;
@@ -52,6 +42,14 @@ import com.google.inject.Inject;
 
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+import static com.github.pockethub.Intents.EXTRA_USER;
+import static com.github.pockethub.util.TypefaceUtils.ICON_FOLLOW;
+import static com.github.pockethub.util.TypefaceUtils.ICON_NEWS;
+import static com.github.pockethub.util.TypefaceUtils.ICON_PUBLIC;
+import static com.github.pockethub.util.TypefaceUtils.ICON_WATCH;
 
 
 /**
@@ -85,7 +83,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        user = (User) getIntent().getParcelableExtra(EXTRA_USER);
+        user = getIntent().getParcelableExtra(EXTRA_USER);
         loadingBar = finder.find(R.id.pb_loading);
 
         ActionBar actionBar = getSupportActionBar();
@@ -126,8 +124,9 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem followItem = menu.findItem(R.id.m_follow);
+        boolean isCurrentUser = user.login.equals(AccountUtils.getLogin(this));
 
-        followItem.setVisible(followingStatusChecked);
+        followItem.setVisible(followingStatusChecked && !isCurrentUser);
         followItem.setTitle(isFollowing ? R.string.unfollow : R.string.follow);
 
         return super.onPrepareOptionsMenu(menu);
