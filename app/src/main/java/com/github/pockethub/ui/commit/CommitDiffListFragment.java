@@ -22,6 +22,7 @@ import static com.github.pockethub.Intents.EXTRA_BASE;
 import static com.github.pockethub.Intents.EXTRA_COMMENT;
 import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
 import static com.github.pockethub.RequestCodes.COMMENT_CREATE;
+
 import android.accounts.Account;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -191,7 +192,7 @@ public class CommitDiffListFragment extends DialogFragment implements
 
     @Override
     public void onCreateOptionsMenu(final Menu optionsMenu,
-            final MenuInflater inflater) {
+                                    final MenuInflater inflater) {
         inflater.inflate(R.menu.commit_view, optionsMenu);
     }
 
@@ -201,36 +202,29 @@ public class CommitDiffListFragment extends DialogFragment implements
             return false;
 
         switch (item.getItemId()) {
-        case R.id.m_refresh:
-            refreshCommit();
-            return true;
-        case R.id.m_copy_hash:
-            copyHashToClipboard();
-            return true;
-        case R.id.m_comment:
-            startActivityForResult(
-                    CreateCommentActivity.createIntent(repository, base),
-                    COMMENT_CREATE);
-            return true;
-        case R.id.m_share:
-            shareCommit();
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case R.id.m_refresh:
+                refreshCommit();
+                return true;
+            case R.id.m_copy_hash:
+                copyHashToClipboard();
+                return true;
+            case R.id.m_comment:
+                startActivityForResult(
+                        CreateCommentActivity.createIntent(repository, base),
+                        COMMENT_CREATE);
+                return true;
+            case R.id.m_share:
+                shareCommit();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
-    @SuppressLint("NewApi")
     private void copyHashToClipboard() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            ClipboardManager manager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText("hash", commit.sha);
-            manager.setPrimaryClip(clip);
-        } else {
-            android.text.ClipboardManager manager = (android.text.ClipboardManager) getActivity().getSystemService
-                    (Context.CLIPBOARD_SERVICE);
-            manager.setText(commit.sha);
-        }
+        ClipboardManager manager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("hash", commit.sha);
+        manager.setPrimaryClip(clip);
         Toast.makeText(getActivity(), R.string.toast_msg_copied, Toast.LENGTH_SHORT).show();
     }
 
@@ -273,7 +267,7 @@ public class CommitDiffListFragment extends DialogFragment implements
     }
 
     private boolean isDifferentCommitter(final String author,
-            final String committer) {
+                                         final String committer) {
         return committer != null && !committer.equals(author);
     }
 
@@ -325,7 +319,7 @@ public class CommitDiffListFragment extends DialogFragment implements
     }
 
     private void addCommitParents(Commit commit,
-            LayoutInflater inflater) {
+                                  LayoutInflater inflater) {
         List<ShaUrl> parents = commit.parents;
         if (parents == null || parents.isEmpty())
             return;
@@ -353,7 +347,7 @@ public class CommitDiffListFragment extends DialogFragment implements
     }
 
     private void updateList(Commit commit,
-            List<CommitComment> comments, List<FullCommitFile> files) {
+                            List<CommitComment> comments, List<FullCommitFile> files) {
         if (!isUsable())
             return;
 
@@ -369,7 +363,7 @@ public class CommitDiffListFragment extends DialogFragment implements
     }
 
     private void updateItems(List<CommitComment> comments,
-            List<FullCommitFile> files) {
+                             List<FullCommitFile> files) {
         CommitFileListAdapter rootAdapter = adapter.getWrappedAdapter();
         rootAdapter.clear();
         for (FullCommitFile file : files)
@@ -417,12 +411,12 @@ public class CommitDiffListFragment extends DialogFragment implements
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         return inflater.inflate(R.layout.commit_diff_list, container, false);
     }
 
     private void showFileOptions(CharSequence line, final int position,
-            final CommitFile file) {
+                                 final CommitFile file) {
         final AlertDialog dialog = LightAlertDialog.create(getActivity());
         dialog.setTitle(CommitUtils.getName(file));
         dialog.setCanceledOnTouchOutside(true);
@@ -486,7 +480,7 @@ public class CommitDiffListFragment extends DialogFragment implements
      * @param parent
      */
     private void selectPreviousFile(int position, Object item,
-            AdapterView<?> parent) {
+                                    AdapterView<?> parent) {
         CharSequence line;
         if (item instanceof CharSequence)
             line = (CharSequence) item;
@@ -511,7 +505,7 @@ public class CommitDiffListFragment extends DialogFragment implements
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
-            long id) {
+                            long id) {
         Object item = parent.getItemAtPosition(position);
         if (item instanceof Commit)
             startActivity(CommitViewActivity.createIntent(repository,
