@@ -15,10 +15,10 @@
   ~ limitations under the License.
   -->
 <TextView
-    android:id="@+id/tv_diff"
-    style="@style/CodeText"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tv_diff"
+    style="@style/CodeText"
     android:layout_width="match_parent"
     android:background="@drawable/list_item_background"
     android:paddingBottom="1dp"
@@ -27,4 +27,4 @@
     android:paddingRight="10dp"
     android:paddingStart="15dp"
     android:paddingTop="1dp"
-    tools:ignore="NewApi"/>
+    tools:ignore="NewApi" />
