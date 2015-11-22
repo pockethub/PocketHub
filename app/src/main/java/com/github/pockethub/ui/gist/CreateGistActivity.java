@@ -64,7 +64,6 @@ public class CreateGistActivity extends BaseActivity {
         publicCheckBox = finder.find(R.id.cb_public);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(R.string.new_gist);
         actionBar.setIcon(R.drawable.ic_github_gist_white_32dp);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
