@@ -57,6 +57,9 @@ android {
         
         textReport isTravis
         textOutput 'stdout'
+        
+        htmlReport !isTravis
+        xmlReport !isTravis
     }
 
     dexOptions {
