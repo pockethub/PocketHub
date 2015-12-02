@@ -15,8 +15,7 @@ def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("UTC"))
 
-def isTravis = "true".equals(System.getenv("TRAVIS"))
-def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
+def isCi = System.getenv("TRAVIS").equals("true") || System.getenv("CI").equals("true")
 
 android {
     compileSdkVersion 23
@@ -57,11 +56,7 @@ android {
     }
 
     dexOptions {
-        // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
-//        preDexLibraries = preDexEnabled && !isTravis
-
-        // False for now until we set up Travis CI for this
-        preDexLibraries = false
+        preDexLibraries = !isCi
     }
 }
 
