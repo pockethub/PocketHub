@@ -64,7 +64,7 @@ android {
         }
 
         resValue "string", "github_oauth", oauth
-        resValue "string", "github_oauth_scheme", oauth != "http://dummy.example.com" ? oauth.split("://")[0] : "http://dummy.example.com"
+        resValue "string", "github_oauth_scheme", oauth.split("://")[0]
 
         buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
         buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
