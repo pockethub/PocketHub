@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/appcompat_secondary_text_disabled_material_light" android:state_enabled="false"/>
+    <item android:color="@android:color/black" android:state_checked="true"/>
+    <item android:color="@color/appcompat_secondary_text_default_material_light"/>
+</selector>

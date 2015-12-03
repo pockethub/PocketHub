@@ -32,6 +32,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.github.pockethub.R;
 import com.github.pockethub.core.commit.CommitMatch;
 import com.github.pockethub.core.commit.CommitUriMatcher;
@@ -48,10 +49,9 @@ import com.github.pockethub.ui.repo.RepositoryViewActivity;
 import java.net.URI;
 import java.text.MessageFormat;
 
-import org.eclipse.egit.github.core.Gist;
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.RepositoryIssue;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.Gist;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * Activity to launch other activities based on the intent's data {@link URI}
@@ -142,12 +142,12 @@ public class UriLauncherActivity extends Activity {
                 return CommitViewActivity.createIntent(commit.repository, commit.commit);
             }
 
-            RepositoryIssue issue = IssueUriMatcher.getIssue(data);
+            Issue issue = IssueUriMatcher.getIssue(data);
             if (issue != null) {
-                return IssuesViewActivity.createIntent(issue, issue.getRepository());
+                return IssuesViewActivity.createIntent(issue, issue.repository);
             }
 
-            Repository repository = RepositoryUriMatcher.getRepository(data);
+            Repo repository = RepositoryUriMatcher.getRepository(data);
             if (repository != null) {
                 return RepositoryViewActivity.createIntent(repository);
             }

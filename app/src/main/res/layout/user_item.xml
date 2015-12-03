@@ -30,6 +30,7 @@
         style="@style/ListTitleText"
         android:layout_width="match_parent"
         android:paddingLeft="10dp"
+        android:paddingStart="10dp"
         android:paddingTop="4dp"
         android:singleLine="true"
         android:textStyle="normal" />

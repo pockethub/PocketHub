@@ -15,6 +15,9 @@
  */
 package com.github.pockethub.core.issue;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import static org.eclipse.egit.github.core.service.IssueService.DIRECTION_DESCENDING;
 import static org.eclipse.egit.github.core.service.IssueService.FIELD_DIRECTION;
@@ -38,22 +41,22 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.eclipse.egit.github.core.Label;
-import org.eclipse.egit.github.core.Milestone;
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.Label;
+import com.alorma.github.sdk.bean.dto.response.Milestone;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * Issue filter containing at least one valid query
  */
-public class IssueFilter implements Serializable, Cloneable, Comparator<Label> {
+public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
 
     /** serialVersionUID */
     private static final long serialVersionUID = 7310646589186299063L;
 
-    private final Repository repository;
+    private final Repo repository;
 
-    private Set<Label> labels;
+    private List<Label> labels;
 
     private Milestone milestone;
 
@@ -66,10 +69,31 @@ public class IssueFilter implements Serializable, Cloneable, Comparator<Label> {
      *
      * @param repository
      */
-    public IssueFilter(final Repository repository) {
+    public IssueFilter(final Repo repository) {
         this.repository = repository;
         open = true;
     }
+
+    protected IssueFilter(Parcel in) {
+        repository = in.readParcelable(Repo.class.getClassLoader());
+        labels = new ArrayList<>();
+        in.readTypedList(labels, Label.CREATOR);
+        milestone = in.readParcelable(Milestone.class.getClassLoader());
+        assignee = in.readParcelable(User.class.getClassLoader());
+        open = in.readByte() != 0;
+    }
+
+    public static final Creator<IssueFilter> CREATOR = new Creator<IssueFilter>() {
+        @Override
+        public IssueFilter createFromParcel(Parcel in) {
+            return new IssueFilter(in);
+        }
+
+        @Override
+        public IssueFilter[] newArray(int size) {
+            return new IssueFilter[size];
+        }
+    };
 
     /**
      * Set only open issues to be returned
@@ -93,7 +117,7 @@ public class IssueFilter implements Serializable, Cloneable, Comparator<Label> {
         if (label == null)
             return this;
         if (labels == null)
-            labels = new TreeSet<>(this);
+            labels = new ArrayList<>();
         labels.add(label);
         return this;
     }
@@ -105,7 +129,7 @@ public class IssueFilter implements Serializable, Cloneable, Comparator<Label> {
     public IssueFilter setLabels(Collection<Label> labels) {
         if (labels != null && !labels.isEmpty()) {
             if (this.labels == null)
-                this.labels = new TreeSet<>(this);
+                this.labels = new ArrayList<>();
             else
                 this.labels.clear();
             this.labels.addAll(labels);
@@ -117,14 +141,14 @@ public class IssueFilter implements Serializable, Cloneable, Comparator<Label> {
     /**
      * @return labels
      */
-    public Set<Label> getLabels() {
+    public List<Label> getLabels() {
         return labels;
     }
 
     /**
      * @return repository
      */
-    public Repository getRepository() {
+    public Repo getRepository() {
         return repository;
     }
 
@@ -181,16 +205,16 @@ public class IssueFilter implements Serializable, Cloneable, Comparator<Label> {
         filter.put(FIELD_DIRECTION, DIRECTION_DESCENDING);
 
         if (assignee != null)
-            filter.put(FILTER_ASSIGNEE, assignee.getLogin());
+            filter.put(FILTER_ASSIGNEE, assignee.login);
 
         if (milestone != null)
             filter.put(FILTER_MILESTONE,
-                    Integer.toString(milestone.getNumber()));
+                    Integer.toString(milestone.number));
 
         if (labels != null && !labels.isEmpty()) {
             StringBuilder labelsQuery = new StringBuilder();
             for (Label label : labels)
-                labelsQuery.append(label.getName()).append(',');
+                labelsQuery.append(label.name).append(',');
             filter.put(FILTER_LABELS, labelsQuery.toString());
         }
 
@@ -214,15 +238,15 @@ public class IssueFilter implements Serializable, Cloneable, Comparator<Label> {
             segments.add("Closed issues");
 
         if (assignee != null)
-            segments.add("Assignee: " + assignee.getLogin());
+            segments.add("Assignee: " + assignee.login);
 
         if (milestone != null)
-            segments.add("Milestone: " + milestone.getTitle());
+            segments.add("Milestone: " + milestone.title);
 
         if (labels != null && !labels.isEmpty()) {
             StringBuilder builder = new StringBuilder("Labels: ");
             for (Label label : labels)
-                builder.append(label.getName()).append(',').append(' ');
+                builder.append(label.name).append(',').append(' ');
             builder.deleteCharAt(builder.length() - 1);
             builder.deleteCharAt(builder.length() - 1);
             segments.add(builder.toString());
@@ -242,10 +266,10 @@ public class IssueFilter implements Serializable, Cloneable, Comparator<Label> {
     @Override
     public int hashCode() {
         return Arrays.hashCode(new Object[] { open,
-                assignee != null ? assignee.getId() : null,
-                milestone != null ? milestone.getNumber() : null,
-                assignee != null ? assignee.getId() : null,
-                repository != null ? repository.getId() : null, labels });
+                assignee != null ? assignee.id : null,
+                milestone != null ? milestone.number : null,
+                assignee != null ? assignee.id : null,
+                repository != null ? repository.id : null, labels });
     }
 
     private boolean isEqual(Object a, Object b) {
@@ -257,17 +281,17 @@ public class IssueFilter implements Serializable, Cloneable, Comparator<Label> {
     private boolean isEqual(Milestone a, Milestone b) {
         if (a == null && b == null)
             return true;
-        return a != null && b != null && a.getNumber() == b.getNumber();
+        return a != null && b != null && a.number == b.number;
     }
 
     private boolean isEqual(User a, User b) {
         if (a == null && b == null)
             return true;
-        return a != null && b != null && a.getId() == b.getId();
+        return a != null && b != null && a.id == b.id;
     }
 
-    private boolean isEqual(Repository a, Repository b) {
-        return a != null && b != null && a.getId() == b.getId();
+    private boolean isEqual(Repo a, Repo b) {
+        return a != null && b != null && a.id == b.id;
     }
 
     @Override
@@ -296,6 +320,20 @@ public class IssueFilter implements Serializable, Cloneable, Comparator<Label> {
 
     @Override
     public int compare(Label lhs, Label rhs) {
-        return CASE_INSENSITIVE_ORDER.compare(lhs.getName(), rhs.getName());
+        return CASE_INSENSITIVE_ORDER.compare(lhs.name, rhs.name);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(repository, flags);
+        dest.writeTypedList(labels);
+        dest.writeParcelable(milestone, flags);
+        dest.writeParcelable(assignee, flags);
+        dest.writeByte((byte) (open ? 1 : 0));
     }
 }

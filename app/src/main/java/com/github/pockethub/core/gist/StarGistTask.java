@@ -22,7 +22,7 @@ import android.util.Log;
 import com.github.pockethub.accounts.AuthenticatedUserTask;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.Gist;
+import com.alorma.github.sdk.bean.dto.response.Gist;
 import org.eclipse.egit.github.core.service.GistService;
 
 /**

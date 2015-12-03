@@ -19,6 +19,9 @@ import android.accounts.Account;
 import android.app.Activity;
 import android.util.Log;
 
+import com.alorma.github.sdk.bean.dto.request.CommentRequest;
+import com.alorma.github.sdk.bean.dto.response.GithubComment;
+import com.alorma.github.sdk.services.gists.PublishGistCommentClient;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.ProgressDialogTask;
 import com.github.pockethub.util.HtmlUtils;
@@ -26,13 +29,13 @@ import com.github.pockethub.util.ToastUtils;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Comment;
-import org.eclipse.egit.github.core.Gist;
+import com.alorma.github.sdk.bean.dto.response.Gist;
 import org.eclipse.egit.github.core.service.GistService;
 
 /**
  * Task to comment on a {@link Gist}
  */
-public class CreateCommentTask extends ProgressDialogTask<Comment> {
+public class CreateCommentTask extends ProgressDialogTask<GithubComment> {
 
     private static final String TAG = "CreateCommentTask";
 
@@ -69,10 +72,9 @@ public class CreateCommentTask extends ProgressDialogTask<Comment> {
     }
 
     @Override
-    public Comment run(Account account) throws Exception {
-        Comment created = service.createComment(id, comment);
-        String formatted = HtmlUtils.format(created.getBodyHtml()).toString();
-        created.setBodyHtml(formatted);
+    public GithubComment run(Account account) throws Exception {
+        GithubComment created = new PublishGistCommentClient(context, id, new CommentRequest(comment)).executeSync();
+        created.body_html = HtmlUtils.format(created.body_html).toString();
         return created;
 
     }

@@ -24,14 +24,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 
+import com.alorma.github.sdk.bean.dto.response.GithubComment;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.github.pockethub.Intents;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.comment.CommentPreviewPagerAdapter;
 
-import org.eclipse.egit.github.core.Comment;
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.RepositoryId;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.Issue;
+import com.alorma.github.sdk.bean.dto.response.User;
+import com.github.pockethub.util.InfoUtils;
 
 /**
  * Activity to edit a comment on an {@link Issue}
@@ -47,7 +49,7 @@ public class EditCommentActivity extends
      * @param user
      * @return intent
      */
-    public static Intent createIntent(RepositoryId repoId, int issueNumber, Comment comment,
+    public static Intent createIntent(Repo repoId, int issueNumber, GithubComment comment,
             User user) {
         Builder builder = new Builder("issue.comment.edit.VIEW");
         builder.repo(repoId);
@@ -57,28 +59,27 @@ public class EditCommentActivity extends
         return builder.toIntent();
     }
 
-    private RepositoryId repositoryId;
+    private Repo repositoryId;
 
     /**
      * Comment to edit.
      */
-    private Comment comment;
+    private GithubComment comment;
 
     private int issueNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        comment = getSerializableExtra(EXTRA_COMMENT);
+        comment = getParcelableExtra(EXTRA_COMMENT);
         issueNumber = getIntExtra(EXTRA_ISSUE_NUMBER);
-        repositoryId = new RepositoryId(getStringExtra(EXTRA_REPOSITORY_OWNER),
-                getStringExtra(EXTRA_REPOSITORY_NAME));
+        repositoryId = getParcelableExtra(Intents.EXTRA_REPOSITORY);
 
         super.onCreate(savedInstanceState);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getString(R.string.issue_title) + issueNumber);
-        actionBar.setSubtitle(repositoryId.generateId());
-        avatars.bind(actionBar, (User) getSerializableExtra(EXTRA_USER));
+        actionBar.setSubtitle(InfoUtils.createRepoId(repositoryId));
+        avatars.bind(actionBar, (User) getParcelableExtra(EXTRA_USER));
     }
 
     @Override
@@ -92,11 +93,9 @@ public class EditCommentActivity extends
      * @param commentText
      */
     protected void editComment(String commentText) {
-        comment.setBody(commentText);
-
-        new EditCommentTask(this, repositoryId, comment) {
+        new EditCommentTask(this, repositoryId, comment.id, commentText) {
             @Override
-            protected void onSuccess(Comment comment) throws Exception {
+            protected void onSuccess(GithubComment comment) throws Exception {
                 super.onSuccess(comment);
 
                 finish(comment);
@@ -107,7 +106,7 @@ public class EditCommentActivity extends
     @Override
     protected CommentPreviewPagerAdapter createAdapter() {
         CommentPreviewPagerAdapter commentPreviewPagerAdapter = new CommentPreviewPagerAdapter(this, repositoryId);
-        commentPreviewPagerAdapter.setCommentText(comment != null ? comment.getBody() : null);
+        commentPreviewPagerAdapter.setCommentText(comment != null ? comment.body : null);
         return commentPreviewPagerAdapter;
     }
 }

@@ -16,15 +16,27 @@
 package com.github.pockethub.ui.comment;
 
 import android.content.Context;
+import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.widget.PopupMenu;
 import android.text.Html;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.TextureView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
+import com.alorma.github.sdk.bean.dto.response.GithubComment;
+import com.alorma.github.sdk.bean.dto.response.GithubEvent;
+import com.alorma.github.sdk.bean.dto.response.Issue;
+import com.alorma.github.sdk.bean.issue.IssueEvent;
+import com.alorma.github.sdk.bean.issue.IssueStory;
+import com.alorma.github.sdk.bean.issue.IssueStoryComment;
+import com.alorma.github.sdk.bean.issue.IssueStoryDetail;
+import com.alorma.github.sdk.bean.issue.IssueStoryEvent;
 import com.github.kevinsawicki.wishlist.MultiTypeAdapter;
 import com.github.pockethub.R;
 import com.github.pockethub.util.AvatarLoader;
@@ -34,12 +46,8 @@ import com.github.pockethub.util.TypefaceUtils;
 
 import java.util.Collection;
 
-import org.eclipse.egit.github.core.Comment;
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.IssueEvent;
-
 /**
- * Adapter for a list of {@link Comment} objects
+ * Adapter for a list of {@link GithubComment} objects
  */
 public class CommentListAdapter extends MultiTypeAdapter {
 
@@ -73,7 +81,7 @@ public class CommentListAdapter extends MultiTypeAdapter {
      * @param avatars
      * @param imageGetter
      */
-    public CommentListAdapter(LayoutInflater inflater, Comment[] elements,
+    public CommentListAdapter(LayoutInflater inflater, GithubComment[] elements,
             AvatarLoader avatars, HttpImageGetter imageGetter, Issue issue) {
         this(inflater, elements, avatars, imageGetter, null, null, null, false, issue);
         this.context = inflater.getContext();
@@ -102,7 +110,7 @@ public class CommentListAdapter extends MultiTypeAdapter {
      * @param userName
      * @param isOwner
      */
-    public CommentListAdapter(LayoutInflater inflater, Comment[] elements,
+    public CommentListAdapter(LayoutInflater inflater, GithubComment[] elements,
             AvatarLoader avatars, HttpImageGetter imageGetter,
             EditCommentListener editCommentListener, DeleteCommentListener deleteCommentListener,
             String userName, boolean isOwner, Issue issue) {
@@ -122,17 +130,17 @@ public class CommentListAdapter extends MultiTypeAdapter {
     @Override
     protected void update(int position, Object obj, int type) {
         if(type == 0)
-            updateComment((Comment) obj);
+            updateComment((GithubComment) obj);
         else
             updateEvent((IssueEvent) obj);
     }
 
     protected void updateEvent(final IssueEvent event) {
         TypefaceUtils.setOcticons(textView(0));
-        String message = String.format("<b>%s</b> %s", event.getActor().getLogin(), event.getEvent());
-        avatars.bind(imageView(2), event.getActor());
+        String message = String.format("<b>%s</b> %s", event.actor.login, event.event);
+        avatars.bind(imageView(2), event.actor);
 
-        String eventString = event.getEvent();
+        String eventString = event.event;
 
         switch (eventString) {
         case "assigned":
@@ -174,8 +182,8 @@ public class CommentListAdapter extends MultiTypeAdapter {
                     context.getResources().getColor(R.color.text_description));
             break;
         case "merged":
-            message += String.format(" commit <b>%s</b> into <tt>%s</tt> from <tt>%s</tt>", event.getCommitId().substring(0,6), issue.getPullRequest().getBase().getRef(),
-                issue.getPullRequest().getHead().getRef());
+            message += String.format(" commit <b>%s</b> into <tt>%s</tt> from <tt>%s</tt>", event.commit_id.substring(0, 6), issue.pullRequest.base.ref,
+                issue.pullRequest.head.ref);
             setText(0, TypefaceUtils.ICON_MERGE);
             textView(0).setTextColor(
                     context.getResources().getColor(R.color.issue_event_merged));
@@ -192,21 +200,21 @@ public class CommentListAdapter extends MultiTypeAdapter {
             break;
         }
 
-        message += " " + TimeUtils.getRelativeTime(event.getCreatedAt());
+        message += " " + TimeUtils.getRelativeTime(event.created_at);
         setText(1, Html.fromHtml(message));
     }
 
-    protected void updateComment(final Comment comment) {
-        imageGetter.bind(textView(0), comment.getBodyHtml(), comment.getId());
-        avatars.bind(imageView(3), comment.getUser());
+    protected void updateComment(final GithubComment comment) {
+        imageGetter.bind(textView(0), comment.body, comment.id);
+        avatars.bind(imageView(3), comment.user);
 
-        setText(1, comment.getUser().getLogin());
-        setText(2, TimeUtils.getRelativeTime(comment.getUpdatedAt()));
+        setText(1, comment.user.login);
+        setText(2, TimeUtils.getRelativeTime(comment.updated_at));
 
-        final boolean canEdit = (isOwner || comment.getUser().getLogin().equals(userName))
+        final boolean canEdit = (isOwner || comment.user.login.equals(userName))
             && editCommentListener != null;
 
-        final boolean canDelete = (isOwner || comment.getUser().getLogin().equals(userName))
+        final boolean canDelete = (isOwner || comment.user.login.equals(userName))
             && deleteCommentListener != null;
 
         final ImageView ivMore = view(4);
@@ -222,7 +230,7 @@ public class CommentListAdapter extends MultiTypeAdapter {
         });
     }
 
-    private void showMorePopup(View v, final Comment comment, final boolean canEdit, final boolean canDelete ) {
+    private void showMorePopup(View v, final GithubComment comment, final boolean canEdit, final boolean canDelete ) {
         PopupMenu menu = new PopupMenu(context, v);
         menu.inflate(R.menu.comment_popup);
 
@@ -264,10 +272,14 @@ public class CommentListAdapter extends MultiTypeAdapter {
         this.clear();
 
         for (Object item : items) {
-            if(item instanceof Comment)
+            if(item instanceof GithubComment)
                 this.addItem(0, item);
-            else
+            else if(item instanceof GithubEvent)
                 this.addItem(1, item);
+            else if(item instanceof IssueStoryComment)
+                this.addItem(0, ((IssueStoryComment) item).comment);
+            else if(item instanceof IssueStoryEvent)
+                this.addItem(1, ((IssueStoryEvent) item).event);
         }
 
         notifyDataSetChanged();

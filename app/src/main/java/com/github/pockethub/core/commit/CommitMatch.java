@@ -15,7 +15,7 @@
  */
 package com.github.pockethub.core.commit;
 
-import org.eclipse.egit.github.core.Repository;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 
 /**
  * Match for a commit in a repository
@@ -23,9 +23,9 @@ import org.eclipse.egit.github.core.Repository;
 public class CommitMatch {
 
     /**
-     * Repository of commit
+     * Repo of commit
      */
-    public final Repository repository;
+    public final Repo repository;
 
     /**
      * SHA-1 of commit
@@ -38,7 +38,7 @@ public class CommitMatch {
      * @param repository
      * @param commit
      */
-    public CommitMatch(final Repository repository, final String commit) {
+    public CommitMatch(final Repo repository, final String commit) {
         this.repository = repository;
         this.commit = commit;
     }

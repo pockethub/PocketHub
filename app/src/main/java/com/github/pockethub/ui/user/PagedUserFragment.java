@@ -26,7 +26,7 @@ import com.google.inject.Inject;
 
 import java.util.List;
 
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.User;
 import org.eclipse.egit.github.core.service.UserService;
 
 /**

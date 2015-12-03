@@ -23,6 +23,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.alorma.github.sdk.bean.dto.response.IssueState;
+import com.alorma.github.sdk.bean.dto.response.Label;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.R;
@@ -32,8 +34,6 @@ import com.github.pockethub.util.TypefaceUtils;
 
 import java.util.Date;
 import java.util.List;
-
-import org.eclipse.egit.github.core.Label;
 
 /**
  * Base list adapter to display issues
@@ -112,11 +112,11 @@ public abstract class IssueListAdapter<V> extends SingleTypeAdapter<V> {
      * @param flags
      * @param viewIndex
      */
-    protected void updateNumber(int number, String state, int flags,
+    protected void updateNumber(int number, IssueState state, int flags,
             int viewIndex) {
         TextView view = textView(viewIndex);
         view.setText(Integer.toString(number));
-        if (STATE_CLOSED.equals(state))
+        if (state.equals(IssueState.closed))
             view.setPaintFlags(flags | STRIKE_THRU_TEXT_FLAG);
         else
             view.setPaintFlags(flags);
@@ -149,7 +149,7 @@ public abstract class IssueListAdapter<V> extends SingleTypeAdapter<V> {
         if (labels != null && !labels.isEmpty()) {
             int size = Math.min(labels.size(), MAX_LABELS);
             for (int i = 0; i < size; i++) {
-                String color = labels.get(i).getColor();
+                String color = labels.get(i).color;
                 if (!TextUtils.isEmpty(color)) {
                     View view = view(viewIndex + i);
                     view.setBackgroundColor(Color.parseColor('#' + color));

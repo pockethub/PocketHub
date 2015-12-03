@@ -19,6 +19,7 @@ import android.content.SyncResult;
 import android.database.SQLException;
 import android.util.Log;
 
+import com.alorma.github.sdk.bean.dto.response.Organization;
 import com.github.pockethub.persistence.DatabaseCache;
 import com.github.pockethub.persistence.OrganizationRepositories;
 import com.github.pockethub.persistence.Organizations;
@@ -27,8 +28,6 @@ import com.google.inject.assistedinject.Assisted;
 
 import java.io.IOException;
 import java.util.List;
-
-import org.eclipse.egit.github.core.User;
 
 /**
  * A cancelable sync operation to synchronize data for a given account
@@ -76,7 +75,7 @@ public class SyncCampaign implements Runnable {
 
     @Override
     public void run() {
-        List<User> orgs;
+        List<Organization> orgs;
         try {
             orgs = cache.requestAndStore(persistedOrgs);
             syncResult.stats.numUpdates++;
@@ -87,11 +86,11 @@ public class SyncCampaign implements Runnable {
         }
 
         Log.d(TAG, "Syncing " + orgs.size() + " users and orgs");
-        for (User org : orgs) {
+        for (Organization org : orgs) {
             if (cancelled)
                 return;
 
-            Log.d(TAG, "Syncing repos for " + org.getLogin());
+            Log.d(TAG, "Syncing repos for " + org.login);
             try {
                 cache.requestAndStore(repos.under(org));
                 syncResult.stats.numUpdates++;

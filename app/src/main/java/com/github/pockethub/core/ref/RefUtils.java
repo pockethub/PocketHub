@@ -17,10 +17,11 @@ package com.github.pockethub.core.ref;
 
 import android.text.TextUtils;
 
-import org.eclipse.egit.github.core.Reference;
+import com.alorma.github.sdk.bean.dto.response.GitReference;
+
 
 /**
- * Utilities for working with {@link Reference}s
+ * Utilities for working with {@link GitReference}s
  */
 public class RefUtils {
 
@@ -38,9 +39,9 @@ public class RefUtils {
      * @param ref
      * @return true if branch, false otherwise
      */
-    public static boolean isBranch(final Reference ref) {
+    public static boolean isBranch(final GitReference ref) {
         if (ref != null) {
-            String name = ref.getRef();
+            String name = ref.ref;
             return !TextUtils.isEmpty(name) && name.startsWith(PREFIX_HEADS);
         } else
             return false;
@@ -52,8 +53,8 @@ public class RefUtils {
      * @param ref
      * @return true if tag, false otherwise
      */
-    public static boolean isTag(final Reference ref) {
-        return ref != null && isTag(ref.getRef());
+    public static boolean isTag(final GitReference ref) {
+        return ref != null && isTag(ref.ref);
     }
 
     /**
@@ -72,10 +73,10 @@ public class RefUtils {
      * @param ref
      * @return full path
      */
-    public static String getPath(final Reference ref) {
+    public static String getPath(final GitReference ref) {
         if (ref == null)
             return null;
-        String name = ref.getRef();
+        String name = ref.ref;
         if (!TextUtils.isEmpty(name) && name.startsWith(PREFIX_REFS))
             return name.substring(PREFIX_REFS.length());
         else
@@ -88,9 +89,9 @@ public class RefUtils {
      * @param ref
      * @return short name
      */
-    public static String getName(final Reference ref) {
+    public static String getName(final GitReference ref) {
         if (ref != null)
-            return getName(ref.getRef());
+            return getName(ref.ref);
         else
             return null;
     }
@@ -122,11 +123,11 @@ public class RefUtils {
      * @param ref
      * @return true if valid, false otherwise
      */
-    public static boolean isValid(final Reference ref) {
+    public static boolean isValid(final GitReference ref) {
         if (ref == null)
             return false;
 
-        String name = ref.getRef();
+        String name = ref.ref;
         return !TextUtils.isEmpty(name) && !name.startsWith(PREFIX_PULL);
     }
 }

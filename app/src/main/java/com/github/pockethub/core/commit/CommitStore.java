@@ -15,32 +15,38 @@
  */
 package com.github.pockethub.core.commit;
 
+import android.content.Context;
+
+import com.alorma.github.sdk.bean.dto.response.Commit;
+import com.alorma.github.sdk.bean.dto.response.Content;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.services.commit.GetSingleCommitClient;
 import com.github.pockethub.core.ItemStore;
+import com.github.pockethub.util.InfoUtils;
+
+import org.eclipse.egit.github.core.service.CommitService;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
-import org.eclipse.egit.github.core.RepositoryCommit;
-import org.eclipse.egit.github.core.service.CommitService;
 
 /**
  * Store of commits
  */
 public class CommitStore extends ItemStore {
 
-    private final Map<String, ItemReferences<RepositoryCommit>> commits = new HashMap<>();
+    private final Map<String, ItemReferences<Commit>> commits = new HashMap<>();
 
-    private final CommitService service;
+    private final Context context;
 
     /**
      * Create commit store
      *
-     * @param service
+     * @param context
      */
-    public CommitStore(final CommitService service) {
-        this.service = service;
+    public CommitStore(final Context context) {
+        this.context = context;
     }
 
     /**
@@ -50,10 +56,8 @@ public class CommitStore extends ItemStore {
      * @param id
      * @return commit or null if not in store
      */
-    public RepositoryCommit getCommit(final IRepositoryIdProvider repo,
-            final String id) {
-        final ItemReferences<RepositoryCommit> repoCommits = commits.get(repo
-                .generateId());
+    public Commit getCommit(final Repo repo, final String id) {
+        final ItemReferences<Commit> repoCommits = commits.get(InfoUtils.createRepoId(repo));
         return repoCommits != null ? repoCommits.get(id) : null;
     }
 
@@ -64,27 +68,26 @@ public class CommitStore extends ItemStore {
      * @param commit
      * @return commit
      */
-    public RepositoryCommit addCommit(IRepositoryIdProvider repo,
-            RepositoryCommit commit) {
-        RepositoryCommit current = getCommit(repo, commit.getSha());
+    public Commit addCommit(Repo repo, Commit commit) {
+        Commit current = getCommit(repo, commit.sha);
         if (current != null) {
-            current.setAuthor(commit.getAuthor());
-            current.setCommit(commit.getCommit());
-            current.setCommitter(commit.getCommitter());
-            current.setFiles(commit.getFiles());
-            current.setParents(commit.getParents());
-            current.setSha(commit.getSha());
-            current.setStats(commit.getStats());
-            current.setUrl(commit.getUrl());
+            current.author = commit.author;
+            current.commit = commit.commit;
+            current.committer = commit.committer;
+            current.files = commit.files;
+            current.parents = commit.parents;
+            current.sha = commit.sha;
+            current.stats = commit.stats;
+            current.url = commit.url;
             return current;
         } else {
-            String repoId = repo.generateId();
-            ItemReferences<RepositoryCommit> repoCommits = commits.get(repoId);
+            String repoId = InfoUtils.createRepoId(repo);
+            ItemReferences<Commit> repoCommits = commits.get(repoId);
             if (repoCommits == null) {
                 repoCommits = new ItemReferences<>();
                 commits.put(repoId, repoCommits);
             }
-            repoCommits.put(commit.getSha(), commit);
+            repoCommits.put(commit.sha, commit);
             return commit;
         }
     }
@@ -97,8 +100,7 @@ public class CommitStore extends ItemStore {
      * @return refreshed commit
      * @throws IOException
      */
-    public RepositoryCommit refreshCommit(final IRepositoryIdProvider repo,
-            final String id) throws IOException {
-        return addCommit(repo, service.getCommit(repo, id));
+    public Commit refreshCommit(final Repo repo, final String id) throws IOException {
+        return addCommit(repo, new GetSingleCommitClient(context, InfoUtils.createCommitInfo(repo, id)).executeSync());
     }
 }

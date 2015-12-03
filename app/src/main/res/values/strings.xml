@@ -14,6 +14,8 @@
   limitations under the License.
 -->
 <resources>
+    <!-- Bugsnag -->
+    <string name="bugsnag_api_key">071042af7240b1a939bfe921b07ccc6d</string>
 
     <!-- Error messages -->
     <string name="error_orgs_load">Loading account &amp; organizations failed</string>
@@ -97,6 +99,7 @@
 
     <string name="app_name" translatable="false">PocketHub</string>
     <string name="home">Home</string>
+    <string name="log_out">Log Out</string>
     <string name="news">News</string>
     <string name="issues">Issues</string>
     <string name="gists">Gists</string>
@@ -112,7 +115,6 @@
     <string name="creating_gist">Creating Gist…</string>
     <string name="create">Create</string>
     <string name="create_gist">Create Gist</string>
-    <string name="gist_content_hint">puts \'Hello World!\'</string>
     <string name="make_public">Make this Gist public</string>
     <string name="gist_file_name_hint">file.rb</string>
     <string name="gist">Gist</string>
@@ -309,5 +311,8 @@
         \n\n Since GitHub has added third-party restrictions we are unable to write
         to certain organizations. You can read more here:\n
         https://help.github.com/articles/about-third-party-application-restrictions/</string>
+    <string name="organizations">Organizations</string>
+    <string name="error_oauth_not_configured">You won\'t be able to login, because the oauth client and secret aren\'t set
+Read the README.md: https://github.com/pockethub/PocketHub#setup-environment</string>
 
 </resources>

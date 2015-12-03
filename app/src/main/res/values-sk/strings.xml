@@ -108,7 +108,6 @@
     <string name="creating_gist">Vytváram Gist…</string>
     <string name="create">Vytvoriť</string>
     <string name="create_gist">Vytvoriť gist</string>
-    <string name="gist_content_hint">puts \'Hello world!\'</string>
     <string name="make_public">Zverejniť tento gist</string>
     <string name="gist_file_name_hint">file.rb</string>
     <string name="gist">Gist</string>

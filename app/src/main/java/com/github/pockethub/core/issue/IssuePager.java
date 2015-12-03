@@ -17,7 +17,7 @@ package com.github.pockethub.core.issue;
 
 import com.github.pockethub.core.ResourcePager;
 
-import org.eclipse.egit.github.core.Issue;
+import com.alorma.github.sdk.bean.dto.response.Issue;
 
 /**
  * Helper class for showing more and more pages of issues
@@ -36,6 +36,7 @@ public abstract class IssuePager extends ResourcePager<Issue> {
      */
     public IssuePager(final IssueStore store) {
         this.store = store;
+
     }
 
     @Override
@@ -45,6 +46,6 @@ public abstract class IssuePager extends ResourcePager<Issue> {
 
     @Override
     protected Object getId(Issue resource) {
-        return resource.getId();
+        return resource.id;
     }
 }

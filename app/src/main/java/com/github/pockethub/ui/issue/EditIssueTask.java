@@ -17,14 +17,17 @@ package com.github.pockethub.ui.issue;
 
 import android.accounts.Account;
 
+import com.alorma.github.sdk.bean.dto.request.IssueRequest;
+import com.alorma.github.sdk.services.issues.EditIssueClient;
 import com.github.pockethub.R;
 import com.github.pockethub.core.issue.IssueStore;
 import com.github.pockethub.ui.DialogFragmentActivity;
 import com.github.pockethub.ui.ProgressDialogTask;
+import com.github.pockethub.util.InfoUtils;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
-import org.eclipse.egit.github.core.Issue;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.Issue;
 
 /**
  * Task to edit an entire issue
@@ -34,28 +37,32 @@ public class EditIssueTask extends ProgressDialogTask<Issue> {
     @Inject
     private IssueStore store;
 
-    private final IRepositoryIdProvider repositoryId;
+    private final Repo repositoryId;
 
-    private final Issue issue;
+    private final int issueNumber;
+
+    private final IssueRequest issue;
 
     /**
      * Create task to edit a milestone
      *
      * @param activity
      * @param repositoryId
+     * @param issueNumber
      * @param issue
      */
     public EditIssueTask(final DialogFragmentActivity activity,
-            final IRepositoryIdProvider repositoryId, final Issue issue) {
+            final Repo repositoryId, final int issueNumber, final IssueRequest issue) {
         super(activity);
 
         this.repositoryId = repositoryId;
+        this.issueNumber = issueNumber;
         this.issue = issue;
     }
 
     @Override
     protected Issue run(Account account) throws Exception {
-        return store.editIssue(repositoryId, issue);
+        return new EditIssueClient(context, InfoUtils.createIssueInfo(repositoryId, issueNumber), issue).executeSync();
     }
 
     /**

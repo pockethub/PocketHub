@@ -25,6 +25,8 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
+import com.alorma.github.sdk.bean.dto.response.Commit;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
 import com.github.pockethub.core.commit.CommitUtils;
@@ -33,12 +35,10 @@ import com.github.pockethub.ui.PagerActivity;
 import com.github.pockethub.ui.ViewPager;
 import com.github.pockethub.ui.repo.RepositoryViewActivity;
 import com.github.pockethub.util.AvatarLoader;
+import com.github.pockethub.util.InfoUtils;
 import com.google.inject.Inject;
 
 import java.util.Collection;
-
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.RepositoryCommit;
 
 /**
  * Activity to display a commit
@@ -52,7 +52,7 @@ public class CommitViewActivity extends PagerActivity {
      * @param id
      * @return intent
      */
-    public static Intent createIntent(final Repository repository,
+    public static Intent createIntent(final Repo repository,
         final String id) {
         return createIntent(repository, 0, id);
     }
@@ -65,12 +65,12 @@ public class CommitViewActivity extends PagerActivity {
      * @param commits
      * @return intent
      */
-    public static Intent createIntent(final Repository repository,
-        final int position, final Collection<RepositoryCommit> commits) {
+    public static Intent createIntent(final Repo repository,
+        final int position, final Collection<Commit> commits) {
         String[] ids = new String[commits.size()];
         int index = 0;
-        for (RepositoryCommit commit : commits)
-            ids[index++] = commit.getSha();
+        for (Commit commit : commits)
+            ids[index++] = commit.sha;
         return createIntent(repository, position, ids);
     }
 
@@ -82,7 +82,7 @@ public class CommitViewActivity extends PagerActivity {
      * @param ids
      * @return intent
      */
-    public static Intent createIntent(final Repository repository,
+    public static Intent createIntent(final Repo repository,
         final int position, final String... ids) {
         Builder builder = new Builder("commits.VIEW");
         builder.add(EXTRA_POSITION, position);
@@ -93,7 +93,7 @@ public class CommitViewActivity extends PagerActivity {
 
     private ViewPager pager;
 
-    private Repository repository;
+    private Repo repository;
 
     private CharSequence[] ids;
 
@@ -114,7 +114,7 @@ public class CommitViewActivity extends PagerActivity {
 
         pager = finder.find(R.id.vp_pages);
 
-        repository = getSerializableExtra(EXTRA_REPOSITORY);
+        repository = getIntent().getParcelableExtra(EXTRA_REPOSITORY);
         ids = getCharSequenceArrayExtra(EXTRA_BASES);
         initialPosition = getIntExtra(EXTRA_POSITION);
 
@@ -126,8 +126,8 @@ public class CommitViewActivity extends PagerActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setSubtitle(repository.generateId());
-        avatars.bind(actionBar, repository.getOwner());
+        actionBar.setSubtitle(InfoUtils.createRepoId(repository));
+        avatars.bind(actionBar, repository.owner);
     }
 
     @Override

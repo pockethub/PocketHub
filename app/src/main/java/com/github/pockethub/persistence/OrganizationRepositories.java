@@ -16,10 +16,16 @@
 package com.github.pockethub.persistence;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 
+import com.alorma.github.sdk.bean.dto.response.Organization;
+import com.alorma.github.sdk.services.orgs.OrgsReposClient;
+import com.alorma.github.sdk.services.repo.GetRepoClient;
+import com.alorma.github.sdk.services.repos.UserReposClient;
+import com.alorma.github.sdk.services.repos.WatchedReposClient;
 import com.github.pockethub.accounts.GitHubAccount;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -32,8 +38,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.eclipse.egit.github.core.service.WatcherService;
 
@@ -41,7 +47,7 @@ import org.eclipse.egit.github.core.service.WatcherService;
  * Cache of repositories under a given organization
  */
 public class OrganizationRepositories implements
-        PersistableResource<Repository> {
+        PersistableResource<Repo> {
 
     /**
      * Creation factory
@@ -54,14 +60,12 @@ public class OrganizationRepositories implements
          * @param org
          * @return repositories
          */
-        OrganizationRepositories under(User org);
+        OrganizationRepositories under(Organization org);
     }
 
-    private final User org;
+    private final Organization org;
 
-    private final RepositoryService repos;
-
-    private final WatcherService watcher;
+    private final Context context;
 
     private final Provider<GitHubAccount> accountProvider;
 
@@ -69,17 +73,14 @@ public class OrganizationRepositories implements
      * Create repositories cache for a given organization
      *
      * @param orgs
-     * @param repos
-     * @param watcher
+     * @param context
      * @param accountProvider
      */
     @Inject
-    public OrganizationRepositories(@Assisted User orgs,
-            RepositoryService repos, WatcherService watcher,
+    public OrganizationRepositories(@Assisted Organization orgs, Context context,
             Provider<GitHubAccount> accountProvider) {
         this.org = orgs;
-        this.repos = repos;
-        this.watcher = watcher;
+        this.context = context;
         this.accountProvider = accountProvider;
     }
 
@@ -93,80 +94,80 @@ public class OrganizationRepositories implements
                 "repos.description", "repos.forks", "repos.watchers",
                 "repos.language", "repos.hasIssues", "repos.mirrorUrl" },
                 "repos.orgId=?",
-                new String[] { Integer.toString(org.getId()) }, null, null,
+                new String[] { Integer.toString(org.id) }, null, null,
                 null);
     }
 
     @Override
-    public Repository loadFrom(Cursor cursor) {
-        Repository repo = new Repository();
-        repo.setId(cursor.getLong(0));
-        repo.setName(cursor.getString(1));
+    public Repo loadFrom(Cursor cursor) {
+        Repo repo = new Repo();
+        repo.id = cursor.getLong(0);
+        repo.name = cursor.getString(1);
 
         User owner = new User();
-        owner.setId(cursor.getInt(2));
-        owner.setLogin(cursor.getString(3));
-        owner.setAvatarUrl(cursor.getString(4));
-        repo.setOwner(owner);
+        owner.id = cursor.getInt(2);
+        owner.login = cursor.getString(3);
+        owner.avatar_url = cursor.getString(4);
+        repo.owner = owner;
 
-        repo.setPrivate(cursor.getInt(5) == 1);
-        repo.setFork(cursor.getInt(6) == 1);
-        repo.setDescription(cursor.getString(7));
-        repo.setForks(cursor.getInt(8));
-        repo.setWatchers(cursor.getInt(9));
-        repo.setLanguage(cursor.getString(10));
-        repo.setHasIssues(cursor.getInt(11) == 1);
-        repo.setMirrorUrl(cursor.getString(12));
+        repo.isPrivate = cursor.getInt(5) == 1;
+        repo.fork = cursor.getInt(6) == 1;
+        repo.description = cursor.getString(7);
+        repo.forks_count = cursor.getInt(8);
+        repo.watchers_count = cursor.getInt(9);
+        repo.language = cursor.getString(10);
+        repo.has_issues = cursor.getInt(11) == 1;
+        repo.mirror_url = cursor.getString(12);
 
         return repo;
     }
 
     @Override
-    public void store(SQLiteDatabase db, List<Repository> repos) {
+    public void store(SQLiteDatabase db, List<Repo> repos) {
         db.delete("repos", "orgId=?",
-                new String[] { Integer.toString(org.getId()) });
+                new String[] { Integer.toString(org.id) });
         if (repos.isEmpty())
             return;
 
         ContentValues values = new ContentValues(12);
-        for (Repository repo : repos) {
+        for (Repo repo : repos) {
             values.clear();
 
-            User owner = repo.getOwner();
-            values.put("repoId", repo.getId());
-            values.put("name", repo.getName());
-            values.put("orgId", org.getId());
-            values.put("ownerId", owner.getId());
-            values.put("private", repo.isPrivate() ? 1 : 0);
-            values.put("fork", repo.isFork() ? 1 : 0);
-            values.put("description", repo.getDescription());
-            values.put("forks", repo.getForks());
-            values.put("watchers", repo.getWatchers());
-            values.put("language", repo.getLanguage());
-            values.put("hasIssues", repo.isHasIssues() ? 1 : 0);
-            values.put("mirrorUrl", repo.getMirrorUrl());
+            User owner = repo.owner;
+            values.put("repoId", repo.id);
+            values.put("name", repo.name);
+            values.put("orgId", org.id);
+            values.put("ownerId", owner.id);
+            values.put("private", repo.isPrivate ? 1 : 0);
+            values.put("fork", repo.fork ? 1 : 0);
+            values.put("description", repo.description);
+            values.put("forks", repo.forks_count);
+            values.put("watchers", repo.watchers_count);
+            values.put("language", repo.language);
+            values.put("hasIssues", repo.has_issues ? 1 : 0);
+            values.put("mirrorUrl", repo.mirror_url);
             db.replace("repos", null, values);
 
             values.clear();
 
-            values.put("id", owner.getId());
-            values.put("name", owner.getLogin());
-            values.put("avatarurl", owner.getAvatarUrl());
+            values.put("id", owner.id);
+            values.put("name", owner.login);
+            values.put("avatarurl", owner.avatar_url);
             db.replace("users", null, values);
         }
     }
 
     @Override
-    public List<Repository> request() throws IOException {
+    public List<Repo> request() throws IOException {
         if (isAuthenticatedUser()) {
-            Set<Repository> all = new TreeSet<>(
-                    new Comparator<Repository>() {
+            Set<Repo> all = new TreeSet<>(
+                    new Comparator<Repo>() {
 
                         @Override
-                        public int compare(final Repository repo1,
-                                final Repository repo2) {
-                            final long id1 = repo1.getId();
-                            final long id2 = repo2.getId();
+                        public int compare(final Repo repo1,
+                                final Repo repo2) {
+                            final long id1 = repo1.id;
+                            final long id2 = repo2.id;
                             if (id1 > id2)
                                 return 1;
                             if (id1 < id2)
@@ -174,19 +175,20 @@ public class OrganizationRepositories implements
                             return 0;
                         }
                     });
-            all.addAll(repos.getRepositories());
-            all.addAll(watcher.getWatched());
+
+            all.addAll(new UserReposClient(context).executeSync());
+            all.addAll(new WatchedReposClient(context).executeSync());
             return new ArrayList<>(all);
         } else
-            return repos.getOrgRepositories(org.getLogin());
+            return new OrgsReposClient(context, org.login).executeSync();
     }
 
     private boolean isAuthenticatedUser() {
-        return org.getLogin().equals(accountProvider.get().getUsername());
+        return org.login.equals(accountProvider.get().getUsername());
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + '[' + org.getLogin() + ']';
+        return getClass().getSimpleName() + '[' + org.login + ']';
     }
 }

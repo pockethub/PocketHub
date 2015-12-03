@@ -21,7 +21,15 @@ import static android.text.format.DateUtils.FORMAT_SHOW_YEAR;
 import static android.text.format.DateUtils.MINUTE_IN_MILLIS;
 import android.text.format.DateUtils;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Utilities for dealing with dates and times
@@ -42,5 +50,20 @@ public class TimeUtils {
                             | FORMAT_NUMERIC_DATE);
         else
             return "just now";
+    }
+
+    public static CharSequence getRelativeTime(final String date) {
+        return getRelativeTime(stringToDate(date));
+    }
+
+    public static Date stringToDate(String value){
+        DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        DateTime t = format.parseDateTime(value);
+        return t.toDate();
+    }
+
+    public static String dateToString(Date value){
+        DateTimeFormatter formats = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        return formats.print(value.getTime());
     }
 }

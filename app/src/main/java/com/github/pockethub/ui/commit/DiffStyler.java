@@ -19,6 +19,7 @@ import android.content.res.Resources;
 import android.text.TextUtils;
 import android.widget.TextView;
 
+import com.alorma.github.sdk.bean.dto.response.CommitFile;
 import com.github.pockethub.R;
 
 import java.util.ArrayList;
@@ -27,8 +28,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.eclipse.egit.github.core.CommitFile;
 
 /**
  * Styler for the file diffs introduced in a commit
@@ -103,7 +102,7 @@ public class DiffStyler {
             return this;
 
         for (CommitFile file : files) {
-            String patch = file.getPatch();
+            String patch = file.patch;
             if (TextUtils.isEmpty(patch))
                 continue;
 
@@ -116,7 +115,7 @@ public class DiffStyler {
                 start = end + 1;
                 end = nextLine(patch, start, length);
             }
-            diffs.put(file.getFilename(), lines);
+            diffs.put(file.filename, lines);
         }
         return this;
     }

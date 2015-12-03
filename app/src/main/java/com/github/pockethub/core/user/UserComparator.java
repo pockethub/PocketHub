@@ -17,18 +17,19 @@ package com.github.pockethub.core.user;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
+import com.alorma.github.sdk.bean.dto.response.Organization;
 import com.github.pockethub.accounts.GitHubAccount;
 import com.google.inject.Inject;
 
 import java.util.Comparator;
 
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * Sorts users and orgs in alphabetical order with special handling to put
  * currently authenticated user first.
  */
-public class UserComparator implements Comparator<User> {
+public class UserComparator implements Comparator<Organization> {
 
     private final String login;
 
@@ -43,9 +44,9 @@ public class UserComparator implements Comparator<User> {
     }
 
     @Override
-    public int compare(final User lhs, final User rhs) {
-        final String lhsLogin = lhs.getLogin();
-        final String rhsLogin = rhs.getLogin();
+    public int compare(final Organization lhs, final Organization rhs) {
+        final String lhsLogin = lhs.login;
+        final String rhsLogin = rhs.login;
 
         if (lhsLogin.equals(login))
             return rhsLogin.equals(login) ? 0 : -1;

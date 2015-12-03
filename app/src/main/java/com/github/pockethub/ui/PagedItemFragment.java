@@ -25,6 +25,8 @@ import android.widget.ListView;
 import com.github.pockethub.ThrowableLoader;
 import com.github.pockethub.core.ResourcePager;
 
+import org.eclipse.egit.github.core.Commit;
+
 import java.io.IOException;
 import java.util.List;
 

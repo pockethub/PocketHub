@@ -13,24 +13,23 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         app:theme="@style/ToolbarStyle" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolbar">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,9 +40,10 @@
             <CheckBox
                 android:id="@+id/cb_public"
                 style="@style/SubtitleText"
-                android:layout_height="45dp"
-                android:layout_gravity="right"
+                android:layout_height="@dimen/touch_target"
+                android:layout_gravity="end"
                 android:paddingRight="10dp"
+                android:paddingEnd="10dp"
                 android:text="@string/make_public"
                 android:textColor="@color/text"
                 android:theme="@style/Theme.GitHub.CheckBoxLight" />
@@ -59,17 +59,16 @@
                 android:paddingTop="5dp">
 
                 <TextView
-                    style="@style/HeaderTitleText"
+                    style="@style/TitleText"
                     android:text="@string/description" />
 
                 <EditText
                     android:id="@+id/et_gist_description"
                     style="@style/FormalSingleLineEditText"
-                    android:layout_width="match_parent"
-                    android:hint="@string/gist_description_hint" />
+                    android:layout_width="match_parent" />
 
                 <TextView
-                    style="@style/HeaderTitleText"
+                    style="@style/TitleText"
                     android:paddingTop="15dp"
                     android:text="@string/file_name" />
 
@@ -78,11 +77,10 @@
                     style="@style/EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/gist_file_name_hint"
                     android:singleLine="true" />
 
                 <TextView
-                    style="@style/HeaderTitleText"
+                    style="@style/TitleText"
                     android:paddingTop="15dp"
                     android:text="@string/file_content" />
 
@@ -92,7 +90,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="top"
-                    android:hint="@string/gist_content_hint"
                     android:inputType="textMultiLine|textAutoComplete"
                     android:minLines="5"
                     android:padding="10dp"
@@ -105,4 +102,4 @@
         </LinearLayout>
     </ScrollView>
 
-</RelativeLayout>
+</LinearLayout>

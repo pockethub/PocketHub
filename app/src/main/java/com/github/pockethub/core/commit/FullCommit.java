@@ -17,16 +17,16 @@ package com.github.pockethub.core.commit;
 
 import android.text.TextUtils;
 
+import com.alorma.github.sdk.bean.dto.response.Commit;
+import com.alorma.github.sdk.bean.dto.response.CommitComment;
+import com.alorma.github.sdk.bean.dto.response.CommitFile;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
-import org.eclipse.egit.github.core.CommitComment;
-import org.eclipse.egit.github.core.CommitFile;
-import org.eclipse.egit.github.core.RepositoryCommit;
 
 /**
  * Commit model with comments
@@ -36,7 +36,7 @@ public class FullCommit extends ArrayList<CommitComment> implements
 
     private static final long serialVersionUID = 2470370479577730822L;
 
-    private final RepositoryCommit commit;
+    private final Commit commit;
 
     private final List<FullCommitFile> files;
 
@@ -45,9 +45,9 @@ public class FullCommit extends ArrayList<CommitComment> implements
      *
      * @param commit
      */
-    public FullCommit(final RepositoryCommit commit) {
+    public FullCommit(final Commit commit) {
         this.commit = commit;
-        List<CommitFile> rawFiles = commit.getFiles();
+        List<CommitFile> rawFiles = commit.files;
         if (rawFiles != null && !rawFiles.isEmpty()) {
             files = new ArrayList<>(rawFiles.size());
             for (CommitFile file : rawFiles)
@@ -62,11 +62,11 @@ public class FullCommit extends ArrayList<CommitComment> implements
      * @param commit
      * @param comments
      */
-    public FullCommit(final RepositoryCommit commit,
+    public FullCommit(final Commit commit,
             final Collection<CommitComment> comments) {
         this.commit = commit;
 
-        List<CommitFile> rawFiles = commit.getFiles();
+        List<CommitFile> rawFiles = commit.files;
         boolean hasComments = comments != null && !comments.isEmpty();
         boolean hasFiles = rawFiles != null && !rawFiles.isEmpty();
         if (hasFiles) {
@@ -77,7 +77,7 @@ public class FullCommit extends ArrayList<CommitComment> implements
                     FullCommitFile full = new FullCommitFile(file);
                     while (iterator.hasNext()) {
                         CommitComment comment = iterator.next();
-                        if (file.getFilename().equals(comment.getPath())) {
+                        if (file.getFileName().equals(comment.path)) {
                             full.add(comment);
                             iterator.remove();
                         }
@@ -97,13 +97,13 @@ public class FullCommit extends ArrayList<CommitComment> implements
 
     @Override
     public boolean add(final CommitComment comment) {
-        String path = comment.getPath();
+        String path = comment.path;
         if (TextUtils.isEmpty(path))
             return super.add(comment);
         else {
             boolean added = false;
             for (FullCommitFile file : files)
-                if (path.equals(file.getFile().getFilename())) {
+                if (path.equals(file.getFile().filename)) {
                     file.add(comment);
                     added = true;
                     break;
@@ -124,7 +124,7 @@ public class FullCommit extends ArrayList<CommitComment> implements
     /**
      * @return commit
      */
-    public RepositoryCommit getCommit() {
+    public Commit getCommit() {
         return commit;
     }
 }

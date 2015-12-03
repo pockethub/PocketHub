@@ -21,6 +21,8 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
+import com.alorma.github.sdk.services.orgs.OrgsMembersClient;
+import com.alorma.github.sdk.services.search.UsersSearchClient;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
 import com.github.pockethub.ThrowableLoader;
@@ -29,9 +31,10 @@ import com.github.pockethub.ui.ItemListFragment;
 import com.github.pockethub.util.AvatarLoader;
 import com.google.inject.Inject;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.User;
 import org.eclipse.egit.github.core.service.OrganizationService;
 
 /**
@@ -51,14 +54,14 @@ public class MembersFragment extends ItemListFragment<User> {
         super.onSaveInstanceState(outState);
 
         if (org != null)
-            outState.putSerializable(EXTRA_USER, org);
+            outState.putParcelable(EXTRA_USER, org);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        org = (User) getArguments().getSerializable("org");
+        org = (User) getArguments().getParcelable("org");
         if (org == null && savedInstanceState != null)
-            org = (User) savedInstanceState.getSerializable(EXTRA_USER);
+            org = savedInstanceState.getParcelable(EXTRA_USER);
         setEmptyText(R.string.no_members);
 
         super.onActivityCreated(savedInstanceState);
@@ -70,7 +73,15 @@ public class MembersFragment extends ItemListFragment<User> {
 
             @Override
             public List<User> loadData() throws Exception {
-                return service.getMembers(org.getLogin());
+                int page = 1;
+                boolean hasMore = true;
+                List<User> users = new ArrayList<>();
+
+                while (hasMore){
+                    hasMore = users.addAll(new OrgsMembersClient(getContext(), org.login, page).executeSync());
+                    page++;
+                }
+                return users;
             }
         };
     }

@@ -27,14 +27,15 @@ import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.DialogFragmentActivity;
 import com.github.pockethub.ui.repo.RepositoryViewActivity;
 import com.github.pockethub.util.AvatarLoader;
+import com.github.pockethub.util.InfoUtils;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.Repository;
 
 /**
  * Activity to display a comparison between two commits
@@ -49,7 +50,7 @@ public class CommitCompareViewActivity extends DialogFragmentActivity {
      * @param head
      * @return intent
      */
-    public static Intent createIntent(final Repository repository,
+    public static Intent createIntent(final Repo repository,
         final String base, final String head) {
         Builder builder = new Builder("commits.compare.VIEW");
         builder.add(EXTRA_BASE, base);
@@ -58,7 +59,7 @@ public class CommitCompareViewActivity extends DialogFragmentActivity {
         return builder.toIntent();
     }
 
-    private Repository repository;
+    private Repo repository;
 
     @Inject
     private AvatarLoader avatars;
@@ -69,7 +70,7 @@ public class CommitCompareViewActivity extends DialogFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        repository = getSerializableExtra(EXTRA_REPOSITORY);
+        repository = getIntent().getParcelableExtra(EXTRA_REPOSITORY);
 
         setContentView(R.layout.commit_compare);
 
@@ -77,8 +78,8 @@ public class CommitCompareViewActivity extends DialogFragmentActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setSubtitle(repository.generateId());
-        avatars.bind(actionBar, repository.getOwner());
+        actionBar.setSubtitle(InfoUtils.createRepoId(repository));
+        avatars.bind(actionBar, repository.owner);
 
         fragment = getSupportFragmentManager()
             .findFragmentById(android.R.id.list);

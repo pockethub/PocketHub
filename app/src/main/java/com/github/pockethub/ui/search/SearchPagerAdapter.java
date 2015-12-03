@@ -17,7 +17,7 @@ package com.github.pockethub.ui.search;
 
 import android.content.res.Resources;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import com.github.pockethub.R;
 import com.github.pockethub.ui.FragmentPagerAdapter;
@@ -34,7 +34,7 @@ public class SearchPagerAdapter extends FragmentPagerAdapter {
      *
      * @param activity
      */
-    public SearchPagerAdapter(ActionBarActivity activity) {
+    public SearchPagerAdapter(AppCompatActivity activity) {
         super(activity);
 
         resources = activity.getResources();

@@ -19,7 +19,9 @@ import static com.github.pockethub.Intents.EXTRA_GIST_FILE;
 import static com.github.pockethub.Intents.EXTRA_GIST_ID;
 import static com.github.pockethub.util.PreferenceUtils.WRAP;
 import android.accounts.Account;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
@@ -31,6 +33,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
+import com.alorma.github.sdk.bean.dto.response.GistFile;
 import com.github.pockethub.R;
 import com.github.pockethub.accounts.AuthenticatedUserTask;
 import com.github.pockethub.core.gist.GistStore;
@@ -43,8 +46,7 @@ import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Map;
 
-import org.eclipse.egit.github.core.Gist;
-import org.eclipse.egit.github.core.GistFile;
+import com.alorma.github.sdk.bean.dto.response.Gist;
 
 /**
  * Fragment to display the content of a file in a Gist
@@ -70,8 +72,8 @@ public class GistFileFragment extends DialogFragment implements
     private MenuItem wrapItem;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
         gistId = getStringExtra(EXTRA_GIST_ID);
     }
@@ -82,8 +84,10 @@ public class GistFileFragment extends DialogFragment implements
 
         file = (GistFile) getArguments().get(EXTRA_GIST_FILE);
         gist = store.getGist(gistId);
-        if (gist == null)
-            gist = new Gist().setId(gistId);
+        if (gist == null) {
+            gist = new Gist();
+            gist.id = gistId;
+        }
 
         codePrefs = PreferenceUtils.getCodePreferences(getActivity());
         codePrefs.registerOnSharedPreferenceChangeListener(this);
@@ -116,6 +120,7 @@ public class GistFileFragment extends DialogFragment implements
                 wrapItem.setTitle(R.string.enable_wrapping);
     }
 
+    @SuppressLint("CommitPrefEdits")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -141,10 +146,10 @@ public class GistFileFragment extends DialogFragment implements
             @Override
             public GistFile run(Account account) throws Exception {
                 gist = store.refreshGist(gistId);
-                Map<String, GistFile> files = gist.getFiles();
+                Map<String, GistFile> files = gist.files;
                 if (files == null)
                     throw new IOException();
-                GistFile loadedFile = files.get(file.getFilename());
+                GistFile loadedFile = files.get(file.filename);
                 if (loadedFile == null)
                     throw new IOException();
                 return loadedFile;
@@ -165,8 +170,8 @@ public class GistFileFragment extends DialogFragment implements
                     return;
 
                 file = loadedFile;
-                getArguments().putSerializable(EXTRA_GIST_FILE, file);
-                if (file.getContent() != null)
+                getArguments().putParcelable(EXTRA_GIST_FILE, file);
+                if (file.content != null)
                     showSource();
             }
 
@@ -174,13 +179,13 @@ public class GistFileFragment extends DialogFragment implements
     }
 
     private void showSource() {
-        editor.setSource(file.getFilename(), file.getContent(), false);
+        editor.setSource(file.filename, file.content, false);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.gist_file_view, null);
+        return inflater.inflate(R.layout.gist_file_view, container, false);
     }
 
     @Override
@@ -193,7 +198,7 @@ public class GistFileFragment extends DialogFragment implements
         editor.setWrap(PreferenceUtils.getCodePreferences(getActivity())
                 .getBoolean(WRAP, false));
 
-        if (file.getContent() != null)
+        if (file.content != null)
             showSource();
         else
             loadSource();

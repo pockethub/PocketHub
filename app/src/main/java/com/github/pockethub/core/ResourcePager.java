@@ -15,15 +15,14 @@
  */
 package com.github.pockethub.core;
 
+import com.alorma.github.sdk.bean.dto.response.GithubEvent;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.eclipse.egit.github.core.client.NoSuchPageException;
-import org.eclipse.egit.github.core.client.PageIterator;
 
 /**
  * Generic resource pager for elements with an id that can be paged
@@ -170,5 +169,5 @@ public abstract class ResourcePager<E> {
      * @return iterator
      */
     public abstract PageIterator<E> createIterator(final int page,
-            final int size);
+                                                             final int size);
 }

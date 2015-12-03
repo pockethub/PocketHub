@@ -15,7 +15,6 @@
  */
 package com.github.pockethub.accounts;
 
-import static com.github.pockethub.accounts.AccountConstants.PROVIDER_AUTHORITY;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
@@ -30,32 +29,33 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.alorma.github.basesdk.ApiClient;
 import com.alorma.github.basesdk.client.BaseClient;
+import com.alorma.github.basesdk.client.GithubDeveloperCredentialsProvider;
+import com.alorma.github.basesdk.client.credentials.GithubDeveloperCredentials;
+import com.alorma.github.sdk.bean.dto.response.Organization;
 import com.alorma.github.sdk.bean.dto.response.Token;
 import com.alorma.github.sdk.login.AccountsHelper;
-import com.alorma.github.sdk.security.GitHub;
 import com.alorma.github.sdk.services.login.RequestTokenClient;
 import com.alorma.github.sdk.services.user.GetAuthUserClient;
 import com.github.pockethub.R;
 import com.github.pockethub.persistence.AccountDataManager;
 import com.github.pockethub.ui.LightProgressDialog;
 import com.github.pockethub.ui.MainActivity;
-import com.github.pockethub.ui.roboactivities.RoboActionBarAccountAuthenticatorActivity;
+import com.github.pockethub.ui.roboactivities.RoboAccountAuthenticatorAppCompatActivity;
 import com.google.inject.Inject;
 import com.squareup.okhttp.HttpUrl;
 
 import java.util.List;
 
-import org.eclipse.egit.github.core.User;
-
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+
+import static com.github.pockethub.accounts.AccountConstants.PROVIDER_AUTHORITY;
 
 /**
  * Activity to login
  */
-public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity implements BaseClient.OnResultCallback<com.alorma.github.sdk.bean.dto.response.User> {
+public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity implements BaseClient.OnResultCallback<com.alorma.github.sdk.bean.dto.response.User> {
 
     /**
      * Auth token type parameter
@@ -90,7 +90,7 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity imp
     }
 
     public static class AccountLoader extends
-        AuthenticatedUserTask<List<User>> {
+        AuthenticatedUserTask<List<Organization>> {
 
         @Inject
         private AccountDataManager cache;
@@ -100,7 +100,7 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity imp
         }
 
         @Override
-        protected List<User> run(Account account) throws Exception {
+        protected List<Organization> run(Account account) throws Exception {
             return cache.getOrgs(true);
         }
     }
@@ -130,8 +130,15 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity imp
 
         accounts = accountManager.getAccountsByType(getString(R.string.account_type));
 
-        if (accounts != null && accounts.length > 0)
+        if (accounts != null && accounts.length > 0) {
             openMain();
+        }
+        checkOauthConfig();
+    }
+
+    private void checkOauthConfig() {
+        if (getString(R.string.github_client).equals("dummy_client") || getString(R.string.github_secret).equals("dummy_secret"))
+            Toast.makeText(this, R.string.error_oauth_not_configured, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -169,8 +176,10 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity imp
     }
 
     private void openMain() {
-        if(progressDialog != null)
+        if (progressDialog != null) {
             progressDialog.dismiss();
+        }
+
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -183,10 +192,10 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity imp
     }
 
     public void handleLogin() {
-        openLoginInBrowser(new GitHub(this));
+        openLoginInBrowser(GithubDeveloperCredentials.getInstance().getProvider());
     }
 
-    private void openLoginInBrowser(ApiClient client) {
+    private void openLoginInBrowser(GithubDeveloperCredentialsProvider client) {
         String initialScope = "user,public_repo,repo,delete_repo,notifications,gist";
         HttpUrl.Builder url = new HttpUrl.Builder()
                 .scheme("https")

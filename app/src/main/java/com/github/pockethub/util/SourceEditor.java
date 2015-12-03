@@ -25,6 +25,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.alorma.github.sdk.bean.dto.response.GitBlob;
 import com.github.pockethub.ui.user.UriLauncherActivity;
 
 import java.io.UnsupportedEncodingException;
@@ -184,11 +185,11 @@ public class SourceEditor {
      * @param blob
      * @return this editor
      */
-    public SourceEditor setSource(final String name, final Blob blob) {
-        String content = blob.getContent();
+    public SourceEditor setSource(final String name, final GitBlob blob) {
+        String content = blob.content;
         if (content == null)
             content = "";
-        boolean encoded = !TextUtils.isEmpty(content) && ENCODING_BASE64.equals(blob.getEncoding());
+        boolean encoded = !TextUtils.isEmpty(content) && ENCODING_BASE64.equals(blob.encoding);
         return setSource(name, content, encoded);
     }
 

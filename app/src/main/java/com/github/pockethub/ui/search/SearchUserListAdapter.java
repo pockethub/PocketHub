@@ -18,6 +18,7 @@ package com.github.pockethub.ui.search;
 import android.content.Context;
 import android.view.LayoutInflater;
 
+import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
 import com.github.pockethub.core.search.SearchUser;
@@ -26,7 +27,7 @@ import com.github.pockethub.util.AvatarLoader;
 /**
  * Adapter for a list of searched users
  */
-public class SearchUserListAdapter extends SingleTypeAdapter<SearchUser> {
+public class SearchUserListAdapter extends SingleTypeAdapter<User> {
 
     private final AvatarLoader avatars;
 
@@ -38,7 +39,7 @@ public class SearchUserListAdapter extends SingleTypeAdapter<SearchUser> {
      * @param avatars
      */
     public SearchUserListAdapter(final Context context,
-            final SearchUser[] elements, final AvatarLoader avatars) {
+            final User[] elements, final AvatarLoader avatars) {
         super(LayoutInflater.from(context), R.layout.user_item);
 
         this.avatars = avatars;
@@ -47,7 +48,7 @@ public class SearchUserListAdapter extends SingleTypeAdapter<SearchUser> {
 
     @Override
     public long getItemId(final int position) {
-        String userId = getItem(position).getId();
+        String userId = String.valueOf(getItem(position).id);
         return Long.parseLong(userId.replace("user-", ""));
     }
 
@@ -57,7 +58,7 @@ public class SearchUserListAdapter extends SingleTypeAdapter<SearchUser> {
     }
 
     @Override
-    protected void update(final int position, final SearchUser user) {
-        setText(1, user.getLogin());
+    protected void update(final int position, final User user) {
+        setText(1, user.login);
     }
 }

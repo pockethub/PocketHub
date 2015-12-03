@@ -163,8 +163,14 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
         getSupportActionBar().setElevation(0);
 
         pager = (ViewPager) findViewById(R.id.vp_pages);
-        pager.setOnPageChangeListener(this);
+        pager.addOnPageChangeListener(this);
         slidingTabsLayout = (TabLayout) findViewById(R.id.sliding_tabs_layout);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        pager.removeOnPageChangeListener(this);
     }
 
     @Override

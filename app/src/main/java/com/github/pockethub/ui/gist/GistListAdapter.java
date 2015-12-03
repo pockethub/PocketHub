@@ -24,12 +24,13 @@ import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.StyledText;
 import com.github.pockethub.util.AvatarLoader;
+import com.github.pockethub.util.TimeUtils;
 import com.github.pockethub.util.TypefaceUtils;
 
 import java.util.Collection;
 
-import org.eclipse.egit.github.core.Gist;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.Gist;
+import com.alorma.github.sdk.bean.dto.response.User;
 
 /**
  * Adapter to display a list of {@link Gist} objects
@@ -55,7 +56,7 @@ public class GistListAdapter extends SingleTypeAdapter<Gist> {
 
     @Override
     public long getItemId(final int position) {
-        final String id = getItem(position).getId();
+        final String id = getItem(position).id;
         return !TextUtils.isEmpty(id) ? id.hashCode() : super
                 .getItemId(position);
     }
@@ -79,27 +80,27 @@ public class GistListAdapter extends SingleTypeAdapter<Gist> {
 
     @Override
     protected void update(int position, Gist gist) {
-        setText(0, gist.getId());
+        setText(0, gist.id);
 
-        String description = gist.getDescription();
+        String description = gist.description;
         if (!TextUtils.isEmpty(description))
             setText(1, description);
         else
             setText(1, R.string.no_description_given);
 
-        User user = gist.getUser();
+        User user = gist.owner;
         avatars.bind(imageView(5), user);
 
         StyledText authorText = new StyledText();
         if (user != null)
-            authorText.bold(user.getLogin());
+            authorText.bold(user.login);
         else
             authorText.bold(anonymous);
         authorText.append(' ');
-        authorText.append(gist.getCreatedAt());
+        authorText.append(TimeUtils.stringToDate(gist.created_at));
         setText(2, authorText);
 
-        setNumber(3, gist.getComments());
-        setNumber(4, gist.getFiles().size());
+        setNumber(3, gist.comments);
+        setNumber(4, gist.files.size());
     }
 }

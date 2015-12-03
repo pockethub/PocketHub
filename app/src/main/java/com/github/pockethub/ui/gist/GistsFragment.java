@@ -32,7 +32,7 @@ import com.google.inject.Inject;
 
 import java.util.List;
 
-import org.eclipse.egit.github.core.Gist;
+import com.alorma.github.sdk.bean.dto.response.Gist;
 import org.eclipse.egit.github.core.service.GistService;
 
 /**

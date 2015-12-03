@@ -20,29 +20,32 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
+import com.alorma.github.sdk.bean.dto.request.CommentRequest;
+import com.alorma.github.sdk.bean.dto.response.GithubComment;
+import com.alorma.github.sdk.services.issues.EditIssueCommentClient;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.ProgressDialogTask;
 import com.github.pockethub.util.HtmlUtils;
+import com.github.pockethub.util.InfoUtils;
 import com.github.pockethub.util.ToastUtils;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Comment;
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 import org.eclipse.egit.github.core.service.IssueService;
 
 /**
  * Task to edit a comment on an issue in a repository
  */
-public class EditCommentTask extends ProgressDialogTask<Comment> {
+public class EditCommentTask extends ProgressDialogTask<GithubComment> {
 
     private static final String TAG = "EditCommentTask";
 
-    private final IRepositoryIdProvider repository;
+    private final Repo repository;
 
-    private final Comment comment;
+    private final String id;
 
-    @Inject
-    private IssueService service;
+    private final String comment;
 
     /**
      * Edit task for editing a comment on the given issue in the given
@@ -52,20 +55,20 @@ public class EditCommentTask extends ProgressDialogTask<Comment> {
      * @param repository
      * @param comment
      */
-    public EditCommentTask(final Context context,
-            final IRepositoryIdProvider repository,
-            final Comment comment) {
+    public EditCommentTask(final Context context, final Repo repository,
+            final String id, final String comment) {
         super(context);
 
         this.repository = repository;
+        this.id = id;
         this.comment = comment;
     }
 
     @Override
-    protected Comment run(Account account) throws Exception {
-        Comment edited = service.editComment(repository, comment);
-        String formatted = HtmlUtils.format(edited.getBodyHtml()).toString();
-        edited.setBodyHtml(formatted);
+    protected GithubComment run(Account account) throws Exception {
+        GithubComment edited = new EditIssueCommentClient(context,
+                InfoUtils.createRepoInfo(repository), id, new CommentRequest(comment)).executeSync();
+        edited.body_html = HtmlUtils.format(edited.body_html).toString();
         return edited;
     }
 

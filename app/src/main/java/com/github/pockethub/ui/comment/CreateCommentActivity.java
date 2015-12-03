@@ -21,6 +21,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.alorma.github.sdk.bean.dto.response.GithubComment;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.TabPagerActivity;
 import com.github.pockethub.util.AvatarLoader;
@@ -89,7 +90,7 @@ public abstract class CreateCommentActivity extends
      *
      * @param comment
      */
-    protected void finish(Comment comment) {
+    protected void finish(GithubComment comment) {
         Intent data = new Intent();
         data.putExtra(EXTRA_COMMENT, comment);
         setResult(RESULT_OK, data);

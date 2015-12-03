@@ -96,24 +96,24 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
     @Override
     protected int getChildLayoutId(final int type) {
         switch (type) {
-        case TYPE_BLOB:
-            return R.layout.blob_item;
-        case TYPE_TREE:
-            return R.layout.folder_item;
-        default:
-            return -1;
+            case TYPE_BLOB:
+                return R.layout.blob_item;
+            case TYPE_TREE:
+                return R.layout.folder_item;
+            default:
+                return -1;
         }
     }
 
     @Override
     protected int[] getChildViewIds(final int type) {
         switch (type) {
-        case TYPE_BLOB:
-            return new int[] { R.id.tv_file, R.id.tv_size };
-        case TYPE_TREE:
-            return new int[] { R.id.tv_folder, R.id.tv_folders, R.id.tv_files };
-        default:
-            return null;
+            case TYPE_BLOB:
+                return new int[]{R.id.tv_file, R.id.tv_size};
+            case TYPE_TREE:
+                return new int[]{R.id.tv_folder, R.id.tv_folders, R.id.tv_files};
+            default:
+                return null;
         }
     }
 
@@ -127,15 +127,15 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
         paddingBottom = view.getPaddingBottom();
 
         switch (type) {
-        case TYPE_BLOB:
-            TypefaceUtils.setOcticons((TextView) view
-                    .findViewById(R.id.tv_file_icon));
-            break;
-        case TYPE_TREE:
-            TypefaceUtils.setOcticons(
-                    (TextView) view.findViewById(R.id.tv_folder_icon),
-                    (TextView) view.findViewById(R.id.tv_folders_icon),
-                    (TextView) view.findViewById(R.id.tv_files_icon));
+            case TYPE_BLOB:
+                TypefaceUtils.setOcticons((TextView) view
+                        .findViewById(R.id.tv_file_icon));
+                break;
+            case TYPE_TREE:
+                TypefaceUtils.setOcticons(
+                        (TextView) view.findViewById(R.id.tv_folder_icon),
+                        (TextView) view.findViewById(R.id.tv_folders_icon),
+                        (TextView) view.findViewById(R.id.tv_files_icon));
         }
 
         return view;
@@ -151,18 +151,17 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
                     paddingBottom);
 
         switch (type) {
-        case TYPE_BLOB:
-            Entry file = (Entry) item;
-            setText(0, file.name);
-            setText(1, Formatter.formatFileSize(context, file.entry.getSize()));
-
-            break;
-        case TYPE_TREE:
-            Folder folder = (Folder) item;
-            setText(0, CommitUtils.getName(folder.name));
-            setNumber(1, folder.folders.size());
-            setNumber(2, folder.files.size());
-            break;
+            case TYPE_BLOB:
+                Entry file = (Entry) item;
+                setText(0, file.name);
+                setText(1, Formatter.formatFileSize(context, file.entry.size));
+                break;
+            case TYPE_TREE:
+                Folder folder = (Folder) item;
+                setText(0, CommitUtils.getName(folder.name));
+                setNumber(1, folder.folders.size());
+                setNumber(2, folder.files.size());
+                break;
         }
     }
 }

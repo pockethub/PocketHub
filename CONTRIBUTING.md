@@ -3,6 +3,7 @@ Contributing
 
 ## Reporting issues
 
+* IMPORTANT: Any issues reported regarding the old Play Store version of the original GitHub app will be closed without investigation. Please only report issues regarding the current repo version (i.e. you must confirm this issue exists in the latest master). This is a different app now, and many old issues with the original app (such as 2FA) were resolved in master but not released.
 * Make sure there's not already an issue (open or closed) regarding your issue.
 * Include detailed information and steps to reproduce. Any issues opened with no description will be ignored.
 * Include a screenshot(s) of the issue. Brownie points for a screen recording of the issue.

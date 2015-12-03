@@ -18,15 +18,16 @@ package com.github.pockethub.ui.issue;
 import static com.github.pockethub.RequestCodes.ISSUE_ASSIGNEE_UPDATE;
 import android.accounts.Account;
 
+import com.alorma.github.sdk.bean.dto.request.EditIssueAssigneeRequestDTO;
 import com.github.pockethub.R;
 import com.github.pockethub.core.issue.IssueStore;
 import com.github.pockethub.ui.DialogFragmentActivity;
 import com.github.pockethub.ui.ProgressDialogTask;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.Issue;
+import com.alorma.github.sdk.bean.dto.response.User;
 import org.eclipse.egit.github.core.service.CollaboratorService;
 
 /**
@@ -42,7 +43,7 @@ public class EditAssigneeTask extends ProgressDialogTask<Issue> {
 
     private final AssigneeDialog assigneeDialog;
 
-    private final IRepositoryIdProvider repositoryId;
+    private final Repo repositoryId;
 
     private final int issueNumber;
 
@@ -56,13 +57,13 @@ public class EditAssigneeTask extends ProgressDialogTask<Issue> {
      * @param issueNumber
      */
     public EditAssigneeTask(final DialogFragmentActivity activity,
-            final IRepositoryIdProvider repositoryId, final int issueNumber) {
+            final Repo repositoryId, final int issueNumber) {
         super(activity);
 
         this.repositoryId = repositoryId;
         this.issueNumber = issueNumber;
         assigneeDialog = new AssigneeDialog(activity, ISSUE_ASSIGNEE_UPDATE,
-                repositoryId, service);
+                repositoryId);
     }
 
     /**
@@ -94,12 +95,11 @@ public class EditAssigneeTask extends ProgressDialogTask<Issue> {
 
     @Override
     protected Issue run(Account account) throws Exception {
-        Issue editedIssue = new Issue();
+        EditIssueAssigneeRequestDTO edit = new EditIssueAssigneeRequestDTO();
         if (assignee != null)
-            editedIssue.setAssignee(assignee);
+            edit.assignee = assignee.login;
         else
-            editedIssue.setAssignee(new User().setLogin(""));
-        editedIssue.setNumber(issueNumber);
-        return store.editIssue(repositoryId, editedIssue);
+            edit.assignee = "";
+        return store.editIssue(repositoryId, issueNumber, edit);
     }
 }

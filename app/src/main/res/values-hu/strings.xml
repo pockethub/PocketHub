@@ -93,7 +93,6 @@
     <string name="creating_gist">Gist létrehozása…</string>
     <string name="create">Új</string>
     <string name="create_gist">Új Gist</string>
-    <string name="gist_content_hint">puts \'Helló Világ!\'</string>
     <string name="make_public">Gist publikussá tétele</string>
     <string name="gist_file_name_hint">fájl.rb</string>
     <string name="gist">Gist</string>

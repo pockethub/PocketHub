@@ -19,18 +19,19 @@ import static com.github.pockethub.Intents.EXTRA_BASE;
 import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
+import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.github.pockethub.ui.FragmentStatePagerAdapter;
 
-import org.eclipse.egit.github.core.Repository;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 
 /**
  * Pager over commits
  */
 public class CommitPagerAdapter extends FragmentStatePagerAdapter {
 
-    private final Repository repository;
+    private final Repo repository;
 
     private final CharSequence[] ids;
 
@@ -39,8 +40,8 @@ public class CommitPagerAdapter extends FragmentStatePagerAdapter {
      * @param repository
      * @param ids
      */
-    public CommitPagerAdapter(ActionBarActivity activity,
-            Repository repository, CharSequence[] ids) {
+    public CommitPagerAdapter(AppCompatActivity activity,
+            Repo repository, CharSequence[] ids) {
         super(activity);
 
         this.repository = repository;
@@ -51,7 +52,7 @@ public class CommitPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(final int position) {
         Bundle arguments = new Bundle();
         arguments.putString(EXTRA_BASE, ids[position].toString());
-        arguments.putSerializable(EXTRA_REPOSITORY, repository);
+        arguments.putParcelable(EXTRA_REPOSITORY, repository);
         CommitDiffListFragment fragment = new CommitDiffListFragment();
         fragment.setArguments(arguments);
         return fragment;

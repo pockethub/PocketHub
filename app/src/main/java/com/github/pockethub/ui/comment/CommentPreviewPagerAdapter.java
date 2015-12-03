@@ -1,4 +1,5 @@
 /*
+ * Copyright 2015 PocketHub.
  * Copyright 2012 GitHub Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,22 +18,18 @@ package com.github.pockethub.ui.comment;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
+import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.FragmentPagerAdapter;
-
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
 
 /**
  * Pager of a raw and rendered comment text
  */
 public class CommentPreviewPagerAdapter extends FragmentPagerAdapter {
-
-    private final IRepositoryIdProvider repo;
-
+    private final Repo repo;
     private RawCommentFragment textFragment;
-
     private RenderedCommentFragment htmlFragment;
 
     /**
@@ -46,8 +43,8 @@ public class CommentPreviewPagerAdapter extends FragmentPagerAdapter {
      * @param activity
      * @param repo
      */
-    public CommentPreviewPagerAdapter(ActionBarActivity activity,
-            IRepositoryIdProvider repo) {
+    public CommentPreviewPagerAdapter(AppCompatActivity activity,
+            Repo repo) {
         super(activity);
         this.context = activity.getApplicationContext();
         this.repo = repo;
@@ -79,6 +76,10 @@ public class CommentPreviewPagerAdapter extends FragmentPagerAdapter {
      * @return text
      */
     public String getCommentText() {
+        if (textFragment == null) {
+            textFragment = (RawCommentFragment) getFragmentByPosition(0);
+        }
+
         return textFragment != null ? textFragment.getText() : null;
     }
 
@@ -88,8 +89,9 @@ public class CommentPreviewPagerAdapter extends FragmentPagerAdapter {
      * @return text
      */
     public void setCommentText(String comment) {
-        if(textFragment != null)
+        if (textFragment != null) {
             textFragment.setText(comment);
+        }
         initComment = comment;
     }
 
@@ -100,8 +102,9 @@ public class CommentPreviewPagerAdapter extends FragmentPagerAdapter {
      * @return this adapter
      */
     public CommentPreviewPagerAdapter setCurrentItem(int position) {
-        if (position == 1 && htmlFragment != null)
+        if (position == 1 && htmlFragment != null) {
             htmlFragment.setText(getCommentText(), repo);
+        }
         return this;
     }
 

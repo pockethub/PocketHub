@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/navigation_home"
+            android:icon="@drawable/ic_github_home_black_24dp"
+            android:checked="true"
+            android:title="@string/home" />
+        <item
+            android:id="@+id/navigation_gists"
+            android:icon="@drawable/ic_github_gist_black_24dp"
+            android:title="@string/gists" />
+        <item
+            android:id="@+id/navigation_issue_dashboard"
+            android:icon="@drawable/ic_github_dashboard_black_24dp"
+            android:title="@string/issue_dashboard" />
+        <item
+            android:id="@+id/navigation_bookmarks"
+            android:icon="@drawable/ic_github_bookmark_black_24dp"
+            android:title="@string/bookmarks" />
+    </group>
+    <item
+        android:id="@+id/navigation_organizations"
+        android:title="@string/organizations">
+        <menu/>
+    </item>
+    <group
+        android:id="@+id/navigation_secondary"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/navigation_log_out"
+            android:checkable="false"
+            android:icon="@drawable/ic_github_sign_out_black_24dp"
+            android:title="@string/log_out"/>
+    </group>
+</menu>

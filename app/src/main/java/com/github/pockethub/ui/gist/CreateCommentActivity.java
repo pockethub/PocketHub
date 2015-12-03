@@ -16,16 +16,25 @@
 package com.github.pockethub.ui.gist;
 
 import static com.github.pockethub.Intents.EXTRA_GIST;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 
+import com.alorma.github.basesdk.client.BaseClient;
+import com.alorma.github.sdk.bean.dto.request.CommentRequest;
+import com.alorma.github.sdk.bean.dto.response.GithubComment;
+import com.alorma.github.sdk.services.gists.PublishGistCommentClient;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
 
-import org.eclipse.egit.github.core.Comment;
-import org.eclipse.egit.github.core.Gist;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.Gist;
+import com.alorma.github.sdk.bean.dto.response.User;
+import com.github.pockethub.util.ToastUtils;
+
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Activity to create a comment on a {@link Gist}
@@ -47,31 +56,39 @@ public class CreateCommentActivity extends
 
     private Gist gist;
 
+    private String TAG = "CreateCommentActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        gist = getSerializableExtra(EXTRA_GIST);
+        gist = getParcelableExtra(EXTRA_GIST);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(getString(R.string.gist_title) + gist.getId());
-        User user = gist.getUser();
+        actionBar.setTitle(getString(R.string.gist_title) + gist.id);
+        User user = gist.user;
         if (user != null)
-            actionBar.setSubtitle(user.getLogin());
+            actionBar.setSubtitle(user.login);
         avatars.bind(actionBar, user);
     }
 
     @Override
-    protected void createComment(String comment) {
-        new CreateCommentTask(this, gist.getId(), comment) {
-
+    protected void createComment(final String comment) {
+        PublishGistCommentClient commentClient = new PublishGistCommentClient(this,
+                gist.id, new CommentRequest(comment));
+        commentClient.setOnResultCallback(new BaseClient.OnResultCallback<GithubComment>() {
             @Override
-            protected void onSuccess(Comment comment) throws Exception {
-                super.onSuccess(comment);
-
-                finish(comment);
+            public void onResponseOk(GithubComment githubComment, Response r) {
+                finish(githubComment);
             }
 
-        }.start();
+            @Override
+            public void onFail(RetrofitError error) {
+                Log.d(TAG, "Exception creating comment on gist", error);
+
+                ToastUtils.show(CreateCommentActivity.this, error.getMessage());
+            }
+        });
+        commentClient.execute();
     }
 }

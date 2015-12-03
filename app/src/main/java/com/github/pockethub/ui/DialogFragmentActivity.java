@@ -16,17 +16,16 @@
 package com.github.pockethub.ui;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 
 import com.github.kevinsawicki.wishlist.ViewFinder;
-import com.github.pockethub.ui.roboactivities.RoboActionBarActivity;
-
-import java.io.Serializable;
+import com.github.pockethub.ui.roboactivities.RoboAppCompatActivity;
 
 /**
  * Activity that display dialogs
  */
 public abstract class DialogFragmentActivity extends
-    RoboActionBarActivity implements DialogResultListener {
+        RoboAppCompatActivity implements DialogResultListener {
 
     /**
      * Finder bound to this activity's view
@@ -44,11 +43,11 @@ public abstract class DialogFragmentActivity extends
      * Get intent extra
      *
      * @param name
-     * @return serializable
+     * @return parcelable
      */
     @SuppressWarnings("unchecked")
-    protected <V extends Serializable> V getSerializableExtra(final String name) {
-        return (V) getIntent().getSerializableExtra(name);
+    protected <V extends Parcelable> V getParcelableExtra(final String name) {
+        return (V) getIntent().getParcelableExtra(name);
     }
 
     /**

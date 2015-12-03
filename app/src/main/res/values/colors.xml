@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <color name="background">#F9F9F9</color>
     <color name="background_id">#E3E3E3</color>
@@ -78,5 +78,8 @@
     <color name="primary">#3D3D3D</color>
     <color name="primary_dark">#313131</color>
     <color name="accent">#3797C7</color>
+
+    <color name="appcompat_secondary_text_default_material_light">#8a000000</color>
+    <color name="appcompat_secondary_text_disabled_material_light">#24000000</color>
 
 </resources>

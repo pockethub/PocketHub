@@ -20,14 +20,21 @@ import static com.github.pockethub.RequestCodes.GIST_CREATE;
 import static com.github.pockethub.RequestCodes.GIST_VIEW;
 import android.content.Intent;
 
+import com.alorma.github.sdk.bean.dto.response.Gist;
+import com.alorma.github.sdk.bean.dto.response.GithubEvent;
+import com.alorma.github.sdk.services.client.GithubClient;
+import com.alorma.github.sdk.services.gists.UserGistsClient;
 import com.github.pockethub.accounts.GitHubAccount;
 import com.github.pockethub.core.ResourcePager;
 import com.github.pockethub.core.gist.GistPager;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import org.eclipse.egit.github.core.Gist;
-import org.eclipse.egit.github.core.client.PageIterator;
+import org.eclipse.egit.github.core.Commit;
+
+import com.github.pockethub.core.PageIterator;
+
+import java.util.List;
 
 /**
  * Fragment to display a list of Gists
@@ -54,8 +61,13 @@ public class MyGistsFragment extends GistsFragment {
 
             @Override
             public PageIterator<Gist> createIterator(int page, int size) {
-                return service.pageGists(accountProvider.get().getUsername(),
-                        page, size);
+                return new PageIterator<>(new PageIterator.GitHubRequest<List<Gist>>() {
+                    @Override
+                    public GithubClient<List<Gist>> execute(int page) {
+                        return new UserGistsClient(getActivity(),
+                                accountProvider.get().getUsername(), page);
+                    }
+                }, page);
             }
         };
     }

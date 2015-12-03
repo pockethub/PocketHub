@@ -15,13 +15,6 @@
  */
 package com.github.pockethub.ui.user;
 
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
-import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
-import static com.github.pockethub.Intents.EXTRA_USER;
-import static com.github.pockethub.util.TypefaceUtils.ICON_FOLLOW;
-import static com.github.pockethub.util.TypefaceUtils.ICON_NEWS;
-import static com.github.pockethub.util.TypefaceUtils.ICON_PUBLIC;
-import static com.github.pockethub.util.TypefaceUtils.ICON_WATCH;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -30,20 +23,34 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
 
+import com.alorma.github.basesdk.client.BaseClient;
+import com.alorma.github.sdk.bean.dto.response.User;
+import com.alorma.github.sdk.services.user.RequestUserClient;
+import com.alorma.github.sdk.services.user.follow.CheckFollowingUser;
+import com.alorma.github.sdk.services.user.follow.FollowUserClient;
+import com.alorma.github.sdk.services.user.follow.OnCheckFollowingUser;
+import com.alorma.github.sdk.services.user.follow.UnfollowUserClient;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
-import com.github.pockethub.core.user.FollowUserTask;
-import com.github.pockethub.core.user.FollowingUserTask;
-import com.github.pockethub.core.user.RefreshUserTask;
-import com.github.pockethub.core.user.UnfollowUserTask;
+import com.github.pockethub.accounts.AccountUtils;
 import com.github.pockethub.ui.MainActivity;
 import com.github.pockethub.ui.TabPagerActivity;
 import com.github.pockethub.util.AvatarLoader;
 import com.github.pockethub.util.ToastUtils;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.User;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+import static com.github.pockethub.Intents.EXTRA_USER;
+import static com.github.pockethub.util.TypefaceUtils.ICON_FOLLOW;
+import static com.github.pockethub.util.TypefaceUtils.ICON_NEWS;
+import static com.github.pockethub.util.TypefaceUtils.ICON_PUBLIC;
+import static com.github.pockethub.util.TypefaceUtils.ICON_WATCH;
+
 
 /**
  * Activity to view a user's various pages
@@ -76,37 +83,34 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        user = (User) getIntent().getSerializableExtra(EXTRA_USER);
+        user = getIntent().getParcelableExtra(EXTRA_USER);
         loadingBar = finder.find(R.id.pb_loading);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(user.getLogin());
+        actionBar.setTitle(user.login);
 
-        if (!TextUtils.isEmpty(user.getAvatarUrl()))
+        if (!TextUtils.isEmpty(user.avatar_url))
             configurePager();
         else {
             ViewUtils.setGone(loadingBar, false);
             setGone(true);
-            new RefreshUserTask(this, user.getLogin()) {
-
+            RequestUserClient userClient = new RequestUserClient(this, user.login);
+            userClient.setOnResultCallback(new BaseClient.OnResultCallback<User>() {
                 @Override
-                protected void onSuccess(User fullUser) throws Exception {
-                    super.onSuccess(fullUser);
-
+                public void onResponseOk(User fullUser, Response r) {
                     user = fullUser;
                     configurePager();
                 }
 
                 @Override
-                protected void onException(Exception e) throws RuntimeException {
-                    super.onException(e);
-
+                public void onFail(RetrofitError error) {
                     ToastUtils.show(UserViewActivity.this,
-                        R.string.error_person_load);
+                            R.string.error_person_load);
                     ViewUtils.setGone(loadingBar, true);
                 }
-            }.execute();
+            });
+            userClient.execute();
         }
     }
 
@@ -120,8 +124,9 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem followItem = menu.findItem(R.id.m_follow);
+        boolean isCurrentUser = user.login.equals(AccountUtils.getLogin(this));
 
-        followItem.setVisible(followingStatusChecked);
+        followItem.setVisible(followingStatusChecked && !isCurrentUser);
         followItem.setTitle(isFollowing ? R.string.unfollow : R.string.follow);
 
         return super.onPrepareOptionsMenu(menu);
@@ -190,56 +195,50 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     }
 
     private void followUser() {
-        if (isFollowing)
-            new UnfollowUserTask(this, user.getLogin()) {
-
+        if (isFollowing) {
+            UnfollowUserClient unfollowUserClient = new UnfollowUserClient(this, user.login);
+            unfollowUserClient.setOnResultCallback(new BaseClient.OnResultCallback<Object>() {
                 @Override
-                protected void onSuccess(User user) throws Exception {
-                    super.onSuccess(user);
-
+                public void onResponseOk(Object o, Response r) {
                     isFollowing = !isFollowing;
                 }
 
                 @Override
-                protected void onException(Exception e) throws RuntimeException {
-                    super.onException(e);
-
+                public void onFail(RetrofitError error) {
                     ToastUtils.show(UserViewActivity.this,
-                        R.string.error_unfollowing_person);
+                            R.string.error_unfollowing_person);
                 }
-            }.start();
-        else
-            new FollowUserTask(this, user.getLogin()) {
-
+            });
+            unfollowUserClient.execute();
+        } else{
+            FollowUserClient followUserClient = new FollowUserClient(this, user.login);
+            followUserClient.setOnResultCallback(new BaseClient.OnResultCallback<Object>() {
                 @Override
-                protected void onSuccess(User user) throws Exception {
-                    super.onSuccess(user);
-
+                public void onResponseOk(Object o, Response r) {
                     isFollowing = !isFollowing;
                 }
 
                 @Override
-                protected void onException(Exception e) throws RuntimeException {
-                    super.onException(e);
-
+                public void onFail(RetrofitError error) {
                     ToastUtils.show(UserViewActivity.this,
-                        R.string.error_following_person);
+                            R.string.error_following_person);
                 }
-            }.start();
+            });
+            followUserClient.execute();
+        }
     }
 
     private void checkFollowingUserStatus() {
         followingStatusChecked = false;
-        new FollowingUserTask(this, user.getLogin()) {
-
+        CheckFollowingUser userFollowingClient = new CheckFollowingUser(this, user.login);
+        userFollowingClient.setOnCheckFollowingUser(new OnCheckFollowingUser() {
             @Override
-            protected void onSuccess(Boolean following) throws Exception {
-                super.onSuccess(following);
-
+            public void onCheckFollowUser(String username, boolean following) {
                 isFollowing = following;
                 followingStatusChecked = true;
                 invalidateOptionsMenu();
             }
-        }.execute();
+        });
+        userFollowingClient.execute();
     }
 }

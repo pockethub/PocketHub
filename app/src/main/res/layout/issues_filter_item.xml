@@ -22,8 +22,10 @@
         android:id="@+id/iv_avatar"
         style="@style/AvatarLarge"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginTop="4dp"
         android:contentDescription="@string/avatar" />
 
@@ -32,6 +34,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/iv_avatar"
+        android:layout_toEndOf="@id/iv_avatar"
         android:orientation="vertical" >
 
         <TextView

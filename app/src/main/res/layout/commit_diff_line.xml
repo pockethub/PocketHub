@@ -21,5 +21,7 @@
     android:background="@drawable/list_item_background"
     android:paddingBottom="1dp"
     android:paddingLeft="15dp"
+    android:paddingStart="15dp"
     android:paddingRight="10dp"
+    android:paddingEnd="10dp"
     android:paddingTop="1dp" />

@@ -45,9 +45,9 @@
         <item name="android:layout_height">16dp</item>
     </style>
 
-    <style name="commentEditIcon" parent="AvatarMedium" />
+    <style name="commentEditIcon" parent="AvatarMedium"/>
 
-    <style name="commentDeleteIcon" parent="AvatarMedium" />
+    <style name="commentDeleteIcon" parent="AvatarMedium"/>
 
     <style name="ListView">
         <item name="android:dividerHeight">2dp</item>
@@ -97,19 +97,19 @@
     </style>
 
     <style name="ListIcon" parent="TextIcon">
-        <item name="android:textSize">14dp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="EventIcon" parent="TextIcon">
-        <item name="android:textSize">22dp</item>
+        <item name="android:textSize">22sp</item>
     </style>
 
     <style name="PrimaryIcon" parent="TextIcon">
-        <item name="android:textSize">28dp</item>
+        <item name="android:textSize">28sp</item>
     </style>
 
     <style name="TabIcon" parent="TextIcon">
-        <item name="android:textSize">20dp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="IssueNumber">
@@ -153,7 +153,7 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="ListTitleText" parent="TitleText" />
+    <style name="ListTitleText" parent="TitleText"/>
 
     <style name="SubtitleText">
         <item name="android:textSize">14sp</item>
@@ -162,7 +162,7 @@
         <item name="android:layout_width">wrap_content</item>
     </style>
 
-    <style name="ListSubtitleText" parent="SubtitleText" />
+    <style name="ListSubtitleText" parent="SubtitleText"/>
 
     <style name="CodeText">
         <item name="android:textSize">12sp</item>
@@ -191,7 +191,7 @@
         <item name="android:paddingBottom">5dp</item>
     </style>
 
-    <style name="HeaderListItem" parent="ListItem" />
+    <style name="HeaderListItem" parent="ListItem"/>
 
     <style name="CommentListItem" parent="ListItem">
         <item name="android:layout_width">match_parent</item>
@@ -230,6 +230,12 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:textStyle">bold</item>
         <item name="android:padding">16dp</item>
+    </style>
+
+    <style name="NavigationView">
+        <item name="android:textColorSecondary">?attr/colorAccent</item>
+        <item name="itemTextColor">@android:color/black</item>
+        <item name="itemIconTint">@color/color_navigation_view_icon</item>
     </style>
 
 </resources>

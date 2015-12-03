@@ -15,16 +15,15 @@
  */
 package com.github.pockethub.core.issue;
 
-import static org.eclipse.egit.github.core.event.Event.TYPE_ISSUES;
-import static org.eclipse.egit.github.core.event.Event.TYPE_ISSUE_COMMENT;
-import static org.eclipse.egit.github.core.event.Event.TYPE_PULL_REQUEST;
+import com.alorma.github.sdk.bean.dto.response.GithubEvent;
+import com.alorma.github.sdk.bean.dto.response.Issue;
+import com.alorma.github.sdk.bean.dto.response.events.payload.GithubEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.IssueCommentEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.IssueEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.PullRequestEventPayload;
+import com.google.gson.Gson;
 
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.event.Event;
-import org.eclipse.egit.github.core.event.EventPayload;
-import org.eclipse.egit.github.core.event.IssueCommentPayload;
-import org.eclipse.egit.github.core.event.IssuesPayload;
-import org.eclipse.egit.github.core.event.PullRequestPayload;
+import java.util.Objects;
 
 /**
  * Helper to find an issue to open for an event
@@ -37,21 +36,24 @@ public class IssueEventMatcher {
      * @param event
      * @return issue or null if event doesn't apply
      */
-    public Issue getIssue(Event event) {
+    public Issue getIssue(GithubEvent event) {
         if (event == null)
             return null;
-        EventPayload payload = event.getPayload();
-        if (payload == null)
+        if (event.payload == null)
             return null;
-        String type = event.getType();
-        if (TYPE_ISSUES.equals(type))
-            return ((IssuesPayload) payload).getIssue();
-        else if (TYPE_ISSUE_COMMENT.equals(type))
-            return ((IssueCommentPayload) payload).getIssue();
-        else if (TYPE_PULL_REQUEST.equals(type))
-            return IssueUtils.toIssue(((PullRequestPayload) payload)
-                    .getPullRequest());
-        else
-            return null;
+
+        Gson gson = new Gson();
+        String json = gson.toJson(event.payload);
+
+        switch (event.type) {
+            case IssuesEvent:
+                return gson.fromJson(json, IssueEventPayload.class).issue;
+            case IssueCommentEvent:
+                return gson.fromJson(json, IssueCommentEventPayload.class).issue;
+            case PullRequestEvent:
+                return gson.fromJson(json, PullRequestEventPayload.class).pull_request;
+            default:
+                return null;
+        }
     }
 }

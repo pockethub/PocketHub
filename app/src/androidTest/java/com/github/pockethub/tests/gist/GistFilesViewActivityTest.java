@@ -26,8 +26,8 @@ import com.google.inject.Inject;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.eclipse.egit.github.core.Gist;
-import org.eclipse.egit.github.core.GistFile;
+import com.alorma.github.sdk.bean.dto.response.Gist;
+import com.alorma.github.sdk.bean.dto.response.GistFile;
 
 import roboguice.RoboGuice;
 
@@ -57,11 +57,21 @@ public class GistFilesViewActivityTest extends
             .getApplicationContext(), this);
 
         gist = new Gist();
-        gist.setId("abcd");
+        gist.id = "abcd";
         Map<String, GistFile> files = new LinkedHashMap<>();
-        files.put("a", new GistFile().setFilename("a").setContent("aa"));
-        files.put("b", new GistFile().setFilename("b").setContent("bb"));
-        gist.setFiles(files);
+
+        GistFile a = new GistFile();
+        GistFile b = new GistFile();
+
+        a.content = "aa";
+        a.filename = "a";
+
+        b.content = "bb";
+        b.filename = "b";
+
+        files.put("a", a);
+        files.put("b", b);
+        gist.files = files;
         store.addGist(gist);
         setActivityIntent(GistFilesViewActivity.createIntent(gist, 0));
     }

@@ -15,17 +15,21 @@
  */
 package com.github.pockethub.core.gist;
 
+import android.content.Context;
+
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
+import com.alorma.github.sdk.bean.dto.response.Commit;
+import com.alorma.github.sdk.bean.dto.response.Gist;
+import com.alorma.github.sdk.bean.dto.response.GistFile;
+import com.alorma.github.sdk.services.gists.EditGistClient;
+import com.alorma.github.sdk.services.gists.GetGistDetailClient;
 import com.github.pockethub.core.ItemStore;
+import com.github.pockethub.util.RequestUtils;
 
 import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
-
-import org.eclipse.egit.github.core.Gist;
-import org.eclipse.egit.github.core.GistFile;
-import org.eclipse.egit.github.core.service.GistService;
 
 /**
  * Store of Gists
@@ -34,15 +38,15 @@ public class GistStore extends ItemStore {
 
     private final ItemReferences<Gist> gists = new ItemReferences<>();
 
-    private final GistService service;
+    private Context context;
 
     /**
      * Create gist store
      *
-     * @param service
+     * @param context
      */
-    public GistStore(final GistService service) {
-        this.service = service;
+    public GistStore(final Context context) {
+        this.context = context;
     }
 
     /**
@@ -62,7 +66,7 @@ public class GistStore extends ItemStore {
      * @return sorted files
      */
     protected Map<String, GistFile> sortFiles(final Gist gist) {
-        Map<String, GistFile> files = gist.getFiles();
+        Map<String, GistFile> files = gist.files;
         if (files == null || files.size() < 2)
             return files;
 
@@ -79,16 +83,16 @@ public class GistStore extends ItemStore {
      * @return gist
      */
     public Gist addGist(Gist gist) {
-        Gist current = getGist(gist.getId());
+        Gist current = getGist(gist.id);
         if (current != null) {
-            current.setComments(gist.getComments());
-            current.setDescription(gist.getDescription());
-            current.setFiles(sortFiles(gist));
-            current.setUpdatedAt(gist.getUpdatedAt());
+            current.comments = gist.comments;
+            current.description = gist.description;
+            current.files = sortFiles(gist);
+            current.updated_at = gist.updated_at;
             return current;
         } else {
-            gist.setFiles(sortFiles(gist));
-            gists.put(gist.getId(), gist);
+            gist.files = sortFiles(gist);
+            gists.put(gist.id, gist);
             return gist;
         }
     }
@@ -101,7 +105,7 @@ public class GistStore extends ItemStore {
      * @throws IOException
      */
     public Gist refreshGist(String id) throws IOException {
-        return addGist(service.getGist(id));
+        return addGist(new GetGistDetailClient(context, id).executeSync());
     }
 
     /**
@@ -112,6 +116,6 @@ public class GistStore extends ItemStore {
      * @throws IOException
      */
     public Gist editGist(Gist gist) throws IOException {
-        return addGist(service.updateGist(gist));
+        return addGist(new EditGistClient(context, gist.id, RequestUtils.editGist(gist)).executeSync());
     }
 }

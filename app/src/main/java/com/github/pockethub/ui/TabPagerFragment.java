@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -137,7 +137,7 @@ public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider
         view.findViewById(R.id.toolbar).setVisibility(View.GONE);
 
         // On Lollipop, the action bar shadow is provided by default, so have to remove it explicitly
-        ((ActionBarActivity) getActivity()).getSupportActionBar().setElevation(0);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setElevation(0);
 
         pager = (ViewPager) view.findViewById(R.id.vp_pages);
         pager.setOnPageChangeListener(this);

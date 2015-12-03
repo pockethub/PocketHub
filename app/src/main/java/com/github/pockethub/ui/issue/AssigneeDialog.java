@@ -19,9 +19,14 @@ import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import android.accounts.Account;
 import android.util.Log;
 
+import com.alorma.github.basesdk.client.BaseClient;
+import com.alorma.github.sdk.services.issues.GetAssigneesClient;
+import com.alorma.github.sdk.services.repo.GetRepoCollaboratorsClient;
 import com.github.pockethub.R;
+import com.github.pockethub.ui.BaseProgressDialog;
 import com.github.pockethub.ui.DialogFragmentActivity;
 import com.github.pockethub.ui.ProgressDialogTask;
+import com.github.pockethub.util.InfoUtils;
 import com.github.pockethub.util.ToastUtils;
 
 import java.util.ArrayList;
@@ -29,18 +34,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
-import org.eclipse.egit.github.core.User;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
 import org.eclipse.egit.github.core.service.CollaboratorService;
+
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Dialog helper to display a list of assignees to select one from
  */
-public class AssigneeDialog {
+public class AssigneeDialog extends BaseProgressDialog {
 
     private static final String TAG = "AssigneeDialog";
-
-    private CollaboratorService service;
 
     private Map<String, User> collaborators;
 
@@ -48,7 +54,7 @@ public class AssigneeDialog {
 
     private final DialogFragmentActivity activity;
 
-    private final IRepositoryIdProvider repository;
+    private final Repo repository;
 
     /**
      * Create dialog helper to display assignees
@@ -56,53 +62,39 @@ public class AssigneeDialog {
      * @param activity
      * @param requestCode
      * @param repository
-     * @param service
      */
     public AssigneeDialog(final DialogFragmentActivity activity,
-            final int requestCode, final IRepositoryIdProvider repository,
-            final CollaboratorService service) {
+            final int requestCode, final Repo repository) {
+        super(activity);
         this.activity = activity;
         this.requestCode = requestCode;
         this.repository = repository;
-        this.service = service;
     }
 
     private void load(final User selectedAssignee) {
-        new ProgressDialogTask<List<User>>(activity) {
-
+        showIndeterminate(R.string.loading_collaborators);
+        GetAssigneesClient getAssigneesClient = new GetAssigneesClient(activity, InfoUtils.createRepoInfo(repository));
+        getAssigneesClient.setOnResultCallback(new BaseClient.OnResultCallback<List<User>>() {
             @Override
-            public List<User> run(Account account) throws Exception {
-                List<User> users = service.getCollaborators(repository);
+            public void onResponseOk(List<User> users, Response r) {
                 Map<String, User> loadedCollaborators = new TreeMap<>(
                         CASE_INSENSITIVE_ORDER);
                 for (User user : users)
-                    loadedCollaborators.put(user.getLogin(), user);
+                    loadedCollaborators.put(user.login, user);
                 collaborators = loadedCollaborators;
-                return users;
-            }
 
-            @Override
-            protected void onSuccess(List<User> all) throws Exception {
-                super.onSuccess(all);
-
+                dismissProgress();
                 show(selectedAssignee);
             }
 
             @Override
-            protected void onException(Exception e) throws RuntimeException {
-                super.onException(e);
-
-                Log.d(TAG, "Exception loading collaborators", e);
-                ToastUtils.show(activity, e, R.string.error_collaborators_load);
+            public void onFail(RetrofitError error) {
+                dismissProgress();
+                Log.d(TAG, "Exception loading collaborators", error);
+                ToastUtils.show(activity, error, R.string.error_collaborators_load);
             }
-
-            @Override
-            public void execute() {
-                showIndeterminate(R.string.loading_collaborators);
-
-                super.execute();
-            }
-        }.execute();
+        });
+        getAssigneesClient.execute();
     }
 
     /**
@@ -121,7 +113,7 @@ public class AssigneeDialog {
         int checked = -1;
         if (selectedAssignee != null)
             for (int i = 0; i < users.size(); i++)
-                if (selectedAssignee.getLogin().equals(users.get(i).getLogin()))
+                if (selectedAssignee.login.equals(users.get(i).login))
                     checked = i;
         AssigneeDialogFragment.show(activity, requestCode,
                 activity.getString(R.string.select_assignee), null, users,

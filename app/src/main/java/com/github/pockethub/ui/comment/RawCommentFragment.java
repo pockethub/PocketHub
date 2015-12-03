@@ -48,7 +48,7 @@ public class RawCommentFragment extends DialogFragment {
         commentText.addTextChangedListener(new TextWatcherAdapter() {
 
             @Override
-            public void afterTextChanged(Editable s) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Activity activity = getActivity();
                 if (activity != null)
                     activity.invalidateOptionsMenu();
@@ -69,7 +69,7 @@ public class RawCommentFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.comment_create, null);
+        return inflater.inflate(R.layout.comment_create, container, false);
     }
 
     /**

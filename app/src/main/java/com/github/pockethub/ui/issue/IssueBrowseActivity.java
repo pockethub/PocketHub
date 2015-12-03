@@ -31,7 +31,7 @@ import com.github.pockethub.ui.DialogFragmentActivity;
 import com.github.pockethub.util.AvatarLoader;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.Repository;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 
 /**
  * Activity for browsing a list of issues scoped to a single {@link IssueFilter}
@@ -49,7 +49,7 @@ public class IssueBrowseActivity extends DialogFragmentActivity {
             .add(EXTRA_ISSUE_FILTER, filter).toIntent();
     }
 
-    private Repository repo;
+    private Repo repo;
 
     @Inject
     private AvatarLoader avatars;
@@ -58,17 +58,17 @@ public class IssueBrowseActivity extends DialogFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        repo = getSerializableExtra(EXTRA_REPOSITORY);
+        repo = getParcelableExtra(EXTRA_REPOSITORY);
 
         setContentView(R.layout.repo_issue_list);
 
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(repo.getName());
-        actionBar.setSubtitle(repo.getOwner().getLogin());
+        actionBar.setTitle(repo.name);
+        actionBar.setSubtitle(repo.owner.login);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        avatars.bind(actionBar, repo.getOwner());
+        avatars.bind(actionBar, repo.owner);
     }
 
     @Override

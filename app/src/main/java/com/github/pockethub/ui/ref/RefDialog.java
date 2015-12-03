@@ -19,20 +19,22 @@ import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import android.accounts.Account;
 import android.util.Log;
 
+import com.alorma.github.sdk.bean.dto.response.GitReference;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.services.git.GetReferencesClient;
 import com.github.pockethub.R;
 import com.github.pockethub.core.ref.RefUtils;
 import com.github.pockethub.ui.DialogFragmentActivity;
 import com.github.pockethub.ui.ProgressDialogTask;
+import com.github.pockethub.util.InfoUtils;
 import com.github.pockethub.util.ToastUtils;
+
+import org.eclipse.egit.github.core.service.DataService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
-import org.eclipse.egit.github.core.Reference;
-import org.eclipse.egit.github.core.service.DataService;
 
 /**
  * Dialog to select a branch or tag
@@ -41,15 +43,13 @@ public class RefDialog {
 
     private static final String TAG = "RefDialog";
 
-    private final DataService service;
-
-    private Map<String, Reference> refs;
+    private Map<String, GitReference> refs;
 
     private final int requestCode;
 
     private final DialogFragmentActivity activity;
 
-    private final IRepositoryIdProvider repository;
+    private final Repo repository;
 
     /**
      * Create dialog helper to display refs
@@ -57,34 +57,43 @@ public class RefDialog {
      * @param activity
      * @param requestCode
      * @param repository
-     * @param service
      */
     public RefDialog(final DialogFragmentActivity activity,
-            final int requestCode, final IRepositoryIdProvider repository,
-            final DataService service) {
+            final int requestCode, final Repo repository) {
         this.activity = activity;
         this.requestCode = requestCode;
         this.repository = repository;
-        this.service = service;
     }
 
-    private void load(final Reference selectedRef) {
-        new ProgressDialogTask<List<Reference>>(activity) {
+    private void load(final GitReference selectedRef) {
+        new ProgressDialogTask<List<GitReference>>(activity) {
 
             @Override
-            public List<Reference> run(Account account) throws Exception {
-                List<Reference> allRefs = service.getReferences(repository);
-                Map<String, Reference> loadedRefs = new TreeMap<>(
-                        CASE_INSENSITIVE_ORDER);
-                for (Reference ref : allRefs)
+            public List<GitReference> run(Account account) throws Exception {
+                List<GitReference> allRefs = new ArrayList<>();
+
+                int page = 1;
+                GetReferencesClient client = new GetReferencesClient(context,
+                        InfoUtils.createRepoInfo(repository), page);
+                allRefs.addAll(client.executeSync());
+                for(int i = client.nextPage; i < client.lastPage; i++) {
+                    client = new GetReferencesClient(context,
+                            InfoUtils.createRepoInfo(repository), i);
+                    allRefs.addAll(client.executeSync());
+                }
+
+                Map<String, GitReference> loadedRefs = new TreeMap<>(CASE_INSENSITIVE_ORDER);
+
+                for (GitReference ref : allRefs)
                     if (RefUtils.isValid(ref))
-                        loadedRefs.put(ref.getRef(), ref);
+                        loadedRefs.put(ref.ref, ref);
+
                 refs = loadedRefs;
                 return allRefs;
             }
 
             @Override
-            protected void onSuccess(List<Reference> all) throws Exception {
+            protected void onSuccess(List<GitReference> all) throws Exception {
                 super.onSuccess(all);
 
                 show(selectedRef);
@@ -112,19 +121,19 @@ public class RefDialog {
      *
      * @param selectedRef
      */
-    public void show(Reference selectedRef) {
+    public void show(GitReference selectedRef) {
         if (refs == null || refs.isEmpty()) {
             load(selectedRef);
             return;
         }
 
-        final ArrayList<Reference> refList = new ArrayList<>(
+        final ArrayList<GitReference> refList = new ArrayList<>(
                 refs.values());
         int checked = -1;
         if (selectedRef != null) {
-            String ref = selectedRef.getRef();
+            String ref = selectedRef.ref;
             for (int i = 0; i < refList.size(); i++) {
-                String candidate = refList.get(i).getRef();
+                String candidate = refList.get(i).ref;
                 if (ref.equals(candidate)) {
                     checked = i;
                     break;

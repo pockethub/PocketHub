@@ -112,7 +112,6 @@
     <string name="creating_gist">Skapar gist&#8230;</string>
     <string name="create">Skapa</string>
     <string name="create_gist">Skapa gist</string>
-    <string name="gist_content_hint">puts \'Hello World!\'</string>
     <string name="make_public">Gör den här gisten publik</string>
     <string name="contributors">Medverkande</string>
     <string name="gist_file_name_hint">fil.rb</string>

@@ -88,7 +88,6 @@
     <string name="creating_gist">正在建立 Gist…</string>
     <string name="create">建立</string>
     <string name="create_gist">建立 Gist</string>
-    <string name="gist_content_hint">puts \'Hello World!\'</string>
     <string name="make_public">公開這個 Gist</string>
     <string name="gist_file_name_hint">file.rb</string>
     <string name="gist">Gist</string>

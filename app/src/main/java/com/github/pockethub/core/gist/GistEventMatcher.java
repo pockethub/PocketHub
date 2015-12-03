@@ -15,12 +15,13 @@
  */
 package com.github.pockethub.core.gist;
 
-import static org.eclipse.egit.github.core.event.Event.TYPE_GIST;
+import com.alorma.github.sdk.bean.dto.response.Gist;
+import com.alorma.github.sdk.bean.dto.response.GithubEvent;
+import com.alorma.github.sdk.bean.dto.response.events.EventType;
+import com.alorma.github.sdk.bean.dto.response.events.payload.GithubEventPayload;
+import com.github.pockethub.api.GistEventPayload;
+import com.google.gson.Gson;
 
-import org.eclipse.egit.github.core.Gist;
-import org.eclipse.egit.github.core.event.Event;
-import org.eclipse.egit.github.core.event.EventPayload;
-import org.eclipse.egit.github.core.event.GistPayload;
 
 /**
  * Helper to find a {@link Gist} to open for an event
@@ -33,15 +34,18 @@ public class GistEventMatcher {
      * @param event
      * @return gist or null if event doesn't apply
      */
-    public Gist getGist(final Event event) {
+    public Gist getGist(final GithubEvent event) {
         if (event == null)
             return null;
-        EventPayload payload = event.getPayload();
-        if (payload == null)
+        if (event.payload == null)
             return null;
-        String type = event.getType();
-        if (TYPE_GIST.equals(type))
-            return ((GistPayload) payload).getGist();
+
+        Gson gson = new Gson();
+        String json = gson.toJson(event.payload);
+
+        EventType type = event.getType();
+        if (EventType.GistEvent.equals(type))
+            return (gson.fromJson(json, GistEventPayload.class)).gist;
         else
             return null;
     }

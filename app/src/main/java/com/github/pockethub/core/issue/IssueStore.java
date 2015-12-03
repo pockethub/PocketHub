@@ -15,42 +15,46 @@
  */
 package com.github.pockethub.core.issue;
 
+import android.content.Context;
+
+import com.alorma.github.sdk.bean.dto.request.EditIssueRequestDTO;
+import com.alorma.github.sdk.bean.dto.response.Issue;
+import com.alorma.github.sdk.bean.dto.response.IssueState;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
+import com.alorma.github.sdk.bean.info.IssueInfo;
+import com.alorma.github.sdk.bean.info.RepoInfo;
+import com.alorma.github.sdk.services.issues.ChangeIssueStateClient;
+import com.alorma.github.sdk.services.issues.EditIssueClient;
+import com.alorma.github.sdk.services.issues.GetIssueClient;
+import com.alorma.github.sdk.services.pullrequest.GetPullsClient;
+import com.alorma.github.sdk.services.pullrequest.GetSinglePullRequestClient;
 import com.github.pockethub.core.ItemStore;
 import com.github.pockethub.util.HtmlUtils;
+import com.github.pockethub.util.InfoUtils;
+import com.squareup.okhttp.internal.http.RequestException;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.RepositoryId;
-import org.eclipse.egit.github.core.RepositoryIssue;
-import org.eclipse.egit.github.core.client.RequestException;
-import org.eclipse.egit.github.core.service.IssueService;
-import org.eclipse.egit.github.core.service.PullRequestService;
 
 /**
  * Store of loaded issues
  */
 public class IssueStore extends ItemStore {
 
-    private final Map<String, ItemReferences<RepositoryIssue>> repos = new HashMap<>();
+    //+++
+    private final Map<String, ItemReferences<Issue>> repos = new HashMap<>();
 
-    private final IssueService issueService;
-
-    private final PullRequestService pullService;
+    private final Context context;
 
     /**
      * Create issue store
      *
-     * @param issueService
-     * @param pullService
+     * @param context
      */
-    public IssueStore(final IssueService issueService,
-            final PullRequestService pullService) {
-        this.issueService = issueService;
-        this.pullService = pullService;
+    public IssueStore(final Context context) {
+        this.context = context;
     }
 
     /**
@@ -60,9 +64,8 @@ public class IssueStore extends ItemStore {
      * @param number
      * @return issue or null if not in store
      */
-    public RepositoryIssue getIssue(IRepositoryIdProvider repository, int number) {
-        ItemReferences<RepositoryIssue> repoIssues = repos.get(repository
-                .generateId());
+    public Issue getIssue(Repo repository, int number) {
+        ItemReferences<Issue> repoIssues = repos.get(InfoUtils.createRepoId(repository));
         return repoIssues != null ? repoIssues.get(number) : null;
     }
 
@@ -72,39 +75,40 @@ public class IssueStore extends ItemStore {
      * @param issue
      * @return issue
      */
-    public RepositoryIssue addIssue(Issue issue) {
-        IRepositoryIdProvider repo = null;
-        if (issue instanceof RepositoryIssue)
-            repo = ((RepositoryIssue) issue).getRepository();
-        if (repo == null)
-            repo = RepositoryId.createFromUrl(issue.getHtmlUrl());
+    public Issue addIssue(Issue issue) {
+        Repo repo = null;
+        if (issue != null) {
+            repo = issue.repository;
+            if (repo == null)
+                repo = repoFromUrl(issue.html_url);
+        }
         return addIssue(repo, issue);
     }
 
-    private RepositoryIssue createRepositoryIssue(Issue issue) {
-        if (issue instanceof RepositoryIssue)
-            return (RepositoryIssue) issue;
+    private Repo repoFromUrl(String url){
+        if (url == null || url.length() == 0)
+            return null;
+        String owner = null;
+        String name = null;
+        for (String segment : url.split("/")) //$NON-NLS-1$
+            if (segment.length() > 0)
+                if (owner == null)
+                    owner = segment;
+                else if (name == null)
+                    name = segment;
+                else
+                    break;
 
-        RepositoryIssue repoIssue = new RepositoryIssue();
-        repoIssue.setAssignee(issue.getAssignee());
-        repoIssue.setBody(issue.getBody());
-        repoIssue.setBodyHtml(issue.getBodyHtml());
-        repoIssue.setBodyText(issue.getBodyText());
-        repoIssue.setClosedAt(issue.getClosedAt());
-        repoIssue.setComments(issue.getComments());
-        repoIssue.setCreatedAt(issue.getCreatedAt());
-        repoIssue.setHtmlUrl(issue.getHtmlUrl());
-        repoIssue.setId(issue.getId());
-        repoIssue.setLabels(issue.getLabels());
-        repoIssue.setMilestone(issue.getMilestone());
-        repoIssue.setNumber(issue.getNumber());
-        repoIssue.setPullRequest(issue.getPullRequest());
-        repoIssue.setState(issue.getState());
-        repoIssue.setTitle(issue.getTitle());
-        repoIssue.setUpdatedAt(issue.getUpdatedAt());
-        repoIssue.setUrl(issue.getUrl());
-        repoIssue.setUser(issue.getUser());
-        return repoIssue;
+        if(owner != null && owner.length() > 0 && name != null && name.length() > 0){
+            Repo repo = new Repo();
+            User user = new User();
+            user.login = owner;
+            repo.owner = user;
+            repo.name = name;
+            return repo;
+        }else{
+            return null;
+        }
     }
 
     /**
@@ -114,35 +118,32 @@ public class IssueStore extends ItemStore {
      * @param issue
      * @return issue
      */
-    public RepositoryIssue addIssue(IRepositoryIdProvider repository,
-            Issue issue) {
-        issue.setBodyHtml(HtmlUtils.format(issue.getBodyHtml()).toString());
-        RepositoryIssue current = getIssue(repository, issue.getNumber());
+    public Issue addIssue(Repo repository, Issue issue) {
+        issue.body_html = (HtmlUtils.format(issue.body_html).toString());
+        Issue current = getIssue(repository, issue.number);
         if (current != null) {
-            current.setAssignee(issue.getAssignee());
-            current.setBody(issue.getBody());
-            current.setBodyHtml(issue.getBodyHtml());
-            current.setClosedAt(issue.getClosedAt());
-            current.setComments(issue.getComments());
-            current.setLabels(issue.getLabels());
-            current.setMilestone(issue.getMilestone());
-            current.setPullRequest(issue.getPullRequest());
-            current.setState(issue.getState());
-            current.setTitle(issue.getTitle());
-            current.setUpdatedAt(issue.getUpdatedAt());
-            if (issue instanceof RepositoryIssue)
-                current.setRepository(((RepositoryIssue) issue).getRepository());
+            current.assignee = issue.assignee;
+            current.body = issue.body;
+            current.body_html = issue.body_html;
+            current.closedAt = issue.closedAt;
+            current.comments = issue.comments;
+            current.labels = issue.labels;
+            current.milestone = issue.milestone;
+            current.pullRequest = issue.pullRequest;
+            current.state = issue.state;
+            current.title = issue.title;
+            current.updated_at = issue.updated_at;
+            current.repository = issue.repository;
             return current;
         } else {
-            String repoId = repository.generateId();
-            ItemReferences<RepositoryIssue> repoIssues = repos.get(repoId);
+            String repoId = InfoUtils.createRepoId(repository);
+            ItemReferences<Issue> repoIssues = repos.get(repoId);
             if (repoIssues == null) {
                 repoIssues = new ItemReferences<>();
                 repos.put(repoId, repoIssues);
             }
-            RepositoryIssue repoIssue = createRepositoryIssue(issue);
-            repoIssues.put(issue.getNumber(), repoIssue);
-            return repoIssue;
+            repoIssues.put(issue.number, issue);
+            return issue;
         }
     }
 
@@ -154,26 +155,9 @@ public class IssueStore extends ItemStore {
      * @return refreshed issue
      * @throws IOException
      */
-    public RepositoryIssue refreshIssue(IRepositoryIdProvider repository,
-            int number) throws IOException {
-        Issue issue;
-        try {
-            issue = issueService.getIssue(repository, number);
-            if (IssueUtils.isPullRequest(issue))
-                issue = IssueUtils.toIssue(pullService.getPullRequest(
-                    repository, number));
-        } catch (IOException e) {
-            if (e instanceof RequestException
-                    && 410 == ((RequestException) e).getStatus())
-                try {
-                    issue = IssueUtils.toIssue(pullService.getPullRequest(
-                            repository, number));
-                } catch (IOException e2) {
-                    throw e;
-                }
-            else
-                throw e;
-        }
+    public Issue refreshIssue(Repo repository, int number) throws IOException {
+        IssueInfo issueInfo = InfoUtils.createIssueInfo(repository, number);
+        Issue issue = new GetIssueClient(context, issueInfo).executeSync();
         return addIssue(repository, issue);
     }
 
@@ -181,12 +165,19 @@ public class IssueStore extends ItemStore {
      * Edit issue
      *
      * @param repository
-     * @param issue
+     * @param issueNumber
      * @return edited issue
      * @throws IOException
      */
-    public RepositoryIssue editIssue(IRepositoryIdProvider repository,
-            Issue issue) throws IOException {
-        return addIssue(repository, issueService.editIssue(repository, issue));
+    public Issue editIssue(Repo repository, int issueNumber, EditIssueRequestDTO editIssueRequestDTO) throws IOException {
+        IssueInfo issueInfo = new IssueInfo(InfoUtils.createRepoInfo(repository));
+        issueInfo.num = issueNumber;
+        return addIssue(repository, new EditIssueClient(context, issueInfo, editIssueRequestDTO).executeSync());
+    }
+
+    public Issue changeState(Repo repository, int issueNumber, IssueState state) throws IOException {
+        IssueInfo issueInfo = new IssueInfo(InfoUtils.createRepoInfo(repository));
+        issueInfo.num = issueNumber;
+        return addIssue(repository, new ChangeIssueStateClient(context, issueInfo, state).executeSync());
     }
 }
