@@ -17,6 +17,8 @@ def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZo
 
 def isTravis = "true".equals(System.getenv("TRAVIS"))
 def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
+def clientIdIsNotSet = true;
+def clientSecretIsNotSet = true;
 
 android {
     compileSdkVersion 23
@@ -29,11 +31,22 @@ android {
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
-        resValue "string", "github_secret", pockethub_github_secret
-        resValue "string", "github_client", pockethub_github_client
+        if (project.hasProperty('pockethub_github_client')) {
+            resValue "string", "github_client", pockethub_github_client
+            clientIdIsNotSet = false
+        } else {
+            resValue "string", "github_client", "dummy_client"
+        }
 
-        if ("dummy_secret".equals(pockethub_github_secret) || "dummy_client".equals(pockethub_github_client)) {
-            logger.warn("You won't be able to login, because the oauth client and secret aren't set")
+        if (project.hasProperty('pockethub_github_secret')) {
+            resValue "string", "github_secret", pockethub_github_secret
+            clientSecretIsNotSet = false
+        } else {
+            resValue "string", "github_secret", "dummy_secret"
+        }
+
+        if (clientIdIsNotSet || clientSecretIsNotSet) {
+            logger.warn("You won't be able to login, because the oauth client or secret isn't set")
             logger.warn("Read the README.md: https://github.com/pockethub/PocketHub#setup-environment")
         }
 
@@ -43,9 +56,15 @@ android {
             resValue "string", "bugsnag_api_key", "bugsnag-api-key"
         }
 
-        String oauth = pockethub_github_callback
+        String oauth = ""
+        if (project.hasProperty('pockethub_github_callback')) {
+            oauth = pockethub_github_callback
+        } else {
+            oauth = "http://dummy.example.com"
+        }
+
         resValue "string", "github_oauth", oauth
-        resValue "string", "github_oauth_scheme", oauth != "DEFAULT" ? oauth.split("://")[0] : "DEFAULT"
+        resValue "string", "github_oauth_scheme", oauth != "http://dummy.example.com" ? oauth.split("://")[0] : "http://dummy.example.com"
 
         buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
         buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
