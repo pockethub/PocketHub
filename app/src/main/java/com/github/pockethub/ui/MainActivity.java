@@ -88,10 +88,6 @@ public class MainActivity extends BaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!BuildConfig.DEBUG) {
-            Bugsnag.init(this);
-        }
-
         setContentView(R.layout.activity_main);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
