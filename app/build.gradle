@@ -32,9 +32,15 @@ android {
         resValue "string", "github_secret", pockethub_github_secret
         resValue "string", "github_client", pockethub_github_client
 
-        if("dummy_secret".equals(pockethub_github_secret) || "dummy_client".equals(pockethub_github_client)){
+        if ("dummy_secret".equals(pockethub_github_secret) || "dummy_client".equals(pockethub_github_client)) {
             logger.warn("You won't be able to login, because the oauth client and secret aren't set")
             logger.warn("Read the README.md: https://github.com/pockethub/PocketHub#setup-environment")
+        }
+
+        if (project.hasProperty('pockethub_bugsnag_api_key')) {
+            resValue "string", "bugsnag_api_key", pockethub_bugsnag_api_key
+        } else {
+            resValue "string", "bugsnag_api_key", "bugsnag-api-key"
         }
 
         String oauth = pockethub_github_callback
@@ -43,6 +49,16 @@ android {
 
         buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
         buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+        }
     }
 
     packagingOptions {
@@ -58,7 +74,7 @@ android {
 
     dexOptions {
         // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
-//        preDexLibraries = preDexEnabled && !isTravis
+        // preDexLibraries = preDexEnabled && !isTravis
 
         // False for now until we set up Travis CI for this
         preDexLibraries = false

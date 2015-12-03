@@ -14,8 +14,6 @@
   limitations under the License.
 -->
 <resources>
-    <!-- Bugsnag -->
-    <string name="bugsnag_api_key">071042af7240b1a939bfe921b07ccc6d</string>
 
     <!-- Error messages -->
     <string name="error_orgs_load">Loading account &amp; organizations failed</string>

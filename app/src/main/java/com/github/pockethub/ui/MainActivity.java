@@ -38,6 +38,7 @@ import com.alorma.github.sdk.bean.dto.response.User;
 import com.alorma.github.sdk.bean.dto.response.UserType;
 import com.alorma.github.sdk.login.AccountsHelper;
 import com.bugsnag.android.Bugsnag;
+import com.github.pockethub.BuildConfig;
 import com.github.pockethub.R;
 import com.github.pockethub.accounts.AccountUtils;
 import com.github.pockethub.accounts.LoginActivity;
@@ -86,7 +87,11 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bugsnag.init(this);
+
+        if (!BuildConfig.DEBUG) {
+            Bugsnag.init(this);
+        }
+
         setContentView(R.layout.activity_main);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
