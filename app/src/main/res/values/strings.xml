@@ -312,5 +312,10 @@
     <string name="organizations">Organizations</string>
     <string name="error_oauth_not_configured">You won\'t be able to login, because the oauth client and secret aren\'t set
 Read the README.md: https://github.com/pockethub/PocketHub#setup-environment</string>
+    <string name="settings">Settings</string>
+    <string name="pref_cat_about_title">About</string>
+    <string name="pref_version_title">Version</string>
+    <string name="pref_build_title">Build</string>
+    <string name="pref_bugreport_title">Report a bug</string>
 
 </resources>

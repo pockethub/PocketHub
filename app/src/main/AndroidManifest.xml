@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.github.pockethub">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.github.pockethub">
 
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -340,6 +341,16 @@
 
         <activity android:name="com.github.pockethub.accounts.LoginWebViewActivity"
             android:launchMode="singleTop"/>
+
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:label="@string/settings"
+            android:parentActivityName=".ui.MainActivity"
+            tools:ignore="UnusedAttribute">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity"/>
+        </activity>
 
         <service
             android:name="com.github.pockethub.sync.SyncAdapterService"

@@ -34,8 +34,6 @@ import android.widget.TextView;
 
 import com.alorma.github.basesdk.client.StoreCredentials;
 import com.alorma.github.sdk.bean.dto.response.Organization;
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.bean.dto.response.UserType;
 import com.alorma.github.sdk.login.AccountsHelper;
 import com.bugsnag.android.Bugsnag;
 import com.github.pockethub.BuildConfig;
@@ -48,6 +46,7 @@ import com.github.pockethub.ui.gist.GistsPagerFragment;
 import com.github.pockethub.ui.issue.FilterListFragment;
 import com.github.pockethub.ui.issue.IssueDashboardPagerFragment;
 import com.github.pockethub.ui.repo.OrganizationLoader;
+import com.github.pockethub.ui.settings.SettingsActivity;
 import com.github.pockethub.ui.user.HomePagerFragment;
 import com.github.pockethub.util.AvatarLoader;
 import com.google.inject.Inject;
@@ -307,6 +306,10 @@ public class MainActivity extends BaseActivity implements
             finish();
             return false;
 
+        } else if (itemId == R.id.navigation_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return false;
         } else if (menuItemOrganizationMap.containsKey(menuItem)) {
             switchFragment(new HomePagerFragment(), menuItemOrganizationMap.get(menuItem));
             navigationView.getMenu().findItem(R.id.navigation_home).setChecked(true);
