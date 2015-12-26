@@ -108,6 +108,7 @@ dependencies {
     compile('com.github.afollestad.material-dialogs:core:0.8.5.3@aar') {
         transitive = true
     }
+    compile 'com.bugsnag:bugsnag-android:3.2.7'
     //Self compiled .aar version of wishlist
     compile (name:'lib', ext:'aar')
     testCompile 'junit:junit:4.12'
