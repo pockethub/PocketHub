@@ -63,10 +63,6 @@ android {
 
         resValue "string", "github_oauth", oauth
         resValue "string", "github_oauth_scheme", oauth.split("://")[0]
-
-        buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
-        buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
-        resValue "string", "github_oauth_scheme", oauth != "DEFAULT" ? oauth.split("://")[0] : "DEFAULT"
     }
 
     buildTypes {
@@ -99,7 +95,6 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.okhttp:okhttp:2.7.0'
     compile 'org.roboguice:roboguice:2.0'
-    compile 'com.github.kevinsawicki:http-request:5.6'
     compile 'com.google.code.gson:gson:2.5'
     compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:3.7.0.201502260915-r'
     compile 'com.android.support:support-v4:23.1.1'
