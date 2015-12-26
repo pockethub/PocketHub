@@ -47,7 +47,7 @@
         <activity
             android:name="com.github.pockethub.ui.gist.CreateGistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/create_gist">
+            android:label="@string/new_gist">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -70,7 +70,8 @@
         </activity>
         <activity
             android:name="com.github.pockethub.ui.issue.EditIssuesFilterActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/filter_issues_title">
             <intent-filter>
                 <action android:name="com.github.pockethub.repo.issues.filter.VIEW" />
 
@@ -102,6 +103,7 @@
         </activity>
         <activity
             android:name="com.github.pockethub.ui.issue.FiltersViewActivity"
+            android:label="@string/bookmarks"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true">
             <intent-filter>

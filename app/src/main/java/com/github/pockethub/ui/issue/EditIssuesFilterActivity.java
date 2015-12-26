@@ -121,7 +121,6 @@ public class EditIssuesFilterActivity extends DialogFragmentActivity {
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(R.string.filter_issues_title);
         actionBar.setSubtitle(InfoUtils.createRepoId(repository));
         avatars.bind(actionBar, repository.owner);
 

@@ -69,7 +69,6 @@ public class FiltersViewActivity extends DialogFragmentActivity implements
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(R.string.bookmarks);
         actionBar.setIcon(R.drawable.ic_bookmark_white_24dp);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
