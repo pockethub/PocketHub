@@ -81,6 +81,12 @@ android {
     lintOptions {
         warning 'MissingTranslation'
         abortOnError false
+        
+        textReport isTravis
+        textOutput 'stdout'
+        
+        htmlReport !isTravis
+        xmlReport !isTravis
     }
 
     dexOptions {
