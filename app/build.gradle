@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.github.ben-manes.versions'   // ./gradlew dependencyUpdates -Drevision=release
 
 repositories {
     flatDir {
@@ -12,9 +13,6 @@ def versionMinor = 1
 def versionPatch = 0
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
-def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
-def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("UTC"))
-
 def isTravis = "true".equals(System.getenv("TRAVIS"))
 def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 def clientIdIsNotSet = true;
@@ -22,12 +20,12 @@ def clientSecretIsNotSet = true;
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '23.0.1'
+    buildToolsVersion '23.0.2'
 
     defaultConfig {
         applicationId 'com.github.pockethub'
         minSdkVersion 15
-        targetSdkVersion 23
+        targetSdkVersion 22
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
@@ -68,6 +66,7 @@ android {
 
         buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
         buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
+        resValue "string", "github_oauth_scheme", oauth != "DEFAULT" ? oauth.split("://")[0] : "DEFAULT"
     }
 
     buildTypes {
@@ -90,33 +89,30 @@ android {
 
     dexOptions {
         // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
-        // preDexLibraries = preDexEnabled && !isTravis
-
-        // False for now until we set up Travis CI for this
-        preDexLibraries = false
+        preDexLibraries = preDexEnabled && !isTravis
     }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:design:23.0.1'
-    compile 'com.squareup.picasso:picasso:2.5.0'
-    compile 'com.squareup.okhttp:okhttp:2.4.0'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.squareup.okhttp:okhttp:2.7.0'
     compile 'org.roboguice:roboguice:2.0'
-    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.github.kevinsawicki:http-request:5.6'
+    compile 'com.google.code.gson:gson:2.5'
     compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:3.7.0.201502260915-r'
+    compile 'com.android.support:support-v4:23.1.1'
     compile ('com.google.inject.extensions:guice-assistedinject:3.0'){
         exclude group: 'com.google.inject'
     }
     compile 'com.github.alorma:github-sdk:1.2.0'
     compile 'com.viewpagerindicator:library:2.4.1@aar'
-    compile 'com.squareup.okio:okio:1.1.0'
+    compile 'com.squareup.okio:okio:1.6.0'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
-    compile('com.afollestad.material-dialogs:core:0.8.0.1@aar') {
+    compile('com.github.afollestad.material-dialogs:core:0.8.5.3@aar') {
         transitive = true
     }
-    compile 'com.bugsnag:bugsnag-android:+'
-
     //Self compiled .aar version of wishlist
     compile (name:'lib', ext:'aar')
     testCompile 'junit:junit:4.12'
@@ -125,4 +121,6 @@ dependencies {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
+
+    compile 'com.android.support:design:23.1.1'
 }
