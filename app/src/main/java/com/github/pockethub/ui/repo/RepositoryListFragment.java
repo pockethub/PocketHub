@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 GitHub Inc.
+ * Copyright (c) 2015 PocketHub
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,10 +15,6 @@
  */
 package com.github.pockethub.ui.repo;
 
-import static com.github.pockethub.Intents.EXTRA_USER;
-import static com.github.pockethub.RequestCodes.REPOSITORY_VIEW;
-import static com.github.pockethub.ResultCodes.RESOURCE_CHANGED;
-import static java.util.Locale.US;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -28,6 +24,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ListView;
 
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.pockethub.R;
@@ -47,8 +45,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
+import static com.github.pockethub.Intents.EXTRA_USER;
+import static com.github.pockethub.RequestCodes.REPOSITORY_VIEW;
+import static com.github.pockethub.ResultCodes.RESOURCE_CHANGED;
+import static java.util.Locale.US;
 
 /**
  * Fragment to display a list of {@link Repo} instances

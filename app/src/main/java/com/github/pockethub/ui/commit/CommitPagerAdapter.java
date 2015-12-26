@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 GitHub Inc.
+ * Copyright (c) 2015 PocketHub
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,8 +15,6 @@
  */
 package com.github.pockethub.ui.commit;
 
-import static com.github.pockethub.Intents.EXTRA_BASE;
-import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -24,7 +22,8 @@ import android.support.v7.app.AppCompatActivity;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.github.pockethub.ui.FragmentStatePagerAdapter;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
+import static com.github.pockethub.Intents.EXTRA_BASE;
+import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
 
 /**
  * Pager over commits

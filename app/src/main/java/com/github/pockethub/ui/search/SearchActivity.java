@@ -1,11 +1,11 @@
 /*
- * Copyright 2013 GitHub Inc.
+ * Copyright (c) 2015 PocketHub
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,12 +15,6 @@
  */
 package com.github.pockethub.ui.search;
 
-import static android.app.SearchManager.QUERY;
-import static android.content.Intent.ACTION_SEARCH;
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
-import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
-import static com.github.pockethub.util.TypefaceUtils.ICON_PERSON;
-import static com.github.pockethub.util.TypefaceUtils.ICON_PUBLIC;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -38,6 +32,13 @@ import com.github.pockethub.R;
 import com.github.pockethub.ui.MainActivity;
 import com.github.pockethub.ui.TabPagerActivity;
 import com.github.pockethub.util.ToastUtils;
+
+import static android.app.SearchManager.QUERY;
+import static android.content.Intent.ACTION_SEARCH;
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+import static com.github.pockethub.util.TypefaceUtils.ICON_PERSON;
+import static com.github.pockethub.util.TypefaceUtils.ICON_PUBLIC;
 
 /**
  * Activity to view search results

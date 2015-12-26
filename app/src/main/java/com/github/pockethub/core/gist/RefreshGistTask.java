@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 GitHub Inc.
+ * Copyright (c) 2015 PocketHub
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,6 +19,7 @@ import android.accounts.Account;
 import android.content.Context;
 import android.util.Log;
 
+import com.alorma.github.sdk.bean.dto.response.Gist;
 import com.alorma.github.sdk.bean.dto.response.GithubComment;
 import com.alorma.github.sdk.services.gists.GetGistCommentsClient;
 import com.github.pockethub.accounts.AuthenticatedUserTask;
@@ -26,12 +27,10 @@ import com.github.pockethub.util.HtmlUtils;
 import com.github.pockethub.util.HttpImageGetter;
 import com.google.inject.Inject;
 
+import org.eclipse.egit.github.core.service.GistService;
+
 import java.util.Collections;
 import java.util.List;
-
-import org.eclipse.egit.github.core.Comment;
-import com.alorma.github.sdk.bean.dto.response.Gist;
-import org.eclipse.egit.github.core.service.GistService;
 
 /**
  * Task to load and store a {@link Gist}

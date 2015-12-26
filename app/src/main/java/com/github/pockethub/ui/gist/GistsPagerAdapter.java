@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 GitHub Inc.
+ * Copyright (c) 2015 PocketHub
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,7 +15,6 @@
  */
 package com.github.pockethub.ui.gist;
 
-import static com.github.pockethub.Intents.EXTRA_GIST_ID;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +22,8 @@ import android.util.SparseArray;
 import android.view.ViewGroup;
 
 import com.github.pockethub.ui.FragmentStatePagerAdapter;
+
+import static com.github.pockethub.Intents.EXTRA_GIST_ID;
 
 /**
  * Adapter to page through an array of Gists

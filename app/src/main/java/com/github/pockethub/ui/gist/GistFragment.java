@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 GitHub Inc.
+ * Copyright (c) 2015 PocketHub
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,14 +15,6 @@
  */
 package com.github.pockethub.ui.gist;
 
-import static android.app.Activity.RESULT_OK;
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static com.github.pockethub.Intents.EXTRA_COMMENT;
-import static com.github.pockethub.Intents.EXTRA_GIST_ID;
-import static com.github.pockethub.RequestCodes.COMMENT_CREATE;
-import static com.github.pockethub.RequestCodes.COMMENT_DELETE;
-import static com.github.pockethub.RequestCodes.COMMENT_EDIT;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -41,7 +33,10 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.alorma.github.sdk.bean.dto.response.Gist;
+import com.alorma.github.sdk.bean.dto.response.GistFile;
 import com.alorma.github.sdk.bean.dto.response.GithubComment;
+import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.R;
 import com.github.pockethub.accounts.AccountUtils;
@@ -73,9 +68,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.alorma.github.sdk.bean.dto.response.Gist;
-import com.alorma.github.sdk.bean.dto.response.GistFile;
-import com.alorma.github.sdk.bean.dto.response.User;
+import static android.app.Activity.RESULT_OK;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static com.github.pockethub.Intents.EXTRA_COMMENT;
+import static com.github.pockethub.Intents.EXTRA_GIST_ID;
+import static com.github.pockethub.RequestCodes.COMMENT_CREATE;
+import static com.github.pockethub.RequestCodes.COMMENT_DELETE;
+import static com.github.pockethub.RequestCodes.COMMENT_EDIT;
 
 /**
  * Activity to display an existing Gist

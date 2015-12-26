@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 GitHub Inc.
+ * Copyright (c) 2015 PocketHub
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,12 +15,6 @@
  */
 package com.github.pockethub.ui;
 
-import static android.content.Intent.ACTION_VIEW;
-import static android.content.Intent.CATEGORY_BROWSABLE;
-import static com.alorma.github.sdk.bean.dto.response.events.EventType.*;
-import static org.eclipse.egit.github.core.event.Event.TYPE_COMMIT_COMMENT;
-import static org.eclipse.egit.github.core.event.Event.TYPE_DOWNLOAD;
-import static org.eclipse.egit.github.core.event.Event.TYPE_PUSH;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -33,13 +27,11 @@ import android.widget.ListView;
 import com.alorma.github.sdk.bean.dto.response.Commit;
 import com.alorma.github.sdk.bean.dto.response.CommitComment;
 import com.alorma.github.sdk.bean.dto.response.Gist;
-import com.alorma.github.sdk.bean.dto.response.GitReference;
 import com.alorma.github.sdk.bean.dto.response.GithubEvent;
 import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.alorma.github.sdk.bean.dto.response.Release;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.bean.dto.response.events.EventType;
 import com.alorma.github.sdk.bean.dto.response.events.payload.CommitCommentEventPayload;
 import com.alorma.github.sdk.bean.dto.response.events.payload.PushEventPayload;
 import com.alorma.github.sdk.bean.dto.response.events.payload.ReleaseEventPayload;
@@ -63,9 +55,13 @@ import com.github.pockethub.util.InfoUtils;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.event.CommitCommentPayload;
-
 import java.util.List;
+
+import static android.content.Intent.ACTION_VIEW;
+import static android.content.Intent.CATEGORY_BROWSABLE;
+import static com.alorma.github.sdk.bean.dto.response.events.EventType.CommitCommentEvent;
+import static com.alorma.github.sdk.bean.dto.response.events.EventType.DownloadEvent;
+import static com.alorma.github.sdk.bean.dto.response.events.EventType.PushEvent;
 
 /**
  * Base news fragment class with utilities for subclasses to built on

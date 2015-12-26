@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 GitHub Inc.
+ * Copyright (c) 2015 PocketHub
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,15 +15,6 @@
  */
 package com.github.pockethub.ui.issue;
 
-import static android.app.Activity.RESULT_OK;
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static com.github.pockethub.Intents.EXTRA_ISSUE;
-import static com.github.pockethub.Intents.EXTRA_ISSUE_FILTER;
-import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
-import static com.github.pockethub.RequestCodes.ISSUE_CREATE;
-import static com.github.pockethub.RequestCodes.ISSUE_FILTER_EDIT;
-import static com.github.pockethub.RequestCodes.ISSUE_VIEW;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
@@ -39,13 +30,17 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.alorma.github.sdk.bean.dto.response.Label;
 import com.alorma.github.sdk.bean.dto.response.Milestone;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
 import com.alorma.github.sdk.services.client.GithubClient;
 import com.alorma.github.sdk.services.issues.GetIssuesClient;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
 import com.github.pockethub.RequestFuture;
+import com.github.pockethub.core.PageIterator;
 import com.github.pockethub.core.ResourcePager;
 import com.github.pockethub.core.issue.IssueFilter;
 import com.github.pockethub.core.issue.IssuePager;
@@ -60,11 +55,15 @@ import com.google.inject.Inject;
 import java.util.Collection;
 import java.util.List;
 
-import com.alorma.github.sdk.bean.dto.response.Issue;
-
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.github.pockethub.core.PageIterator;
+import static android.app.Activity.RESULT_OK;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static com.github.pockethub.Intents.EXTRA_ISSUE;
+import static com.github.pockethub.Intents.EXTRA_ISSUE_FILTER;
+import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
+import static com.github.pockethub.RequestCodes.ISSUE_CREATE;
+import static com.github.pockethub.RequestCodes.ISSUE_FILTER_EDIT;
+import static com.github.pockethub.RequestCodes.ISSUE_VIEW;
 
 /**
  * Fragment to display a list of issues

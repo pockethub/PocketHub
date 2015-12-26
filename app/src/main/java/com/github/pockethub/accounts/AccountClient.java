@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 GitHub Inc.
+ * Copyright (c) 2015 PocketHub
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,16 +15,17 @@
  */
 package com.github.pockethub.accounts;
 
-import static android.util.Log.DEBUG;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.github.pockethub.DefaultClient;
 import com.google.inject.Provider;
 
+import org.eclipse.egit.github.core.client.GitHubClient;
+
 import java.net.HttpURLConnection;
 
-import org.eclipse.egit.github.core.client.GitHubClient;
+import static android.util.Log.DEBUG;
 
 /**
  * {@link GitHubClient} extensions that integrates with the Android account

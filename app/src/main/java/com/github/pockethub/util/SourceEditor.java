@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 GitHub Inc.
+ * Copyright (c) 2015 PocketHub
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,10 +15,8 @@
  */
 package com.github.pockethub.util;
 
-import static org.eclipse.egit.github.core.Blob.ENCODING_BASE64;
-import static org.eclipse.egit.github.core.client.IGitHubConstants.CHARSET_UTF8;
-import android.os.Build;
 import android.net.Uri;
+import android.os.Build;
 import android.text.TextUtils;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
@@ -28,10 +26,12 @@ import android.webkit.WebViewClient;
 import com.alorma.github.sdk.bean.dto.response.GitBlob;
 import com.github.pockethub.ui.user.UriLauncherActivity;
 
+import org.eclipse.egit.github.core.util.EncodingUtils;
+
 import java.io.UnsupportedEncodingException;
 
-import org.eclipse.egit.github.core.Blob;
-import org.eclipse.egit.github.core.util.EncodingUtils;
+import static org.eclipse.egit.github.core.Blob.ENCODING_BASE64;
+import static org.eclipse.egit.github.core.client.IGitHubConstants.CHARSET_UTF8;
 
 /**
  * Utilities for displaying source code in a {@link WebView}

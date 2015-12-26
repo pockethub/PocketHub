@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 GitHub Inc.
+ * Copyright (c) 2015 PocketHub
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,14 +15,13 @@
  */
 package com.github.pockethub.ui.issue;
 
-import static android.app.SearchManager.APP_DATA;
-import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
-import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
+import com.alorma.github.sdk.bean.dto.response.Issue;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.services.search.IssuesSearchClient;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
@@ -31,15 +30,16 @@ import com.github.pockethub.ui.ItemListFragment;
 import com.github.pockethub.util.AvatarLoader;
 import com.google.inject.Inject;
 
+import org.eclipse.egit.github.core.SearchIssue;
+import org.eclipse.egit.github.core.service.IssueService;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.alorma.github.sdk.bean.dto.response.Issue;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import org.eclipse.egit.github.core.SearchIssue;
-import org.eclipse.egit.github.core.service.IssueService;
+import static android.app.SearchManager.APP_DATA;
+import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
 
 /**
  * Fragment to display a list of {@link SearchIssue} instances

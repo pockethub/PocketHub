@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 GitHub Inc.
+ * Copyright (c) 2015 PocketHub
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,25 +15,23 @@
  */
 package com.github.pockethub.ui.issue;
 
-import static com.github.pockethub.Intents.EXTRA_COMMENT;
-import static com.github.pockethub.Intents.EXTRA_ISSUE_NUMBER;
-import static com.github.pockethub.Intents.EXTRA_REPOSITORY_NAME;
-import static com.github.pockethub.Intents.EXTRA_REPOSITORY_OWNER;
-import static com.github.pockethub.Intents.EXTRA_USER;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 
 import com.alorma.github.sdk.bean.dto.response.GithubComment;
+import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.Intents;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.comment.CommentPreviewPagerAdapter;
-
-import com.alorma.github.sdk.bean.dto.response.Issue;
-import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.util.InfoUtils;
+
+import static com.github.pockethub.Intents.EXTRA_COMMENT;
+import static com.github.pockethub.Intents.EXTRA_ISSUE_NUMBER;
+import static com.github.pockethub.Intents.EXTRA_USER;
 
 /**
  * Activity to edit a comment on an {@link Issue}

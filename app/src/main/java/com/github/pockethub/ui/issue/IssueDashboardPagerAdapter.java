@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 GitHub Inc.
+ * Copyright (c) 2015 PocketHub
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,6 +14,17 @@
  * limitations under the License.
  */
 package com.github.pockethub.ui.issue;
+
+import android.content.res.Resources;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+
+import com.github.pockethub.R;
+import com.github.pockethub.ui.FragmentStatePagerAdapter;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.github.pockethub.ui.issue.DashboardIssueFragment.ARG_FILTER;
 import static org.eclipse.egit.github.core.service.IssueService.DIRECTION_DESCENDING;
@@ -25,16 +36,6 @@ import static org.eclipse.egit.github.core.service.IssueService.FILTER_CREATED;
 import static org.eclipse.egit.github.core.service.IssueService.FILTER_MENTIONED;
 import static org.eclipse.egit.github.core.service.IssueService.FILTER_SUBSCRIBED;
 import static org.eclipse.egit.github.core.service.IssueService.SORT_UPDATED;
-import android.content.res.Resources;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-
-import com.github.pockethub.R;
-import com.github.pockethub.ui.FragmentStatePagerAdapter;
-
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Pager adapter for the issues dashboard

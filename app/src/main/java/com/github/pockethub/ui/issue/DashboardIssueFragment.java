@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 GitHub Inc.
+ * Copyright (c) 2015 PocketHub
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,7 +15,6 @@
  */
 package com.github.pockethub.ui.issue;
 
-import static com.github.pockethub.RequestCodes.ISSUE_VIEW;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -24,20 +23,21 @@ import android.widget.ListView;
 import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.alorma.github.sdk.services.client.GithubClient;
 import com.alorma.github.sdk.services.issues.GetIssuesClient;
-import com.alorma.github.sdk.services.search.IssuesSearchClient;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
+import com.github.pockethub.core.PageIterator;
 import com.github.pockethub.core.ResourcePager;
 import com.github.pockethub.core.issue.IssueStore;
 import com.github.pockethub.ui.PagedItemFragment;
 import com.github.pockethub.util.AvatarLoader;
 import com.google.inject.Inject;
 
+import org.eclipse.egit.github.core.service.IssueService;
+
 import java.util.List;
 import java.util.Map;
 
-import com.github.pockethub.core.PageIterator;
-import org.eclipse.egit.github.core.service.IssueService;
+import static com.github.pockethub.RequestCodes.ISSUE_VIEW;
 
 /**
  * Fragment to display a pageable list of dashboard issues

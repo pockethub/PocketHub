@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 GitHub Inc.
+ * Copyright (c) 2015 PocketHub
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,17 +15,6 @@
  */
 package com.github.pockethub.accounts;
 
-import static android.accounts.AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE;
-import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
-import static android.accounts.AccountManager.KEY_ACCOUNT_TYPE;
-import static android.accounts.AccountManager.KEY_AUTHTOKEN;
-import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
-import static android.accounts.AccountManager.KEY_INTENT;
-import static com.github.pockethub.accounts.AccountConstants.ACCOUNT_TYPE;
-import static com.github.pockethub.accounts.AccountConstants.APP_NOTE;
-import static com.github.pockethub.accounts.AccountConstants.APP_NOTE_URL;
-import static com.github.pockethub.accounts.LoginActivity.PARAM_AUTHTOKEN_TYPE;
-import static com.github.pockethub.accounts.LoginActivity.PARAM_USERNAME;
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
@@ -39,12 +28,24 @@ import android.util.Log;
 
 import com.github.pockethub.DefaultClient;
 
+import org.eclipse.egit.github.core.Authorization;
+import org.eclipse.egit.github.core.service.OAuthService;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.egit.github.core.Authorization;
-import org.eclipse.egit.github.core.service.OAuthService;
+import static android.accounts.AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE;
+import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
+import static android.accounts.AccountManager.KEY_ACCOUNT_TYPE;
+import static android.accounts.AccountManager.KEY_AUTHTOKEN;
+import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
+import static android.accounts.AccountManager.KEY_INTENT;
+import static com.github.pockethub.accounts.AccountConstants.ACCOUNT_TYPE;
+import static com.github.pockethub.accounts.AccountConstants.APP_NOTE;
+import static com.github.pockethub.accounts.AccountConstants.APP_NOTE_URL;
+import static com.github.pockethub.accounts.LoginActivity.PARAM_AUTHTOKEN_TYPE;
+import static com.github.pockethub.accounts.LoginActivity.PARAM_USERNAME;
 
 public class AccountAuthenticator extends AbstractAccountAuthenticator {
 

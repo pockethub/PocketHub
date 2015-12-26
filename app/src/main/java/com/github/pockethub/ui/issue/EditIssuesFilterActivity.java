@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 GitHub Inc.
+ * Copyright (c) 2015 PocketHub
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,8 +15,6 @@
  */
 package com.github.pockethub.ui.issue;
 
-import static android.view.View.GONE;
-import static com.github.pockethub.Intents.EXTRA_ISSUE_FILTER;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -32,6 +30,8 @@ import android.widget.TextView;
 
 import com.alorma.github.sdk.bean.dto.response.Label;
 import com.alorma.github.sdk.bean.dto.response.Milestone;
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
 import com.github.pockethub.core.issue.IssueFilter;
@@ -40,15 +40,14 @@ import com.github.pockethub.util.AvatarLoader;
 import com.github.pockethub.util.InfoUtils;
 import com.google.inject.Inject;
 
-import java.util.List;
-import java.util.Set;
-
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
-
 import org.eclipse.egit.github.core.service.CollaboratorService;
 import org.eclipse.egit.github.core.service.LabelService;
 import org.eclipse.egit.github.core.service.MilestoneService;
+
+import java.util.List;
+
+import static android.view.View.GONE;
+import static com.github.pockethub.Intents.EXTRA_ISSUE_FILTER;
 
 /**
  * Activity to create or edit an issues filter for a repository

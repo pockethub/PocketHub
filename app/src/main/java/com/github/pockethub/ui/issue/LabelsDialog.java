@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 GitHub Inc.
+ * Copyright (c) 2015 PocketHub
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,12 +15,11 @@
  */
 package com.github.pockethub.ui.issue;
 
-import static java.lang.String.CASE_INSENSITIVE_ORDER;
-
 import android.util.Log;
 
 import com.alorma.github.basesdk.client.BaseClient;
 import com.alorma.github.sdk.bean.dto.response.Label;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.services.issues.GithubIssueLabelsClient;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.BaseProgressDialog;
@@ -36,10 +35,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
-
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+
+import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
 /**
  * Dialog helper to display a list of possibly selected issue labels

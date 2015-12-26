@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 GitHub Inc.
+ * Copyright (c) 2015 PocketHub
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,15 +15,6 @@
  */
 package com.github.pockethub.ui.repo;
 
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
-import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
-import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
-import static com.github.pockethub.ResultCodes.RESOURCE_CHANGED;
-import static com.github.pockethub.ui.repo.RepositoryPagerAdapter.ITEM_CODE;
-import static com.github.pockethub.util.TypefaceUtils.ICON_CODE;
-import static com.github.pockethub.util.TypefaceUtils.ICON_COMMIT;
-import static com.github.pockethub.util.TypefaceUtils.ICON_ISSUE_OPEN;
-import static com.github.pockethub.util.TypefaceUtils.ICON_NEWS;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -52,7 +43,6 @@ import com.github.pockethub.ui.TabPagerActivity;
 import com.github.pockethub.ui.user.UriLauncherActivity;
 import com.github.pockethub.ui.user.UserViewActivity;
 import com.github.pockethub.util.AvatarLoader;
-import com.github.pockethub.util.ConvertUtils;
 import com.github.pockethub.util.InfoUtils;
 import com.github.pockethub.util.ShareUtils;
 import com.github.pockethub.util.ToastUtils;
@@ -60,6 +50,16 @@ import com.google.inject.Inject;
 
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
+import static com.github.pockethub.ResultCodes.RESOURCE_CHANGED;
+import static com.github.pockethub.ui.repo.RepositoryPagerAdapter.ITEM_CODE;
+import static com.github.pockethub.util.TypefaceUtils.ICON_CODE;
+import static com.github.pockethub.util.TypefaceUtils.ICON_COMMIT;
+import static com.github.pockethub.util.TypefaceUtils.ICON_ISSUE_OPEN;
+import static com.github.pockethub.util.TypefaceUtils.ICON_NEWS;
 
 /**
  * Activity to view a repository

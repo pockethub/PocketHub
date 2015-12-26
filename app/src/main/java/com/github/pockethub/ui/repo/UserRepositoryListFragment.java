@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 GitHub Inc.
+ * Copyright (c) 2015 PocketHub
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,30 +15,30 @@
  */
 package com.github.pockethub.ui.repo;
 
-import static com.github.pockethub.Intents.EXTRA_USER;
-import static com.github.pockethub.RequestCodes.REPOSITORY_VIEW;
-import static com.github.pockethub.ResultCodes.RESOURCE_CHANGED;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
+import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.dto.response.User;
 import com.alorma.github.sdk.services.client.GithubClient;
 import com.alorma.github.sdk.services.repos.UserReposClient;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
+import com.github.pockethub.core.PageIterator;
 import com.github.pockethub.core.ResourcePager;
 import com.github.pockethub.ui.PagedItemFragment;
 import com.google.inject.Inject;
 
+import org.eclipse.egit.github.core.service.RepositoryService;
+
 import java.util.List;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.github.pockethub.core.PageIterator;
-import org.eclipse.egit.github.core.service.RepositoryService;
+import static com.github.pockethub.Intents.EXTRA_USER;
+import static com.github.pockethub.RequestCodes.REPOSITORY_VIEW;
+import static com.github.pockethub.ResultCodes.RESOURCE_CHANGED;
 
 /**
  * Fragment to display a list of repositories for a {@link User}

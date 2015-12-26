@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 GitHub Inc.
+ * Copyright (c) 2015 PocketHub
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,10 +15,6 @@
  */
 package com.github.pockethub.ui.commit;
 
-import static com.github.pockethub.Intents.EXTRA_BASE;
-import static com.github.pockethub.Intents.EXTRA_PATH;
-import static com.github.pockethub.Intents.EXTRA_POSITION;
-import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -26,13 +22,17 @@ import android.text.TextUtils;
 
 import com.alorma.github.sdk.bean.dto.request.CommitCommentRequest;
 import com.alorma.github.sdk.bean.dto.response.CommitComment;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
 import com.github.pockethub.core.commit.CommitUtils;
 import com.github.pockethub.ui.comment.CommentPreviewPagerAdapter;
-
-import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.github.pockethub.util.InfoUtils;
+
+import static com.github.pockethub.Intents.EXTRA_BASE;
+import static com.github.pockethub.Intents.EXTRA_PATH;
+import static com.github.pockethub.Intents.EXTRA_POSITION;
+import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
 
 /**
  * Activity to create a comment on a commit

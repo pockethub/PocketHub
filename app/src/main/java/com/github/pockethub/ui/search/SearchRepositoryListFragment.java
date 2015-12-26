@@ -1,11 +1,11 @@
 /*
- * Copyright 2013 GitHub Inc.
+ * Copyright (c) 2015 PocketHub
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,37 +15,30 @@
  */
 package com.github.pockethub.ui.search;
 
-import static android.app.SearchManager.QUERY;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.services.client.GithubClient;
 import com.alorma.github.sdk.services.repo.GetRepoClient;
 import com.alorma.github.sdk.services.search.RepoSearchClient;
-import com.alorma.github.sdk.services.search.UsersSearchClient;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
-import com.github.pockethub.ThrowableLoader;
 import com.github.pockethub.core.PageIterator;
 import com.github.pockethub.core.ResourcePager;
 import com.github.pockethub.core.repo.RefreshRepositoryTask;
-import com.github.pockethub.ui.ItemListFragment;
 import com.github.pockethub.ui.PagedItemFragment;
 import com.github.pockethub.ui.repo.RepositoryViewActivity;
 import com.github.pockethub.util.InfoUtils;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
+import static android.app.SearchManager.QUERY;
 
 /**
  * Fragment to display a list of {@link Repo} instances
