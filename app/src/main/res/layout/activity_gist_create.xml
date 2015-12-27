@@ -36,8 +36,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginStart="40dp"
                 android:layout_marginTop="?attr/actionBarSize"
                 android:orientation="vertical"
                 android:padding="@dimen/activity_content_padding"
@@ -53,6 +51,8 @@
                     android:text="@string/make_public"/>
 
                 <android.support.design.widget.TextInputLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
                     style="@style/InputTextLayout">
 
                     <EditText
@@ -66,6 +66,8 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
                     style="@style/InputTextLayout">
 
                     <EditText
