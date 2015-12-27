@@ -99,6 +99,8 @@
     <string name="home">Home</string>
     <string name="log_out">Log Out</string>
     <string name="news">News</string>
+    <string name="skip">Skip</string>
+    <string name="done">Done</string>
     <string name="issues">Issues</string>
     <string name="gists">Gists</string>
     <string name="commits">Commits</string>

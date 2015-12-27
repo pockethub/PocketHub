@@ -16,8 +16,10 @@
   -->
 
 <resources>
-    <style name="Theme.PocketHub.NavigationDrawer" parent="Theme.PocketHub">
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-    </style>
+    <declare-styleable name="DotPageIndicator">
+        <attr name="dotColorSelected" format="color"/>
+        <attr name="dotColor" format="color"/>
+        <attr name="dotRadius" format="dimension"/>
+        <attr name="dotSpacing" format="dimension"/>
+    </declare-styleable>
 </resources>
