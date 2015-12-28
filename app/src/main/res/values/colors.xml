@@ -83,9 +83,9 @@
     <color name="appcompat_secondary_text_disabled_material_light">#24000000</color>
 
     <array name="welcome_screen_colors">
-        <item>#15BCE3</item>
-        <item>#FFB611</item>
-        <item>#FF2D11</item>
+        <item>@color/accent</item>
+        <item>#FFC417</item>
+        <item>#FF573D</item>
     </array>
 
 </resources>

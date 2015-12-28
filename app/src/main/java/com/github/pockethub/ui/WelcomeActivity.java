@@ -64,10 +64,11 @@ public class WelcomeActivity extends DotPagerActivity {
             @Override
             public void onClick(View v) {
                 ViewPager pager = getViewPager();
-                if (pager.getCurrentItem() + 1 < adapter.getCount())
+                if (pager.getCurrentItem() + 1 < adapter.getCount()) {
                     pager.setCurrentItem(pager.getCurrentItem() + 1, true);
-                else
+                }else {
                     configureDotPager();
+                }
             }
         });
     }
@@ -91,9 +92,8 @@ public class WelcomeActivity extends DotPagerActivity {
     protected PagerAdapter createAdapter() {
         return new WelcomePagerAdapter(R.layout.welcome_pager_item,
                 new int[]{R.drawable.waving_android, R.drawable.welcome_app_icon, R.drawable.thumb_up},
-                new String[]{"So a while a go the GitHub app was discontinued and some of us wanted something new...",
-                "We move the app under a new name and are now PocketHub", "Click done and we'll get you logged in!"},
-                new String[]{"Welcome", "Long story short", "Let's get started"});
+                getResources().getStringArray(R.array.welcome_texts),
+                getResources().getStringArray(R.array.welcome_titles));
     }
 
     /**
