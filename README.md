@@ -47,6 +47,9 @@ Any contributions, large or small, major features, bug fixes, additional languag
 - The callback URL needs to be in the format `your_schema://whatever_you_want`
 - Use a custom schema like `myawesomeschema` (not `http` or `https`)
 
+## Building with Docker
+`build_in_docker.sh` sets up a Docker VM and build PocketHub in it. Supports Docker and Docker Machine (with VMWARE Fusion)
+
 ## Legacy Notes
 
 If you had a current installation of the Github App installed and then enabled 2FA (2 Factor Authentication), then you must delete the Personal Access Token (PAT) from your configuration (via the web interface). A thanks to @landstander668 for posting this workaround.
