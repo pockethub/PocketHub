@@ -105,8 +105,9 @@ public class MainActivity extends BaseActivity implements
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         userLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
 
-        if(sp.getBoolean(PREF_FIRST_USE, true))
+        if(sp.getBoolean(PREF_FIRST_USE, true)) {
             openWelcomeScreen();
+        }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
