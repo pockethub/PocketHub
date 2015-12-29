@@ -237,9 +237,10 @@ public class MainActivity extends BaseActivity implements
         ImageView userImage;
         TextView userRealName;
         TextView userName;
-        userImage = (ImageView) navigationView.findViewById(R.id.user_picture);
-        userRealName = (TextView) navigationView.findViewById(R.id.user_real_name);
-        userName = (TextView) navigationView.findViewById(R.id.user_name);
+        View headerView = navigationView.getHeaderView(0);
+        userImage = (ImageView) headerView.findViewById(R.id.user_picture);
+        userRealName = (TextView) headerView.findViewById(R.id.user_real_name);
+        userName = (TextView) headerView.findViewById(R.id.user_name);
 
         avatars.bind(userImage, org);
         userName.setText(org.login);

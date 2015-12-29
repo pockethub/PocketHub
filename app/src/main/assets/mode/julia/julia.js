@@ -34,7 +34,6 @@ CodeMirror.defineMode("julia", function(_conf, parserConf) {
   var closers = wordRegexp(blockClosers);
   var macro = /^@[_A-Za-z][_A-Za-z0-9]*/;
   var symbol = /^:[_A-Za-z][_A-Za-z0-9]*/;
-  var indentInfo = null;
 
   function in_array(state) {
     var ch = cur_scope(state);
@@ -247,7 +246,6 @@ CodeMirror.defineMode("julia", function(_conf, parserConf) {
   }
 
   function tokenLexer(stream, state) {
-    indentInfo = null;
     var style = state.tokenize(stream, state);
     var current = stream.current();
 
@@ -285,7 +283,7 @@ CodeMirror.defineMode("julia", function(_conf, parserConf) {
       if(textAfter=="end" || textAfter=="]" || textAfter=="}" || textAfter=="else" || textAfter=="elseif" || textAfter=="catch" || textAfter=="finally") {
         delta = -1;
       }
-      return (state.scopes.length + delta) * 4;
+      return (state.scopes.length + delta) * _conf.indentUnit;
     },
 
     lineComment: "#",
