@@ -80,7 +80,10 @@ android {
 
     lintOptions {
         warning 'MissingTranslation'
-        abortOnError false
+        abortOnError true
+        check 'NewApi', 'InlinedApi'
+        fatal 'NewApi', 'InlinedApi'
+        checkReleaseBuilds true
         
         textReport isTravis
         textOutput 'stdout'
