@@ -103,7 +103,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.item_list, container, false);
+        return inflater.inflate(R.layout.fragment_item_list, container, false);
     }
 
     @Override

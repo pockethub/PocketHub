@@ -187,9 +187,8 @@ public class CommitDiffListFragment extends DialogFragment implements
     }
 
     @Override
-    public void onCreateOptionsMenu(final Menu optionsMenu,
-                                    final MenuInflater inflater) {
-        inflater.inflate(R.menu.commit_view, optionsMenu);
+    public void onCreateOptionsMenu(final Menu optionsMenu, final MenuInflater inflater) {
+        inflater.inflate(R.menu.fragment_commit_view, optionsMenu);
     }
 
     @Override
@@ -406,9 +405,8 @@ public class CommitDiffListFragment extends DialogFragment implements
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.commit_diff_list, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_commit_diff_list, container, false);
     }
 
     private void showFileOptions(CharSequence line, final int position,

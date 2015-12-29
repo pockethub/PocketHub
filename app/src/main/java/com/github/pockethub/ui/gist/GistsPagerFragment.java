@@ -44,7 +44,7 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.gists, menu);
+        inflater.inflate(R.menu.fragment_gists, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 

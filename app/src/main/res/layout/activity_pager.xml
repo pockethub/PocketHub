@@ -13,30 +13,22 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ToolbarStyle"
+        android:theme="@style/ToolbarTheme"
         android:minHeight="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:layout_alignParentTop="true"
         android:id="@+id/toolbar" />
 
-    <WebView
-        android:id="@+id/wv_code"
-        android:layout_below="@id/toolbar"
+    <com.github.pockethub.ui.ViewPager
+        android:id="@+id/vp_pages"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
+        android:layout_height="match_parent" />
 
-    <ProgressBar
-        android:id="@+id/pb_loading"
-        style="@style/ListSpinner"
-        android:layout_centerInParent="true" />
-
-</RelativeLayout>
+</LinearLayout>

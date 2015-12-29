@@ -20,16 +20,25 @@
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ToolbarStyle"
+        android:theme="@style/ToolbarTheme"
         android:minHeight="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:layout_alignParentTop="true"
         android:id="@+id/toolbar" />
 
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        style="@style/Spinner"
+        android:layout_centerInParent="true"
+        android:layout_width="64dp"
+        android:layout_height="64dp" />
+
     <ScrollView
+        android:id="@+id/sv_issue_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar">
+        android:layout_below="@id/toolbar"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,105 +48,105 @@
 
             <TextView
                 style="@style/HeaderTitleText"
-                android:text="@string/section_issue_status" />
+                android:text="@string/title" />
 
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/inset_background"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/rb_open"
-                    style="@style/SubtitleText"
-                    android:text="@string/status_open"
-                    android:textColor="@color/text" />
-
-                <RadioButton
-                    android:id="@+id/rb_closed"
-                    style="@style/SubtitleText"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:text="@string/status_closed"
-                    android:textColor="@color/text" />
-            </RadioGroup>
+            <EditText
+                android:id="@+id/et_issue_title"
+                style="@style/FormalSingleLineEditText"
+                android:layout_width="match_parent" />
 
             <TextView
-                android:id="@+id/tv_assignee_label"
+                android:id="@+id/tv_labels_label"
                 style="@style/HeaderTitleText"
                 android:paddingTop="5dp"
-                android:text="@string/section_issue_assigned" />
+                android:text="@string/labels"
+                android:visibility="gone" />
 
             <LinearLayout
+                android:id="@+id/ll_labels"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/inset_background"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="10dp">
+                android:padding="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_labels"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_assignee_label"
+                style="@style/HeaderTitleText"
+                android:paddingTop="5dp"
+                android:text="@string/assignee"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/ll_assignee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/inset_background"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:visibility="gone">
 
                 <ImageView
-                    android:id="@+id/iv_avatar"
-                    style="@style/AvatarLarge"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:id="@+id/iv_assignee_avatar"
+                    style="@style/AvatarMedium"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"
                     android:contentDescription="@string/avatar" />
 
                 <TextView
-                    android:id="@+id/tv_assignee"
-                    style="@style/SubtitleText"
-                    android:layout_width="match_parent"
-                    android:includeFontPadding="true"
+                    android:id="@+id/tv_assignee_name"
+                    style="@style/ListSubtitleText"
                     android:singleLine="true"
-                    android:text="@string/assignee_anyone"
                     android:textColor="@color/text" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_milestone_label"
                 style="@style/HeaderTitleText"
-                android:paddingTop="15dp"
-                android:text="@string/section_issue_milestone" />
+                android:paddingTop="5dp"
+                android:text="@string/milestone"
+                android:visibility="gone" />
 
             <LinearLayout
+                android:id="@+id/ll_milestone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/inset_background"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
-                android:padding="10dp">
+                android:padding="10dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_milestone"
-                    style="@style/SubtitleText"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    style="@style/ListSubtitleText"
                     android:singleLine="true"
                     android:textColor="@color/text" />
+
+                <include layout="@layout/milestone" />
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_labels_label"
                 style="@style/HeaderTitleText"
-                android:paddingTop="15dp"
-                android:text="@string/section_issue_labels" />
+                android:paddingTop="5dp"
+                android:text="@string/description" />
 
-            <LinearLayout
+            <EditText
+                android:id="@+id/et_issue_body"
+                style="@style/FormalMultiLineEditText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/inset_background"
-                android:gravity="center_vertical"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <TextView
-                    android:id="@+id/tv_labels"
-                    style="@style/SubtitleText"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="@string/none"
-                    android:textColor="@color/text" />
-            </LinearLayout>
+                android:minLines="5"
+                android:scrollbars="horizontal|vertical" />
         </LinearLayout>
     </ScrollView>
 

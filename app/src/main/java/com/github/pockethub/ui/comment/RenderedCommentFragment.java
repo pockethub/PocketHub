@@ -85,7 +85,7 @@ public class RenderedCommentFragment extends DialogFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.comment_preview, null);
+        return inflater.inflate(R.layout.fragment_comment_preview, null);
     }
 
     @Override

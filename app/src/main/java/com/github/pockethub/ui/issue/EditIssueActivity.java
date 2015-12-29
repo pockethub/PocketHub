@@ -133,7 +133,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.issue_edit);
+        setContentView(R.layout.activity_issue_edit);
 
         titleText = finder.find(R.id.et_issue_title);
         bodyText = finder.find(R.id.et_issue_body);
@@ -327,7 +327,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
-        getMenuInflater().inflate(R.menu.issue_edit, options);
+        getMenuInflater().inflate(R.menu.activity_issue_edit, options);
         saveItem = options.findItem(R.id.m_apply);
         updateSaveMenu();
         return super.onCreateOptionsMenu(options);

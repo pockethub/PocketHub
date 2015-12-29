@@ -105,7 +105,7 @@ public class GistFileFragment extends DialogFragment implements
 
     @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
-        inflater.inflate(R.menu.code_view, optionsMenu);
+        inflater.inflate(R.menu.fragment_code_view, optionsMenu);
 
         wrapItem = optionsMenu.findItem(R.id.m_wrap);
         updateWrapItem();
@@ -184,7 +184,7 @@ public class GistFileFragment extends DialogFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.gist_file_view, container, false);
+        return inflater.inflate(R.layout.fragment_gist_file_view, container, false);
     }
 
     @Override

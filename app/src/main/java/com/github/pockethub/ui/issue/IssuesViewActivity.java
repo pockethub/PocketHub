@@ -188,7 +188,7 @@ public class IssuesViewActivity extends PagerActivity {
         repoIds = getIntent().getParcelableArrayListExtra(EXTRA_REPOSITORIES);
         repo = getParcelableExtra(EXTRA_REPOSITORY);
 
-        setContentView(R.layout.pager);
+        setContentView(R.layout.activity_pager);
 
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 

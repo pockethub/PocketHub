@@ -55,7 +55,7 @@ public class IssueSearchActivity extends RoboAppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
-        getMenuInflater().inflate(R.menu.search, options);
+        getMenuInflater().inflate(R.menu.activity_search, options);
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         MenuItem searchItem = options.findItem(R.id.m_search);
@@ -89,7 +89,7 @@ public class IssueSearchActivity extends RoboAppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.issue_search);
+        setContentView(R.layout.activity_issue_search);
 
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 

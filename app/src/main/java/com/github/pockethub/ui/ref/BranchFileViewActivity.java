@@ -120,7 +120,7 @@ public class BranchFileViewActivity extends BaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.commit_file_view);
+        setContentView(R.layout.activity_commit_file_view);
 
         repo = getParcelableExtra(EXTRA_REPOSITORY);
         sha = getStringExtra(EXTRA_BASE);
@@ -151,7 +151,7 @@ public class BranchFileViewActivity extends BaseActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(final Menu optionsMenu) {
-        getMenuInflater().inflate(R.menu.file_view, optionsMenu);
+        getMenuInflater().inflate(R.menu.activity_file_view, optionsMenu);
 
         MenuItem wrapItem = optionsMenu.findItem(R.id.m_wrap);
         if (PreferenceUtils.getCodePreferences(this).getBoolean(WRAP, false))

@@ -60,7 +60,7 @@ public class IssueBrowseActivity extends DialogFragmentActivity {
 
         repo = getParcelableExtra(EXTRA_REPOSITORY);
 
-        setContentView(R.layout.repo_issue_list);
+        setContentView(R.layout.activity_repo_issue_list);
 
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 

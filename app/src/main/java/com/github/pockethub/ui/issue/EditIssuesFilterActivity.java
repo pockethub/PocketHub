@@ -103,7 +103,7 @@ public class EditIssuesFilterActivity extends DialogFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.issues_filter_edit);
+        setContentView(R.layout.activity_issues_filter_edit);
 
         labelsText = finder.find(R.id.tv_labels);
         milestoneText = finder.find(R.id.tv_milestone);
@@ -204,7 +204,7 @@ public class EditIssuesFilterActivity extends DialogFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
-        getMenuInflater().inflate(R.menu.issue_filter, options);
+        getMenuInflater().inflate(R.menu.activity_issue_filter, options);
         return true;
     }
 

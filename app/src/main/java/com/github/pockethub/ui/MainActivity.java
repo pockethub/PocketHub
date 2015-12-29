@@ -174,7 +174,7 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionMenu) {
-        getMenuInflater().inflate(R.menu.home, optionMenu);
+        getMenuInflater().inflate(R.menu.activity_main, optionMenu);
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         MenuItem searchItem = optionMenu.findItem(R.id.m_search);

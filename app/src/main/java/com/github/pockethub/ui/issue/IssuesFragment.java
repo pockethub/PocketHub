@@ -187,7 +187,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
     @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
-        inflater.inflate(R.menu.issues, optionsMenu);
+        inflater.inflate(R.menu.fragment_issues, optionsMenu);
 
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         MenuItem searchItem = optionsMenu.findItem(R.id.m_search);
