@@ -15,7 +15,6 @@
  */
 package com.github.pockethub.ui;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +23,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ListView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.alorma.github.sdk.bean.dto.response.Commit;
 import com.alorma.github.sdk.bean.dto.response.CommitComment;
 import com.alorma.github.sdk.bean.dto.response.Gist;
@@ -150,9 +150,11 @@ public abstract class NewsFragment extends PagedItemFragment<GithubEvent> {
         final User user = event.actor;
 
         if (repo != null && user != null) {
-            final AlertDialog dialog = LightAlertDialog.create(getActivity());
-            dialog.setTitle(R.string.navigate_to);
-            dialog.setCanceledOnTouchOutside(true);
+            final MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity())
+                    .title(R.string.navigate_to);
+
+            // Hacky but necessary since material dialogs has a different API
+            final MaterialDialog[] dialogHolder = new MaterialDialog[1];
 
             View view = getActivity().getLayoutInflater().inflate(
                     R.layout.nav_dialog, null);
@@ -164,20 +166,22 @@ public abstract class NewsFragment extends PagedItemFragment<GithubEvent> {
             finder.onClick(R.id.ll_user_area, new OnClickListener() {
 
                 public void onClick(View v) {
-                    dialog.dismiss();
-
+                    dialogHolder[0].dismiss();
                     viewUser(user);
                 }
             });
             finder.onClick(R.id.ll_repo_area, new OnClickListener() {
 
                 public void onClick(View v) {
-                    dialog.dismiss();
-
+                    dialogHolder[0].dismiss();
                     viewRepository(repo);
                 }
             });
-            dialog.setView(view);
+            builder.customView(view, false);
+
+            MaterialDialog dialog = builder.build();
+            dialogHolder[0] = dialog;
+            dialog.setCanceledOnTouchOutside(true);
             dialog.show();
 
             return true;

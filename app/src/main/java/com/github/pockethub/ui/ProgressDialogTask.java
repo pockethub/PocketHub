@@ -15,9 +15,10 @@
  */
 package com.github.pockethub.ui;
 
-import android.app.AlertDialog;
 import android.content.Context;
+import android.support.annotation.StringRes;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.pockethub.accounts.AuthenticatedUserTask;
 
 import java.util.concurrent.Executor;
@@ -32,7 +33,7 @@ public abstract class ProgressDialogTask<E> extends AuthenticatedUserTask<E> {
     /**
      * Progress dialog last displayed
      */
-    protected AlertDialog progress;
+    protected MaterialDialog progress;
 
     /**
      * @param context
@@ -66,8 +67,10 @@ public abstract class ProgressDialogTask<E> extends AuthenticatedUserTask<E> {
      */
     protected void showIndeterminate(final CharSequence message) {
         dismissProgress();
-
-        progress = LightProgressDialog.create(getContext(), message);
+        progress = new MaterialDialog.Builder(context)
+                .content(message)
+                .progress(true, 0)
+                .build();
         progress.show();
     }
 
@@ -76,10 +79,12 @@ public abstract class ProgressDialogTask<E> extends AuthenticatedUserTask<E> {
      *
      * @param resId
      */
-    protected void showIndeterminate(final int resId) {
+    protected void showIndeterminate(@StringRes final int resId) {
         dismissProgress();
-
-        progress = LightProgressDialog.create(getContext(), resId);
+        progress = new MaterialDialog.Builder(context)
+                .content(resId)
+                .progress(true, 0)
+                .build();
         progress.show();
     }
 

@@ -16,23 +16,24 @@
 package com.github.pockethub.ui.issue;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.alorma.github.sdk.bean.dto.response.Label;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.DialogFragmentActivity;
 import com.github.pockethub.ui.DialogFragmentHelper;
-import com.github.pockethub.ui.LightAlertDialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -145,18 +146,34 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
         view.setAdapter(adapter);
         view.setOnItemClickListener(adapter);
 
-        AlertDialog dialog = LightAlertDialog.create(activity);
-        dialog.setCancelable(true);
-        dialog.setOnCancelListener(this);
-        dialog.setButton(BUTTON_NEGATIVE, activity.getString(R.string.cancel),
-                this);
-        dialog.setButton(BUTTON_NEUTRAL, activity.getString(R.string.clear), this);
-        dialog.setButton(BUTTON_POSITIVE, activity.getString(R.string.apply),
-                this);
-        dialog.setTitle(getTitle());
-        dialog.setMessage(getMessage());
-        dialog.setView(view);
-        return dialog;
+        return new MaterialDialog.Builder(activity)
+                .cancelable(true)
+                .cancelListener(this)
+                .negativeText(R.string.cancel)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        LabelsDialogFragment.this.onClick(dialog, BUTTON_NEGATIVE);
+                    }
+                })
+                .neutralText(R.string.clear)
+                .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        LabelsDialogFragment.this.onClick(dialog, BUTTON_NEUTRAL);
+                    }
+                })
+                .positiveText(R.string.apply)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        LabelsDialogFragment.this.onClick(dialog, BUTTON_POSITIVE);
+                    }
+                })
+                .title(getTitle())
+                .content(getMessage())
+                .customView(view, false)
+                .build();
     }
 
     @SuppressWarnings("unchecked")

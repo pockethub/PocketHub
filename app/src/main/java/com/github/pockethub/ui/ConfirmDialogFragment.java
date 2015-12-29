@@ -15,12 +15,15 @@
  */
 package com.github.pockethub.ui;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -66,17 +69,28 @@ public class ConfirmDialogFragment extends DialogFragmentHelper implements
         show(activity, new ConfirmDialogFragment(), arguments, TAG);
     }
 
+    @NonNull
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
-        AlertDialog dialog = LightAlertDialog.create(getActivity());
-        dialog.setTitle(getTitle());
-        dialog.setMessage(getMessage());
-        dialog.setButton(BUTTON_POSITIVE,
-                getResources().getString(android.R.string.yes), this);
-        dialog.setButton(BUTTON_NEGATIVE,
-                getResources().getString(android.R.string.no), this);
-        dialog.setCancelable(true);
-        dialog.setOnCancelListener(this);
-        return dialog;
+        return new MaterialDialog.Builder(getActivity())
+                .title(getTitle())
+                .content(getMessage())
+                .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.no)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        ConfirmDialogFragment.this.onClick(dialog, BUTTON_POSITIVE);
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        ConfirmDialogFragment.this.onClick(dialog, BUTTON_NEGATIVE);
+                    }
+                })
+                .cancelable(true)
+                .cancelListener(this)
+                .build();
     }
 
     @Override
