@@ -16,12 +16,17 @@
 package com.github.pockethub.ui.gist;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.alorma.github.sdk.bean.dto.response.Gist;
@@ -57,6 +62,47 @@ public class CreateGistActivity extends BaseActivity {
         nameText = finder.find(R.id.et_gist_name);
         contentText = finder.find(R.id.et_gist_content);
         publicCheckBox = finder.find(R.id.cb_public);
+
+        final AppBarLayout appBarLayout = finder.find(R.id.appbar);
+
+        // Fully expand the AppBar if something in it gets focus
+        View.OnFocusChangeListener expandAppBarOnFocusChangeListener = new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus)
+                    appBarLayout.setExpanded(true);
+            }
+        };
+        nameText.setOnFocusChangeListener(expandAppBarOnFocusChangeListener);
+        descriptionText.setOnFocusChangeListener(expandAppBarOnFocusChangeListener);
+        publicCheckBox.setOnFocusChangeListener(expandAppBarOnFocusChangeListener);
+
+        // Fully expand the AppBar if something in it changes its value
+        TextWatcher expandAppBarTextWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                appBarLayout.setExpanded(true);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                appBarLayout.setExpanded(true);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                appBarLayout.setExpanded(true);
+            }
+        };
+        nameText.addTextChangedListener(expandAppBarTextWatcher);
+        descriptionText.addTextChangedListener(expandAppBarTextWatcher);
+        publicCheckBox.addTextChangedListener(expandAppBarTextWatcher);
+        publicCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                appBarLayout.setExpanded(true);
+            }
+        });
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
