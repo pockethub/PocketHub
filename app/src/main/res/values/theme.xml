@@ -45,6 +45,7 @@
     <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="colorControlNormal">@android:color/white</item>
         <item name="colorControlHighlight">@color/ripple_material_dark</item>
+        <item name="colorAccent">#FFFFFF</item>
     </style>
 
     <style name="Theme.GitHub.CheckBoxLight" parent="@style/Theme.AppCompat.Light.NoActionBar">
