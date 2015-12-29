@@ -22,7 +22,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_drawer_header_height">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
