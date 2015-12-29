@@ -17,7 +17,6 @@ package com.github.pockethub.accounts;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +28,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.alorma.github.basesdk.client.BaseClient;
 import com.alorma.github.basesdk.client.GithubDeveloperCredentialsProvider;
 import com.alorma.github.basesdk.client.credentials.GithubDeveloperCredentials;
@@ -39,7 +39,6 @@ import com.alorma.github.sdk.services.login.RequestTokenClient;
 import com.alorma.github.sdk.services.user.GetAuthUserClient;
 import com.github.pockethub.R;
 import com.github.pockethub.persistence.AccountDataManager;
-import com.github.pockethub.ui.LightProgressDialog;
 import com.github.pockethub.ui.MainActivity;
 import com.github.pockethub.ui.roboactivities.RoboAccountAuthenticatorAppCompatActivity;
 import com.google.inject.Inject;
@@ -115,7 +114,7 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity imp
 
     private RequestTokenClient requestTokenClient;
 
-    private AlertDialog progressDialog;
+    private MaterialDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -186,9 +185,10 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity imp
     }
 
     private void openLoadingDialog() {
-        progressDialog = LightProgressDialog.create(this,
-                R.string.login_activity_authenticating);
-        progressDialog.show();
+        progressDialog = new MaterialDialog.Builder(this)
+                .progress(true, 0)
+                .content(R.string.login_activity_authenticating)
+                .show();
     }
 
     public void handleLogin() {

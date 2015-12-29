@@ -15,7 +15,6 @@
  */
 package com.github.pockethub.ui;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
@@ -23,6 +22,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import roboguice.fragment.RoboDialogFragment;
 
@@ -130,13 +131,12 @@ public abstract class DialogFragmentHelper extends RoboDialogFragment implements
      *
      * @return dialog
      */
-    protected AlertDialog createDialog() {
-        final AlertDialog dialog = LightAlertDialog.create(getActivity());
-        dialog.setTitle(getTitle());
-        dialog.setMessage(getMessage());
-        dialog.setCancelable(true);
-        dialog.setOnCancelListener(this);
-        return dialog;
+    protected MaterialDialog.Builder createDialogBuilder() {
+        return new MaterialDialog.Builder(getActivity())
+                .title(getTitle())
+                .content(getMessage())
+                .cancelable(true)
+                .cancelListener(this);
     }
 
     @Override

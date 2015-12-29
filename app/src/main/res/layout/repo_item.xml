@@ -76,11 +76,11 @@
     <View
         android:id="@+id/v_separator"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@id/ll_details"
         android:layout_marginTop="5dp"
-        android:background="@drawable/list_divider" />
+        android:background="@null" />
 
 </RelativeLayout>

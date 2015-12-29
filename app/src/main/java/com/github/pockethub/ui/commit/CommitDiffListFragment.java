@@ -16,13 +16,12 @@
 package com.github.pockethub.ui.commit;
 
 import android.accounts.Account;
-import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,6 +38,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.alorma.github.sdk.bean.dto.response.Commit;
 import com.alorma.github.sdk.bean.dto.response.CommitComment;
 import com.alorma.github.sdk.bean.dto.response.CommitFile;
@@ -55,7 +56,6 @@ import com.github.pockethub.core.commit.FullCommitFile;
 import com.github.pockethub.core.commit.RefreshCommitTask;
 import com.github.pockethub.ui.DialogFragment;
 import com.github.pockethub.ui.HeaderFooterListAdapter;
-import com.github.pockethub.ui.LightAlertDialog;
 import com.github.pockethub.ui.StyledText;
 import com.github.pockethub.util.AvatarLoader;
 import com.github.pockethub.util.HttpImageGetter;
@@ -69,7 +69,6 @@ import java.util.Date;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.DialogInterface.BUTTON_NEGATIVE;
 import static android.graphics.Paint.UNDERLINE_TEXT_FLAG;
 import static com.github.pockethub.Intents.EXTRA_BASE;
 import static com.github.pockethub.Intents.EXTRA_COMMENT;
@@ -414,9 +413,11 @@ public class CommitDiffListFragment extends DialogFragment implements
 
     private void showFileOptions(CharSequence line, final int position,
                                  final CommitFile file) {
-        final AlertDialog dialog = LightAlertDialog.create(getActivity());
-        dialog.setTitle(CommitUtils.getName(file));
-        dialog.setCanceledOnTouchOutside(true);
+
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity())
+                .title(CommitUtils.getName(file));
+
+        final MaterialDialog[] dialogHolder = new MaterialDialog[1];
 
         View view = getActivity().getLayoutInflater().inflate(
                 R.layout.diff_line_dialog, null);
@@ -430,20 +431,16 @@ public class CommitDiffListFragment extends DialogFragment implements
                 + CommitUtils.abbreviate(commit));
 
         finder.find(R.id.ll_view_area).setOnClickListener(new OnClickListener() {
-
             public void onClick(View v) {
-                dialog.dismiss();
-
+                dialogHolder[0].dismiss();
                 openFile(file);
             }
         });
 
         finder.find(R.id.ll_comment_area).setOnClickListener(
                 new OnClickListener() {
-
                     public void onClick(View v) {
-                        dialog.dismiss();
-
+                        dialogHolder[0].dismiss();
                         startActivityForResult(CreateCommentActivity
                                         .createIntent(repository, commit.sha,
                                                 file.filename, position),
@@ -451,14 +448,18 @@ public class CommitDiffListFragment extends DialogFragment implements
                     }
                 });
 
-        dialog.setView(view);
-        dialog.setButton(BUTTON_NEGATIVE, getString(R.string.cancel),
-                new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int which) {
+        builder.customView(view, false)
+                .negativeText(R.string.cancel)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         dialog.dismiss();
                     }
                 });
+
+        MaterialDialog dialog = builder.build();
+        dialogHolder[0] = dialog;
+        dialog.setCanceledOnTouchOutside(true);
         dialog.show();
     }
 

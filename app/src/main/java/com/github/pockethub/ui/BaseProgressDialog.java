@@ -16,8 +16,10 @@
 
 package com.github.pockethub.ui;
 
-import android.app.AlertDialog;
 import android.content.Context;
+import android.support.annotation.StringRes;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 public class BaseProgressDialog {
 
@@ -25,7 +27,7 @@ public class BaseProgressDialog {
     /**
      * Progress dialog last displayed
      */
-    protected AlertDialog progress;
+    protected MaterialDialog progress;
 
 
     public BaseProgressDialog(Context context) {
@@ -50,7 +52,10 @@ public class BaseProgressDialog {
     protected void showIndeterminate(final CharSequence message) {
         dismissProgress();
 
-        progress = LightProgressDialog.create(context, message);
+        progress = new MaterialDialog.Builder(context)
+                .content(message)
+                .progress(true, 0)
+                .build();
         progress.show();
     }
 
@@ -59,10 +64,13 @@ public class BaseProgressDialog {
      *
      * @param resId
      */
-    protected void showIndeterminate(final int resId) {
+    protected void showIndeterminate(@StringRes final int resId) {
         dismissProgress();
 
-        progress = LightProgressDialog.create(context, resId);
+        progress = new MaterialDialog.Builder(context)
+                .content(resId)
+                .progress(true, 0)
+                .build();
         progress.show();
     }
 }

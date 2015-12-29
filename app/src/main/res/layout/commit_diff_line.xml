@@ -18,7 +18,7 @@
     android:id="@+id/tv_diff"
     style="@style/CodeText"
     android:layout_width="match_parent"
-    android:background="@drawable/list_item_background"
+    android:background="?selectableItemBackground"
     android:paddingBottom="1dp"
     android:paddingLeft="15dp"
     android:paddingStart="15dp"

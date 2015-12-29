@@ -16,16 +16,17 @@
 package com.github.pockethub.ui.user;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.alorma.github.sdk.bean.dto.response.Gist;
 import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.alorma.github.sdk.bean.dto.response.Repo;
@@ -37,7 +38,6 @@ import com.github.pockethub.core.gist.GistUriMatcher;
 import com.github.pockethub.core.issue.IssueUriMatcher;
 import com.github.pockethub.core.repo.RepositoryUriMatcher;
 import com.github.pockethub.core.user.UserUriMatcher;
-import com.github.pockethub.ui.LightAlertDialog;
 import com.github.pockethub.ui.commit.CommitViewActivity;
 import com.github.pockethub.ui.gist.GistsViewActivity;
 import com.github.pockethub.ui.issue.IssuesViewActivity;
@@ -46,7 +46,6 @@ import com.github.pockethub.ui.repo.RepositoryViewActivity;
 import java.net.URI;
 import java.text.MessageFormat;
 
-import static android.content.DialogInterface.BUTTON_POSITIVE;
 import static android.content.Intent.ACTION_VIEW;
 import static android.content.Intent.CATEGORY_BROWSABLE;
 import static org.eclipse.egit.github.core.client.IGitHubConstants.HOST_DEFAULT;
@@ -162,24 +161,22 @@ public class UriLauncherActivity extends Activity {
     }
 
     private void showParseError(String url) {
-        AlertDialog dialog = LightAlertDialog.create(this);
-        dialog.setTitle(R.string.title_invalid_github_url);
-        dialog.setMessage(MessageFormat.format(getString(R.string.message_invalid_github_url), url));
-        dialog.setOnCancelListener(new OnCancelListener() {
-
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                finish();
-            }
-        });
-        dialog.setButton(BUTTON_POSITIVE, getString(android.R.string.ok),
-                new OnClickListener() {
-
+        new MaterialDialog.Builder(this)
+                .title(R.string.title_invalid_github_url)
+                .content(MessageFormat.format(getString(R.string.message_invalid_github_url), url))
+                .cancelListener(new OnCancelListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onCancel(DialogInterface dialog) {
                         finish();
                     }
-                });
-        dialog.show();
+                })
+                .positiveText(android.R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        finish();
+                    }
+                })
+                .show();
     }
 }

@@ -23,19 +23,19 @@ import android.accounts.AuthenticatorDescription;
 import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
-import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.alorma.github.sdk.bean.dto.response.Organization;
 import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.R;
-import com.github.pockethub.ui.LightAlertDialog;
 
 import org.eclipse.egit.github.core.client.RequestException;
 
@@ -45,7 +45,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
-import static android.content.DialogInterface.BUTTON_POSITIVE;
 import static android.util.Log.DEBUG;
 import static com.github.pockethub.accounts.AccountConstants.ACCOUNT_TYPE;
 import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
@@ -319,26 +318,23 @@ public class AccountUtils {
      * @param activity
      */
     private static void showConflictMessage(final Activity activity) {
-        AlertDialog dialog = LightAlertDialog.create(activity);
-        dialog.setTitle(activity.getString(R.string.authenticator_conflict_title));
-        dialog.setMessage(activity
-                .getString(R.string.authenticator_conflict_message));
-        dialog.setOnCancelListener(new OnCancelListener() {
-
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                activity.finish();
-            }
-        });
-        dialog.setButton(BUTTON_POSITIVE,
-                activity.getString(android.R.string.ok), new OnClickListener() {
-
+        new MaterialDialog.Builder(activity)
+                .title(R.string.authenticator_conflict_title)
+                .content(R.string.authenticator_conflict_message)
+                .positiveText(android.R.string.ok)
+                .cancelListener(new OnCancelListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onCancel(DialogInterface dialog) {
                         activity.finish();
                     }
-                });
-        dialog.show();
+                })
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        activity.finish();
+                    }
+                })
+                .show();
     }
 
     /**

@@ -16,16 +16,18 @@
 package com.github.pockethub.ui.ref;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.alorma.github.sdk.bean.dto.response.GitReference;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
@@ -117,9 +119,14 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
         Activity activity = getActivity();
         Bundle arguments = getArguments();
 
-        final AlertDialog dialog = createDialog();
-        dialog.setButton(BUTTON_NEGATIVE, activity.getString(R.string.cancel),
-                this);
+        final MaterialDialog.Builder dialogBuilder = createDialogBuilder()
+                .negativeText(R.string.cancel)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        RefDialogFragment.this.onClick(dialog, BUTTON_NEGATIVE);
+                    }
+                });
 
         LayoutInflater inflater = activity.getLayoutInflater();
 
@@ -130,7 +137,7 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
-                onClick(dialog, position);
+                onClick(getDialog(), position);
             }
         });
 
@@ -141,9 +148,9 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
         view.setAdapter(adapter);
         if (selected >= 0)
             view.setSelection(selected);
-        dialog.setView(view);
+        dialogBuilder.customView(view, false);
 
-        return dialog;
+        return dialogBuilder.build();
     }
 
     @SuppressWarnings("unchecked")

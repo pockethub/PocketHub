@@ -49,7 +49,7 @@
                 android:textStyle="normal" />
         </LinearLayout>
 
-        <View style="@style/Separator" />
+        <!--<View style="@style/Separator" />-->
 
         <LinearLayout
             android:id="@+id/ll_repo_area"
