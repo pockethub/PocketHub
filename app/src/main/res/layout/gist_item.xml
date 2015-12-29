@@ -15,7 +15,8 @@
   ~ limitations under the License.
   -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItem" >
+                xmlns:tools="http://schemas.android.com/tools"
+                style="@style/ListItem">
 
     <ImageView
         android:id="@+id/iv_avatar"
@@ -66,7 +67,8 @@
             style="@style/ListIcon"
             android:paddingLeft="5dp"
             android:paddingStart="5dp"
-            android:text="@string/icon_file" />
+            android:text="@string/icon_file"
+            tools:ignore="NewApi"/>
 
         <TextView
             android:id="@+id/tv_gist_files"
@@ -74,7 +76,8 @@
             android:paddingLeft="5dp"
             android:paddingStart="5dp"
             android:paddingEnd="10dp"
-            android:paddingRight="10dp" />
+            android:paddingRight="10dp"
+            tools:ignore="NewApi"/>
 
         <TextView
             android:id="@+id/tv_comment_icon"
@@ -85,7 +88,8 @@
             android:id="@+id/tv_gist_comments"
             style="@style/ListNumericSubtitleText"
             android:paddingStart="5dp"
-            android:paddingLeft="5dp" />
+            android:paddingLeft="5dp"
+            tools:ignore="NewApi"/>
     </LinearLayout>
 
 </RelativeLayout>

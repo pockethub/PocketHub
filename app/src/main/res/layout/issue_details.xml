@@ -14,7 +14,8 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
         android:id="@+id/iv_avatar"
@@ -30,7 +31,8 @@
         android:paddingStart="10dp"
         android:paddingRight="2dp"
         android:paddingEnd="2dp"
-        android:singleLine="true" />
+        android:singleLine="true"
+        tools:ignore="NewApi"/>
 
     <TextView
         android:id="@+id/tv_pull_request_icon"
@@ -48,6 +50,7 @@
         android:id="@+id/tv_issue_comments"
         style="@style/ListNumericSubtitleText"
         android:paddingStart="5dp"
-        android:paddingLeft="5dp" />
+        android:paddingLeft="5dp"
+        tools:ignore="NewApi"/>
 
 </merge>
