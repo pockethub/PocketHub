@@ -49,6 +49,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/description"
+                        android:inputType="textCapSentences|textMultiLine"
+                        android:maxLines="3"
                         android:nextFocusDown="@+id/et_gist_name"
                         android:nextFocusForward="@+id/et_gist_name" />
                 </android.support.design.widget.TextInputLayout>
@@ -61,6 +63,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/file_name"
+                        android:inputType="textNoSuggestions|textUri"
                         android:nextFocusDown="@+id/cb_public"
                         android:nextFocusForward="@+id/cb_public"
                         android:nextFocusUp="@id/et_gist_description"
