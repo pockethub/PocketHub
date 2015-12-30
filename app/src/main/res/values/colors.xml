@@ -84,8 +84,8 @@
 
     <array name="welcome_screen_colors">
         <item>@color/accent</item>
-        <item>#FFC417</item>
-        <item>#FF573D</item>
+        <item>@color/primary</item>
+        <item>@color/milestone_closed_start</item>
     </array>
 
 </resources>
