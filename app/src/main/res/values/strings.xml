@@ -317,7 +317,7 @@ Read the README.md: https://github.com/pockethub/PocketHub#setup-environment</st
 
 
     <string-array name="welcome_texts">
-        <item>So a while a go the GitHub app was discontinued and some of us wanted something new…</item>
+        <item>So a while ago the GitHub app was discontinued and some of us wanted something new…</item>
         <item>We move the app under a new name and are now PocketHub</item>
         <item>Click done and we’ll get you logged in!</item>
     </string-array>

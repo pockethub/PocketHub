@@ -16,6 +16,7 @@
 
 package com.github.pockethub.ui;
 
+import android.support.annotation.ColorInt;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,8 +50,15 @@ public class WelcomePagerAdapter extends PagerAdapter {
         View v = LayoutInflater.from(container.getContext())
                 .inflate(view, container, false);
 
-        ((TextView)v.findViewById(R.id.tv_info)).setText(info[position]);
-        ((TextView)v.findViewById(R.id.tv_title)).setText(titles[position]);
+        TextView titleText = ((TextView)v.findViewById(R.id.tv_title));
+        TextView infoText = ((TextView)v.findViewById(R.id.tv_info));
+        titleText.setText(titles[position]);
+        infoText.setText(info[position]);
+        if (position == 0) {
+            @ColorInt int primaryColor = titleText.getResources().getColor(R.color.primary);
+            titleText.setTextColor(primaryColor);
+            infoText.setTextColor(primaryColor);
+        }
         ((ImageView)v.findViewById(R.id.iv_art)).setImageResource(images[position]);
 
         container.addView(v);

@@ -22,6 +22,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Build;
+import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -119,6 +120,14 @@ public class DotPageIndicator extends View implements android.support.v4.view.Vi
             a.recycle();
         }
         dotAlpha = PAINT_SELECTED.getAlpha();
+    }
+
+    public void setDotColor(@ColorInt int color) {
+        PAINT_NOT_SELECTED.setColor(color);
+    }
+
+    public void setSelectedDotColor(@ColorInt int color) {
+        PAINT_SELECTED.setColor(color);
     }
 
     /**

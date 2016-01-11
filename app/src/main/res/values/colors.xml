@@ -83,9 +83,9 @@
     <color name="appcompat_secondary_text_disabled_material_light">#24000000</color>
 
     <array name="welcome_screen_colors">
-        <item>@color/accent</item>
+        <item>@color/background</item>
         <item>@color/primary</item>
-        <item>@color/milestone_closed_start</item>
+        <item>@color/accent</item>
     </array>
 
 </resources>

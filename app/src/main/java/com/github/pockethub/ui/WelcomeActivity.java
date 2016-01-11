@@ -22,6 +22,8 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.ColorInt;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.widget.Button;
@@ -39,7 +41,11 @@ public class WelcomeActivity extends DotPagerActivity {
     };
 
     private int[] colors;
+    @ColorInt int accentsColorDark;
+    @ColorInt int accentsColorLight = Color.parseColor("#54FFFFFF");
+    @ColorInt int darkDividerColor = Color.parseColor("#24000000");
 
+    private View divider;
     private Button doneBtn;
     private Button skipBtn;
     private ImageButton nextBtn;
@@ -57,6 +63,7 @@ public class WelcomeActivity extends DotPagerActivity {
         doneBtn = (Button) findViewById(R.id.btn_done);
         skipBtn = (Button) findViewById(R.id.btn_skip);
         nextBtn = (ImageButton) findViewById(R.id.btn_next);
+        divider = findViewById(R.id.divider);
 
         skipBtn.setOnClickListener(onClickListener);
         doneBtn.setOnClickListener(onClickListener);
@@ -117,13 +124,21 @@ public class WelcomeActivity extends DotPagerActivity {
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-        int color;
-        if(positionOffsetPixels >= 0)
+        @ColorInt int color;
+        @ColorInt int accentsColor;
+        if(positionOffsetPixels >= 0) {
             color = blendColors(getBackgroundColor(position), getBackgroundColor(position + 1), (1 - positionOffset));
-        else
+            accentsColor = blendColors(getAccentsColor(position), getAccentsColor(position +1), (1 - positionOffset));
+        } else {
             color = blendColors(getBackgroundColor(position + 1), getBackgroundColor(position), (1 - positionOffset));
+            accentsColor = blendColors(getAccentsColor(position + 1), getAccentsColor(position), (1 - positionOffset));
+        }
 
         setBackgroundColor(color);
+        skipBtn.setTextColor(accentsColor);
+        nextBtn.setColorFilter(accentsColor);
+        divider.setBackgroundColor(accentsColor);
+        dotPageIndicator.setSelectedDotColor(accentsColor);
     }
 
     /**
@@ -162,6 +177,7 @@ public class WelcomeActivity extends DotPagerActivity {
             colors[i] = ta.getColor(i, 0);
         }
         ta.recycle();
+        accentsColorDark = ContextCompat.getColor(this, R.color.primary);
     }
 
     /**
@@ -174,6 +190,22 @@ public class WelcomeActivity extends DotPagerActivity {
             return colors[pos];
         else
             return colors[colors.length - 1];
+    }
+
+    private int getAccentsColor(int pos) {
+        if (pos == 0) {
+            return accentsColorDark;
+        } else {
+            return accentsColorLight;
+        }
+    }
+
+    private int divider(int pos) {
+        if (pos == 0) {
+            return darkDividerColor;
+        } else {
+            return accentsColorLight;
+        }
     }
 
     /**

@@ -27,7 +27,7 @@ public abstract class DotPagerActivity<V extends PagerAdapter>
         extends PagerActivity{
 
     private ViewPager pager;
-    private DotPageIndicator dotPageIndicator;
+    protected DotPageIndicator dotPageIndicator;
 
     /**
      * Pager adapter
