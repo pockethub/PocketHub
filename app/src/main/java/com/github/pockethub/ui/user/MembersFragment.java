@@ -78,7 +78,7 @@ public class MembersFragment extends ItemListFragment<User> {
                 List<User> users = new ArrayList<>();
 
                 while (hasMore){
-                    hasMore = users.addAll(new OrgsMembersClient(getContext(), org.login, page).executeSync());
+                    hasMore = users.addAll(new OrgsMembersClient(org.login, page).observable().toBlocking().first().first);
                     page++;
                 }
                 return users;

@@ -105,7 +105,7 @@ public class DashboardIssueFragment extends PagedItemFragment<Issue> {
                 return new PageIterator<>(new PageIterator.GitHubRequest<List<Issue>>() {
                     @Override
                     public GithubClient<List<Issue>> execute(int page) {
-                        return new GetIssuesClient(getActivity(), filterData, page);
+                        return new GetIssuesClient(filterData, page);
                     }
                 }, page);
             }

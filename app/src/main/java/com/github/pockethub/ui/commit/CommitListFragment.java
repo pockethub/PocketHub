@@ -161,9 +161,9 @@ public class CommitListFragment extends PagedItemFragment<Commit>
                     @Override
                     public GithubClient<List<Commit>> execute(int page) {
                         if (page > 1 || ref == null)
-                            return new ListCommitsClient(getActivity(), InfoUtils.createCommitInfo(repository, last), page);
+                            return new ListCommitsClient(InfoUtils.createCommitInfo(repository, last), page);
                         else
-                            return new ListCommitsClient(getActivity(), InfoUtils.createCommitInfo(repository, ref), page);
+                            return new ListCommitsClient(InfoUtils.createCommitInfo(repository, ref), page);
                     }
                 }, page);
             }

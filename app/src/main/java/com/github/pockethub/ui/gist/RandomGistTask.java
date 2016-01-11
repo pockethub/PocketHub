@@ -74,18 +74,18 @@ public class RandomGistTask extends ProgressDialogTask<Gist> {
         PageIterator<Gist> pages = new PageIterator<>(new PageIterator.GitHubRequest<List<Gist>>() {
             @Override
             public GithubClient<List<Gist>> execute(int page) {
-                return new PublicGistsClient(context, 1);
+                return new PublicGistsClient(1);
             }
         }, 1);
         pages.next();
         int randomPage = 1 + (int) (Math.random() * ((pages.getLastPage() - 1) + 1));
 
-        Collection<Gist> gists = pages.getRequest().execute(randomPage).executeSync();
+        Collection<Gist> gists = pages.getRequest().execute(randomPage).observable().toBlocking().first();
 
         // Make at least two tries since page numbers are volatile
         if (gists.isEmpty()) {
             randomPage = 1 + (int) (Math.random() * ((pages.getLastPage() - 1) + 1));
-            gists = pages.getRequest().execute(randomPage).executeSync();
+            gists = pages.getRequest().execute(randomPage).observable().toBlocking().first();
         }
 
         if (gists.isEmpty())

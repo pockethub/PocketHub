@@ -73,7 +73,7 @@ public class RepositoryContributorsFragment extends ItemListFragment<Contributor
 
             @Override
             public List<Contributor> loadData() throws Exception {
-                return new GetRepoContributorsClient(getContext(), InfoUtils.createRepoInfo(repo)).executeSync();
+                return new GetRepoContributorsClient(InfoUtils.createRepoInfo(repo)).observable().toBlocking().first();
             }
         };
     }

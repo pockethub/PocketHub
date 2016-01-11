@@ -38,7 +38,7 @@ public class StarredGistsFragment extends GistsFragment {
                 return new PageIterator<>(new PageIterator.GitHubRequest<List<Gist>>() {
                     @Override
                     public GithubClient<List<Gist>> execute(int page) {
-                        return new UserStarredGistsClient(getActivity(), page);
+                        return new UserStarredGistsClient(page);
                     }
                 }, page);
             }

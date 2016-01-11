@@ -64,8 +64,8 @@ public class MarkdownLoader extends AuthenticatedUserLoader<CharSequence> {
 
     @Override
     public CharSequence load(Account account) {
-        GetMarkdownClient markdownClient = new GetMarkdownClient(getContext(), RequestUtils.markdown(raw));
-        String html = markdownClient.executeSync();
+        GetMarkdownClient markdownClient = new GetMarkdownClient(RequestUtils.markdown(raw));
+        String html = markdownClient.observable().toBlocking().first();
 /*            if (repository != null)
                 html = service.getRepositoryHtml(repository, raw);
             else

@@ -268,7 +268,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
                 return new PageIterator<>(new PageIterator.GitHubRequest<List<Issue>>() {
                     @Override
                     public GithubClient<List<Issue>> execute(int page) {
-                        return new GetIssuesClient(getActivity(), InfoUtils.createIssueInfo(repository, null), filter.toFilterMap(),
+                        return new GetIssuesClient(InfoUtils.createIssueInfo(repository, null), filter.toFilterMap(),
                                 page);
                     }
                 }, page);

@@ -62,8 +62,8 @@ public class EditCommentTask extends ProgressDialogTask<GithubComment> {
 
     @Override
     protected GithubComment run(Account account) throws Exception {
-        GithubComment edited = new EditIssueCommentClient(context,
-                InfoUtils.createRepoInfo(repository), id, new CommentRequest(comment)).executeSync();
+        GithubComment edited = new EditIssueCommentClient(
+                InfoUtils.createRepoInfo(repository), id, new CommentRequest(comment)).observable().toBlocking().first();
         edited.body_html = HtmlUtils.format(edited.body_html).toString();
         return edited;
     }
