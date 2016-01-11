@@ -76,6 +76,7 @@ public class MainActivity extends BaseActivity implements
 
     private static final String TAG = "MainActivity";
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
+    public static final String PREF_FIRST_USE = "first_use";
 
     @Inject
     private AccountDataManager accountDataManager;
@@ -99,11 +100,14 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         userLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
+
+        if(sp.getBoolean(PREF_FIRST_USE, true)) {
+            openWelcomeScreen();
+        }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -146,6 +150,11 @@ public class MainActivity extends BaseActivity implements
                 storeCredentials.storeScopes(AccountsHelper.getUserScopes(this, account));
             }
         }
+    }
+
+    private void openWelcomeScreen() {
+        startActivity(new Intent(this, WelcomeActivity.class));
+        finish();
     }
 
     @Override

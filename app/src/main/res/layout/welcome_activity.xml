@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2015 PocketHub
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.WelcomeActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        app:layout_behavior="com.github.pockethub.ui.PatchedScrollingViewBehavior"
+        android:layout_height="match_parent">
+
+        <com.github.pockethub.ui.ViewPager
+            android:id="@+id/vp_pages"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/ListSpinner"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <FrameLayout
+            android:id="@+id/welcome_bottom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="3dp"
+            android:gravity="bottom">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#54FFFFFF"
+                android:id="@+id/divider"/>
+
+            <Button
+                android:id="@+id/btn_skip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginStart="24dp"
+                android:layout_gravity="bottom"
+                android:text="@string/skip"
+                android:textSize="18sp"
+                android:textAllCaps="true"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead.Inverse"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"/>
+
+            <com.github.pockethub.ui.view.DotPageIndicator
+                android:id="@+id/dot_page_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:dotColorSelected="#AAFFFFFF"
+                app:dotColor="#24000000"/>
+
+            <Button
+                android:id="@+id/btn_done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginRight="24dp"
+                android:layout_marginEnd="24dp"
+                android:textSize="18sp"
+                android:textAllCaps="true"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead.Inverse"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:text="@string/done"
+                android:visibility="gone"/>
+
+            <ImageButton
+                android:id="@+id/btn_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|bottom"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:src="@drawable/ic_arrow_right"/>
+
+        </FrameLayout>
+
+    </FrameLayout>
+</android.support.design.widget.CoordinatorLayout>
