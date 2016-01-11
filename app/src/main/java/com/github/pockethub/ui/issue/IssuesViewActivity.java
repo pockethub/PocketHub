@@ -22,7 +22,6 @@ import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.alorma.github.basesdk.client.BaseClient;
 import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.Team;
@@ -31,13 +30,13 @@ import com.alorma.github.sdk.services.orgs.teams.GetOrgTeamsClient;
 import com.alorma.github.sdk.services.orgs.teams.GetTeamMembersClient;
 import com.alorma.github.sdk.services.repo.GetRepoClient;
 import com.alorma.github.sdk.services.user.actions.CheckUserCollaboratorClient;
-import com.alorma.github.sdk.services.user.actions.OnCheckUserIsCollaborator;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
 import com.github.pockethub.accounts.AccountUtils;
 import com.github.pockethub.accounts.AuthenticatedUserTask;
 import com.github.pockethub.core.issue.IssueStore;
 import com.github.pockethub.core.issue.IssueUtils;
+import com.github.pockethub.rx.ObserverAdapter;
 import com.github.pockethub.ui.FragmentProvider;
 import com.github.pockethub.ui.PagerActivity;
 import com.github.pockethub.ui.ViewPager;
@@ -53,8 +52,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -203,20 +202,16 @@ public class IssuesViewActivity extends PagerActivity {
         // Load avatar if single issue and user is currently unset or missing
         // avatar URL
         if (issueNumbers.length == 1 && (user.get() == null || user.get().avatar_url == null)) {
-            GetRepoClient repoClient = new GetRepoClient(this,
-                    InfoUtils.createRepoInfo(repo != null ? repo : repoIds.get(0)));
-            repoClient.setOnResultCallback(new BaseClient.OnResultCallback<Repo>() {
-                @Override
-                public void onResponseOk(Repo repo, Response r) {
-                    avatars.bind(getSupportActionBar(), repo.owner);
-                }
-
-                @Override
-                public void onFail(RetrofitError error) {
-
-                }
-            });
-            repoClient.execute();
+            new GetRepoClient(InfoUtils.createRepoInfo(repo != null ? repo : repoIds.get(0)))
+                    .observable()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new ObserverAdapter<Repo>() {
+                        @Override
+                        public void onNext(Repo repo) {
+                            avatars.bind(getSupportActionBar(), repo.owner);
+                        }
+                    });
         }
 
         isOwner = false;
@@ -345,19 +340,19 @@ public class IssuesViewActivity extends PagerActivity {
     }
 
     private void checkCollaboratorStatus() {
-        CheckUserCollaboratorClient collaboratorClient = new CheckUserCollaboratorClient(this,
-                InfoUtils.createRepoInfo(repo != null ? repo : repoIds.get(0)),
-                AccountUtils.getLogin(IssuesViewActivity.this));
-
-        collaboratorClient.setOnCheckUserIsCollaborator(new OnCheckUserIsCollaborator() {
-            @Override
-            public void onCheckUserIsCollaborator(String user, boolean collaborator) {
-                isCollaborator = collaborator;
-                invalidateOptionsMenu();
-                configurePager();
-            }
-        });
-        collaboratorClient.execute();
+        new CheckUserCollaboratorClient(InfoUtils.createRepoInfo(repo != null ? repo : repoIds.get(0)),
+                AccountUtils.getLogin(IssuesViewActivity.this))
+                .observable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ObserverAdapter<Boolean>() {
+                    @Override
+                    public void onNext(Boolean collaborator) {
+                        isCollaborator = collaborator;
+                        invalidateOptionsMenu();
+                        configurePager();
+                    }
+                });
     }
 
     private void checkOwnerStatus() {
@@ -365,8 +360,12 @@ public class IssuesViewActivity extends PagerActivity {
 
             @Override
             protected Boolean run(Account account) throws Exception {
-                List<Team> teams =  new GetOrgTeamsClient(context, repo.owner.login).executeSync();
-                List<User> users = new GetTeamMembersClient(context, String.valueOf(teams.get(0).id)).executeSync();
+                List<Team> teams =  new GetOrgTeamsClient(repo.owner.login)
+                        .observable()
+                        .toBlocking().first().first;
+                List<User> users = new GetTeamMembersClient(String.valueOf(teams.get(0).id))
+                        .observable()
+                        .toBlocking().first().first;
 
                 String userName = AccountUtils.getLogin(IssuesViewActivity.this);
                 for(User user : users)

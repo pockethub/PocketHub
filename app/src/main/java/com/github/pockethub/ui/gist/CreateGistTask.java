@@ -21,6 +21,7 @@ import android.util.Log;
 
 import com.alorma.github.sdk.bean.dto.response.Gist;
 import com.alorma.github.sdk.bean.dto.response.GistFile;
+import com.alorma.github.sdk.bean.dto.response.GistFilesMap;
 import com.alorma.github.sdk.services.gists.PublishGistClient;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.ProgressDialogTask;
@@ -28,8 +29,6 @@ import com.github.pockethub.util.ToastUtils;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.service.GistService;
-
-import java.util.Collections;
 
 /**
  * Task to create a {@link Gist}
@@ -77,9 +76,11 @@ public class CreateGistTask extends ProgressDialogTask<Gist> {
         GistFile file = new GistFile();
         file.content = content;
         file.filename = name;
-        gist.files = Collections.singletonMap(name, file);
+        GistFilesMap map = new GistFilesMap();
+        map.put(name, file);
+        gist.files = map;
 
-        return new PublishGistClient(context, gist).executeSync();
+        return new PublishGistClient(gist).observable().toBlocking().first();
     }
 
     @Override

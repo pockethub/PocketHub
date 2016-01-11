@@ -23,25 +23,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
 
-import com.alorma.github.basesdk.client.BaseClient;
 import com.alorma.github.sdk.bean.dto.response.User;
 import com.alorma.github.sdk.services.user.RequestUserClient;
 import com.alorma.github.sdk.services.user.follow.CheckFollowingUser;
 import com.alorma.github.sdk.services.user.follow.FollowUserClient;
-import com.alorma.github.sdk.services.user.follow.OnCheckFollowingUser;
 import com.alorma.github.sdk.services.user.follow.UnfollowUserClient;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
 import com.github.pockethub.accounts.AccountUtils;
+import com.github.pockethub.rx.ObserverAdapter;
 import com.github.pockethub.ui.MainActivity;
 import com.github.pockethub.ui.TabPagerActivity;
 import com.github.pockethub.util.AvatarLoader;
 import com.github.pockethub.util.ToastUtils;
 import com.google.inject.Inject;
 
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -95,22 +95,24 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
         else {
             ViewUtils.setGone(loadingBar, false);
             setGone(true);
-            RequestUserClient userClient = new RequestUserClient(this, user.login);
-            userClient.setOnResultCallback(new BaseClient.OnResultCallback<User>() {
-                @Override
-                public void onResponseOk(User fullUser, Response r) {
-                    user = fullUser;
-                    configurePager();
-                }
+            new RequestUserClient(user.login)
+                    .observable()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new ObserverAdapter<User>() {
+                        @Override
+                        public void onNext(User fullUser) {
+                            user = fullUser;
+                            configurePager();
+                        }
 
-                @Override
-                public void onFail(RetrofitError error) {
-                    ToastUtils.show(UserViewActivity.this,
-                            R.string.error_person_load);
-                    ViewUtils.setGone(loadingBar, true);
-                }
-            });
-            userClient.execute();
+                        @Override
+                        public void onError(Throwable e) {
+                            ToastUtils.show(UserViewActivity.this,
+                                    R.string.error_person_load);
+                            ViewUtils.setGone(loadingBar, true);
+                        }
+                    });
         }
     }
 
@@ -195,50 +197,43 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     }
 
     private void followUser() {
+        Observable<Boolean> followObservable;
         if (isFollowing) {
-            UnfollowUserClient unfollowUserClient = new UnfollowUserClient(this, user.login);
-            unfollowUserClient.setOnResultCallback(new BaseClient.OnResultCallback<Object>() {
-                @Override
-                public void onResponseOk(Object o, Response r) {
-                    isFollowing = !isFollowing;
-                }
-
-                @Override
-                public void onFail(RetrofitError error) {
-                    ToastUtils.show(UserViewActivity.this,
-                            R.string.error_unfollowing_person);
-                }
-            });
-            unfollowUserClient.execute();
+            followObservable = new UnfollowUserClient(user.login)
+                    .observable();
         } else{
-            FollowUserClient followUserClient = new FollowUserClient(this, user.login);
-            followUserClient.setOnResultCallback(new BaseClient.OnResultCallback<Object>() {
-                @Override
-                public void onResponseOk(Object o, Response r) {
-                    isFollowing = !isFollowing;
-                }
-
-                @Override
-                public void onFail(RetrofitError error) {
-                    ToastUtils.show(UserViewActivity.this,
-                            R.string.error_following_person);
-                }
-            });
-            followUserClient.execute();
+            followObservable = new FollowUserClient(user.login).observable();
         }
+
+        followObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ObserverAdapter<Boolean>() {
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        isFollowing = !isFollowing;
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.show(UserViewActivity.this,
+                                isFollowing ? R.string.error_unfollowing_person : R.string.error_following_person);
+                    }
+                });
     }
 
     private void checkFollowingUserStatus() {
         followingStatusChecked = false;
-        CheckFollowingUser userFollowingClient = new CheckFollowingUser(this, user.login);
-        userFollowingClient.setOnCheckFollowingUser(new OnCheckFollowingUser() {
-            @Override
-            public void onCheckFollowUser(String username, boolean following) {
-                isFollowing = following;
-                followingStatusChecked = true;
-                invalidateOptionsMenu();
-            }
-        });
-        userFollowingClient.execute();
+        new CheckFollowingUser(user.login)
+                .observable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ObserverAdapter<Boolean>() {
+                    @Override
+                    public void onNext(Boolean following) {
+                        isFollowing = following;
+                        followingStatusChecked = true;
+                        invalidateOptionsMenu();
+                    }
+                });
     }
 }

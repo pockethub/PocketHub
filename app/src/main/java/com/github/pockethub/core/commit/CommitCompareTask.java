@@ -55,8 +55,8 @@ public class CommitCompareTask extends AuthenticatedUserTask<CompareCommit> {
 
     @Override
     protected CompareCommit run(Account account) throws Exception {
-        return new CompareCommitsClient(context,
-                InfoUtils.createRepoInfo(repository), base, head).executeSync();
+        return new CompareCommitsClient(InfoUtils.createRepoInfo(repository), base, head)
+                .observable().toBlocking().first();
     }
 
     @Override

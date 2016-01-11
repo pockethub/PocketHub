@@ -88,8 +88,8 @@ public class Organizations implements PersistableResource<Organization> {
 
     @Override
     public List<Organization> request() throws IOException {
-        User user = new GetAuthUserClient(context).executeSync();
-        List<Organization> orgs = new GetOrgsClient(context, null).executeSync();
+        User user = new GetAuthUserClient().observable().toBlocking().first();
+        List<Organization> orgs = new GetOrgsClient(null).observable().toBlocking().first().first;
         List<Organization> all = new ArrayList<>(orgs.size() + 1);
         all.add(user);
         all.addAll(orgs);

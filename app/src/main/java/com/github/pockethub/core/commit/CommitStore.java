@@ -98,6 +98,7 @@ public class CommitStore extends ItemStore {
      * @throws IOException
      */
     public Commit refreshCommit(final Repo repo, final String id) throws IOException {
-        return addCommit(repo, new GetSingleCommitClient(context, InfoUtils.createCommitInfo(repo, id)).executeSync());
+        return addCommit(repo, new GetSingleCommitClient(InfoUtils.createCommitInfo(repo, id))
+                .observable().toBlocking().first());
     }
 }

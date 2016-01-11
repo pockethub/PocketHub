@@ -28,7 +28,6 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
-import com.alorma.github.basesdk.client.BaseClient;
 import com.alorma.github.sdk.bean.dto.response.CommitFile;
 import com.alorma.github.sdk.bean.dto.response.GitBlob;
 import com.alorma.github.sdk.bean.dto.response.Repo;
@@ -37,6 +36,7 @@ import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
 import com.github.pockethub.core.commit.CommitUtils;
+import com.github.pockethub.rx.ObserverAdapter;
 import com.github.pockethub.ui.BaseActivity;
 import com.github.pockethub.ui.MarkdownLoader;
 import com.github.pockethub.util.AvatarLoader;
@@ -49,8 +49,8 @@ import com.github.pockethub.util.SourceEditor;
 import com.github.pockethub.util.ToastUtils;
 import com.google.inject.Inject;
 
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static com.github.pockethub.Intents.EXTRA_BASE;
 import static com.github.pockethub.Intents.EXTRA_HEAD;
@@ -265,43 +265,44 @@ public class CommitFileViewActivity extends BaseActivity implements
     }
 
     private void loadContent() {
-        GetGitBlobClient gitBlobClient = new GetGitBlobClient(this,
-                InfoUtils.createCommitInfo(repo, sha));
-        gitBlobClient.setOnResultCallback(new BaseClient.OnResultCallback<GitBlob>() {
-            @Override
-            public void onResponseOk(GitBlob gitBlob, Response r) {
-                ViewUtils.setGone(loadingBar, true);
-                ViewUtils.setGone(codeView, false);
+        new GetGitBlobClient(InfoUtils.createCommitInfo(repo, sha))
+                .observable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ObserverAdapter<GitBlob>() {
+                    @Override
+                    public void onNext(GitBlob gitBlob) {
+                        ViewUtils.setGone(loadingBar, true);
+                        ViewUtils.setGone(codeView, false);
 
-                editor.setSource(path, gitBlob);
-                CommitFileViewActivity.this.blob = gitBlob;
+                        editor.setSource(path, gitBlob);
+                        CommitFileViewActivity.this.blob = gitBlob;
 
-                if (markdownItem != null)
-                    markdownItem.setEnabled(true);
+                        if (markdownItem != null)
+                            markdownItem.setEnabled(true);
 
-                if (isMarkdownFile
-                        && PreferenceUtils.getCodePreferences(
-                        CommitFileViewActivity.this).getBoolean(
-                        RENDER_MARKDOWN, true))
-                    loadMarkdown();
-                else {
-                    ViewUtils.setGone(loadingBar, true);
-                    ViewUtils.setGone(codeView, false);
-                    editor.setSource(path, gitBlob);
-                }
-            }
+                        if (isMarkdownFile
+                                && PreferenceUtils.getCodePreferences(
+                                CommitFileViewActivity.this).getBoolean(
+                                RENDER_MARKDOWN, true))
+                            loadMarkdown();
+                        else {
+                            ViewUtils.setGone(loadingBar, true);
+                            ViewUtils.setGone(codeView, false);
+                            editor.setSource(path, gitBlob);
+                        }
+                    }
 
-            @Override
-            public void onFail(RetrofitError error) {
-                Log.d(TAG, "Loading commit file contents failed", error);
+                    @Override
+                    public void onError(Throwable error) {
+                        Log.e(TAG, "Loading commit file contents failed", error);
 
-                ViewUtils.setGone(loadingBar, true);
-                ViewUtils.setGone(codeView, false);
-                ToastUtils.show(CommitFileViewActivity.this, error,
-                        R.string.error_file_load);
-            }
-        });
-        gitBlobClient.execute();
+                        ViewUtils.setGone(loadingBar, true);
+                        ViewUtils.setGone(codeView, false);
+                        ToastUtils.show(CommitFileViewActivity.this, error,
+                                R.string.error_file_load);
+                    }
+                });
     }
 
 }

@@ -53,7 +53,7 @@ public class RefreshRepositoryTask extends ProgressDialogTask<Repo> {
 
     @Override
     protected Repo run(Account account) throws Exception {
-        return new GetRepoClient(context, InfoUtils.createRepoInfo(repo)).executeSync();
+        return new GetRepoClient(InfoUtils.createRepoInfo(repo)).observable().toBlocking().first();
     }
 
     @Override

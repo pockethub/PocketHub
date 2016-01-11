@@ -31,7 +31,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.alorma.github.basesdk.client.BaseClient;
 import com.alorma.github.sdk.bean.dto.response.Commit;
 import com.alorma.github.sdk.bean.dto.response.CommitFile;
 import com.alorma.github.sdk.bean.dto.response.CompareCommit;
@@ -40,6 +39,7 @@ import com.alorma.github.sdk.services.repo.CompareCommitsClient;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.R;
 import com.github.pockethub.core.commit.CommitUtils;
+import com.github.pockethub.rx.ObserverAdapter;
 import com.github.pockethub.ui.DialogFragment;
 import com.github.pockethub.ui.HeaderFooterListAdapter;
 import com.github.pockethub.util.AvatarLoader;
@@ -52,8 +52,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static com.github.pockethub.Intents.EXTRA_BASE;
 import static com.github.pockethub.Intents.EXTRA_HEAD;
@@ -123,24 +123,25 @@ public class CommitCompareListFragment extends DialogFragment implements
     }
 
     private void compareCommits() {
-        CompareCommitsClient compareCommitsClient = new CompareCommitsClient(getActivity(),
-                InfoUtils.createRepoInfo(repository), base, head);
-        compareCommitsClient.setOnResultCallback(new BaseClient.OnResultCallback<CompareCommit>() {
-            @Override
-            public void onResponseOk(CompareCommit compareCommit, Response r) {
-                List<CommitFile> files = compareCommit.files;
-                diffStyler.setFiles(files);
-                if (files != null)
-                    Collections.sort(files, new CommitFileComparator());
-                updateList(compareCommit);
-            }
+        new CompareCommitsClient(InfoUtils.createRepoInfo(repository), base, head)
+                .observable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ObserverAdapter<CompareCommit>() {
+                    @Override
+                    public void onNext(CompareCommit compareCommit) {
+                        List<CommitFile> files = compareCommit.files;
+                        diffStyler.setFiles(files);
+                        if (files != null)
+                            Collections.sort(files, new CommitFileComparator());
+                        updateList(compareCommit);
+                    }
 
-            @Override
-            public void onFail(RetrofitError error) {
-                ToastUtils.show(getActivity(), error, R.string.error_commits_load);
-            }
-        });
-        compareCommitsClient.execute();
+                    @Override
+                    public void onError(Throwable error) {
+                        ToastUtils.show(getActivity(), error, R.string.error_commits_load);
+                    }
+                });
     }
 
     private void updateList(CompareCommit compare) {

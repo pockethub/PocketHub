@@ -28,12 +28,12 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.alorma.github.basesdk.client.BaseClient;
 import com.alorma.github.sdk.bean.dto.request.RequestMarkdownDTO;
 import com.alorma.github.sdk.services.content.GetMarkdownClient;
 import com.bugsnag.android.Bugsnag;
 import com.github.pockethub.R;
 import com.github.pockethub.accounts.AuthenticatedUserTask;
+import com.github.pockethub.rx.ObserverAdapter;
 import com.google.inject.Inject;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -48,8 +48,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static android.util.Base64.DEFAULT;
 import static android.view.View.GONE;
@@ -187,19 +187,21 @@ public class HttpImageGetter implements ImageGetter {
             if (!html.matches("<[a-z][\\s\\S]*>")) {
                 RequestMarkdownDTO markdownDTO = new RequestMarkdownDTO();
                 markdownDTO.text = html;
-                GetMarkdownClient markdownClient = new GetMarkdownClient(context, markdownDTO);
-                markdownClient.setOnResultCallback(new BaseClient.OnResultCallback<String>() {
-                    @Override
-                    public void onResponseOk(String data, Response response) {
-                        continueBind(view, data, id);
-                    }
+                new GetMarkdownClient(markdownDTO)
+                        .observable()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new ObserverAdapter<String>() {
+                            @Override
+                            public void onNext(String data) {
+                                continueBind(view, data, id);
+                            }
 
-                    @Override
-                    public void onFail(RetrofitError retrofitError) {
-                        continueBind(view, html, id);
-                    }
-                });
-                markdownClient.execute();
+                            @Override
+                            public void onError(Throwable e) {
+                                continueBind(view, html, id);
+                            }
+                        });
             } else {
                 return continueBind(view, html, id);
             }

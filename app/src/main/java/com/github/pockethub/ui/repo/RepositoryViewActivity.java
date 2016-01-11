@@ -25,20 +25,19 @@ import android.view.MenuItem;
 import android.widget.ProgressBar;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.alorma.github.basesdk.client.BaseClient;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.User;
 import com.alorma.github.sdk.services.repo.DeleteRepoClient;
 import com.alorma.github.sdk.services.repo.GetRepoClient;
 import com.alorma.github.sdk.services.repo.actions.CheckRepoStarredClient;
 import com.alorma.github.sdk.services.repo.actions.ForkRepoClient;
-import com.alorma.github.sdk.services.repo.actions.OnCheckStarredRepo;
 import com.alorma.github.sdk.services.repo.actions.StarRepoClient;
 import com.alorma.github.sdk.services.repo.actions.UnstarRepoClient;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
 import com.github.pockethub.core.repo.RepositoryUtils;
+import com.github.pockethub.rx.ObserverAdapter;
 import com.github.pockethub.ui.TabPagerActivity;
 import com.github.pockethub.ui.user.UriLauncherActivity;
 import com.github.pockethub.ui.user.UserViewActivity;
@@ -48,8 +47,10 @@ import com.github.pockethub.util.ShareUtils;
 import com.github.pockethub.util.ToastUtils;
 import com.google.inject.Inject;
 
-import retrofit.RetrofitError;
 import retrofit.client.Response;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -109,21 +110,23 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
             avatars.bind(getSupportActionBar(), owner);
             ViewUtils.setGone(loadingBar, false);
             setGone(true);
-            GetRepoClient client = new GetRepoClient(this, InfoUtils.createRepoInfo(repository));
-            client.setOnResultCallback(new BaseClient.OnResultCallback<Repo>() {
-                @Override
-                public void onResponseOk(Repo repo, Response r) {
-                    repository = repo;
-                    configurePager();
-                }
+            new GetRepoClient(InfoUtils.createRepoInfo(repository))
+                    .observable()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new ObserverAdapter<Repo>() {
+                        @Override
+                        public void onNext(Repo repo) {
+                            repository = repo;
+                            configurePager();
+                        }
 
-                @Override
-                public void onFail(RetrofitError error) {
-                    ToastUtils.show(RepositoryViewActivity.this, R.string.error_repo_load);
-                    ViewUtils.setGone(loadingBar, true);
-                }
-            });
-            client.execute();
+                        @Override
+                        public void onError(Throwable e) {
+                            ToastUtils.show(RepositoryViewActivity.this, R.string.error_repo_load);
+                            ViewUtils.setGone(loadingBar, true);
+                        }
+                    });
         }
     }
 
@@ -221,52 +224,42 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     }
 
     private void starRepository() {
+        Observable<Boolean> starObservable;
         if (isStarred) {
-            UnstarRepoClient unstarRepoClient = new UnstarRepoClient(this, repository.owner.login, repository.name);
-            unstarRepoClient.setOnResultCallback(new BaseClient.OnResultCallback<Response>() {
-                @Override
-                public void onResponseOk(Response o, Response r) {
-
-                    isStarred = !isStarred;
-                    setResult(RESOURCE_CHANGED);
-                }
-
-                @Override
-                public void onFail(RetrofitError error) {
-                    ToastUtils.show(RepositoryViewActivity.this, R.string.error_unstarring_repository);
-                }
-            });
-            unstarRepoClient.execute();
-        }else {
-            StarRepoClient starRepoClient = new StarRepoClient(this, repository.owner.login, repository.name);
-            starRepoClient.setOnResultCallback(new BaseClient.OnResultCallback<Response>() {
-                @Override
-                public void onResponseOk(Response o, Response r) {
-                    isStarred = !isStarred;
-                    setResult(RESOURCE_CHANGED);
-                }
-
-                @Override
-                public void onFail(RetrofitError error) {
-                    ToastUtils.show(RepositoryViewActivity.this, R.string.error_starring_repository);
-                }
-            });
-            starRepoClient.execute();
+            starObservable = new UnstarRepoClient(repository.owner.login, repository.name).observable();
+        } else {
+            starObservable = new StarRepoClient(repository.owner.login, repository.name).observable();
         }
+        starObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ObserverAdapter<Boolean>() {
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        isStarred = !isStarred;
+                        setResult(RESOURCE_CHANGED);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.show(RepositoryViewActivity.this, isStarred ? R.string.error_unstarring_repository : R.string.error_starring_repository);
+                    }
+                });
     }
 
     private void checkStarredRepositoryStatus() {
         starredStatusChecked = false;
-        CheckRepoStarredClient checkRepoStarredClient = new CheckRepoStarredClient(this, repository.owner.login, repository.name);
-        checkRepoStarredClient.setOnCheckStarredRepo(new OnCheckStarredRepo() {
-            @Override
-            public void onCheckStarredRepo(String repo, boolean starred) {
-                isStarred = starred;
-                starredStatusChecked = true;
-                invalidateOptionsMenu();
-            }
-        });
-        checkRepoStarredClient.execute();
+        new CheckRepoStarredClient(repository.owner.login, repository.name)
+                .observable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ObserverAdapter<Boolean>() {
+                    @Override
+                    public void onNext(Boolean starred) {
+                        isStarred = starred;
+                        starredStatusChecked = true;
+                        invalidateOptionsMenu();
+                    }
+                });
     }
 
     private void shareRepository() {
@@ -278,23 +271,25 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     }
 
     private void forkRepository() {
-        ForkRepoClient forkClient = new ForkRepoClient(this, InfoUtils.createRepoInfo(repository));
-        forkClient.setOnResultCallback(new BaseClient.OnResultCallback<Repo>() {
-            @Override
-            public void onResponseOk(Repo repo, Response r) {
-                if (repo != null) {
-                    UriLauncherActivity.launchUri(RepositoryViewActivity.this, Uri.parse(repo.html_url));
-                } else {
-                    ToastUtils.show(RepositoryViewActivity.this, R.string.error_forking_repository);
-                }
-            }
+        new ForkRepoClient(InfoUtils.createRepoInfo(repository))
+                .observable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ObserverAdapter<Repo>() {
+                    @Override
+                    public void onNext(Repo repo) {
+                        if (repo != null) {
+                            UriLauncherActivity.launchUri(RepositoryViewActivity.this, Uri.parse(repo.html_url));
+                        } else {
+                            ToastUtils.show(RepositoryViewActivity.this, R.string.error_forking_repository);
+                        }
+                    }
 
-            @Override
-            public void onFail(RetrofitError error) {
-                ToastUtils.show(RepositoryViewActivity.this, R.string.error_forking_repository);
-            }
-        });
-        forkClient.execute();
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.show(RepositoryViewActivity.this, R.string.error_forking_repository);
+                    }
+                });
     }
 
     private void deleteRepository() {
@@ -315,21 +310,22 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                         super.onNegative(dialog);
                         dialog.dismiss();
 
-                        DeleteRepoClient repoClient = new DeleteRepoClient(RepositoryViewActivity.this,
-                                InfoUtils.createRepoInfo(repository));
-                        repoClient.setOnResultCallback(new BaseClient.OnResultCallback<Response>() {
-                            @Override
-                            public void onResponseOk(Response response, Response r) {
-                                onBackPressed();
-                                ToastUtils.show(RepositoryViewActivity.this, R.string.delete_successful);
-                            }
+                        new DeleteRepoClient(InfoUtils.createRepoInfo(repository))
+                                .observable()
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new ObserverAdapter<Response>() {
+                                    @Override
+                                    public void onNext(Response response) {
+                                        onBackPressed();
+                                        ToastUtils.show(RepositoryViewActivity.this, R.string.delete_successful);
+                                    }
 
-                            @Override
-                            public void onFail(RetrofitError error) {
-                                ToastUtils.show(RepositoryViewActivity.this, R.string.error_deleting_repository);
-                            }
-                        });
-                        repoClient.execute();
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        ToastUtils.show(RepositoryViewActivity.this, R.string.error_deleting_repository);
+                                    }
+                                });
                     }
                 })
                 .show();

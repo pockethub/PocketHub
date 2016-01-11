@@ -74,14 +74,14 @@ public class RefreshIssueTask extends AuthenticatedUserTask<IssueStory> {
         bodyImageGetter.encode(issue.id, issue.body_html);
 
         if(issue.pullRequest != null) {
-            PullRequestStory story = new PullRequestStoryLoader(context, InfoUtils.createIssueInfo(repo, issue)).executeSync();
+            PullRequestStory story = new PullRequestStoryLoader(InfoUtils.createIssueInfo(repo, issue)).observable().toBlocking().first();
             IssueStory issueStory = new IssueStory();
             issueStory.issue = story.pullRequest;
             issueStory.issue.pullRequest = story.pullRequest;
             issueStory.details = story.details;
             return issueStory;
         }else {
-            return new IssueStoryLoader(context, InfoUtils.createIssueInfo(repo, issue)).executeSync();
+            return new IssueStoryLoader(InfoUtils.createIssueInfo(repo, issue)).observable().toBlocking().first();
         }
     }
 

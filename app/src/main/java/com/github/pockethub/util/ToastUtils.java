@@ -56,7 +56,7 @@ public class ToastUtils {
     }
 
     /**
-     * Show {@link Toast} for exception
+     * Show {@link Toast} for throwable
      * <p>
      * This given default message will be used if an message can not be derived
      * from the given {@link Exception}
@@ -67,7 +67,7 @@ public class ToastUtils {
      * @param e
      * @param defaultMessage
      */
-    public static void show(final Activity activity, final Exception e,
+    public static void show(final Activity activity, final Throwable e,
             final int defaultMessage) {
         if (activity == null)
             return;

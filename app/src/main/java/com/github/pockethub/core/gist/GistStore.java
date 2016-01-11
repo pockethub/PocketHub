@@ -19,6 +19,7 @@ import android.content.Context;
 
 import com.alorma.github.sdk.bean.dto.response.Gist;
 import com.alorma.github.sdk.bean.dto.response.GistFile;
+import com.alorma.github.sdk.bean.dto.response.GistFilesMap;
 import com.alorma.github.sdk.services.gists.EditGistClient;
 import com.alorma.github.sdk.services.gists.GetGistDetailClient;
 import com.github.pockethub.core.ItemStore;
@@ -61,18 +62,20 @@ public class GistStore extends ItemStore {
     /**
      * Sort files in {@link Gist}
      *
+     * TODO this is broken because the SDK thinks maps need to be parceled?
+     *
      * @param gist
      * @return sorted files
      */
-    protected Map<String, GistFile> sortFiles(final Gist gist) {
-        Map<String, GistFile> files = gist.files;
+    protected GistFilesMap sortFiles(final Gist gist) {
+        GistFilesMap files = gist.files;
         if (files == null || files.size() < 2)
             return files;
 
         Map<String, GistFile> sorted = new TreeMap<>(
                 CASE_INSENSITIVE_ORDER);
         sorted.putAll(files);
-        return sorted;
+        return files;
     }
 
     /**
@@ -104,7 +107,7 @@ public class GistStore extends ItemStore {
      * @throws IOException
      */
     public Gist refreshGist(String id) throws IOException {
-        return addGist(new GetGistDetailClient(context, id).executeSync());
+        return addGist(new GetGistDetailClient(id).observable().toBlocking().first());
     }
 
     /**
@@ -115,6 +118,6 @@ public class GistStore extends ItemStore {
      * @throws IOException
      */
     public Gist editGist(Gist gist) throws IOException {
-        return addGist(new EditGistClient(context, gist.id, RequestUtils.editGist(gist)).executeSync());
+        return addGist(new EditGistClient(gist.id, RequestUtils.editGist(gist)).observable().toBlocking().first());
     }
 }

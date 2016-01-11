@@ -69,7 +69,7 @@ public class RefreshGistTask extends AuthenticatedUserTask<FullGist> {
         Gist gist = store.refreshGist(id);
         List<GithubComment> comments;
         if (gist.comments > 0)
-            comments = new GetGistCommentsClient(context, id).executeSync();
+            comments = new GetGistCommentsClient(id).observable().toBlocking().first().first;
         else
             comments = Collections.emptyList();
         for (GithubComment comment : comments) {

@@ -115,9 +115,8 @@ public class CommitListFragment extends PagedItemFragment<Commit>
                 if (TextUtils.isEmpty(ref)) {
                     String defaultBranch = repository.default_branch;
                     if (TextUtils.isEmpty(defaultBranch)) {
-                        defaultBranch = new GetRepoClient(getContext(),
-                                InfoUtils.createRepoInfo(repository))
-                                .executeSync().default_branch;
+                        defaultBranch = new GetRepoClient(InfoUtils.createRepoInfo(repository))
+                                .observable().toBlocking().first().default_branch;
                         if (TextUtils.isEmpty(defaultBranch))
                             defaultBranch = "master";
                     }

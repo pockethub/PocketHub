@@ -80,7 +80,7 @@ public class PageIterator<V> implements Iterator<Collection<V>>, Iterable<Collec
         } else {
             List resources = null;
             GithubClient client = request.execute(nextPage);
-            Object response = client.executeSync();
+            Object response = client.observable().toBlocking().first();
             if(response != null)
                 resources = (List) response;
 

@@ -172,11 +172,11 @@ public class OrganizationRepositories implements
                         }
                     });
 
-            all.addAll(new UserReposClient(context).executeSync());
-            all.addAll(new WatchedReposClient(context).executeSync());
+            all.addAll(new UserReposClient().observable().toBlocking().first().first);
+            all.addAll(new WatchedReposClient(org.name, null, 0).observable().toBlocking().first().first);
             return new ArrayList<>(all);
         } else
-            return new OrgsReposClient(context, org.login).executeSync();
+            return new OrgsReposClient(org.name, null, 0).observable().toBlocking().first().first;
     }
 
     private boolean isAuthenticatedUser() {

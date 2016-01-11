@@ -61,8 +61,7 @@ public class MyGistsFragment extends GistsFragment {
                 return new PageIterator<>(new PageIterator.GitHubRequest<List<Gist>>() {
                     @Override
                     public GithubClient<List<Gist>> execute(int page) {
-                        return new UserGistsClient(getActivity(),
-                                accountProvider.get().getUsername(), page);
+                        return new UserGistsClient(accountProvider.get().getUsername(), page);
                     }
                 }, page);
             }

@@ -73,8 +73,7 @@ public class CreateCommentTask extends ProgressDialogTask<CommitComment> {
 
     @Override
     public CommitComment run(final Account account) throws Exception {
-        CommitComment created = new PublishCommitCommentClient(context,
-                InfoUtils.createCommitInfo(repository, commit), comment).executeSync();
+        CommitComment created = new PublishCommitCommentClient(InfoUtils.createCommitInfo(repository, commit), comment).observable().toBlocking().first();
 
         created.body_html = HtmlUtils.format(created.body_html).toString();
         return created;

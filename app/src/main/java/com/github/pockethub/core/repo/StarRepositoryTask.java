@@ -64,7 +64,7 @@ public class StarRepositoryTask extends ProgressDialogTask<Void> {
 
     @Override
     protected Void run(Account account) throws Exception {
-        new StarRepoClient(context, repo.owner.login, repo.name).executeSync();
+        new StarRepoClient(repo.owner.login, repo.name).observable().toBlocking().first();
         return null;
     }
 
