@@ -32,7 +32,7 @@ import com.alorma.github.sdk.bean.dto.response.Commit;
 import com.alorma.github.sdk.bean.dto.response.GitReference;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.ShaUrl;
-import com.alorma.github.sdk.services.client.GithubClient;
+import com.alorma.github.sdk.services.client.GithubListClient;
 import com.alorma.github.sdk.services.commit.ListCommitsClient;
 import com.alorma.github.sdk.services.repo.GetRepoClient;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
@@ -159,7 +159,7 @@ public class CommitListFragment extends PagedItemFragment<Commit>
 
                 return new PageIterator<>(new PageIterator.GitHubRequest<List<Commit>>() {
                     @Override
-                    public GithubClient<List<Commit>> execute(int page) {
+                    public GithubListClient<List<Commit>> execute(int page) {
                         if (page > 1 || ref == null)
                             return new ListCommitsClient(InfoUtils.createCommitInfo(repository, last), page);
                         else

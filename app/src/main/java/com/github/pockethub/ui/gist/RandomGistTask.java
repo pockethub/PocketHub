@@ -20,7 +20,7 @@ import android.app.Activity;
 import android.util.Log;
 
 import com.alorma.github.sdk.bean.dto.response.Gist;
-import com.alorma.github.sdk.services.client.GithubClient;
+import com.alorma.github.sdk.services.client.GithubListClient;
 import com.alorma.github.sdk.services.gists.PublicGistsClient;
 import com.github.pockethub.R;
 import com.github.pockethub.core.PageIterator;
@@ -73,19 +73,19 @@ public class RandomGistTask extends ProgressDialogTask<Gist> {
     protected Gist run(Account account) throws Exception {
         PageIterator<Gist> pages = new PageIterator<>(new PageIterator.GitHubRequest<List<Gist>>() {
             @Override
-            public GithubClient<List<Gist>> execute(int page) {
+            public GithubListClient<List<Gist>> execute(int page) {
                 return new PublicGistsClient(1);
             }
         }, 1);
         pages.next();
         int randomPage = 1 + (int) (Math.random() * ((pages.getLastPage() - 1) + 1));
 
-        Collection<Gist> gists = pages.getRequest().execute(randomPage).observable().toBlocking().first();
+        Collection<Gist> gists = pages.getRequest().execute(randomPage).observable().toBlocking().first().first;
 
         // Make at least two tries since page numbers are volatile
         if (gists.isEmpty()) {
             randomPage = 1 + (int) (Math.random() * ((pages.getLastPage() - 1) + 1));
-            gists = pages.getRequest().execute(randomPage).observable().toBlocking().first();
+            gists = pages.getRequest().execute(randomPage).observable().toBlocking().first().first;
         }
 
         if (gists.isEmpty())

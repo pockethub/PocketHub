@@ -18,7 +18,7 @@ package com.github.pockethub.ui.gist;
 import android.content.Intent;
 
 import com.alorma.github.sdk.bean.dto.response.Gist;
-import com.alorma.github.sdk.services.client.GithubClient;
+import com.alorma.github.sdk.services.client.GithubListClient;
 import com.alorma.github.sdk.services.gists.UserGistsClient;
 import com.github.pockethub.accounts.GitHubAccount;
 import com.github.pockethub.core.PageIterator;
@@ -60,7 +60,7 @@ public class MyGistsFragment extends GistsFragment {
             public PageIterator<Gist> createIterator(int page, int size) {
                 return new PageIterator<>(new PageIterator.GitHubRequest<List<Gist>>() {
                     @Override
-                    public GithubClient<List<Gist>> execute(int page) {
+                    public GithubListClient<List<Gist>> execute(int page) {
                         return new UserGistsClient(accountProvider.get().getUsername(), page);
                     }
                 }, page);

@@ -16,7 +16,7 @@
 package com.github.pockethub.ui.user;
 
 import com.alorma.github.sdk.bean.dto.response.GithubEvent;
-import com.alorma.github.sdk.services.client.GithubClient;
+import com.alorma.github.sdk.services.client.GithubListClient;
 import com.alorma.github.sdk.services.user.events.GetUserEventsClient;
 import com.github.pockethub.core.PageIterator;
 import com.github.pockethub.core.ResourcePager;
@@ -38,8 +38,8 @@ public class UserReceivedNewsFragment extends UserNewsFragment {
                 return new PageIterator<>(new PageIterator.GitHubRequest<List<GithubEvent>>() {
 
                     @Override
-                    public GithubClient<List<GithubEvent>> execute(int page) {
-                        return new GetUserEventsClient(getActivity(), org.login, page);
+                    public GithubListClient<List<GithubEvent>> execute(int page) {
+                        return new GetUserEventsClient(org.login, page);
                     }
                 }, page);
             }
