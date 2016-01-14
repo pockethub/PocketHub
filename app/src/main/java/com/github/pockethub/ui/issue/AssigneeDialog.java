@@ -72,6 +72,7 @@ public class AssigneeDialog extends BaseProgressDialog {
         new GetAssigneesClient(InfoUtils.createRepoInfo(repository)).observable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(activity.<List<User>>bindToLifecycle())
                 .subscribe(new ObserverAdapter<List<User>>() {
                     @Override
                     public void onError(Throwable error) {

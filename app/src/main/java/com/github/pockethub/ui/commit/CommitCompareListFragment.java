@@ -127,6 +127,7 @@ public class CommitCompareListFragment extends DialogFragment implements
                 .observable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<CompareCommit>bindToLifecycle())
                 .subscribe(new ObserverAdapter<CompareCommit>() {
                     @Override
                     public void onNext(CompareCommit compareCommit) {

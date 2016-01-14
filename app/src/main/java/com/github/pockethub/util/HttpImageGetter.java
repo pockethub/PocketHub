@@ -15,7 +15,6 @@
  */
 package com.github.pockethub.util;
 
-import android.accounts.Account;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,7 +31,6 @@ import com.alorma.github.sdk.bean.dto.request.RequestMarkdownDTO;
 import com.alorma.github.sdk.services.content.GetMarkdownClient;
 import com.bugsnag.android.Bugsnag;
 import com.github.pockethub.R;
-import com.github.pockethub.accounts.AuthenticatedUserTask;
 import com.github.pockethub.rx.ObserverAdapter;
 import com.google.inject.Inject;
 import com.squareup.okhttp.OkHttpClient;
@@ -48,7 +46,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static android.util.Base64.DEFAULT;
@@ -224,21 +224,23 @@ public class HttpImageGetter implements ImageGetter {
 
         show(view, encoded);
         view.setTag(id);
-        new AuthenticatedUserTask<CharSequence>(context) {
-
-            @Override
-            protected CharSequence run(Account account) throws Exception {
-                return HtmlUtils.encode(html, HttpImageGetter.this);
-            }
-
-            @Override
-            protected void onSuccess(final CharSequence html) throws Exception {
-                fullHtmlCache.put(id, html);
-
-                if (id.equals(view.getTag()))
-                    show(view, html);
-            }
-        }.execute();
+        Observable.just(html)
+                .subscribeOn(Schedulers.computation())
+                .map(new Func1<String, CharSequence>() {
+                    @Override
+                    public CharSequence call(String htmlString) {
+                        return HtmlUtils.encode(htmlString, HttpImageGetter.this);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ObserverAdapter<CharSequence>() {@Override
+                    public void onNext(CharSequence htmlCharSequence) {
+                        fullHtmlCache.put(id, htmlCharSequence);
+                        if (id.equals(view.getTag())) {
+                            show(view, htmlCharSequence);
+                        }
+                    }
+                });
         return this;
     }
 

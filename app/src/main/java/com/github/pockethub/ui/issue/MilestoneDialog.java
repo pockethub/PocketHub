@@ -83,6 +83,7 @@ public class MilestoneDialog extends BaseProgressDialog {
                 .observable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(activity.<List<Milestone>>bindToLifecycle())
                 .subscribe(new ObserverAdapter<List<Milestone>>() {
                     @Override
                     public void onNext(List<Milestone> milestones) {

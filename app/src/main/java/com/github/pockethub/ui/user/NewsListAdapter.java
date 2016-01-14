@@ -31,6 +31,7 @@ import com.alorma.github.sdk.bean.dto.response.events.payload.GithubEventPayload
 import com.alorma.github.sdk.bean.dto.response.events.payload.IssueCommentEventPayload;
 import com.alorma.github.sdk.bean.dto.response.events.payload.IssueEventPayload;
 import com.alorma.github.sdk.bean.dto.response.events.payload.MemberEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.Payload;
 import com.alorma.github.sdk.bean.dto.response.events.payload.PublicEventPayload;
 import com.alorma.github.sdk.bean.dto.response.events.payload.PullRequestEventPayload;
 import com.alorma.github.sdk.bean.dto.response.events.payload.PullRequestReviewCommentEventPayload;
@@ -186,7 +187,7 @@ public class NewsListAdapter extends SingleTypeAdapter<GithubEvent> {
             for (int i = 0; i < items.length; i++) {
                 GithubEvent element = (GithubEvent) items[i];
                 String json = gson.toJson(element.payload);
-                element.payload = gson.fromJson(json, getClassFromType(element.type));
+                element.payload = gson.fromJson(json, Payload.class);
                 elements[i] = element;
             }
             super.setItems(elements);

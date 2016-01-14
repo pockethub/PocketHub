@@ -18,11 +18,11 @@ package com.github.pockethub.ui.user;
 
 import com.alorma.github.sdk.bean.dto.response.GithubEvent;
 import com.alorma.github.sdk.bean.dto.response.events.EventType;
+import com.alorma.github.sdk.bean.dto.response.events.payload.Payload;
 import com.github.pockethub.BuildConfig;
 import com.github.pockethub.ui.StyledText;
 import com.github.pockethub.util.TypefaceUtils;
 
-import org.eclipse.egit.github.core.event.IssuesPayload;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
@@ -204,8 +204,8 @@ public class IconAndViewTextManagerTest {
         // Arrange
         GithubEvent event = new GithubEvent();
         event.type = EventType.IssuesEvent;
-        IssuesPayload payload = new IssuesPayload();
-        payload.setAction(IconAndViewTextManager.ISSUES_PAYLOAD_ACTION_OPENED);
+        Payload payload = new Payload();
+        payload.action = IconAndViewTextManager.ISSUES_PAYLOAD_ACTION_OPENED;
         event.payload = payload;
 
         IconAndViewTextManager iconAndViewTextManager = new IconAndViewTextManager(null);
@@ -225,8 +225,8 @@ public class IconAndViewTextManagerTest {
         // Arrange
         GithubEvent event = new GithubEvent();
         event.type = EventType.IssuesEvent;
-        IssuesPayload payload = new IssuesPayload();
-        payload.setAction(IconAndViewTextManager.ISSUES_PAYLOAD_ACTION_REOPENED);
+        Payload payload = new Payload();
+        payload.action = IconAndViewTextManager.ISSUES_PAYLOAD_ACTION_REOPENED;
         event.payload = payload;
 
         IconAndViewTextManager iconAndViewTextManager = new IconAndViewTextManager(null);
@@ -246,8 +246,8 @@ public class IconAndViewTextManagerTest {
         // Arrange
         GithubEvent event = new GithubEvent();
         event.type = EventType.IssuesEvent;
-        IssuesPayload payload = new IssuesPayload();
-        payload.setAction(IconAndViewTextManager.ISSUES_PAYLOAD_ACTION_CLOSED);
+        Payload payload = new Payload();
+        payload.action = IconAndViewTextManager.ISSUES_PAYLOAD_ACTION_CLOSED;
         event.payload = payload;
 
         IconAndViewTextManager iconAndViewTextManager = new IconAndViewTextManager(null);

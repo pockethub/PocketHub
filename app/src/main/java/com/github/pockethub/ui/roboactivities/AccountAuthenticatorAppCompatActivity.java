@@ -19,7 +19,15 @@ package com.github.pockethub.ui.roboactivities;
 import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.v7.app.AppCompatActivity;
+
+import com.trello.rxlifecycle.ActivityEvent;
+import com.trello.rxlifecycle.ActivityLifecycleProvider;
+import com.trello.rxlifecycle.RxLifecycle;
+
+import rx.Observable;
+import rx.subjects.BehaviorSubject;
 
 /**
  * Base class for implementing an Activity that is used to help implement an
@@ -37,9 +45,61 @@ import android.support.v7.app.AppCompatActivity;
  *
  * Based on <a href="https://github.com/mccrajs">@mccrajs's</a> implementation <a href="https://github.com/rtyley/roboguice-sherlock/blob/master/src/main/java/com/github/rtyley/android/sherlock/android/accounts/SherlockAccountAuthenticatorActivity.java">here</a>.
  */
-public class AccountAuthenticatorAppCompatActivity extends AppCompatActivity {
+public class AccountAuthenticatorAppCompatActivity extends AppCompatActivity implements ActivityLifecycleProvider {
     private AccountAuthenticatorResponse mAccountAuthenticatorResponse = null;
     private Bundle mResultBundle = null;
+
+    private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
+
+    @Override
+    public final Observable<ActivityEvent> lifecycle() {
+        return lifecycleSubject.asObservable();
+    }
+
+    @Override
+    public final <T> Observable.Transformer<T, T> bindUntilEvent(ActivityEvent event) {
+        return RxLifecycle.bindUntilActivityEvent(lifecycleSubject, event);
+    }
+
+    @Override
+    public final <T> Observable.Transformer<T, T> bindToLifecycle() {
+        return RxLifecycle.bindActivity(lifecycleSubject);
+    }
+
+    @Override
+    @CallSuper
+    protected void onStart() {
+        super.onStart();
+        lifecycleSubject.onNext(ActivityEvent.START);
+    }
+
+    @Override
+    @CallSuper
+    protected void onResume() {
+        super.onResume();
+        lifecycleSubject.onNext(ActivityEvent.RESUME);
+    }
+
+    @Override
+    @CallSuper
+    protected void onPause() {
+        lifecycleSubject.onNext(ActivityEvent.PAUSE);
+        super.onPause();
+    }
+
+    @Override
+    @CallSuper
+    protected void onStop() {
+        lifecycleSubject.onNext(ActivityEvent.STOP);
+        super.onStop();
+    }
+
+    @Override
+    @CallSuper
+    protected void onDestroy() {
+        lifecycleSubject.onNext(ActivityEvent.DESTROY);
+        super.onDestroy();
+    }
 
     /**
      * Set the result that is to be sent as the result of the request that caused this
@@ -56,8 +116,10 @@ public class AccountAuthenticatorAppCompatActivity extends AppCompatActivity {
      * icicle is non-zero.
      * @param icicle the save instance data of this Activity, may be null
      */
+    @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+        lifecycleSubject.onNext(ActivityEvent.CREATE);
 
         mAccountAuthenticatorResponse =
             getIntent().getParcelableExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE);

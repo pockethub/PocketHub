@@ -77,6 +77,7 @@ public class CreateCommentActivity extends
                 .observable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<GithubComment>bindToLifecycle())
                 .subscribe(new ObserverAdapter<GithubComment>() {
                     @Override
                     public void onNext(GithubComment githubComment) {

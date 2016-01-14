@@ -114,6 +114,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                     .observable()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .compose(this.<Repo>bindToLifecycle())
                     .subscribe(new ObserverAdapter<Repo>() {
                         @Override
                         public void onNext(Repo repo) {
@@ -232,6 +233,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
         }
         starObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<Boolean>bindToLifecycle())
                 .subscribe(new ObserverAdapter<Boolean>() {
                     @Override
                     public void onNext(Boolean aBoolean) {
@@ -252,6 +254,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                 .observable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<Boolean>bindToLifecycle())
                 .subscribe(new ObserverAdapter<Boolean>() {
                     @Override
                     public void onNext(Boolean starred) {
@@ -275,6 +278,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                 .observable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<Repo>bindToLifecycle())
                 .subscribe(new ObserverAdapter<Repo>() {
                     @Override
                     public void onNext(Repo repo) {
@@ -314,6 +318,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                                 .observable()
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
+                                .compose(RepositoryViewActivity.this.<Response>bindToLifecycle())
                                 .subscribe(new ObserverAdapter<Response>() {
                                     @Override
                                     public void onNext(Response response) {

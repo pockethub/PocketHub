@@ -381,6 +381,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
                 .observable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<Boolean>bindToLifecycle())
                 .subscribe(new ObserverAdapter<Boolean>() {
                     @Override
                     public void onNext(Boolean isCollaborator) {

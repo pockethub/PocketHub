@@ -19,6 +19,7 @@ package com.github.pockethub.core;
 import android.net.Uri;
 
 import com.alorma.github.sdk.services.client.GithubListClient;
+import com.alorma.gitskarios.core.Pair;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -82,7 +83,7 @@ public class PageIterator<V> implements Iterator<Collection<V>>, Iterable<Collec
             GithubListClient client = request.execute(nextPage);
             Object response = client.observable().toBlocking().first();
             if(response != null)
-                resources = (List) response;
+                resources = (List) ((Pair) response).first;
 
             if(resources == null)
                 resources = Collections.emptyList();
@@ -92,7 +93,7 @@ public class PageIterator<V> implements Iterator<Collection<V>>, Iterable<Collec
             this.lastPage = parsePageNumber(last);
             this.next = client.next != null ? Uri.parse(client.next.toString()) : Uri.EMPTY;
             this.nextPage = parsePageNumber(next);
-            return (Collection<V>)resources;
+            return (Collection<V>) resources;
         }
     }
 

@@ -269,6 +269,7 @@ public class CommitFileViewActivity extends BaseActivity implements
                 .observable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<GitBlob>bindToLifecycle())
                 .subscribe(new ObserverAdapter<GitBlob>() {
                     @Override
                     public void onNext(GitBlob gitBlob) {

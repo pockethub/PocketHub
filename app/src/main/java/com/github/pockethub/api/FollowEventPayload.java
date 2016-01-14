@@ -16,10 +16,27 @@
 
 package com.github.pockethub.api;
 
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.bean.dto.response.events.payload.GithubEventPayload;
+import android.os.Parcel;
 
-public class FollowEventPayload extends GithubEventPayload {
+import com.alorma.github.sdk.bean.dto.response.User;
+import com.alorma.github.sdk.bean.dto.response.events.payload.Payload;
+
+public class FollowEventPayload extends Payload {
 
     public User target;
+
+    public FollowEventPayload() {
+        super();
+    }
+
+    protected FollowEventPayload(Parcel in) {
+        super(in);
+        target = in.readParcelable(User.class.getClassLoader());
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeParcelable(target, 0);
+    }
 }

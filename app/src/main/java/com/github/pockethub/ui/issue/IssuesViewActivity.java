@@ -206,6 +206,7 @@ public class IssuesViewActivity extends PagerActivity {
                     .observable()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .compose(this.<Repo>bindToLifecycle())
                     .subscribe(new ObserverAdapter<Repo>() {
                         @Override
                         public void onNext(Repo repo) {
@@ -345,6 +346,7 @@ public class IssuesViewActivity extends PagerActivity {
                 .observable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<Boolean>bindToLifecycle())
                 .subscribe(new ObserverAdapter<Boolean>() {
                     @Override
                     public void onNext(Boolean collaborator) {

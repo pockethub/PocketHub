@@ -76,6 +76,7 @@ public class LabelsDialog extends BaseProgressDialog {
                 .observable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(activity.<List<Label>>bindToLifecycle())
                 .subscribe(new ObserverAdapter<List<Label>>() {
                     @Override
                     public void onNext(List<Label> repositoryLabels) {

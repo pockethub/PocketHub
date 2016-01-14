@@ -99,6 +99,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
                     .observable()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .compose(this.<User>bindToLifecycle())
                     .subscribe(new ObserverAdapter<User>() {
                         @Override
                         public void onNext(User fullUser) {
@@ -207,6 +208,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
 
         followObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<Boolean>bindToLifecycle())
                 .subscribe(new ObserverAdapter<Boolean>() {
                     @Override
                     public void onNext(Boolean aBoolean) {
@@ -227,6 +229,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
                 .observable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<Boolean>bindToLifecycle())
                 .subscribe(new ObserverAdapter<Boolean>() {
                     @Override
                     public void onNext(Boolean following) {

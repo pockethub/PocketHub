@@ -20,7 +20,6 @@ import android.text.TextUtils;
 import com.alorma.github.sdk.bean.dto.response.GithubEvent;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.events.EventType;
-import com.alorma.github.sdk.bean.dto.response.events.payload.ForkEventPayload;
 import com.github.pockethub.util.ConvertUtils;
 
 /**
@@ -43,7 +42,7 @@ public class RepositoryEventMatcher {
 
         EventType type = event.getType();
         if (EventType.ForkEvent.equals(type)) {
-            Repo repository = ((ForkEventPayload)event.payload).forkee;
+            Repo repository = event.payload.forkee;
             // Verify repository has valid name and owner
             if (repository != null && !TextUtils.isEmpty(repository.name)
                     && repository.owner!= null

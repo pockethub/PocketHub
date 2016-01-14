@@ -29,13 +29,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.alorma.github.basesdk.client.BaseClient;
-import com.alorma.github.basesdk.client.GithubDeveloperCredentialsProvider;
-import com.alorma.github.basesdk.client.credentials.GithubDeveloperCredentials;
 import com.alorma.github.sdk.bean.dto.response.Organization;
 import com.alorma.github.sdk.bean.dto.response.Token;
 import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.login.AccountsHelper;
 import com.alorma.github.sdk.services.login.RequestTokenClient;
 import com.alorma.github.sdk.services.user.GetAuthUserClient;
 import com.github.pockethub.R;
@@ -48,8 +44,6 @@ import com.squareup.okhttp.HttpUrl;
 
 import java.util.List;
 
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -164,6 +158,7 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
                     .observable()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .compose(this.<Token>bindToLifecycle())
                     .subscribe(new ObserverAdapter<Token>() {
                         @Override
                         public void onError(Throwable e) {
@@ -201,10 +196,10 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
     }
 
     public void handleLogin() {
-        openLoginInBrowser(GithubDeveloperCredentials.getInstance().getProvider());
+        openLoginInBrowser();
     }
 
-    private void openLoginInBrowser(GithubDeveloperCredentialsProvider client) {
+    private void openLoginInBrowser() {
         String initialScope = "user,public_repo,repo,delete_repo,notifications,gist";
         HttpUrl.Builder url = new HttpUrl.Builder()
                 .scheme("https")
@@ -212,7 +207,7 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
                 .addPathSegment("login")
                 .addPathSegment("oauth")
                 .addPathSegment("authorize")
-                .addQueryParameter("client_id", client.getApiClient())
+                .addQueryParameter("client_id", getString(R.string.github_client))
                 .addQueryParameter("scope", initialScope);
 
         Intent intent = new Intent(this, LoginWebViewActivity.class);
@@ -248,6 +243,7 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
                 .observable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<User>bindToLifecycle())
                 .subscribe(new ObserverAdapter<User>() {
                     @Override
                     public void onError(Throwable e) {
