@@ -23,6 +23,16 @@ import com.alorma.github.sdk.bean.dto.response.events.payload.Payload;
 
 public class GistEventPayload extends Payload {
 
+    public static final Creator<GistEventPayload> CREATOR = new Creator<GistEventPayload>() {
+        public GistEventPayload createFromParcel(Parcel source) {
+            return new GistEventPayload(source);
+        }
+
+        public GistEventPayload[] newArray(int size) {
+            return new GistEventPayload[size];
+        }
+    };
+
     public Gist gist;
 
     public GistEventPayload() {

@@ -29,18 +29,11 @@ import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.Team;
 import com.alorma.github.sdk.bean.dto.response.User;
 import com.alorma.github.sdk.bean.dto.response.events.EventType;
-import com.alorma.github.sdk.bean.dto.response.events.payload.CommitCommentEventPayload;
-import com.alorma.github.sdk.bean.dto.response.events.payload.CreatedEventPayload;
-import com.alorma.github.sdk.bean.dto.response.events.payload.DeleteEventPayload;
-import com.alorma.github.sdk.bean.dto.response.events.payload.IssueCommentEventPayload;
-import com.alorma.github.sdk.bean.dto.response.events.payload.IssueEventPayload;
-import com.alorma.github.sdk.bean.dto.response.events.payload.MemberEventPayload;
-import com.alorma.github.sdk.bean.dto.response.events.payload.PullRequestEventPayload;
-import com.alorma.github.sdk.bean.dto.response.events.payload.PushEventPayload;
-import com.alorma.github.sdk.bean.dto.response.events.payload.TeamAddEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.Payload;
 import com.github.pockethub.R.id;
 import com.github.pockethub.api.FollowEventPayload;
 import com.github.pockethub.api.GistEventPayload;
+import com.github.pockethub.api.MemberEventPayload;
 import com.github.pockethub.ui.user.NewsListAdapter;
 import com.github.pockethub.util.AvatarLoader;
 
@@ -100,7 +93,7 @@ public class NewsEventTextTest extends InstrumentationTestCase {
     @UiThreadTest
     public void testCommitCommentEvent() {
         GithubEvent event = createEvent(EventType.CommitCommentEvent);
-        event.payload = new CommitCommentEventPayload();
+        event.payload = new Payload();
         updateView(event);
 
         verify("user commented on user/repo");
@@ -112,7 +105,7 @@ public class NewsEventTextTest extends InstrumentationTestCase {
     @UiThreadTest
     public void testCreateRepositoryEvent() {
         GithubEvent event = createEvent(EventType.CreateEvent);
-        CreatedEventPayload payload = new CreatedEventPayload();
+        Payload payload = new Payload();
         payload.ref_type = "repository";
         event.payload = payload;
         updateView(event);
@@ -126,7 +119,7 @@ public class NewsEventTextTest extends InstrumentationTestCase {
     @UiThreadTest
     public void testCreateBranchEvent() {
         GithubEvent event = createEvent(EventType.CreateEvent);
-        CreatedEventPayload payload = new CreatedEventPayload();
+        Payload payload = new Payload();
         payload.ref_type = "branch";
         payload.ref = "b1";
         event.payload = payload;
@@ -136,12 +129,12 @@ public class NewsEventTextTest extends InstrumentationTestCase {
     }
 
     /**
-     * Verify text of deleve event
+     * Verify text of delete event
      */
     @UiThreadTest
     public void testDelete() {
         GithubEvent event = createEvent(EventType.DeleteEvent);
-        DeleteEventPayload payload = new DeleteEventPayload();
+        Payload payload = new Payload();
         payload.ref_type = "branch";
         payload.ref = "b1";
         event.payload = payload;
@@ -202,7 +195,7 @@ public class NewsEventTextTest extends InstrumentationTestCase {
     @UiThreadTest
     public void testIssueComment() {
         GithubEvent event = createEvent(EventType.IssueCommentEvent);
-        IssueCommentEventPayload payload = new IssueCommentEventPayload();
+        Payload payload = new Payload();
         Issue issue = new Issue();
         issue.number = 5;
         payload.issue = issue;
@@ -218,7 +211,7 @@ public class NewsEventTextTest extends InstrumentationTestCase {
     @UiThreadTest
     public void testIssue() {
         GithubEvent event = createEvent(EventType.IssuesEvent);
-        IssueEventPayload payload = new IssueEventPayload();
+        Payload payload = new Payload();
         payload.action = "closed";
         Issue issue = new Issue();
         issue.number = 8;
@@ -273,7 +266,7 @@ public class NewsEventTextTest extends InstrumentationTestCase {
     @UiThreadTest
     public void testPullRequest() {
         GithubEvent event = createEvent(EventType.PullRequestEvent);
-        PullRequestEventPayload payload = new PullRequestEventPayload();
+        Payload payload = new Payload();
         payload.number = 30;
         payload.action = "merged";
         event.payload = payload;
@@ -288,7 +281,7 @@ public class NewsEventTextTest extends InstrumentationTestCase {
     @UiThreadTest
     public void testPush() {
         GithubEvent event = createEvent(EventType.PushEvent);
-        PushEventPayload payload = new PushEventPayload();
+        Payload payload = new Payload();
         payload.ref = "refs/heads/master";
         event.payload = payload;
         updateView(event);
@@ -302,7 +295,7 @@ public class NewsEventTextTest extends InstrumentationTestCase {
     @UiThreadTest
     public void testTeamAdd() {
         GithubEvent event = createEvent(EventType.TeamAddEvent);
-        TeamAddEventPayload payload = new TeamAddEventPayload();
+        Payload payload = new Payload();
 
         Team team = new Team();
         team.name = "t1";

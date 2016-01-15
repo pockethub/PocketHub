@@ -138,8 +138,8 @@ public class IconAndViewTextManager {
         boldActor(main, event);
 
         main.append(" created ");
-//        String refType = event.payload.ref_type;
-//        main.append(refType);
+        String refType = event.payload.ref_type;
+        main.append(refType);
         main.append(' ');
         if (!"repository".equals("")) {
             main.append(event.payload.ref);
@@ -154,7 +154,7 @@ public class IconAndViewTextManager {
         boldActor(main, event);
 
         main.append(" deleted ");
-//        main.append(event.payload.ref_type);
+        main.append(event.payload.ref_type);
         main.append(' ');
         main.append(event.payload.ref);
         main.append(" at ");

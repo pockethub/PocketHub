@@ -21,7 +21,7 @@ import com.alorma.github.sdk.bean.dto.response.GithubEvent;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.User;
 import com.alorma.github.sdk.bean.dto.response.events.EventType;
-import com.alorma.github.sdk.bean.dto.response.events.payload.ForkEventPayload;
+import com.alorma.github.sdk.bean.dto.response.events.payload.Payload;
 import com.github.pockethub.core.repo.RepositoryEventMatcher;
 
 /**
@@ -36,7 +36,7 @@ public class RepositoryEventMatcherTest extends AndroidTestCase {
         RepositoryEventMatcher matcher = new RepositoryEventMatcher();
         GithubEvent event = new GithubEvent();
         event.type = (EventType.ForkEvent);
-        ForkEventPayload payload = new ForkEventPayload();
+        Payload payload = new Payload();
         event.payload = payload;
         assertNull(matcher.getRepository(event));
 
