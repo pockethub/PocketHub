@@ -17,12 +17,12 @@ package com.github.pockethub.ui.issue;
 
 import android.util.Log;
 
-import com.alorma.github.basesdk.client.BaseClient;
 import com.alorma.github.sdk.bean.dto.response.Milestone;
 import com.alorma.github.sdk.bean.dto.response.MilestoneState;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.services.issues.GetMilestonesClient;
 import com.github.pockethub.R;
+import com.github.pockethub.rx.ObserverAdapter;
 import com.github.pockethub.ui.BaseProgressDialog;
 import com.github.pockethub.ui.DialogFragmentActivity;
 import com.github.pockethub.util.InfoUtils;
@@ -33,8 +33,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
@@ -79,31 +79,33 @@ public class MilestoneDialog extends BaseProgressDialog {
 
     private void load(final Milestone selectedMilestone) {
         showIndeterminate(R.string.loading_milestones);
-        GetMilestonesClient getMilestonesClient = new GetMilestonesClient(activity, InfoUtils.createRepoInfo(repository), MilestoneState.open);
-        getMilestonesClient.setOnResultCallback(new BaseClient.OnResultCallback<List<Milestone>>() {
+        new GetMilestonesClient(InfoUtils.createRepoInfo(repository), MilestoneState.open)
+                .observable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(activity.<List<Milestone>>bindToLifecycle())
+                .subscribe(new ObserverAdapter<List<Milestone>>() {
+                    @Override
+                    public void onNext(List<Milestone> milestones) {
+                        Collections.sort(milestones, new Comparator<Milestone>() {
+                            public int compare(Milestone m1, Milestone m2) {
+                                return CASE_INSENSITIVE_ORDER.compare(m1.title,
+                                        m2.title);
+                            }
+                        });
+                        repositoryMilestones = (ArrayList<Milestone>) milestones;
 
-            @Override
-            public void onResponseOk(List<Milestone> milestones, Response r) {
-                Collections.sort(milestones, new Comparator<Milestone>() {
-                    public int compare(Milestone m1, Milestone m2) {
-                        return CASE_INSENSITIVE_ORDER.compare(m1.title,
-                                m2.title);
+                        dismissProgress();
+                        show(selectedMilestone);
+                    }
+
+                    @Override
+                    public void onError(Throwable error) {
+                        dismissProgress();
+                        Log.e(TAG, "Exception loading milestones", error);
+                        ToastUtils.show(activity, error, R.string.error_milestones_load);
                     }
                 });
-                repositoryMilestones = (ArrayList<Milestone>) milestones;
-
-                dismissProgress();
-                show(selectedMilestone);
-            }
-
-            @Override
-            public void onFail(RetrofitError error) {
-                dismissProgress();
-                Log.d(TAG, "Exception loading milestones", error);
-                ToastUtils.show(activity, error, R.string.error_milestones_load);
-            }
-        });
-        getMilestonesClient.execute();
     }
 
     /**

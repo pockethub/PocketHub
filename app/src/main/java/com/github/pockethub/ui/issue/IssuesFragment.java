@@ -35,7 +35,7 @@ import com.alorma.github.sdk.bean.dto.response.Label;
 import com.alorma.github.sdk.bean.dto.response.Milestone;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.services.client.GithubClient;
+import com.alorma.github.sdk.services.client.GithubListClient;
 import com.alorma.github.sdk.services.issues.GetIssuesClient;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
@@ -267,8 +267,8 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
             public PageIterator<Issue> createIterator(int page, int size) {
                 return new PageIterator<>(new PageIterator.GitHubRequest<List<Issue>>() {
                     @Override
-                    public GithubClient<List<Issue>> execute(int page) {
-                        return new GetIssuesClient(getActivity(), InfoUtils.createIssueInfo(repository, null), filter.toFilterMap(),
+                    public GithubListClient<List<Issue>> execute(int page) {
+                        return new GetIssuesClient(InfoUtils.createIssueInfo(repository, null), filter.toFilterMap(),
                                 page);
                     }
                 }, page);

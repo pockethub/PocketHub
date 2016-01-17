@@ -21,7 +21,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.services.client.GithubClient;
+import com.alorma.github.sdk.services.client.GithubListClient;
 import com.alorma.github.sdk.services.search.UsersSearchClient;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
@@ -65,8 +65,8 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
             public PageIterator<User> createIterator(int page, int size) {
                 return new PageIterator<>(new PageIterator.GitHubRequest<List<User>>() {
                     @Override
-                    public GithubClient<List<User>> execute(int page) {
-                        return new UsersSearchClient(getContext(), query, page);
+                    public GithubListClient<List<User>> execute(int page) {
+                        return new UsersSearchClient(query, page);
                     }
                 }, page);
             }

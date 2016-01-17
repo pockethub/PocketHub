@@ -153,7 +153,7 @@ public class IssueStore extends ItemStore {
      */
     public Issue refreshIssue(Repo repository, int number) throws IOException {
         IssueInfo issueInfo = InfoUtils.createIssueInfo(repository, number);
-        Issue issue = new GetIssueClient(context, issueInfo).executeSync();
+        Issue issue = new GetIssueClient(issueInfo).observable().toBlocking().first();
         return addIssue(repository, issue);
     }
 
@@ -168,12 +168,12 @@ public class IssueStore extends ItemStore {
     public Issue editIssue(Repo repository, int issueNumber, EditIssueRequestDTO editIssueRequestDTO) throws IOException {
         IssueInfo issueInfo = new IssueInfo(InfoUtils.createRepoInfo(repository));
         issueInfo.num = issueNumber;
-        return addIssue(repository, new EditIssueClient(context, issueInfo, editIssueRequestDTO).executeSync());
+        return addIssue(repository, new EditIssueClient(issueInfo, editIssueRequestDTO).observable().toBlocking().first());
     }
 
     public Issue changeState(Repo repository, int issueNumber, IssueState state) throws IOException {
         IssueInfo issueInfo = new IssueInfo(InfoUtils.createRepoInfo(repository));
         issueInfo.num = issueNumber;
-        return addIssue(repository, new ChangeIssueStateClient(context, issueInfo, state).executeSync());
+        return addIssue(repository, new ChangeIssueStateClient(issueInfo, state).observable().toBlocking().first());
     }
 }

@@ -19,6 +19,7 @@ import android.support.v4.view.ViewPager;
 
 import com.alorma.github.sdk.bean.dto.response.Gist;
 import com.alorma.github.sdk.bean.dto.response.GistFile;
+import com.alorma.github.sdk.bean.dto.response.GistFilesMap;
 import com.github.pockethub.R.id;
 import com.github.pockethub.core.gist.GistStore;
 import com.github.pockethub.tests.ActivityTest;
@@ -57,7 +58,7 @@ public class GistFilesViewActivityTest extends
 
         gist = new Gist();
         gist.id = "abcd";
-        Map<String, GistFile> files = new LinkedHashMap<>();
+        GistFilesMap files = new GistFilesMap();
 
         GistFile a = new GistFile();
         GistFile b = new GistFile();

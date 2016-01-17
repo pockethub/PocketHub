@@ -89,7 +89,7 @@ public class ServicesModule extends AbstractModule {
 
     @Provides
     User currentUser(Context context) throws IOException {
-        return new GetAuthUserClient(context).executeSync();
+        return new GetAuthUserClient().observable().toBlocking().first();
     }
 
     @Provides

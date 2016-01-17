@@ -35,11 +35,11 @@ import com.alorma.github.sdk.bean.dto.response.Milestone;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.User;
 import com.alorma.github.sdk.services.user.actions.CheckUserCollaboratorClient;
-import com.alorma.github.sdk.services.user.actions.OnCheckUserIsCollaborator;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
 import com.github.pockethub.accounts.AccountUtils;
 import com.github.pockethub.core.issue.IssueUtils;
+import com.github.pockethub.rx.ObserverAdapter;
 import com.github.pockethub.ui.DialogFragmentActivity;
 import com.github.pockethub.ui.StyledText;
 import com.github.pockethub.ui.TextWatcherAdapter;
@@ -49,6 +49,9 @@ import com.github.pockethub.util.RequestUtils;
 import com.google.inject.Inject;
 
 import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -374,16 +377,18 @@ public class EditIssueActivity extends DialogFragmentActivity {
     }
 
     private void checkCollaboratorStatus() {
-        CheckUserCollaboratorClient collaboratorClient = new CheckUserCollaboratorClient(this,
-                InfoUtils.createRepoInfo(repository), AccountUtils.getLogin(this));
-        collaboratorClient.setOnCheckUserIsCollaborator(new OnCheckUserIsCollaborator() {
-            @Override
-            public void onCheckUserIsCollaborator(String user, boolean collaborator) {
-                showMainContent();
-                if (collaborator)
-                    showCollaboratorOptions();
-            }
-        });
-        collaboratorClient.execute();
+        new CheckUserCollaboratorClient(InfoUtils.createRepoInfo(repository), AccountUtils.getLogin(this))
+                .observable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<Boolean>bindToLifecycle())
+                .subscribe(new ObserverAdapter<Boolean>() {
+                    @Override
+                    public void onNext(Boolean isCollaborator) {
+                        showMainContent();
+                        if (isCollaborator)
+                            showCollaboratorOptions();
+                    }
+                });
     }
 }

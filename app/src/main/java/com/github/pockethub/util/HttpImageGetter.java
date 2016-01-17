@@ -15,7 +15,6 @@
  */
 package com.github.pockethub.util;
 
-import android.accounts.Account;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,12 +27,11 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.alorma.github.basesdk.client.BaseClient;
 import com.alorma.github.sdk.bean.dto.request.RequestMarkdownDTO;
 import com.alorma.github.sdk.services.content.GetMarkdownClient;
 import com.bugsnag.android.Bugsnag;
 import com.github.pockethub.R;
-import com.github.pockethub.accounts.AuthenticatedUserTask;
+import com.github.pockethub.rx.ObserverAdapter;
 import com.google.inject.Inject;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -48,8 +46,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 import static android.util.Base64.DEFAULT;
 import static android.view.View.GONE;
@@ -187,19 +187,21 @@ public class HttpImageGetter implements ImageGetter {
             if (!html.matches("<[a-z][\\s\\S]*>")) {
                 RequestMarkdownDTO markdownDTO = new RequestMarkdownDTO();
                 markdownDTO.text = html;
-                GetMarkdownClient markdownClient = new GetMarkdownClient(context, markdownDTO);
-                markdownClient.setOnResultCallback(new BaseClient.OnResultCallback<String>() {
-                    @Override
-                    public void onResponseOk(String data, Response response) {
-                        continueBind(view, data, id);
-                    }
+                new GetMarkdownClient(markdownDTO)
+                        .observable()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new ObserverAdapter<String>() {
+                            @Override
+                            public void onNext(String data) {
+                                continueBind(view, data, id);
+                            }
 
-                    @Override
-                    public void onFail(RetrofitError retrofitError) {
-                        continueBind(view, html, id);
-                    }
-                });
-                markdownClient.execute();
+                            @Override
+                            public void onError(Throwable e) {
+                                continueBind(view, html, id);
+                            }
+                        });
             } else {
                 return continueBind(view, html, id);
             }
@@ -222,21 +224,23 @@ public class HttpImageGetter implements ImageGetter {
 
         show(view, encoded);
         view.setTag(id);
-        new AuthenticatedUserTask<CharSequence>(context) {
-
-            @Override
-            protected CharSequence run(Account account) throws Exception {
-                return HtmlUtils.encode(html, HttpImageGetter.this);
-            }
-
-            @Override
-            protected void onSuccess(final CharSequence html) throws Exception {
-                fullHtmlCache.put(id, html);
-
-                if (id.equals(view.getTag()))
-                    show(view, html);
-            }
-        }.execute();
+        Observable.just(html)
+                .subscribeOn(Schedulers.computation())
+                .map(new Func1<String, CharSequence>() {
+                    @Override
+                    public CharSequence call(String htmlString) {
+                        return HtmlUtils.encode(htmlString, HttpImageGetter.this);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ObserverAdapter<CharSequence>() {@Override
+                    public void onNext(CharSequence htmlCharSequence) {
+                        fullHtmlCache.put(id, htmlCharSequence);
+                        if (id.equals(view.getTag())) {
+                            show(view, htmlCharSequence);
+                        }
+                    }
+                });
         return this;
     }
 

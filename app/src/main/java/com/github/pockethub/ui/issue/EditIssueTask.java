@@ -61,7 +61,7 @@ public class EditIssueTask extends ProgressDialogTask<Issue> {
 
     @Override
     protected Issue run(Account account) throws Exception {
-        return new EditIssueClient(context, InfoUtils.createIssueInfo(repositoryId, issueNumber), issue).executeSync();
+        return new EditIssueClient(InfoUtils.createIssueInfo(repositoryId, issueNumber), issue).observable().toBlocking().first();
     }
 
     /**

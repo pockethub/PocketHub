@@ -23,7 +23,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.services.client.GithubClient;
+import com.alorma.github.sdk.services.client.GithubListClient;
 import com.alorma.github.sdk.services.repo.GetRepoClient;
 import com.alorma.github.sdk.services.search.RepoSearchClient;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
@@ -59,8 +59,8 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repo> {
             public PageIterator<Repo> createIterator(int page, int size) {
                 return new PageIterator<>(new PageIterator.GitHubRequest<List<Repo>>() {
                     @Override
-                    public GithubClient<List<Repo>> execute(int page) {
-                        return new RepoSearchClient(getContext(), query, page);
+                    public GithubListClient<List<Repo>> execute(int page) {
+                        return new RepoSearchClient(query, page);
                     }
                 }, page);
             }
@@ -135,7 +135,7 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repo> {
             return false;
 
         Repo repo;
-        repo = new GetRepoClient(getActivity(), InfoUtils.createRepoInfo(repoId)).executeSync();
+        repo = new GetRepoClient(InfoUtils.createRepoInfo(repoId)).observable().toBlocking().first();
 
         startActivity(RepositoryViewActivity.createIntent(repo));
         final Activity activity = getActivity();

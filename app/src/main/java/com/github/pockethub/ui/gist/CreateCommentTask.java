@@ -72,7 +72,7 @@ public class CreateCommentTask extends ProgressDialogTask<GithubComment> {
 
     @Override
     public GithubComment run(Account account) throws Exception {
-        GithubComment created = new PublishGistCommentClient(context, id, new CommentRequest(comment)).executeSync();
+        GithubComment created = new PublishGistCommentClient(id, new CommentRequest(comment)).observable().toBlocking().first();
         created.body_html = HtmlUtils.format(created.body_html).toString();
         return created;
 

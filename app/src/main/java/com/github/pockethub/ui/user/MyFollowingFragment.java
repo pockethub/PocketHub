@@ -16,7 +16,7 @@
 package com.github.pockethub.ui.user;
 
 import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.services.client.GithubClient;
+import com.alorma.github.sdk.services.client.GithubListClient;
 import com.alorma.github.sdk.services.user.UserFollowingClient;
 import com.github.pockethub.core.PageIterator;
 import com.github.pockethub.core.ResourcePager;
@@ -37,8 +37,8 @@ public class MyFollowingFragment extends FollowingFragment {
             public PageIterator<User> createIterator(int page, int size) {
                 return new PageIterator<>(new PageIterator.GitHubRequest<List<User>>() {
                     @Override
-                    public GithubClient<List<User>> execute(int page) {
-                        return new UserFollowingClient(getActivity(), null, page);
+                    public GithubListClient<List<User>> execute(int page) {
+                        return new UserFollowingClient(null, page);
                     }
                 }, page);
             }

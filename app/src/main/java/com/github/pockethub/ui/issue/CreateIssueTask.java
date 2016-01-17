@@ -71,7 +71,7 @@ public class CreateIssueTask extends ProgressDialogTask<Issue> {
 
     @Override
     public Issue run(Account account) throws Exception {
-        return new PostNewIssueClient(context, InfoUtils.createRepoInfo(repository), request).executeSync();
+        return new PostNewIssueClient(InfoUtils.createRepoInfo(repository), request).observable().toBlocking().first();
     }
 
     @Override

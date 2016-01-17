@@ -224,7 +224,7 @@
     <string name="message_invalid_github_url">The following URL could not be opened by this application:\n{0}</string>
     <string name="cancel">Cancel</string>
     <string name="authenticator_conflict_title">App Conflict</string>
-    <string name="authenticator_conflict_message">Another installed app is already configured for GitHub authentication.\n\nYou must remove the other app from the Accounts &amp; sync settings and uninstall it before the GitHub app can be used.</string>
+    <string name="authenticator_conflict_message">Another installed app is already configured for PocketHub authentication.\n\nYou must remove the other app from the Accounts &amp; sync settings and uninstall it before the PocketHub app can be used.</string>
     <string name="opening_repository">Otwarto {0}…</string>
     <string name="commit_compare_title">Połącz popełnienia</string>
     <string name="commit_prefix">Popełnienie\u0020</string>

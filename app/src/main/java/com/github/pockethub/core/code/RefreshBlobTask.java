@@ -48,6 +48,6 @@ public class RefreshBlobTask extends AuthenticatedUserTask<GitBlob> {
 
     @Override
     protected GitBlob run(Account account) throws Exception {
-        return new GetGitBlobClient(context, InfoUtils.createCommitInfo(repository, blobSha)).executeSync();
+        return new GetGitBlobClient(InfoUtils.createCommitInfo(repository, blobSha)).observable().toBlocking().first();
     }
 }

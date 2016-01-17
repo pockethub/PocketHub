@@ -17,7 +17,7 @@ package com.github.pockethub.core.issue;
 
 import android.text.TextUtils;
 
-import com.alorma.github.sdk.PullRequest;
+import com.alorma.github.sdk.bean.dto.response.PullRequest;
 import com.alorma.github.sdk.bean.dto.response.Issue;
 
 

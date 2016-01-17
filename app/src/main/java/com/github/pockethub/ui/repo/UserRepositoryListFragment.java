@@ -23,7 +23,7 @@ import android.widget.ListView;
 
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.services.client.GithubClient;
+import com.alorma.github.sdk.services.client.GithubListClient;
 import com.alorma.github.sdk.services.repos.UserReposClient;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
@@ -77,8 +77,8 @@ public class UserRepositoryListFragment extends PagedItemFragment<Repo> {
             public PageIterator<Repo> createIterator(int page, int size) {
                 return new PageIterator<>(new PageIterator.GitHubRequest<List<Repo>>() {
                     @Override
-                    public GithubClient<List<Repo>> execute(int page) {
-                        return new UserReposClient(getActivity(), user.login, page);
+                    public GithubListClient<List<Repo>> execute(int page) {
+                        return new UserReposClient(user.login, null, page);
                     }
                 }, page);
             }

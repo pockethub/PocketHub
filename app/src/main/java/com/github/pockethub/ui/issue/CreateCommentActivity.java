@@ -19,7 +19,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 
-import com.alorma.github.basesdk.client.BaseClient;
 import com.alorma.github.sdk.bean.dto.response.GithubComment;
 import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.alorma.github.sdk.bean.dto.response.Repo;
@@ -28,12 +27,13 @@ import com.alorma.github.sdk.services.issues.NewIssueCommentClient;
 import com.github.pockethub.Intents;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
+import com.github.pockethub.rx.ObserverAdapter;
 import com.github.pockethub.ui.comment.CommentPreviewPagerAdapter;
 import com.github.pockethub.util.HtmlUtils;
 import com.github.pockethub.util.InfoUtils;
 
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static com.github.pockethub.Intents.EXTRA_ISSUE_NUMBER;
 import static com.github.pockethub.Intents.EXTRA_USER;
@@ -80,21 +80,18 @@ public class CreateCommentActivity extends
 
     @Override
     protected void createComment(String comment) {
-        NewIssueCommentClient issueCommentClient = new NewIssueCommentClient(this,
-                InfoUtils.createIssueInfo(repositoryId, issueNumber), comment);
-        issueCommentClient.setOnResultCallback(new BaseClient.OnResultCallback<GithubComment>() {
-            @Override
-            public void onResponseOk(GithubComment githubComment, Response r) {
-                githubComment.body_html = HtmlUtils.format(githubComment.body_html).toString();
-                finish(githubComment);
-            }
-
-            @Override
-            public void onFail(RetrofitError error) {
-
-            }
-        });
-        issueCommentClient.execute();
+        new NewIssueCommentClient(InfoUtils.createIssueInfo(repositoryId, issueNumber), comment)
+                .observable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<GithubComment>bindToLifecycle())
+                .subscribe(new ObserverAdapter<GithubComment>() {
+                    @Override
+                    public void onNext(GithubComment githubComment) {
+                        githubComment.body_html = HtmlUtils.format(githubComment.body_html).toString();
+                        finish(githubComment);
+                    }
+                });
     }
 
     @Override

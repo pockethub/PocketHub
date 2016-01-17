@@ -18,7 +18,8 @@ package com.github.pockethub.core;
 
 import android.net.Uri;
 
-import com.alorma.github.sdk.services.client.GithubClient;
+import com.alorma.github.sdk.services.client.GithubListClient;
+import com.alorma.gitskarios.core.Pair;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -79,20 +80,20 @@ public class PageIterator<V> implements Iterator<Collection<V>>, Iterable<Collec
             throw new NoSuchElementException();
         } else {
             List resources = null;
-            GithubClient client = request.execute(nextPage);
-            Object response = client.executeSync();
+            GithubListClient client = request.execute(nextPage);
+            Object response = client.observable().toBlocking().first();
             if(response != null)
-                resources = (List) response;
+                resources = (List) ((Pair) response).first;
 
             if(resources == null)
                 resources = Collections.emptyList();
 
             ++this.nextPage;
-            this.last = client.last;
+            this.last = client.last != null ? Uri.parse(client.last.toString()) : Uri.EMPTY;
             this.lastPage = parsePageNumber(last);
-            this.next = client.next;
+            this.next = client.next != null ? Uri.parse(client.next.toString()) : Uri.EMPTY;
             this.nextPage = parsePageNumber(next);
-            return (Collection<V>)resources;
+            return (Collection<V>) resources;
         }
     }
 
@@ -105,6 +106,6 @@ public class PageIterator<V> implements Iterator<Collection<V>>, Iterable<Collec
     }
 
     public interface GitHubRequest<V>{
-        GithubClient<V> execute(int page);
+        GithubListClient<V> execute(int page);
     }
 }

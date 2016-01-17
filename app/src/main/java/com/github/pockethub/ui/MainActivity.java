@@ -48,12 +48,12 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alorma.github.basesdk.client.StoreCredentials;
 import com.alorma.github.sdk.bean.dto.response.Organization;
-import com.alorma.github.sdk.login.AccountsHelper;
 import com.github.pockethub.R;
 import com.github.pockethub.accounts.AccountUtils;
+import com.github.pockethub.accounts.AccountsHelper;
 import com.github.pockethub.accounts.LoginActivity;
+import com.github.pockethub.accounts.StoreCredentials;
 import com.github.pockethub.core.user.UserComparator;
 import com.github.pockethub.persistence.AccountDataManager;
 import com.github.pockethub.ui.gist.GistsPagerFragment;
@@ -147,7 +147,6 @@ public class MainActivity extends BaseActivity implements
                 AccountsHelper.getUserToken(this, account);
                 storeCredentials.storeToken(AccountsHelper.getUserToken(this, account));
                 storeCredentials.storeUsername(account.name);
-                storeCredentials.storeScopes(AccountsHelper.getUserScopes(this, account));
             }
         }
     }

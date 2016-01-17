@@ -21,7 +21,7 @@ import com.alorma.github.sdk.bean.dto.response.GithubEvent;
 import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.services.client.GithubClient;
+import com.alorma.github.sdk.services.client.GithubListClient;
 import com.alorma.github.sdk.services.repo.GetRepoEventsClient;
 import com.github.pockethub.core.PageIterator;
 import com.github.pockethub.core.ResourcePager;
@@ -58,9 +58,8 @@ public class RepositoryNewsFragment extends NewsFragment {
             public PageIterator<GithubEvent> createIterator(int page, int size) {
                 return new PageIterator<>(new PageIterator.GitHubRequest<List<GithubEvent>>() {
                     @Override
-                    public GithubClient<List<GithubEvent>> execute(int page) {
-                        return new GetRepoEventsClient(getActivity(),
-                                InfoUtils.createRepoInfo(repo), page);
+                    public GithubListClient<List<GithubEvent>> execute(int page) {
+                        return new GetRepoEventsClient(InfoUtils.createRepoInfo(repo), page);
                     }
                 }, page);
             }

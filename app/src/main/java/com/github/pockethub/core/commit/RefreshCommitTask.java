@@ -68,8 +68,8 @@ public class RefreshCommitTask extends AuthenticatedUserTask<FullCommit> {
         Commit commit = store.refreshCommit(repository, id);
         GitCommit rawCommit = commit.commit;
         if (rawCommit != null && rawCommit.comment_count > 0) {
-            List<CommitComment> comments = new GetCommitCommentsClient(context,
-                    InfoUtils.createCommitInfo(repository, commit.sha)).executeSync();
+            List<CommitComment> comments = new GetCommitCommentsClient(InfoUtils.createCommitInfo(repository, commit.sha))
+                    .observable().toBlocking().first().first;
             for (CommitComment comment : comments) {
                 String formatted = HtmlUtils.format(comment.body_html).toString();
                 comment.body_html = formatted;

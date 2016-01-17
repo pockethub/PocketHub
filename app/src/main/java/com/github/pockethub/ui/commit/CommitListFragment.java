@@ -32,7 +32,7 @@ import com.alorma.github.sdk.bean.dto.response.Commit;
 import com.alorma.github.sdk.bean.dto.response.GitReference;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.ShaUrl;
-import com.alorma.github.sdk.services.client.GithubClient;
+import com.alorma.github.sdk.services.client.GithubListClient;
 import com.alorma.github.sdk.services.commit.ListCommitsClient;
 import com.alorma.github.sdk.services.repo.GetRepoClient;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
@@ -115,9 +115,8 @@ public class CommitListFragment extends PagedItemFragment<Commit>
                 if (TextUtils.isEmpty(ref)) {
                     String defaultBranch = repository.default_branch;
                     if (TextUtils.isEmpty(defaultBranch)) {
-                        defaultBranch = new GetRepoClient(getContext(),
-                                InfoUtils.createRepoInfo(repository))
-                                .executeSync().default_branch;
+                        defaultBranch = new GetRepoClient(InfoUtils.createRepoInfo(repository))
+                                .observable().toBlocking().first().default_branch;
                         if (TextUtils.isEmpty(defaultBranch))
                             defaultBranch = "master";
                     }
@@ -160,11 +159,11 @@ public class CommitListFragment extends PagedItemFragment<Commit>
 
                 return new PageIterator<>(new PageIterator.GitHubRequest<List<Commit>>() {
                     @Override
-                    public GithubClient<List<Commit>> execute(int page) {
+                    public GithubListClient<List<Commit>> execute(int page) {
                         if (page > 1 || ref == null)
-                            return new ListCommitsClient(getActivity(), InfoUtils.createCommitInfo(repository, last), page);
+                            return new ListCommitsClient(InfoUtils.createCommitInfo(repository, last), page);
                         else
-                            return new ListCommitsClient(getActivity(), InfoUtils.createCommitInfo(repository, ref), page);
+                            return new ListCommitsClient(InfoUtils.createCommitInfo(repository, ref), page);
                     }
                 }, page);
             }

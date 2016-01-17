@@ -101,7 +101,7 @@ public class SearchIssueListFragment extends ItemListFragment<Issue>
                 int page = 1;
                 boolean hasMore = true;
                 while(hasMore){
-                    hasMore = matches.addAll(new IssuesSearchClient(getContext(), query, page).executeSync());
+                    hasMore = matches.addAll(new IssuesSearchClient(query, page).observable().toBlocking().first().first);
                     page++;
                 }
                 Collections.sort(matches, SearchIssueListFragment.this);

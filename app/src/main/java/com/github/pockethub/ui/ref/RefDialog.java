@@ -72,13 +72,11 @@ public class RefDialog {
                 List<GitReference> allRefs = new ArrayList<>();
 
                 int page = 1;
-                GetReferencesClient client = new GetReferencesClient(context,
-                        InfoUtils.createRepoInfo(repository), page);
-                allRefs.addAll(client.executeSync());
+                GetReferencesClient client = new GetReferencesClient(InfoUtils.createRepoInfo(repository), page);
+                allRefs.addAll(client.observable().toBlocking().first().first);
                 for(int i = client.nextPage; i < client.lastPage; i++) {
-                    client = new GetReferencesClient(context,
-                            InfoUtils.createRepoInfo(repository), i);
-                    allRefs.addAll(client.executeSync());
+                    client = new GetReferencesClient(InfoUtils.createRepoInfo(repository), i);
+                    allRefs.addAll(client.observable().toBlocking().first().first);
                 }
 
                 Map<String, GitReference> loadedRefs = new TreeMap<>(CASE_INSENSITIVE_ORDER);

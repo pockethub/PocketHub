@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 PocketHub
+ * Copyright (c) 2016 PocketHub
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,32 +21,36 @@ import android.os.Parcel;
 import com.alorma.github.sdk.bean.dto.response.User;
 import com.alorma.github.sdk.bean.dto.response.events.payload.Payload;
 
-public class FollowEventPayload extends Payload {
+public final class MemberEventPayload extends Payload {
 
-    public static final Creator<FollowEventPayload> CREATOR = new Creator<FollowEventPayload>() {
-        public FollowEventPayload createFromParcel(Parcel source) {
-            return new FollowEventPayload(source);
+    public static final Creator<MemberEventPayload> CREATOR = new Creator<MemberEventPayload>() {
+        public MemberEventPayload createFromParcel(Parcel source) {
+            return new MemberEventPayload(source);
         }
 
-        public FollowEventPayload[] newArray(int size) {
-            return new FollowEventPayload[size];
+        public MemberEventPayload[] newArray(int size) {
+            return new MemberEventPayload[size];
         }
     };
+    public User member;
 
-    public User target;
-
-    public FollowEventPayload() {
-        super();
+    public MemberEventPayload() {
     }
 
-    protected FollowEventPayload(Parcel in) {
+    protected MemberEventPayload(Parcel in) {
         super(in);
-        target = in.readParcelable(User.class.getClassLoader());
+        this.member = in.readParcelable(User.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeParcelable(target, 0);
+        dest.writeParcelable(this.member, 0);
     }
+
 }
