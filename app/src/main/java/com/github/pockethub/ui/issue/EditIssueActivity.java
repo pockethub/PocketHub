@@ -50,6 +50,7 @@ import com.google.inject.Inject;
 
 import java.util.List;
 
+import retrofit.RetrofitError;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -388,6 +389,15 @@ public class EditIssueActivity extends DialogFragmentActivity {
                         showMainContent();
                         if (isCollaborator)
                             showCollaboratorOptions();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if(e instanceof RetrofitError && ((RetrofitError) e).getResponse().getStatus() == 403){
+                            //403 -> Forbidden
+                            //The user is not a collaborator.
+                            showMainContent();
+                        }
                     }
                 });
     }
