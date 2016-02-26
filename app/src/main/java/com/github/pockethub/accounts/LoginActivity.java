@@ -39,6 +39,8 @@ import com.github.pockethub.persistence.AccountDataManager;
 import com.github.pockethub.rx.ObserverAdapter;
 import com.github.pockethub.ui.MainActivity;
 import com.github.pockethub.ui.roboactivities.RoboAccountAuthenticatorAppCompatActivity;
+import com.github.pockethub.util.NetworkUtils;
+import com.github.pockethub.util.ToastUtils;
 import com.google.inject.Inject;
 import com.squareup.okhttp.HttpUrl;
 
@@ -196,6 +198,10 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
     }
 
     public void handleLogin() {
+        if(!NetworkUtils.isNetworkConnected(LoginActivity.this)) {
+            ToastUtils.show(LoginActivity.this, R.string.no_network);
+            return;
+        }
         openLoginInBrowser();
     }
 
