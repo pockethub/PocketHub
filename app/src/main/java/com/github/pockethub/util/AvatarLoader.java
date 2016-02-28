@@ -19,9 +19,11 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.InsetDrawable;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
@@ -145,7 +147,9 @@ public class AvatarLoader {
 
             @Override
             protected void onSuccess(BitmapDrawable image) throws Exception {
-                actionBar.setLogo(image);
+                // compute inset in pixels
+                int insetPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, context.getResources().getDisplayMetrics());
+                actionBar.setLogo(new InsetDrawable(image, 0, 0, insetPx, 0));
             }
         }.execute();
     }
