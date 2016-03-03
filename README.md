@@ -33,7 +33,7 @@ After the initial release, we'll start working on giving this app a proper refre
 
 Please see the [issues](https://github.com/pockethub/PocketHub/issues) section to report any bugs or feature requests and to see the list of known issues. We can't promise fast response times since we all have full time jobs of our own, but we will do our best to respond in a timely fashion.  If you'd like to contribute, please fork this repository and contribute back using [pull requests](https://github.com/pockethub/PocketHub/pulls).
 
-Any contributions, large or small, major features, bug fixes, additional language translations, unit/integration tests are welcomed and appreciated but will be thoroughly reviewed and discussed. **Please read `CONTRIBUTING.md` first!**
+Any contributions, large or small, major features, bug fixes, additional language translations, unit/integration tests are welcomed and appreciated but will be thoroughly reviewed and discussed. **Please read [CONTRIBUTING.md](https://github.com/pockethub/PocketHub/blob/master/CONTRIBUTING.md) first!**
 
 ## Setup Environment
 
