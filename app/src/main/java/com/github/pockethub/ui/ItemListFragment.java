@@ -217,7 +217,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
         Exception exception = getException(loader);
         if (exception != null) {
             if(!NetworkUtils.isNetworkConnected(getActivity())) {
-                showError(exception, R.string.no_network);
+                showError(exception, R.string.error_network);
             }
             else {
                 showError(exception, getErrorMessage(exception));

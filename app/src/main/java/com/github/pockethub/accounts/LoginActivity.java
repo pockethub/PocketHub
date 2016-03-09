@@ -199,7 +199,7 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
 
     public void handleLogin() {
         if(!NetworkUtils.isNetworkConnected(LoginActivity.this)) {
-            ToastUtils.show(LoginActivity.this, R.string.no_network);
+            ToastUtils.show(LoginActivity.this, R.string.error_network);
             return;
         }
         openLoginInBrowser();

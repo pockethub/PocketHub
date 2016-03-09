@@ -49,7 +49,7 @@
     <string name="error_checking_starring_status">Checking starring status failed</string>
     <string name="error_rendering_markdown">Rendering markdown failed</string>
     <string name="error_users_search">Searching users failed</string>
-    <string name="no_network">No internet connection</string>
+    <string name="error_network">No internet connection</string>
     <!--  -->
 
 

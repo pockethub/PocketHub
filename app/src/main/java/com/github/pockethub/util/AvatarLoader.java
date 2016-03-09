@@ -78,8 +78,7 @@ public class AvatarLoader {
 
         OkHttpClient client = new OkHttpClient();
         client.setConnectTimeout(30, TimeUnit.SECONDS);
-        client.setReadTimeout(60, TimeUnit.SECONDS);
-        client.setRetryOnConnectionFailure(true);
+        client.setReadTimeout(30, TimeUnit.SECONDS);
 
         // Install an HTTP cache in the application cache directory.
         File cacheDir = new File(context.getCacheDir(), "http");
