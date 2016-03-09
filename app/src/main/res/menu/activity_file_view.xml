@@ -29,7 +29,7 @@
     android:visible="false"/>
   <item
     android:id="@+id/m_share"
-    android:icon="@drawable/abc_ic_menu_share_mtrl_alpha"
+    android:icon="@drawable/abc_ic_menu_share_material"
     app:showAsAction="never"
     android:title="@string/share"/>
 
