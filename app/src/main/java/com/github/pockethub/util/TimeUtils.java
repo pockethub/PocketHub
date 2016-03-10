@@ -53,9 +53,14 @@ public class TimeUtils {
         return getRelativeTime(stringToDate(date));
     }
 
+    /**
+     * Convert string datetime in UTC to local datetime.
+     * @param value The datetime in UTC to parse.
+     * @return Local datetime.
+     */
     public static Date stringToDate(String value){
         DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        DateTime t = format.parseDateTime(value);
+        DateTime t = format.withZoneUTC().parseDateTime(value);
         return t.toDate();
     }
 
