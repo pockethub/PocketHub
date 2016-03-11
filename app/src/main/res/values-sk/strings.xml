@@ -70,6 +70,7 @@
     <string name="loading_commits">Načítavam commity…</string>
     <string name="loading_files_and_comments">Načítavam súbory &amp; komentáre…</string>
     <string name="loading_refs">Načítavam vetvy &amp; značky…</string>
+    <string name="loading">Načítavam…</string> 
     <!--  -->
 
 
@@ -94,7 +95,12 @@
     <string name="updating_milestone">Aktualizujem míľnik…</string>
     <!--  -->
 
-    <string name="news">Novinky</string>
+    <string name="app_name" translatable="false">PocketHub</string>             
+    <string name="home">Domov</string>                                           
+    <string name="log_out">Odhlásiť sa</string>                                     
+    <string name="news">Novinky</string>                                           
+    <string name="skip">Preskočiť</string>                                           
+    <string name="done">Hotovo</string>
     <string name="issues">Issues</string>
     <string name="gists">Gisty</string>
     <string name="commits">Commity</string>
@@ -105,6 +111,7 @@
     <string name="clear_search_history">Vymazať históriu</string>
     <string name="search_history_cleared">Hľadať v premazanej histórii</string>
     <string name="login_activity_authenticating">Prihlásenie…</string>
+    <string name="loading_user">Načítavam profil užívateľa…</string>
     <string name="creating_gist">Vytváram Gist…</string>
     <string name="create">Vytvoriť</string>
     <string name="create_gist">Vytvoriť gist</string>
@@ -122,6 +129,7 @@
     <string name="bookmark">Záložka</string>
     <string name="comment">Komentár</string>
     <string name="delete">Zmazať</string>
+    <string name="delete_cap">ZMAZAŤ</string>
     <string name="refresh">Obnoviť</string>
     <string name="dashboard_issues_title">Prehľad issues</string>
     <string name="bookmarks">Záložky</string>
@@ -186,6 +194,7 @@
     <string name="signup_link">Ste nový na GitHube? &lt;a href=\"https://github.com/join\">Kliknite sem&lt;/a> a zaregistrujte sa</string>
     <string name="signup_link_two_factor_auth">Nie ste si istý čo robiť? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Nájsť pomoc.&lt;/a></string>
     <string name="connection_failed">Nie je možné pripojiť sa na GitHub</string>
+    <string name="code_authentication_failed">Autentifikácia zlyhala! Nesprávny verifikačný kód</string>
     <string name="invalid_login_or_password">Prosím, vložte platné užívateľské meno &amp; heslo</string>
     <string name="invalid_password">Prosím, vložte platné heslo.</string>
     <string name="password">Heslo</string>
@@ -229,6 +238,7 @@
     <string name="title_invalid_github_url">Nelatná GitHub URL</string>
     <string name="message_invalid_github_url">Nasledujúca URL nemohla byť otvorená touto aplikáciou:\n{0}</string>
     <string name="cancel">Zrušiť</string>
+    <string name="not_sure">NEISTÝ</string>
     <string name="authenticator_conflict_title">App konflikt</string>
     <string name="authenticator_conflict_message">Ďalšia nainštalovaná aplikácia už používa GitHub overenie.\n\nMusíte túto aplikáciu odstrániť z Účtov &amp; synchronizovať nastavenia a odinštalovať ju predtým než môže byť aplikácia GitHub použitá.</string>
     <string name="opening_repository">Otváram {0}…</string>
@@ -249,6 +259,7 @@
     <string name="starring_repository">Označujem ako obľúbený…</string>
     <string name="unstarring_repository">Ruším obľúbený…</string>
     <string name="forking_repository">Forkujem…</string>
+    <string name="deleting_repository">Mažem…</string>
     <string name="navigate_to">Navigovať do…</string>
     <string name="navigate_to_user">Navigovať na %s</string>
     <string name="contributions">%d commitov</string>
@@ -282,4 +293,38 @@
     <string name="copy_hash">Kopírovať hash</string>
     <string name="toast_msg_copied">Skopírovaná do clipboardu</string>
 
+    <!-- Navigation drawer strings -->
+    <string name="navigation_drawer_open">Otvoriť navigačný panel</string>
+    <string name="navigation_drawer_close">Zatvoriť navigačný panel</string>
+    <string name="navigation_drawer_subheader">Podnadpis</string>
+
+    <!-- Deleting repo -->
+    <string name="are_you_sure">Ste si absolútne istý?</string>
+    <string name="unexpected_bad_things">Túto akciu nie je možné vrátiť späť.
+        Toto permanentne vymaže repozitár, wiki, issues a komentáre,
+        a zmaže všetkých spolupracovníkov.</string>
+    <string name="delete_successful">Repozitár je zmazaný</string>
+    <string name="login_or_email">Login alebo Email</string>
+
+    <string name="temporary_login_message"><b>Autentifikácia prebehla cez webstránku,
+        pre pokračovanie stlačte log in tlačidlo</b>
+        \n\n Vzhľadom k tomu, že GitHub pridal obmedzenie tretích strán, nie sme schopní zapisovať
+        do určitých organizácií. Prečítajte si viac tu:\n
+        https://help.github.com/articles/about-third-party-application-restrictions/</string>
+    <string name="organizations">Organizácie</string>
+    <string name="error_oauth_not_configured">Nebudete schopný prihlásiť sa, pretože oauth klient nie je nastavený
+Prečítajte si README.md: https://github.com/pockethub/PocketHub#setup-environment</string>
+
+
+    <string-array name="welcome_texts">
+        <item>Prednedávnom bol vývoj GitHub aplikácie prerušený a niektorí z nás chceli niečo nové…</item>
+        <item>Premenovali sme aplikáciu na PocketHub</item>
+        <item>Kliknite hotovo a my Vás prihlásime!</item>
+    </string-array>
+
+    <string-array name="welcome_titles">
+        <item>Vitajte</item>
+        <item>Dlhý príbeh v skratke</item>
+        <item>Začíname</item>
+    </string-array>
 </resources>
