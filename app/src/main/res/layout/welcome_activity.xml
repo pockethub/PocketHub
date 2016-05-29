@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|bottom"
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:src="@drawable/ic_arrow_right"/>
+                app:srcCompat="@drawable/ic_arrow_right"/>
 
         </FrameLayout>
 
