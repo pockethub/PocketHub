@@ -27,17 +27,12 @@ import com.github.pockethub.ui.DialogFragmentActivity;
 import com.github.pockethub.ui.ProgressDialogTask;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.service.MilestoneService;
-
 import static com.github.pockethub.RequestCodes.ISSUE_MILESTONE_UPDATE;
 
 /**
  * Task to edit a milestone
  */
 public class EditMilestoneTask extends ProgressDialogTask<Issue> {
-
-    @Inject
-    private MilestoneService service;
 
     @Inject
     private IssueStore store;

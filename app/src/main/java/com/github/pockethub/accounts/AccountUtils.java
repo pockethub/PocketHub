@@ -36,8 +36,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.alorma.github.sdk.bean.dto.response.Organization;
 import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.R;
-
-import org.eclipse.egit.github.core.client.RequestException;
+import com.squareup.okhttp.internal.http.RequestException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -344,9 +343,6 @@ public class AccountUtils {
      * @return true if 401, false otherwise
      */
     public static boolean isUnauthorized(final Exception e) {
-        if (e instanceof RequestException)
-            return ((RequestException) e).getStatus() == HTTP_UNAUTHORIZED;
-
         String message = null;
         if (e instanceof IOException)
             message = e.getMessage();

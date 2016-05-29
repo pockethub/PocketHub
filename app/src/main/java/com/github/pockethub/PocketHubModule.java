@@ -17,9 +17,7 @@ package com.github.pockethub;
 
 import android.content.Context;
 
-import com.github.pockethub.accounts.AccountClient;
 import com.github.pockethub.accounts.AccountScope;
-import com.github.pockethub.accounts.GitHubAccount;
 import com.github.pockethub.core.commit.CommitStore;
 import com.github.pockethub.core.gist.GistStore;
 import com.github.pockethub.core.issue.IssueStore;
@@ -31,7 +29,6 @@ import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.name.Named;
 
-import org.eclipse.egit.github.core.client.GitHubClient;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -54,11 +51,6 @@ public class PocketHubModule extends AbstractModule {
         install(new FactoryModuleBuilder()
                 .build(OrganizationRepositories.Factory.class));
         install(AccountScope.module());
-    }
-
-    @Provides
-    GitHubClient client(Provider<GitHubAccount> accountProvider) {
-        return new AccountClient(accountProvider);
     }
 
     @Provides

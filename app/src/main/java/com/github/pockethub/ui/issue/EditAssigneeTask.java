@@ -27,17 +27,12 @@ import com.github.pockethub.ui.DialogFragmentActivity;
 import com.github.pockethub.ui.ProgressDialogTask;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.service.CollaboratorService;
-
 import static com.github.pockethub.RequestCodes.ISSUE_ASSIGNEE_UPDATE;
 
 /**
  * Task to edit the assignee
  */
 public class EditAssigneeTask extends ProgressDialogTask<Issue> {
-
-    @Inject
-    private CollaboratorService service;
 
     @Inject
     private IssueStore store;

@@ -32,8 +32,6 @@ import com.github.pockethub.ui.PagedItemFragment;
 import com.github.pockethub.util.AvatarLoader;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.service.IssueService;
-
 import java.util.List;
 import java.util.Map;
 
@@ -48,9 +46,6 @@ public class DashboardIssueFragment extends PagedItemFragment<Issue> {
      * Filter data argument
      */
     public static final String ARG_FILTER = "filter";
-
-    @Inject
-    private IssueService service;
 
     @Inject
     private IssueStore store;

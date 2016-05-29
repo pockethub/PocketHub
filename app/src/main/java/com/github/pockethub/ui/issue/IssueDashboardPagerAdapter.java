@@ -19,23 +19,17 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.alorma.github.sdk.services.issues.IssuesService;
 import com.github.pockethub.R;
+import com.github.pockethub.core.issue.IssueFilter;
 import com.github.pockethub.ui.FragmentStatePagerAdapter;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.pockethub.core.issue.IssueFilter.*;
 import static com.github.pockethub.ui.issue.DashboardIssueFragment.ARG_FILTER;
-import static org.eclipse.egit.github.core.service.IssueService.DIRECTION_DESCENDING;
-import static org.eclipse.egit.github.core.service.IssueService.FIELD_DIRECTION;
-import static org.eclipse.egit.github.core.service.IssueService.FIELD_FILTER;
-import static org.eclipse.egit.github.core.service.IssueService.FIELD_SORT;
-import static org.eclipse.egit.github.core.service.IssueService.FILTER_ASSIGNED;
-import static org.eclipse.egit.github.core.service.IssueService.FILTER_CREATED;
-import static org.eclipse.egit.github.core.service.IssueService.FILTER_MENTIONED;
-import static org.eclipse.egit.github.core.service.IssueService.FILTER_SUBSCRIBED;
-import static org.eclipse.egit.github.core.service.IssueService.SORT_UPDATED;
 
 /**
  * Pager adapter for the issues dashboard

@@ -23,9 +23,6 @@ import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.services.repo.GetRepoClient;
 import com.github.pockethub.ui.ProgressDialogTask;
 import com.github.pockethub.util.InfoUtils;
-import com.google.inject.Inject;
-
-import org.eclipse.egit.github.core.service.RepositoryService;
 
 /**
  * Task to refresh a repository
@@ -33,9 +30,6 @@ import org.eclipse.egit.github.core.service.RepositoryService;
 public class RefreshRepositoryTask extends ProgressDialogTask<Repo> {
 
     private static final String TAG = "RefreshRepositoryTask";
-
-    @Inject
-    private RepositoryService service;
 
     private final Repo repo;
 

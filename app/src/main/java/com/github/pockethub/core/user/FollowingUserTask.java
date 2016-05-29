@@ -19,10 +19,8 @@ import android.accounts.Account;
 import android.content.Context;
 import android.util.Log;
 
+import com.alorma.github.sdk.services.user.follow.CheckFollowingUser;
 import com.github.pockethub.accounts.AuthenticatedUserTask;
-import com.google.inject.Inject;
-
-import org.eclipse.egit.github.core.service.UserService;
 
 /**
  * Task to check user following status
@@ -30,9 +28,6 @@ import org.eclipse.egit.github.core.service.UserService;
 public class FollowingUserTask extends AuthenticatedUserTask<Boolean> {
 
     private static final String TAG = "FollowingUserTask";
-
-    @Inject
-    private UserService service;
 
     private final String login;
 
@@ -50,7 +45,7 @@ public class FollowingUserTask extends AuthenticatedUserTask<Boolean> {
 
     @Override
     protected Boolean run(final Account account) throws Exception {
-        return service.isFollowing(login);
+        return new CheckFollowingUser(login).observable().toBlocking().first();
     }
 
     @Override

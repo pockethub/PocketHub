@@ -48,14 +48,15 @@ import java.text.MessageFormat;
 
 import static android.content.Intent.ACTION_VIEW;
 import static android.content.Intent.CATEGORY_BROWSABLE;
-import static org.eclipse.egit.github.core.client.IGitHubConstants.HOST_DEFAULT;
-import static org.eclipse.egit.github.core.client.IGitHubConstants.HOST_GISTS;
-import static org.eclipse.egit.github.core.client.IGitHubConstants.PROTOCOL_HTTPS;
 
 /**
  * Activity to launch other activities based on the intent's data {@link URI}
  */
 public class UriLauncherActivity extends Activity {
+
+    private static final String HOST_DEFAULT = "github.com";
+    private static final String HOST_GISTS = "gist.github.com";
+    private static final String PROTOCOL_HTTPS = "https";
 
     static public void launchUri(Context context, Uri data) {
         Intent intent = getIntentForURI(data);

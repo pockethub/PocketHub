@@ -21,6 +21,7 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,8 +46,6 @@ import com.github.pockethub.util.ShareUtils;
 import com.github.pockethub.util.SourceEditor;
 import com.github.pockethub.util.ToastUtils;
 import com.google.inject.Inject;
-
-import org.eclipse.egit.github.core.util.EncodingUtils;
 
 import static com.github.pockethub.Intents.EXTRA_BASE;
 import static com.github.pockethub.Intents.EXTRA_HEAD;
@@ -251,8 +250,7 @@ public class BranchFileViewActivity extends BaseActivity implements
         ViewUtils.setGone(loadingBar, false);
         ViewUtils.setGone(codeView, true);
 
-        String markdown = new String(
-            EncodingUtils.fromBase64(blob.content));
+        String markdown = new String(Base64.decode(blob.content, Base64.DEFAULT));
         Bundle args = new Bundle();
         args.putCharSequence(ARG_TEXT, markdown);
         args.putParcelable(ARG_REPO, repo);

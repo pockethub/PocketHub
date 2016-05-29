@@ -27,9 +27,6 @@ import com.github.pockethub.R;
 import com.github.pockethub.ui.ProgressDialogTask;
 import com.github.pockethub.util.HtmlUtils;
 import com.github.pockethub.util.ToastUtils;
-import com.google.inject.Inject;
-
-import org.eclipse.egit.github.core.service.GistService;
 
 /**
  * Task to comment on a {@link Gist}
@@ -37,9 +34,6 @@ import org.eclipse.egit.github.core.service.GistService;
 public class CreateCommentTask extends ProgressDialogTask<GithubComment> {
 
     private static final String TAG = "CreateCommentTask";
-
-    @Inject
-    private GistService service;
 
     private final String id;
 

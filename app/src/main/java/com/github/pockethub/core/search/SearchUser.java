@@ -15,8 +15,6 @@
  */
 package com.github.pockethub.core.search;
 
-import org.eclipse.egit.github.core.util.DateUtils;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -48,7 +46,7 @@ public class SearchUser implements Serializable {
      * @return createdAt
      */
     public Date getCreatedAt() {
-        return DateUtils.clone(createdAt);
+        return (Date) createdAt.clone();
     }
 
     /**
@@ -56,7 +54,7 @@ public class SearchUser implements Serializable {
      * @return this user
      */
     public SearchUser setCreatedAt(Date createdAt) {
-        this.createdAt = DateUtils.clone(createdAt);
+        this.createdAt = (Date) createdAt.clone();
         return this;
     }
 

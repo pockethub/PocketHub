@@ -21,11 +21,11 @@ import android.content.Context;
 import android.util.Log;
 
 import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.bean.info.RepoInfo;
+import com.alorma.github.sdk.services.repo.actions.ForkRepoClient;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.ProgressDialogTask;
-import com.google.inject.Inject;
-
-import org.eclipse.egit.github.core.service.RepositoryService;
+import com.github.pockethub.util.InfoUtils;
 
 /**
  * Task to fork a repository
@@ -33,9 +33,6 @@ import org.eclipse.egit.github.core.service.RepositoryService;
 public class ForkRepositoryTask extends ProgressDialogTask<Repo> {
 
     private static final String TAG = "ForkRepositoryTask";
-
-    @Inject
-    private RepositoryService service;
 
     private final Repo repo;
 
@@ -64,7 +61,7 @@ public class ForkRepositoryTask extends ProgressDialogTask<Repo> {
 
     @Override
     protected Repo run(Account account) throws Exception {
-        return new Repo();
+        return new ForkRepoClient(InfoUtils.createRepoInfo(repo)).observable().toBlocking().first();
     }
 
     @Override

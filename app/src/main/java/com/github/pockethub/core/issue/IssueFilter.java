@@ -32,21 +32,116 @@ import java.util.List;
 import java.util.Map;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
-import static org.eclipse.egit.github.core.service.IssueService.DIRECTION_DESCENDING;
-import static org.eclipse.egit.github.core.service.IssueService.FIELD_DIRECTION;
-import static org.eclipse.egit.github.core.service.IssueService.FIELD_SORT;
-import static org.eclipse.egit.github.core.service.IssueService.FILTER_ASSIGNEE;
-import static org.eclipse.egit.github.core.service.IssueService.FILTER_LABELS;
-import static org.eclipse.egit.github.core.service.IssueService.FILTER_MILESTONE;
-import static org.eclipse.egit.github.core.service.IssueService.FILTER_STATE;
-import static org.eclipse.egit.github.core.service.IssueService.SORT_CREATED;
-import static org.eclipse.egit.github.core.service.IssueService.STATE_CLOSED;
-import static org.eclipse.egit.github.core.service.IssueService.STATE_OPEN;
 
 /**
  * Issue filter containing at least one valid query
  */
 public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
+
+    /**
+     * Filter field key
+     */
+    public static final String FIELD_FILTER = "filter"; 
+
+    /**
+     * Filter by issue assignee
+     */
+    public static final String FILTER_ASSIGNEE = "assignee"; 
+
+    /**
+     * Filter by issue's milestone
+     */
+    public static final String FILTER_MILESTONE = "milestone"; 
+
+    /**
+     * Filter by user mentioned in issue
+     */
+    public static final String FILTER_MENTIONED = "mentioned"; 
+
+    /**
+     * Filter by subscribed issues for user
+     */
+    public static final String FILTER_SUBSCRIBED = "subscribed"; 
+
+    /**
+     * Filter by created issues by user
+     */
+    public static final String FILTER_CREATED = "created"; 
+
+    /**
+     * Filter by assigned issues for user
+     */
+    public static final String FILTER_ASSIGNED = "assigned"; 
+
+    /**
+     * Filter by issue's labels
+     */
+    public static final String FILTER_LABELS = "labels"; 
+
+    /**
+     * Filter by issue's state
+     */
+    public static final String FILTER_STATE = "state"; 
+
+    /**
+     * Issue open state filter value
+     */
+    public static final String STATE_OPEN = "open"; 
+
+    /**
+     * Issue closed state filter value
+     */
+    public static final String STATE_CLOSED = "closed"; 
+
+    /**
+     * Issue body field name
+     */
+    public static final String FIELD_BODY = "body"; 
+
+    /**
+     * Issue title field name
+     */
+    public static final String FIELD_TITLE = "title"; 
+
+    /**
+     * Since date field
+     */
+    public static final String FIELD_SINCE = "since"; 
+
+    /**
+     * Sort direction of output
+     */
+    public static final String FIELD_DIRECTION = "direction"; 
+
+    /**
+     * Ascending direction sort order
+     */
+    public static final String DIRECTION_ASCENDING = "asc"; 
+
+    /**
+     * Descending direction sort order
+     */
+    public static final String DIRECTION_DESCENDING = "desc"; 
+
+    /**
+     * Sort field key
+     */
+    public static final String FIELD_SORT = "sort"; 
+
+    /**
+     * Sort by created at
+     */
+    public static final String SORT_CREATED = "created"; 
+
+    /**
+     * Sort by updated at
+     */
+    public static final String SORT_UPDATED = "updated"; 
+
+    /**
+     * Sort by commented on at
+     */
+    public static final String SORT_COMMENTS = "comments";
 
     /** serialVersionUID */
     private static final long serialVersionUID = 7310646589186299063L;

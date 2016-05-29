@@ -20,8 +20,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.github.kevinsawicki.wishlist.Toaster;
-
-import org.eclipse.egit.github.core.client.RequestException;
+import com.squareup.okhttp.internal.http.RequestException;
 
 /**
  * Utilities for displaying toast notifications
@@ -74,7 +73,7 @@ public class ToastUtils {
 
         String message;
         if (e instanceof RequestException)
-            message = ((RequestException) e).formatErrors();
+            message = e.getMessage();
         else
             message = null;
 

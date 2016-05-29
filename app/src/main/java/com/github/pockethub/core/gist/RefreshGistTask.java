@@ -23,11 +23,10 @@ import com.alorma.github.sdk.bean.dto.response.Gist;
 import com.alorma.github.sdk.bean.dto.response.GithubComment;
 import com.alorma.github.sdk.services.gists.GetGistCommentsClient;
 import com.github.pockethub.accounts.AuthenticatedUserTask;
+import com.github.pockethub.api.CheckGistStarredClient;
 import com.github.pockethub.util.HtmlUtils;
 import com.github.pockethub.util.HttpImageGetter;
 import com.google.inject.Inject;
-
-import org.eclipse.egit.github.core.service.GistService;
 
 import java.util.Collections;
 import java.util.List;
@@ -41,9 +40,6 @@ public class RefreshGistTask extends AuthenticatedUserTask<FullGist> {
 
     @Inject
     private GistStore store;
-
-    @Inject
-    private GistService service;
 
     private final String id;
 
@@ -78,7 +74,9 @@ public class RefreshGistTask extends AuthenticatedUserTask<FullGist> {
             comment.body_html = formatted;
             imageGetter.encode(comment, formatted);
         }
-        return new FullGist(gist, service.isStarred(id), comments);
+        CheckGistStarredClient client = new CheckGistStarredClient(id);
+
+        return new FullGist(gist, client.observable().toBlocking().first(), comments);
     }
 
     @Override

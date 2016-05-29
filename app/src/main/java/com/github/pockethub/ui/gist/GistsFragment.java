@@ -29,8 +29,6 @@ import com.github.pockethub.ui.PagedItemFragment;
 import com.github.pockethub.util.AvatarLoader;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.service.GistService;
-
 import java.util.List;
 
 import static com.github.pockethub.RequestCodes.GIST_CREATE;
@@ -46,12 +44,6 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
      */
     @Inject
     protected AvatarLoader avatars;
-
-    /**
-     * Gist service
-     */
-    @Inject
-    protected GistService service;
 
     /**
      * Gist store
