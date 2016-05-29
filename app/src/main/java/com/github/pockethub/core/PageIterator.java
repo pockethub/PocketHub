@@ -21,13 +21,12 @@ import android.net.Uri;
 import com.alorma.github.sdk.services.client.GithubListClient;
 import com.alorma.gitskarios.core.Pair;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class PageIterator<V> implements Iterator<Collection<V>>, Iterable<Collection<V>>{
+public class PageIterator<V> implements Iterator<List>, Iterable<List> {
 
     protected GitHubRequest<List<V>> request;
     protected int nextPage;
@@ -75,7 +74,7 @@ public class PageIterator<V> implements Iterator<Collection<V>>, Iterable<Collec
         throw new UnsupportedOperationException("Remove not supported");
     }
 
-    public Collection<V> next() {
+    public List next() {
         if(!this.hasNext()) {
             throw new NoSuchElementException();
         } else {
@@ -93,7 +92,7 @@ public class PageIterator<V> implements Iterator<Collection<V>>, Iterable<Collec
             this.lastPage = parsePageNumber(last);
             this.next = client.next != null ? Uri.parse(client.next.toString()) : Uri.EMPTY;
             this.nextPage = parsePageNumber(next);
-            return (Collection<V>) resources;
+            return resources;
         }
     }
 
@@ -101,7 +100,7 @@ public class PageIterator<V> implements Iterator<Collection<V>>, Iterable<Collec
         return this.request;
     }
 
-    public Iterator<Collection<V>> iterator() {
+    public Iterator<List> iterator() {
         return this;
     }
 
