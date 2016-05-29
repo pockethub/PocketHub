@@ -17,6 +17,7 @@ package com.github.pockethub.ui.gist;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
@@ -35,7 +36,6 @@ import com.github.pockethub.ui.ViewPager;
 import com.github.pockethub.util.AvatarLoader;
 import com.github.pockethub.util.HttpImageGetter;
 import com.google.inject.Inject;
-import com.viewpagerindicator.TitlePageIndicator;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -67,7 +67,7 @@ public class GistFilesViewActivity extends PagerActivity {
 
     private ProgressBar loadingBar;
 
-    private TitlePageIndicator indicator;
+    private TabLayout tabs;
 
     private Gist gist;
 
@@ -95,7 +95,7 @@ public class GistFilesViewActivity extends PagerActivity {
 
         pager = finder.find(R.id.vp_pages);
         loadingBar = finder.find(R.id.pb_loading);
-        indicator = finder.find(R.id.tpi_header);
+        tabs = finder.find(R.id.sliding_tabs_layout);
 
         if (initialPosition < 0)
             initialPosition = 0;
@@ -108,7 +108,7 @@ public class GistFilesViewActivity extends PagerActivity {
         else {
             ViewUtils.setGone(loadingBar, false);
             ViewUtils.setGone(pager, true);
-            ViewUtils.setGone(indicator, true);
+            ViewUtils.setGone(tabs, true);
             new RefreshGistTask(this, gistId, imageGetter) {
 
                 @Override
@@ -135,11 +135,11 @@ public class GistFilesViewActivity extends PagerActivity {
 
         ViewUtils.setGone(loadingBar, true);
         ViewUtils.setGone(pager, false);
-        ViewUtils.setGone(indicator, false);
+        ViewUtils.setGone(tabs, false);
 
         adapter = new GistFilesPagerAdapter(this, gist);
         pager.setAdapter(adapter);
-        indicator.setViewPager(pager);
+        tabs.setupWithViewPager(pager);
 
         if (initialPosition < adapter.getCount()) {
             pager.scheduleSetItem(initialPosition);
