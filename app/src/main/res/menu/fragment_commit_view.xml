@@ -28,7 +28,7 @@
         android:title="@string/copy_hash" />
     <item
         android:id="@+id/m_share"
-        android:icon="@drawable/abc_ic_menu_share_material"
+        android:icon="@android:drawable/ic_menu_share"
         app:showAsAction="never"
         android:title="@string/share"/>
     <item
