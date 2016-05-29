@@ -4,7 +4,7 @@ android:
    - tools
    - platform-tools
    - android-23
-   - build-tools-23.0.2
+   - build-tools-23.0.3
    - extra
 
 jdk: oraclejdk7
