@@ -31,6 +31,7 @@ import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.api.FollowEventPayload;
 import com.github.pockethub.api.GistEventPayload;
+import com.github.pockethub.api.MemberEventPayload;
 import com.github.pockethub.core.issue.IssueUtils;
 import com.github.pockethub.ui.StyledText;
 import com.github.pockethub.util.TimeUtils;
@@ -141,7 +142,7 @@ public class IconAndViewTextManager {
         String refType = event.payload.ref_type;
         main.append(refType);
         main.append(' ');
-        if (!"repository".equals("")) {
+        if (!"repository".equals(refType)) {
             main.append(event.payload.ref);
             main.append(" at ");
             boldRepo(main, event);
