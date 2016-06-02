@@ -22,6 +22,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 
 import com.alorma.github.sdk.bean.dto.response.Organization;
+import com.alorma.github.sdk.bean.dto.response.Permissions;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.User;
 import com.alorma.github.sdk.services.orgs.OrgsReposClient;
@@ -85,10 +86,10 @@ public class OrganizationRepositories implements
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables("repos JOIN users ON (repos.ownerId = users.id)");
         return builder.query(readableDatabase, new String[] {
-                "repos.repoId, repos.name", "users.id", "users.name",
-                "users.avatarurl", "repos.private", "repos.fork",
-                "repos.description", "repos.forks", "repos.watchers",
-                "repos.language", "repos.hasIssues", "repos.mirrorUrl" },
+                "repos.repoId", "repos.name", "users.id", "users.name", "users.avatarurl",
+                "repos.private", "repos.fork", "repos.description", "repos.forks",
+                "repos.watchers", "repos.language", "repos.hasIssues", "repos.mirrorUrl",
+                "repos.permissions_admin", "repos.permissions_pull", "repos.permissions_push" },
                 "repos.orgId=?",
                 new String[] { Integer.toString(org.id) }, null, null,
                 null);
@@ -114,6 +115,11 @@ public class OrganizationRepositories implements
         repo.language = cursor.getString(10);
         repo.has_issues = cursor.getInt(11) == 1;
         repo.mirror_url = cursor.getString(12);
+
+        repo.permissions = new Permissions();
+        repo.permissions.admin = cursor.getInt(13) == 1;
+        repo.permissions.pull = cursor.getInt(14) == 1;
+        repo.permissions.push = cursor.getInt(15) == 1;
 
         return repo;
     }
@@ -142,6 +148,10 @@ public class OrganizationRepositories implements
             values.put("language", repo.language);
             values.put("hasIssues", repo.has_issues ? 1 : 0);
             values.put("mirrorUrl", repo.mirror_url);
+            values.put("permissions_admin", repo.canAdmin() ? 1 : 0);
+            values.put("permissions_pull", repo.canPull() ? 1 : 0);
+            values.put("permissions_push", repo.canPush() ? 1 : 0);
+
             db.replace("repos", null, values);
 
             values.clear();

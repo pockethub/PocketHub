@@ -75,6 +75,7 @@ import java.util.List;
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.github.pockethub.Intents.EXTRA_CAN_WRITE_REPO;
 import static com.github.pockethub.Intents.EXTRA_COMMENT;
 import static com.github.pockethub.Intents.EXTRA_ISSUE;
 import static com.github.pockethub.Intents.EXTRA_ISSUE_NUMBER;
@@ -109,9 +110,7 @@ public class IssueFragment extends DialogFragment {
 
     private User user;
 
-    private boolean isCollaborator;
-
-    private boolean isOwner;
+    private boolean canWrite;
 
     @Inject
     private AvatarLoader avatars;
@@ -183,8 +182,7 @@ public class IssueFragment extends DialogFragment {
                 args.getString(EXTRA_REPOSITORY_NAME));
         issueNumber = args.getInt(EXTRA_ISSUE_NUMBER);
         user = args.getParcelable(EXTRA_USER);
-        isCollaborator = args.getBoolean(EXTRA_IS_COLLABORATOR, false);
-        isOwner = args.getBoolean(EXTRA_IS_OWNER, false);
+        canWrite = args.getBoolean(EXTRA_CAN_WRITE_REPO, false);
 
         DialogFragmentActivity dialogActivity = (DialogFragmentActivity) getActivity();
 
@@ -317,7 +315,7 @@ public class IssueFragment extends DialogFragment {
 
             @Override
             public void onClick(View v) {
-                if (issue != null && isCollaborator)
+                if (issue != null && canWrite)
                     milestoneTask.prompt(issue.milestone);
             }
         });
@@ -327,7 +325,7 @@ public class IssueFragment extends DialogFragment {
 
                     @Override
                     public void onClick(View v) {
-                        if (issue != null && isCollaborator)
+                        if (issue != null && canWrite)
                             assigneeTask.prompt(issue.assignee);
                     }
                 });
@@ -336,7 +334,7 @@ public class IssueFragment extends DialogFragment {
 
             @Override
             public void onClick(View v) {
-                if (issue != null && isCollaborator)
+                if (issue != null && canWrite)
                     labelsTask.prompt(issue.labels);
             }
         });
@@ -346,7 +344,7 @@ public class IssueFragment extends DialogFragment {
 
         adapter = new HeaderFooterListAdapter<>(list,
                 new CommentListAdapter(activity.getLayoutInflater(), null, avatars,
-                        commentImageGetter, editCommentListener, deleteCommentListener, userName, isOwner, issue));
+                        commentImageGetter, editCommentListener, deleteCommentListener, userName, canWrite, issue));
         list.setAdapter(adapter);
     }
 
@@ -541,8 +539,8 @@ public class IssueFragment extends DialogFragment {
             boolean isCreator = false;
             if(issue != null)
                 isCreator = issue.user.login.equals(AccountUtils.getLogin(getActivity()));
-            editItem.setVisible(isOwner || isCollaborator || isCreator);
-            stateItem.setVisible(isOwner || isCollaborator || isCreator);
+            editItem.setVisible(canWrite || isCreator);
+            stateItem.setVisible(canWrite || isCreator);
         }
         updateStateItem(issue);
     }

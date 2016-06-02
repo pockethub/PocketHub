@@ -59,7 +59,7 @@ public class CommentListAdapter extends MultiTypeAdapter {
      */
     private final DeleteCommentListener deleteCommentListener;
 
-    private final boolean isOwner;
+    private final boolean canWrite;
 
     private final String userName;
 
@@ -102,17 +102,17 @@ public class CommentListAdapter extends MultiTypeAdapter {
      * @param avatars
      * @param imageGetter
      * @param userName
-     * @param isOwner
+     * @param canWrite
      */
     public CommentListAdapter(LayoutInflater inflater, GithubComment[] elements,
             AvatarLoader avatars, HttpImageGetter imageGetter,
             EditCommentListener editCommentListener, DeleteCommentListener deleteCommentListener,
-            String userName, boolean isOwner, Issue issue) {
+            String userName, boolean canWrite, Issue issue) {
         super(inflater);
 
         this.issue = issue;
         this.userName = userName;
-        this.isOwner = isOwner;
+        this.canWrite = canWrite;
         this.context = inflater.getContext();
         this.avatars = avatars;
         this.imageGetter = imageGetter;
@@ -205,10 +205,10 @@ public class CommentListAdapter extends MultiTypeAdapter {
         setText(1, comment.user.login);
         setText(2, TimeUtils.getRelativeTime(comment.updated_at));
 
-        final boolean canEdit = (isOwner || comment.user.login.equals(userName))
+        final boolean canEdit = (canWrite || comment.user.login.equals(userName))
             && editCommentListener != null;
 
-        final boolean canDelete = (isOwner || comment.user.login.equals(userName))
+        final boolean canDelete = (canWrite || comment.user.login.equals(userName))
             && deleteCommentListener != null;
 
         final ImageView ivMore = view(4);
