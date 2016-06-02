@@ -53,8 +53,6 @@ import com.github.pockethub.util.ToastUtils;
 import com.github.pockethub.util.TypefaceUtils;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.service.DataService;
-
 import java.util.LinkedList;
 
 import static android.app.Activity.RESULT_OK;
@@ -90,9 +88,6 @@ public class RepositoryCodeFragment extends DialogFragment implements
     private Folder folder;
 
     private Repo repository;
-
-    @Inject
-    private DataService service;
 
     private RefDialog dialog;
 

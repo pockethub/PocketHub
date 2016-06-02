@@ -20,13 +20,31 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ToolbarTheme"
-        android:minHeight="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:id="@+id/toolbar" />
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ToolbarTheme"
+            android:layout_alignParentTop="true"
+            android:minHeight="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:id="@+id/toolbar" />
+
+        <android.support.design.widget.TabLayout
+            android:layout_below="@id/toolbar"
+            android:id="@+id/sliding_tabs_layout"
+            app:tabIndicatorColor="@android:color/white"
+            app:tabMode="scrollable"
+            android:background="@color/primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </android.support.design.widget.AppBarLayout>
 
     <ProgressBar
         android:id="@+id/pb_loading"
@@ -34,21 +52,6 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:visibility="gone" />
-
-    <com.viewpagerindicator.TitlePageIndicator
-        android:id="@+id/tpi_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/pager_title_background"
-        android:textColor="@color/pager_title_text"
-        app:clipPadding="10dp"
-        app:footerColor="@color/pager_footer"
-        app:footerIndicatorHeight="5dp"
-        app:footerIndicatorStyle="triangle"
-        app:footerLineHeight="0dp"
-        app:selectedBold="true"
-        app:selectedColor="@color/pager_title_selected_text"
-        app:titlePadding="10dp" />
 
     <com.github.pockethub.ui.ViewPager
         android:id="@+id/vp_pages"

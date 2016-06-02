@@ -20,11 +20,9 @@ import android.content.Context;
 import android.util.Log;
 
 import com.alorma.github.sdk.bean.dto.response.User;
+import com.alorma.github.sdk.services.user.follow.FollowUserClient;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.ProgressDialogTask;
-import com.google.inject.Inject;
-
-import org.eclipse.egit.github.core.service.UserService;
 
 /**
  * Task to follow a user
@@ -32,9 +30,6 @@ import org.eclipse.egit.github.core.service.UserService;
 public class FollowUserTask extends ProgressDialogTask<User> {
 
     private static final String TAG = "FollowUserTask";
-
-    @Inject
-    private UserService service;
 
     private final String login;
 
@@ -63,7 +58,8 @@ public class FollowUserTask extends ProgressDialogTask<User> {
 
     @Override
     protected User run(final Account account) throws Exception {
-        service.follow(login);
+        FollowUserClient client = new FollowUserClient(login);
+        client.observable().toBlocking().first();
 
         return null;
     }

@@ -30,9 +30,6 @@ import com.github.pockethub.R;
 import com.github.pockethub.core.PageIterator;
 import com.github.pockethub.core.ResourcePager;
 import com.github.pockethub.ui.PagedItemFragment;
-import com.google.inject.Inject;
-
-import org.eclipse.egit.github.core.service.RepositoryService;
 
 import java.util.List;
 
@@ -44,9 +41,6 @@ import static com.github.pockethub.ResultCodes.RESOURCE_CHANGED;
  * Fragment to display a list of repositories for a {@link User}
  */
 public class UserRepositoryListFragment extends PagedItemFragment<Repo> {
-
-    @Inject
-    private RepositoryService service;
 
     private User user;
 

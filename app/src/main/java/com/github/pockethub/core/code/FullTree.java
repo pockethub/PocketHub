@@ -20,21 +20,18 @@ import android.text.TextUtils;
 import com.alorma.github.sdk.bean.dto.response.GitReference;
 import com.alorma.github.sdk.bean.dto.response.GitTree;
 import com.alorma.github.sdk.bean.dto.response.GitTreeEntry;
+import com.alorma.github.sdk.bean.dto.response.GitTreeType;
 import com.github.pockethub.core.commit.CommitUtils;
 import com.github.pockethub.core.ref.RefUtils;
-
-import org.eclipse.egit.github.core.Tree;
 
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
-import static org.eclipse.egit.github.core.TreeEntry.TYPE_BLOB;
-import static org.eclipse.egit.github.core.TreeEntry.TYPE_TREE;
 
 /**
- * {@link Tree} with additional information
+ * {@link GitTree} with additional information
  */
 public class FullTree {
 
@@ -124,12 +121,11 @@ public class FullTree {
         }
 
         private void add(final GitTreeEntry entry) {
-            String type = entry.type.toString();
             String path = entry.path;
             if (TextUtils.isEmpty(path))
                 return;
 
-            if (TYPE_BLOB.equals(type)) {
+            if (entry.type == GitTreeType.blob) {
                 String[] segments = path.split("/");
                 if (segments.length > 1) {
                     Folder folder = folders.get(segments[0]);
@@ -139,7 +135,7 @@ public class FullTree {
                     Entry file = new Entry(entry, this);
                     files.put(file.name, file);
                 }
-            } else if (TYPE_TREE.equals(type)) {
+            } else if (entry.type == GitTreeType.tree) {
                 String[] segments = path.split("/");
                 if (segments.length > 1) {
                     Folder folder = folders.get(segments[0]);

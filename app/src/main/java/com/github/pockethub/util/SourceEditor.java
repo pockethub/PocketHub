@@ -18,6 +18,7 @@ package com.github.pockethub.util;
 import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -26,12 +27,7 @@ import android.webkit.WebViewClient;
 import com.alorma.github.sdk.bean.dto.response.GitBlob;
 import com.github.pockethub.ui.user.UriLauncherActivity;
 
-import org.eclipse.egit.github.core.util.EncodingUtils;
-
 import java.io.UnsupportedEncodingException;
-
-import static org.eclipse.egit.github.core.Blob.ENCODING_BASE64;
-import static org.eclipse.egit.github.core.client.IGitHubConstants.CHARSET_UTF8;
 
 /**
  * Utilities for displaying source code in a {@link WebView}
@@ -39,6 +35,7 @@ import static org.eclipse.egit.github.core.client.IGitHubConstants.CHARSET_UTF8;
 public class SourceEditor {
 
     private static final String URL_PAGE = "file:///android_asset/source-editor.html";
+    private static final String ENCODING_BASE64 = "base64";
 
     private final WebView view;
 
@@ -107,7 +104,7 @@ public class SourceEditor {
     public String getContent() {
         if (encoded)
             try {
-                return new String(EncodingUtils.fromBase64(content), CHARSET_UTF8);
+                return new String(Base64.decode(content, Base64.DEFAULT), "UTF-8");
             } catch (UnsupportedEncodingException e) {
                 return getRawContent();
             }
@@ -173,7 +170,7 @@ public class SourceEditor {
     private void loadSource() {
         if (name != null && content != null)
             if (markdown)
-                view.loadDataWithBaseURL(null, content, "text/html", CHARSET_UTF8, null);
+                view.loadDataWithBaseURL(null, content, "text/html", "UTF-8", null);
             else
                 view.loadUrl(URL_PAGE);
     }

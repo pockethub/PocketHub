@@ -30,9 +30,6 @@ import com.github.pockethub.ui.ItemListFragment;
 import com.github.pockethub.util.AvatarLoader;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.SearchIssue;
-import org.eclipse.egit.github.core.service.IssueService;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -42,13 +39,10 @@ import static android.app.SearchManager.APP_DATA;
 import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
 
 /**
- * Fragment to display a list of {@link SearchIssue} instances
+ * Fragment to display a list of {@link Issue} instances
  */
 public class SearchIssueListFragment extends ItemListFragment<Issue>
         implements Comparator<Issue> {
-
-    @Inject
-    private IssueService service;
 
     @Inject
     private AvatarLoader avatars;

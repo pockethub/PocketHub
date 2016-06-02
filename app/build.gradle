@@ -118,8 +118,6 @@ dependencies {
 
     compile 'org.roboguice:roboguice:2.0'
     compile 'com.google.code.gson:gson:2.5'
-    compile 'com.viewpagerindicator:library:2.4.1@aar'
-    compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:3.7.0.201502260915-r'
 
     compile ('com.google.inject.extensions:guice-assistedinject:3.0'){
         exclude group: 'com.google.inject'

@@ -22,9 +22,6 @@ import android.util.Log;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.services.repo.actions.CheckRepoStarredClient;
 import com.github.pockethub.accounts.AuthenticatedUserTask;
-import com.google.inject.Inject;
-
-import org.eclipse.egit.github.core.service.WatcherService;
 
 /**
  * Task to check repository starring status
@@ -32,9 +29,6 @@ import org.eclipse.egit.github.core.service.WatcherService;
 public class StarredRepositoryTask extends AuthenticatedUserTask<Boolean> {
 
     private static final String TAG = "StarringRepositoryTask";
-
-    @Inject
-    private WatcherService service;
 
     private final Repo repo;
 

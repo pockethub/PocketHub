@@ -33,24 +33,7 @@ import com.github.pockethub.util.AvatarLoader;
 import com.github.pockethub.util.TypefaceUtils;
 import com.google.gson.Gson;
 
-import static org.eclipse.egit.github.core.event.Event.TYPE_COMMIT_COMMENT;
-import static org.eclipse.egit.github.core.event.Event.TYPE_CREATE;
-import static org.eclipse.egit.github.core.event.Event.TYPE_DELETE;
-import static org.eclipse.egit.github.core.event.Event.TYPE_DOWNLOAD;
-import static org.eclipse.egit.github.core.event.Event.TYPE_FOLLOW;
-import static org.eclipse.egit.github.core.event.Event.TYPE_FORK;
-import static org.eclipse.egit.github.core.event.Event.TYPE_FORK_APPLY;
-import static org.eclipse.egit.github.core.event.Event.TYPE_GIST;
-import static org.eclipse.egit.github.core.event.Event.TYPE_GOLLUM;
-import static org.eclipse.egit.github.core.event.Event.TYPE_ISSUES;
-import static org.eclipse.egit.github.core.event.Event.TYPE_ISSUE_COMMENT;
-import static org.eclipse.egit.github.core.event.Event.TYPE_MEMBER;
-import static org.eclipse.egit.github.core.event.Event.TYPE_PUBLIC;
-import static org.eclipse.egit.github.core.event.Event.TYPE_PULL_REQUEST;
-import static org.eclipse.egit.github.core.event.Event.TYPE_PULL_REQUEST_REVIEW_COMMENT;
-import static org.eclipse.egit.github.core.event.Event.TYPE_PUSH;
-import static org.eclipse.egit.github.core.event.Event.TYPE_TEAM_ADD;
-import static org.eclipse.egit.github.core.event.Event.TYPE_WATCH;
+import static com.alorma.github.sdk.bean.dto.response.events.EventType.*;
 
 /**
  * Adapter for a list of news events
@@ -75,32 +58,31 @@ public class NewsListAdapter extends SingleTypeAdapter<GithubEvent> {
         Gson gson = new Gson();
         final String json = gson.toJson(event.payload);
 
-        final String type = event.type.toString();
-        if (TextUtils.isEmpty(type))
+        final EventType type = event.type;
+        if (type.equals(Unhandled))
             return false;
 
-        return TYPE_COMMIT_COMMENT.equals(type) //
-                || (TYPE_CREATE.equals(type) //
+        return CommitCommentEvent.equals(type) //
+                || (CreateEvent.equals(type) //
                 && (gson.fromJson(json, Payload.class)).ref_type != null) //
-                || TYPE_DELETE.equals(type) //
-                || TYPE_DOWNLOAD.equals(type) //
-                || TYPE_FOLLOW.equals(type) //
-                || TYPE_FORK.equals(type) //
-                || TYPE_FORK_APPLY.equals(type) //
-                || (TYPE_GIST.equals(type)
+                || DeleteEvent.equals(type) //
+                || DownloadEvent.equals(type) //
+                || FollowEvent.equals(type) //
+                || ForkEvent.equals(type) //
+                || (GistEvent.equals(type)
                 && (gson.fromJson(json, GistEventPayload.class)).gist != null)
-                || TYPE_GOLLUM.equals(type) //
-                || (TYPE_ISSUE_COMMENT.equals(type) //
+                || GollumEvent.equals(type) //
+                || (IssueCommentEvent.equals(type) //
                 && (gson.fromJson(json, Payload.class)).issue != null) //
-                || (TYPE_ISSUES.equals(type) //
+                || (IssuesEvent.equals(type) //
                 && (gson.fromJson(json, Payload.class)).issue != null) //
-                || TYPE_MEMBER.equals(type) //
-                || TYPE_PUBLIC.equals(type) //
-                || TYPE_PULL_REQUEST.equals(type) //
-                || TYPE_PULL_REQUEST_REVIEW_COMMENT.equals(type) //
-                || TYPE_PUSH.equals(type) //
-                || TYPE_TEAM_ADD.equals(type) //
-                || TYPE_WATCH.equals(type);
+                || MemberEvent.equals(type) //
+                || PublicEvent.equals(type) //
+                || PullRequestEvent.equals(type) //
+                || PullRequestReviewCommentEvent.equals(type) //
+                || PushEvent.equals(type) //
+                || TeamAddEvent.equals(type) //
+                || WatchEvent.equals(type);
     }
 
     private final AvatarLoader avatars;

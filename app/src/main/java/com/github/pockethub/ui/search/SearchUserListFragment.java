@@ -29,7 +29,6 @@ import com.github.pockethub.accounts.AccountUtils;
 import com.github.pockethub.core.PageIterator;
 import com.github.pockethub.core.ResourcePager;
 import com.github.pockethub.core.search.SearchUser;
-import com.github.pockethub.core.search.SearchUserService;
 import com.github.pockethub.core.user.RefreshUserTask;
 import com.github.pockethub.ui.PagedItemFragment;
 import com.github.pockethub.ui.user.UserViewActivity;
@@ -46,9 +45,6 @@ import static android.app.SearchManager.QUERY;
 public class SearchUserListFragment extends PagedItemFragment<User> {
 
     private String query;
-
-    @Inject
-    private SearchUserService service;
 
     @Inject
     private AvatarLoader avatars;

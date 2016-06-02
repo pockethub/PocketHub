@@ -28,17 +28,18 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.alorma.github.sdk.bean.dto.request.RequestMarkdownDTO;
+import com.alorma.github.sdk.bean.dto.response.Content;
+import com.alorma.github.sdk.bean.info.FileInfo;
+import com.alorma.github.sdk.bean.info.RepoInfo;
+import com.alorma.github.sdk.services.content.GetFileContentClient;
 import com.alorma.github.sdk.services.content.GetMarkdownClient;
+import com.alorma.github.sdk.services.user.GetAuthUserClient;
 import com.bugsnag.android.Bugsnag;
 import com.github.pockethub.R;
 import com.github.pockethub.rx.ObserverAdapter;
 import com.google.inject.Inject;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
-
-import org.eclipse.egit.github.core.RepositoryContents;
-import org.eclipse.egit.github.core.RepositoryId;
-import org.eclipse.egit.github.core.service.ContentsService;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,7 +56,6 @@ import static android.util.Base64.DEFAULT;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static java.lang.Integer.MAX_VALUE;
-import static org.eclipse.egit.github.core.client.IGitHubConstants.HOST_DEFAULT;
 
 /**
  * Getter for an image
@@ -83,6 +83,8 @@ public class HttpImageGetter implements ImageGetter {
         return html.contains("<img");
     }
 
+    private static final String HOST_DEFAULT = "github.com";
+
     private final LoadingImageGetter loading;
 
     private final Context context;
@@ -95,20 +97,16 @@ public class HttpImageGetter implements ImageGetter {
 
     private final Map<Object, CharSequence> fullHtmlCache = new HashMap<>();
 
-    private final ContentsService service;
-
     private final OkHttpClient okHttpClient;
 
     /**
      * Create image getter for context
      *
      * @param context
-     * @param service
      */
     @Inject
-    public HttpImageGetter(Context context, ContentsService service) {
+    public HttpImageGetter(Context context) {
         this.context = context;
-        this.service = service;
         dir = context.getCacheDir();
         width = ServiceUtils.getDisplayWidth(context);
         loading = new LoadingImageGetter(context, 24);
@@ -292,12 +290,14 @@ public class HttpImageGetter implements ImageGetter {
 
         if (TextUtils.isEmpty(path))
             return null;
+        FileInfo info = new FileInfo();
+        info.repoInfo = InfoUtils.createRepoInfo(InfoUtils.createRepoFromData(owner, name), branch);
+        info.path = path.toString();
 
-        List<RepositoryContents> contents = service.getContents(
-                RepositoryId.create(owner, name), path.toString(), branch);
-        if (contents != null && contents.size() == 1) {
-            byte[] content = Base64.decode(contents.get(0).getContent(),
-                    DEFAULT);
+        GetFileContentClient service = new GetFileContentClient(info);
+        Content contents = service.observable().toBlocking().first();
+        if (contents.children != null && contents.children.size() == 1) {
+            byte[] content = Base64.decode(contents.children.get(0).content, DEFAULT);
             Bitmap bitmap = ImageUtils.getBitmap(content, width, MAX_VALUE);
             if (bitmap == null)
                 return loading.getDrawable(source);

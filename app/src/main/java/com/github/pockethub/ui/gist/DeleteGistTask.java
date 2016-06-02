@@ -21,11 +21,9 @@ import android.util.Log;
 
 import com.alorma.github.sdk.bean.dto.response.Gist;
 import com.github.pockethub.R;
+import com.github.pockethub.api.DeleteGistClient;
 import com.github.pockethub.ui.ProgressDialogTask;
 import com.github.pockethub.util.ToastUtils;
-import com.google.inject.Inject;
-
-import org.eclipse.egit.github.core.service.GistService;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -37,9 +35,6 @@ public class DeleteGistTask extends ProgressDialogTask<Gist> {
     private static final String TAG = "DeleteGistTask";
 
     private final String id;
-
-    @Inject
-    private GistService service;
 
     /**
      * Create task
@@ -66,7 +61,8 @@ public class DeleteGistTask extends ProgressDialogTask<Gist> {
 
     @Override
     public Gist run(Account account) throws Exception {
-        service.deleteGist(id);
+        DeleteGistClient client = new DeleteGistClient(id);
+        client.observable().toBlocking().first();
         return null;
     }
 

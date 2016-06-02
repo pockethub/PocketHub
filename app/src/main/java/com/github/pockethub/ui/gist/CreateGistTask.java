@@ -26,9 +26,6 @@ import com.alorma.github.sdk.services.gists.PublishGistClient;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.ProgressDialogTask;
 import com.github.pockethub.util.ToastUtils;
-import com.google.inject.Inject;
-
-import org.eclipse.egit.github.core.service.GistService;
 
 /**
  * Task to create a {@link Gist}
@@ -36,9 +33,6 @@ import org.eclipse.egit.github.core.service.GistService;
 public class CreateGistTask extends ProgressDialogTask<Gist> {
 
     private static final String TAG = "CreateGistTask";
-
-    @Inject
-    private GistService service;
 
     private final String description;
 

@@ -23,9 +23,6 @@ import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.services.repo.actions.UnstarRepoClient;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.ProgressDialogTask;
-import com.google.inject.Inject;
-
-import org.eclipse.egit.github.core.service.WatcherService;
 
 /**
  * Task to unstar a repository
@@ -33,9 +30,6 @@ import org.eclipse.egit.github.core.service.WatcherService;
 public class UnstarRepositoryTask extends ProgressDialogTask<Void> {
 
     private static final String TAG = "UnstarRepositoryTask";
-
-    @Inject
-    private WatcherService service;
 
     private final Repo repo;
 

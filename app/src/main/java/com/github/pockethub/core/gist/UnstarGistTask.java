@@ -21,9 +21,7 @@ import android.util.Log;
 
 import com.alorma.github.sdk.bean.dto.response.Gist;
 import com.github.pockethub.accounts.AuthenticatedUserTask;
-import com.google.inject.Inject;
-
-import org.eclipse.egit.github.core.service.GistService;
+import com.github.pockethub.api.UnStarGistClient;
 
 /**
  * Task to unstar a {@link Gist}
@@ -31,9 +29,6 @@ import org.eclipse.egit.github.core.service.GistService;
 public class UnstarGistTask extends AuthenticatedUserTask<Gist> {
 
     private static final String TAG = "UnstarGistTask";
-
-    @Inject
-    private GistService service;
 
     private final String id;
 
@@ -51,7 +46,8 @@ public class UnstarGistTask extends AuthenticatedUserTask<Gist> {
 
     @Override
     public Gist run(Account account) throws Exception {
-        service.unstarGist(id);
+        UnStarGistClient client = new UnStarGistClient(id);
+        client.observable().toBlocking().first();
         return null;
     }
 

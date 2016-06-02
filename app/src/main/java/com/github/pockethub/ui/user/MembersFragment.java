@@ -30,8 +30,6 @@ import com.github.pockethub.ui.ItemListFragment;
 import com.github.pockethub.util.AvatarLoader;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.service.OrganizationService;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,9 +41,6 @@ import static com.github.pockethub.Intents.EXTRA_USER;
 public class MembersFragment extends ItemListFragment<User> {
 
     private User org;
-
-    @Inject
-    private OrganizationService service;
 
     @Inject
     private AvatarLoader avatars;

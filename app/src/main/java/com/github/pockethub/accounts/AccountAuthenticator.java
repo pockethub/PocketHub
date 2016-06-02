@@ -26,24 +26,13 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.github.pockethub.DefaultClient;
-
-import org.eclipse.egit.github.core.Authorization;
-import org.eclipse.egit.github.core.service.OAuthService;
-
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 import static android.accounts.AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE;
-import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
-import static android.accounts.AccountManager.KEY_ACCOUNT_TYPE;
-import static android.accounts.AccountManager.KEY_AUTHTOKEN;
 import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 import static android.accounts.AccountManager.KEY_INTENT;
 import static com.github.pockethub.accounts.AccountConstants.ACCOUNT_TYPE;
-import static com.github.pockethub.accounts.AccountConstants.APP_NOTE;
-import static com.github.pockethub.accounts.AccountConstants.APP_NOTE_URL;
 import static com.github.pockethub.accounts.LoginActivity.PARAM_AUTHTOKEN_TYPE;
 import static com.github.pockethub.accounts.LoginActivity.PARAM_USERNAME;
 
@@ -93,56 +82,11 @@ public class AccountAuthenticator extends AbstractAccountAuthenticator {
         return null;
     }
 
-    private static boolean isValidAuthorization(final Authorization auth,
-            final List<String> requiredScopes) {
-        if (auth == null)
-            return false;
-
-        if (!APP_NOTE.equals(auth.getNote()))
-            return false;
-
-        if (!APP_NOTE_URL.equals(auth.getNoteUrl()))
-            return false;
-
-        List<String> scopes = auth.getScopes();
-        return scopes != null && scopes.containsAll(requiredScopes);
-    }
-
     private Intent createLoginIntent(final AccountAuthenticatorResponse response) {
         final Intent intent = new Intent(context, LoginActivity.class);
         intent.putExtra(PARAM_AUTHTOKEN_TYPE, ACCOUNT_TYPE);
         intent.putExtra(KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
         return intent;
-    }
-
-    /**
-     * Get existing authorization for this app
-     *
-     * @param service
-     * @return token or null if none found
-     * @throws IOException
-     */
-    public static String getAuthorization(final OAuthService service) throws IOException {
-        for (Authorization auth : service.getAuthorizations())
-            if (isValidAuthorization(auth, SCOPES))
-                return auth.getToken();
-        return null;
-    }
-
-    /**
-     * Create authorization for this app
-     *
-     * @param service
-     * @return created token
-     * @throws IOException
-     */
-    public static String createAuthorization(final OAuthService service) throws IOException {
-        Authorization auth = new Authorization();
-        auth.setNote(APP_NOTE);
-        auth.setNoteUrl(APP_NOTE_URL);
-        auth.setScopes(SCOPES);
-        auth = service.createAuthorization(auth);
-        return auth != null ? auth.getToken() : null;
     }
 
     @Override
@@ -161,29 +105,6 @@ public class AccountAuthenticator extends AbstractAccountAuthenticator {
         if (TextUtils.isEmpty(password)) {
             bundle.putParcelable(KEY_INTENT, createLoginIntent(response));
             return bundle;
-        }
-
-        DefaultClient client = new DefaultClient();
-        client.setCredentials(account.name, password);
-        OAuthService service = new OAuthService(client);
-
-        String authToken;
-        try {
-            authToken = getAuthorization(service);
-            if (TextUtils.isEmpty(authToken))
-                authToken = createAuthorization(service);
-        } catch (IOException e) {
-            Log.e(TAG, "Authorization retrieval failed", e);
-            throw new NetworkErrorException(e);
-        }
-
-        if (TextUtils.isEmpty(authToken))
-            bundle.putParcelable(KEY_INTENT, createLoginIntent(response));
-        else {
-            bundle.putString(KEY_ACCOUNT_NAME, account.name);
-            bundle.putString(KEY_ACCOUNT_TYPE, ACCOUNT_TYPE);
-            bundle.putString(KEY_AUTHTOKEN, authToken);
-            am.clearPassword(account);
         }
         return bundle;
     }

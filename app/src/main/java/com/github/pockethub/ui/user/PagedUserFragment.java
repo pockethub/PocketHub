@@ -25,8 +25,6 @@ import com.github.pockethub.ui.PagedItemFragment;
 import com.github.pockethub.util.AvatarLoader;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.service.UserService;
-
 import java.util.List;
 
 /**
@@ -39,12 +37,6 @@ public abstract class PagedUserFragment extends PagedItemFragment<User> {
      */
     @Inject
     protected AvatarLoader avatars;
-
-    /**
-     * User service
-     */
-    @Inject
-    protected UserService service;
 
     @Override
     protected SingleTypeAdapter<User> createAdapter(List<User> items) {

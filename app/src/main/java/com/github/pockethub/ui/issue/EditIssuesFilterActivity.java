@@ -39,11 +39,6 @@ import com.github.pockethub.ui.DialogFragmentActivity;
 import com.github.pockethub.util.AvatarLoader;
 import com.github.pockethub.util.InfoUtils;
 import com.google.inject.Inject;
-
-import org.eclipse.egit.github.core.service.CollaboratorService;
-import org.eclipse.egit.github.core.service.LabelService;
-import org.eclipse.egit.github.core.service.MilestoneService;
-
 import java.util.List;
 
 import static android.view.View.GONE;
@@ -70,15 +65,6 @@ public class EditIssuesFilterActivity extends DialogFragmentActivity {
     private static final int REQUEST_MILESTONE = 2;
 
     private static final int REQUEST_ASSIGNEE = 3;
-
-    @Inject
-    private CollaboratorService collaborators;
-
-    @Inject
-    private MilestoneService milestones;
-
-    @Inject
-    private LabelService labels;
 
     @Inject
     private AvatarLoader avatars;

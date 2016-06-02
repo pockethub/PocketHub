@@ -29,8 +29,6 @@ import com.github.pockethub.ui.ProgressDialogTask;
 import com.github.pockethub.util.ToastUtils;
 import com.google.inject.Inject;
 
-import org.eclipse.egit.github.core.service.GistService;
-
 import java.util.Collection;
 import java.util.List;
 
@@ -42,9 +40,6 @@ import static com.github.pockethub.RequestCodes.GIST_VIEW;
 public class RandomGistTask extends ProgressDialogTask<Gist> {
 
     private static final String TAG = "RandomGistTask";
-
-    @Inject
-    private GistService service;
 
     @Inject
     private GistStore store;

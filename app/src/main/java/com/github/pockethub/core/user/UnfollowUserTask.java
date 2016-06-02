@@ -20,11 +20,9 @@ import android.content.Context;
 import android.util.Log;
 
 import com.alorma.github.sdk.bean.dto.response.User;
+import com.alorma.github.sdk.services.user.follow.UnfollowUserClient;
 import com.github.pockethub.R;
 import com.github.pockethub.ui.ProgressDialogTask;
-import com.google.inject.Inject;
-
-import org.eclipse.egit.github.core.service.UserService;
 
 /**
  * Task to unfollow a user
@@ -32,9 +30,6 @@ import org.eclipse.egit.github.core.service.UserService;
 public class UnfollowUserTask extends ProgressDialogTask<User> {
 
     private static final String TAG = "UnfollowUserTask";
-
-    @Inject
-    private UserService service;
 
     private final String login;
 
@@ -63,7 +58,8 @@ public class UnfollowUserTask extends ProgressDialogTask<User> {
 
     @Override
     protected User run(final Account account) throws Exception {
-        service.unfollow(login);
+        UnfollowUserClient client = new UnfollowUserClient(login);
+        client.observable().toBlocking().first();
 
         return null;
     }

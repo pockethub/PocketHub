@@ -22,9 +22,6 @@ import android.util.Log;
 import com.alorma.github.sdk.bean.dto.response.User;
 import com.alorma.github.sdk.services.user.RequestUserClient;
 import com.github.pockethub.accounts.AuthenticatedUserTask;
-import com.google.inject.Inject;
-
-import org.eclipse.egit.github.core.service.UserService;
 
 /**
  * Task to refresh a user
@@ -32,9 +29,6 @@ import org.eclipse.egit.github.core.service.UserService;
 public class RefreshUserTask extends AuthenticatedUserTask<User> {
 
     private static final String TAG = "RefreshUserTask";
-
-    @Inject
-    private UserService service;
 
     private final String login;
 

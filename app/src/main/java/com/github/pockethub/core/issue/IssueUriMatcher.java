@@ -23,20 +23,18 @@ import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.core.repo.RepositoryUtils;
 
-import org.eclipse.egit.github.core.RepositoryIssue;
-
 import java.util.List;
 
 /**
- * Parses a {@link RepositoryIssue} from a {@link Uri}
+ * Parses a {@link Issue} from a {@link Uri}
  */
 public class IssueUriMatcher {
 
     /**
-     * Parse a {@link RepositoryIssue} from a non-null {@link Uri}
+     * Parse a {@link Issue} from a non-null {@link Uri}
      *
      * @param uri
-     * @return {@link RepositoryIssue} or null if none found in given
+     * @return {@link Issue} or null if none found in given
      *         {@link Uri}
      */
     public static Issue getIssue(Uri uri) {
