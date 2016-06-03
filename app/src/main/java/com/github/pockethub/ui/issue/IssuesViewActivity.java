@@ -172,9 +172,7 @@ public class IssuesViewActivity extends PagerActivity {
 
     private final AtomicReference<User> user = new AtomicReference<>();
 
-    private boolean isCollaborator;
-
-    private boolean isOwner;
+    private boolean canWrite;
 
     private IssuesPagerAdapter adapter;
 
@@ -201,7 +199,7 @@ public class IssuesViewActivity extends PagerActivity {
 
         // Load avatar if single issue and user is currently unset or missing
         // avatar URL
-        if (issueNumbers.length == 1 && (user.get() == null || user.get().avatar_url == null)) {
+        if (repo == null) {
             new GetRepoClient(InfoUtils.createRepoInfo(repo != null ? repo : repoIds.get(0)))
                     .observable()
                     .subscribeOn(Schedulers.io())
@@ -210,21 +208,21 @@ public class IssuesViewActivity extends PagerActivity {
                     .subscribe(new ObserverAdapter<Repo>() {
                         @Override
                         public void onNext(Repo repo) {
-                            avatars.bind(getSupportActionBar(), repo.owner);
+                            repositoryLoaded(repo);
                         }
                     });
+        } else {
+            repositoryLoaded(repo);
         }
+    }
 
-        isOwner = false;
-        if(repo != null) {
-            if (!AccountUtils.isUser(this, repo.owner))
-                checkOwnerStatus();
-            else
-                isOwner = repo.owner.login.equals(AccountUtils.getLogin(this));
-        }
+    private void repositoryLoaded(Repo repo){
+        if (issueNumbers.length == 1 && (user.get() == null || user.get().avatar_url == null))
+            avatars.bind(getSupportActionBar(), repo.owner);
 
-        isCollaborator = false;
-        checkCollaboratorStatus();
+        canWrite = repo.canAdmin() || repo.canPush();
+        invalidateOptionsMenu();
+        configurePager();
     }
 
     private void configurePager() {
@@ -232,9 +230,9 @@ public class IssuesViewActivity extends PagerActivity {
         pager = finder.find(R.id.vp_pages);
 
         if (repo != null)
-            adapter = new IssuesPagerAdapter(this, repo, issueNumbers, isCollaborator, isOwner);
+            adapter = new IssuesPagerAdapter(this, repo, issueNumbers, canWrite);
         else
-            adapter = new IssuesPagerAdapter(this, repoIds, issueNumbers, store, isCollaborator, isOwner);
+            adapter = new IssuesPagerAdapter(this, repoIds, issueNumbers, store, canWrite);
         pager.setAdapter(adapter);
 
         pager.setOnPageChangeListener(this);
@@ -338,59 +336,5 @@ public class IssuesViewActivity extends PagerActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void checkCollaboratorStatus() {
-        new CheckUserCollaboratorClient(InfoUtils.createRepoInfo(repo != null ? repo : repoIds.get(0)),
-                AccountUtils.getLogin(IssuesViewActivity.this))
-                .observable()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Boolean>bindToLifecycle())
-                .subscribe(new ObserverAdapter<Boolean>() {
-                    @Override
-                    public void onNext(Boolean collaborator) {
-                        isCollaborator = collaborator;
-                        invalidateOptionsMenu();
-                        configurePager();
-                    }
-                });
-    }
-
-    private void checkOwnerStatus() {
-        new AuthenticatedUserTask<Boolean>(this) {
-
-            @Override
-            protected Boolean run(Account account) throws Exception {
-                List<Team> teams =  new GetOrgTeamsClient(repo.owner.login)
-                        .observable()
-                        .toBlocking().first().first;
-                List<User> users = new GetTeamMembersClient(String.valueOf(teams.get(0).id))
-                        .observable()
-                        .toBlocking().first().first;
-
-                String userName = AccountUtils.getLogin(IssuesViewActivity.this);
-                for(User user : users)
-                    if(user.login.equals(userName))
-                        return true;
-
-                return false;
-            }
-
-            @Override
-            protected void onThrowable(Throwable t) throws RuntimeException {
-                invalidateOptionsMenu();
-                configurePager();
-            }
-
-            @Override
-            protected void onSuccess(Boolean owner) throws Exception {
-                super.onSuccess(owner);
-
-                isOwner = owner;
-                invalidateOptionsMenu();
-                configurePager();
-            }
-        }.execute();
     }
 }

@@ -24,11 +24,13 @@ import android.view.ViewGroup;
 import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.User;
+import com.github.pockethub.Intents;
 import com.github.pockethub.core.issue.IssueStore;
 import com.github.pockethub.ui.FragmentStatePagerAdapter;
 
 import java.util.List;
 
+import static com.github.pockethub.Intents.*;
 import static com.github.pockethub.Intents.EXTRA_ISSUE_NUMBER;
 import static com.github.pockethub.Intents.EXTRA_IS_COLLABORATOR;
 import static com.github.pockethub.Intents.EXTRA_IS_OWNER;
@@ -52,47 +54,43 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
 
     private final IssueStore store;
 
-    private boolean isCollaborator;
-
-    private boolean isOwner;
+    private boolean canWrite;
 
     /**
      * @param activity
      * @param repoIds
      * @param issueNumbers
      * @param issueStore
-     * @param collaborator
+     * @param canWrite
      */
     public IssuesPagerAdapter(AppCompatActivity activity,
             List<Repo> repoIds, int[] issueNumbers,
-            IssueStore issueStore, boolean collaborator, boolean owner) {
+            IssueStore issueStore, boolean canWrite) {
         super(activity);
 
         repos = repoIds;
         repo = null;
         issues = issueNumbers;
         store = issueStore;
-        isCollaborator = collaborator;
-        isOwner = owner;
+        this.canWrite = canWrite;
     }
 
     /**
      * @param activity
      * @param repository
      * @param issueNumbers
-     * @param collaborator
+     * @param canWrite
      */
     public IssuesPagerAdapter(AppCompatActivity activity,
             Repo repository, int[] issueNumbers,
-            boolean collaborator, boolean owner) {
+            boolean canWrite) {
         super(activity);
 
         repos = null;
         repo = repository;
         issues = issueNumbers;
         store = null;
-        isCollaborator = collaborator;
-        isOwner = owner;
+        this.canWrite = canWrite;
     }
 
     @Override
@@ -116,8 +114,7 @@ public class IssuesPagerAdapter extends FragmentStatePagerAdapter {
             }
         }
         args.putInt(EXTRA_ISSUE_NUMBER, issues[position]);
-        args.putBoolean(EXTRA_IS_COLLABORATOR, isCollaborator);
-        args.putBoolean(EXTRA_IS_OWNER, isOwner);
+        args.putBoolean(EXTRA_CAN_WRITE_REPO, canWrite);
         fragment.setArguments(args);
         return fragment;
     }

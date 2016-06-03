@@ -127,6 +127,11 @@ public class Intents {
     public static final String EXTRA_IS_OWNER = INTENT_EXTRA_PREFIX + "IS_OWNER";
 
     /**
+     * Boolean value which indicates if a user can write to a repo (Push, pull and edit)
+     */
+    public static final String EXTRA_CAN_WRITE_REPO = INTENT_EXTRA_PREFIX + "CAN_WRITE_REPO";
+
+    /**
      * Issue filter handle
      */
     public static final String EXTRA_ISSUE_FILTER = INTENT_EXTRA_PREFIX
