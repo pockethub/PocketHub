@@ -34,12 +34,12 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
     /**
      * Index of code page
      */
-    public static final int ITEM_CODE = 1;
+    public static final int ITEM_CODE = 2;
 
     /**
      * Index of commits page
      */
-    public static final int ITEM_COMMITS = 2;
+    public static final int ITEM_COMMITS = 3;
 
     private final Resources resources;
 
@@ -56,7 +56,7 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
      * @param hasIssues
      */
     public RepositoryPagerAdapter(AppCompatActivity activity,
-            boolean hasIssues) {
+                                  boolean hasIssues) {
         super(activity);
 
         resources = activity.getResources();
@@ -66,40 +66,44 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
-        case 0:
-            return resources.getString(R.string.tab_news);
-        case 1:
-            return resources.getString(R.string.tab_code);
-        case 2:
-            return resources.getString(R.string.tab_commits);
-        case 3:
-            return resources.getString(R.string.tab_issues);
-        default:
-            return null;
+            case 0:
+                return resources.getString(R.string.tab_readme);
+            case 1:
+                return resources.getString(R.string.tab_news);
+            case 2:
+                return resources.getString(R.string.tab_code);
+            case 3:
+                return resources.getString(R.string.tab_commits);
+            case 4:
+                return resources.getString(R.string.tab_issues);
+            default:
+                return null;
         }
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-        case 0:
-            return new RepositoryNewsFragment();
-        case 1:
-            codeFragment = new RepositoryCodeFragment();
-            return codeFragment;
-        case 2:
-            commitsFragment = new CommitListFragment();
-            return commitsFragment;
-        case 3:
-            return new IssuesFragment();
-        default:
-            return null;
+            case 0:
+                return new RepositoryReadmeFragment();
+            case 1:
+                return new RepositoryNewsFragment();
+            case 2:
+                codeFragment = new RepositoryCodeFragment();
+                return codeFragment;
+            case 3:
+                commitsFragment = new CommitListFragment();
+                return commitsFragment;
+            case 4:
+                return new IssuesFragment();
+            default:
+                return null;
         }
     }
 
     @Override
     public int getCount() {
-        return hasIssues ? 4 : 3;
+        return hasIssues ? 5 : 4;
     }
 
     /**
@@ -121,7 +125,7 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
      * @return this adapter
      */
     public RepositoryPagerAdapter onDialogResult(int position, int requestCode,
-            int resultCode, Bundle arguments) {
+                                                 int resultCode, Bundle arguments) {
         if (position == ITEM_CODE && codeFragment != null)
             codeFragment.onDialogResult(requestCode, resultCode, arguments);
         else if (position == ITEM_COMMITS && commitsFragment != null)
