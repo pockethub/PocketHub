@@ -31,19 +31,11 @@ import com.github.pockethub.ui.issue.IssuesFragment;
  */
 public class RepositoryPagerAdapter extends FragmentPagerAdapter {
 
-    /**
-     * Index of code page
-     */
-    public static final int ITEM_CODE = 2;
-
-    /**
-     * Index of commits page
-     */
-    public static final int ITEM_COMMITS = 3;
-
     private final Resources resources;
 
     private final boolean hasIssues;
+
+    private final boolean hasReadme;
 
     private RepositoryCodeFragment codeFragment;
 
@@ -56,15 +48,18 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
      * @param hasIssues
      */
     public RepositoryPagerAdapter(AppCompatActivity activity,
-                                  boolean hasIssues) {
+                                  boolean hasIssues, boolean hasReadme) {
         super(activity);
 
         resources = activity.getResources();
+        this.hasReadme = hasReadme;
         this.hasIssues = hasIssues;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
+        position = hasReadme ? position : position + 1;
+
         switch (position) {
             case 0:
                 return resources.getString(R.string.tab_readme);
@@ -83,6 +78,8 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        position = hasReadme ? position : position + 1;
+
         switch (position) {
             case 0:
                 return new RepositoryReadmeFragment();
@@ -103,7 +100,24 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return hasIssues ? 5 : 4;
+        int count = hasIssues ? 5 : 4;
+        count = hasReadme ? count : count - 1;
+
+        return count;
+    }
+
+    /**
+     * Returns index of code page
+     */
+    public int getItemCode() {
+        return hasReadme ? 2 : 1;
+    }
+
+    /**
+     * Returns index of commits page
+     */
+    public int getItemCommits() {
+        return hasReadme ? 3 : 2;
     }
 
     /**
@@ -126,9 +140,9 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
      */
     public RepositoryPagerAdapter onDialogResult(int position, int requestCode,
                                                  int resultCode, Bundle arguments) {
-        if (position == ITEM_CODE && codeFragment != null)
+        if (position == getItemCode() && codeFragment != null)
             codeFragment.onDialogResult(requestCode, resultCode, arguments);
-        else if (position == ITEM_COMMITS && commitsFragment != null)
+        else if (position == getItemCommits() && commitsFragment != null)
             commitsFragment.onDialogResult(requestCode, resultCode, arguments);
 
         return this;
