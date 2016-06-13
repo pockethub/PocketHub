@@ -20,6 +20,6 @@ public class CheckHasReadMeClient extends GithubClient<Response> {
 
     @Override
     protected Observable<Response> getApiObservable(RestAdapter restAdapter) {
-        return restAdapter.create(ContentService.class).hasReadme(info.owner, info.owner);
+        return restAdapter.create(ContentService.class).hasReadme(info.owner, info.name);
     }
 }
