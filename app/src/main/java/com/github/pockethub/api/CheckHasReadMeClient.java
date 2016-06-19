@@ -7,9 +7,6 @@ import retrofit.RestAdapter;
 import retrofit.client.Response;
 import rx.Observable;
 
-/**
- * Created by Henrik on 16-06-13.
- */
 public class CheckHasReadMeClient extends GithubClient<Response> {
 
     private RepoInfo info;

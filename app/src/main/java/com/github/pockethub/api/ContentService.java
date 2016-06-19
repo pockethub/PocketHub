@@ -6,9 +6,6 @@ import retrofit.http.HEAD;
 import retrofit.http.Path;
 import rx.Observable;
 
-/**
- * Created by Henrik on 16-06-13.
- */
 public interface ContentService {
 
     /**
