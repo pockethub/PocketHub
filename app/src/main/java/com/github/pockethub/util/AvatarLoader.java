@@ -42,6 +42,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import roboguice.util.RoboAsyncTask;
@@ -78,6 +79,8 @@ public class AvatarLoader {
         this.context = context;
 
         OkHttpClient client = new OkHttpClient();
+        client.setConnectTimeout(30, TimeUnit.SECONDS);
+        client.setReadTimeout(30, TimeUnit.SECONDS);
 
         // Install an HTTP cache in the application cache directory.
         File cacheDir = new File(context.getCacheDir(), "http");

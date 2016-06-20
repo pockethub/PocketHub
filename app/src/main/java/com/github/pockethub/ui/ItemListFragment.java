@@ -37,6 +37,7 @@ import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.R;
 import com.github.pockethub.ThrowableLoader;
+import com.github.pockethub.util.NetworkUtils;
 import com.github.pockethub.util.ToastUtils;
 
 import java.util.Collections;
@@ -209,7 +210,12 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
         swipeLayout.setRefreshing(false);
         Exception exception = getException(loader);
         if (exception != null) {
-            showError(exception, getErrorMessage(exception));
+            if(!NetworkUtils.isNetworkConnected(getActivity())) {
+                showError(exception, R.string.error_network);
+            }
+            else {
+                showError(exception, getErrorMessage(exception));
+            }
             showList();
             return;
         }
