@@ -31,19 +31,11 @@ import com.github.pockethub.ui.issue.IssuesFragment;
  */
 public class RepositoryPagerAdapter extends FragmentPagerAdapter {
 
-    /**
-     * Index of code page
-     */
-    public static final int ITEM_CODE = 1;
-
-    /**
-     * Index of commits page
-     */
-    public static final int ITEM_COMMITS = 2;
-
     private final Resources resources;
 
     private final boolean hasIssues;
+
+    private final boolean hasReadme;
 
     private RepositoryCodeFragment codeFragment;
 
@@ -56,50 +48,76 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
      * @param hasIssues
      */
     public RepositoryPagerAdapter(AppCompatActivity activity,
-            boolean hasIssues) {
+                                  boolean hasIssues, boolean hasReadme) {
         super(activity);
 
         resources = activity.getResources();
+        this.hasReadme = hasReadme;
         this.hasIssues = hasIssues;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
+        position = hasReadme ? position : position + 1;
+
         switch (position) {
-        case 0:
-            return resources.getString(R.string.tab_news);
-        case 1:
-            return resources.getString(R.string.tab_code);
-        case 2:
-            return resources.getString(R.string.tab_commits);
-        case 3:
-            return resources.getString(R.string.tab_issues);
-        default:
-            return null;
+            case 0:
+                return resources.getString(R.string.tab_readme);
+            case 1:
+                return resources.getString(R.string.tab_news);
+            case 2:
+                return resources.getString(R.string.tab_code);
+            case 3:
+                return resources.getString(R.string.tab_commits);
+            case 4:
+                return resources.getString(R.string.tab_issues);
+            default:
+                return null;
         }
     }
 
     @Override
     public Fragment getItem(int position) {
+        position = hasReadme ? position : position + 1;
+
         switch (position) {
-        case 0:
-            return new RepositoryNewsFragment();
-        case 1:
-            codeFragment = new RepositoryCodeFragment();
-            return codeFragment;
-        case 2:
-            commitsFragment = new CommitListFragment();
-            return commitsFragment;
-        case 3:
-            return new IssuesFragment();
-        default:
-            return null;
+            case 0:
+                return new RepositoryReadmeFragment();
+            case 1:
+                return new RepositoryNewsFragment();
+            case 2:
+                codeFragment = new RepositoryCodeFragment();
+                return codeFragment;
+            case 3:
+                commitsFragment = new CommitListFragment();
+                return commitsFragment;
+            case 4:
+                return new IssuesFragment();
+            default:
+                return null;
         }
     }
 
     @Override
     public int getCount() {
-        return hasIssues ? 4 : 3;
+        int count = hasIssues ? 5 : 4;
+        count = hasReadme ? count : count - 1;
+
+        return count;
+    }
+
+    /**
+     * Returns index of code page
+     */
+    public int getItemCode() {
+        return hasReadme ? 2 : 1;
+    }
+
+    /**
+     * Returns index of commits page
+     */
+    public int getItemCommits() {
+        return hasReadme ? 3 : 2;
     }
 
     /**
@@ -121,10 +139,10 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
      * @return this adapter
      */
     public RepositoryPagerAdapter onDialogResult(int position, int requestCode,
-            int resultCode, Bundle arguments) {
-        if (position == ITEM_CODE && codeFragment != null)
+                                                 int resultCode, Bundle arguments) {
+        if (position == getItemCode() && codeFragment != null)
             codeFragment.onDialogResult(requestCode, resultCode, arguments);
-        else if (position == ITEM_COMMITS && commitsFragment != null)
+        else if (position == getItemCommits() && commitsFragment != null)
             commitsFragment.onDialogResult(requestCode, resultCode, arguments);
 
         return this;

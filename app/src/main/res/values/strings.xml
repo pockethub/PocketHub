@@ -282,6 +282,7 @@
     <string name="tab_mentioned">mentioned</string>
     <string name="tab_mine">mine</string>
     <string name="tab_starred">starred</string>
+    <string name="tab_readme">readme</string>
     <string name="tab_all">all</string>
     <!--  -->
     <string name="share">Share</string>

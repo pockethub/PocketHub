@@ -17,11 +17,14 @@ package com.github.pockethub.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 
 /**
  * Web view extension with scrolling fixes
  */
 public class WebView extends android.webkit.WebView {
+
+    private boolean intercept;
 
     /**
      * @param context
@@ -59,6 +62,20 @@ public class WebView extends android.webkit.WebView {
         super(context);
     }
 
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent p_event)
+    {
+        return true;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent p_event) {
+        if (intercept && getParent() != null)
+            getParent().requestDisallowInterceptTouchEvent(true);
+
+        return super.onTouchEvent(p_event);
+    }
+
     private boolean canScrollCodeHorizontally(final int direction) {
         final int range = computeHorizontalScrollRange()
                 - computeHorizontalScrollExtent();
@@ -74,5 +91,13 @@ public class WebView extends android.webkit.WebView {
     @Override
     public boolean canScrollHorizontally(final int direction) {
         return super.canScrollHorizontally(direction);
+    }
+
+    public void startIntercept() {
+        intercept = true;
+    }
+
+    public void stopIntercept() {
+        intercept = false;
     }
 }

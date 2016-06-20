@@ -28,6 +28,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.User;
 import com.alorma.github.sdk.services.repo.DeleteRepoClient;
+import com.alorma.github.sdk.services.repo.GetReadmeContentsClient;
 import com.alorma.github.sdk.services.repo.GetRepoClient;
 import com.alorma.github.sdk.services.repo.actions.CheckRepoStarredClient;
 import com.alorma.github.sdk.services.repo.actions.ForkRepoClient;
@@ -36,6 +37,7 @@ import com.alorma.github.sdk.services.repo.actions.UnstarRepoClient;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
+import com.github.pockethub.api.CheckHasReadMeClient;
 import com.github.pockethub.core.repo.RepositoryUtils;
 import com.github.pockethub.rx.ObserverAdapter;
 import com.github.pockethub.ui.TabPagerActivity;
@@ -46,7 +48,9 @@ import com.github.pockethub.util.InfoUtils;
 import com.github.pockethub.util.ShareUtils;
 import com.github.pockethub.util.ToastUtils;
 import com.google.inject.Inject;
+import com.squareup.okhttp.OkHttpClient;
 
+import retrofit.client.Client;
 import retrofit.client.Response;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -56,7 +60,6 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
 import static com.github.pockethub.ResultCodes.RESOURCE_CHANGED;
-import static com.github.pockethub.ui.repo.RepositoryPagerAdapter.ITEM_CODE;
 import static com.github.pockethub.util.TypefaceUtils.ICON_CODE;
 import static com.github.pockethub.util.TypefaceUtils.ICON_COMMIT;
 import static com.github.pockethub.util.TypefaceUtils.ICON_ISSUE_OPEN;
@@ -89,6 +92,8 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
 
     private boolean starredStatusChecked;
 
+    private boolean hasReadme;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,7 +110,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         if (owner.avatar_url != null && RepositoryUtils.isComplete(repository))
-            configurePager();
+            checkReadme();
         else {
             avatars.bind(getSupportActionBar(), owner);
             ViewUtils.setGone(loadingBar, false);
@@ -119,7 +124,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                         @Override
                         public void onNext(Repo repo) {
                             repository = repo;
-                            configurePager();
+                            checkReadme();
                         }
 
                         @Override
@@ -149,8 +154,29 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
 
     @Override
     public void onBackPressed() {
-        if (adapter == null || pager.getCurrentItem() != ITEM_CODE || !adapter.onBackPressed())
+        if (adapter == null || pager.getCurrentItem() != adapter.getItemCode() || !adapter.onBackPressed())
             super.onBackPressed();
+    }
+
+    private void checkReadme() {
+        new CheckHasReadMeClient(InfoUtils.createRepoInfo(repository))
+                .observable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<Response>bindToLifecycle())
+                .subscribe(new ObserverAdapter<Response>() {
+                    @Override
+                    public void onNext(Response response) {
+                        hasReadme = response.getStatus() == 200;
+                        configurePager();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        hasReadme = false;
+                        configurePager();
+                    }
+                });
     }
 
     private void configurePager() {
@@ -200,7 +226,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
 
     @Override
     protected RepositoryPagerAdapter createAdapter() {
-        return new RepositoryPagerAdapter(this, repository.has_issues);
+        return new RepositoryPagerAdapter(this, repository.has_issues, hasReadme);
     }
 
     @Override
