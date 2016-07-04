@@ -32,8 +32,8 @@ import android.webkit.WebView;
 import com.alorma.github.sdk.bean.dto.response.Gist;
 import com.alorma.github.sdk.bean.dto.response.GistFile;
 import com.github.pockethub.R;
-import com.github.pockethub.accounts.AuthenticatedUserTask;
 import com.github.pockethub.core.gist.GistStore;
+import com.github.pockethub.rx.ObserverAdapter;
 import com.github.pockethub.ui.DialogFragment;
 import com.github.pockethub.util.PreferenceUtils;
 import com.github.pockethub.util.SourceEditor;
@@ -42,6 +42,11 @@ import com.google.inject.Inject;
 
 import java.io.IOException;
 import java.util.Map;
+
+import rx.Observable;
+import rx.Subscriber;
+import rx.functions.Action1;
+import rx.observables.AsyncOnSubscribe;
 
 import static com.github.pockethub.Intents.EXTRA_GIST_FILE;
 import static com.github.pockethub.Intents.EXTRA_GIST_ID;
@@ -140,31 +145,25 @@ public class GistFileFragment extends DialogFragment implements
     }
 
     private void loadSource() {
-        new AuthenticatedUserTask<GistFile>(getActivity()) {
-
+        Observable.create(new Observable.OnSubscribe<GistFile>() {
             @Override
-            public GistFile run(Account account) throws Exception {
-                gist = store.refreshGist(gistId);
-                Map<String, GistFile> files = gist.files;
-                if (files == null)
-                    throw new IOException();
-                GistFile loadedFile = files.get(file.filename);
-                if (loadedFile == null)
-                    throw new IOException();
-                return loadedFile;
+            public void call(Subscriber<? super GistFile> subscriber) {
+                try {
+                    gist = store.refreshGist(gistId);
+                    Map<String, GistFile> files = gist.files;
+                    if (files == null)
+                        subscriber.onError(new IOException());
+                    GistFile loadedFile = files.get(file.filename);
+                    if (loadedFile == null)
+                        subscriber.onError(new IOException());
+                    subscriber.onNext(loadedFile);
+                } catch (IOException e) {
+                    subscriber.onError(e);
+                }
             }
-
+        }).subscribe(new ObserverAdapter<GistFile>() {
             @Override
-            protected void onException(Exception e) throws RuntimeException {
-                super.onException(e);
-
-                ToastUtils.show(getActivity(), e, R.string.error_gist_file_load);
-            }
-
-            @Override
-            protected void onSuccess(GistFile loadedFile) throws Exception {
-                super.onSuccess(loadedFile);
-
+            public void onNext(GistFile loadedFile) {
                 if (loadedFile == null)
                     return;
 
@@ -174,7 +173,11 @@ public class GistFileFragment extends DialogFragment implements
                     showSource();
             }
 
-        }.execute();
+            @Override
+            public void onError(Throwable e) {
+                ToastUtils.show(getActivity(), e, R.string.error_gist_file_load);
+            }
+        });
     }
 
     private void showSource() {

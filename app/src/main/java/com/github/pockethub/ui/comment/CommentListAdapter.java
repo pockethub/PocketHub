@@ -254,13 +254,13 @@ public class CommentListAdapter extends MultiTypeAdapter {
     }
 
     public MultiTypeAdapter setItems(Collection<?> items) {
-        if (items == null || items.isEmpty())
+        if (items == null)
             return this;
         return setItems(items.toArray());
     }
 
     public MultiTypeAdapter setItems(final Object[] items) {
-        if (items == null || items.length == 0)
+        if (items == null)
             return this;
 
         this.clear();

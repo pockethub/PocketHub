@@ -15,28 +15,29 @@
  */
 package com.github.pockethub.core.gist;
 
-import android.accounts.Account;
+import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 
 import com.alorma.github.sdk.bean.dto.response.Gist;
 import com.alorma.github.sdk.bean.dto.response.GithubComment;
 import com.alorma.github.sdk.services.gists.GetGistCommentsClient;
-import com.github.pockethub.accounts.AuthenticatedUserTask;
 import com.github.pockethub.api.CheckGistStarredClient;
 import com.github.pockethub.util.HtmlUtils;
 import com.github.pockethub.util.HttpImageGetter;
 import com.google.inject.Inject;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+
+import roboguice.RoboGuice;
+import rx.Observable;
+import rx.Subscriber;
 
 /**
  * Task to load and store a {@link Gist}
  */
-public class RefreshGistTask extends AuthenticatedUserTask<FullGist> {
-
-    private static final String TAG = "RefreshGistTask";
+public class RefreshGistTask implements Observable.OnSubscribe<FullGist> {
 
     @Inject
     private GistStore store;
@@ -48,41 +49,36 @@ public class RefreshGistTask extends AuthenticatedUserTask<FullGist> {
     /**
      * Create task to refresh the given {@link Gist}
      *
-     * @param context
      * @param gistId
      * @param imageGetter
      */
-    public RefreshGistTask(Context context, String gistId,
-            HttpImageGetter imageGetter) {
-        super(context);
-
+    public RefreshGistTask(Activity activity, String gistId,
+                           HttpImageGetter imageGetter) {
         id = gistId;
         this.imageGetter = imageGetter;
+        RoboGuice.injectMembers(activity, this);
     }
 
     @Override
-    public FullGist run(Account account) throws Exception {
-        Gist gist = store.refreshGist(id);
-        List<GithubComment> comments;
-        if (gist.comments > 0)
-            comments = new GetGistCommentsClient(id).observable().toBlocking().first().first;
-        else
-            comments = Collections.emptyList();
-        for (GithubComment comment : comments) {
-            String formatted = HtmlUtils.format(comment.body_html)
-                    .toString();
-            comment.body_html = formatted;
-            imageGetter.encode(comment, formatted);
+    public void call(Subscriber<? super FullGist> subscriber) {
+        try {
+            Gist gist = store.refreshGist(id);
+            List<GithubComment> comments;
+            if (gist.comments > 0)
+                comments = new GetGistCommentsClient(id).observable().toBlocking().first().first;
+            else
+                comments = Collections.emptyList();
+            for (GithubComment comment : comments) {
+                String formatted = HtmlUtils.format(comment.body_html)
+                        .toString();
+                comment.body_html = formatted;
+                imageGetter.encode(comment, formatted);
+            }
+            CheckGistStarredClient client = new CheckGistStarredClient(id);
+
+            subscriber.onNext(new FullGist(gist, client.observable().toBlocking().first(), comments));
+        }catch (IOException e){
+            subscriber.onError(e);
         }
-        CheckGistStarredClient client = new CheckGistStarredClient(id);
-
-        return new FullGist(gist, client.observable().toBlocking().first(), comments);
-    }
-
-    @Override
-    protected void onException(Exception e) throws RuntimeException {
-        super.onException(e);
-
-        Log.d(TAG, "Exception loading gist", e);
     }
 }

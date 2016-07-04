@@ -23,7 +23,7 @@ import com.alorma.github.sdk.services.issues.GithubIssueLabelsClient;
 import com.github.pockethub.R;
 import com.github.pockethub.rx.ObserverAdapter;
 import com.github.pockethub.ui.BaseProgressDialog;
-import com.github.pockethub.ui.DialogFragmentActivity;
+import com.github.pockethub.ui.BaseActivity;
 import com.github.pockethub.util.InfoUtils;
 import com.github.pockethub.util.ToastUtils;
 
@@ -49,7 +49,7 @@ public class LabelsDialog extends BaseProgressDialog {
 
     private final int requestCode;
 
-    private final DialogFragmentActivity activity;
+    private final BaseActivity activity;
 
     private final Repo repository;
 
@@ -62,7 +62,7 @@ public class LabelsDialog extends BaseProgressDialog {
      * @param requestCode
      * @param repository
      */
-    public LabelsDialog(final DialogFragmentActivity activity,
+    public LabelsDialog(final BaseActivity activity,
             final int requestCode, final Repo repository) {
         super(activity);
         this.activity = activity;

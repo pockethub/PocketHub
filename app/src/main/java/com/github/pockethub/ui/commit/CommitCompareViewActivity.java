@@ -25,7 +25,7 @@ import android.view.MenuItem;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
-import com.github.pockethub.ui.DialogFragmentActivity;
+import com.github.pockethub.ui.BaseActivity;
 import com.github.pockethub.ui.repo.RepositoryViewActivity;
 import com.github.pockethub.util.AvatarLoader;
 import com.github.pockethub.util.InfoUtils;
@@ -41,7 +41,7 @@ import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
 /**
  * Activity to display a comparison between two commits
  */
-public class CommitCompareViewActivity extends DialogFragmentActivity {
+public class CommitCompareViewActivity extends BaseActivity {
 
     /**
      * Create intent for this activity

@@ -18,13 +18,16 @@ package com.github.pockethub.ui.gist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.alorma.github.sdk.bean.dto.response.Gist;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
+import com.github.pockethub.api.DeleteGistClient;
 import com.github.pockethub.core.OnLoadListener;
 import com.github.pockethub.core.gist.GistStore;
+import com.github.pockethub.rx.ProgressObserverAdapter;
 import com.github.pockethub.ui.ConfirmDialogFragment;
 import com.github.pockethub.ui.FragmentProvider;
 import com.github.pockethub.ui.MainActivity;
@@ -32,10 +35,15 @@ import com.github.pockethub.ui.PagerActivity;
 import com.github.pockethub.ui.ViewPager;
 import com.github.pockethub.ui.user.UriLauncherActivity;
 import com.github.pockethub.util.AvatarLoader;
+import com.github.pockethub.util.ToastUtils;
 import com.google.inject.Inject;
 
 import java.io.Serializable;
 import java.util.List;
+
+import retrofit.client.Response;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -51,6 +59,7 @@ public class GistsViewActivity extends PagerActivity implements
     OnLoadListener<Gist> {
 
     private static final int REQUEST_CONFIRM_DELETE = 1;
+    private static final String TAG = "GistsViewActivity";
 
     /**
      * Create an intent to show a single gist
@@ -155,7 +164,28 @@ public class GistsViewActivity extends PagerActivity implements
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
         if (REQUEST_CONFIRM_DELETE == requestCode && RESULT_OK == resultCode) {
             final String gistId = arguments.getString(EXTRA_GIST_ID);
-            new DeleteGistTask(this, gistId).start();
+
+            new DeleteGistClient(gistId).observable()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .compose(this.<Response>bindToLifecycle())
+                    .subscribe(new ProgressObserverAdapter<Response>(this, R.string.deleting_gist) {
+
+                        @Override
+                        public void onNext(Response response) {
+                            super.onNext(response);
+                            setResult(RESULT_OK);
+                            finish();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            super.onError(e);
+                            Log.d(TAG, "Exception deleting Gist", e);
+                            ToastUtils.show(GistsViewActivity.this, e.getMessage());
+                            dismissProgress();
+                        }
+                    }.start());
             return;
         }
 
@@ -194,9 +224,9 @@ public class GistsViewActivity extends PagerActivity implements
             actionBar.setSubtitle(null);
             actionBar.setLogo(null);
             actionBar.setIcon(R.drawable.app_icon);
-        } else if (gist.user != null) {
-            avatars.bind(actionBar, gist.user);
-            actionBar.setSubtitle(gist.user.login);
+        } else if (gist.owner != null) {
+            avatars.bind(actionBar, gist.owner);
+            actionBar.setSubtitle(gist.owner.login);
         } else {
             actionBar.setSubtitle(R.string.anonymous);
             actionBar.setLogo(null);

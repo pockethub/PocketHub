@@ -16,21 +16,45 @@
 
 package com.github.pockethub.ui.gist;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.alorma.github.sdk.bean.dto.response.Gist;
+import com.alorma.github.sdk.services.client.GithubListClient;
+import com.alorma.github.sdk.services.gists.PublicGistsClient;
 import com.github.pockethub.R;
+import com.github.pockethub.core.PageIterator;
+import com.github.pockethub.core.gist.GistStore;
+import com.github.pockethub.rx.ObserverAdapter;
+import com.github.pockethub.ui.BaseActivity;
 import com.github.pockethub.ui.TabPagerFragment;
+import com.github.pockethub.util.ToastUtils;
+import com.google.inject.Inject;
 
+import java.util.Collection;
+import java.util.List;
+
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
+import static com.github.pockethub.RequestCodes.GIST_VIEW;
 import static com.github.pockethub.util.TypefaceUtils.ICON_PERSON;
 import static com.github.pockethub.util.TypefaceUtils.ICON_STAR;
 import static com.github.pockethub.util.TypefaceUtils.ICON_TEAM;
 
 public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter> {
+
+    private static final String TAG = "GistsPagerFragment";
+    @Inject
+    private GistStore store;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -39,7 +63,54 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
     }
 
     private void randomGist() {
-        new RandomGistTask(this.getActivity()).start();
+        Observable<Gist> observable = Observable.create(new Observable.OnSubscribe<Gist>() {
+            @Override
+            public void call(Subscriber<? super Gist> subscriber) {
+                PageIterator<Gist> pages = new PageIterator<>(new PageIterator.GitHubRequest<List<Gist>>() {
+                    @Override
+                    public GithubListClient<List<Gist>> execute(int page) {
+                        return new PublicGistsClient(1);
+                    }
+                }, 1);
+                pages.next();
+                int randomPage = 1 + (int) (Math.random() * ((pages.getLastPage() - 1) + 1));
+
+                Collection<Gist> gists = pages.getRequest().execute(randomPage).observable().toBlocking().first().first;
+
+                // Make at least two tries since page numbers are volatile
+                if (gists.isEmpty()) {
+                    randomPage = 1 + (int) (Math.random() * ((pages.getLastPage() - 1) + 1));
+                    gists = pages.getRequest().execute(randomPage).observable().toBlocking().first().first;
+                }
+
+                if (gists.isEmpty())
+                    throw new IllegalArgumentException(getContext().getString(
+                            R.string.no_gists_found));
+
+                subscriber.onNext(store.addGist(gists.iterator().next()));
+            }
+        });
+
+        showProgressIndeterminate(R.string.random_gist);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(((BaseActivity)getActivity()).<Gist>bindToLifecycle())
+                .subscribe(new ObserverAdapter<Gist>() {
+
+                    @Override
+                    public void onNext(Gist gist) {
+                        getActivity().startActivityForResult(
+                                GistsViewActivity.createIntent(gist), GIST_VIEW);
+                        dismissProgress();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "Exception opening random Gist", e);
+                        ToastUtils.show((Activity) getContext(), e.getMessage());
+                        dismissProgress();
+                    }
+                });
     }
 
     @Override

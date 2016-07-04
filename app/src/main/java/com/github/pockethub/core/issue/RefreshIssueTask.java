@@ -15,9 +15,7 @@
  */
 package com.github.pockethub.core.issue;
 
-import android.accounts.Account;
 import android.content.Context;
-import android.util.Log;
 
 import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.alorma.github.sdk.bean.dto.response.Repo;
@@ -25,15 +23,20 @@ import com.alorma.github.sdk.bean.issue.IssueStory;
 import com.alorma.github.sdk.bean.issue.PullRequestStory;
 import com.alorma.github.sdk.services.issues.story.IssueStoryLoader;
 import com.alorma.github.sdk.services.pullrequest.story.PullRequestStoryLoader;
-import com.github.pockethub.accounts.AuthenticatedUserTask;
 import com.github.pockethub.util.HttpImageGetter;
 import com.github.pockethub.util.InfoUtils;
 import com.google.inject.Inject;
 
+import java.io.IOException;
+
+import roboguice.RoboGuice;
+import rx.Observable;
+import rx.Subscriber;
+
 /**
  * Task to load and store an {@link Issue}
  */
-public class RefreshIssueTask extends AuthenticatedUserTask<IssueStory> {
+public class RefreshIssueTask implements Observable.OnSubscribe<IssueStory> {
 
     private static final String TAG = "RefreshIssueTask";
 
@@ -46,49 +49,39 @@ public class RefreshIssueTask extends AuthenticatedUserTask<IssueStory> {
 
     private final HttpImageGetter bodyImageGetter;
 
-    private final HttpImageGetter commentImageGetter;
 
     /**
      * Create task to refresh given issue
      *
-     * @param context
      * @param repo
      * @param issueNumber
      * @param bodyImageGetter
-     * @param commentImageGetter
      */
-    public RefreshIssueTask(Context context,
-            Repo repo, int issueNumber,
-            HttpImageGetter bodyImageGetter, HttpImageGetter commentImageGetter) {
-        super(context);
-
+    public RefreshIssueTask(Context context, Repo repo, int issueNumber, HttpImageGetter bodyImageGetter) {
         this.repo = repo;
         this.issueNumber = issueNumber;
         this.bodyImageGetter = bodyImageGetter;
-        this.commentImageGetter = commentImageGetter;
+        RoboGuice.getInjector(context).injectMembers(this);
     }
 
     @Override
-    public IssueStory run(Account account) throws Exception {
-        Issue issue = store.refreshIssue(repo, issueNumber);
-        bodyImageGetter.encode(issue.id, issue.body_html);
+    public void call(Subscriber<? super IssueStory> subscriber) {
+        try {
+            Issue issue = store.refreshIssue(repo, issueNumber);
+            bodyImageGetter.encode(issue.id, issue.body_html);
 
-        if(issue.pullRequest != null) {
-            PullRequestStory story = new PullRequestStoryLoader(InfoUtils.createIssueInfo(repo, issue)).observable().toBlocking().first();
-            IssueStory issueStory = new IssueStory();
-            issueStory.issue = story.pullRequest;
-            issueStory.issue.pullRequest = story.pullRequest;
-            issueStory.details = story.details;
-            return issueStory;
-        }else {
-            return new IssueStoryLoader(InfoUtils.createIssueInfo(repo, issue)).observable().toBlocking().first();
+            if (issue.pullRequest != null) {
+                PullRequestStory story = new PullRequestStoryLoader(InfoUtils.createIssueInfo(repo, issue)).observable().toBlocking().first();
+                IssueStory issueStory = new IssueStory();
+                issueStory.issue = story.pullRequest;
+                issueStory.issue.pullRequest = story.pullRequest;
+                issueStory.details = story.details;
+                subscriber.onNext(issueStory);
+            } else {
+                subscriber.onNext(new IssueStoryLoader(InfoUtils.createIssueInfo(repo, issue)).observable().toBlocking().first());
+            }
+        } catch (IOException e){
+            subscriber.onError(e);
         }
-    }
-
-    @Override
-    protected void onException(Exception e) throws RuntimeException {
-        super.onException(e);
-
-        Log.d(TAG, "Exception loading issue", e);
     }
 }

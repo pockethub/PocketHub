@@ -58,7 +58,7 @@ public class SingleChoiceDialogFragment extends DialogFragmentHelper implements
      * @param selectedChoice
      * @param helper
      */
-    protected static void show(final DialogFragmentActivity activity,
+    protected static void show(final BaseActivity activity,
             final int requestCode, final String title, final String message,
             ArrayList<? extends Parcelable> choices, final int selectedChoice,
             final DialogFragmentHelper helper) {

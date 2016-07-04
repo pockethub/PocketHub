@@ -15,6 +15,7 @@
  */
 package com.github.pockethub.persistence;
 
+import android.accounts.Account;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -28,7 +29,6 @@ import com.alorma.github.sdk.bean.dto.response.User;
 import com.alorma.github.sdk.services.orgs.OrgsReposClient;
 import com.alorma.github.sdk.services.repos.UserReposClient;
 import com.alorma.github.sdk.services.repos.WatchedReposClient;
-import com.github.pockethub.accounts.GitHubAccount;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
@@ -64,7 +64,7 @@ public class OrganizationRepositories implements
 
     private final Context context;
 
-    private final Provider<GitHubAccount> accountProvider;
+    private final Provider<Account> accountProvider;
 
     /**
      * Create repositories cache for a given organization
@@ -75,7 +75,7 @@ public class OrganizationRepositories implements
      */
     @Inject
     public OrganizationRepositories(@Assisted Organization orgs, Context context,
-            Provider<GitHubAccount> accountProvider) {
+            Provider<Account> accountProvider) {
         this.org = orgs;
         this.context = context;
         this.accountProvider = accountProvider;
@@ -190,7 +190,7 @@ public class OrganizationRepositories implements
     }
 
     private boolean isAuthenticatedUser() {
-        return org.login.equals(accountProvider.get().getUsername());
+        return org.login.equals(accountProvider.get().name);
     }
 
     @Override

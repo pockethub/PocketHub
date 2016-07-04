@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,23 +35,28 @@ import com.alorma.github.sdk.bean.dto.response.Label;
 import com.alorma.github.sdk.bean.dto.response.Milestone;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.User;
+import com.alorma.github.sdk.services.issues.EditIssueClient;
+import com.alorma.github.sdk.services.issues.PostNewIssueClient;
 import com.alorma.github.sdk.services.user.actions.CheckUserCollaboratorClient;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
 import com.github.pockethub.accounts.AccountUtils;
 import com.github.pockethub.core.issue.IssueUtils;
 import com.github.pockethub.rx.ObserverAdapter;
-import com.github.pockethub.ui.DialogFragmentActivity;
+import com.github.pockethub.rx.ProgressObserverAdapter;
+import com.github.pockethub.ui.BaseActivity;
 import com.github.pockethub.ui.StyledText;
 import com.github.pockethub.ui.TextWatcherAdapter;
 import com.github.pockethub.util.AvatarLoader;
 import com.github.pockethub.util.InfoUtils;
 import com.github.pockethub.util.RequestUtils;
+import com.github.pockethub.util.ToastUtils;
 import com.google.inject.Inject;
 
 import java.util.List;
 
 import retrofit.RetrofitError;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -67,7 +73,9 @@ import static com.github.pockethub.RequestCodes.ISSUE_MILESTONE_UPDATE;
 /**
  * Activity to edit or create an issue
  */
-public class EditIssueActivity extends DialogFragmentActivity {
+public class EditIssueActivity extends BaseActivity {
+
+    private static final String TAG = "EditIssueActivity";
 
     /**
      * Create intent to create an issue
@@ -343,34 +351,38 @@ public class EditIssueActivity extends DialogFragmentActivity {
             case R.id.m_apply:
                 IssueRequest request = RequestUtils.issueFull(issue,
                         bodyText.getText().toString(), titleText.getText().toString());
-                if (issue.number > 0)
-                    new EditIssueTask(this, repository, issue.number, request) {
+                Observable<Issue> observable;
+                int message;
 
-                        @Override
-                        protected void onSuccess(Issue editedIssue)
-                            throws Exception {
-                            super.onSuccess(editedIssue);
+                if (issue.number > 0) {
+                    observable = new EditIssueClient(InfoUtils.createIssueInfo(repository, issue.number), request).observable();
+                    message = R.string.updating_issue;
+                } else {
+                    observable = new PostNewIssueClient(InfoUtils.createRepoInfo(repository), request).observable();
+                    message = R.string.creating_issue;
+                }
 
-                            Intent intent = new Intent();
-                            intent.putExtra(EXTRA_ISSUE, editedIssue);
-                            setResult(RESULT_OK, intent);
-                            finish();
-                        }
-                    }.edit();
-                else
-                    new CreateIssueTask(this, repository, request) {
+                observable.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .compose(this.<Issue>bindToLifecycle())
+                        .subscribe(new ProgressObserverAdapter<Issue>(this, message) {
 
-                        @Override
-                        protected void onSuccess(Issue created) throws Exception {
-                            super.onSuccess(created);
+                            @Override
+                            public void onNext(Issue issue) {
+                                super.onNext(issue);
+                                Intent intent = new Intent();
+                                intent.putExtra(EXTRA_ISSUE, issue);
+                                setResult(RESULT_OK, intent);
+                                finish();
+                            }
 
-                            Intent intent = new Intent();
-                            intent.putExtra(EXTRA_ISSUE, created);
-                            setResult(RESULT_OK, intent);
-                            finish();
-                        }
-
-                    }.create();
+                            @Override
+                            public void onError(Throwable e) {
+                                super.onError(e);
+                                Log.e(TAG, "Exception creating issue", e);
+                                ToastUtils.show(EditIssueActivity.this, e.getMessage());
+                            }
+                        }.start());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

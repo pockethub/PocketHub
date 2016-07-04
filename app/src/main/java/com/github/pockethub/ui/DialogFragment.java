@@ -18,8 +18,10 @@ package com.github.pockethub.ui;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.StringRes;
 import android.view.View;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.pockethub.ui.roboactivities.RoboSupportFragment;
 
@@ -34,6 +36,7 @@ public abstract class DialogFragment extends RoboSupportFragment implements
      * {@link #onViewCreated(android.view.View, Bundle)}
      */
     protected ViewFinder finder;
+    private MaterialDialog progressDialog;
 
     /**
      * Is this fragment usable from the UI-thread
@@ -83,5 +86,43 @@ public abstract class DialogFragment extends RoboSupportFragment implements
         super.onViewCreated(view, savedInstanceState);
 
         finder = new ViewFinder(view);
+    }
+
+    /**
+     * Dismiss and clear progress dialog field
+     */
+    protected void dismissProgress() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
+    }
+
+    /**
+     * Show indeterminate progress dialog with given message
+     *
+     * @param message
+     */
+    protected void showProgressIndeterminate(final CharSequence message) {
+        dismissProgress();
+        progressDialog = new MaterialDialog.Builder(getActivity())
+                .content(message)
+                .progress(true, 0)
+                .build();
+        progressDialog.show();
+    }
+
+    /**
+     * Show indeterminate progress dialog with given message
+     *
+     * @param resId
+     */
+    protected void showProgressIndeterminate(@StringRes final int resId) {
+        dismissProgress();
+        progressDialog = new MaterialDialog.Builder(getActivity())
+                .content(resId)
+                .progress(true, 0)
+                .build();
+        progressDialog.show();
     }
 }

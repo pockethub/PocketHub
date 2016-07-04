@@ -24,7 +24,7 @@ import android.view.MenuItem;
  * Activity that displays a {@link ViewPager} and has workarounds for
  * ActionBar/ViewPager bugs
  */
-public abstract class PagerActivity extends DialogFragmentActivity implements
+public abstract class PagerActivity extends BaseActivity implements
         OnPageChangeListener {
 
     private boolean menuCreated;

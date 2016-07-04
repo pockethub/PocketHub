@@ -16,14 +16,12 @@
 package com.github.pockethub.sync;
 
 import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
 
-import com.github.pockethub.accounts.AccountScope;
 import com.github.pockethub.sync.SyncCampaign.Factory;
 import com.google.inject.Inject;
 
@@ -38,9 +36,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Inject
     private ContextScope contextScope;
-
-    @Inject
-    private AccountScope accountScope;
 
     @Inject
     private Factory campaignFactory;
@@ -61,18 +56,13 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(final Account account, final Bundle extras,
             final String authority, final ContentProviderClient provider,
             final SyncResult syncResult) {
-        accountScope.enterWith(account, AccountManager.get(getContext()));
+        contextScope.enter(getContext());
         try {
-            contextScope.enter(getContext());
-            try {
-                cancelCampaign();
-                campaign = campaignFactory.create(syncResult);
-                campaign.run();
-            } finally {
-                contextScope.exit(getContext());
-            }
+            cancelCampaign();
+            campaign = campaignFactory.create(syncResult);
+            campaign.run();
         } finally {
-            accountScope.exit();
+            contextScope.exit(getContext());
         }
     }
 

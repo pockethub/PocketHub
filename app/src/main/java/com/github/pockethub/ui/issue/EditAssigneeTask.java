@@ -15,33 +15,43 @@
  */
 package com.github.pockethub.ui.issue;
 
-import android.accounts.Account;
-
 import com.alorma.github.sdk.bean.dto.request.EditIssueAssigneeRequestDTO;
 import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.R;
 import com.github.pockethub.core.issue.IssueStore;
-import com.github.pockethub.ui.DialogFragmentActivity;
-import com.github.pockethub.ui.ProgressDialogTask;
+import com.github.pockethub.rx.ProgressObserverAdapter;
+import com.github.pockethub.ui.BaseActivity;
 import com.google.inject.Inject;
+
+import java.io.IOException;
+
+import roboguice.RoboGuice;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static com.github.pockethub.RequestCodes.ISSUE_ASSIGNEE_UPDATE;
 
 /**
  * Task to edit the assignee
  */
-public class EditAssigneeTask extends ProgressDialogTask<Issue> {
+public class EditAssigneeTask implements Observable.OnSubscribe<Issue> {
 
     @Inject
     private IssueStore store;
 
     private final AssigneeDialog assigneeDialog;
 
+    private final BaseActivity activity;
+
     private final Repo repositoryId;
 
     private final int issueNumber;
+
+    private final ProgressObserverAdapter<Issue> observer;
 
     private User assignee;
 
@@ -52,14 +62,31 @@ public class EditAssigneeTask extends ProgressDialogTask<Issue> {
      * @param repositoryId
      * @param issueNumber
      */
-    public EditAssigneeTask(final DialogFragmentActivity activity,
-            final Repo repositoryId, final int issueNumber) {
-        super(activity);
-
+    public EditAssigneeTask(final BaseActivity activity,
+                            final Repo repositoryId, final int issueNumber,
+                            final ProgressObserverAdapter<Issue> observer) {
+        this.activity = activity;
         this.repositoryId = repositoryId;
         this.issueNumber = issueNumber;
+        this.observer = observer;
+        observer.setContent(R.string.updating_assignee);
         assigneeDialog = new AssigneeDialog(activity, ISSUE_ASSIGNEE_UPDATE,
                 repositoryId);
+        RoboGuice.injectMembers(activity, this);
+    }
+
+    @Override
+    public void call(Subscriber<? super Issue> subscriber) {
+        try{
+            EditIssueAssigneeRequestDTO edit = new EditIssueAssigneeRequestDTO();
+            if (assignee != null)
+                edit.assignee = assignee.login;
+            else
+                edit.assignee = "";
+            subscriber.onNext(store.editIssue(repositoryId, issueNumber, edit));
+        } catch (IOException e) {
+            subscriber.onError(e);
+        }
     }
 
     /**
@@ -81,21 +108,15 @@ public class EditAssigneeTask extends ProgressDialogTask<Issue> {
      * @return this task
      */
     public EditAssigneeTask edit(User user) {
-        showIndeterminate(R.string.updating_assignee);
-
         this.assignee = user;
 
-        execute();
+        Observable.create(this)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(activity.<Issue>bindToLifecycle())
+                .subscribe(observer);
+
         return this;
     }
 
-    @Override
-    protected Issue run(Account account) throws Exception {
-        EditIssueAssigneeRequestDTO edit = new EditIssueAssigneeRequestDTO();
-        if (assignee != null)
-            edit.assignee = assignee.login;
-        else
-            edit.assignee = "";
-        return store.editIssue(repositoryId, issueNumber, edit);
-    }
 }

@@ -89,22 +89,6 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
             new Bundle(), SYNC_PERIOD);
     }
 
-    public static class AccountLoader extends
-        AuthenticatedUserTask<List<Organization>> {
-
-        @Inject
-        private AccountDataManager cache;
-
-        protected AccountLoader(Context context) {
-            super(context);
-        }
-
-        @Override
-        protected List<Organization> run(Account account) throws Exception {
-            return cache.getOrgs(true);
-        }
-    }
-
     private AccountManager accountManager;
 
     private Account[] accounts;
@@ -237,7 +221,7 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
         this.accessToken = accessToken;
         this.scope = scope;
 
-        progressDialog.setMessage(getString(R.string.loading_user));
+        progressDialog.setContent(getString(R.string.loading_user));
 
         new GetAuthUserClient(accessToken)
                 .observable()

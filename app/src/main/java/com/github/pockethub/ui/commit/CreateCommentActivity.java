@@ -23,11 +23,18 @@ import android.text.TextUtils;
 import com.alorma.github.sdk.bean.dto.request.CommitCommentRequest;
 import com.alorma.github.sdk.bean.dto.response.CommitComment;
 import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.alorma.github.sdk.services.commit.PublishCommitCommentClient;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
 import com.github.pockethub.core.commit.CommitUtils;
+import com.github.pockethub.rx.ProgressObserverAdapter;
 import com.github.pockethub.ui.comment.CommentPreviewPagerAdapter;
+import com.github.pockethub.util.HtmlUtils;
 import com.github.pockethub.util.InfoUtils;
+import com.github.pockethub.util.ToastUtils;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static com.github.pockethub.Intents.EXTRA_BASE;
 import static com.github.pockethub.Intents.EXTRA_PATH;
@@ -99,23 +106,34 @@ public class CreateCommentActivity extends
     }
 
     @Override
-    protected void createComment(String comment) {
+    protected void createComment(final String comment) {
         CommitCommentRequest commitComment = new CommitCommentRequest();
         commitComment.body = comment;
         if (isLineComment(path, position)) {
             commitComment.path = path;
             commitComment.position = position;
         }
-        new CreateCommentTask(this, repository, commit, commitComment) {
 
-            @Override
-            protected void onSuccess(CommitComment comment) throws Exception {
-                super.onSuccess(comment);
+        new PublishCommitCommentClient(InfoUtils.createCommitInfo(repository, commit),
+                commitComment).observable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<CommitComment>bindToLifecycle())
+                .subscribe(new ProgressObserverAdapter<CommitComment>(this, R.string.creating_comment) {
 
-                finish(comment);
-            }
+                    @Override
+                    public void onNext(CommitComment created) {
+                        super.onNext(created);
+                        created.body_html = HtmlUtils.format(created.body_html).toString();
+                        finish(created);
+                    }
 
-        }.start();
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        ToastUtils.show(CreateCommentActivity.this, e.getMessage());
+                    }
+                }.start());
     }
 
     @Override

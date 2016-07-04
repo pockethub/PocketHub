@@ -19,6 +19,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,8 +42,9 @@ import com.github.pockethub.core.code.FullTree.Entry;
 import com.github.pockethub.core.code.FullTree.Folder;
 import com.github.pockethub.core.code.RefreshTreeTask;
 import com.github.pockethub.core.ref.RefUtils;
+import com.github.pockethub.rx.ObserverAdapter;
 import com.github.pockethub.ui.DialogFragment;
-import com.github.pockethub.ui.DialogFragmentActivity;
+import com.github.pockethub.ui.BaseActivity;
 import com.github.pockethub.ui.HeaderFooterListAdapter;
 import com.github.pockethub.ui.StyledText;
 import com.github.pockethub.ui.ref.BranchFileViewActivity;
@@ -51,9 +53,12 @@ import com.github.pockethub.ui.ref.RefDialog;
 import com.github.pockethub.ui.ref.RefDialogFragment;
 import com.github.pockethub.util.ToastUtils;
 import com.github.pockethub.util.TypefaceUtils;
-import com.google.inject.Inject;
 
 import java.util.LinkedList;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
 import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
@@ -64,6 +69,8 @@ import static com.github.pockethub.RequestCodes.REF_UPDATE;
  */
 public class RepositoryCodeFragment extends DialogFragment implements
         OnItemClickListener {
+
+    private static final String TAG = "RepositoryCodeFragment";
 
     private FullTree tree;
 
@@ -137,45 +144,46 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
     private void refreshTree(final GitReference reference) {
         showLoading(true);
-        new RefreshTreeTask(repository, reference, getActivity()) {
-
-            @Override
-            protected void onSuccess(final FullTree fullTree) throws Exception {
-                super.onSuccess(fullTree);
-
-                if (folder == null || folder.parent == null)
-                    setFolder(fullTree, fullTree.root);
-                else {
-                    // Look for current folder in new tree or else reset to root
-                    Folder current = folder;
-                    LinkedList<Folder> stack = new LinkedList<>();
-                    while (current.parent != null) {
-                        stack.addFirst(current);
-                        current = current.parent;
+        Observable.create(new RefreshTreeTask(repository, reference))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<FullTree>bindToLifecycle())
+                .subscribe(new ObserverAdapter<FullTree>() {
+                    @Override
+                    public void onNext(FullTree fullTree) {
+                        if (folder == null || folder.parent == null)
+                            setFolder(fullTree, fullTree.root);
+                        else {
+                            // Look for current folder in new tree or else reset to root
+                            Folder current = folder;
+                            LinkedList<Folder> stack = new LinkedList<>();
+                            while (current.parent != null) {
+                                stack.addFirst(current);
+                                current = current.parent;
+                            }
+                            Folder refreshed = fullTree.root;
+                            while (!stack.isEmpty()) {
+                                refreshed = refreshed.folders
+                                        .get(stack.removeFirst().name);
+                                if (refreshed == null)
+                                    break;
+                            }
+                            if (refreshed != null)
+                                setFolder(fullTree, refreshed);
+                            else
+                                setFolder(fullTree, fullTree.root);
+                        }
                     }
-                    Folder refreshed = fullTree.root;
-                    while (!stack.isEmpty()) {
-                        refreshed = refreshed.folders
-                                .get(stack.removeFirst().name);
-                        if (refreshed == null)
-                            break;
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        Log.d(TAG, "Exception loading tree", e);
+
+                        showLoading(false);
+                        ToastUtils.show(getActivity(), e, R.string.error_code_load);
                     }
-                    if (refreshed != null)
-                        setFolder(fullTree, refreshed);
-                    else
-                        setFolder(fullTree, fullTree.root);
-                }
-            }
-
-            @Override
-            protected void onException(Exception e) throws RuntimeException {
-                super.onException(e);
-
-                showLoading(false);
-                ToastUtils.show(getActivity(), e, R.string.error_code_load);
-            }
-
-        }.execute();
+                });
     }
 
     private void switchBranches() {
@@ -183,7 +191,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
             return;
 
         if (dialog == null)
-            dialog = new RefDialog((DialogFragmentActivity) getActivity(),
+            dialog = new RefDialog((BaseActivity) getActivity(),
                     REF_UPDATE, repository);
         dialog.show(tree.reference);
     }

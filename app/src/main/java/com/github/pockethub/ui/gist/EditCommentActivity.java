@@ -18,13 +18,22 @@ package com.github.pockethub.ui.gist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 
+import com.alorma.github.sdk.bean.dto.request.CommentRequest;
 import com.alorma.github.sdk.bean.dto.response.Gist;
 import com.alorma.github.sdk.bean.dto.response.GithubComment;
 import com.alorma.github.sdk.bean.dto.response.User;
+import com.alorma.github.sdk.services.gists.EditGistCommentClient;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
+import com.github.pockethub.rx.ProgressObserverAdapter;
 import com.github.pockethub.ui.comment.CommentPreviewPagerAdapter;
+import com.github.pockethub.util.HtmlUtils;
+import com.github.pockethub.util.ToastUtils;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static com.github.pockethub.Intents.EXTRA_COMMENT;
 import static com.github.pockethub.Intents.EXTRA_GIST;
@@ -34,6 +43,8 @@ import static com.github.pockethub.Intents.EXTRA_GIST;
  */
 public class EditCommentActivity extends
         com.github.pockethub.ui.comment.CreateCommentActivity {
+
+    private static final String TAG = "EditCommentActivity";
 
     /**
      * Create intent to edit a comment
@@ -63,7 +74,7 @@ public class EditCommentActivity extends
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getString(R.string.gist_title) + gist.id);
-        User user = gist.user;
+        User user = gist.owner;
         if (user != null)
             actionBar.setSubtitle(user.login);
         avatars.bind(actionBar, user);
@@ -80,14 +91,27 @@ public class EditCommentActivity extends
      * @param commentText
      */
     protected void editComment(String commentText) {
-        new EditCommentTask(this, gist.id, commentText, comment.id) {
-            @Override
-            protected void onSuccess(GithubComment comment) throws Exception {
-                super.onSuccess(comment);
+        new EditGistCommentClient(gist.id, comment.id, new CommentRequest(commentText)).observable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<GithubComment>bindToLifecycle())
+                .subscribe(new ProgressObserverAdapter<GithubComment>(this, R.string.editing_comment) {
 
-                finish(comment);
-            }
-        }.start();
+                    @Override
+                    public void onNext(GithubComment edited) {
+                        super.onNext(edited);
+                        dismissProgress();
+                        edited.body_html = HtmlUtils.format(edited.body_html).toString();
+                        finish(edited);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        Log.d(TAG, "Exception editing comment on gist", e);
+                        ToastUtils.show(EditCommentActivity.this, e.getMessage());
+                    }
+                }.start());
     }
 
     @Override

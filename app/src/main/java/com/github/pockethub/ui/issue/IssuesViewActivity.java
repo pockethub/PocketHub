@@ -33,7 +33,6 @@ import com.alorma.github.sdk.services.user.actions.CheckUserCollaboratorClient;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
 import com.github.pockethub.accounts.AccountUtils;
-import com.github.pockethub.accounts.AuthenticatedUserTask;
 import com.github.pockethub.core.issue.IssueStore;
 import com.github.pockethub.core.issue.IssueUtils;
 import com.github.pockethub.rx.ObserverAdapter;

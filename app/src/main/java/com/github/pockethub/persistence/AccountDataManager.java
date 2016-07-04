@@ -22,15 +22,16 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
+import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.alorma.github.sdk.bean.dto.response.Organization;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.RequestFuture;
 import com.github.pockethub.RequestReader;
 import com.github.pockethub.RequestWriter;
-import com.github.pockethub.accounts.AuthenticatedUserTask;
 import com.github.pockethub.core.issue.IssueFilter;
 import com.github.pockethub.persistence.OrganizationRepositories.Factory;
+import com.github.pockethub.rx.ObserverAdapter;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
@@ -43,6 +44,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import rx.Observable;
+import rx.Subscriber;
 
 /**
  * Manager cache for an account
@@ -201,20 +205,17 @@ public class AccountDataManager {
      */
     public void getIssueFilters(
             final RequestFuture<Collection<IssueFilter>> requestFuture) {
-        new AuthenticatedUserTask<Collection<IssueFilter>>(context, EXECUTOR) {
-
+        Observable.create(new Observable.OnSubscribe<Collection<IssueFilter>>() {
             @Override
-            public Collection<IssueFilter> run(Account account)
-                    throws Exception {
-                return getIssueFilters();
+            public void call(Subscriber<? super Collection<IssueFilter>> subscriber) {
+                subscriber.onNext(getIssueFilters());
             }
-
+        }).subscribe(new ObserverAdapter<Collection<IssueFilter>>() {
             @Override
-            protected void onSuccess(Collection<IssueFilter> filters)
-                    throws Exception {
+            public void onNext(Collection<IssueFilter> filters) {
                 requestFuture.success(filters);
             }
-        }.execute();
+        });
     }
 
     /**
@@ -242,24 +243,23 @@ public class AccountDataManager {
      */
     public void addIssueFilter(final IssueFilter filter,
             final RequestFuture<IssueFilter> requestFuture) {
-        new AuthenticatedUserTask<IssueFilter>(context, EXECUTOR) {
-
+        Observable.create(new Observable.OnSubscribe<IssueFilter>() {
             @Override
-            public IssueFilter run(Account account) throws Exception {
+            public void call(Subscriber<? super IssueFilter> subscriber) {
                 addIssueFilter(filter);
-                return filter;
+                subscriber.onNext(filter);
             }
-
+        }).subscribe(new ObserverAdapter<IssueFilter>() {
             @Override
-            protected void onSuccess(IssueFilter filter) throws Exception {
-                requestFuture.success(filter);
-            }
-
-            @Override
-            protected void onException(Exception e) throws RuntimeException {
+            public void onError(Throwable e) {
                 Log.d(TAG, "Exception adding issue filter", e);
             }
-        }.execute();
+
+            @Override
+            public void onNext(IssueFilter issueFilter) {
+                requestFuture.success(issueFilter);
+            }
+        });
     }
 
     /**
@@ -285,23 +285,22 @@ public class AccountDataManager {
      */
     public void removeIssueFilter(final IssueFilter filter,
             final RequestFuture<IssueFilter> requestFuture) {
-        new AuthenticatedUserTask<IssueFilter>(context, EXECUTOR) {
-
+        Observable.create(new Observable.OnSubscribe<IssueFilter>() {
             @Override
-            public IssueFilter run(Account account) throws Exception {
+            public void call(Subscriber<? super IssueFilter> subscriber) {
                 removeIssueFilter(filter);
-                return filter;
+                subscriber.onNext(filter);
+            }
+        }).subscribe(new ObserverAdapter<IssueFilter>() {
+            @Override
+            public void onNext(IssueFilter issueFilter) {
+                requestFuture.success(issueFilter);
             }
 
             @Override
-            protected void onSuccess(IssueFilter filter) throws Exception {
-                requestFuture.success(filter);
-            }
-
-            @Override
-            protected void onException(Exception e) throws RuntimeException {
+            public void onError(Throwable e) {
                 Log.d(TAG, "Exception removing issue filter", e);
             }
-        }.execute();
+        });
     }
 }

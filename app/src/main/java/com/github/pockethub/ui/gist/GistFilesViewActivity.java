@@ -27,15 +27,21 @@ import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
+import com.github.pockethub.core.code.FullTree;
 import com.github.pockethub.core.gist.FullGist;
 import com.github.pockethub.core.gist.GistStore;
 import com.github.pockethub.core.gist.RefreshGistTask;
+import com.github.pockethub.rx.ObserverAdapter;
 import com.github.pockethub.ui.FragmentProvider;
 import com.github.pockethub.ui.PagerActivity;
 import com.github.pockethub.ui.ViewPager;
 import com.github.pockethub.util.AvatarLoader;
 import com.github.pockethub.util.HttpImageGetter;
 import com.google.inject.Inject;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -109,24 +115,24 @@ public class GistFilesViewActivity extends PagerActivity {
             ViewUtils.setGone(loadingBar, false);
             ViewUtils.setGone(pager, true);
             ViewUtils.setGone(tabs, true);
-            new RefreshGistTask(this, gistId, imageGetter) {
-
-                @Override
-                protected void onSuccess(FullGist gist) throws Exception {
-                    super.onSuccess(gist);
-
-                    GistFilesViewActivity.this.gist = gist.getGist();
-                    configurePager();
-                }
-
-            }.execute();
+            Observable.create(new RefreshGistTask(this, gistId, imageGetter))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .compose(this.<FullGist>bindToLifecycle())
+                    .subscribe(new ObserverAdapter<FullGist>() {
+                        @Override
+                        public void onNext(FullGist gist) {
+                            GistFilesViewActivity.this.gist = gist.getGist();
+                            configurePager();
+                        }
+                    });
         }
     }
 
     private void configurePager() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        User author = gist.user;
+        User author = gist.owner;
         if (author != null) {
             actionBar.setSubtitle(author.login);
             avatars.bind(actionBar, author);

@@ -30,13 +30,17 @@ import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
 import com.github.pockethub.core.PageIterator;
 import com.github.pockethub.core.ResourcePager;
-import com.github.pockethub.core.repo.RefreshRepositoryTask;
+import com.github.pockethub.rx.ObserverAdapter;
+import com.github.pockethub.rx.ProgressObserverAdapter;
 import com.github.pockethub.ui.PagedItemFragment;
 import com.github.pockethub.ui.repo.RepositoryViewActivity;
 import com.github.pockethub.util.InfoUtils;
 
 import java.text.MessageFormat;
 import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static android.app.SearchManager.QUERY;
 
@@ -99,24 +103,19 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repo> {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         final Repo result = (Repo) l.getItemAtPosition(position);
-        new RefreshRepositoryTask(getActivity(), result) {
-
-            @Override
-            public void execute() {
-                showIndeterminate(MessageFormat.format(
-                        getString(R.string.opening_repository),
-                        InfoUtils.createRepoId(result)));
-
-                super.execute();
-            }
-
-            @Override
-            protected void onSuccess(Repo repository) throws Exception {
-                super.onSuccess(repository);
-
-                startActivity(RepositoryViewActivity.createIntent(repository));
-            }
-        }.execute();
+        new GetRepoClient(InfoUtils.createRepoInfo(result))
+                .observable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<Repo>bindToLifecycle())
+                .subscribe(new ProgressObserverAdapter<Repo>(getActivity(),
+                        MessageFormat.format(getString(R.string.opening_repository), InfoUtils.createRepoId(result))) {
+                    @Override
+                    public void onNext(Repo repo) {
+                        super.onNext(repo);
+                        startActivity(RepositoryViewActivity.createIntent(repo));
+                    }
+                });
     }
 
     /**

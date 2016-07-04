@@ -16,6 +16,7 @@
 package com.github.pockethub.ui;
 
 import android.accounts.Account;
+import android.app.Activity;
 import android.content.Context;
 import android.text.Html.ImageGetter;
 
@@ -41,15 +42,15 @@ public class MarkdownLoader extends AuthenticatedUserLoader<CharSequence> {
     private boolean encode;
 
     /**
-     * @param context
+     * @param activity
      * @param repository
      * @param raw
      * @param imageGetter
      * @param encode
      */
-    public MarkdownLoader(Context context, Repo repository,
-            String raw, ImageGetter imageGetter, boolean encode) {
-        super(context);
+    public MarkdownLoader(Activity activity, Repo repository,
+                          String raw, ImageGetter imageGetter, boolean encode) {
+        super(activity);
 
         this.repository = repository;
         this.raw = raw;

@@ -29,7 +29,7 @@ import com.github.pockethub.RequestFuture;
 import com.github.pockethub.core.issue.IssueFilter;
 import com.github.pockethub.persistence.AccountDataManager;
 import com.github.pockethub.ui.ConfirmDialogFragment;
-import com.github.pockethub.ui.DialogFragmentActivity;
+import com.github.pockethub.ui.BaseActivity;
 import com.github.pockethub.ui.MainActivity;
 import com.google.inject.Inject;
 
@@ -39,7 +39,7 @@ import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 /**
  * Activity to display a list of saved {@link IssueFilter} objects
  */
-public class FiltersViewActivity extends DialogFragmentActivity implements
+public class FiltersViewActivity extends BaseActivity implements
     OnItemLongClickListener {
 
     /**

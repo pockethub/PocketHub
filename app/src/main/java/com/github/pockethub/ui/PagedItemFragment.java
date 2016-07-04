@@ -17,6 +17,7 @@ package com.github.pockethub.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;

@@ -25,11 +25,12 @@ import com.alorma.github.sdk.bean.dto.response.Contributor;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.User;
 import com.alorma.github.sdk.services.repo.GetRepoContributorsClient;
+import com.alorma.github.sdk.services.user.RequestUserClient;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
 import com.github.pockethub.ThrowableLoader;
 import com.github.pockethub.accounts.AccountUtils;
-import com.github.pockethub.core.user.RefreshUserTask;
+import com.github.pockethub.rx.ObserverAdapter;
 import com.github.pockethub.ui.ItemListFragment;
 import com.github.pockethub.ui.user.UserViewActivity;
 import com.github.pockethub.util.AvatarLoader;
@@ -37,6 +38,9 @@ import com.github.pockethub.util.InfoUtils;
 import com.google.inject.Inject;
 
 import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
 
@@ -87,16 +91,20 @@ public class RepositoryContributorsFragment extends ItemListFragment<Contributor
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         final Contributor contributor = (Contributor) l.getItemAtPosition(position);
-        new RefreshUserTask(getActivity(), contributor.author.login) {
+        new RequestUserClient(contributor.author.login)
+                .observable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<User>bindToLifecycle())
+                .subscribe(new ObserverAdapter<User>() {
+                    @Override
+                    public void onNext(User user) {
+                        super.onNext(user);
+                        if (!AccountUtils.isUser(getActivity(), user))
+                            startActivity(UserViewActivity.createIntent(user));
+                    }
+                });
 
-            @Override
-            protected void onSuccess(User user) throws Exception {
-                super.onSuccess(user);
-
-                if (!AccountUtils.isUser(getActivity(), user))
-                    startActivity(UserViewActivity.createIntent(user));
-            }
-        }.execute();
     }
 
     @Override

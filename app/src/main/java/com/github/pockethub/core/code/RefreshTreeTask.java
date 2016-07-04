@@ -28,16 +28,18 @@ import com.alorma.github.sdk.services.git.GetGitCommitClient;
 import com.alorma.github.sdk.services.git.GetGitTreeClient;
 import com.alorma.github.sdk.services.git.GetReferenceClient;
 import com.alorma.github.sdk.services.repo.GetRepoClient;
-import com.github.pockethub.accounts.AuthenticatedUserTask;
 import com.github.pockethub.core.ref.RefUtils;
 import com.github.pockethub.util.InfoUtils;
 
 import java.io.IOException;
 
+import rx.Observable;
+import rx.Subscriber;
+
 /**
  * Task to load the tree for a repository's default branch
  */
-public class RefreshTreeTask extends AuthenticatedUserTask<FullTree> {
+public class RefreshTreeTask implements Observable.OnSubscribe<FullTree> {
 
     private static final String TAG = "RefreshTreeTask";
 
@@ -50,12 +52,9 @@ public class RefreshTreeTask extends AuthenticatedUserTask<FullTree> {
      *
      * @param repository
      * @param reference
-     * @param context
      */
     public RefreshTreeTask(final Repo repository,
-            final GitReference reference, final Context context) {
-        super(context);
-
+            final GitReference reference) {
         this.repository = repository;
         this.reference = reference;
     }
@@ -66,7 +65,7 @@ public class RefreshTreeTask extends AuthenticatedUserTask<FullTree> {
     }
 
     @Override
-    protected FullTree run(Account account) throws Exception {
+    public void call(Subscriber<? super FullTree> subscriber) {
         GitReference ref = reference;
         String branch = RefUtils.getPath(ref);
         if (branch == null) {
@@ -75,8 +74,8 @@ public class RefreshTreeTask extends AuthenticatedUserTask<FullTree> {
                 branch = new GetRepoClient(InfoUtils.createRepoInfo(repository))
                         .observable().toBlocking().first().default_branch;
                 if (TextUtils.isEmpty(branch))
-                    throw new IOException(
-                            "Repo does not have master branch");
+                    subscriber.onError(new IOException(
+                            "Repo does not have master branch"));
             }
             branch = "refs/heads/" + branch;
         }
@@ -84,25 +83,17 @@ public class RefreshTreeTask extends AuthenticatedUserTask<FullTree> {
         if (!isValidRef(ref)) {
             ref = new GetReferenceClient(InfoUtils.createRepoInfo(repository, branch)).observable().toBlocking().first();
             if (!isValidRef(ref))
-                throw new IOException(
-                        "Reference does not have associated commit SHA-1");
+                subscriber.onError(new IOException("Reference does not have associated commit SHA-1"));
         }
 
         GitCommit commit = new GetGitCommitClient(InfoUtils.createRepoInfo(repository, ref.object.sha))
                 .observable().toBlocking().first();
         if (commit == null || commit.tree == null
                 || TextUtils.isEmpty(commit.tree.sha))
-            throw new IOException("Commit does not have associated tree SHA-1");
+            subscriber.onError(new IOException("Commit does not have associated tree SHA-1"));
 
         GitTree tree = new GetGitTreeClient(InfoUtils.createRepoInfo(repository, commit.tree.sha),true)
                 .observable().toBlocking().first();
-        return new FullTree(tree, ref);
-    }
-
-    @Override
-    protected void onException(Exception e) throws RuntimeException {
-        super.onException(e);
-
-        Log.d(TAG, "Exception loading tree", e);
+        subscriber.onNext(new FullTree(tree, ref));
     }
 }

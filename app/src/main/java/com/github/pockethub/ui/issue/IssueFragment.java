@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,17 +42,21 @@ import com.alorma.github.sdk.bean.dto.response.Milestone;
 import com.alorma.github.sdk.bean.dto.response.PullRequest;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.User;
+import com.alorma.github.sdk.bean.info.RepoInfo;
 import com.alorma.github.sdk.bean.issue.IssueStory;
 import com.alorma.github.sdk.bean.issue.IssueStoryComment;
+import com.alorma.github.sdk.services.issues.DeleteIssueCommentClient;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.R;
 import com.github.pockethub.accounts.AccountUtils;
 import com.github.pockethub.core.issue.IssueStore;
 import com.github.pockethub.core.issue.IssueUtils;
 import com.github.pockethub.core.issue.RefreshIssueTask;
+import com.github.pockethub.rx.ObserverAdapter;
+import com.github.pockethub.rx.ProgressObserverAdapter;
 import com.github.pockethub.ui.ConfirmDialogFragment;
 import com.github.pockethub.ui.DialogFragment;
-import com.github.pockethub.ui.DialogFragmentActivity;
+import com.github.pockethub.ui.BaseActivity;
 import com.github.pockethub.ui.HeaderFooterListAdapter;
 import com.github.pockethub.ui.SelectableLinkMovementMethod;
 import com.github.pockethub.ui.StyledText;
@@ -72,6 +77,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import retrofit.client.Response;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -79,8 +89,6 @@ import static com.github.pockethub.Intents.EXTRA_CAN_WRITE_REPO;
 import static com.github.pockethub.Intents.EXTRA_COMMENT;
 import static com.github.pockethub.Intents.EXTRA_ISSUE;
 import static com.github.pockethub.Intents.EXTRA_ISSUE_NUMBER;
-import static com.github.pockethub.Intents.EXTRA_IS_COLLABORATOR;
-import static com.github.pockethub.Intents.EXTRA_IS_OWNER;
 import static com.github.pockethub.Intents.EXTRA_REPOSITORY_NAME;
 import static com.github.pockethub.Intents.EXTRA_REPOSITORY_OWNER;
 import static com.github.pockethub.Intents.EXTRA_USER;
@@ -99,6 +107,8 @@ import static com.github.pockethub.util.TypefaceUtils.ICON_COMMIT;
  * Fragment to display an issue
  */
 public class IssueFragment extends DialogFragment {
+
+    private static final String TAG = "IssueFragment";
 
     private int issueNumber;
 
@@ -184,50 +194,21 @@ public class IssueFragment extends DialogFragment {
         user = args.getParcelable(EXTRA_USER);
         canWrite = args.getBoolean(EXTRA_CAN_WRITE_REPO, false);
 
-        DialogFragmentActivity dialogActivity = (DialogFragmentActivity) getActivity();
+        BaseActivity dialogActivity = (BaseActivity) getActivity();
 
-        milestoneTask = new EditMilestoneTask(dialogActivity, repositoryId,
-                issueNumber) {
-
+        ProgressObserverAdapter<Issue> observer = new ProgressObserverAdapter<Issue>(getActivity()) {
             @Override
-            protected void onSuccess(Issue editedIssue) throws Exception {
-                super.onSuccess(editedIssue);
-
-                updateHeader(editedIssue);
+            public void onNext(Issue issue) {
+                super.onNext(issue);
+                updateHeader(issue);
+                refreshIssue();
             }
         };
 
-        assigneeTask = new EditAssigneeTask(dialogActivity, repositoryId,
-                issueNumber) {
-
-            @Override
-            protected void onSuccess(Issue editedIssue) throws Exception {
-                super.onSuccess(editedIssue);
-
-                updateHeader(editedIssue);
-            }
-        };
-
-        labelsTask = new EditLabelsTask(dialogActivity, repositoryId,
-                issueNumber) {
-
-            @Override
-            protected void onSuccess(Issue editedIssue) throws Exception {
-                super.onSuccess(editedIssue);
-
-                updateHeader(editedIssue);
-            }
-        };
-
-        stateTask = new EditStateTask(dialogActivity, repositoryId, issueNumber) {
-
-            @Override
-            protected void onSuccess(Issue editedIssue) throws Exception {
-                super.onSuccess(editedIssue);
-
-                updateHeader(editedIssue);
-            }
-        };
+        milestoneTask = new EditMilestoneTask(dialogActivity, repositoryId, issueNumber, observer);
+        assigneeTask = new EditAssigneeTask(dialogActivity, repositoryId, issueNumber, observer);
+        labelsTask = new EditLabelsTask(dialogActivity, repositoryId, issueNumber, observer);
+        stateTask = new EditStateTask(dialogActivity, repositoryId, issueNumber, observer);
     }
 
     @Override
@@ -434,37 +415,36 @@ public class IssueFragment extends DialogFragment {
     }
 
     private void refreshIssue() {
-        new RefreshIssueTask(getActivity(), repositoryId, issueNumber,
-                bodyImageGetter, commentImageGetter) {
+        Observable.create(new RefreshIssueTask(getActivity(), repositoryId, issueNumber, bodyImageGetter))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<IssueStory>bindToLifecycle())
+                .subscribe(new ObserverAdapter<IssueStory>() {
+                    @Override
+                    public void onNext(IssueStory fullIssue) {
+                        if (!isUsable())
+                            return;
 
-            @Override
-            protected void onException(Exception e) throws RuntimeException {
-                super.onException(e);
-                ToastUtils.show(getActivity(), e, R.string.error_issue_load);
-                ViewUtils.setGone(progress, true);
-            }
+                        issue = fullIssue.issue;
+                        items = new ArrayList<>();
+                        items.addAll(fullIssue.details);
+                        updateList(fullIssue.issue, items);
+                    }
 
-            @Override
-            protected void onSuccess(IssueStory fullIssue) throws Exception {
-                super.onSuccess(fullIssue);
-                if (!isUsable())
-                    return;
-
-                issue = fullIssue.issue;
-
-                items = new ArrayList<>();
-
-                items.addAll(fullIssue.details);
-
-                updateList(fullIssue.issue, items);
-            }
-        }.execute();
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.show(getActivity(), e, R.string.error_issue_load);
+                        ViewUtils.setGone(progress, true);
+                    }
+                });
     }
 
     private void updateList(Issue issue, List<Object> items) {
         adapter.getWrappedAdapter().setItems(items);
         adapter.removeHeader(loadingView);
         adapter.getWrappedAdapter().setIssue(issue);
+
+        adapter.getWrappedAdapter().notifyDataSetChanged();
 
         headerView.setVisibility(VISIBLE);
         updateHeader(issue);
@@ -498,22 +478,36 @@ public class IssueFragment extends DialogFragment {
             break;
         case COMMENT_DELETE:
             final GithubComment comment = arguments.getParcelable(EXTRA_COMMENT);
-            new DeleteCommentTask(getActivity(), repositoryId, comment) {
-                @Override
-                protected void onSuccess(GithubComment comment) throws Exception {
-                    super.onSuccess(comment);
-                    // Update comment list
-                    if (items != null && comment != null) {
-                        int commentPosition = findCommentPositionInItems(comment);
-                        if (commentPosition >= 0) {
-                            issue.comments--;
-                            items.remove(commentPosition);
-                            updateList(issue, items);
+            RepoInfo info = InfoUtils.createRepoInfo(repositoryId);
+            showProgressIndeterminate(R.string.deleting_comment);
+            new DeleteIssueCommentClient(info, comment.id).observable()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .compose(this.<Response>bindToLifecycle())
+                    .subscribe(new ObserverAdapter<Response>() {
+
+                        @Override
+                        public void onNext(Response response) {
+                            if (items != null) {
+                                int commentPosition = findCommentPositionInItems(comment);
+                                if (commentPosition >= 0) {
+                                    issue.comments--;
+                                    items.remove(commentPosition);
+                                    updateList(issue, items);
+                                }
+                            } else {
+                                refreshIssue();
+                            }
+                            dismissProgress();
                         }
-                    } else
-                        refreshIssue();
-                }
-            }.start();
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.d(TAG, "Exception deleting comment on issue", e);
+                            ToastUtils.show(getActivity(), e.getMessage());
+                            dismissProgress();
+                        }
+                    });
             break;
         }
     }

@@ -94,7 +94,7 @@ public abstract class DialogFragmentHelper extends RoboDialogFragment implements
      * @param resultCode
      */
     protected void onResult(final int resultCode) {
-        final DialogFragmentActivity activity = (DialogFragmentActivity) getActivity();
+        final BaseActivity activity = (BaseActivity) getActivity();
         if (activity != null) {
             final Bundle arguments = getArguments();
             if (arguments != null)

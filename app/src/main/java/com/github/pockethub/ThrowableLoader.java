@@ -16,6 +16,7 @@
 package com.github.pockethub;
 
 import android.accounts.Account;
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -38,11 +39,11 @@ public abstract class ThrowableLoader<D> extends AuthenticatedUserLoader<D> {
     /**
      * Create loader for context and seeded with initial data
      *
-     * @param context
+     * @param activity
      * @param data
      */
-    public ThrowableLoader(Context context, D data) {
-        super(context);
+    public ThrowableLoader(Activity activity, D data) {
+        super(activity);
 
         this.data = data;
     }

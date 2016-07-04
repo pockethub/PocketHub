@@ -19,17 +19,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.alorma.github.sdk.bean.dto.response.Gist;
+import com.alorma.github.sdk.bean.dto.response.GistFile;
+import com.alorma.github.sdk.bean.dto.response.GistFilesMap;
+import com.alorma.github.sdk.services.gists.PublishGistClient;
 import com.github.pockethub.R;
+import com.github.pockethub.rx.ProgressObserverAdapter;
 import com.github.pockethub.ui.BaseActivity;
 import com.github.pockethub.ui.MainActivity;
 import com.github.pockethub.ui.TextWatcherAdapter;
 import com.github.pockethub.util.ShareUtils;
+import com.github.pockethub.util.ToastUtils;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -38,6 +47,8 @@ import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
  * Activity to share a text selection as a public or private Gist
  */
 public class CreateGistActivity extends BaseActivity {
+
+    private static final String TAG = "CreateGistActivity";
 
     private EditText descriptionText;
 
@@ -133,16 +144,37 @@ public class CreateGistActivity extends BaseActivity {
 
         final String content = contentText.getText().toString();
 
-        new CreateGistTask(this, description, isPublic, name, content) {
+        Gist gist = new Gist();
+        gist.description = description;
+        gist.isPublic = isPublic;
 
-            @Override
-            protected void onSuccess(Gist gist) throws Exception {
-                super.onSuccess(gist);
+        GistFile file = new GistFile();
+        file.content = content;
+        file.filename = name;
+        GistFilesMap map = new GistFilesMap();
+        map.put(name, file);
+        gist.files = map;
 
-                startActivity(GistsViewActivity.createIntent(gist));
-                setResult(RESULT_OK);
-                finish();
-            }
-        }.create();
+        new PublishGistClient(gist).observable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<Gist>bindToLifecycle())
+                .subscribe(new ProgressObserverAdapter<Gist>(this, R.string.creating_gist) {
+
+                    @Override
+                    public void onNext(Gist gist) {
+                        super.onNext(gist);
+                        startActivity(GistsViewActivity.createIntent(gist));
+                        setResult(RESULT_OK);
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        Log.d(TAG, "Exception creating Gist", e);
+                        ToastUtils.show(CreateGistActivity.this, e.getMessage());
+                    }
+                }.start());
     }
 }

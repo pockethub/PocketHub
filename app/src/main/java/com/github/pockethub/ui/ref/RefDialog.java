@@ -15,16 +15,17 @@
  */
 package com.github.pockethub.ui.ref;
 
-import android.accounts.Account;
 import android.util.Log;
 
 import com.alorma.github.sdk.bean.dto.response.GitReference;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.services.git.GetReferencesClient;
+import com.alorma.gitskarios.core.Pair;
 import com.github.pockethub.R;
 import com.github.pockethub.core.ref.RefUtils;
-import com.github.pockethub.ui.DialogFragmentActivity;
-import com.github.pockethub.ui.ProgressDialogTask;
+import com.github.pockethub.rx.ObserverAdapter;
+import com.github.pockethub.rx.ProgressObserverAdapter;
+import com.github.pockethub.ui.BaseActivity;
 import com.github.pockethub.util.InfoUtils;
 import com.github.pockethub.util.ToastUtils;
 
@@ -32,6 +33,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
@@ -46,7 +51,7 @@ public class RefDialog {
 
     private final int requestCode;
 
-    private final DialogFragmentActivity activity;
+    private final BaseActivity activity;
 
     private final Repo repository;
 
@@ -57,7 +62,7 @@ public class RefDialog {
      * @param requestCode
      * @param repository
      */
-    public RefDialog(final DialogFragmentActivity activity,
+    public RefDialog(final BaseActivity activity,
             final int requestCode, final Repo repository) {
         this.activity = activity;
         this.requestCode = requestCode;
@@ -65,52 +70,38 @@ public class RefDialog {
     }
 
     private void load(final GitReference selectedRef) {
-        new ProgressDialogTask<List<GitReference>>(activity) {
+        new GetReferencesClient(InfoUtils.createRepoInfo(repository))
+                .observable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ProgressObserverAdapter<Pair<List<GitReference>, Integer>>(activity, R.string.loading_refs) {
+                    List<GitReference> allRefs = new ArrayList<>();
 
-            @Override
-            public List<GitReference> run(Account account) throws Exception {
-                List<GitReference> allRefs = new ArrayList<>();
+                    @Override
+                    public void onNext(Pair<List<GitReference>, Integer> pair) {
+                        super.onNext(pair);
+                        allRefs.addAll(pair.first);
+                    }
 
-                int page = 1;
-                GetReferencesClient client = new GetReferencesClient(InfoUtils.createRepoInfo(repository), page);
-                allRefs.addAll(client.observable().toBlocking().first().first);
-                for(int i = client.nextPage; i < client.lastPage; i++) {
-                    client = new GetReferencesClient(InfoUtils.createRepoInfo(repository), i);
-                    allRefs.addAll(client.observable().toBlocking().first().first);
-                }
+                    @Override
+                    public void onCompleted() {
+                        Map<String, GitReference> loadedRefs = new TreeMap<>(CASE_INSENSITIVE_ORDER);
 
-                Map<String, GitReference> loadedRefs = new TreeMap<>(CASE_INSENSITIVE_ORDER);
+                        for (GitReference ref : allRefs)
+                            if (RefUtils.isValid(ref))
+                                loadedRefs.put(ref.ref, ref);
 
-                for (GitReference ref : allRefs)
-                    if (RefUtils.isValid(ref))
-                        loadedRefs.put(ref.ref, ref);
+                        refs = loadedRefs;
+                        show(selectedRef);
+                    }
 
-                refs = loadedRefs;
-                return allRefs;
-            }
-
-            @Override
-            protected void onSuccess(List<GitReference> all) throws Exception {
-                super.onSuccess(all);
-
-                show(selectedRef);
-            }
-
-            @Override
-            protected void onException(Exception e) throws RuntimeException {
-                super.onException(e);
-
-                Log.d(TAG, "Exception loading references", e);
-                ToastUtils.show(activity, e, R.string.error_refs_load);
-            }
-
-            @Override
-            public void execute() {
-                showIndeterminate(R.string.loading_refs);
-
-                super.execute();
-            }
-        }.execute();
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        Log.d(TAG, "Exception loading references", e);
+                        ToastUtils.show(activity, e, R.string.error_refs_load);
+                    }
+                }.start());
     }
 
     /**

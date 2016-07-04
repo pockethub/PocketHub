@@ -33,7 +33,7 @@ import com.alorma.github.sdk.bean.dto.response.Milestone;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.R;
-import com.github.pockethub.ui.DialogFragmentActivity;
+import com.github.pockethub.ui.BaseActivity;
 import com.github.pockethub.ui.SingleChoiceDialogFragment;
 
 import java.util.ArrayList;
@@ -106,7 +106,7 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
      * @param choices
      * @param selectedChoice
      */
-    public static void show(final DialogFragmentActivity activity,
+    public static void show(final BaseActivity activity,
             final int requestCode, final String title, final String message,
             ArrayList<Milestone> choices, final int selectedChoice) {
         show(activity, requestCode, title, message, choices, selectedChoice,

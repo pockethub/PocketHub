@@ -35,7 +35,7 @@ import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
 import com.github.pockethub.core.issue.IssueFilter;
-import com.github.pockethub.ui.DialogFragmentActivity;
+import com.github.pockethub.ui.BaseActivity;
 import com.github.pockethub.util.AvatarLoader;
 import com.github.pockethub.util.InfoUtils;
 import com.google.inject.Inject;
@@ -47,7 +47,7 @@ import static com.github.pockethub.Intents.EXTRA_ISSUE_FILTER;
 /**
  * Activity to create or edit an issues filter for a repository
  */
-public class EditIssuesFilterActivity extends DialogFragmentActivity {
+public class EditIssuesFilterActivity extends BaseActivity {
 
     /**
      * Create intent for creating an issue filter for the given repository

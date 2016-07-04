@@ -31,7 +31,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
-import com.github.pockethub.ui.DialogFragmentActivity;
+import com.github.pockethub.ui.BaseActivity;
 import com.github.pockethub.ui.SingleChoiceDialogFragment;
 import com.github.pockethub.util.AvatarLoader;
 import com.google.inject.Inject;
@@ -100,7 +100,7 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
      * @param choices
      * @param selectedChoice
      */
-    public static void show(final DialogFragmentActivity activity,
+    public static void show(final BaseActivity activity,
             final int requestCode, final String title, final String message,
             ArrayList<User> choices, final int selectedChoice) {
         show(activity, requestCode, title, message, choices, selectedChoice,

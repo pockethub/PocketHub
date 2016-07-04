@@ -15,35 +15,44 @@
  */
 package com.github.pockethub.ui.issue;
 
-import android.accounts.Account;
-
 import com.alorma.github.sdk.bean.dto.request.EditIssueLabelsRequestDTO;
 import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.alorma.github.sdk.bean.dto.response.Label;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.github.pockethub.R;
 import com.github.pockethub.core.issue.IssueStore;
-import com.github.pockethub.ui.DialogFragmentActivity;
-import com.github.pockethub.ui.ProgressDialogTask;
+import com.github.pockethub.rx.ProgressObserverAdapter;
+import com.github.pockethub.ui.BaseActivity;
 import com.google.inject.Inject;
 
+import java.io.IOException;
 import java.util.List;
+
+import roboguice.RoboGuice;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static com.github.pockethub.RequestCodes.ISSUE_LABELS_UPDATE;
 
 /**
  * Task to edit labels
  */
-public class EditLabelsTask extends ProgressDialogTask<Issue> {
+public class EditLabelsTask implements Observable.OnSubscribe<Issue> {
 
     @Inject
     private IssueStore store;
 
     private final LabelsDialog labelsDialog;
 
+    private final BaseActivity activity;
+
     private final Repo repositoryId;
 
     private final int issueNumber;
+
+    private final ProgressObserverAdapter<Issue> observer;
 
     private Label[] labels;
 
@@ -54,14 +63,32 @@ public class EditLabelsTask extends ProgressDialogTask<Issue> {
      * @param repositoryId
      * @param issueNumber
      */
-    public EditLabelsTask(final DialogFragmentActivity activity,
-            final Repo repositoryId, final int issueNumber) {
-        super(activity);
+    public EditLabelsTask(final BaseActivity activity,
+                          final Repo repositoryId, final int issueNumber,
+                          final ProgressObserverAdapter<Issue> observer) {
 
+        this.activity = activity;
         this.repositoryId = repositoryId;
         this.issueNumber = issueNumber;
+        this.observer = observer;
+        observer.setContent(R.string.updating_labels);
         labelsDialog = new LabelsDialog(activity, ISSUE_LABELS_UPDATE,
                 repositoryId);
+        RoboGuice.injectMembers(activity, this);
+    }
+
+    @Override
+    public void call(Subscriber<? super Issue> subscriber) {
+        try {
+            EditIssueLabelsRequestDTO requestDTO = new EditIssueLabelsRequestDTO();
+            requestDTO.labels = new String[labels.length];
+            for (int i = 0; i < labels.length; i++)
+                requestDTO.labels[i] = labels[i].name;
+
+            subscriber.onNext(store.editIssue(repositoryId, issueNumber, requestDTO));
+        } catch (IOException e) {
+            subscriber.onError(e);
+        }
     }
 
     /**
@@ -83,21 +110,13 @@ public class EditLabelsTask extends ProgressDialogTask<Issue> {
      * @return this task
      */
     public EditLabelsTask edit(Label[] labels) {
-        showIndeterminate(R.string.updating_labels);
-
         this.labels = labels;
 
-        execute();
+        Observable.create(this)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(activity.<Issue>bindToLifecycle())
+                .subscribe(observer);
         return this;
-    }
-
-    @Override
-    public Issue run(Account account) throws Exception {
-        EditIssueLabelsRequestDTO requestDTO = new EditIssueLabelsRequestDTO();
-        requestDTO.labels = new String[labels.length];
-        for (int i = 0; i < labels.length; i++)
-            requestDTO.labels[i] = labels[i].name;
-
-        return store.editIssue(repositoryId, issueNumber, requestDTO);
     }
 }

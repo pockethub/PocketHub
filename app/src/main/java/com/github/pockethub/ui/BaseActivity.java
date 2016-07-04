@@ -29,9 +29,10 @@ import rx.Observable;
 import rx.subjects.BehaviorSubject;
 
 /**
- * Base activity
+ * Activity that display dialogs
  */
-public class BaseActivity extends RoboAppCompatActivity implements ActivityLifecycleProvider {
+public abstract class BaseActivity extends
+        RoboAppCompatActivity implements DialogResultListener, ActivityLifecycleProvider {
 
     /**
      * Finder bound to this activity's view
@@ -39,12 +40,14 @@ public class BaseActivity extends RoboAppCompatActivity implements ActivityLifec
     protected ViewFinder finder;
     private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
 
+    @CallSuper
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         lifecycleSubject.onNext(ActivityEvent.CREATE);
         finder = new ViewFinder(this);
     }
+
 
     @Override
     public final Observable<ActivityEvent> lifecycle() {
@@ -100,7 +103,7 @@ public class BaseActivity extends RoboAppCompatActivity implements ActivityLifec
      * Get intent extra
      *
      * @param name
-     * @return serializable
+     * @return parcelable
      */
     @SuppressWarnings("unchecked")
     protected <V extends Parcelable> V getParcelableExtra(final String name) {
@@ -121,6 +124,26 @@ public class BaseActivity extends RoboAppCompatActivity implements ActivityLifec
      * Get intent extra
      *
      * @param name
+     * @return int array
+     */
+    protected int[] getIntArrayExtra(final String name) {
+        return getIntent().getIntArrayExtra(name);
+    }
+
+    /**
+     * Get intent extra
+     *
+     * @param name
+     * @return boolean array
+     */
+    protected boolean[] getBooleanArrayExtra(final String name) {
+        return getIntent().getBooleanArrayExtra(name);
+    }
+
+    /**
+     * Get intent extra
+     *
+     * @param name
      * @return string
      */
     protected String getStringExtra(final String name) {
@@ -135,5 +158,20 @@ public class BaseActivity extends RoboAppCompatActivity implements ActivityLifec
      */
     protected String[] getStringArrayExtra(final String name) {
         return getIntent().getStringArrayExtra(name);
+    }
+
+    /**
+     * Get intent extra
+     *
+     * @param name
+     * @return char sequence array
+     */
+    protected CharSequence[] getCharSequenceArrayExtra(final String name) {
+        return getIntent().getCharSequenceArrayExtra(name);
+    }
+
+    @Override
+    public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
+        // Intentionally left blank
     }
 }

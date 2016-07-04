@@ -16,11 +16,9 @@
 package com.github.pockethub.tests.user;
 
 import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.test.AndroidTestCase;
 
 import com.alorma.github.sdk.bean.dto.response.User;
-import com.github.pockethub.accounts.GitHubAccount;
 import com.github.pockethub.core.user.UserComparator;
 
 /**
@@ -32,8 +30,7 @@ public class UserComparatorTest extends AndroidTestCase {
      * Test sorting of users that match login
      */
     public void testLoginMatch() {
-        GitHubAccount account = new GitHubAccount(new Account("m", "t"),
-                AccountManager.get(getContext()));
+        Account account = new Account("m", "t");
         UserComparator comparator = new UserComparator(account);
 
         assertTrue(comparator.compare(createUser("m"),
@@ -54,8 +51,7 @@ public class UserComparatorTest extends AndroidTestCase {
      * Test sorting of users that don't match login
      */
     public void testNoLoginMatch() {
-        GitHubAccount account = new GitHubAccount(new Account("m", "t"),
-                AccountManager.get(getContext()));
+        Account account = new Account("m", "t");
         UserComparator comparator = new UserComparator(account);
 
         assertTrue(comparator.compare(createUser("a"),

@@ -15,35 +15,46 @@
  */
 package com.github.pockethub.ui.issue;
 
-import android.accounts.Account;
-
 import com.alorma.github.sdk.bean.dto.request.EditIssueMilestoneRequestDTO;
 import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.alorma.github.sdk.bean.dto.response.Milestone;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.github.pockethub.R;
 import com.github.pockethub.core.issue.IssueStore;
-import com.github.pockethub.ui.DialogFragmentActivity;
-import com.github.pockethub.ui.ProgressDialogTask;
+import com.github.pockethub.rx.ObserverAdapter;
+import com.github.pockethub.rx.ProgressObserverAdapter;
+import com.github.pockethub.ui.BaseActivity;
 import com.google.inject.Inject;
+
+import java.io.IOException;
+
+import roboguice.RoboGuice;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static com.github.pockethub.RequestCodes.ISSUE_MILESTONE_UPDATE;
 
 /**
  * Task to edit a milestone
  */
-public class EditMilestoneTask extends ProgressDialogTask<Issue> {
+public class EditMilestoneTask implements Observable.OnSubscribe<Issue> {
 
     @Inject
     private IssueStore store;
 
     private final MilestoneDialog milestoneDialog;
 
+    private final BaseActivity activity;
+
     private final Repo repositoryId;
 
     private final int issueNumber;
 
     private int milestoneNumber;
+
+    private final ProgressObserverAdapter<Issue> observer;
 
     /**
      * Create task to edit a milestone
@@ -52,28 +63,34 @@ public class EditMilestoneTask extends ProgressDialogTask<Issue> {
      * @param repositoryId
      * @param issueNumber
      */
-    public EditMilestoneTask(final DialogFragmentActivity activity,
-            final Repo repositoryId, final int issueNumber) {
-        super(activity);
-
+    public EditMilestoneTask(final BaseActivity activity,
+                             final Repo repositoryId, final int issueNumber,
+                             final ProgressObserverAdapter<Issue> observer) {
+        this.activity = activity;
         this.repositoryId = repositoryId;
         this.issueNumber = issueNumber;
+        this.observer = observer;
+        observer.setContent(R.string.updating_milestone);
         milestoneDialog = new MilestoneDialog(activity, ISSUE_MILESTONE_UPDATE,
                 repositoryId);
+        RoboGuice.injectMembers(activity, this);
     }
 
     @Override
-    protected Issue run(Account account) throws Exception {
-        EditIssueMilestoneRequestDTO editedIssue = new EditIssueMilestoneRequestDTO();
-        editedIssue.milestone = milestoneNumber;
-        return store.editIssue(repositoryId, issueNumber, editedIssue);
+    public void call(Subscriber<? super Issue> subscriber) {
+        try {
+            EditIssueMilestoneRequestDTO editedIssue = new EditIssueMilestoneRequestDTO();
+            editedIssue.milestone = milestoneNumber;
+            subscriber.onNext(store.editIssue(repositoryId, issueNumber, editedIssue));
+        } catch (IOException e) {
+            subscriber.onError(e);
+        }
     }
 
     /**
      * Prompt for milestone selection
      *
-     * @param milestone
-     *            current milestone
+     * @param milestone current milestone
      * @return this task
      */
     public EditMilestoneTask prompt(Milestone milestone) {
@@ -89,12 +106,12 @@ public class EditMilestoneTask extends ProgressDialogTask<Issue> {
      */
     public EditMilestoneTask edit(Milestone milestone) {
         if (milestone != null)
-            milestoneNumber = milestone.number;
-            milestoneNumber = -1;
 
-        showIndeterminate(R.string.updating_milestone);
-
-        super.execute();
+            Observable.create(this)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(activity.<Issue>bindToLifecycle())
+                .subscribe(observer);
 
         return this;
     }

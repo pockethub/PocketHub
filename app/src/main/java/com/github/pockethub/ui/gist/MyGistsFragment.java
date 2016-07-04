@@ -15,12 +15,12 @@
  */
 package com.github.pockethub.ui.gist;
 
+import android.accounts.Account;
 import android.content.Intent;
 
 import com.alorma.github.sdk.bean.dto.response.Gist;
 import com.alorma.github.sdk.services.client.GithubListClient;
 import com.alorma.github.sdk.services.gists.UserGistsClient;
-import com.github.pockethub.accounts.GitHubAccount;
 import com.github.pockethub.core.PageIterator;
 import com.github.pockethub.core.ResourcePager;
 import com.github.pockethub.core.gist.GistPager;
@@ -39,7 +39,7 @@ import static com.github.pockethub.RequestCodes.GIST_VIEW;
 public class MyGistsFragment extends GistsFragment {
 
     @Inject
-    private Provider<GitHubAccount> accountProvider;
+    private Provider<Account> accountProvider;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -61,7 +61,7 @@ public class MyGistsFragment extends GistsFragment {
                 return new PageIterator<>(new PageIterator.GitHubRequest<List<Gist>>() {
                     @Override
                     public GithubListClient<List<Gist>> execute(int page) {
-                        return new UserGistsClient(accountProvider.get().getUsername(), page);
+                        return new UserGistsClient(accountProvider.get().name, page);
                     }
                 }, page);
             }

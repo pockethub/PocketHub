@@ -44,7 +44,7 @@ import com.github.pockethub.core.ResourcePager;
 import com.github.pockethub.core.commit.CommitPager;
 import com.github.pockethub.core.commit.CommitStore;
 import com.github.pockethub.core.ref.RefUtils;
-import com.github.pockethub.ui.DialogFragmentActivity;
+import com.github.pockethub.ui.BaseActivity;
 import com.github.pockethub.ui.DialogResultListener;
 import com.github.pockethub.ui.ItemListFragment;
 import com.github.pockethub.ui.PagedItemFragment;
@@ -242,7 +242,7 @@ public class CommitListFragment extends PagedItemFragment<Commit>
             return;
 
         if (dialog == null)
-            dialog = new RefDialog((DialogFragmentActivity) getActivity(),
+            dialog = new RefDialog((BaseActivity) getActivity(),
                     REF_UPDATE, repository);
         GitReference reference = new GitReference();
         reference.ref = ref;

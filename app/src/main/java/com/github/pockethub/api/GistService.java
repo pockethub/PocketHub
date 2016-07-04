@@ -20,5 +20,5 @@ public interface GistService {
     Observable<Response> unstarGist(@Path("id") String id);
 
     @DELETE("/gists/{id}")
-    Observable<Response> deleteGist(String id);
+    Observable<Response> deleteGist(@Path("id") String id);
 }

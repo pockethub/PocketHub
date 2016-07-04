@@ -21,6 +21,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,15 +38,18 @@ import com.alorma.github.sdk.bean.dto.response.Gist;
 import com.alorma.github.sdk.bean.dto.response.GistFile;
 import com.alorma.github.sdk.bean.dto.response.GithubComment;
 import com.alorma.github.sdk.bean.dto.response.User;
+import com.alorma.github.sdk.services.gists.DeleteGistCommentClient;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.R;
 import com.github.pockethub.accounts.AccountUtils;
+import com.github.pockethub.api.StarGistClient;
+import com.github.pockethub.api.UnStarGistClient;
 import com.github.pockethub.core.OnLoadListener;
 import com.github.pockethub.core.gist.FullGist;
 import com.github.pockethub.core.gist.GistStore;
 import com.github.pockethub.core.gist.RefreshGistTask;
-import com.github.pockethub.core.gist.StarGistTask;
-import com.github.pockethub.core.gist.UnstarGistTask;
+import com.github.pockethub.rx.ObserverAdapter;
+import com.github.pockethub.rx.ProgressObserverAdapter;
 import com.github.pockethub.ui.ConfirmDialogFragment;
 import com.github.pockethub.ui.DialogFragment;
 import com.github.pockethub.ui.HeaderFooterListAdapter;
@@ -68,6 +72,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import retrofit.client.Response;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -81,6 +90,8 @@ import static com.github.pockethub.RequestCodes.COMMENT_EDIT;
  * Activity to display an existing Gist
  */
 public class GistFragment extends DialogFragment implements OnItemClickListener {
+
+    private static final String TAG = "GistFragment";
 
     private String gistId;
 
@@ -155,12 +166,14 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         progress = finder.find(R.id.pb_loading);
 
         Activity activity = getActivity();
-        User user = gist.user;
+        User user = gist.owner;
         String userName = null;
-        if(user != null) userName = user.login;
+        if(user != null)
+            userName = user.login;
+
         adapter = new HeaderFooterListAdapter<>(list,
                 new CommentListAdapter(activity.getLayoutInflater(), null, avatars,
-                        imageGetter, editCommentListener, deleteCommentListener, userName, false, null));
+                        imageGetter, editCommentListener, deleteCommentListener, userName, isOwner(), null));
         list.setAdapter(adapter);
     }
 
@@ -189,7 +202,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     private boolean isOwner() {
         if (gist == null)
             return false;
-        User user = gist.user;
+        User user = gist.owner;
         if (user == null)
             return false;
         String login = AccountUtils.getLogin(getActivity());
@@ -276,31 +289,30 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
     private void starGist() {
         ToastUtils.show(getActivity(), R.string.starring_gist);
+        new StarGistClient(gistId)
+                .observable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<Boolean>bindToLifecycle())
+                .subscribe(new ObserverAdapter<Boolean>() {
 
-        new StarGistTask(getActivity(), gistId) {
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        starred = true;
+                    }
 
-            @Override
-            protected void onSuccess(Gist gist) throws Exception {
-                super.onSuccess(gist);
-
-                starred = true;
-            }
-
-            @Override
-            protected void onException(Exception e) throws RuntimeException {
-                super.onException(e);
-
-                ToastUtils.show((Activity) getContext(), e.getMessage());
-            }
-
-        }.execute();
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.show((Activity) getContext(), e.getMessage());
+                    }
+                });
     }
 
     private void shareGist() {
         StringBuilder subject = new StringBuilder("Gist ");
         String id = gist.id;
         subject.append(id);
-        User user = gist.user;
+        User user = gist.owner;
         if (user != null && !TextUtils.isEmpty(user.login))
             subject.append(" by ").append(user.login);
         startActivity(ShareUtils.create(subject, "https://gist.github.com/"
@@ -309,23 +321,21 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
     private void unstarGist() {
         ToastUtils.show(getActivity(), R.string.unstarring_gist);
+        new UnStarGistClient(gistId).observable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<Boolean>bindToLifecycle())
+                .subscribe(new ObserverAdapter<Boolean>() {
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        starred = false;
+                    }
 
-        new UnstarGistTask(getActivity(), gistId) {
-
-            @Override
-            protected void onSuccess(Gist gist) throws Exception {
-                super.onSuccess(gist);
-
-                starred = false;
-            }
-
-            protected void onException(Exception e) throws RuntimeException {
-                super.onException(e);
-
-                ToastUtils.show((Activity) getContext(), e.getMessage());
-            }
-
-        }.execute();
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.show((Activity) getContext(), e.getMessage());
+                    }
+                });
     }
 
     @Override
@@ -401,35 +411,34 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     }
 
     private void refreshGist() {
-        new RefreshGistTask(getActivity(), gistId, imageGetter) {
+        Observable.create(new RefreshGistTask(getActivity(), gistId, imageGetter))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<FullGist>bindToLifecycle())
+                .subscribe(new ObserverAdapter<FullGist>() {
 
-            @Override
-            protected void onException(Exception e) throws RuntimeException {
-                super.onException(e);
-                ToastUtils.show(getActivity(), e, R.string.error_gist_load);
-            }
+                    @Override
+                    public void onNext(FullGist fullGist) {
+                        if (!isUsable())
+                            return;
 
-            @SuppressWarnings("unchecked")
-            @Override
-            protected void onSuccess(FullGist fullGist) throws Exception {
-                super.onSuccess(fullGist);
+                        FragmentActivity activity = getActivity();
+                        if (activity instanceof OnLoadListener)
+                            ((OnLoadListener<Gist>) activity)
+                                    .loaded(fullGist.getGist());
 
-                if (!isUsable())
-                    return;
+                        starred = fullGist.isStarred();
+                        loadFinished = true;
+                        gist = fullGist.getGist();
+                        comments = fullGist;
+                        updateList(fullGist.getGist(), fullGist);
+                    }
 
-                FragmentActivity activity = getActivity();
-                if (activity instanceof OnLoadListener)
-                    ((OnLoadListener<Gist>) activity)
-                            .loaded(fullGist.getGist());
-
-                starred = fullGist.isStarred();
-                loadFinished = true;
-                gist = fullGist.getGist();
-                comments = fullGist;
-                updateList(fullGist.getGist(), fullGist);
-            }
-
-        }.execute();
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.show(getActivity(), e, R.string.error_gist_load);
+                    }
+                });
     }
 
     @Override
@@ -449,26 +458,37 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         switch (requestCode) {
         case COMMENT_DELETE:
             final GithubComment comment = arguments.getParcelable(EXTRA_COMMENT);
-            new DeleteCommentTask(getActivity(), gist.id, comment) {
-                @Override
-                protected void onSuccess(GithubComment comment) throws Exception {
-                    super.onSuccess(comment);
+            new DeleteGistCommentClient(comment.id, gistId).observable()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .compose(this.<Response>bindToLifecycle())
+                    .subscribe(new ProgressObserverAdapter<Response>(getActivity(), R.string.deleting_comment) {
 
-                    // Update comment list
-                    if (comments != null && comment != null) {
-                        int position = Collections.binarySearch(comments,
-                                comment, new Comparator<GithubComment>() {
-                                    public int compare(GithubComment lhs, GithubComment rhs) {
-                                        return String.valueOf(lhs.id)
-                                                .compareTo(rhs.id);
-                                    }
-                                });
-                        comments.remove(position);
-                        updateList(gist, comments);
-                    } else
-                        refreshGist();
-                }
-            }.start();
+                        @Override
+                        public void onNext(Response response) {
+                            super.onNext(response);
+                            // Update comment list
+                            if (comments != null) {
+                                int position = Collections.binarySearch(comments,
+                                        comment, new Comparator<GithubComment>() {
+                                            public int compare(GithubComment lhs, GithubComment rhs) {
+                                                return String.valueOf(lhs.id)
+                                                        .compareTo(rhs.id);
+                                            }
+                                        });
+                                comments.remove(position);
+                                updateList(gist, comments);
+                            } else
+                                refreshGist();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            super.onError(e);
+                            Log.d(TAG, "Exception deleting comment on gist", e);
+                            ToastUtils.show((Activity) getContext(), e.getMessage());
+                        }
+                    }.start());
             break;
         }
     }

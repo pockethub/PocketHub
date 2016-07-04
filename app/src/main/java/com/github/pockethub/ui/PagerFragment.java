@@ -22,7 +22,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public abstract class PagerFragment extends Fragment implements
+public abstract class PagerFragment extends DialogFragment implements
     ViewPager.OnPageChangeListener {
 
     /**

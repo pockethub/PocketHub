@@ -15,16 +15,16 @@
  */
 package com.github.pockethub;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.Context;
 
-import com.github.pockethub.accounts.AccountScope;
 import com.github.pockethub.core.commit.CommitStore;
 import com.github.pockethub.core.gist.GistStore;
 import com.github.pockethub.core.issue.IssueStore;
 import com.github.pockethub.persistence.OrganizationRepositories;
 import com.github.pockethub.sync.SyncCampaign;
 import com.google.inject.AbstractModule;
-import com.google.inject.Provider;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.name.Named;
@@ -50,7 +50,13 @@ public class PocketHubModule extends AbstractModule {
         install(new FactoryModuleBuilder().build(SyncCampaign.Factory.class));
         install(new FactoryModuleBuilder()
                 .build(OrganizationRepositories.Factory.class));
-        install(AccountScope.module());
+    }
+
+    @Provides
+    Account account(Context context){
+        AccountManager accountManager = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
+        Account[] accounts = accountManager.getAccountsByType(context.getString(R.string.account_type));
+        return accounts[0];
     }
 
     @Provides

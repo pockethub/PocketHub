@@ -19,7 +19,6 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountsException;
 import android.app.Activity;
-import android.content.Context;
 
 import com.github.kevinsawicki.wishlist.AsyncLoader;
 import com.google.inject.Inject;
@@ -37,27 +36,23 @@ import roboguice.inject.ContextScope;
  */
 public abstract class AuthenticatedUserLoader<D> extends AsyncLoader<D> {
 
-    @Inject
-    private ContextScope contextScope;
-
-    @Inject
-    private AccountScope accountScope;
-
     /**
      * Activity using this loader
      */
-    @Inject
     protected Activity activity;
+
+    @Inject
+    private ContextScope contextScope;
 
     /**
      * Create loader for context
      *
-     * @param context
+     * @param activity
      */
-    public AuthenticatedUserLoader(final Context context) {
-        super(context);
-
-        RoboGuice.injectMembers(context, this);
+    public AuthenticatedUserLoader(final Activity activity) {
+        super(activity);
+        this.activity = activity;
+        RoboGuice.injectMembers(activity, this);
     }
 
     /**
@@ -79,16 +74,11 @@ public abstract class AuthenticatedUserLoader<D> extends AsyncLoader<D> {
             return getAccountFailureData();
         }
 
-        accountScope.enterWith(account, manager);
+        contextScope.enter(getContext());
         try {
-            contextScope.enter(getContext());
-            try {
-                return load(account);
-            } finally {
-                contextScope.exit(getContext());
-            }
+            return load(account);
         } finally {
-            accountScope.exit();
+            contextScope.exit(getContext());
         }
     }
 

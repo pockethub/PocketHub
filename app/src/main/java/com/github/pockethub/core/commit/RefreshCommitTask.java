@@ -16,6 +16,7 @@
 package com.github.pockethub.core.commit;
 
 import android.accounts.Account;
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -24,20 +25,22 @@ import com.alorma.github.sdk.bean.dto.response.CommitComment;
 import com.alorma.github.sdk.bean.dto.response.GitCommit;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.services.commit.GetCommitCommentsClient;
-import com.github.pockethub.accounts.AuthenticatedUserTask;
 import com.github.pockethub.util.HtmlUtils;
 import com.github.pockethub.util.HttpImageGetter;
 import com.github.pockethub.util.InfoUtils;
 import com.google.inject.Inject;
 
+import java.io.IOException;
 import java.util.List;
+
+import roboguice.RoboGuice;
+import rx.Observable;
+import rx.Subscriber;
 
 /**
  * Task to load a commit by SHA-1 id
  */
-public class RefreshCommitTask extends AuthenticatedUserTask<FullCommit> {
-
-    private static final String TAG = "RefreshCommitTask";
+public class RefreshCommitTask implements Observable.OnSubscribe<FullCommit> {
 
     @Inject
     private CommitStore store;
@@ -49,41 +52,37 @@ public class RefreshCommitTask extends AuthenticatedUserTask<FullCommit> {
     private final HttpImageGetter imageGetter;
 
     /**
-     * @param context
      * @param repository
      * @param id
      * @param imageGetter
      */
-    public RefreshCommitTask(Context context, Repo repository,
-            String id, HttpImageGetter imageGetter) {
-        super(context);
+    public RefreshCommitTask(Activity activity, Repo repository,
+                             String id, HttpImageGetter imageGetter) {
 
         this.repository = repository;
         this.id = id;
         this.imageGetter = imageGetter;
+        RoboGuice.injectMembers(activity, this);
     }
 
     @Override
-    protected FullCommit run(Account account) throws Exception {
-        Commit commit = store.refreshCommit(repository, id);
-        GitCommit rawCommit = commit.commit;
-        if (rawCommit != null && rawCommit.comment_count > 0) {
-            List<CommitComment> comments = new GetCommitCommentsClient(InfoUtils.createCommitInfo(repository, commit.sha))
-                    .observable().toBlocking().first().first;
-            for (CommitComment comment : comments) {
-                String formatted = HtmlUtils.format(comment.body_html).toString();
-                comment.body_html = formatted;
-                imageGetter.encode(comment, formatted);
-            }
-            return new FullCommit(commit, comments);
-        } else
-            return new FullCommit(commit);
-    }
-
-    @Override
-    protected void onException(Exception e) throws RuntimeException {
-        super.onException(e);
-
-        Log.d(TAG, "Exception loading commit", e);
+    public void call(Subscriber<? super FullCommit> subscriber) {
+        try {
+            Commit commit = store.refreshCommit(repository, id);
+            GitCommit rawCommit = commit.commit;
+            if (rawCommit != null && rawCommit.comment_count > 0) {
+                List<CommitComment> comments = new GetCommitCommentsClient(InfoUtils.createCommitInfo(repository, commit.sha))
+                        .observable().toBlocking().first().first;
+                for (CommitComment comment : comments) {
+                    String formatted = HtmlUtils.format(comment.body_html).toString();
+                    comment.body_html = formatted;
+                    imageGetter.encode(comment, formatted);
+                }
+                subscriber.onNext(new FullCommit(commit, comments));
+            } else
+                subscriber.onNext(new FullCommit(commit));
+        }catch (IOException e){
+            subscriber.onError(e);
+        }
     }
 }

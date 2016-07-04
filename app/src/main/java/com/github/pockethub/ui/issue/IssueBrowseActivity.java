@@ -24,7 +24,7 @@ import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.github.pockethub.Intents.Builder;
 import com.github.pockethub.R;
 import com.github.pockethub.core.issue.IssueFilter;
-import com.github.pockethub.ui.DialogFragmentActivity;
+import com.github.pockethub.ui.BaseActivity;
 import com.github.pockethub.util.AvatarLoader;
 import com.google.inject.Inject;
 
@@ -36,7 +36,7 @@ import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
 /**
  * Activity for browsing a list of issues scoped to a single {@link IssueFilter}
  */
-public class IssueBrowseActivity extends DialogFragmentActivity {
+public class IssueBrowseActivity extends BaseActivity {
 
     /**
      * Create intent to browse the filtered issues

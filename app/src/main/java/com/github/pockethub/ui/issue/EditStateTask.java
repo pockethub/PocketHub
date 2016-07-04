@@ -15,17 +15,24 @@
  */
 package com.github.pockethub.ui.issue;
 
-import android.accounts.Account;
-
 import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.alorma.github.sdk.bean.dto.response.IssueState;
 import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.github.pockethub.R;
 import com.github.pockethub.core.issue.IssueStore;
+import com.github.pockethub.rx.ObserverAdapter;
+import com.github.pockethub.rx.ProgressObserverAdapter;
 import com.github.pockethub.ui.ConfirmDialogFragment;
-import com.github.pockethub.ui.DialogFragmentActivity;
-import com.github.pockethub.ui.ProgressDialogTask;
+import com.github.pockethub.ui.BaseActivity;
 import com.google.inject.Inject;
+
+import java.io.IOException;
+
+import roboguice.RoboGuice;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static com.github.pockethub.RequestCodes.ISSUE_CLOSE;
 import static com.github.pockethub.RequestCodes.ISSUE_REOPEN;
@@ -33,14 +40,16 @@ import static com.github.pockethub.RequestCodes.ISSUE_REOPEN;
 /**
  * Task to close or reopen an issue
  */
-public class EditStateTask extends ProgressDialogTask<Issue> {
+public class EditStateTask implements Observable.OnSubscribe<Issue> {
 
     @Inject
     private IssueStore store;
 
+    private final BaseActivity activity;
     private final Repo repositoryId;
 
     private final int issueNumber;
+    private final ProgressObserverAdapter<Issue> observer;
 
     private boolean close;
 
@@ -51,12 +60,24 @@ public class EditStateTask extends ProgressDialogTask<Issue> {
      * @param repositoryId
      * @param issueNumber
      */
-    public EditStateTask(final DialogFragmentActivity activity,
-            final Repo repositoryId, final int issueNumber) {
-        super(activity);
-
+    public EditStateTask(final BaseActivity activity,
+                         final Repo repositoryId, final int issueNumber,
+                         final ProgressObserverAdapter<Issue> observer) {
+        this.activity = activity;
         this.repositoryId = repositoryId;
         this.issueNumber = issueNumber;
+        this.observer = observer;
+        RoboGuice.injectMembers(activity, this);
+    }
+
+    @Override
+    public void call(Subscriber<? super Issue> subscriber) {
+        try {
+            IssueState state = close ? IssueState.closed : IssueState.open;
+            subscriber.onNext(store.changeState(repositoryId, issueNumber, state));
+        } catch (IOException e) {
+            subscriber.onError(e);
+        }
     }
 
     /**
@@ -67,25 +88,13 @@ public class EditStateTask extends ProgressDialogTask<Issue> {
      */
     public EditStateTask confirm(boolean close) {
         if (close)
-            ConfirmDialogFragment.show((DialogFragmentActivity) getContext(),
-                    ISSUE_CLOSE, getString(R.string.issue_confirm_close_title),
-                    getString(R.string.issue_confirm_close_message));
+            ConfirmDialogFragment.show(activity, ISSUE_CLOSE, activity.getString(R.string.issue_confirm_close_title),
+                    activity.getString(R.string.issue_confirm_close_message));
         else
-            ConfirmDialogFragment.show((DialogFragmentActivity) getContext(),
-                    ISSUE_REOPEN, getString(R.string.issue_confirm_reopen_title),
-                    getString(R.string.issue_confirm_reopen_message));
+            ConfirmDialogFragment.show(activity, ISSUE_REOPEN, activity.getString(R.string.issue_confirm_reopen_title),
+                    activity.getString(R.string.issue_confirm_reopen_message));
 
         return this;
-    }
-
-    @Override
-    protected Issue run(Account account) throws Exception {
-        IssueState state;
-        if (close)
-            state = IssueState.closed;
-        else
-            state = IssueState.open;
-        return store.changeState(repositoryId, issueNumber, state);
     }
 
     /**
@@ -95,14 +104,17 @@ public class EditStateTask extends ProgressDialogTask<Issue> {
      * @return this task
      */
     public EditStateTask edit(boolean close) {
-        if (close)
-            showIndeterminate(R.string.closing_issue);
-        else
-            showIndeterminate(R.string.reopening_issue);
-
+        int message = close ? R.string.closing_issue : R.string.reopening_issue;
         this.close = close;
+        observer.setContent(message);
+        observer.start();
 
-        execute();
+        Observable.create(this)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(activity.<Issue>bindToLifecycle())
+                .subscribe(observer);
+
         return this;
     }
 }

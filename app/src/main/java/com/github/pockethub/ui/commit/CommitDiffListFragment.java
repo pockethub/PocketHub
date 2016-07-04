@@ -49,11 +49,13 @@ import com.alorma.github.sdk.bean.dto.response.ShaUrl;
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.R;
+import com.github.pockethub.core.code.FullTree;
 import com.github.pockethub.core.commit.CommitStore;
 import com.github.pockethub.core.commit.CommitUtils;
 import com.github.pockethub.core.commit.FullCommit;
 import com.github.pockethub.core.commit.FullCommitFile;
 import com.github.pockethub.core.commit.RefreshCommitTask;
+import com.github.pockethub.rx.ObserverAdapter;
 import com.github.pockethub.ui.DialogFragment;
 import com.github.pockethub.ui.HeaderFooterListAdapter;
 import com.github.pockethub.ui.StyledText;
@@ -67,6 +69,10 @@ import com.google.inject.Inject;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
 import static android.graphics.Paint.UNDERLINE_TEXT_FLAG;
@@ -231,34 +237,27 @@ public class CommitDiffListFragment extends DialogFragment implements
     }
 
     private void refreshCommit() {
-        new RefreshCommitTask(getActivity(), repository, base,
-                commentImageGetter) {
+        Observable.create(new RefreshCommitTask(getActivity(), repository, base, commentImageGetter))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<FullCommit>bindToLifecycle())
+                .subscribe(new ObserverAdapter<FullCommit>() {
+                    @Override
+                    public void onNext(FullCommit full) {
+                        List<CommitFile> files = full.getCommit().files;
+                        diffStyler.setFiles(files);
+                        if (files != null)
+                            Collections.sort(files, new CommitFileComparator());
 
-            @Override
-            protected FullCommit run(Account account) throws Exception {
-                FullCommit full = super.run(account);
+                        updateList(full.getCommit(), full, full.getFiles());
+                    }
 
-                List<CommitFile> files = full.getCommit().files;
-                diffStyler.setFiles(files);
-                if (files != null)
-                    Collections.sort(files, new CommitFileComparator());
-                return full;
-            }
-
-            @Override
-            protected void onSuccess(FullCommit commit) throws Exception {
-                super.onSuccess(commit);
-                updateList(commit.getCommit(), commit, commit.getFiles());
-            }
-
-            @Override
-            protected void onException(Exception e) throws RuntimeException {
-                super.onException(e);
-                ToastUtils.show(getActivity(), e, R.string.error_commit_load);
-                ViewUtils.setGone(progress, true);
-            }
-
-        }.execute();
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.show(getActivity(), e, R.string.error_commit_load);
+                        ViewUtils.setGone(progress, true);
+                    }
+                });
     }
 
     private boolean isDifferentCommitter(final String author,

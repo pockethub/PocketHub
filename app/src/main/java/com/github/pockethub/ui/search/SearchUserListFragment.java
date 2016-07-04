@@ -23,19 +23,23 @@ import android.widget.ListView;
 import com.alorma.github.sdk.bean.dto.response.User;
 import com.alorma.github.sdk.services.client.GithubListClient;
 import com.alorma.github.sdk.services.search.UsersSearchClient;
+import com.alorma.github.sdk.services.user.RequestUserClient;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.R;
 import com.github.pockethub.accounts.AccountUtils;
 import com.github.pockethub.core.PageIterator;
 import com.github.pockethub.core.ResourcePager;
 import com.github.pockethub.core.search.SearchUser;
-import com.github.pockethub.core.user.RefreshUserTask;
+import com.github.pockethub.rx.ObserverAdapter;
 import com.github.pockethub.ui.PagedItemFragment;
 import com.github.pockethub.ui.user.UserViewActivity;
 import com.github.pockethub.util.AvatarLoader;
 import com.google.inject.Inject;
 
 import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static android.app.SearchManager.QUERY;
 
@@ -104,16 +108,19 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         final User result = (User) l.getItemAtPosition(position);
-        new RefreshUserTask(getActivity(), result.login) {
+        new RequestUserClient(result.login)
+                .observable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<User>bindToLifecycle())
+                .subscribe(new ObserverAdapter<User>() {
 
-            @Override
-            protected void onSuccess(User user) throws Exception {
-                super.onSuccess(user);
-
-                if (!AccountUtils.isUser(getActivity(), user))
-                    startActivity(UserViewActivity.createIntent(user));
-            }
-        }.execute();
+                    @Override
+                    public void onNext(User user) {
+                        if (!AccountUtils.isUser(getActivity(), user))
+                            startActivity(UserViewActivity.createIntent(user));
+                    }
+                });
     }
 
     @Override

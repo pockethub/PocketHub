@@ -24,7 +24,7 @@ import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.Intents;
 import com.github.pockethub.R;
-import com.github.pockethub.ui.DialogFragmentActivity;
+import com.github.pockethub.ui.BaseActivity;
 import com.github.pockethub.util.AvatarLoader;
 import com.google.inject.Inject;
 
@@ -35,7 +35,7 @@ import static com.github.pockethub.Intents.EXTRA_REPOSITORY;
 /**
  * Activity to view repository contributors
  */
-public class RepositoryContributorsActivity extends DialogFragmentActivity {
+public class RepositoryContributorsActivity extends BaseActivity {
 
     /**
      * Create intent for this activity

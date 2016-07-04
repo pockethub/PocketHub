@@ -15,8 +15,9 @@
  */
 package com.github.pockethub.core.user;
 
+import android.accounts.Account;
+
 import com.alorma.github.sdk.bean.dto.response.Organization;
-import com.github.pockethub.accounts.GitHubAccount;
 import com.google.inject.Inject;
 
 import java.util.Comparator;
@@ -37,8 +38,8 @@ public class UserComparator implements Comparator<Organization> {
      * @param account
      */
     @Inject
-    public UserComparator(final GitHubAccount account) {
-        login = account.getUsername();
+    public UserComparator(final Account account) {
+        login = account.name;
     }
 
     @Override
