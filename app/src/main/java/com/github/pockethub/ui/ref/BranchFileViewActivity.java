@@ -218,8 +218,7 @@ public class BranchFileViewActivity extends BaseActivity implements
     @Override
     public Loader<CharSequence> onCreateLoader(int loader, Bundle args) {
         final String raw = args.getString(ARG_TEXT);
-        final Repo repo = (Repo) args
-                .getParcelable(ARG_REPO);
+        final Repo repo = args.getParcelable(ARG_REPO);
         return new MarkdownLoader(this, repo, raw, imageGetter, false);
     }
 
@@ -274,7 +273,7 @@ public class BranchFileViewActivity extends BaseActivity implements
 
                     @Override
                     public void onNext(GitBlob gitBlob) {
-                        BranchFileViewActivity.this.blob = blob;
+                        BranchFileViewActivity.this.blob = gitBlob;
 
                         if (markdownItem != null)
                             markdownItem.setEnabled(true);
