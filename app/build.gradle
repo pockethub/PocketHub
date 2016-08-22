@@ -23,7 +23,7 @@ android {
     buildToolsVersion '23.0.3'
 
     defaultConfig {
-        applicationId 'com.github.pockethub'
+        applicationId 'com.github.pockethub.android'
         minSdkVersion 15
         targetSdkVersion 23
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild

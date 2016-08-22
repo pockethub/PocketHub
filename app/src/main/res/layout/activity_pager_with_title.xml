@@ -53,7 +53,7 @@
         android:layout_height="64dp"
         android:visibility="gone" />
 
-    <com.github.pockethub.ui.ViewPager
+    <com.github.pockethub.android.ui.ViewPager
         android:id="@+id/vp_pages"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

@@ -30,6 +30,6 @@
         android:layout_below="@id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        class="com.github.pockethub.ui.commit.CommitCompareListFragment" />
+        class="com.github.pockethub.android.ui.commit.CommitCompareListFragment" />
 
 </RelativeLayout>
