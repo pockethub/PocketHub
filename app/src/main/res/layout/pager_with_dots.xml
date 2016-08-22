@@ -40,12 +40,12 @@
     </android.support.design.widget.AppBarLayout>
     <FrameLayout
         android:layout_width="match_parent"
-        app:layout_behavior="com.github.pockethub.ui.PatchedScrollingViewBehavior"
+        app:layout_behavior="com.github.pockethub.android.ui.PatchedScrollingViewBehavior"
         android:layout_height="match_parent">
 
-        <com.github.pockethub.ui.ViewPager
+        <com.github.pockethub.android.ui.ViewPager
             android:id="@+id/vp_pages"
-            app:layout_behavior="com.github.pockethub.ui.PatchedScrollingViewBehavior"
+            app:layout_behavior="com.github.pockethub.android.ui.PatchedScrollingViewBehavior"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
@@ -55,7 +55,7 @@
             android:layout_gravity="center"
             android:visibility="gone" />
 
-        <com.github.pockethub.ui.view.DotPageIndicator
+        <com.github.pockethub.android.ui.view.DotPageIndicator
             android:id="@+id/dot_page_indicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
