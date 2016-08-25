@@ -181,7 +181,7 @@ public class CommitDiffListFragment extends DialogFragment implements
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (RESULT_OK == resultCode && COMMENT_CREATE == requestCode
                 && data != null) {
-            CommitComment comment = (CommitComment) data
+            CommitComment comment = data
                     .getParcelableExtra(EXTRA_COMMENT);
             addComment(comment);
             return;

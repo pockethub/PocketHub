@@ -96,7 +96,7 @@ public class IssueSearchActivity extends RoboAppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         Bundle appData = getIntent().getBundleExtra(APP_DATA);
         if (appData != null) {
-            repository = (Repo) appData.getParcelable(EXTRA_REPOSITORY);
+            repository = appData.getParcelable(EXTRA_REPOSITORY);
             if (repository != null) {
                 actionBar.setSubtitle(InfoUtils.createRepoId(repository));
                 actionBar.setDisplayHomeAsUpEnabled(true);
