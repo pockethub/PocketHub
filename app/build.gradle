@@ -113,8 +113,8 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.9.0'
 
     compile 'com.github.alorma:github-sdk:3.2.5'
-    compile 'io.reactivex:rxandroid:1.1.0'
-    compile 'io.reactivex:rxjava:1.1.0'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.2.0'
     compile 'com.trello:rxlifecycle:0.4.0'
     compile 'com.bugsnag:bugsnag-android:3.2.7'
 
