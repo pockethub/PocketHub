@@ -57,7 +57,7 @@ public class SearchIssueListFragment extends ItemListFragment<Issue>
 
         Bundle appData = getActivity().getIntent().getBundleExtra(APP_DATA);
         if (appData != null)
-            repository = (Repo) appData.getParcelable(EXTRA_REPOSITORY);
+            repository = appData.getParcelable(EXTRA_REPOSITORY);
     }
 
     @Override

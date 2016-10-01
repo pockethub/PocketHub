@@ -345,7 +345,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
         switch (requestCode) {
         case COMMENT_CREATE:
-            GithubComment comment = (GithubComment) data
+            GithubComment comment = data
                     .getParcelableExtra(EXTRA_COMMENT);
             if (comments != null) {
                 comments.add(comment);
@@ -355,7 +355,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 refreshGist();
             return;
         case COMMENT_EDIT:
-            comment = (GithubComment) data.getParcelableExtra(EXTRA_COMMENT);
+            comment = data.getParcelableExtra(EXTRA_COMMENT);
             if (comments != null && comment != null) {
                 int position = Collections.binarySearch(comments, comment,
                         new Comparator<GithubComment>() {
