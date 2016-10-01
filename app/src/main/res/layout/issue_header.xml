@@ -30,6 +30,10 @@
         android:padding="8dp"
         android:textColor="@color/state_text" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="16dp"/>
+
     <TextView
         android:id="@+id/tv_labels"
         android:layout_width="wrap_content"
@@ -54,7 +58,7 @@
         <TextView
             android:id="@+id/tv_milestone"
             style="@style/ListSubtitleText"
-            android:singleLine="true"
+            android:maxLines="1"
             android:textColor="@color/text" />
 
         <include layout="@layout/milestone" />
