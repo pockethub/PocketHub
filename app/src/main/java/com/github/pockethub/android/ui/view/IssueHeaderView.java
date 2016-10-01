@@ -52,9 +52,11 @@ public class IssueHeaderView extends LinearLayout {
         createdDateText = (TextView) findViewById(R.id.tv_issue_creation_date);
         commentCount = (TextView) findViewById(R.id.tv_issue_comments_count);
 
-        final TextView authorDateSeparator = (TextView) findViewById(R.id.tv_issue_author_date_separator);
+        final TextView authorDateSeparator = (TextView)
+                findViewById(R.id.tv_issue_author_date_separator);
         authorDateSeparator.setText(" ");
-        final TextView dateCommentsSeparator = (TextView) findViewById(R.id.tv_issue_date_comments_separator);
+        final TextView dateCommentsSeparator = (TextView)
+                findViewById(R.id.tv_issue_date_comments_separator);
         dateCommentsSeparator.setText(" · ");
     }
 
@@ -65,7 +67,10 @@ public class IssueHeaderView extends LinearLayout {
                 getContext().getString(R.string.prefix_opened)).append(TimeUtils.stringToDate
                 (issue.created_at)));
         final int comments = issue.comments;
-        final String commentString = getContext().getString(R.string.comments);
+        String commentString = getContext().getString(R.string.comment);
+        if (comments > 1) {
+            commentString = getContext().getString(R.string.comments);
+        }
         commentCount.setText(String.format("%1$s " + commentString, comments));
     }
 
