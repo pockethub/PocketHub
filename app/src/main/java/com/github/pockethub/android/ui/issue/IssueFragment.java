@@ -64,6 +64,7 @@ import com.github.pockethub.android.ui.comment.CommentListAdapter;
 import com.github.pockethub.android.ui.comment.DeleteCommentListener;
 import com.github.pockethub.android.ui.comment.EditCommentListener;
 import com.github.pockethub.android.ui.commit.CommitCompareViewActivity;
+import com.github.pockethub.android.ui.view.IssueHeaderView;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.HttpImageGetter;
 import com.github.pockethub.android.util.InfoUtils;
@@ -132,7 +133,7 @@ public class IssueFragment extends DialogFragment {
 
     private ProgressBar progress;
 
-    private View headerView;
+    private View listHeaderView;
 
     private View loadingView;
 
@@ -150,15 +151,7 @@ public class IssueFragment extends DialogFragment {
 
     private TextView stateText;
 
-    private TextView titleText;
-
     private TextView bodyText;
-
-    private TextView authorText;
-
-    private TextView createdDateText;
-
-    private ImageView creatorAvatar;
 
     private ViewGroup commitsView;
 
@@ -181,6 +174,8 @@ public class IssueFragment extends DialogFragment {
 
     @Inject
     private HttpImageGetter commentImageGetter;
+
+    private IssueHeaderView issueHeader;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -215,7 +210,7 @@ public class IssueFragment extends DialogFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        adapter.addHeader(headerView);
+        adapter.addHeader(listHeaderView);
         adapter.addFooter(footerView);
 
         issue = store.getIssue(repositoryId, issueNumber);
@@ -239,7 +234,7 @@ public class IssueFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_comment_list, container, false);
+        return inflater.inflate(R.layout.fragment_issue, container, false);
     }
 
     @Override
@@ -251,23 +246,20 @@ public class IssueFragment extends DialogFragment {
 
         LayoutInflater inflater = getLayoutInflater(savedInstanceState);
 
-        headerView = inflater.inflate(R.layout.issue_header, null);
+        issueHeader = (IssueHeaderView) view.findViewById(R.id.issue_header);
 
-        stateText = (TextView) headerView.findViewById(R.id.tv_state);
-        titleText = (TextView) headerView.findViewById(R.id.tv_issue_title);
-        authorText = (TextView) headerView.findViewById(R.id.tv_issue_author);
-        createdDateText = (TextView) headerView
-                .findViewById(R.id.tv_issue_creation_date);
-        creatorAvatar = (ImageView) headerView.findViewById(R.id.iv_avatar);
-        commitsView = (ViewGroup) headerView.findViewById(R.id.ll_issue_commits);
-        assigneeText = (TextView) headerView.findViewById(R.id.tv_assignee_name);
-        assigneeAvatar = (ImageView) headerView
+        listHeaderView = inflater.inflate(R.layout.issue_header, null);
+
+        stateText = (TextView) listHeaderView.findViewById(R.id.tv_state);
+        commitsView = (ViewGroup) listHeaderView.findViewById(R.id.ll_issue_commits);
+        assigneeText = (TextView) listHeaderView.findViewById(R.id.tv_assignee_name);
+        assigneeAvatar = (ImageView) listHeaderView
                 .findViewById(R.id.iv_assignee_avatar);
-        labelsArea = (TextView) headerView.findViewById(R.id.tv_labels);
-        milestoneArea = headerView.findViewById(R.id.ll_milestone);
-        milestoneText = (TextView) headerView.findViewById(R.id.tv_milestone);
-        milestoneProgressArea = headerView.findViewById(R.id.v_closed);
-        bodyText = (TextView) headerView.findViewById(R.id.tv_issue_body);
+        labelsArea = (TextView) listHeaderView.findViewById(R.id.tv_labels);
+        milestoneArea = listHeaderView.findViewById(R.id.ll_milestone);
+        milestoneText = (TextView) listHeaderView.findViewById(R.id.tv_milestone);
+        milestoneProgressArea = listHeaderView.findViewById(R.id.v_closed);
+        bodyText = (TextView) listHeaderView.findViewById(R.id.tv_issue_body);
         bodyText.setMovementMethod(SelectableLinkMovementMethod.getInstance());
 
         loadingView = inflater.inflate(R.layout.loading_item, null);
@@ -301,7 +293,7 @@ public class IssueFragment extends DialogFragment {
             }
         });
 
-        headerView.findViewById(R.id.ll_assignee).setOnClickListener(
+        listHeaderView.findViewById(R.id.ll_assignee).setOnClickListener(
                 new OnClickListener() {
 
                     @Override
@@ -333,7 +325,7 @@ public class IssueFragment extends DialogFragment {
         if (!isUsable())
             return;
 
-        titleText.setText(issue.title);
+        issueHeader.updateHeader(issue);
 
         String body = issue.body_html;
         if (!TextUtils.isEmpty(body))
@@ -341,21 +333,16 @@ public class IssueFragment extends DialogFragment {
         else
             bodyText.setText(R.string.no_description_given);
 
-        authorText.setText(issue.user.login);
-        createdDateText.setText(new StyledText().append(
-                getString(R.string.prefix_opened)).append(TimeUtils.stringToDate(issue.created_at)));
-        avatars.bind(creatorAvatar, issue.user);
-
         if (IssueUtils.isPullRequest(issue) && issue.pullRequest.commits > 0) {
             ViewUtils.setGone(commitsView, false);
 
-            TextView icon = (TextView) headerView.findViewById(R.id.tv_commit_icon);
+            TextView icon = (TextView) listHeaderView.findViewById(R.id.tv_commit_icon);
             TypefaceUtils.setOcticons(icon);
             icon.setText(ICON_COMMIT);
 
             String commits = getString(R.string.pull_request_commits,
                     issue.pullRequest.commits);
-            ((TextView) headerView.findViewById(R.id.tv_pull_request_commits)).setText(commits);
+            ((TextView) listHeaderView.findViewById(R.id.tv_pull_request_commits)).setText(commits);
         } else
             ViewUtils.setGone(commitsView, true);
 
@@ -409,6 +396,7 @@ public class IssueFragment extends DialogFragment {
         } else
             milestoneArea.setVisibility(GONE);
 
+        ViewUtils.setGone(issueHeader, false);
         ViewUtils.setGone(progress, true);
         ViewUtils.setGone(list, false);
         updateStateItem(issue);
@@ -446,7 +434,7 @@ public class IssueFragment extends DialogFragment {
 
         adapter.getWrappedAdapter().notifyDataSetChanged();
 
-        headerView.setVisibility(VISIBLE);
+        listHeaderView.setVisibility(VISIBLE);
         updateHeader(issue);
     }
 
