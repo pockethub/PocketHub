@@ -99,6 +99,8 @@
     <string name="home">Home</string>
     <string name="log_out">Log Out</string>
     <string name="news">News</string>
+    <string name="skip">Skip</string>
+    <string name="done">Done</string>
     <string name="issues">Issues</string>
     <string name="gists">Gists</string>
     <string name="commits">Commits</string>
@@ -238,7 +240,7 @@
     <string name="cancel">Cancel</string>
     <string name="not_sure">NOT SURE</string>
     <string name="authenticator_conflict_title">App Conflict</string>
-    <string name="authenticator_conflict_message">Another installed app is already configured for GitHub authentication.\n\nYou must remove the other app from the Accounts &amp; sync settings and uninstall it before the GitHub app can be used.</string>
+    <string name="authenticator_conflict_message">Another installed app is already configured for PocketHub authentication.\n\nYou must remove the other app from the Accounts &amp; sync settings and uninstall it before the PocketHub app can be used.</string>
     <string name="opening_repository">Opening {0}…</string>
     <string name="commit_compare_title">Commit Compare</string>
     <string name="commit_prefix">Commit\u0020</string>
@@ -280,6 +282,7 @@
     <string name="tab_mentioned">mentioned</string>
     <string name="tab_mine">mine</string>
     <string name="tab_starred">starred</string>
+    <string name="tab_readme">readme</string>
     <string name="tab_all">all</string>
     <!--  -->
     <string name="share">Share</string>
@@ -313,4 +316,16 @@
     <string name="error_oauth_not_configured">You won\'t be able to login, because the oauth client and secret aren\'t set
 Read the README.md: https://github.com/pockethub/PocketHub#setup-environment</string>
 
+
+    <string-array name="welcome_texts">
+        <item>So a while ago the GitHub app was discontinued and some of us wanted something new…</item>
+        <item>We move the app under a new name and are now PocketHub</item>
+        <item>Click done and we’ll get you logged in!</item>
+    </string-array>
+
+    <string-array name="welcome_titles">
+        <item>Welcome</item>
+        <item>Long story short</item>
+        <item>Let’s get started</item>
+    </string-array>
 </resources>

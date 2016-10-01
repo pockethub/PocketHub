@@ -16,6 +16,6 @@
   -->
 <resources>
     <string-array name="roboguice_modules">
-        <item>com.github.pockethub.PocketHubModule</item>
+        <item>com.github.pockethub.android.PocketHubModule</item>
     </string-array>
 </resources>

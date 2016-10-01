@@ -1,6 +1,4 @@
-# PocketHub [![Build Status](https://travis-ci.org/pockethub/PocketHub.svg?branch=master)](https://travis-ci.org/pockethub/PocketHub)
-
-[![Join the chat at https://gitter.im/pockethub/PocketHub](https://badges.gitter.im/pockethub/PocketHub.svg)](https://gitter.im/pockethub/PocketHub?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# PocketHub [![Build Status](https://travis-ci.org/pockethub/PocketHub.svg?branch=master)](https://travis-ci.org/pockethub/PocketHub)  [![Join the chat at https://gitter.im/pockethub/PocketHub](https://badges.gitter.im/pockethub/PocketHub.svg)](https://gitter.im/pockethub/PocketHub?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) <a style="margin-bottom: 0;" href='https://play.google.com/store/apps/details?id=com.github.pockethub.android&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80px"/></a>
 
 This repository contains the source code for the PocketHub Android app.
 
@@ -33,7 +31,7 @@ After the initial release, we'll start working on giving this app a proper refre
 
 Please see the [issues](https://github.com/pockethub/PocketHub/issues) section to report any bugs or feature requests and to see the list of known issues. We can't promise fast response times since we all have full time jobs of our own, but we will do our best to respond in a timely fashion.  If you'd like to contribute, please fork this repository and contribute back using [pull requests](https://github.com/pockethub/PocketHub/pulls).
 
-Any contributions, large or small, major features, bug fixes, additional language translations, unit/integration tests are welcomed and appreciated but will be thoroughly reviewed and discussed. **Please read `CONTRIBUTING.md` first!**
+Any contributions, large or small, major features, bug fixes, additional language translations, unit/integration tests are welcomed and appreciated but will be thoroughly reviewed and discussed. **Please read [CONTRIBUTING.md](https://github.com/pockethub/PocketHub/blob/master/CONTRIBUTING.md) first!**
 
 ## Setup Environment
 

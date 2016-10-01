@@ -13,7 +13,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <color name="background">#F9F9F9</color>
     <color name="background_id">#E3E3E3</color>
@@ -81,5 +81,11 @@
 
     <color name="appcompat_secondary_text_default_material_light">#8a000000</color>
     <color name="appcompat_secondary_text_disabled_material_light">#24000000</color>
+
+    <array name="welcome_screen_colors">
+        <item>@color/background</item>
+        <item>@color/primary</item>
+        <item>@color/accent</item>
+    </array>
 
 </resources>
