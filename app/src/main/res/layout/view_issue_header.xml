@@ -17,6 +17,21 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
        xmlns:tools="http://schemas.android.com/tools">
 
+    <TextView
+        android:id="@+id/tv_issue_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textColor="@android:color/white"
+        android:textIsSelectable="true"
+        tools:text="Title"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,57 +39,49 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
-        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp">
+        android:paddingBottom="8dp">
 
-        <ImageView
-            android:id="@+id/iv_avatar"
-            style="@style/AvatarLarge"
-            android:contentDescription="@string/avatar"
-            tools:src="@drawable/app_icon"/>
+        <TextView
+            android:id="@+id/tv_issue_author"
+            style="@style/ListSubtitleText"
+            android:maxLines="1"
+            android:textColor="@color/inset_outer"
+            android:textIsSelectable="true"
+            android:textStyle="bold"
+            tools:text="StefMa"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tv_issue_author_date_separator"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingEnd="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingStart="10dp">
+            android:textColor="@color/inset_outer"
+            tools:text=" "/>
 
-            <TextView
-                android:id="@+id/tv_issue_author"
-                style="@style/ListSubtitleText"
-                android:maxLines="1"
-                android:textColor="@color/inset_outer"
-                android:textIsSelectable="true"
-                android:textStyle="bold"
-                tools:text="StefMa"/>
+        <TextView
+            android:id="@+id/tv_issue_creation_date"
+            style="@style/ListSubtitleText"
+            android:maxLines="1"
+            android:textColor="@color/inset_outer"
+            tools:text="opened 6 hours ago"/>
 
-            <TextView
-                android:id="@+id/tv_issue_creation_date"
-                style="@style/ListSubtitleText"
-                android:maxLines="1"
-                android:textColor="@color/inset_outer"
-                tools:text="opened 6 hours ago"/>
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_issue_date_comments_separator"
+            style="@style/ListSubtitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textColor="@color/inset_outer"
+            tools:text=" · "/>
+
+        <TextView
+            android:id="@+id/tv_issue_comments_count"
+            style="@style/ListSubtitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textColor="@color/inset_outer"
+            tools:text="1 comment"/>
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_issue_title"
-        style="@style/ListTitleText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginStart="16dp"
-        android:paddingBottom="10dp"
-        android:paddingTop="5dp"
-        android:textColor="@android:color/white"
-        android:textIsSelectable="true"
-        tools:text="Title"/>
 
 </merge>
