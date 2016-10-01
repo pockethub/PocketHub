@@ -48,6 +48,7 @@
                 android:id="@+id/tv_issue_author"
                 style="@style/ListSubtitleText"
                 android:maxLines="1"
+                android:textColor="@color/inset_outer"
                 android:textIsSelectable="true"
                 android:textStyle="bold"
                 tools:text="StefMa"/>
@@ -56,6 +57,7 @@
                 android:id="@+id/tv_issue_creation_date"
                 style="@style/ListSubtitleText"
                 android:maxLines="1"
+                android:textColor="@color/inset_outer"
                 tools:text="opened 6 hours ago"/>
         </LinearLayout>
     </LinearLayout>
