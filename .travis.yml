@@ -2,6 +2,7 @@ language: android
 android:
    components:
    - tools
+   - tools
    - platform-tools
    - android-23
    - build-tools-23.0.3
@@ -12,7 +13,7 @@ jdk: oraclejdk7
 notifications:
   email: false
 
-sudo: false
+sudo: required
 
 script:
   - ./gradlew clean build
