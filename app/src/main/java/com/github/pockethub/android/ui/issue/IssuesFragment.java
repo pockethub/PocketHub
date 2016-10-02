@@ -230,7 +230,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == ISSUE_FILTER_EDIT
                 && data != null) {
-            IssueFilter newFilter = (IssueFilter) data
+            IssueFilter newFilter = data
                     .getParcelableExtra(EXTRA_ISSUE_FILTER);
             if (!filter.equals(newFilter)) {
                 filter = newFilter;

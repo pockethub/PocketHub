@@ -54,7 +54,7 @@ public class MembersFragment extends ItemListFragment<User> {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        org = (User) getArguments().getParcelable("org");
+        org = getArguments().getParcelable("org");
         if (org == null && savedInstanceState != null)
             org = savedInstanceState.getParcelable(EXTRA_USER);
         setEmptyText(R.string.no_members);
