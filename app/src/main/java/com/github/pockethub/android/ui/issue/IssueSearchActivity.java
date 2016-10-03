@@ -53,13 +53,17 @@ public class IssueSearchActivity extends RoboAppCompatActivity {
 
     private SearchIssueListFragment issueFragment;
 
+    private String lastQuery;
+
+    private SearchView searchView;
+
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
         getMenuInflater().inflate(R.menu.activity_search, options);
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         MenuItem searchItem = options.findItem(R.id.m_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         Bundle args = new Bundle();
@@ -71,6 +75,14 @@ public class IssueSearchActivity extends RoboAppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.m_search:
+                searchView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        searchView.setQuery(lastQuery, false);
+                    }
+                });
+                return true;
             case R.id.m_clear:
                 IssueSearchSuggestionsProvider.clear(this);
                 ToastUtils.show(this, R.string.search_history_cleared);
@@ -124,6 +136,7 @@ public class IssueSearchActivity extends RoboAppCompatActivity {
     }
 
     private void search(final String query) {
+        lastQuery = query;
         getSupportActionBar().setTitle(query);
         IssueSearchSuggestionsProvider.save(this, query);
         issueFragment.setQuery(query);
