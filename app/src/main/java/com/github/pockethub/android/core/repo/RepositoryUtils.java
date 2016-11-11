@@ -37,9 +37,11 @@ public class RepositoryUtils {
      *
      */
     public static boolean isComplete(final Repository repository) {
-        return repository.isPrivate() || repository.isFork()
-                || repository.forksCount() > 0 || repository.watchersCount() > 0
-                || repository.hasIssues();
+        return (repository.isPrivate() != null && repository.isPrivate())
+                || (repository.isFork() != null && repository.isFork())
+                || (repository.forksCount() != null && repository.forksCount() > 0)
+                || (repository.watchersCount() != null && repository.watchersCount() > 0)
+                || (repository.hasIssues() != null && repository.hasIssues());
     }
 
     /**
