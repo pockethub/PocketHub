@@ -51,6 +51,10 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
 
     private SearchUserListFragment userFragment;
 
+    private SearchView searchView;
+
+    private String lastQuery;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +74,7 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         MenuItem searchItem = options.findItem(R.id.m_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         return true;
@@ -79,6 +83,14 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.m_search:
+                searchView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        searchView.setQuery(lastQuery, false);
+                    }
+                });
+                return true;
             case R.id.m_clear:
                 RepositorySearchSuggestionsProvider.clear(this);
                 ToastUtils.show(this, R.string.search_history_cleared);
@@ -127,6 +139,7 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
     }
 
     private void search(final String query) {
+        lastQuery = query;
         getSupportActionBar().setTitle(query);
         RepositorySearchSuggestionsProvider.save(this, query);
 
