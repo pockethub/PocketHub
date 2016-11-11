@@ -4,8 +4,8 @@ android:
    - tools
    - tools #Running this twice get's the latest build tools (https://github.com/codepath/android_guides/wiki/Setting-up-Travis-CI)
    - platform-tools
-   - android-23
-   - build-tools-23.0.3
+   - android-25
+   - build-tools-25.0.0
    - extra
 
 jdk: oraclejdk7
