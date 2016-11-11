@@ -15,19 +15,16 @@
  */
 package com.github.pockethub.android.core.commit;
 
-import android.accounts.Account;
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 
-import com.alorma.github.sdk.bean.dto.response.Commit;
-import com.alorma.github.sdk.bean.dto.response.CommitComment;
-import com.alorma.github.sdk.bean.dto.response.GitCommit;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.services.commit.GetCommitCommentsClient;
-import com.github.pockethub.android.util.HtmlUtils;
 import com.github.pockethub.android.util.HttpImageGetter;
-import com.github.pockethub.android.util.InfoUtils;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Commit;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.git.GitComment;
+import com.meisolsson.githubsdk.model.git.GitCommit;
+import com.meisolsson.githubsdk.service.repositories.RepositoryCommentService;
 import com.google.inject.Inject;
 
 import java.io.IOException;
@@ -42,10 +39,12 @@ import rx.Subscriber;
  */
 public class RefreshCommitTask implements Observable.OnSubscribe<FullCommit> {
 
+    private final Context context;
+
     @Inject
     private CommitStore store;
 
-    private final Repo repository;
+    private final Repository repository;
 
     private final String id;
 
@@ -56,12 +55,13 @@ public class RefreshCommitTask implements Observable.OnSubscribe<FullCommit> {
      * @param id
      * @param imageGetter
      */
-    public RefreshCommitTask(Activity activity, Repo repository,
+    public RefreshCommitTask(Activity activity, Repository repository,
                              String id, HttpImageGetter imageGetter) {
 
         this.repository = repository;
         this.id = id;
         this.imageGetter = imageGetter;
+        this.context = activity;
         RoboGuice.injectMembers(activity, this);
     }
 
@@ -69,14 +69,16 @@ public class RefreshCommitTask implements Observable.OnSubscribe<FullCommit> {
     public void call(Subscriber<? super FullCommit> subscriber) {
         try {
             Commit commit = store.refreshCommit(repository, id);
-            GitCommit rawCommit = commit.commit;
-            if (rawCommit != null && rawCommit.comment_count > 0) {
-                List<CommitComment> comments = new GetCommitCommentsClient(InfoUtils.createCommitInfo(repository, commit.sha))
-                        .observable().toBlocking().first().first;
-                for (CommitComment comment : comments) {
-                    String formatted = HtmlUtils.format(comment.body_html).toString();
-                    comment.body_html = formatted;
-                    imageGetter.encode(comment, formatted);
+            GitCommit rawCommit = commit.commit();
+            if (rawCommit != null && rawCommit.commentCount() > 0) {
+                List<GitComment> comments = ServiceGenerator.createService(context, RepositoryCommentService.class)
+                        .getCommitComments(repository.owner().login(), repository.name(), commit.sha(), 1)
+                        .toBlocking()
+                        .first()
+                        .items();
+
+                for (GitComment comment : comments) {
+                    imageGetter.encode(comment, comment.bodyHtml());
                 }
                 subscriber.onNext(new FullCommit(commit, comments));
             } else

@@ -18,8 +18,8 @@ package com.github.pockethub.android.tests.gist;
 import android.net.Uri;
 import android.test.AndroidTestCase;
 
-import com.alorma.github.sdk.bean.dto.response.Gist;
 import com.github.pockethub.android.core.gist.GistUriMatcher;
+import com.meisolsson.githubsdk.model.Gist;
 
 /**
  * Unit tests of {@link GistUriMatcher}
@@ -52,7 +52,7 @@ public class GistUriMatcherTest extends AndroidTestCase {
         Gist gist = GistUriMatcher.getGist(Uri
                 .parse("https://gist.github.com/1234"));
         assertNotNull(gist);
-        assertEquals("1234", gist.id);
+        assertEquals("1234", gist.id());
     }
 
     /**
@@ -62,6 +62,6 @@ public class GistUriMatcherTest extends AndroidTestCase {
         Gist gist = GistUriMatcher.getGist(Uri
                 .parse("https://gist.github.com/abcd1234abcd1234abcd"));
         assertNotNull(gist);
-        assertEquals("abcd1234abcd1234abcd", gist.id);
+        assertEquals("abcd1234abcd1234abcd", gist.id());
     }
 }

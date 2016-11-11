@@ -18,8 +18,8 @@ package com.github.pockethub.android.tests.issue;
 import android.net.Uri;
 import android.test.AndroidTestCase;
 
-import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.github.pockethub.android.core.issue.IssueUriMatcher;
+import com.meisolsson.githubsdk.model.Issue;
 
 /**
  * Unit tests of {@link IssueUriMatcher}
@@ -48,11 +48,11 @@ public class IssueUriMatcherTest extends AndroidTestCase {
         Issue issue = IssueUriMatcher.getIssue(Uri
                 .parse("https://github.com/defunkt/resque/issues/3"));
         assertNotNull(issue);
-        assertEquals(3, issue.number);
-        assertNotNull(issue.repository);
-        assertEquals("resque", issue.repository.name);
-        assertNotNull(issue.repository.owner);
-        assertEquals("defunkt", issue.repository.owner.login);
+        assertEquals(3, issue.number().intValue());
+        assertNotNull(issue.repository());
+        assertEquals("resque", issue.repository().name());
+        assertNotNull(issue.repository().owner());
+        assertEquals("defunkt", issue.repository().owner().login());
     }
 
     /**
@@ -62,11 +62,11 @@ public class IssueUriMatcherTest extends AndroidTestCase {
         Issue issue = IssueUriMatcher.getIssue(Uri
                 .parse("https://github.com/defunkt/resque/pull/3"));
         assertNotNull(issue);
-        assertEquals(3, issue.number);
-        assertNotNull(issue.repository);
-        assertEquals("resque", issue.repository.name);
-        assertNotNull(issue.repository.owner);
-        assertEquals("defunkt", issue.repository.owner.login);
+        assertEquals(3, issue.number().intValue());
+        assertNotNull(issue.repository());
+        assertEquals("resque", issue.repository().name());
+        assertNotNull(issue.repository().owner());
+        assertEquals("defunkt", issue.repository().owner().login());
     }
 
     /**
@@ -76,11 +76,11 @@ public class IssueUriMatcherTest extends AndroidTestCase {
         Issue issue = IssueUriMatcher.getIssue(Uri
                 .parse("http://github.com/defunkt/resque/issues/15"));
         assertNotNull(issue);
-        assertEquals(15, issue.number);
-        assertNotNull(issue.repository);
-        assertEquals("resque", issue.repository.name);
-        assertNotNull(issue.repository.owner);
-        assertEquals("defunkt", issue.repository.owner.login);
+        assertEquals(15, issue.number().intValue());
+        assertNotNull(issue.repository());
+        assertEquals("resque", issue.repository().name());
+        assertNotNull(issue.repository().owner());
+        assertEquals("defunkt", issue.repository().owner().login());
     }
 
     /**
@@ -91,10 +91,10 @@ public class IssueUriMatcherTest extends AndroidTestCase {
                 .getIssue(Uri
                         .parse("https://github.com/defunkt/resque/issues/300#issuecomment-123456"));
         assertNotNull(issue);
-        assertEquals(300, issue.number);
-        assertNotNull(issue.repository);
-        assertEquals("resque", issue.repository.name);
-        assertNotNull(issue.repository.owner);
-        assertEquals("defunkt", issue.repository.owner.login);
+        assertEquals(300, issue.number().intValue());
+        assertNotNull(issue.repository());
+        assertEquals("resque", issue.repository().name());
+        assertNotNull(issue.repository().owner());
+        assertEquals("defunkt", issue.repository().owner().login());
     }
 }

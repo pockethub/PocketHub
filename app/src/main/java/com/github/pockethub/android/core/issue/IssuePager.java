@@ -15,8 +15,8 @@
  */
 package com.github.pockethub.android.core.issue;
 
-import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.github.pockethub.android.core.ResourcePager;
+import com.meisolsson.githubsdk.model.Issue;
 
 /**
  * Helper class for showing more and more pages of issues
@@ -45,6 +45,6 @@ public abstract class IssuePager extends ResourcePager<Issue> {
 
     @Override
     protected Object getId(Issue resource) {
-        return resource.id;
+        return resource.id();
     }
 }

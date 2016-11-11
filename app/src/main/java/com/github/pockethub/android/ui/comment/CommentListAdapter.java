@@ -25,23 +25,22 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
-import com.alorma.github.sdk.bean.dto.response.GithubComment;
-import com.alorma.github.sdk.bean.dto.response.GithubEvent;
-import com.alorma.github.sdk.bean.dto.response.Issue;
-import com.alorma.github.sdk.bean.issue.IssueEvent;
-import com.alorma.github.sdk.bean.issue.IssueStoryComment;
-import com.alorma.github.sdk.bean.issue.IssueStoryEvent;
 import com.github.kevinsawicki.wishlist.MultiTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.HttpImageGetter;
 import com.github.pockethub.android.util.TimeUtils;
 import com.github.pockethub.android.util.TypefaceUtils;
+import com.meisolsson.githubsdk.model.GitHubComment;
+import com.meisolsson.githubsdk.model.GitHubEvent;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.IssueEvent;
+import com.meisolsson.githubsdk.model.IssueEventType;
 
 import java.util.Collection;
 
 /**
- * Adapter for a list of {@link GithubComment} objects
+ * Adapter for a list of {@link GitHubComment} objects
  */
 public class CommentListAdapter extends MultiTypeAdapter {
 
@@ -75,7 +74,7 @@ public class CommentListAdapter extends MultiTypeAdapter {
      * @param avatars
      * @param imageGetter
      */
-    public CommentListAdapter(LayoutInflater inflater, GithubComment[] elements,
+    public CommentListAdapter(LayoutInflater inflater, GitHubComment[] elements,
             AvatarLoader avatars, HttpImageGetter imageGetter, Issue issue) {
         this(inflater, elements, avatars, imageGetter, null, null, null, false, issue);
         this.context = inflater.getContext();
@@ -104,7 +103,7 @@ public class CommentListAdapter extends MultiTypeAdapter {
      * @param userName
      * @param canWrite
      */
-    public CommentListAdapter(LayoutInflater inflater, GithubComment[] elements,
+    public CommentListAdapter(LayoutInflater inflater, GitHubComment[] elements,
             AvatarLoader avatars, HttpImageGetter imageGetter,
             EditCommentListener editCommentListener, DeleteCommentListener deleteCommentListener,
             String userName, boolean canWrite, Issue issue) {
@@ -124,91 +123,91 @@ public class CommentListAdapter extends MultiTypeAdapter {
     @Override
     protected void update(int position, Object obj, int type) {
         if(type == 0)
-            updateComment((GithubComment) obj);
+            updateComment((GitHubComment) obj);
         else
             updateEvent((IssueEvent) obj);
     }
 
     protected void updateEvent(final IssueEvent event) {
         TypefaceUtils.setOcticons(textView(0));
-        String message = String.format("<b>%s</b> %s", event.actor.login, event.event);
-        avatars.bind(imageView(2), event.actor);
+        String message = String.format("<b>%s</b> %s", event.actor().login(), event.event());
+        avatars.bind(imageView(2), event.actor());
 
-        String eventString = event.event;
+        IssueEventType eventType = event.event();
 
-        switch (eventString) {
-        case "assigned":
-        case "unassigned":
-            setText(0, TypefaceUtils.ICON_PERSON);
-            textView(0).setTextColor(
-                    context.getResources().getColor(R.color.text_description));
-            break;
-        case "labeled":
-        case "unlabeled":
-            setText(0, TypefaceUtils.ICON_TAG);
-            textView(0).setTextColor(
-                    context.getResources().getColor(R.color.text_description));
-            break;
-        case "referenced":
-            setText(0, TypefaceUtils.ICON_BOOKMARK);
-            textView(0).setTextColor(
-                    context.getResources().getColor(R.color.text_description));
-            break;
-        case "milestoned":
-        case "demilestoned":
-            setText(0, TypefaceUtils.ICON_MILESTONE);
-            textView(0).setTextColor(
-                    context.getResources().getColor(R.color.text_description));
-            break;
-        case "closed":
-            setText(0, TypefaceUtils.ICON_ISSUE_CLOSE);
-            textView(0).setTextColor(
-                    context.getResources().getColor(R.color.issue_event_closed));
-            break;
-        case "reopened":
-            setText(0, TypefaceUtils.ICON_ISSUE_REOPEN);
-            textView(0).setTextColor(
-                    context.getResources().getColor(R.color.issue_event_reopened));
-            break;
-        case "renamed":
-            setText(0, TypefaceUtils.ICON_EDIT);
-            textView(0).setTextColor(
-                    context.getResources().getColor(R.color.text_description));
-            break;
-        case "merged":
-            message += String.format(" commit <b>%s</b> into <tt>%s</tt> from <tt>%s</tt>", event.commit_id.substring(0, 6), issue.pullRequest.base.ref,
-                issue.pullRequest.head.ref);
-            setText(0, TypefaceUtils.ICON_MERGE);
-            textView(0).setTextColor(
-                    context.getResources().getColor(R.color.issue_event_merged));
-            break;
-        case "locked":
-            setText(0, TypefaceUtils.ICON_LOCK);
-            textView(0).setTextColor(
-                    context.getResources().getColor(R.color.issue_event_lock));
-            break;
-        case "unlocked":
-            setText(0, TypefaceUtils.ICON_KEY);
-            textView(0).setTextColor(
-                    context.getResources().getColor(R.color.issue_event_lock));
-            break;
+        switch (eventType) {
+            case assigned:
+            case unassigned:
+                setText(0, TypefaceUtils.ICON_PERSON);
+                textView(0).setTextColor(
+                        context.getResources().getColor(R.color.text_description));
+                break;
+            case labeled:
+            case unlabeled:
+                setText(0, TypefaceUtils.ICON_TAG);
+                textView(0).setTextColor(
+                        context.getResources().getColor(R.color.text_description));
+                break;
+            case referenced:
+                setText(0, TypefaceUtils.ICON_BOOKMARK);
+                textView(0).setTextColor(
+                        context.getResources().getColor(R.color.text_description));
+                break;
+            case milestoned:
+            case demilestoned:
+                setText(0, TypefaceUtils.ICON_MILESTONE);
+                textView(0).setTextColor(
+                        context.getResources().getColor(R.color.text_description));
+                break;
+            case closed:
+                setText(0, TypefaceUtils.ICON_ISSUE_CLOSE);
+                textView(0).setTextColor(
+                        context.getResources().getColor(R.color.issue_event_closed));
+                break;
+            case reopened:
+                setText(0, TypefaceUtils.ICON_ISSUE_REOPEN);
+                textView(0).setTextColor(
+                        context.getResources().getColor(R.color.issue_event_reopened));
+                break;
+            case renamed:
+                setText(0, TypefaceUtils.ICON_EDIT);
+                textView(0).setTextColor(
+                        context.getResources().getColor(R.color.text_description));
+                break;
+            case merged:
+                message += String.format(" commit <b>%s</b> into <tt>%s</tt> from <tt>%s</tt>", event.commitId().substring(0, 6), issue.pullRequest().base().ref(),
+                        issue.pullRequest().head().ref());
+                setText(0, TypefaceUtils.ICON_MERGE);
+                textView(0).setTextColor(
+                        context.getResources().getColor(R.color.issue_event_merged));
+                break;
+            case locked:
+                setText(0, TypefaceUtils.ICON_LOCK);
+                textView(0).setTextColor(
+                        context.getResources().getColor(R.color.issue_event_lock));
+                break;
+            case unlocked:
+                setText(0, TypefaceUtils.ICON_KEY);
+                textView(0).setTextColor(
+                        context.getResources().getColor(R.color.issue_event_lock));
+                break;
         }
 
-        message += " " + TimeUtils.getRelativeTime(event.created_at);
+        message += " " + TimeUtils.getRelativeTime(event.createdAt());
         setText(1, Html.fromHtml(message));
     }
 
-    protected void updateComment(final GithubComment comment) {
-        imageGetter.bind(textView(0), comment.body, comment.id);
-        avatars.bind(imageView(3), comment.user);
+    protected void updateComment(final GitHubComment comment) {
+        imageGetter.bind(textView(0), comment.body(), comment.id());
+        avatars.bind(imageView(3), comment.user());
 
-        setText(1, comment.user.login);
-        setText(2, TimeUtils.getRelativeTime(comment.updated_at));
+        setText(1, comment.user().login());
+        setText(2, TimeUtils.getRelativeTime(comment.updatedAt()));
 
-        final boolean canEdit = (canWrite || comment.user.login.equals(userName))
+        final boolean canEdit = (canWrite || comment.user().login().equals(userName))
             && editCommentListener != null;
 
-        final boolean canDelete = (canWrite || comment.user.login.equals(userName))
+        final boolean canDelete = (canWrite || comment.user().login().equals(userName))
             && deleteCommentListener != null;
 
         final ImageView ivMore = view(4);
@@ -224,7 +223,7 @@ public class CommentListAdapter extends MultiTypeAdapter {
         });
     }
 
-    private void showMorePopup(View v, final GithubComment comment, final boolean canEdit, final boolean canDelete ) {
+    private void showMorePopup(View v, final GitHubComment comment, final boolean canEdit, final boolean canDelete ) {
         PopupMenu menu = new PopupMenu(context, v);
         menu.inflate(R.menu.comment_popup);
 
@@ -266,14 +265,12 @@ public class CommentListAdapter extends MultiTypeAdapter {
         this.clear();
 
         for (Object item : items) {
-            if(item instanceof GithubComment)
+            if(item instanceof GitHubComment)
                 this.addItem(0, item);
-            else if(item instanceof GithubEvent)
+            else if(item instanceof GitHubEvent)
                 this.addItem(1, item);
-            else if(item instanceof IssueStoryComment)
-                this.addItem(0, ((IssueStoryComment) item).comment);
-            else if(item instanceof IssueStoryEvent)
-                this.addItem(1, ((IssueStoryEvent) item).event);
+            else if(item instanceof IssueEvent)
+                this.addItem(1, (item));
         }
 
         notifyDataSetChanged();

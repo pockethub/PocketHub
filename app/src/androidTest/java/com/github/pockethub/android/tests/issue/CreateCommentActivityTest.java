@@ -18,7 +18,7 @@ package com.github.pockethub.android.tests.issue;
 import android.view.View;
 import android.widget.EditText;
 
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R.id;
 import com.github.pockethub.android.tests.ActivityTest;
 import com.github.pockethub.android.ui.issue.CreateCommentActivity;
@@ -43,9 +43,9 @@ public class CreateCommentActivityTest extends
     protected void setUp() throws Exception {
         super.setUp();
 
-        User user = new User();
-        user.login = "u";
-
+        User user = User.builder()
+                .login("u")
+                .build();
         setActivityIntent(CreateCommentActivity.createIntent(InfoUtils.createRepoFromData("o", "u")
                 , 1, user));
     }

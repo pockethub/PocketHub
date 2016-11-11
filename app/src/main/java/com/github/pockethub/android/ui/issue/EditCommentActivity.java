@@ -20,21 +20,20 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 
-import com.alorma.github.sdk.bean.dto.request.CommentRequest;
-import com.alorma.github.sdk.bean.dto.response.GithubComment;
-import com.alorma.github.sdk.bean.dto.response.Issue;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.bean.info.RepoInfo;
-import com.alorma.github.sdk.services.issues.EditIssueCommentClient;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.GitHubComment;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.Intents;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.comment.CommentPreviewPagerAdapter;
-import com.github.pockethub.android.util.HtmlUtils;
 import com.github.pockethub.android.util.InfoUtils;
 import com.github.pockethub.android.util.ToastUtils;
+import com.meisolsson.githubsdk.model.request.CommentRequest;
+import com.meisolsson.githubsdk.service.issues.IssueCommentService;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -59,7 +58,7 @@ public class EditCommentActivity extends
      * @param user
      * @return intent
      */
-    public static Intent createIntent(Repo repoId, int issueNumber, GithubComment comment,
+    public static Intent createIntent(Repository repoId, int issueNumber, GitHubComment comment,
             User user) {
         Builder builder = new Builder("issue.comment.edit.VIEW");
         builder.repo(repoId);
@@ -69,12 +68,12 @@ public class EditCommentActivity extends
         return builder.toIntent();
     }
 
-    private Repo repositoryId;
+    private Repository repositoryId;
 
     /**
      * Comment to edit.
      */
-    private GithubComment comment;
+    private GitHubComment comment;
 
     private int issueNumber;
 
@@ -103,18 +102,22 @@ public class EditCommentActivity extends
      * @param commentText
      */
     protected void editComment(String commentText) {
-        RepoInfo info = InfoUtils.createRepoInfo(repositoryId);
-        new EditIssueCommentClient(info, comment.id, new CommentRequest(commentText)).observable()
+        CommentRequest commentRequest = CommentRequest.builder()
+                .body(commentText)
+                .build();
+
+        ServiceGenerator.createService(this, IssueCommentService.class)
+                .editIssueComment(repositoryId.owner().login(), repositoryId.name(),
+                        issueNumber, comment.id(), commentRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<GithubComment>bindToLifecycle())
-                .subscribe(new ProgressObserverAdapter<GithubComment>(this, R.string.editing_comment) {
+                .compose(this.<GitHubComment>bindToLifecycle())
+                .subscribe(new ProgressObserverAdapter<GitHubComment>(this, R.string.editing_comment) {
 
                     @Override
-                    public void onNext(GithubComment edited) {
+                    public void onNext(GitHubComment edited) {
                         super.onNext(edited);
                         dismissProgress();
-                        edited.body_html = HtmlUtils.format(edited.body_html).toString();
                         finish(edited);
                     }
 
@@ -130,7 +133,7 @@ public class EditCommentActivity extends
     @Override
     protected CommentPreviewPagerAdapter createAdapter() {
         CommentPreviewPagerAdapter commentPreviewPagerAdapter = new CommentPreviewPagerAdapter(this, repositoryId);
-        commentPreviewPagerAdapter.setCommentText(comment != null ? comment.body : null);
+        commentPreviewPagerAdapter.setCommentText(comment != null ? comment.body() : null);
         return commentPreviewPagerAdapter;
     }
 }

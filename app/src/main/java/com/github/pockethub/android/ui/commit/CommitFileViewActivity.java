@@ -28,10 +28,9 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
-import com.alorma.github.sdk.bean.dto.response.CommitFile;
-import com.alorma.github.sdk.bean.dto.response.GitBlob;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.services.git.GetGitBlobClient;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.GitHubFile;
+import com.meisolsson.githubsdk.model.Repository;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
@@ -47,6 +46,8 @@ import com.github.pockethub.android.util.PreferenceUtils;
 import com.github.pockethub.android.util.ShareUtils;
 import com.github.pockethub.android.util.SourceEditor;
 import com.github.pockethub.android.util.ToastUtils;
+import com.meisolsson.githubsdk.model.git.GitBlob;
+import com.meisolsson.githubsdk.service.git.GitService;
 import com.google.inject.Inject;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -79,17 +80,16 @@ public class CommitFileViewActivity extends BaseActivity implements
      * @param file
      * @return intent
      */
-    public static Intent createIntent(Repo repository, String commit,
-        CommitFile file) {
+    public static Intent createIntent(Repository repository, String commit, GitHubFile file) {
         Builder builder = new Builder("commit.file.VIEW");
         builder.repo(repository);
         builder.add(EXTRA_HEAD, commit);
-        builder.add(EXTRA_PATH, file.filename);
-        builder.add(EXTRA_BASE, file.sha);
+        builder.add(EXTRA_PATH, file.filename());
+        builder.add(EXTRA_BASE, file.sha());
         return builder.toIntent();
     }
 
-    private Repo repo;
+    private Repository repo;
 
     private String commit;
 
@@ -150,7 +150,7 @@ public class CommitFileViewActivity extends BaseActivity implements
             actionBar.setTitle(path);
         actionBar.setSubtitle(getString(R.string.commit_prefix)
             + CommitUtils.abbreviate(commit));
-        avatars.bind(actionBar, repo.owner);
+        avatars.bind(actionBar, repo.owner());
 
         loadContent();
     }
@@ -221,7 +221,7 @@ public class CommitFileViewActivity extends BaseActivity implements
     @Override
     public Loader<CharSequence> onCreateLoader(int loader, Bundle args) {
         final String raw = args.getString(ARG_TEXT);
-        final Repo repo = args.getParcelable(ARG_REPO);
+        final Repository repo = args.getParcelable(ARG_REPO);
         return new MarkdownLoader(this, repo, raw, imageGetter, false);
     }
 
@@ -257,7 +257,7 @@ public class CommitFileViewActivity extends BaseActivity implements
         ViewUtils.setGone(loadingBar, false);
         ViewUtils.setGone(codeView, true);
 
-        String markdown = new String(Base64.decode(blob.content, Base64.DEFAULT));
+        String markdown = new String(Base64.decode(blob.content(), Base64.DEFAULT));
         Bundle args = new Bundle();
         args.putCharSequence(ARG_TEXT, markdown);
         args.putParcelable(ARG_REPO, repo);
@@ -265,8 +265,8 @@ public class CommitFileViewActivity extends BaseActivity implements
     }
 
     private void loadContent() {
-        new GetGitBlobClient(InfoUtils.createCommitInfo(repo, sha))
-                .observable()
+        ServiceGenerator.createService(this, GitService.class)
+                .getGitBlob(repo.owner().login(), repo.name(), sha)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<GitBlob>bindToLifecycle())

@@ -15,20 +15,18 @@
  */
 package com.github.pockethub.android.core.user;
 
-
-import com.alorma.github.sdk.bean.dto.response.GithubEvent;
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.bean.dto.response.events.EventType;
-import com.github.pockethub.android.api.FollowEventPayload;
-import com.google.gson.Gson;
+import com.meisolsson.githubsdk.model.GitHubEvent;
+import com.meisolsson.githubsdk.model.GitHubEventType;
+import com.meisolsson.githubsdk.model.User;
+import com.meisolsson.githubsdk.model.payload.FollowPayload;
 
 /**
- * Matches a {@link User} in an {@link GithubEvent}
+ * Matches a {@link User} in an {@link GitHubEvent}
  */
 public class UserEventMatcher {
 
     /**
-     * Pair of users in an {@link GithubEvent}
+     * Pair of users in an {@link GitHubEvent}
      */
     public static class UserPair {
 
@@ -54,20 +52,14 @@ public class UserEventMatcher {
      * @param event
      * @return user or null if event doesn't apply
      */
-    public UserPair getUsers(final GithubEvent event) {
-        if (event == null)
+    public UserPair getUsers(final GitHubEvent event) {
+        if (event == null || event.payload() == null)
             return null;
 
-        if (event.payload == null)
-            return null;
-
-        Gson gson = new Gson();
-        String json = gson.toJson(event.payload);
-
-        EventType type = event.getType();
-        if (EventType.FollowEvent.equals(type)) {
-            User from = event.actor;
-            User to = gson.fromJson(json, FollowEventPayload.class).target;
+        GitHubEventType type = event.type();
+        if (GitHubEventType.FollowEvent.equals(type)) {
+            User from = event.actor();
+            User to = ((FollowPayload) event.payload()).target();
             if (from != null && to != null)
                 return new UserPair(from, to);
         }

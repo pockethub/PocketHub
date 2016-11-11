@@ -31,11 +31,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.alorma.github.sdk.bean.dto.response.Commit;
-import com.alorma.github.sdk.bean.dto.response.CommitFile;
-import com.alorma.github.sdk.bean.dto.response.CompareCommit;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.services.repo.CompareCommitsClient;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.commit.CommitUtils;
@@ -43,8 +38,13 @@ import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.HeaderFooterListAdapter;
 import com.github.pockethub.android.util.AvatarLoader;
-import com.github.pockethub.android.util.InfoUtils;
 import com.github.pockethub.android.util.ToastUtils;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Commit;
+import com.meisolsson.githubsdk.model.CommitCompare;
+import com.meisolsson.githubsdk.model.GitHubFile;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.service.repositories.RepositoryCommitService;
 import com.google.inject.Inject;
 
 import java.text.MessageFormat;
@@ -71,7 +71,7 @@ public class CommitCompareListFragment extends DialogFragment implements
 
     private ProgressBar progress;
 
-    private Repo repository;
+    private Repository repository;
 
     private String base;
 
@@ -82,7 +82,7 @@ public class CommitCompareListFragment extends DialogFragment implements
 
     private HeaderFooterListAdapter<CommitFileListAdapter> adapter;
 
-    private CompareCommit compare;
+    private CommitCompare compare;
 
     @Override
     public void onAttach(Context context) {
@@ -90,8 +90,8 @@ public class CommitCompareListFragment extends DialogFragment implements
 
         Activity activity = (Activity) context;
         repository = activity.getIntent().getParcelableExtra(EXTRA_REPOSITORY);
-        base = getStringExtra(EXTRA_BASE);
-        head = getStringExtra(EXTRA_HEAD);
+        base = getStringExtra(EXTRA_BASE).substring(0, 7);
+        head = getStringExtra(EXTRA_HEAD).substring(0, 7);
     }
 
     @Override
@@ -123,15 +123,15 @@ public class CommitCompareListFragment extends DialogFragment implements
     }
 
     private void compareCommits() {
-        new CompareCommitsClient(InfoUtils.createRepoInfo(repository), base, head)
-                .observable()
+        ServiceGenerator.createService(getActivity(), RepositoryCommitService.class)
+                .compareCommits(repository.owner().login(), repository.name(), base, head)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<CompareCommit>bindToLifecycle())
-                .subscribe(new ObserverAdapter<CompareCommit>() {
+                .compose(this.<CommitCompare>bindToLifecycle())
+                .subscribe(new ObserverAdapter<CommitCompare>() {
                     @Override
-                    public void onNext(CompareCommit compareCommit) {
-                        List<CommitFile> files = compareCommit.files;
+                    public void onNext(CommitCompare compareCommit) {
+                        List<GitHubFile> files = compareCommit.files();
                         diffStyler.setFiles(files);
                         if (files != null)
                             Collections.sort(files, new CommitFileComparator());
@@ -145,7 +145,7 @@ public class CommitCompareListFragment extends DialogFragment implements
                 });
     }
 
-    private void updateList(CompareCommit compare) {
+    private void updateList(CommitCompare compare) {
         if (!isUsable())
             return;
 
@@ -158,7 +158,7 @@ public class CommitCompareListFragment extends DialogFragment implements
         adapter.clearHeaders();
         adapter.getWrappedAdapter().clear();
 
-        List<Commit> commits = compare.commits;
+        List<Commit> commits = compare.commits();
         if (!commits.isEmpty()) {
             View commitHeader = inflater.inflate(R.layout.commit_details_header,
                     null);
@@ -179,15 +179,15 @@ public class CommitCompareListFragment extends DialogFragment implements
 
         CommitFileListAdapter rootAdapter = adapter.getWrappedAdapter();
         rootAdapter.clear();
-        List<CommitFile> files = compare.files;
+        List<GitHubFile> files = compare.files();
         if (files != null && !files.isEmpty()) {
             addFileStatHeader(files, inflater);
-            for (CommitFile file : files)
+            for (GitHubFile file : files)
                 rootAdapter.addItem(file);
         }
     }
 
-    private void addFileStatHeader(List<CommitFile> files,
+    private void addFileStatHeader(List<GitHubFile> files,
             LayoutInflater inflater) {
         View fileHeader = inflater.inflate(
                 R.layout.commit_compare_file_details_header, null);
@@ -222,32 +222,31 @@ public class CommitCompareListFragment extends DialogFragment implements
     private void openCommit(final Commit commit) {
         if (compare != null) {
             int commitPosition = 0;
-            Collection<Commit> commits = compare.commits;
+            Collection<Commit> commits = compare.commits();
             for (Commit candidate : commits)
                 if (commit == candidate)
                     break;
                 else
                     commitPosition++;
             if (commitPosition < commits.size())
-                startActivity(CommitViewActivity.createIntent(repository,
-                        commitPosition, commits));
+                startActivity(CommitViewActivity.createIntent(repository, commitPosition, commits));
         } else
             startActivity(CommitViewActivity.createIntent(repository,
-                    commit.sha));
+                    commit.sha()));
     }
 
-    private void openFile(final CommitFile file) {
-        if (!TextUtils.isEmpty(file.filename)
-                && !TextUtils.isEmpty(file.sha))
+    private void openFile(final GitHubFile file) {
+        if (!TextUtils.isEmpty(file.filename())
+                && !TextUtils.isEmpty(file.sha()))
             startActivity(CommitFileViewActivity.createIntent(repository, head, file));
     }
 
     private void openLine(AdapterView<?> parent, int position) {
-        Object item = null;
+        Object item;
         while (--position >= 0) {
             item = parent.getItemAtPosition(position);
-            if (item instanceof CommitFile) {
-                openFile((CommitFile) item);
+            if (item instanceof GitHubFile) {
+                openFile((GitHubFile) item);
                 return;
             }
         }
@@ -259,8 +258,8 @@ public class CommitCompareListFragment extends DialogFragment implements
         Object item = parent.getItemAtPosition(position);
         if (item instanceof Commit)
             openCommit((Commit) item);
-        else if (item instanceof CommitFile)
-            openFile((CommitFile) item);
+        else if (item instanceof GitHubFile)
+            openFile((GitHubFile) item);
         else if (item instanceof CharSequence)
             openLine(parent, position);
     }

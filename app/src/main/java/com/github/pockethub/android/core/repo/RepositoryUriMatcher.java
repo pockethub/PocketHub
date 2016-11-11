@@ -17,23 +17,23 @@ package com.github.pockethub.android.core.repo;
 
 import android.net.Uri;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.github.pockethub.android.util.InfoUtils;
+import com.meisolsson.githubsdk.model.Repository;
 
 import java.util.List;
 
 /**
- * Parses a {@link Repo} from a {@link Uri}
+ * Parses a {@link Repository} from a {@link Uri}
  */
 public class RepositoryUriMatcher {
 
     /**
-     * Attempt to parse a {@link Repo} from the given {@link Uri}
+     * Attempt to parse a {@link Repository} from the given {@link Uri}
      *
      * @param uri
-     * @return {@link Repo} or null if unparseable
+     * @return {@link Repository} or null if unparseable
      */
-    public static Repo getRepository(Uri uri) {
+    public static Repository getRepository(Uri uri) {
         List<String> segments = uri.getPathSegments();
         if (segments == null)
             return null;
@@ -48,11 +48,6 @@ public class RepositoryUriMatcher {
         if (!RepositoryUtils.isValidRepo(repoName))
             return null;
 
-        Repo repository = new Repo();
-        User owner = new User();
-        owner.login = repoOwner;
-        repository.name = repoName;
-        repository.owner = owner;
-        return repository;
+        return InfoUtils.createRepoFromData(repoOwner, repoName);
     }
 }

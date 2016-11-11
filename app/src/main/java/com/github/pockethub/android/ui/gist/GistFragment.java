@@ -34,16 +34,14 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.alorma.github.sdk.bean.dto.response.Gist;
-import com.alorma.github.sdk.bean.dto.response.GistFile;
-import com.alorma.github.sdk.bean.dto.response.GithubComment;
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.services.gists.DeleteGistCommentClient;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Gist;
+import com.meisolsson.githubsdk.model.GistFile;
+import com.meisolsson.githubsdk.model.GitHubComment;
+import com.meisolsson.githubsdk.model.User;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.accounts.AccountUtils;
-import com.github.pockethub.android.api.StarGistClient;
-import com.github.pockethub.android.api.UnStarGistClient;
 import com.github.pockethub.android.core.OnLoadListener;
 import com.github.pockethub.android.core.gist.FullGist;
 import com.github.pockethub.android.core.gist.GistStore;
@@ -60,9 +58,10 @@ import com.github.pockethub.android.ui.comment.EditCommentListener;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.HttpImageGetter;
 import com.github.pockethub.android.util.ShareUtils;
-import com.github.pockethub.android.util.TimeUtils;
 import com.github.pockethub.android.util.ToastUtils;
 import com.github.pockethub.android.util.TypefaceUtils;
+import com.meisolsson.githubsdk.service.gists.GistCommentService;
+import com.meisolsson.githubsdk.service.gists.GistService;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -72,7 +71,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import retrofit.client.Response;
+import retrofit2.Response;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -95,7 +94,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
     private String gistId;
 
-    private List<GithubComment> comments;
+    private List<GitHubComment> comments;
 
     private Gist gist;
 
@@ -166,10 +165,10 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         progress = finder.find(R.id.pb_loading);
 
         Activity activity = getActivity();
-        User user = gist.owner;
+        User user = gist.owner();
         String userName = null;
         if(user != null)
-            userName = user.login;
+            userName = user.login();
 
         adapter = new HeaderFooterListAdapter<>(list,
                 new CommentListAdapter(activity.getLayoutInflater(), null, avatars,
@@ -190,7 +189,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
             updateFiles(gist);
         }
 
-        if (gist == null || (gist.comments > 0 && comments == null))
+        if (gist == null || (gist.comments() > 0 && comments == null))
             adapter.addHeader(loadingView, null, false);
 
         if (gist != null && comments != null)
@@ -202,15 +201,15 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     private boolean isOwner() {
         if (gist == null)
             return false;
-        User user = gist.owner;
+        User user = gist.owner();
         if (user == null)
             return false;
         String login = AccountUtils.getLogin(getActivity());
-        return login != null && login.equals(user.login);
+        return login != null && login.equals(user.login());
     }
 
     private void updateHeader(Gist gist) {
-        Date createdAt = TimeUtils.stringToDate(gist.created_at);
+        Date createdAt = gist.createdAt();
         if (createdAt != null) {
             StyledText text = new StyledText();
             text.append(getString(R.string.prefix_created));
@@ -220,7 +219,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         } else
             created.setVisibility(GONE);
 
-        Date updatedAt = TimeUtils.stringToDate(gist.updated_at);
+        Date updatedAt = gist.updatedAt();
         if (updatedAt != null && !updatedAt.equals(createdAt)) {
             StyledText text = new StyledText();
             text.append(getString(R.string.prefix_updated));
@@ -230,7 +229,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         } else
             updated.setVisibility(GONE);
 
-        String desc = gist.description;
+        String desc = gist.description();
         if (!TextUtils.isEmpty(desc))
             description.setText(desc);
         else
@@ -289,16 +288,16 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
     private void starGist() {
         ToastUtils.show(getActivity(), R.string.starring_gist);
-        new StarGistClient(gistId)
-                .observable()
+        ServiceGenerator.createService(getActivity(), GistService.class)
+                .starGist(gistId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Boolean>bindToLifecycle())
-                .subscribe(new ObserverAdapter<Boolean>() {
+                .compose(this.<Response<Boolean>>bindToLifecycle())
+                .subscribe(new ObserverAdapter<Response<Boolean>>() {
 
                     @Override
-                    public void onNext(Boolean aBoolean) {
-                        starred = true;
+                    public void onNext(Response<Boolean> response) {
+                        starred = response.code() == 204;
                     }
 
                     @Override
@@ -310,25 +309,26 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
     private void shareGist() {
         StringBuilder subject = new StringBuilder("Gist ");
-        String id = gist.id;
+        String id = gist.id();
         subject.append(id);
-        User user = gist.owner;
-        if (user != null && !TextUtils.isEmpty(user.login))
-            subject.append(" by ").append(user.login);
+        User user = gist.owner();
+        if (user != null && !TextUtils.isEmpty(user.login()))
+            subject.append(" by ").append(user.login());
         startActivity(ShareUtils.create(subject, "https://gist.github.com/"
                 + id));
     }
 
     private void unstarGist() {
         ToastUtils.show(getActivity(), R.string.unstarring_gist);
-        new UnStarGistClient(gistId).observable()
+        ServiceGenerator.createService(getActivity(), GistService.class)
+                .unstarGist(gistId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Boolean>bindToLifecycle())
-                .subscribe(new ObserverAdapter<Boolean>() {
+                .compose(this.<Response<Boolean>>bindToLifecycle())
+                .subscribe(new ObserverAdapter<Response<Boolean>>() {
                     @Override
-                    public void onNext(Boolean aBoolean) {
-                        starred = false;
+                    public void onNext(Response<Boolean> response) {
+                        starred = !(response.code() == 204);
                     }
 
                     @Override
@@ -345,11 +345,11 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
         switch (requestCode) {
         case COMMENT_CREATE:
-            GithubComment comment = data
+            GitHubComment comment = data
                     .getParcelableExtra(EXTRA_COMMENT);
             if (comments != null) {
                 comments.add(comment);
-                gist.comments = gist.comments + 1;
+                gist = gist.toBuilder().comments(gist.comments() + 1).build();
                 updateList(gist, comments);
             } else
                 refreshGist();
@@ -358,12 +358,12 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
             comment = data.getParcelableExtra(EXTRA_COMMENT);
             if (comments != null && comment != null) {
                 int position = Collections.binarySearch(comments, comment,
-                        new Comparator<GithubComment>() {
-                            public int compare(GithubComment lhs, GithubComment rhs) {
-                                return String.valueOf(lhs.id).compareTo(rhs.id);
+                        new Comparator<GitHubComment>() {
+                            public int compare(GitHubComment lhs, GitHubComment rhs) {
+                                return Integer.valueOf(lhs.id()).compareTo(rhs.id());
                             }
                         });
-                imageGetter.removeFromCache(comment.id);
+                imageGetter.removeFromCache(comment.id());
                 comments.set(position, comment);
                 updateList(gist, comments);
             } else
@@ -383,7 +383,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
             adapter.removeHeader(header);
         fileHeaders.clear();
 
-        Map<String, GistFile> files = gist.files;
+        Map<String, GistFile> files = gist.files();
         if (files == null || files.isEmpty())
             return;
 
@@ -391,7 +391,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         final Typeface octicons = TypefaceUtils.getOcticons(activity);
         for (GistFile file : files.values()) {
             View fileView = inflater.inflate(R.layout.gist_file_item, null);
-            ((TextView) fileView.findViewById(R.id.tv_file)).setText(file.filename);
+            ((TextView) fileView.findViewById(R.id.tv_file)).setText(file.filename());
             ((TextView) fileView.findViewById(R.id.tv_file_icon))
                     .setTypeface(octicons);
             adapter.addHeader(fileView, file, true);
@@ -399,9 +399,9 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         }
     }
 
-    private void updateList(Gist gist, List<GithubComment> comments) {
+    private void updateList(Gist gist, List<GitHubComment> comments) {
         adapter.getWrappedAdapter().setItems(
-                comments.toArray(new GithubComment[comments.size()]));
+                comments.toArray(new GitHubComment[comments.size()]));
         adapter.removeHeader(loadingView);
 
         headerView.setVisibility(VISIBLE);
@@ -457,23 +457,24 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
         switch (requestCode) {
         case COMMENT_DELETE:
-            final GithubComment comment = arguments.getParcelable(EXTRA_COMMENT);
-            new DeleteGistCommentClient(comment.id, gistId).observable()
+            final GitHubComment comment = arguments.getParcelable(EXTRA_COMMENT);
+            ServiceGenerator.createService(getActivity(), GistCommentService.class)
+                    .deleteGistComment(gistId, comment.id())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Response>bindToLifecycle())
-                    .subscribe(new ProgressObserverAdapter<Response>(getActivity(), R.string.deleting_comment) {
+                    .compose(this.<Response<Boolean>>bindToLifecycle())
+                    .subscribe(new ProgressObserverAdapter<Response<Boolean>>(getActivity(), R.string.deleting_comment) {
 
                         @Override
-                        public void onNext(Response response) {
+                        public void onNext(Response<Boolean> response) {
                             super.onNext(response);
                             // Update comment list
                             if (comments != null) {
                                 int position = Collections.binarySearch(comments,
-                                        comment, new Comparator<GithubComment>() {
-                                            public int compare(GithubComment lhs, GithubComment rhs) {
-                                                return String.valueOf(lhs.id)
-                                                        .compareTo(rhs.id);
+                                        comment, new Comparator<GitHubComment>() {
+                                            public int compare(GitHubComment lhs, GitHubComment rhs) {
+                                                return Integer.valueOf(lhs.id())
+                                                        .compareTo(rhs.id());
                                             }
                                         });
                                 comments.remove(position);
@@ -497,7 +498,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
      * Edit existing comment
      */
     final EditCommentListener editCommentListener = new EditCommentListener() {
-        public void onEditComment(GithubComment comment) {
+        public void onEditComment(GitHubComment comment) {
             startActivityForResult(
                     EditCommentActivity.createIntent(gist, comment),
                     COMMENT_EDIT);
@@ -508,7 +509,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
      * Delete existing comment
      */
     final DeleteCommentListener deleteCommentListener = new DeleteCommentListener() {
-        public void onDeleteComment(GithubComment comment) {
+        public void onDeleteComment(GitHubComment comment) {
             Bundle args = new Bundle();
             args.putParcelable(EXTRA_COMMENT, comment);
             ConfirmDialogFragment.show(

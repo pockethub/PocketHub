@@ -19,8 +19,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.StyledText;
 import com.github.pockethub.android.util.TypefaceUtils;
@@ -35,7 +35,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * Adapter for the default account's repositories
  */
 public class DefaultRepositoryListAdapter extends
-        RepositoryListAdapter<Repo> {
+        RepositoryListAdapter<Repository> {
 
     private int descriptionColor;
 
@@ -53,7 +53,7 @@ public class DefaultRepositoryListAdapter extends
      * @param account
      */
     public DefaultRepositoryListAdapter(LayoutInflater inflater,
-            Repo[] elements, AtomicReference<User> account) {
+            Repository[] elements, AtomicReference<User> account) {
         super(R.layout.repo_item, inflater, elements);
 
         this.account = account;
@@ -77,9 +77,9 @@ public class DefaultRepositoryListAdapter extends
      * @param text
      * @return this adapter
      */
-    public DefaultRepositoryListAdapter registerHeader(Repo repository,
+    public DefaultRepositoryListAdapter registerHeader(Repository repository,
             String text) {
-        headers.put(repository.id, text);
+        headers.put(repository.id(), text);
         return this;
     }
 
@@ -90,8 +90,8 @@ public class DefaultRepositoryListAdapter extends
      * @return this adapter
      */
     public DefaultRepositoryListAdapter registerNoSeparator(
-            Repo repository) {
-        noSeparators.add(repository.id);
+            Repository repository) {
+        noSeparators.add(repository.id());
         return this;
     }
 
@@ -114,26 +114,26 @@ public class DefaultRepositoryListAdapter extends
     }
 
     @Override
-    protected void update(int position, Repo repository) {
-        String headerValue = headers.get(repository.id);
+    protected void update(int position, Repository repository) {
+        String headerValue = headers.get(repository.id());
         if (headerValue != null) {
             setGone(5, false);
             setText(6, headerValue);
         } else
             setGone(5, true);
 
-        setGone(7, noSeparators.contains(repository.id));
+        setGone(7, noSeparators.contains(repository.id()));
 
         StyledText name = new StyledText();
-        if (!account.get().login.equals(repository.owner.login))
-            name.foreground(repository.owner.login, descriptionColor)
+        if (!account.get().login().equals(repository.owner().login()))
+            name.foreground(repository.owner().login(), descriptionColor)
                     .foreground('/', descriptionColor);
-        name.bold(repository.name);
+        name.bold(repository.name());
         setText(8, name);
 
-        updateDetails(repository.description, repository.language,
-                repository.watchers_count, repository.forks_count,
-                repository.isPrivate, repository.fork,
-                repository.mirror_url);
+        updateDetails(repository.description(), repository.language(),
+                repository.watchersCount(), repository.forksCount(),
+                repository.isPrivate(), repository.isFork(),
+                repository.mirrorUrl());
     }
 }

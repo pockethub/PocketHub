@@ -21,10 +21,10 @@ import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.alorma.github.sdk.bean.dto.response.Issue;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.services.repo.GetRepoClient;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueStore;
@@ -37,6 +37,7 @@ import com.github.pockethub.android.ui.repo.RepositoryViewActivity;
 import com.github.pockethub.android.ui.user.UriLauncherActivity;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.InfoUtils;
+import com.meisolsson.githubsdk.service.repositories.RepositoryService;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public class IssuesViewActivity extends PagerActivity {
      * @return intent
      */
     public static Intent createIntent(final Issue issue,
-        final Repo repository) {
+        final Repository repository) {
         return createIntent(Collections.singletonList(issue), repository, 0);
     }
 
@@ -92,12 +93,12 @@ public class IssuesViewActivity extends PagerActivity {
      * @return intent
      */
     public static Intent createIntent(final Collection<? extends Issue> issues,
-        final Repo repository, final int position) {
+        final Repository repository, final int position) {
         int[] numbers = new int[issues.size()];
         boolean[] pullRequests = new boolean[issues.size()];
         int index = 0;
         for (Issue issue : issues) {
-            numbers[index] = issue.number;
+            numbers[index] = issue.number();
             pullRequests[index] = IssueUtils.isPullRequest(issue);
             index++;
         }
@@ -119,22 +120,22 @@ public class IssuesViewActivity extends PagerActivity {
         final int count = issues.size();
         int[] numbers = new int[count];
         boolean[] pullRequests = new boolean[count];
-        ArrayList<Repo> repos = new ArrayList<>(count);
+        ArrayList<Repository> repos = new ArrayList<>(count);
         int index = 0;
         for (Issue issue : issues) {
-            numbers[index] = issue.number;
+            numbers[index] = issue.number();
             pullRequests[index] = IssueUtils.isPullRequest(issue);
             index++;
 
-            Repo repoId = null;
-            Repo issueRepo = issue.repository;
+            Repository repoId = null;
+            Repository issueRepo = issue.repository();
             if (issueRepo != null) {
-                User owner = issueRepo.owner;
+                User owner = issueRepo.owner();
                 if (owner != null)
-                    repoId = InfoUtils.createRepoFromData(owner.login, issueRepo.name);
+                    repoId = InfoUtils.createRepoFromData(owner.login(), issueRepo.name());
             }
             if (repoId == null)
-                repoId = InfoUtils.createRepoFromUrl(issue.html_url);
+                repoId = InfoUtils.createRepoFromUrl(issue.htmlUrl());
             repos.add(repoId);
         }
 
@@ -152,9 +153,9 @@ public class IssuesViewActivity extends PagerActivity {
 
     private boolean[] pullRequests;
 
-    private ArrayList<Repo> repoIds;
+    private ArrayList<Repository> repoIds;
 
-    private Repo repo;
+    private Repository repo;
 
     @Inject
     private AvatarLoader avatars;
@@ -185,21 +186,22 @@ public class IssuesViewActivity extends PagerActivity {
         if (repo != null) {
             ActionBar actionBar = getSupportActionBar();
             actionBar.setSubtitle(InfoUtils.createRepoId(repo));
-            user.set(repo.owner);
+            user.set(repo.owner());
             avatars.bind(actionBar, user);
         }
 
         // Load avatar if single issue and user is currently unset or missing
         // avatar URL
         if (repo == null) {
-            new GetRepoClient(InfoUtils.createRepoInfo(repo != null ? repo : repoIds.get(0)))
-                    .observable()
+            Repository temp = repo != null ? repo : repoIds.get(0);
+            ServiceGenerator.createService(this, RepositoryService.class)
+                    .getRepository(temp.owner().login(), temp.name())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Repo>bindToLifecycle())
-                    .subscribe(new ObserverAdapter<Repo>() {
+                    .compose(this.<Repository>bindToLifecycle())
+                    .subscribe(new ObserverAdapter<Repository>() {
                         @Override
-                        public void onNext(Repo repo) {
+                        public void onNext(Repository repo) {
                             repositoryLoaded(repo);
                         }
                     });
@@ -208,11 +210,12 @@ public class IssuesViewActivity extends PagerActivity {
         }
     }
 
-    private void repositoryLoaded(Repo repo){
-        if (issueNumbers.length == 1 && (user.get() == null || user.get().avatar_url == null))
-            avatars.bind(getSupportActionBar(), repo.owner);
+    private void repositoryLoaded(Repository repo) {
+        if (issueNumbers.length == 1 && (user.get() == null || user.get().avatarUrl() == null))
+            avatars.bind(getSupportActionBar(), repo.owner());
 
-        canWrite = repo.canAdmin() || repo.canPush();
+        canWrite = repo.permissions() != null && (repo.permissions().admin() || repo.permissions().push());
+
         invalidateOptionsMenu();
         configurePager();
     }
@@ -263,9 +266,9 @@ public class IssuesViewActivity extends PagerActivity {
             actionBar.setSubtitle(InfoUtils.createRepoId(repo));
             Issue issue = store.getIssue(repo, issueNumbers[position]);
             if (issue != null) {
-                Repo fullRepo = issue.repository;
-                if (fullRepo != null && fullRepo.owner != null) {
-                    user.set(fullRepo.owner);
+                Repository fullRepo = issue.repository();
+                if (fullRepo != null && fullRepo.owner() != null) {
+                    user.set(fullRepo.owner());
                     avatars.bind(actionBar, user);
                 } else
                     actionBar.setLogo(null);
@@ -307,15 +310,15 @@ public class IssuesViewActivity extends PagerActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Repo repository = repo;
+                Repository repository = repo;
                 if (repository == null) {
                     int position = pager.getCurrentItem();
-                    Repo repoId = repoIds.get(position);
+                    Repository repoId = repoIds.get(position);
                     if (repoId != null) {
                         Issue issue = store.getIssue(repoId,
                             issueNumbers[position]);
                         if (issue != null)
-                            repository = issue.repository;
+                            repository = issue.repository();
                     }
                 }
                 if (repository != null) {

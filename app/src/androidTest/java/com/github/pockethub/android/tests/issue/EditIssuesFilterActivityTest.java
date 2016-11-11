@@ -15,7 +15,7 @@
  */
 package com.github.pockethub.android.tests.issue;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.core.issue.IssueFilter;
 import com.github.pockethub.android.tests.ActivityTest;
 import com.github.pockethub.android.ui.issue.EditIssuesFilterActivity;
@@ -38,7 +38,7 @@ public class EditIssuesFilterActivityTest extends
     protected void setUp() throws Exception {
         super.setUp();
 
-        Repo repo = InfoUtils.createRepoFromData("owner", "name");
+        Repository repo = InfoUtils.createRepoFromData("owner", "name");
         IssueFilter filter = new IssueFilter(repo);
         setActivityIntent(EditIssuesFilterActivity.createIntent(filter));
     }

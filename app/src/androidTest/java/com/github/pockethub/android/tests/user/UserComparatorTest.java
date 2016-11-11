@@ -18,7 +18,7 @@ package com.github.pockethub.android.tests.user;
 import android.accounts.Account;
 import android.test.AndroidTestCase;
 
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.core.user.UserComparator;
 
 /**
@@ -61,8 +61,8 @@ public class UserComparatorTest extends AndroidTestCase {
     }
 
     private User createUser(String login){
-        User user = new User();
-        user.login = login;
-        return user;
+        return User.builder()
+                .login(login)
+                .build();
     }
 }

@@ -29,12 +29,12 @@ import android.widget.ListView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.alorma.github.sdk.bean.dto.response.Milestone;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.SingleChoiceDialogFragment;
+import com.meisolsson.githubsdk.model.Milestone;
 
 import java.util.ArrayList;
 
@@ -69,9 +69,9 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
 
         @Override
         protected void update(int position, Milestone item) {
-            setText(1, item.title);
+            setText(1, item.title());
 
-            String description = item.description;
+            String description = item.description();
             if (!TextUtils.isEmpty(description))
                 ViewUtils.setGone(setText(2, description), false);
             else
@@ -82,7 +82,7 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
 
         @Override
         public long getItemId(int position) {
-            return getItem(position).number;
+            return getItem(position).number();
         }
     }
 

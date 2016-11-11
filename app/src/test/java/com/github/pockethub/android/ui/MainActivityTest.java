@@ -23,13 +23,13 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 
-import com.alorma.github.sdk.bean.dto.response.Organization;
 import com.github.pockethub.android.BuildConfig;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.gist.GistsPagerFragment;
 import com.github.pockethub.android.ui.issue.FilterListFragment;
 import com.github.pockethub.android.ui.issue.IssueDashboardPagerFragment;
 import com.github.pockethub.android.ui.user.HomePagerFragment;
+import com.meisolsson.githubsdk.model.User;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -66,8 +66,8 @@ public class MainActivityTest {
     @Before
     public void setup() {
         mockMainActivity = Robolectric.buildActivity(MockMainActivity.class).create().get();
-        List<Organization> org = new ArrayList<>();
-        org.add(new Organization());
+        List<User> org = new ArrayList<>();
+        org.add(User.builder().build());
         Account firstGitHubAccount = new Account("GitHubAccount", "com.github");
         Account secondGitHubAccount = new Account("GitHubAccount2", "com.github");
         accounts = new Account[]{firstGitHubAccount, secondGitHubAccount};
@@ -131,7 +131,7 @@ public class MainActivityTest {
     public static class MockMainActivity extends MainActivity {
 
         @Override
-        void switchFragment(Fragment frag, Organization org) {
+        void switchFragment(Fragment frag, User org) {
             super.switchFragment(frag, org);
             fragment = frag;
         }

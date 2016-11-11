@@ -15,7 +15,7 @@
  */
 package com.github.pockethub.android.ui.user;
 
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.meisolsson.githubsdk.model.User;
 
 /**
  * Callback interface when the selected organization changes

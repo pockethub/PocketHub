@@ -17,22 +17,26 @@ package com.github.pockethub.android.core.issue;
 
 import android.content.Context;
 
-import com.alorma.github.sdk.bean.dto.request.EditIssueRequestDTO;
-import com.alorma.github.sdk.bean.dto.response.Issue;
-import com.alorma.github.sdk.bean.dto.response.IssueState;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.bean.info.IssueInfo;
-import com.alorma.github.sdk.services.issues.ChangeIssueStateClient;
-import com.alorma.github.sdk.services.issues.EditIssueClient;
-import com.alorma.github.sdk.services.issues.GetIssueClient;
 import com.github.pockethub.android.core.ItemStore;
-import com.github.pockethub.android.util.HtmlUtils;
+import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.util.InfoUtils;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.IssueState;
+import com.meisolsson.githubsdk.model.PullRequest;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
+import com.meisolsson.githubsdk.model.request.issue.IssueRequest;
+import com.meisolsson.githubsdk.service.issues.IssueService;
+import com.meisolsson.githubsdk.service.pull_request.PullRequestService;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import rx.Scheduler;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Store of loaded issues
@@ -42,7 +46,9 @@ public class IssueStore extends ItemStore {
     //+++
     private final Map<String, ItemReferences<Issue>> repos = new HashMap<>();
 
-    private final Context context;
+    private IssueService service;
+
+    private PullRequestService pullRequestService;
 
     /**
      * Create issue store
@@ -50,7 +56,8 @@ public class IssueStore extends ItemStore {
      * @param context
      */
     public IssueStore(final Context context) {
-        this.context = context;
+        service = ServiceGenerator.createService(context, IssueService.class);
+        pullRequestService = ServiceGenerator.createService(context, PullRequestService.class);
     }
 
     /**
@@ -60,7 +67,7 @@ public class IssueStore extends ItemStore {
      * @param number
      * @return issue or null if not in store
      */
-    public Issue getIssue(Repo repository, int number) {
+    public Issue getIssue(Repository repository, int number) {
         ItemReferences<Issue> repoIssues = repos.get(InfoUtils.createRepoId(repository));
         return repoIssues != null ? repoIssues.get(number) : null;
     }
@@ -72,16 +79,16 @@ public class IssueStore extends ItemStore {
      * @return issue
      */
     public Issue addIssue(Issue issue) {
-        Repo repo = null;
+        Repository repo = null;
         if (issue != null) {
-            repo = issue.repository;
+            repo = issue.repository();
             if (repo == null)
-                repo = repoFromUrl(issue.html_url);
+                repo = repoFromUrl(issue.htmlUrl());
         }
         return addIssue(repo, issue);
     }
 
-    private Repo repoFromUrl(String url){
+    private Repository repoFromUrl(String url) {
         if (url == null || url.length() == 0)
             return null;
         String owner = null;
@@ -95,14 +102,9 @@ public class IssueStore extends ItemStore {
                 else
                     break;
 
-        if(owner != null && owner.length() > 0 && name != null && name.length() > 0){
-            Repo repo = new Repo();
-            User user = new User();
-            user.login = owner;
-            repo.owner = user;
-            repo.name = name;
-            return repo;
-        }else{
+        if (owner != null && owner.length() > 0 && name != null && name.length() > 0) {
+            return InfoUtils.createRepoFromData(owner, name);
+        } else {
             return null;
         }
     }
@@ -114,33 +116,20 @@ public class IssueStore extends ItemStore {
      * @param issue
      * @return issue
      */
-    public Issue addIssue(Repo repository, Issue issue) {
-        issue.body_html = (HtmlUtils.format(issue.body_html).toString());
-        Issue current = getIssue(repository, issue.number);
-        if (current != null) {
-            current.assignee = issue.assignee;
-            current.body = issue.body;
-            current.body_html = issue.body_html;
-            current.closedAt = issue.closedAt;
-            current.comments = issue.comments;
-            current.labels = issue.labels;
-            current.milestone = issue.milestone;
-            current.pullRequest = issue.pullRequest;
-            current.state = issue.state;
-            current.title = issue.title;
-            current.updated_at = issue.updated_at;
-            current.repository = issue.repository;
+    public Issue addIssue(Repository repository, Issue issue) {
+        Issue current = getIssue(repository, issue.number());
+        if (current != null && current.equals(issue))
             return current;
-        } else {
-            String repoId = InfoUtils.createRepoId(repository);
-            ItemReferences<Issue> repoIssues = repos.get(repoId);
-            if (repoIssues == null) {
-                repoIssues = new ItemReferences<>();
-                repos.put(repoId, repoIssues);
-            }
-            repoIssues.put(issue.number, issue);
-            return issue;
+
+        String repoId = InfoUtils.createRepoId(repository);
+        ItemReferences<Issue> repoIssues = repos.get(repoId);
+        if (repoIssues == null) {
+            repoIssues = new ItemReferences<>();
+            repos.put(repoId, repoIssues);
         }
+
+        repoIssues.put(issue.number(), issue);
+        return issue;
     }
 
     /**
@@ -151,9 +140,10 @@ public class IssueStore extends ItemStore {
      * @return refreshed issue
      * @throws IOException
      */
-    public Issue refreshIssue(Repo repository, int number) throws IOException {
-        IssueInfo issueInfo = InfoUtils.createIssueInfo(repository, number);
-        Issue issue = new GetIssueClient(issueInfo).observable().toBlocking().first();
+    public Issue refreshIssue(Repository repository, int number) throws IOException {
+        Issue issue = service.getIssue(repository.owner().login(), repository.name(), number)
+                .toBlocking()
+                .first();
         return addIssue(repository, issue);
     }
 
@@ -165,15 +155,20 @@ public class IssueStore extends ItemStore {
      * @return edited issue
      * @throws IOException
      */
-    public Issue editIssue(Repo repository, int issueNumber, EditIssueRequestDTO editIssueRequestDTO) throws IOException {
-        IssueInfo issueInfo = new IssueInfo(InfoUtils.createRepoInfo(repository));
-        issueInfo.num = issueNumber;
-        return addIssue(repository, new EditIssueClient(issueInfo, editIssueRequestDTO).observable().toBlocking().first());
+    public Issue editIssue(Repository repository, int issueNumber, IssueRequest request) throws IOException {
+        Issue issue = service.editIssue(repository.owner().login(), repository.name(), issueNumber, request)
+                .toBlocking()
+                .first();
+        return addIssue(repository, issue);
     }
 
-    public Issue changeState(Repo repository, int issueNumber, IssueState state) throws IOException {
-        IssueInfo issueInfo = new IssueInfo(InfoUtils.createRepoInfo(repository));
-        issueInfo.num = issueNumber;
-        return addIssue(repository, new ChangeIssueStateClient(issueInfo, state).observable().toBlocking().first());
+    public Issue changeState(Repository repository, int issueNumber, IssueState state) throws IOException {
+        IssueRequest editIssue = IssueRequest.builder()
+                .state(state)
+                .build();
+        Issue issue = service.editIssue(repository.owner().login(), repository.name(), issueNumber, editIssue)
+                .toBlocking()
+                .first();
+        return addIssue(repository, issue);
     }
 }

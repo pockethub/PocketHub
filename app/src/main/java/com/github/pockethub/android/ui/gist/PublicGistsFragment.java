@@ -15,14 +15,15 @@
  */
 package com.github.pockethub.android.ui.gist;
 
-import com.alorma.github.sdk.bean.dto.response.Gist;
-import com.alorma.github.sdk.services.client.GithubListClient;
-import com.alorma.github.sdk.services.gists.PublicGistsClient;
 import com.github.pockethub.android.core.PageIterator;
 import com.github.pockethub.android.core.ResourcePager;
 import com.github.pockethub.android.core.gist.GistPager;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Gist;
+import com.meisolsson.githubsdk.model.Page;
+import com.meisolsson.githubsdk.service.gists.GistService;
 
-import java.util.List;
+import rx.Observable;
 
 /**
  * Fragment to display a list of public Gists
@@ -35,10 +36,11 @@ public class PublicGistsFragment extends GistsFragment {
 
             @Override
             public PageIterator<Gist> createIterator(int page, int size) {
-                return new PageIterator<>(new PageIterator.GitHubRequest<List<Gist>>() {
+                return new PageIterator<>(new PageIterator.GitHubRequest<Page<Gist>>() {
                     @Override
-                    public GithubListClient<List<Gist>> execute(int page) {
-                        return new PublicGistsClient(page);
+                    public Observable<Page<Gist>> execute(int page) {
+                        return ServiceGenerator.createService(getActivity(), GistService.class)
+                                .getPublicGists(page);
                     }
                 }, page);
             }

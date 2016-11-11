@@ -36,8 +36,8 @@ public class ProgressObserverAdapter<T> extends ObserverAdapter<T> {
     }
 
     @Override
-    public void onNext(T t) {
-        super.onNext(t);
+    public void onCompleted() {
+        super.onCompleted();
         dismissProgress();
     }
 

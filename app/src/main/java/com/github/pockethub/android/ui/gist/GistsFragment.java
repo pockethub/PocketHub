@@ -21,12 +21,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
-import com.alorma.github.sdk.bean.dto.response.Gist;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.gist.GistStore;
 import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.util.AvatarLoader;
+import com.meisolsson.githubsdk.model.Gist;
 import com.google.inject.Inject;
 
 import java.util.List;

@@ -27,10 +27,8 @@ import android.util.TypedValue;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
-import com.alorma.github.sdk.bean.dto.response.Contributor;
-import com.alorma.github.sdk.bean.dto.response.Organization;
-import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.android.R;
+import com.meisolsson.githubsdk.model.User;
 import com.google.inject.Inject;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
@@ -126,7 +124,7 @@ public class AvatarLoader {
         if (user == null)
             return;
 
-        String avatarUrl = user.avatar_url;
+        String avatarUrl = user.avatarUrl();
         if (TextUtils.isEmpty(avatarUrl))
             return;
 
@@ -164,26 +162,6 @@ public class AvatarLoader {
         bind(view, getAvatarUrl(user));
     }
 
-    /**
-     * Bind view to image at URL
-     *
-     * @param view The ImageView that is to display the user's avatar.
-     * @param org A User object that points to the desired user.
-     */
-    public void bind(final ImageView view, final Organization org) {
-        bind(view, getAvatarUrl(org));
-    }
-
-    /**
-     * Bind view to image at URL
-     *
-     * @param view        The ImageView that is to display the user's avatar.
-     * @param contributor A Contributor object that points to the desired user.
-     */
-    public void bind(final ImageView view, final Contributor contributor) {
-        bind(view, contributor.author.avatar_url);
-    }
-
     private void bind(final ImageView view, String url) {
         if (url == null) {
             p.load(R.drawable.spinner_inner).resize(avatarSize, avatarSize).into(view);
@@ -201,8 +179,8 @@ public class AvatarLoader {
                 .into(view);
     }
 
-    public void bind(MenuItem menuItem, Organization organization) {
-        bind(menuItem, getAvatarUrl(organization));
+    public void bind(MenuItem menuItem, User user) {
+        bind(menuItem, getAvatarUrl(user));
     }
 
     private void bind(final MenuItem orgMenuItem, final String url) {
@@ -235,20 +213,9 @@ public class AvatarLoader {
         if (user == null)
             return null;
 
-        String avatarUrl = user.avatar_url;
+        String avatarUrl = user.avatarUrl();
         if (TextUtils.isEmpty(avatarUrl)) {
-            avatarUrl = getAvatarUrl(GravatarUtils.getHash(user.email));
-        }
-        return avatarUrl;
-    }
-
-    private String getAvatarUrl(Organization org) {
-        if (org == null)
-            return null;
-
-        String avatarUrl = org.avatar_url;
-        if (TextUtils.isEmpty(avatarUrl)) {
-            avatarUrl = getAvatarUrl(GravatarUtils.getHash(org.email));
+            avatarUrl = getAvatarUrl(GravatarUtils.getHash(user.email()));
         }
         return avatarUrl;
     }

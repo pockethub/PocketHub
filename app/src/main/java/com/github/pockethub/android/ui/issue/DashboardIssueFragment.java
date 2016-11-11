@@ -20,9 +20,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-import com.alorma.github.sdk.bean.dto.response.Issue;
-import com.alorma.github.sdk.services.client.GithubListClient;
-import com.alorma.github.sdk.services.issues.GetIssuesClient;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.PageIterator;
@@ -30,10 +27,16 @@ import com.github.pockethub.android.core.ResourcePager;
 import com.github.pockethub.android.core.issue.IssueStore;
 import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.util.AvatarLoader;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.Page;
+import com.meisolsson.githubsdk.service.issues.IssueService;
 import com.google.inject.Inject;
 
 import java.util.List;
 import java.util.Map;
+
+import rx.Observable;
 
 import static com.github.pockethub.android.RequestCodes.ISSUE_VIEW;
 
@@ -53,14 +56,14 @@ public class DashboardIssueFragment extends PagedItemFragment<Issue> {
     @Inject
     private AvatarLoader avatars;
 
-    private Map<String, String> filterData;
+    private Map<String, Object> filterData;
 
     @SuppressWarnings("unchecked")
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        filterData = (Map<String, String>) getArguments().getSerializable(ARG_FILTER);
+        filterData = (Map<String, Object>) getArguments().getSerializable(ARG_FILTER);
     }
 
     @Override
@@ -92,15 +95,15 @@ public class DashboardIssueFragment extends PagedItemFragment<Issue> {
 
             @Override
             protected Object getId(Issue resource) {
-                return resource.id;
+                return resource.id();
             }
 
             @Override
             public PageIterator<Issue> createIterator(int page, int size) {
-                return new PageIterator<>(new PageIterator.GitHubRequest<List<Issue>>() {
+                return new PageIterator<>(new PageIterator.GitHubRequest<Page<Issue>>() {
                     @Override
-                    public GithubListClient<List<Issue>> execute(int page) {
-                        return new GetIssuesClient(filterData, page);
+                    public Observable<Page<Issue>> execute(int page) {
+                        return ServiceGenerator.createService(getActivity(), IssueService.class).getIssues(filterData, page);
                     }
                 }, page);
             }

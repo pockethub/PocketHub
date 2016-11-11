@@ -18,7 +18,7 @@ package com.github.pockethub.android.ui.user;
 import android.view.View;
 import android.widget.ListView;
 
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.meisolsson.githubsdk.model.User;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.accounts.AccountUtils;
 import com.github.pockethub.android.ui.PagedItemFragment;

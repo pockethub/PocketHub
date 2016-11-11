@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * Generic resource pager for elements with an id that can be paged
@@ -48,6 +49,7 @@ public abstract class ResourcePager<E> {
      * Are more pages available?
      */
     protected boolean hasMore;
+    private PageIterator<E> iterator;
 
     /**
      * Reset the number of the next page to be requested from {@link #next()}
@@ -68,6 +70,7 @@ public abstract class ResourcePager<E> {
      */
     public ResourcePager<E> clear() {
         count = Math.max(1, page - 1);
+        iterator = null;
         page = 1;
         resources.clear();
         hasMore = true;
@@ -100,7 +103,9 @@ public abstract class ResourcePager<E> {
      */
     public boolean next() throws IOException {
         boolean emptyPage = false;
-        PageIterator<E> iterator = createIterator(page, -1);
+        if(iterator == null)
+            iterator = createIterator(page, -1);
+
         try {
             for (int i = 0; i < count && iterator.hasNext(); i++) {
                 Collection<E> resourcePage = iterator.next();
@@ -121,9 +126,9 @@ public abstract class ResourcePager<E> {
             }
 
             page++;
-        } catch (NoSuchPageException e) {
+        } catch (NoSuchElementException e) {
             hasMore = false;
-            throw e.getCause();
+            e.printStackTrace();
         }
         hasMore = iterator.hasNext() && !emptyPage;
         return hasMore;

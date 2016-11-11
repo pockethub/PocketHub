@@ -15,17 +15,18 @@
  */
 package com.github.pockethub.android.ui.issue;
 
-import com.alorma.github.sdk.bean.dto.request.EditIssueLabelsRequestDTO;
-import com.alorma.github.sdk.bean.dto.response.Issue;
-import com.alorma.github.sdk.bean.dto.response.Label;
-import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.Label;
+import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueStore;
 import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.BaseActivity;
+import com.meisolsson.githubsdk.model.request.issue.IssueRequest;
 import com.google.inject.Inject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import roboguice.RoboGuice;
@@ -48,7 +49,7 @@ public class EditLabelsTask implements Observable.OnSubscribe<Issue> {
 
     private final BaseActivity activity;
 
-    private final Repo repositoryId;
+    private final Repository repositoryId;
 
     private final int issueNumber;
 
@@ -64,7 +65,7 @@ public class EditLabelsTask implements Observable.OnSubscribe<Issue> {
      * @param issueNumber
      */
     public EditLabelsTask(final BaseActivity activity,
-                          final Repo repositoryId, final int issueNumber,
+                          final Repository repositoryId, final int issueNumber,
                           final ProgressObserverAdapter<Issue> observer) {
 
         this.activity = activity;
@@ -80,12 +81,12 @@ public class EditLabelsTask implements Observable.OnSubscribe<Issue> {
     @Override
     public void call(Subscriber<? super Issue> subscriber) {
         try {
-            EditIssueLabelsRequestDTO requestDTO = new EditIssueLabelsRequestDTO();
-            requestDTO.labels = new String[labels.length];
-            for (int i = 0; i < labels.length; i++)
-                requestDTO.labels[i] = labels[i].name;
+            List<String> labelNames = new ArrayList<>(labels.length);
+            for (Label label : labels)
+                labelNames.add(label.name());
 
-            subscriber.onNext(store.editIssue(repositoryId, issueNumber, requestDTO));
+            IssueRequest editIssue = IssueRequest.builder().labels(labelNames).build();
+            subscriber.onNext(store.editIssue(repositoryId, issueNumber, editIssue));
         } catch (IOException e) {
             subscriber.onError(e);
         }

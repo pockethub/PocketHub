@@ -18,8 +18,8 @@ package com.github.pockethub.android.tests.gist;
 import android.view.View;
 import android.widget.EditText;
 
-import com.alorma.github.sdk.bean.dto.response.Gist;
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.meisolsson.githubsdk.model.Gist;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R.id;
 import com.github.pockethub.android.tests.ActivityTest;
 import com.github.pockethub.android.ui.gist.CreateCommentActivity;
@@ -43,12 +43,14 @@ public class CreateCommentActivityTest extends
     protected void setUp() throws Exception {
         super.setUp();
 
-        Gist gist = new Gist();
-        User user = new User();
+        User user = User.builder()
+                .login("abc")
+                .build();
 
-        user.login = "abc";
-        gist.user = user;
-        gist.id = "123";
+        Gist gist = Gist.builder()
+                .user(user)
+                .id("123")
+                .build();
 
         setActivityIntent(CreateCommentActivity.createIntent(gist));
     }

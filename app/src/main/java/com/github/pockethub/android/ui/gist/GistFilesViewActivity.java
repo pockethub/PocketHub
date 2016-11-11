@@ -22,8 +22,8 @@ import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
 
-import com.alorma.github.sdk.bean.dto.response.Gist;
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.meisolsson.githubsdk.model.Gist;
+import com.meisolsson.githubsdk.model.User;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
@@ -60,7 +60,7 @@ public class GistFilesViewActivity extends PagerActivity {
      * @return intent
      */
     public static Intent createIntent(Gist gist, int position) {
-        return new Builder("gist.files.VIEW").gist(gist.id)
+        return new Builder("gist.files.VIEW").gist(gist.id())
             .add(EXTRA_POSITION, position).toIntent();
     }
 
@@ -131,9 +131,9 @@ public class GistFilesViewActivity extends PagerActivity {
     private void configurePager() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        User author = gist.owner;
+        User author = gist.owner();
         if (author != null) {
-            actionBar.setSubtitle(author.login);
+            actionBar.setSubtitle(author.login());
             avatars.bind(actionBar, author);
         } else
             actionBar.setSubtitle(R.string.anonymous);

@@ -17,11 +17,10 @@ package com.github.pockethub.android.tests.commit;
 
 import android.test.AndroidTestCase;
 
-import com.alorma.github.sdk.bean.dto.response.Commit;
-import com.alorma.github.sdk.bean.dto.response.CommitComment;
-import com.alorma.github.sdk.bean.dto.response.CommitFile;
-import com.alorma.github.sdk.bean.dto.response.GitCommitFiles;
 import com.github.pockethub.android.core.commit.FullCommit;
+import com.meisolsson.githubsdk.model.Commit;
+import com.meisolsson.githubsdk.model.GitHubFile;
+import com.meisolsson.githubsdk.model.git.GitComment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,16 +35,22 @@ public class FullCommitTest extends AndroidTestCase {
      * Test commit with one file and one line comment
      */
     public void testSingleLineCommentSingleFile() {
-        Commit commit = new Commit();
-        CommitFile file = new CommitFile();
-        file.filename = "a.txt";
-        CommitComment comment = new CommitComment();
-        comment.path = file.getFileName();
-        comment.position = 10;
-        commit.files = new GitCommitFiles();
-        commit.files.addAll(Collections.singletonList(file));
+        GitHubFile file = GitHubFile.builder()
+                .filename("a.txt")
+                .build();
+
+        GitComment comment = GitComment.builder()
+                .path(file.filename())
+                .position(10)
+                .build();
+
+        Commit commit = Commit.builder()
+                .files(Collections.singletonList(file))
+                .build();
+
         FullCommit full = new FullCommit(commit, new ArrayList<>(
                 Collections.singletonList(comment)));
+
         assertTrue(full.isEmpty());
         assertEquals(1, full.getFiles().size());
         assertEquals(comment, full.getFiles().get(0).get(10).get(0));
@@ -55,14 +60,17 @@ public class FullCommitTest extends AndroidTestCase {
      * Test commit with one file and one commit comment
      */
     public void testSingleCommentSingleFile() {
-        Commit commit = new Commit();
-        CommitFile file = new CommitFile();
-        file.filename = "a.txt";
-        CommitComment comment = new CommitComment();
-        commit.files = new GitCommitFiles();
-        commit.files.addAll(Collections.singletonList(file));
-        FullCommit full = new FullCommit(commit, new ArrayList<CommitComment>(
-                Collections.singletonList(comment)));
+        GitHubFile file = GitHubFile.builder()
+                .filename("a.txt")
+                .build();
+
+        GitComment comment = GitComment.builder().build();
+
+        Commit commit = Commit.builder()
+                .files(Collections.singletonList(file))
+                .build();
+
+        FullCommit full = new FullCommit(commit, Collections.singletonList(comment));
         assertFalse(full.isEmpty());
         assertEquals(comment, full.get(0));
         assertEquals(1, full.getFiles().size());
@@ -72,10 +80,11 @@ public class FullCommitTest extends AndroidTestCase {
      * Test commit with no files and one commit comment
      */
     public void testSingleCommentNoFiles() {
-        Commit commit = new Commit();
-        CommitComment comment = new CommitComment();
-        FullCommit full = new FullCommit(commit, new ArrayList<CommitComment>(
-                Collections.singletonList(comment)));
+        GitComment comment = GitComment.builder().build();
+
+        Commit commit = Commit.builder().build();
+
+        FullCommit full = new FullCommit(commit, Collections.singletonList(comment));
         assertFalse(full.isEmpty());
         assertEquals(comment, full.get(0));
         assertTrue(full.getFiles().isEmpty());
@@ -85,11 +94,14 @@ public class FullCommitTest extends AndroidTestCase {
      * Test commit with no comments and one file
      */
     public void testNoCommentsSingleFile() {
-        Commit commit = new Commit();
-        CommitFile file = new CommitFile();
-        file.filename = "a.txt";
-        commit.files = new GitCommitFiles();
-        commit.files.addAll(Collections.singletonList(file));
+        GitHubFile file = GitHubFile.builder()
+                .filename("a.txt")
+                .build();
+
+        Commit commit = Commit.builder()
+                .files(Collections.singletonList(file))
+                .build();
+
         FullCommit full = new FullCommit(commit);
         assertTrue(full.isEmpty());
         assertEquals(1, full.getFiles().size());
@@ -99,17 +111,22 @@ public class FullCommitTest extends AndroidTestCase {
      * Test commit with line and global comments
      */
     public void testBothTypesOfComments() {
-        Commit commit = new Commit();
-        CommitFile file = new CommitFile();
-        file.filename = "a.txt";
-        commit.files = new GitCommitFiles();
-        commit.files.addAll(Collections.singletonList(file));
-        CommitComment comment1 = new CommitComment();
-        comment1.path = file.getFileName();
-        comment1.position = 10;
-        CommitComment comment2 = new CommitComment();
-        FullCommit full = new FullCommit(commit, new ArrayList<CommitComment>(
-                Arrays.asList(comment1, comment2)));
+        GitHubFile file = GitHubFile.builder()
+                .filename("a.txt")
+                .build();
+
+        GitComment comment1 = GitComment.builder()
+                .path(file.filename())
+                .position(10)
+                .build();
+
+        GitComment comment2 = GitComment.builder().build();
+
+        Commit commit = Commit.builder()
+                .files(Collections.singletonList(file))
+                .build();
+
+        FullCommit full = new FullCommit(commit, new ArrayList<>(Arrays.asList(comment1, comment2)));
         assertEquals(1, full.size());
         assertEquals(comment2, full.get(0));
         assertEquals(1, full.getFiles().size());

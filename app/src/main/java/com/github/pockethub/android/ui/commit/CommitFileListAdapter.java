@@ -19,8 +19,6 @@ import android.content.res.Resources;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 
-import com.alorma.github.sdk.bean.dto.response.CommitComment;
-import com.alorma.github.sdk.bean.dto.response.CommitFile;
 import com.github.kevinsawicki.wishlist.MultiTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
@@ -29,6 +27,8 @@ import com.github.pockethub.android.ui.StyledText;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.HttpImageGetter;
 import com.github.pockethub.android.util.TimeUtils;
+import com.meisolsson.githubsdk.model.GitHubFile;
+import com.meisolsson.githubsdk.model.git.GitComment;
 
 import java.util.List;
 
@@ -87,14 +87,14 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
     public long getItemId(int position) {
         switch (getItemViewType(position)) {
         case TYPE_FILE_HEADER:
-            String sha = ((CommitFile) getItem(position)).sha;
+            String sha = ((GitHubFile) getItem(position)).sha();
             if (!TextUtils.isEmpty(sha))
                 return sha.hashCode();
             else
                 return super.getItemId(position);
         case TYPE_COMMENT:
         case TYPE_LINE_COMMENT:
-            return Long.parseLong(((CommitComment) getItem(position)).id);
+            return ((GitComment) getItem(position)).id();
         default:
             return super.getItemId(position);
         }
@@ -108,11 +108,11 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
      */
     public void addItem(final FullCommitFile file) {
         addItem(TYPE_FILE_HEADER, file.getFile());
-        List<CharSequence> lines = diffStyler.get(file.getFile().filename);
+        List<CharSequence> lines = diffStyler.get(file.getFile().filename());
         int number = 0;
         for (CharSequence line : lines) {
             addItem(TYPE_FILE_LINE, line);
-            for (CommitComment comment : file.get(number))
+            for (GitComment comment : file.get(number))
                 addItem(TYPE_LINE_COMMENT, comment);
             number++;
         }
@@ -123,9 +123,9 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
      *
      * @param file
      */
-    public void addItem(final CommitFile file) {
+    public void addItem(final GitHubFile file) {
         addItem(TYPE_FILE_HEADER, file);
-        addItems(TYPE_FILE_LINE, diffStyler.get(file.filename));
+        addItems(TYPE_FILE_LINE, diffStyler.get(file.filename()));
     }
 
     /**
@@ -133,7 +133,7 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
      *
      * @param comment
      */
-    public void addComment(final CommitComment comment) {
+    public void addComment(final GitComment comment) {
         addItem(TYPE_COMMENT, comment);
     }
 
@@ -173,8 +173,8 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
     protected void update(final int position, final Object item, final int type) {
         switch (type) {
         case TYPE_FILE_HEADER:
-            CommitFile file = (CommitFile) item;
-            String path = file.filename;
+            GitHubFile file = (GitHubFile) item;
+            String path = file.filename();
             int lastSlash = path.lastIndexOf('/');
             if (lastSlash != -1) {
                 setText(0, path.substring(lastSlash + 1));
@@ -187,11 +187,11 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
 
             StyledText stats = new StyledText();
             stats.foreground('+', addTextColor);
-            stats.foreground(FORMAT_INT.format(file.additions),
+            stats.foreground(FORMAT_INT.format(file.additions()),
                     addTextColor);
             stats.append(' ').append(' ').append(' ');
             stats.foreground('-', removeTextColor);
-            stats.foreground(FORMAT_INT.format(file.deletions),
+            stats.foreground(FORMAT_INT.format(file.deletions()),
                     removeTextColor);
             setText(2, stats);
             return;
@@ -201,12 +201,11 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
             return;
         case TYPE_LINE_COMMENT:
         case TYPE_COMMENT:
-            CommitComment comment = (CommitComment) item;
-            avatars.bind(imageView(1), comment.user);
-            setText(2, comment.user.login);
-            setText(3, TimeUtils.getRelativeTime(comment.updated_at));
-            imageGetter.bind(textView(0), comment.body_html,
-                    comment.id);
+            GitComment comment = (GitComment) item;
+            avatars.bind(imageView(1), comment.user());
+            setText(2, comment.user().login());
+            setText(3, TimeUtils.getRelativeTime(comment.updatedAt()));
+            imageGetter.bind(textView(0), comment.bodyHtml(), comment.id());
         }
     }
 }

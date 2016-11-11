@@ -15,14 +15,15 @@
  */
 package com.github.pockethub.android.ui.user;
 
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.services.client.GithubListClient;
-import com.alorma.github.sdk.services.user.UserFollowingClient;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Page;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.core.PageIterator;
 import com.github.pockethub.android.core.ResourcePager;
 import com.github.pockethub.android.core.user.UserPager;
+import com.meisolsson.githubsdk.service.users.UserFollowerService;
 
-import java.util.List;
+import rx.Observable;
 
 /**
  * Fragment to display the users being followed by the default user
@@ -35,10 +36,11 @@ public class MyFollowingFragment extends FollowingFragment {
 
             @Override
             public PageIterator<User> createIterator(int page, int size) {
-                return new PageIterator<>(new PageIterator.GitHubRequest<List<User>>() {
+                return new PageIterator<>(new PageIterator.GitHubRequest<Page<User>>() {
                     @Override
-                    public GithubListClient<List<User>> execute(int page) {
-                        return new UserFollowingClient(null, page);
+                    public Observable<Page<User>> execute(int page) {
+                        return ServiceGenerator.createService(getContext(), UserFollowerService.class)
+                                .getFollowing(page);
                     }
                 }, page);
             }

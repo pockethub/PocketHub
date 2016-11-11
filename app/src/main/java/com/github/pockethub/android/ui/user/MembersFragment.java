@@ -20,14 +20,16 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.services.orgs.OrgsMembersClient;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Page;
+import com.meisolsson.githubsdk.model.User;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ThrowableLoader;
 import com.github.pockethub.android.accounts.AccountUtils;
 import com.github.pockethub.android.ui.ItemListFragment;
 import com.github.pockethub.android.util.AvatarLoader;
+import com.meisolsson.githubsdk.service.organizations.OrganizationMemberService;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -68,13 +70,17 @@ public class MembersFragment extends ItemListFragment<User> {
 
             @Override
             public List<User> loadData() throws Exception {
-                int page = 1;
-                boolean hasMore = true;
+                OrganizationMemberService service = ServiceGenerator.createService(getContext(), OrganizationMemberService.class);
+
+                int current = 1;
+                int last = -1;
                 List<User> users = new ArrayList<>();
 
-                while (hasMore){
-                    hasMore = users.addAll(new OrgsMembersClient(org.login, page).observable().toBlocking().first().first);
-                    page++;
+                while (current != last){
+                    Page<User> page = service.getMembers(org.login(), current).toBlocking().first();
+                    users.addAll(page.items());
+                    last = page.last() != null ? page.last() : -1;
+                    current = page.next() != null ? page.next() : -1;
                 }
                 return users;
             }

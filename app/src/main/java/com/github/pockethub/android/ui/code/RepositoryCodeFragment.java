@@ -33,8 +33,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.alorma.github.sdk.bean.dto.response.GitReference;
-import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.code.FullTree;
@@ -53,6 +51,8 @@ import com.github.pockethub.android.ui.ref.RefDialog;
 import com.github.pockethub.android.ui.ref.RefDialogFragment;
 import com.github.pockethub.android.util.ToastUtils;
 import com.github.pockethub.android.util.TypefaceUtils;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.git.GitReference;
 
 import java.util.LinkedList;
 
@@ -94,7 +94,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
     private Folder folder;
 
-    private Repo repository;
+    private Repository repository;
 
     private RefDialog dialog;
 
@@ -125,8 +125,9 @@ public class RepositoryCodeFragment extends DialogFragment implements
         switch (item.getItemId()) {
         case R.id.m_refresh:
             if (tree != null) {
-                GitReference ref = new GitReference();
-                ref.ref = tree.reference.ref;
+                GitReference ref = GitReference.builder()
+                        .ref(tree.reference.ref())
+                        .build();
                 refreshTree(ref);
             }else
                 refreshTree(null);
@@ -144,7 +145,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
     private void refreshTree(final GitReference reference) {
         showLoading(true);
-        Observable.create(new RefreshTreeTask(repository, reference))
+        Observable.create(new RefreshTreeTask(getActivity(), repository, reference))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<FullTree>bindToLifecycle())
@@ -278,7 +279,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
         if (folder.entry != null) {
             int textLightColor = getResources().getColor(R.color.text_light);
-            final String[] segments = folder.entry.path.split("/");
+            final String[] segments = folder.entry.path().split("/");
             StyledText text = new StyledText();
             for (int i = 0; i < segments.length - 1; i++) {
                 final int index = i;
@@ -322,6 +323,6 @@ public class RepositoryCodeFragment extends DialogFragment implements
             setFolder(tree, (Folder) entry);
         else
             startActivity(BranchFileViewActivity.createIntent(repository,
-                    tree.branch, entry.entry.path, entry.entry.sha));
+                    tree.branch, entry.entry.path(), entry.entry.sha()));
     }
 }

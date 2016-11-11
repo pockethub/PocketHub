@@ -17,13 +17,12 @@ package com.github.pockethub.android.core.gist;
 
 import android.content.Context;
 
-import com.alorma.github.sdk.bean.dto.response.Gist;
-import com.alorma.github.sdk.bean.dto.response.GistFile;
-import com.alorma.github.sdk.bean.dto.response.GistFilesMap;
-import com.alorma.github.sdk.services.gists.EditGistClient;
-import com.alorma.github.sdk.services.gists.GetGistDetailClient;
 import com.github.pockethub.android.core.ItemStore;
-import com.github.pockethub.android.util.RequestUtils;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Gist;
+import com.meisolsson.githubsdk.model.GistFile;
+import com.meisolsson.githubsdk.model.request.gist.CreateGist;
+import com.meisolsson.githubsdk.service.gists.GistService;
 
 import java.io.IOException;
 import java.util.Map;
@@ -62,20 +61,17 @@ public class GistStore extends ItemStore {
     /**
      * Sort files in {@link Gist}
      *
-     * TODO this is broken because the SDK thinks maps need to be parceled?
-     *
      * @param gist
      * @return sorted files
      */
-    protected GistFilesMap sortFiles(final Gist gist) {
-        GistFilesMap files = gist.files;
+    protected Map<String, GistFile> sortFiles(final Gist gist) {
+        Map<String, GistFile> files = gist.files();
         if (files == null || files.size() < 2)
             return files;
 
-        Map<String, GistFile> sorted = new TreeMap<>(
-                CASE_INSENSITIVE_ORDER);
+        Map<String, GistFile> sorted = new TreeMap<>(CASE_INSENSITIVE_ORDER);
         sorted.putAll(files);
-        return files;
+        return sorted;
     }
 
     /**
@@ -85,18 +81,15 @@ public class GistStore extends ItemStore {
      * @return gist
      */
     public Gist addGist(Gist gist) {
-        Gist current = getGist(gist.id);
-        if (current != null) {
-            current.comments = gist.comments;
-            current.description = gist.description;
-            current.files = sortFiles(gist);
-            current.updated_at = gist.updated_at;
+        Gist current = getGist(gist.id());
+        if (current != null && current.equals(gist))
             return current;
-        } else {
-            gist.files = sortFiles(gist);
-            gists.put(gist.id, gist);
-            return gist;
-        }
+
+        gist = gist.toBuilder()
+                .files(sortFiles(gist))
+                .build();
+        gists.put(gist.id(), gist);
+        return gist;
     }
 
     /**
@@ -107,7 +100,7 @@ public class GistStore extends ItemStore {
      * @throws IOException
      */
     public Gist refreshGist(String id) throws IOException {
-        return addGist(new GetGistDetailClient(id).observable().toBlocking().first());
+        return ServiceGenerator.createService(context, GistService.class).getGist(id).toBlocking().first();
     }
 
     /**
@@ -118,6 +111,12 @@ public class GistStore extends ItemStore {
      * @throws IOException
      */
     public Gist editGist(Gist gist) throws IOException {
-        return addGist(new EditGistClient(gist.id, RequestUtils.editGist(gist)).observable().toBlocking().first());
+        CreateGist edit = CreateGist.builder()
+                .files(gist.files())
+                .description(gist.description())
+                .isPublic(gist.isPublic())
+                .build();
+
+        return ServiceGenerator.createService(context, GistService.class).editGist(edit).toBlocking().first();
     }
 }

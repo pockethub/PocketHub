@@ -15,14 +15,14 @@
  */
 package com.github.pockethub.android.ui.issue;
 
-import com.alorma.github.sdk.bean.dto.request.EditIssueMilestoneRequestDTO;
-import com.alorma.github.sdk.bean.dto.response.Issue;
-import com.alorma.github.sdk.bean.dto.response.Milestone;
-import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.Milestone;
+import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueStore;
 import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.BaseActivity;
+import com.meisolsson.githubsdk.model.request.issue.IssueRequest;
 import com.google.inject.Inject;
 
 import java.io.IOException;
@@ -47,7 +47,7 @@ public class EditMilestoneTask implements Observable.OnSubscribe<Issue> {
 
     private final BaseActivity activity;
 
-    private final Repo repositoryId;
+    private final Repository repositoryId;
 
     private final int issueNumber;
 
@@ -63,7 +63,7 @@ public class EditMilestoneTask implements Observable.OnSubscribe<Issue> {
      * @param issueNumber
      */
     public EditMilestoneTask(final BaseActivity activity,
-                             final Repo repositoryId, final int issueNumber,
+                             final Repository repositoryId, final int issueNumber,
                              final ProgressObserverAdapter<Issue> observer) {
         this.activity = activity;
         this.repositoryId = repositoryId;
@@ -78,8 +78,7 @@ public class EditMilestoneTask implements Observable.OnSubscribe<Issue> {
     @Override
     public void call(Subscriber<? super Issue> subscriber) {
         try {
-            EditIssueMilestoneRequestDTO editedIssue = new EditIssueMilestoneRequestDTO();
-            editedIssue.milestone = milestoneNumber;
+            IssueRequest editedIssue = IssueRequest.builder().milestone(milestoneNumber).build();
             subscriber.onNext(store.editIssue(repositoryId, issueNumber, editedIssue));
         } catch (IOException e) {
             subscriber.onError(e);

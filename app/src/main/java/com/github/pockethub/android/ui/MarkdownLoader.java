@@ -19,11 +19,12 @@ import android.accounts.Account;
 import android.app.Activity;
 import android.text.Html.ImageGetter;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.services.content.GetMarkdownClient;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.accounts.AuthenticatedUserLoader;
 import com.github.pockethub.android.util.HtmlUtils;
-import com.github.pockethub.android.util.RequestUtils;
+import com.meisolsson.githubsdk.model.request.RequestMarkdown;
+import com.meisolsson.githubsdk.service.misc.MarkdownService;
 
 /**
  * Markdown loader
@@ -34,7 +35,7 @@ public class MarkdownLoader extends AuthenticatedUserLoader<CharSequence> {
 
     private final ImageGetter imageGetter;
 
-    private final Repo repository;
+    private final Repository repository;
 
     private final String raw;
 
@@ -47,7 +48,7 @@ public class MarkdownLoader extends AuthenticatedUserLoader<CharSequence> {
      * @param imageGetter
      * @param encode
      */
-    public MarkdownLoader(Activity activity, Repo repository,
+    public MarkdownLoader(Activity activity, Repository repository,
                           String raw, ImageGetter imageGetter, boolean encode) {
         super(activity);
 
@@ -64,12 +65,16 @@ public class MarkdownLoader extends AuthenticatedUserLoader<CharSequence> {
 
     @Override
     public CharSequence load(Account account) {
-        GetMarkdownClient markdownClient = new GetMarkdownClient(RequestUtils.markdown(raw));
-        String html = markdownClient.observable().toBlocking().first();
-/*            if (repository != null)
-                html = service.getRepositoryHtml(repository, raw);
-            else
-                html = service.getHtml(raw, MODE_GFM);*/
+        RequestMarkdown markdown = RequestMarkdown.builder()
+                .mode(RequestMarkdown.MODE_GFM)
+                .text(raw)
+                .context(repository != null ? String.format("%s/%s", repository.owner().login(), repository.name()) : null)
+                .build();
+
+        String html = ServiceGenerator.createService(activity, MarkdownService.class)
+                .renderMarkdown(markdown)
+                .toBlocking()
+                .first();
 
         if (encode)
             return HtmlUtils.encode(html, imageGetter);

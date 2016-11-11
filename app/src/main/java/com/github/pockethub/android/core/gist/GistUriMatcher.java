@@ -18,7 +18,8 @@ package com.github.pockethub.android.core.gist;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.alorma.github.sdk.bean.dto.response.Gist;
+
+import com.meisolsson.githubsdk.model.Gist;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -47,8 +48,10 @@ public class GistUriMatcher {
         if (TextUtils.isEmpty(gistId))
             return null;
 
-        Gist gist = new Gist();
-        gist.id = gistId;
+        Gist gist = Gist.builder()
+                .id(gistId)
+                .build();
+
         if (TextUtils.isDigitsOnly(gistId))
             return gist;
 

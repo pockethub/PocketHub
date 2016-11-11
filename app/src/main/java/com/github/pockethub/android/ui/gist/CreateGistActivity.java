@@ -25,10 +25,6 @@ import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import com.alorma.github.sdk.bean.dto.response.Gist;
-import com.alorma.github.sdk.bean.dto.response.GistFile;
-import com.alorma.github.sdk.bean.dto.response.GistFilesMap;
-import com.alorma.github.sdk.services.gists.PublishGistClient;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.BaseActivity;
@@ -36,6 +32,14 @@ import com.github.pockethub.android.ui.MainActivity;
 import com.github.pockethub.android.ui.TextWatcherAdapter;
 import com.github.pockethub.android.util.ShareUtils;
 import com.github.pockethub.android.util.ToastUtils;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Gist;
+import com.meisolsson.githubsdk.model.GistFile;
+import com.meisolsson.githubsdk.model.request.gist.CreateGist;
+import com.meisolsson.githubsdk.service.gists.GistService;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -143,19 +147,17 @@ public class CreateGistActivity extends BaseActivity {
             : getString(R.string.gist_file_name_hint);
 
         final String content = contentText.getText().toString();
+        Map<String, GistFile> map = new HashMap<>();
+        map.put(name, GistFile.builder().filename(name).content(content).build());
 
-        Gist gist = new Gist();
-        gist.description = description;
-        gist.isPublic = isPublic;
+        CreateGist createGist = CreateGist.builder()
+                .files(map)
+                .description(description)
+                .isPublic(isPublic)
+                .build();
 
-        GistFile file = new GistFile();
-        file.content = content;
-        file.filename = name;
-        GistFilesMap map = new GistFilesMap();
-        map.put(name, file);
-        gist.files = map;
-
-        new PublishGistClient(gist).observable()
+        ServiceGenerator.createService(this, GistService.class)
+                .createGist(createGist)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<Gist>bindToLifecycle())

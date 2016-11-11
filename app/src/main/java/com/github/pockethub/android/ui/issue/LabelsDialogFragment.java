@@ -29,11 +29,11 @@ import android.widget.ListView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.alorma.github.sdk.bean.dto.response.Label;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.DialogFragmentHelper;
+import com.meisolsson.githubsdk.model.Label;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -135,7 +135,7 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
         if (selectedChoices != null)
             for (int i = 0; i < choices.size(); i++)
                 if (selectedChoices[i])
-                    selected.add(choices.get(i).name);
+                    selected.add(choices.get(i).name());
         arguments.putStringArrayList(ARG_SELECTED, (ArrayList<String>) selected);
 
         LayoutInflater inflater = activity.getLayoutInflater();

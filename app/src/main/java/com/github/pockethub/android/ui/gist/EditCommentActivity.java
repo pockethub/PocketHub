@@ -20,17 +20,17 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 
-import com.alorma.github.sdk.bean.dto.request.CommentRequest;
-import com.alorma.github.sdk.bean.dto.response.Gist;
-import com.alorma.github.sdk.bean.dto.response.GithubComment;
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.services.gists.EditGistCommentClient;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Gist;
+import com.meisolsson.githubsdk.model.GitHubComment;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.comment.CommentPreviewPagerAdapter;
-import com.github.pockethub.android.util.HtmlUtils;
 import com.github.pockethub.android.util.ToastUtils;
+import com.meisolsson.githubsdk.model.request.CommentRequest;
+import com.meisolsson.githubsdk.service.gists.GistCommentService;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -52,7 +52,7 @@ public class EditCommentActivity extends
      * @param gist
      * @return intent
      */
-    public static Intent createIntent(Gist gist, GithubComment comment) {
+    public static Intent createIntent(Gist gist, GitHubComment comment) {
         Builder builder = new Builder("gist.comment.edit.VIEW");
         builder.gist(gist);
         builder.add(EXTRA_COMMENT, comment);
@@ -64,7 +64,7 @@ public class EditCommentActivity extends
     /**
      * Comment to edit.
      */
-    private GithubComment comment;
+    private GitHubComment comment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,35 +73,38 @@ public class EditCommentActivity extends
         super.onCreate(savedInstanceState);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(getString(R.string.gist_title) + gist.id);
-        User user = gist.owner;
+        actionBar.setTitle(getString(R.string.gist_title) + gist.id());
+        User user = gist.owner();
         if (user != null)
-            actionBar.setSubtitle(user.login);
+            actionBar.setSubtitle(user.login());
         avatars.bind(actionBar, user);
     }
 
     @Override
     protected void createComment(String comment) {
-        editComment(comment);
+        CommentRequest commentRequest = CommentRequest.builder()
+                .body(comment)
+                .build();
+        editComment(commentRequest);
     }
 
     /**
      * Edit comment.
      *
-     * @param commentText
+     * @param commentRequest
      */
-    protected void editComment(String commentText) {
-        new EditGistCommentClient(gist.id, comment.id, new CommentRequest(commentText)).observable()
+    protected void editComment(CommentRequest commentRequest) {
+        ServiceGenerator.createService(this, GistCommentService.class)
+                .editGistComment(gist.id(), comment.id(), commentRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<GithubComment>bindToLifecycle())
-                .subscribe(new ProgressObserverAdapter<GithubComment>(this, R.string.editing_comment) {
+                .compose(this.<GitHubComment>bindToLifecycle())
+                .subscribe(new ProgressObserverAdapter<GitHubComment>(this, R.string.editing_comment) {
 
                     @Override
-                    public void onNext(GithubComment edited) {
+                    public void onNext(GitHubComment edited) {
                         super.onNext(edited);
                         dismissProgress();
-                        edited.body_html = HtmlUtils.format(edited.body_html).toString();
                         finish(edited);
                     }
 
@@ -117,7 +120,7 @@ public class EditCommentActivity extends
     @Override
     protected CommentPreviewPagerAdapter createAdapter() {
         CommentPreviewPagerAdapter commentPreviewPagerAdapter = new CommentPreviewPagerAdapter(this, null);
-        commentPreviewPagerAdapter.setCommentText(comment != null ? comment.body : null);
+        commentPreviewPagerAdapter.setCommentText(comment != null ? comment.body() : null);
         return commentPreviewPagerAdapter;
     }
 }

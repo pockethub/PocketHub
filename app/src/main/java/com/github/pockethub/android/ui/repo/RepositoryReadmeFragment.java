@@ -2,21 +2,27 @@ package com.github.pockethub.android.ui.repo;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.services.repo.GetReadmeContentsClient;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Content;
+import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.Intents;
 import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.WebView;
-import com.github.pockethub.android.util.InfoUtils;
+import com.meisolsson.githubsdk.model.request.RequestMarkdown;
+import com.meisolsson.githubsdk.service.misc.MarkdownService;
+import com.meisolsson.githubsdk.service.repositories.RepositoryContentService;
 
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class RepositoryReadmeFragment extends DialogFragment {
@@ -41,13 +47,13 @@ public class RepositoryReadmeFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         webview = (WebView) view;
 
-        Repo repo = getParcelableExtra(Intents.EXTRA_REPOSITORY);
+        Repository repo = getParcelableExtra(Intents.EXTRA_REPOSITORY);
         WebSettings settings = webview.getSettings();
         settings.setJavaScriptEnabled(true);
         webview.addJavascriptInterface(this, "Readme");
 
-        new GetReadmeContentsClient(InfoUtils.createRepoInfo(repo))
-                .observable()
+        ServiceGenerator.createService(getActivity(), RepositoryContentService.class)
+                .getReadmeHtml(repo.owner().login(), repo.name(), null)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<String>bindToLifecycle())

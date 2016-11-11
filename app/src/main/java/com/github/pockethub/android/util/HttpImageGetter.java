@@ -27,19 +27,15 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.alorma.github.sdk.bean.dto.request.RequestMarkdownDTO;
-import com.alorma.github.sdk.bean.dto.response.Content;
-import com.alorma.github.sdk.bean.info.FileInfo;
-import com.alorma.github.sdk.bean.info.RepoInfo;
-import com.alorma.github.sdk.services.content.GetFileContentClient;
-import com.alorma.github.sdk.services.content.GetMarkdownClient;
-import com.alorma.github.sdk.services.user.GetAuthUserClient;
 import com.bugsnag.android.Bugsnag;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.rx.ObserverAdapter;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Content;
+import com.meisolsson.githubsdk.model.request.RequestMarkdown;
+import com.meisolsson.githubsdk.service.misc.MarkdownService;
+import com.meisolsson.githubsdk.service.repositories.RepositoryContentService;
 import com.google.inject.Inject;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,6 +43,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -183,10 +182,12 @@ public class HttpImageGetter implements ImageGetter {
         encoded = rawHtmlCache.get(id);
         if (encoded == null) {
             if (!html.matches("<[a-z][\\s\\S]*>")) {
-                RequestMarkdownDTO markdownDTO = new RequestMarkdownDTO();
-                markdownDTO.text = html;
-                new GetMarkdownClient(markdownDTO)
-                        .observable()
+                RequestMarkdown requestMarkdown = RequestMarkdown.builder()
+                        .text(html)
+                        .build();
+
+                ServiceGenerator.createService(context, MarkdownService.class)
+                        .renderMarkdown(requestMarkdown)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new ObserverAdapter<String>() {
@@ -204,7 +205,7 @@ public class HttpImageGetter implements ImageGetter {
                 return continueBind(view, html, id);
             }
         }
-        return this;
+        return continueBind(view, html, id);
     }
 
     private HttpImageGetter continueBind(final TextView view, final String html, final Object id){
@@ -290,14 +291,14 @@ public class HttpImageGetter implements ImageGetter {
 
         if (TextUtils.isEmpty(path))
             return null;
-        FileInfo info = new FileInfo();
-        info.repoInfo = InfoUtils.createRepoInfo(InfoUtils.createRepoFromData(owner, name), branch);
-        info.path = path.toString();
 
-        GetFileContentClient service = new GetFileContentClient(info);
-        Content contents = service.observable().toBlocking().first();
-        if (contents.children != null && contents.children.size() == 1) {
-            byte[] content = Base64.decode(contents.children.get(0).content, DEFAULT);
+        Content contents = ServiceGenerator.createService(context, RepositoryContentService.class)
+                .getContents(owner, name, path.toString(), branch)
+                .toBlocking()
+                .first();
+
+        if (contents.content() != null) {
+            byte[] content = Base64.decode(contents.content(), DEFAULT);
             Bitmap bitmap = ImageUtils.getBitmap(content, width, MAX_VALUE);
             if (bitmap == null)
                 return loading.getDrawable(source);
@@ -324,9 +325,12 @@ public class HttpImageGetter implements ImageGetter {
             Log.d(getClass().getSimpleName(), logMessage);
             Bugsnag.leaveBreadcrumb(logMessage);
 
-            Request request = new Request.Builder().get().url(source).build();
+            Request request = new Request.Builder()
+                    .get()
+                    .url(source)
+                    .build();
 
-            com.squareup.okhttp.Response response = okHttpClient.newCall(request).execute();
+            Response response = okHttpClient.newCall(request).execute();
 
             if (!response.isSuccessful())
                 throw new IOException("Unexpected response code: " + response.code());

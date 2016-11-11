@@ -18,7 +18,7 @@ package com.github.pockethub.android.tests.repo;
 import android.net.Uri;
 import android.test.AndroidTestCase;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.core.repo.RepositoryUriMatcher;
 
 /**
@@ -59,24 +59,24 @@ public class RepositoryUriMatcherTest extends AndroidTestCase {
      * Verify URI with owner but no name
      */
     public void testHttpUriWithOwnerAndName() {
-        Repo repo = RepositoryUriMatcher.getRepository(Uri
+        Repository repo = RepositoryUriMatcher.getRepository(Uri
                 .parse("http://github.com/defunkt/resque"));
         assertNotNull(repo);
-        assertEquals("resque", repo.name);
-        assertNotNull(repo.owner);
-        assertEquals("defunkt", repo.owner.login);
+        assertEquals("resque", repo.name());
+        assertNotNull(repo.owner());
+        assertEquals("defunkt", repo.owner().login());
     }
 
     /**
      * Verify URI with owner but no name
      */
     public void testHttpsUriWithOwnerAndName() {
-        Repo repo = RepositoryUriMatcher.getRepository(Uri
+        Repository repo = RepositoryUriMatcher.getRepository(Uri
                 .parse("https://github.com/mojombo/jekyll"));
         assertNotNull(repo);
-        assertEquals("jekyll", repo.name);
-        assertNotNull(repo.owner);
-        assertEquals("mojombo", repo.owner.login);
+        assertEquals("jekyll", repo.name());
+        assertNotNull(repo.owner());
+        assertEquals("mojombo", repo.owner().login());
     }
 
     /**

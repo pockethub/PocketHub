@@ -20,7 +20,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueFilter;
@@ -49,7 +49,7 @@ public class IssueBrowseActivity extends BaseActivity {
             .add(EXTRA_ISSUE_FILTER, filter).toIntent();
     }
 
-    private Repo repo;
+    private Repository repo;
 
     @Inject
     private AvatarLoader avatars;
@@ -65,10 +65,10 @@ public class IssueBrowseActivity extends BaseActivity {
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(repo.name);
-        actionBar.setSubtitle(repo.owner.login);
+        actionBar.setTitle(repo.name());
+        actionBar.setSubtitle(repo.owner().login());
         actionBar.setDisplayHomeAsUpEnabled(true);
-        avatars.bind(actionBar, repo.owner);
+        avatars.bind(actionBar, repo.owner());
     }
 
     @Override

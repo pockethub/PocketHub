@@ -17,9 +17,9 @@ package com.github.pockethub.android.core.commit;
 
 import android.net.Uri;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.android.core.repo.RepositoryUtils;
+import com.github.pockethub.android.util.InfoUtils;
+import com.meisolsson.githubsdk.model.Repository;
 
 import java.util.List;
 
@@ -55,11 +55,7 @@ public class CommitUriMatcher {
         if (!CommitUtils.isValidCommit(commit))
             return null;
 
-        Repo repository = new Repo();
-        User owner = new User();
-        owner.login = repoOwner;
-        repository.name = repoName;
-        repository.owner = owner;
+        Repository repository = InfoUtils.createRepoFromData(repoOwner, repoName);
         return new CommitMatch(repository, commit);
     }
 }

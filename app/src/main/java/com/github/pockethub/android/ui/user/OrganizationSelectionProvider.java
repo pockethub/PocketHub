@@ -15,6 +15,8 @@
  */
 package com.github.pockethub.android.ui.user;
 
+import com.meisolsson.githubsdk.model.User;
+
 /**
  * Interface to register and unregister a {@link OrganizationSelectionListener}
  */
@@ -26,7 +28,7 @@ public interface OrganizationSelectionProvider {
      * @param listener
      * @return the currently selected organization
      */
-    com.alorma.github.sdk.bean.dto.response.User addListener(OrganizationSelectionListener listener);
+    User addListener(OrganizationSelectionListener listener);
 
     /**
      * Remove selection listener

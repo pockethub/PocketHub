@@ -24,17 +24,13 @@ import android.view.View.OnClickListener;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.alorma.github.sdk.bean.dto.response.Commit;
-import com.alorma.github.sdk.bean.dto.response.CommitComment;
-import com.alorma.github.sdk.bean.dto.response.Gist;
-import com.alorma.github.sdk.bean.dto.response.GithubEvent;
-import com.alorma.github.sdk.bean.dto.response.Issue;
-import com.alorma.github.sdk.bean.dto.response.Release;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.bean.dto.response.events.payload.CommitCommentEventPayload;
-import com.alorma.github.sdk.bean.dto.response.events.payload.PushEventPayload;
-import com.alorma.github.sdk.bean.dto.response.events.payload.ReleaseEventPayload;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Gist;
+import com.meisolsson.githubsdk.model.GitHubEvent;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.Release;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.pockethub.android.R;
@@ -52,39 +48,43 @@ import com.github.pockethub.android.ui.user.NewsListAdapter;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.ConvertUtils;
 import com.github.pockethub.android.util.InfoUtils;
-import com.google.gson.Gson;
+import com.meisolsson.githubsdk.model.git.GitComment;
+import com.meisolsson.githubsdk.model.git.GitCommit;
+import com.meisolsson.githubsdk.model.payload.CommitCommentPayload;
+import com.meisolsson.githubsdk.model.payload.PushPayload;
+import com.meisolsson.githubsdk.model.payload.ReleasePayload;
 import com.google.inject.Inject;
 
 import java.util.List;
 
 import static android.content.Intent.ACTION_VIEW;
 import static android.content.Intent.CATEGORY_BROWSABLE;
-import static com.alorma.github.sdk.bean.dto.response.events.EventType.CommitCommentEvent;
-import static com.alorma.github.sdk.bean.dto.response.events.EventType.DownloadEvent;
-import static com.alorma.github.sdk.bean.dto.response.events.EventType.PushEvent;
+import static com.meisolsson.githubsdk.model.GitHubEventType.CommitCommentEvent;
+import static com.meisolsson.githubsdk.model.GitHubEventType.DownloadEvent;
+import static com.meisolsson.githubsdk.model.GitHubEventType.PushEvent;
 
 /**
  * Base news fragment class with utilities for subclasses to built on
  */
-public abstract class NewsFragment extends PagedItemFragment<GithubEvent> {
+public abstract class NewsFragment extends PagedItemFragment<GitHubEvent> {
 
     /**
-     * Matcher for finding an {@link Issue} from an {@link GithubEvent}
+     * Matcher for finding an {@link Issue} from an {@link GitHubEvent}
      */
     protected final IssueEventMatcher issueMatcher = new IssueEventMatcher();
 
     /**
-     * Matcher for finding a {@link Gist} from an {@link GithubEvent}
+     * Matcher for finding a {@link Gist} from an {@link GitHubEvent}
      */
     protected final GistEventMatcher gistMatcher = new GistEventMatcher();
 
     /**
-     * Matcher for finding a {@link Repo} from an {@link GithubEvent}
+     * Matcher for finding a {@link Repository} from an {@link GitHubEvent}
      */
     protected final RepositoryEventMatcher repoMatcher = new RepositoryEventMatcher();
 
     /**
-     * Matcher for finding a {@link User} from an {@link GithubEvent}
+     * Matcher for finding a {@link User} from an {@link GitHubEvent}
      */
     protected final UserEventMatcher userMatcher = new UserEventMatcher();
 
@@ -100,26 +100,26 @@ public abstract class NewsFragment extends PagedItemFragment<GithubEvent> {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        GithubEvent event = (GithubEvent) l.getItemAtPosition(position);
+        GitHubEvent event = (GitHubEvent) l.getItemAtPosition(position);
 
-        if (DownloadEvent.equals(event.getType())) {
+        if (DownloadEvent.equals(event.type())) {
             openDownload(event);
             return;
         }
 
-        if (PushEvent.equals(event.getType())) {
+        if (PushEvent.equals(event.type())) {
             openPush(event);
             return;
         }
 
-        if (CommitCommentEvent.equals(event.getType())) {
+        if (CommitCommentEvent.equals(event.type())) {
             openCommitComment(event);
             return;
         }
 
         Issue issue = issueMatcher.getIssue(event);
         if (issue != null) {
-            Repo repo = ConvertUtils.eventRepoToRepo(event.repo);
+            Repository repo = ConvertUtils.eventRepoToRepo(event.repo());
             viewIssue(issue, repo);
             return;
         }
@@ -130,7 +130,7 @@ public abstract class NewsFragment extends PagedItemFragment<GithubEvent> {
             return;
         }
 
-        Repo repo = repoMatcher.getRepository(event);
+        Repository repo = repoMatcher.getRepository(event);
         if (repo != null)
             viewRepository(repo);
 
@@ -145,9 +145,9 @@ public abstract class NewsFragment extends PagedItemFragment<GithubEvent> {
         if (!isUsable())
             return false;
 
-        final GithubEvent event = (GithubEvent) l.getItemAtPosition(position);
-        final Repo repo = ConvertUtils.eventRepoToRepo(event.repo);
-        final User user = event.actor;
+        final GitHubEvent event = (GitHubEvent) l.getItemAtPosition(position);
+        final Repository repo = ConvertUtils.eventRepoToRepo(event.repo());
+        final User user = event.actor();
 
         if (repo != null && user != null) {
             final MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity())
@@ -160,8 +160,8 @@ public abstract class NewsFragment extends PagedItemFragment<GithubEvent> {
                     R.layout.nav_dialog, null);
             ViewFinder finder = new ViewFinder(view);
             avatars.bind(finder.imageView(R.id.iv_user_avatar), user);
-            avatars.bind(finder.imageView(R.id.iv_repo_avatar), repo.owner);
-            finder.setText(R.id.tv_login, user.login);
+            avatars.bind(finder.imageView(R.id.iv_repo_avatar), repo.owner());
+            finder.setText(R.id.tv_login, user.login());
             finder.setText(R.id.tv_repo_name, InfoUtils.createRepoId(repo));
             finder.onClick(R.id.ll_user_area, new OnClickListener() {
 
@@ -191,15 +191,12 @@ public abstract class NewsFragment extends PagedItemFragment<GithubEvent> {
     }
 
     // https://developer.github.com/v3/repos/downloads/#downloads-api-is-deprecated
-    private void openDownload(GithubEvent event) {
-        Gson gson = new Gson();
-        String json = gson.toJson(event.payload);
-
-        Release release = gson.fromJson(json, ReleaseEventPayload.class).release;
+    private void openDownload(GitHubEvent event) {
+        Release release = ((ReleasePayload) event.payload()).release();
         if (release == null)
             return;
 
-        String url = release.html_url;
+        String url = release.htmlUrl();
         if (TextUtils.isEmpty(url))
             return;
 
@@ -208,51 +205,44 @@ public abstract class NewsFragment extends PagedItemFragment<GithubEvent> {
         startActivity(intent);
     }
 
-    private void openCommitComment(GithubEvent event) {
-        Repo repo = ConvertUtils.eventRepoToRepo(event.repo);
+    private void openCommitComment(GitHubEvent event) {
+        Repository repo = ConvertUtils.eventRepoToRepo(event.repo());
         if (repo == null)
             return;
 
-        if(repo.name.contains("/")) {
-            String[] repoId = repo.name.split("/");
+        if(repo.name().contains("/")) {
+            String[] repoId = repo.name().split("/");
             repo = InfoUtils.createRepoFromData(repoId[0], repoId[1]);
         }
 
-        Gson gson = new Gson();
-        String json = gson.toJson(event.payload);
-
-        CommitCommentEventPayload payload = gson.fromJson(json, CommitCommentEventPayload.class);
-        CommitComment comment = payload.comment;
+        CommitCommentPayload payload = ((CommitCommentPayload) event.payload());
+        GitComment comment = payload.comment();
         if (comment == null)
             return;
 
-        String sha = comment.commit_id;
+        String sha = comment.commitId();
         if (!TextUtils.isEmpty(sha))
             startActivity(CommitViewActivity.createIntent(repo, sha));
     }
 
-    private void openPush(GithubEvent event) {
-        Repo repo = ConvertUtils.eventRepoToRepo(event.repo);
+    private void openPush(GitHubEvent event) {
+        Repository repo = ConvertUtils.eventRepoToRepo(event.repo());
         if (repo == null)
             return;
 
-        Gson gson = new Gson();
-        String json = gson.toJson(event.payload);
-
-        PushEventPayload payload = gson.fromJson(json, PushEventPayload.class);
-        List<Commit> commits = payload.commits;
+        PushPayload payload = ((PushPayload) event.payload());
+        List<GitCommit> commits = payload.commits();
         if (commits == null || commits.isEmpty())
             return;
 
         if (commits.size() > 1) {
-            String base = payload.before;
-            String head = payload.head;
+            String base = payload.before();
+            String head = payload.head();
             if (!TextUtils.isEmpty(base) && !TextUtils.isEmpty(head))
-                startActivity(CommitCompareViewActivity.createIntent(repo,
-                        base, head));
+                startActivity(CommitCompareViewActivity.createIntent(repo, base, head));
         } else {
-            Commit commit = commits.get(0);
-            String sha = commit != null ? commit.sha : null;
+            GitCommit commit = commits.get(0);
+            String sha = commit != null ? commit.sha() : null;
             if (!TextUtils.isEmpty(sha))
                 startActivity(CommitViewActivity.createIntent(repo, sha));
         }
@@ -263,7 +253,7 @@ public abstract class NewsFragment extends PagedItemFragment<GithubEvent> {
      *
      * @param repository
      */
-    protected void viewRepository(Repo repository) {
+    protected void viewRepository(Repository repository) {
         startActivity(RepositoryViewActivity.createIntent(repository));
     }
 
@@ -293,7 +283,7 @@ public abstract class NewsFragment extends PagedItemFragment<GithubEvent> {
      * @param issue
      * @param repository
      */
-    protected void viewIssue(Issue issue, Repo repository) {
+    protected void viewIssue(Issue issue, Repository repository) {
         if (repository != null)
             startActivity(IssuesViewActivity.createIntent(issue, repository));
         else
@@ -301,9 +291,9 @@ public abstract class NewsFragment extends PagedItemFragment<GithubEvent> {
     }
 
     @Override
-    protected SingleTypeAdapter<GithubEvent> createAdapter(List<GithubEvent> items) {
+    protected SingleTypeAdapter<GitHubEvent> createAdapter(List<GitHubEvent> items) {
         return new NewsListAdapter(getActivity().getLayoutInflater(),
-                items.toArray(new GithubEvent[items.size()]), avatars);
+                items.toArray(new GitHubEvent[items.size()]), avatars);
     }
 
     @Override

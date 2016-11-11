@@ -19,8 +19,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.StyledText;
 import com.github.pockethub.android.util.TypefaceUtils;
@@ -29,7 +29,7 @@ import com.github.pockethub.android.util.TypefaceUtils;
  * Adapter for a list of repositories
  */
 public class UserRepositoryListAdapter extends
-        RepositoryListAdapter<Repo> {
+        RepositoryListAdapter<Repository> {
 
     private final String login;
 
@@ -43,15 +43,15 @@ public class UserRepositoryListAdapter extends
      * @param user
      */
     public UserRepositoryListAdapter(LayoutInflater inflater,
-            Repo[] elements, User user) {
+            Repository[] elements, User user) {
         super(R.layout.user_repo_item, inflater, elements);
 
-        login = user.login;
+        login = user.login();
     }
 
     @Override
     public long getItemId(final int position) {
-        return getItem(position).id;
+        return getItem(position).id();
     }
 
     @Override
@@ -72,17 +72,17 @@ public class UserRepositoryListAdapter extends
     }
 
     @Override
-    protected void update(int position, Repo repository) {
+    protected void update(int position, Repository repository) {
         StyledText name = new StyledText();
-        if (!login.equals(repository.owner.login))
-            name.foreground(repository.owner.login, descriptionColor)
+        if (!login.equals(repository.owner().login()))
+            name.foreground(repository.owner().login(), descriptionColor)
                     .foreground('/', descriptionColor);
-        name.bold(repository.name);
+        name.bold(repository.name());
         setText(5, name);
 
-        updateDetails(repository.description, repository.language,
-                repository.watchers_count, repository.forks_count,
-                repository.isPrivate, repository.fork,
-                repository.mirror_url);
+        updateDetails(repository.description(), repository.language(),
+                repository.watchersCount(), repository.forksCount(),
+                repository.isPrivate(), repository.isFork(),
+                repository.mirrorUrl());
     }
 }

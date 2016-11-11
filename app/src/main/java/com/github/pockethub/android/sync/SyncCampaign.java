@@ -19,10 +19,10 @@ import android.content.SyncResult;
 import android.database.SQLException;
 import android.util.Log;
 
-import com.alorma.github.sdk.bean.dto.response.Organization;
 import com.github.pockethub.android.persistence.DatabaseCache;
 import com.github.pockethub.android.persistence.OrganizationRepositories;
 import com.github.pockethub.android.persistence.Organizations;
+import com.meisolsson.githubsdk.model.User;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -75,7 +75,7 @@ public class SyncCampaign implements Runnable {
 
     @Override
     public void run() {
-        List<Organization> orgs;
+        List<User> orgs;
         try {
             orgs = cache.requestAndStore(persistedOrgs);
             syncResult.stats.numUpdates++;
@@ -86,11 +86,11 @@ public class SyncCampaign implements Runnable {
         }
 
         Log.d(TAG, "Syncing " + orgs.size() + " users and orgs");
-        for (Organization org : orgs) {
+        for (User org : orgs) {
             if (cancelled)
                 return;
 
-            Log.d(TAG, "Syncing repos for " + org.login);
+            Log.d(TAG, "Syncing repos for " + org.login());
             try {
                 cache.requestAndStore(repos.under(org));
                 syncResult.stats.numUpdates++;

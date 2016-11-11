@@ -17,8 +17,8 @@ package com.github.pockethub.android.ui.user;
 
 import android.os.Bundle;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.core.user.UserEventMatcher.UserPair;
 import com.github.pockethub.android.ui.NewsFragment;
 
@@ -68,26 +68,26 @@ public abstract class UserNewsFragment extends NewsFragment implements
     }
 
     @Override
-    protected void viewRepository(Repo repository) {
-        User owner = repository.owner;
-        if (owner != null && org.login.equals(owner.login))
-            repository.owner = org;
+    protected void viewRepository(Repository repository) {
+        User owner = repository.owner();
+        if (owner != null && org.login().equals(owner.login()))
+            repository = repository.toBuilder().owner(org).build();
 
         super.viewRepository(repository);
     }
 
     @Override
     public void onOrganizationSelected(User organization) {
-        int previousOrgId = org != null ? org.id : -1;
+        int previousOrgId = org != null ? org.id() : -1;
         org = organization;
         // Only hard refresh if view already created and org is changing
-        if (previousOrgId != org.id)
+        if (previousOrgId != org.id())
             refreshWithProgress();
     }
 
     @Override
     protected boolean viewUser(User user) {
-        if (org.id != user.id) {
+        if (org.id() != user.id()) {
             startActivity(UserViewActivity.createIntent(user));
             return true;
         }

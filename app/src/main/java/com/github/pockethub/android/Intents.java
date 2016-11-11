@@ -18,12 +18,12 @@ package com.github.pockethub.android;
 import android.content.Intent;
 import android.os.Parcelable;
 
-import com.alorma.github.sdk.bean.dto.response.Gist;
-import com.alorma.github.sdk.bean.dto.response.GistFile;
-import com.alorma.github.sdk.bean.dto.response.Issue;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.android.util.InfoUtils;
+import com.meisolsson.githubsdk.model.Gist;
+import com.meisolsson.githubsdk.model.GistFile;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -44,25 +44,25 @@ public class Intents {
     public static final String INTENT_EXTRA_PREFIX = INTENT_PREFIX + "extra.";
 
     /**
-     * Repo handle
+     * Repository handle
      */
     public static final String EXTRA_REPOSITORY = INTENT_EXTRA_PREFIX
             + "REPOSITORY";
 
     /**
-     * Repo ids collection handle
+     * Repository ids collection handle
      */
     public static final String EXTRA_REPOSITORIES = INTENT_EXTRA_PREFIX
             + "REPOSITORIES";
 
     /**
-     * Repo name
+     * Repository name
      */
     public static final String EXTRA_REPOSITORY_NAME = INTENT_EXTRA_PREFIX
             + "REPOSITORY_NAME";
 
     /**
-     * Repo owner
+     * Repository owner
      */
     public static final String EXTRA_REPOSITORY_OWNER = INTENT_EXTRA_PREFIX
             + "REPOSITORY_OWNER";
@@ -181,12 +181,12 @@ public class Intents {
     public static final String EXTRA_PATH = INTENT_EXTRA_PREFIX + "PATH";
 
     /**
-     * Resolve the {@link Repo} referenced by the given intent
+     * Resolve the {@link Repository} referenced by the given intent
      *
      * @param intent
      * @return repository id
      */
-    public static Repo repoFrom(Intent intent) {
+    public static Repository repoFrom(Intent intent) {
         String repoName = intent.getStringExtra(EXTRA_REPOSITORY_NAME);
         String repoOwner = intent.getStringExtra(EXTRA_REPOSITORY_OWNER);
         return InfoUtils.createRepoFromData(repoOwner, repoName);
@@ -216,7 +216,7 @@ public class Intents {
          * @param repository
          * @return this builder
          */
-        public Builder repo(Repo repository) {
+        public Builder repo(Repository repository) {
             return add(EXTRA_REPOSITORY, repository);
         }
 
@@ -227,8 +227,8 @@ public class Intents {
          * @return this builder
          */
         public Builder issue(Issue issue) {
-            return repo(InfoUtils.createRepoFromUrl(issue.html_url)).add(EXTRA_ISSUE,
-                    issue).add(EXTRA_ISSUE_NUMBER, issue.number);
+            return repo(InfoUtils.createRepoFromUrl(issue.htmlUrl())).add(EXTRA_ISSUE,
+                    issue).add(EXTRA_ISSUE_NUMBER, issue.number());
         }
 
         /**

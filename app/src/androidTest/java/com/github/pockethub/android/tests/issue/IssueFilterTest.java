@@ -17,9 +17,9 @@ package com.github.pockethub.android.tests.issue;
 
 import android.test.AndroidTestCase;
 
-import com.alorma.github.sdk.bean.dto.response.Milestone;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.meisolsson.githubsdk.model.Milestone;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.core.issue.IssueFilter;
 
 /**
@@ -31,8 +31,10 @@ public class IssueFilterTest extends AndroidTestCase {
      * Verify {@link IssueFilter#equals(Object)}
      */
     public void testEqualFilter() {
-        Repo repo = new Repo();
-        repo.id = 1;
+        Repository repo = Repository.builder()
+                .id(1L)
+                .build();
+
         IssueFilter filter1 = new IssueFilter(repo);
 
         assertFalse(filter1.equals(null));
@@ -43,8 +45,10 @@ public class IssueFilterTest extends AndroidTestCase {
         assertEquals(filter1, filter2);
         assertEquals(filter1.hashCode(), filter2.hashCode());
 
-        User user = new User();
-        user.id = 2;
+        User user = User.builder()
+                .id(2)
+                .build();
+
         filter1.setAssignee(user);
         assertFalse(filter1.equals(filter2));
         filter2.setAssignee(user);
@@ -57,8 +61,9 @@ public class IssueFilterTest extends AndroidTestCase {
         assertEquals(filter1, filter2);
         assertEquals(filter1.hashCode(), filter2.hashCode());
 
-        Milestone milestone = new Milestone();
-        milestone.number = 3;
+        Milestone milestone = Milestone.builder()
+                .number(3)
+                .build();
         filter1.setMilestone(milestone);
         assertFalse(filter1.equals(filter2));
         filter2.setMilestone(milestone);

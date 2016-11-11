@@ -21,15 +21,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
-import com.alorma.github.sdk.bean.dto.response.Organization;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.android.RequestFuture;
 import com.github.pockethub.android.RequestReader;
 import com.github.pockethub.android.RequestWriter;
 import com.github.pockethub.android.core.issue.IssueFilter;
 import com.github.pockethub.android.persistence.OrganizationRepositories.Factory;
 import com.github.pockethub.android.rx.ObserverAdapter;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
@@ -156,7 +155,7 @@ public class AccountDataManager {
      * @return list of user and Orgs
      * @throws IOException
      */
-    public List<Organization> getOrgs(boolean forceReload) throws IOException {
+    public List<User> getOrgs(boolean forceReload) throws IOException {
         return forceReload ? dbCache.requestAndStore(userAndOrgsResource)
                 : dbCache.loadOrRequest(userAndOrgsResource);
     }
@@ -173,7 +172,7 @@ public class AccountDataManager {
      * @return list of repositories
      * @throws IOException
      */
-    public List<Repo> getRepos(final User user, boolean forceReload)
+    public List<Repository> getRepos(final User user, boolean forceReload)
             throws IOException {
         OrganizationRepositories resource = allRepos.under(user);
         return forceReload ? dbCache.requestAndStore(resource) : dbCache

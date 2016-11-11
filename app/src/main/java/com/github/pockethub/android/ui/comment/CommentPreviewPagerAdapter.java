@@ -19,15 +19,15 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.FragmentPagerAdapter;
+import com.meisolsson.githubsdk.model.Repository;
 
 /**
  * Pager of a raw and rendered comment text
  */
 public class CommentPreviewPagerAdapter extends FragmentPagerAdapter {
-    private final Repo repo;
+    private final Repository repo;
     private RawCommentFragment textFragment;
     private RenderedCommentFragment htmlFragment;
 
@@ -42,8 +42,7 @@ public class CommentPreviewPagerAdapter extends FragmentPagerAdapter {
      * @param activity
      * @param repo
      */
-    public CommentPreviewPagerAdapter(AppCompatActivity activity,
-            Repo repo) {
+    public CommentPreviewPagerAdapter(AppCompatActivity activity, Repository repo) {
         super(activity);
         this.context = activity.getApplicationContext();
         this.repo = repo;

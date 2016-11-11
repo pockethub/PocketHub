@@ -17,10 +17,13 @@ package com.github.pockethub.android.core.repo;
 
 import android.text.TextUtils;
 
-import com.alorma.github.sdk.bean.dto.response.GithubEvent;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.events.EventType;
 import com.github.pockethub.android.util.ConvertUtils;
+import com.meisolsson.githubsdk.model.GitHubEvent;
+import com.meisolsson.githubsdk.model.GitHubEventType;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.payload.ForkPayload;
+
+import static com.meisolsson.githubsdk.model.GitHubEventType.*;
 
 /**
  * Helper to find a {@link RepositoryEventMatcher} to open for an event
@@ -28,31 +31,28 @@ import com.github.pockethub.android.util.ConvertUtils;
 public class RepositoryEventMatcher {
 
     /**
-     * Get {@link Repo} from event
+     * Get {@link Repository} from event
      *
      * @param event
      * @return gist or null if event doesn't apply
      */
-    public Repo getRepository(final GithubEvent event) {
-        if (event == null)
+    public Repository getRepository(final GitHubEvent event) {
+        if (event == null || event.payload() == null)
             return null;
 
-        if (event.payload == null)
-            return null;
-
-        EventType type = event.getType();
-        if (EventType.ForkEvent.equals(type)) {
-            Repo repository = event.payload.forkee;
+        GitHubEventType type = event.type();
+        if (ForkEvent.equals(type)) {
+            Repository repository = ((ForkPayload)event.payload()).forkee();
             // Verify repository has valid name and owner
-            if (repository != null && !TextUtils.isEmpty(repository.name)
-                    && repository.owner!= null
-                    && !TextUtils.isEmpty(repository.owner.login))
+            if (repository != null && !TextUtils.isEmpty(repository.name())
+                    && repository.owner() != null
+                    && !TextUtils.isEmpty(repository.owner().login()))
                 return repository;
         }
 
-        if (EventType.CreateEvent.equals(type) || EventType.WatchEvent.equals(type)
-                || EventType.PublicEvent.equals(type))
-            return ConvertUtils.eventRepoToRepo(event.repo);
+        if (CreateEvent.equals(type) || WatchEvent.equals(type)
+                || PublicEvent.equals(type))
+            return ConvertUtils.eventRepoToRepo(event.repo());
 
         return null;
     }

@@ -17,9 +17,8 @@ package com.github.pockethub.android.core.issue;
 
 import android.text.TextUtils;
 
-import com.alorma.github.sdk.bean.dto.response.PullRequest;
-import com.alorma.github.sdk.bean.dto.response.Issue;
-
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.PullRequest;
 
 /**
  * Utilities for working with {@link Issue} models
@@ -33,8 +32,8 @@ public class IssueUtils {
      * @return true if pull request, false otherwise
      */
     public static boolean isPullRequest(final Issue issue) {
-        return issue != null && issue.pullRequest != null
-                && !TextUtils.isEmpty(issue.pullRequest.html_url);
+        return issue != null && issue.pullRequest() != null
+                && !TextUtils.isEmpty(issue.pullRequest().htmlUrl());
     }
 
     /**
@@ -47,24 +46,23 @@ public class IssueUtils {
         if (pullRequest == null)
             return null;
 
-        Issue issue = new Issue();
-        issue.assignee = pullRequest.assignee;
-        issue.body = pullRequest.body;
-        issue.body_html = pullRequest.body_html;
-        issue.body = pullRequest.body;
-        issue.closedAt = pullRequest.closedAt;
-        issue.comments = pullRequest.comments;
-        issue.created_at = pullRequest.created_at;
-        issue.html_url = pullRequest.html_url;
-        issue.number = pullRequest.number;
-        issue.milestone = pullRequest.milestone;
-        issue.id = pullRequest.id;
-        issue.pullRequest = pullRequest;
-        issue.state = pullRequest.state;
-        issue.title = pullRequest.title;
-        issue.updated_at = pullRequest.updated_at;
-        issue.url = pullRequest.url;
-        issue.user = pullRequest.user;
-        return issue;
+        return Issue.builder()
+                .assignee(pullRequest.assignee())
+                .body(pullRequest.body())
+                .bodyHtml(pullRequest.bodyHtml())
+                .closedAt(pullRequest.closedAt())
+                .comments(pullRequest.comments())
+                .createdAt(pullRequest.createdAt())
+                .htmlUrl(pullRequest.htmlUrl())
+                .number(pullRequest.number())
+                .milestone(pullRequest.milestone())
+                .id(pullRequest.id())
+                .pullRequest(pullRequest)
+                .state(pullRequest.state())
+                .title(pullRequest.title())
+                .updatedAt(pullRequest.updatedAt())
+                .url(pullRequest.url())
+                .user(pullRequest.user())
+                .build();
     }
 }

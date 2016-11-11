@@ -21,10 +21,11 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.alorma.github.sdk.bean.dto.response.GithubComment;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.TabPagerActivity;
 import com.github.pockethub.android.util.AvatarLoader;
+import com.meisolsson.githubsdk.model.GitHubComment;
+import com.meisolsson.githubsdk.model.git.GitComment;
 import com.google.inject.Inject;
 
 import static com.github.pockethub.android.Intents.EXTRA_COMMENT;
@@ -88,7 +89,14 @@ public abstract class CreateCommentActivity extends
      *
      * @param comment
      */
-    protected void finish(GithubComment comment) {
+    protected void finish(GitHubComment comment) {
+        Intent data = new Intent();
+        data.putExtra(EXTRA_COMMENT, comment);
+        setResult(RESULT_OK, data);
+        finish();
+    }
+
+    protected void finish(GitComment comment) {
         Intent data = new Intent();
         data.putExtra(EXTRA_COMMENT, comment);
         setResult(RESULT_OK, data);

@@ -20,14 +20,16 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
-import com.alorma.github.sdk.bean.dto.response.Issue;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.services.search.IssuesSearchClient;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.Repository;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ThrowableLoader;
 import com.github.pockethub.android.ui.ItemListFragment;
 import com.github.pockethub.android.util.AvatarLoader;
+import com.meisolsson.githubsdk.model.SearchPage;
+import com.meisolsson.githubsdk.service.search.SearchService;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -47,7 +49,7 @@ public class SearchIssueListFragment extends ItemListFragment<Issue>
     @Inject
     private AvatarLoader avatars;
 
-    private Repo repository;
+    private Repository repository;
 
     private String query;
 
@@ -92,11 +94,15 @@ public class SearchIssueListFragment extends ItemListFragment<Issue>
                     return Collections.emptyList();
                 List<Issue> matches = new ArrayList<>();
 
-                int page = 1;
-                boolean hasMore = true;
-                while(hasMore){
-                    hasMore = matches.addAll(new IssuesSearchClient(query, page).observable().toBlocking().first().first);
-                    page++;
+                SearchService service = ServiceGenerator.createService(getActivity(), SearchService.class);
+
+                int current = 1;
+                int last = 0;
+                while(current != last){
+                    SearchPage<Issue> page = service.searchIssues(query, null, null, current).toBlocking().first();
+                    matches.addAll(page.items());
+                    last = page.last() != null ? page.last() : -1;
+                    current = page.next() != null ? page.next() : -1;
                 }
                 Collections.sort(matches, SearchIssueListFragment.this);
                 return matches;
@@ -118,6 +124,6 @@ public class SearchIssueListFragment extends ItemListFragment<Issue>
 
     @Override
     public int compare(Issue lhs, Issue rhs) {
-        return rhs.number - lhs.number;
+        return (int) (rhs.number() - lhs.number());
     }
 }

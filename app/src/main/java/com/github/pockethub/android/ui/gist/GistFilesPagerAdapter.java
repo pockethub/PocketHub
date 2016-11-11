@@ -19,9 +19,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
-import com.alorma.github.sdk.bean.dto.response.Gist;
-import com.alorma.github.sdk.bean.dto.response.GistFile;
 import com.github.pockethub.android.ui.FragmentPagerAdapter;
+import com.meisolsson.githubsdk.model.Gist;
+import com.meisolsson.githubsdk.model.GistFile;
 
 import java.util.Map;
 
@@ -41,7 +41,7 @@ public class GistFilesPagerAdapter extends FragmentPagerAdapter {
     public GistFilesPagerAdapter(AppCompatActivity activity, Gist gist) {
         super(activity);
 
-        Map<String, GistFile> gistFiles = gist.files;
+        Map<String, GistFile> gistFiles = gist.files();
         if (gistFiles != null && !gistFiles.isEmpty())
             files = gistFiles.values().toArray(new GistFile[gistFiles.size()]);
         else
@@ -50,7 +50,7 @@ public class GistFilesPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return files[position].filename;
+        return files[position].filename();
     }
 
     @Override

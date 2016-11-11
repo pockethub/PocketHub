@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.github.kevinsawicki.wishlist.Keyboard;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
@@ -32,6 +31,7 @@ import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.MarkdownLoader;
 import com.github.pockethub.android.util.HttpImageGetter;
 import com.github.pockethub.android.util.ToastUtils;
+import com.meisolsson.githubsdk.model.Repository;
 import com.google.inject.Inject;
 
 import java.io.Serializable;
@@ -67,7 +67,7 @@ public class RenderedCommentFragment extends DialogFragment implements
      * @param raw
      * @param repo
      */
-    public void setText(final String raw, final Repo repo) {
+    public void setText(final String raw, final Repository repo) {
         Bundle args = new Bundle();
         args.putCharSequence(ARG_TEXT, raw);
         if (repo instanceof Serializable)
@@ -91,7 +91,7 @@ public class RenderedCommentFragment extends DialogFragment implements
     @Override
     public Loader<CharSequence> onCreateLoader(int loader, Bundle args) {
         final CharSequence raw = args.getCharSequence(ARG_TEXT);
-        final Repo repo = args.getParcelable(ARG_REPO);
+        final Repository repo = args.getParcelable(ARG_REPO);
         return new MarkdownLoader(getActivity(), repo, raw.toString(),
                 imageGetter, true);
     }

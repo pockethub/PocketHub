@@ -19,12 +19,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueUtils;
 import com.github.pockethub.android.util.AvatarLoader;
-import com.github.pockethub.android.util.TimeUtils;
 import com.github.pockethub.android.util.TypefaceUtils;
+import com.meisolsson.githubsdk.model.Issue;
 
 /**
  * Adapter to display a list of dashboard issues
@@ -48,12 +47,12 @@ public class DashboardIssueListAdapter extends
 
     @Override
     public long getItemId(final int position) {
-        return Long.parseLong(getItem(position).id);
+        return getItem(position).id();
     }
 
     @Override
     protected int getNumber(final Issue issue) {
-        return issue.number;
+        return (int) issue.number();
     }
 
     @Override
@@ -77,11 +76,11 @@ public class DashboardIssueListAdapter extends
 
     @Override
     protected void update(int position, Issue issue) {
-        updateNumber(issue.number, issue.state, numberPaintFlags, 1);
+        updateNumber(issue.number(), issue.state(), numberPaintFlags, 1);
 
-        avatars.bind(imageView(3), issue.user);
+        avatars.bind(imageView(3), issue.user());
 
-        String[] segments = issue.url.split("/");
+        String[] segments = issue.url().split("/");
         int length = segments.length;
         if (length >= 4)
             setText(0, segments[length - 4] + '/' + segments[length - 3]);
@@ -90,10 +89,10 @@ public class DashboardIssueListAdapter extends
 
         setGone(6, !IssueUtils.isPullRequest(issue));
 
-        setText(2, issue.title);
+        setText(2, issue.title());
 
-        updateReporter(issue.user.login, TimeUtils.stringToDate(issue.created_at), 4);
-        setNumber(5, issue.comments);
-        updateLabels(issue.labels, 7);
+        updateReporter(issue.user().login(), issue.createdAt(), 4);
+        setNumber(5, issue.comments());
+        updateLabels(issue.labels(), 7);
     }
 }

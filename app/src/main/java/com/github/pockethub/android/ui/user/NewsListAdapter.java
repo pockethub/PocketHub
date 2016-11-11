@@ -21,24 +21,23 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alorma.github.sdk.bean.dto.response.GithubEvent;
-import com.alorma.github.sdk.bean.dto.response.events.EventType;
-import com.alorma.github.sdk.bean.dto.response.events.payload.MemberEventPayload;
-import com.alorma.github.sdk.bean.dto.response.events.payload.Payload;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.api.FollowEventPayload;
-import com.github.pockethub.android.api.GistEventPayload;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.TypefaceUtils;
-import com.google.gson.Gson;
+import com.meisolsson.githubsdk.model.GitHubEvent;
+import com.meisolsson.githubsdk.model.GitHubEventType;
+import com.meisolsson.githubsdk.model.payload.CreatePayload;
+import com.meisolsson.githubsdk.model.payload.GistPayload;
+import com.meisolsson.githubsdk.model.payload.IssueCommentPayload;
+import com.meisolsson.githubsdk.model.payload.IssuesPayload;
 
-import static com.alorma.github.sdk.bean.dto.response.events.EventType.*;
+import static com.meisolsson.githubsdk.model.GitHubEventType.*;
 
 /**
  * Adapter for a list of news events
  */
-public class NewsListAdapter extends SingleTypeAdapter<GithubEvent> {
+public class NewsListAdapter extends SingleTypeAdapter<GitHubEvent> {
 
     private final IconAndViewTextManager iconAndViewTextManager = new IconAndViewTextManager(this);
 
@@ -48,34 +47,26 @@ public class NewsListAdapter extends SingleTypeAdapter<GithubEvent> {
      * @param event
      * @return true if renderable, false otherwise
      */
-    public static boolean isValid(final GithubEvent event) {
-        if (event == null)
+    public static boolean isValid(final GitHubEvent event) {
+        if (event == null || event.payload() == null)
             return false;
 
-        if (event.payload == null)
-            return false;
-
-        Gson gson = new Gson();
-        final String json = gson.toJson(event.payload);
-
-        final EventType type = event.type;
-        if (type.equals(Unhandled))
-            return false;
+        final GitHubEventType type = event.type();
 
         return CommitCommentEvent.equals(type) //
                 || (CreateEvent.equals(type) //
-                && (gson.fromJson(json, Payload.class)).ref_type != null) //
+                && ((CreatePayload) event.payload()).refType() != null) //
                 || DeleteEvent.equals(type) //
                 || DownloadEvent.equals(type) //
                 || FollowEvent.equals(type) //
                 || ForkEvent.equals(type) //
                 || (GistEvent.equals(type)
-                && (gson.fromJson(json, GistEventPayload.class)).gist != null)
+                && ((GistPayload) event.payload()).gist() != null)
                 || GollumEvent.equals(type) //
                 || (IssueCommentEvent.equals(type) //
-                && (gson.fromJson(json, Payload.class)).issue != null) //
+                && ((IssueCommentPayload) event.payload()).issue() != null) //
                 || (IssuesEvent.equals(type) //
-                && (gson.fromJson(json, Payload.class)).issue != null) //
+                && ((IssuesPayload) event.payload()).issue() != null) //
                 || MemberEvent.equals(type) //
                 || PublicEvent.equals(type) //
                 || PullRequestEvent.equals(type) //
@@ -94,73 +85,12 @@ public class NewsListAdapter extends SingleTypeAdapter<GithubEvent> {
      * @param elements
      * @param avatars
      */
-    public NewsListAdapter(LayoutInflater inflater, GithubEvent[] elements,
+    public NewsListAdapter(LayoutInflater inflater, GitHubEvent[] elements,
             AvatarLoader avatars) {
         super(inflater, R.layout.news_item);
 
         this.avatars = avatars;
         setItems(elements);
-    }
-
-    private Class getClassFromType(EventType type) {
-        switch (type){
-            case WatchEvent:
-                return Payload.class;
-            case CreateEvent:
-                return Payload.class;
-            case CommitCommentEvent:
-                return Payload.class;
-            case DownloadEvent:
-                return Payload.class;
-            case FollowEvent:
-                return FollowEventPayload.class;
-            case ForkEvent:
-                return Payload.class;
-            case GistEvent:
-                return GistEventPayload.class;
-            case IssueCommentEvent:
-                return Payload.class;
-            case IssuesEvent:
-                return Payload.class;
-            case MemberEvent:
-                return MemberEventPayload.class;
-            case PublicEvent:
-                return Payload.class;
-            case PullRequestEvent:
-                return Payload.class;
-            case PullRequestReviewCommentEvent:
-                return Payload.class;
-            case PushEvent:
-                return Payload.class;
-            case TeamAddEvent:
-                return Payload.class;
-            case DeleteEvent:
-                return Payload.class;
-            case ReleaseEvent:
-                return Payload.class;
-            case Unhandled:
-                return Payload.class;
-
-            default:
-                return Payload.class;
-        }
-    }
-
-    @Override
-    public void setItems(Object[] items) {
-        if(items != null) {
-            GithubEvent[] elements = new GithubEvent[items.length];
-            Gson gson = new Gson();
-            for (int i = 0; i < items.length; i++) {
-                GithubEvent element = (GithubEvent) items[i];
-                String json = gson.toJson(element.payload);
-                element.payload = gson.fromJson(json, Payload.class);
-                elements[i] = element;
-            }
-            super.setItems(elements);
-        }else{
-            super.setItems(items);
-        }
     }
 
     /**
@@ -176,7 +106,7 @@ public class NewsListAdapter extends SingleTypeAdapter<GithubEvent> {
 
     @Override
     public long getItemId(final int position) {
-        final String id = String.valueOf(getItem(position).id);
+        final String id = String.valueOf(getItem(position).id());
         return !TextUtils.isEmpty(id) ? id.hashCode() : super.getItemId(position);
     }
 
@@ -195,7 +125,7 @@ public class NewsListAdapter extends SingleTypeAdapter<GithubEvent> {
     }
 
     @Override
-    protected void update(int position, GithubEvent event) {
+    protected void update(int position, GitHubEvent event) {
 
         iconAndViewTextManager.update(position, event);
     }

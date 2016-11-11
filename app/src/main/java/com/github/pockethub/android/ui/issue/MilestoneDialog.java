@@ -17,23 +17,25 @@ package com.github.pockethub.android.ui.issue;
 
 import android.util.Log;
 
-import com.alorma.github.sdk.bean.dto.response.Milestone;
-import com.alorma.github.sdk.bean.dto.response.MilestoneState;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.services.issues.GetMilestonesClient;
+import com.github.pockethub.android.rx.ProgressObserverAdapter;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Milestone;
+import com.meisolsson.githubsdk.model.Page;
+import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.BaseProgressDialog;
 import com.github.pockethub.android.ui.BaseActivity;
-import com.github.pockethub.android.util.InfoUtils;
 import com.github.pockethub.android.util.ToastUtils;
+import com.meisolsson.githubsdk.service.issues.IssueMilestoneService;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
@@ -51,7 +53,7 @@ public class MilestoneDialog extends BaseProgressDialog {
 
     private final BaseActivity activity;
 
-    private final Repo repository;
+    private final Repository repository;
 
     /**
      * Create dialog helper to display milestones
@@ -61,7 +63,7 @@ public class MilestoneDialog extends BaseProgressDialog {
      * @param repository
      */
     public MilestoneDialog(final BaseActivity activity,
-            final int requestCode, final Repo repository) {
+            final int requestCode, final Repository repository) {
         super(activity);
         this.activity = activity;
         this.requestCode = requestCode;
@@ -78,32 +80,51 @@ public class MilestoneDialog extends BaseProgressDialog {
     }
 
     private void load(final Milestone selectedMilestone) {
-        showIndeterminate(R.string.loading_milestones);
-        new GetMilestonesClient(InfoUtils.createRepoInfo(repository), MilestoneState.open)
-                .observable()
+        getPageAndNext(1).subscribe(new ProgressObserverAdapter<Page<Milestone>>(activity, R.string.loading_milestones){
+            ArrayList<Milestone> milestones = new ArrayList<>();
+
+            @Override
+            public void onNext(Page<Milestone> page) {
+                milestones.addAll(page.items());
+            }
+
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+                Collections.sort(milestones, new Comparator<Milestone>() {
+                    public int compare(Milestone m1, Milestone m2) {
+                        return CASE_INSENSITIVE_ORDER.compare(m1.title(),
+                                m2.title());
+                    }
+                });
+                repositoryMilestones = milestones;
+
+                dismissProgress();
+                show(selectedMilestone);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                dismissProgress();
+                Log.e(TAG, "Exception loading milestones", error);
+                ToastUtils.show(activity, error, R.string.error_milestones_load);
+            }
+        }.start());
+    }
+
+    private Observable<Page<Milestone>> getPageAndNext(int i) {
+        return ServiceGenerator.createService(activity, IssueMilestoneService.class)
+                .getRepositoryMilestones(repository.owner().login(), repository.name(), i)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(activity.<List<Milestone>>bindToLifecycle())
-                .subscribe(new ObserverAdapter<List<Milestone>>() {
+                .concatMap(new Func1<Page<Milestone>, Observable<Page<Milestone>>>() {
                     @Override
-                    public void onNext(List<Milestone> milestones) {
-                        Collections.sort(milestones, new Comparator<Milestone>() {
-                            public int compare(Milestone m1, Milestone m2) {
-                                return CASE_INSENSITIVE_ORDER.compare(m1.title,
-                                        m2.title);
-                            }
-                        });
-                        repositoryMilestones = (ArrayList<Milestone>) milestones;
+                    public Observable<Page<Milestone>> call(Page<Milestone> page) {
+                        if (page.next() == null)
+                            return Observable.just(page);
 
-                        dismissProgress();
-                        show(selectedMilestone);
-                    }
-
-                    @Override
-                    public void onError(Throwable error) {
-                        dismissProgress();
-                        Log.e(TAG, "Exception loading milestones", error);
-                        ToastUtils.show(activity, error, R.string.error_milestones_load);
+                        return Observable.just(page)
+                                .concatWith(getPageAndNext(page.next()));
                     }
                 });
     }
@@ -122,7 +143,7 @@ public class MilestoneDialog extends BaseProgressDialog {
         int checked = -1;
         if (selectedMilestone != null)
             for (int i = 0; i < repositoryMilestones.size(); i++)
-                if (selectedMilestone.number == repositoryMilestones.get(i).number) {
+                if (selectedMilestone.number() == repositoryMilestones.get(i).number()) {
                     checked = i;
                     break;
                 }
@@ -141,8 +162,8 @@ public class MilestoneDialog extends BaseProgressDialog {
         if (repositoryMilestones == null)
             return -1;
         for (Milestone milestone : repositoryMilestones)
-            if (title.equals(milestone.title))
-                return milestone.number;
+            if (title.equals(milestone.title()))
+                return milestone.number();
         return -1;
     }
 }
