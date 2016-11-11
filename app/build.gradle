@@ -19,13 +19,13 @@ def clientIdIsNotSet = true;
 def clientSecretIsNotSet = true;
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '23.0.3'
+    compileSdkVersion 25
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId 'com.github.pockethub.android'
         minSdkVersion 15
-        targetSdkVersion 23
+        targetSdkVersion 25
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         vectorDrawables.useSupportLibrary = true
@@ -102,7 +102,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    def supportVersion = '23.4.0'
+    def supportVersion = '25.0.0'
     compile "com.android.support:appcompat-v7:$supportVersion"
     compile "com.android.support:support-v4:$supportVersion"
     compile "com.android.support:design:$supportVersion"
