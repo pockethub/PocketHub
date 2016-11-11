@@ -23,11 +23,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
 
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.services.user.RequestUserClient;
-import com.alorma.github.sdk.services.user.follow.CheckFollowingUser;
-import com.alorma.github.sdk.services.user.follow.FollowUserClient;
-import com.alorma.github.sdk.services.user.follow.UnfollowUserClient;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.User;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
@@ -37,8 +34,11 @@ import com.github.pockethub.android.ui.MainActivity;
 import com.github.pockethub.android.ui.TabPagerActivity;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.ToastUtils;
+import com.meisolsson.githubsdk.service.users.UserFollowerService;
+import com.meisolsson.githubsdk.service.users.UserService;
 import com.google.inject.Inject;
 
+import retrofit2.Response;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -88,15 +88,15 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(user.login);
+        actionBar.setTitle(user.login());
 
-        if (!TextUtils.isEmpty(user.avatar_url))
+        if (!TextUtils.isEmpty(user.avatarUrl()))
             configurePager();
         else {
             ViewUtils.setGone(loadingBar, false);
             setGone(true);
-            new RequestUserClient(user.login)
-                    .observable()
+            ServiceGenerator.createService(this, UserService.class)
+                    .getUser(user.login())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(this.<User>bindToLifecycle())
@@ -127,7 +127,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem followItem = menu.findItem(R.id.m_follow);
-        boolean isCurrentUser = user.login.equals(AccountUtils.getLogin(this));
+        boolean isCurrentUser = user.login().equals(AccountUtils.getLogin(this));
 
         followItem.setVisible(followingStatusChecked && !isCurrentUser);
         followItem.setTitle(isFollowing ? R.string.unfollow : R.string.follow);
@@ -198,20 +198,21 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     }
 
     private void followUser() {
-        Observable<Boolean> followObservable;
+        UserFollowerService service = ServiceGenerator.createService(this, UserFollowerService.class);
+
+        Observable<Response<Boolean>> followObservable;
         if (isFollowing) {
-            followObservable = new UnfollowUserClient(user.login)
-                    .observable();
+            followObservable = service.unfollowUser(user.login());
         } else{
-            followObservable = new FollowUserClient(user.login).observable();
+            followObservable = service.followUser(user.login());
         }
 
         followObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Boolean>bindToLifecycle())
-                .subscribe(new ObserverAdapter<Boolean>() {
+                .compose(this.<Response<Boolean>>bindToLifecycle())
+                .subscribe(new ObserverAdapter<Response<Boolean>>() {
                     @Override
-                    public void onNext(Boolean aBoolean) {
+                    public void onNext(Response<Boolean>aBoolean) {
                         isFollowing = !isFollowing;
                     }
 
@@ -225,15 +226,15 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
 
     private void checkFollowingUserStatus() {
         followingStatusChecked = false;
-        new CheckFollowingUser(user.login)
-                .observable()
+        ServiceGenerator.createService(this, UserFollowerService.class)
+                .isFollowing(user.login())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Boolean>bindToLifecycle())
-                .subscribe(new ObserverAdapter<Boolean>() {
+                .compose(this.<Response<Boolean>>bindToLifecycle())
+                .subscribe(new ObserverAdapter<Response<Boolean>>() {
                     @Override
-                    public void onNext(Boolean following) {
-                        isFollowing = following;
+                    public void onNext(Response<Boolean> response) {
+                        isFollowing = response.code() == 204;
                         followingStatusChecked = true;
                         invalidateOptionsMenu();
                     }

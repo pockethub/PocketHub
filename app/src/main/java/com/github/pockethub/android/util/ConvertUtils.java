@@ -16,8 +16,7 @@
 
 package com.github.pockethub.android.util;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.meisolsson.githubsdk.model.Repository;
 
 public class ConvertUtils {
 
@@ -27,12 +26,8 @@ public class ConvertUtils {
 	 * @param repo The original repo.
 	 * @return A new repo, with a name and a new owner's login.
 	 */
-	public static Repo eventRepoToRepo(Repo repo) {
-		Repo newRepo = new Repo();
-		String[] ref = repo.name.split("/");
-		newRepo.owner = new User();
-		newRepo.owner.login = ref[0];
-		newRepo.name = ref[1];
-		return newRepo;
+	public static Repository eventRepoToRepo(Repository repo) {
+		String[] ref = repo.name().split("/");
+		return InfoUtils.createRepoFromData(ref[0], ref[1]);
 	}
 }

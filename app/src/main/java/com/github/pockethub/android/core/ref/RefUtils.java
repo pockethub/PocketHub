@@ -17,7 +17,7 @@ package com.github.pockethub.android.core.ref;
 
 import android.text.TextUtils;
 
-import com.alorma.github.sdk.bean.dto.response.GitReference;
+import com.meisolsson.githubsdk.model.git.GitReference;
 
 
 /**
@@ -41,7 +41,7 @@ public class RefUtils {
      */
     public static boolean isBranch(final GitReference ref) {
         if (ref != null) {
-            String name = ref.ref;
+            String name = ref.ref();
             return !TextUtils.isEmpty(name) && name.startsWith(PREFIX_HEADS);
         } else
             return false;
@@ -54,7 +54,7 @@ public class RefUtils {
      * @return true if tag, false otherwise
      */
     public static boolean isTag(final GitReference ref) {
-        return ref != null && isTag(ref.ref);
+        return ref != null && isTag(ref.ref());
     }
 
     /**
@@ -76,7 +76,7 @@ public class RefUtils {
     public static String getPath(final GitReference ref) {
         if (ref == null)
             return null;
-        String name = ref.ref;
+        String name = ref.ref();
         if (!TextUtils.isEmpty(name) && name.startsWith(PREFIX_REFS))
             return name.substring(PREFIX_REFS.length());
         else
@@ -91,7 +91,7 @@ public class RefUtils {
      */
     public static String getName(final GitReference ref) {
         if (ref != null)
-            return getName(ref.ref);
+            return getName(ref.ref());
         else
             return null;
     }
@@ -127,7 +127,7 @@ public class RefUtils {
         if (ref == null)
             return false;
 
-        String name = ref.ref;
+        String name = ref.ref();
         return !TextUtils.isEmpty(name) && !name.startsWith(PREFIX_PULL);
     }
 }

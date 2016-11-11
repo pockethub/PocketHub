@@ -154,7 +154,7 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
             case TYPE_BLOB:
                 Entry file = (Entry) item;
                 setText(0, file.name);
-                setText(1, Formatter.formatFileSize(context, file.entry.size));
+                setText(1, Formatter.formatFileSize(context, file.entry.size()));
                 break;
             case TYPE_TREE:
                 Folder folder = (Folder) item;

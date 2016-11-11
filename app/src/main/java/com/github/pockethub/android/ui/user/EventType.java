@@ -16,85 +16,88 @@
 
 package com.github.pockethub.android.ui.user;
 
-import com.alorma.github.sdk.bean.dto.response.GithubEvent;
-import com.alorma.github.sdk.bean.dto.response.events.payload.IssueEventPayload;
 import com.github.pockethub.android.ui.StyledText;
 import com.github.pockethub.android.util.TypefaceUtils;
-import com.google.gson.Gson;
+import com.meisolsson.githubsdk.model.GitHubEvent;
+import com.meisolsson.githubsdk.model.payload.IssuesPayload;
 
 public enum EventType {
     CommitCommentEvent {
         @Override
-        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GithubEvent event, StyledText main, StyledText details) {
+        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatCommitComment(event, main, details);
             return TypefaceUtils.ICON_COMMENT;
         }
     },
     CreateEvent {
         @Override
-        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GithubEvent event, StyledText main, StyledText details) {
+        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatCreate(event, main, details);
             return TypefaceUtils.ICON_CREATE;
         }
     },
     DeleteEvent {
         @Override
-        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GithubEvent event, StyledText main, StyledText details) {
+        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatDelete(event, main, details);
             return TypefaceUtils.ICON_DELETE;
         }
     },
     DownloadEvent {
         @Override
-        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GithubEvent event, StyledText main, StyledText details) {
+        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
+            iconAndViewTextManager.formatDownload(event, main, details);
+            return TypefaceUtils.ICON_UPLOAD;
+        }
+    },
+    ReleaseEvent {
+        @Override
+        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatDownload(event, main, details);
             return TypefaceUtils.ICON_UPLOAD;
         }
     },
     FollowEvent {
         @Override
-        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GithubEvent event, StyledText main, StyledText details) {
+        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatFollow(event, main, details);
             return TypefaceUtils.ICON_FOLLOW;
         }
     },
     ForkEvent {
         @Override
-        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GithubEvent event, StyledText main, StyledText details) {
+        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatFork(event, main, details);
             return TypefaceUtils.ICON_FORK;
         }
     },
     GistEvent {
         @Override
-        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GithubEvent event, StyledText main, StyledText details) {
+        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatGist(event, main, details);
             return TypefaceUtils.ICON_GIST;
         }
     },
     GollumEvent {
         @Override
-        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GithubEvent event, StyledText main, StyledText details) {
+        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatWiki(event, main, details);
             return TypefaceUtils.ICON_WIKI;
         }
     },
     IssueCommentEvent {
         @Override
-        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GithubEvent event, StyledText main, StyledText details) {
+        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatIssueComment(event, main, details);
             return TypefaceUtils.ICON_ISSUE_COMMENT;
         }
     },
     IssuesEvent {
         @Override
-        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GithubEvent event, StyledText main, StyledText details) {
+        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatIssues(event, main, details);
 
-            Gson gson = new Gson();
-            String json = gson.toJson(event.payload);
-
-            String action = gson.fromJson(json, IssueEventPayload.class).action;
+            String action = ((IssuesPayload) event.payload()).action();
             String icon = null;
             if (IconAndViewTextManager.ISSUES_PAYLOAD_ACTION_OPENED.equals(action))
                 icon = TypefaceUtils.ICON_ISSUE_OPEN;
@@ -107,53 +110,53 @@ public enum EventType {
     },
     MemberEvent {
         @Override
-        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GithubEvent event, StyledText main, StyledText details) {
+        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatAddMember(event, main, details);
             return TypefaceUtils.ICON_ADD_MEMBER;
         }
     },
     PublicEvent {
         @Override
-        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GithubEvent event, StyledText main, StyledText details) {
+        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatPublic(event, main, details);
             return null;
         }
     },
     PullRequestEvent {
         @Override
-        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GithubEvent event, StyledText main, StyledText details) {
+        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatPullRequest(event, main, details);
             return TypefaceUtils.ICON_PULL_REQUEST;
         }
     },
     PullRequestReviewCommentEvent {
         @Override
-        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GithubEvent event, StyledText main, StyledText details) {
+        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatReviewComment(event, main, details);
             return TypefaceUtils.ICON_COMMENT;
         }
     },
     PushEvent {
         @Override
-        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GithubEvent event, StyledText main, StyledText details) {
+        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatPush(event, main, details);
             return TypefaceUtils.ICON_PUSH;
         }
     },
     TeamAddEvent {
         @Override
-        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GithubEvent event, StyledText main, StyledText details) {
+        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatTeamAdd(event, main, details);
             return TypefaceUtils.ICON_ADD_MEMBER;
         }
     },
     WatchEvent {
         @Override
-        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GithubEvent event, StyledText main, StyledText details) {
+        public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatWatch(event, main, details);
             return TypefaceUtils.ICON_STAR;
         }
     };
 
-    public abstract String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GithubEvent event, StyledText main, StyledText details);
+    public abstract String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details);
 }

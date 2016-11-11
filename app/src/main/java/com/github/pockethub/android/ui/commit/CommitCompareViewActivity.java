@@ -22,7 +22,7 @@ import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.BaseActivity;
@@ -37,7 +37,6 @@ import static com.github.pockethub.android.Intents.EXTRA_BASE;
 import static com.github.pockethub.android.Intents.EXTRA_HEAD;
 import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY;
 
-
 /**
  * Activity to display a comparison between two commits
  */
@@ -51,7 +50,7 @@ public class CommitCompareViewActivity extends BaseActivity {
      * @param head
      * @return intent
      */
-    public static Intent createIntent(final Repo repository,
+    public static Intent createIntent(final Repository repository,
         final String base, final String head) {
         Builder builder = new Builder("commits.compare.VIEW");
         builder.add(EXTRA_BASE, base);
@@ -60,7 +59,7 @@ public class CommitCompareViewActivity extends BaseActivity {
         return builder.toIntent();
     }
 
-    private Repo repository;
+    private Repository repository;
 
     @Inject
     private AvatarLoader avatars;
@@ -80,7 +79,7 @@ public class CommitCompareViewActivity extends BaseActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setSubtitle(InfoUtils.createRepoId(repository));
-        avatars.bind(actionBar, repository.owner);
+        avatars.bind(actionBar, repository.owner());
 
         fragment = getSupportFragmentManager()
             .findFragmentById(android.R.id.list);

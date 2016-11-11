@@ -18,13 +18,13 @@ package com.github.pockethub.android.core.commit;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
-import com.alorma.github.sdk.bean.dto.response.Commit;
-import com.alorma.github.sdk.bean.dto.response.CommitFile;
-import com.alorma.github.sdk.bean.dto.response.GitCommit;
-import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.android.ui.StyledText;
 import com.github.pockethub.android.util.AvatarLoader;
-import com.github.pockethub.android.util.TimeUtils;
+import com.meisolsson.githubsdk.model.Commit;
+import com.meisolsson.githubsdk.model.GitHubFile;
+import com.meisolsson.githubsdk.model.User;
+import com.meisolsson.githubsdk.model.git.GitCommit;
+import com.meisolsson.githubsdk.model.git.GitUser;
 
 import java.text.NumberFormat;
 import java.util.Collection;
@@ -50,7 +50,7 @@ public class CommitUtils {
      * @return abbreviated sha
      */
     public static String abbreviate(final Commit commit) {
-        return commit != null ? abbreviate(commit.sha) : null;
+        return commit != null ? abbreviate(commit.sha()) : null;
     }
 
     /**
@@ -60,7 +60,7 @@ public class CommitUtils {
      * @return abbreviated sha
      */
     public static String abbreviate(final GitCommit commit) {
-        return commit != null ? abbreviate(commit.sha) : null;
+        return commit != null ? abbreviate(commit.sha()) : null;
     }
 
     /**
@@ -96,16 +96,16 @@ public class CommitUtils {
      * @return author name or null if missing
      */
     public static String getAuthor(final Commit commit) {
-        User author = commit.author;
+        User author = commit.author();
         if (author != null)
-            return author.login;
+            return author.login();
 
-        GitCommit rawCommit = commit.commit;
+        GitCommit rawCommit = commit.commit();
         if (rawCommit == null)
             return null;
 
-        User commitAuthor = rawCommit.author;
-        return commitAuthor != null ? commitAuthor.login : null;
+        GitUser commitAuthor = rawCommit.author();
+        return commitAuthor != null ? commitAuthor.name() : null;
     }
 
     /**
@@ -118,16 +118,16 @@ public class CommitUtils {
      * @return committer name or null if missing
      */
     public static String getCommitter(final Commit commit) {
-        User committer = commit.committer;
+        User committer = commit.committer();
         if (committer != null)
-            return committer.login;
+            return committer.login();
 
-        GitCommit rawCommit = commit.commit;
+        GitCommit rawCommit = commit.commit();
         if (rawCommit == null)
             return null;
 
-        User commitCommitter = rawCommit.committer;
-        return commitCommitter != null ? commitCommitter.login : null;
+        GitUser commitCommitter = rawCommit.committer();
+        return commitCommitter != null ? commitCommitter.name() : null;
     }
 
     /**
@@ -137,12 +137,12 @@ public class CommitUtils {
      * @return author name or null if missing
      */
     public static Date getAuthorDate(final Commit commit) {
-        GitCommit rawCommit = commit.commit;
+        GitCommit rawCommit = commit.commit();
         if (rawCommit == null)
             return null;
 
-        User commitAuthor = rawCommit.author;
-        return commitAuthor != null && commitAuthor.date != null ? TimeUtils.stringToDate(commitAuthor.date) : null;
+        GitUser commitAuthor = rawCommit.author();
+        return commitAuthor != null && commitAuthor.date() != null ? commitAuthor.date() : null;
     }
 
     /**
@@ -152,12 +152,12 @@ public class CommitUtils {
      * @return author name or null if missing
      */
     public static Date getCommitterDate(final Commit commit) {
-        GitCommit rawCommit = commit.commit;
+        GitCommit rawCommit = commit.commit();
         if (rawCommit == null)
             return null;
 
-        User commitCommitter = rawCommit.committer;
-        return commitCommitter != null && commitCommitter.date != null? TimeUtils.stringToDate(commitCommitter.date): null;
+        GitUser commitCommitter = rawCommit.committer();
+        return commitCommitter != null && commitCommitter.date() != null ? commitCommitter.date(): null;
     }
 
     /**
@@ -170,14 +170,10 @@ public class CommitUtils {
      */
     public static ImageView bindAuthor(final Commit commit,
             final AvatarLoader avatars, final ImageView view) {
-        User author = commit.author;
+        User author = commit.author();
         if (author != null)
             avatars.bind(view, author);
-        else {
-            GitCommit rawCommit = commit.commit;
-            if (rawCommit != null)
-                avatars.bind(view, rawCommit.author);
-        }
+
         return view;
     }
 
@@ -191,14 +187,10 @@ public class CommitUtils {
      */
     public static ImageView bindCommitter(final Commit commit,
             final AvatarLoader avatars, final ImageView view) {
-        User committer = commit.committer;
+        User committer = commit.committer();
         if (committer != null)
             avatars.bind(view, committer);
-        else {
-            GitCommit rawCommit = commit.commit;
-            if (rawCommit != null)
-                avatars.bind(view, rawCommit.committer);
-        }
+
         return view;
     }
 
@@ -209,9 +201,9 @@ public class CommitUtils {
      * @return count
      */
     public static String getCommentCount(final Commit commit) {
-        final GitCommit rawCommit = commit.commit;
+        final GitCommit rawCommit = commit.commit();
         if (rawCommit != null)
-            return FORMAT.format(rawCommit.comment_count);
+            return FORMAT.format(rawCommit.commentCount());
         else
             return "0";
     }
@@ -222,15 +214,15 @@ public class CommitUtils {
      * @param files
      * @return styled text
      */
-    public static StyledText formatStats(final Collection<CommitFile> files) {
+    public static StyledText formatStats(final Collection<GitHubFile> files) {
         StyledText fileDetails = new StyledText();
         int added = 0;
         int deleted = 0;
         int changed = 0;
         if (files != null)
-            for (CommitFile file : files) {
-                added += file.additions;
-                deleted += file.deletions;
+            for (GitHubFile file : files) {
+                added += file.additions();
+                deleted += file.deletions();
                 changed++;
             }
 
@@ -260,8 +252,8 @@ public class CommitUtils {
      * @param file
      * @return last segment of commit file path
      */
-    public static String getName(final CommitFile file) {
-        return file != null ? getName(file.getFileName()) : null;
+    public static String getName(final GitHubFile file) {
+        return file != null ? getName(file.filename()) : null;
     }
 
     /**

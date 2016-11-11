@@ -25,20 +25,19 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.alorma.github.sdk.bean.dto.response.Gist;
-import com.alorma.github.sdk.services.client.GithubListClient;
-import com.alorma.github.sdk.services.gists.PublicGistsClient;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.core.PageIterator;
 import com.github.pockethub.android.core.gist.GistStore;
 import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.TabPagerFragment;
 import com.github.pockethub.android.util.ToastUtils;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Gist;
+import com.meisolsson.githubsdk.model.Page;
+import com.meisolsson.githubsdk.service.gists.GistService;
 import com.google.inject.Inject;
 
 import java.util.Collection;
-import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -66,21 +65,17 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
         Observable<Gist> observable = Observable.create(new Observable.OnSubscribe<Gist>() {
             @Override
             public void call(Subscriber<? super Gist> subscriber) {
-                PageIterator<Gist> pages = new PageIterator<>(new PageIterator.GitHubRequest<List<Gist>>() {
-                    @Override
-                    public GithubListClient<List<Gist>> execute(int page) {
-                        return new PublicGistsClient(1);
-                    }
-                }, 1);
-                pages.next();
-                int randomPage = 1 + (int) (Math.random() * ((pages.getLastPage() - 1) + 1));
+                GistService service = ServiceGenerator.createService(getActivity(), GistService.class);
 
-                Collection<Gist> gists = pages.getRequest().execute(randomPage).observable().toBlocking().first().first;
+                Page<Gist> p = service.getPublicGists(1).toBlocking().first();
+                int randomPage = 1 + (int) (Math.random() * ((p.last() - 1) + 1));
+
+                Collection<Gist> gists = service.getPublicGists(randomPage).toBlocking().first().items();
 
                 // Make at least two tries since page numbers are volatile
                 if (gists.isEmpty()) {
-                    randomPage = 1 + (int) (Math.random() * ((pages.getLastPage() - 1) + 1));
-                    gists = pages.getRequest().execute(randomPage).observable().toBlocking().first().first;
+                    randomPage = 1 + (int) (Math.random() * ((p.last() - 1) + 1));
+                    gists = service.getPublicGists(randomPage).toBlocking().first().items();
                 }
 
                 if (gists.isEmpty())

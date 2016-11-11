@@ -20,8 +20,8 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
-import com.alorma.github.sdk.bean.dto.response.Commit;
-import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.meisolsson.githubsdk.model.Commit;
+import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.commit.CommitUtils;
@@ -53,7 +53,7 @@ public class CommitViewActivity extends PagerActivity {
      * @param id
      * @return intent
      */
-    public static Intent createIntent(final Repo repository,
+    public static Intent createIntent(final Repository repository,
         final String id) {
         return createIntent(repository, 0, id);
     }
@@ -66,12 +66,12 @@ public class CommitViewActivity extends PagerActivity {
      * @param commits
      * @return intent
      */
-    public static Intent createIntent(final Repo repository,
+    public static Intent createIntent(final Repository repository,
         final int position, final Collection<Commit> commits) {
         String[] ids = new String[commits.size()];
         int index = 0;
         for (Commit commit : commits)
-            ids[index++] = commit.sha;
+            ids[index++] = commit.sha();
         return createIntent(repository, position, ids);
     }
 
@@ -83,7 +83,7 @@ public class CommitViewActivity extends PagerActivity {
      * @param ids
      * @return intent
      */
-    public static Intent createIntent(final Repo repository,
+    public static Intent createIntent(final Repository repository,
         final int position, final String... ids) {
         Builder builder = new Builder("commits.VIEW");
         builder.add(EXTRA_POSITION, position);
@@ -94,7 +94,7 @@ public class CommitViewActivity extends PagerActivity {
 
     private ViewPager pager;
 
-    private Repo repository;
+    private Repository repository;
 
     private CharSequence[] ids;
 
@@ -128,7 +128,7 @@ public class CommitViewActivity extends PagerActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setSubtitle(InfoUtils.createRepoId(repository));
-        avatars.bind(actionBar, repository.owner);
+        avatars.bind(actionBar, repository.owner());
     }
 
     @Override

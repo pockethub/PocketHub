@@ -15,8 +15,8 @@
  */
 package com.github.pockethub.android.core.user;
 
-import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.android.core.ResourcePager;
+import com.meisolsson.githubsdk.model.User;
 
 /**
  * Pager over users
@@ -25,6 +25,6 @@ public abstract class UserPager extends ResourcePager<User> {
 
     @Override
     protected Object getId(User resource) {
-        return resource.id;
+        return resource.id();
     }
 }

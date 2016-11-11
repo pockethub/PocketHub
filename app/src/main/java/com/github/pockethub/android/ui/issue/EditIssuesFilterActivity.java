@@ -28,10 +28,10 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.alorma.github.sdk.bean.dto.response.Label;
-import com.alorma.github.sdk.bean.dto.response.Milestone;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.meisolsson.githubsdk.model.Label;
+import com.meisolsson.githubsdk.model.Milestone;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueFilter;
@@ -102,14 +102,14 @@ public class EditIssuesFilterActivity extends BaseActivity {
         if (filter == null)
             filter = getIntent().getParcelableExtra(EXTRA_ISSUE_FILTER);
 
-        final Repo repository = filter.getRepository();
+        final Repository repository = filter.getRepository();
 
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.filter_issues_title);
         actionBar.setSubtitle(InfoUtils.createRepoId(repository));
-        avatars.bind(actionBar, repository.owner);
+        avatars.bind(actionBar, repository.owner());
 
         OnClickListener assigneeListener = new OnClickListener() {
 
@@ -226,7 +226,7 @@ public class EditIssuesFilterActivity extends BaseActivity {
     private void updateMilestone() {
         Milestone selected = filter.getMilestone();
         if (selected != null)
-            milestoneText.setText(selected.title);
+            milestoneText.setText(selected.title());
         else
             milestoneText.setText(R.string.none);
     }
@@ -235,7 +235,7 @@ public class EditIssuesFilterActivity extends BaseActivity {
         User selected = filter.getAssignee();
         if (selected != null) {
             avatars.bind(avatarView, selected);
-            assigneeText.setText(selected.login);
+            assigneeText.setText(selected.login());
         } else {
             avatarView.setVisibility(GONE);
             assigneeText.setText(R.string.assignee_anyone);

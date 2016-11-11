@@ -17,22 +17,25 @@ package com.github.pockethub.android.ui.issue;
 
 import android.util.Log;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.services.issues.GetAssigneesClient;
+import com.github.pockethub.android.rx.ProgressObserverAdapter;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Page;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.BaseProgressDialog;
 import com.github.pockethub.android.ui.BaseActivity;
-import com.github.pockethub.android.util.InfoUtils;
 import com.github.pockethub.android.util.ToastUtils;
+import com.meisolsson.githubsdk.service.issues.IssueAssigneeService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
@@ -50,7 +53,7 @@ public class AssigneeDialog extends BaseProgressDialog {
 
     private final BaseActivity activity;
 
-    private final Repo repository;
+    private final Repository repository;
 
     /**
      * Create dialog helper to display assignees
@@ -60,7 +63,7 @@ public class AssigneeDialog extends BaseProgressDialog {
      * @param repository
      */
     public AssigneeDialog(final BaseActivity activity,
-            final int requestCode, final Repo repository) {
+            final int requestCode, final Repository repository) {
         super(activity);
         this.activity = activity;
         this.requestCode = requestCode;
@@ -68,32 +71,53 @@ public class AssigneeDialog extends BaseProgressDialog {
     }
 
     private void load(final User selectedAssignee) {
-        showIndeterminate(R.string.loading_collaborators);
-        new GetAssigneesClient(InfoUtils.createRepoInfo(repository)).observable()
+        getPageAndNext(1).subscribe(new ProgressObserverAdapter<Page<User>>(activity, R.string.loading_collaborators) {
+            List<User> users = new ArrayList<>();
+
+            @Override
+            public void onError(Throwable error) {
+                dismissProgress();
+                Log.d(TAG, "Exception loading collaborators", error);
+                ToastUtils.show(activity, error, R.string.error_collaborators_load);
+            }
+
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+                Map<String, User> loadedCollaborators = new TreeMap<>(
+                        CASE_INSENSITIVE_ORDER);
+                for (User user : users)
+                    loadedCollaborators.put(user.login(), user);
+                collaborators = loadedCollaborators;
+
+                dismissProgress();
+                show(selectedAssignee);
+            }
+
+            @Override
+            public void onNext(Page<User> page) {
+                users.addAll(page.items());
+            }
+        }.start());
+    }
+
+    private Observable<Page<User>> getPageAndNext(int i) {
+        return ServiceGenerator.createService(activity, IssueAssigneeService.class)
+                .getAssignees(repository.owner().login(), repository.name(), i)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(activity.<List<User>>bindToLifecycle())
-                .subscribe(new ObserverAdapter<List<User>>() {
+                .concatMap(new Func1<Page<User>, Observable<Page<User>>>() {
                     @Override
-                    public void onError(Throwable error) {
-                        dismissProgress();
-                        Log.d(TAG, "Exception loading collaborators", error);
-                        ToastUtils.show(activity, error, R.string.error_collaborators_load);
-                    }
+                    public Observable<Page<User>> call(Page<User> page) {
+                        if (page.next() == null)
+                            return Observable.just(page);
 
-                    @Override
-                    public void onNext(List<User> users) {
-                        Map<String, User> loadedCollaborators = new TreeMap<>(
-                                CASE_INSENSITIVE_ORDER);
-                        for (User user : users)
-                            loadedCollaborators.put(user.login, user);
-                        collaborators = loadedCollaborators;
-
-                        dismissProgress();
-                        show(selectedAssignee);
+                        return Observable.just(page)
+                                .concatWith(getPageAndNext(page.next()));
                     }
                 });
     }
+
 
     /**
      * Show dialog with given assignee selected
@@ -111,7 +135,7 @@ public class AssigneeDialog extends BaseProgressDialog {
         int checked = -1;
         if (selectedAssignee != null)
             for (int i = 0; i < users.size(); i++)
-                if (selectedAssignee.login.equals(users.get(i).login))
+                if (selectedAssignee.login().equals(users.get(i).login()))
                     checked = i;
         AssigneeDialogFragment.show(activity, requestCode,
                 activity.getString(R.string.select_assignee), null, users,

@@ -17,8 +17,9 @@ package com.github.pockethub.android;
 
 import android.content.Context;
 
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.services.user.GetAuthUserClient;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.User;
+import com.meisolsson.githubsdk.service.users.UserService;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 
@@ -35,6 +36,6 @@ public class ServicesModule extends AbstractModule {
 
     @Provides
     User currentUser(Context context) throws IOException {
-        return new GetAuthUserClient().observable().toBlocking().first();
+        return ServiceGenerator.createService(context, UserService.class).getUser().toBlocking().first();
     }
 }

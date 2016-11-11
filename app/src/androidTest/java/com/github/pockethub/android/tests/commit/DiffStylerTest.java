@@ -17,8 +17,8 @@ package com.github.pockethub.android.tests.commit;
 
 import android.test.AndroidTestCase;
 
-import com.alorma.github.sdk.bean.dto.response.CommitFile;
 import com.github.pockethub.android.ui.commit.DiffStyler;
+import com.meisolsson.githubsdk.model.GitHubFile;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,9 +35,11 @@ public class DiffStylerTest extends AndroidTestCase {
         assertNotNull(patch);
         String fileName = "file.txt";
         DiffStyler styler = new DiffStyler(getContext().getResources());
-        CommitFile file = new CommitFile();
-        file.filename = fileName;
-        file.patch = patch;
+        GitHubFile file = GitHubFile.builder()
+                .filename(fileName)
+                .patch(patch)
+                .build();
+
         styler.setFiles(Collections.singletonList(file));
         List<CharSequence> styled = styler.get(fileName);
         assertNotNull(styled);
@@ -59,7 +61,7 @@ public class DiffStylerTest extends AndroidTestCase {
         DiffStyler styler = new DiffStyler(getContext().getResources());
         styler.setFiles(null);
         assertTrue(styler.get("navigation_drawer_header_background").isEmpty());
-        styler.setFiles(Collections.<CommitFile>emptyList());
+        styler.setFiles(Collections.<GitHubFile>emptyList());
         assertTrue(styler.get("navigation_drawer_header_background").isEmpty());
     }
 
@@ -68,11 +70,14 @@ public class DiffStylerTest extends AndroidTestCase {
      */
     public void testEmptyPatch() {
         DiffStyler styler = new DiffStyler(getContext().getResources());
-        CommitFile file = new CommitFile();
-        file.filename = "file.txt";
+        GitHubFile file = GitHubFile.builder()
+                .filename("file.txt")
+                .build();
         styler.setFiles(Collections.singletonList(file));
         assertTrue(styler.get("file.txt").isEmpty());
-        file.patch = "";
+
+        file = file.toBuilder().filename("").build();
+        styler.setFiles(Collections.singletonList(file));
         assertTrue(styler.get("file.txt").isEmpty());
     }
 

@@ -27,10 +27,10 @@ import android.graphics.drawable.PaintDrawable;
 import android.text.style.DynamicDrawableSpan;
 import android.widget.TextView;
 
-import com.alorma.github.sdk.bean.dto.response.Label;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.StyledText;
 import com.github.pockethub.android.util.ServiceUtils;
+import com.meisolsson.githubsdk.model.Label;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -149,8 +149,8 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
 
             @Override
             public int compare(final Label lhs, final Label rhs) {
-                return CASE_INSENSITIVE_ORDER.compare(lhs.name,
-                        rhs.name);
+                return CASE_INSENSITIVE_ORDER.compare(lhs.name(),
+                        rhs.name());
             }
         });
         setText(view, sortedLabels);
@@ -185,7 +185,7 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
         int[] nameWidths = new int[labels.length];
         int textHeight = MIN_VALUE;
         for (int i = 0; i < labels.length; i++) {
-            String name = labels[i].name.toUpperCase(US);
+            String name = labels[i].name().toUpperCase(US);
             textBounds.setEmpty();
             p.getTextBounds(name, 0, name.length(), textBounds);
             names[i] = name;
@@ -203,7 +203,7 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
                     + 0.5F);
 
             text.append('\uFFFC', new LabelDrawableSpan(resources, textSize,
-                    labels[i].color, paddingLeft, textHeight, bounds,
+                    labels[i].color(), paddingLeft, textHeight, bounds,
                     names[i]));
 
             if (i + 1 < labels.length)

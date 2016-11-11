@@ -18,15 +18,15 @@ package com.github.pockethub.android.ui.repo;
 import android.content.Context;
 import android.view.LayoutInflater;
 
-import com.alorma.github.sdk.bean.dto.response.Contributor;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.util.AvatarLoader;
+import com.meisolsson.githubsdk.model.User;
 
 /**
  * List adapter for a list of contributors
  */
-public class ContributorListAdapter extends SingleTypeAdapter<Contributor> {
+public class ContributorListAdapter extends SingleTypeAdapter<User> {
 
     private final Context context;
 
@@ -40,7 +40,7 @@ public class ContributorListAdapter extends SingleTypeAdapter<Contributor> {
      * @param avatars
      */
     public ContributorListAdapter(final Context context,
-            final Contributor[] elements, final AvatarLoader avatars) {
+            final User[] elements, final AvatarLoader avatars) {
         super(LayoutInflater.from(context), R.layout.contributor_item);
 
         this.context = context.getApplicationContext();
@@ -50,7 +50,7 @@ public class ContributorListAdapter extends SingleTypeAdapter<Contributor> {
 
     @Override
     public long getItemId(final int position) {
-        return getItem(position).id;
+        return getItem(position).id();
     }
 
     @Override
@@ -59,9 +59,9 @@ public class ContributorListAdapter extends SingleTypeAdapter<Contributor> {
     }
 
     @Override
-    protected void update(int position, Contributor contributor) {
+    protected void update(int position, User contributor) {
         avatars.bind(imageView(0), contributor);
-        setText(1, contributor.author.login);
-        setText(2, context.getString(R.string.contributions, contributor.total));
+        setText(1, contributor.login());
+        setText(2, context.getString(R.string.contributions, contributor.contributions()));
     }
 }

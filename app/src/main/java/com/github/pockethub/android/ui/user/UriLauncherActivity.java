@@ -27,10 +27,10 @@ import android.text.TextUtils;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.alorma.github.sdk.bean.dto.response.Gist;
-import com.alorma.github.sdk.bean.dto.response.Issue;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.meisolsson.githubsdk.model.Gist;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.commit.CommitMatch;
 import com.github.pockethub.android.core.commit.CommitUriMatcher;
@@ -144,10 +144,10 @@ public class UriLauncherActivity extends Activity {
 
             Issue issue = IssueUriMatcher.getIssue(data);
             if (issue != null) {
-                return IssuesViewActivity.createIntent(issue, issue.repository);
+                return IssuesViewActivity.createIntent(issue, issue.repository());
             }
 
-            Repo repository = RepositoryUriMatcher.getRepository(data);
+            Repository repository = RepositoryUriMatcher.getRepository(data);
             if (repository != null) {
                 return RepositoryViewActivity.createIntent(repository);
             }

@@ -33,9 +33,8 @@ import android.util.Log;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.alorma.github.sdk.bean.dto.response.Organization;
-import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.android.R;
+import com.meisolsson.githubsdk.model.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -100,25 +99,7 @@ public class AccountUtils {
         if (user == null)
             return false;
 
-        String login = user.login;
-        if (login == null)
-            return false;
-
-        return login.equals(getLogin(context));
-    }
-
-    /**
-     * Is the given user the owner of the default account?
-     *
-     * @param context
-     * @param user
-     * @return true if default account user, false otherwise
-     */
-    public static boolean isUser(final Context context, final Organization user) {
-        if (user == null)
-            return false;
-
-        String login = user.login;
+        String login = user.login();
         if (login == null)
             return false;
 

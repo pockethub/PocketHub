@@ -21,10 +21,8 @@ import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.alorma.github.sdk.bean.dto.response.Gist;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.api.DeleteGistClient;
 import com.github.pockethub.android.core.OnLoadListener;
 import com.github.pockethub.android.core.gist.GistStore;
 import com.github.pockethub.android.rx.ProgressObserverAdapter;
@@ -36,12 +34,15 @@ import com.github.pockethub.android.ui.ViewPager;
 import com.github.pockethub.android.ui.user.UriLauncherActivity;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.ToastUtils;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Gist;
+import com.meisolsson.githubsdk.service.gists.GistService;
 import com.google.inject.Inject;
 
 import java.io.Serializable;
 import java.util.List;
 
-import retrofit.client.Response;
+import retrofit2.Response;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -83,7 +84,7 @@ public class GistsViewActivity extends PagerActivity implements
         String[] ids = new String[gists.size()];
         int index = 0;
         for (Gist gist : gists)
-            ids[index++] = gist.id;
+            ids[index++] = gist.id();
         return new Builder("gists.VIEW")
             .add(EXTRA_GIST_IDS, (Serializable) ids)
             .add(EXTRA_POSITION, position).toIntent();
@@ -123,12 +124,12 @@ public class GistsViewActivity extends PagerActivity implements
         // Support opening this activity with a single Gist that may be present
         // in the intent but not currently present in the store
         if (gists == null && gist != null) {
-            if (gist.created_at != null) {
-                Gist stored = store.getGist(gist.id);
+            if (gist.createdAt() != null) {
+                Gist stored = store.getGist(gist.id());
                 if (stored == null)
                     store.addGist(gist);
             }
-            gists = new String[] { gist.id };
+            gists = new String[] { gist.id() };
         }
 
         adapter = new GistsPagerAdapter(this, gists);
@@ -165,14 +166,15 @@ public class GistsViewActivity extends PagerActivity implements
         if (REQUEST_CONFIRM_DELETE == requestCode && RESULT_OK == resultCode) {
             final String gistId = arguments.getString(EXTRA_GIST_ID);
 
-            new DeleteGistClient(gistId).observable()
+            ServiceGenerator.createService(this, GistService.class)
+                    .deleteGist(gistId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Response>bindToLifecycle())
-                    .subscribe(new ProgressObserverAdapter<Response>(this, R.string.deleting_gist) {
+                    .compose(this.<Response<Boolean>>bindToLifecycle())
+                    .subscribe(new ProgressObserverAdapter<Response<Boolean>>(this, R.string.deleting_gist) {
 
                         @Override
-                        public void onNext(Response response) {
+                        public void onNext(Response<Boolean> response) {
                             super.onNext(response);
                             setResult(RESULT_OK);
                             finish();
@@ -224,9 +226,9 @@ public class GistsViewActivity extends PagerActivity implements
             actionBar.setSubtitle(null);
             actionBar.setLogo(null);
             actionBar.setIcon(R.drawable.app_icon);
-        } else if (gist.owner != null) {
-            avatars.bind(actionBar, gist.owner);
-            actionBar.setSubtitle(gist.owner.login);
+        } else if (gist.owner() != null) {
+            avatars.bind(actionBar, gist.owner());
+            actionBar.setSubtitle(gist.owner().login());
         } else {
             actionBar.setSubtitle(R.string.anonymous);
             actionBar.setLogo(null);
@@ -237,7 +239,7 @@ public class GistsViewActivity extends PagerActivity implements
 
     @Override
     public void loaded(Gist gist) {
-        if (gists[pager.getCurrentItem()].equals(gist.id))
-            updateActionBar(gist, gist.id);
+        if (gists[pager.getCurrentItem()].equals(gist.id()))
+            updateActionBar(gist, gist.id());
     }
 }

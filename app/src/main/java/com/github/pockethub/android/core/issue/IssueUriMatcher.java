@@ -18,10 +18,10 @@ package com.github.pockethub.android.core.issue;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.alorma.github.sdk.bean.dto.response.Issue;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.android.core.repo.RepositoryUtils;
+import com.github.pockethub.android.util.InfoUtils;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.Repository;
 
 import java.util.List;
 
@@ -67,15 +67,10 @@ public class IssueUriMatcher {
         if (issueNumber < 1)
             return null;
 
-        Repo repo = new Repo();
-        User owner = new User();
-        owner.login = repoOwner;
-        repo.name = repoName;
-        repo.owner = owner;
-
-        Issue issue = new Issue();
-        issue.repository = repo;
-        issue.number = issueNumber;
-        return issue;
+        Repository repo = InfoUtils.createRepoFromData(repoOwner, repoName);
+        return Issue.builder()
+                .repository(repo)
+                .number(issueNumber)
+                .build();
     }
 }

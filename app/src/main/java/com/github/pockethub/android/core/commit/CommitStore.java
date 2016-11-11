@@ -17,11 +17,12 @@ package com.github.pockethub.android.core.commit;
 
 import android.content.Context;
 
-import com.alorma.github.sdk.bean.dto.response.Commit;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.services.commit.GetSingleCommitClient;
 import com.github.pockethub.android.core.ItemStore;
 import com.github.pockethub.android.util.InfoUtils;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Commit;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.service.repositories.RepositoryCommitService;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -53,7 +54,7 @@ public class CommitStore extends ItemStore {
      * @param id
      * @return commit or null if not in store
      */
-    public Commit getCommit(final Repo repo, final String id) {
+    public Commit getCommit(final Repository repo, final String id) {
         final ItemReferences<Commit> repoCommits = commits.get(InfoUtils.createRepoId(repo));
         return repoCommits != null ? repoCommits.get(id) : null;
     }
@@ -65,28 +66,19 @@ public class CommitStore extends ItemStore {
      * @param commit
      * @return commit
      */
-    public Commit addCommit(Repo repo, Commit commit) {
-        Commit current = getCommit(repo, commit.sha);
-        if (current != null) {
-            current.author = commit.author;
-            current.commit = commit.commit;
-            current.committer = commit.committer;
-            current.files = commit.files;
-            current.parents = commit.parents;
-            current.sha = commit.sha;
-            current.stats = commit.stats;
-            current.url = commit.url;
+    public Commit addCommit(Repository repo, Commit commit) {
+        Commit current = getCommit(repo, commit.sha());
+        if (current != null && current.equals(commit))
             return current;
-        } else {
-            String repoId = InfoUtils.createRepoId(repo);
-            ItemReferences<Commit> repoCommits = commits.get(repoId);
-            if (repoCommits == null) {
-                repoCommits = new ItemReferences<>();
-                commits.put(repoId, repoCommits);
-            }
-            repoCommits.put(commit.sha, commit);
-            return commit;
+
+        String repoId = InfoUtils.createRepoId(repo);
+        ItemReferences<Commit> repoCommits = commits.get(repoId);
+        if (repoCommits == null) {
+            repoCommits = new ItemReferences<>();
+            commits.put(repoId, repoCommits);
         }
+        repoCommits.put(commit.sha(), commit);
+        return commit;
     }
 
     /**
@@ -97,8 +89,12 @@ public class CommitStore extends ItemStore {
      * @return refreshed commit
      * @throws IOException
      */
-    public Commit refreshCommit(final Repo repo, final String id) throws IOException {
-        return addCommit(repo, new GetSingleCommitClient(InfoUtils.createCommitInfo(repo, id))
-                .observable().toBlocking().first());
+    public Commit refreshCommit(final Repository repo, final String id) throws IOException {
+        Commit commit = ServiceGenerator.createService(context, RepositoryCommitService.class)
+                .getCommit(repo.owner().login(), repo.name(), id)
+                .toBlocking()
+                .first();
+
+        return addCommit(repo, commit);
     }
 }

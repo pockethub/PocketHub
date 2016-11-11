@@ -17,8 +17,8 @@ package com.github.pockethub.android.core.commit;
 
 import android.util.SparseArray;
 
-import com.alorma.github.sdk.bean.dto.response.CommitComment;
-import com.alorma.github.sdk.bean.dto.response.CommitFile;
+import com.meisolsson.githubsdk.model.GitHubFile;
+import com.meisolsson.githubsdk.model.git.GitComment;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,17 +29,16 @@ import java.util.List;
  */
 public class FullCommitFile {
 
-    private final SparseArray<List<CommitComment>> comments = new SparseArray<>(
-            4);
+    private final SparseArray<List<GitComment>> comments = new SparseArray<>(4);
 
-    private final CommitFile file;
+    private final GitHubFile file;
 
     /**
      * Create file
      *
      * @param file
      */
-    public FullCommitFile(final CommitFile file) {
+    public FullCommitFile(final GitHubFile file) {
         this.file = file;
     }
 
@@ -49,10 +48,9 @@ public class FullCommitFile {
      * @param line
      * @return comments
      */
-    public List<CommitComment> get(final int line) {
-        List<CommitComment> lineComments = comments.get(line);
-        return lineComments != null ? lineComments : Collections
-                .<CommitComment> emptyList();
+    public List<GitComment> get(final int line) {
+        List<GitComment> lineComments = comments.get(line);
+        return lineComments != null ? lineComments : Collections.<GitComment> emptyList();
     }
 
     /**
@@ -61,10 +59,10 @@ public class FullCommitFile {
      * @param comment
      * @return this file
      */
-    public FullCommitFile add(final CommitComment comment) {
-        int line = comment.position;
+    public FullCommitFile add(final GitComment comment) {
+        int line = (int) comment.position();
         if (line >= 0) {
-            List<CommitComment> lineComments = comments.get(line);
+            List<GitComment> lineComments = comments.get(line);
             if (lineComments == null) {
                 lineComments = new ArrayList<>(4);
                 comments.put(line, lineComments);
@@ -77,7 +75,7 @@ public class FullCommitFile {
     /**
      * @return file
      */
-    public CommitFile getFile() {
+    public GitHubFile getFile() {
         return file;
     }
 }

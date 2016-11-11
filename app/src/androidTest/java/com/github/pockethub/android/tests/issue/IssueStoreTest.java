@@ -17,10 +17,12 @@ package com.github.pockethub.android.tests.issue;
 
 import android.test.AndroidTestCase;
 
-import com.alorma.github.sdk.bean.dto.response.Issue;
-import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.core.issue.IssueStore;
 import com.github.pockethub.android.util.InfoUtils;
+
+import static android.test.MoreAsserts.assertNotEqual;
 
 /**
  * Unit tests of {@link IssueStore}
@@ -32,23 +34,26 @@ public class IssueStoreTest extends AndroidTestCase {
      */
     public void testReuseIssue() {
         IssueStore store = new IssueStore(mContext);
-        Repo repo = InfoUtils.createRepoFromData("owner", "name");
+        Repository repo = InfoUtils.createRepoFromData("owner", "name");
 
         assertNull(store.getIssue(repo, 1));
 
-        Issue issue = new Issue();
-        issue.repository = repo;
-        issue.number = 1;
-        issue.body = "body";
-        assertSame(issue, store.addIssue(issue));
-        assertSame(issue, store.getIssue(repo, 1));
+        Issue issue = Issue.builder()
+                .repository(repo)
+                .number(1)
+                .body("body")
+                .build();
+        assertEquals(issue, store.addIssue(issue));
+        assertEquals(issue, store.getIssue(repo, 1));
 
-        Issue issue2 = new Issue();
-        issue2.repository = repo;
-        issue2.number = 1;
-        issue2.body = "body2";
-        assertSame(issue, store.addIssue(issue2));
-        assertEquals(issue2.body, issue.body);
-        assertSame(issue, store.getIssue(repo, 1));
+        Issue issue2 = Issue.builder()
+                .repository(repo)
+                .number(1)
+                .body("body2")
+                .build();
+
+        assertNotEqual(issue, store.addIssue(issue2));
+        assertNotEqual(issue2.body(), issue.body());
+        assertNotEqual(issue, store.getIssue(repo, 1));
     }
 }

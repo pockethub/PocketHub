@@ -29,15 +29,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
-import com.alorma.github.sdk.bean.dto.request.IssueRequest;
-import com.alorma.github.sdk.bean.dto.response.Issue;
-import com.alorma.github.sdk.bean.dto.response.Label;
-import com.alorma.github.sdk.bean.dto.response.Milestone;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.services.issues.EditIssueClient;
-import com.alorma.github.sdk.services.issues.PostNewIssueClient;
-import com.alorma.github.sdk.services.user.actions.CheckUserCollaboratorClient;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.Label;
+import com.meisolsson.githubsdk.model.Milestone;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.accounts.AccountUtils;
@@ -49,13 +46,18 @@ import com.github.pockethub.android.ui.StyledText;
 import com.github.pockethub.android.ui.TextWatcherAdapter;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.InfoUtils;
-import com.github.pockethub.android.util.RequestUtils;
 import com.github.pockethub.android.util.ToastUtils;
+import com.meisolsson.githubsdk.model.request.issue.IssueRequest;
+import com.meisolsson.githubsdk.service.issues.IssueService;
+import com.meisolsson.githubsdk.service.repositories.RepositoryCollaboratorService;
 import com.google.inject.Inject;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import retrofit.RetrofitError;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -83,9 +85,9 @@ public class EditIssueActivity extends BaseActivity {
      * @param repository
      * @return intent
      */
-    public static Intent createIntent(Repo repository) {
-        return createIntent(null, repository.owner.login,
-            repository.name, repository.owner);
+    public static Intent createIntent(Repository repository) {
+        return createIntent(null, repository.owner().login(),
+            repository.name(), repository.owner());
     }
 
     /**
@@ -131,7 +133,7 @@ public class EditIssueActivity extends BaseActivity {
 
     private Issue issue;
 
-    private Repo repository;
+    private Repository repository;
 
     private MenuItem saveItem;
 
@@ -163,7 +165,7 @@ public class EditIssueActivity extends BaseActivity {
         if (issue == null)
             issue = intent.getParcelableExtra(EXTRA_ISSUE);
         if (issue == null)
-            issue = new Issue();
+            issue = Issue.builder().build();
 
         repository = InfoUtils.createRepoFromData(
             intent.getStringExtra(EXTRA_REPOSITORY_OWNER),
@@ -174,13 +176,13 @@ public class EditIssueActivity extends BaseActivity {
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
         ActionBar actionBar = getSupportActionBar();
-        if (issue.number > 0)
+        if (issue.number() != null && issue.number() > 0)
             if (IssueUtils.isPullRequest(issue))
                 actionBar.setTitle(getString(R.string.pull_request_title)
-                    + issue.number);
+                    + issue.number());
             else
                 actionBar.setTitle(getString(R.string.issue_title)
-                    + issue.number);
+                    + issue.number());
         else
             actionBar.setTitle(R.string.new_issue);
         actionBar.setSubtitle(InfoUtils.createRepoId(repository));
@@ -196,8 +198,8 @@ public class EditIssueActivity extends BaseActivity {
         });
 
         updateSaveMenu();
-        titleText.setText(issue.title);
-        bodyText.setText(issue.body);
+        titleText.setText(issue.title());
+        bodyText.setText(issue.body());
     }
 
     @Override
@@ -207,22 +209,19 @@ public class EditIssueActivity extends BaseActivity {
 
         switch (requestCode) {
             case ISSUE_MILESTONE_UPDATE:
-                issue.milestone = MilestoneDialogFragment.getSelected(arguments);
+                issue = issue.toBuilder().milestone(MilestoneDialogFragment.getSelected(arguments)).build();
                 updateMilestone();
                 break;
             case ISSUE_ASSIGNEE_UPDATE:
                 User assignee = AssigneeDialogFragment.getSelected(arguments);
-                if (assignee != null)
-                    issue.assignee = assignee;
-                else {
-                    User user = new User();
-                    user.login = "";
-                    issue.assignee = user;
+                if (assignee == null) {
+                    assignee = User.builder().login("").build();
                 }
+                issue = issue.toBuilder().assignee(assignee).build();
                 updateAssignee();
                 break;
             case ISSUE_LABELS_UPDATE:
-                issue.labels = LabelsDialogFragment.getSelected(arguments);
+                issue = issue.toBuilder().labels(LabelsDialogFragment.getSelected(arguments)).build();
                 updateLabels();
                 break;
         }
@@ -249,7 +248,7 @@ public class EditIssueActivity extends BaseActivity {
                     milestoneDialog = new MilestoneDialog(
                         EditIssueActivity.this, ISSUE_MILESTONE_UPDATE,
                         repository);
-                milestoneDialog.show(issue.milestone);
+                milestoneDialog.show(issue.milestone());
             }
         });
 
@@ -260,7 +259,7 @@ public class EditIssueActivity extends BaseActivity {
                 if (assigneeDialog == null)
                     assigneeDialog = new AssigneeDialog(EditIssueActivity.this,
                         ISSUE_ASSIGNEE_UPDATE, repository);
-                assigneeDialog.show(issue.assignee);
+                assigneeDialog.show(issue.assignee());
             }
         });
 
@@ -271,7 +270,7 @@ public class EditIssueActivity extends BaseActivity {
                 if (labelsDialog == null)
                     labelsDialog = new LabelsDialog(EditIssueActivity.this,
                         ISSUE_LABELS_UPDATE, repository);
-                labelsDialog.show(issue.labels);
+                labelsDialog.show(issue.labels());
             }
         });
 
@@ -281,11 +280,11 @@ public class EditIssueActivity extends BaseActivity {
     }
 
     private void updateMilestone() {
-        Milestone milestone = issue.milestone;
+        Milestone milestone = issue.milestone();
         if (milestone != null) {
-            milestoneText.setText(milestone.title);
-            float closed = milestone.closedIssues;
-            float total = closed + milestone.openIssues;
+            milestoneText.setText(milestone.title());
+            float closed = milestone.closedIssues();
+            float total = closed + milestone.openIssues();
             if (total > 0) {
                 ((LayoutParams) milestoneClosed.getLayoutParams()).weight = closed
                     / total;
@@ -300,8 +299,8 @@ public class EditIssueActivity extends BaseActivity {
     }
 
     private void updateAssignee() {
-        User assignee = issue.assignee;
-        String login = assignee != null ? assignee.login : null;
+        User assignee = issue.assignee();
+        String login = assignee != null ? assignee.login() : null;
         if (!TextUtils.isEmpty(login)) {
             assigneeText.setText(new StyledText().bold(login));
             assigneeAvatar.setVisibility(VISIBLE);
@@ -313,7 +312,7 @@ public class EditIssueActivity extends BaseActivity {
     }
 
     private void updateLabels() {
-        List<Label> labels = issue.labels;
+        List<Label> labels = issue.labels();
         if (labels != null && !labels.isEmpty())
             LabelDrawableSpan.setText(labelsText, labels);
         else
@@ -349,16 +348,34 @@ public class EditIssueActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.m_apply:
-                IssueRequest request = RequestUtils.issueFull(issue,
-                        bodyText.getText().toString(), titleText.getText().toString());
+                IssueRequest.Builder request = IssueRequest.builder()
+                        .body(bodyText.getText().toString())
+                        .title(titleText.getText().toString())
+                        .state(issue.state());
+
+                if(issue.assignee() != null)
+                    request.assignees(Collections.singletonList(issue.assignee().login()));
+
+                if(issue.milestone() != null)
+                    request.milestone(issue.milestone().number());
+
+                if(issue.labels() != null) {
+                    List<String> labels = new ArrayList<>();
+                    for (Label label : issue.labels())
+                        labels.add(label.name());
+
+                    request.labels(labels);
+                }
+
+                IssueService service = ServiceGenerator.createService(this, IssueService.class);
                 Observable<Issue> observable;
                 int message;
 
-                if (issue.number > 0) {
-                    observable = new EditIssueClient(InfoUtils.createIssueInfo(repository, issue.number), request).observable();
+                if (issue.number() != null && issue.number() > 0) {
+                    observable = service.editIssue(repository.owner().login(), repository.name(), issue.number(), request.build());
                     message = R.string.updating_issue;
                 } else {
-                    observable = new PostNewIssueClient(InfoUtils.createRepoInfo(repository), request).observable();
+                    observable =  service.createIssue(repository.owner().login(), repository.name(), request.build());
                     message = R.string.creating_issue;
                 }
 
@@ -390,26 +407,27 @@ public class EditIssueActivity extends BaseActivity {
     }
 
     private void checkCollaboratorStatus() {
-        new CheckUserCollaboratorClient(InfoUtils.createRepoInfo(repository), AccountUtils.getLogin(this))
-                .observable()
+        ServiceGenerator.createService(this, RepositoryCollaboratorService.class)
+                .isUserCollaborator(repository.owner().login(), repository.name(), AccountUtils.getLogin(this))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Boolean>bindToLifecycle())
-                .subscribe(new ObserverAdapter<Boolean>() {
+                .compose(this.<Response<Boolean>>bindToLifecycle())
+                .subscribe(new ObserverAdapter<Response<Boolean>>() {
                     @Override
-                    public void onNext(Boolean isCollaborator) {
+                    public void onNext(Response<Boolean> response) {
                         showMainContent();
-                        if (isCollaborator)
+                        if (response.code() == 204)
                             showCollaboratorOptions();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        if(e instanceof RetrofitError && ((RetrofitError) e).getResponse().getStatus() == 403){
+
+                        /*if(e instanceof RetrofitError && ((RetrofitError) e).getResponse().getStatus() == 403){
                             //403 -> Forbidden
                             //The user is not a collaborator.
                             showMainContent();
-                        }
+                        }*/
                     }
                 });
     }

@@ -19,7 +19,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import com.alorma.github.sdk.services.issues.IssuesService;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueFilter;
 import com.github.pockethub.android.ui.FragmentStatePagerAdapter;
@@ -56,7 +55,7 @@ public class IssueDashboardPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(final int position) {
-        String filter = null;
+        String filter;
         switch (position) {
             case 0:
                 filter = FILTER_SUBSCRIBED;
@@ -73,7 +72,7 @@ public class IssueDashboardPagerAdapter extends FragmentStatePagerAdapter {
             default:
                 return null;
         }
-        final Map<String, String> filterData = new HashMap<>();
+        final Map<String, Object> filterData = new HashMap<>();
         filterData.put(FIELD_FILTER, filter);
         filterData.put(FIELD_SORT, SORT_UPDATED);
         filterData.put(FIELD_DIRECTION, DIRECTION_DESCENDING);

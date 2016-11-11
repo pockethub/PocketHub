@@ -20,13 +20,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.alorma.github.sdk.bean.dto.response.Commit;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.commit.CommitUtils;
 import com.github.pockethub.android.ui.StyledText;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.TypefaceUtils;
+import com.meisolsson.githubsdk.model.Commit;
 
 import java.util.Collection;
 
@@ -53,7 +53,7 @@ public class CommitListAdapter extends SingleTypeAdapter<Commit> {
 
     @Override
     public long getItemId(int position) {
-        String sha = getItem(position).sha;
+        String sha = getItem(position).sha();
         if (!TextUtils.isEmpty(sha))
             return sha.hashCode();
         else
@@ -77,7 +77,7 @@ public class CommitListAdapter extends SingleTypeAdapter<Commit> {
 
     @Override
     protected void update(int position, Commit item) {
-        setText(0, CommitUtils.abbreviate(item.sha));
+        setText(0, CommitUtils.abbreviate(item.sha()));
 
         StyledText authorText = new StyledText();
         authorText.bold(CommitUtils.getAuthor(item));
@@ -86,7 +86,7 @@ public class CommitListAdapter extends SingleTypeAdapter<Commit> {
         setText(1, authorText);
 
         CommitUtils.bindAuthor(item, avatars, imageView(2));
-        setText(3, item.commit.message);
+        setText(3, item.commit().message());
         setText(4, CommitUtils.getCommentCount(item));
     }
 }

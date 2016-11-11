@@ -17,12 +17,12 @@ package com.github.pockethub.android.tests.repo;
 
 import android.test.AndroidTestCase;
 
-import com.alorma.github.sdk.bean.dto.response.GithubEvent;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.bean.dto.response.events.EventType;
-import com.alorma.github.sdk.bean.dto.response.events.payload.Payload;
+import com.meisolsson.githubsdk.model.GitHubEvent;
+import com.meisolsson.githubsdk.model.GitHubEventType;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.core.repo.RepositoryEventMatcher;
+import com.meisolsson.githubsdk.model.payload.ForkPayload;
 
 /**
  * Unit tests of {@link RepositoryEventMatcher}
@@ -34,23 +34,35 @@ public class RepositoryEventMatcherTest extends AndroidTestCase {
      */
     public void testIncompleteRepositoryFork() {
         RepositoryEventMatcher matcher = new RepositoryEventMatcher();
-        GithubEvent event = new GithubEvent();
-        event.type = (EventType.ForkEvent);
-        Payload payload = new Payload();
-        event.payload = payload;
+        ForkPayload payload = ForkPayload.builder().build();
+
+        GitHubEvent event = GitHubEvent.builder()
+                .type(GitHubEventType.ForkEvent)
+                .payload(payload)
+                .build();
+
         assertNull(matcher.getRepository(event));
 
-        Repo repository = new Repo();
-        payload.forkee = repository;
+        Repository repository = Repository.builder().build();
+        payload = payload.toBuilder().forkee(repository).build();
+        event = event.toBuilder().payload(payload).build();
         assertNull(matcher.getRepository(event));
 
-        repository.name = "repo";
+        repository = repository.toBuilder().name("repo").build();
+        payload = payload.toBuilder().forkee(repository).build();
+        event = event.toBuilder().payload(payload).build();
         assertNull(matcher.getRepository(event));
 
-        repository.owner = new User();
+        User user = User.builder().build();
+        repository = repository.toBuilder().owner(user).build();
+        payload = payload.toBuilder().forkee(repository).build();
+        event = event.toBuilder().payload(payload).build();
         assertNull(matcher.getRepository(event));
 
-        repository.owner.login = "owner";
+        user = user.toBuilder().login("owner").build();
+        repository = repository.toBuilder().owner(user).build();
+        payload = payload.toBuilder().forkee(repository).build();
+        event = event.toBuilder().payload(payload).build();
         assertEquals(repository, matcher.getRepository(event));
     }
 

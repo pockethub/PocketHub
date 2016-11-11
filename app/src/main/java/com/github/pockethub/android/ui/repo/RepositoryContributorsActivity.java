@@ -20,8 +20,8 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.Intents;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.BaseActivity;
@@ -43,11 +43,11 @@ public class RepositoryContributorsActivity extends BaseActivity {
      * @param repository
      * @return intent
      */
-    public static Intent createIntent(Repo repository) {
+    public static Intent createIntent(Repository repository) {
         return new Intents.Builder("repo.contributors.VIEW").repo(repository).toIntent();
     }
 
-    private Repo repository;
+    private Repository repository;
 
     @Inject
     private AvatarLoader avatars;
@@ -63,11 +63,11 @@ public class RepositoryContributorsActivity extends BaseActivity {
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(repository.name);
+        actionBar.setTitle(repository.name());
         actionBar.setSubtitle(R.string.contributors);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        User owner = repository.owner;
+        User owner = repository.owner();
         avatars.bind(getSupportActionBar(), owner);
     }
 

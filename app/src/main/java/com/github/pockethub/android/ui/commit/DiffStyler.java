@@ -19,8 +19,8 @@ import android.content.res.Resources;
 import android.text.TextUtils;
 import android.widget.TextView;
 
-import com.alorma.github.sdk.bean.dto.response.CommitFile;
 import com.github.pockethub.android.R;
+import com.meisolsson.githubsdk.model.GitHubFile;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -96,13 +96,13 @@ public class DiffStyler {
      * @param files
      * @return this styler
      */
-    public DiffStyler setFiles(final Collection<CommitFile> files) {
+    public DiffStyler setFiles(final Collection<GitHubFile> files) {
         diffs.clear();
         if (files == null || files.isEmpty())
             return this;
 
-        for (CommitFile file : files) {
-            String patch = file.patch;
+        for (GitHubFile file : files) {
+            String patch = file.patch();
             if (TextUtils.isEmpty(patch))
                 continue;
 
@@ -115,7 +115,7 @@ public class DiffStyler {
                 start = end + 1;
                 end = nextLine(patch, start, length);
             }
-            diffs.put(file.filename, lines);
+            diffs.put(file.filename(), lines);
         }
         return this;
     }

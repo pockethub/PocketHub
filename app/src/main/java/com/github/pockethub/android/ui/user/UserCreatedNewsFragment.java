@@ -15,13 +15,14 @@
  */
 package com.github.pockethub.android.ui.user;
 
-import com.alorma.github.sdk.bean.dto.response.GithubEvent;
-import com.alorma.github.sdk.services.client.GithubListClient;
-import com.alorma.github.sdk.services.user.events.GetUserCreatedEventsClient;
 import com.github.pockethub.android.core.PageIterator;
 import com.github.pockethub.android.core.ResourcePager;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.GitHubEvent;
+import com.meisolsson.githubsdk.model.Page;
+import com.meisolsson.githubsdk.service.activity.EventService;
 
-import java.util.List;
+import rx.Observable;
 
 /**
  * News that a given user has created
@@ -29,15 +30,16 @@ import java.util.List;
 public class UserCreatedNewsFragment extends UserNewsFragment {
 
     @Override
-    protected ResourcePager<GithubEvent> createPager() {
+    protected ResourcePager<GitHubEvent> createPager() {
         return new EventPager() {
 
             @Override
-            public PageIterator<GithubEvent> createIterator(int page, int size) {
-                return new PageIterator<>(new PageIterator.GitHubRequest<List<GithubEvent>>() {
+            public PageIterator<GitHubEvent> createIterator(int page, int size) {
+                return new PageIterator<>(new PageIterator.GitHubRequest<Page<GitHubEvent>>() {
                     @Override
-                    public GithubListClient<List<GithubEvent>> execute(int page) {
-                        return new GetUserCreatedEventsClient(org.login, page);
+                    public Observable<Page<GitHubEvent>> execute(int page) {
+                        return ServiceGenerator.createService(getContext(), EventService.class)
+                                .getUserPerformedEvents(org.login(), page);
                     }
                 }, page);
             }

@@ -17,8 +17,8 @@ package com.github.pockethub.android.tests.ref;
 
 import android.test.AndroidTestCase;
 
-import com.alorma.github.sdk.bean.dto.response.GitReference;
 import com.github.pockethub.android.core.ref.RefUtils;
+import com.meisolsson.githubsdk.model.git.GitReference;
 
 
 /**
@@ -31,7 +31,7 @@ public class RefUtilsTest extends AndroidTestCase {
      */
     public void testIsBranch() {
         assertFalse(RefUtils.isBranch(null));
-        assertFalse(RefUtils.isBranch(new GitReference()));
+        assertFalse(RefUtils.isBranch(GitReference.builder().build()));
         assertFalse(RefUtils.isBranch(createGitReference("")));
         assertFalse(RefUtils.isBranch(createGitReference("navigation_drawer_header_background")));
         assertFalse(RefUtils.isBranch(createGitReference("refs/tags/v1")));
@@ -44,7 +44,7 @@ public class RefUtilsTest extends AndroidTestCase {
      */
     public void testIsTag() {
         assertFalse(RefUtils.isTag((GitReference) null));
-        assertFalse(RefUtils.isTag(new GitReference()));
+        assertFalse(RefUtils.isTag(GitReference.builder().build()));
         assertFalse(RefUtils.isTag(createGitReference("")));
         assertFalse(RefUtils.isTag(createGitReference("navigation_drawer_header_background")));
         assertFalse(RefUtils.isTag(createGitReference("refs/b1")));
@@ -57,7 +57,7 @@ public class RefUtilsTest extends AndroidTestCase {
      */
     public void testIsValid() {
         assertFalse(RefUtils.isValid(null));
-        assertFalse(RefUtils.isValid(new GitReference()));
+        assertFalse(RefUtils.isValid(GitReference.builder().build()));
         assertFalse(RefUtils.isValid(createGitReference("")));
         assertFalse(RefUtils.isValid(createGitReference("refs/pull/6/merge")));
         assertFalse(RefUtils.isValid(createGitReference("refs/pull/6/head")));
@@ -71,7 +71,7 @@ public class RefUtilsTest extends AndroidTestCase {
      */
     public void testGetName() {
         assertNull(RefUtils.getName((GitReference) null));
-        assertNull(RefUtils.getName(new GitReference()));
+        assertNull(RefUtils.getName(GitReference.builder().build()));
         assertEquals("", RefUtils.getName(createGitReference("")));
         assertEquals("unchanged",
             RefUtils.getName(createGitReference("unchanged")));
@@ -89,7 +89,7 @@ public class RefUtilsTest extends AndroidTestCase {
      */
     public void testGetPath() {
         assertNull(RefUtils.getPath(null));
-        assertNull(RefUtils.getPath(new GitReference()));
+        assertNull(RefUtils.getPath(GitReference.builder().build()));
         assertEquals("", RefUtils.getPath(createGitReference("")));
         assertEquals("unchanged",
             RefUtils.getPath(createGitReference("unchanged")));
@@ -103,8 +103,8 @@ public class RefUtilsTest extends AndroidTestCase {
     }
 
     private GitReference createGitReference(String ref){
-        GitReference reference = new GitReference();
-        reference.ref = ref;
-        return reference;
+        return GitReference.builder()
+                .ref(ref)
+                .build();
     }
 }

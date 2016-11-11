@@ -15,9 +15,10 @@
  */
 package com.github.pockethub.android.core.issue;
 
-import com.alorma.github.sdk.bean.dto.response.GithubComment;
-import com.alorma.github.sdk.bean.dto.response.Issue;
-import com.alorma.github.sdk.bean.issue.IssueEvent;
+
+import com.meisolsson.githubsdk.model.GitHubComment;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.IssueEvent;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import java.util.Collection;
 /**
  * Issue model with comments
  */
-public class FullIssue extends ArrayList<GithubComment> implements Serializable {
+public class FullIssue extends ArrayList<GitHubComment> implements Serializable {
 
     private static final long serialVersionUID = 4586476132467323827L;
 
@@ -41,7 +42,7 @@ public class FullIssue extends ArrayList<GithubComment> implements Serializable 
      * @param comments
      * @param events
      */
-    public FullIssue(final Issue issue, final Collection<GithubComment> comments, final Collection<IssueEvent> events) {
+    public FullIssue(final Issue issue, final Collection<GitHubComment> comments, final Collection<IssueEvent> events) {
         super(comments);
 
         this.events = events;

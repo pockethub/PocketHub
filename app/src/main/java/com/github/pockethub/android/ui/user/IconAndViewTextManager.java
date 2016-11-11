@@ -18,23 +18,34 @@ package com.github.pockethub.android.ui.user;
 
 import android.text.TextUtils;
 
-import com.alorma.github.sdk.bean.dto.response.Commit;
-import com.alorma.github.sdk.bean.dto.response.CommitComment;
-import com.alorma.github.sdk.bean.dto.response.GithubComment;
-import com.alorma.github.sdk.bean.dto.response.GithubEvent;
-import com.alorma.github.sdk.bean.dto.response.Issue;
-import com.alorma.github.sdk.bean.dto.response.PullRequest;
-import com.alorma.github.sdk.bean.dto.response.Release;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.Team;
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.meisolsson.githubsdk.model.GitHubComment;
+import com.meisolsson.githubsdk.model.GitHubEvent;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.PullRequest;
+import com.meisolsson.githubsdk.model.Release;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.ReviewComment;
+import com.meisolsson.githubsdk.model.Team;
+import com.meisolsson.githubsdk.model.User;
 import com.github.kevinsawicki.wishlist.ViewUtils;
-import com.github.pockethub.android.api.FollowEventPayload;
-import com.github.pockethub.android.api.GistEventPayload;
-import com.github.pockethub.android.api.MemberEventPayload;
 import com.github.pockethub.android.core.issue.IssueUtils;
 import com.github.pockethub.android.ui.StyledText;
 import com.github.pockethub.android.util.TimeUtils;
+import com.meisolsson.githubsdk.model.git.GitComment;
+import com.meisolsson.githubsdk.model.git.GitCommit;
+import com.meisolsson.githubsdk.model.payload.CommitCommentPayload;
+import com.meisolsson.githubsdk.model.payload.CreatePayload;
+import com.meisolsson.githubsdk.model.payload.DeletePayload;
+import com.meisolsson.githubsdk.model.payload.FollowPayload;
+import com.meisolsson.githubsdk.model.payload.GistPayload;
+import com.meisolsson.githubsdk.model.payload.IssueCommentPayload;
+import com.meisolsson.githubsdk.model.payload.IssuesPayload;
+import com.meisolsson.githubsdk.model.payload.MemberPayload;
+import com.meisolsson.githubsdk.model.payload.PullRequestPayload;
+import com.meisolsson.githubsdk.model.payload.PullRequestReviewCommentPayload;
+import com.meisolsson.githubsdk.model.payload.PushPayload;
+import com.meisolsson.githubsdk.model.payload.ReleasePayload;
+import com.meisolsson.githubsdk.model.payload.TeamAddPayload;
 
 import java.util.List;
 
@@ -51,17 +62,16 @@ public class IconAndViewTextManager {
     }
 
     private void appendComment(final StyledText details,
-            final GithubComment comment) {
+            final GitHubComment comment) {
         if (comment != null)
-            appendText(details, comment.body);
+            appendText(details, comment.body());
     }
 
-    private void appendCommitComment(final StyledText details,
-            final CommitComment comment) {
+    private void appendReviewComment(StyledText details, ReviewComment comment) {
         if (comment == null)
             return;
 
-        String id = comment.commit_id;
+        String id = comment.commitId();
         if (!TextUtils.isEmpty(id)) {
             if (id.length() > 10)
                 id = id.substring(0, 10);
@@ -70,7 +80,24 @@ public class IconAndViewTextManager {
             details.monospace(id);
             details.append(':').append('\n');
         }
-        appendComment(details, comment);
+        appendText(details, comment.body());
+    }
+
+    private void appendCommitComment(final StyledText details,
+            final GitComment comment) {
+        if (comment == null)
+            return;
+
+        String id = comment.commitId();
+        if (!TextUtils.isEmpty(id)) {
+            if (id.length() > 10)
+                id = id.substring(0, 10);
+            appendText(details, "Comment in");
+            details.append(' ');
+            details.monospace(id);
+            details.append(':').append('\n');
+        }
+        appendText(details, comment.body());
     }
 
     private void appendText(final StyledText details, String text) {
@@ -83,28 +110,28 @@ public class IconAndViewTextManager {
         details.append(text);
     }
 
-    private StyledText boldActor(final StyledText text, final GithubEvent event) {
-        return boldUser(text, event.actor);
+    private StyledText boldActor(final StyledText text, final GitHubEvent event) {
+        return boldUser(text, event.actor());
     }
 
     private StyledText boldUser(final StyledText text, final User user) {
         if (user != null)
-            text.bold(user.login);
+            text.bold(user.login());
         return text;
     }
 
-    private StyledText boldRepo(final StyledText text, final GithubEvent event) {
-        Repo repo = event.repo;
+    private StyledText boldRepo(final StyledText text, final GitHubEvent event) {
+        Repository repo = event.repo();
         if (repo != null)
-            text.bold(repo.name);
+            text.bold(repo.name());
         return text;
     }
 
     private StyledText boldRepoName(final StyledText text,
-            final GithubEvent event) {
-        Repo repo = event.repo;
+            final GitHubEvent event) {
+        Repository repo = event.repo();
         if (repo != null) {
-            String name = repo.name;
+            String name = repo.name();
             if (!TextUtils.isEmpty(name)) {
                 int slash = name.indexOf('/');
                 if (slash != -1 && slash + 1 < name.length())
@@ -114,77 +141,83 @@ public class IconAndViewTextManager {
         return text;
     }
 
-    void formatCommitComment(GithubEvent event, StyledText main,
+    void formatCommitComment(GitHubEvent event, StyledText main,
                                     StyledText details) {
         boldActor(main, event);
         main.append(" commented on ");
         boldRepo(main, event);
 
-        appendCommitComment(details, event.payload.comment);
+        CommitCommentPayload payload = (CommitCommentPayload) event.payload();
+        appendCommitComment(details, payload.comment());
     }
 
-    void formatDownload(GithubEvent event, StyledText main,
+    void formatDownload(GitHubEvent event, StyledText main,
                                StyledText details) {
         boldActor(main, event);
         main.append(" uploaded a file to ");
         boldRepo(main, event);
 
-        Release download = event.payload.release;
+        ReleasePayload payload = (ReleasePayload) event.payload();
+        Release download = payload.release();
         if (download != null)
-            appendText(details, download.name);
+            appendText(details, download.name());
     }
 
-    void formatCreate(GithubEvent event, StyledText main,
+    void formatCreate(GitHubEvent event, StyledText main,
                              StyledText details) {
         boldActor(main, event);
 
+        CreatePayload payload = (CreatePayload) event.payload();
+
         main.append(" created ");
-        String refType = event.payload.ref_type;
+        String refType = payload.refType();
         main.append(refType);
         main.append(' ');
         if (!"repository".equals(refType)) {
-            main.append(event.payload.ref);
+            main.append(payload.ref());
             main.append(" at ");
             boldRepo(main, event);
         } else
             boldRepoName(main, event);
     }
 
-    void formatDelete(GithubEvent event, StyledText main,
+    void formatDelete(GitHubEvent event, StyledText main,
                              StyledText details) {
         boldActor(main, event);
 
+        DeletePayload payload = (DeletePayload) event.payload();
+
         main.append(" deleted ");
-        main.append(event.payload.ref_type);
+        main.append(payload.refType());
         main.append(' ');
-        main.append(event.payload.ref);
+        main.append(payload.ref());
         main.append(" at ");
 
         boldRepo(main, event);
     }
 
-    void formatFollow(GithubEvent event, StyledText main,
+    void formatFollow(GitHubEvent event, StyledText main,
                              StyledText details) {
         boldActor(main, event);
         main.append(" started following ");
-        boldUser(main, ((FollowEventPayload) event.payload).target);
+        boldUser(main, ((FollowPayload) event.payload()).target());
     }
 
-    void formatFork(GithubEvent event, StyledText main,
+    void formatFork(GitHubEvent event, StyledText main,
                            StyledText details) {
         boldActor(main, event);
         main.append(" forked repository ");
         boldRepo(main, event);
     }
 
-    void formatGist(GithubEvent event, StyledText main,
+    void formatGist(GitHubEvent event, StyledText main,
                            StyledText details) {
         boldActor(main, event);
 
-        GistEventPayload payload = (GistEventPayload) event.payload;
+        GistPayload payload = (GistPayload) event.payload();
 
         main.append(' ');
-        String action = payload.action;
+        String action = payload.action();
         if ("create".equals(action))
             main.append("created");
         else if ("update".equals(action))
@@ -192,117 +225,126 @@ public class IconAndViewTextManager {
         else
             main.append(action);
         main.append(" Gist ");
-        main.append(payload.gist.id);
+        main.append(payload.gist().id());
     }
 
-    void formatWiki(GithubEvent event, StyledText main,
+    void formatWiki(GitHubEvent event, StyledText main,
                            StyledText details) {
         boldActor(main, event);
         main.append(" updated the wiki in ");
         boldRepo(main, event);
     }
 
-    void formatIssueComment(GithubEvent event, StyledText main,
+    void formatIssueComment(GitHubEvent event, StyledText main,
                                    StyledText details) {
         boldActor(main, event);
 
         main.append(" commented on ");
 
-        Issue issue = event.payload.issue;
+        IssueCommentPayload payload = (IssueCommentPayload) event.payload();
+        Issue issue = payload.issue();
         String number;
         if (IssueUtils.isPullRequest(issue))
-            number = "pull request " + issue.number;
+            number = "pull request " + issue.number();
         else
-            number = "issue " + issue.number;
+            number = "issue " + issue.number();
         main.bold(number);
 
         main.append(" on ");
 
         boldRepo(main, event);
 
-        appendComment(details, event.payload.comment);
+        appendComment(details, payload.comment());
     }
 
-    void formatIssues(GithubEvent event, StyledText main,
+    void formatIssues(GitHubEvent event, StyledText main,
                              StyledText details) {
         boldActor(main, event);
 
-        String action = event.payload.action;
-        Issue issue = event.payload.issue;
+        IssuesPayload payload = (IssuesPayload) event.payload();
+
+        String action = payload.action();
+        Issue issue = payload.issue();
         main.append(' ');
         main.append(action);
         main.append(' ');
-        main.bold("issue " + issue.number);
+        main.bold("issue " + issue.number());
         main.append(" on ");
 
         boldRepo(main, event);
 
-        appendText(details, issue.title);
+        appendText(details, issue.title());
     }
 
-    void formatAddMember(GithubEvent event, StyledText main,
+    void formatAddMember(GitHubEvent event, StyledText main,
                                 StyledText details) {
+        MemberPayload payload = (MemberPayload) event.payload();
+
         boldActor(main, event);
         main.append(" added ");
-        main.bold(event.payload.sender.login);
+        main.bold(payload.member().login());
         main.append(" as a collaborator to ");
         boldRepo(main, event);
     }
 
-    void formatPublic(GithubEvent event, StyledText main,
+    void formatPublic(GitHubEvent event, StyledText main,
                              StyledText details) {
         boldActor(main, event);
         main.append(" open sourced repository ");
         boldRepo(main, event);
     }
 
-    void formatWatch(GithubEvent event, StyledText main,
+    void formatWatch(GitHubEvent event, StyledText main,
                             StyledText details) {
         boldActor(main, event);
         main.append(" starred ");
         boldRepo(main, event);
     }
 
-    void formatReviewComment(GithubEvent event, StyledText main,
+    void formatReviewComment(GitHubEvent event, StyledText main,
                                     StyledText details) {
         boldActor(main, event);
         main.append(" commented on ");
         boldRepo(main, event);
 
-        appendCommitComment(details, event.payload.comment);
+        appendReviewComment(details, ((PullRequestReviewCommentPayload) event.payload()).comment());
     }
 
-    void formatPullRequest(GithubEvent event, StyledText main,
+    void formatPullRequest(GitHubEvent event, StyledText main,
                                   StyledText details) {
         boldActor(main, event);
 
-        String action = event.payload.action;
+        PullRequestPayload payload = (PullRequestPayload) event.payload();
+
+        String action = payload.action();
         if ("synchronize".equals(action))
             action = "updated";
         main.append(' ');
         main.append(action);
         main.append(' ');
-        main.bold("pull request " + event.payload.number);
+        main.bold("pull request " + payload.number());
         main.append(" on ");
 
         boldRepo(main, event);
 
         if (ISSUES_PAYLOAD_ACTION_OPENED.equals(action) || "closed".equals(action)) {
-            PullRequest request = event.payload.pull_request;
+            PullRequest request = payload.pullRequest();
             if (request != null) {
-                String title = request.title;
+                String title = request.title();
                 if (!TextUtils.isEmpty(title))
                     details.append(title);
             }
         }
     }
 
-    void formatPush(GithubEvent event, StyledText main,
+    void formatPush(GitHubEvent event, StyledText main,
                            StyledText details) {
         boldActor(main, event);
 
+        PushPayload payload = (PushPayload) event.payload();
+
         main.append(" pushed to ");
-        String ref = event.payload.ref;
+        String ref = payload.ref();
         if (ref.startsWith("refs/heads/"))
             ref = ref.substring(11);
         main.bold(ref);
@@ -310,7 +352,7 @@ public class IconAndViewTextManager {
 
         boldRepo(main, event);
 
-        final List<Commit> commits = event.payload.commits;
+        final List<GitCommit> commits = payload.commits();
         int size = commits != null ? commits.size() : -1;
         if (size > 0) {
             if (size != 1)
@@ -320,11 +362,11 @@ public class IconAndViewTextManager {
 
             int max = 3;
             int appended = 0;
-            for (Commit commit : commits) {
+            for (GitCommit commit : commits) {
                 if (commit == null)
                     continue;
 
-                String sha = commit.sha;
+                String sha = commit.sha();
                 if (TextUtils.isEmpty(sha))
                     continue;
 
@@ -334,7 +376,7 @@ public class IconAndViewTextManager {
                 else
                     details.monospace(sha);
 
-                String message = commit.message;
+                String message = commit.message();
                 if (!TextUtils.isEmpty(message)) {
                     details.append(' ');
                     int newline = message.indexOf('\n');
@@ -351,27 +393,28 @@ public class IconAndViewTextManager {
         }
     }
 
-    void formatTeamAdd(GithubEvent event, StyledText main,
+    void formatTeamAdd(GitHubEvent event, StyledText main,
                               StyledText details) {
         boldActor(main, event);
 
         main.append(" added ");
 
-        Repo repo = event.payload.repository;
-        String repoName = repo != null ? repo.name : null;
+        TeamAddPayload payload = (TeamAddPayload) event.payload();
+        Repository repo = payload.repository();
+        String repoName = repo != null ? repo.name() : null;
         if (repoName != null)
             main.bold(repoName);
 
         main.append(" to team");
 
-        Team team = event.payload.team;
-        String teamName = team != null ? team.name : null;
+        Team team = payload.team();
+        String teamName = team != null ? team.name() : null;
         if (teamName != null)
             main.append(' ').bold(teamName);
     }
 
-    protected void update(int position, GithubEvent event) {
-        newsListAdapter.getAvatars().bind(newsListAdapter.imageViewAgent(0), event.actor);
+    protected void update(int position, GitHubEvent event) {
+        newsListAdapter.getAvatars().bind(newsListAdapter.imageViewAgent(0), event.actor());
 
         StyledText main = new StyledText();
         StyledText details = new StyledText();
@@ -389,11 +432,11 @@ public class IconAndViewTextManager {
         else
             newsListAdapter.setGoneAgent(2, true);
 
-        newsListAdapter.setTextAgent(4, TimeUtils.getRelativeTime(event.created_at));
+        newsListAdapter.setTextAgent(4, TimeUtils.getRelativeTime(event.createdAt()));
     }
 
-    String setIconAndFormatStyledText(GithubEvent event, StyledText main, StyledText details) {
+    String setIconAndFormatStyledText(GitHubEvent event, StyledText main, StyledText details) {
 
-        return EventType.valueOf(event.type.toString()).generateIconAndFormatStyledText(this, event, main, details);
+        return EventType.valueOf(event.type().toString()).generateIconAndFormatStyledText(this, event, main, details);
     }
 }

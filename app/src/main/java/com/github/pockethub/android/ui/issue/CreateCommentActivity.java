@@ -19,18 +19,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 
-import com.alorma.github.sdk.bean.dto.response.GithubComment;
-import com.alorma.github.sdk.bean.dto.response.Issue;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.services.issues.NewIssueCommentClient;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.GitHubComment;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.Intents;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.comment.CommentPreviewPagerAdapter;
-import com.github.pockethub.android.util.HtmlUtils;
 import com.github.pockethub.android.util.InfoUtils;
+import com.meisolsson.githubsdk.model.request.CommentRequest;
+import com.meisolsson.githubsdk.service.issues.IssueCommentService;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -52,7 +53,7 @@ public class CreateCommentActivity extends
      * @param user
      * @return intent
      */
-    public static Intent createIntent(Repo repoId, int issueNumber,
+    public static Intent createIntent(Repository repoId, int issueNumber,
             User user) {
         Builder builder = new Builder("issue.comment.create.VIEW");
         builder.repo(repoId);
@@ -61,7 +62,7 @@ public class CreateCommentActivity extends
         return builder.toIntent();
     }
 
-    private Repo repositoryId;
+    private Repository repositoryId;
 
     private int issueNumber;
 
@@ -80,15 +81,18 @@ public class CreateCommentActivity extends
 
     @Override
     protected void createComment(String comment) {
-        new NewIssueCommentClient(InfoUtils.createIssueInfo(repositoryId, issueNumber), comment)
-                .observable()
+        CommentRequest commentRequest = CommentRequest.builder()
+                .body(comment)
+                .build();
+
+        ServiceGenerator.createService(this, IssueCommentService.class)
+                .createIssueComment(repositoryId.owner().login(), repositoryId.name(), issueNumber, commentRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<GithubComment>bindToLifecycle())
-                .subscribe(new ObserverAdapter<GithubComment>() {
+                .compose(this.<GitHubComment>bindToLifecycle())
+                .subscribe(new ObserverAdapter<GitHubComment>() {
                     @Override
-                    public void onNext(GithubComment githubComment) {
-                        githubComment.body_html = HtmlUtils.format(githubComment.body_html).toString();
+                    public void onNext(GitHubComment githubComment) {
                         finish(githubComment);
                     }
                 });

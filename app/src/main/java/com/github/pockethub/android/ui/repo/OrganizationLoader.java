@@ -19,8 +19,7 @@ import android.accounts.Account;
 import android.app.Activity;
 import android.util.Log;
 
-import com.alorma.github.sdk.bean.dto.response.Organization;
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.accounts.AuthenticatedUserLoader;
 import com.github.pockethub.android.core.user.UserComparator;
@@ -36,7 +35,7 @@ import java.util.List;
 /**
  * Load of a {@link List} or {@link User} organizations
  */
-public class OrganizationLoader extends AuthenticatedUserLoader<List<Organization>> {
+public class OrganizationLoader extends AuthenticatedUserLoader<List<User>> {
 
     private static final String TAG = "OrganizationLoader";
 
@@ -62,13 +61,13 @@ public class OrganizationLoader extends AuthenticatedUserLoader<List<Organizatio
     }
 
     @Override
-    protected List<Organization> getAccountFailureData() {
+    protected List<User> getAccountFailureData() {
         return Collections.emptyList();
     }
 
     @Override
-    public List<Organization> load(final Account account) {
-        List<Organization> orgs;
+    public List<User> load(final Account account) {
+        List<User> orgs;
         try {
             orgs = accountDataManager.getOrgs(false);
         } catch (final IOException e) {

@@ -17,37 +17,49 @@ package com.github.pockethub.android.core.issue;
 
 import android.content.Context;
 
-import com.alorma.github.sdk.bean.dto.response.Issue;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.issue.IssueStory;
-import com.alorma.github.sdk.bean.issue.PullRequestStory;
-import com.alorma.github.sdk.services.issues.story.IssueStoryLoader;
-import com.alorma.github.sdk.services.pullrequest.story.PullRequestStoryLoader;
+import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.util.HttpImageGetter;
-import com.github.pockethub.android.util.InfoUtils;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.GitHubComment;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.IssueEvent;
+import com.meisolsson.githubsdk.model.Page;
+import com.meisolsson.githubsdk.model.PullRequest;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.service.issues.IssueCommentService;
+import com.meisolsson.githubsdk.service.issues.IssueEventService;
 import com.google.inject.Inject;
+import com.meisolsson.githubsdk.service.pull_request.PullRequestService;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import roboguice.RoboGuice;
 import rx.Observable;
 import rx.Subscriber;
+import rx.schedulers.Schedulers;
 
 /**
  * Task to load and store an {@link Issue}
  */
-public class RefreshIssueTask implements Observable.OnSubscribe<IssueStory> {
+public class RefreshIssueTask implements Observable.OnSubscribe<FullIssue> {
 
     private static final String TAG = "RefreshIssueTask";
+
+    private final Context context;
 
     @Inject
     private IssueStore store;
 
-    private final Repo repo;
+    private final Repository repo;
 
     private final int issueNumber;
 
     private final HttpImageGetter bodyImageGetter;
+
+    private final HttpImageGetter commentImageGetter;
 
 
     /**
@@ -57,31 +69,82 @@ public class RefreshIssueTask implements Observable.OnSubscribe<IssueStory> {
      * @param issueNumber
      * @param bodyImageGetter
      */
-    public RefreshIssueTask(Context context, Repo repo, int issueNumber, HttpImageGetter bodyImageGetter) {
+    public RefreshIssueTask(Context context, Repository repo, int issueNumber, HttpImageGetter bodyImageGetter, HttpImageGetter commentImageGetter) {
         this.repo = repo;
         this.issueNumber = issueNumber;
         this.bodyImageGetter = bodyImageGetter;
+        this.context = context;
+        this.commentImageGetter = commentImageGetter;
         RoboGuice.getInjector(context).injectMembers(this);
     }
 
     @Override
-    public void call(Subscriber<? super IssueStory> subscriber) {
+    public void call(Subscriber<? super FullIssue> subscriber) {
         try {
             Issue issue = store.refreshIssue(repo, issueNumber);
-            bodyImageGetter.encode(issue.id, issue.body_html);
 
-            if (issue.pullRequest != null) {
-                PullRequestStory story = new PullRequestStoryLoader(InfoUtils.createIssueInfo(repo, issue)).observable().toBlocking().first();
-                IssueStory issueStory = new IssueStory();
-                issueStory.issue = story.pullRequest;
-                issueStory.issue.pullRequest = story.pullRequest;
-                issueStory.details = story.details;
-                subscriber.onNext(issueStory);
-            } else {
-                subscriber.onNext(new IssueStoryLoader(InfoUtils.createIssueInfo(repo, issue)).observable().toBlocking().first());
-            }
+            PullRequest pull = getPullRequest(repo.owner().login(), repo.name(), issueNumber);
+            issue = issue.toBuilder()
+                    .pullRequest(pull)
+                    .build();
+            bodyImageGetter.encode(issue.id(), issue.bodyHtml());
+
+            List<GitHubComment> comments;
+            if(issue.comments() > 0)
+                comments = getAllComments(repo.owner().login(), repo.name(), issueNumber);
+            else
+                comments = Collections.emptyList();
+
+            for (GitHubComment comment : comments)
+                commentImageGetter.encode(comment.id(), comment.bodyHtml());
+
+            List<IssueEvent> events = getAllEvents(repo.owner().login(), repo.name(), issueNumber);
+            subscriber.onNext(new FullIssue(issue, comments, events));
         } catch (IOException e){
             subscriber.onError(e);
         }
+    }
+
+    private List<GitHubComment> getAllComments(String login, String name, int issueNumber) {
+        List<GitHubComment> comments = new ArrayList<>();
+        int current = 1;
+        int last = -1;
+
+        while(current != last) {
+            Page<GitHubComment> page = ServiceGenerator.createService(context, IssueCommentService.class)
+                    .getIssueComments(login, name, issueNumber, current)
+                    .toBlocking()
+                    .first();
+            comments.addAll(page.items());
+            last = page.last() != null ? page.last() : -1;
+            current = page.next() != null ? page.next() : -1;
+        }
+
+        return comments;
+    }
+
+    private List<IssueEvent> getAllEvents(String login, String name, int issueNumber) {
+        List<IssueEvent> events = new ArrayList<>();
+        int current = 1;
+        int last = -1;
+
+        while(current != last) {
+            Page<IssueEvent> page = ServiceGenerator.createService(context, IssueEventService.class)
+                    .getIssueEvents(login, name, issueNumber, current)
+                    .toBlocking()
+                    .first();
+            events.addAll(page.items());
+            last = page.last() != null ? page.last() : -1;
+            current = page.next() != null ? page.next() : -1;
+        }
+
+        return events;
+    }
+
+    private PullRequest getPullRequest(String login, String name, int issueNumber) {
+        return ServiceGenerator.createService(context, PullRequestService.class)
+                .getPullRequest(login, name, issueNumber)
+                .toBlocking()
+                .first();
     }
 }

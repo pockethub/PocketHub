@@ -15,8 +15,8 @@
  */
 package com.github.pockethub.android.core.gist;
 
-import com.alorma.github.sdk.bean.dto.response.Gist;
-import com.alorma.github.sdk.bean.dto.response.GithubComment;
+import com.meisolsson.githubsdk.model.Gist;
+import com.meisolsson.githubsdk.model.GitHubComment;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import java.util.Collection;
 /**
  * Gist model with comments and starred status
  */
-public class FullGist extends ArrayList<GithubComment> implements Serializable {
+public class FullGist extends ArrayList<GitHubComment> implements Serializable {
 
     private static final long serialVersionUID = -5966699489498437000L;
 
@@ -41,7 +41,7 @@ public class FullGist extends ArrayList<GithubComment> implements Serializable {
      * @param comments
      */
     public FullGist(final Gist gist, final boolean starred,
-            final Collection<GithubComment> comments) {
+            final Collection<GitHubComment> comments) {
         super(comments);
 
         this.starred = starred;

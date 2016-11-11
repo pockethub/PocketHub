@@ -15,12 +15,13 @@
  */
 package com.github.pockethub.android.core.issue;
 
-import com.alorma.github.sdk.bean.dto.response.GithubEvent;
-import com.alorma.github.sdk.bean.dto.response.Issue;
-import com.alorma.github.sdk.bean.dto.response.events.payload.IssueCommentEventPayload;
-import com.alorma.github.sdk.bean.dto.response.events.payload.IssueEventPayload;
-import com.alorma.github.sdk.bean.dto.response.events.payload.PullRequestEventPayload;
-import com.google.gson.Gson;
+import com.meisolsson.githubsdk.model.GitHubEvent;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.payload.IssueCommentPayload;
+import com.meisolsson.githubsdk.model.payload.IssuesPayload;
+import com.meisolsson.githubsdk.model.payload.PullRequestPayload;
+
+import static com.github.pockethub.android.core.issue.IssueUtils.toIssue;
 
 /**
  * Helper to find an issue to open for an event
@@ -33,22 +34,17 @@ public class IssueEventMatcher {
      * @param event
      * @return issue or null if event doesn't apply
      */
-    public Issue getIssue(GithubEvent event) {
-        if (event == null)
-            return null;
-        if (event.payload == null)
+    public Issue getIssue(GitHubEvent event) {
+        if (event == null || event.payload() == null)
             return null;
 
-        Gson gson = new Gson();
-        String json = gson.toJson(event.payload);
-
-        switch (event.type) {
+        switch (event.type()) {
             case IssuesEvent:
-                return gson.fromJson(json, IssueEventPayload.class).issue;
+                return ((IssuesPayload) event.payload()).issue();
             case IssueCommentEvent:
-                return gson.fromJson(json, IssueCommentEventPayload.class).issue;
+                return ((IssueCommentPayload) event.payload()).issue();
             case PullRequestEvent:
-                return gson.fromJson(json, PullRequestEventPayload.class).pull_request;
+                return toIssue(((PullRequestPayload) event.payload()).pullRequest());
             default:
                 return null;
         }

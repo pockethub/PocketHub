@@ -18,7 +18,7 @@ package com.github.pockethub.android.ui.search;
 import android.content.Context;
 import android.view.LayoutInflater;
 
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.meisolsson.githubsdk.model.User;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.util.AvatarLoader;
@@ -47,7 +47,7 @@ public class SearchUserListAdapter extends SingleTypeAdapter<User> {
 
     @Override
     public long getItemId(final int position) {
-        String userId = String.valueOf(getItem(position).id);
+        String userId = String.valueOf(getItem(position).id());
         return Long.parseLong(userId.replace("user-", ""));
     }
 
@@ -58,6 +58,6 @@ public class SearchUserListAdapter extends SingleTypeAdapter<User> {
 
     @Override
     protected void update(final int position, final User user) {
-        setText(1, user.login);
+        setText(1, user.login());
     }
 }

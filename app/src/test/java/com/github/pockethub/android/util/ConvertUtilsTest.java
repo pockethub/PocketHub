@@ -16,8 +16,8 @@
 
 package com.github.pockethub.android.util;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -32,28 +32,32 @@ public class ConvertUtilsTest {
 	private static final String REPO_NAME = REPO_NAME_FIRST_PART + "/" + REPO_NAME_SECOND_PART;
 	private static final String REPO_OWNER_LOGIN = "repo_owner_login";
 
-	private Repo repo;
+	private Repository repo;
 
 	@Before
 	public void setup() {
-		repo = new Repo();
-		repo.name = REPO_NAME;
-		repo.owner = new User();
-		repo.owner.login = REPO_OWNER_LOGIN;
+		User user = User.builder()
+				.login(REPO_OWNER_LOGIN)
+				.build();
+
+		repo = Repository.builder().
+				name(REPO_NAME)
+				.owner(user)
+				.build();
 	}
 
 	@Test
 	public void testOriginalRepoIsNotChanged() throws Exception {
 		ConvertUtils.eventRepoToRepo(repo);
-		assertThat(repo.owner.login, equalTo(REPO_OWNER_LOGIN));
-		assertThat(repo.name, equalTo(REPO_NAME));
+		assertThat(repo.owner().login(), equalTo(REPO_OWNER_LOGIN));
+		assertThat(repo.name(), equalTo(REPO_NAME));
 	}
 
 	@Test
 	public void testNewRepoIsCreated() throws Exception {
-		Repo newRepo = ConvertUtils.eventRepoToRepo(repo);
-		assertThat(newRepo.owner.login, equalTo(REPO_NAME_FIRST_PART));
-		assertThat(newRepo.name, equalTo(REPO_NAME_SECOND_PART));
+		Repository newRepo = ConvertUtils.eventRepoToRepo(repo);
+		assertThat(newRepo.owner().login(), equalTo(REPO_NAME_FIRST_PART));
+		assertThat(newRepo.name(), equalTo(REPO_NAME_SECOND_PART));
 	}
 
 }

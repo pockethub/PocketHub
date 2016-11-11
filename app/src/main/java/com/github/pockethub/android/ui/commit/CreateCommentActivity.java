@@ -20,18 +20,18 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 
-import com.alorma.github.sdk.bean.dto.request.CommitCommentRequest;
-import com.alorma.github.sdk.bean.dto.response.CommitComment;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.services.commit.PublishCommitCommentClient;
+import com.github.pockethub.android.rx.ProgressObserverAdapter;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.commit.CommitUtils;
-import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.comment.CommentPreviewPagerAdapter;
-import com.github.pockethub.android.util.HtmlUtils;
 import com.github.pockethub.android.util.InfoUtils;
 import com.github.pockethub.android.util.ToastUtils;
+import com.meisolsson.githubsdk.model.git.GitComment;
+import com.meisolsson.githubsdk.model.request.repository.CreateCommitComment;
+import com.meisolsson.githubsdk.service.repositories.RepositoryCommentService;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -54,7 +54,7 @@ public class CreateCommentActivity extends
      * @param commit
      * @return intent
      */
-    public static Intent createIntent(Repo repository, String commit) {
+    public static Intent createIntent(Repository repository, String commit) {
         return createIntent(repository, commit, null, -1);
     }
 
@@ -67,7 +67,7 @@ public class CreateCommentActivity extends
      * @param position
      * @return intent
      */
-    public static Intent createIntent(Repo repository, String commit,
+    public static Intent createIntent(Repository repository, String commit,
             String path, int position) {
         Builder builder = new Builder("commit.comment.create.VIEW");
         builder.repo(repository);
@@ -81,7 +81,7 @@ public class CreateCommentActivity extends
         return !TextUtils.isEmpty(path) && position > -1;
     }
 
-    private Repo repository;
+    private Repository repository;
 
     private String commit;
 
@@ -102,29 +102,28 @@ public class CreateCommentActivity extends
         actionBar.setTitle(getString(R.string.commit_prefix)
                 + CommitUtils.abbreviate(commit));
         actionBar.setSubtitle(InfoUtils.createRepoId(repository));
-        avatars.bind(actionBar, repository.owner);
+        avatars.bind(actionBar, repository.owner());
     }
 
     @Override
     protected void createComment(final String comment) {
-        CommitCommentRequest commitComment = new CommitCommentRequest();
-        commitComment.body = comment;
-        if (isLineComment(path, position)) {
-            commitComment.path = path;
-            commitComment.position = position;
-        }
+        CreateCommitComment.Builder commitCommentBuilder = CreateCommitComment.builder()
+                .body(comment);
 
-        new PublishCommitCommentClient(InfoUtils.createCommitInfo(repository, commit),
-                commitComment).observable()
+
+        if(isLineComment(path, position))
+            commitCommentBuilder.path(path).position(position);
+
+        ServiceGenerator.createService(this, RepositoryCommentService.class)
+                .createCommitComment(repository.owner().login(), repository.name(), commit, commitCommentBuilder.build())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<CommitComment>bindToLifecycle())
-                .subscribe(new ProgressObserverAdapter<CommitComment>(this, R.string.creating_comment) {
+                .compose(this.<GitComment>bindToLifecycle())
+                .subscribe(new ProgressObserverAdapter<GitComment>(this, R.string.creating_comment) {
 
                     @Override
-                    public void onNext(CommitComment created) {
+                    public void onNext(GitComment created) {
                         super.onNext(created);
-                        created.body_html = HtmlUtils.format(created.body_html).toString();
                         finish(created);
                     }
 

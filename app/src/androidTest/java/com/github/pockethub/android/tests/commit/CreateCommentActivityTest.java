@@ -18,8 +18,8 @@ package com.github.pockethub.android.tests.commit;
 import android.view.View;
 import android.widget.EditText;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R.id;
 import com.github.pockethub.android.tests.ActivityTest;
 import com.github.pockethub.android.ui.commit.CreateCommentActivity;
@@ -43,16 +43,21 @@ public class CreateCommentActivityTest extends
     protected void setUp() throws Exception {
         super.setUp();
 
-        Repo repo = new Repo();
-        repo.name = "name";
-        User user = new User();
-        user.login = "owner";
-        repo.owner = user;
+        User user = User.builder()
+                .login("owner")
+                .build();
+
+        Repository repo = Repository.builder()
+                .name("name")
+                .owner(user)
+                .build();
         setActivityIntent(CreateCommentActivity.createIntent(repo, "abcdef"));
     }
 
     /**
      * Verify empty comment can't be created
+     *
+     * TODO: The testing framework moves to fast and is not waiting until the menu item is disabled
      *
      * @throws Throwable
      */

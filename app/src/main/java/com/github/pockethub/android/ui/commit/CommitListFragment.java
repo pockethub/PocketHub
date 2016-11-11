@@ -28,13 +28,10 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.alorma.github.sdk.bean.dto.response.Commit;
-import com.alorma.github.sdk.bean.dto.response.GitReference;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.ShaUrl;
-import com.alorma.github.sdk.services.client.GithubListClient;
-import com.alorma.github.sdk.services.commit.ListCommitsClient;
-import com.alorma.github.sdk.services.repo.GetRepoClient;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Commit;
+import com.meisolsson.githubsdk.model.Page;
+import com.meisolsson.githubsdk.model.Repository;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
@@ -51,11 +48,15 @@ import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.ui.ref.RefDialog;
 import com.github.pockethub.android.ui.ref.RefDialogFragment;
 import com.github.pockethub.android.util.AvatarLoader;
-import com.github.pockethub.android.util.InfoUtils;
 import com.github.pockethub.android.util.TypefaceUtils;
+import com.meisolsson.githubsdk.model.git.GitReference;
+import com.meisolsson.githubsdk.service.repositories.RepositoryCommitService;
+import com.meisolsson.githubsdk.service.repositories.RepositoryService;
 import com.google.inject.Inject;
 
 import java.util.List;
+
+import rx.Observable;
 
 import static android.app.Activity.RESULT_OK;
 import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY;
@@ -77,7 +78,7 @@ public class CommitListFragment extends PagedItemFragment<Commit>
     @Inject
     private CommitStore store;
 
-    private Repo repository;
+    private Repository repository;
 
     private RefDialog dialog;
 
@@ -113,10 +114,14 @@ public class CommitListFragment extends PagedItemFragment<Commit>
             @Override
             public List<Commit> loadData() throws Exception {
                 if (TextUtils.isEmpty(ref)) {
-                    String defaultBranch = repository.default_branch;
+                    String defaultBranch = repository.defaultBranch();
                     if (TextUtils.isEmpty(defaultBranch)) {
-                        defaultBranch = new GetRepoClient(InfoUtils.createRepoInfo(repository))
-                                .observable().toBlocking().first().default_branch;
+                        defaultBranch = ServiceGenerator.createService(getActivity(), RepositoryService.class)
+                                .getRepository(repository.owner().login(), repository.name())
+                                .toBlocking()
+                                .first()
+                                .defaultBranch();
+
                         if (TextUtils.isEmpty(defaultBranch))
                             defaultBranch = "master";
                     }
@@ -145,9 +150,9 @@ public class CommitListFragment extends PagedItemFragment<Commit>
             protected Commit register(Commit resource) {
                 // Store first parent of last commit registered for next page
                 // lookup
-                List<ShaUrl> parents = resource.parents;
+                List<Commit> parents = resource.parents();
                 if (parents != null && !parents.isEmpty())
-                    last = parents.get(0).sha;
+                    last = parents.get(0).sha();
                 else
                     last = null;
 
@@ -157,13 +162,16 @@ public class CommitListFragment extends PagedItemFragment<Commit>
             @Override
             public PageIterator<Commit> createIterator(int page, int size) {
 
-                return new PageIterator<>(new PageIterator.GitHubRequest<List<Commit>>() {
+                return new PageIterator<>(new PageIterator.GitHubRequest<Page<Commit>>() {
                     @Override
-                    public GithubListClient<List<Commit>> execute(int page) {
+                    public Observable<Page<Commit>> execute(int page) {
+                        RepositoryCommitService service = ServiceGenerator.createService(getActivity(),
+                                RepositoryCommitService.class);
+
                         if (page > 1 || ref == null)
-                            return new ListCommitsClient(InfoUtils.createCommitInfo(repository, last), page);
+                            return service.getCommits(repository.owner().login(), repository.name(), last, page);
                         else
-                            return new ListCommitsClient(InfoUtils.createCommitInfo(repository, ref), page);
+                            return service.getCommits(repository.owner().login(), repository.name(), ref, page);
                     }
                 }, page);
             }
@@ -232,7 +240,7 @@ public class CommitListFragment extends PagedItemFragment<Commit>
     }
 
     private void setRef(final GitReference ref) {
-        this.ref = ref.ref;
+        this.ref = ref.ref();
         updateRefLabel();
         refreshWithProgress();
     }
@@ -244,9 +252,9 @@ public class CommitListFragment extends PagedItemFragment<Commit>
         if (dialog == null)
             dialog = new RefDialog((BaseActivity) getActivity(),
                     REF_UPDATE, repository);
-        GitReference reference = new GitReference();
-        reference.ref = ref;
-
+        GitReference reference = GitReference.builder()
+                .ref(ref)
+                .build();
         dialog.show(reference);
     }
 

@@ -17,9 +17,9 @@ package com.github.pockethub.android.core.commit;
 
 import android.text.TextUtils;
 
-import com.alorma.github.sdk.bean.dto.response.Commit;
-import com.alorma.github.sdk.bean.dto.response.CommitComment;
-import com.alorma.github.sdk.bean.dto.response.CommitFile;
+import com.meisolsson.githubsdk.model.Commit;
+import com.meisolsson.githubsdk.model.GitHubFile;
+import com.meisolsson.githubsdk.model.git.GitComment;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * Commit model with comments
  */
-public class FullCommit extends ArrayList<CommitComment> implements
+public class FullCommit extends ArrayList<GitComment> implements
         Serializable {
 
     private static final long serialVersionUID = 2470370479577730822L;
@@ -47,10 +47,10 @@ public class FullCommit extends ArrayList<CommitComment> implements
      */
     public FullCommit(final Commit commit) {
         this.commit = commit;
-        List<CommitFile> rawFiles = commit.files;
+        List<GitHubFile> rawFiles = commit.files();
         if (rawFiles != null && !rawFiles.isEmpty()) {
             files = new ArrayList<>(rawFiles.size());
-            for (CommitFile file : rawFiles)
+            for (GitHubFile file : rawFiles)
                 files.add(new FullCommitFile(file));
         } else
             files = Collections.emptyList();
@@ -63,21 +63,21 @@ public class FullCommit extends ArrayList<CommitComment> implements
      * @param comments
      */
     public FullCommit(final Commit commit,
-            final Collection<CommitComment> comments) {
+            final Collection<GitComment> comments) {
         this.commit = commit;
 
-        List<CommitFile> rawFiles = commit.files;
+        List<GitHubFile> rawFiles = commit.files();
         boolean hasComments = comments != null && !comments.isEmpty();
         boolean hasFiles = rawFiles != null && !rawFiles.isEmpty();
         if (hasFiles) {
             files = new ArrayList<>(rawFiles.size());
             if (hasComments) {
-                for (CommitFile file : rawFiles) {
-                    Iterator<CommitComment> iterator = comments.iterator();
+                for (GitHubFile file : rawFiles) {
+                    Iterator<GitComment> iterator = comments.iterator();
                     FullCommitFile full = new FullCommitFile(file);
                     while (iterator.hasNext()) {
-                        CommitComment comment = iterator.next();
-                        if (file.getFileName().equals(comment.path)) {
+                        GitComment comment = iterator.next();
+                        if (file.filename().equals(comment.path())) {
                             full.add(comment);
                             iterator.remove();
                         }
@@ -86,7 +86,7 @@ public class FullCommit extends ArrayList<CommitComment> implements
                 }
                 hasComments = !comments.isEmpty();
             } else
-                for (CommitFile file : rawFiles)
+                for (GitHubFile file : rawFiles)
                     files.add(new FullCommitFile(file));
         } else
             files = Collections.emptyList();
@@ -96,14 +96,14 @@ public class FullCommit extends ArrayList<CommitComment> implements
     }
 
     @Override
-    public boolean add(final CommitComment comment) {
-        String path = comment.path;
+    public boolean add(final GitComment comment) {
+        String path = comment.path();
         if (TextUtils.isEmpty(path))
             return super.add(comment);
         else {
             boolean added = false;
             for (FullCommitFile file : files)
-                if (path.equals(file.getFile().filename)) {
+                if (path.equals(file.getFile().filename())) {
                     file.add(comment);
                     added = true;
                     break;

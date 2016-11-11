@@ -15,17 +15,18 @@
  */
 package com.github.pockethub.android.ui.issue;
 
-import com.alorma.github.sdk.bean.dto.request.EditIssueAssigneeRequestDTO;
-import com.alorma.github.sdk.bean.dto.response.Issue;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueStore;
 import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.BaseActivity;
+import com.meisolsson.githubsdk.model.request.issue.IssueRequest;
 import com.google.inject.Inject;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import roboguice.RoboGuice;
 import rx.Observable;
@@ -38,6 +39,7 @@ import static com.github.pockethub.android.RequestCodes.ISSUE_ASSIGNEE_UPDATE;
 /**
  * Task to edit the assignee
  */
+//TODO Let this take multiple assignees
 public class EditAssigneeTask implements Observable.OnSubscribe<Issue> {
 
     @Inject
@@ -47,7 +49,7 @@ public class EditAssigneeTask implements Observable.OnSubscribe<Issue> {
 
     private final BaseActivity activity;
 
-    private final Repo repositoryId;
+    private final Repository repositoryId;
 
     private final int issueNumber;
 
@@ -63,7 +65,7 @@ public class EditAssigneeTask implements Observable.OnSubscribe<Issue> {
      * @param issueNumber
      */
     public EditAssigneeTask(final BaseActivity activity,
-                            final Repo repositoryId, final int issueNumber,
+                            final Repository repositoryId, final int issueNumber,
                             final ProgressObserverAdapter<Issue> observer) {
         this.activity = activity;
         this.repositoryId = repositoryId;
@@ -78,11 +80,15 @@ public class EditAssigneeTask implements Observable.OnSubscribe<Issue> {
     @Override
     public void call(Subscriber<? super Issue> subscriber) {
         try{
-            EditIssueAssigneeRequestDTO edit = new EditIssueAssigneeRequestDTO();
+            String assigneLogin;
             if (assignee != null)
-                edit.assignee = assignee.login;
+                assigneLogin = assignee.login();
             else
-                edit.assignee = "";
+                assigneLogin = "";
+
+            IssueRequest edit = IssueRequest.builder()
+                    .assignees(Collections.singletonList(assigneLogin))
+                    .build();
             subscriber.onNext(store.editIssue(repositoryId, issueNumber, edit));
         } catch (IOException e) {
             subscriber.onError(e);

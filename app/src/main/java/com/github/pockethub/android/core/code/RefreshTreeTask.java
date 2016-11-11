@@ -15,21 +15,17 @@
  */
 package com.github.pockethub.android.core.code;
 
-import android.accounts.Account;
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.alorma.github.sdk.bean.dto.response.GitCommit;
-import com.alorma.github.sdk.bean.dto.response.GitReference;
-import com.alorma.github.sdk.bean.dto.response.GitTree;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.services.git.GetGitCommitClient;
-import com.alorma.github.sdk.services.git.GetGitTreeClient;
-import com.alorma.github.sdk.services.git.GetReferenceClient;
-import com.alorma.github.sdk.services.repo.GetRepoClient;
 import com.github.pockethub.android.core.ref.RefUtils;
-import com.github.pockethub.android.util.InfoUtils;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.git.GitCommit;
+import com.meisolsson.githubsdk.model.git.GitReference;
+import com.meisolsson.githubsdk.model.git.GitTree;
+import com.meisolsson.githubsdk.service.git.GitService;
+import com.meisolsson.githubsdk.service.repositories.RepositoryService;
 
 import java.io.IOException;
 
@@ -37,31 +33,34 @@ import rx.Observable;
 import rx.Subscriber;
 
 /**
- * Task to load the tree for a repository's default branch
+ * Task to load the tree for a repo's default branch
  */
 public class RefreshTreeTask implements Observable.OnSubscribe<FullTree> {
 
     private static final String TAG = "RefreshTreeTask";
 
-    private final Repo repository;
+    private final Context context;
+
+    private final Repository repo;
 
     private final GitReference reference;
 
     /**
-     * Create task to refresh repository's tree
+     * Create task to refresh repo's tree
      *
      * @param repository
      * @param reference
      */
-    public RefreshTreeTask(final Repo repository,
-            final GitReference reference) {
-        this.repository = repository;
+    public RefreshTreeTask(final Context context, final Repository repository,
+                           final GitReference reference) {
+        this.context = context;
+        this.repo = repository;
         this.reference = reference;
     }
 
     private boolean isValidRef(GitReference ref) {
-        return ref != null && ref.object != null
-                && !TextUtils.isEmpty(ref.object.sha);
+        return ref != null && ref.object() != null
+                && !TextUtils.isEmpty(ref.object().sha());
     }
 
     @Override
@@ -69,31 +68,42 @@ public class RefreshTreeTask implements Observable.OnSubscribe<FullTree> {
         GitReference ref = reference;
         String branch = RefUtils.getPath(ref);
         if (branch == null) {
-            branch = repository.default_branch;
+            branch = repo.defaultBranch();
             if (TextUtils.isEmpty(branch)) {
-                branch = new GetRepoClient(InfoUtils.createRepoInfo(repository))
-                        .observable().toBlocking().first().default_branch;
+                branch = ServiceGenerator.createService(context, RepositoryService.class)
+                        .getRepository(repo.owner().login(), repo.name())
+                        .toBlocking()
+                        .first()
+                        .defaultBranch();
                 if (TextUtils.isEmpty(branch))
                     subscriber.onError(new IOException(
-                            "Repo does not have master branch"));
+                            "Repository does not have master branch"));
             }
-            branch = "refs/heads/" + branch;
         }
+
+        GitService gitService = ServiceGenerator.createService(context, GitService.class);
 
         if (!isValidRef(ref)) {
-            ref = new GetReferenceClient(InfoUtils.createRepoInfo(repository, branch)).observable().toBlocking().first();
-            if (!isValidRef(ref))
+            branch = branch.replace("heads/", "");
+            ref = gitService.getGitReference(repo.owner().login(), repo.name(), branch)
+                    .toBlocking().first();
+            if (!isValidRef(ref)) {
                 subscriber.onError(new IOException("Reference does not have associated commit SHA-1"));
+                return;
+            }
         }
 
-        GitCommit commit = new GetGitCommitClient(InfoUtils.createRepoInfo(repository, ref.object.sha))
-                .observable().toBlocking().first();
-        if (commit == null || commit.tree == null
-                || TextUtils.isEmpty(commit.tree.sha))
+        GitCommit commit = gitService.getGitCommit(repo.owner().login(), repo.name(), ref.object().sha())
+                .toBlocking()
+                .first();
+        if (commit == null || commit.tree() == null || TextUtils.isEmpty(commit.tree().sha())) {
             subscriber.onError(new IOException("Commit does not have associated tree SHA-1"));
+            return;
+        }
 
-        GitTree tree = new GetGitTreeClient(InfoUtils.createRepoInfo(repository, commit.tree.sha),true)
-                .observable().toBlocking().first();
+        GitTree tree = gitService.getGitTreeRecursive(repo.owner().login(), repo.name(), commit.tree().sha())
+                .toBlocking()
+                .first();
         subscriber.onNext(new FullTree(tree, ref));
     }
 }

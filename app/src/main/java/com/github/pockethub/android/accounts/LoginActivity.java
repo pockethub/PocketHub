@@ -28,16 +28,19 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.alorma.github.sdk.bean.dto.response.Token;
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.services.login.RequestTokenClient;
-import com.alorma.github.sdk.services.user.GetAuthUserClient;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.MainActivity;
 import com.github.pockethub.android.ui.roboactivities.RoboAccountAuthenticatorAppCompatActivity;
-import com.squareup.okhttp.HttpUrl;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.core.TokenStore;
+import com.meisolsson.githubsdk.model.GitHubToken;
+import com.meisolsson.githubsdk.model.User;
+import com.meisolsson.githubsdk.model.request.RequestToken;
+import com.meisolsson.githubsdk.service.OAuthService;
+import com.meisolsson.githubsdk.service.users.UserService;
 
+import okhttp3.HttpUrl;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -132,23 +135,30 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
         if (uri != null && uri.getScheme().equals(getString(R.string.github_oauth_scheme))) {
             openLoadingDialog();
             String code = uri.getQueryParameter("code");
-            new RequestTokenClient(code, clientId, secret, redirectUri)
-                    .observable()
+            RequestToken request = RequestToken.builder()
+                    .clientId(clientId)
+                    .clientSecret(secret)
+                    .redirectUri(redirectUri)
+                    .code(code)
+                    .build();
+
+            ServiceGenerator.createAuthService()
+                    .getToken(request)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Token>bindToLifecycle())
-                    .subscribe(new ObserverAdapter<Token>() {
+                    .compose(this.<GitHubToken>bindToLifecycle())
+                    .subscribe(new ObserverAdapter<GitHubToken>() {
                         @Override
                         public void onError(Throwable e) {
                             e.printStackTrace();
                         }
 
                         @Override
-                        public void onNext(Token token) {
-                            if (token.access_token != null) {
-                                endAuth(token.access_token, token.scope);
-                            } else if (token.error != null) {
-                                Toast.makeText(LoginActivity.this, token.error, Toast.LENGTH_LONG).show();
+                        public void onNext(GitHubToken token) {
+                            if (token.accessToken() != null) {
+                                endAuth(token.accessToken(), token.scope());
+                            } else if (token.error() != null) {
+                                Toast.makeText(LoginActivity.this, token.error(), Toast.LENGTH_LONG).show();
                                 progressDialog.dismiss();
                             }
                         }
@@ -217,8 +227,9 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
 
         progressDialog.setContent(getString(R.string.loading_user));
 
-        new GetAuthUserClient(accessToken)
-                .observable()
+        TokenStore.getInstance(this).saveToken(accessToken);
+        ServiceGenerator.createService(this, UserService.class)
+                .getUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<User>bindToLifecycle())
@@ -230,8 +241,8 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
 
                     @Override
                     public void onNext(User user) {
-                        Account account = new Account(user.login, getString(R.string.account_type));
-                        Bundle userData = AccountsHelper.buildBundle(user.name, user.email, user.avatar_url, scope);
+                        Account account = new Account(user.login(), getString(R.string.account_type));
+                        Bundle userData = AccountsHelper.buildBundle(user.name(), user.email(), user.avatarUrl(), scope);
                         userData.putString(AccountManager.KEY_AUTHTOKEN, accessToken);
 
                         accountManager.addAccountExplicitly(account, null, userData);

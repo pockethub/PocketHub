@@ -15,16 +15,16 @@
  */
 package com.github.pockethub.android.core.commit;
 
-import com.alorma.github.sdk.bean.dto.response.Commit;
-import com.alorma.github.sdk.bean.dto.response.Repo;
 import com.github.pockethub.android.core.ResourcePager;
+import com.meisolsson.githubsdk.model.Commit;
+import com.meisolsson.githubsdk.model.Repository;
 
 /**
  * Pager over commits
  */
 public abstract class CommitPager extends ResourcePager<Commit> {
 
-    private final Repo repository;
+    private final Repository repository;
 
     private final CommitStore store;
 
@@ -34,14 +34,14 @@ public abstract class CommitPager extends ResourcePager<Commit> {
      * @param repository
      * @param store
      */
-    public CommitPager(final Repo repository, final CommitStore store) {
+    public CommitPager(final Repository repository, final CommitStore store) {
         this.repository = repository;
         this.store = store;
     }
 
     @Override
     protected Object getId(final Commit resource) {
-        return resource.sha;
+        return resource.sha();
     }
 
     @Override

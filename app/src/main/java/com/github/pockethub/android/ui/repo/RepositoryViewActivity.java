@@ -25,18 +25,12 @@ import android.view.MenuItem;
 import android.widget.ProgressBar;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.services.repo.DeleteRepoClient;
-import com.alorma.github.sdk.services.repo.GetRepoClient;
-import com.alorma.github.sdk.services.repo.actions.CheckRepoStarredClient;
-import com.alorma.github.sdk.services.repo.actions.ForkRepoClient;
-import com.alorma.github.sdk.services.repo.actions.StarRepoClient;
-import com.alorma.github.sdk.services.repo.actions.UnstarRepoClient;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.api.CheckHasReadMeClient;
 import com.github.pockethub.android.core.repo.RepositoryUtils;
 import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.TabPagerActivity;
@@ -46,9 +40,14 @@ import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.InfoUtils;
 import com.github.pockethub.android.util.ShareUtils;
 import com.github.pockethub.android.util.ToastUtils;
+import com.meisolsson.githubsdk.service.activity.StarringService;
+import com.meisolsson.githubsdk.service.repositories.RepositoryContentService;
+import com.meisolsson.githubsdk.service.repositories.RepositoryForkService;
+import com.meisolsson.githubsdk.service.repositories.RepositoryService;
 import com.google.inject.Inject;
 
-import retrofit.client.Response;
+
+import retrofit2.Response;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -65,7 +64,7 @@ import static com.github.pockethub.android.util.TypefaceUtils.ICON_NEWS;
 /**
  * Activity to view a repository
  */
-public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdapter>{
+public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdapter> {
     public static final String TAG = "RepositoryViewActivity";
 
     /**
@@ -74,11 +73,11 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
      * @param repository
      * @return intent
      */
-    public static Intent createIntent(Repo repository) {
+    public static Intent createIntent(Repository repository) {
         return new Builder("repo.VIEW").repo(repository).toIntent();
     }
 
-    private Repo repository;
+    private Repository repository;
 
     @Inject
     private AvatarLoader avatars;
@@ -99,27 +98,27 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
 
         loadingBar = finder.find(R.id.progress_bar);
 
-        User owner = repository.owner;
+        User owner = repository.owner();
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(repository.name);
-        actionBar.setSubtitle(owner.login);
+        actionBar.setTitle(repository.name());
+        actionBar.setSubtitle(owner.login());
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        if (owner.avatar_url != null && RepositoryUtils.isComplete(repository))
+        if (owner.avatarUrl() != null && RepositoryUtils.isComplete(repository))
             checkReadme();
         else {
             avatars.bind(getSupportActionBar(), owner);
             ViewUtils.setGone(loadingBar, false);
             setGone(true);
-            new GetRepoClient(InfoUtils.createRepoInfo(repository))
-                    .observable()
+            ServiceGenerator.createService(this, RepositoryService.class)
+                    .getRepository(repository.owner().login(), repository.name())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Repo>bindToLifecycle())
-                    .subscribe(new ObserverAdapter<Repo>() {
+                    .compose(this.<Repository>bindToLifecycle())
+                    .subscribe(new ObserverAdapter<Repository>() {
                         @Override
-                        public void onNext(Repo repo) {
+                        public void onNext(Repository repo) {
                             repository = repo;
                             checkReadme();
                         }
@@ -156,15 +155,15 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     }
 
     private void checkReadme() {
-        new CheckHasReadMeClient(InfoUtils.createRepoInfo(repository))
-                .observable()
+        ServiceGenerator.createService(this, RepositoryContentService.class)
+                .hasReadme(repository.owner().login(), repository.name())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<Response>bindToLifecycle())
                 .subscribe(new ObserverAdapter<Response>() {
                     @Override
                     public void onNext(Response response) {
-                        hasReadme = response.getStatus() == 200;
+                        hasReadme = response.code() == 200;
                         configurePager();
                     }
 
@@ -177,7 +176,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     }
 
     private void configurePager() {
-        avatars.bind(getSupportActionBar(), repository.owner);
+        avatars.bind(getSupportActionBar(), repository.owner());
         configureTabPager();
         ViewUtils.setGone(loadingBar, true);
         setGone(false);
@@ -207,7 +206,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                 return super.onOptionsItemSelected(item);
             case android.R.id.home:
                 finish();
-                Intent intent = UserViewActivity.createIntent(repository.owner);
+                Intent intent = UserViewActivity.createIntent(repository.owner());
                 intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 return true;
@@ -223,7 +222,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
 
     @Override
     protected RepositoryPagerAdapter createAdapter() {
-        return new RepositoryPagerAdapter(this, repository.has_issues, hasReadme);
+        return new RepositoryPagerAdapter(this, repository.hasIssues(), hasReadme);
     }
 
     @Override
@@ -248,18 +247,21 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     }
 
     private void starRepository() {
-        Observable<Boolean> starObservable;
+        StarringService service = ServiceGenerator.createService(this, StarringService.class);
+
+        Observable<Response<Boolean>> starObservable;
         if (isStarred) {
-            starObservable = new UnstarRepoClient(repository.owner.login, repository.name).observable();
+            starObservable = service.unstarRepository(repository.owner().login(), repository.name());
         } else {
-            starObservable = new StarRepoClient(repository.owner.login, repository.name).observable();
+            starObservable = service.starRepository(repository.owner().login(), repository.name());
         }
+
         starObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Boolean>bindToLifecycle())
-                .subscribe(new ObserverAdapter<Boolean>() {
+                .compose(this.<Response<Boolean>>bindToLifecycle())
+                .subscribe(new ObserverAdapter<Response<Boolean>>() {
                     @Override
-                    public void onNext(Boolean aBoolean) {
+                    public void onNext(Response<Boolean> aBoolean) {
                         isStarred = !isStarred;
                         setResult(RESOURCE_CHANGED);
                     }
@@ -273,15 +275,15 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
 
     private void checkStarredRepositoryStatus() {
         starredStatusChecked = false;
-        new CheckRepoStarredClient(repository.owner.login, repository.name)
-                .observable()
+        ServiceGenerator.createService(this, StarringService.class)
+                .checkIfRepositoryIsStarred(repository.owner().login(), repository.name())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Boolean>bindToLifecycle())
-                .subscribe(new ObserverAdapter<Boolean>() {
+                .compose(this.<Response<Boolean>>bindToLifecycle())
+                .subscribe(new ObserverAdapter<Response<Boolean>>() {
                     @Override
-                    public void onNext(Boolean starred) {
-                        isStarred = starred;
+                    public void onNext(Response<Boolean> response) {
+                        isStarred = response.code() == 204;
                         starredStatusChecked = true;
                         invalidateOptionsMenu();
                     }
@@ -289,7 +291,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     }
 
     private void shareRepository() {
-        String repoUrl = repository.html_url;
+        String repoUrl = repository.htmlUrl();
         if (TextUtils.isEmpty(repoUrl))
             repoUrl = "https://github.com/" + InfoUtils.createRepoId(repository);
         Intent sharingIntent = ShareUtils.create(InfoUtils.createRepoId(repository), repoUrl);
@@ -297,16 +299,16 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     }
 
     private void forkRepository() {
-        new ForkRepoClient(InfoUtils.createRepoInfo(repository))
-                .observable()
+        ServiceGenerator.createService(this, RepositoryForkService.class)
+                .createFork(repository.owner().login(), repository.name())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Repo>bindToLifecycle())
-                .subscribe(new ObserverAdapter<Repo>() {
+                .compose(this.<Repository>bindToLifecycle())
+                .subscribe(new ObserverAdapter<Repository>() {
                     @Override
-                    public void onNext(Repo repo) {
+                    public void onNext(Repository repo) {
                         if (repo != null) {
-                            UriLauncherActivity.launchUri(RepositoryViewActivity.this, Uri.parse(repo.html_url));
+                            UriLauncherActivity.launchUri(RepositoryViewActivity.this, Uri.parse(repo.htmlUrl()));
                         } else {
                             ToastUtils.show(RepositoryViewActivity.this, R.string.error_forking_repository);
                         }
@@ -337,14 +339,14 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                         super.onNegative(dialog);
                         dialog.dismiss();
 
-                        new DeleteRepoClient(InfoUtils.createRepoInfo(repository))
-                                .observable()
+                        ServiceGenerator.createService(dialog.getContext(), RepositoryService.class)
+                                .deleteRepository(repository.owner().login(), repository.name())
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .compose(RepositoryViewActivity.this.<Response>bindToLifecycle())
-                                .subscribe(new ObserverAdapter<Response>() {
+                                .compose(RepositoryViewActivity.this.<Response<Boolean>>bindToLifecycle())
+                                .subscribe(new ObserverAdapter<Response<Boolean>>() {
                                     @Override
-                                    public void onNext(Response response) {
+                                    public void onNext(Response<Boolean> response) {
                                         onBackPressed();
                                         ToastUtils.show(RepositoryViewActivity.this, R.string.delete_successful);
                                     }

@@ -25,7 +25,7 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.repo.RepositoryViewActivity;
 import com.github.pockethub.android.ui.roboactivities.RoboAppCompatActivity;
@@ -49,7 +49,7 @@ public class IssueSearchActivity extends RoboAppCompatActivity {
     @Inject
     private AvatarLoader avatars;
 
-    private Repo repository;
+    private Repository repository;
 
     private SearchIssueListFragment issueFragment;
 
@@ -100,9 +100,9 @@ public class IssueSearchActivity extends RoboAppCompatActivity {
             if (repository != null) {
                 actionBar.setSubtitle(InfoUtils.createRepoId(repository));
                 actionBar.setDisplayHomeAsUpEnabled(true);
+                avatars.bind(actionBar, repository.owner());
             }
         }
-        avatars.bind(actionBar, repository.owner);
 
         issueFragment = (SearchIssueListFragment) getSupportFragmentManager()
             .findFragmentById(android.R.id.list);

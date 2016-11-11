@@ -48,12 +48,10 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alorma.github.sdk.bean.dto.response.Organization;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.accounts.AccountUtils;
 import com.github.pockethub.android.accounts.AccountsHelper;
 import com.github.pockethub.android.accounts.LoginActivity;
-import com.github.pockethub.android.accounts.StoreCredentials;
 import com.github.pockethub.android.core.user.UserComparator;
 import com.github.pockethub.android.persistence.AccountDataManager;
 import com.github.pockethub.android.ui.gist.GistsPagerFragment;
@@ -62,6 +60,8 @@ import com.github.pockethub.android.ui.issue.IssueDashboardPagerFragment;
 import com.github.pockethub.android.ui.repo.OrganizationLoader;
 import com.github.pockethub.android.ui.user.HomePagerFragment;
 import com.github.pockethub.android.util.AvatarLoader;
+import com.meisolsson.githubsdk.core.TokenStore;
+import com.meisolsson.githubsdk.model.User;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -72,7 +72,7 @@ import java.util.Map;
 
 
 public class MainActivity extends BaseActivity implements
-    LoaderManager.LoaderCallbacks<List<Organization>>, NavigationView.OnNavigationItemSelectedListener {
+    LoaderManager.LoaderCallbacks<List<User>>, NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
@@ -84,9 +84,9 @@ public class MainActivity extends BaseActivity implements
     @Inject
     private Provider<UserComparator> userComparatorProvider;
 
-    private List<Organization> orgs = Collections.emptyList();
+    private List<User> orgs = Collections.emptyList();
 
-    private Organization org;
+    private User org;
 
     private NavigationView navigationView;
 
@@ -137,16 +137,15 @@ public class MainActivity extends BaseActivity implements
 
         getSupportLoaderManager().initLoader(0, null, this);
 
-        StoreCredentials storeCredentials = new StoreCredentials(this);
+        TokenStore tokenStore = TokenStore.getInstance(this);
 
-        if (storeCredentials.token() == null) {
+        if (tokenStore.getToken() == null) {
             AccountManager manager = AccountManager.get(this);
             Account[] accounts = manager.getAccountsByType(getString(R.string.account_type));
             if (accounts.length > 0) {
                 Account account = accounts[0];
                 AccountsHelper.getUserToken(this, account);
-                storeCredentials.storeToken(AccountsHelper.getUserToken(this, account));
-                storeCredentials.storeUsername(account.name);
+                tokenStore.saveToken(AccountsHelper.getUserToken(this, account));
             }
         }
     }
@@ -198,22 +197,22 @@ public class MainActivity extends BaseActivity implements
 
         // Restart loader if default account doesn't match currently loaded
         // account
-        List<Organization> currentOrgs = orgs;
+        List<User> currentOrgs = orgs;
         if (currentOrgs != null && !currentOrgs.isEmpty()
                 && !AccountUtils.isUser(this, currentOrgs.get(0)))
             reloadOrgs();
     }
 
     @Override
-    public Loader<List<Organization>> onCreateLoader(int i, Bundle bundle) {
+    public Loader<List<User>> onCreateLoader(int i, Bundle bundle) {
         return new OrganizationLoader(this, accountDataManager,
                 userComparatorProvider);
     }
 
-    Map<MenuItem,Organization> menuItemOrganizationMap = new HashMap<>();
+    Map<MenuItem,User> menuItemOrganizationMap = new HashMap<>();
 
     @Override
-    public void onLoadFinished(Loader<List<Organization>> listLoader, final List<Organization> orgs) {
+    public void onLoadFinished(Loader<List<User>> listLoader, final List<User> orgs) {
         if (orgs.isEmpty())
             return;
 
@@ -251,11 +250,11 @@ public class MainActivity extends BaseActivity implements
         userName = (TextView) headerView.findViewById(R.id.user_name);
 
         avatars.bind(userImage, org);
-        userName.setText(org.login);
+        userName.setText(org.login());
 
-        String name = org.name;
+        String name = org.name();
         if (name != null) {
-            userRealName.setText(org.name);
+            userRealName.setText(org.name());
         } else {
             userRealName.setVisibility(View.GONE);
         }
@@ -274,9 +273,9 @@ public class MainActivity extends BaseActivity implements
         if (organizationContainer.hasSubMenu()) {
             SubMenu organizationsMenu = organizationContainer.getSubMenu();
             for (int i = 1; i < orgs.size(); i++) {
-                Organization organization = orgs.get(i);
-                if (organizationsMenu.findItem(organization.id) == null) {
-                    MenuItem organizationMenuItem = organizationsMenu.add(Menu.NONE, organization.id, Menu.NONE, organization.name != null ? organization.name : organization.login);
+                User organization = orgs.get(i);
+                if (organizationsMenu.findItem(organization.id()) == null) {
+                    MenuItem organizationMenuItem = organizationsMenu.add(Menu.NONE, organization.id(), Menu.NONE, organization.name() != null ? organization.name() : organization.login());
                     organizationMenuItem.setIcon(R.drawable.ic_github_organization_black_24dp);
                     //Because of tinting the real image would became a grey block
                     //avatars.bind(organizationMenuItem, organization);
@@ -289,7 +288,7 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    public void onLoaderReset(Loader<List<Organization>> listLoader) {
+    public void onLoaderReset(Loader<List<User>> listLoader) {
 
     }
 
@@ -338,7 +337,7 @@ public class MainActivity extends BaseActivity implements
     }
 
     @VisibleForTesting
-    void switchFragment(Fragment fragment, Organization organization) {
+    void switchFragment(Fragment fragment, User organization) {
         if (organization != null) {
             Bundle args = new Bundle();
             args.putParcelable("org", organization);

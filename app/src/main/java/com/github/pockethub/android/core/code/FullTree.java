@@ -17,12 +17,12 @@ package com.github.pockethub.android.core.code;
 
 import android.text.TextUtils;
 
-import com.alorma.github.sdk.bean.dto.response.GitReference;
-import com.alorma.github.sdk.bean.dto.response.GitTree;
-import com.alorma.github.sdk.bean.dto.response.GitTreeEntry;
-import com.alorma.github.sdk.bean.dto.response.GitTreeType;
 import com.github.pockethub.android.core.commit.CommitUtils;
 import com.github.pockethub.android.core.ref.RefUtils;
+import com.meisolsson.githubsdk.model.git.GitEntryType;
+import com.meisolsson.githubsdk.model.git.GitReference;
+import com.meisolsson.githubsdk.model.git.GitTree;
+import com.meisolsson.githubsdk.model.git.GitTreeEntry;
 
 import java.util.List;
 import java.util.Map;
@@ -64,7 +64,7 @@ public class FullTree {
         private Entry(GitTreeEntry entry, Folder parent) {
             this.entry = entry;
             this.parent = parent;
-            this.name = CommitUtils.getName(entry.path);
+            this.name = CommitUtils.getName(entry.path());
         }
 
         @Override
@@ -121,11 +121,11 @@ public class FullTree {
         }
 
         private void add(final GitTreeEntry entry) {
-            String path = entry.path;
+            String path = entry.path();
             if (TextUtils.isEmpty(path))
                 return;
 
-            if (entry.type == GitTreeType.blob) {
+            if (entry.type() == GitEntryType.blob) {
                 String[] segments = path.split("/");
                 if (segments.length > 1) {
                     Folder folder = folders.get(segments[0]);
@@ -135,7 +135,7 @@ public class FullTree {
                     Entry file = new Entry(entry, this);
                     files.put(file.name, file);
                 }
-            } else if (entry.type == GitTreeType.tree) {
+            } else if (entry.type() == GitEntryType.tree) {
                 String[] segments = path.split("/");
                 if (segments.length > 1) {
                     Folder folder = folders.get(segments[0]);
@@ -181,7 +181,7 @@ public class FullTree {
         this.branch = RefUtils.getName(reference);
 
         root = new Folder();
-        List<GitTreeEntry> entries = tree.tree;
+        List<GitTreeEntry> entries = tree.tree();
         if (entries != null && !entries.isEmpty())
             for (GitTreeEntry entry : entries) {
                 root.add(entry);

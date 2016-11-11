@@ -16,46 +16,24 @@
 
 package com.github.pockethub.android.core;
 
-import android.net.Uri;
 
-import com.alorma.github.sdk.services.client.GithubListClient;
-import com.alorma.gitskarios.core.Pair;
+import com.meisolsson.githubsdk.model.Page;
 
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import rx.Observable;
+
 public class PageIterator<V> implements Iterator<List>, Iterable<List> {
 
-    protected GitHubRequest<List<V>> request;
-    protected int nextPage;
-    protected int lastPage;
-    protected Uri next;
-    protected Uri last;
+    protected GitHubRequest<Page<V>> request;
+    protected Integer nextPage;
+    protected Integer lastPage;
 
-    public PageIterator(GitHubRequest<List<V>> request, int nextPage) {
+    public PageIterator(GitHubRequest<Page<V>> request, int nextPage) {
         this.request = request;
-        this.nextPage = this.lastPage = nextPage;
-        this.next = Uri.EMPTY;
-    }
-
-    protected int parsePageNumber(Uri uri) {
-        if(uri != null && uri != Uri.EMPTY) {
-
-            String param = uri.getQueryParameter("page");
-            if(param != null && param.length() != 0) {
-                try {
-                    return Integer.parseInt(param);
-                } catch (NumberFormatException var4) {
-                    return -1;
-                }
-            } else {
-                return -1;
-            }
-        } else {
-            return -1;
-        }
+        this.nextPage = nextPage;
     }
 
     public int getNextPage() {
@@ -67,36 +45,28 @@ public class PageIterator<V> implements Iterator<List>, Iterable<List> {
     }
 
     public boolean hasNext() {
-        return this.nextPage == 0 || this.next != null;
+        return (this.nextPage != null && this.nextPage == 1) || this.lastPage != null;
     }
 
     public void remove() {
         throw new UnsupportedOperationException("Remove not supported");
     }
 
-    public List next() {
+    public List<V> next() {
         if(!this.hasNext()) {
             throw new NoSuchElementException();
         } else {
-            List resources = null;
-            GithubListClient client = request.execute(nextPage);
-            Object response = client.observable().toBlocking().first();
-            if(response != null)
-                resources = (List) ((Pair) response).first;
-
-            if(resources == null)
-                resources = Collections.emptyList();
+            Observable<Page<V>> client = request.execute(nextPage);
+            Page<V> response = client.toBlocking().first();
 
             ++this.nextPage;
-            this.last = client.last != null ? Uri.parse(client.last.toString()) : Uri.EMPTY;
-            this.lastPage = parsePageNumber(last);
-            this.next = client.next != null ? Uri.parse(client.next.toString()) : Uri.EMPTY;
-            this.nextPage = parsePageNumber(next);
-            return resources;
+            this.lastPage = response.last();
+            this.nextPage = response.next();
+            return response.items();
         }
     }
 
-    public GitHubRequest<List<V>> getRequest() {
+    public GitHubRequest<Page<V>> getRequest() {
         return this.request;
     }
 
@@ -105,6 +75,6 @@ public class PageIterator<V> implements Iterator<List>, Iterable<List> {
     }
 
     public interface GitHubRequest<V>{
-        GithubListClient<V> execute(int page);
+        Observable<V> execute(int page);
     }
 }

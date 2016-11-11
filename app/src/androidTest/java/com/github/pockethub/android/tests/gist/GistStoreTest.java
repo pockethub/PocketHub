@@ -17,8 +17,10 @@ package com.github.pockethub.android.tests.gist;
 
 import android.test.AndroidTestCase;
 
-import com.alorma.github.sdk.bean.dto.response.Gist;
 import com.github.pockethub.android.core.gist.GistStore;
+import com.meisolsson.githubsdk.model.Gist;
+
+import static android.test.MoreAsserts.assertNotEqual;
 
 /**
  * Unit tests of {@link GistStore}
@@ -32,17 +34,23 @@ public class GistStoreTest extends AndroidTestCase {
         GistStore store = new GistStore(mContext);
         assertNull(store.getGist("abcd"));
 
-        Gist gist = new Gist();
-        gist.id = "abcd";
-        gist.description = "description";
-        assertSame(gist, store.addGist(gist));
-        assertSame(gist, store.getGist("abcd"));
+        Gist gist = Gist.builder()
+                .id("abcd")
+                .description("description")
+                .build();
 
-        Gist gist2 = new Gist();
-        gist2.id = "abcd";
-        gist.description = "description2";
-        assertSame(gist, store.addGist(gist2));
-        assertEquals(gist2.description, gist.description);
-        assertSame(gist, store.getGist("abcd"));
+        // The gist is added and the store will return the given gist
+        assertEquals(gist, store.addGist(gist));
+        assertEquals(gist, store.getGist("abcd"));
+
+        Gist gist2 = Gist.builder()
+                .id("abcd")
+                .description("description2")
+                .build();
+
+        // The gist has now been updated and should not return the same gist
+        assertNotEqual(gist, store.addGist(gist2));
+        assertNotEqual(gist.description(), gist2.description());
+        assertNotEqual(gist, store.getGist("abcd"));
     }
 }

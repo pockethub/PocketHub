@@ -15,7 +15,7 @@
  */
 package com.github.pockethub.android.ui.comment;
 
-import com.alorma.github.sdk.bean.dto.response.GithubComment;
+import com.meisolsson.githubsdk.model.GitHubComment;
 
 /**
  * Interface definition for a callback to be invoked when a comment is edited
@@ -27,5 +27,5 @@ public interface EditCommentListener {
      *
      * @param comment
      */
-    void onEditComment(GithubComment comment);
+    void onEditComment(GitHubComment comment);
 }

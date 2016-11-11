@@ -23,8 +23,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.alorma.github.sdk.bean.dto.response.Organization;
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.accounts.AccountUtils;
 import com.github.pockethub.android.ui.TabPagerFragment;
 import com.github.pockethub.android.util.PreferenceUtils;
@@ -39,18 +38,18 @@ public class HomePagerFragment extends TabPagerFragment<HomePagerAdapter> {
 
     private boolean isDefaultUser;
 
-    private Organization org;
+    private User org;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        setOrg((Organization) getArguments().getParcelable("org"));
+        setOrg((User) getArguments().getParcelable("org"));
     }
 
     @SuppressLint("CommitPrefEdits")
-    private void setOrg(Organization org) {
-        PreferenceUtils.save(sharedPreferences.edit().putInt(PREF_ORG_ID, org.id));
+    private void setOrg(User org) {
+        PreferenceUtils.save(sharedPreferences.edit().putInt(PREF_ORG_ID, org.id()));
         this.org = org;
         this.isDefaultUser = AccountUtils.isUser(getActivity(), org);
         configureTabPager();
@@ -58,34 +57,6 @@ public class HomePagerFragment extends TabPagerFragment<HomePagerAdapter> {
 
     @Override
     protected HomePagerAdapter createAdapter() {
-        return new HomePagerAdapter(this, isDefaultUser, orgToUser(org));
-    }
-
-    private User orgToUser(Organization org){
-        User user = new User();
-        user.id = org.id;
-        user.login = org.login;
-        user.name = org.name;
-        user.company = org.company;
-
-        user.created_at = org.created_at;
-        user.updated_at = org.updated_at;
-
-        user.avatar_url = org.avatar_url;
-        user.gravatar_id = org.gravatar_id;
-        user.blog = org.blog;
-        user.bio = org.bio;
-        user.email = org.email;
-
-        user.location = org.location;
-        user.type = org.type;
-
-        user.site_admin = org.site_admin;
-
-        user.public_repos = org.public_repos;
-        user.public_gists = org.public_gists;
-        user.followers = org.followers;
-        user.following = org.following;
-        return user;
+        return new HomePagerAdapter(this, isDefaultUser, org);
     }
 }

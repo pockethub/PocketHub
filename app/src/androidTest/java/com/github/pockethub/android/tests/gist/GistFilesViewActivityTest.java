@@ -15,18 +15,17 @@
  */
 package com.github.pockethub.android.tests.gist;
 
+import android.support.v4.util.ArrayMap;
 import android.support.v4.view.ViewPager;
 
-import com.alorma.github.sdk.bean.dto.response.Gist;
-import com.alorma.github.sdk.bean.dto.response.GistFile;
-import com.alorma.github.sdk.bean.dto.response.GistFilesMap;
 import com.github.pockethub.android.R.id;
 import com.github.pockethub.android.core.gist.GistStore;
 import com.github.pockethub.android.tests.ActivityTest;
 import com.github.pockethub.android.ui.gist.GistFilesViewActivity;
+import com.meisolsson.githubsdk.model.Gist;
+import com.meisolsson.githubsdk.model.GistFile;
 import com.google.inject.Inject;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import roboguice.RoboGuice;
@@ -56,22 +55,25 @@ public class GistFilesViewActivityTest extends
         RoboGuice.injectMembers(getInstrumentation().getTargetContext()
             .getApplicationContext(), this);
 
-        gist = new Gist();
-        gist.id = "abcd";
-        GistFilesMap files = new GistFilesMap();
+        Map<String, GistFile> files = new ArrayMap<>();
 
-        GistFile a = new GistFile();
-        GistFile b = new GistFile();
-
-        a.content = "aa";
-        a.filename = "a";
-
-        b.content = "bb";
-        b.filename = "b";
+        GistFile a = GistFile.builder()
+                .content("aa")
+                .filename("a")
+                .build();
+        GistFile b = GistFile.builder()
+                .content("bb")
+                .filename("b")
+                .build();
 
         files.put("a", a);
         files.put("b", b);
-        gist.files = files;
+
+        gist = Gist.builder()
+                .id("abcd")
+                .files(files)
+                .build();
+
         store.addGist(gist);
         setActivityIntent(GistFilesViewActivity.createIntent(gist, 0));
     }

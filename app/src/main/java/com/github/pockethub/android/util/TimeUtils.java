@@ -17,10 +17,6 @@ package com.github.pockethub.android.util;
 
 import android.text.format.DateUtils;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import java.util.Date;
 
 import static android.text.format.DateUtils.FORMAT_NUMERIC_DATE;
@@ -47,25 +43,5 @@ public class TimeUtils {
                             | FORMAT_NUMERIC_DATE);
         else
             return "just now";
-    }
-
-    public static CharSequence getRelativeTime(final String date) {
-        return getRelativeTime(stringToDate(date));
-    }
-
-    /**
-     * Convert string datetime in UTC to local datetime.
-     * @param value The datetime in UTC to parse.
-     * @return Local datetime.
-     */
-    public static Date stringToDate(String value){
-        DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        DateTime t = format.withZoneUTC().parseDateTime(value);
-        return t.toDate();
-    }
-
-    public static String dateToString(Date value){
-        DateTimeFormatter formats = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        return formats.print(value.getTime());
     }
 }

@@ -28,7 +28,7 @@ import android.widget.ListView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.meisolsson.githubsdk.model.User;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.BaseActivity;
@@ -64,7 +64,7 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
 
         @Override
         public long getItemId(int position) {
-            return getItem(position).id;
+            return getItem(position).id();
         }
 
         @Override
@@ -74,7 +74,7 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
 
         @Override
         protected void update(int position, User item) {
-            setText(0, item.login);
+            setText(0, item.login());
             loader.bind(imageView(1), item);
             setChecked(2, selected == position);
         }

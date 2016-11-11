@@ -28,13 +28,13 @@ import android.widget.ListView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.alorma.github.sdk.bean.dto.response.GitReference;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.ref.RefUtils;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.SingleChoiceDialogFragment;
 import com.github.pockethub.android.util.TypefaceUtils;
+import com.meisolsson.githubsdk.model.git.GitReference;
 
 import java.util.ArrayList;
 
@@ -60,7 +60,7 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
 
         @Override
         public long getItemId(int position) {
-            return getItem(position).ref.hashCode();
+            return getItem(position).ref().hashCode();
         }
 
         @Override

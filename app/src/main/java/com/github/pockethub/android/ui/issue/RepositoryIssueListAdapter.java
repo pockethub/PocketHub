@@ -19,12 +19,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.alorma.github.sdk.bean.dto.response.Issue;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueUtils;
 import com.github.pockethub.android.util.AvatarLoader;
-import com.github.pockethub.android.util.TimeUtils;
 import com.github.pockethub.android.util.TypefaceUtils;
+import com.meisolsson.githubsdk.model.Issue;
 
 /**
  * Adapter for a list of {@link Issue} objects
@@ -45,7 +44,7 @@ public class RepositoryIssueListAdapter extends IssueListAdapter<Issue> {
 
     @Override
     public long getItemId(int position) {
-        return Long.parseLong(getItem(position).id);
+        return getItem(position).id();
     }
 
     @Override
@@ -60,7 +59,7 @@ public class RepositoryIssueListAdapter extends IssueListAdapter<Issue> {
 
     @Override
     protected int getNumber(Issue issue) {
-        return issue.number;
+        return issue.number();
     }
 
     @Override
@@ -73,16 +72,16 @@ public class RepositoryIssueListAdapter extends IssueListAdapter<Issue> {
 
     @Override
     protected void update(int position, Issue issue) {
-        updateNumber(issue.number, issue.state, numberPaintFlags, 0);
+        updateNumber(issue.number(), issue.state(), numberPaintFlags, 0);
 
-        avatars.bind(imageView(2), issue.user);
+        avatars.bind(imageView(2), issue.user());
 
         setGone(5, !IssueUtils.isPullRequest(issue));
 
-        setText(1, issue.title);
+        setText(1, issue.title());
 
-        updateReporter(issue.user.login, TimeUtils.stringToDate(issue.created_at), 3);
-        setNumber(4, issue.comments);
-        updateLabels(issue.labels, 6);
+        updateReporter(issue.user().login(), issue.createdAt(), 3);
+        setNumber(4, issue.comments());
+        updateLabels(issue.labels(), 6);
     }
 }

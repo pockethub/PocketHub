@@ -15,11 +15,11 @@
  */
 package com.github.pockethub.android.core.gist;
 
-import com.alorma.github.sdk.bean.dto.response.Gist;
-import com.alorma.github.sdk.bean.dto.response.GithubEvent;
-import com.alorma.github.sdk.bean.dto.response.events.EventType;
-import com.github.pockethub.android.api.GistEventPayload;
-import com.google.gson.Gson;
+import com.github.pockethub.android.ui.user.EventType;
+import com.meisolsson.githubsdk.model.Gist;
+import com.meisolsson.githubsdk.model.GitHubEvent;
+import com.meisolsson.githubsdk.model.GitHubEventType;
+import com.meisolsson.githubsdk.model.payload.GistPayload;
 
 
 /**
@@ -33,18 +33,13 @@ public class GistEventMatcher {
      * @param event
      * @return gist or null if event doesn't apply
      */
-    public Gist getGist(final GithubEvent event) {
-        if (event == null)
-            return null;
-        if (event.payload == null)
+    public Gist getGist(final GitHubEvent event) {
+        if (event == null || event.payload() == null)
             return null;
 
-        Gson gson = new Gson();
-        String json = gson.toJson(event.payload);
-
-        EventType type = event.getType();
+        GitHubEventType type = event.type();
         if (EventType.GistEvent.equals(type))
-            return (gson.fromJson(json, GistEventPayload.class)).gist;
+            return ((GistPayload) event.payload()).gist();
         else
             return null;
     }

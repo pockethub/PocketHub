@@ -17,12 +17,11 @@ package com.github.pockethub.android.tests.commit;
 
 import android.test.AndroidTestCase;
 
-import com.alorma.github.sdk.bean.dto.response.Commit;
-import com.alorma.github.sdk.bean.dto.response.CommitFile;
-import com.alorma.github.sdk.bean.dto.response.GitCommit;
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.meisolsson.githubsdk.model.Commit;
+import com.meisolsson.githubsdk.model.GitHubFile;
 import com.github.pockethub.android.core.commit.CommitUtils;
-import com.github.pockethub.android.util.TimeUtils;
+import com.meisolsson.githubsdk.model.git.GitCommit;
+import com.meisolsson.githubsdk.model.git.GitUser;
 
 import java.util.Date;
 
@@ -41,13 +40,18 @@ public class CommitUtilsTest extends AndroidTestCase {
         assertEquals("", CommitUtils.abbreviate(""));
         assertEquals("a", CommitUtils.abbreviate("a"));
         assertEquals("abcdefghij", CommitUtils.abbreviate("abcdefghijk"));
-        GitCommit gitCommit = new GitCommit();
-        gitCommit.sha = "abc";
+
+        GitCommit gitCommit = GitCommit.builder()
+                .sha("abc")
+                .build();
+
         assertEquals("abc", CommitUtils.abbreviate(gitCommit));
-        Commit commit = new Commit();
-        commit.sha = "abcd";
-        assertEquals("abcd",
-                CommitUtils.abbreviate(commit.sha));
+
+        Commit commit = Commit.builder()
+                .sha("abcd")
+                .build();
+
+        assertEquals("abcd", CommitUtils.abbreviate(commit));
     }
 
     /**
@@ -55,12 +59,11 @@ public class CommitUtilsTest extends AndroidTestCase {
      */
     public void testGetName() {
         assertNull(CommitUtils.getName((String) null));
-        assertNull(CommitUtils.getName((CommitFile) null));
+        assertNull(CommitUtils.getName((GitHubFile) null));
         assertEquals("", CommitUtils.getName(""));
         assertEquals("/", CommitUtils.getName("/"));
         assertEquals("b", CommitUtils.getName("a/b"));
-        CommitFile file = new CommitFile();
-        file.filename = "a/b/c";
+        GitHubFile file = GitHubFile.builder().filename("a/b/c").build();
         assertEquals("c", CommitUtils.getName(file));
     }
 
@@ -80,15 +83,31 @@ public class CommitUtilsTest extends AndroidTestCase {
      * Test parsing author from commit
      */
     public void testGetAuthor() {
-        Commit commit = new Commit();
+        Commit commit = Commit.builder().build();
         assertNull(CommitUtils.getAuthor(commit));
-        GitCommit rawCommit = new GitCommit();
-        commit.commit = rawCommit;
+
+        GitCommit rawCommit = GitCommit.builder().build();
+        commit = commit.toBuilder()
+                .commit(rawCommit)
+                .build();
         assertNull(CommitUtils.getAuthor(commit));
-        User user = new User();
-        rawCommit.author = user;
+
+        GitUser user = GitUser.builder().build();
+        rawCommit = rawCommit.toBuilder()
+                .author(user)
+                .build();
+        commit = commit.toBuilder()
+                .commit(rawCommit)
+                .build();
         assertNull(CommitUtils.getAuthor(commit));
-        user.login = "u1";
+
+        user = user.toBuilder().name("u1").build();
+        rawCommit = rawCommit.toBuilder()
+                .author(user)
+                .build();
+        commit = commit.toBuilder()
+                .commit(rawCommit)
+                .build();
         assertEquals("u1", CommitUtils.getAuthor(commit));
     }
 
@@ -96,18 +115,40 @@ public class CommitUtilsTest extends AndroidTestCase {
      * Test parsing committer from commit
      */
     public void testGetCommitter() {
-        Commit commit = new Commit();
+        Commit commit = Commit.builder().build();
         assertNull(CommitUtils.getCommitter(commit));
-        GitCommit rawCommit = new GitCommit();
-        commit.commit = rawCommit;
+
+        GitCommit rawCommit = GitCommit.builder().build();
+        commit = commit.toBuilder()
+                .commit(rawCommit)
+                .build();
         assertNull(CommitUtils.getCommitter(commit));
-        User user = new User();
-        rawCommit.committer = user;
+
+        GitUser user = GitUser.builder().build();
+        rawCommit = rawCommit.toBuilder()
+                .committer(user)
+                .build();
+        commit = commit.toBuilder()
+                .commit(rawCommit)
+                .build();
         assertNull(CommitUtils.getCommitter(commit));
-        user.login = "u1";
+
+        user = user.toBuilder().name("u1").build();
+        rawCommit = rawCommit.toBuilder()
+                .committer(user)
+                .build();
+        commit = commit.toBuilder()
+                .commit(rawCommit)
+                .build();
         assertEquals("u1", CommitUtils.getCommitter(commit));
-        user.login = "u2";
-        commit.committer = user;
+
+        user = user.toBuilder().name("u2").build();
+        rawCommit = rawCommit.toBuilder()
+                .committer(user)
+                .build();
+        commit = commit.toBuilder()
+                .commit(rawCommit)
+                .build();
         assertEquals("u2", CommitUtils.getCommitter(commit));
     }
 
@@ -115,15 +156,33 @@ public class CommitUtilsTest extends AndroidTestCase {
      * Test parsing author date from commit
      */
     public void testGetAuthorDate() {
-        Commit commit = new Commit();
+        Commit commit = Commit.builder().build();
         assertNull(CommitUtils.getAuthorDate(commit));
-        GitCommit rawCommit = new GitCommit();
-        commit.commit = rawCommit;
+
+        GitCommit rawCommit = GitCommit.builder().build();
+        commit = commit.toBuilder()
+                .commit(rawCommit)
+                .build();
         assertNull(CommitUtils.getAuthorDate(commit));
-        User user = new User();
-        rawCommit.author = user;
+
+        GitUser user = GitUser.builder().build();
+        rawCommit = rawCommit.toBuilder()
+                .author(user)
+                .build();
+        commit = commit.toBuilder()
+                .commit(rawCommit)
+                .build();
         assertNull(CommitUtils.getAuthorDate(commit));
-        user.date = TimeUtils.dateToString(new Date(12000));
+
+        user = user.toBuilder()
+                .date(new Date(12000))
+                .build();
+        rawCommit = rawCommit.toBuilder()
+                .author(user)
+                .build();
+        commit = commit.toBuilder()
+                .commit(rawCommit)
+                .build();
         assertEquals(new Date(12000), CommitUtils.getAuthorDate(commit));
     }
 
@@ -131,15 +190,33 @@ public class CommitUtilsTest extends AndroidTestCase {
      * Test parsing committer date from commit
      */
     public void testGetCommitterDate() {
-        Commit commit = new Commit();
+        Commit commit = Commit.builder().build();
         assertNull(CommitUtils.getCommitterDate(commit));
-        GitCommit rawCommit = new GitCommit();
-        commit.commit = rawCommit;
+
+        GitCommit rawCommit = GitCommit.builder().build();
+        commit = commit.toBuilder()
+                .commit(rawCommit)
+                .build();
         assertNull(CommitUtils.getCommitterDate(commit));
-        User user = new User();
-        rawCommit.committer = user;
+
+        GitUser user = GitUser.builder().build();
+        rawCommit = rawCommit.toBuilder()
+                .committer(user)
+                .build();
+        commit = commit.toBuilder()
+                .commit(rawCommit)
+                .build();
         assertNull(CommitUtils.getCommitterDate(commit));
-        user.date = TimeUtils.dateToString(new Date(12000));
+
+        user = user.toBuilder()
+                .date(new Date(12000))
+                .build();
+        rawCommit = rawCommit.toBuilder()
+                .committer(user)
+                .build();
+        commit = commit.toBuilder()
+                .commit(rawCommit)
+                .build();
         assertEquals(new Date(12000), CommitUtils.getCommitterDate(commit));
     }
 }

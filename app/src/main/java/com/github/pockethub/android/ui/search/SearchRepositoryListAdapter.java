@@ -20,7 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.StyledText;
 import com.github.pockethub.android.ui.repo.RepositoryListAdapter;
@@ -30,7 +30,7 @@ import com.github.pockethub.android.util.TypefaceUtils;
  * Adapter for a list of searched for repositories
  */
 public class SearchRepositoryListAdapter extends
-        RepositoryListAdapter<Repo> {
+        RepositoryListAdapter<Repository> {
 
     /**
      * Create list adapter for searched for repositories
@@ -39,13 +39,13 @@ public class SearchRepositoryListAdapter extends
      * @param elements
      */
     public SearchRepositoryListAdapter(LayoutInflater inflater,
-            Repo[] elements) {
+            Repository[] elements) {
         super(R.layout.user_repo_item, inflater, elements);
     }
 
     @Override
     public long getItemId(final int position) {
-        final String id = String.valueOf(getItem(position).id);
+        final String id = String.valueOf(getItem(position).id());
         return !TextUtils.isEmpty(id) ? id.hashCode() : super
                 .getItemId(position);
     }
@@ -67,14 +67,14 @@ public class SearchRepositoryListAdapter extends
     }
 
     @Override
-    protected void update(int position, Repo repository) {
+    protected void update(int position, Repository repository) {
         StyledText name = new StyledText();
-        name.append(repository.owner.login).append('/');
-        name.bold(repository.name);
+        name.append(repository.owner().login()).append('/');
+        name.bold(repository.name());
         setText(5, name);
 
-        updateDetails(repository.description, repository.language,
-                repository.watchers_count, repository.forks_count,
-                repository.isPrivate, repository.fork, null);
+        updateDetails(repository.description(), repository.language(),
+                repository.watchersCount(), repository.forksCount(),
+                repository.isPrivate(), repository.isFork(), null);
     }
 }

@@ -15,7 +15,7 @@
  */
 package com.github.pockethub.android.ui.commit;
 
-import com.alorma.github.sdk.bean.dto.response.CommitFile;
+import com.meisolsson.githubsdk.model.GitHubFile;
 
 import java.util.Comparator;
 
@@ -25,16 +25,16 @@ import static java.lang.String.CASE_INSENSITIVE_ORDER;
 /**
  * Comparator for commit files
  */
-public class CommitFileComparator implements Comparator<CommitFile> {
+public class CommitFileComparator implements Comparator<GitHubFile> {
 
     @Override
-    public int compare(final CommitFile lhs, final CommitFile rhs) {
-        String lPath = lhs.filename;
+    public int compare(final GitHubFile lhs, final GitHubFile rhs) {
+        String lPath = lhs.filename();
         final int lSlash = lPath.lastIndexOf('/');
         if (lSlash != -1)
             lPath = lPath.substring(lSlash + 1);
 
-        String rPath = rhs.filename;
+        String rPath = rhs.filename();
         final int rSlash = rPath.lastIndexOf('/');
         if (rSlash != -1)
             rPath = rPath.substring(rSlash + 1);

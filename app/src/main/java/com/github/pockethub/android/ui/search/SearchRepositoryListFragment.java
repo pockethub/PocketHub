@@ -22,49 +22,65 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.services.client.GithubListClient;
-import com.alorma.github.sdk.services.repo.GetRepoClient;
-import com.alorma.github.sdk.services.search.RepoSearchClient;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Page;
+import com.meisolsson.githubsdk.model.Repository;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.PageIterator;
 import com.github.pockethub.android.core.ResourcePager;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.ui.repo.RepositoryViewActivity;
 import com.github.pockethub.android.util.InfoUtils;
+import com.meisolsson.githubsdk.model.SearchPage;
+import com.meisolsson.githubsdk.service.repositories.RepositoryService;
+import com.meisolsson.githubsdk.service.search.SearchService;
 
 import java.text.MessageFormat;
 import java.util.List;
 
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static android.app.SearchManager.QUERY;
 
 /**
- * Fragment to display a list of {@link Repo} instances
+ * Fragment to display a list of {@link Repository} instances
  */
-public class SearchRepositoryListFragment extends PagedItemFragment<Repo> {
+public class SearchRepositoryListFragment extends PagedItemFragment<Repository> {
 
     private String query;
 
     @Override
-    protected ResourcePager<Repo> createPager() {
-        return new ResourcePager<Repo>() {
+    protected ResourcePager<Repository> createPager() {
+        return new ResourcePager<Repository>() {
             @Override
-            protected Object getId(Repo resource) {
-                return resource.id;
+            protected Object getId(Repository resource) {
+                return resource.id();
             }
 
             @Override
-            public PageIterator<Repo> createIterator(int page, int size) {
-                return new PageIterator<>(new PageIterator.GitHubRequest<List<Repo>>() {
+            public PageIterator<Repository> createIterator(int page, int size) {
+                return new PageIterator<>(new PageIterator.GitHubRequest<Page<Repository>>() {
                     @Override
-                    public GithubListClient<List<Repo>> execute(int page) {
-                        return new RepoSearchClient(query, page);
+                    public Observable<Page<Repository>> execute(int page) {
+                        return ServiceGenerator.createService(getContext(), SearchService.class)
+                                .searchRepositories(query, null, null, page)
+                                .map(new Func1<SearchPage<Repository>, Page<Repository>>() {
+                                    @Override
+                                    public Page<Repository> call(SearchPage<Repository> repositorySearchPage) {
+                                        return Page.<Repository>builder()
+                                                .first(repositorySearchPage.first())
+                                                .last(repositorySearchPage.last())
+                                                .next(repositorySearchPage.next())
+                                                .prev(repositorySearchPage.prev())
+                                                .items(repositorySearchPage.items())
+                                                .build();
+                                    }
+                                });
                     }
                 }, page);
             }
@@ -102,16 +118,16 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repo> {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        final Repo result = (Repo) l.getItemAtPosition(position);
-        new GetRepoClient(InfoUtils.createRepoInfo(result))
-                .observable()
+        final Repository result = (Repository) l.getItemAtPosition(position);
+        ServiceGenerator.createService(getContext(), RepositoryService.class)
+                .getRepository(result.owner().login(), result.name())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Repo>bindToLifecycle())
-                .subscribe(new ProgressObserverAdapter<Repo>(getActivity(),
+                .compose(this.<Repository>bindToLifecycle())
+                .subscribe(new ProgressObserverAdapter<Repository>(getActivity(),
                         MessageFormat.format(getString(R.string.opening_repository), InfoUtils.createRepoId(result))) {
                     @Override
-                    public void onNext(Repo repo) {
+                    public void onNext(Repository repo) {
                         super.onNext(repo);
                         startActivity(RepositoryViewActivity.createIntent(repo));
                     }
@@ -129,12 +145,15 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repo> {
         if (TextUtils.isEmpty(query))
             return false;
 
-        Repo repoId = InfoUtils.createRepoFromUrl(query.trim());
+        Repository repoId = InfoUtils.createRepoFromUrl(query.trim());
         if (repoId == null)
             return false;
 
-        Repo repo;
-        repo = new GetRepoClient(InfoUtils.createRepoInfo(repoId)).observable().toBlocking().first();
+        Repository repo;
+        repo = ServiceGenerator.createService(getContext(), RepositoryService.class)
+                .getRepository(repoId.owner().login(), repoId.name())
+                .toBlocking()
+                .first();
 
         startActivity(RepositoryViewActivity.createIntent(repo));
         final Activity activity = getActivity();
@@ -149,10 +168,10 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repo> {
     }
 
     @Override
-    protected SingleTypeAdapter<Repo> createAdapter(
-            List<Repo> items) {
+    protected SingleTypeAdapter<Repository> createAdapter(
+            List<Repository> items) {
         return new SearchRepositoryListAdapter(getActivity()
-                .getLayoutInflater(), items.toArray(new Repo[items
+                .getLayoutInflater(), items.toArray(new Repository[items
                 .size()]));
     }
 }

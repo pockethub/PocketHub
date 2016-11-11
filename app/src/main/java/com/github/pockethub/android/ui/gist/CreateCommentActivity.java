@@ -20,15 +20,16 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 
-import com.alorma.github.sdk.bean.dto.request.CommentRequest;
-import com.alorma.github.sdk.bean.dto.response.Gist;
-import com.alorma.github.sdk.bean.dto.response.GithubComment;
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.services.gists.PublishGistCommentClient;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Gist;
+import com.meisolsson.githubsdk.model.GitHubComment;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.util.ToastUtils;
+import com.meisolsson.githubsdk.model.request.CommentRequest;
+import com.meisolsson.githubsdk.service.gists.GistCommentService;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -64,23 +65,27 @@ public class CreateCommentActivity extends
         gist = getParcelableExtra(EXTRA_GIST);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(getString(R.string.gist_title) + gist.id);
-        User user = gist.owner;
+        actionBar.setTitle(getString(R.string.gist_title) + gist.id());
+        User user = gist.owner();
         if (user != null)
-            actionBar.setSubtitle(user.login);
+            actionBar.setSubtitle(user.login());
         avatars.bind(actionBar, user);
     }
 
     @Override
     protected void createComment(final String comment) {
-        new PublishGistCommentClient(gist.id, new CommentRequest(comment))
-                .observable()
+        CommentRequest commentRequest = CommentRequest.builder()
+                .body(comment)
+                .build();
+
+        ServiceGenerator.createService(this, GistCommentService.class)
+                .createGistComment(gist.id(), commentRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<GithubComment>bindToLifecycle())
-                .subscribe(new ObserverAdapter<GithubComment>() {
+                .compose(this.<GitHubComment>bindToLifecycle())
+                .subscribe(new ObserverAdapter<GitHubComment>() {
                     @Override
-                    public void onNext(GithubComment githubComment) {
+                    public void onNext(GitHubComment githubComment) {
                         finish(githubComment);
                     }
 

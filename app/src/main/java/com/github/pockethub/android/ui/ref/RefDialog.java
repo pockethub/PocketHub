@@ -17,17 +17,16 @@ package com.github.pockethub.android.ui.ref;
 
 import android.util.Log;
 
-import com.alorma.github.sdk.bean.dto.response.GitReference;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.services.git.GetReferencesClient;
-import com.alorma.gitskarios.core.Pair;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.ref.RefUtils;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.BaseActivity;
-import com.github.pockethub.android.util.InfoUtils;
 import com.github.pockethub.android.util.ToastUtils;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Page;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.git.GitReference;
+import com.meisolsson.githubsdk.service.git.GitService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +35,7 @@ import java.util.TreeMap;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
@@ -53,7 +53,7 @@ public class RefDialog {
 
     private final BaseActivity activity;
 
-    private final Repo repository;
+    private final Repository repository;
 
     /**
      * Create dialog helper to display refs
@@ -63,45 +63,61 @@ public class RefDialog {
      * @param repository
      */
     public RefDialog(final BaseActivity activity,
-            final int requestCode, final Repo repository) {
+            final int requestCode, final Repository repository) {
         this.activity = activity;
         this.requestCode = requestCode;
         this.repository = repository;
     }
 
+
+
     private void load(final GitReference selectedRef) {
-        new GetReferencesClient(InfoUtils.createRepoInfo(repository))
-                .observable()
+        getPageAndNext(1).subscribe(new ProgressObserverAdapter<Page<GitReference>>(activity, R.string.loading_refs) {
+            List<GitReference> allRefs = new ArrayList<>();
+
+            @Override
+            public void onNext(Page<GitReference> page) {
+                super.onNext(page);
+                allRefs.addAll(page.items());
+            }
+
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+                Map<String, GitReference> loadedRefs = new TreeMap<>(CASE_INSENSITIVE_ORDER);
+
+                for (GitReference ref : allRefs)
+                    if (RefUtils.isValid(ref))
+                        loadedRefs.put(ref.ref(), ref);
+
+                refs = loadedRefs;
+                show(selectedRef);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                Log.d(TAG, "Exception loading references", e);
+                ToastUtils.show(activity, e, R.string.error_refs_load);
+            }
+        }.start());
+    }
+
+    private Observable<Page<GitReference>> getPageAndNext(int i) {
+        return ServiceGenerator.createService(activity, GitService.class)
+                .getGitReferences(repository.owner().login(), repository.name(), i)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ProgressObserverAdapter<Pair<List<GitReference>, Integer>>(activity, R.string.loading_refs) {
-                    List<GitReference> allRefs = new ArrayList<>();
-
+                .concatMap(new Func1<Page<GitReference>, Observable<Page<GitReference>>>() {
                     @Override
-                    public void onNext(Pair<List<GitReference>, Integer> pair) {
-                        super.onNext(pair);
-                        allRefs.addAll(pair.first);
+                    public Observable<Page<GitReference>> call(Page<GitReference> page) {
+                        if (page.next() == null)
+                            return Observable.just(page);
+
+                        return Observable.just(page)
+                                .concatWith(getPageAndNext(page.next()));
                     }
-
-                    @Override
-                    public void onCompleted() {
-                        Map<String, GitReference> loadedRefs = new TreeMap<>(CASE_INSENSITIVE_ORDER);
-
-                        for (GitReference ref : allRefs)
-                            if (RefUtils.isValid(ref))
-                                loadedRefs.put(ref.ref, ref);
-
-                        refs = loadedRefs;
-                        show(selectedRef);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        Log.d(TAG, "Exception loading references", e);
-                        ToastUtils.show(activity, e, R.string.error_refs_load);
-                    }
-                }.start());
+                });
     }
 
     /**
@@ -119,9 +135,9 @@ public class RefDialog {
                 refs.values());
         int checked = -1;
         if (selectedRef != null) {
-            String ref = selectedRef.ref;
+            String ref = selectedRef.ref();
             for (int i = 0; i < refList.size(); i++) {
-                String candidate = refList.get(i).ref;
+                String candidate = refList.get(i).ref();
                 if (ref.equals(candidate)) {
                     checked = i;
                     break;

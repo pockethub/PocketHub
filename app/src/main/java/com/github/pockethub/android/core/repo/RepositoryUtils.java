@@ -17,10 +17,11 @@ package com.github.pockethub.android.core.repo;
 
 import android.text.TextUtils;
 
-import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.meisolsson.githubsdk.model.Repository;
+
 
 /**
- * Utilities for working with {@link Repo} objects
+ * Utilities for working with {@link Repository} objects
  */
 public class RepositoryUtils {
 
@@ -35,10 +36,10 @@ public class RepositoryUtils {
      * @return true if complete, false otherwise
      *
      */
-    public static boolean isComplete(final Repo repository) {
-        return repository.isPrivate || repository.fork
-                || repository.forks_count > 0 || repository.watchers_count > 0
-                || repository.has_issues;
+    public static boolean isComplete(final Repository repository) {
+        return repository.isPrivate() || repository.isFork()
+                || repository.forksCount() > 0 || repository.watchersCount() > 0
+                || repository.hasIssues();
     }
 
     /**

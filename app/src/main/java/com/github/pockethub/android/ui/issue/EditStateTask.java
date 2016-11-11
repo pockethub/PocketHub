@@ -15,9 +15,9 @@
  */
 package com.github.pockethub.android.ui.issue;
 
-import com.alorma.github.sdk.bean.dto.response.Issue;
-import com.alorma.github.sdk.bean.dto.response.IssueState;
-import com.alorma.github.sdk.bean.dto.response.Repo;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.IssueState;
+import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueStore;
 import com.github.pockethub.android.rx.ProgressObserverAdapter;
@@ -45,7 +45,7 @@ public class EditStateTask implements Observable.OnSubscribe<Issue> {
     private IssueStore store;
 
     private final BaseActivity activity;
-    private final Repo repositoryId;
+    private final Repository repositoryId;
 
     private final int issueNumber;
     private final ProgressObserverAdapter<Issue> observer;
@@ -60,7 +60,7 @@ public class EditStateTask implements Observable.OnSubscribe<Issue> {
      * @param issueNumber
      */
     public EditStateTask(final BaseActivity activity,
-                         final Repo repositoryId, final int issueNumber,
+                         final Repository repositoryId, final int issueNumber,
                          final ProgressObserverAdapter<Issue> observer) {
         this.activity = activity;
         this.repositoryId = repositoryId;
@@ -74,6 +74,7 @@ public class EditStateTask implements Observable.OnSubscribe<Issue> {
         try {
             IssueState state = close ? IssueState.closed : IssueState.open;
             subscriber.onNext(store.changeState(repositoryId, issueNumber, state));
+            subscriber.onCompleted();
         } catch (IOException e) {
             subscriber.onError(e);
         }

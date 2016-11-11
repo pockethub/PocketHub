@@ -20,10 +20,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.services.client.GithubListClient;
-import com.alorma.github.sdk.services.search.UsersSearchClient;
-import com.alorma.github.sdk.services.user.RequestUserClient;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Page;
+import com.meisolsson.githubsdk.model.SearchPage;
+import com.meisolsson.githubsdk.model.User;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.accounts.AccountUtils;
@@ -34,11 +34,15 @@ import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.ui.user.UserViewActivity;
 import com.github.pockethub.android.util.AvatarLoader;
+import com.meisolsson.githubsdk.service.search.SearchService;
+import com.meisolsson.githubsdk.service.users.UserService;
 import com.google.inject.Inject;
 
 import java.util.List;
 
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static android.app.SearchManager.QUERY;
@@ -58,15 +62,28 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
         return new ResourcePager<User>() {
             @Override
             protected Object getId(User resource) {
-                return resource.id;
+                return resource.id();
             }
 
             @Override
             public PageIterator<User> createIterator(int page, int size) {
-                return new PageIterator<>(new PageIterator.GitHubRequest<List<User>>() {
+                return new PageIterator<>(new PageIterator.GitHubRequest<Page<User>>() {
                     @Override
-                    public GithubListClient<List<User>> execute(int page) {
-                        return new UsersSearchClient(query, page);
+                    public Observable<Page<User>> execute(int page) {
+                        return ServiceGenerator.createService(getContext(), SearchService.class)
+                                .searchUsers(query, null, null, page)
+                                .map(new Func1<SearchPage<User>, Page<User>>() {
+                                    @Override
+                                    public Page<User> call(SearchPage<User> userSearchPage) {
+                                        return Page.<User>builder()
+                                                .first(userSearchPage.first())
+                                                .last(userSearchPage.last())
+                                                .next(userSearchPage.next())
+                                                .prev(userSearchPage.prev())
+                                                .items(userSearchPage.items())
+                                                .build();
+                                    }
+                                });
                     }
                 }, page);
             }
@@ -108,8 +125,8 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         final User result = (User) l.getItemAtPosition(position);
-        new RequestUserClient(result.login)
-                .observable()
+        ServiceGenerator.createService(getContext(), UserService.class)
+                .getUser(result.login())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<User>bindToLifecycle())

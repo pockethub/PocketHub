@@ -21,10 +21,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 
-import com.alorma.github.sdk.bean.dto.response.Organization;
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.services.orgs.GetOrgsClient;
-import com.alorma.github.sdk.services.user.GetAuthUserClient;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Page;
+import com.meisolsson.githubsdk.model.User;
+import com.meisolsson.githubsdk.service.organizations.OrganizationService;
+import com.meisolsson.githubsdk.service.users.UserService;
 import com.google.inject.Inject;
 
 import java.io.IOException;
@@ -34,7 +35,7 @@ import java.util.List;
 /**
  * Cache of organization under an account
  */
-public class Organizations implements PersistableResource<Organization> {
+public class Organizations implements PersistableResource<User> {
 
     private final Context context;
 
@@ -60,39 +61,57 @@ public class Organizations implements PersistableResource<Organization> {
 
     @Override
     public User loadFrom(Cursor cursor) {
-        User user = new User();
-        user.id = cursor.getInt(0);
-        user.login = cursor.getString(1);
-        user.avatar_url = cursor.getString(2);
-        return user;
+        return User.builder()
+                .id(cursor.getInt(0))
+                .login(cursor.getString(1))
+                .avatarUrl(cursor.getString(2))
+                .build();
     }
 
     @Override
-    public void store(SQLiteDatabase db, List<Organization> orgs) {
+    public void store(SQLiteDatabase db, List<User> orgs) {
         db.delete("orgs", null, null);
         if (orgs.isEmpty())
             return;
 
         ContentValues values = new ContentValues(3);
-        for (Organization user : orgs) {
+        for (User user : orgs) {
             values.clear();
 
-            values.put("id", user.id);
+            values.put("id", user.id());
             db.replace("orgs", null, values);
 
-            values.put("name", user.login);
-            values.put("avatarurl", user.avatar_url);
+            values.put("name", user.login());
+            values.put("avatarurl", user.avatarUrl());
             db.replace("users", null, values);
         }
     }
 
     @Override
-    public List<Organization> request() throws IOException {
-        User user = new GetAuthUserClient().observable().toBlocking().first();
-        List<Organization> orgs = new GetOrgsClient(null).observable().toBlocking().first().first;
-        List<Organization> all = new ArrayList<>(orgs.size() + 1);
+    public List<User> request() throws IOException {
+        User user = ServiceGenerator.createService(context, UserService.class).getUser()
+                .toBlocking().first();
+
+        List<User> all = getAllOrgs();
         all.add(user);
-        all.addAll(orgs);
         return all;
+    }
+
+    private List<User> getAllOrgs(){
+        List<User> repos = new ArrayList<>();
+        int current = 1;
+        int last = -1;
+
+        while(current != last) {
+            Page<User> page = ServiceGenerator.createService(context, OrganizationService.class)
+                    .getMyOrganizations(current)
+                    .toBlocking()
+                    .first();
+            repos.addAll(page.items());
+            last = page.last() != null ? page.last() : -1;
+            current = page.next() != null ? page.next() : -1;
+        }
+
+        return repos;
     }
 }

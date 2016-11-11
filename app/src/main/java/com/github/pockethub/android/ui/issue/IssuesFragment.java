@@ -30,14 +30,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.alorma.github.sdk.bean.dto.response.Issue;
-import com.alorma.github.sdk.bean.dto.response.Label;
-import com.alorma.github.sdk.bean.dto.response.Milestone;
-import com.alorma.github.sdk.bean.dto.response.Repo;
-import com.alorma.github.sdk.bean.dto.response.User;
-import com.alorma.github.sdk.services.client.GithubListClient;
-import com.alorma.github.sdk.services.issues.GetIssuesClient;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.Label;
+import com.meisolsson.githubsdk.model.Milestone;
+import com.meisolsson.githubsdk.model.Page;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.RequestFuture;
 import com.github.pockethub.android.core.PageIterator;
@@ -48,12 +48,15 @@ import com.github.pockethub.android.core.issue.IssueStore;
 import com.github.pockethub.android.persistence.AccountDataManager;
 import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.util.AvatarLoader;
-import com.github.pockethub.android.util.InfoUtils;
 import com.github.pockethub.android.util.ToastUtils;
+import com.meisolsson.githubsdk.service.issues.IssueService;
 import com.google.inject.Inject;
 
 import java.util.Collection;
 import java.util.List;
+
+import rx.Observable;
+import rx.functions.Func1;
 
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
@@ -78,7 +81,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
     private IssueFilter filter;
 
-    private Repo repository;
+    private Repository repository;
 
     private View filterHeader;
 
@@ -152,7 +155,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
         Milestone filterMilestone = filter.getMilestone();
         if (filterMilestone != null) {
-            milestone.setText(filterMilestone.title);
+            milestone.setText(filterMilestone.title());
             milestone.setVisibility(VISIBLE);
         } else
             milestone.setVisibility(GONE);
@@ -160,7 +163,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
         User user = filter.getAssignee();
         if (user != null) {
             avatars.bind(assigneeAvatar, user);
-            assignee.setText(user.login);
+            assignee.setText(user.login());
             assigneeArea.setVisibility(VISIBLE);
         } else
             assigneeArea.setVisibility(GONE);
@@ -265,11 +268,13 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
             @Override
             public PageIterator<Issue> createIterator(int page, int size) {
-                return new PageIterator<>(new PageIterator.GitHubRequest<List<Issue>>() {
+                return new PageIterator<>(new PageIterator.GitHubRequest<Page<Issue>>() {
+
                     @Override
-                    public GithubListClient<List<Issue>> execute(int page) {
-                        return new GetIssuesClient(InfoUtils.createIssueInfo(repository, null), filter.toFilterMap(),
-                                page);
+                    public Observable<Page<Issue>> execute(int page) {
+                        return ServiceGenerator.createService(getActivity(), IssueService.class)
+                                .getRepositoryIssues(repository.owner().login(),
+                                        repository.name(), filter.toFilterMap(), page);
                     }
                 }, page);
             }

@@ -17,8 +17,8 @@ package com.github.pockethub.android.core.user;
 
 import android.net.Uri;
 
-import com.alorma.github.sdk.bean.dto.response.User;
 import com.github.pockethub.android.core.repo.RepositoryUtils;
+import com.meisolsson.githubsdk.model.User;
 
 import java.util.List;
 
@@ -43,8 +43,10 @@ public class UserUriMatcher {
         String login = segments.get(0);
         if (!RepositoryUtils.isValidOwner(login))
             return null;
-        User user = new User();
-        user.login = login;
-        return user;
+
+
+        return User.builder()
+                .login(login)
+                .build();
     }
 }

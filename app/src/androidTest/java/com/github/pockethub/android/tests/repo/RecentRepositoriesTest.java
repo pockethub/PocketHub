@@ -17,7 +17,7 @@ package com.github.pockethub.android.tests.repo;
 
 import android.test.AndroidTestCase;
 
-import com.alorma.github.sdk.bean.dto.response.User;
+import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.ui.repo.RecentRepositories;
 
 import static com.github.pockethub.android.ui.repo.RecentRepositories.MAX_SIZE;
@@ -31,8 +31,10 @@ public class RecentRepositoriesTest extends AndroidTestCase {
      * Verify bad input
      */
     public void testBadInput() {
-        User org = new User();
-        org.id = 20;
+        User org = User.builder()
+                .id(20)
+                .build();
+
         RecentRepositories recent = new RecentRepositories(getContext(), org);
         assertFalse(recent.contains(null));
         assertFalse(recent.contains(-1));
@@ -42,8 +44,10 @@ public class RecentRepositoriesTest extends AndroidTestCase {
      * Verify eviction
      */
     public void testMaxReached() {
-        User org = new User();
-        org.id = 20;
+        User org = User.builder()
+                .id(20)
+                .build();
+
         RecentRepositories recent = new RecentRepositories(getContext(), org);
 
         for (int i = 0; i < MAX_SIZE; i++) {
@@ -63,8 +67,10 @@ public class RecentRepositoriesTest extends AndroidTestCase {
      * Verify input/output to disk of {@link RecentRepositories} state
      */
     public void testIO() {
-        User org = new User();
-        org.id = 20;
+        User org = User.builder()
+                .id(20)
+                .build();
+
         RecentRepositories recent1 = new RecentRepositories(getContext(), org);
         long id = 1234;
         recent1.add(id);
@@ -78,15 +84,19 @@ public class RecentRepositoriesTest extends AndroidTestCase {
      * Verify repositories are scoped to organization
      */
     public void testScopedStorage() {
-        User org1 = new User();
-        org1.id = 20;
+        User org1 = User.builder()
+                .id(20)
+                .build();
+
         RecentRepositories recent1 = new RecentRepositories(getContext(), org1);
         long id1 = 1234;
         recent1.add(id1);
         assertTrue(recent1.contains(id1));
 
-        User org2 = new User();
-        org2.id = 40;
+        User org2 = User.builder()
+                .id(40)
+                .build();
+
         RecentRepositories recent2 = new RecentRepositories(getContext(), org2);
         assertFalse(recent2.contains(id1));
         long id2 = 2345;
