@@ -1,0 +1,2 @@
+'use strict';(function(a){"object"==typeof exports&&"object"==typeof module?a(require("../../lib/codemirror")):"function"==typeof define&&define.amd?define(["../../lib/codemirror"],a):a(CodeMirror)})(function(a){a.defineMode("diff",function(){var a={"+":"positive","-":"negative","@":"meta"};return{token:function(b){var c=b.string.search(/[\t ]+?$/);if(!b.sol()||0===c)return b.skipToEnd(),("error "+(a[b.string.charAt(0)]||"")).replace(/ $/,"");var d=a[b.peek()]||b.skipToEnd();-1===c?b.skipToEnd():
+b.pos=c;return d}}});a.defineMIME("text/x-diff","diff")});
