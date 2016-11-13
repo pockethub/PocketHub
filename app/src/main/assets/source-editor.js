@@ -35,7 +35,7 @@ window.onload = function () {
     return;
   }
 
-  CodeMirror.modeURL = "mode/%N/%N.js";
+  CodeMirror.modeURL = "code_mirror/mode/%N/%N.js";
 
   var config = {};
   config.value = SourceEditor.getContent();
