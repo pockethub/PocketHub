@@ -83,10 +83,13 @@ public class RefreshIssueTask implements Observable.OnSubscribe<FullIssue> {
         try {
             Issue issue = store.refreshIssue(repo, issueNumber);
 
-            PullRequest pull = getPullRequest(repo.owner().login(), repo.name(), issueNumber);
-            issue = issue.toBuilder()
-                    .pullRequest(pull)
-                    .build();
+            if (issue.pullRequest() != null) {
+                PullRequest pull = getPullRequest(repo.owner().login(), repo.name(), issueNumber);
+                issue = issue.toBuilder()
+                        .pullRequest(pull)
+                        .build();
+            }
+
             bodyImageGetter.encode(issue.id(), issue.bodyHtml());
 
             List<GitHubComment> comments;
