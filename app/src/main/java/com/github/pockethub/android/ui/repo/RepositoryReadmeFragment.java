@@ -7,8 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
+import android.webkit.URLUtil;
 import android.webkit.WebSettings;
 
+import com.github.pockethub.android.util.HtmlUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Content;
 import com.meisolsson.githubsdk.model.Repository;
@@ -47,7 +49,7 @@ public class RepositoryReadmeFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         webview = (WebView) view;
 
-        Repository repo = getParcelableExtra(Intents.EXTRA_REPOSITORY);
+        final Repository repo = getParcelableExtra(Intents.EXTRA_REPOSITORY);
         WebSettings settings = webview.getSettings();
         settings.setJavaScriptEnabled(true);
         webview.addJavascriptInterface(this, "Readme");
@@ -61,8 +63,11 @@ public class RepositoryReadmeFragment extends DialogFragment {
                     @Override
                     public void onNext(String s) {
                         super.onNext(s);
+                        String baseUrl = String.format("https://github.com/%s/%s/raw/%s/",
+                                repo.owner().login(), repo.name(), "master");
+
                         String data = PAGE_START + s + PAGE_END;
-                        webview.loadDataWithBaseURL("file:///android_asset/", data, "text/html", "UTF-8", null);
+                        webview.loadDataWithBaseURL(baseUrl, data, "text/html", "UTF-8", null);
                     }
                 });
     }
