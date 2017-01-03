@@ -134,8 +134,7 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
 
                     @Override
                     public void onNext(User user) {
-                        if (!AccountUtils.isUser(getActivity(), user))
-                            startActivity(UserViewActivity.createIntent(user));
+                        startActivity(UserViewActivity.createIntent(user));
                     }
                 });
     }
