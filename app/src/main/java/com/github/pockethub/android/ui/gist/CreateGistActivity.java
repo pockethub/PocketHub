@@ -15,20 +15,24 @@
  */
 package com.github.pockethub.android.ui.gist;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.BaseActivity;
-import com.github.pockethub.android.ui.MainActivity;
 import com.github.pockethub.android.ui.TextWatcherAdapter;
 import com.github.pockethub.android.util.ShareUtils;
 import com.github.pockethub.android.util.ToastUtils;
@@ -43,9 +47,6 @@ import java.util.Map;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
-import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 
 /**
  * Activity to share a text selection as a public or private Gist
@@ -62,7 +63,7 @@ public class CreateGistActivity extends BaseActivity {
 
     private CheckBox publicCheckBox;
 
-    private MenuItem createItem;
+    private MenuItem menuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,16 +71,55 @@ public class CreateGistActivity extends BaseActivity {
 
         setContentView(R.layout.activity_gist_create);
 
-        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         descriptionText = finder.find(R.id.et_gist_description);
         nameText = finder.find(R.id.et_gist_name);
         contentText = finder.find(R.id.et_gist_content);
         publicCheckBox = finder.find(R.id.cb_public);
 
+        final AppBarLayout appBarLayout = finder.find(R.id.appbar);
+
+        // Fully expand the AppBar if something in it gets focus
+        View.OnFocusChangeListener expandAppBarOnFocusChangeListener = new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus)
+                    appBarLayout.setExpanded(true);
+            }
+        };
+        nameText.setOnFocusChangeListener(expandAppBarOnFocusChangeListener);
+        descriptionText.setOnFocusChangeListener(expandAppBarOnFocusChangeListener);
+        publicCheckBox.setOnFocusChangeListener(expandAppBarOnFocusChangeListener);
+
+        // Fully expand the AppBar if something in it changes its value
+        TextWatcher expandAppBarTextWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                appBarLayout.setExpanded(true);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                appBarLayout.setExpanded(true);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                appBarLayout.setExpanded(true);
+            }
+        };
+        nameText.addTextChangedListener(expandAppBarTextWatcher);
+        descriptionText.addTextChangedListener(expandAppBarTextWatcher);
+        publicCheckBox.addTextChangedListener(expandAppBarTextWatcher);
+        publicCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                appBarLayout.setExpanded(true);
+            }
+        });
+
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(R.string.new_gist);
-        actionBar.setIcon(R.drawable.ic_github_gist_white_32dp);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         String text = ShareUtils.getBody(getIntent());
@@ -100,39 +140,34 @@ public class CreateGistActivity extends BaseActivity {
         updateCreateMenu();
     }
 
-    private void updateCreateMenu() {
-        if (contentText != null)
-            updateCreateMenu(contentText.getText());
-    }
-
-    private void updateCreateMenu(CharSequence text) {
-        if (createItem != null)
-            createItem.setEnabled(!TextUtils.isEmpty(text));
-    }
-
     @Override
-    public boolean onCreateOptionsMenu(Menu options) {
-        getMenuInflater().inflate(R.menu.activity_gist_create, options);
-        createItem = options.findItem(R.id.m_apply);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.activity_create_gist, menu);
+        menuItem = menu.findItem(R.id.create_gist);
         updateCreateMenu();
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.m_apply:
+        switch (item.getItemId()){
+            case R.id.create_gist:
                 createGist();
-                return true;
-            case android.R.id.home:
-                finish();
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void updateCreateMenu() {
+        if (contentText != null)
+            updateCreateMenu(contentText.getText());
+    }
+
+    private void updateCreateMenu(CharSequence text) {
+        if (menuItem != null)
+            menuItem.setEnabled(!TextUtils.isEmpty(text));
     }
 
     private void createGist() {

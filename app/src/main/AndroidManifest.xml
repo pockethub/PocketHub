@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.github.pockethub.android">
-
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -47,7 +47,12 @@
         <activity
             android:name="com.github.pockethub.android.ui.gist.CreateGistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/create_gist">
+            android:label="@string/create_gist"
+            android:parentActivityName="com.github.pockethub.ui.MainActivity"
+            tools:ignore="UnusedAttribute">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.github.pockethub.ui.MainActivity" />
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
