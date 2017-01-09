@@ -315,6 +315,9 @@
     <string name="organizations">Organizations</string>
     <string name="error_oauth_not_configured">You won\'t be able to login, because the oauth client and secret aren\'t set
 Read the README.md: https://github.com/pockethub/PocketHub#setup-environment</string>
+    <string name="error_image_upload">Unable to upload image</string>
+    <string name="read_permission_title">Let us explain</string>
+    <string name="read_permission_content">For us to for example upload images we need to be able to read your storage.</string>
 
 
     <string-array name="welcome_texts">
