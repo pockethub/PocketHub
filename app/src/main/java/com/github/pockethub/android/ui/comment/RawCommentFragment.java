@@ -16,6 +16,7 @@
 package com.github.pockethub.android.ui.comment;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -69,6 +70,7 @@ public class RawCommentFragment extends DialogFragment {
         addImageFab = finder.find(R.id.fab_add_image);
 
         addImageFab.setOnClickListener(new View.OnClickListener() {
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {

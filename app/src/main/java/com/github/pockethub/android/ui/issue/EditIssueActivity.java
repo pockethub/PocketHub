@@ -16,6 +16,7 @@
 package com.github.pockethub.android.ui.issue;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -226,6 +227,7 @@ public class EditIssueActivity extends BaseActivity {
         });
 
         addImageFab.setOnClickListener(new View.OnClickListener() {
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
 
