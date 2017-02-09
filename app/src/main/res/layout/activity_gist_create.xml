@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2015 PocketHub
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ToolbarTheme" >
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+            app:titleEnabled="false"
+            app:toolbarId="@+id/toolbar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="?attr/actionBarSize"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/activity_content_padding"
+                android:paddingRight="@dimen/activity_content_padding"
+                app:layout_collapseMode="parallax">
+
+                <android.support.design.widget.TextInputLayout
+                    style="@style/InputTextLayout">
+
+                    <EditText
+                        android:id="@+id/et_gist_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/description"
+                        android:inputType="textCapSentences|textMultiLine"
+                        android:maxLines="3"
+                        android:nextFocusDown="@+id/et_gist_name"
+                        android:nextFocusForward="@+id/et_gist_name" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    style="@style/InputTextLayout">
+
+                    <EditText
+                        android:id="@+id/et_gist_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/file_name"
+                        android:inputType="textNoSuggestions|textUri"
+                        android:nextFocusDown="@+id/cb_public"
+                        android:nextFocusForward="@+id/cb_public"
+                        android:nextFocusUp="@id/et_gist_description"
+                        android:singleLine="true" />
+                </android.support.design.widget.TextInputLayout>
+
+                <CheckBox
+                    android:id="@+id/cb_public"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:minHeight="@dimen/touch_target"
+                    android:nextFocusDown="@+id/et_gist_content"
+                    android:nextFocusForward="@+id/et_gist_content"
+                    android:nextFocusUp="@id/et_gist_name"
+                    android:text="@string/make_public" />
+            </LinearLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:layout_collapseMode="pin"/>
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <EditText
+            android:id="@+id/et_gist_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:elegantTextHeight="true"
+            android:fitsSystemWindows="false"
+            android:hint="@string/file_content"
+            android:imeOptions="actionDone"
+            android:inputType="textLongMessage|text|textMultiLine"
+            android:nextFocusUp="@id/cb_public"
+            android:padding="@dimen/activity_content_padding"
+            android:scrollHorizontally="true"
+            android:singleLine="false"
+            android:typeface="monospace"
+            tools:text="A very very very very very very very very very very very very very very very long line">
+
+            <requestFocus/>
+        </EditText>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

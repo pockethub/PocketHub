@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2015 PocketHub
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ToolbarTheme"
+        android:minHeight="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:layout_alignParentTop="true"
+        android:id="@+id/toolbar" />
+
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        style="@style/Spinner"
+        android:layout_centerInParent="true"
+        android:layout_width="64dp"
+        android:layout_height="64dp" />
+
+    <ScrollView
+        android:id="@+id/sv_issue_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                style="@style/HeaderTitleText"
+                android:text="@string/title" />
+
+            <EditText
+                android:id="@+id/et_issue_title"
+                style="@style/FormalSingleLineEditText"
+                android:layout_width="match_parent" />
+
+            <TextView
+                android:id="@+id/tv_labels_label"
+                style="@style/HeaderTitleText"
+                android:paddingTop="5dp"
+                android:text="@string/labels"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/ll_labels"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/inset_background"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_labels"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_assignee_label"
+                style="@style/HeaderTitleText"
+                android:paddingTop="5dp"
+                android:text="@string/assignee"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/ll_assignee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/inset_background"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/iv_assignee_avatar"
+                    style="@style/AvatarMedium"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:contentDescription="@string/avatar" />
+
+                <TextView
+                    android:id="@+id/tv_assignee_name"
+                    style="@style/ListSubtitleText"
+                    android:singleLine="true"
+                    android:textColor="@color/text" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_milestone_label"
+                style="@style/HeaderTitleText"
+                android:paddingTop="5dp"
+                android:text="@string/milestone"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/ll_milestone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/inset_background"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_milestone"
+                    style="@style/ListSubtitleText"
+                    android:singleLine="true"
+                    android:textColor="@color/text" />
+
+                <include layout="@layout/milestone" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/HeaderTitleText"
+                android:paddingTop="5dp"
+                android:text="@string/description" />
+
+            <EditText
+                android:id="@+id/et_issue_body"
+                style="@style/FormalMultiLineEditText"
+                android:layout_width="match_parent"
+                android:minLines="5"
+                android:scrollbars="horizontal|vertical" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

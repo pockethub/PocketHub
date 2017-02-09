@@ -1,0 +1,21 @@
+body {
+  padding: 0;
+  margin: 0;
+  font-size: 12px;
+}
+
+.CodeMirror {
+  height: auto;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  line-height: 1.4em;
+}
+
+img {
+  display: block;
+  border: 1px solid #999;
+  padding: 1px;
+  margin-top: 10px;
+  margin-left: 10px;
+  background: url("trans_bg.gif") right bottom #EEE;
+}

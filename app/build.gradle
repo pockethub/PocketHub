@@ -1,0 +1,135 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.github.ben-manes.versions'   // ./gradlew dependencyUpdates -Drevision=release
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+// Manifest version information!
+def versionMajor = 0
+def versionMinor = 2
+def versionPatch = 1
+def versionBuild = 0 // bump for dogfood builds, public betas, etc.
+
+def isTravis = "true".equals(System.getenv("TRAVIS"))
+def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
+def clientIdIsNotSet = true;
+def clientSecretIsNotSet = true;
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.0'
+
+    defaultConfig {
+        applicationId 'com.github.pockethub.android'
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        vectorDrawables.useSupportLibrary = true
+
+        if (project.hasProperty('pockethub_github_client')) {
+            resValue "string", "github_client", pockethub_github_client
+            clientIdIsNotSet = false
+        } else {
+            resValue "string", "github_client", "dummy_client"
+        }
+
+        if (project.hasProperty('pockethub_github_secret')) {
+            resValue "string", "github_secret", pockethub_github_secret
+            clientSecretIsNotSet = false
+        } else {
+            resValue "string", "github_secret", "dummy_secret"
+        }
+
+        if (clientIdIsNotSet || clientSecretIsNotSet) {
+            logger.warn("You won't be able to login, because the oauth client or secret isn't set")
+            logger.warn("Read the README.md: https://github.com/pockethub/PocketHub#setup-environment")
+        }
+
+        if (project.hasProperty('pockethub_bugsnag_api_key')) {
+            resValue "string", "bugsnag_api_key", pockethub_bugsnag_api_key
+        } else {
+            resValue "string", "bugsnag_api_key", "bugsnag-api-key"
+        }
+
+        String oauth = ""
+        if (project.hasProperty('pockethub_github_callback')) {
+            oauth = pockethub_github_callback
+        } else {
+            oauth = "http://dummy.example.com"
+        }
+
+        resValue "string", "github_oauth", oauth
+        resValue "string", "github_oauth_scheme", oauth.split("://")[0]
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+
+    lintOptions {
+        warning 'MissingTranslation'
+        abortOnError true
+        check 'NewApi', 'InlinedApi'
+        fatal 'NewApi', 'InlinedApi'
+        checkReleaseBuilds true
+        
+        textReport isTravis
+        textOutput 'stdout'
+        
+        htmlReport !isTravis
+        xmlReport !isTravis
+    }
+
+    dexOptions {
+        // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
+        preDexLibraries = preDexEnabled && !isTravis
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    def supportVersion = '25.0.0'
+    compile "com.android.support:appcompat-v7:$supportVersion"
+    compile "com.android.support:support-v4:$supportVersion"
+    compile "com.android.support:design:$supportVersion"
+
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.squareup.okhttp:okhttp:2.7.0'
+
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'com.trello:rxlifecycle:0.4.0'
+    compile 'com.bugsnag:bugsnag-android:3.2.7'
+    compile 'org.roboguice:roboguice:2.0'
+
+    compile 'com.github.meisolsson:githubsdk:0.1.8'
+
+    compile ('com.google.inject.extensions:guice-assistedinject:3.0'){
+        exclude group: 'com.google.inject'
+    }
+    compile 'com.afollestad.material-dialogs:core:0.9.1.0'
+
+    //Self compiled .aar version of wishlist
+    compile (name:'lib', ext:'aar')
+
+    //Libs for testing
+    testCompile 'junit:junit:4.12'
+    testCompile "org.mockito:mockito-core:1.9.5"
+    testCompile('org.robolectric:robolectric:3.0') {
+        exclude group: 'commons-logging', module: 'commons-logging'
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    }
+}
