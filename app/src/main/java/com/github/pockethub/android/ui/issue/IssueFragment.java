@@ -512,7 +512,7 @@ public class IssueFragment extends DialogFragment {
             final GitHubComment comment = arguments.getParcelable(EXTRA_COMMENT);
 
             ServiceGenerator.createService(getActivity(), IssueCommentService.class)
-                    .deleteIssueComment(repositoryId.owner().login(), repositoryId.name(), issueNumber, comment.id())
+                    .deleteIssueComment(repositoryId.owner().login(), repositoryId.name(), comment.id())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(this.<Response<Boolean>>bindToLifecycle())
