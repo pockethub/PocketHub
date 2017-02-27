@@ -108,7 +108,7 @@ public class EditCommentActivity extends
 
         ServiceGenerator.createService(this, IssueCommentService.class)
                 .editIssueComment(repositoryId.owner().login(), repositoryId.name(),
-                        issueNumber, comment.id(), commentRequest)
+                        comment.id(), commentRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<GitHubComment>bindToLifecycle())
