@@ -40,6 +40,8 @@ import com.meisolsson.githubsdk.model.request.RequestToken;
 import com.meisolsson.githubsdk.service.OAuthService;
 import com.meisolsson.githubsdk.service.users.UserService;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.HttpUrl;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -69,10 +71,7 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
 
     private static final String TAG = "LoginActivity";
 
-    /**
-     * Sync period in seconds, currently every 8 hours
-     */
-    private static final long SYNC_PERIOD = 8L * 60L * 60L;
+    private static final long SYNC_PERIOD = TimeUnit.HOURS.toSeconds(8);
     private String clientId;
     private String secret;
     private String redirectUri;
