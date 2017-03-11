@@ -112,7 +112,7 @@ public class EditIssuesFilterActivity extends BaseActivity {
         avatars.bind(actionBar, repository.owner());
 
         OnClickListener assigneeListener = new OnClickListener() {
-
+            @Override
             public void onClick(View v) {
                 if (assigneeDialog == null)
                     assigneeDialog = new AssigneeDialog(
@@ -127,7 +127,7 @@ public class EditIssuesFilterActivity extends BaseActivity {
         assigneeText.setOnClickListener(assigneeListener);
 
         OnClickListener milestoneListener = new OnClickListener() {
-
+            @Override
             public void onClick(View v) {
                 if (milestoneDialog == null)
                     milestoneDialog = new MilestoneDialog(
@@ -142,7 +142,7 @@ public class EditIssuesFilterActivity extends BaseActivity {
         milestoneText.setOnClickListener(milestoneListener);
 
         OnClickListener labelsListener = new OnClickListener() {
-
+            @Override
             public void onClick(View v) {
                 if (labelsDialog == null)
                     labelsDialog = new LabelsDialog(
@@ -163,7 +163,7 @@ public class EditIssuesFilterActivity extends BaseActivity {
         RadioButton openButton = (RadioButton) findViewById(R.id.rb_open);
 
         openButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
+            @Override
             public void onCheckedChanged(CompoundButton buttonView,
                 boolean isChecked) {
                 if (isChecked)
@@ -174,7 +174,7 @@ public class EditIssuesFilterActivity extends BaseActivity {
         RadioButton closedButton = (RadioButton) findViewById(R.id.rb_closed);
 
         closedButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
+            @Override
             public void onCheckedChanged(CompoundButton buttonView,
                 boolean isChecked) {
                 if (isChecked)

@@ -88,6 +88,7 @@ public abstract class FragmentPagerAdapter extends
         return selected;
     }
 
+    @Override
     public Object instantiateItem(ViewGroup container, int position) {
         Object fragment = super.instantiateItem(container, position);
         containerId = container.getId();

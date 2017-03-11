@@ -177,6 +177,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         avatars.bind(finder.imageView(R.id.iv_owner_avatar), owner);
         finder.setText(R.id.tv_owner_name, getString(R.string.navigate_to_user, owner.login()));
         finder.onClick(R.id.ll_owner_area, new OnClickListener() {
+            @Override
             public void onClick(View v) {
                 dialogHolder[0].dismiss();
                 viewUser(owner);
@@ -187,6 +188,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
             finder.find(R.id.divider).setVisibility(View.VISIBLE);
             finder.find(R.id.ll_recent_repo_area).setVisibility(View.VISIBLE);
             finder.onClick(R.id.ll_recent_repo_area, new OnClickListener() {
+                @Override
                 public void onClick(View v) {
                     dialogHolder[0].dismiss();
                     recentRepos.remove(repo);

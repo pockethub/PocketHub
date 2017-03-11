@@ -429,6 +429,7 @@ public class CommitDiffListFragment extends DialogFragment implements
                 + CommitUtils.abbreviate(commit));
 
         finder.find(R.id.ll_view_area).setOnClickListener(new OnClickListener() {
+            @Override
             public void onClick(View v) {
                 dialogHolder[0].dismiss();
                 openFile(file);
@@ -437,6 +438,7 @@ public class CommitDiffListFragment extends DialogFragment implements
 
         finder.find(R.id.ll_comment_area).setOnClickListener(
                 new OnClickListener() {
+                    @Override
                     public void onClick(View v) {
                         dialogHolder[0].dismiss();
                         startActivityForResult(CreateCommentActivity

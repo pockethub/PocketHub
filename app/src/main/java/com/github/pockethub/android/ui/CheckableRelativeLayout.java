@@ -35,16 +35,19 @@ public class CheckableRelativeLayout extends RelativeLayout implements Checkable
         super(context, attrs);
     }
 
+    @Override
     public boolean isChecked() {
         return checked;
     }
 
+    @Override
     public void setChecked(boolean b) {
         checked = b;
         refreshDrawableState();
         forceLayout();
     }
 
+    @Override
     public void toggle() {
         checked = !checked;
     }

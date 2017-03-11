@@ -131,6 +131,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
     private List<View> fileHeaders = new ArrayList<>();
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         gistId = getArguments().getString(EXTRA_GIST_ID);
@@ -359,6 +360,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
             if (comments != null && comment != null) {
                 int position = Collections.binarySearch(comments, comment,
                         new Comparator<GitHubComment>() {
+                            @Override
                             public int compare(GitHubComment lhs, GitHubComment rhs) {
                                 return Integer.valueOf(lhs.id()).compareTo(rhs.id());
                             }
@@ -472,6 +474,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                             if (comments != null) {
                                 int position = Collections.binarySearch(comments,
                                         comment, new Comparator<GitHubComment>() {
+                                            @Override
                                             public int compare(GitHubComment lhs, GitHubComment rhs) {
                                                 return Integer.valueOf(lhs.id())
                                                         .compareTo(rhs.id());
@@ -498,6 +501,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
      * Edit existing comment
      */
     final EditCommentListener editCommentListener = new EditCommentListener() {
+        @Override
         public void onEditComment(GitHubComment comment) {
             startActivityForResult(
                     EditCommentActivity.createIntent(gist, comment),
@@ -509,6 +513,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
      * Delete existing comment
      */
     final DeleteCommentListener deleteCommentListener = new DeleteCommentListener() {
+        @Override
         public void onDeleteComment(GitHubComment comment) {
             Bundle args = new Bundle();
             args.putParcelable(EXTRA_COMMENT, comment);

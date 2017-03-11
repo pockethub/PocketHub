@@ -47,6 +47,7 @@ public class MembersFragment extends ItemListFragment<User> {
     @Inject
     private AvatarLoader avatars;
 
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 

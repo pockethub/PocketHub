@@ -29,6 +29,7 @@ public class AccountAuthenticatorService extends Service {
 
     private static AccountAuthenticator AUTHENTICATOR;
 
+    @Override
     public IBinder onBind(Intent intent) {
         return intent.getAction().equals(ACTION_AUTHENTICATOR_INTENT) ? getAuthenticator()
                 .getIBinder() : null;

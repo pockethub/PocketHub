@@ -133,6 +133,7 @@ public class CommitListFragment extends PagedItemFragment<Commit>
         };
     }
 
+    @Override
     public void onLoadFinished(Loader<List<Commit>> loader, List<Commit> items) {
         super.onLoadFinished(loader, items);
 

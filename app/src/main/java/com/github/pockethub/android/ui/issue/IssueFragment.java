@@ -672,6 +672,7 @@ public class IssueFragment extends DialogFragment {
      * Edit existing comment
      */
     final EditCommentListener editCommentListener = new EditCommentListener() {
+        @Override
         public void onEditComment(GitHubComment comment) {
             startActivityForResult(EditCommentActivity.createIntent(
                     repositoryId, issueNumber, comment, user), COMMENT_EDIT);
@@ -682,6 +683,7 @@ public class IssueFragment extends DialogFragment {
      * Delete existing comment
      */
     final DeleteCommentListener deleteCommentListener = new DeleteCommentListener() {
+        @Override
         public void onDeleteComment(GitHubComment comment) {
             Bundle args = new Bundle();
             args.putParcelable(EXTRA_COMMENT, comment);
