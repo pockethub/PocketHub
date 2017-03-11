@@ -1,0 +1,23 @@
+apply plugin: 'checkstyle'
+
+check.dependsOn 'checkstyle'
+
+checkstyle {
+    toolVersion = '7.5.1'
+}
+
+task checkstyle(type: Checkstyle) {
+    configFile file("${project.rootDir}/script/style/checkstyle.xml")
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    classpath = files()
+
+    reports {
+        html {
+            enabled true
+            destination "$project.buildDir/reports/checkstyle/checkstyle.html"
+        }
+    }
+}
