@@ -226,7 +226,7 @@ public class AccountUtils {
             throw e;
         } catch (AuthenticatorConflictException e) {
             activity.runOnUiThread(new Runnable() {
-
+                @Override
                 public void run() {
                     showConflictMessage(activity);
                 }
@@ -276,7 +276,7 @@ public class AccountUtils {
                 return false;
             } catch (AuthenticatorConflictException e) {
                 activity.runOnUiThread(new Runnable() {
-
+                    @Override
                     public void run() {
                         showConflictMessage(activity);
                     }

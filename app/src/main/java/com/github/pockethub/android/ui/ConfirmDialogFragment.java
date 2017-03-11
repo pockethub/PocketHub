@@ -69,6 +69,7 @@ public class ConfirmDialogFragment extends DialogFragmentHelper implements
         show(activity, new ConfirmDialogFragment(), arguments, TAG);
     }
 
+    @Override
     @NonNull
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
         return new MaterialDialog.Builder(getActivity())

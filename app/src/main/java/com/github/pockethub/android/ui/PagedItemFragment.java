@@ -71,6 +71,7 @@ public abstract class PagedItemFragment<E> extends ItemListFragment<E>
      * @param activity
      * @param listView
      */
+    @Override
     protected void configureList(Activity activity, ListView listView) {
         super.configureList(activity, listView);
 

@@ -91,6 +91,7 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
         return POSITION_NONE;
     }
 
+    @Override
     public Object instantiateItem(ViewGroup container, int position) {
         Object fragment = super.instantiateItem(container, position);
         if (fragment instanceof Fragment)

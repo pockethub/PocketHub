@@ -88,7 +88,7 @@ public class SearchIssueListFragment extends ItemListFragment<Issue>
     @Override
     public Loader<List<Issue>> onCreateLoader(int id, Bundle args) {
         return new ThrowableLoader<List<Issue>>(getActivity(), items) {
-
+            @Override
             public List<Issue> loadData() throws Exception {
                 if (repository == null)
                     return Collections.emptyList();

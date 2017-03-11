@@ -88,14 +88,14 @@ public class GistFilesViewActivityTest extends
             id.vp_pages);
         assertEquals(0, pager.getCurrentItem());
         ui(new Runnable() {
-
+            @Override
             public void run() {
                 pager.setCurrentItem(1, true);
             }
         });
         assertEquals(1, pager.getCurrentItem());
         ui(new Runnable() {
-
+            @Override
             public void run() {
                 pager.setCurrentItem(0, true);
             }

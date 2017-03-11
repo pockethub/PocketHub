@@ -101,6 +101,7 @@ public class GistFileFragment extends DialogFragment implements
         codePrefs.unregisterOnSharedPreferenceChangeListener(this);
     }
 
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
     }

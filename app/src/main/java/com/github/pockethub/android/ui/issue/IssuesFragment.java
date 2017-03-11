@@ -218,7 +218,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
             return true;
         case R.id.m_bookmark:
             cache.addIssueFilter(filter, new RequestFuture<IssueFilter>() {
-
+                @Override
                 public void success(IssueFilter response) {
                     ToastUtils.show(getActivity(), R.string.message_filter_saved);
                 }

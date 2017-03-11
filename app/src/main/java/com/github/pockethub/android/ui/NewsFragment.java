@@ -164,14 +164,14 @@ public abstract class NewsFragment extends PagedItemFragment<GitHubEvent> {
             finder.setText(R.id.tv_login, user.login());
             finder.setText(R.id.tv_repo_name, InfoUtils.createRepoId(repo));
             finder.onClick(R.id.ll_user_area, new OnClickListener() {
-
+                @Override
                 public void onClick(View v) {
                     dialogHolder[0].dismiss();
                     viewUser(user);
                 }
             });
             finder.onClick(R.id.ll_repo_area, new OnClickListener() {
-
+                @Override
                 public void onClick(View v) {
                     dialogHolder[0].dismiss();
                     viewRepository(repo);

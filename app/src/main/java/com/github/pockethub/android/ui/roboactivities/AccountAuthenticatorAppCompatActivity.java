@@ -132,6 +132,7 @@ public class AccountAuthenticatorAppCompatActivity extends AppCompatActivity imp
     /**
      * Sends the result or a Constants.ERROR_CODE_CANCELED error if a result isn't present.
      */
+    @Override
     public void finish() {
         if (mAccountAuthenticatorResponse != null) {
             // send the result bundle back if set, otherwise send an error.

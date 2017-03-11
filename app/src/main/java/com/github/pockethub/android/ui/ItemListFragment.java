@@ -202,6 +202,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      */
     protected abstract int getErrorMessage(Exception exception);
 
+    @Override
     public void onLoadFinished(Loader<List<E>> loader, List<E> items) {
         if (!isUsable())
             return;

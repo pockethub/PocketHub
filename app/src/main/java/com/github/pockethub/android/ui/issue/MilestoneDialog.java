@@ -92,6 +92,7 @@ public class MilestoneDialog extends BaseProgressDialog {
             public void onCompleted() {
                 super.onCompleted();
                 Collections.sort(milestones, new Comparator<Milestone>() {
+                    @Override
                     public int compare(Milestone m1, Milestone m2) {
                         return CASE_INSENSITIVE_ORDER.compare(m1.title(),
                                 m2.title());

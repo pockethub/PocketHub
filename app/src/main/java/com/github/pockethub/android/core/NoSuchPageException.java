@@ -27,10 +27,12 @@ public class NoSuchPageException extends NoSuchElementException {
         this.cause = cause;
     }
 
+    @Override
     public String getMessage() {
         return this.cause != null ? this.cause.getMessage() : super.getMessage();
     }
 
+    @Override
     public IOException getCause() {
         return this.cause;
     }

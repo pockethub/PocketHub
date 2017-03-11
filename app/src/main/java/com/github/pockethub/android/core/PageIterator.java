@@ -44,14 +44,17 @@ public class PageIterator<V> implements Iterator<List>, Iterable<List> {
         return this.lastPage;
     }
 
+    @Override
     public boolean hasNext() {
         return (this.nextPage != null && this.nextPage == 1) || this.lastPage != null;
     }
 
+    @Override
     public void remove() {
         throw new UnsupportedOperationException("Remove not supported");
     }
 
+    @Override
     public List<V> next() {
         if(!this.hasNext()) {
             throw new NoSuchElementException();
@@ -70,6 +73,7 @@ public class PageIterator<V> implements Iterator<List>, Iterable<List> {
         return this.request;
     }
 
+    @Override
     public Iterator<List> iterator() {
         return this;
     }
