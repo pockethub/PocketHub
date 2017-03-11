@@ -47,8 +47,9 @@ public class ToastUtils {
      * @param resId
      */
     public static void show(final Activity activity, final int resId) {
-        if (activity == null)
+        if (activity == null) {
             return;
+        }
 
         show(activity, activity.getString(resId));
     }
@@ -67,8 +68,9 @@ public class ToastUtils {
      */
     public static void show(final Activity activity, final Throwable e,
             final int defaultMessage) {
-        if (activity == null)
+        if (activity == null) {
             return;
+        }
 
         String message = activity.getString(defaultMessage);
 

@@ -34,13 +34,15 @@ public class GistEventMatcher {
      * @return gist or null if event doesn't apply
      */
     public Gist getGist(final GitHubEvent event) {
-        if (event == null || event.payload() == null)
+        if (event == null || event.payload() == null) {
             return null;
+        }
 
         GitHubEventType type = event.type();
-        if (EventType.GistEvent.equals(type))
+        if (EventType.GistEvent.equals(type)) {
             return ((GistPayload) event.payload()).gist();
-        else
+        } else {
             return null;
+        }
     }
 }

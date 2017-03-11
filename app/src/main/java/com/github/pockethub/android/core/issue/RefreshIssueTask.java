@@ -93,13 +93,15 @@ public class RefreshIssueTask implements Observable.OnSubscribe<FullIssue> {
             bodyImageGetter.encode(issue.id(), issue.bodyHtml());
 
             List<GitHubComment> comments;
-            if(issue.comments() > 0)
+            if(issue.comments() > 0) {
                 comments = getAllComments(repo.owner().login(), repo.name(), issueNumber);
-            else
+            } else {
                 comments = Collections.emptyList();
+            }
 
-            for (GitHubComment comment : comments)
+            for (GitHubComment comment : comments) {
                 commentImageGetter.encode(comment.id(), comment.bodyHtml());
+            }
 
             List<IssueEvent> events = getAllEvents(repo.owner().login(), repo.name(), issueNumber);
             subscriber.onNext(new FullIssue(issue, comments, events));

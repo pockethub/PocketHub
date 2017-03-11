@@ -64,8 +64,9 @@ public class StyledText extends SpannableStringBuilder {
 
     @Override
     public StyledText append(CharSequence text) {
-        if (text != null)
+        if (text != null) {
             super.append(text);
+        }
         return this;
     }
 
@@ -182,8 +183,9 @@ public class StyledText extends SpannableStringBuilder {
             append(time.subSequence(0, 1).toString()
                     .toLowerCase(Locale.getDefault()));
             append(time.subSequence(1, timeLength));
-        } else
+        } else {
             append(time);
+        }
 
         return this;
     }

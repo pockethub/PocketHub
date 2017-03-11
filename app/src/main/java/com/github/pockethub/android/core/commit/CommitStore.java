@@ -68,8 +68,9 @@ public class CommitStore extends ItemStore {
      */
     public Commit addCommit(Repository repo, Commit commit) {
         Commit current = getCommit(repo, commit.sha());
-        if (current != null && current.equals(commit))
+        if (current != null && current.equals(commit)) {
             return current;
+        }
 
         String repoId = InfoUtils.createRepoId(repo);
         ItemReferences<Commit> repoCommits = commits.get(repoId);

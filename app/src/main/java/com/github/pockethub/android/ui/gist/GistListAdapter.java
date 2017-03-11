@@ -81,19 +81,21 @@ public class GistListAdapter extends SingleTypeAdapter<Gist> {
         setText(0, gist.id());
 
         String description = gist.description();
-        if (!TextUtils.isEmpty(description))
+        if (!TextUtils.isEmpty(description)) {
             setText(1, description);
-        else
+        } else {
             setText(1, R.string.no_description_given);
+        }
 
         User user = gist.owner();
         avatars.bind(imageView(5), user);
 
         StyledText authorText = new StyledText();
-        if (user != null)
+        if (user != null) {
             authorText.bold(user.login());
-        else
+        } else {
             authorText.bold(anonymous);
+        }
         authorText.append(' ');
         authorText.append(gist.createdAt());
         setText(2, authorText);

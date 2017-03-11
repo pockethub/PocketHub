@@ -132,8 +132,9 @@ public class OrganizationRepositories implements
     public void store(SQLiteDatabase db, List<Repository> repos) {
         db.delete("repos", "orgId=?",
                 new String[] { Integer.toString(org.id()) });
-        if (repos.isEmpty())
+        if (repos.isEmpty()) {
             return;
+        }
 
         ContentValues values = new ContentValues(12);
         for (Repository repo : repos) {
@@ -178,10 +179,12 @@ public class OrganizationRepositories implements
                                            final Repository repo2) {
                             final long id1 = repo1.id();
                             final long id2 = repo2.id();
-                            if (id1 > id2)
+                            if (id1 > id2) {
                                 return 1;
-                            if (id1 < id2)
+                            }
+                            if (id1 < id2) {
                                 return -1;
+                            }
                             return 0;
                         }
                     });
@@ -200,13 +203,14 @@ public class OrganizationRepositories implements
                 }
             }));
             return new ArrayList<>(all);
-        } else
+        } else {
             return getAllItems(new PageIterator.GitHubRequest<Page<Repository>>() {
                 @Override
                 public Observable<Page<Repository>> execute(int page) {
                     return ServiceGenerator.createService(context, RepositoryService.class).getOrganizationRepositories(org.login(), page);
                 }
             });
+        }
     }
 
     private List<Repository> getAllItems(PageIterator.GitHubRequest<Page<Repository>> request){

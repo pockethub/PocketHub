@@ -84,8 +84,9 @@ public class CreateGistActivity extends BaseActivity {
         View.OnFocusChangeListener expandAppBarOnFocusChangeListener = new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus)
+                if (hasFocus) {
                     appBarLayout.setExpanded(true);
+                }
             }
         };
         nameText.setOnFocusChangeListener(expandAppBarOnFocusChangeListener);
@@ -123,12 +124,14 @@ public class CreateGistActivity extends BaseActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         String text = ShareUtils.getBody(getIntent());
-        if (!TextUtils.isEmpty(text))
+        if (!TextUtils.isEmpty(text)) {
             contentText.setText(text);
+        }
 
         String subject = ShareUtils.getSubject(getIntent());
-        if (!TextUtils.isEmpty(subject))
+        if (!TextUtils.isEmpty(subject)) {
             descriptionText.setText(subject);
+        }
 
         contentText.addTextChangedListener(new TextWatcherAdapter() {
 
@@ -161,13 +164,15 @@ public class CreateGistActivity extends BaseActivity {
     }
 
     private void updateCreateMenu() {
-        if (contentText != null)
+        if (contentText != null) {
             updateCreateMenu(contentText.getText());
+        }
     }
 
     private void updateCreateMenu(CharSequence text) {
-        if (menuItem != null)
+        if (menuItem != null) {
             menuItem.setEnabled(!TextUtils.isEmpty(text));
+        }
     }
 
     private void createGist() {

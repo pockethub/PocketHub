@@ -42,10 +42,11 @@ public class GistFilesPagerAdapter extends FragmentPagerAdapter {
         super(activity);
 
         Map<String, GistFile> gistFiles = gist.files();
-        if (gistFiles != null && !gistFiles.isEmpty())
+        if (gistFiles != null && !gistFiles.isEmpty()) {
             files = gistFiles.values().toArray(new GistFile[gistFiles.size()]);
-        else
+        } else {
             files = new GistFile[0];
+        }
     }
 
     @Override

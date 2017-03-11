@@ -36,24 +36,30 @@ public class CommitUriMatcher {
      */
     public static CommitMatch getCommit(Uri uri) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null)
+        if (segments == null) {
             return null;
-        if (segments.size() < 4)
+        }
+        if (segments.size() < 4) {
             return null;
-        if (!"commit".equals(segments.get(2)))
+        }
+        if (!"commit".equals(segments.get(2))) {
             return null;
+        }
 
         String repoOwner = segments.get(0);
-        if (!RepositoryUtils.isValidOwner(repoOwner))
+        if (!RepositoryUtils.isValidOwner(repoOwner)) {
             return null;
+        }
 
         String repoName = segments.get(1);
-        if (!RepositoryUtils.isValidRepo(repoName))
+        if (!RepositoryUtils.isValidRepo(repoName)) {
             return null;
+        }
 
         String commit = segments.get(3);
-        if (!CommitUtils.isValidCommit(commit))
+        if (!CommitUtils.isValidCommit(commit)) {
             return null;
+        }
 
         Repository repository = InfoUtils.createRepoFromData(repoOwner, repoName);
         return new CommitMatch(repository, commit);

@@ -131,11 +131,13 @@ public class IssuesViewActivity extends PagerActivity {
             Repository issueRepo = issue.repository();
             if (issueRepo != null) {
                 User owner = issueRepo.owner();
-                if (owner != null)
+                if (owner != null) {
                     repoId = InfoUtils.createRepoFromData(owner.login(), issueRepo.name());
+                }
             }
-            if (repoId == null)
+            if (repoId == null) {
                 repoId = InfoUtils.createRepoFromUrl(issue.htmlUrl());
+            }
             repos.add(repoId);
         }
 
@@ -211,8 +213,9 @@ public class IssuesViewActivity extends PagerActivity {
     }
 
     private void repositoryLoaded(Repository repo) {
-        if (issueNumbers.length == 1 && (user.get() == null || user.get().avatarUrl() == null))
+        if (issueNumbers.length == 1 && (user.get() == null || user.get().avatarUrl() == null)) {
             avatars.bind(getSupportActionBar(), repo.owner());
+        }
 
         canWrite = repo.permissions() != null && (repo.permissions().admin() || repo.permissions().push());
 
@@ -224,10 +227,11 @@ public class IssuesViewActivity extends PagerActivity {
         int initialPosition = getIntExtra(EXTRA_POSITION);
         pager = finder.find(R.id.vp_pages);
 
-        if (repo != null)
+        if (repo != null) {
             adapter = new IssuesPagerAdapter(this, repo, issueNumbers, canWrite);
-        else
+        } else {
             adapter = new IssuesPagerAdapter(this, repoIds, issueNumbers, store, canWrite);
+        }
         pager.setAdapter(adapter);
 
         pager.setOnPageChangeListener(this);
@@ -239,12 +243,13 @@ public class IssuesViewActivity extends PagerActivity {
         int number = issueNumbers[position];
         boolean pullRequest = pullRequests[position];
 
-        if (pullRequest)
+        if (pullRequest) {
             getSupportActionBar().setTitle(
-                getString(R.string.pull_request_title) + number);
-        else
+                    getString(R.string.pull_request_title) + number);
+        } else {
             getSupportActionBar().setTitle(
-                getString(R.string.issue_title) + number);
+                    getString(R.string.issue_title) + number);
+        }
     }
 
     @Override
@@ -256,8 +261,9 @@ public class IssuesViewActivity extends PagerActivity {
             return;
         }
 
-        if (repoIds == null)
+        if (repoIds == null) {
             return;
+        }
 
         ActionBar actionBar = getSupportActionBar();
         repo = repoIds.get(position);
@@ -270,10 +276,12 @@ public class IssuesViewActivity extends PagerActivity {
                 if (fullRepo != null && fullRepo.owner() != null) {
                     user.set(fullRepo.owner());
                     avatars.bind(actionBar, user);
-                } else
+                } else {
                     actionBar.setLogo(null);
-            } else
+                }
+            } else {
                 actionBar.setLogo(null);
+            }
         } else {
             actionBar.setSubtitle(null);
             actionBar.setLogo(null);
@@ -289,10 +297,11 @@ public class IssuesViewActivity extends PagerActivity {
     @Override
     public void startActivity(Intent intent) {
         Intent converted = UriLauncherActivity.convert(intent);
-        if (converted != null)
+        if (converted != null) {
             super.startActivity(converted);
-        else
+        } else {
             super.startActivity(intent);
+        }
     }
 
     @Override
@@ -317,8 +326,9 @@ public class IssuesViewActivity extends PagerActivity {
                     if (repoId != null) {
                         Issue issue = store.getIssue(repoId,
                             issueNumbers[position]);
-                        if (issue != null)
+                        if (issue != null) {
                             repository = issue.repository();
+                        }
                     }
                 }
                 if (repository != null) {

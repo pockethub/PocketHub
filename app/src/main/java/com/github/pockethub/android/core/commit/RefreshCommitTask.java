@@ -81,8 +81,9 @@ public class RefreshCommitTask implements Observable.OnSubscribe<FullCommit> {
                     imageGetter.encode(comment, comment.bodyHtml());
                 }
                 subscriber.onNext(new FullCommit(commit, comments));
-            } else
+            } else {
                 subscriber.onNext(new FullCommit(commit));
+            }
         }catch (IOException e){
             subscriber.onError(e);
         }

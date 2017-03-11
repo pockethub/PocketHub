@@ -68,10 +68,11 @@ public class RefreshGistTask implements Observable.OnSubscribe<FullGist> {
         try {
             Gist gist = store.refreshGist(id);
             List<GitHubComment> comments;
-            if (gist.comments() > 0)
+            if (gist.comments() > 0) {
                 comments = ServiceGenerator.createService(context, GistCommentService.class).getGistComments(id, 0).toBlocking().first().items();
-            else
+            } else {
                 comments = Collections.emptyList();
+            }
 
             for (GitHubComment comment : comments) {
                 imageGetter.encode(comment, comment.bodyHtml());

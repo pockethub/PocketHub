@@ -87,12 +87,13 @@ public class EditStateTask implements Observable.OnSubscribe<Issue> {
      * @return this task
      */
     public EditStateTask confirm(boolean close) {
-        if (close)
+        if (close) {
             ConfirmDialogFragment.show(activity, ISSUE_CLOSE, activity.getString(R.string.issue_confirm_close_title),
                     activity.getString(R.string.issue_confirm_close_message));
-        else
+        } else {
             ConfirmDialogFragment.show(activity, ISSUE_REOPEN, activity.getString(R.string.issue_confirm_reopen_title),
                     activity.getString(R.string.issue_confirm_reopen_message));
+        }
 
         return this;
     }

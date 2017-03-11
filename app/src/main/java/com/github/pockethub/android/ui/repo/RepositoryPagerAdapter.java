@@ -140,10 +140,11 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
      */
     public RepositoryPagerAdapter onDialogResult(int position, int requestCode,
                                                  int resultCode, Bundle arguments) {
-        if (position == getItemCode() && codeFragment != null)
+        if (position == getItemCode() && codeFragment != null) {
             codeFragment.onDialogResult(requestCode, resultCode, arguments);
-        else if (position == getItemCommits() && commitsFragment != null)
+        } else if (position == getItemCommits() && commitsFragment != null) {
             commitsFragment.onDialogResult(requestCode, resultCode, arguments);
+        }
 
         return this;
     }

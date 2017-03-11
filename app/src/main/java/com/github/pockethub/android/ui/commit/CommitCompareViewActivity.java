@@ -87,8 +87,9 @@ public class CommitCompareViewActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionsMenu) {
-        if (fragment != null)
+        if (fragment != null) {
             fragment.onCreateOptionsMenu(optionsMenu, getMenuInflater());
+        }
 
         return super.onCreateOptionsMenu(optionsMenu);
     }
@@ -102,10 +103,11 @@ public class CommitCompareViewActivity extends BaseActivity {
                 startActivity(intent);
                 return true;
             default:
-                if (fragment != null)
+                if (fragment != null) {
                     return fragment.onOptionsItemSelected(item);
-                else
+                } else {
                     return super.onOptionsItemSelected(item);
+                }
         }
     }
 }

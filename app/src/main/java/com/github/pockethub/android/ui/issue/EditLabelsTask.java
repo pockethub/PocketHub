@@ -82,8 +82,9 @@ public class EditLabelsTask implements Observable.OnSubscribe<Issue> {
     public void call(Subscriber<? super Issue> subscriber) {
         try {
             List<String> labelNames = new ArrayList<>(labels.length);
-            for (Label label : labels)
+            for (Label label : labels) {
                 labelNames.add(label.name());
+            }
 
             IssueRequest editIssue = IssueRequest.builder().labels(labelNames).build();
             subscriber.onNext(store.editIssue(repositoryId, issueNumber, editIssue));

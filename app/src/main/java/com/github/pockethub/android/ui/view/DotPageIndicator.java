@@ -95,8 +95,9 @@ public class DotPageIndicator extends View implements android.support.v4.view.Vi
     public DotPageIndicator(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        if (isInEditMode())
+        if (isInEditMode()) {
             return;
+        }
 
         Resources res = getResources();
         TypedArray a = context.getTheme().obtainStyledAttributes(
@@ -138,8 +139,9 @@ public class DotPageIndicator extends View implements android.support.v4.view.Vi
      */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if(viewPager != null)
+        if(viewPager != null) {
             createOnDrawValues();
+        }
 
         int desiredWidth = (int) getWidthOfDots(dotColumns);
         int desiredHeight = (int) getHeightOfDots(dotRows);
@@ -199,8 +201,9 @@ public class DotPageIndicator extends View implements android.support.v4.view.Vi
                 }
             }
 
-            if(getHeightOfDots(dotRows) > currentHeight)
+            if(getHeightOfDots(dotRows) > currentHeight) {
                 throw new IllegalStateException("Can't fit DotPageIndicator");
+            }
         }
         updateValues = false;
     }
@@ -213,8 +216,9 @@ public class DotPageIndicator extends View implements android.support.v4.view.Vi
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (updateValues)
+        if (updateValues) {
             createOnDrawValues();
+        }
 
         for (int i = 0; i < dotRows; i++) {
             int dotDiff = getNumberOfPages() - ((i + 1) * dotColumns);
@@ -280,10 +284,11 @@ public class DotPageIndicator extends View implements android.support.v4.view.Vi
      * @return The color specified
      */
     private int getColor(Resources res, int id, Resources.Theme theme){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return res.getColor(id, theme);
-        else
+        } else {
             return res.getColor(id);
+        }
     }
 
     /**
@@ -297,8 +302,9 @@ public class DotPageIndicator extends View implements android.support.v4.view.Vi
         int row = (index - column) / dotColumns;
         int columns = dotColumns;
 
-        if(dotColumns * (row + 1) > getNumberOfPages())
+        if(dotColumns * (row + 1) > getNumberOfPages()) {
             columns = dotColumns - ((dotColumns * (row + 1)) - getNumberOfPages());
+        }
 
         float center = currentWidth / 2;
         float start = center - getWidthOfDots(columns / 2);
@@ -358,11 +364,13 @@ public class DotPageIndicator extends View implements android.support.v4.view.Vi
      * @param pager ViewPager
      */
     public void setViewPager(ViewPager pager) {
-        if (pager == null)
+        if (pager == null) {
             return;
+        }
 
-        if(viewPager != null)
+        if(viewPager != null) {
             viewPager.removeOnPageChangeListener(this);
+        }
 
         viewPager = pager;
         pager.addOnPageChangeListener(this);

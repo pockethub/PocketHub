@@ -72,12 +72,13 @@ public class ImageUtils {
             Log.d(TAG, e.getMessage(), e);
             return null;
         } finally {
-            if (file != null)
+            if (file != null) {
                 try {
                     file.close();
                 } catch (IOException e) {
                     Log.d(TAG, e.getMessage(), e);
                 }
+            }
         }
     }
 
@@ -104,11 +105,12 @@ public class ImageUtils {
      * @return scale
      */
     public static int getScale(Point size, int width, int height) {
-        if (size.x > width || size.y > height)
+        if (size.x > width || size.y > height) {
             return Math.max(Math.round((float) size.y / (float) height),
                     Math.round((float) size.x / (float) width));
-        else
+        } else {
             return 1;
+        }
     }
 
     /**
@@ -130,12 +132,13 @@ public class ImageUtils {
             Log.d(TAG, e.getMessage(), e);
             return null;
         } finally {
-            if (file != null)
+            if (file != null) {
                 try {
                     file.close();
                 } catch (IOException e) {
                     Log.d(TAG, e.getMessage(), e);
                 }
+            }
         }
     }
 
@@ -220,8 +223,9 @@ public class ImageUtils {
      */
     public static void setImage(final File image, final ImageView view) {
         Bitmap bitmap = getBitmap(image);
-        if (bitmap != null)
+        if (bitmap != null) {
             view.setImageBitmap(bitmap);
+        }
     }
 
     /**

@@ -112,8 +112,9 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (filter == null)
+        if (filter == null) {
             filter = new IssueFilter(repository);
+        }
     }
 
     @Override
@@ -141,32 +142,36 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     }
 
     private void updateFilterSummary() {
-        if (filter.isOpen())
+        if (filter.isOpen()) {
             state.setText(R.string.open_issues);
-        else
+        } else {
             state.setText(R.string.closed_issues);
+        }
 
         Collection<Label> filterLabels = filter.getLabels();
         if (filterLabels != null && !filterLabels.isEmpty()) {
             LabelDrawableSpan.setText(labels, filterLabels);
             labels.setVisibility(VISIBLE);
-        } else
+        } else {
             labels.setVisibility(GONE);
+        }
 
         Milestone filterMilestone = filter.getMilestone();
         if (filterMilestone != null) {
             milestone.setText(filterMilestone.title());
             milestone.setVisibility(VISIBLE);
-        } else
+        } else {
             milestone.setVisibility(GONE);
+        }
 
         User user = filter.getAssignee();
         if (user != null) {
             avatars.bind(assigneeAvatar, user);
             assignee.setText(user.login());
             assigneeArea.setVisibility(VISIBLE);
-        } else
+        } else {
             assigneeArea.setVisibility(GONE);
+        }
     }
 
     @Override
@@ -178,14 +183,15 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        if (position == 0)
+        if (position == 0) {
             startActivityForResult(
                     EditIssuesFilterActivity.createIntent(filter),
                     ISSUE_FILTER_EDIT);
-        else
+        } else {
             startActivityForResult(
                     IssuesViewActivity.createIntent(items, repository, position
                             - getListAdapter().getHeadersCount()), ISSUE_VIEW);
+        }
     }
 
     @Override
@@ -204,8 +210,9 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (!isUsable())
+        if (!isUsable()) {
             return false;
+        }
         switch (item.getItemId()) {
         case R.id.create_issue:
             startActivityForResult(EditIssueActivity.createIntent(repository),

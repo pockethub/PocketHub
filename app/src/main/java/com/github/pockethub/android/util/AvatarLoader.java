@@ -94,8 +94,9 @@ public class AvatarLoader {
         // TODO remove this eventually
         // Delete the old cache
         final File avatarDir = new File(context.getCacheDir(), "avatars/github.com");
-        if (avatarDir.isDirectory())
+        if (avatarDir.isDirectory()) {
             deleteCache(avatarDir);
+        }
     }
 
     /**
@@ -117,16 +118,19 @@ public class AvatarLoader {
      * @return this helper
      */
     public void bind(final ActionBar actionBar, final AtomicReference<User> userReference) {
-        if (userReference == null)
+        if (userReference == null) {
             return;
+        }
 
         final User user = userReference.get();
-        if (user == null)
+        if (user == null) {
             return;
+        }
 
         String avatarUrl = user.avatarUrl();
-        if (TextUtils.isEmpty(avatarUrl))
+        if (TextUtils.isEmpty(avatarUrl)) {
             return;
+        }
 
         // Remove the URL params as they are not needed and break cache
         if (avatarUrl.contains("?") && !avatarUrl.contains("gravatar")) {
@@ -210,8 +214,9 @@ public class AvatarLoader {
     }
 
     private String getAvatarUrl(User user) {
-        if (user == null)
+        if (user == null) {
             return null;
+        }
 
         String avatarUrl = user.avatarUrl();
         if (TextUtils.isEmpty(avatarUrl)) {
@@ -221,10 +226,11 @@ public class AvatarLoader {
     }
 
     private String getAvatarUrl(String id) {
-        if (!TextUtils.isEmpty(id))
+        if (!TextUtils.isEmpty(id)) {
             return "http://gravatar.com/avatar/" + id + "?d=404";
-        else
+        } else {
             return null;
+        }
     }
 
     private int getMaxAvatarSize(final Context context) {
@@ -237,9 +243,11 @@ public class AvatarLoader {
     }
 
     private boolean deleteCache(final File cache) {
-        if (cache.isDirectory())
-            for (File f : cache.listFiles())
+        if (cache.isDirectory()) {
+            for (File f : cache.listFiles()) {
                 deleteCache(f);
+            }
+        }
         return cache.delete();
     }
 

@@ -103,12 +103,14 @@ public class EditIssueActivity extends BaseActivity {
         final String repositoryOwner, final String repositoryName,
         final User user) {
         Builder builder = new Builder("repo.issues.edit.VIEW");
-        if (user != null)
+        if (user != null) {
             builder.add(EXTRA_USER, user);
+        }
         builder.add(EXTRA_REPOSITORY_NAME, repositoryName);
         builder.add(EXTRA_REPOSITORY_OWNER, repositoryOwner);
-        if (issue != null)
+        if (issue != null) {
             builder.issue(issue);
+        }
         return builder.toIntent();
     }
 
@@ -160,12 +162,15 @@ public class EditIssueActivity extends BaseActivity {
 
         Intent intent = getIntent();
 
-        if (savedInstanceState != null)
+        if (savedInstanceState != null) {
             issue = savedInstanceState.getParcelable(EXTRA_ISSUE);
-        if (issue == null)
+        }
+        if (issue == null) {
             issue = intent.getParcelableExtra(EXTRA_ISSUE);
-        if (issue == null)
+        }
+        if (issue == null) {
             issue = Issue.builder().build();
+        }
 
         repository = InfoUtils.createRepoFromData(
             intent.getStringExtra(EXTRA_REPOSITORY_OWNER),
@@ -176,15 +181,17 @@ public class EditIssueActivity extends BaseActivity {
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
         ActionBar actionBar = getSupportActionBar();
-        if (issue.number() != null && issue.number() > 0)
-            if (IssueUtils.isPullRequest(issue))
+        if (issue.number() != null && issue.number() > 0) {
+            if (IssueUtils.isPullRequest(issue)) {
                 actionBar.setTitle(getString(R.string.pull_request_title)
-                    + issue.number());
-            else
+                        + issue.number());
+            } else {
                 actionBar.setTitle(getString(R.string.issue_title)
-                    + issue.number());
-        else
+                        + issue.number());
+            }
+        } else {
             actionBar.setTitle(R.string.new_issue);
+        }
         actionBar.setSubtitle(InfoUtils.createRepoId(repository));
         avatars.bind(actionBar, (User) intent.getParcelableExtra(EXTRA_USER));
 
@@ -204,8 +211,9 @@ public class EditIssueActivity extends BaseActivity {
 
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
-        if (RESULT_OK != resultCode)
+        if (RESULT_OK != resultCode) {
             return;
+        }
 
         switch (requestCode) {
             case ISSUE_MILESTONE_UPDATE:
@@ -244,10 +252,11 @@ public class EditIssueActivity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
-                if (milestoneDialog == null)
+                if (milestoneDialog == null) {
                     milestoneDialog = new MilestoneDialog(
-                        EditIssueActivity.this, ISSUE_MILESTONE_UPDATE,
-                        repository);
+                            EditIssueActivity.this, ISSUE_MILESTONE_UPDATE,
+                            repository);
+                }
                 milestoneDialog.show(issue.milestone());
             }
         });
@@ -256,9 +265,10 @@ public class EditIssueActivity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
-                if (assigneeDialog == null)
+                if (assigneeDialog == null) {
                     assigneeDialog = new AssigneeDialog(EditIssueActivity.this,
-                        ISSUE_ASSIGNEE_UPDATE, repository);
+                            ISSUE_ASSIGNEE_UPDATE, repository);
+                }
                 assigneeDialog.show(issue.assignee());
             }
         });
@@ -267,9 +277,10 @@ public class EditIssueActivity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
-                if (labelsDialog == null)
+                if (labelsDialog == null) {
                     labelsDialog = new LabelsDialog(EditIssueActivity.this,
-                        ISSUE_LABELS_UPDATE, repository);
+                            ISSUE_LABELS_UPDATE, repository);
+                }
                 labelsDialog.show(issue.labels());
             }
         });
@@ -289,8 +300,9 @@ public class EditIssueActivity extends BaseActivity {
                 ((LayoutParams) milestoneClosed.getLayoutParams()).weight = closed
                     / total;
                 milestoneClosed.setVisibility(VISIBLE);
-            } else
+            } else {
                 milestoneClosed.setVisibility(GONE);
+            }
             milestoneGraph.setVisibility(VISIBLE);
         } else {
             milestoneText.setText(R.string.none);
@@ -313,10 +325,11 @@ public class EditIssueActivity extends BaseActivity {
 
     private void updateLabels() {
         List<Label> labels = issue.labels();
-        if (labels != null && !labels.isEmpty())
+        if (labels != null && !labels.isEmpty()) {
             LabelDrawableSpan.setText(labelsText, labels);
-        else
+        } else {
             labelsText.setText(R.string.none);
+        }
     }
 
     @Override
@@ -327,13 +340,15 @@ public class EditIssueActivity extends BaseActivity {
     }
 
     private void updateSaveMenu() {
-        if (titleText != null)
+        if (titleText != null) {
             updateSaveMenu(titleText.getText());
+        }
     }
 
     private void updateSaveMenu(final CharSequence text) {
-        if (saveItem != null)
+        if (saveItem != null) {
             saveItem.setEnabled(!TextUtils.isEmpty(text));
+        }
     }
 
     @Override
@@ -353,16 +368,19 @@ public class EditIssueActivity extends BaseActivity {
                         .title(titleText.getText().toString())
                         .state(issue.state());
 
-                if(issue.assignee() != null)
+                if(issue.assignee() != null) {
                     request.assignees(Collections.singletonList(issue.assignee().login()));
+                }
 
-                if(issue.milestone() != null)
+                if(issue.milestone() != null) {
                     request.milestone(issue.milestone().number());
+                }
 
                 if(issue.labels() != null) {
                     List<String> labels = new ArrayList<>();
-                    for (Label label : issue.labels())
+                    for (Label label : issue.labels()) {
                         labels.add(label.name());
+                    }
 
                     request.labels(labels);
                 }
@@ -416,8 +434,9 @@ public class EditIssueActivity extends BaseActivity {
                     @Override
                     public void onNext(Response<Boolean> response) {
                         showMainContent();
-                        if (response.code() == 204)
+                        if (response.code() == 204) {
                             showCollaboratorOptions();
+                        }
                     }
 
                     @Override

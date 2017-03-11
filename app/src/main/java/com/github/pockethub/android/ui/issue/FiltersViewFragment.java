@@ -85,8 +85,9 @@ public class FiltersViewFragment extends DialogFragment implements
 
                 @Override
                 public void success(IssueFilter response) {
-                    if (fragment != null)
+                    if (fragment != null) {
                         fragment.refresh();
+                    }
                 }
             });
             return;

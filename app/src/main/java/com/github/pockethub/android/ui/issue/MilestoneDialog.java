@@ -121,8 +121,9 @@ public class MilestoneDialog extends BaseProgressDialog {
                 .concatMap(new Func1<Page<Milestone>, Observable<Page<Milestone>>>() {
                     @Override
                     public Observable<Page<Milestone>> call(Page<Milestone> page) {
-                        if (page.next() == null)
+                        if (page.next() == null) {
                             return Observable.just(page);
+                        }
 
                         return Observable.just(page)
                                 .concatWith(getPageAndNext(page.next()));
@@ -142,12 +143,14 @@ public class MilestoneDialog extends BaseProgressDialog {
         }
 
         int checked = -1;
-        if (selectedMilestone != null)
-            for (int i = 0; i < repositoryMilestones.size(); i++)
+        if (selectedMilestone != null) {
+            for (int i = 0; i < repositoryMilestones.size(); i++) {
                 if (selectedMilestone.number() == repositoryMilestones.get(i).number()) {
                     checked = i;
                     break;
                 }
+            }
+        }
         MilestoneDialogFragment.show(activity, requestCode,
                 activity.getString(R.string.select_milestone), null,
                 repositoryMilestones, checked);
@@ -160,11 +163,14 @@ public class MilestoneDialog extends BaseProgressDialog {
      * @return number of -1 if not found
      */
     public int getMilestoneNumber(String title) {
-        if (repositoryMilestones == null)
+        if (repositoryMilestones == null) {
             return -1;
-        for (Milestone milestone : repositoryMilestones)
-            if (title.equals(milestone.title()))
+        }
+        for (Milestone milestone : repositoryMilestones) {
+            if (title.equals(milestone.title())) {
                 return milestone.number();
+            }
+        }
         return -1;
     }
 }

@@ -199,8 +199,9 @@ public class MainActivity extends BaseActivity implements
         // account
         List<User> currentOrgs = orgs;
         if (currentOrgs != null && !currentOrgs.isEmpty()
-                && !AccountUtils.isUser(this, currentOrgs.get(0)))
+                && !AccountUtils.isUser(this, currentOrgs.get(0))) {
             reloadOrgs();
+        }
     }
 
     @Override
@@ -213,8 +214,9 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onLoadFinished(Loader<List<User>> listLoader, final List<User> orgs) {
-        if (orgs.isEmpty())
+        if (orgs.isEmpty()) {
             return;
+        }
 
         org = orgs.get(0);
         this.orgs = orgs;
@@ -222,19 +224,22 @@ public class MainActivity extends BaseActivity implements
         setUpNavigationView();
 
         Window window = getWindow();
-        if (window == null)
+        if (window == null) {
             return;
+        }
         View view = window.getDecorView();
-        if (view == null)
+        if (view == null) {
             return;
+        }
 
         view.post(new Runnable() {
 
             @Override
             public void run() {
                 MainActivity.this.switchFragment(new HomePagerFragment(), org);
-                if(!userLearnedDrawer)
+                if(!userLearnedDrawer) {
                     drawerLayout.openDrawer(GravityCompat.START);
+                }
             }
         });
 

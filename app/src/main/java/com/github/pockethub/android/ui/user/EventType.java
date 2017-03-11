@@ -99,12 +99,13 @@ public enum EventType {
 
             String action = ((IssuesPayload) event.payload()).action();
             String icon = null;
-            if (IconAndViewTextManager.ISSUES_PAYLOAD_ACTION_OPENED.equals(action))
+            if (IconAndViewTextManager.ISSUES_PAYLOAD_ACTION_OPENED.equals(action)) {
                 icon = TypefaceUtils.ICON_ISSUE_OPEN;
-            else if (IconAndViewTextManager.ISSUES_PAYLOAD_ACTION_REOPENED.equals(action))
+            } else if (IconAndViewTextManager.ISSUES_PAYLOAD_ACTION_REOPENED.equals(action)) {
                 icon = TypefaceUtils.ICON_ISSUE_REOPEN;
-            else if (IconAndViewTextManager.ISSUES_PAYLOAD_ACTION_CLOSED.equals(action))
+            } else if (IconAndViewTextManager.ISSUES_PAYLOAD_ACTION_CLOSED.equals(action)) {
                 icon = TypefaceUtils.ICON_ISSUE_CLOSE;
+            }
             return icon;
         }
     },

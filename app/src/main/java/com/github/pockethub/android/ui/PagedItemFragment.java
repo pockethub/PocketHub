@@ -109,15 +109,19 @@ public abstract class PagedItemFragment<E> extends ItemListFragment<E>
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem,
             int visibleItemCount, int totalItemCount) {
-        if (!isUsable())
+        if (!isUsable()) {
             return;
-        if (!pager.hasMore())
+        }
+        if (!pager.hasMore()) {
             return;
-        if (getLoaderManager().hasRunningLoaders())
+        }
+        if (getLoaderManager().hasRunningLoaders()) {
             return;
+        }
         if (listView != null
-                && listView.getLastVisiblePosition() >= pager.size())
+                && listView.getLastVisiblePosition() >= pager.size()) {
             showMore();
+        }
     }
 
     @Override

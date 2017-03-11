@@ -119,15 +119,17 @@ public class DefaultRepositoryListAdapter extends
         if (headerValue != null) {
             setGone(5, false);
             setText(6, headerValue);
-        } else
+        } else {
             setGone(5, true);
+        }
 
         setGone(7, noSeparators.contains(repository.id()));
 
         StyledText name = new StyledText();
-        if (!account.get().login().equals(repository.owner().login()))
+        if (!account.get().login().equals(repository.owner().login())) {
             name.foreground(repository.owner().login(), descriptionColor)
                     .foreground('/', descriptionColor);
+        }
         name.bold(repository.name());
         setText(8, name);
 

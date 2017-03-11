@@ -86,9 +86,11 @@ public class RefDialog {
                 super.onCompleted();
                 Map<String, GitReference> loadedRefs = new TreeMap<>(CASE_INSENSITIVE_ORDER);
 
-                for (GitReference ref : allRefs)
-                    if (RefUtils.isValid(ref))
+                for (GitReference ref : allRefs) {
+                    if (RefUtils.isValid(ref)) {
                         loadedRefs.put(ref.ref(), ref);
+                    }
+                }
 
                 refs = loadedRefs;
                 show(selectedRef);
@@ -111,8 +113,9 @@ public class RefDialog {
                 .concatMap(new Func1<Page<GitReference>, Observable<Page<GitReference>>>() {
                     @Override
                     public Observable<Page<GitReference>> call(Page<GitReference> page) {
-                        if (page.next() == null)
+                        if (page.next() == null) {
                             return Observable.just(page);
+                        }
 
                         return Observable.just(page)
                                 .concatWith(getPageAndNext(page.next()));

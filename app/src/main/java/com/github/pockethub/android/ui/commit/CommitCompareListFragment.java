@@ -110,8 +110,9 @@ public class CommitCompareListFragment extends DialogFragment implements
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        if (!isUsable())
+        if (!isUsable()) {
             return false;
+        }
 
         switch (item.getItemId()) {
         case R.id.m_refresh:
@@ -133,8 +134,9 @@ public class CommitCompareListFragment extends DialogFragment implements
                     public void onNext(CommitCompare compareCommit) {
                         List<GitHubFile> files = compareCommit.files();
                         diffStyler.setFiles(files);
-                        if (files != null)
+                        if (files != null) {
                             Collections.sort(files, new CommitFileComparator());
+                        }
                         updateList(compareCommit);
                     }
 
@@ -146,8 +148,9 @@ public class CommitCompareListFragment extends DialogFragment implements
     }
 
     private void updateList(CommitCompare compare) {
-        if (!isUsable())
+        if (!isUsable()) {
             return;
+        }
 
         this.compare = compare;
 
@@ -182,8 +185,9 @@ public class CommitCompareListFragment extends DialogFragment implements
         List<GitHubFile> files = compare.files();
         if (files != null && !files.isEmpty()) {
             addFileStatHeader(files, inflater);
-            for (GitHubFile file : files)
+            for (GitHubFile file : files) {
                 rootAdapter.addItem(file);
+            }
         }
     }
 
@@ -223,22 +227,27 @@ public class CommitCompareListFragment extends DialogFragment implements
         if (compare != null) {
             int commitPosition = 0;
             Collection<Commit> commits = compare.commits();
-            for (Commit candidate : commits)
-                if (commit == candidate)
+            for (Commit candidate : commits) {
+                if (commit == candidate) {
                     break;
-                else
+                } else {
                     commitPosition++;
-            if (commitPosition < commits.size())
+                }
+            }
+            if (commitPosition < commits.size()) {
                 startActivity(CommitViewActivity.createIntent(repository, commitPosition, commits));
-        } else
+            }
+        } else {
             startActivity(CommitViewActivity.createIntent(repository,
                     commit.sha()));
+        }
     }
 
     private void openFile(final GitHubFile file) {
         if (!TextUtils.isEmpty(file.filename())
-                && !TextUtils.isEmpty(file.sha()))
+                && !TextUtils.isEmpty(file.sha())) {
             startActivity(CommitFileViewActivity.createIntent(repository, head, file));
+        }
     }
 
     private void openLine(AdapterView<?> parent, int position) {
@@ -256,11 +265,12 @@ public class CommitCompareListFragment extends DialogFragment implements
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
         Object item = parent.getItemAtPosition(position);
-        if (item instanceof Commit)
+        if (item instanceof Commit) {
             openCommit((Commit) item);
-        else if (item instanceof GitHubFile)
+        } else if (item instanceof GitHubFile) {
             openFile((GitHubFile) item);
-        else if (item instanceof CharSequence)
+        } else if (item instanceof CharSequence) {
             openLine(parent, position);
+        }
     }
 }

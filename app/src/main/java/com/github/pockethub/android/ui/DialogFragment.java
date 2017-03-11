@@ -61,10 +61,11 @@ public abstract class DialogFragment extends RoboSupportFragment implements
     @SuppressWarnings("unchecked")
     protected <V extends Parcelable> V getParcelableExtra(final String name) {
         Activity activity = getActivity();
-        if (activity != null)
+        if (activity != null) {
             return (V) activity.getIntent().getParcelableExtra(name);
-        else
+        } else {
             return null;
+        }
     }
 
     /**
@@ -75,10 +76,11 @@ public abstract class DialogFragment extends RoboSupportFragment implements
      */
     protected String getStringExtra(final String name) {
         Activity activity = getActivity();
-        if (activity != null)
+        if (activity != null) {
             return activity.getIntent().getStringExtra(name);
-        else
+        } else {
             return null;
+        }
     }
 
     @Override

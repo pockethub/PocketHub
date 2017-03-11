@@ -88,10 +88,11 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
         switch (getItemViewType(position)) {
         case TYPE_FILE_HEADER:
             String sha = ((GitHubFile) getItem(position)).sha();
-            if (!TextUtils.isEmpty(sha))
+            if (!TextUtils.isEmpty(sha)) {
                 return sha.hashCode();
-            else
+            } else {
                 return super.getItemId(position);
+            }
         case TYPE_COMMENT:
         case TYPE_LINE_COMMENT:
             return ((GitComment) getItem(position)).id();
@@ -112,8 +113,9 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
         int number = 0;
         for (CharSequence line : lines) {
             addItem(TYPE_FILE_LINE, line);
-            for (GitComment comment : file.get(number))
+            for (GitComment comment : file.get(number)) {
                 addItem(TYPE_LINE_COMMENT, comment);
+            }
             number++;
         }
     }

@@ -22,18 +22,23 @@ import com.meisolsson.githubsdk.model.User;
 public class InfoUtils {
 
     public static Repository createRepoFromUrl(String url) {
-        if (url == null || url.length() == 0)
+        if (url == null || url.length() == 0) {
             return null;
+        }
         String owner = null;
         String name = null;
         for (String segment : url.split("/")) //$NON-NLS-1$
-            if (segment.length() > 0)
-                if (owner == null)
+        {
+            if (segment.length() > 0) {
+                if (owner == null) {
                     owner = segment;
-                else if (name == null)
+                } else if (name == null) {
                     name = segment;
-                else
+                } else {
                     break;
+                }
+            }
+        }
 
         if (owner != null && owner.length() > 0 && name != null && name.length() > 0) {
             return createRepoFromData(owner, name);
@@ -43,10 +48,11 @@ public class InfoUtils {
     }
 
     public static String createRepoId(Repository repo) {
-        if(repo.name().contains("/"))
+        if(repo.name().contains("/")) {
             return repo.name();
-        else
+        } else {
             return createRepoId(repo.owner().login(), repo.name());
+        }
     }
 
     public static String createRepoId(String owner, String name) {

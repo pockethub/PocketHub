@@ -76,9 +76,10 @@ public class MarkdownLoader extends AuthenticatedUserLoader<CharSequence> {
                 .toBlocking()
                 .first();
 
-        if (encode)
+        if (encode) {
             return HtmlUtils.encode(html, imageGetter);
-        else
+        } else {
             return html;
+        }
     }
 }

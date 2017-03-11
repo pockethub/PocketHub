@@ -119,8 +119,9 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
     }
 
     private void checkOauthConfig() {
-        if (clientId.equals("dummy_client") || secret.equals("dummy_secret"))
+        if (clientId.equals("dummy_client") || secret.equals("dummy_secret")) {
             Toast.makeText(this, R.string.error_oauth_not_configured, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -205,8 +206,9 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == WEBVIEW_REQUEST_CODE && resultCode == RESULT_OK)
+        if(requestCode == WEBVIEW_REQUEST_CODE && resultCode == RESULT_OK) {
             onUserLoggedIn(data.getData());
+        }
     }
 
     @Override

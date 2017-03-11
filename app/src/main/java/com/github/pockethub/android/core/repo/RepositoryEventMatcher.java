@@ -37,8 +37,9 @@ public class RepositoryEventMatcher {
      * @return gist or null if event doesn't apply
      */
     public Repository getRepository(final GitHubEvent event) {
-        if (event == null || event.payload() == null)
+        if (event == null || event.payload() == null) {
             return null;
+        }
 
         GitHubEventType type = event.type();
         if (ForkEvent.equals(type)) {
@@ -46,13 +47,15 @@ public class RepositoryEventMatcher {
             // Verify repository has valid name and owner
             if (repository != null && !TextUtils.isEmpty(repository.name())
                     && repository.owner() != null
-                    && !TextUtils.isEmpty(repository.owner().login()))
+                    && !TextUtils.isEmpty(repository.owner().login())) {
                 return repository;
+            }
         }
 
         if (CreateEvent.equals(type) || WatchEvent.equals(type)
-                || PublicEvent.equals(type))
+                || PublicEvent.equals(type)) {
             return ConvertUtils.eventRepoToRepo(event.repo());
+        }
 
         return null;
     }

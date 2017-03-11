@@ -75,8 +75,9 @@ public class RepositoryNewsFragment extends NewsFragment {
      */
     @Override
     protected void viewRepository(Repository repository) {
-        if (!InfoUtils.createRepoId(repo).equals(InfoUtils.createRepoId(repository)))
+        if (!InfoUtils.createRepoId(repo).equals(InfoUtils.createRepoId(repository))) {
             super.viewRepository(repository);
+        }
     }
 
     @Override
@@ -95,7 +96,8 @@ public class RepositoryNewsFragment extends NewsFragment {
 
     @Override
     protected void viewUser(UserPair users) {
-        if (!viewUser(users.from))
+        if (!viewUser(users.from)) {
             viewUser(users.to);
+        }
     }
 }

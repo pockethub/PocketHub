@@ -96,11 +96,13 @@ public class EditIssuesFilterActivity extends BaseActivity {
         assigneeText = finder.find(R.id.tv_assignee);
         avatarView = finder.find(R.id.iv_avatar);
 
-        if (savedInstanceState != null)
+        if (savedInstanceState != null) {
             filter = savedInstanceState.getParcelable(EXTRA_ISSUE_FILTER);
+        }
 
-        if (filter == null)
+        if (filter == null) {
             filter = getIntent().getParcelableExtra(EXTRA_ISSUE_FILTER);
+        }
 
         final Repository repository = filter.getRepository();
 
@@ -114,10 +116,11 @@ public class EditIssuesFilterActivity extends BaseActivity {
         OnClickListener assigneeListener = new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (assigneeDialog == null)
+                if (assigneeDialog == null) {
                     assigneeDialog = new AssigneeDialog(
-                        EditIssuesFilterActivity.this, REQUEST_ASSIGNEE,
-                        repository);
+                            EditIssuesFilterActivity.this, REQUEST_ASSIGNEE,
+                            repository);
+                }
                 assigneeDialog.show(filter.getAssignee());
             }
         };
@@ -129,10 +132,11 @@ public class EditIssuesFilterActivity extends BaseActivity {
         OnClickListener milestoneListener = new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (milestoneDialog == null)
+                if (milestoneDialog == null) {
                     milestoneDialog = new MilestoneDialog(
-                        EditIssuesFilterActivity.this, REQUEST_MILESTONE,
-                        repository);
+                            EditIssuesFilterActivity.this, REQUEST_MILESTONE,
+                            repository);
+                }
                 milestoneDialog.show(filter.getMilestone());
             }
         };
@@ -144,10 +148,11 @@ public class EditIssuesFilterActivity extends BaseActivity {
         OnClickListener labelsListener = new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (labelsDialog == null)
+                if (labelsDialog == null) {
                     labelsDialog = new LabelsDialog(
-                        EditIssuesFilterActivity.this, REQUEST_LABELS,
-                        repository);
+                            EditIssuesFilterActivity.this, REQUEST_LABELS,
+                            repository);
+                }
                 labelsDialog.show(filter.getLabels());
             }
         };
@@ -166,8 +171,9 @@ public class EditIssuesFilterActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                 boolean isChecked) {
-                if (isChecked)
+                if (isChecked) {
                     filter.setOpen(true);
+                }
             }
         });
 
@@ -177,15 +183,17 @@ public class EditIssuesFilterActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                 boolean isChecked) {
-                if (isChecked)
+                if (isChecked) {
                     filter.setOpen(false);
+                }
             }
         });
 
-        if (filter.isOpen())
+        if (filter.isOpen()) {
             openButton.setChecked(true);
-        else
+        } else {
             closedButton.setChecked(true);
+        }
     }
 
     @Override
@@ -217,18 +225,20 @@ public class EditIssuesFilterActivity extends BaseActivity {
 
     private void updateLabels() {
         List<Label> selected = filter.getLabels();
-        if (selected != null)
+        if (selected != null) {
             LabelDrawableSpan.setText(labelsText, selected);
-        else
+        } else {
             labelsText.setText(R.string.none);
+        }
     }
 
     private void updateMilestone() {
         Milestone selected = filter.getMilestone();
-        if (selected != null)
+        if (selected != null) {
             milestoneText.setText(selected.title());
-        else
+        } else {
             milestoneText.setText(R.string.none);
+        }
     }
 
     private void updateAssignee() {
@@ -244,8 +254,9 @@ public class EditIssuesFilterActivity extends BaseActivity {
 
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
-        if (RESULT_OK != resultCode)
+        if (RESULT_OK != resultCode) {
             return;
+        }
 
         switch (requestCode) {
             case REQUEST_LABELS:

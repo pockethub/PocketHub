@@ -86,10 +86,11 @@ public class ProgressObserverAdapter<T> extends ObserverAdapter<T> {
     }
 
     public ProgressObserverAdapter<T> start() {
-        if(message == null)
+        if(message == null) {
             showProgressIndeterminate(resid);
-        else
+        } else {
             showProgressIndeterminate(message);
+        }
         return this;
     }
 }

@@ -109,10 +109,11 @@ public class RepositoryCodeFragment extends DialogFragment implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (tree == null || folder == null)
+        if (tree == null || folder == null) {
             refreshTree(null);
-        else
+        } else {
             setFolder(tree, folder);
+        }
     }
 
     @Override
@@ -129,8 +130,9 @@ public class RepositoryCodeFragment extends DialogFragment implements
                         .ref(tree.reference.ref())
                         .build();
                 refreshTree(ref);
-            }else
+            }else {
                 refreshTree(null);
+            }
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -152,9 +154,9 @@ public class RepositoryCodeFragment extends DialogFragment implements
                 .subscribe(new ObserverAdapter<FullTree>() {
                     @Override
                     public void onNext(FullTree fullTree) {
-                        if (folder == null || folder.parent == null)
+                        if (folder == null || folder.parent == null) {
                             setFolder(fullTree, fullTree.root);
-                        else {
+                        } else {
                             // Look for current folder in new tree or else reset to root
                             Folder current = folder;
                             LinkedList<Folder> stack = new LinkedList<>();
@@ -166,13 +168,15 @@ public class RepositoryCodeFragment extends DialogFragment implements
                             while (!stack.isEmpty()) {
                                 refreshed = refreshed.folders
                                         .get(stack.removeFirst().name);
-                                if (refreshed == null)
+                                if (refreshed == null) {
                                     break;
+                                }
                             }
-                            if (refreshed != null)
+                            if (refreshed != null) {
                                 setFolder(fullTree, refreshed);
-                            else
+                            } else {
                                 setFolder(fullTree, fullTree.root);
+                            }
                         }
                     }
 
@@ -188,19 +192,22 @@ public class RepositoryCodeFragment extends DialogFragment implements
     }
 
     private void switchBranches() {
-        if (tree == null)
+        if (tree == null) {
             return;
+        }
 
-        if (dialog == null)
+        if (dialog == null) {
             dialog = new RefDialog((BaseActivity) getActivity(),
                     REF_UPDATE, repository);
+        }
         dialog.show(tree.reference);
     }
 
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
-        if (RESULT_OK != resultCode)
+        if (RESULT_OK != resultCode) {
             return;
+        }
 
         switch (requestCode) {
         case REF_UPDATE:
@@ -242,8 +249,9 @@ public class RepositoryCodeFragment extends DialogFragment implements
                 null);
         pathView = (TextView) pathHeaderView.findViewById(R.id.tv_path);
         pathView.setMovementMethod(LinkMovementMethod.getInstance());
-        if (pathShowing)
+        if (pathShowing) {
             adapter.addHeader(pathHeaderView);
+        }
 
         TypefaceUtils.setOcticons(branchIconView,
                 (TextView) pathHeaderView.findViewById(R.id.tv_folder_icon));
@@ -259,8 +267,9 @@ public class RepositoryCodeFragment extends DialogFragment implements
         if (folder != null && folder.parent != null) {
             setFolder(tree, folder.parent);
             return true;
-        } else
+        } else {
             return false;
+        }
     }
 
     private void setFolder(final FullTree tree, final Folder folder) {
@@ -270,10 +279,11 @@ public class RepositoryCodeFragment extends DialogFragment implements
         showLoading(false);
 
         branchView.setText(tree.branch);
-        if (RefUtils.isTag(tree.reference))
+        if (RefUtils.isTag(tree.reference)) {
             branchIconView.setText(R.string.icon_tag);
-        else
+        } else {
             branchIconView.setText(R.string.icon_fork);
+        }
 
         adapter.getWrappedAdapter().setIndented(folder.entry != null);
 
@@ -290,8 +300,9 @@ public class RepositoryCodeFragment extends DialogFragment implements
                         Folder clicked = folder;
                         for (int i = index; i < segments.length - 1; i++) {
                             clicked = clicked.parent;
-                            if (clicked == null)
+                            if (clicked == null) {
                                 return;
+                            }
                         }
                         setFolder(tree, clicked);
                     }
@@ -316,13 +327,15 @@ public class RepositoryCodeFragment extends DialogFragment implements
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
         Entry entry = (Entry) parent.getItemAtPosition(position);
-        if (tree == null || entry == null)
+        if (tree == null || entry == null) {
             return;
+        }
 
-        if (entry instanceof Folder)
+        if (entry instanceof Folder) {
             setFolder(tree, (Folder) entry);
-        else
+        } else {
             startActivity(BranchFileViewActivity.createIntent(repository,
                     tree.branch, entry.entry.path(), entry.entry.sha()));
+        }
     }
 }

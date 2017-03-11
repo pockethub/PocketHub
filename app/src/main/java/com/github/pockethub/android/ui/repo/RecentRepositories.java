@@ -69,8 +69,9 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
 
     private void load() {
         LinkedHashSet<Long> loaded = new RequestReader(file, VERSION).read();
-        if (loaded == null)
+        if (loaded == null) {
             loaded = new LinkedHashSet<>();
+        }
         ids = loaded;
         trim();
     }
@@ -100,8 +101,9 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
      * @return this recent list
      */
     public RecentRepositories add(final long id) {
-        if (ids == null)
+        if (ids == null) {
             load();
+        }
         ids.remove(id);
         ids.add(id);
         trim();
@@ -125,8 +127,9 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
      * @return this recent list
      */
     public RecentRepositories remove(final long id) {
-        if (ids == null)
+        if (ids == null) {
             load();
+        }
         ids.remove(id);
         return this;
     }
@@ -137,7 +140,7 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
      * @return this recent list
      */
     public RecentRepositories saveAsync() {
-        if (ids != null)
+        if (ids != null) {
             new AsyncTask<Void, Void, Void>() {
 
                 @Override
@@ -146,6 +149,7 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
                     return null;
                 }
             }.execute();
+        }
         return this;
     }
 
@@ -156,8 +160,9 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
      */
     public RecentRepositories save() {
         final LinkedHashSet<Long> save = ids;
-        if (save != null)
+        if (save != null) {
             new RequestWriter(file, VERSION).write(save);
+        }
         return this;
     }
 
@@ -178,8 +183,9 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
      * @return true if in recent list, false otherwise
      */
     public boolean contains(long id) {
-        if (ids == null)
+        if (ids == null) {
             load();
+        }
         return ids.contains(id);
     }
 
@@ -187,22 +193,26 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
     public int compare(final Repository lhs, final Repository rhs) {
         final boolean lRecent = contains(lhs);
         final boolean rRecent = contains(rhs);
-        if (lRecent && !rRecent)
+        if (lRecent && !rRecent) {
             return -1;
-        if (!lRecent && rRecent)
+        }
+        if (!lRecent && rRecent) {
             return 1;
+        }
 
         final int order = CASE_INSENSITIVE_ORDER.compare(lhs.name(),
                 rhs.name());
-        if (order == 0)
-            if (id == lhs.owner().id())
+        if (order == 0) {
+            if (id == lhs.owner().id()) {
                 return -1;
-            else if (id == rhs.owner().id())
+            } else if (id == rhs.owner().id()) {
                 return 1;
-            else
+            } else {
                 return CASE_INSENSITIVE_ORDER.compare(
                         lhs.owner().login(), rhs.owner().login());
-        else
+            }
+        } else {
             return order;
+        }
     }
 }

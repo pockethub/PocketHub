@@ -43,8 +43,9 @@ public class IssueUtils {
      * @return issue
      */
     public static Issue toIssue(final PullRequest pullRequest) {
-        if (pullRequest == null)
+        if (pullRequest == null) {
             return null;
+        }
 
         return Issue.builder()
                 .assignee(pullRequest.assignee())

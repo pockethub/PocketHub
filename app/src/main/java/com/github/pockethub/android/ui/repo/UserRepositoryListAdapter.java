@@ -74,9 +74,10 @@ public class UserRepositoryListAdapter extends
     @Override
     protected void update(int position, Repository repository) {
         StyledText name = new StyledText();
-        if (!login.equals(repository.owner().login()))
+        if (!login.equals(repository.owner().login())) {
             name.foreground(repository.owner().login(), descriptionColor)
                     .foreground('/', descriptionColor);
+        }
         name.bold(repository.name());
         setText(5, name);
 

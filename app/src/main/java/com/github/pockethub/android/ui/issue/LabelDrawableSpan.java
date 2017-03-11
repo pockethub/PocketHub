@@ -95,8 +95,9 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
                     || (hsv[2] > 0.7 && hsv[0] > 40 && hsv[0] < 200)) {
                 hsv[2] = 0.4F;
                 textColor = Color.HSVToColor(hsv);
-            } else
+            } else {
                 textColor = WHITE;
+            }
 
             layers = (LayerDrawable) resources
                     .getDrawable(R.drawable.label_background);
@@ -206,8 +207,9 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
                     labels[i].color(), paddingLeft, textHeight, bounds,
                     names[i]));
 
-            if (i + 1 < labels.length)
+            if (i + 1 < labels.length) {
                 text.append(' ');
+            }
         }
         view.setText(text);
     }

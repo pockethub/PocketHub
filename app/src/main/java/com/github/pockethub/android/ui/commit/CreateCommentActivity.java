@@ -72,8 +72,9 @@ public class CreateCommentActivity extends
         Builder builder = new Builder("commit.comment.create.VIEW");
         builder.repo(repository);
         builder.add(EXTRA_BASE, commit);
-        if (isLineComment(path, position))
+        if (isLineComment(path, position)) {
             builder.add(EXTRA_PATH, path).add(EXTRA_POSITION, position);
+        }
         return builder.toIntent();
     }
 
@@ -111,8 +112,9 @@ public class CreateCommentActivity extends
                 .body(comment);
 
 
-        if(isLineComment(path, position))
+        if(isLineComment(path, position)) {
             commitCommentBuilder.path(path).position(position);
+        }
 
         ServiceGenerator.createService(this, RepositoryCommentService.class)
                 .createCommitComment(repository.owner().login(), repository.name(), commit, commitCommentBuilder.build())

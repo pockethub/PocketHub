@@ -102,15 +102,16 @@ public class GistFilesViewActivity extends PagerActivity {
         loadingBar = finder.find(R.id.pb_loading);
         tabs = finder.find(R.id.sliding_tabs_layout);
 
-        if (initialPosition < 0)
+        if (initialPosition < 0) {
             initialPosition = 0;
+        }
 
         getSupportActionBar().setTitle(getString(R.string.gist_title) + gistId);
 
         gist = store.getGist(gistId);
-        if (gist != null)
+        if (gist != null) {
             configurePager();
-        else {
+        } else {
             ViewUtils.setGone(loadingBar, false);
             ViewUtils.setGone(pager, true);
             ViewUtils.setGone(tabs, true);
@@ -135,8 +136,9 @@ public class GistFilesViewActivity extends PagerActivity {
         if (author != null) {
             actionBar.setSubtitle(author.login());
             avatars.bind(actionBar, author);
-        } else
+        } else {
             actionBar.setSubtitle(R.string.anonymous);
+        }
 
         ViewUtils.setGone(loadingBar, true);
         ViewUtils.setGone(pager, false);

@@ -148,8 +148,9 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
         UserListAdapter adapter = new UserListAdapter(inflater,
                 choices.toArray(new User[choices.size()]), selected, loader);
         view.setAdapter(adapter);
-        if (selected >= 0)
+        if (selected >= 0) {
             view.setSelection(selected);
+        }
         dialogBuilder.customView(view, false);
 
         return dialogBuilder.build();

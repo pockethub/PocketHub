@@ -63,8 +63,9 @@ public abstract class DialogFragmentHelper extends RoboDialogFragment implements
         FragmentManager manager = activity.getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         Fragment current = manager.findFragmentByTag(tag);
-        if (current != null)
+        if (current != null) {
             transaction.remove(current);
+        }
         transaction.addToBackStack(null);
 
         fragment.setArguments(arguments);
@@ -97,9 +98,10 @@ public abstract class DialogFragmentHelper extends RoboDialogFragment implements
         final BaseActivity activity = (BaseActivity) getActivity();
         if (activity != null) {
             final Bundle arguments = getArguments();
-            if (arguments != null)
+            if (arguments != null) {
                 activity.onDialogResult(arguments.getInt(ARG_REQUEST_CODE),
-                    resultCode, arguments);
+                        resultCode, arguments);
+            }
         }
     }
 
