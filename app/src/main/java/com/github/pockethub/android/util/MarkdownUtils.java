@@ -34,13 +34,16 @@ public class MarkdownUtils {
    * @return true if the name has a markdown extension, false otherwise
    */
   public static boolean isMarkdown(String name) {
-      if (TextUtils.isEmpty(name))
+      if (TextUtils.isEmpty(name)) {
           return false;
+      }
 
       name = name.toLowerCase(US);
-      for (String extension : MARKDOWN_EXTENSIONS)
-          if (name.endsWith(extension))
+      for (String extension : MARKDOWN_EXTENSIONS) {
+          if (name.endsWith(extension)) {
               return true;
+          }
+      }
 
       return false;
   }

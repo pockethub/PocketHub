@@ -105,9 +105,9 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
         actionBar.setSubtitle(owner.login());
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        if (owner.avatarUrl() != null && RepositoryUtils.isComplete(repository))
+        if (owner.avatarUrl() != null && RepositoryUtils.isComplete(repository)) {
             checkReadme();
-        else {
+        } else {
             avatars.bind(getSupportActionBar(), owner);
             ViewUtils.setGone(loadingBar, false);
             setGone(true);
@@ -150,8 +150,9 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
 
     @Override
     public void onBackPressed() {
-        if (adapter == null || pager.getCurrentItem() != adapter.getItemCode() || !adapter.onBackPressed())
+        if (adapter == null || pager.getCurrentItem() != adapter.getItemCode() || !adapter.onBackPressed()) {
             super.onBackPressed();
+        }
     }
 
     private void checkReadme() {
@@ -292,8 +293,9 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
 
     private void shareRepository() {
         String repoUrl = repository.htmlUrl();
-        if (TextUtils.isEmpty(repoUrl))
+        if (TextUtils.isEmpty(repoUrl)) {
             repoUrl = "https://github.com/" + InfoUtils.createRepoId(repository);
+        }
         Intent sharingIntent = ShareUtils.create(InfoUtils.createRepoId(repository), repoUrl);
         startActivity(sharingIntent);
     }

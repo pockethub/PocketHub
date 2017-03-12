@@ -94,8 +94,9 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         Object fragment = super.instantiateItem(container, position);
-        if (fragment instanceof Fragment)
+        if (fragment instanceof Fragment) {
             tags.add(((Fragment) fragment).getTag());
+        }
         return fragment;
     }
 

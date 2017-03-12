@@ -67,7 +67,8 @@ public abstract class FragmentStatePagerAdapter extends
             selected = null;
         }
 
-        if (changed)
+        if (changed) {
             activity.invalidateOptionsMenu();
+        }
     }
 }

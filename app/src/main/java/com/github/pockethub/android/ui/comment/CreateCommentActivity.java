@@ -65,9 +65,10 @@ public abstract class CreateCommentActivity extends
     public void invalidateOptionsMenu() {
         super.invalidateOptionsMenu();
 
-        if (applyItem != null)
+        if (applyItem != null) {
             applyItem.setEnabled(adapter != null
-                && !TextUtils.isEmpty(adapter.getCommentText()));
+                    && !TextUtils.isEmpty(adapter.getCommentText()));
+        }
     }
 
     @Override

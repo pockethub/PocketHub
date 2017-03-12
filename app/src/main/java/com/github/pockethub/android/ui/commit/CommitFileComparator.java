@@ -31,13 +31,15 @@ public class CommitFileComparator implements Comparator<GitHubFile> {
     public int compare(final GitHubFile lhs, final GitHubFile rhs) {
         String lPath = lhs.filename();
         final int lSlash = lPath.lastIndexOf('/');
-        if (lSlash != -1)
+        if (lSlash != -1) {
             lPath = lPath.substring(lSlash + 1);
+        }
 
         String rPath = rhs.filename();
         final int rSlash = rPath.lastIndexOf('/');
-        if (rSlash != -1)
+        if (rSlash != -1) {
             rPath = rPath.substring(rSlash + 1);
+        }
 
         return CASE_INSENSITIVE_ORDER.compare(lPath, rPath);
     }

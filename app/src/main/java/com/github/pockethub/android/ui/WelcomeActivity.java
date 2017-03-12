@@ -186,10 +186,11 @@ public class WelcomeActivity extends DotPagerActivity {
      * @return The color
      */
     private int getBackgroundColor(int pos){
-        if(pos < colors.length)
+        if(pos < colors.length) {
             return colors[pos];
-        else
+        } else {
             return colors[colors.length - 1];
+        }
     }
 
     private int getAccentsColor(int pos) {

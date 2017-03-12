@@ -70,8 +70,9 @@ public class RenderedCommentFragment extends DialogFragment implements
     public void setText(final String raw, final Repository repo) {
         Bundle args = new Bundle();
         args.putCharSequence(ARG_TEXT, raw);
-        if (repo instanceof Serializable)
+        if (repo instanceof Serializable) {
             args.putParcelable(ARG_REPO, repo);
+        }
         getLoaderManager().restartLoader(0, args, this);
         Keyboard.hideSoftInput(bodyText);
         showLoading(true);
@@ -99,8 +100,9 @@ public class RenderedCommentFragment extends DialogFragment implements
     @Override
     public void onLoadFinished(Loader<CharSequence> loader,
             CharSequence rendered) {
-        if (rendered == null)
+        if (rendered == null) {
             ToastUtils.show(getActivity(), R.string.error_rendering_markdown);
+        }
         bodyText.setText(rendered);
         showLoading(false);
     }

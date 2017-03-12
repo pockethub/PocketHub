@@ -59,8 +59,9 @@ public class RecentRepositoriesTest extends AndroidTestCase {
         assertTrue(recent.contains(MAX_SIZE + 1));
         assertFalse(recent.contains(0));
 
-        for (int i = 1; i < MAX_SIZE; i++)
+        for (int i = 1; i < MAX_SIZE; i++) {
             assertTrue(recent.contains(i));
+        }
     }
 
     /**

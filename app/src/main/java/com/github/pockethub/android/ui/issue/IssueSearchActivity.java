@@ -131,8 +131,9 @@ public class IssueSearchActivity extends RoboAppCompatActivity {
     }
 
     private void handleIntent(Intent intent) {
-        if (ACTION_SEARCH.equals(intent.getAction()))
+        if (ACTION_SEARCH.equals(intent.getAction())) {
             search(intent.getStringExtra(QUERY));
+        }
     }
 
     private void search(final String query) {

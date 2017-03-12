@@ -63,30 +63,34 @@ public class FilterListAdapter extends SingleTypeAdapter<IssueFilter> {
     protected void update(int position, IssueFilter filter) {
         avatars.bind(imageView(0), filter.getRepository().owner());
         setText(1, InfoUtils.createRepoId(filter.getRepository()));
-        if (filter.isOpen())
+        if (filter.isOpen()) {
             setText(2, R.string.open_issues);
-        else
+        } else {
             setText(2, R.string.closed_issues);
+        }
 
         Collection<Label> labels = filter.getLabels();
         if (labels != null && !labels.isEmpty()) {
             TextView labelsText = textView(3);
             LabelDrawableSpan.setText(labelsText, labels);
             ViewUtils.setGone(labelsText, false);
-        } else
+        } else {
             setGone(3, true);
+        }
 
         Milestone milestone = filter.getMilestone();
-        if (milestone != null)
+        if (milestone != null) {
             ViewUtils.setGone(setText(4, milestone.title()), false);
-        else
+        } else {
             setGone(4, true);
+        }
 
         User assignee = filter.getAssignee();
         if (assignee != null) {
             avatars.bind(imageView(7), assignee);
             ViewUtils.setGone(setText(6, assignee.login()), false);
-        } else
+        } else {
             setGone(5, true);
+        }
     }
 }

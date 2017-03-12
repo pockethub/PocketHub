@@ -72,10 +72,11 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
             setText(1, item.title());
 
             String description = item.description();
-            if (!TextUtils.isEmpty(description))
+            if (!TextUtils.isEmpty(description)) {
                 ViewUtils.setGone(setText(2, description), false);
-            else
+            } else {
                 setGone(2, true);
+            }
 
             setChecked(0, selected == position);
         }
@@ -152,8 +153,9 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
         MilestoneListAdapter adapter = new MilestoneListAdapter(inflater,
                 choices.toArray(new Milestone[choices.size()]), selected);
         view.setAdapter(adapter);
-        if (selected >= 0)
+        if (selected >= 0) {
             view.setSelection(selected);
+        }
         dialogBuilder.customView(view, false);
 
         return dialogBuilder.build();

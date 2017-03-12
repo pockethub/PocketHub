@@ -125,8 +125,9 @@ public class HeaderFooterListAdapter<E extends BaseAdapter> extends
     @Override
     public boolean removeHeader(View v) {
         boolean removed = super.removeHeader(v);
-        if (removed)
+        if (removed) {
             wrapped.notifyDataSetChanged();
+        }
         return removed;
     }
 
@@ -140,11 +141,13 @@ public class HeaderFooterListAdapter<E extends BaseAdapter> extends
         if (!headers.isEmpty()) {
             FixedViewInfo[] infos = headers.toArray(new FixedViewInfo[headers
                     .size()]);
-            for (FixedViewInfo info : infos)
+            for (FixedViewInfo info : infos) {
                 removed = super.removeHeader(info.view) || removed;
+            }
         }
-        if (removed)
+        if (removed) {
             wrapped.notifyDataSetChanged();
+        }
         return removed;
     }
 
@@ -158,19 +161,22 @@ public class HeaderFooterListAdapter<E extends BaseAdapter> extends
         if (!footers.isEmpty()) {
             FixedViewInfo[] infos = footers.toArray(new FixedViewInfo[footers
                     .size()]);
-            for (FixedViewInfo info : infos)
+            for (FixedViewInfo info : infos) {
                 removed = super.removeFooter(info.view) || removed;
+            }
         }
-        if (removed)
+        if (removed) {
             wrapped.notifyDataSetChanged();
+        }
         return removed;
     }
 
     @Override
     public boolean removeFooter(View v) {
         boolean removed = super.removeFooter(v);
-        if (removed)
+        if (removed) {
             wrapped.notifyDataSetChanged();
+        }
         return removed;
     }
 

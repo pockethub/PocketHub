@@ -142,12 +142,14 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repository> 
      * @return true if query opened as repository, false otherwise
      */
     private boolean openRepositoryMatch(final String query) {
-        if (TextUtils.isEmpty(query))
+        if (TextUtils.isEmpty(query)) {
             return false;
+        }
 
         Repository repoId = InfoUtils.createRepoFromUrl(query.trim());
-        if (repoId == null)
+        if (repoId == null) {
             return false;
+        }
 
         Repository repo;
         repo = ServiceGenerator.createService(getContext(), RepositoryService.class)
@@ -157,8 +159,9 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repository> 
 
         startActivity(RepositoryViewActivity.createIntent(repo));
         final Activity activity = getActivity();
-        if (activity != null)
+        if (activity != null) {
             activity.finish();
+        }
         return true;
     }
 

@@ -90,9 +90,9 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(user.login());
 
-        if (!TextUtils.isEmpty(user.avatarUrl()))
+        if (!TextUtils.isEmpty(user.avatarUrl())) {
             configurePager();
-        else {
+        } else {
             ViewUtils.setGone(loadingBar, false);
             setGone(true);
             ServiceGenerator.createService(this, UserService.class)

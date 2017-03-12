@@ -51,15 +51,17 @@ public class MembersFragment extends ItemListFragment<User> {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        if (org != null)
+        if (org != null) {
             outState.putParcelable(EXTRA_USER, org);
+        }
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         org = getArguments().getParcelable("org");
-        if (org == null && savedInstanceState != null)
+        if (org == null && savedInstanceState != null) {
             org = savedInstanceState.getParcelable(EXTRA_USER);
+        }
         setEmptyText(R.string.no_members);
 
         super.onActivityCreated(savedInstanceState);

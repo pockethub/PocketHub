@@ -78,9 +78,10 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
                     gists = service.getPublicGists(randomPage).toBlocking().first().items();
                 }
 
-                if (gists.isEmpty())
+                if (gists.isEmpty()) {
                     throw new IllegalArgumentException(getContext().getString(
                             R.string.no_gists_found));
+                }
 
                 subscriber.onNext(store.addGist(gists.iterator().next()));
             }

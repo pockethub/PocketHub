@@ -53,15 +53,17 @@ public class UserEventMatcher {
      * @return user or null if event doesn't apply
      */
     public UserPair getUsers(final GitHubEvent event) {
-        if (event == null || event.payload() == null)
+        if (event == null || event.payload() == null) {
             return null;
+        }
 
         GitHubEventType type = event.type();
         if (GitHubEventType.FollowEvent.equals(type)) {
             User from = event.actor();
             User to = ((FollowPayload) event.payload()).target();
-            if (from != null && to != null)
+            if (from != null && to != null) {
                 return new UserPair(from, to);
+            }
         }
 
         return null;

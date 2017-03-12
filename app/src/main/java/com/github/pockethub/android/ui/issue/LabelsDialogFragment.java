@@ -132,10 +132,13 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
         boolean[] selectedChoices = arguments
                 .getBooleanArray(ARG_SELECTED_CHOICES);
         List<String> selected = new ArrayList<>();
-        if (selectedChoices != null)
-            for (int i = 0; i < choices.size(); i++)
-                if (selectedChoices[i])
+        if (selectedChoices != null) {
+            for (int i = 0; i < choices.size(); i++) {
+                if (selectedChoices[i]) {
                     selected.add(choices.get(i).name());
+                }
+            }
+        }
         arguments.putStringArrayList(ARG_SELECTED, (ArrayList<String>) selected);
 
         LayoutInflater inflater = activity.getLayoutInflater();
@@ -189,9 +192,11 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
                 .getBooleanArray(ARG_SELECTED_CHOICES);
         ArrayList<Label> choices = getChoices();
         if (selectedChoices != null) {
-            for (int i = 0; i < selectedChoices.length; i++)
-                if (selectedChoices[i])
+            for (int i = 0; i < selectedChoices.length; i++) {
+                if (selectedChoices[i]) {
                     selected.add(choices.get(i));
+                }
+            }
         }
         arguments.putParcelableArrayList(ARG_SELECTED, selected);
 

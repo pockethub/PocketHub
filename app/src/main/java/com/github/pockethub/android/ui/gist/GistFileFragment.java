@@ -87,8 +87,9 @@ public class GistFileFragment extends DialogFragment implements
 
         file = (GistFile) getArguments().get(EXTRA_GIST_FILE);
         gist = store.getGist(gistId);
-        if (gist == null)
+        if (gist == null) {
             gist = Gist.builder().id(gistId).build();
+        }
 
         codePrefs = PreferenceUtils.getCodePreferences(getActivity());
         codePrefs.registerOnSharedPreferenceChangeListener(this);
@@ -115,11 +116,13 @@ public class GistFileFragment extends DialogFragment implements
     }
 
     private void updateWrapItem() {
-        if (wrapItem != null)
-            if (codePrefs.getBoolean(WRAP, false))
+        if (wrapItem != null) {
+            if (codePrefs.getBoolean(WRAP, false)) {
                 wrapItem.setTitle(R.string.disable_wrapping);
-            else
+            } else {
                 wrapItem.setTitle(R.string.enable_wrapping);
+            }
+        }
     }
 
     @SuppressLint("CommitPrefEdits")
@@ -149,11 +152,13 @@ public class GistFileFragment extends DialogFragment implements
                 try {
                     gist = store.refreshGist(gistId);
                     Map<String, GistFile> files = gist.files();
-                    if (files == null)
+                    if (files == null) {
                         subscriber.onError(new IOException());
+                    }
                     GistFile loadedFile = files.get(file.filename());
-                    if (loadedFile == null)
+                    if (loadedFile == null) {
                         subscriber.onError(new IOException());
+                    }
                     subscriber.onNext(loadedFile);
                 } catch (IOException e) {
                     subscriber.onError(e);
@@ -164,13 +169,15 @@ public class GistFileFragment extends DialogFragment implements
                 .subscribe(new ObserverAdapter<GistFile>() {
                     @Override
                     public void onNext(GistFile loadedFile) {
-                        if (loadedFile == null)
+                        if (loadedFile == null) {
                             return;
+                        }
 
                         file = loadedFile;
                         getArguments().putParcelable(EXTRA_GIST_FILE, file);
-                        if (file.content() != null)
+                        if (file.content() != null) {
                             showSource();
+                        }
                     }
 
                     @Override
@@ -200,10 +207,11 @@ public class GistFileFragment extends DialogFragment implements
         editor.setWrap(PreferenceUtils.getCodePreferences(getActivity())
                 .getBoolean(WRAP, false));
 
-        if (file.content() != null)
+        if (file.content() != null) {
             showSource();
-        else
+        } else {
             loadSource();
+        }
     }
 
     @Override

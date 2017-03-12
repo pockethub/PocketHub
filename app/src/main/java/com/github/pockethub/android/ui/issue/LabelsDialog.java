@@ -87,8 +87,9 @@ public class LabelsDialog extends BaseProgressDialog {
                 super.onCompleted();
                 Map<String, Label> loadedLabels = new TreeMap<>(
                         CASE_INSENSITIVE_ORDER);
-                for (Label label : repositoryLabels)
+                for (Label label : repositoryLabels) {
                     loadedLabels.put(label.name(), label);
+                }
 
                 labels = loadedLabels;
 
@@ -113,8 +114,9 @@ public class LabelsDialog extends BaseProgressDialog {
                 .concatMap(new Func1<Page<Label>, Observable<Page<Label>>>() {
                     @Override
                     public Observable<Page<Label>> call(Page<Label> page) {
-                        if (page.next() == null)
+                        if (page.next() == null) {
                             return Observable.just(page);
+                        }
 
                         return Observable.just(page)
                                 .concatWith(getPageAndNext(page.next()));
@@ -138,11 +140,14 @@ public class LabelsDialog extends BaseProgressDialog {
         final boolean[] checked = new boolean[names.size()];
         if (selectedLabels != null && !selectedLabels.isEmpty()) {
             Set<String> selectedNames = new HashSet<>();
-            for (Label label : selectedLabels)
+            for (Label label : selectedLabels) {
                 selectedNames.add(label.name());
-            for (int i = 0; i < checked.length; i++)
-                if (selectedNames.contains(names.get(i).name()))
+            }
+            for (int i = 0; i < checked.length; i++) {
+                if (selectedNames.contains(names.get(i).name())) {
                     checked[i] = true;
+                }
+            }
         }
         LabelsDialogFragment.show(activity, requestCode,
                 activity.getString(R.string.select_labels), null, names, checked);

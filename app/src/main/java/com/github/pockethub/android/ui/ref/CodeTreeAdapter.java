@@ -143,12 +143,13 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
 
     @Override
     protected void update(final int position, final Object item, final int type) {
-        if (indented)
+        if (indented) {
             updater.view.setPadding(indentedPaddingLeft, paddingTop,
                     paddingRight, paddingBottom);
-        else
+        } else {
             updater.view.setPadding(paddingLeft, paddingTop, paddingRight,
                     paddingBottom);
+        }
 
         switch (type) {
             case TYPE_BLOB:

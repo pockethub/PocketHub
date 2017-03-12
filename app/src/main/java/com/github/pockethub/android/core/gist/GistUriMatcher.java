@@ -39,24 +39,29 @@ public class GistUriMatcher {
      */
     public static Gist getGist(final Uri uri) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null)
+        if (segments == null) {
             return null;
-        if (segments.size() != 1)
+        }
+        if (segments.size() != 1) {
             return null;
+        }
 
         String gistId = segments.get(0);
-        if (TextUtils.isEmpty(gistId))
+        if (TextUtils.isEmpty(gistId)) {
             return null;
+        }
 
         Gist gist = Gist.builder()
                 .id(gistId)
                 .build();
 
-        if (TextUtils.isDigitsOnly(gistId))
+        if (TextUtils.isDigitsOnly(gistId)) {
             return gist;
+        }
 
-        if (PATTERN.matcher(gistId).matches())
+        if (PATTERN.matcher(gistId).matches()) {
             return gist;
+        }
 
         return null;
     }

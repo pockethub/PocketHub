@@ -168,8 +168,9 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         Activity activity = getActivity();
         User user = gist.owner();
         String userName = null;
-        if(user != null)
+        if(user != null) {
             userName = user.login();
+        }
 
         adapter = new HeaderFooterListAdapter<>(list,
                 new CommentListAdapter(activity.getLayoutInflater(), null, avatars,
@@ -190,21 +191,25 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
             updateFiles(gist);
         }
 
-        if (gist == null || (gist.comments() > 0 && comments == null))
+        if (gist == null || (gist.comments() > 0 && comments == null)) {
             adapter.addHeader(loadingView, null, false);
+        }
 
-        if (gist != null && comments != null)
+        if (gist != null && comments != null) {
             updateList(gist, comments);
-        else
+        } else {
             refreshGist();
+        }
     }
 
     private boolean isOwner() {
-        if (gist == null)
+        if (gist == null) {
             return false;
+        }
         User user = gist.owner();
-        if (user == null)
+        if (user == null) {
             return false;
+        }
         String login = AccountUtils.getLogin(getActivity());
         return login != null && login.equals(user.login());
     }
@@ -217,8 +222,9 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
             text.append(createdAt);
             created.setText(text);
             created.setVisibility(VISIBLE);
-        } else
+        } else {
             created.setVisibility(GONE);
+        }
 
         Date updatedAt = gist.updatedAt();
         if (updatedAt != null && !updatedAt.equals(createdAt)) {
@@ -227,14 +233,16 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
             text.append(updatedAt);
             updated.setText(text);
             updated.setVisibility(VISIBLE);
-        } else
+        } else {
             updated.setVisibility(GONE);
+        }
 
         String desc = gist.description();
-        if (!TextUtils.isEmpty(desc))
+        if (!TextUtils.isEmpty(desc)) {
             description.setText(desc);
-        else
+        } else {
             description.setText(R.string.no_description_given);
+        }
 
         ViewUtils.setGone(progress, true);
         ViewUtils.setGone(list, false);
@@ -252,18 +260,21 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
             menu.removeItem(R.id.m_delete);
             MenuItem starItem = menu.findItem(R.id.m_star);
             starItem.setEnabled(loadFinished && !owner);
-            if (starred)
+            if (starred) {
                 starItem.setTitle(R.string.unstar);
-            else
+            } else {
                 starItem.setTitle(R.string.star);
-        } else
+            }
+        } else {
             menu.removeItem(R.id.m_star);
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (gist == null)
+        if (gist == null) {
             return super.onOptionsItemSelected(item);
+        }
 
         switch (item.getItemId()) {
         case R.id.m_comment:
@@ -271,10 +282,11 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                     COMMENT_CREATE);
             return true;
         case R.id.m_star:
-            if (starred)
+            if (starred) {
                 unstarGist();
-            else
+            } else {
                 starGist();
+            }
             return true;
         case R.id.m_refresh:
             refreshGist();
@@ -313,8 +325,9 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         String id = gist.id();
         subject.append(id);
         User user = gist.owner();
-        if (user != null && !TextUtils.isEmpty(user.login()))
+        if (user != null && !TextUtils.isEmpty(user.login())) {
             subject.append(" by ").append(user.login());
+        }
         startActivity(ShareUtils.create(subject, "https://gist.github.com/"
                 + id));
     }
@@ -341,8 +354,9 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (RESULT_OK != resultCode || data == null)
+        if (RESULT_OK != resultCode || data == null) {
             return;
+        }
 
         switch (requestCode) {
         case COMMENT_CREATE:
@@ -352,8 +366,9 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 comments.add(comment);
                 gist = gist.toBuilder().comments(gist.comments() + 1).build();
                 updateList(gist, comments);
-            } else
+            } else {
                 refreshGist();
+            }
             return;
         case COMMENT_EDIT:
             comment = data.getParcelableExtra(EXTRA_COMMENT);
@@ -368,8 +383,9 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 imageGetter.removeFromCache(comment.id());
                 comments.set(position, comment);
                 updateList(gist, comments);
-            } else
+            } else {
                 refreshGist();
+            }
             return;
         }
 
@@ -378,16 +394,19 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
     private void updateFiles(Gist gist) {
         final Activity activity = getActivity();
-        if (activity == null)
+        if (activity == null) {
             return;
+        }
 
-        for (View header : fileHeaders)
+        for (View header : fileHeaders) {
             adapter.removeHeader(header);
+        }
         fileHeaders.clear();
 
         Map<String, GistFile> files = gist.files();
-        if (files == null || files.isEmpty())
+        if (files == null || files.isEmpty()) {
             return;
+        }
 
         final LayoutInflater inflater = activity.getLayoutInflater();
         final Typeface octicons = TypefaceUtils.getOcticons(activity);
@@ -421,13 +440,15 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
                     @Override
                     public void onNext(FullGist fullGist) {
-                        if (!isUsable())
+                        if (!isUsable()) {
                             return;
+                        }
 
                         FragmentActivity activity = getActivity();
-                        if (activity instanceof OnLoadListener)
+                        if (activity instanceof OnLoadListener) {
                             ((OnLoadListener<Gist>) activity)
                                     .loaded(fullGist.getGist());
+                        }
 
                         starred = fullGist.isStarred();
                         loadFinished = true;
@@ -447,15 +468,17 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
         Object item = parent.getItemAtPosition(position);
-        if (item instanceof GistFile)
+        if (item instanceof GistFile) {
             startActivity(GistFilesViewActivity
                     .createIntent(gist, position - 1));
+        }
     }
 
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
-        if (RESULT_OK != resultCode)
+        if (RESULT_OK != resultCode) {
             return;
+        }
 
         switch (requestCode) {
         case COMMENT_DELETE:
@@ -482,8 +505,9 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                                         });
                                 comments.remove(position);
                                 updateList(gist, comments);
-                            } else
+                            } else {
                                 refreshGist();
+                            }
                         }
 
                         @Override

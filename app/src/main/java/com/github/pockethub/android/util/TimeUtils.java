@@ -38,11 +38,12 @@ public class TimeUtils {
      */
     public static CharSequence getRelativeTime(final Date date) {
         long now = System.currentTimeMillis();
-        if (Math.abs(now - date.getTime()) > TimeUnit.MINUTES.toMillis(1))
+        if (Math.abs(now - date.getTime()) > TimeUnit.MINUTES.toMillis(1)) {
             return DateUtils.getRelativeTimeSpanString(date.getTime(), now,
                     MINUTE_IN_MILLIS, FORMAT_SHOW_DATE | FORMAT_SHOW_YEAR
                             | FORMAT_NUMERIC_DATE);
-        else
+        } else {
             return "just now";
+        }
     }
 }

@@ -81,10 +81,11 @@ public class EditAssigneeTask implements Observable.OnSubscribe<Issue> {
     public void call(Subscriber<? super Issue> subscriber) {
         try{
             String assigneLogin;
-            if (assignee != null)
+            if (assignee != null) {
                 assigneLogin = assignee.login();
-            else
+            } else {
                 assigneLogin = "";
+            }
 
             IssueRequest edit = IssueRequest.builder()
                     .assignees(Collections.singletonList(assigneLogin))

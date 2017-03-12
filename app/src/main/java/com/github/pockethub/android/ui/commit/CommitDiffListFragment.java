@@ -152,14 +152,16 @@ public class CommitDiffListFragment extends DialogFragment implements
                 .setText(R.string.loading_files_and_comments);
 
         if (files == null
-                || (commit != null && commit.commit().commentCount() > 0 && comments == null))
+                || (commit != null && commit.commit().commentCount() > 0 && comments == null)) {
             adapter.addFooter(loadingView);
+        }
 
-        if (commit != null && comments != null && files != null)
+        if (commit != null && comments != null && files != null) {
             updateList(commit, comments, files);
-        else {
-            if (commit != null)
+        } else {
+            if (commit != null) {
                 updateHeader(commit);
+            }
             refreshCommit();
         }
     }
@@ -179,8 +181,9 @@ public class CommitDiffListFragment extends DialogFragment implements
             }
             commentImageGetter.encode(comment, comment.bodyHtml());
             updateItems(comments, files);
-        } else
+        } else {
             refreshCommit();
+        }
     }
 
     @Override
@@ -202,8 +205,9 @@ public class CommitDiffListFragment extends DialogFragment implements
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        if (!isUsable())
+        if (!isUsable()) {
             return false;
+        }
 
         switch (item.getItemId()) {
             case R.id.m_refresh:
@@ -249,8 +253,9 @@ public class CommitDiffListFragment extends DialogFragment implements
                     public void onNext(FullCommit full) {
                         List<GitHubFile> files = full.getCommit().files();
                         diffStyler.setFiles(files);
-                        if (files != null)
+                        if (files != null) {
                             Collections.sort(files, new CommitFileComparator());
+                        }
 
                         updateList(full.getCommit(), full, full.getFiles());
                     }
@@ -283,13 +288,15 @@ public class CommitDiffListFragment extends DialogFragment implements
             styledAuthor.append(getString(R.string.authored));
 
             Date commitAuthorDate = CommitUtils.getAuthorDate(commit);
-            if (commitAuthorDate != null)
+            if (commitAuthorDate != null) {
                 styledAuthor.append(' ').append(commitAuthorDate);
+            }
 
             authorDate.setText(styledAuthor);
             ViewUtils.setGone(authorArea, false);
-        } else
+        } else {
             ViewUtils.setGone(authorArea, true);
+        }
 
         if (isDifferentCommitter(commitAuthor, commitCommitter)) {
             CommitUtils.bindCommitter(commit, avatars, committerAvatar);
@@ -298,13 +305,15 @@ public class CommitDiffListFragment extends DialogFragment implements
             styledCommitter.append(getString(R.string.committed));
 
             Date commitCommitterDate = CommitUtils.getCommitterDate(commit);
-            if (commitCommitterDate != null)
+            if (commitCommitterDate != null) {
                 styledCommitter.append(' ').append(commitCommitterDate);
+            }
 
             committerDate.setText(styledCommitter);
             ViewUtils.setGone(committerArea, false);
-        } else
+        } else {
             ViewUtils.setGone(committerArea, true);
+        }
     }
 
     private void addDiffStats(Commit commit, LayoutInflater inflater) {
@@ -318,8 +327,9 @@ public class CommitDiffListFragment extends DialogFragment implements
     private void addCommitParents(Commit commit,
                                   LayoutInflater inflater) {
         List<Commit> parents = commit.parents();
-        if (parents == null || parents.isEmpty())
+        if (parents == null || parents.isEmpty()) {
             return;
+        }
 
         for (Commit parent : parents) {
             View parentView = inflater.inflate(R.layout.commit_parent_item, null);
@@ -344,8 +354,9 @@ public class CommitDiffListFragment extends DialogFragment implements
     }
 
     private void updateList(Commit commit, List<GitComment> comments, List<FullCommitFile> files) {
-        if (!isUsable())
+        if (!isUsable()) {
             return;
+        }
 
         this.commit = commit;
         this.comments = comments;
@@ -362,10 +373,12 @@ public class CommitDiffListFragment extends DialogFragment implements
                              List<FullCommitFile> files) {
         CommitFileListAdapter rootAdapter = adapter.getWrappedAdapter();
         rootAdapter.clear();
-        for (FullCommitFile file : files)
+        for (FullCommitFile file : files) {
             rootAdapter.addItem(file);
-        for (GitComment comment : comments)
+        }
+        for (GitComment comment : comments) {
             rootAdapter.addComment(comment);
+        }
     }
 
     @Override
@@ -465,9 +478,10 @@ public class CommitDiffListFragment extends DialogFragment implements
 
     private void openFile(GitHubFile file) {
         if (!TextUtils.isEmpty(file.filename())
-                && !TextUtils.isEmpty(file.sha()))
+                && !TextUtils.isEmpty(file.sha())) {
             startActivity(CommitFileViewActivity.createIntent(repository, base,
                     file));
+        }
     }
 
     /**
@@ -480,24 +494,28 @@ public class CommitDiffListFragment extends DialogFragment implements
     private void selectPreviousFile(int position, Object item,
                                     AdapterView<?> parent) {
         CharSequence line;
-        if (item instanceof CharSequence)
+        if (item instanceof CharSequence) {
             line = (CharSequence) item;
-        else
+        } else {
             line = null;
+        }
 
         int linePosition = 0;
         while (--position >= 0) {
             item = parent.getItemAtPosition(position);
 
             if (item instanceof GitHubFile) {
-                if (line != null)
+                if (line != null) {
                     showFileOptions(line, linePosition, (GitHubFile) item);
+                }
                 break;
-            } else if (item instanceof CharSequence)
-                if (line != null)
+            } else if (item instanceof CharSequence) {
+                if (line != null) {
                     linePosition++;
-                else
+                } else {
                     line = (CharSequence) item;
+                }
+            }
         }
     }
 
@@ -505,15 +523,17 @@ public class CommitDiffListFragment extends DialogFragment implements
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
         Object item = parent.getItemAtPosition(position);
-        if (item instanceof Commit)
+        if (item instanceof Commit) {
             startActivity(CommitViewActivity.createIntent(repository,
                     ((Commit) item).sha()));
-        else if (item instanceof GitHubFile)
+        } else if (item instanceof GitHubFile) {
             openFile((GitHubFile) item);
-        else if (item instanceof CharSequence)
+        } else if (item instanceof CharSequence) {
             selectPreviousFile(position, item, parent);
-        else if (item instanceof GitComment)
-            if (!TextUtils.isEmpty(((GitComment) item).path()))
+        } else if (item instanceof GitComment) {
+            if (!TextUtils.isEmpty(((GitComment) item).path())) {
                 selectPreviousFile(position, item, parent);
+            }
+        }
     }
 }

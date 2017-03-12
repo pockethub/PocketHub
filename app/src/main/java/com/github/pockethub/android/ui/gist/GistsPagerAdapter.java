@@ -68,8 +68,9 @@ public class GistsPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         Object fragment = super.instantiateItem(container, position);
-        if (fragment instanceof GistFragment)
+        if (fragment instanceof GistFragment) {
             fragments.put(position, (GistFragment) fragment);
+        }
         return fragment;
     }
 
@@ -85,8 +86,9 @@ public class GistsPagerAdapter extends FragmentStatePagerAdapter {
     public GistsPagerAdapter onDialogResult(int position, int requestCode,
             int resultCode, Bundle arguments) {
         GistFragment fragment = fragments.get(position);
-        if (fragment != null)
+        if (fragment != null) {
             fragment.onDialogResult(requestCode, resultCode, arguments);
+        }
         return this;
     }
 }

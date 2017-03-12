@@ -36,8 +36,9 @@ public class AccountAuthenticatorService extends Service {
     }
 
     private AccountAuthenticator getAuthenticator() {
-        if (AUTHENTICATOR == null)
+        if (AUTHENTICATOR == null) {
             AUTHENTICATOR = new AccountAuthenticator(this);
+        }
         return AUTHENTICATOR;
     }
 }

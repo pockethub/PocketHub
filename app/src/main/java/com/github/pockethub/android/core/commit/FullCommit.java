@@ -50,10 +50,12 @@ public class FullCommit extends ArrayList<GitComment> implements
         List<GitHubFile> rawFiles = commit.files();
         if (rawFiles != null && !rawFiles.isEmpty()) {
             files = new ArrayList<>(rawFiles.size());
-            for (GitHubFile file : rawFiles)
+            for (GitHubFile file : rawFiles) {
                 files.add(new FullCommitFile(file));
-        } else
+            }
+        } else {
             files = Collections.emptyList();
+        }
     }
 
     /**
@@ -85,31 +87,37 @@ public class FullCommit extends ArrayList<GitComment> implements
                     files.add(full);
                 }
                 hasComments = !comments.isEmpty();
-            } else
-                for (GitHubFile file : rawFiles)
+            } else {
+                for (GitHubFile file : rawFiles) {
                     files.add(new FullCommitFile(file));
-        } else
+                }
+            }
+        } else {
             files = Collections.emptyList();
+        }
 
-        if (hasComments)
+        if (hasComments) {
             addAll(comments);
+        }
     }
 
     @Override
     public boolean add(final GitComment comment) {
         String path = comment.path();
-        if (TextUtils.isEmpty(path))
+        if (TextUtils.isEmpty(path)) {
             return super.add(comment);
-        else {
+        } else {
             boolean added = false;
-            for (FullCommitFile file : files)
+            for (FullCommitFile file : files) {
                 if (path.equals(file.getFile().filename())) {
                     file.add(comment);
                     added = true;
                     break;
                 }
-            if (!added)
+            }
+            if (!added) {
                 added = super.add(comment);
+            }
             return added;
         }
     }

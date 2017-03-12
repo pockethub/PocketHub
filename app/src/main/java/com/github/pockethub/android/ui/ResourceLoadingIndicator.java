@@ -71,11 +71,13 @@ public class ResourceLoadingIndicator {
      * @return this indicator
      */
     public ResourceLoadingIndicator setVisible(final boolean visible) {
-        if (showing != visible && adapter != null)
-            if (visible)
+        if (showing != visible && adapter != null) {
+            if (visible) {
                 adapter.addFooter(view);
-            else
+            } else {
                 adapter.removeFooter(view);
+            }
+        }
         showing = visible;
         return this;
     }

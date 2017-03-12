@@ -75,9 +75,10 @@ public class RefreshTreeTask implements Observable.OnSubscribe<FullTree> {
                         .toBlocking()
                         .first()
                         .defaultBranch();
-                if (TextUtils.isEmpty(branch))
+                if (TextUtils.isEmpty(branch)) {
                     subscriber.onError(new IOException(
                             "Repository does not have master branch"));
+                }
             }
         }
 

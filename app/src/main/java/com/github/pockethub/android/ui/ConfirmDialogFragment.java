@@ -64,8 +64,9 @@ public class ConfirmDialogFragment extends DialogFragmentHelper implements
             final int requestCode, final String title, final String message,
             final Bundle bundle) {
         Bundle arguments = createArguments(title, message, requestCode);
-        if (bundle != null)
+        if (bundle != null) {
             arguments.putAll(bundle);
+        }
         show(activity, new ConfirmDialogFragment(), arguments, TAG);
     }
 

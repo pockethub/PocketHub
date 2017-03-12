@@ -70,10 +70,11 @@ public class CommitUtils {
      * @return abbreviated sha
      */
     public static String abbreviate(final String sha) {
-        if (!TextUtils.isEmpty(sha) && sha.length() > LENGTH)
+        if (!TextUtils.isEmpty(sha) && sha.length() > LENGTH) {
             return sha.substring(0, LENGTH);
-        else
+        } else {
             return sha;
+        }
     }
 
     /**
@@ -97,12 +98,14 @@ public class CommitUtils {
      */
     public static String getAuthor(final Commit commit) {
         User author = commit.author();
-        if (author != null)
+        if (author != null) {
             return author.login();
+        }
 
         GitCommit rawCommit = commit.commit();
-        if (rawCommit == null)
+        if (rawCommit == null) {
             return null;
+        }
 
         GitUser commitAuthor = rawCommit.author();
         return commitAuthor != null ? commitAuthor.name() : null;
@@ -119,12 +122,14 @@ public class CommitUtils {
      */
     public static String getCommitter(final Commit commit) {
         User committer = commit.committer();
-        if (committer != null)
+        if (committer != null) {
             return committer.login();
+        }
 
         GitCommit rawCommit = commit.commit();
-        if (rawCommit == null)
+        if (rawCommit == null) {
             return null;
+        }
 
         GitUser commitCommitter = rawCommit.committer();
         return commitCommitter != null ? commitCommitter.name() : null;
@@ -138,8 +143,9 @@ public class CommitUtils {
      */
     public static Date getAuthorDate(final Commit commit) {
         GitCommit rawCommit = commit.commit();
-        if (rawCommit == null)
+        if (rawCommit == null) {
             return null;
+        }
 
         GitUser commitAuthor = rawCommit.author();
         return commitAuthor != null && commitAuthor.date() != null ? commitAuthor.date() : null;
@@ -153,8 +159,9 @@ public class CommitUtils {
      */
     public static Date getCommitterDate(final Commit commit) {
         GitCommit rawCommit = commit.commit();
-        if (rawCommit == null)
+        if (rawCommit == null) {
             return null;
+        }
 
         GitUser commitCommitter = rawCommit.committer();
         return commitCommitter != null && commitCommitter.date() != null ? commitCommitter.date(): null;
@@ -171,8 +178,9 @@ public class CommitUtils {
     public static ImageView bindAuthor(final Commit commit,
             final AvatarLoader avatars, final ImageView view) {
         User author = commit.author();
-        if (author != null)
+        if (author != null) {
             avatars.bind(view, author);
+        }
 
         return view;
     }
@@ -188,8 +196,9 @@ public class CommitUtils {
     public static ImageView bindCommitter(final Commit commit,
             final AvatarLoader avatars, final ImageView view) {
         User committer = commit.committer();
-        if (committer != null)
+        if (committer != null) {
             avatars.bind(view, committer);
+        }
 
         return view;
     }
@@ -202,10 +211,11 @@ public class CommitUtils {
      */
     public static String getCommentCount(final Commit commit) {
         final GitCommit rawCommit = commit.commit();
-        if (rawCommit != null)
+        if (rawCommit != null) {
             return FORMAT.format(rawCommit.commentCount());
-        else
+        } else {
             return "0";
+        }
     }
 
     /**
@@ -219,29 +229,33 @@ public class CommitUtils {
         int added = 0;
         int deleted = 0;
         int changed = 0;
-        if (files != null)
+        if (files != null) {
             for (GitHubFile file : files) {
                 added += file.additions();
                 deleted += file.deletions();
                 changed++;
             }
+        }
 
-        if (changed != 1)
+        if (changed != 1) {
             fileDetails.append(FORMAT.format(changed)).append(" changed files");
-        else
+        } else {
             fileDetails.append("1 changed file");
+        }
         fileDetails.append(" with ");
 
-        if (added != 1)
+        if (added != 1) {
             fileDetails.append(FORMAT.format(added)).append(" additions");
-        else
+        } else {
             fileDetails.append("1 addition ");
+        }
         fileDetails.append(" and ");
 
-        if (deleted != 1)
+        if (deleted != 1) {
             fileDetails.append(FORMAT.format(deleted)).append(" deletions");
-        else
+        } else {
             fileDetails.append("1 deletion");
+        }
 
         return fileDetails;
     }
@@ -263,13 +277,15 @@ public class CommitUtils {
      * @return last segment of path
      */
     public static String getName(final String path) {
-        if (TextUtils.isEmpty(path))
+        if (TextUtils.isEmpty(path)) {
             return path;
+        }
 
         int lastSlash = path.lastIndexOf('/');
-        if (lastSlash != -1 && lastSlash + 1 < path.length())
+        if (lastSlash != -1 && lastSlash + 1 < path.length()) {
             return path.substring(lastSlash + 1);
-        else
+        } else {
             return path;
+        }
     }
 }

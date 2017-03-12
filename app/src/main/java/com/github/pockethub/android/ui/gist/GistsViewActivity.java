@@ -83,8 +83,9 @@ public class GistsViewActivity extends PagerActivity implements
     public static Intent createIntent(List<Gist> gists, int position) {
         String[] ids = new String[gists.size()];
         int index = 0;
-        for (Gist gist : gists)
+        for (Gist gist : gists) {
             ids[index++] = gist.id();
+        }
         return new Builder("gists.VIEW")
             .add(EXTRA_GIST_IDS, (Serializable) ids)
             .add(EXTRA_POSITION, position).toIntent();
@@ -126,8 +127,9 @@ public class GistsViewActivity extends PagerActivity implements
         if (gists == null && gist != null) {
             if (gist.createdAt() != null) {
                 Gist stored = store.getGist(gist.id());
-                if (stored == null)
+                if (stored == null) {
                     store.addGist(gist);
+                }
             }
             gists = new String[] { gist.id() };
         }
@@ -209,10 +211,11 @@ public class GistsViewActivity extends PagerActivity implements
     @Override
     public void startActivity(Intent intent) {
         Intent converted = UriLauncherActivity.convert(intent);
-        if (converted != null)
+        if (converted != null) {
             super.startActivity(converted);
-        else
+        } else {
             super.startActivity(intent);
+        }
     }
 
     @Override
@@ -239,7 +242,8 @@ public class GistsViewActivity extends PagerActivity implements
 
     @Override
     public void loaded(Gist gist) {
-        if (gists[pager.getCurrentItem()].equals(gist.id()))
+        if (gists[pager.getCurrentItem()].equals(gist.id())) {
             updateActionBar(gist, gist.id());
+        }
     }
 }

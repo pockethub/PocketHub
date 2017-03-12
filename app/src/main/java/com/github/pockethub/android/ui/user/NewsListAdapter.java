@@ -48,8 +48,9 @@ public class NewsListAdapter extends SingleTypeAdapter<GitHubEvent> {
      * @return true if renderable, false otherwise
      */
     public static boolean isValid(final GitHubEvent event) {
-        if (event == null || event.payload() == null)
+        if (event == null || event.payload() == null) {
             return false;
+        }
 
         final GitHubEventType type = event.type();
 

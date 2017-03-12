@@ -59,12 +59,13 @@ public abstract class ThrowableLoader<D> extends AuthenticatedUserLoader<D> {
             return loadData();
         } catch (Exception e) {
             if (AccountUtils.isUnauthorized(e)
-                    && AccountUtils.updateAccount(account, activity))
+                    && AccountUtils.updateAccount(account, activity)) {
                 try {
                     return loadData();
                 } catch (Exception e2) {
                     e = e2;
                 }
+            }
             Log.d(TAG, "Exception loading data", e);
             exception = e;
             return data;

@@ -134,8 +134,9 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
     }
 
     private void handleIntent(Intent intent) {
-        if (ACTION_SEARCH.equals(intent.getAction()))
+        if (ACTION_SEARCH.equals(intent.getAction())) {
             search(intent.getStringExtra(QUERY));
+        }
     }
 
     private void search(final String query) {

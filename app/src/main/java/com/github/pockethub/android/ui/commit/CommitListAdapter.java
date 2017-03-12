@@ -54,10 +54,11 @@ public class CommitListAdapter extends SingleTypeAdapter<Commit> {
     @Override
     public long getItemId(int position) {
         String sha = getItem(position).sha();
-        if (!TextUtils.isEmpty(sha))
+        if (!TextUtils.isEmpty(sha)) {
             return sha.hashCode();
-        else
+        } else {
             return super.getItemId(position);
+        }
     }
 
     @Override

@@ -66,8 +66,9 @@ public class GistStore extends ItemStore {
      */
     protected Map<String, GistFile> sortFiles(final Gist gist) {
         Map<String, GistFile> files = gist.files();
-        if (files == null || files.size() < 2)
+        if (files == null || files.size() < 2) {
             return files;
+        }
 
         Map<String, GistFile> sorted = new TreeMap<>(CASE_INSENSITIVE_ORDER);
         sorted.putAll(files);
@@ -82,8 +83,9 @@ public class GistStore extends ItemStore {
      */
     public Gist addGist(Gist gist) {
         Gist current = getGist(gist.id());
-        if (current != null && current.equals(gist))
+        if (current != null && current.equals(gist)) {
             return current;
+        }
 
         gist = gist.toBuilder()
                 .files(sortFiles(gist))

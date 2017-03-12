@@ -105,11 +105,13 @@ public class EditMilestoneTask implements Observable.OnSubscribe<Issue> {
     public EditMilestoneTask edit(Milestone milestone) {
         if (milestone != null)
 
+        {
             Observable.create(this)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(activity.<Issue>bindToLifecycle())
-                .subscribe(observer);
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .compose(activity.<Issue>bindToLifecycle())
+                    .subscribe(observer);
+        }
 
         return this;
     }

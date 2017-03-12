@@ -122,8 +122,9 @@ public class CommitListFragment extends PagedItemFragment<Commit>
                                 .first()
                                 .defaultBranch();
 
-                        if (TextUtils.isEmpty(defaultBranch))
+                        if (TextUtils.isEmpty(defaultBranch)) {
                             defaultBranch = "master";
+                        }
                     }
                     ref = defaultBranch;
                 }
@@ -137,8 +138,9 @@ public class CommitListFragment extends PagedItemFragment<Commit>
     public void onLoadFinished(Loader<List<Commit>> loader, List<Commit> items) {
         super.onLoadFinished(loader, items);
 
-        if (ref != null)
+        if (ref != null) {
             updateRefLabel();
+        }
     }
 
     @Override
@@ -152,10 +154,11 @@ public class CommitListFragment extends PagedItemFragment<Commit>
                 // Store first parent of last commit registered for next page
                 // lookup
                 List<Commit> parents = resource.parents();
-                if (parents != null && !parents.isEmpty())
+                if (parents != null && !parents.isEmpty()) {
                     last = parents.get(0).sha();
-                else
+                } else {
                     last = null;
+                }
 
                 return super.register(resource);
             }
@@ -169,10 +172,11 @@ public class CommitListFragment extends PagedItemFragment<Commit>
                         RepositoryCommitService service = ServiceGenerator.createService(getActivity(),
                                 RepositoryCommitService.class);
 
-                        if (page > 1 || ref == null)
+                        if (page > 1 || ref == null) {
                             return service.getCommits(repository.owner().login(), repository.name(), last, page);
-                        else
+                        } else {
                             return service.getCommits(repository.owner().login(), repository.name(), ref, page);
+                        }
                     }
                 }, page);
             }
@@ -205,9 +209,10 @@ public class CommitListFragment extends PagedItemFragment<Commit>
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Object item = l.getItemAtPosition(position);
-        if (item instanceof Commit)
+        if (item instanceof Commit) {
             startActivityForResult(CommitViewActivity.createIntent(repository,
                     position, items), COMMIT_VIEW);
+        }
     }
 
     @Override
@@ -222,8 +227,9 @@ public class CommitListFragment extends PagedItemFragment<Commit>
 
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
-        if (RESULT_OK != resultCode)
+        if (RESULT_OK != resultCode) {
             return;
+        }
 
         switch (requestCode) {
         case REF_UPDATE:
@@ -234,10 +240,11 @@ public class CommitListFragment extends PagedItemFragment<Commit>
 
     private void updateRefLabel() {
         branchView.setText(RefUtils.getName(ref));
-        if (RefUtils.isTag(ref))
+        if (RefUtils.isTag(ref)) {
             branchIconView.setText(R.string.icon_tag);
-        else
+        } else {
             branchIconView.setText(R.string.icon_fork);
+        }
     }
 
     private void setRef(final GitReference ref) {
@@ -247,12 +254,14 @@ public class CommitListFragment extends PagedItemFragment<Commit>
     }
 
     private void switchRefs() {
-        if (ref == null)
+        if (ref == null) {
             return;
+        }
 
-        if (dialog == null)
+        if (dialog == null) {
             dialog = new RefDialog((BaseActivity) getActivity(),
                     REF_UPDATE, repository);
+        }
         GitReference reference = GitReference.builder()
                 .ref(ref)
                 .build();

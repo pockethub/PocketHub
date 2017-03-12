@@ -63,29 +63,33 @@ public abstract class RepositoryListAdapter<V> extends SingleTypeAdapter<V> {
             final String language, final int watchers, final int forks,
             final boolean isPrivate, final boolean isFork,
             final String mirrorUrl) {
-        if (TextUtils.isEmpty(mirrorUrl))
-            if (isPrivate)
+        if (TextUtils.isEmpty(mirrorUrl)) {
+            if (isPrivate) {
                 setText(0, ICON_PRIVATE);
-            else if (isFork)
+            } else if (isFork) {
                 setText(0, ICON_FORK);
-            else
+            } else {
                 setText(0, ICON_PUBLIC);
-        else {
-            if (isPrivate)
+            }
+        } else {
+            if (isPrivate) {
                 setText(0, ICON_MIRROR_PRIVATE);
-            else
+            } else {
                 setText(0, ICON_MIRROR_PUBLIC);
+            }
         }
 
-        if (!TextUtils.isEmpty(description))
+        if (!TextUtils.isEmpty(description)) {
             ViewUtils.setGone(setText(1, description), false);
-        else
+        } else {
             setGone(1, true);
+        }
 
-        if (!TextUtils.isEmpty(language))
+        if (!TextUtils.isEmpty(language)) {
             ViewUtils.setGone(setText(2, language), false);
-        else
+        } else {
             setGone(2, true);
+        }
 
         setNumber(3, watchers);
         setNumber(4, forks);

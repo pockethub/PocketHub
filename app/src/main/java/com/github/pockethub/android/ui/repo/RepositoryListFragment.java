@@ -70,8 +70,9 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         super.onSaveInstanceState(outState);
 
         User org = this.org.get();
-        if (org != null)
+        if (org != null) {
             outState.putParcelable(EXTRA_USER, org);
+        }
     }
 
     @Override
@@ -98,14 +99,16 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         int previousOrgId = previousOrg != null ? previousOrg.id() : -1;
         org.set(organization);
 
-        if (recentRepos != null)
+        if (recentRepos != null) {
             recentRepos.saveAsync();
+        }
 
         // Only hard refresh if view already created and org is changing
         if (previousOrgId != organization.id()) {
             Activity activity = getActivity();
-            if (activity != null)
+            if (activity != null) {
                 recentRepos = new RecentRepositories(activity, organization);
+            }
 
             refreshWithProgress();
         }
@@ -116,18 +119,22 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         Activity activity = getActivity();
         User currentOrg = null;
 
-        if (getActivity() instanceof OrganizationSelectionProvider)
+        if (getActivity() instanceof OrganizationSelectionProvider) {
             currentOrg = ((OrganizationSelectionProvider) activity)
-                .addListener(this);
+                    .addListener(this);
+        }
 
-        if (getArguments() != null && getArguments().containsKey("org"))
+        if (getArguments() != null && getArguments().containsKey("org")) {
             currentOrg = getArguments().getParcelable("org");
+        }
 
-        if (currentOrg == null && savedInstanceState != null)
+        if (currentOrg == null && savedInstanceState != null) {
             currentOrg = savedInstanceState.getParcelable(EXTRA_USER);
+        }
         org.set(currentOrg);
-        if (currentOrg != null)
+        if (currentOrg != null) {
             recentRepos = new RecentRepositories(activity, currentOrg);
+        }
 
         setEmptyText(R.string.no_repositories);
 
@@ -148,8 +155,9 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
     @Override
     public void onListItemClick(ListView list, View v, int position, long id) {
         Repository repo = (Repository) list.getItemAtPosition(position);
-        if (recentRepos != null)
+        if (recentRepos != null) {
             recentRepos.add(repo);
+        }
 
         startActivityForResult(RepositoryViewActivity.createIntent(repo),
             REPOSITORY_VIEW);
@@ -158,12 +166,14 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
     @Override
     public boolean onListItemLongClick(ListView list, View v, int position,
         long itemId) {
-        if (!isUsable())
+        if (!isUsable()) {
             return false;
+        }
 
         final Repository repo = (Repository) list.getItemAtPosition(position);
-        if (repo == null)
+        if (repo == null) {
             return false;
+        }
 
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity())
                 .title(InfoUtils.createRepoId(repo));
@@ -207,51 +217,59 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
     }
 
     private void viewUser(User user) {
-        if (org.get().id() != user.id())
+        if (org.get().id() != user.id()) {
             startActivity(UserViewActivity.createIntent(user));
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
 
-        if (recentRepos != null)
+        if (recentRepos != null) {
             recentRepos.saveAsync();
+        }
     }
 
     private void updateHeaders(final List<Repository> repos) {
         HeaderFooterListAdapter<?> rootAdapter = getListAdapter();
-        if (rootAdapter == null)
+        if (rootAdapter == null) {
             return;
+        }
 
         DefaultRepositoryListAdapter adapter = (DefaultRepositoryListAdapter) rootAdapter
             .getWrappedAdapter();
         adapter.clearHeaders();
 
-        if (repos.isEmpty())
+        if (repos.isEmpty()) {
             return;
+        }
 
         // Add recent header if at least one recent repository
         Repository first = repos.get(0);
-        if (recentRepos.contains(first))
+        if (recentRepos.contains(first)) {
             adapter.registerHeader(first, getString(R.string.recently_viewed));
+        }
 
         // Advance past all recent repositories
         int index;
         Repository current = null;
         for (index = 0; index < repos.size(); index++) {
             Repository repository = repos.get(index);
-            if (recentRepos.contains(repository.id()))
+            if (recentRepos.contains(repository.id())) {
                 current = repository;
-            else
+            } else {
                 break;
+            }
         }
 
-        if (index >= repos.size())
+        if (index >= repos.size()) {
             return;
+        }
 
-        if (current != null)
+        if (current != null) {
             adapter.registerNoSeparator(current);
+        }
 
         // Register header for first character
         current = repos.get(index);
@@ -263,13 +281,15 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         for (index = index + 1; index < repos.size(); index++) {
             current = repos.get(index);
             char repoStart = Character.toLowerCase(current.name().charAt(0));
-            if (repoStart <= start)
+            if (repoStart <= start) {
                 continue;
+            }
 
             // Don't include separator for the last element of the previous
             // character
-            if (previousHeader != repoStart)
+            if (previousHeader != repoStart) {
                 adapter.registerNoSeparator(repos.get(index - 1));
+            }
 
             adapter.registerHeader(current, Character.toString(repoStart)
                 .toUpperCase(US));
@@ -288,8 +308,9 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
             @Override
             public List<Repository> loadData() throws Exception {
                 User org = RepositoryListFragment.this.org.get();
-                if (org == null)
+                if (org == null) {
                     return Collections.emptyList();
+                }
 
                 List<Repository> repos = cache.getRepos(org,
                     isForceRefresh(args));

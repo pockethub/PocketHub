@@ -86,8 +86,9 @@ public class AssigneeDialog extends BaseProgressDialog {
                 super.onCompleted();
                 Map<String, User> loadedCollaborators = new TreeMap<>(
                         CASE_INSENSITIVE_ORDER);
-                for (User user : users)
+                for (User user : users) {
                     loadedCollaborators.put(user.login(), user);
+                }
                 collaborators = loadedCollaborators;
 
                 dismissProgress();
@@ -109,8 +110,9 @@ public class AssigneeDialog extends BaseProgressDialog {
                 .concatMap(new Func1<Page<User>, Observable<Page<User>>>() {
                     @Override
                     public Observable<Page<User>> call(Page<User> page) {
-                        if (page.next() == null)
+                        if (page.next() == null) {
                             return Observable.just(page);
+                        }
 
                         return Observable.just(page)
                                 .concatWith(getPageAndNext(page.next()));
@@ -133,10 +135,13 @@ public class AssigneeDialog extends BaseProgressDialog {
         final ArrayList<User> users = new ArrayList<>(
                 collaborators.values());
         int checked = -1;
-        if (selectedAssignee != null)
-            for (int i = 0; i < users.size(); i++)
-                if (selectedAssignee.login().equals(users.get(i).login()))
+        if (selectedAssignee != null) {
+            for (int i = 0; i < users.size(); i++) {
+                if (selectedAssignee.login().equals(users.get(i).login())) {
                     checked = i;
+                }
+            }
+        }
         AssigneeDialogFragment.show(activity, requestCode,
                 activity.getString(R.string.select_assignee), null, users,
                 checked);

@@ -78,10 +78,11 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
 
         @Override
         protected void update(int position, GitReference item) {
-            if (RefUtils.isTag(item))
+            if (RefUtils.isTag(item)) {
                 setText(0, R.string.icon_tag);
-            else
+            } else {
                 setText(0, R.string.icon_fork);
+            }
             setText(1, RefUtils.getName(item));
             setChecked(2, selected == position);
         }
@@ -146,8 +147,9 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
         RefListAdapter adapter = new RefListAdapter(inflater,
                 choices.toArray(new GitReference[choices.size()]), selected);
         view.setAdapter(adapter);
-        if (selected >= 0)
+        if (selected >= 0) {
             view.setSelection(selected);
+        }
         dialogBuilder.customView(view, false);
 
         return dialogBuilder.build();

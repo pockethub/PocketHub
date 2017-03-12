@@ -71,8 +71,9 @@ public class Organizations implements PersistableResource<User> {
     @Override
     public void store(SQLiteDatabase db, List<User> orgs) {
         db.delete("orgs", null, null);
-        if (orgs.isEmpty())
+        if (orgs.isEmpty()) {
             return;
+        }
 
         ContentValues values = new ContentValues(3);
         for (User user : orgs) {

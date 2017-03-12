@@ -226,14 +226,16 @@ public class IssueFragment extends DialogFragment {
                 .findViewById(R.id.tv_loading);
         loadingText.setText(R.string.loading_comments);
 
-        if (issue == null || (issue.comments() > 0 && items == null))
+        if (issue == null || (issue.comments() > 0 && items == null)) {
             adapter.addHeader(loadingView);
+        }
 
-        if (issue != null && items != null)
+        if (issue != null && items != null) {
             updateList(issue, items);
-        else {
-            if (issue != null)
+        } else {
+            if (issue != null) {
                 updateHeader(issue);
+            }
             refreshIssue();
         }
     }
@@ -280,8 +282,9 @@ public class IssueFragment extends DialogFragment {
 
             @Override
             public void onClick(View v) {
-                if (IssueUtils.isPullRequest(issue))
+                if (IssueUtils.isPullRequest(issue)) {
                     openPullRequestCommits();
+                }
             }
         });
 
@@ -289,8 +292,9 @@ public class IssueFragment extends DialogFragment {
 
             @Override
             public void onClick(View v) {
-                if (issue != null)
+                if (issue != null) {
                     stateTask.confirm(IssueState.open.equals(issue.state()));
+                }
             }
         });
 
@@ -298,8 +302,9 @@ public class IssueFragment extends DialogFragment {
 
             @Override
             public void onClick(View v) {
-                if (issue != null && canWrite)
+                if (issue != null && canWrite) {
                     milestoneTask.prompt(issue.milestone());
+                }
             }
         });
 
@@ -308,8 +313,9 @@ public class IssueFragment extends DialogFragment {
 
                     @Override
                     public void onClick(View v) {
-                        if (issue != null && canWrite)
+                        if (issue != null && canWrite) {
                             assigneeTask.prompt(issue.assignee());
+                        }
                     }
                 });
 
@@ -317,8 +323,9 @@ public class IssueFragment extends DialogFragment {
 
             @Override
             public void onClick(View v) {
-                if (issue != null && canWrite)
+                if (issue != null && canWrite) {
                     labelsTask.prompt(issue.labels());
+                }
             }
         });
 
@@ -332,16 +339,18 @@ public class IssueFragment extends DialogFragment {
     }
 
     private void updateHeader(final Issue issue) {
-        if (!isUsable())
+        if (!isUsable()) {
             return;
+        }
 
         titleText.setText(issue.title());
 
         String body = issue.bodyHtml();
-        if (!TextUtils.isEmpty(body))
+        if (!TextUtils.isEmpty(body)) {
             bodyImageGetter.bind(bodyText, body, issue.id());
-        else
+        } else {
             bodyText.setText(R.string.no_description_given);
+        }
 
         authorText.setText(issue.user().login());
         createdDateText.setText(new StyledText().append(
@@ -359,16 +368,18 @@ public class IssueFragment extends DialogFragment {
             String commits = getString(R.string.pull_request_commits,
                     issue.pullRequest().commits());
             ((TextView) headerView.findViewById(R.id.tv_pull_request_commits)).setText(commits);
-        } else
+        } else {
             ViewUtils.setGone(commitsView, true);
+        }
 
         boolean open = IssueState.open.equals(issue.state());
         if (!open) {
             StyledText text = new StyledText();
             text.bold(getString(R.string.closed));
             Date closedAt = issue.closedAt();
-            if (closedAt != null)
+            if (closedAt != null) {
                 text.append(' ').append(closedAt);
+            }
             stateText.setText(text);
         }
         ViewUtils.setGone(stateText, open);
@@ -390,8 +401,9 @@ public class IssueFragment extends DialogFragment {
         if (labels != null && !labels.isEmpty()) {
             LabelDrawableSpan.setText(labelsArea, labels);
             labelsArea.setVisibility(VISIBLE);
-        } else
+        } else {
             labelsArea.setVisibility(GONE);
+        }
 
         if (issue.milestone() != null) {
             Milestone milestone = issue.milestone();
@@ -406,11 +418,13 @@ public class IssueFragment extends DialogFragment {
                 ((LayoutParams) milestoneProgressArea.getLayoutParams()).weight = closed
                         / total;
                 milestoneProgressArea.setVisibility(VISIBLE);
-            } else
+            } else {
                 milestoneProgressArea.setVisibility(GONE);
+            }
             milestoneArea.setVisibility(VISIBLE);
-        } else
+        } else {
             milestoneArea.setVisibility(GONE);
+        }
 
         ViewUtils.setGone(progress, true);
         ViewUtils.setGone(list, false);
@@ -425,8 +439,9 @@ public class IssueFragment extends DialogFragment {
                 .subscribe(new ObserverAdapter<FullIssue>() {
                     @Override
                     public void onNext(FullIssue fullIssue) {
-                        if (!isUsable())
+                        if (!isUsable()) {
                             return;
+                        }
 
                         issue = fullIssue.getIssue();
                         items = new ArrayList<>();
@@ -450,23 +465,25 @@ public class IssueFragment extends DialogFragment {
                 Date l = getDate(lhs);
                 Date r = getDate(rhs);
 
-                if(l == null && r != null)
+                if(l == null && r != null) {
                     return 1;
-                else if(l != null && r == null)
+                } else if(l != null && r == null) {
                     return -1;
-                else if(l == null && r == null)
+                } else if(l == null && r == null) {
                     return 0;
-                else
+                } else {
                     return l.compareTo(r);
+                }
             }
 
             private Date getDate(Object obj){
-                if(obj instanceof GitHubComment)
+                if(obj instanceof GitHubComment) {
                     return ((GitHubComment) obj).createdAt();
-                else if(obj instanceof GitHubEvent)
+                } else if(obj instanceof GitHubEvent) {
                     return ((GitHubEvent) obj).createdAt();
-                else if(obj instanceof IssueEvent)
+                } else if(obj instanceof IssueEvent) {
                     return ((IssueEvent) obj).createdAt();
+                }
 
                 return null;
             }
@@ -484,8 +501,9 @@ public class IssueFragment extends DialogFragment {
 
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
-        if (RESULT_OK != resultCode)
+        if (RESULT_OK != resultCode) {
             return;
+        }
 
         switch (requestCode) {
         case ISSUE_MILESTONE_UPDATE:
@@ -497,10 +515,11 @@ public class IssueFragment extends DialogFragment {
         case ISSUE_LABELS_UPDATE:
             ArrayList<Label> labels = LabelsDialogFragment
                     .getSelected(arguments);
-            if (labels != null && !labels.isEmpty())
+            if (labels != null && !labels.isEmpty()) {
                 labelsTask.edit(labels.toArray(new Label[labels.size()]));
-            else
+            } else {
                 labelsTask.edit(null);
+            }
             break;
         case ISSUE_CLOSE:
             stateTask.edit(true);
@@ -563,8 +582,9 @@ public class IssueFragment extends DialogFragment {
         MenuItem stateItem = menu.findItem(R.id.m_state);
         if (editItem != null && stateItem != null) {
             boolean isCreator = false;
-            if(issue != null)
+            if(issue != null) {
                 isCreator = issue.user().login().equals(AccountUtils.getLogin(getActivity()));
+            }
             editItem.setVisible(canWrite || isCreator);
             stateItem.setVisible(canWrite || isCreator);
         }
@@ -580,8 +600,9 @@ public class IssueFragment extends DialogFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (RESULT_OK != resultCode || data == null)
+        if (RESULT_OK != resultCode || data == null) {
             return;
+        }
 
         switch (requestCode) {
         case ISSUE_EDIT:
@@ -596,8 +617,9 @@ public class IssueFragment extends DialogFragment {
                 items.add(comment);
                 issue = issue.toBuilder().comments(issue.comments() + 1).build();
                 updateList(issue, items);
-            } else
+            } else {
                 refreshIssue();
+            }
             return;
         case COMMENT_EDIT:
             comment = data
@@ -609,22 +631,24 @@ public class IssueFragment extends DialogFragment {
                     replaceCommentInItems(commentPosition, comment);
                     updateList(issue, items);
                 }
-            } else
+            } else {
                 refreshIssue();
+            }
         }
     }
 
     private void shareIssue() {
         String id = InfoUtils.createRepoId(repositoryId);
-        if (IssueUtils.isPullRequest(issue))
+        if (IssueUtils.isPullRequest(issue)) {
             startActivity(ShareUtils.create("Pull Request " + issueNumber
                     + " on " + id, "https://github.com/" + id + "/pull/"
                     + issueNumber));
-        else
+        } else {
             startActivity(ShareUtils
                     .create("Issue " + issueNumber + " on " + id,
                             "https://github.com/" + id + "/issues/"
                                     + issueNumber));
+        }
     }
 
     private void openPullRequestCommits() {
@@ -642,26 +666,30 @@ public class IssueFragment extends DialogFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.m_edit:
-            if (issue != null)
+            if (issue != null) {
                 startActivityForResult(EditIssueActivity.createIntent(issue,
-                                repositoryId.owner().login(), repositoryId.name(), user),
+                        repositoryId.owner().login(), repositoryId.name(), user),
                         ISSUE_EDIT);
+            }
             return true;
         case R.id.m_comment:
-            if (issue != null)
+            if (issue != null) {
                 startActivityForResult(CreateCommentActivity.createIntent(
                         repositoryId, issueNumber, user), COMMENT_CREATE);
+            }
             return true;
         case R.id.m_refresh:
             refreshIssue();
             return true;
         case R.id.m_share:
-            if (issue != null)
+            if (issue != null) {
                 shareIssue();
+            }
             return true;
         case R.id.m_state:
-            if (issue != null)
+            if (issue != null) {
                 stateTask.confirm(IssueState.open.equals(issue.state()));
+            }
             return true;
         default:
             return super.onOptionsItemSelected(item);

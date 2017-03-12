@@ -122,10 +122,11 @@ public class CommentListAdapter extends MultiTypeAdapter {
 
     @Override
     protected void update(int position, Object obj, int type) {
-        if(type == 0)
+        if(type == 0) {
             updateComment((GitHubComment) obj);
-        else
+        } else {
             updateEvent((IssueEvent) obj);
+        }
     }
 
     protected void updateEvent(final IssueEvent event) {
@@ -212,15 +213,16 @@ public class CommentListAdapter extends MultiTypeAdapter {
 
         final ImageView ivMore = view(4);
 
-        if(!canEdit && !canDelete)
+        if(!canEdit && !canDelete) {
             ivMore.setVisibility(View.INVISIBLE);
-        else
+        } else {
             ivMore.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showMorePopup(ivMore, comment, canEdit, canDelete);
-            }
-        });
+                @Override
+                public void onClick(View v) {
+                    showMorePopup(ivMore, comment, canEdit, canDelete);
+                }
+            });
+        }
     }
 
     private void showMorePopup(View v, final GitHubComment comment, final boolean canEdit, final boolean canDelete ) {
@@ -253,24 +255,27 @@ public class CommentListAdapter extends MultiTypeAdapter {
     }
 
     public MultiTypeAdapter setItems(Collection<?> items) {
-        if (items == null)
+        if (items == null) {
             return this;
+        }
         return setItems(items.toArray());
     }
 
     public MultiTypeAdapter setItems(final Object[] items) {
-        if (items == null)
+        if (items == null) {
             return this;
+        }
 
         this.clear();
 
         for (Object item : items) {
-            if(item instanceof GitHubComment)
+            if(item instanceof GitHubComment) {
                 this.addItem(0, item);
-            else if(item instanceof GitHubEvent)
+            } else if(item instanceof GitHubEvent) {
                 this.addItem(1, item);
-            else if(item instanceof IssueEvent)
+            } else if(item instanceof IssueEvent) {
                 this.addItem(1, (item));
+            }
         }
 
         notifyDataSetChanged();
@@ -296,18 +301,20 @@ public class CommentListAdapter extends MultiTypeAdapter {
 
     @Override
     protected int getChildLayoutId(int type) {
-        if(type == 0)
+        if(type == 0) {
             return R.layout.comment_item;
-        else
+        } else {
             return R.layout.comment_event_item;
+        }
     }
 
     @Override
     protected int[] getChildViewIds(int type) {
-        if(type == 0)
-            return new int[] { R.id.tv_comment_body, R.id.tv_comment_author,
-                    R.id.tv_comment_date, R.id.iv_avatar, R.id.iv_more };
-        else
+        if(type == 0) {
+            return new int[]{R.id.tv_comment_body, R.id.tv_comment_author,
+                    R.id.tv_comment_date, R.id.iv_avatar, R.id.iv_more};
+        } else {
             return new int[]{R.id.tv_event_icon, R.id.tv_event, R.id.iv_avatar};
+        }
     }
 }

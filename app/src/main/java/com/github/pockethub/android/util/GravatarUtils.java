@@ -56,8 +56,9 @@ public class GravatarUtils {
     }
 
     private static String digest(final String value) {
-        if (MD5 == null)
+        if (MD5 == null) {
             return null;
+        }
 
         byte[] bytes;
         try {
@@ -73,8 +74,9 @@ public class GravatarUtils {
 
         String hashed = new BigInteger(1, bytes).toString(16);
         int padding = HASH_LENGTH - hashed.length();
-        if (padding == 0)
+        if (padding == 0) {
             return hashed;
+        }
 
         char[] zeros = new char[padding];
         Arrays.fill(zeros, '0');
@@ -88,8 +90,9 @@ public class GravatarUtils {
      * @return hash
      */
     public static String getHash(String email) {
-        if (TextUtils.isEmpty(email))
+        if (TextUtils.isEmpty(email)) {
             return null;
+        }
         email = email.trim().toLowerCase(US);
         return email.length() > 0 ? digest(email) : null;
     }

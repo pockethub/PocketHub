@@ -64,8 +64,9 @@ public abstract class ItemStore {
         @SuppressWarnings("rawtypes")
         private void expungeEntries() {
             ItemReference ref;
-            while ((ref = (ItemReference) queue.poll()) != null)
+            while ((ref = (ItemReference) queue.poll()) != null) {
                 items.remove(ref.id);
+            }
         }
 
         /**

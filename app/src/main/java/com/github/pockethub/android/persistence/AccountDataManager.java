@@ -94,11 +94,12 @@ public class AccountDataManager {
         long start = System.currentTimeMillis();
         long length = file.length();
         Object data = new RequestReader(file, FORMAT_VERSION).read();
-        if (data != null)
+        if (data != null) {
             Log.d(TAG, MessageFormat.format(
                     "Cache hit to {0}, {1} ms to load {2} bytes",
                     file.getName(), (System.currentTimeMillis() - start),
                     length));
+        }
         return (V) data;
     }
 
@@ -190,8 +191,9 @@ public class AccountDataManager {
     public Collection<IssueFilter> getIssueFilters() {
         final File cache = new File(root, "issue_filters.ser");
         Collection<IssueFilter> cached = read(cache);
-        if (cached != null)
+        if (cached != null) {
             return cached;
+        }
         return Collections.emptyList();
     }
 
@@ -226,10 +228,12 @@ public class AccountDataManager {
     public void addIssueFilter(IssueFilter filter) {
         final File cache = new File(root, "issue_filters.ser");
         Collection<IssueFilter> filters = read(cache);
-        if (filters == null)
+        if (filters == null) {
             filters = new HashSet<>();
-        if (filters.add(filter))
+        }
+        if (filters.add(filter)) {
             write(cache, filters);
+        }
     }
 
     /**
@@ -270,8 +274,9 @@ public class AccountDataManager {
     public void removeIssueFilter(IssueFilter filter) {
         final File cache = new File(root, "issue_filters.ser");
         Collection<IssueFilter> filters = read(cache);
-        if (filters != null && filters.remove(filter))
+        if (filters != null && filters.remove(filter)) {
             write(cache, filters);
+        }
     }
 
     /**

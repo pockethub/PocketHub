@@ -212,8 +212,9 @@ public class TypefaceUtils {
      */
     public static int getMaxDigits(int... numbers) {
         int max = 1;
-        for (int number : numbers)
+        for (int number : numbers) {
             max = Math.max(max, (int) Math.log10(number) + 1);
+        }
         return max;
     }
 
@@ -240,8 +241,9 @@ public class TypefaceUtils {
      * @return octicons typeface
      */
     public static Typeface getOcticons(final Context context) {
-        if (OCTICONS == null)
+        if (OCTICONS == null) {
             OCTICONS = getTypeface(context, "octicons-regular-webfont.ttf");
+        }
         return OCTICONS;
     }
 
@@ -251,12 +253,14 @@ public class TypefaceUtils {
      * @param textViews
      */
     public static void setOcticons(final TextView... textViews) {
-        if (textViews == null || textViews.length == 0)
+        if (textViews == null || textViews.length == 0) {
             return;
+        }
 
         Typeface typeface = getOcticons(textViews[0].getContext());
-        for (TextView textView : textViews)
+        for (TextView textView : textViews) {
             textView.setTypeface(typeface);
+        }
     }
 
     /**

@@ -49,8 +49,9 @@ public class RawCommentFragment extends DialogFragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Activity activity = getActivity();
-                if (activity != null)
+                if (activity != null) {
                     activity.invalidateOptionsMenu();
+                }
             }
         });
         commentText.setOnTouchListener(new View.OnTouchListener() {

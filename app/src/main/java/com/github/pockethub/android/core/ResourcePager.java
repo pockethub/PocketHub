@@ -103,19 +103,22 @@ public abstract class ResourcePager<E> {
      */
     public boolean next() throws IOException {
         boolean emptyPage = false;
-        if(iterator == null)
+        if(iterator == null) {
             iterator = createIterator(page, -1);
+        }
 
         try {
             for (int i = 0; i < count && iterator.hasNext(); i++) {
                 Collection<E> resourcePage = iterator.next();
                 emptyPage = resourcePage.isEmpty();
-                if (emptyPage)
+                if (emptyPage) {
                     break;
+                }
                 for (E resource : resourcePage) {
                     resource = register(resource);
-                    if (resource == null)
+                    if (resource == null) {
                         continue;
+                    }
                     resources.put(getId(resource), resource);
                 }
             }

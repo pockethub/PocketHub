@@ -82,10 +82,11 @@ public class DashboardIssueListAdapter extends
 
         String[] segments = issue.url().split("/");
         int length = segments.length;
-        if (length >= 4)
+        if (length >= 4) {
             setText(0, segments[length - 4] + '/' + segments[length - 3]);
-        else
+        } else {
             setText(0, null);
+        }
 
         setGone(6, !IssueUtils.isPullRequest(issue));
 

@@ -60,8 +60,9 @@ public class SearchIssueListAdapter extends IssueListAdapter<Issue> {
         TypefaceUtils.setOcticons(
                 (TextView) view.findViewById(R.id.tv_pull_request_icon),
                 (TextView) view.findViewById(R.id.tv_comment_icon));
-        for (int i = 0; i < MAX_LABELS; i++)
+        for (int i = 0; i < MAX_LABELS; i++) {
             ViewUtils.setGone(view.findViewById(R.id.v_label0 + i), true);
+        }
         ViewUtils.setGone(view.findViewById(R.id.tv_pull_request_icon), true);
         return view;
     }

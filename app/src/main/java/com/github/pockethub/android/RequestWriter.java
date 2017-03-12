@@ -48,8 +48,9 @@ public class RequestWriter {
     }
 
     private void createDirectory(final File dir) {
-        if (dir != null && !dir.exists())
+        if (dir != null && !dir.exists()) {
             dir.mkdirs();
+        }
     }
 
     /**
@@ -74,24 +75,27 @@ public class RequestWriter {
             Log.d(TAG, "Exception writing cache " + handle.getName(), e);
             return null;
         } finally {
-            if (output != null)
+            if (output != null) {
                 try {
                     output.close();
                 } catch (IOException e) {
                     Log.d(TAG, "Exception closing stream", e);
                 }
-            if (lock != null)
+            }
+            if (lock != null) {
                 try {
                     lock.release();
                 } catch (IOException e) {
                     Log.d(TAG, "Exception unlocking file", e);
                 }
-            if (dir != null)
+            }
+            if (dir != null) {
                 try {
                     dir.close();
                 } catch (IOException e) {
                     Log.d(TAG, "Exception closing file", e);
                 }
+            }
         }
         return request;
     }

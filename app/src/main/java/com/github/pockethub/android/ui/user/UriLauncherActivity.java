@@ -75,33 +75,40 @@ public class UriLauncherActivity extends Activity {
      * @return converted intent or null if non-application specific
      */
     static public Intent convert(final Intent intent) {
-        if (intent == null)
+        if (intent == null) {
             return null;
+        }
 
-        if (!ACTION_VIEW.equals(intent.getAction()))
+        if (!ACTION_VIEW.equals(intent.getAction())) {
             return null;
+        }
 
         Uri data = intent.getData();
-        if (data == null)
+        if (data == null) {
             return null;
+        }
 
         if (TextUtils.isEmpty(data.getHost()) || TextUtils.isEmpty(data.getScheme())) {
             String host = data.getHost();
-            if (TextUtils.isEmpty(host))
+            if (TextUtils.isEmpty(host)) {
                 host = HOST_DEFAULT;
+            }
             String scheme = data.getScheme();
-            if (TextUtils.isEmpty(scheme))
+            if (TextUtils.isEmpty(scheme)) {
                 scheme = PROTOCOL_HTTPS;
+            }
             String prefix = scheme + "://" + host;
 
             String path = data.getPath();
-            if (!TextUtils.isEmpty(path))
-                if (path.charAt(0) == '/')
+            if (!TextUtils.isEmpty(path)) {
+                if (path.charAt(0) == '/') {
                     data = Uri.parse(prefix + path);
-                else
+                } else {
                     data = Uri.parse(prefix + '/' + path);
-            else
+                }
+            } else {
                 data = Uri.parse(prefix);
+            }
             intent.setData(data);
         }
 

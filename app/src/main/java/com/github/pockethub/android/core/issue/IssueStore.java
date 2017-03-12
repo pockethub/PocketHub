@@ -82,25 +82,31 @@ public class IssueStore extends ItemStore {
         Repository repo = null;
         if (issue != null) {
             repo = issue.repository();
-            if (repo == null)
+            if (repo == null) {
                 repo = repoFromUrl(issue.htmlUrl());
+            }
         }
         return addIssue(repo, issue);
     }
 
     private Repository repoFromUrl(String url) {
-        if (url == null || url.length() == 0)
+        if (url == null || url.length() == 0) {
             return null;
+        }
         String owner = null;
         String name = null;
         for (String segment : url.split("/")) //$NON-NLS-1$
-            if (segment.length() > 0)
-                if (owner == null)
+        {
+            if (segment.length() > 0) {
+                if (owner == null) {
                     owner = segment;
-                else if (name == null)
+                } else if (name == null) {
                     name = segment;
-                else
+                } else {
                     break;
+                }
+            }
+        }
 
         if (owner != null && owner.length() > 0 && name != null && name.length() > 0) {
             return InfoUtils.createRepoFromData(owner, name);
@@ -118,8 +124,9 @@ public class IssueStore extends ItemStore {
      */
     public Issue addIssue(Repository repository, Issue issue) {
         Issue current = getIssue(repository, issue.number());
-        if (current != null && current.equals(issue))
+        if (current != null && current.equals(issue)) {
             return current;
+        }
 
         String repoId = InfoUtils.createRepoId(repository);
         ItemReferences<Issue> repoIssues = repos.get(repoId);

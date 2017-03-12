@@ -35,18 +35,22 @@ public class RepositoryUriMatcher {
      */
     public static Repository getRepository(Uri uri) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null)
+        if (segments == null) {
             return null;
-        if (segments.size() < 2)
+        }
+        if (segments.size() < 2) {
             return null;
+        }
 
         String repoOwner = segments.get(0);
-        if (!RepositoryUtils.isValidOwner(repoOwner))
+        if (!RepositoryUtils.isValidOwner(repoOwner)) {
             return null;
+        }
 
         String repoName = segments.get(1);
-        if (!RepositoryUtils.isValidRepo(repoName))
+        if (!RepositoryUtils.isValidRepo(repoName)) {
             return null;
+        }
 
         return InfoUtils.createRepoFromData(repoOwner, repoName);
     }
