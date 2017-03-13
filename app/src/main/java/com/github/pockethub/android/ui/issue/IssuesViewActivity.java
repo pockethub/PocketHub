@@ -46,8 +46,8 @@ import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
 
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -198,10 +198,10 @@ public class IssuesViewActivity extends PagerActivity {
         if (repo == null) {
             Repository temp = repo != null ? repo : repoIds.get(0);
             RxJavaInterop.toV1Single(ServiceGenerator.createService(this, RepositoryService.class)
-                    .getRepository(temp.owner().login(), temp.name()))
+                    .getRepository(temp.owner().login(), temp.name())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Repository>bindToLifecycle().<Repository>forSingle())
+                    .compose(this.<Repository>bindToLifecycle()))
                     .subscribe(new ObserverAdapter<Repository>() {
                         @Override
                         public void onNext(Repository repo) {

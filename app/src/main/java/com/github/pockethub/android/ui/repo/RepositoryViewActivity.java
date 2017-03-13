@@ -49,10 +49,9 @@ import com.google.inject.Inject;
 
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -114,10 +113,10 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
             ViewUtils.setGone(loadingBar, false);
             setGone(true);
             RxJavaInterop.toV1Single(ServiceGenerator.createService(this, RepositoryService.class)
-                    .getRepository(repository.owner().login(), repository.name()))
+                    .getRepository(repository.owner().login(), repository.name())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Repository>bindToLifecycle().<Repository>forSingle())
+                    .compose(this.<Repository>bindToLifecycle()))
                     .subscribe(new ObserverAdapter<Repository>() {
                         @Override
                         public void onNext(Repository repo) {
@@ -159,10 +158,10 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
 
     private void checkReadme() {
         RxJavaInterop.toV1Single(ServiceGenerator.createService(this, RepositoryContentService.class)
-                .hasReadme(repository.owner().login(), repository.name()))
+                .hasReadme(repository.owner().login(), repository.name())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response>bindToLifecycle().<Response<Void>>forSingle())
+                .compose(this.<Response>bindToLifecycle()))
                 .subscribe(new ObserverAdapter<Response>() {
                     @Override
                     public void onNext(Response response) {
@@ -259,9 +258,9 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
             starSingle = service.starRepository(repository.owner().login(), repository.name());
         }
 
-        RxJavaInterop.toV1Single(starSingle).subscribeOn(Schedulers.io())
+        RxJavaInterop.toV1Single(starSingle.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response<Boolean>>bindToLifecycle().<Response<Boolean>>forSingle())
+                .compose(this.<Response<Boolean>>bindToLifecycle()))
                 .subscribe(new ObserverAdapter<Response<Boolean>>() {
                     @Override
                     public void onNext(Response<Boolean> aBoolean) {
@@ -279,10 +278,10 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     private void checkStarredRepositoryStatus() {
         starredStatusChecked = false;
         RxJavaInterop.toV1Single(ServiceGenerator.createService(this, StarringService.class)
-                .checkIfRepositoryIsStarred(repository.owner().login(), repository.name()))
+                .checkIfRepositoryIsStarred(repository.owner().login(), repository.name())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response<Boolean>>bindToLifecycle().<Response<Boolean>>forSingle())
+                .compose(this.<Response<Boolean>>bindToLifecycle()))
                 .subscribe(new ObserverAdapter<Response<Boolean>>() {
                     @Override
                     public void onNext(Response<Boolean> response) {
@@ -304,10 +303,10 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
 
     private void forkRepository() {
         RxJavaInterop.toV1Single(ServiceGenerator.createService(this, RepositoryForkService.class)
-                .createFork(repository.owner().login(), repository.name()))
+                .createFork(repository.owner().login(), repository.name())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Repository>bindToLifecycle().<Repository>forSingle())
+                .compose(this.<Repository>bindToLifecycle()))
                 .subscribe(new ObserverAdapter<Repository>() {
                     @Override
                     public void onNext(Repository repo) {
@@ -344,10 +343,10 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                         dialog.dismiss();
 
                         RxJavaInterop.toV1Single(ServiceGenerator.createService(dialog.getContext(), RepositoryService.class)
-                                .deleteRepository(repository.owner().login(), repository.name()))
+                                .deleteRepository(repository.owner().login(), repository.name())
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .compose(RepositoryViewActivity.this.<Response<Boolean>>bindToLifecycle().<Response<Boolean>>forSingle())
+                                .compose(RepositoryViewActivity.this.<Response<Boolean>>bindToLifecycle()))
                                 .subscribe(new ObserverAdapter<Response<Boolean>>() {
                                     @Override
                                     public void onNext(Response<Boolean> response) {

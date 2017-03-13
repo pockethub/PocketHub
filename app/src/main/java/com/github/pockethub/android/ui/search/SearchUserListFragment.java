@@ -42,12 +42,10 @@ import java.util.List;
 
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static android.app.SearchManager.QUERY;
 
@@ -130,10 +128,10 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
     public void onListItemClick(ListView l, View v, int position, long id) {
         final User result = (User) l.getItemAtPosition(position);
         RxJavaInterop.toV1Single(ServiceGenerator.createService(getContext(), UserService.class)
-                .getUser(result.login()))
+                .getUser(result.login())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<User>bindToLifecycle().<User>forSingle())
+                .compose(this.<User>bindToLifecycle()))
                 .subscribe(new ObserverAdapter<User>() {
 
                     @Override

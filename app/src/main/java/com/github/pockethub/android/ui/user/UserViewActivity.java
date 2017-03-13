@@ -40,10 +40,9 @@ import com.google.inject.Inject;
 
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -98,10 +97,10 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
             ViewUtils.setGone(loadingBar, false);
             setGone(true);
             RxJavaInterop.toV1Single(ServiceGenerator.createService(this, UserService.class)
-                    .getUser(user.login()))
+                    .getUser(user.login())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<User>bindToLifecycle().<User>forSingle())
+                    .compose(this.<User>bindToLifecycle()))
                     .subscribe(new ObserverAdapter<User>() {
                         @Override
                         public void onNext(User fullUser) {
@@ -209,9 +208,9 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
             followSingle = service.followUser(user.login());
         }
 
-        RxJavaInterop.toV1Single(followSingle).subscribeOn(Schedulers.io())
+        RxJavaInterop.toV1Single(followSingle.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response<Boolean>>bindToLifecycle().<Response<Boolean>>forSingle())
+                .compose(this.<Response<Boolean>>bindToLifecycle()))
                 .subscribe(new ObserverAdapter<Response<Boolean>>() {
                     @Override
                     public void onNext(Response<Boolean>aBoolean) {
@@ -229,10 +228,10 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     private void checkFollowingUserStatus() {
         followingStatusChecked = false;
         RxJavaInterop.toV1Single(ServiceGenerator.createService(this, UserFollowerService.class)
-                .isFollowing(user.login()))
+                .isFollowing(user.login())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response<Boolean>>bindToLifecycle().<Response<Boolean>>forSingle())
+                .compose(this.<Response<Boolean>>bindToLifecycle()))
                 .subscribe(new ObserverAdapter<Response<Boolean>>() {
                     @Override
                     public void onNext(Response<Boolean> response) {

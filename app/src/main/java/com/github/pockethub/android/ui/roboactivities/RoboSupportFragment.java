@@ -22,16 +22,15 @@ import android.support.annotation.CallSuper;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import com.trello.rxlifecycle.LifecycleProvider;
-import com.trello.rxlifecycle.LifecycleTransformer;
-import com.trello.rxlifecycle.RxLifecycle;
-import com.trello.rxlifecycle.android.FragmentEvent;
-import com.trello.rxlifecycle.android.RxLifecycleAndroid;
+import com.trello.rxlifecycle2.LifecycleProvider;
+import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.trello.rxlifecycle2.RxLifecycle;
+import com.trello.rxlifecycle2.android.FragmentEvent;
+import com.trello.rxlifecycle2.android.RxLifecycleAndroid;
 
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
 import roboguice.RoboGuice;
-import rx.Observable;
-import rx.subjects.BehaviorSubject;
-
 
 public abstract class RoboSupportFragment extends Fragment implements LifecycleProvider<FragmentEvent> {
 
@@ -39,7 +38,7 @@ public abstract class RoboSupportFragment extends Fragment implements LifecycleP
 
     @Override
     public final Observable<FragmentEvent> lifecycle() {
-        return lifecycleSubject.asObservable();
+        return lifecycleSubject;
     }
 
     @Override

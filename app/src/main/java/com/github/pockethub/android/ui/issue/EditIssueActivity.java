@@ -58,11 +58,10 @@ import java.util.List;
 
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -399,9 +398,9 @@ public class EditIssueActivity extends BaseActivity {
                     message = R.string.creating_issue;
                 }
 
-                RxJavaInterop.toV1Single(single).subscribeOn(Schedulers.io())
+                RxJavaInterop.toV1Single(single.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .compose(this.<Issue>bindToLifecycle().<Issue>forSingle())
+                        .compose(this.<Issue>bindToLifecycle()))
                         .subscribe(new ProgressObserverAdapter<Issue>(this, message) {
 
                             @Override
@@ -428,10 +427,10 @@ public class EditIssueActivity extends BaseActivity {
 
     private void checkCollaboratorStatus() {
         RxJavaInterop.toV1Single(ServiceGenerator.createService(this, RepositoryCollaboratorService.class)
-                .isUserCollaborator(repository.owner().login(), repository.name(), AccountUtils.getLogin(this)))
+                .isUserCollaborator(repository.owner().login(), repository.name(), AccountUtils.getLogin(this))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response<Boolean>>bindToLifecycle().<Response<Boolean>>forSingle())
+                .compose(this.<Response<Boolean>>bindToLifecycle()))
                 .subscribe(new ObserverAdapter<Response<Boolean>>() {
                     @Override
                     public void onNext(Response<Boolean> response) {

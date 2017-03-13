@@ -53,8 +53,8 @@ import java.util.Collections;
 import java.util.List;
 
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.github.pockethub.android.Intents.EXTRA_BASE;
 import static com.github.pockethub.android.Intents.EXTRA_HEAD;
@@ -126,10 +126,10 @@ public class CommitCompareListFragment extends DialogFragment implements
 
     private void compareCommits() {
         RxJavaInterop.toV1Single(ServiceGenerator.createService(getActivity(), RepositoryCommitService.class)
-                .compareCommits(repository.owner().login(), repository.name(), base, head))
+                .compareCommits(repository.owner().login(), repository.name(), base, head)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<CommitCompare>bindToLifecycle().<CommitCompare>forSingle())
+                .compose(this.<CommitCompare>bindToLifecycle()))
                 .subscribe(new ObserverAdapter<CommitCompare>() {
                     @Override
                     public void onNext(CommitCompare compareCommit) {

@@ -80,10 +80,11 @@ import java.util.Date;
 import java.util.List;
 
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
@@ -433,10 +434,10 @@ public class IssueFragment extends DialogFragment {
     }
 
     private void refreshIssue() {
-        Observable.create(new RefreshIssueTask(getActivity(), repositoryId, issueNumber, bodyImageGetter, commentImageGetter))
+        RxJavaInterop.toV1Observable(RxJavaInterop.toV2Observable(Observable.create(new RefreshIssueTask(getActivity(), repositoryId, issueNumber, bodyImageGetter, commentImageGetter)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<FullIssue>bindToLifecycle())
+                .compose(this.<FullIssue>bindToLifecycle()), BackpressureStrategy.BUFFER)
                 .subscribe(new ObserverAdapter<FullIssue>() {
                     @Override
                     public void onNext(FullIssue fullIssue) {
@@ -532,10 +533,10 @@ public class IssueFragment extends DialogFragment {
             final GitHubComment comment = arguments.getParcelable(EXTRA_COMMENT);
 
             RxJavaInterop.toV1Single(ServiceGenerator.createService(getActivity(), IssueCommentService.class)
-                    .deleteIssueComment(repositoryId.owner().login(), repositoryId.name(), comment.id()))
+                    .deleteIssueComment(repositoryId.owner().login(), repositoryId.name(), comment.id())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Response<Boolean>>bindToLifecycle().<Response<Boolean>>forSingle())
+                    .compose(this.<Response<Boolean>>bindToLifecycle()))
                     .subscribe(new ProgressObserverAdapter<Response<Boolean>>(getActivity(), R.string.deleting_comment) {
 
                         @Override

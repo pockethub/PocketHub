@@ -46,8 +46,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Activity to share a text selection as a public or private Gist
@@ -198,10 +198,10 @@ public class CreateGistActivity extends BaseActivity {
                 .build();
 
         RxJavaInterop.toV1Single(ServiceGenerator.createService(this, GistService.class)
-                .createGist(createGist))
+                .createGist(createGist)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Gist>bindToLifecycle().<Gist>forSingle())
+                .compose(this.<Gist>bindToLifecycle()))
                 .subscribe(new ProgressObserverAdapter<Gist>(this, R.string.creating_gist) {
 
                     @Override

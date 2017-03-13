@@ -28,11 +28,13 @@ import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Collections;
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import roboguice.RoboGuice;
 import rx.Observable;
 import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import static com.github.pockethub.android.RequestCodes.ISSUE_ASSIGNEE_UPDATE;
 
@@ -117,10 +119,10 @@ public class EditAssigneeTask implements Observable.OnSubscribe<Issue> {
     public EditAssigneeTask edit(User user) {
         this.assignee = user;
 
-        Observable.create(this)
+        RxJavaInterop.toV1Observable(RxJavaInterop.toV2Observable(Observable.create(this))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(activity.<Issue>bindToLifecycle())
+                .compose(activity.<Issue>bindToLifecycle()), BackpressureStrategy.BUFFER)
                 .subscribe(observer);
 
         return this;

@@ -23,10 +23,8 @@ import com.meisolsson.githubsdk.service.misc.MarkdownService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryContentService;
 
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class RepositoryReadmeFragment extends DialogFragment {
 
@@ -56,10 +54,10 @@ public class RepositoryReadmeFragment extends DialogFragment {
         webview.addJavascriptInterface(this, "Readme");
 
         RxJavaInterop.toV1Single(ServiceGenerator.createService(getActivity(), RepositoryContentService.class)
-                .getReadmeHtml(repo.owner().login(), repo.name(), null))
+                .getReadmeHtml(repo.owner().login(), repo.name(), null)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<String>bindToLifecycle().<String>forSingle())
+                .compose(this.<String>bindToLifecycle()))
                 .subscribe(new ObserverAdapter<String>() {
                     @Override
                     public void onNext(String s) {

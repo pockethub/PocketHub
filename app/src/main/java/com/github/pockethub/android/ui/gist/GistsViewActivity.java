@@ -43,9 +43,9 @@ import java.io.Serializable;
 import java.util.List;
 
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -170,10 +170,10 @@ public class GistsViewActivity extends PagerActivity implements
             final String gistId = arguments.getString(EXTRA_GIST_ID);
 
             RxJavaInterop.toV1Single(ServiceGenerator.createService(this, GistService.class)
-                    .deleteGist(gistId))
+                    .deleteGist(gistId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Response<Boolean>>bindToLifecycle().<Response<Boolean>>forSingle())
+                    .compose(this.<Response<Boolean>>bindToLifecycle()))
                     .subscribe(new ProgressObserverAdapter<Response<Boolean>>(this, R.string.deleting_gist) {
 
                         @Override

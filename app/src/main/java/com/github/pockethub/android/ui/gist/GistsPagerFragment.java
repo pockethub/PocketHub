@@ -39,10 +39,12 @@ import com.google.inject.Inject;
 
 import java.util.Collection;
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import rx.Observable;
 import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import static com.github.pockethub.android.RequestCodes.GIST_VIEW;
 import static com.github.pockethub.android.util.TypefaceUtils.ICON_PERSON;
@@ -88,9 +90,9 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
         });
 
         showProgressIndeterminate(R.string.random_gist);
-        observable.subscribeOn(Schedulers.io())
+        RxJavaInterop.toV1Observable(RxJavaInterop.toV2Observable(observable).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(((BaseActivity)getActivity()).<Gist>bindToLifecycle())
+                .compose(((BaseActivity)getActivity()).<Gist>bindToLifecycle()), BackpressureStrategy.BUFFER)
                 .subscribe(new ObserverAdapter<Gist>() {
 
                     @Override

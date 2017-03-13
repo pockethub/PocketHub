@@ -51,8 +51,8 @@ import com.meisolsson.githubsdk.service.git.GitService;
 import com.google.inject.Inject;
 
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.github.pockethub.android.Intents.EXTRA_BASE;
 import static com.github.pockethub.android.Intents.EXTRA_HEAD;
@@ -274,10 +274,10 @@ public class CommitFileViewActivity extends BaseActivity implements
 
     private void loadContent() {
         RxJavaInterop.toV1Single(ServiceGenerator.createService(this, GitService.class)
-                .getGitBlob(repo.owner().login(), repo.name(), sha))
+                .getGitBlob(repo.owner().login(), repo.name(), sha)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<GitBlob>bindToLifecycle().<GitBlob>forSingle())
+                .compose(this.<GitBlob>bindToLifecycle()))
                 .subscribe(new ObserverAdapter<GitBlob>() {
                     @Override
                     public void onNext(GitBlob gitBlob) {

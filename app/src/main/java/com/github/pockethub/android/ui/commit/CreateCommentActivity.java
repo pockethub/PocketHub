@@ -34,8 +34,8 @@ import com.meisolsson.githubsdk.model.request.repository.CreateCommitComment;
 import com.meisolsson.githubsdk.service.repositories.RepositoryCommentService;
 
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.github.pockethub.android.Intents.EXTRA_BASE;
 import static com.github.pockethub.android.Intents.EXTRA_PATH;
@@ -118,10 +118,10 @@ public class CreateCommentActivity extends
         }
 
         RxJavaInterop.toV1Single(ServiceGenerator.createService(this, RepositoryCommentService.class)
-                .createCommitComment(repository.owner().login(), repository.name(), commit, commitCommentBuilder.build()))
+                .createCommitComment(repository.owner().login(), repository.name(), commit, commitCommentBuilder.build())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<GitComment>bindToLifecycle().<GitComment>forSingle())
+                .compose(this.<GitComment>bindToLifecycle()))
                 .subscribe(new ProgressObserverAdapter<GitComment>(this, R.string.creating_comment) {
 
                     @Override

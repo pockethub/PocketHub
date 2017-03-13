@@ -41,8 +41,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY;
 
@@ -106,10 +106,10 @@ public class RepositoryContributorsFragment extends ItemListFragment<User> {
     public void onListItemClick(ListView l, View v, int position, long id) {
         final User contributor = (User) l.getItemAtPosition(position);
         RxJavaInterop.toV1Single(ServiceGenerator.createService(getContext(), UserService.class)
-                .getUser(contributor.login()))
+                .getUser(contributor.login())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<User>bindToLifecycle().<User>forSingle())
+                .compose(this.<User>bindToLifecycle()))
                 .subscribe(new ObserverAdapter<User>() {
                     @Override
                     public void onNext(User user) {

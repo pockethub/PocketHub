@@ -67,9 +67,11 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
 import static android.graphics.Paint.UNDERLINE_TEXT_FLAG;
@@ -244,10 +246,10 @@ public class CommitDiffListFragment extends DialogFragment implements
     }
 
     private void refreshCommit() {
-        Observable.create(new RefreshCommitTask(getActivity(), repository, base, commentImageGetter))
+        RxJavaInterop.toV1Observable(RxJavaInterop.toV2Observable(Observable.create(new RefreshCommitTask(getActivity(), repository, base, commentImageGetter)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<FullCommit>bindToLifecycle())
+                .compose(this.<FullCommit>bindToLifecycle()), BackpressureStrategy.BUFFER)
                 .subscribe(new ObserverAdapter<FullCommit>() {
                     @Override
                     public void onNext(FullCommit full) {

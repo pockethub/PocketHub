@@ -42,12 +42,10 @@ import java.util.List;
 
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static android.app.SearchManager.QUERY;
 
@@ -124,10 +122,10 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repository> 
     public void onListItemClick(ListView l, View v, int position, long id) {
         final Repository result = (Repository) l.getItemAtPosition(position);
         RxJavaInterop.toV1Single(ServiceGenerator.createService(getContext(), RepositoryService.class)
-                .getRepository(result.owner().login(), result.name()))
+                .getRepository(result.owner().login(), result.name())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Repository>bindToLifecycle().<Repository>forSingle())
+                .compose(this.<Repository>bindToLifecycle()))
                 .subscribe(new ProgressObserverAdapter<Repository>(getActivity(),
                         MessageFormat.format(getString(R.string.opening_repository), InfoUtils.createRepoId(result))) {
                     @Override
