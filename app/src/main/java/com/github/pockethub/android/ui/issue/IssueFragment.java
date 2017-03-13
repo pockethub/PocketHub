@@ -80,7 +80,6 @@ import java.util.Date;
 import java.util.List;
 
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
-import io.reactivex.BackpressureStrategy;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
@@ -434,10 +433,10 @@ public class IssueFragment extends DialogFragment {
     }
 
     private void refreshIssue() {
-        RxJavaInterop.toV1Observable(RxJavaInterop.toV2Observable(Observable.create(new RefreshIssueTask(getActivity(), repositoryId, issueNumber, bodyImageGetter, commentImageGetter)))
+        RxJavaInterop.toV2Observable(Observable.create(new RefreshIssueTask(getActivity(), repositoryId, issueNumber, bodyImageGetter, commentImageGetter)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<FullIssue>bindToLifecycle()), BackpressureStrategy.BUFFER)
+                .compose(this.<FullIssue>bindToLifecycle())
                 .subscribe(new ObserverAdapter<FullIssue>() {
                     @Override
                     public void onNext(FullIssue fullIssue) {
@@ -532,15 +531,15 @@ public class IssueFragment extends DialogFragment {
         case COMMENT_DELETE:
             final GitHubComment comment = arguments.getParcelable(EXTRA_COMMENT);
 
-            RxJavaInterop.toV1Single(ServiceGenerator.createService(getActivity(), IssueCommentService.class)
+            ServiceGenerator.createService(getActivity(), IssueCommentService.class)
                     .deleteIssueComment(repositoryId.owner().login(), repositoryId.name(), comment.id())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Response<Boolean>>bindToLifecycle()))
+                    .compose(this.<Response<Boolean>>bindToLifecycle())
                     .subscribe(new ProgressObserverAdapter<Response<Boolean>>(getActivity(), R.string.deleting_comment) {
 
                         @Override
-                        public void onNext(Response<Boolean> response) {
+                        public void onSuccess(Response<Boolean> response) {
                             if (items != null) {
                                 int commentPosition = findCommentPositionInItems(comment);
                                 if (commentPosition >= 0) {

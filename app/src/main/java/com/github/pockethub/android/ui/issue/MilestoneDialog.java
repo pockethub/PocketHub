@@ -81,7 +81,7 @@ public class MilestoneDialog extends BaseProgressDialog {
     }
 
     private void load(final Milestone selectedMilestone) {
-        getPageAndNext(1).subscribe(new ProgressObserverAdapter<Page<Milestone>>(activity, R.string.loading_milestones){
+        RxJavaInterop.toV2Observable(getPageAndNext(1)).subscribe(new ProgressObserverAdapter<Page<Milestone>>(activity, R.string.loading_milestones){
             ArrayList<Milestone> milestones = new ArrayList<>();
 
             @Override
@@ -90,8 +90,8 @@ public class MilestoneDialog extends BaseProgressDialog {
             }
 
             @Override
-            public void onCompleted() {
-                super.onCompleted();
+            public void onComplete() {
+                super.onComplete();
                 Collections.sort(milestones, new Comparator<Milestone>() {
                     @Override
                     public int compare(Milestone m1, Milestone m2) {

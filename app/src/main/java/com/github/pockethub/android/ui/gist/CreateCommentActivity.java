@@ -80,14 +80,14 @@ public class CreateCommentActivity extends
                 .body(comment)
                 .build();
 
-        RxJavaInterop.toV1Single(ServiceGenerator.createService(this, GistCommentService.class)
+        ServiceGenerator.createService(this, GistCommentService.class)
                 .createGistComment(gist.id(), commentRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<GitHubComment>bindToLifecycle()))
+                .compose(this.<GitHubComment>bindToLifecycle())
                 .subscribe(new ObserverAdapter<GitHubComment>() {
                     @Override
-                    public void onNext(GitHubComment githubComment) {
+                    public void onSuccess(GitHubComment githubComment) {
                         finish(githubComment);
                     }
 

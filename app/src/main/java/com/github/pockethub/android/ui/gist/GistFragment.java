@@ -72,7 +72,6 @@ import java.util.List;
 import java.util.Map;
 
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
-import io.reactivex.BackpressureStrategy;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
@@ -303,15 +302,15 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
     private void starGist() {
         ToastUtils.show(getActivity(), R.string.starring_gist);
-        RxJavaInterop.toV1Single(ServiceGenerator.createService(getActivity(), GistService.class)
+        ServiceGenerator.createService(getActivity(), GistService.class)
                 .starGist(gistId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response<Boolean>>bindToLifecycle()))
+                .compose(this.<Response<Boolean>>bindToLifecycle())
                 .subscribe(new ObserverAdapter<Response<Boolean>>() {
 
                     @Override
-                    public void onNext(Response<Boolean> response) {
+                    public void onSuccess(Response<Boolean> response) {
                         starred = response.code() == 204;
                     }
 
@@ -336,14 +335,14 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
     private void unstarGist() {
         ToastUtils.show(getActivity(), R.string.unstarring_gist);
-        RxJavaInterop.toV1Single(ServiceGenerator.createService(getActivity(), GistService.class)
+        ServiceGenerator.createService(getActivity(), GistService.class)
                 .unstarGist(gistId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response<Boolean>>bindToLifecycle()))
+                .compose(this.<Response<Boolean>>bindToLifecycle())
                 .subscribe(new ObserverAdapter<Response<Boolean>>() {
                     @Override
-                    public void onNext(Response<Boolean> response) {
+                    public void onSuccess(Response<Boolean> response) {
                         starred = !(response.code() == 204);
                     }
 
@@ -434,10 +433,10 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     }
 
     private void refreshGist() {
-        RxJavaInterop.toV1Observable(RxJavaInterop.toV2Observable(Observable.create(new RefreshGistTask(getActivity(), gistId, imageGetter)))
+        RxJavaInterop.toV2Observable(Observable.create(new RefreshGistTask(getActivity(), gistId, imageGetter)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<FullGist>bindToLifecycle()), BackpressureStrategy.BUFFER)
+                .compose(this.<FullGist>bindToLifecycle())
                 .subscribe(new ObserverAdapter<FullGist>() {
 
                     @Override
@@ -485,16 +484,16 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         switch (requestCode) {
         case COMMENT_DELETE:
             final GitHubComment comment = arguments.getParcelable(EXTRA_COMMENT);
-            RxJavaInterop.toV1Single(ServiceGenerator.createService(getActivity(), GistCommentService.class)
+            ServiceGenerator.createService(getActivity(), GistCommentService.class)
                     .deleteGistComment(gistId, comment.id())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Response<Boolean>>bindToLifecycle()))
+                    .compose(this.<Response<Boolean>>bindToLifecycle())
                     .subscribe(new ProgressObserverAdapter<Response<Boolean>>(getActivity(), R.string.deleting_comment) {
 
                         @Override
-                        public void onNext(Response<Boolean> response) {
-                            super.onNext(response);
+                        public void onSuccess(Response<Boolean> response) {
+                            super.onSuccess(response);
                             // Update comment list
                             if (comments != null) {
                                 int position = Collections.binarySearch(comments,

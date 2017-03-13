@@ -105,15 +105,15 @@ public class RepositoryContributorsFragment extends ItemListFragment<User> {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         final User contributor = (User) l.getItemAtPosition(position);
-        RxJavaInterop.toV1Single(ServiceGenerator.createService(getContext(), UserService.class)
+        ServiceGenerator.createService(getContext(), UserService.class)
                 .getUser(contributor.login())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<User>bindToLifecycle()))
+                .compose(this.<User>bindToLifecycle())
                 .subscribe(new ObserverAdapter<User>() {
                     @Override
-                    public void onNext(User user) {
-                        super.onNext(user);
+                    public void onSuccess(User user) {
+                        super.onSuccess(user);
                         startActivity(UserViewActivity.createIntent(user));
                     }
                 });

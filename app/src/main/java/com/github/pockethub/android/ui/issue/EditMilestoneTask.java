@@ -28,7 +28,6 @@ import com.google.inject.Inject;
 import java.io.IOException;
 
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
-import io.reactivex.BackpressureStrategy;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import roboguice.RoboGuice;
@@ -108,10 +107,10 @@ public class EditMilestoneTask implements Observable.OnSubscribe<Issue> {
         if (milestone != null)
 
         {
-            RxJavaInterop.toV1Observable(RxJavaInterop.toV2Observable(Observable.create(this))
+            RxJavaInterop.toV2Observable(Observable.create(this))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(activity.<Issue>bindToLifecycle()), BackpressureStrategy.BUFFER)
+                    .compose(activity.<Issue>bindToLifecycle())
                     .subscribe(observer);
         }
 

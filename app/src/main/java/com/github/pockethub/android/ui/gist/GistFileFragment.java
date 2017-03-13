@@ -42,6 +42,7 @@ import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Map;
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -146,7 +147,7 @@ public class GistFileFragment extends DialogFragment implements
     }
 
     private void loadSource() {
-        Observable.create(new Observable.OnSubscribe<GistFile>() {
+        RxJavaInterop.toV2Observable(Observable.create(new Observable.OnSubscribe<GistFile>() {
             @Override
             public void call(Subscriber<? super GistFile> subscriber) {
                 try {
@@ -165,7 +166,7 @@ public class GistFileFragment extends DialogFragment implements
                 }
             }
         }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread()))
                 .subscribe(new ObserverAdapter<GistFile>() {
                     @Override
                     public void onNext(GistFile loadedFile) {

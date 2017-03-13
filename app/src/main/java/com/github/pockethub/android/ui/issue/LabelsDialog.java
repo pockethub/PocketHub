@@ -75,7 +75,7 @@ public class LabelsDialog extends BaseProgressDialog {
     }
 
     private void load(final Collection<Label> selectedLabels) {
-        getPageAndNext(1).subscribe(new ProgressObserverAdapter<Page<Label>>(activity, R.string.loading_labels){
+        RxJavaInterop.toV2Observable(getPageAndNext(1)).subscribe(new ProgressObserverAdapter<Page<Label>>(activity, R.string.loading_labels){
             List<Label> repositoryLabels = new ArrayList<>();
 
             @Override
@@ -84,8 +84,8 @@ public class LabelsDialog extends BaseProgressDialog {
             }
 
             @Override
-            public void onCompleted() {
-                super.onCompleted();
+            public void onComplete() {
+                super.onComplete();
                 Map<String, Label> loadedLabels = new TreeMap<>(
                         CASE_INSENSITIVE_ORDER);
                 for (Label label : repositoryLabels) {

@@ -72,7 +72,7 @@ public class AssigneeDialog extends BaseProgressDialog {
     }
 
     private void load(final User selectedAssignee) {
-        getPageAndNext(1).subscribe(new ProgressObserverAdapter<Page<User>>(activity, R.string.loading_collaborators) {
+        RxJavaInterop.toV2Observable(getPageAndNext(1)).subscribe(new ProgressObserverAdapter<Page<User>>(activity, R.string.loading_collaborators) {
             List<User> users = new ArrayList<>();
 
             @Override
@@ -83,8 +83,8 @@ public class AssigneeDialog extends BaseProgressDialog {
             }
 
             @Override
-            public void onCompleted() {
-                super.onCompleted();
+            public void onComplete() {
+                super.onComplete();
                 Map<String, User> loadedCollaborators = new TreeMap<>(
                         CASE_INSENSITIVE_ORDER);
                 for (User user : users) {

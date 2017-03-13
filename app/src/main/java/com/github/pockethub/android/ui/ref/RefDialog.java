@@ -73,7 +73,7 @@ public class RefDialog {
 
 
     private void load(final GitReference selectedRef) {
-        getPageAndNext(1).subscribe(new ProgressObserverAdapter<Page<GitReference>>(activity, R.string.loading_refs) {
+        RxJavaInterop.toV2Observable(getPageAndNext(1)).subscribe(new ProgressObserverAdapter<Page<GitReference>>(activity, R.string.loading_refs) {
             List<GitReference> allRefs = new ArrayList<>();
 
             @Override
@@ -83,8 +83,8 @@ public class RefDialog {
             }
 
             @Override
-            public void onCompleted() {
-                super.onCompleted();
+            public void onComplete() {
+                super.onComplete();
                 Map<String, GitReference> loadedRefs = new TreeMap<>(CASE_INSENSITIVE_ORDER);
 
                 for (GitReference ref : allRefs) {

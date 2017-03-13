@@ -127,15 +127,15 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         final User result = (User) l.getItemAtPosition(position);
-        RxJavaInterop.toV1Single(ServiceGenerator.createService(getContext(), UserService.class)
+        ServiceGenerator.createService(getContext(), UserService.class)
                 .getUser(result.login())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<User>bindToLifecycle()))
+                .compose(this.<User>bindToLifecycle())
                 .subscribe(new ObserverAdapter<User>() {
 
                     @Override
-                    public void onNext(User user) {
+                    public void onSuccess(User user) {
                         startActivity(UserViewActivity.createIntent(user));
                     }
                 });

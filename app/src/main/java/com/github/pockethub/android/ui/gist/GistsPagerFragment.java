@@ -40,7 +40,6 @@ import com.google.inject.Inject;
 import java.util.Collection;
 
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
-import io.reactivex.BackpressureStrategy;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import rx.Observable;
@@ -90,9 +89,9 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
         });
 
         showProgressIndeterminate(R.string.random_gist);
-        RxJavaInterop.toV1Observable(RxJavaInterop.toV2Observable(observable).subscribeOn(Schedulers.io())
+        RxJavaInterop.toV2Observable(observable).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(((BaseActivity)getActivity()).<Gist>bindToLifecycle()), BackpressureStrategy.BUFFER)
+                .compose(((BaseActivity)getActivity()).<Gist>bindToLifecycle())
                 .subscribe(new ObserverAdapter<Gist>() {
 
                     @Override

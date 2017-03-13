@@ -96,14 +96,14 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
         } else {
             ViewUtils.setGone(loadingBar, false);
             setGone(true);
-            RxJavaInterop.toV1Single(ServiceGenerator.createService(this, UserService.class)
+            ServiceGenerator.createService(this, UserService.class)
                     .getUser(user.login())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<User>bindToLifecycle()))
+                    .compose(this.<User>bindToLifecycle())
                     .subscribe(new ObserverAdapter<User>() {
                         @Override
-                        public void onNext(User fullUser) {
+                        public void onSuccess(User fullUser) {
                             user = fullUser;
                             configurePager();
                         }
@@ -208,12 +208,12 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
             followSingle = service.followUser(user.login());
         }
 
-        RxJavaInterop.toV1Single(followSingle.subscribeOn(Schedulers.io())
+        followSingle.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response<Boolean>>bindToLifecycle()))
+                .compose(this.<Response<Boolean>>bindToLifecycle())
                 .subscribe(new ObserverAdapter<Response<Boolean>>() {
                     @Override
-                    public void onNext(Response<Boolean>aBoolean) {
+                    public void onSuccess(Response<Boolean>aBoolean) {
                         isFollowing = !isFollowing;
                     }
 
@@ -227,14 +227,14 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
 
     private void checkFollowingUserStatus() {
         followingStatusChecked = false;
-        RxJavaInterop.toV1Single(ServiceGenerator.createService(this, UserFollowerService.class)
+        ServiceGenerator.createService(this, UserFollowerService.class)
                 .isFollowing(user.login())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response<Boolean>>bindToLifecycle()))
+                .compose(this.<Response<Boolean>>bindToLifecycle())
                 .subscribe(new ObserverAdapter<Response<Boolean>>() {
                     @Override
-                    public void onNext(Response<Boolean> response) {
+                    public void onSuccess(Response<Boolean> response) {
                         isFollowing = response.code() == 204;
                         followingStatusChecked = true;
                         invalidateOptionsMenu();

@@ -169,16 +169,16 @@ public class GistsViewActivity extends PagerActivity implements
         if (REQUEST_CONFIRM_DELETE == requestCode && RESULT_OK == resultCode) {
             final String gistId = arguments.getString(EXTRA_GIST_ID);
 
-            RxJavaInterop.toV1Single(ServiceGenerator.createService(this, GistService.class)
+            ServiceGenerator.createService(this, GistService.class)
                     .deleteGist(gistId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Response<Boolean>>bindToLifecycle()))
+                    .compose(this.<Response<Boolean>>bindToLifecycle())
                     .subscribe(new ProgressObserverAdapter<Response<Boolean>>(this, R.string.deleting_gist) {
 
                         @Override
-                        public void onNext(Response<Boolean> response) {
-                            super.onNext(response);
+                        public void onSuccess(Response<Boolean> response) {
+                            super.onSuccess(response);
                             setResult(RESULT_OK);
                             finish();
                         }

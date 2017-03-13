@@ -197,14 +197,14 @@ public class IssuesViewActivity extends PagerActivity {
         // avatar URL
         if (repo == null) {
             Repository temp = repo != null ? repo : repoIds.get(0);
-            RxJavaInterop.toV1Single(ServiceGenerator.createService(this, RepositoryService.class)
+            ServiceGenerator.createService(this, RepositoryService.class)
                     .getRepository(temp.owner().login(), temp.name())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Repository>bindToLifecycle()))
+                    .compose(this.<Repository>bindToLifecycle())
                     .subscribe(new ObserverAdapter<Repository>() {
                         @Override
-                        public void onNext(Repository repo) {
+                        public void onSuccess(Repository repo) {
                             repositoryLoaded(repo);
                         }
                     });

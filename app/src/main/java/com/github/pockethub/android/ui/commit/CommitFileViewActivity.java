@@ -273,14 +273,14 @@ public class CommitFileViewActivity extends BaseActivity implements
     }
 
     private void loadContent() {
-        RxJavaInterop.toV1Single(ServiceGenerator.createService(this, GitService.class)
+        ServiceGenerator.createService(this, GitService.class)
                 .getGitBlob(repo.owner().login(), repo.name(), sha)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<GitBlob>bindToLifecycle()))
+                .compose(this.<GitBlob>bindToLifecycle())
                 .subscribe(new ObserverAdapter<GitBlob>() {
                     @Override
-                    public void onNext(GitBlob gitBlob) {
+                    public void onSuccess(GitBlob gitBlob) {
                         ViewUtils.setGone(loadingBar, true);
                         ViewUtils.setGone(codeView, false);
 

@@ -57,7 +57,6 @@ import com.meisolsson.githubsdk.model.git.GitReference;
 import java.util.LinkedList;
 
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
-import io.reactivex.BackpressureStrategy;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import rx.Observable;
@@ -149,10 +148,10 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
     private void refreshTree(final GitReference reference) {
         showLoading(true);
-        RxJavaInterop.toV1Observable(RxJavaInterop.toV2Observable(Observable.create(new RefreshTreeTask(getActivity(), repository, reference)))
+        RxJavaInterop.toV2Observable(Observable.create(new RefreshTreeTask(getActivity(), repository, reference)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<FullTree>bindToLifecycle()), BackpressureStrategy.BUFFER)
+                .compose(this.<FullTree>bindToLifecycle())
                 .subscribe(new ObserverAdapter<FullTree>() {
                     @Override
                     public void onNext(FullTree fullTree) {

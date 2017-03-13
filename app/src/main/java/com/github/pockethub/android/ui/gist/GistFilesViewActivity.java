@@ -39,7 +39,6 @@ import com.github.pockethub.android.util.HttpImageGetter;
 import com.google.inject.Inject;
 
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
-import io.reactivex.BackpressureStrategy;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import rx.Observable;
@@ -117,10 +116,10 @@ public class GistFilesViewActivity extends PagerActivity {
             ViewUtils.setGone(loadingBar, false);
             ViewUtils.setGone(pager, true);
             ViewUtils.setGone(tabs, true);
-            RxJavaInterop.toV1Observable(RxJavaInterop.toV2Observable(Observable.create(new RefreshGistTask(this, gistId, imageGetter)))
+            RxJavaInterop.toV2Observable(Observable.create(new RefreshGistTask(this, gistId, imageGetter)))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<FullGist>bindToLifecycle()), BackpressureStrategy.BUFFER)
+                    .compose(this.<FullGist>bindToLifecycle())
                     .subscribe(new ObserverAdapter<FullGist>() {
                         @Override
                         public void onNext(FullGist gist) {

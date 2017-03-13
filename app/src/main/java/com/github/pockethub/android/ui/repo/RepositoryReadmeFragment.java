@@ -53,15 +53,15 @@ public class RepositoryReadmeFragment extends DialogFragment {
         settings.setJavaScriptEnabled(true);
         webview.addJavascriptInterface(this, "Readme");
 
-        RxJavaInterop.toV1Single(ServiceGenerator.createService(getActivity(), RepositoryContentService.class)
+        ServiceGenerator.createService(getActivity(), RepositoryContentService.class)
                 .getReadmeHtml(repo.owner().login(), repo.name(), null)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<String>bindToLifecycle()))
+                .compose(this.<String>bindToLifecycle())
                 .subscribe(new ObserverAdapter<String>() {
                     @Override
-                    public void onNext(String s) {
-                        super.onNext(s);
+                    public void onSuccess(String s) {
+                        super.onSuccess(s);
                         String baseUrl = String.format("https://github.com/%s/%s/raw/%s/",
                                 repo.owner().login(), repo.name(), "master");
 

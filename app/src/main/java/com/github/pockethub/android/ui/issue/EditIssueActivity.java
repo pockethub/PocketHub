@@ -398,14 +398,14 @@ public class EditIssueActivity extends BaseActivity {
                     message = R.string.creating_issue;
                 }
 
-                RxJavaInterop.toV1Single(single.subscribeOn(Schedulers.io())
+                single.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .compose(this.<Issue>bindToLifecycle()))
+                        .compose(this.<Issue>bindToLifecycle())
                         .subscribe(new ProgressObserverAdapter<Issue>(this, message) {
 
                             @Override
-                            public void onNext(Issue issue) {
-                                super.onNext(issue);
+                            public void onSuccess(Issue issue) {
+                                super.onSuccess(issue);
                                 Intent intent = new Intent();
                                 intent.putExtra(EXTRA_ISSUE, issue);
                                 setResult(RESULT_OK, intent);
@@ -426,14 +426,14 @@ public class EditIssueActivity extends BaseActivity {
     }
 
     private void checkCollaboratorStatus() {
-        RxJavaInterop.toV1Single(ServiceGenerator.createService(this, RepositoryCollaboratorService.class)
+        ServiceGenerator.createService(this, RepositoryCollaboratorService.class)
                 .isUserCollaborator(repository.owner().login(), repository.name(), AccountUtils.getLogin(this))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response<Boolean>>bindToLifecycle()))
+                .compose(this.<Response<Boolean>>bindToLifecycle())
                 .subscribe(new ObserverAdapter<Response<Boolean>>() {
                     @Override
-                    public void onNext(Response<Boolean> response) {
+                    public void onSuccess(Response<Boolean> response) {
                         showMainContent();
                         if (response.code() == 204) {
                             showCollaboratorOptions();

@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import rx.Observable;
 import rx.Subscriber;
 
@@ -204,12 +205,12 @@ public class AccountDataManager {
      */
     public void getIssueFilters(
             final RequestFuture<Collection<IssueFilter>> requestFuture) {
-        Observable.create(new Observable.OnSubscribe<Collection<IssueFilter>>() {
+        RxJavaInterop.toV2Observable(Observable.create(new Observable.OnSubscribe<Collection<IssueFilter>>() {
             @Override
             public void call(Subscriber<? super Collection<IssueFilter>> subscriber) {
                 subscriber.onNext(getIssueFilters());
             }
-        }).subscribe(new ObserverAdapter<Collection<IssueFilter>>() {
+        })).subscribe(new ObserverAdapter<Collection<IssueFilter>>() {
             @Override
             public void onNext(Collection<IssueFilter> filters) {
                 requestFuture.success(filters);
@@ -244,13 +245,13 @@ public class AccountDataManager {
      */
     public void addIssueFilter(final IssueFilter filter,
             final RequestFuture<IssueFilter> requestFuture) {
-        Observable.create(new Observable.OnSubscribe<IssueFilter>() {
+        RxJavaInterop.toV2Observable(Observable.create(new Observable.OnSubscribe<IssueFilter>() {
             @Override
             public void call(Subscriber<? super IssueFilter> subscriber) {
                 addIssueFilter(filter);
                 subscriber.onNext(filter);
             }
-        }).subscribe(new ObserverAdapter<IssueFilter>() {
+        })).subscribe(new ObserverAdapter<IssueFilter>() {
             @Override
             public void onError(Throwable e) {
                 Log.d(TAG, "Exception adding issue filter", e);
@@ -287,13 +288,13 @@ public class AccountDataManager {
      */
     public void removeIssueFilter(final IssueFilter filter,
             final RequestFuture<IssueFilter> requestFuture) {
-        Observable.create(new Observable.OnSubscribe<IssueFilter>() {
+        RxJavaInterop.toV2Observable(Observable.create(new Observable.OnSubscribe<IssueFilter>() {
             @Override
             public void call(Subscriber<? super IssueFilter> subscriber) {
                 removeIssueFilter(filter);
                 subscriber.onNext(filter);
             }
-        }).subscribe(new ObserverAdapter<IssueFilter>() {
+        })).subscribe(new ObserverAdapter<IssueFilter>() {
             @Override
             public void onNext(IssueFilter issueFilter) {
                 requestFuture.success(issueFilter);

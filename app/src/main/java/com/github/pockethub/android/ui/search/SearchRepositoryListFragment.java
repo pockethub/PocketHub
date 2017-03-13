@@ -121,16 +121,16 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repository> 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         final Repository result = (Repository) l.getItemAtPosition(position);
-        RxJavaInterop.toV1Single(ServiceGenerator.createService(getContext(), RepositoryService.class)
+        ServiceGenerator.createService(getContext(), RepositoryService.class)
                 .getRepository(result.owner().login(), result.name())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Repository>bindToLifecycle()))
+                .compose(this.<Repository>bindToLifecycle())
                 .subscribe(new ProgressObserverAdapter<Repository>(getActivity(),
                         MessageFormat.format(getString(R.string.opening_repository), InfoUtils.createRepoId(result))) {
                     @Override
-                    public void onNext(Repository repo) {
-                        super.onNext(repo);
+                    public void onSuccess(Repository repo) {
+                        super.onSuccess(repo);
                         startActivity(RepositoryViewActivity.createIntent(repo));
                     }
                 });

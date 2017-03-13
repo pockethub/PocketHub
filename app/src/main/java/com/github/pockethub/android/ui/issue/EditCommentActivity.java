@@ -107,17 +107,17 @@ public class EditCommentActivity extends
                 .body(commentText)
                 .build();
 
-        RxJavaInterop.toV1Single(ServiceGenerator.createService(this, IssueCommentService.class)
+        ServiceGenerator.createService(this, IssueCommentService.class)
                 .editIssueComment(repositoryId.owner().login(), repositoryId.name(),
                         comment.id(), commentRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<GitHubComment>bindToLifecycle()))
+                .compose(this.<GitHubComment>bindToLifecycle())
                 .subscribe(new ProgressObserverAdapter<GitHubComment>(this, R.string.editing_comment) {
 
                     @Override
-                    public void onNext(GitHubComment edited) {
-                        super.onNext(edited);
+                    public void onSuccess(GitHubComment edited) {
+                        super.onSuccess(edited);
                         dismissProgress();
                         finish(edited);
                     }

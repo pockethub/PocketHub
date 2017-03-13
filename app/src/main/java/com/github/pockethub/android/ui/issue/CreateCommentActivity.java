@@ -33,7 +33,6 @@ import com.github.pockethub.android.util.InfoUtils;
 import com.meisolsson.githubsdk.model.request.CommentRequest;
 import com.meisolsson.githubsdk.service.issues.IssueCommentService;
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -86,14 +85,14 @@ public class CreateCommentActivity extends
                 .body(comment)
                 .build();
 
-        RxJavaInterop.toV1Single(ServiceGenerator.createService(this, IssueCommentService.class)
+        ServiceGenerator.createService(this, IssueCommentService.class)
                 .createIssueComment(repositoryId.owner().login(), repositoryId.name(), issueNumber, commentRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<GitHubComment>bindToLifecycle()))
+                .compose(this.<GitHubComment>bindToLifecycle())
                 .subscribe(new ObserverAdapter<GitHubComment>() {
                     @Override
-                    public void onNext(GitHubComment githubComment) {
+                    public void onSuccess(GitHubComment githubComment) {
                         finish(githubComment);
                     }
                 });

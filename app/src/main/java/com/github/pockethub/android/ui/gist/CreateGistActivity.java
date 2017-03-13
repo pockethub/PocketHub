@@ -197,16 +197,16 @@ public class CreateGistActivity extends BaseActivity {
                 .isPublic(isPublic)
                 .build();
 
-        RxJavaInterop.toV1Single(ServiceGenerator.createService(this, GistService.class)
+        ServiceGenerator.createService(this, GistService.class)
                 .createGist(createGist)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Gist>bindToLifecycle()))
+                .compose(this.<Gist>bindToLifecycle())
                 .subscribe(new ProgressObserverAdapter<Gist>(this, R.string.creating_gist) {
 
                     @Override
-                    public void onNext(Gist gist) {
-                        super.onNext(gist);
+                    public void onSuccess(Gist gist) {
+                        super.onSuccess(gist);
                         startActivity(GistsViewActivity.createIntent(gist));
                         setResult(RESULT_OK);
                         finish();

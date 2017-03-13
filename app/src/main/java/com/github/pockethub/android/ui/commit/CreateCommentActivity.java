@@ -117,16 +117,16 @@ public class CreateCommentActivity extends
             commitCommentBuilder.path(path).position(position);
         }
 
-        RxJavaInterop.toV1Single(ServiceGenerator.createService(this, RepositoryCommentService.class)
+        ServiceGenerator.createService(this, RepositoryCommentService.class)
                 .createCommitComment(repository.owner().login(), repository.name(), commit, commitCommentBuilder.build())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<GitComment>bindToLifecycle()))
+                .compose(this.<GitComment>bindToLifecycle())
                 .subscribe(new ProgressObserverAdapter<GitComment>(this, R.string.creating_comment) {
 
                     @Override
-                    public void onNext(GitComment created) {
-                        super.onNext(created);
+                    public void onSuccess(GitComment created) {
+                        super.onSuccess(created);
                         finish(created);
                     }
 

@@ -52,7 +52,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -125,14 +124,14 @@ public class CommitCompareListFragment extends DialogFragment implements
     }
 
     private void compareCommits() {
-        RxJavaInterop.toV1Single(ServiceGenerator.createService(getActivity(), RepositoryCommitService.class)
+        ServiceGenerator.createService(getActivity(), RepositoryCommitService.class)
                 .compareCommits(repository.owner().login(), repository.name(), base, head)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<CommitCompare>bindToLifecycle()))
+                .compose(this.<CommitCompare>bindToLifecycle())
                 .subscribe(new ObserverAdapter<CommitCompare>() {
                     @Override
-                    public void onNext(CommitCompare compareCommit) {
+                    public void onSuccess(CommitCompare compareCommit) {
                         List<GitHubFile> files = compareCommit.files();
                         diffStyler.setFiles(files);
                         if (files != null) {
