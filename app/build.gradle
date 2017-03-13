@@ -112,7 +112,8 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.7.0'
 
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.trello:rxlifecycle:0.4.0'
+    compile 'com.trello:rxlifecycle:1.0'
+    compile 'com.trello:rxlifecycle-android:1.0'
     compile 'com.bugsnag:bugsnag-android:3.2.7'
     compile 'org.roboguice:roboguice:2.0'
 

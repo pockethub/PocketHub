@@ -21,9 +21,11 @@ import android.support.annotation.CallSuper;
 
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.pockethub.android.ui.roboactivities.RoboAppCompatActivity;
-import com.trello.rxlifecycle.ActivityEvent;
-import com.trello.rxlifecycle.ActivityLifecycleProvider;
+import com.trello.rxlifecycle.LifecycleProvider;
+import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
+import com.trello.rxlifecycle.android.ActivityEvent;
+import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
@@ -32,7 +34,7 @@ import rx.subjects.BehaviorSubject;
  * Activity that display dialogs
  */
 public abstract class BaseActivity extends
-        RoboAppCompatActivity implements DialogResultListener, ActivityLifecycleProvider {
+        RoboAppCompatActivity implements DialogResultListener, LifecycleProvider<ActivityEvent> {
 
     /**
      * Finder bound to this activity's view
@@ -55,13 +57,13 @@ public abstract class BaseActivity extends
     }
 
     @Override
-    public final <T> Observable.Transformer<T, T> bindUntilEvent(ActivityEvent event) {
-        return RxLifecycle.bindUntilActivityEvent(lifecycleSubject, event);
+    public final <T> LifecycleTransformer<T> bindUntilEvent(ActivityEvent event) {
+        return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
     }
 
     @Override
-    public final <T> Observable.Transformer<T, T> bindToLifecycle() {
-        return RxLifecycle.bindActivity(lifecycleSubject);
+    public final <T> LifecycleTransformer<T> bindToLifecycle() {
+        return RxLifecycleAndroid.bindActivity(lifecycleSubject);
     }
 
     @Override
