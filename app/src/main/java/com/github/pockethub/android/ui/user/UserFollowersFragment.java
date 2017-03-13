@@ -26,7 +26,6 @@ import com.github.pockethub.android.core.user.UserPager;
 import com.meisolsson.githubsdk.service.users.UserFollowerService;
 
 import io.reactivex.Single;
-import rx.Observable;
 
 import static com.github.pockethub.android.Intents.EXTRA_USER;
 

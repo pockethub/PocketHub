@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Single;
-import rx.Observable;
 
 import static com.github.pockethub.android.RequestCodes.ISSUE_VIEW;
 

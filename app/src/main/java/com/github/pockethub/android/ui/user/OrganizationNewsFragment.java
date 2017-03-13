@@ -24,7 +24,6 @@ import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.service.activity.EventService;
 
 import io.reactivex.Single;
-import rx.Observable;
 
 /**
  * Fragment to display an organization's news

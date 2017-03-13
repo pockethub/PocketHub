@@ -39,11 +39,11 @@ import com.google.inject.Inject;
 
 import java.util.Collection;
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import rx.Observable;
-import rx.Subscriber;
 
 import static com.github.pockethub.android.RequestCodes.GIST_VIEW;
 import static com.github.pockethub.android.util.TypefaceUtils.ICON_PERSON;
@@ -63,9 +63,9 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
     }
 
     private void randomGist() {
-        Observable<Gist> observable = Observable.create(new Observable.OnSubscribe<Gist>() {
+        Observable<Gist> observable = Observable.create(new ObservableOnSubscribe<Gist>() {
             @Override
-            public void call(Subscriber<? super Gist> subscriber) {
+            public void subscribe(ObservableEmitter<Gist> emitter) throws Exception {
                 GistService service = ServiceGenerator.createService(getActivity(), GistService.class);
 
                 Page<Gist> p = service.getPublicGists(1).blockingGet();
@@ -84,12 +84,12 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
                             R.string.no_gists_found));
                 }
 
-                subscriber.onNext(store.addGist(gists.iterator().next()));
+                emitter.onNext(store.addGist(gists.iterator().next()));
             }
         });
 
         showProgressIndeterminate(R.string.random_gist);
-        RxJavaInterop.toV2Observable(observable).subscribeOn(Schedulers.io())
+        observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(((BaseActivity)getActivity()).<Gist>bindToLifecycle())
                 .subscribe(new ObserverAdapter<Gist>() {

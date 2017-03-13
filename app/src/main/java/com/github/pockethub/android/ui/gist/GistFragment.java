@@ -71,11 +71,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
-import rx.Observable;
 
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
@@ -433,7 +432,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     }
 
     private void refreshGist() {
-        RxJavaInterop.toV2Observable(Observable.create(new RefreshGistTask(getActivity(), gistId, imageGetter)))
+        Observable.create(new RefreshGistTask(getActivity(), gistId, imageGetter))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<FullGist>bindToLifecycle())

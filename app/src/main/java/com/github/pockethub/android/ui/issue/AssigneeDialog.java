@@ -33,11 +33,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
@@ -72,7 +73,7 @@ public class AssigneeDialog extends BaseProgressDialog {
     }
 
     private void load(final User selectedAssignee) {
-        RxJavaInterop.toV2Observable(getPageAndNext(1)).subscribe(new ProgressObserverAdapter<Page<User>>(activity, R.string.loading_collaborators) {
+        getPageAndNext(1).subscribe(new ProgressObserverAdapter<Page<User>>(activity, R.string.loading_collaborators) {
             List<User> users = new ArrayList<>();
 
             @Override
@@ -104,13 +105,13 @@ public class AssigneeDialog extends BaseProgressDialog {
     }
 
     private Observable<Page<User>> getPageAndNext(int i) {
-        return RxJavaInterop.toV1Single(ServiceGenerator.createService(activity, IssueAssigneeService.class)
-                .getAssignees(repository.owner().login(), repository.name(), i))
+        return ServiceGenerator.createService(activity, IssueAssigneeService.class)
+                .getAssignees(repository.owner().login(), repository.name(), i)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .flatMapObservable(new Func1<Page<User>, Observable<Page<User>>>() {
+                .flatMapObservable(new Function<Page<User>, ObservableSource<? extends Page<User>>>() {
                     @Override
-                    public Observable<Page<User>> call(Page<User> page) {
+                    public ObservableSource<? extends Page<User>> apply(@NonNull Page<User> page) throws Exception {
                         if (page.next() == null) {
                             return Observable.just(page);
                         }

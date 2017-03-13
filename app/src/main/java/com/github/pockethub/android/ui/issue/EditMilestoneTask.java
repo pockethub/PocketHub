@@ -27,19 +27,19 @@ import com.google.inject.Inject;
 
 import java.io.IOException;
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import roboguice.RoboGuice;
-import rx.Observable;
-import rx.Subscriber;
 
 import static com.github.pockethub.android.RequestCodes.ISSUE_MILESTONE_UPDATE;
 
 /**
  * Task to edit a milestone
  */
-public class EditMilestoneTask implements Observable.OnSubscribe<Issue> {
+public class EditMilestoneTask implements ObservableOnSubscribe<Issue> {
 
     @Inject
     private IssueStore store;
@@ -77,12 +77,12 @@ public class EditMilestoneTask implements Observable.OnSubscribe<Issue> {
     }
 
     @Override
-    public void call(Subscriber<? super Issue> subscriber) {
+    public void subscribe(ObservableEmitter<Issue> emitter) throws Exception {
         try {
             IssueRequest editedIssue = IssueRequest.builder().milestone(milestoneNumber).build();
-            subscriber.onNext(store.editIssue(repositoryId, issueNumber, editedIssue));
+            emitter.onNext(store.editIssue(repositoryId, issueNumber, editedIssue));
         } catch (IOException e) {
-            subscriber.onError(e);
+            emitter.onError(e);
         }
     }
 
@@ -107,7 +107,7 @@ public class EditMilestoneTask implements Observable.OnSubscribe<Issue> {
         if (milestone != null)
 
         {
-            RxJavaInterop.toV2Observable(Observable.create(this))
+            Observable.create(this)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(activity.<Issue>bindToLifecycle())

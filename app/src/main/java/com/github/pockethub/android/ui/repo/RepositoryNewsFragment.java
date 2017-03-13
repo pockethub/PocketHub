@@ -34,7 +34,6 @@ import com.github.pockethub.android.util.InfoUtils;
 import com.meisolsson.githubsdk.service.activity.EventService;
 
 import io.reactivex.Single;
-import rx.Observable;
 
 import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY;
 

@@ -56,10 +56,9 @@ import com.meisolsson.githubsdk.model.git.GitReference;
 
 import java.util.LinkedList;
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import rx.Observable;
 
 import static android.app.Activity.RESULT_OK;
 import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY;
@@ -148,7 +147,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
     private void refreshTree(final GitReference reference) {
         showLoading(true);
-        RxJavaInterop.toV2Observable(Observable.create(new RefreshTreeTask(getActivity(), repository, reference)))
+        Observable.create(new RefreshTreeTask(getActivity(), repository, reference))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<FullTree>bindToLifecycle())

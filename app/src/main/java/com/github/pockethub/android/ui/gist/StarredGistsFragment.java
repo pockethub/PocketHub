@@ -24,7 +24,6 @@ import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.service.gists.GistService;
 
 import io.reactivex.Single;
-import rx.Observable;
 
 /**
  * Fragment to display a list of Gists

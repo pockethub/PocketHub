@@ -50,7 +50,6 @@ import com.meisolsson.githubsdk.model.git.GitBlob;
 import com.meisolsson.githubsdk.service.git.GitService;
 import com.google.inject.Inject;
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 

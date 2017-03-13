@@ -46,8 +46,6 @@ import com.meisolsson.githubsdk.service.repositories.RepositoryForkService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryService;
 import com.google.inject.Inject;
 
-
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;

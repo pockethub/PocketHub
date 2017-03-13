@@ -45,7 +45,6 @@ import com.meisolsson.githubsdk.service.gists.GistService;
 import java.util.HashMap;
 import java.util.Map;
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 

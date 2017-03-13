@@ -33,7 +33,6 @@ import com.meisolsson.githubsdk.model.git.GitComment;
 import com.meisolsson.githubsdk.model.request.repository.CreateCommitComment;
 import com.meisolsson.githubsdk.service.repositories.RepositoryCommentService;
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 

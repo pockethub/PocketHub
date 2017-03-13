@@ -29,7 +29,6 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import io.reactivex.Single;
-import rx.Observable;
 
 import static android.app.Activity.RESULT_OK;
 import static com.github.pockethub.android.RequestCodes.GIST_CREATE;

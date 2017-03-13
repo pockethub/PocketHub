@@ -79,11 +79,10 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
-import rx.Observable;
 
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
@@ -433,7 +432,7 @@ public class IssueFragment extends DialogFragment {
     }
 
     private void refreshIssue() {
-        RxJavaInterop.toV2Observable(Observable.create(new RefreshIssueTask(getActivity(), repositoryId, issueNumber, bodyImageGetter, commentImageGetter)))
+        Observable.create(new RefreshIssueTask(getActivity(), repositoryId, issueNumber, bodyImageGetter, commentImageGetter))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<FullIssue>bindToLifecycle())

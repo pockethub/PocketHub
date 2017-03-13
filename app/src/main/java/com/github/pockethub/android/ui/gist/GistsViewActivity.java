@@ -42,7 +42,6 @@ import com.google.inject.Inject;
 import java.io.Serializable;
 import java.util.List;
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;

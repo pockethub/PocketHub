@@ -57,7 +57,6 @@ import com.google.inject.Inject;
 import java.util.List;
 
 import io.reactivex.Single;
-import rx.Observable;
 
 import static android.app.Activity.RESULT_OK;
 import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY;

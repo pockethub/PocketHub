@@ -72,16 +72,12 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        debug {
-            multiDexEnabled true // TODO Remove after full migration to RxJava 2
-        }
     }
 
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
-        exclude 'META-INF/rxjava.properties' // TODO Remove after full migration to RxJava 2
     }
 
     lintOptions {
@@ -115,8 +111,6 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.okhttp:okhttp:2.7.0'
 
-    compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.github.akarnokd:rxjava2-interop:0.9.3'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxjava:2.0.7'
     compile 'com.trello.rxlifecycle2:rxlifecycle:2.0.1'

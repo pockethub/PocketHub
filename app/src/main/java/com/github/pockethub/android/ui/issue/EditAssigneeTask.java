@@ -28,12 +28,12 @@ import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Collections;
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import roboguice.RoboGuice;
-import rx.Observable;
-import rx.Subscriber;
 
 import static com.github.pockethub.android.RequestCodes.ISSUE_ASSIGNEE_UPDATE;
 
@@ -41,7 +41,7 @@ import static com.github.pockethub.android.RequestCodes.ISSUE_ASSIGNEE_UPDATE;
  * Task to edit the assignee
  */
 //TODO Let this take multiple assignees
-public class EditAssigneeTask implements Observable.OnSubscribe<Issue> {
+public class EditAssigneeTask implements ObservableOnSubscribe<Issue> {
 
     @Inject
     private IssueStore store;
@@ -79,7 +79,7 @@ public class EditAssigneeTask implements Observable.OnSubscribe<Issue> {
     }
 
     @Override
-    public void call(Subscriber<? super Issue> subscriber) {
+    public void subscribe(ObservableEmitter<Issue> emitter) throws Exception {
         try{
             String assigneLogin;
             if (assignee != null) {
@@ -91,9 +91,9 @@ public class EditAssigneeTask implements Observable.OnSubscribe<Issue> {
             IssueRequest edit = IssueRequest.builder()
                     .assignees(Collections.singletonList(assigneLogin))
                     .build();
-            subscriber.onNext(store.editIssue(repositoryId, issueNumber, edit));
+            emitter.onNext(store.editIssue(repositoryId, issueNumber, edit));
         } catch (IOException e) {
-            subscriber.onError(e);
+            emitter.onError(e);
         }
     }
 
@@ -118,7 +118,7 @@ public class EditAssigneeTask implements Observable.OnSubscribe<Issue> {
     public EditAssigneeTask edit(User user) {
         this.assignee = user;
 
-        RxJavaInterop.toV2Observable(Observable.create(this))
+        Observable.create(this)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(activity.<Issue>bindToLifecycle())
@@ -126,5 +126,4 @@ public class EditAssigneeTask implements Observable.OnSubscribe<Issue> {
 
         return this;
     }
-
 }

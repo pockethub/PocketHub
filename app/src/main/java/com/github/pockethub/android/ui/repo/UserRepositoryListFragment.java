@@ -35,7 +35,6 @@ import com.meisolsson.githubsdk.service.repositories.RepositoryService;
 import java.util.List;
 
 import io.reactivex.Single;
-import rx.Observable;
 
 import static com.github.pockethub.android.Intents.EXTRA_USER;
 import static com.github.pockethub.android.RequestCodes.REPOSITORY_VIEW;

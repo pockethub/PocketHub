@@ -29,13 +29,13 @@ import com.meisolsson.githubsdk.service.repositories.RepositoryService;
 
 import java.io.IOException;
 
-import rx.Observable;
-import rx.Subscriber;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 
 /**
  * Task to load the tree for a repo's default branch
  */
-public class RefreshTreeTask implements Observable.OnSubscribe<FullTree> {
+public class RefreshTreeTask implements ObservableOnSubscribe<FullTree> {
 
     private static final String TAG = "RefreshTreeTask";
 
@@ -64,7 +64,7 @@ public class RefreshTreeTask implements Observable.OnSubscribe<FullTree> {
     }
 
     @Override
-    public void call(Subscriber<? super FullTree> subscriber) {
+    public void subscribe(ObservableEmitter<FullTree> emitter) throws Exception {
         GitReference ref = reference;
         String branch = RefUtils.getPath(ref);
         if (branch == null) {
@@ -75,7 +75,7 @@ public class RefreshTreeTask implements Observable.OnSubscribe<FullTree> {
                         .blockingGet()
                         .defaultBranch();
                 if (TextUtils.isEmpty(branch)) {
-                    subscriber.onError(new IOException(
+                    emitter.onError(new IOException(
                             "Repository does not have master branch"));
                 }
             }
@@ -88,7 +88,7 @@ public class RefreshTreeTask implements Observable.OnSubscribe<FullTree> {
             ref = gitService.getGitReference(repo.owner().login(), repo.name(), branch)
                     .blockingGet();
             if (!isValidRef(ref)) {
-                subscriber.onError(new IOException("Reference does not have associated commit SHA-1"));
+                emitter.onError(new IOException("Reference does not have associated commit SHA-1"));
                 return;
             }
         }
@@ -96,12 +96,12 @@ public class RefreshTreeTask implements Observable.OnSubscribe<FullTree> {
         GitCommit commit = gitService.getGitCommit(repo.owner().login(), repo.name(), ref.object().sha())
                 .blockingGet();
         if (commit == null || commit.tree() == null || TextUtils.isEmpty(commit.tree().sha())) {
-            subscriber.onError(new IOException("Commit does not have associated tree SHA-1"));
+            emitter.onError(new IOException("Commit does not have associated tree SHA-1"));
             return;
         }
 
         GitTree tree = gitService.getGitTreeRecursive(repo.owner().login(), repo.name(), commit.tree().sha())
                 .blockingGet();
-        subscriber.onNext(new FullTree(tree, ref));
+        emitter.onNext(new FullTree(tree, ref));
     }
 }

@@ -40,7 +40,6 @@ import com.meisolsson.githubsdk.service.search.SearchService;
 import java.text.MessageFormat;
 import java.util.List;
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;

@@ -24,7 +24,6 @@ import com.github.pockethub.android.core.user.UserPager;
 import com.meisolsson.githubsdk.service.users.UserFollowerService;
 
 import io.reactivex.Single;
-import rx.Observable;
 
 /**
  * Fragment to display the users being followed by the default user

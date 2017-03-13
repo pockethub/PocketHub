@@ -29,19 +29,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import roboguice.RoboGuice;
-import rx.Observable;
-import rx.Subscriber;
 
 import static com.github.pockethub.android.RequestCodes.ISSUE_LABELS_UPDATE;
 
 /**
  * Task to edit labels
  */
-public class EditLabelsTask implements Observable.OnSubscribe<Issue> {
+public class EditLabelsTask implements ObservableOnSubscribe<Issue> {
 
     @Inject
     private IssueStore store;
@@ -80,7 +80,7 @@ public class EditLabelsTask implements Observable.OnSubscribe<Issue> {
     }
 
     @Override
-    public void call(Subscriber<? super Issue> subscriber) {
+    public void subscribe(ObservableEmitter<Issue> emitter) throws Exception {
         try {
             List<String> labelNames = new ArrayList<>(labels.length);
             for (Label label : labels) {
@@ -88,9 +88,9 @@ public class EditLabelsTask implements Observable.OnSubscribe<Issue> {
             }
 
             IssueRequest editIssue = IssueRequest.builder().labels(labelNames).build();
-            subscriber.onNext(store.editIssue(repositoryId, issueNumber, editIssue));
+            emitter.onNext(store.editIssue(repositoryId, issueNumber, editIssue));
         } catch (IOException e) {
-            subscriber.onError(e);
+            emitter.onError(e);
         }
     }
 
@@ -115,7 +115,7 @@ public class EditLabelsTask implements Observable.OnSubscribe<Issue> {
     public EditLabelsTask edit(Label[] labels) {
         this.labels = labels;
 
-        RxJavaInterop.toV2Observable(Observable.create(this))
+        Observable.create(this)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(activity.<Issue>bindToLifecycle())

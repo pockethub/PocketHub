@@ -17,7 +17,6 @@ package com.github.pockethub.android.core.issue;
 
 import android.content.Context;
 
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.util.HttpImageGetter;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.GitHubComment;
@@ -36,15 +35,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import roboguice.RoboGuice;
-import rx.Observable;
-import rx.Subscriber;
-import rx.schedulers.Schedulers;
 
 /**
  * Task to load and store an {@link Issue}
  */
-public class RefreshIssueTask implements Observable.OnSubscribe<FullIssue> {
+public class RefreshIssueTask implements ObservableOnSubscribe<FullIssue> {
 
     private static final String TAG = "RefreshIssueTask";
 
@@ -79,7 +77,7 @@ public class RefreshIssueTask implements Observable.OnSubscribe<FullIssue> {
     }
 
     @Override
-    public void call(Subscriber<? super FullIssue> subscriber) {
+    public void subscribe(ObservableEmitter<FullIssue> emitter) throws Exception {
         try {
             Issue issue = store.refreshIssue(repo, issueNumber);
 
@@ -104,9 +102,9 @@ public class RefreshIssueTask implements Observable.OnSubscribe<FullIssue> {
             }
 
             List<IssueEvent> events = getAllEvents(repo.owner().login(), repo.name(), issueNumber);
-            subscriber.onNext(new FullIssue(issue, comments, events));
+            emitter.onNext(new FullIssue(issue, comments, events));
         } catch (IOException e){
-            subscriber.onError(e);
+            emitter.onError(e);
         }
     }
 

@@ -33,11 +33,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
@@ -81,7 +82,7 @@ public class MilestoneDialog extends BaseProgressDialog {
     }
 
     private void load(final Milestone selectedMilestone) {
-        RxJavaInterop.toV2Observable(getPageAndNext(1)).subscribe(new ProgressObserverAdapter<Page<Milestone>>(activity, R.string.loading_milestones){
+        getPageAndNext(1).subscribe(new ProgressObserverAdapter<Page<Milestone>>(activity, R.string.loading_milestones){
             ArrayList<Milestone> milestones = new ArrayList<>();
 
             @Override
@@ -115,13 +116,13 @@ public class MilestoneDialog extends BaseProgressDialog {
     }
 
     private Observable<Page<Milestone>> getPageAndNext(int i) {
-        return RxJavaInterop.toV1Single(ServiceGenerator.createService(activity, IssueMilestoneService.class)
-                .getRepositoryMilestones(repository.owner().login(), repository.name(), i))
+        return ServiceGenerator.createService(activity, IssueMilestoneService.class)
+                .getRepositoryMilestones(repository.owner().login(), repository.name(), i)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .flatMapObservable(new Func1<Page<Milestone>, Observable<Page<Milestone>>>() {
+                .flatMapObservable(new Function<Page<Milestone>, ObservableSource<? extends Page<Milestone>>>() {
                     @Override
-                    public Observable<Page<Milestone>> call(Page<Milestone> page) {
+                    public ObservableSource<? extends Page<Milestone>> apply(@NonNull Page<Milestone> page) throws Exception {
                         if (page.next() == null) {
                             return Observable.just(page);
                         }

@@ -41,9 +41,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.Single;
-import rx.Observable;
 
 /**
  * Cache of repositories under a given organization

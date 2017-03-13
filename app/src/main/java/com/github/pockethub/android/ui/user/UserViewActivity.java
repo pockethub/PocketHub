@@ -38,7 +38,6 @@ import com.meisolsson.githubsdk.service.users.UserFollowerService;
 import com.meisolsson.githubsdk.service.users.UserService;
 import com.google.inject.Inject;
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;

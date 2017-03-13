@@ -40,7 +40,6 @@ import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 

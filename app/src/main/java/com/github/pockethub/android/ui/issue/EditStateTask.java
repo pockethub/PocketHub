@@ -27,12 +27,12 @@ import com.google.inject.Inject;
 
 import java.io.IOException;
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import roboguice.RoboGuice;
-import rx.Observable;
-import rx.Subscriber;
 
 import static com.github.pockethub.android.RequestCodes.ISSUE_CLOSE;
 import static com.github.pockethub.android.RequestCodes.ISSUE_REOPEN;
@@ -40,7 +40,7 @@ import static com.github.pockethub.android.RequestCodes.ISSUE_REOPEN;
 /**
  * Task to close or reopen an issue
  */
-public class EditStateTask implements Observable.OnSubscribe<Issue> {
+public class EditStateTask implements ObservableOnSubscribe<Issue> {
 
     @Inject
     private IssueStore store;
@@ -71,13 +71,13 @@ public class EditStateTask implements Observable.OnSubscribe<Issue> {
     }
 
     @Override
-    public void call(Subscriber<? super Issue> subscriber) {
+    public void subscribe(ObservableEmitter<Issue> emitter) throws Exception {
         try {
             IssueState state = close ? IssueState.closed : IssueState.open;
-            subscriber.onNext(store.changeState(repositoryId, issueNumber, state));
-            subscriber.onCompleted();
+            emitter.onNext(store.changeState(repositoryId, issueNumber, state));
+            emitter.onComplete();
         } catch (IOException e) {
-            subscriber.onError(e);
+            emitter.onError(e);
         }
     }
 
@@ -111,7 +111,7 @@ public class EditStateTask implements Observable.OnSubscribe<Issue> {
         observer.setContent(message);
         observer.start();
 
-        RxJavaInterop.toV2Observable(Observable.create(this))
+        Observable.create(this)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(activity.<Issue>bindToLifecycle())

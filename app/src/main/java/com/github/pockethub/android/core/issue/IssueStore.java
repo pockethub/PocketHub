@@ -18,7 +18,6 @@ package com.github.pockethub.android.core.issue;
 import android.content.Context;
 
 import com.github.pockethub.android.core.ItemStore;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.util.InfoUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Issue;
@@ -33,10 +32,6 @@ import com.meisolsson.githubsdk.service.pull_request.PullRequestService;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import rx.Scheduler;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Store of loaded issues

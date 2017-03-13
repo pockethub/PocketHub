@@ -56,8 +56,6 @@ import java.util.Collection;
 import java.util.List;
 
 import io.reactivex.Single;
-import rx.Observable;
-import rx.functions.Func1;
 
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;

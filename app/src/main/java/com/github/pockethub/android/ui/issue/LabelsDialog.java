@@ -36,11 +36,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
@@ -75,7 +76,7 @@ public class LabelsDialog extends BaseProgressDialog {
     }
 
     private void load(final Collection<Label> selectedLabels) {
-        RxJavaInterop.toV2Observable(getPageAndNext(1)).subscribe(new ProgressObserverAdapter<Page<Label>>(activity, R.string.loading_labels){
+        getPageAndNext(1).subscribe(new ProgressObserverAdapter<Page<Label>>(activity, R.string.loading_labels){
             List<Label> repositoryLabels = new ArrayList<>();
 
             @Override
@@ -108,13 +109,13 @@ public class LabelsDialog extends BaseProgressDialog {
     }
 
     private Observable<Page<Label>> getPageAndNext(int i) {
-        return RxJavaInterop.toV1Single(ServiceGenerator.createService(activity, IssueLabelService.class)
-                .getRepositoryLabels(repository.owner().login(), repository.name(), i))
+        return ServiceGenerator.createService(activity, IssueLabelService.class)
+                .getRepositoryLabels(repository.owner().login(), repository.name(), i)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .flatMapObservable(new Func1<Page<Label>, Observable<Page<Label>>>() {
+                .flatMapObservable(new Function<Page<Label>, ObservableSource<? extends Page<Label>>>() {
                     @Override
-                    public Observable<Page<Label>> call(Page<Label> page) {
+                    public ObservableSource<? extends Page<Label>> apply(@NonNull Page<Label> page) throws Exception {
                         if (page.next() == null) {
                             return Observable.just(page);
                         }

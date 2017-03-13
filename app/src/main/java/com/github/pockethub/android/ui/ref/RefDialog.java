@@ -33,11 +33,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
@@ -73,7 +74,7 @@ public class RefDialog {
 
 
     private void load(final GitReference selectedRef) {
-        RxJavaInterop.toV2Observable(getPageAndNext(1)).subscribe(new ProgressObserverAdapter<Page<GitReference>>(activity, R.string.loading_refs) {
+        getPageAndNext(1).subscribe(new ProgressObserverAdapter<Page<GitReference>>(activity, R.string.loading_refs) {
             List<GitReference> allRefs = new ArrayList<>();
 
             @Override
@@ -107,13 +108,13 @@ public class RefDialog {
     }
 
     private Observable<Page<GitReference>> getPageAndNext(int i) {
-        return RxJavaInterop.toV1Single(ServiceGenerator.createService(activity, GitService.class)
-                .getGitReferences(repository.owner().login(), repository.name(), i))
+        return ServiceGenerator.createService(activity, GitService.class)
+                .getGitReferences(repository.owner().login(), repository.name(), i)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .flatMapObservable(new Func1<Page<GitReference>, Observable<Page<GitReference>>>() {
+                .flatMapObservable(new Function<Page<GitReference>, ObservableSource<? extends Page<GitReference>>>() {
                     @Override
-                    public Observable<Page<GitReference>> call(Page<GitReference> page) {
+                    public ObservableSource<? extends Page<GitReference>> apply(@NonNull Page<GitReference> page) throws Exception {
                         if (page.next() == null) {
                             return Observable.just(page);
                         }

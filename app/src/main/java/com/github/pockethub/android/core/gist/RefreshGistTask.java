@@ -30,15 +30,15 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import retrofit2.Response;
 import roboguice.RoboGuice;
-import rx.Observable;
-import rx.Subscriber;
 
 /**
  * Task to load and store a {@link Gist}
  */
-public class RefreshGistTask implements Observable.OnSubscribe<FullGist> {
+public class RefreshGistTask implements ObservableOnSubscribe<FullGist> {
 
     private final Context context;
 
@@ -64,7 +64,7 @@ public class RefreshGistTask implements Observable.OnSubscribe<FullGist> {
     }
 
     @Override
-    public void call(Subscriber<? super FullGist> subscriber) {
+    public void subscribe(ObservableEmitter<FullGist> emitter) throws Exception {
         try {
             Gist gist = store.refreshGist(id);
             List<GitHubComment> comments;
@@ -81,9 +81,9 @@ public class RefreshGistTask implements Observable.OnSubscribe<FullGist> {
             boolean starred = response.code() == 204;
 
 
-            subscriber.onNext(new FullGist(gist, starred, comments));
+            emitter.onNext(new FullGist(gist, starred, comments));
         }catch (IOException e){
-            subscriber.onError(e);
+            emitter.onError(e);
         }
     }
 }

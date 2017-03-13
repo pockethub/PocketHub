@@ -22,7 +22,6 @@ import com.meisolsson.githubsdk.model.request.RequestMarkdown;
 import com.meisolsson.githubsdk.service.misc.MarkdownService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryContentService;
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
