@@ -73,8 +73,7 @@ public class RefreshCommitTask implements Observable.OnSubscribe<FullCommit> {
             if (rawCommit != null && rawCommit.commentCount() > 0) {
                 List<GitComment> comments = ServiceGenerator.createService(context, RepositoryCommentService.class)
                         .getCommitComments(repository.owner().login(), repository.name(), commit.sha(), 1)
-                        .toBlocking()
-                        .first()
+                        .blockingGet()
                         .items();
 
                 for (GitComment comment : comments) {

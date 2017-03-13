@@ -31,6 +31,7 @@ import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.model.request.CommentRequest;
 import com.meisolsson.githubsdk.service.gists.GistCommentService;
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -79,11 +80,11 @@ public class CreateCommentActivity extends
                 .body(comment)
                 .build();
 
-        ServiceGenerator.createService(this, GistCommentService.class)
-                .createGistComment(gist.id(), commentRequest)
+        RxJavaInterop.toV1Single(ServiceGenerator.createService(this, GistCommentService.class)
+                .createGistComment(gist.id(), commentRequest))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<GitHubComment>bindToLifecycle())
+                .compose(this.<GitHubComment>bindToLifecycle().<GitHubComment>forSingle())
                 .subscribe(new ObserverAdapter<GitHubComment>() {
                     @Override
                     public void onNext(GitHubComment githubComment) {

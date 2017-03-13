@@ -45,6 +45,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -196,11 +197,11 @@ public class IssuesViewActivity extends PagerActivity {
         // avatar URL
         if (repo == null) {
             Repository temp = repo != null ? repo : repoIds.get(0);
-            ServiceGenerator.createService(this, RepositoryService.class)
-                    .getRepository(temp.owner().login(), temp.name())
+            RxJavaInterop.toV1Single(ServiceGenerator.createService(this, RepositoryService.class)
+                    .getRepository(temp.owner().login(), temp.name()))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Repository>bindToLifecycle())
+                    .compose(this.<Repository>bindToLifecycle().<Repository>forSingle())
                     .subscribe(new ObserverAdapter<Repository>() {
                         @Override
                         public void onNext(Repository repo) {

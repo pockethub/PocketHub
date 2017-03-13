@@ -32,6 +32,7 @@ import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.model.request.CommentRequest;
 import com.meisolsson.githubsdk.service.gists.GistCommentService;
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -95,11 +96,11 @@ public class EditCommentActivity extends
      * @param commentRequest
      */
     protected void editComment(CommentRequest commentRequest) {
-        ServiceGenerator.createService(this, GistCommentService.class)
-                .editGistComment(gist.id(), comment.id(), commentRequest)
+        RxJavaInterop.toV1Single(ServiceGenerator.createService(this, GistCommentService.class)
+                .editGistComment(gist.id(), comment.id(), commentRequest))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<GitHubComment>bindToLifecycle())
+                .compose(this.<GitHubComment>bindToLifecycle().<GitHubComment>forSingle())
                 .subscribe(new ProgressObserverAdapter<GitHubComment>(this, R.string.editing_comment) {
 
                     @Override

@@ -71,6 +71,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import retrofit2.Response;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -301,11 +302,11 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
     private void starGist() {
         ToastUtils.show(getActivity(), R.string.starring_gist);
-        ServiceGenerator.createService(getActivity(), GistService.class)
-                .starGist(gistId)
+        RxJavaInterop.toV1Single(ServiceGenerator.createService(getActivity(), GistService.class)
+                .starGist(gistId))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response<Boolean>>bindToLifecycle())
+                .compose(this.<Response<Boolean>>bindToLifecycle().<Response<Boolean>>forSingle())
                 .subscribe(new ObserverAdapter<Response<Boolean>>() {
 
                     @Override
@@ -334,11 +335,11 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
     private void unstarGist() {
         ToastUtils.show(getActivity(), R.string.unstarring_gist);
-        ServiceGenerator.createService(getActivity(), GistService.class)
-                .unstarGist(gistId)
+        RxJavaInterop.toV1Single(ServiceGenerator.createService(getActivity(), GistService.class)
+                .unstarGist(gistId))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response<Boolean>>bindToLifecycle())
+                .compose(this.<Response<Boolean>>bindToLifecycle().<Response<Boolean>>forSingle())
                 .subscribe(new ObserverAdapter<Response<Boolean>>() {
                     @Override
                     public void onNext(Response<Boolean> response) {
@@ -483,11 +484,11 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         switch (requestCode) {
         case COMMENT_DELETE:
             final GitHubComment comment = arguments.getParcelable(EXTRA_COMMENT);
-            ServiceGenerator.createService(getActivity(), GistCommentService.class)
-                    .deleteGistComment(gistId, comment.id())
+            RxJavaInterop.toV1Single(ServiceGenerator.createService(getActivity(), GistCommentService.class)
+                    .deleteGistComment(gistId, comment.id()))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Response<Boolean>>bindToLifecycle())
+                    .compose(this.<Response<Boolean>>bindToLifecycle().<Response<Boolean>>forSingle())
                     .subscribe(new ProgressObserverAdapter<Response<Boolean>>(getActivity(), R.string.deleting_comment) {
 
                         @Override

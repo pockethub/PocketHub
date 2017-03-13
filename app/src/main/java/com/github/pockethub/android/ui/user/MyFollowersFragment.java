@@ -23,6 +23,7 @@ import com.github.pockethub.android.core.ResourcePager;
 import com.github.pockethub.android.core.user.UserPager;
 import com.meisolsson.githubsdk.service.users.UserFollowerService;
 
+import io.reactivex.Single;
 import rx.Observable;
 
 /**
@@ -38,7 +39,7 @@ public class MyFollowersFragment extends FollowersFragment {
             public PageIterator<User> createIterator(int page, int size) {
                 return new PageIterator<>(new PageIterator.GitHubRequest<Page<User>>() {
                     @Override
-                    public Observable<Page<User>> execute(int page) {
+                    public Single<Page<User>> execute(int page) {
                         return ServiceGenerator.createService(getContext(), UserFollowerService.class)
                                 .getFollowers(page);
                     }

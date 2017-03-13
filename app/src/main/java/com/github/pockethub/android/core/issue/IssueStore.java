@@ -149,8 +149,7 @@ public class IssueStore extends ItemStore {
      */
     public Issue refreshIssue(Repository repository, int number) throws IOException {
         Issue issue = service.getIssue(repository.owner().login(), repository.name(), number)
-                .toBlocking()
-                .first();
+                .blockingGet();
         return addIssue(repository, issue);
     }
 
@@ -164,8 +163,7 @@ public class IssueStore extends ItemStore {
      */
     public Issue editIssue(Repository repository, int issueNumber, IssueRequest request) throws IOException {
         Issue issue = service.editIssue(repository.owner().login(), repository.name(), issueNumber, request)
-                .toBlocking()
-                .first();
+                .blockingGet();
         return addIssue(repository, issue);
     }
 
@@ -174,8 +172,7 @@ public class IssueStore extends ItemStore {
                 .state(state)
                 .build();
         Issue issue = service.editIssue(repository.owner().login(), repository.name(), issueNumber, editIssue)
-                .toBlocking()
-                .first();
+                .blockingGet();
         return addIssue(repository, issue);
     }
 }

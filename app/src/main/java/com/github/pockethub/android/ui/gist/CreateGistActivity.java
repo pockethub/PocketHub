@@ -45,6 +45,7 @@ import com.meisolsson.githubsdk.service.gists.GistService;
 import java.util.HashMap;
 import java.util.Map;
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -196,11 +197,11 @@ public class CreateGistActivity extends BaseActivity {
                 .isPublic(isPublic)
                 .build();
 
-        ServiceGenerator.createService(this, GistService.class)
-                .createGist(createGist)
+        RxJavaInterop.toV1Single(ServiceGenerator.createService(this, GistService.class)
+                .createGist(createGist))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Gist>bindToLifecycle())
+                .compose(this.<Gist>bindToLifecycle().<Gist>forSingle())
                 .subscribe(new ProgressObserverAdapter<Gist>(this, R.string.creating_gist) {
 
                     @Override

@@ -72,8 +72,7 @@ public class RefreshTreeTask implements Observable.OnSubscribe<FullTree> {
             if (TextUtils.isEmpty(branch)) {
                 branch = ServiceGenerator.createService(context, RepositoryService.class)
                         .getRepository(repo.owner().login(), repo.name())
-                        .toBlocking()
-                        .first()
+                        .blockingGet()
                         .defaultBranch();
                 if (TextUtils.isEmpty(branch)) {
                     subscriber.onError(new IOException(
@@ -87,7 +86,7 @@ public class RefreshTreeTask implements Observable.OnSubscribe<FullTree> {
         if (!isValidRef(ref)) {
             branch = branch.replace("heads/", "");
             ref = gitService.getGitReference(repo.owner().login(), repo.name(), branch)
-                    .toBlocking().first();
+                    .blockingGet();
             if (!isValidRef(ref)) {
                 subscriber.onError(new IOException("Reference does not have associated commit SHA-1"));
                 return;
@@ -95,16 +94,14 @@ public class RefreshTreeTask implements Observable.OnSubscribe<FullTree> {
         }
 
         GitCommit commit = gitService.getGitCommit(repo.owner().login(), repo.name(), ref.object().sha())
-                .toBlocking()
-                .first();
+                .blockingGet();
         if (commit == null || commit.tree() == null || TextUtils.isEmpty(commit.tree().sha())) {
             subscriber.onError(new IOException("Commit does not have associated tree SHA-1"));
             return;
         }
 
         GitTree tree = gitService.getGitTreeRecursive(repo.owner().login(), repo.name(), commit.tree().sha())
-                .toBlocking()
-                .first();
+                .blockingGet();
         subscriber.onNext(new FullTree(tree, ref));
     }
 }

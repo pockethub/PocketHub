@@ -47,6 +47,8 @@ import com.meisolsson.githubsdk.service.repositories.RepositoryService;
 import com.google.inject.Inject;
 
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import io.reactivex.Single;
 import retrofit2.Response;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -111,11 +113,11 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
             avatars.bind(getSupportActionBar(), owner);
             ViewUtils.setGone(loadingBar, false);
             setGone(true);
-            ServiceGenerator.createService(this, RepositoryService.class)
-                    .getRepository(repository.owner().login(), repository.name())
+            RxJavaInterop.toV1Single(ServiceGenerator.createService(this, RepositoryService.class)
+                    .getRepository(repository.owner().login(), repository.name()))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Repository>bindToLifecycle())
+                    .compose(this.<Repository>bindToLifecycle().<Repository>forSingle())
                     .subscribe(new ObserverAdapter<Repository>() {
                         @Override
                         public void onNext(Repository repo) {
@@ -156,11 +158,11 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     }
 
     private void checkReadme() {
-        ServiceGenerator.createService(this, RepositoryContentService.class)
-                .hasReadme(repository.owner().login(), repository.name())
+        RxJavaInterop.toV1Single(ServiceGenerator.createService(this, RepositoryContentService.class)
+                .hasReadme(repository.owner().login(), repository.name()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response>bindToLifecycle())
+                .compose(this.<Response>bindToLifecycle().<Response<Void>>forSingle())
                 .subscribe(new ObserverAdapter<Response>() {
                     @Override
                     public void onNext(Response response) {
@@ -250,16 +252,16 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     private void starRepository() {
         StarringService service = ServiceGenerator.createService(this, StarringService.class);
 
-        Observable<Response<Boolean>> starObservable;
+        Single<Response<Boolean>> starSingle;
         if (isStarred) {
-            starObservable = service.unstarRepository(repository.owner().login(), repository.name());
+            starSingle = service.unstarRepository(repository.owner().login(), repository.name());
         } else {
-            starObservable = service.starRepository(repository.owner().login(), repository.name());
+            starSingle = service.starRepository(repository.owner().login(), repository.name());
         }
 
-        starObservable.subscribeOn(Schedulers.io())
+        RxJavaInterop.toV1Single(starSingle).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response<Boolean>>bindToLifecycle())
+                .compose(this.<Response<Boolean>>bindToLifecycle().<Response<Boolean>>forSingle())
                 .subscribe(new ObserverAdapter<Response<Boolean>>() {
                     @Override
                     public void onNext(Response<Boolean> aBoolean) {
@@ -276,11 +278,11 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
 
     private void checkStarredRepositoryStatus() {
         starredStatusChecked = false;
-        ServiceGenerator.createService(this, StarringService.class)
-                .checkIfRepositoryIsStarred(repository.owner().login(), repository.name())
+        RxJavaInterop.toV1Single(ServiceGenerator.createService(this, StarringService.class)
+                .checkIfRepositoryIsStarred(repository.owner().login(), repository.name()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response<Boolean>>bindToLifecycle())
+                .compose(this.<Response<Boolean>>bindToLifecycle().<Response<Boolean>>forSingle())
                 .subscribe(new ObserverAdapter<Response<Boolean>>() {
                     @Override
                     public void onNext(Response<Boolean> response) {
@@ -301,11 +303,11 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     }
 
     private void forkRepository() {
-        ServiceGenerator.createService(this, RepositoryForkService.class)
-                .createFork(repository.owner().login(), repository.name())
+        RxJavaInterop.toV1Single(ServiceGenerator.createService(this, RepositoryForkService.class)
+                .createFork(repository.owner().login(), repository.name()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Repository>bindToLifecycle())
+                .compose(this.<Repository>bindToLifecycle().<Repository>forSingle())
                 .subscribe(new ObserverAdapter<Repository>() {
                     @Override
                     public void onNext(Repository repo) {
@@ -341,11 +343,11 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                         super.onNegative(dialog);
                         dialog.dismiss();
 
-                        ServiceGenerator.createService(dialog.getContext(), RepositoryService.class)
-                                .deleteRepository(repository.owner().login(), repository.name())
+                        RxJavaInterop.toV1Single(ServiceGenerator.createService(dialog.getContext(), RepositoryService.class)
+                                .deleteRepository(repository.owner().login(), repository.name()))
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .compose(RepositoryViewActivity.this.<Response<Boolean>>bindToLifecycle())
+                                .compose(RepositoryViewActivity.this.<Response<Boolean>>bindToLifecycle().<Response<Boolean>>forSingle())
                                 .subscribe(new ObserverAdapter<Response<Boolean>>() {
                                     @Override
                                     public void onNext(Response<Boolean> response) {

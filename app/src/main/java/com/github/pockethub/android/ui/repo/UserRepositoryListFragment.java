@@ -34,6 +34,7 @@ import com.meisolsson.githubsdk.service.repositories.RepositoryService;
 
 import java.util.List;
 
+import io.reactivex.Single;
 import rx.Observable;
 
 import static com.github.pockethub.android.Intents.EXTRA_USER;
@@ -74,7 +75,7 @@ public class UserRepositoryListFragment extends PagedItemFragment<Repository> {
             public PageIterator<Repository> createIterator(int page, int size) {
                 return new PageIterator<>(new PageIterator.GitHubRequest<Page<Repository>>() {
                     @Override
-                    public Observable<Page<Repository>> execute(int page) {
+                    public Single<Page<Repository>> execute(int page) {
                         return ServiceGenerator.createService(getContext(), RepositoryService.class)
                                 .getUserRepositories(user.login(), page);
                     }

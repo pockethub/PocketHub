@@ -56,6 +56,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import io.reactivex.Single;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import rx.Observable;
@@ -386,20 +388,20 @@ public class EditIssueActivity extends BaseActivity {
                 }
 
                 IssueService service = ServiceGenerator.createService(this, IssueService.class);
-                Observable<Issue> observable;
+                Single<Issue> single;
                 int message;
 
                 if (issue.number() != null && issue.number() > 0) {
-                    observable = service.editIssue(repository.owner().login(), repository.name(), issue.number(), request.build());
+                    single = service.editIssue(repository.owner().login(), repository.name(), issue.number(), request.build());
                     message = R.string.updating_issue;
                 } else {
-                    observable =  service.createIssue(repository.owner().login(), repository.name(), request.build());
+                    single =  service.createIssue(repository.owner().login(), repository.name(), request.build());
                     message = R.string.creating_issue;
                 }
 
-                observable.subscribeOn(Schedulers.io())
+                RxJavaInterop.toV1Single(single).subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .compose(this.<Issue>bindToLifecycle())
+                        .compose(this.<Issue>bindToLifecycle().<Issue>forSingle())
                         .subscribe(new ProgressObserverAdapter<Issue>(this, message) {
 
                             @Override
@@ -425,11 +427,11 @@ public class EditIssueActivity extends BaseActivity {
     }
 
     private void checkCollaboratorStatus() {
-        ServiceGenerator.createService(this, RepositoryCollaboratorService.class)
-                .isUserCollaborator(repository.owner().login(), repository.name(), AccountUtils.getLogin(this))
+        RxJavaInterop.toV1Single(ServiceGenerator.createService(this, RepositoryCollaboratorService.class)
+                .isUserCollaborator(repository.owner().login(), repository.name(), AccountUtils.getLogin(this)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response<Boolean>>bindToLifecycle())
+                .compose(this.<Response<Boolean>>bindToLifecycle().<Response<Boolean>>forSingle())
                 .subscribe(new ObserverAdapter<Response<Boolean>>() {
                     @Override
                     public void onNext(Response<Boolean> response) {

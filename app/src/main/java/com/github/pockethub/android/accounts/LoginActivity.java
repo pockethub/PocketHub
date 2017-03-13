@@ -42,6 +42,7 @@ import com.meisolsson.githubsdk.service.users.UserService;
 
 import java.util.concurrent.TimeUnit;
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import okhttp3.HttpUrl;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -142,11 +143,11 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
                     .code(code)
                     .build();
 
-            ServiceGenerator.createAuthService()
-                    .getToken(request)
+            RxJavaInterop.toV1Single(ServiceGenerator.createAuthService()
+                    .getToken(request))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<GitHubToken>bindToLifecycle())
+                    .compose(this.<GitHubToken>bindToLifecycle().<GitHubToken>forSingle())
                     .subscribe(new ObserverAdapter<GitHubToken>() {
                         @Override
                         public void onError(Throwable e) {
@@ -229,11 +230,11 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
         progressDialog.setContent(getString(R.string.loading_user));
 
         TokenStore.getInstance(this).saveToken(accessToken);
-        ServiceGenerator.createService(this, UserService.class)
-                .getUser()
+        RxJavaInterop.toV1Single(ServiceGenerator.createService(this, UserService.class)
+                .getUser())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<User>bindToLifecycle())
+                .compose(this.<User>bindToLifecycle().<User>forSingle())
                 .subscribe(new ObserverAdapter<User>() {
                     @Override
                     public void onError(Throwable e) {

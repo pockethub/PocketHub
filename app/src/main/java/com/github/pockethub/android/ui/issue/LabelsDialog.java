@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -107,11 +108,11 @@ public class LabelsDialog extends BaseProgressDialog {
     }
 
     private Observable<Page<Label>> getPageAndNext(int i) {
-        return ServiceGenerator.createService(activity, IssueLabelService.class)
-                .getRepositoryLabels(repository.owner().login(), repository.name(), i)
+        return RxJavaInterop.toV1Single(ServiceGenerator.createService(activity, IssueLabelService.class)
+                .getRepositoryLabels(repository.owner().login(), repository.name(), i))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .concatMap(new Func1<Page<Label>, Observable<Page<Label>>>() {
+                .flatMapObservable(new Func1<Page<Label>, Observable<Page<Label>>>() {
                     @Override
                     public Observable<Page<Label>> call(Page<Label> page) {
                         if (page.next() == null) {

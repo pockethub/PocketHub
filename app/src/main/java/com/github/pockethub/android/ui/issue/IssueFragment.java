@@ -79,6 +79,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import retrofit2.Response;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -530,11 +531,11 @@ public class IssueFragment extends DialogFragment {
         case COMMENT_DELETE:
             final GitHubComment comment = arguments.getParcelable(EXTRA_COMMENT);
 
-            ServiceGenerator.createService(getActivity(), IssueCommentService.class)
-                    .deleteIssueComment(repositoryId.owner().login(), repositoryId.name(), comment.id())
+            RxJavaInterop.toV1Single(ServiceGenerator.createService(getActivity(), IssueCommentService.class)
+                    .deleteIssueComment(repositoryId.owner().login(), repositoryId.name(), comment.id()))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Response<Boolean>>bindToLifecycle())
+                    .compose(this.<Response<Boolean>>bindToLifecycle().<Response<Boolean>>forSingle())
                     .subscribe(new ProgressObserverAdapter<Response<Boolean>>(getActivity(), R.string.deleting_comment) {
 
                         @Override

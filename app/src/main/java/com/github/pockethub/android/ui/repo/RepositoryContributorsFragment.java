@@ -40,6 +40,7 @@ import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -85,7 +86,7 @@ public class RepositoryContributorsFragment extends ItemListFragment<User> {
                 List<User> users = new ArrayList<>();
 
                 while (current != last){
-                    Page<User> page = service.getContributors(repo.owner().login(), repo.name(), current).toBlocking().first();
+                    Page<User> page = service.getContributors(repo.owner().login(), repo.name(), current).blockingGet();
                     users.addAll(page.items());
                     last = page.last() != null ? page.last() : -1;
                     current = page.next() != null ? page.next() : -1;
@@ -104,11 +105,11 @@ public class RepositoryContributorsFragment extends ItemListFragment<User> {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         final User contributor = (User) l.getItemAtPosition(position);
-        ServiceGenerator.createService(getContext(), UserService.class)
-                .getUser(contributor.login())
+        RxJavaInterop.toV1Single(ServiceGenerator.createService(getContext(), UserService.class)
+                .getUser(contributor.login()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<User>bindToLifecycle())
+                .compose(this.<User>bindToLifecycle().<User>forSingle())
                 .subscribe(new ObserverAdapter<User>() {
                     @Override
                     public void onNext(User user) {

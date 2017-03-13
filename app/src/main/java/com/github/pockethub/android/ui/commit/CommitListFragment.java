@@ -56,6 +56,7 @@ import com.google.inject.Inject;
 
 import java.util.List;
 
+import io.reactivex.Single;
 import rx.Observable;
 
 import static android.app.Activity.RESULT_OK;
@@ -118,8 +119,7 @@ public class CommitListFragment extends PagedItemFragment<Commit>
                     if (TextUtils.isEmpty(defaultBranch)) {
                         defaultBranch = ServiceGenerator.createService(getActivity(), RepositoryService.class)
                                 .getRepository(repository.owner().login(), repository.name())
-                                .toBlocking()
-                                .first()
+                                .blockingGet()
                                 .defaultBranch();
 
                         if (TextUtils.isEmpty(defaultBranch)) {
@@ -168,7 +168,7 @@ public class CommitListFragment extends PagedItemFragment<Commit>
 
                 return new PageIterator<>(new PageIterator.GitHubRequest<Page<Commit>>() {
                     @Override
-                    public Observable<Page<Commit>> execute(int page) {
+                    public Single<Page<Commit>> execute(int page) {
                         RepositoryCommitService service = ServiceGenerator.createService(getActivity(),
                                 RepositoryCommitService.class);
 

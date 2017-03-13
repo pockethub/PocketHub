@@ -43,6 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -192,8 +193,8 @@ public class HttpImageGetter implements ImageGetter {
                         .text(html)
                         .build();
 
-                ServiceGenerator.createService(context, MarkdownService.class)
-                        .renderMarkdown(requestMarkdown)
+                RxJavaInterop.toV1Single(ServiceGenerator.createService(context, MarkdownService.class)
+                        .renderMarkdown(requestMarkdown))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new ObserverAdapter<String>() {
@@ -310,8 +311,7 @@ public class HttpImageGetter implements ImageGetter {
 
         Content contents = ServiceGenerator.createService(context, RepositoryContentService.class)
                 .getContents(owner, name, path.toString(), branch)
-                .toBlocking()
-                .first();
+                .blockingGet();
 
         if (contents.content() != null) {
             byte[] content = Base64.decode(contents.content(), DEFAULT);

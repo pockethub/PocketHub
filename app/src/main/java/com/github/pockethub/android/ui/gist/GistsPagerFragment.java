@@ -67,15 +67,15 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
             public void call(Subscriber<? super Gist> subscriber) {
                 GistService service = ServiceGenerator.createService(getActivity(), GistService.class);
 
-                Page<Gist> p = service.getPublicGists(1).toBlocking().first();
+                Page<Gist> p = service.getPublicGists(1).blockingGet();
                 int randomPage = 1 + (int) (Math.random() * ((p.last() - 1) + 1));
 
-                Collection<Gist> gists = service.getPublicGists(randomPage).toBlocking().first().items();
+                Collection<Gist> gists = service.getPublicGists(randomPage).blockingGet().items();
 
                 // Make at least two tries since page numbers are volatile
                 if (gists.isEmpty()) {
                     randomPage = 1 + (int) (Math.random() * ((p.last() - 1) + 1));
-                    gists = service.getPublicGists(randomPage).toBlocking().first().items();
+                    gists = service.getPublicGists(randomPage).blockingGet().items();
                 }
 
                 if (gists.isEmpty()) {

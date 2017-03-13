@@ -33,6 +33,7 @@ import com.github.pockethub.android.ui.user.UserViewActivity;
 import com.github.pockethub.android.util.InfoUtils;
 import com.meisolsson.githubsdk.service.activity.EventService;
 
+import io.reactivex.Single;
 import rx.Observable;
 
 import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY;
@@ -59,7 +60,7 @@ public class RepositoryNewsFragment extends NewsFragment {
             public PageIterator<GitHubEvent> createIterator(int page, int size) {
                 return new PageIterator<>(new PageIterator.GitHubRequest<Page<GitHubEvent>>() {
                     @Override
-                    public Observable<Page<GitHubEvent>> execute(int page) {
+                    public Single<Page<GitHubEvent>> execute(int page) {
                         return ServiceGenerator.createService(getActivity(), EventService.class)
                                 .getRepositoryEvents(repo.owner().login(), repo.name(), page);
                     }

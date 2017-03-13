@@ -118,8 +118,7 @@ public class RefreshIssueTask implements Observable.OnSubscribe<FullIssue> {
         while(current != last) {
             Page<GitHubComment> page = ServiceGenerator.createService(context, IssueCommentService.class)
                     .getIssueComments(login, name, issueNumber, current)
-                    .toBlocking()
-                    .first();
+                    .blockingGet();
             comments.addAll(page.items());
             last = page.last() != null ? page.last() : -1;
             current = page.next() != null ? page.next() : -1;
@@ -136,8 +135,7 @@ public class RefreshIssueTask implements Observable.OnSubscribe<FullIssue> {
         while(current != last) {
             Page<IssueEvent> page = ServiceGenerator.createService(context, IssueEventService.class)
                     .getIssueEvents(login, name, issueNumber, current)
-                    .toBlocking()
-                    .first();
+                    .blockingGet();
             events.addAll(page.items());
             last = page.last() != null ? page.last() : -1;
             current = page.next() != null ? page.next() : -1;
@@ -149,7 +147,6 @@ public class RefreshIssueTask implements Observable.OnSubscribe<FullIssue> {
     private PullRequest getPullRequest(String login, String name, int issueNumber) {
         return ServiceGenerator.createService(context, PullRequestService.class)
                 .getPullRequest(login, name, issueNumber)
-                .toBlocking()
-                .first();
+                .blockingGet();
     }
 }

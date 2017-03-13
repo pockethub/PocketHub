@@ -22,6 +22,7 @@ import com.meisolsson.githubsdk.model.GitHubEvent;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.service.activity.EventService;
 
+import io.reactivex.Single;
 import rx.Observable;
 
 /**
@@ -37,7 +38,7 @@ public class UserCreatedNewsFragment extends UserNewsFragment {
             public PageIterator<GitHubEvent> createIterator(int page, int size) {
                 return new PageIterator<>(new PageIterator.GitHubRequest<Page<GitHubEvent>>() {
                     @Override
-                    public Observable<Page<GitHubEvent>> execute(int page) {
+                    public Single<Page<GitHubEvent>> execute(int page) {
                         return ServiceGenerator.createService(getContext(), EventService.class)
                                 .getUserPerformedEvents(org.login(), page);
                     }

@@ -40,6 +40,10 @@ import com.meisolsson.githubsdk.service.search.SearchService;
 import java.text.MessageFormat;
 import java.util.List;
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import io.reactivex.Single;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -66,12 +70,12 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repository> 
             public PageIterator<Repository> createIterator(int page, int size) {
                 return new PageIterator<>(new PageIterator.GitHubRequest<Page<Repository>>() {
                     @Override
-                    public Observable<Page<Repository>> execute(int page) {
+                    public Single<Page<Repository>> execute(int page) {
                         return ServiceGenerator.createService(getContext(), SearchService.class)
                                 .searchRepositories(query, null, null, page)
-                                .map(new Func1<SearchPage<Repository>, Page<Repository>>() {
+                                .map(new Function<SearchPage<Repository>, Page<Repository>>() {
                                     @Override
-                                    public Page<Repository> call(SearchPage<Repository> repositorySearchPage) {
+                                    public Page<Repository> apply(@NonNull SearchPage<Repository> repositorySearchPage) throws Exception {
                                         return Page.<Repository>builder()
                                                 .first(repositorySearchPage.first())
                                                 .last(repositorySearchPage.last())
@@ -119,11 +123,11 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repository> 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         final Repository result = (Repository) l.getItemAtPosition(position);
-        ServiceGenerator.createService(getContext(), RepositoryService.class)
-                .getRepository(result.owner().login(), result.name())
+        RxJavaInterop.toV1Single(ServiceGenerator.createService(getContext(), RepositoryService.class)
+                .getRepository(result.owner().login(), result.name()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Repository>bindToLifecycle())
+                .compose(this.<Repository>bindToLifecycle().<Repository>forSingle())
                 .subscribe(new ProgressObserverAdapter<Repository>(getActivity(),
                         MessageFormat.format(getString(R.string.opening_repository), InfoUtils.createRepoId(result))) {
                     @Override
@@ -154,8 +158,7 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repository> 
         Repository repo;
         repo = ServiceGenerator.createService(getContext(), RepositoryService.class)
                 .getRepository(repoId.owner().login(), repoId.name())
-                .toBlocking()
-                .first();
+                .blockingGet();
 
         startActivity(RepositoryViewActivity.createIntent(repo));
         final Activity activity = getActivity();

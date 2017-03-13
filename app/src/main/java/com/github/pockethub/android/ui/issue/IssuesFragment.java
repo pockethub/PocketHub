@@ -55,6 +55,7 @@ import com.google.inject.Inject;
 import java.util.Collection;
 import java.util.List;
 
+import io.reactivex.Single;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -278,7 +279,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
                 return new PageIterator<>(new PageIterator.GitHubRequest<Page<Issue>>() {
 
                     @Override
-                    public Observable<Page<Issue>> execute(int page) {
+                    public Single<Page<Issue>> execute(int page) {
                         return ServiceGenerator.createService(getActivity(), IssueService.class)
                                 .getRepositoryIssues(repository.owner().login(),
                                         repository.name(), filter.toFilterMap(), page);

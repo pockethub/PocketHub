@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -106,11 +107,11 @@ public class RefDialog {
     }
 
     private Observable<Page<GitReference>> getPageAndNext(int i) {
-        return ServiceGenerator.createService(activity, GitService.class)
-                .getGitReferences(repository.owner().login(), repository.name(), i)
+        return RxJavaInterop.toV1Single(ServiceGenerator.createService(activity, GitService.class)
+                .getGitReferences(repository.owner().login(), repository.name(), i))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .concatMap(new Func1<Page<GitReference>, Observable<Page<GitReference>>>() {
+                .flatMapObservable(new Func1<Page<GitReference>, Observable<Page<GitReference>>>() {
                     @Override
                     public Observable<Page<GitReference>> call(Page<GitReference> page) {
                         if (page.next() == null) {

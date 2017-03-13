@@ -41,6 +41,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import io.reactivex.Single;
 import rx.Observable;
 
 /**
@@ -191,14 +193,14 @@ public class OrganizationRepositories implements
 
             all.addAll(getAllItems(new PageIterator.GitHubRequest<Page<Repository>>() {
                 @Override
-                public Observable<Page<Repository>> execute(int page) {
+                public Single<Page<Repository>> execute(int page) {
                     return ServiceGenerator.createService(context, RepositoryService.class).getUserRepositories(page);
                 }
             }));
 
             all.addAll(getAllItems(new PageIterator.GitHubRequest<Page<Repository>>() {
                 @Override
-                public Observable<Page<Repository>> execute(int page) {
+                public Single<Page<Repository>> execute(int page) {
                     return ServiceGenerator.createService(context, WatchingService.class).getWatchedRepositories(page);
                 }
             }));
@@ -206,7 +208,7 @@ public class OrganizationRepositories implements
         } else {
             return getAllItems(new PageIterator.GitHubRequest<Page<Repository>>() {
                 @Override
-                public Observable<Page<Repository>> execute(int page) {
+                public Single<Page<Repository>> execute(int page) {
                     return ServiceGenerator.createService(context, RepositoryService.class).getOrganizationRepositories(org.login(), page);
                 }
             });
@@ -219,7 +221,7 @@ public class OrganizationRepositories implements
         int last = -1;
 
         while(current != last) {
-            Page<Repository> page = request.execute(current).toBlocking().first();
+            Page<Repository> page = request.execute(current).blockingGet();
             repos.addAll(page.items());
             last = page.last() != null ? page.last() : -1;
             current = page.next() != null ? page.next() : -1;

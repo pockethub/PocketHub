@@ -126,7 +126,7 @@ dependencies {
     compile 'com.bugsnag:bugsnag-android:3.2.7'
     compile 'org.roboguice:roboguice:2.0'
 
-    compile 'com.github.meisolsson:githubsdk:0.2.0'
+    compile 'com.github.meisolsson:githubsdk:0.3.0'
 
     compile ('com.google.inject.extensions:guice-assistedinject:3.0'){
         exclude group: 'com.google.inject'

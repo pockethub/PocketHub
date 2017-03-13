@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -103,11 +104,11 @@ public class AssigneeDialog extends BaseProgressDialog {
     }
 
     private Observable<Page<User>> getPageAndNext(int i) {
-        return ServiceGenerator.createService(activity, IssueAssigneeService.class)
-                .getAssignees(repository.owner().login(), repository.name(), i)
+        return RxJavaInterop.toV1Single(ServiceGenerator.createService(activity, IssueAssigneeService.class)
+                .getAssignees(repository.owner().login(), repository.name(), i))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .concatMap(new Func1<Page<User>, Observable<Page<User>>>() {
+                .flatMapObservable(new Func1<Page<User>, Observable<Page<User>>>() {
                     @Override
                     public Observable<Page<User>> call(Page<User> page) {
                         if (page.next() == null) {

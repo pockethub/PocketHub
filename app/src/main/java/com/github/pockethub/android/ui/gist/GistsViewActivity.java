@@ -42,6 +42,7 @@ import com.google.inject.Inject;
 import java.io.Serializable;
 import java.util.List;
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import retrofit2.Response;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -168,11 +169,11 @@ public class GistsViewActivity extends PagerActivity implements
         if (REQUEST_CONFIRM_DELETE == requestCode && RESULT_OK == resultCode) {
             final String gistId = arguments.getString(EXTRA_GIST_ID);
 
-            ServiceGenerator.createService(this, GistService.class)
-                    .deleteGist(gistId)
+            RxJavaInterop.toV1Single(ServiceGenerator.createService(this, GistService.class)
+                    .deleteGist(gistId))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Response<Boolean>>bindToLifecycle())
+                    .compose(this.<Response<Boolean>>bindToLifecycle().<Response<Boolean>>forSingle())
                     .subscribe(new ProgressObserverAdapter<Response<Boolean>>(this, R.string.deleting_gist) {
 
                         @Override

@@ -40,6 +40,10 @@ import com.google.inject.Inject;
 
 import java.util.List;
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import io.reactivex.Single;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -69,12 +73,12 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
             public PageIterator<User> createIterator(int page, int size) {
                 return new PageIterator<>(new PageIterator.GitHubRequest<Page<User>>() {
                     @Override
-                    public Observable<Page<User>> execute(int page) {
+                    public Single<Page<User>> execute(int page) {
                         return ServiceGenerator.createService(getContext(), SearchService.class)
                                 .searchUsers(query, null, null, page)
-                                .map(new Func1<SearchPage<User>, Page<User>>() {
+                                .map(new Function<SearchPage<User>, Page<User>>() {
                                     @Override
-                                    public Page<User> call(SearchPage<User> userSearchPage) {
+                                    public Page<User> apply(@NonNull SearchPage<User> userSearchPage) throws Exception {
                                         return Page.<User>builder()
                                                 .first(userSearchPage.first())
                                                 .last(userSearchPage.last())
@@ -125,11 +129,11 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         final User result = (User) l.getItemAtPosition(position);
-        ServiceGenerator.createService(getContext(), UserService.class)
-                .getUser(result.login())
+        RxJavaInterop.toV1Single(ServiceGenerator.createService(getContext(), UserService.class)
+                .getUser(result.login()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<User>bindToLifecycle())
+                .compose(this.<User>bindToLifecycle().<User>forSingle())
                 .subscribe(new ObserverAdapter<User>() {
 
                     @Override

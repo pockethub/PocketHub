@@ -69,7 +69,7 @@ public class RefreshGistTask implements Observable.OnSubscribe<FullGist> {
             Gist gist = store.refreshGist(id);
             List<GitHubComment> comments;
             if (gist.comments() > 0) {
-                comments = ServiceGenerator.createService(context, GistCommentService.class).getGistComments(id, 0).toBlocking().first().items();
+                comments = ServiceGenerator.createService(context, GistCommentService.class).getGistComments(id, 0).blockingGet().items();
             } else {
                 comments = Collections.emptyList();
             }
@@ -77,7 +77,7 @@ public class RefreshGistTask implements Observable.OnSubscribe<FullGist> {
             for (GitHubComment comment : comments) {
                 imageGetter.encode(comment, comment.bodyHtml());
             }
-            Response<Boolean> response = ServiceGenerator.createService(context, GistService.class).checkIfGistIsStarred(id).toBlocking().first();
+            Response<Boolean> response = ServiceGenerator.createService(context, GistService.class).checkIfGistIsStarred(id).blockingGet();
             boolean starred = response.code() == 204;
 
 

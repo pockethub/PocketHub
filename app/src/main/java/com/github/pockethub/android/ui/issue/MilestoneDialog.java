@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -114,11 +115,11 @@ public class MilestoneDialog extends BaseProgressDialog {
     }
 
     private Observable<Page<Milestone>> getPageAndNext(int i) {
-        return ServiceGenerator.createService(activity, IssueMilestoneService.class)
-                .getRepositoryMilestones(repository.owner().login(), repository.name(), i)
+        return RxJavaInterop.toV1Single(ServiceGenerator.createService(activity, IssueMilestoneService.class)
+                .getRepositoryMilestones(repository.owner().login(), repository.name(), i))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .concatMap(new Func1<Page<Milestone>, Observable<Page<Milestone>>>() {
+                .flatMapObservable(new Func1<Page<Milestone>, Observable<Page<Milestone>>>() {
                     @Override
                     public Observable<Page<Milestone>> call(Page<Milestone> page) {
                         if (page.next() == null) {
