@@ -15,8 +15,16 @@
  */
 package com.github.pockethub.android.ui.issue;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -29,6 +37,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.pockethub.android.util.ImageBinPoster;
+import com.github.pockethub.android.util.PermissionsUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.Label;
@@ -51,7 +62,10 @@ import com.meisolsson.githubsdk.model.request.issue.IssueRequest;
 import com.meisolsson.githubsdk.service.issues.IssueService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryCollaboratorService;
 import com.google.inject.Inject;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -78,6 +92,9 @@ import static com.github.pockethub.android.RequestCodes.ISSUE_MILESTONE_UPDATE;
 public class EditIssueActivity extends BaseActivity {
 
     private static final String TAG = "EditIssueActivity";
+
+    private static final int REQUEST_CODE_SELECT_PHOTO = 0;
+    private static final int READ_PERMISSION_REQUEST = 1;
 
     /**
      * Create intent to create an issue
@@ -130,6 +147,8 @@ public class EditIssueActivity extends BaseActivity {
 
     private TextView labelsText;
 
+    private FloatingActionButton addImageFab;
+
     @Inject
     private AvatarLoader avatars;
 
@@ -145,6 +164,8 @@ public class EditIssueActivity extends BaseActivity {
 
     private LabelsDialog labelsDialog;
 
+    private MaterialDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,6 +180,7 @@ public class EditIssueActivity extends BaseActivity {
         assigneeAvatar = finder.find(R.id.iv_assignee_avatar);
         assigneeText = finder.find(R.id.tv_assignee_name);
         labelsText = finder.find(R.id.tv_labels);
+        addImageFab = finder.find(R.id.fab_add_image);
 
         Intent intent = getIntent();
 
@@ -204,9 +226,57 @@ public class EditIssueActivity extends BaseActivity {
             }
         });
 
+        addImageFab.setOnClickListener(new View.OnClickListener() {
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+            @Override
+            public void onClick(View v) {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    Activity activity = EditIssueActivity.this;
+                    String permission = Manifest.permission.READ_EXTERNAL_STORAGE;
+
+                    if (ContextCompat.checkSelfPermission(activity, permission)
+                            != PackageManager.PERMISSION_GRANTED) {
+
+                        PermissionsUtils.askForPermission(activity, READ_PERMISSION_REQUEST,
+                                permission, R.string.read_permission_title,
+                                R.string.read_permission_content);
+                    } else {
+                        startImagePicker();
+                    }
+                } else {
+                    startImagePicker();
+                }
+            }
+        });
+
         updateSaveMenu();
         titleText.setText(issue.title());
         bodyText.setText(issue.body());
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == READ_PERMISSION_REQUEST) {
+
+            boolean result = true;
+            for (int i = 0; i < permissions.length; i++) {
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                    result = false;
+                }
+            }
+
+            if (result) {
+                startImagePicker();
+            }
+        }
+    }
+
+    private void startImagePicker() {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, REQUEST_CODE_SELECT_PHOTO);
     }
 
     @Override
@@ -233,6 +303,49 @@ public class EditIssueActivity extends BaseActivity {
                 updateLabels();
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_SELECT_PHOTO && resultCode == Activity.RESULT_OK) {
+            progressDialog = new MaterialDialog.Builder(this)
+                    .content(R.string.loading)
+                    .progress(true, 0)
+                    .build();
+            progressDialog.show();
+            ImageBinPoster.post(this, data.getData(), new Callback() {
+                @Override
+                public void onFailure(Request request, IOException e) {
+                    progressDialog.dismiss();
+                    showImageError();
+                }
+
+                @Override
+                public void onResponse(com.squareup.okhttp.Response response) throws IOException {
+                    progressDialog.dismiss();
+                    if (response.isSuccessful()) {
+                        insertImage(ImageBinPoster.getUrl(response.body().string()));
+                    } else {
+                        showImageError();
+                    }
+                }
+            });
+        }
+    }
+
+    private void showImageError() {
+        ToastUtils.show(this, R.string.error_image_upload);
+    }
+
+    private void insertImage(final String url) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                bodyText.append("![](" + url + ")");
+            }
+        });
     }
 
     private void showMainContent() {
