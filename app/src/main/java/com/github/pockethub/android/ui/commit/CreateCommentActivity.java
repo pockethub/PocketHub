@@ -33,8 +33,8 @@ import com.meisolsson.githubsdk.model.git.GitComment;
 import com.meisolsson.githubsdk.model.request.repository.CreateCommitComment;
 import com.meisolsson.githubsdk.service.repositories.RepositoryCommentService;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.github.pockethub.android.Intents.EXTRA_BASE;
 import static com.github.pockethub.android.Intents.EXTRA_PATH;
@@ -124,8 +124,8 @@ public class CreateCommentActivity extends
                 .subscribe(new ProgressObserverAdapter<GitComment>(this, R.string.creating_comment) {
 
                     @Override
-                    public void onNext(GitComment created) {
-                        super.onNext(created);
+                    public void onSuccess(GitComment created) {
+                        super.onSuccess(created);
                         finish(created);
                     }
 

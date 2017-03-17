@@ -33,10 +33,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
@@ -82,8 +84,8 @@ public class AssigneeDialog extends BaseProgressDialog {
             }
 
             @Override
-            public void onCompleted() {
-                super.onCompleted();
+            public void onComplete() {
+                super.onComplete();
                 Map<String, User> loadedCollaborators = new TreeMap<>(
                         CASE_INSENSITIVE_ORDER);
                 for (User user : users) {
@@ -107,9 +109,9 @@ public class AssigneeDialog extends BaseProgressDialog {
                 .getAssignees(repository.owner().login(), repository.name(), i)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .concatMap(new Func1<Page<User>, Observable<Page<User>>>() {
+                .flatMapObservable(new Function<Page<User>, ObservableSource<? extends Page<User>>>() {
                     @Override
-                    public Observable<Page<User>> call(Page<User> page) {
+                    public ObservableSource<? extends Page<User>> apply(@NonNull Page<User> page) throws Exception {
                         if (page.next() == null) {
                             return Observable.just(page);
                         }

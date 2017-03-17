@@ -18,7 +18,6 @@ package com.github.pockethub.android.core.issue;
 import android.content.Context;
 
 import com.github.pockethub.android.core.ItemStore;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.util.InfoUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Issue;
@@ -33,10 +32,6 @@ import com.meisolsson.githubsdk.service.pull_request.PullRequestService;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import rx.Scheduler;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Store of loaded issues
@@ -149,8 +144,7 @@ public class IssueStore extends ItemStore {
      */
     public Issue refreshIssue(Repository repository, int number) throws IOException {
         Issue issue = service.getIssue(repository.owner().login(), repository.name(), number)
-                .toBlocking()
-                .first();
+                .blockingGet();
         return addIssue(repository, issue);
     }
 
@@ -164,8 +158,7 @@ public class IssueStore extends ItemStore {
      */
     public Issue editIssue(Repository repository, int issueNumber, IssueRequest request) throws IOException {
         Issue issue = service.editIssue(repository.owner().login(), repository.name(), issueNumber, request)
-                .toBlocking()
-                .first();
+                .blockingGet();
         return addIssue(repository, issue);
     }
 
@@ -174,8 +167,7 @@ public class IssueStore extends ItemStore {
                 .state(state)
                 .build();
         Issue issue = service.editIssue(repository.owner().login(), repository.name(), issueNumber, editIssue)
-                .toBlocking()
-                .first();
+                .blockingGet();
         return addIssue(repository, issue);
     }
 }

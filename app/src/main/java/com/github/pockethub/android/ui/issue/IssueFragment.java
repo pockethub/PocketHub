@@ -79,10 +79,10 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
@@ -538,7 +538,7 @@ public class IssueFragment extends DialogFragment {
                     .subscribe(new ProgressObserverAdapter<Response<Boolean>>(getActivity(), R.string.deleting_comment) {
 
                         @Override
-                        public void onNext(Response<Boolean> response) {
+                        public void onSuccess(Response<Boolean> response) {
                             if (items != null) {
                                 int commentPosition = findCommentPositionInItems(comment);
                                 if (commentPosition >= 0) {

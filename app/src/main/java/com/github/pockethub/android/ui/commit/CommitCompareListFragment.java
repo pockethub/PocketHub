@@ -52,8 +52,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.github.pockethub.android.Intents.EXTRA_BASE;
 import static com.github.pockethub.android.Intents.EXTRA_HEAD;
@@ -131,7 +131,7 @@ public class CommitCompareListFragment extends DialogFragment implements
                 .compose(this.<CommitCompare>bindToLifecycle())
                 .subscribe(new ObserverAdapter<CommitCompare>() {
                     @Override
-                    public void onNext(CommitCompare compareCommit) {
+                    public void onSuccess(CommitCompare compareCommit) {
                         List<GitHubFile> files = compareCommit.files();
                         diffStyler.setFiles(files);
                         if (files != null) {

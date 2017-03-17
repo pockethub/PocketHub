@@ -30,14 +30,14 @@ import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.List;
 
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import roboguice.RoboGuice;
-import rx.Observable;
-import rx.Subscriber;
 
 /**
  * Task to load a commit by SHA-1 id
  */
-public class RefreshCommitTask implements Observable.OnSubscribe<FullCommit> {
+public class RefreshCommitTask implements ObservableOnSubscribe<FullCommit> {
 
     private final Context context;
 
@@ -66,26 +66,25 @@ public class RefreshCommitTask implements Observable.OnSubscribe<FullCommit> {
     }
 
     @Override
-    public void call(Subscriber<? super FullCommit> subscriber) {
+    public void subscribe(ObservableEmitter<FullCommit> emitter) throws Exception {
         try {
             Commit commit = store.refreshCommit(repository, id);
             GitCommit rawCommit = commit.commit();
             if (rawCommit != null && rawCommit.commentCount() > 0) {
                 List<GitComment> comments = ServiceGenerator.createService(context, RepositoryCommentService.class)
                         .getCommitComments(repository.owner().login(), repository.name(), commit.sha(), 1)
-                        .toBlocking()
-                        .first()
+                        .blockingGet()
                         .items();
 
                 for (GitComment comment : comments) {
                     imageGetter.encode(comment, comment.bodyHtml());
                 }
-                subscriber.onNext(new FullCommit(commit, comments));
+                emitter.onNext(new FullCommit(commit, comments));
             } else {
-                subscriber.onNext(new FullCommit(commit));
+                emitter.onNext(new FullCommit(commit));
             }
         }catch (IOException e){
-            subscriber.onError(e);
+            emitter.onError(e);
         }
     }
 }

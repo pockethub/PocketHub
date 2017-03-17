@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import rx.Observable;
+import io.reactivex.Single;
 
 public class PageIterator<V> implements Iterator<List>, Iterable<List> {
 
@@ -59,8 +59,8 @@ public class PageIterator<V> implements Iterator<List>, Iterable<List> {
         if(!this.hasNext()) {
             throw new NoSuchElementException();
         } else {
-            Observable<Page<V>> client = request.execute(nextPage);
-            Page<V> response = client.toBlocking().first();
+            Single<Page<V>> client = request.execute(nextPage);
+            Page<V> response = client.blockingGet();
 
             ++this.nextPage;
             this.lastPage = response.last();
@@ -79,6 +79,6 @@ public class PageIterator<V> implements Iterator<List>, Iterable<List> {
     }
 
     public interface GitHubRequest<V>{
-        Observable<V> execute(int page);
+        Single<V> execute(int page);
     }
 }

@@ -33,10 +33,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
@@ -82,8 +84,8 @@ public class RefDialog {
             }
 
             @Override
-            public void onCompleted() {
-                super.onCompleted();
+            public void onComplete() {
+                super.onComplete();
                 Map<String, GitReference> loadedRefs = new TreeMap<>(CASE_INSENSITIVE_ORDER);
 
                 for (GitReference ref : allRefs) {
@@ -110,9 +112,9 @@ public class RefDialog {
                 .getGitReferences(repository.owner().login(), repository.name(), i)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .concatMap(new Func1<Page<GitReference>, Observable<Page<GitReference>>>() {
+                .flatMapObservable(new Function<Page<GitReference>, ObservableSource<? extends Page<GitReference>>>() {
                     @Override
-                    public Observable<Page<GitReference>> call(Page<GitReference> page) {
+                    public ObservableSource<? extends Page<GitReference>> apply(@NonNull Page<GitReference> page) throws Exception {
                         if (page.next() == null) {
                             return Observable.just(page);
                         }

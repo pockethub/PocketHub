@@ -23,7 +23,7 @@ import com.github.pockethub.android.core.ResourcePager;
 import com.github.pockethub.android.core.user.UserPager;
 import com.meisolsson.githubsdk.service.users.UserFollowerService;
 
-import rx.Observable;
+import io.reactivex.Single;
 
 /**
  * Fragment to display the users being followed by the default user
@@ -38,7 +38,7 @@ public class MyFollowingFragment extends FollowingFragment {
             public PageIterator<User> createIterator(int page, int size) {
                 return new PageIterator<>(new PageIterator.GitHubRequest<Page<User>>() {
                     @Override
-                    public Observable<Page<User>> execute(int page) {
+                    public Single<Page<User>> execute(int page) {
                         return ServiceGenerator.createService(getContext(), UserFollowerService.class)
                                 .getFollowing(page);
                     }

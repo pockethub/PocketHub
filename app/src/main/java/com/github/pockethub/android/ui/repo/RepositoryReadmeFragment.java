@@ -22,10 +22,8 @@ import com.meisolsson.githubsdk.model.request.RequestMarkdown;
 import com.meisolsson.githubsdk.service.misc.MarkdownService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryContentService;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class RepositoryReadmeFragment extends DialogFragment {
 
@@ -61,8 +59,8 @@ public class RepositoryReadmeFragment extends DialogFragment {
                 .compose(this.<String>bindToLifecycle())
                 .subscribe(new ObserverAdapter<String>() {
                     @Override
-                    public void onNext(String s) {
-                        super.onNext(s);
+                    public void onSuccess(String s) {
+                        super.onSuccess(s);
                         String baseUrl = String.format("https://github.com/%s/%s/raw/%s/",
                                 repo.owner().login(), repo.name(), "master");
 

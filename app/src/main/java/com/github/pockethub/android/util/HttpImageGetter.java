@@ -43,13 +43,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 import static android.util.Base64.DEFAULT;
 import static android.view.View.GONE;
@@ -198,7 +199,7 @@ public class HttpImageGetter implements ImageGetter {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new ObserverAdapter<String>() {
                             @Override
-                            public void onNext(String data) {
+                            public void onSuccess(String data) {
                                 continueBind(view, data, id);
                             }
 
@@ -232,9 +233,9 @@ public class HttpImageGetter implements ImageGetter {
         view.setTag(id);
         Observable.just(html)
                 .subscribeOn(Schedulers.computation())
-                .map(new Func1<String, CharSequence>() {
+                .map(new Function<String, CharSequence>() {
                     @Override
-                    public CharSequence call(String htmlString) {
+                    public CharSequence apply(@NonNull String htmlString) throws Exception {
                         return HtmlUtils.encode(htmlString, HttpImageGetter.this);
                     }
                 })
@@ -310,8 +311,7 @@ public class HttpImageGetter implements ImageGetter {
 
         Content contents = ServiceGenerator.createService(context, RepositoryContentService.class)
                 .getContents(owner, name, path.toString(), branch)
-                .toBlocking()
-                .first();
+                .blockingGet();
 
         if (contents.content() != null) {
             byte[] content = Base64.decode(contents.content(), DEFAULT);

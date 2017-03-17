@@ -23,7 +23,7 @@ import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.service.gists.GistService;
 
-import rx.Observable;
+import io.reactivex.Single;
 
 /**
  * Fragment to display a list of public Gists
@@ -38,7 +38,7 @@ public class PublicGistsFragment extends GistsFragment {
             public PageIterator<Gist> createIterator(int page, int size) {
                 return new PageIterator<>(new PageIterator.GitHubRequest<Page<Gist>>() {
                     @Override
-                    public Observable<Page<Gist>> execute(int page) {
+                    public Single<Page<Gist>> execute(int page) {
                         return ServiceGenerator.createService(getActivity(), GistService.class)
                                 .getPublicGists(page);
                     }

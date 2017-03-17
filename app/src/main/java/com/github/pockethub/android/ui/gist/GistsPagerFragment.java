@@ -39,10 +39,11 @@ import com.google.inject.Inject;
 
 import java.util.Collection;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.github.pockethub.android.RequestCodes.GIST_VIEW;
 import static com.github.pockethub.android.util.TypefaceUtils.ICON_PERSON;
@@ -62,20 +63,20 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
     }
 
     private void randomGist() {
-        Observable<Gist> observable = Observable.create(new Observable.OnSubscribe<Gist>() {
+        Observable<Gist> observable = Observable.create(new ObservableOnSubscribe<Gist>() {
             @Override
-            public void call(Subscriber<? super Gist> subscriber) {
+            public void subscribe(ObservableEmitter<Gist> emitter) throws Exception {
                 GistService service = ServiceGenerator.createService(getActivity(), GistService.class);
 
-                Page<Gist> p = service.getPublicGists(1).toBlocking().first();
+                Page<Gist> p = service.getPublicGists(1).blockingGet();
                 int randomPage = 1 + (int) (Math.random() * ((p.last() - 1) + 1));
 
-                Collection<Gist> gists = service.getPublicGists(randomPage).toBlocking().first().items();
+                Collection<Gist> gists = service.getPublicGists(randomPage).blockingGet().items();
 
                 // Make at least two tries since page numbers are volatile
                 if (gists.isEmpty()) {
                     randomPage = 1 + (int) (Math.random() * ((p.last() - 1) + 1));
-                    gists = service.getPublicGists(randomPage).toBlocking().first().items();
+                    gists = service.getPublicGists(randomPage).blockingGet().items();
                 }
 
                 if (gists.isEmpty()) {
@@ -83,7 +84,7 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
                             R.string.no_gists_found));
                 }
 
-                subscriber.onNext(store.addGist(gists.iterator().next()));
+                emitter.onNext(store.addGist(gists.iterator().next()));
             }
         });
 

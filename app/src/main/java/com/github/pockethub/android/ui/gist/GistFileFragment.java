@@ -42,10 +42,11 @@ import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Map;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.github.pockethub.android.Intents.EXTRA_GIST_FILE;
 import static com.github.pockethub.android.Intents.EXTRA_GIST_ID;
@@ -146,22 +147,22 @@ public class GistFileFragment extends DialogFragment implements
     }
 
     private void loadSource() {
-        Observable.create(new Observable.OnSubscribe<GistFile>() {
+        Observable.create(new ObservableOnSubscribe<GistFile>() {
             @Override
-            public void call(Subscriber<? super GistFile> subscriber) {
+            public void subscribe(ObservableEmitter<GistFile> emitter) throws Exception {
                 try {
                     gist = store.refreshGist(gistId);
                     Map<String, GistFile> files = gist.files();
                     if (files == null) {
-                        subscriber.onError(new IOException());
+                        emitter.onError(new IOException());
                     }
                     GistFile loadedFile = files.get(file.filename());
                     if (loadedFile == null) {
-                        subscriber.onError(new IOException());
+                        emitter.onError(new IOException());
                     }
-                    subscriber.onNext(loadedFile);
+                    emitter.onNext(loadedFile);
                 } catch (IOException e) {
-                    subscriber.onError(e);
+                    emitter.onError(e);
                 }
             }
         }).subscribeOn(Schedulers.io())

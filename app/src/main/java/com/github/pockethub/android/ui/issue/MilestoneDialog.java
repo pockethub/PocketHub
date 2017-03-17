@@ -33,10 +33,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
@@ -89,8 +91,8 @@ public class MilestoneDialog extends BaseProgressDialog {
             }
 
             @Override
-            public void onCompleted() {
-                super.onCompleted();
+            public void onComplete() {
+                super.onComplete();
                 Collections.sort(milestones, new Comparator<Milestone>() {
                     @Override
                     public int compare(Milestone m1, Milestone m2) {
@@ -118,9 +120,9 @@ public class MilestoneDialog extends BaseProgressDialog {
                 .getRepositoryMilestones(repository.owner().login(), repository.name(), i)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .concatMap(new Func1<Page<Milestone>, Observable<Page<Milestone>>>() {
+                .flatMapObservable(new Function<Page<Milestone>, ObservableSource<? extends Page<Milestone>>>() {
                     @Override
-                    public Observable<Page<Milestone>> call(Page<Milestone> page) {
+                    public ObservableSource<? extends Page<Milestone>> apply(@NonNull Page<Milestone> page) throws Exception {
                         if (page.next() == null) {
                             return Observable.just(page);
                         }

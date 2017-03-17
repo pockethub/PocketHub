@@ -45,8 +45,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -203,7 +203,7 @@ public class IssuesViewActivity extends PagerActivity {
                     .compose(this.<Repository>bindToLifecycle())
                     .subscribe(new ObserverAdapter<Repository>() {
                         @Override
-                        public void onNext(Repository repo) {
+                        public void onSuccess(Repository repo) {
                             repositoryLoaded(repo);
                         }
                     });

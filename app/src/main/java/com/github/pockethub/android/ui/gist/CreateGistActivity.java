@@ -45,8 +45,8 @@ import com.meisolsson.githubsdk.service.gists.GistService;
 import java.util.HashMap;
 import java.util.Map;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Activity to share a text selection as a public or private Gist
@@ -204,8 +204,8 @@ public class CreateGistActivity extends BaseActivity {
                 .subscribe(new ProgressObserverAdapter<Gist>(this, R.string.creating_gist) {
 
                     @Override
-                    public void onNext(Gist gist) {
-                        super.onNext(gist);
+                    public void onSuccess(Gist gist) {
+                        super.onSuccess(gist);
                         startActivity(GistsViewActivity.createIntent(gist));
                         setResult(RESULT_OK);
                         finish();

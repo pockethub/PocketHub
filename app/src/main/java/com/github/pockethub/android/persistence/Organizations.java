@@ -91,7 +91,7 @@ public class Organizations implements PersistableResource<User> {
     @Override
     public List<User> request() throws IOException {
         User user = ServiceGenerator.createService(context, UserService.class).getUser()
-                .toBlocking().first();
+                .blockingGet();
 
         List<User> all = getAllOrgs();
         all.add(user);
@@ -106,8 +106,7 @@ public class Organizations implements PersistableResource<User> {
         while(current != last) {
             Page<User> page = ServiceGenerator.createService(context, OrganizationService.class)
                     .getMyOrganizations(current)
-                    .toBlocking()
-                    .first();
+                    .blockingGet();
             repos.addAll(page.items());
             last = page.last() != null ? page.last() : -1;
             current = page.next() != null ? page.next() : -1;

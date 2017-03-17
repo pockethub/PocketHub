@@ -56,11 +56,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -386,25 +386,25 @@ public class EditIssueActivity extends BaseActivity {
                 }
 
                 IssueService service = ServiceGenerator.createService(this, IssueService.class);
-                Observable<Issue> observable;
+                Single<Issue> single;
                 int message;
 
                 if (issue.number() != null && issue.number() > 0) {
-                    observable = service.editIssue(repository.owner().login(), repository.name(), issue.number(), request.build());
+                    single = service.editIssue(repository.owner().login(), repository.name(), issue.number(), request.build());
                     message = R.string.updating_issue;
                 } else {
-                    observable =  service.createIssue(repository.owner().login(), repository.name(), request.build());
+                    single =  service.createIssue(repository.owner().login(), repository.name(), request.build());
                     message = R.string.creating_issue;
                 }
 
-                observable.subscribeOn(Schedulers.io())
+                single.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .compose(this.<Issue>bindToLifecycle())
                         .subscribe(new ProgressObserverAdapter<Issue>(this, message) {
 
                             @Override
-                            public void onNext(Issue issue) {
-                                super.onNext(issue);
+                            public void onSuccess(Issue issue) {
+                                super.onSuccess(issue);
                                 Intent intent = new Intent();
                                 intent.putExtra(EXTRA_ISSUE, issue);
                                 setResult(RESULT_OK, intent);
@@ -432,7 +432,7 @@ public class EditIssueActivity extends BaseActivity {
                 .compose(this.<Response<Boolean>>bindToLifecycle())
                 .subscribe(new ObserverAdapter<Response<Boolean>>() {
                     @Override
-                    public void onNext(Response<Boolean> response) {
+                    public void onSuccess(Response<Boolean> response) {
                         showMainContent();
                         if (response.code() == 204) {
                             showCollaboratorOptions();

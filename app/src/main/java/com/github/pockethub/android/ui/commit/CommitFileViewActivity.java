@@ -50,8 +50,8 @@ import com.meisolsson.githubsdk.model.git.GitBlob;
 import com.meisolsson.githubsdk.service.git.GitService;
 import com.google.inject.Inject;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.github.pockethub.android.Intents.EXTRA_BASE;
 import static com.github.pockethub.android.Intents.EXTRA_HEAD;
@@ -279,7 +279,7 @@ public class CommitFileViewActivity extends BaseActivity implements
                 .compose(this.<GitBlob>bindToLifecycle())
                 .subscribe(new ObserverAdapter<GitBlob>() {
                     @Override
-                    public void onNext(GitBlob gitBlob) {
+                    public void onSuccess(GitBlob gitBlob) {
                         ViewUtils.setGone(loadingBar, true);
                         ViewUtils.setGone(codeView, false);
 

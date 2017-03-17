@@ -36,7 +36,7 @@ import com.google.inject.Inject;
 import java.util.List;
 import java.util.Map;
 
-import rx.Observable;
+import io.reactivex.Single;
 
 import static com.github.pockethub.android.RequestCodes.ISSUE_VIEW;
 
@@ -102,7 +102,7 @@ public class DashboardIssueFragment extends PagedItemFragment<Issue> {
             public PageIterator<Issue> createIterator(int page, int size) {
                 return new PageIterator<>(new PageIterator.GitHubRequest<Page<Issue>>() {
                     @Override
-                    public Observable<Page<Issue>> execute(int page) {
+                    public Single<Page<Issue>> execute(int page) {
                         return ServiceGenerator.createService(getActivity(), IssueService.class).getIssues(filterData, page);
                     }
                 }, page);

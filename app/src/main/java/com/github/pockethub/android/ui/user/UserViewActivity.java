@@ -38,10 +38,10 @@ import com.meisolsson.githubsdk.service.users.UserFollowerService;
 import com.meisolsson.githubsdk.service.users.UserService;
 import com.google.inject.Inject;
 
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -102,7 +102,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
                     .compose(this.<User>bindToLifecycle())
                     .subscribe(new ObserverAdapter<User>() {
                         @Override
-                        public void onNext(User fullUser) {
+                        public void onSuccess(User fullUser) {
                             user = fullUser;
                             configurePager();
                         }
@@ -200,19 +200,19 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     private void followUser() {
         UserFollowerService service = ServiceGenerator.createService(this, UserFollowerService.class);
 
-        Observable<Response<Boolean>> followObservable;
+        Single<Response<Boolean>> followSingle;
         if (isFollowing) {
-            followObservable = service.unfollowUser(user.login());
+            followSingle = service.unfollowUser(user.login());
         } else{
-            followObservable = service.followUser(user.login());
+            followSingle = service.followUser(user.login());
         }
 
-        followObservable.subscribeOn(Schedulers.io())
+        followSingle.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<Response<Boolean>>bindToLifecycle())
                 .subscribe(new ObserverAdapter<Response<Boolean>>() {
                     @Override
-                    public void onNext(Response<Boolean>aBoolean) {
+                    public void onSuccess(Response<Boolean>aBoolean) {
                         isFollowing = !isFollowing;
                     }
 
@@ -233,7 +233,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
                 .compose(this.<Response<Boolean>>bindToLifecycle())
                 .subscribe(new ObserverAdapter<Response<Boolean>>() {
                     @Override
-                    public void onNext(Response<Boolean> response) {
+                    public void onSuccess(Response<Boolean> response) {
                         isFollowing = response.code() == 204;
                         followingStatusChecked = true;
                         invalidateOptionsMenu();

@@ -16,14 +16,27 @@
 
 package com.github.pockethub.android.rx;
 
-import rx.Observer;
+import io.reactivex.Observer;
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Observer stub
  */
-public abstract class ObserverAdapter<T> implements Observer<T> {
+public class ObserverAdapter<T> implements Observer<T>, SingleObserver<T> {
+
     @Override
-    public void onCompleted() {
+    public void onSubscribe(Disposable d) {
+
+    }
+
+    @Override
+    public void onSuccess(T t) {
+
+    }
+
+    @Override
+    public void onNext(T t) {
 
     }
 
@@ -33,7 +46,7 @@ public abstract class ObserverAdapter<T> implements Observer<T> {
     }
 
     @Override
-    public void onNext(T t) {
+    public void onComplete() {
 
     }
 }

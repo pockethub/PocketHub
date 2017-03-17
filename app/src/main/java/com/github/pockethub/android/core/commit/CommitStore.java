@@ -93,8 +93,7 @@ public class CommitStore extends ItemStore {
     public Commit refreshCommit(final Repository repo, final String id) throws IOException {
         Commit commit = ServiceGenerator.createService(context, RepositoryCommitService.class)
                 .getCommit(repo.owner().login(), repo.name(), id)
-                .toBlocking()
-                .first();
+                .blockingGet();
 
         return addCommit(repo, commit);
     }

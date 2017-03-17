@@ -36,10 +36,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
@@ -83,8 +85,8 @@ public class LabelsDialog extends BaseProgressDialog {
             }
 
             @Override
-            public void onCompleted() {
-                super.onCompleted();
+            public void onComplete() {
+                super.onComplete();
                 Map<String, Label> loadedLabels = new TreeMap<>(
                         CASE_INSENSITIVE_ORDER);
                 for (Label label : repositoryLabels) {
@@ -111,9 +113,9 @@ public class LabelsDialog extends BaseProgressDialog {
                 .getRepositoryLabels(repository.owner().login(), repository.name(), i)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .concatMap(new Func1<Page<Label>, Observable<Page<Label>>>() {
+                .flatMapObservable(new Function<Page<Label>, ObservableSource<? extends Page<Label>>>() {
                     @Override
-                    public Observable<Page<Label>> call(Page<Label> page) {
+                    public ObservableSource<? extends Page<Label>> apply(@NonNull Page<Label> page) throws Exception {
                         if (page.next() == null) {
                             return Observable.just(page);
                         }

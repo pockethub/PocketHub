@@ -40,10 +40,11 @@ import com.google.inject.Inject;
 
 import java.util.List;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 import static android.app.SearchManager.QUERY;
 
@@ -69,12 +70,12 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
             public PageIterator<User> createIterator(int page, int size) {
                 return new PageIterator<>(new PageIterator.GitHubRequest<Page<User>>() {
                     @Override
-                    public Observable<Page<User>> execute(int page) {
+                    public Single<Page<User>> execute(int page) {
                         return ServiceGenerator.createService(getContext(), SearchService.class)
                                 .searchUsers(query, null, null, page)
-                                .map(new Func1<SearchPage<User>, Page<User>>() {
+                                .map(new Function<SearchPage<User>, Page<User>>() {
                                     @Override
-                                    public Page<User> call(SearchPage<User> userSearchPage) {
+                                    public Page<User> apply(@NonNull SearchPage<User> userSearchPage) throws Exception {
                                         return Page.<User>builder()
                                                 .first(userSearchPage.first())
                                                 .last(userSearchPage.last())
@@ -133,7 +134,7 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
                 .subscribe(new ObserverAdapter<User>() {
 
                     @Override
-                    public void onNext(User user) {
+                    public void onSuccess(User user) {
                         startActivity(UserViewActivity.createIntent(user));
                     }
                 });

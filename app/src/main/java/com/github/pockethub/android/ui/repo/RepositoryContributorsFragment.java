@@ -40,8 +40,8 @@ import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY;
 
@@ -85,7 +85,7 @@ public class RepositoryContributorsFragment extends ItemListFragment<User> {
                 List<User> users = new ArrayList<>();
 
                 while (current != last){
-                    Page<User> page = service.getContributors(repo.owner().login(), repo.name(), current).toBlocking().first();
+                    Page<User> page = service.getContributors(repo.owner().login(), repo.name(), current).blockingGet();
                     users.addAll(page.items());
                     last = page.last() != null ? page.last() : -1;
                     current = page.next() != null ? page.next() : -1;
@@ -111,8 +111,8 @@ public class RepositoryContributorsFragment extends ItemListFragment<User> {
                 .compose(this.<User>bindToLifecycle())
                 .subscribe(new ObserverAdapter<User>() {
                     @Override
-                    public void onNext(User user) {
-                        super.onNext(user);
+                    public void onSuccess(User user) {
+                        super.onSuccess(user);
                         startActivity(UserViewActivity.createIntent(user));
                     }
                 });

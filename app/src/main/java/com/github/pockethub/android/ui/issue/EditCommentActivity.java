@@ -35,8 +35,8 @@ import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.model.request.CommentRequest;
 import com.meisolsson.githubsdk.service.issues.IssueCommentService;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.github.pockethub.android.Intents.EXTRA_COMMENT;
 import static com.github.pockethub.android.Intents.EXTRA_ISSUE_NUMBER;
@@ -115,8 +115,8 @@ public class EditCommentActivity extends
                 .subscribe(new ProgressObserverAdapter<GitHubComment>(this, R.string.editing_comment) {
 
                     @Override
-                    public void onNext(GitHubComment edited) {
-                        super.onNext(edited);
+                    public void onSuccess(GitHubComment edited) {
+                        super.onSuccess(edited);
                         dismissProgress();
                         finish(edited);
                     }

@@ -42,9 +42,9 @@ import com.google.inject.Inject;
 import java.io.Serializable;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -176,8 +176,8 @@ public class GistsViewActivity extends PagerActivity implements
                     .subscribe(new ProgressObserverAdapter<Response<Boolean>>(this, R.string.deleting_gist) {
 
                         @Override
-                        public void onNext(Response<Boolean> response) {
-                            super.onNext(response);
+                        public void onSuccess(Response<Boolean> response) {
+                            super.onSuccess(response);
                             setResult(RESULT_OK);
                             finish();
                         }

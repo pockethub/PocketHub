@@ -42,9 +42,9 @@ import com.meisolsson.githubsdk.service.users.UserService;
 
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.HttpUrl;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import static com.github.pockethub.android.accounts.AccountConstants.PROVIDER_AUTHORITY;
 
@@ -154,7 +154,7 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
                         }
 
                         @Override
-                        public void onNext(GitHubToken token) {
+                        public void onSuccess(GitHubToken token) {
                             if (token.accessToken() != null) {
                                 endAuth(token.accessToken(), token.scope());
                             } else if (token.error() != null) {
@@ -241,7 +241,7 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
                     }
 
                     @Override
-                    public void onNext(User user) {
+                    public void onSuccess(User user) {
                         Account account = new Account(user.login(), getString(R.string.account_type));
                         Bundle userData = AccountsHelper.buildBundle(user.name(), user.email(), user.avatarUrl(), scope);
                         userData.putString(AccountManager.KEY_AUTHTOKEN, accessToken);

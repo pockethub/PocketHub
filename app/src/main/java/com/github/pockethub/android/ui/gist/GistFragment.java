@@ -71,10 +71,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
@@ -309,7 +309,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 .subscribe(new ObserverAdapter<Response<Boolean>>() {
 
                     @Override
-                    public void onNext(Response<Boolean> response) {
+                    public void onSuccess(Response<Boolean> response) {
                         starred = response.code() == 204;
                     }
 
@@ -341,7 +341,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 .compose(this.<Response<Boolean>>bindToLifecycle())
                 .subscribe(new ObserverAdapter<Response<Boolean>>() {
                     @Override
-                    public void onNext(Response<Boolean> response) {
+                    public void onSuccess(Response<Boolean> response) {
                         starred = !(response.code() == 204);
                     }
 
@@ -491,8 +491,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                     .subscribe(new ProgressObserverAdapter<Response<Boolean>>(getActivity(), R.string.deleting_comment) {
 
                         @Override
-                        public void onNext(Response<Boolean> response) {
-                            super.onNext(response);
+                        public void onSuccess(Response<Boolean> response) {
+                            super.onSuccess(response);
                             // Update comment list
                             if (comments != null) {
                                 int position = Collections.binarySearch(comments,

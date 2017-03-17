@@ -80,7 +80,7 @@ public class MembersFragment extends ItemListFragment<User> {
                 List<User> users = new ArrayList<>();
 
                 while (current != last){
-                    Page<User> page = service.getMembers(org.login(), current).toBlocking().first();
+                    Page<User> page = service.getMembers(org.login(), current).blockingGet();
                     users.addAll(page.items());
                     last = page.last() != null ? page.last() : -1;
                     current = page.next() != null ? page.next() : -1;
