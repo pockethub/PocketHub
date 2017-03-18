@@ -39,7 +39,6 @@ import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.RequestFuture;
 import com.github.pockethub.android.core.PageIterator;
 import com.github.pockethub.android.core.ResourcePager;
 import com.github.pockethub.android.core.issue.IssueFilter;
@@ -56,6 +55,8 @@ import java.util.Collection;
 import java.util.List;
 
 import io.reactivex.Single;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
@@ -223,9 +224,9 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
                     ISSUE_FILTER_EDIT);
             return true;
         case R.id.m_bookmark:
-            cache.addIssueFilter(filter, new RequestFuture<IssueFilter>() {
+            cache.addIssueFilter(filter, new Consumer<IssueFilter>() {
                 @Override
-                public void success(IssueFilter response) {
+                public void accept(@NonNull IssueFilter response) throws Exception {
                     ToastUtils.show(getActivity(), R.string.message_filter_saved);
                 }
             });
