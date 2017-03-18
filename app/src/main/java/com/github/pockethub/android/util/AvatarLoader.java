@@ -191,17 +191,14 @@ public class AvatarLoader {
 
         //MenuItem icons can not be set async,
         //but we have to use a different Thread because picasso fails if we are using the main thread
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    int _24dp = ServiceUtils.getIntPixels(context, 24);
-                    Bitmap image = p.load(url).resize(_24dp, _24dp).get();
-                    BitmapDrawable drawable = new BitmapDrawable(context.getResources(), ImageUtils.roundCorners(image, cornerRadius));
-                    orgMenuItem.setIcon(drawable);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        Thread thread = new Thread(() -> {
+            try {
+                int _24dp = ServiceUtils.getIntPixels(context, 24);
+                Bitmap image = p.load(url).resize(_24dp, _24dp).get();
+                BitmapDrawable drawable = new BitmapDrawable(context.getResources(), ImageUtils.roundCorners(image, cornerRadius));
+                orgMenuItem.setIcon(drawable);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
         thread.start();

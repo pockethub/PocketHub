@@ -34,10 +34,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
@@ -109,16 +106,13 @@ public class AssigneeDialog extends BaseProgressDialog {
                 .getAssignees(repository.owner().login(), repository.name(), i)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .flatMapObservable(new Function<Page<User>, ObservableSource<? extends Page<User>>>() {
-                    @Override
-                    public ObservableSource<? extends Page<User>> apply(@NonNull Page<User> page) throws Exception {
-                        if (page.next() == null) {
-                            return Observable.just(page);
-                        }
-
-                        return Observable.just(page)
-                                .concatWith(getPageAndNext(page.next()));
+                .flatMapObservable(page -> {
+                    if (page.next() == null) {
+                        return Observable.just(page);
                     }
+
+                    return Observable.just(page)
+                            .concatWith(getPageAndNext(page.next()));
                 });
     }
 

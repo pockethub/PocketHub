@@ -19,15 +19,10 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
@@ -121,32 +116,16 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
 
         final MaterialDialog.Builder dialogBuilder = createDialogBuilder()
                 .negativeText(R.string.cancel)
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        MilestoneDialogFragment.this.onClick(dialog, BUTTON_NEGATIVE);
-                    }
-                })
+                .onNegative((dialog, which) -> onClick(dialog, BUTTON_NEGATIVE))
                 .neutralText(R.string.clear)
-                .onNeutral(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        MilestoneDialogFragment.this.onClick(dialog, BUTTON_NEUTRAL);
-                    }
-                });
+                .onNeutral((dialog, which) -> onClick(dialog, BUTTON_NEUTRAL));
 
         LayoutInflater inflater = activity.getLayoutInflater();
 
         ListView view = (ListView) inflater.inflate(R.layout.dialog_list_view,
                 null);
-        view.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-                onClick(getDialog(), position);
-            }
-        });
+        view.setOnItemClickListener((parent, view1, position, id) ->
+                onClick(getDialog(), position));
 
         ArrayList<Milestone> choices = getChoices();
         int selected = arguments.getInt(ARG_SELECTED_CHOICE);

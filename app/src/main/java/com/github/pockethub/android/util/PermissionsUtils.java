@@ -2,7 +2,6 @@ package com.github.pockethub.android.util;
 
 import android.app.Activity;
 import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v13.app.FragmentCompat;
 import android.support.v4.app.ActivityCompat;
@@ -10,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.pockethub.android.R;
 
@@ -29,14 +27,9 @@ public class PermissionsUtils {
                     .content(askContent)
                     .positiveText(android.R.string.yes)
                     .negativeText(android.R.string.no)
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog,
-                                            @NonNull DialogAction which) {
+                    .onPositive((dialog, which) ->
                             ActivityCompat.requestPermissions(activity,
-                                    new String[]{permission}, requestCode);
-                        }
-                    });
+                                    new String[]{permission}, requestCode));
 
             builder.show();
         } else {
@@ -54,13 +47,8 @@ public class PermissionsUtils {
                     .content(askContent)
                     .positiveText(android.R.string.yes)
                     .negativeText(android.R.string.no)
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog,
-                                            @NonNull DialogAction which) {
-                            fragment.requestPermissions(new String[]{permission}, requestCode);
-                        }
-                    });
+                    .onPositive((dialog, which) ->
+                            fragment.requestPermissions(new String[]{permission}, requestCode));
 
             builder.show();
         } else {

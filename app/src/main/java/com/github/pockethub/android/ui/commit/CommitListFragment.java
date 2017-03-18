@@ -23,14 +23,12 @@ import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Commit;
-import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
@@ -55,8 +53,6 @@ import com.meisolsson.githubsdk.service.repositories.RepositoryService;
 import com.google.inject.Inject;
 
 import java.util.List;
-
-import io.reactivex.Single;
 
 import static android.app.Activity.RESULT_OK;
 import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY;
@@ -165,17 +161,14 @@ public class CommitListFragment extends PagedItemFragment<Commit>
             @Override
             public PageIterator<Commit> createIterator(int page, int size) {
 
-                return new PageIterator<>(new PageIterator.GitHubRequest<Page<Commit>>() {
-                    @Override
-                    public Single<Page<Commit>> execute(int page) {
-                        RepositoryCommitService service = ServiceGenerator.createService(getActivity(),
-                                RepositoryCommitService.class);
+                return new PageIterator<>(page1 -> {
+                    RepositoryCommitService service = ServiceGenerator.createService(getActivity(),
+                            RepositoryCommitService.class);
 
-                        if (page > 1 || ref == null) {
-                            return service.getCommits(repository.owner().login(), repository.name(), last, page);
-                        } else {
-                            return service.getCommits(repository.owner().login(), repository.name(), ref, page);
-                        }
+                    if (page1 > 1 || ref == null) {
+                        return service.getCommits(repository.owner().login(), repository.name(), last, page1);
+                    } else {
+                        return service.getCommits(repository.owner().login(), repository.name(), ref, page1);
                     }
                 }, page);
             }
@@ -282,13 +275,7 @@ public class CommitListFragment extends PagedItemFragment<Commit>
         branchView = finder.find(R.id.tv_branch);
         branchIconView = finder.find(R.id.tv_branch_icon);
         TypefaceUtils.setOcticons(branchIconView);
-        branchFooterView.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                switchRefs();
-            }
-        });
+        branchFooterView.setOnClickListener(v -> switchRefs());
     }
 
     @Override

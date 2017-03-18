@@ -22,7 +22,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -78,18 +77,8 @@ public class ConfirmDialogFragment extends DialogFragmentHelper implements
                 .content(getMessage())
                 .positiveText(android.R.string.ok)
                 .negativeText(android.R.string.no)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        ConfirmDialogFragment.this.onClick(dialog, BUTTON_POSITIVE);
-                    }
-                })
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        ConfirmDialogFragment.this.onClick(dialog, BUTTON_NEGATIVE);
-                    }
-                })
+                .onPositive((dialog, which) -> onClick(dialog, BUTTON_POSITIVE))
+                .onNegative((dialog, which) -> onClick(dialog, BUTTON_NEGATIVE))
                 .cancelable(true)
                 .cancelListener(this)
                 .build();

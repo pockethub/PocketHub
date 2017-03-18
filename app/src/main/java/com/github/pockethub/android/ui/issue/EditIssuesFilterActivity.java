@@ -20,10 +20,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -113,48 +110,33 @@ public class EditIssuesFilterActivity extends BaseActivity {
         actionBar.setSubtitle(InfoUtils.createRepoId(repository));
         avatars.bind(actionBar, repository.owner());
 
-        OnClickListener assigneeListener = new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (assigneeDialog == null) {
-                    assigneeDialog = new AssigneeDialog(
-                            EditIssuesFilterActivity.this, REQUEST_ASSIGNEE,
-                            repository);
-                }
-                assigneeDialog.show(filter.getAssignee());
+        OnClickListener assigneeListener = v -> {
+            if (assigneeDialog == null) {
+                assigneeDialog = new AssigneeDialog(this, REQUEST_ASSIGNEE, repository);
             }
+            assigneeDialog.show(filter.getAssignee());
         };
 
         findViewById(R.id.tv_assignee_label)
             .setOnClickListener(assigneeListener);
         assigneeText.setOnClickListener(assigneeListener);
 
-        OnClickListener milestoneListener = new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (milestoneDialog == null) {
-                    milestoneDialog = new MilestoneDialog(
-                            EditIssuesFilterActivity.this, REQUEST_MILESTONE,
-                            repository);
-                }
-                milestoneDialog.show(filter.getMilestone());
+        OnClickListener milestoneListener = v -> {
+            if (milestoneDialog == null) {
+                milestoneDialog = new MilestoneDialog(this, REQUEST_MILESTONE, repository);
             }
+            milestoneDialog.show(filter.getMilestone());
         };
 
         findViewById(R.id.tv_milestone_label)
             .setOnClickListener(milestoneListener);
         milestoneText.setOnClickListener(milestoneListener);
 
-        OnClickListener labelsListener = new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (labelsDialog == null) {
-                    labelsDialog = new LabelsDialog(
-                            EditIssuesFilterActivity.this, REQUEST_LABELS,
-                            repository);
-                }
-                labelsDialog.show(filter.getLabels());
+        OnClickListener labelsListener = v -> {
+            if (labelsDialog == null) {
+                labelsDialog = new LabelsDialog(this, REQUEST_LABELS, repository);
             }
+            labelsDialog.show(filter.getLabels());
         };
 
         findViewById(R.id.tv_labels_label)
@@ -167,25 +149,17 @@ public class EditIssuesFilterActivity extends BaseActivity {
 
         RadioButton openButton = (RadioButton) findViewById(R.id.rb_open);
 
-        openButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                boolean isChecked) {
-                if (isChecked) {
-                    filter.setOpen(true);
-                }
+        openButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                filter.setOpen(true);
             }
         });
 
         RadioButton closedButton = (RadioButton) findViewById(R.id.rb_closed);
 
-        closedButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                boolean isChecked) {
-                if (isChecked) {
-                    filter.setOpen(false);
-                }
+        closedButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                filter.setOpen(false);
             }
         });
 

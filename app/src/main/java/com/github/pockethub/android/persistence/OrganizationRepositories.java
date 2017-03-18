@@ -36,12 +36,9 @@ import com.google.inject.assistedinject.Assisted;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
-import io.reactivex.Single;
 
 /**
  * Cache of repositories under a given organization
@@ -171,45 +168,30 @@ public class OrganizationRepositories implements
     @Override
     public List<Repository> request() throws IOException {
         if (isAuthenticatedUser()) {
-            Set<Repository> all = new TreeSet<>(
-                    new Comparator<Repository>() {
-
-                        @Override
-                        public int compare(final Repository repo1,
-                                           final Repository repo2) {
-                            final long id1 = repo1.id();
-                            final long id2 = repo2.id();
-                            if (id1 > id2) {
-                                return 1;
-                            }
-                            if (id1 < id2) {
-                                return -1;
-                            }
-                            return 0;
-                        }
-                    });
-
-            all.addAll(getAllItems(new PageIterator.GitHubRequest<Page<Repository>>() {
-                @Override
-                public Single<Page<Repository>> execute(int page) {
-                    return ServiceGenerator.createService(context, RepositoryService.class).getUserRepositories(page);
+            Set<Repository> all = new TreeSet<>((repo1, repo2) -> {
+                final long id1 = repo1.id();
+                final long id2 = repo2.id();
+                if (id1 > id2) {
+                    return 1;
                 }
-            }));
-
-            all.addAll(getAllItems(new PageIterator.GitHubRequest<Page<Repository>>() {
-                @Override
-                public Single<Page<Repository>> execute(int page) {
-                    return ServiceGenerator.createService(context, WatchingService.class).getWatchedRepositories(page);
+                if (id1 < id2) {
+                    return -1;
                 }
-            }));
+                return 0;
+            });
+
+            all.addAll(getAllItems(page ->
+                    ServiceGenerator.createService(context, RepositoryService.class)
+                            .getUserRepositories(page)));
+
+            all.addAll(getAllItems(page ->
+                    ServiceGenerator.createService(context, WatchingService.class)
+                            .getWatchedRepositories(page)));
             return new ArrayList<>(all);
         } else {
-            return getAllItems(new PageIterator.GitHubRequest<Page<Repository>>() {
-                @Override
-                public Single<Page<Repository>> execute(int page) {
-                    return ServiceGenerator.createService(context, RepositoryService.class).getOrganizationRepositories(org.login(), page);
-                }
-            });
+            return getAllItems(page ->
+                    ServiceGenerator.createService(context, RepositoryService.class)
+                            .getOrganizationRepositories(org.login(), page));
         }
     }
 

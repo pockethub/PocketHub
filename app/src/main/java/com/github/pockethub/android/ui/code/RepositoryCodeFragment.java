@@ -25,7 +25,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -237,13 +236,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
         branchFooterView = finder.find(R.id.rl_branch);
         branchView = finder.find(R.id.tv_branch);
         branchIconView = finder.find(R.id.tv_branch_icon);
-        branchFooterView.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                switchBranches();
-            }
-        });
+        branchFooterView.setOnClickListener(v -> switchBranches());
 
         pathHeaderView = activity.getLayoutInflater().inflate(R.layout.path_item,
                 null);
@@ -293,19 +286,15 @@ public class RepositoryCodeFragment extends DialogFragment implements
             StyledText text = new StyledText();
             for (int i = 0; i < segments.length - 1; i++) {
                 final int index = i;
-                text.url(segments[i], new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        Folder clicked = folder;
-                        for (int i = index; i < segments.length - 1; i++) {
-                            clicked = clicked.parent;
-                            if (clicked == null) {
-                                return;
-                            }
+                text.url(segments[i], v -> {
+                    Folder clicked = folder;
+                    for (int i1 = index; i1 < segments.length - 1; i1++) {
+                        clicked = clicked.parent;
+                        if (clicked == null) {
+                            return;
                         }
-                        setFolder(tree, clicked);
                     }
+                    setFolder(tree, clicked);
                 }).append(' ').foreground('/', textLightColor).append(' ');
             }
             text.bold(segments[segments.length - 1]);

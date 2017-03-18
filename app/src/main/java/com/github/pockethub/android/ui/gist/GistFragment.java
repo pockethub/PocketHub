@@ -66,7 +66,6 @@ import com.google.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -373,13 +372,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         case COMMENT_EDIT:
             comment = data.getParcelableExtra(EXTRA_COMMENT);
             if (comments != null && comment != null) {
-                int position = Collections.binarySearch(comments, comment,
-                        new Comparator<GitHubComment>() {
-                            @Override
-                            public int compare(GitHubComment lhs, GitHubComment rhs) {
-                                return Integer.valueOf(lhs.id()).compareTo(rhs.id());
-                            }
-                        });
+                int position = Collections.binarySearch(comments, comment, (lhs, rhs) ->
+                        Integer.valueOf(lhs.id()).compareTo(rhs.id()));
                 imageGetter.removeFromCache(comment.id());
                 comments.set(position, comment);
                 updateList(gist, comments);
@@ -496,13 +490,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                             // Update comment list
                             if (comments != null) {
                                 int position = Collections.binarySearch(comments,
-                                        comment, new Comparator<GitHubComment>() {
-                                            @Override
-                                            public int compare(GitHubComment lhs, GitHubComment rhs) {
-                                                return Integer.valueOf(lhs.id())
-                                                        .compareTo(rhs.id());
-                                            }
-                                        });
+                                        comment, (lhs, rhs) -> Integer.valueOf(lhs.id())
+                                                .compareTo(rhs.id()));
                                 comments.remove(position);
                                 updateList(gist, comments);
                             } else {
@@ -536,18 +525,15 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     /**
      * Delete existing comment
      */
-    final DeleteCommentListener deleteCommentListener = new DeleteCommentListener() {
-        @Override
-        public void onDeleteComment(GitHubComment comment) {
-            Bundle args = new Bundle();
-            args.putParcelable(EXTRA_COMMENT, comment);
-            ConfirmDialogFragment.show(
-                    getActivity(),
-                    COMMENT_DELETE,
-                    getActivity()
-                            .getString(R.string.confirm_comment_delete_title),
-                    getActivity().getString(
-                            R.string.confirm_comment_delete_message), args);
-        }
+    final DeleteCommentListener deleteCommentListener = comment -> {
+        Bundle args = new Bundle();
+        args.putParcelable(EXTRA_COMMENT, comment);
+        ConfirmDialogFragment.show(
+                getActivity(),
+                COMMENT_DELETE,
+                getActivity()
+                        .getString(R.string.confirm_comment_delete_title),
+                getActivity().getString(
+                        R.string.confirm_comment_delete_message), args);
     };
 }

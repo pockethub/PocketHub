@@ -76,12 +76,7 @@ public class IssueSearchActivity extends RoboAppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.m_search:
-                searchView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        searchView.setQuery(lastQuery, false);
-                    }
-                });
+                searchView.post(() -> searchView.setQuery(lastQuery, false));
                 return true;
             case R.id.m_clear:
                 IssueSearchSuggestionsProvider.clear(this);

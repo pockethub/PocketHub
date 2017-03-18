@@ -22,7 +22,6 @@ import android.widget.ListView;
 
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Page;
-import com.meisolsson.githubsdk.model.SearchPage;
 import com.meisolsson.githubsdk.model.User;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
@@ -40,10 +39,7 @@ import com.google.inject.Inject;
 
 import java.util.List;
 
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 import static android.app.SearchManager.QUERY;
@@ -68,25 +64,16 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
 
             @Override
             public PageIterator<User> createIterator(int page, int size) {
-                return new PageIterator<>(new PageIterator.GitHubRequest<Page<User>>() {
-                    @Override
-                    public Single<Page<User>> execute(int page) {
-                        return ServiceGenerator.createService(getContext(), SearchService.class)
-                                .searchUsers(query, null, null, page)
-                                .map(new Function<SearchPage<User>, Page<User>>() {
-                                    @Override
-                                    public Page<User> apply(@NonNull SearchPage<User> userSearchPage) throws Exception {
-                                        return Page.<User>builder()
-                                                .first(userSearchPage.first())
-                                                .last(userSearchPage.last())
-                                                .next(userSearchPage.next())
-                                                .prev(userSearchPage.prev())
-                                                .items(userSearchPage.items())
-                                                .build();
-                                    }
-                                });
-                    }
-                }, page);
+                return new PageIterator<>(page1 ->
+                        ServiceGenerator.createService(getContext(), SearchService.class)
+                                .searchUsers(query, null, null, page1)
+                                .map(userSearchPage -> Page.<User>builder()
+                                        .first(userSearchPage.first())
+                                        .last(userSearchPage.last())
+                                        .next(userSearchPage.next())
+                                        .prev(userSearchPage.prev())
+                                        .items(userSearchPage.items())
+                                        .build()), page);
             }
         };
     }

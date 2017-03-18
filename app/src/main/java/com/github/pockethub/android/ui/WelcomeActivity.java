@@ -33,12 +33,7 @@ import com.github.pockethub.android.R;
 
 public class WelcomeActivity extends DotPagerActivity {
 
-    private final View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            closeAndOpenLogin();
-        }
-    };
+    private final View.OnClickListener onClickListener = v -> closeAndOpenLogin();
 
     private int[] colors;
     @ColorInt int accentsColorDark;
@@ -67,15 +62,12 @@ public class WelcomeActivity extends DotPagerActivity {
 
         skipBtn.setOnClickListener(onClickListener);
         doneBtn.setOnClickListener(onClickListener);
-        nextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ViewPager pager = getViewPager();
-                if (pager.getCurrentItem() + 1 < adapter.getCount()) {
-                    pager.setCurrentItem(pager.getCurrentItem() + 1, true);
-                }else {
-                    configureDotPager();
-                }
+        nextBtn.setOnClickListener(v -> {
+            ViewPager pager1 = getViewPager();
+            if (pager1.getCurrentItem() + 1 < adapter.getCount()) {
+                pager1.setCurrentItem(pager1.getCurrentItem() + 1, true);
+            }else {
+                configureDotPager();
             }
         });
     }

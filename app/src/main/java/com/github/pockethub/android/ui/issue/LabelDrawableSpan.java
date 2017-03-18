@@ -34,7 +34,6 @@ import com.meisolsson.githubsdk.model.Label;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
 
 import static android.graphics.Color.WHITE;
 import static android.graphics.Typeface.DEFAULT_BOLD;
@@ -146,14 +145,8 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
     public static void setText(final TextView view,
             final Collection<Label> labels) {
         final Label[] sortedLabels = labels.toArray(new Label[labels.size()]);
-        Arrays.sort(sortedLabels, new Comparator<Label>() {
-
-            @Override
-            public int compare(final Label lhs, final Label rhs) {
-                return CASE_INSENSITIVE_ORDER.compare(lhs.name(),
-                        rhs.name());
-            }
-        });
+        Arrays.sort(sortedLabels, (lhs, rhs) ->
+                CASE_INSENSITIVE_ORDER.compare(lhs.name(), rhs.name()));
         setText(view, sortedLabels);
     }
 

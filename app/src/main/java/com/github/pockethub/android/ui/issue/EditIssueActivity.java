@@ -16,7 +16,6 @@
 package com.github.pockethub.android.ui.issue;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -31,7 +30,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
@@ -226,27 +224,21 @@ public class EditIssueActivity extends BaseActivity {
             }
         });
 
-        addImageFab.setOnClickListener(new View.OnClickListener() {
-            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-            @Override
-            public void onClick(View v) {
+        addImageFab.setOnClickListener(v -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                String permission = Manifest.permission.READ_EXTERNAL_STORAGE;
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    Activity activity = EditIssueActivity.this;
-                    String permission = Manifest.permission.READ_EXTERNAL_STORAGE;
+                if (ContextCompat.checkSelfPermission(this, permission)
+                        != PackageManager.PERMISSION_GRANTED) {
 
-                    if (ContextCompat.checkSelfPermission(activity, permission)
-                            != PackageManager.PERMISSION_GRANTED) {
-
-                        PermissionsUtils.askForPermission(activity, READ_PERMISSION_REQUEST,
-                                permission, R.string.read_permission_title,
-                                R.string.read_permission_content);
-                    } else {
-                        startImagePicker();
-                    }
+                    PermissionsUtils.askForPermission(this, READ_PERMISSION_REQUEST,
+                            permission, R.string.read_permission_title,
+                            R.string.read_permission_content);
                 } else {
                     startImagePicker();
                 }
+            } else {
+                startImagePicker();
             }
         });
 
@@ -340,12 +332,7 @@ public class EditIssueActivity extends BaseActivity {
     }
 
     private void insertImage(final String url) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                bodyText.append("![](" + url + ")");
-            }
-        });
+        runOnUiThread(() -> bodyText.append("![](" + url + ")"));
     }
 
     private void showMainContent() {
@@ -361,41 +348,25 @@ public class EditIssueActivity extends BaseActivity {
         finder.find(R.id.tv_assignee_label).setVisibility(View.VISIBLE);
         finder.find(R.id.ll_assignee).setVisibility(View.VISIBLE);
 
-        finder.onClick(R.id.ll_milestone, new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (milestoneDialog == null) {
-                    milestoneDialog = new MilestoneDialog(
-                            EditIssueActivity.this, ISSUE_MILESTONE_UPDATE,
-                            repository);
-                }
-                milestoneDialog.show(issue.milestone());
+        finder.onClick(R.id.ll_milestone, v -> {
+            if (milestoneDialog == null) {
+                milestoneDialog = new MilestoneDialog(this, ISSUE_MILESTONE_UPDATE, repository);
             }
+            milestoneDialog.show(issue.milestone());
         });
 
-        finder.onClick(R.id.ll_assignee, new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (assigneeDialog == null) {
-                    assigneeDialog = new AssigneeDialog(EditIssueActivity.this,
-                            ISSUE_ASSIGNEE_UPDATE, repository);
-                }
-                assigneeDialog.show(issue.assignee());
+        finder.onClick(R.id.ll_assignee, v -> {
+            if (assigneeDialog == null) {
+                assigneeDialog = new AssigneeDialog(this, ISSUE_ASSIGNEE_UPDATE, repository);
             }
+            assigneeDialog.show(issue.assignee());
         });
 
-        finder.onClick(R.id.ll_labels, new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (labelsDialog == null) {
-                    labelsDialog = new LabelsDialog(EditIssueActivity.this,
-                            ISSUE_LABELS_UPDATE, repository);
-                }
-                labelsDialog.show(issue.labels());
+        finder.onClick(R.id.ll_labels, v -> {
+            if (labelsDialog == null) {
+                labelsDialog = new LabelsDialog(this, ISSUE_LABELS_UPDATE, repository);
             }
+            labelsDialog.show(issue.labels());
         });
 
         updateAssignee();

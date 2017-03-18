@@ -45,8 +45,6 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -233,12 +231,7 @@ public class HttpImageGetter implements ImageGetter {
         view.setTag(id);
         Observable.just(html)
                 .subscribeOn(Schedulers.computation())
-                .map(new Function<String, CharSequence>() {
-                    @Override
-                    public CharSequence apply(@NonNull String htmlString) throws Exception {
-                        return HtmlUtils.encode(htmlString, HttpImageGetter.this);
-                    }
-                })
+                .map(htmlString -> HtmlUtils.encode(htmlString, this))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ObserverAdapter<CharSequence>() {@Override
                     public void onNext(CharSequence htmlCharSequence) {

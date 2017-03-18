@@ -20,7 +20,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -166,19 +165,13 @@ public abstract class NewsFragment extends PagedItemFragment<GitHubEvent> {
             avatars.bind(finder.imageView(R.id.iv_repo_avatar), repo.owner());
             finder.setText(R.id.tv_login, user.login());
             finder.setText(R.id.tv_repo_name, InfoUtils.createRepoId(repo));
-            finder.onClick(R.id.ll_user_area, new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialogHolder[0].dismiss();
-                    viewUser(user);
-                }
+            finder.onClick(R.id.ll_user_area, v1 -> {
+                dialogHolder[0].dismiss();
+                viewUser(user);
             });
-            finder.onClick(R.id.ll_repo_area, new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialogHolder[0].dismiss();
-                    viewRepository(repo);
-                }
+            finder.onClick(R.id.ll_repo_area, v1 -> {
+                dialogHolder[0].dismiss();
+                viewRepository(repo);
             });
             builder.customView(view, false);
 
