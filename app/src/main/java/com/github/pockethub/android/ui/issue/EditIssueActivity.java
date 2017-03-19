@@ -16,6 +16,7 @@
 package com.github.pockethub.android.ui.issue;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -224,21 +225,27 @@ public class EditIssueActivity extends BaseActivity {
             }
         });
 
-        addImageFab.setOnClickListener(v -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                String permission = Manifest.permission.READ_EXTERNAL_STORAGE;
+        // @TargetApi(…) required to ensure build passes
+        // noinspection Convert2Lambda
+        addImageFab.setOnClickListener(new View.OnClickListener() {
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+            @Override
+            public void onClick(View v) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    Activity activity = EditIssueActivity.this;
+                    String permission = Manifest.permission.READ_EXTERNAL_STORAGE;
 
-                if (ContextCompat.checkSelfPermission(this, permission)
-                        != PackageManager.PERMISSION_GRANTED) {
-
-                    PermissionsUtils.askForPermission(this, READ_PERMISSION_REQUEST,
-                            permission, R.string.read_permission_title,
-                            R.string.read_permission_content);
+                    if (ContextCompat.checkSelfPermission(activity, permission)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        PermissionsUtils.askForPermission(activity, READ_PERMISSION_REQUEST,
+                                permission, R.string.read_permission_title,
+                                R.string.read_permission_content);
+                    } else {
+                        startImagePicker();
+                    }
                 } else {
                     startImagePicker();
                 }
-            } else {
-                startImagePicker();
             }
         });
 
