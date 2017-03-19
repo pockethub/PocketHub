@@ -21,12 +21,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
-import com.github.pockethub.android.RequestFuture;
 import com.github.pockethub.android.RequestReader;
 import com.github.pockethub.android.RequestWriter;
 import com.github.pockethub.android.core.issue.IssueFilter;
 import com.github.pockethub.android.persistence.OrganizationRepositories.Factory;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
 import com.google.inject.Inject;
@@ -45,6 +43,8 @@ import java.util.concurrent.Executors;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 
 /**
  * Manager cache for an account
@@ -201,21 +201,16 @@ public class AccountDataManager {
     /**
      * Get bookmarked issue filters
      *
-     * @param requestFuture
+     * @param requestConsumer
      */
     public void getIssueFilters(
-            final RequestFuture<Collection<IssueFilter>> requestFuture) {
+            final Consumer<Collection<IssueFilter>> requestConsumer) {
         Observable.create(new ObservableOnSubscribe<Collection<IssueFilter>>() {
             @Override
             public void subscribe(ObservableEmitter<Collection<IssueFilter>> emitter) throws Exception {
                 emitter.onNext(getIssueFilters());
             }
-        }).subscribe(new ObserverAdapter<Collection<IssueFilter>>() {
-            @Override
-            public void onNext(Collection<IssueFilter> filters) {
-                requestFuture.success(filters);
-            }
-        });
+        }).subscribe(requestConsumer);
     }
 
     /**
@@ -241,25 +236,20 @@ public class AccountDataManager {
      * Add issue filter to store
      *
      * @param filter
-     * @param requestFuture
+     * @param requestConsumer
      */
     public void addIssueFilter(final IssueFilter filter,
-            final RequestFuture<IssueFilter> requestFuture) {
+            final Consumer<IssueFilter> requestConsumer) {
         Observable.create(new ObservableOnSubscribe<IssueFilter>() {
             @Override
             public void subscribe(ObservableEmitter<IssueFilter> emitter) throws Exception {
                 addIssueFilter(filter);
                 emitter.onNext(filter);
             }
-        }).subscribe(new ObserverAdapter<IssueFilter>() {
+        }).subscribe(requestConsumer, new Consumer<Throwable>() {
             @Override
-            public void onError(Throwable e) {
+            public void accept(@NonNull Throwable e) throws Exception {
                 Log.d(TAG, "Exception adding issue filter", e);
-            }
-
-            @Override
-            public void onNext(IssueFilter issueFilter) {
-                requestFuture.success(issueFilter);
             }
         });
     }
@@ -284,24 +274,19 @@ public class AccountDataManager {
      * Remove issue filter from store
      *
      * @param filter
-     * @param requestFuture
+     * @param requestConsumer
      */
     public void removeIssueFilter(final IssueFilter filter,
-            final RequestFuture<IssueFilter> requestFuture) {
+            final Consumer<IssueFilter> requestConsumer) {
         Observable.create(new ObservableOnSubscribe<IssueFilter>() {
             @Override
             public void subscribe(ObservableEmitter<IssueFilter> emitter) throws Exception {
                 removeIssueFilter(filter);
                 emitter.onNext(filter);
             }
-        }).subscribe(new ObserverAdapter<IssueFilter>() {
+        }).subscribe(requestConsumer, new Consumer<Throwable>() {
             @Override
-            public void onNext(IssueFilter issueFilter) {
-                requestFuture.success(issueFilter);
-            }
-
-            @Override
-            public void onError(Throwable e) {
+            public void accept(@NonNull Throwable e) throws Exception {
                 Log.d(TAG, "Exception removing issue filter", e);
             }
         });
