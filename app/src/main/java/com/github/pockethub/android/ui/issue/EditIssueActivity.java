@@ -49,7 +49,6 @@ import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.accounts.AccountUtils;
 import com.github.pockethub.android.core.issue.IssueUtils;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.StyledText;
@@ -521,24 +520,17 @@ public class EditIssueActivity extends BaseActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<Response<Boolean>>bindToLifecycle())
-                .subscribe(new ObserverAdapter<Response<Boolean>>() {
-                    @Override
-                    public void onSuccess(Response<Boolean> response) {
+                .subscribe(response -> {
+                    showMainContent();
+                    if (response.code() == 204) {
+                        showCollaboratorOptions();
+                    }
+                }, e -> {
+                    /*if(e instanceof RetrofitError && ((RetrofitError) e).getResponse().getStatus() == 403){
+                        //403 -> Forbidden
+                        //The user is not a collaborator.
                         showMainContent();
-                        if (response.code() == 204) {
-                            showCollaboratorOptions();
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                        /*if(e instanceof RetrofitError && ((RetrofitError) e).getResponse().getStatus() == 403){
-                            //403 -> Forbidden
-                            //The user is not a collaborator.
-                            showMainContent();
-                        }*/
-                    }
+                    }*/
                 });
     }
 }

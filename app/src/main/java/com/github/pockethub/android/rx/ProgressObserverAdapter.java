@@ -5,7 +5,11 @@ import android.support.annotation.StringRes;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-public class ProgressObserverAdapter<T> extends ObserverAdapter<T> {
+import io.reactivex.Observer;
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.Disposable;
+
+public class ProgressObserverAdapter<T> implements Observer<T>, SingleObserver<T> {
 
     private MaterialDialog progressDialog;
     private Context context;
@@ -42,13 +46,19 @@ public class ProgressObserverAdapter<T> extends ObserverAdapter<T> {
 
     @Override
     public void onComplete() {
-        super.onComplete();
         dismissProgress();
     }
 
     @Override
+    public void onSubscribe(final Disposable d) {
+    }
+
+    @Override
+    public void onNext(final T t) {
+    }
+
+    @Override
     public void onError(Throwable e) {
-        super.onError(e);
         dismissProgress();
     }
 

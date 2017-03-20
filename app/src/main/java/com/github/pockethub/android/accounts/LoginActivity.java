@@ -29,7 +29,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.MainActivity;
 import com.github.pockethub.android.ui.roboactivities.RoboAccountAuthenticatorAppCompatActivity;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
@@ -147,22 +146,14 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(this.<GitHubToken>bindToLifecycle())
-                    .subscribe(new ObserverAdapter<GitHubToken>() {
-                        @Override
-                        public void onError(Throwable e) {
-                            e.printStackTrace();
+                    .subscribe(token -> {
+                        if (token.accessToken() != null) {
+                            endAuth(token.accessToken(), token.scope());
+                        } else if (token.error() != null) {
+                            Toast.makeText(this, token.error(), Toast.LENGTH_LONG).show();
+                            progressDialog.dismiss();
                         }
-
-                        @Override
-                        public void onSuccess(GitHubToken token) {
-                            if (token.accessToken() != null) {
-                                endAuth(token.accessToken(), token.scope());
-                            } else if (token.error() != null) {
-                                Toast.makeText(LoginActivity.this, token.error(), Toast.LENGTH_LONG).show();
-                                progressDialog.dismiss();
-                            }
-                        }
-                    });
+                    }, Throwable::printStackTrace);
         }
     }
 
@@ -234,31 +225,23 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<User>bindToLifecycle())
-                .subscribe(new ObserverAdapter<User>() {
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
+                .subscribe(user -> {
+                    Account account = new Account(user.login(), getString(R.string.account_type));
+                    Bundle userData = AccountsHelper.buildBundle(user.name(), user.email(), user.avatarUrl(), scope);
+                    userData.putString(AccountManager.KEY_AUTHTOKEN, accessToken);
 
-                    @Override
-                    public void onSuccess(User user) {
-                        Account account = new Account(user.login(), getString(R.string.account_type));
-                        Bundle userData = AccountsHelper.buildBundle(user.name(), user.email(), user.avatarUrl(), scope);
-                        userData.putString(AccountManager.KEY_AUTHTOKEN, accessToken);
+                    accountManager.addAccountExplicitly(account, null, userData);
+                    accountManager.setAuthToken(account, getString(R.string.account_type), accessToken);
 
-                        accountManager.addAccountExplicitly(account, null, userData);
-                        accountManager.setAuthToken(account, getString(R.string.account_type), accessToken);
+                    Bundle result = new Bundle();
+                    result.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
+                    result.putString(AccountManager.KEY_ACCOUNT_TYPE, account.type);
+                    result.putString(AccountManager.KEY_AUTHTOKEN, accessToken);
 
-                        Bundle result = new Bundle();
-                        result.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
-                        result.putString(AccountManager.KEY_ACCOUNT_TYPE, account.type);
-                        result.putString(AccountManager.KEY_AUTHTOKEN, accessToken);
+                    setAccountAuthenticatorResult(result);
 
-                        setAccountAuthenticatorResult(result);
-
-                        openMain();
-                    }
-                });
+                    openMain();
+                }, Throwable::printStackTrace);
     }
 
     @Override

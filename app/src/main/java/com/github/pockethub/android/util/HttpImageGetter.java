@@ -29,7 +29,6 @@ import android.widget.TextView;
 
 import com.bugsnag.android.Bugsnag;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Content;
 import com.meisolsson.githubsdk.model.request.RequestMarkdown;
@@ -195,17 +194,8 @@ public class HttpImageGetter implements ImageGetter {
                         .renderMarkdown(requestMarkdown)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new ObserverAdapter<String>() {
-                            @Override
-                            public void onSuccess(String data) {
-                                continueBind(view, data, id);
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                continueBind(view, html, id);
-                            }
-                        });
+                        .subscribe(data -> continueBind(view, data, id),
+                                e -> continueBind(view, html, id));
             } else {
                 return continueBind(view, html, id);
             }
@@ -233,12 +223,10 @@ public class HttpImageGetter implements ImageGetter {
                 .subscribeOn(Schedulers.computation())
                 .map(htmlString -> HtmlUtils.encode(htmlString, this))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ObserverAdapter<CharSequence>() {@Override
-                    public void onNext(CharSequence htmlCharSequence) {
-                        fullHtmlCache.put(id, htmlCharSequence);
-                        if (id.equals(view.getTag())) {
-                            show(view, htmlCharSequence);
-                        }
+                .subscribe(htmlCharSequence -> {
+                    fullHtmlCache.put(id, htmlCharSequence);
+                    if (id.equals(view.getTag())) {
+                        show(view, htmlCharSequence);
                     }
                 });
         return this;

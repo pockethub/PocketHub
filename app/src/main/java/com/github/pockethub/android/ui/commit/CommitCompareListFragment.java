@@ -34,7 +34,6 @@ import android.widget.TextView;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.commit.CommitUtils;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.HeaderFooterListAdapter;
 import com.github.pockethub.android.util.AvatarLoader;
@@ -129,22 +128,14 @@ public class CommitCompareListFragment extends DialogFragment implements
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<CommitCompare>bindToLifecycle())
-                .subscribe(new ObserverAdapter<CommitCompare>() {
-                    @Override
-                    public void onSuccess(CommitCompare compareCommit) {
-                        List<GitHubFile> files = compareCommit.files();
-                        diffStyler.setFiles(files);
-                        if (files != null) {
-                            Collections.sort(files, new CommitFileComparator());
-                        }
-                        updateList(compareCommit);
+                .subscribe(compareCommit -> {
+                    List<GitHubFile> files = compareCommit.files();
+                    diffStyler.setFiles(files);
+                    if (files != null) {
+                        Collections.sort(files, new CommitFileComparator());
                     }
-
-                    @Override
-                    public void onError(Throwable error) {
-                        ToastUtils.show(getActivity(), error, R.string.error_commits_load);
-                    }
-                });
+                    updateList(compareCommit);
+                }, error -> ToastUtils.show(getActivity(), error, R.string.error_commits_load));
     }
 
     private void updateList(CommitCompare compare) {

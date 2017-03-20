@@ -15,7 +15,6 @@ import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Content;
 import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.Intents;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.WebView;
 import com.meisolsson.githubsdk.model.request.RequestMarkdown;
@@ -57,16 +56,12 @@ public class RepositoryReadmeFragment extends DialogFragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<String>bindToLifecycle())
-                .subscribe(new ObserverAdapter<String>() {
-                    @Override
-                    public void onSuccess(String s) {
-                        super.onSuccess(s);
-                        String baseUrl = String.format("https://github.com/%s/%s/raw/%s/",
-                                repo.owner().login(), repo.name(), "master");
+                .subscribe(s -> {
+                    String baseUrl = String.format("https://github.com/%s/%s/raw/%s/",
+                            repo.owner().login(), repo.name(), "master");
 
-                        String data = PAGE_START + s + PAGE_END;
-                        webview.loadDataWithBaseURL(baseUrl, data, "text/html", "UTF-8", null);
-                    }
+                    String data = PAGE_START + s + PAGE_END;
+                    webview.loadDataWithBaseURL(baseUrl, data, "text/html", "UTF-8", null);
                 });
     }
 

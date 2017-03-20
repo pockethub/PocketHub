@@ -30,7 +30,6 @@ import android.webkit.WebView;
 
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.gist.GistStore;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.util.PreferenceUtils;
 import com.github.pockethub.android.util.SourceEditor;
@@ -162,25 +161,17 @@ public class GistFileFragment extends DialogFragment implements
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ObserverAdapter<GistFile>() {
-                    @Override
-                    public void onNext(GistFile loadedFile) {
-                        if (loadedFile == null) {
-                            return;
-                        }
-
-                        file = loadedFile;
-                        getArguments().putParcelable(EXTRA_GIST_FILE, file);
-                        if (file.content() != null) {
-                            showSource();
-                        }
+                .subscribe(loadedFile -> {
+                    if (loadedFile == null) {
+                        return;
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        ToastUtils.show(getActivity(), e, R.string.error_gist_file_load);
+                    file = loadedFile;
+                    getArguments().putParcelable(EXTRA_GIST_FILE, file);
+                    if (file.content() != null) {
+                        showSource();
                     }
-                });
+                }, e -> ToastUtils.show(getActivity(), e, R.string.error_gist_file_load));
     }
 
     private void showSource() {

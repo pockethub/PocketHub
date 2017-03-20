@@ -47,7 +47,6 @@ import com.github.pockethub.android.core.commit.CommitUtils;
 import com.github.pockethub.android.core.commit.FullCommit;
 import com.github.pockethub.android.core.commit.FullCommitFile;
 import com.github.pockethub.android.core.commit.RefreshCommitTask;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.HeaderFooterListAdapter;
 import com.github.pockethub.android.ui.StyledText;
@@ -245,23 +244,17 @@ public class CommitDiffListFragment extends DialogFragment implements
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<FullCommit>bindToLifecycle())
-                .subscribe(new ObserverAdapter<FullCommit>() {
-                    @Override
-                    public void onNext(FullCommit full) {
-                        List<GitHubFile> files = full.getCommit().files();
-                        diffStyler.setFiles(files);
-                        if (files != null) {
-                            Collections.sort(files, new CommitFileComparator());
-                        }
-
-                        updateList(full.getCommit(), full, full.getFiles());
+                .subscribe(full -> {
+                    List<GitHubFile> files = full.getCommit().files();
+                    diffStyler.setFiles(files);
+                    if (files != null) {
+                        Collections.sort(files, new CommitFileComparator());
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        ToastUtils.show(getActivity(), e, R.string.error_commit_load);
-                        ViewUtils.setGone(progress, true);
-                    }
+                    updateList(full.getCommit(), full, full.getFiles());
+                }, e -> {
+                    ToastUtils.show(getActivity(), e, R.string.error_commit_load);
+                    ViewUtils.setGone(progress, true);
                 });
     }
 

@@ -27,7 +27,6 @@ import android.view.View;
 
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.gist.GistStore;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.TabPagerFragment;
 import com.github.pockethub.android.util.ToastUtils;
@@ -87,21 +86,14 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(((BaseActivity)getActivity()).<Gist>bindToLifecycle())
-                .subscribe(new ObserverAdapter<Gist>() {
-
-                    @Override
-                    public void onNext(Gist gist) {
-                        getActivity().startActivityForResult(
-                                GistsViewActivity.createIntent(gist), GIST_VIEW);
-                        dismissProgress();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d(TAG, "Exception opening random Gist", e);
-                        ToastUtils.show((Activity) getContext(), e.getMessage());
-                        dismissProgress();
-                    }
+                .subscribe(gist -> {
+                    getActivity().startActivityForResult(
+                            GistsViewActivity.createIntent(gist), GIST_VIEW);
+                    dismissProgress();
+                }, e -> {
+                    Log.d(TAG, "Exception opening random Gist", e);
+                    ToastUtils.show((Activity) getContext(), e.getMessage());
+                    dismissProgress();
                 });
     }
 

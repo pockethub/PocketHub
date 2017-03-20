@@ -29,7 +29,6 @@ import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueStore;
 import com.github.pockethub.android.core.issue.IssueUtils;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.FragmentProvider;
 import com.github.pockethub.android.ui.PagerActivity;
 import com.github.pockethub.android.ui.ViewPager;
@@ -201,12 +200,7 @@ public class IssuesViewActivity extends PagerActivity {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(this.<Repository>bindToLifecycle())
-                    .subscribe(new ObserverAdapter<Repository>() {
-                        @Override
-                        public void onSuccess(Repository repo) {
-                            repositoryLoaded(repo);
-                        }
-                    });
+                    .subscribe(this::repositoryLoaded);
         } else {
             repositoryLoaded(repo);
         }

@@ -51,7 +51,6 @@ import com.github.pockethub.android.accounts.AccountUtils;
 import com.github.pockethub.android.core.issue.IssueStore;
 import com.github.pockethub.android.core.issue.IssueUtils;
 import com.github.pockethub.android.core.issue.RefreshIssueTask;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.ConfirmDialogFragment;
 import com.github.pockethub.android.ui.DialogFragment;
@@ -414,25 +413,19 @@ public class IssueFragment extends DialogFragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<FullIssue>bindToLifecycle())
-                .subscribe(new ObserverAdapter<FullIssue>() {
-                    @Override
-                    public void onNext(FullIssue fullIssue) {
-                        if (!isUsable()) {
-                            return;
-                        }
-
-                        issue = fullIssue.getIssue();
-                        items = new ArrayList<>();
-                        items.addAll(fullIssue.getEvents());
-                        items.addAll(fullIssue);
-                        updateList(fullIssue.getIssue(), items);
+                .subscribe(fullIssue -> {
+                    if (!isUsable()) {
+                        return;
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        ToastUtils.show(getActivity(), e, R.string.error_issue_load);
-                        ViewUtils.setGone(progress, true);
-                    }
+                    issue = fullIssue.getIssue();
+                    items = new ArrayList<>();
+                    items.addAll(fullIssue.getEvents());
+                    items.addAll(fullIssue);
+                    updateList(fullIssue.getIssue(), items);
+                }, e -> {
+                    ToastUtils.show(getActivity(), e, R.string.error_issue_load);
+                    ViewUtils.setGone(progress, true);
                 });
     }
 

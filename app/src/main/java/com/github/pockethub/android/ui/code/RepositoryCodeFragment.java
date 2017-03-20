@@ -39,7 +39,6 @@ import com.github.pockethub.android.core.code.FullTree.Entry;
 import com.github.pockethub.android.core.code.FullTree.Folder;
 import com.github.pockethub.android.core.code.RefreshTreeTask;
 import com.github.pockethub.android.core.ref.RefUtils;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.HeaderFooterListAdapter;
@@ -150,43 +149,36 @@ public class RepositoryCodeFragment extends DialogFragment implements
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<FullTree>bindToLifecycle())
-                .subscribe(new ObserverAdapter<FullTree>() {
-                    @Override
-                    public void onNext(FullTree fullTree) {
-                        if (folder == null || folder.parent == null) {
-                            setFolder(fullTree, fullTree.root);
-                        } else {
-                            // Look for current folder in new tree or else reset to root
-                            Folder current = folder;
-                            LinkedList<Folder> stack = new LinkedList<>();
-                            while (current.parent != null) {
-                                stack.addFirst(current);
-                                current = current.parent;
-                            }
-                            Folder refreshed = fullTree.root;
-                            while (!stack.isEmpty()) {
-                                refreshed = refreshed.folders
-                                        .get(stack.removeFirst().name);
-                                if (refreshed == null) {
-                                    break;
-                                }
-                            }
-                            if (refreshed != null) {
-                                setFolder(fullTree, refreshed);
-                            } else {
-                                setFolder(fullTree, fullTree.root);
+                .subscribe(fullTree -> {
+                    if (folder == null || folder.parent == null) {
+                        setFolder(fullTree, fullTree.root);
+                    } else {
+                        // Look for current folder in new tree or else reset to root
+                        Folder current = folder;
+                        LinkedList<Folder> stack = new LinkedList<>();
+                        while (current.parent != null) {
+                            stack.addFirst(current);
+                            current = current.parent;
+                        }
+                        Folder refreshed = fullTree.root;
+                        while (!stack.isEmpty()) {
+                            refreshed = refreshed.folders
+                                    .get(stack.removeFirst().name);
+                            if (refreshed == null) {
+                                break;
                             }
                         }
+                        if (refreshed != null) {
+                            setFolder(fullTree, refreshed);
+                        } else {
+                            setFolder(fullTree, fullTree.root);
+                        }
                     }
+                }, e -> {
+                    Log.d(TAG, "Exception loading tree", e);
 
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        Log.d(TAG, "Exception loading tree", e);
-
-                        showLoading(false);
-                        ToastUtils.show(getActivity(), e, R.string.error_code_load);
-                    }
+                    showLoading(false);
+                    ToastUtils.show(getActivity(), e, R.string.error_code_load);
                 });
     }
 

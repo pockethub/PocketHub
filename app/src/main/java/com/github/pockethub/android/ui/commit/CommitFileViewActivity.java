@@ -35,7 +35,6 @@ import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.commit.CommitUtils;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.MarkdownLoader;
 import com.github.pockethub.android.util.AvatarLoader;
@@ -277,40 +276,32 @@ public class CommitFileViewActivity extends BaseActivity implements
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<GitBlob>bindToLifecycle())
-                .subscribe(new ObserverAdapter<GitBlob>() {
-                    @Override
-                    public void onSuccess(GitBlob gitBlob) {
+                .subscribe(gitBlob -> {
+                    ViewUtils.setGone(loadingBar, true);
+                    ViewUtils.setGone(codeView, false);
+
+                    editor.setSource(path, gitBlob);
+                    blob = gitBlob;
+
+                    if (markdownItem != null) {
+                        markdownItem.setEnabled(true);
+                    }
+
+                    if (isMarkdownFile
+                            && PreferenceUtils.getCodePreferences(this).getBoolean(
+                            RENDER_MARKDOWN, true)) {
+                        loadMarkdown();
+                    } else {
                         ViewUtils.setGone(loadingBar, true);
                         ViewUtils.setGone(codeView, false);
-
                         editor.setSource(path, gitBlob);
-                        CommitFileViewActivity.this.blob = gitBlob;
-
-                        if (markdownItem != null) {
-                            markdownItem.setEnabled(true);
-                        }
-
-                        if (isMarkdownFile
-                                && PreferenceUtils.getCodePreferences(
-                                CommitFileViewActivity.this).getBoolean(
-                                RENDER_MARKDOWN, true)) {
-                            loadMarkdown();
-                        } else {
-                            ViewUtils.setGone(loadingBar, true);
-                            ViewUtils.setGone(codeView, false);
-                            editor.setSource(path, gitBlob);
-                        }
                     }
+                }, error -> {
+                    Log.e(TAG, "Loading commit file contents failed", error);
 
-                    @Override
-                    public void onError(Throwable error) {
-                        Log.e(TAG, "Loading commit file contents failed", error);
-
-                        ViewUtils.setGone(loadingBar, true);
-                        ViewUtils.setGone(codeView, false);
-                        ToastUtils.show(CommitFileViewActivity.this, error,
-                                R.string.error_file_load);
-                    }
+                    ViewUtils.setGone(loadingBar, true);
+                    ViewUtils.setGone(codeView, false);
+                    ToastUtils.show(this, error, R.string.error_file_load);
                 });
     }
 

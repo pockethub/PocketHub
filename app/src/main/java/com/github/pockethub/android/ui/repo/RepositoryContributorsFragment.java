@@ -29,7 +29,6 @@ import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ThrowableLoader;
 import com.github.pockethub.android.accounts.AccountUtils;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.ItemListFragment;
 import com.github.pockethub.android.ui.user.UserViewActivity;
 import com.github.pockethub.android.util.AvatarLoader;
@@ -109,13 +108,7 @@ public class RepositoryContributorsFragment extends ItemListFragment<User> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<User>bindToLifecycle())
-                .subscribe(new ObserverAdapter<User>() {
-                    @Override
-                    public void onSuccess(User user) {
-                        super.onSuccess(user);
-                        startActivity(UserViewActivity.createIntent(user));
-                    }
-                });
+                .subscribe(user -> startActivity(UserViewActivity.createIntent(user)));
 
     }
 

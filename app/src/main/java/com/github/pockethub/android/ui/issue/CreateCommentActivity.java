@@ -27,7 +27,6 @@ import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.Intents;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.comment.CommentPreviewPagerAdapter;
 import com.github.pockethub.android.util.InfoUtils;
 import com.meisolsson.githubsdk.model.request.CommentRequest;
@@ -90,12 +89,7 @@ public class CreateCommentActivity extends
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<GitHubComment>bindToLifecycle())
-                .subscribe(new ObserverAdapter<GitHubComment>() {
-                    @Override
-                    public void onSuccess(GitHubComment githubComment) {
-                        finish(githubComment);
-                    }
-                });
+                .subscribe(this::finish);
     }
 
     @Override
