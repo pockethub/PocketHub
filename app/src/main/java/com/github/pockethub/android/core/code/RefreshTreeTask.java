@@ -29,13 +29,13 @@ import com.meisolsson.githubsdk.service.repositories.RepositoryService;
 
 import java.io.IOException;
 
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
 
 /**
  * Task to load the tree for a repo's default branch
  */
-public class RefreshTreeTask implements ObservableOnSubscribe<FullTree> {
+public class RefreshTreeTask implements SingleOnSubscribe<FullTree> {
 
     private static final String TAG = "RefreshTreeTask";
 
@@ -64,7 +64,7 @@ public class RefreshTreeTask implements ObservableOnSubscribe<FullTree> {
     }
 
     @Override
-    public void subscribe(ObservableEmitter<FullTree> emitter) throws Exception {
+    public void subscribe(SingleEmitter<FullTree> emitter) throws Exception {
         GitReference ref = reference;
         String branch = RefUtils.getPath(ref);
         if (branch == null) {
@@ -102,6 +102,6 @@ public class RefreshTreeTask implements ObservableOnSubscribe<FullTree> {
 
         GitTree tree = gitService.getGitTreeRecursive(repo.owner().login(), repo.name(), commit.tree().sha())
                 .blockingGet();
-        emitter.onNext(new FullTree(tree, ref));
+        emitter.onSuccess(new FullTree(tree, ref));
     }
 }

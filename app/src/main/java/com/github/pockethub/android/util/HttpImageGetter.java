@@ -42,7 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
@@ -219,7 +219,7 @@ public class HttpImageGetter implements ImageGetter {
 
         show(view, encoded);
         view.setTag(id);
-        Observable.just(html)
+        Single.just(html)
                 .subscribeOn(Schedulers.computation())
                 .map(htmlString -> HtmlUtils.encode(htmlString, this))
                 .observeOn(AndroidSchedulers.mainThread())

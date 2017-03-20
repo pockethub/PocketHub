@@ -27,9 +27,9 @@ import com.google.inject.Inject;
 
 import java.io.IOException;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import roboguice.RoboGuice;
@@ -40,7 +40,7 @@ import static com.github.pockethub.android.RequestCodes.ISSUE_REOPEN;
 /**
  * Task to close or reopen an issue
  */
-public class EditStateTask implements ObservableOnSubscribe<Issue> {
+public class EditStateTask implements SingleOnSubscribe<Issue> {
 
     @Inject
     private IssueStore store;
@@ -71,11 +71,10 @@ public class EditStateTask implements ObservableOnSubscribe<Issue> {
     }
 
     @Override
-    public void subscribe(ObservableEmitter<Issue> emitter) throws Exception {
+    public void subscribe(SingleEmitter<Issue> emitter) throws Exception {
         try {
             IssueState state = close ? IssueState.closed : IssueState.open;
-            emitter.onNext(store.changeState(repositoryId, issueNumber, state));
-            emitter.onComplete();
+            emitter.onSuccess(store.changeState(repositoryId, issueNumber, state));
         } catch (IOException e) {
             emitter.onError(e);
         }
@@ -111,7 +110,7 @@ public class EditStateTask implements ObservableOnSubscribe<Issue> {
         observer.setContent(message);
         observer.start();
 
-        Observable.create(this)
+        Single.create(this)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(activity.<Issue>bindToLifecycle())

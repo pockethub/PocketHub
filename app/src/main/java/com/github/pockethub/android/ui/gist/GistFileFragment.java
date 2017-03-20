@@ -41,7 +41,7 @@ import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Map;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -144,7 +144,7 @@ public class GistFileFragment extends DialogFragment implements
     }
 
     private void loadSource() {
-        Observable.<GistFile>create(emitter -> {
+        Single.<GistFile>create(emitter -> {
             try {
                 gist = store.refreshGist(gistId);
                 Map<String, GistFile> files = gist.files();
@@ -155,7 +155,7 @@ public class GistFileFragment extends DialogFragment implements
                 if (loadedFile == null) {
                     emitter.onError(new IOException());
                 }
-                emitter.onNext(loadedFile);
+                emitter.onSuccess(loadedFile);
             } catch (IOException e) {
                 emitter.onError(e);
             }

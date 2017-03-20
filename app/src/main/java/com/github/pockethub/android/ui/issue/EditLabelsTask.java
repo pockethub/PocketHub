@@ -29,9 +29,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import roboguice.RoboGuice;
@@ -41,7 +41,7 @@ import static com.github.pockethub.android.RequestCodes.ISSUE_LABELS_UPDATE;
 /**
  * Task to edit labels
  */
-public class EditLabelsTask implements ObservableOnSubscribe<Issue> {
+public class EditLabelsTask implements SingleOnSubscribe<Issue> {
 
     @Inject
     private IssueStore store;
@@ -80,7 +80,7 @@ public class EditLabelsTask implements ObservableOnSubscribe<Issue> {
     }
 
     @Override
-    public void subscribe(ObservableEmitter<Issue> emitter) throws Exception {
+    public void subscribe(SingleEmitter<Issue> emitter) throws Exception {
         try {
             List<String> labelNames = new ArrayList<>(labels.length);
             for (Label label : labels) {
@@ -88,7 +88,7 @@ public class EditLabelsTask implements ObservableOnSubscribe<Issue> {
             }
 
             IssueRequest editIssue = IssueRequest.builder().labels(labelNames).build();
-            emitter.onNext(store.editIssue(repositoryId, issueNumber, editIssue));
+            emitter.onSuccess(store.editIssue(repositoryId, issueNumber, editIssue));
         } catch (IOException e) {
             emitter.onError(e);
         }
@@ -115,7 +115,7 @@ public class EditLabelsTask implements ObservableOnSubscribe<Issue> {
     public EditLabelsTask edit(Label[] labels) {
         this.labels = labels;
 
-        Observable.create(this)
+        Single.create(this)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(activity.<Issue>bindToLifecycle())
