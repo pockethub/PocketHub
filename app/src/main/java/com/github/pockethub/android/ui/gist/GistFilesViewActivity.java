@@ -30,7 +30,6 @@ import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.gist.FullGist;
 import com.github.pockethub.android.core.gist.GistStore;
 import com.github.pockethub.android.core.gist.RefreshGistTask;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.FragmentProvider;
 import com.github.pockethub.android.ui.PagerActivity;
 import com.github.pockethub.android.ui.ViewPager;
@@ -119,12 +118,9 @@ public class GistFilesViewActivity extends PagerActivity {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(this.<FullGist>bindToLifecycle())
-                    .subscribe(new ObserverAdapter<FullGist>() {
-                        @Override
-                        public void onNext(FullGist gist) {
-                            GistFilesViewActivity.this.gist = gist.getGist();
-                            configurePager();
-                        }
+                    .subscribe(gist -> {
+                        this.gist = gist.getGist();
+                        configurePager();
                     });
         }
     }

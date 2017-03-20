@@ -26,7 +26,6 @@ import com.meisolsson.githubsdk.model.GitHubComment;
 import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.model.request.CommentRequest;
 import com.meisolsson.githubsdk.service.gists.GistCommentService;
@@ -84,18 +83,10 @@ public class CreateCommentActivity extends
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<GitHubComment>bindToLifecycle())
-                .subscribe(new ObserverAdapter<GitHubComment>() {
-                    @Override
-                    public void onSuccess(GitHubComment githubComment) {
-                        finish(githubComment);
-                    }
+                .subscribe(this::finish, error -> {
+                    Log.e(TAG, "Exception creating comment on gist", error);
 
-                    @Override
-                    public void onError(Throwable error) {
-                        Log.e(TAG, "Exception creating comment on gist", error);
-
-                        ToastUtils.show(CreateCommentActivity.this, error.getMessage());
-                    }
+                    ToastUtils.show(this, error.getMessage());
                 });
     }
 }

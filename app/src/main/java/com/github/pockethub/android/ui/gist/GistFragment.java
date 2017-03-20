@@ -46,7 +46,6 @@ import com.github.pockethub.android.core.OnLoadListener;
 import com.github.pockethub.android.core.gist.FullGist;
 import com.github.pockethub.android.core.gist.GistStore;
 import com.github.pockethub.android.core.gist.RefreshGistTask;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.ConfirmDialogFragment;
 import com.github.pockethub.android.ui.DialogFragment;
@@ -305,18 +304,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<Response<Boolean>>bindToLifecycle())
-                .subscribe(new ObserverAdapter<Response<Boolean>>() {
-
-                    @Override
-                    public void onSuccess(Response<Boolean> response) {
-                        starred = response.code() == 204;
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        ToastUtils.show((Activity) getContext(), e.getMessage());
-                    }
-                });
+                .subscribe(response -> starred = response.code() == 204,
+                        e -> ToastUtils.show((Activity) getContext(), e.getMessage()));
     }
 
     private void shareGist() {
@@ -338,17 +327,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<Response<Boolean>>bindToLifecycle())
-                .subscribe(new ObserverAdapter<Response<Boolean>>() {
-                    @Override
-                    public void onSuccess(Response<Boolean> response) {
-                        starred = !(response.code() == 204);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        ToastUtils.show((Activity) getContext(), e.getMessage());
-                    }
-                });
+                .subscribe(response -> starred = !(response.code() == 204),
+                        e -> ToastUtils.show((Activity) getContext(), e.getMessage()));
     }
 
     @Override
@@ -430,32 +410,23 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<FullGist>bindToLifecycle())
-                .subscribe(new ObserverAdapter<FullGist>() {
-
-                    @Override
-                    public void onNext(FullGist fullGist) {
-                        if (!isUsable()) {
-                            return;
-                        }
-
-                        FragmentActivity activity = getActivity();
-                        if (activity instanceof OnLoadListener) {
-                            ((OnLoadListener<Gist>) activity)
-                                    .loaded(fullGist.getGist());
-                        }
-
-                        starred = fullGist.isStarred();
-                        loadFinished = true;
-                        gist = fullGist.getGist();
-                        comments = fullGist;
-                        updateList(fullGist.getGist(), fullGist);
+                .subscribe(fullGist -> {
+                    if (!isUsable()) {
+                        return;
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        ToastUtils.show(getActivity(), e, R.string.error_gist_load);
+                    FragmentActivity activity = getActivity();
+                    if (activity instanceof OnLoadListener) {
+                        ((OnLoadListener<Gist>) activity)
+                                .loaded(fullGist.getGist());
                     }
-                });
+
+                    starred = fullGist.isStarred();
+                    loadFinished = true;
+                    gist = fullGist.getGist();
+                    comments = fullGist;
+                    updateList(fullGist.getGist(), fullGist);
+                }, e -> ToastUtils.show(getActivity(), e, R.string.error_gist_load));
     }
 
     @Override

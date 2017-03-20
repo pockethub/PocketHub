@@ -29,7 +29,6 @@ import com.github.pockethub.android.accounts.AccountUtils;
 import com.github.pockethub.android.core.PageIterator;
 import com.github.pockethub.android.core.ResourcePager;
 import com.github.pockethub.android.core.search.SearchUser;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.ui.user.UserViewActivity;
 import com.github.pockethub.android.util.AvatarLoader;
@@ -118,13 +117,7 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<User>bindToLifecycle())
-                .subscribe(new ObserverAdapter<User>() {
-
-                    @Override
-                    public void onSuccess(User user) {
-                        startActivity(UserViewActivity.createIntent(user));
-                    }
-                });
+                .subscribe(user -> startActivity(UserViewActivity.createIntent(user)));
     }
 
     @Override

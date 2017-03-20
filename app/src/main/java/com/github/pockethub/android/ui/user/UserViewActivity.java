@@ -29,7 +29,6 @@ import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.accounts.AccountUtils;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.MainActivity;
 import com.github.pockethub.android.ui.TabPagerActivity;
 import com.github.pockethub.android.util.AvatarLoader;
@@ -100,19 +99,12 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(this.<User>bindToLifecycle())
-                    .subscribe(new ObserverAdapter<User>() {
-                        @Override
-                        public void onSuccess(User fullUser) {
-                            user = fullUser;
-                            configurePager();
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            ToastUtils.show(UserViewActivity.this,
-                                    R.string.error_person_load);
-                            ViewUtils.setGone(loadingBar, true);
-                        }
+                    .subscribe(fullUser -> {
+                        user = fullUser;
+                        configurePager();
+                    }, e -> {
+                        ToastUtils.show(this, R.string.error_person_load);
+                        ViewUtils.setGone(loadingBar, true);
                     });
         }
     }
@@ -210,18 +202,8 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
         followSingle.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<Response<Boolean>>bindToLifecycle())
-                .subscribe(new ObserverAdapter<Response<Boolean>>() {
-                    @Override
-                    public void onSuccess(Response<Boolean>aBoolean) {
-                        isFollowing = !isFollowing;
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        ToastUtils.show(UserViewActivity.this,
-                                isFollowing ? R.string.error_unfollowing_person : R.string.error_following_person);
-                    }
-                });
+                .subscribe(aBoolean -> isFollowing = !isFollowing,
+                        e -> ToastUtils.show(this, isFollowing ? R.string.error_unfollowing_person : R.string.error_following_person));
     }
 
     private void checkFollowingUserStatus() {
@@ -231,13 +213,10 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<Response<Boolean>>bindToLifecycle())
-                .subscribe(new ObserverAdapter<Response<Boolean>>() {
-                    @Override
-                    public void onSuccess(Response<Boolean> response) {
-                        isFollowing = response.code() == 204;
-                        followingStatusChecked = true;
-                        invalidateOptionsMenu();
-                    }
+                .subscribe(response -> {
+                    isFollowing = response.code() == 204;
+                    followingStatusChecked = true;
+                    invalidateOptionsMenu();
                 });
     }
 }

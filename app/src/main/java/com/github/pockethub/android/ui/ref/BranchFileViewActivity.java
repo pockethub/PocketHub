@@ -34,7 +34,6 @@ import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.commit.CommitUtils;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.MarkdownLoader;
 import com.github.pockethub.android.util.AvatarLoader;
@@ -276,38 +275,29 @@ public class BranchFileViewActivity extends BaseActivity implements
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<GitBlob>bindToLifecycle())
-                .subscribe(new ObserverAdapter<GitBlob>() {
+                .subscribe(gitBlob -> {
+                    blob = gitBlob;
 
-                    @Override
-                    public void onSuccess(GitBlob gitBlob) {
-                        BranchFileViewActivity.this.blob = gitBlob;
-
-                        if (markdownItem != null) {
-                            markdownItem.setEnabled(true);
-                        }
-
-                        if (isMarkdownFile
-                                && PreferenceUtils.getCodePreferences(
-                                BranchFileViewActivity.this).getBoolean(
-                                RENDER_MARKDOWN, true)) {
-                            loadMarkdown();
-                        } else {
-                            ViewUtils.setGone(loadingBar, true);
-                            ViewUtils.setGone(codeView, false);
-
-                            editor.setMarkdown(false).setSource(file, blob);
-                        }
+                    if (markdownItem != null) {
+                        markdownItem.setEnabled(true);
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d(TAG, "Loading file contents failed", e);
-
+                    if (isMarkdownFile
+                            && PreferenceUtils.getCodePreferences(this).getBoolean(
+                            RENDER_MARKDOWN, true)) {
+                        loadMarkdown();
+                    } else {
                         ViewUtils.setGone(loadingBar, true);
                         ViewUtils.setGone(codeView, false);
-                        ToastUtils.show(BranchFileViewActivity.this, e,
-                                R.string.error_file_load);
+
+                        editor.setMarkdown(false).setSource(file, blob);
                     }
+                }, e -> {
+                    Log.d(TAG, "Loading file contents failed", e);
+
+                    ViewUtils.setGone(loadingBar, true);
+                    ViewUtils.setGone(codeView, false);
+                    ToastUtils.show(this, e, R.string.error_file_load);
                 });
     }
 
