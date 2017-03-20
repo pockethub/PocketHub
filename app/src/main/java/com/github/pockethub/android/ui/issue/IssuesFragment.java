@@ -35,7 +35,6 @@ import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.Label;
 import com.meisolsson.githubsdk.model.Milestone;
-import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R;
@@ -53,10 +52,6 @@ import com.google.inject.Inject;
 
 import java.util.Collection;
 import java.util.List;
-
-import io.reactivex.Single;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
@@ -224,12 +219,8 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
                     ISSUE_FILTER_EDIT);
             return true;
         case R.id.m_bookmark:
-            cache.addIssueFilter(filter, new Consumer<IssueFilter>() {
-                @Override
-                public void accept(@NonNull IssueFilter response) throws Exception {
-                    ToastUtils.show(getActivity(), R.string.message_filter_saved);
-                }
-            });
+            cache.addIssueFilter(filter, response ->
+                    ToastUtils.show(getActivity(), R.string.message_filter_saved));
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -275,15 +266,10 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
             @Override
             public PageIterator<Issue> createIterator(int page, int size) {
-                return new PageIterator<>(new PageIterator.GitHubRequest<Page<Issue>>() {
-
-                    @Override
-                    public Single<Page<Issue>> execute(int page) {
-                        return ServiceGenerator.createService(getActivity(), IssueService.class)
+                return new PageIterator<>(page1 ->
+                        ServiceGenerator.createService(getActivity(), IssueService.class)
                                 .getRepositoryIssues(repository.owner().login(),
-                                        repository.name(), filter.toFilterMap(), page);
-                    }
-                }, page);
+                                        repository.name(), filter.toFilterMap(), page1), page);
             }
         };
     }

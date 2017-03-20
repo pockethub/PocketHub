@@ -20,9 +20,7 @@ import android.support.v7.widget.PopupMenu;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 import com.github.kevinsawicki.wishlist.MultiTypeAdapter;
@@ -216,12 +214,7 @@ public class CommentListAdapter extends MultiTypeAdapter {
         if(!canEdit && !canDelete) {
             ivMore.setVisibility(View.INVISIBLE);
         } else {
-            ivMore.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showMorePopup(ivMore, comment, canEdit, canDelete);
-                }
-            });
+            ivMore.setOnClickListener(v -> showMorePopup(ivMore, comment, canEdit, canDelete));
         }
     }
 
@@ -232,23 +225,20 @@ public class CommentListAdapter extends MultiTypeAdapter {
         menu.getMenu().findItem(R.id.m_edit).setEnabled(canEdit);
         menu.getMenu().findItem(R.id.m_delete).setEnabled(canDelete);
 
-        menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.m_edit:
-                        if (editCommentListener != null) {
-                            editCommentListener.onEditComment(comment);
-                        }
-                        break;
-                    case R.id.m_delete:
-                        if (deleteCommentListener != null) {
-                            deleteCommentListener.onDeleteComment(comment);
-                        }
-                        break;
-                }
-                return false;
+        menu.setOnMenuItemClickListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.m_edit:
+                    if (editCommentListener != null) {
+                        editCommentListener.onEditComment(comment);
+                    }
+                    break;
+                case R.id.m_delete:
+                    if (deleteCommentListener != null) {
+                        deleteCommentListener.onDeleteComment(comment);
+                    }
+                    break;
             }
+            return false;
         });
 
         menu.show();

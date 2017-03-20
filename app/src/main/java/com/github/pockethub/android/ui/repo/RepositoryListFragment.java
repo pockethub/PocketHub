@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -186,24 +185,18 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         final User owner = repo.owner();
         avatars.bind(finder.imageView(R.id.iv_owner_avatar), owner);
         finder.setText(R.id.tv_owner_name, getString(R.string.navigate_to_user, owner.login()));
-        finder.onClick(R.id.ll_owner_area, new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogHolder[0].dismiss();
-                viewUser(owner);
-            }
+        finder.onClick(R.id.ll_owner_area, v1 -> {
+            dialogHolder[0].dismiss();
+            viewUser(owner);
         });
 
         if ((recentRepos != null) && (recentRepos.contains(repo))) {
             finder.find(R.id.divider).setVisibility(View.VISIBLE);
             finder.find(R.id.ll_recent_repo_area).setVisibility(View.VISIBLE);
-            finder.onClick(R.id.ll_recent_repo_area, new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialogHolder[0].dismiss();
-                    recentRepos.remove(repo);
-                    refresh();
-                }
+            finder.onClick(R.id.ll_recent_repo_area, v1 -> {
+                dialogHolder[0].dismiss();
+                recentRepos.remove(repo);
+                refresh();
             });
         }
 

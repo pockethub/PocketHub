@@ -20,14 +20,12 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
@@ -153,26 +151,11 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
                 .cancelable(true)
                 .cancelListener(this)
                 .negativeText(R.string.cancel)
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        LabelsDialogFragment.this.onClick(dialog, BUTTON_NEGATIVE);
-                    }
-                })
+                .onNegative((dialog, which) -> onClick(dialog, BUTTON_NEGATIVE))
                 .neutralText(R.string.clear)
-                .onNeutral(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        LabelsDialogFragment.this.onClick(dialog, BUTTON_NEUTRAL);
-                    }
-                })
+                .onNeutral((dialog, which) -> onClick(dialog, BUTTON_NEUTRAL))
                 .positiveText(R.string.apply)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        LabelsDialogFragment.this.onClick(dialog, BUTTON_POSITIVE);
-                    }
-                })
+                .onPositive((dialog, which) -> onClick(dialog, BUTTON_POSITIVE))
                 .title(getTitle())
                 .content(getMessage())
                 .customView(view, false)

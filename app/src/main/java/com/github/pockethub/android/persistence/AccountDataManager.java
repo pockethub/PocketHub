@@ -41,9 +41,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -205,12 +202,8 @@ public class AccountDataManager {
      */
     public void getIssueFilters(
             final Consumer<Collection<IssueFilter>> requestConsumer) {
-        Observable.create(new ObservableOnSubscribe<Collection<IssueFilter>>() {
-            @Override
-            public void subscribe(ObservableEmitter<Collection<IssueFilter>> emitter) throws Exception {
-                emitter.onNext(getIssueFilters());
-            }
-        }).subscribe(requestConsumer);
+        Observable.<Collection<IssueFilter>>create(emitter -> emitter.onNext(getIssueFilters()))
+                .subscribe(requestConsumer);
     }
 
     /**
@@ -240,18 +233,11 @@ public class AccountDataManager {
      */
     public void addIssueFilter(final IssueFilter filter,
             final Consumer<IssueFilter> requestConsumer) {
-        Observable.create(new ObservableOnSubscribe<IssueFilter>() {
-            @Override
-            public void subscribe(ObservableEmitter<IssueFilter> emitter) throws Exception {
-                addIssueFilter(filter);
-                emitter.onNext(filter);
-            }
-        }).subscribe(requestConsumer, new Consumer<Throwable>() {
-            @Override
-            public void accept(@NonNull Throwable e) throws Exception {
-                Log.d(TAG, "Exception adding issue filter", e);
-            }
-        });
+        Observable.<IssueFilter>create(emitter -> {
+            addIssueFilter(filter);
+            emitter.onNext(filter);
+        }).subscribe(requestConsumer, e ->
+                Log.d(TAG, "Exception adding issue filter", e));
     }
 
     /**
@@ -278,17 +264,10 @@ public class AccountDataManager {
      */
     public void removeIssueFilter(final IssueFilter filter,
             final Consumer<IssueFilter> requestConsumer) {
-        Observable.create(new ObservableOnSubscribe<IssueFilter>() {
-            @Override
-            public void subscribe(ObservableEmitter<IssueFilter> emitter) throws Exception {
-                removeIssueFilter(filter);
-                emitter.onNext(filter);
-            }
-        }).subscribe(requestConsumer, new Consumer<Throwable>() {
-            @Override
-            public void accept(@NonNull Throwable e) throws Exception {
-                Log.d(TAG, "Exception removing issue filter", e);
-            }
-        });
+        Observable.<IssueFilter>create(emitter -> {
+            removeIssueFilter(filter);
+            emitter.onNext(filter);
+        }).subscribe(requestConsumer, e ->
+                Log.d(TAG, "Exception removing issue filter", e));
     }
 }

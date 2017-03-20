@@ -20,7 +20,6 @@ import android.content.Context;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.GitHubEvent;
 import com.meisolsson.githubsdk.model.Issue;
-import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.core.PageIterator;
@@ -32,8 +31,6 @@ import com.github.pockethub.android.ui.user.EventPager;
 import com.github.pockethub.android.ui.user.UserViewActivity;
 import com.github.pockethub.android.util.InfoUtils;
 import com.meisolsson.githubsdk.service.activity.EventService;
-
-import io.reactivex.Single;
 
 import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY;
 
@@ -57,13 +54,9 @@ public class RepositoryNewsFragment extends NewsFragment {
 
             @Override
             public PageIterator<GitHubEvent> createIterator(int page, int size) {
-                return new PageIterator<>(new PageIterator.GitHubRequest<Page<GitHubEvent>>() {
-                    @Override
-                    public Single<Page<GitHubEvent>> execute(int page) {
-                        return ServiceGenerator.createService(getActivity(), EventService.class)
-                                .getRepositoryEvents(repo.owner().login(), repo.name(), page);
-                    }
-                }, page);
+                return new PageIterator<>(page1 ->
+                        ServiceGenerator.createService(getActivity(), EventService.class)
+                                .getRepositoryEvents(repo.owner().login(), repo.name(), page1), page);
             }
         };
     }

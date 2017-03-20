@@ -27,7 +27,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.github.pockethub.android.R;
@@ -81,12 +80,9 @@ public class CreateGistActivity extends BaseActivity {
         final AppBarLayout appBarLayout = finder.find(R.id.appbar);
 
         // Fully expand the AppBar if something in it gets focus
-        View.OnFocusChangeListener expandAppBarOnFocusChangeListener = new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    appBarLayout.setExpanded(true);
-                }
+        View.OnFocusChangeListener expandAppBarOnFocusChangeListener = (v, hasFocus) -> {
+            if (hasFocus) {
+                appBarLayout.setExpanded(true);
             }
         };
         nameText.setOnFocusChangeListener(expandAppBarOnFocusChangeListener);
@@ -113,12 +109,8 @@ public class CreateGistActivity extends BaseActivity {
         nameText.addTextChangedListener(expandAppBarTextWatcher);
         descriptionText.addTextChangedListener(expandAppBarTextWatcher);
         publicCheckBox.addTextChangedListener(expandAppBarTextWatcher);
-        publicCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                appBarLayout.setExpanded(true);
-            }
-        });
+        publicCheckBox.setOnCheckedChangeListener((buttonView, isChecked) ->
+                appBarLayout.setExpanded(true));
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);

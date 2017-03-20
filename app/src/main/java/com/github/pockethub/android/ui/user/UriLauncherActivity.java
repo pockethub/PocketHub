@@ -17,15 +17,11 @@ package com.github.pockethub.android.ui.user;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.Issue;
@@ -172,19 +168,9 @@ public class UriLauncherActivity extends Activity {
         new MaterialDialog.Builder(this)
                 .title(R.string.title_invalid_github_url)
                 .content(MessageFormat.format(getString(R.string.message_invalid_github_url), url))
-                .cancelListener(new OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        finish();
-                    }
-                })
+                .cancelListener(dialog -> finish())
                 .positiveText(android.R.string.ok)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        finish();
-                    }
-                })
+                .onPositive((dialog, which) -> finish())
                 .show();
     }
 }

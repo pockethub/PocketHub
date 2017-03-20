@@ -24,14 +24,10 @@ import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.pockethub.android.R;
 import com.meisolsson.githubsdk.model.User;
@@ -239,12 +235,7 @@ public class AccountUtils {
             Log.d(TAG, "Excepting retrieving account", e);
             throw e;
         } catch (AuthenticatorConflictException e) {
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showConflictMessage(activity);
-                }
-            });
+            activity.runOnUiThread(() -> showConflictMessage(activity));
             throw e;
         } catch (IOException e) {
             Log.d(TAG, "Excepting retrieving account", e);
@@ -292,12 +283,7 @@ public class AccountUtils {
                 Log.d(TAG, "Excepting retrieving account", e);
                 return false;
             } catch (AuthenticatorConflictException e) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showConflictMessage(activity);
-                    }
-                });
+                activity.runOnUiThread(() -> showConflictMessage(activity));
                 return false;
             } catch (IOException e) {
                 Log.d(TAG, "Excepting retrieving account", e);
@@ -317,18 +303,8 @@ public class AccountUtils {
                 .title(R.string.authenticator_conflict_title)
                 .content(R.string.authenticator_conflict_message)
                 .positiveText(android.R.string.ok)
-                .cancelListener(new OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        activity.finish();
-                    }
-                })
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        activity.finish();
-                    }
-                })
+                .cancelListener(dialog -> activity.finish())
+                .onPositive((dialog, which) -> activity.finish())
                 .show();
     }
 

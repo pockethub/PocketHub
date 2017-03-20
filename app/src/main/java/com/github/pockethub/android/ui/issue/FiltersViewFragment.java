@@ -35,9 +35,6 @@ import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.MainActivity;
 import com.google.inject.Inject;
 
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
-
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 
@@ -83,12 +80,9 @@ public class FiltersViewFragment extends DialogFragment implements
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
         if (requestCode == REQUEST_DELETE && resultCode == Activity.RESULT_OK) {
             IssueFilter filter = arguments.getParcelable(ARG_FILTER);
-            cache.removeIssueFilter(filter, new Consumer<IssueFilter>() {
-                @Override
-                public void accept(@NonNull IssueFilter response) throws Exception {
-                    if (fragment != null) {
-                        fragment.refresh();
-                    }
+            cache.removeIssueFilter(filter, response -> {
+                if (fragment != null) {
+                    fragment.refresh();
                 }
             });
             return;

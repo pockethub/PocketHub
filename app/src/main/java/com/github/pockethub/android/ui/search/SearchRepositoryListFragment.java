@@ -33,17 +33,13 @@ import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.ui.repo.RepositoryViewActivity;
 import com.github.pockethub.android.util.InfoUtils;
-import com.meisolsson.githubsdk.model.SearchPage;
 import com.meisolsson.githubsdk.service.repositories.RepositoryService;
 import com.meisolsson.githubsdk.service.search.SearchService;
 
 import java.text.MessageFormat;
 import java.util.List;
 
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 import static android.app.SearchManager.QUERY;
@@ -65,25 +61,16 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repository> 
 
             @Override
             public PageIterator<Repository> createIterator(int page, int size) {
-                return new PageIterator<>(new PageIterator.GitHubRequest<Page<Repository>>() {
-                    @Override
-                    public Single<Page<Repository>> execute(int page) {
-                        return ServiceGenerator.createService(getContext(), SearchService.class)
-                                .searchRepositories(query, null, null, page)
-                                .map(new Function<SearchPage<Repository>, Page<Repository>>() {
-                                    @Override
-                                    public Page<Repository> apply(@NonNull SearchPage<Repository> repositorySearchPage) throws Exception {
-                                        return Page.<Repository>builder()
-                                                .first(repositorySearchPage.first())
-                                                .last(repositorySearchPage.last())
-                                                .next(repositorySearchPage.next())
-                                                .prev(repositorySearchPage.prev())
-                                                .items(repositorySearchPage.items())
-                                                .build();
-                                    }
-                                });
-                    }
-                }, page);
+                return new PageIterator<>(page1 ->
+                        ServiceGenerator.createService(getContext(), SearchService.class)
+                                .searchRepositories(query, null, null, page1)
+                                .map(repositorySearchPage -> Page.<Repository>builder()
+                                        .first(repositorySearchPage.first())
+                                        .last(repositorySearchPage.last())
+                                        .next(repositorySearchPage.next())
+                                        .prev(repositorySearchPage.prev())
+                                        .items(repositorySearchPage.items())
+                                        .build()), page);
             }
         };
     }

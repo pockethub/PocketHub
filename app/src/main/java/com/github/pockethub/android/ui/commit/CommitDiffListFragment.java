@@ -20,14 +20,12 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -37,7 +35,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.meisolsson.githubsdk.model.Commit;
 import com.meisolsson.githubsdk.model.GitHubFile;
@@ -441,34 +438,22 @@ public class CommitDiffListFragment extends DialogFragment implements
         finder.setText(R.id.tv_commit, getString(R.string.commit_prefix)
                 + CommitUtils.abbreviate(commit));
 
-        finder.find(R.id.ll_view_area).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogHolder[0].dismiss();
-                openFile(file);
-            }
+        finder.find(R.id.ll_view_area).setOnClickListener(v -> {
+            dialogHolder[0].dismiss();
+            openFile(file);
         });
 
-        finder.find(R.id.ll_comment_area).setOnClickListener(
-                new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialogHolder[0].dismiss();
-                        startActivityForResult(CreateCommentActivity
-                                        .createIntent(repository, commit.sha(),
-                                                file.filename(), position),
-                                COMMENT_CREATE);
-                    }
-                });
+        finder.find(R.id.ll_comment_area).setOnClickListener(v -> {
+            dialogHolder[0].dismiss();
+            startActivityForResult(CreateCommentActivity
+                            .createIntent(repository, commit.sha(),
+                                    file.filename(), position),
+                    COMMENT_CREATE);
+        });
 
         builder.customView(view, false)
                 .negativeText(R.string.cancel)
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();
-                    }
-                });
+                .onNegative((dialog, which) -> dialog.dismiss());
 
         MaterialDialog dialog = builder.build();
         dialogHolder[0] = dialog;

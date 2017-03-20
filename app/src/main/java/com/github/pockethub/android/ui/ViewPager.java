@@ -84,13 +84,7 @@ public class ViewPager extends android.support.v4.view.ViewPager {
      */
     public void scheduleSetItem(final int item,
                                 final OnPageChangeListener listener) {
-        post(new Runnable() {
-
-            @Override
-            public void run() {
-                setItem(item, listener);
-            }
-        });
+        post(() -> setItem(item, listener));
     }
 
     /**
@@ -99,13 +93,7 @@ public class ViewPager extends android.support.v4.view.ViewPager {
      * @param item
      */
     public void scheduleSetItem(final int item) {
-        post(new Runnable() {
-
-            @Override
-            public void run() {
-                setItem(item);
-            }
-        });
+        post(() -> setItem(item));
     }
 
     @Override

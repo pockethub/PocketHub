@@ -30,14 +30,10 @@ import com.meisolsson.githubsdk.service.issues.IssueMilestoneService;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
@@ -93,13 +89,8 @@ public class MilestoneDialog extends BaseProgressDialog {
             @Override
             public void onComplete() {
                 super.onComplete();
-                Collections.sort(milestones, new Comparator<Milestone>() {
-                    @Override
-                    public int compare(Milestone m1, Milestone m2) {
-                        return CASE_INSENSITIVE_ORDER.compare(m1.title(),
-                                m2.title());
-                    }
-                });
+                Collections.sort(milestones, (m1, m2) ->
+                        CASE_INSENSITIVE_ORDER.compare(m1.title(), m2.title()));
                 repositoryMilestones = milestones;
 
                 dismissProgress();
@@ -120,16 +111,13 @@ public class MilestoneDialog extends BaseProgressDialog {
                 .getRepositoryMilestones(repository.owner().login(), repository.name(), i)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .flatMapObservable(new Function<Page<Milestone>, ObservableSource<? extends Page<Milestone>>>() {
-                    @Override
-                    public ObservableSource<? extends Page<Milestone>> apply(@NonNull Page<Milestone> page) throws Exception {
-                        if (page.next() == null) {
-                            return Observable.just(page);
-                        }
-
-                        return Observable.just(page)
-                                .concatWith(getPageAndNext(page.next()));
+                .flatMapObservable(page -> {
+                    if (page.next() == null) {
+                        return Observable.just(page);
                     }
+
+                    return Observable.just(page)
+                            .concatWith(getPageAndNext(page.next()));
                 });
     }
 

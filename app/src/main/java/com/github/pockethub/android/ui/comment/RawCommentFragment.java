@@ -27,7 +27,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -69,6 +68,8 @@ public class RawCommentFragment extends DialogFragment {
         commentText = finder.find(R.id.et_comment);
         addImageFab = finder.find(R.id.fab_add_image);
 
+        // @TargetApi(…) required to ensure build passes
+        // noinspection Convert2Lambda
         addImageFab.setOnClickListener(new View.OnClickListener() {
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
@@ -79,7 +80,6 @@ public class RawCommentFragment extends DialogFragment {
 
                     if (ContextCompat.checkSelfPermission(getActivity(), permission)
                             != PackageManager.PERMISSION_GRANTED) {
-
                         PermissionsUtils.askForPermission(fragment, READ_PERMISSION_REQUEST,
                                 permission, R.string.read_permission_title,
                                 R.string.read_permission_content);
@@ -102,13 +102,9 @@ public class RawCommentFragment extends DialogFragment {
                 }
             }
         });
-        commentText.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                commentText.requestFocusFromTouch();
-                return false;
-            }
+        commentText.setOnTouchListener((v, event) -> {
+            commentText.requestFocusFromTouch();
+            return false;
         });
 
         setText(initComment);
@@ -169,12 +165,7 @@ public class RawCommentFragment extends DialogFragment {
     }
 
     private void insertImage(final String url) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                commentText.append("![](" + url + ")");
-            }
-        });
+        getActivity().runOnUiThread(() -> commentText.append("![](" + url + ")"));
     }
 
     @Override

@@ -43,8 +43,6 @@ import java.io.IOException;
 import java.util.Map;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -147,23 +145,20 @@ public class GistFileFragment extends DialogFragment implements
     }
 
     private void loadSource() {
-        Observable.create(new ObservableOnSubscribe<GistFile>() {
-            @Override
-            public void subscribe(ObservableEmitter<GistFile> emitter) throws Exception {
-                try {
-                    gist = store.refreshGist(gistId);
-                    Map<String, GistFile> files = gist.files();
-                    if (files == null) {
-                        emitter.onError(new IOException());
-                    }
-                    GistFile loadedFile = files.get(file.filename());
-                    if (loadedFile == null) {
-                        emitter.onError(new IOException());
-                    }
-                    emitter.onNext(loadedFile);
-                } catch (IOException e) {
-                    emitter.onError(e);
+        Observable.<GistFile>create(emitter -> {
+            try {
+                gist = store.refreshGist(gistId);
+                Map<String, GistFile> files = gist.files();
+                if (files == null) {
+                    emitter.onError(new IOException());
                 }
+                GistFile loadedFile = files.get(file.filename());
+                if (loadedFile == null) {
+                    emitter.onError(new IOException());
+                }
+                emitter.onNext(loadedFile);
+            } catch (IOException e) {
+                emitter.onError(e);
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

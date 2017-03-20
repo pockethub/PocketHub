@@ -19,4 +19,9 @@
     <issue id="NewApi" severity="error">
         <ignore regexp=".*paddingStart.*" />
     </issue>
+
+    <!-- Retrolambda backports try-with-resources -->
+    <issue id="NewApi">
+        <ignore regexp="Try-with-resources requires API level 19"/>
+    </issue>
 </lint>

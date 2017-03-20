@@ -24,9 +24,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -138,23 +135,10 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
                 R.color.pager_title_background_end);
 
         listView = (ListView) view.findViewById(android.R.id.list);
-        listView.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-                onListItemClick((ListView) parent, view, position, id);
-            }
-        });
-        listView.setOnItemLongClickListener(new OnItemLongClickListener() {
-
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-                return onListItemLongClick((ListView) parent, view, position,
-                        id);
-            }
-        });
+        listView.setOnItemClickListener((parent, view1, position, id) ->
+                onListItemClick((ListView) parent, view1, position, id));
+        listView.setOnItemLongClickListener((parent, view12, position, id) ->
+                onListItemLongClick((ListView) parent, view12, position, id));
         progressBar = (ProgressBar) view.findViewById(R.id.pb_loading);
 
         emptyView = (TextView) view.findViewById(android.R.id.empty);

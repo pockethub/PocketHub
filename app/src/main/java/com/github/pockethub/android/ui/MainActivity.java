@@ -232,14 +232,10 @@ public class MainActivity extends BaseActivity implements
             return;
         }
 
-        view.post(new Runnable() {
-
-            @Override
-            public void run() {
-                MainActivity.this.switchFragment(new HomePagerFragment(), org);
-                if(!userLearnedDrawer) {
-                    drawerLayout.openDrawer(GravityCompat.START);
-                }
+        view.post(() -> {
+            switchFragment(new HomePagerFragment(), org);
+            if(!userLearnedDrawer) {
+                drawerLayout.openDrawer(GravityCompat.START);
             }
         });
 

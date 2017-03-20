@@ -40,8 +40,6 @@ import com.google.inject.Inject;
 import java.util.Collection;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -63,29 +61,26 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
     }
 
     private void randomGist() {
-        Observable<Gist> observable = Observable.create(new ObservableOnSubscribe<Gist>() {
-            @Override
-            public void subscribe(ObservableEmitter<Gist> emitter) throws Exception {
-                GistService service = ServiceGenerator.createService(getActivity(), GistService.class);
+        Observable<Gist> observable = Observable.create(emitter -> {
+            GistService service = ServiceGenerator.createService(getActivity(), GistService.class);
 
-                Page<Gist> p = service.getPublicGists(1).blockingGet();
-                int randomPage = 1 + (int) (Math.random() * ((p.last() - 1) + 1));
+            Page<Gist> p = service.getPublicGists(1).blockingGet();
+            int randomPage = 1 + (int) (Math.random() * ((p.last() - 1) + 1));
 
-                Collection<Gist> gists = service.getPublicGists(randomPage).blockingGet().items();
+            Collection<Gist> gists = service.getPublicGists(randomPage).blockingGet().items();
 
-                // Make at least two tries since page numbers are volatile
-                if (gists.isEmpty()) {
-                    randomPage = 1 + (int) (Math.random() * ((p.last() - 1) + 1));
-                    gists = service.getPublicGists(randomPage).blockingGet().items();
-                }
-
-                if (gists.isEmpty()) {
-                    throw new IllegalArgumentException(getContext().getString(
-                            R.string.no_gists_found));
-                }
-
-                emitter.onNext(store.addGist(gists.iterator().next()));
+            // Make at least two tries since page numbers are volatile
+            if (gists.isEmpty()) {
+                randomPage = 1 + (int) (Math.random() * ((p.last() - 1) + 1));
+                gists = service.getPublicGists(randomPage).blockingGet().items();
             }
+
+            if (gists.isEmpty()) {
+                throw new IllegalArgumentException(getContext().getString(
+                        R.string.no_gists_found));
+            }
+
+            emitter.onNext(store.addGist(gists.iterator().next()));
         });
 
         showProgressIndeterminate(R.string.random_gist);

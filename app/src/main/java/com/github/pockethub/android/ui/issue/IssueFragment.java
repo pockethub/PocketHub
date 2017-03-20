@@ -26,7 +26,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
@@ -278,54 +277,33 @@ public class IssueFragment extends DialogFragment {
 
         footerView = inflater.inflate(R.layout.footer_separator, null);
 
-        commitsView.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (IssueUtils.isPullRequest(issue)) {
-                    openPullRequestCommits();
-                }
+        commitsView.setOnClickListener(v -> {
+            if (IssueUtils.isPullRequest(issue)) {
+                openPullRequestCommits();
             }
         });
 
-        stateText.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (issue != null) {
-                    stateTask.confirm(IssueState.open.equals(issue.state()));
-                }
+        stateText.setOnClickListener(v -> {
+            if (issue != null) {
+                stateTask.confirm(IssueState.open.equals(issue.state()));
             }
         });
 
-        milestoneArea.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (issue != null && canWrite) {
-                    milestoneTask.prompt(issue.milestone());
-                }
+        milestoneArea.setOnClickListener(v -> {
+            if (issue != null && canWrite) {
+                milestoneTask.prompt(issue.milestone());
             }
         });
 
-        headerView.findViewById(R.id.ll_assignee).setOnClickListener(
-                new OnClickListener() {
+        headerView.findViewById(R.id.ll_assignee).setOnClickListener(v -> {
+            if (issue != null && canWrite) {
+                assigneeTask.prompt(issue.assignee());
+            }
+        });
 
-                    @Override
-                    public void onClick(View v) {
-                        if (issue != null && canWrite) {
-                            assigneeTask.prompt(issue.assignee());
-                        }
-                    }
-                });
-
-        labelsArea.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (issue != null && canWrite) {
-                    labelsTask.prompt(issue.labels());
-                }
+        labelsArea.setOnClickListener(v -> {
+            if (issue != null && canWrite) {
+                labelsTask.prompt(issue.labels());
             }
         });
 
@@ -710,19 +688,16 @@ public class IssueFragment extends DialogFragment {
     /**
      * Delete existing comment
      */
-    final DeleteCommentListener deleteCommentListener = new DeleteCommentListener() {
-        @Override
-        public void onDeleteComment(GitHubComment comment) {
-            Bundle args = new Bundle();
-            args.putParcelable(EXTRA_COMMENT, comment);
-            ConfirmDialogFragment.show(
-                    getActivity(),
-                    COMMENT_DELETE,
-                    getActivity()
-                            .getString(R.string.confirm_comment_delete_title),
-                    getActivity().getString(
-                            R.string.confirm_comment_delete_message), args);
-        }
+    final DeleteCommentListener deleteCommentListener = comment -> {
+        Bundle args = new Bundle();
+        args.putParcelable(EXTRA_COMMENT, comment);
+        ConfirmDialogFragment.show(
+                getActivity(),
+                COMMENT_DELETE,
+                getActivity()
+                        .getString(R.string.confirm_comment_delete_title),
+                getActivity().getString(
+                        R.string.confirm_comment_delete_message), args);
     };
 
     /**
