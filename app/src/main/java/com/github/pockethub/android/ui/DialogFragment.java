@@ -120,11 +120,6 @@ public abstract class DialogFragment extends RoboSupportFragment implements
      * @param resId
      */
     protected void showProgressIndeterminate(@StringRes final int resId) {
-        dismissProgress();
-        progressDialog = new MaterialDialog.Builder(getActivity())
-                .content(resId)
-                .progress(true, 0)
-                .build();
-        progressDialog.show();
+        showProgressIndeterminate(getString(resId));
     }
 }

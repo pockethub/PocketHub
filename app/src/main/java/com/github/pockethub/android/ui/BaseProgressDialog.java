@@ -65,12 +65,6 @@ public class BaseProgressDialog {
      * @param resId
      */
     protected void showIndeterminate(@StringRes final int resId) {
-        dismissProgress();
-
-        progress = new MaterialDialog.Builder(context)
-                .content(resId)
-                .progress(true, 0)
-                .build();
-        progress.show();
+        showIndeterminate(context.getString(resId));
     }
 }
