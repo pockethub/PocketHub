@@ -43,9 +43,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.github.pockethub.android.RequestCodes.GIST_VIEW;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_PERSON;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_STAR;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_TEAM;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_PERSON;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_STAR;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_TEAM;
 
 public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter> {
 

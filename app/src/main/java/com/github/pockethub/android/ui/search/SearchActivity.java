@@ -37,8 +37,8 @@ import static android.app.SearchManager.QUERY;
 import static android.content.Intent.ACTION_SEARCH;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_PERSON;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_PUBLIC;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_PERSON;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_PUBLIC;
 
 /**
  * Activity to view search results

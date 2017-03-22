@@ -25,10 +25,10 @@ import android.widget.ImageView;
 
 import com.github.kevinsawicki.wishlist.MultiTypeAdapter;
 import com.github.pockethub.android.R;
+import com.github.pockethub.android.ui.view.OcticonTextView;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.HttpImageGetter;
 import com.github.pockethub.android.util.TimeUtils;
-import com.github.pockethub.android.util.TypefaceUtils;
 import com.meisolsson.githubsdk.model.GitHubComment;
 import com.meisolsson.githubsdk.model.GitHubEvent;
 import com.meisolsson.githubsdk.model.Issue;
@@ -128,7 +128,6 @@ public class CommentListAdapter extends MultiTypeAdapter {
     }
 
     protected void updateEvent(final IssueEvent event) {
-        TypefaceUtils.setOcticons(textView(0));
         String message = String.format("<b>%s</b> %s", event.actor().login(), event.event());
         avatars.bind(imageView(2), event.actor());
 
@@ -137,56 +136,56 @@ public class CommentListAdapter extends MultiTypeAdapter {
         switch (eventType) {
             case assigned:
             case unassigned:
-                setText(0, TypefaceUtils.ICON_PERSON);
+                setText(0, OcticonTextView.ICON_PERSON);
                 textView(0).setTextColor(
                         context.getResources().getColor(R.color.text_description));
                 break;
             case labeled:
             case unlabeled:
-                setText(0, TypefaceUtils.ICON_TAG);
+                setText(0, OcticonTextView.ICON_TAG);
                 textView(0).setTextColor(
                         context.getResources().getColor(R.color.text_description));
                 break;
             case referenced:
-                setText(0, TypefaceUtils.ICON_BOOKMARK);
+                setText(0, OcticonTextView.ICON_BOOKMARK);
                 textView(0).setTextColor(
                         context.getResources().getColor(R.color.text_description));
                 break;
             case milestoned:
             case demilestoned:
-                setText(0, TypefaceUtils.ICON_MILESTONE);
+                setText(0, OcticonTextView.ICON_MILESTONE);
                 textView(0).setTextColor(
                         context.getResources().getColor(R.color.text_description));
                 break;
             case closed:
-                setText(0, TypefaceUtils.ICON_ISSUE_CLOSE);
+                setText(0, OcticonTextView.ICON_ISSUE_CLOSE);
                 textView(0).setTextColor(
                         context.getResources().getColor(R.color.issue_event_closed));
                 break;
             case reopened:
-                setText(0, TypefaceUtils.ICON_ISSUE_REOPEN);
+                setText(0, OcticonTextView.ICON_ISSUE_REOPEN);
                 textView(0).setTextColor(
                         context.getResources().getColor(R.color.issue_event_reopened));
                 break;
             case renamed:
-                setText(0, TypefaceUtils.ICON_EDIT);
+                setText(0, OcticonTextView.ICON_EDIT);
                 textView(0).setTextColor(
                         context.getResources().getColor(R.color.text_description));
                 break;
             case merged:
                 message += String.format(" commit <b>%s</b> into <tt>%s</tt> from <tt>%s</tt>", event.commitId().substring(0, 6), issue.pullRequest().base().ref(),
                         issue.pullRequest().head().ref());
-                setText(0, TypefaceUtils.ICON_MERGE);
+                setText(0, OcticonTextView.ICON_MERGE);
                 textView(0).setTextColor(
                         context.getResources().getColor(R.color.issue_event_merged));
                 break;
             case locked:
-                setText(0, TypefaceUtils.ICON_LOCK);
+                setText(0, OcticonTextView.ICON_LOCK);
                 textView(0).setTextColor(
                         context.getResources().getColor(R.color.issue_event_lock));
                 break;
             case unlocked:
-                setText(0, TypefaceUtils.ICON_KEY);
+                setText(0, OcticonTextView.ICON_KEY);
                 textView(0).setTextColor(
                         context.getResources().getColor(R.color.issue_event_lock));
                 break;

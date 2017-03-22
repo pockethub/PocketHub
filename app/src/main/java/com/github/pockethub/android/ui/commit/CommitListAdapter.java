@@ -17,15 +17,12 @@ package com.github.pockethub.android.ui.commit;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.commit.CommitUtils;
 import com.github.pockethub.android.ui.StyledText;
 import com.github.pockethub.android.util.AvatarLoader;
-import com.github.pockethub.android.util.TypefaceUtils;
 import com.meisolsson.githubsdk.model.Commit;
 
 import java.util.Collection;
@@ -65,15 +62,6 @@ public class CommitListAdapter extends SingleTypeAdapter<Commit> {
     protected int[] getChildViewIds() {
         return new int[] { R.id.tv_commit_id, R.id.tv_commit_author, R.id.iv_avatar,
                 R.id.tv_commit_message, R.id.tv_commit_comments };
-    }
-
-    @Override
-    protected View initialize(View view) {
-        view = super.initialize(view);
-
-        TypefaceUtils.setOcticons((TextView) view
-                .findViewById(R.id.tv_comment_icon));
-        return view;
     }
 
     @Override

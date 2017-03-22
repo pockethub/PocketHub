@@ -20,7 +20,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -29,7 +28,6 @@ import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.ref.RefUtils;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.SingleChoiceDialogFragment;
-import com.github.pockethub.android.util.TypefaceUtils;
 import com.meisolsson.githubsdk.model.git.GitReference;
 
 import java.util.ArrayList;
@@ -62,14 +60,6 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
         @Override
         protected int[] getChildViewIds() {
             return new int[] { R.id.tv_ref_icon, R.id.tv_ref, R.id.rb_selected };
-        }
-
-        @Override
-        protected View initialize(View view) {
-            view = super.initialize(view);
-
-            TypefaceUtils.setOcticons(textView(0));
-            return view;
         }
 
         @Override

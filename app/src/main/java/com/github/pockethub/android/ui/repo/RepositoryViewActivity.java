@@ -54,10 +54,10 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY;
 import static com.github.pockethub.android.ResultCodes.RESOURCE_CHANGED;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_CODE;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_COMMIT;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_ISSUE_OPEN;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_NEWS;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_CODE;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_COMMIT;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_ISSUE_OPEN;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_NEWS;
 
 /**
  * Activity to view a repository

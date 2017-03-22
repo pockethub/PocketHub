@@ -47,7 +47,7 @@
             android:background="@color/text_recent" />
     </LinearLayout>
 
-    <TextView
+    <com.github.pockethub.android.ui.view.OcticonTextView
         android:id="@+id/tv_repo_icon"
         style="@style/PrimaryIcon"
         android:layout_alignParentLeft="true"

@@ -61,7 +61,7 @@
             android:layout_weight="1"
             android:singleLine="true" />
 
-        <TextView
+        <com.github.pockethub.android.ui.view.OcticonTextView
             android:id="@+id/tv_file_icon"
             style="@style/ListIcon"
             android:paddingLeft="5dp"
@@ -76,7 +76,7 @@
             android:paddingEnd="10dp"
             android:paddingRight="10dp" />
 
-        <TextView
+        <com.github.pockethub.android.ui.view.OcticonTextView
             android:id="@+id/tv_comment_icon"
             style="@style/ListIcon"
             android:text="@string/icon_comment" />

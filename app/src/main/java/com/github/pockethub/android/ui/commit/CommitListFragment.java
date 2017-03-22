@@ -46,7 +46,6 @@ import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.ui.ref.RefDialog;
 import com.github.pockethub.android.ui.ref.RefDialogFragment;
 import com.github.pockethub.android.util.AvatarLoader;
-import com.github.pockethub.android.util.TypefaceUtils;
 import com.meisolsson.githubsdk.model.git.GitReference;
 import com.meisolsson.githubsdk.service.repositories.RepositoryCommitService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryService;
@@ -274,7 +273,6 @@ public class CommitListFragment extends PagedItemFragment<Commit>
         branchFooterView = finder.find(R.id.rl_branch);
         branchView = finder.find(R.id.tv_branch);
         branchIconView = finder.find(R.id.tv_branch_icon);
-        TypefaceUtils.setOcticons(branchIconView);
         branchFooterView.setOnClickListener(v -> switchRefs());
     }
 

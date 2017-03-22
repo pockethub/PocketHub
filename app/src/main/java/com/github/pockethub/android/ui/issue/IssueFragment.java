@@ -67,7 +67,6 @@ import com.github.pockethub.android.util.HttpImageGetter;
 import com.github.pockethub.android.util.InfoUtils;
 import com.github.pockethub.android.util.ShareUtils;
 import com.github.pockethub.android.util.ToastUtils;
-import com.github.pockethub.android.util.TypefaceUtils;
 import com.meisolsson.githubsdk.service.issues.IssueCommentService;
 import com.google.inject.Inject;
 
@@ -101,7 +100,7 @@ import static com.github.pockethub.android.RequestCodes.ISSUE_EDIT;
 import static com.github.pockethub.android.RequestCodes.ISSUE_LABELS_UPDATE;
 import static com.github.pockethub.android.RequestCodes.ISSUE_MILESTONE_UPDATE;
 import static com.github.pockethub.android.RequestCodes.ISSUE_REOPEN;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_COMMIT;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_COMMIT;
 
 /**
  * Fragment to display an issue
@@ -339,7 +338,6 @@ public class IssueFragment extends DialogFragment {
             ViewUtils.setGone(commitsView, false);
 
             TextView icon = (TextView) headerView.findViewById(R.id.tv_commit_icon);
-            TypefaceUtils.setOcticons(icon);
             icon.setText(ICON_COMMIT);
 
             String commits = getString(R.string.pull_request_commits,

@@ -17,12 +17,10 @@ package com.github.pockethub.android.ui.issue;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.util.AvatarLoader;
-import com.github.pockethub.android.util.TypefaceUtils;
 import com.meisolsson.githubsdk.model.Issue;
 
 /**
@@ -57,9 +55,6 @@ public class SearchIssueListAdapter extends IssueListAdapter<Issue> {
         view = super.initialize(view);
 
         numberPaintFlags = textView(view, 0).getPaintFlags();
-        TypefaceUtils.setOcticons(
-                (TextView) view.findViewById(R.id.tv_pull_request_icon),
-                (TextView) view.findViewById(R.id.tv_comment_icon));
         for (int i = 0; i < MAX_LABELS; i++) {
             ViewUtils.setGone(view.findViewById(R.id.v_label0 + i), true);
         }
