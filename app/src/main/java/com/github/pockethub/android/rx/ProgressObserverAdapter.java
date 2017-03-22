@@ -92,12 +92,7 @@ public class ProgressObserverAdapter<T> implements Observer<T>, SingleObserver<T
      * @param resId
      */
     protected void showProgressIndeterminate(@StringRes final int resId) {
-        dismissProgress();
-        progressDialog = new MaterialDialog.Builder(context)
-                .content(resId)
-                .progress(true, 0)
-                .build();
-        progressDialog.show();
+        showProgressIndeterminate(context.getString(resId));
     }
 
     public ProgressObserverAdapter<T> start() {
