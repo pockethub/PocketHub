@@ -21,11 +21,11 @@ import android.view.LayoutInflater;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_FORK;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_MIRROR_PRIVATE;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_MIRROR_PUBLIC;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_PRIVATE;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_PUBLIC;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_FORK;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_MIRROR_PRIVATE;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_MIRROR_PUBLIC;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_PRIVATE;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_PUBLIC;
 
 /**
  * Adapter for a list of repositories

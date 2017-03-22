@@ -30,7 +30,7 @@
         android:paddingEnd="10dp"
         android:paddingRight="10dp" />
 
-    <TextView
+    <com.github.pockethub.android.ui.view.OcticonTextView
         android:id="@+id/tv_ref_icon"
         style="@style/PrimaryIcon"
         android:layout_centerVertical="true"

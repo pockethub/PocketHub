@@ -19,7 +19,7 @@
     android:id="@+id/rl_path"
     style="@style/HeaderListItem" >
 
-    <TextView
+    <com.github.pockethub.android.ui.view.OcticonTextView
         android:id="@+id/tv_folder_icon"
         style="@style/PrimaryIcon"
         android:layout_alignParentLeft="true"

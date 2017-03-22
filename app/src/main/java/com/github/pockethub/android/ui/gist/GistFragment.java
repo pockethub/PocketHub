@@ -17,7 +17,6 @@ package com.github.pockethub.android.ui.gist;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
@@ -58,7 +57,6 @@ import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.HttpImageGetter;
 import com.github.pockethub.android.util.ShareUtils;
 import com.github.pockethub.android.util.ToastUtils;
-import com.github.pockethub.android.util.TypefaceUtils;
 import com.meisolsson.githubsdk.service.gists.GistCommentService;
 import com.meisolsson.githubsdk.service.gists.GistService;
 import com.google.inject.Inject;
@@ -383,12 +381,9 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         }
 
         final LayoutInflater inflater = activity.getLayoutInflater();
-        final Typeface octicons = TypefaceUtils.getOcticons(activity);
         for (GistFile file : files.values()) {
             View fileView = inflater.inflate(R.layout.gist_file_item, null);
             ((TextView) fileView.findViewById(R.id.tv_file)).setText(file.filename());
-            ((TextView) fileView.findViewById(R.id.tv_file_icon))
-                    .setTypeface(octicons);
             adapter.addHeader(fileView, file, true);
             fileHeaders.add(fileView);
         }

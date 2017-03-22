@@ -45,10 +45,10 @@ import retrofit2.Response;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static com.github.pockethub.android.Intents.EXTRA_USER;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_FOLLOW;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_NEWS;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_PUBLIC;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_WATCH;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_FOLLOW;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_NEWS;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_PUBLIC;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_WATCH;
 
 
 /**

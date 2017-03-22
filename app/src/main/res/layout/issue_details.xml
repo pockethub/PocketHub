@@ -32,14 +32,14 @@
         android:paddingEnd="2dp"
         android:singleLine="true" />
 
-    <TextView
+    <com.github.pockethub.android.ui.view.OcticonTextView
         android:id="@+id/tv_pull_request_icon"
         style="@style/ListIcon"
         android:paddingRight="5dp"
         android:paddingEnd="5dp"
         android:text="@string/icon_pull_request" />
 
-    <TextView
+    <com.github.pockethub.android.ui.view.OcticonTextView
         android:id="@+id/tv_comment_icon"
         style="@style/ListIcon"
         android:text="@string/icon_comment" />

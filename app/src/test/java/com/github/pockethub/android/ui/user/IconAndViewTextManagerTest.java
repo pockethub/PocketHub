@@ -18,6 +18,7 @@ package com.github.pockethub.android.ui.user;
 
 import com.github.pockethub.android.BuildConfig;
 import com.github.pockethub.android.ui.StyledText;
+import com.github.pockethub.android.ui.view.OcticonTextView;
 import com.github.pockethub.android.util.TypefaceUtils;
 import com.meisolsson.githubsdk.model.GitHubEvent;
 import com.meisolsson.githubsdk.model.GitHubEventType;
@@ -52,7 +53,7 @@ public class IconAndViewTextManagerTest {
         String icon = spyIconAndViewTextManager.setIconAndFormatStyledText(event, null, null);
 
         // Assert
-        assertEquals(TypefaceUtils.ICON_COMMENT, icon);
+        assertEquals(OcticonTextView.ICON_COMMENT, icon);
         verify(spyIconAndViewTextManager).formatCommitComment(event, null, null);
     }
 
@@ -71,7 +72,7 @@ public class IconAndViewTextManagerTest {
         String icon = spyIconAndViewTextManager.setIconAndFormatStyledText(event, null, null);
 
         // Assert
-        assertEquals(TypefaceUtils.ICON_CREATE, icon);
+        assertEquals(OcticonTextView.ICON_CREATE, icon);
         verify(spyIconAndViewTextManager).formatCreate(event, null, null);
     }
 
@@ -90,7 +91,7 @@ public class IconAndViewTextManagerTest {
         String icon = spyIconAndViewTextManager.setIconAndFormatStyledText(event, null, null);
 
         // Assert
-        assertEquals(TypefaceUtils.ICON_DELETE, icon);
+        assertEquals(OcticonTextView.ICON_DELETE, icon);
         verify(spyIconAndViewTextManager).formatDelete(event, null, null);
     }
 
@@ -109,7 +110,7 @@ public class IconAndViewTextManagerTest {
         String icon = spyIconAndViewTextManager.setIconAndFormatStyledText(event, null, null);
 
         // Assert
-        assertEquals(TypefaceUtils.ICON_UPLOAD, icon);
+        assertEquals(OcticonTextView.ICON_UPLOAD, icon);
         verify(spyIconAndViewTextManager).formatDownload(event, null, null);
     }
 
@@ -128,7 +129,7 @@ public class IconAndViewTextManagerTest {
         String icon = spyIconAndViewTextManager.setIconAndFormatStyledText(event, null, null);
 
         // Assert
-        assertEquals(TypefaceUtils.ICON_FOLLOW, icon);
+        assertEquals(OcticonTextView.ICON_FOLLOW, icon);
         verify(spyIconAndViewTextManager).formatFollow(event, null, null);
     }
 
@@ -147,7 +148,7 @@ public class IconAndViewTextManagerTest {
         String icon = spyIconAndViewTextManager.setIconAndFormatStyledText(event, new StyledText(), null);
 
         // Assert
-        assertEquals(TypefaceUtils.ICON_FORK, icon);
+        assertEquals(OcticonTextView.ICON_FORK, icon);
         verify(spyIconAndViewTextManager).formatFork(event, new StyledText(), null);
     }
 
@@ -166,7 +167,7 @@ public class IconAndViewTextManagerTest {
         String icon = spyIconAndViewTextManager.setIconAndFormatStyledText(event, null, null);
 
         // Assert
-        assertEquals(TypefaceUtils.ICON_GIST, icon);
+        assertEquals(OcticonTextView.ICON_GIST, icon);
         verify(spyIconAndViewTextManager).formatGist(event, null, null);
     }
 
@@ -185,7 +186,7 @@ public class IconAndViewTextManagerTest {
         String icon = spyIconAndViewTextManager.setIconAndFormatStyledText(event, null, null);
 
         // Assert
-        assertEquals(TypefaceUtils.ICON_WIKI, icon);
+        assertEquals(OcticonTextView.ICON_WIKI, icon);
         verify(spyIconAndViewTextManager).formatWiki(event, null, null);
     }
 
@@ -204,7 +205,7 @@ public class IconAndViewTextManagerTest {
         String icon = spyIconAndViewTextManager.setIconAndFormatStyledText(event, null, null);
 
         // Assert
-        assertEquals(TypefaceUtils.ICON_ISSUE_COMMENT, icon);
+        assertEquals(OcticonTextView.ICON_ISSUE_COMMENT, icon);
         verify(spyIconAndViewTextManager).formatIssueComment(event, null, null);
     }
 
@@ -228,7 +229,7 @@ public class IconAndViewTextManagerTest {
         String icon = spyIconAndViewTextManager.setIconAndFormatStyledText(event, null, null);
 
         // Assert
-        assertEquals(TypefaceUtils.ICON_ISSUE_OPEN, icon);
+        assertEquals(OcticonTextView.ICON_ISSUE_OPEN, icon);
         verify(spyIconAndViewTextManager).formatIssues(event, null, null);
     }
 
@@ -252,7 +253,7 @@ public class IconAndViewTextManagerTest {
         String icon = spyIconAndViewTextManager.setIconAndFormatStyledText(event, null, null);
 
         // Assert
-        assertEquals(TypefaceUtils.ICON_ISSUE_REOPEN, icon);
+        assertEquals(OcticonTextView.ICON_ISSUE_REOPEN, icon);
         verify(spyIconAndViewTextManager).formatIssues(event, null, null);
     }
 
@@ -276,7 +277,7 @@ public class IconAndViewTextManagerTest {
         String icon = spyIconAndViewTextManager.setIconAndFormatStyledText(event, null, null);
 
         // Assert
-        assertEquals(TypefaceUtils.ICON_ISSUE_CLOSE, icon);
+        assertEquals(OcticonTextView.ICON_ISSUE_CLOSE, icon);
         verify(spyIconAndViewTextManager).formatIssues(event, null, null);
     }
 
@@ -295,7 +296,7 @@ public class IconAndViewTextManagerTest {
         String icon = spyIconAndViewTextManager.setIconAndFormatStyledText(event, null, null);
 
         // Assert
-        assertEquals(TypefaceUtils.ICON_ADD_MEMBER, icon);
+        assertEquals(OcticonTextView.ICON_ADD_MEMBER, icon);
         verify(spyIconAndViewTextManager).formatAddMember(event, null, null);
     }
 
@@ -333,7 +334,7 @@ public class IconAndViewTextManagerTest {
         String icon = spyIconAndViewTextManager.setIconAndFormatStyledText(event, null, null);
 
         // Assert
-        assertEquals(TypefaceUtils.ICON_PULL_REQUEST, icon);
+        assertEquals(OcticonTextView.ICON_PULL_REQUEST, icon);
         verify(spyIconAndViewTextManager).formatPullRequest(event, null, null);
     }
 
@@ -352,7 +353,7 @@ public class IconAndViewTextManagerTest {
         String icon = spyIconAndViewTextManager.setIconAndFormatStyledText(event, null, null);
 
         // Assert
-        assertEquals(TypefaceUtils.ICON_COMMENT, icon);
+        assertEquals(OcticonTextView.ICON_COMMENT, icon);
         verify(spyIconAndViewTextManager).formatReviewComment(event, null, null);
     }
 
@@ -371,7 +372,7 @@ public class IconAndViewTextManagerTest {
         String icon = spyIconAndViewTextManager.setIconAndFormatStyledText(event, null, null);
 
         // Assert
-        assertEquals(TypefaceUtils.ICON_PUSH, icon);
+        assertEquals(OcticonTextView.ICON_PUSH, icon);
         verify(spyIconAndViewTextManager).formatPush(event, null, null);
     }
 
@@ -390,7 +391,7 @@ public class IconAndViewTextManagerTest {
         String icon = spyIconAndViewTextManager.setIconAndFormatStyledText(event, null, null);
 
         // Assert
-        assertEquals(TypefaceUtils.ICON_STAR, icon);
+        assertEquals(OcticonTextView.ICON_STAR, icon);
         verify(spyIconAndViewTextManager).formatWatch(event, null, null);
     }
 }

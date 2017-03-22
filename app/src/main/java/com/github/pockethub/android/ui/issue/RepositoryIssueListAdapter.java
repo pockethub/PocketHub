@@ -17,12 +17,10 @@ package com.github.pockethub.android.ui.issue;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueUtils;
 import com.github.pockethub.android.util.AvatarLoader;
-import com.github.pockethub.android.util.TypefaceUtils;
 import com.meisolsson.githubsdk.model.Issue;
 
 /**
@@ -52,8 +50,6 @@ public class RepositoryIssueListAdapter extends IssueListAdapter<Issue> {
         view = super.initialize(view);
 
         numberPaintFlags = textView(view, 0).getPaintFlags();
-        TypefaceUtils.setOcticons(textView(view, 5),
-                (TextView) view.findViewById(R.id.tv_comment_icon));
         return view;
     }
 

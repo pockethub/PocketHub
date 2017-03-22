@@ -17,7 +17,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/ListItem" >
 
-    <TextView
+    <com.github.pockethub.android.ui.view.OcticonTextView
         android:id="@+id/tv_folder_icon"
         style="@style/EventIcon"
         android:layout_alignParentLeft="true"
@@ -43,7 +43,7 @@
             android:paddingEnd="5dp"
             android:paddingRight="5dp" />
 
-        <TextView
+        <com.github.pockethub.android.ui.view.OcticonTextView
             android:id="@+id/tv_folders_icon"
             style="@style/ListIcon"
             android:text="@string/icon_folder" />
@@ -56,7 +56,7 @@
             android:paddingEnd="10dp"
             android:paddingRight="10dp" />
 
-        <TextView
+        <com.github.pockethub.android.ui.view.OcticonTextView
             android:id="@+id/tv_files_icon"
             style="@style/ListIcon"
             android:paddingLeft="5dp"

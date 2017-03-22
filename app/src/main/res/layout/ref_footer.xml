@@ -25,7 +25,7 @@
     android:paddingTop="8dp"
     android:visibility="gone" >
 
-    <TextView
+    <com.github.pockethub.android.ui.view.OcticonTextView
         android:id="@+id/tv_branch_icon"
         style="@style/PrimaryIcon"
         android:layout_alignParentLeft="true"

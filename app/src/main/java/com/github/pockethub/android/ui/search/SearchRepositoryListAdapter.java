@@ -17,14 +17,11 @@ package com.github.pockethub.android.ui.search;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
 
 import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.StyledText;
 import com.github.pockethub.android.ui.repo.RepositoryListAdapter;
-import com.github.pockethub.android.util.TypefaceUtils;
 
 /**
  * Adapter for a list of searched for repositories
@@ -48,16 +45,6 @@ public class SearchRepositoryListAdapter extends
         final String id = String.valueOf(getItem(position).id());
         return !TextUtils.isEmpty(id) ? id.hashCode() : super
                 .getItemId(position);
-    }
-
-    @Override
-    protected View initialize(View view) {
-        view = super.initialize(view);
-
-        TypefaceUtils.setOcticons(textView(view, 0),
-                (TextView) view.findViewById(R.id.tv_forks_icon),
-                (TextView) view.findViewById(R.id.tv_watchers_icon));
-        return view;
     }
 
     @Override

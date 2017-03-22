@@ -48,7 +48,6 @@ import com.github.pockethub.android.ui.ref.CodeTreeAdapter;
 import com.github.pockethub.android.ui.ref.RefDialog;
 import com.github.pockethub.android.ui.ref.RefDialogFragment;
 import com.github.pockethub.android.util.ToastUtils;
-import com.github.pockethub.android.util.TypefaceUtils;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.git.GitReference;
 
@@ -238,8 +237,6 @@ public class RepositoryCodeFragment extends DialogFragment implements
             adapter.addHeader(pathHeaderView);
         }
 
-        TypefaceUtils.setOcticons(branchIconView,
-                (TextView) pathHeaderView.findViewById(R.id.tv_folder_icon));
         listView.setAdapter(adapter);
     }
 

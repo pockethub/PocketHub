@@ -22,7 +22,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <com.github.pockethub.android.ui.view.OcticonTextView
         android:layout_centerVertical="true"
         style="@style/PrimaryIcon"
         android:id="@+id/tv_event_icon"/>

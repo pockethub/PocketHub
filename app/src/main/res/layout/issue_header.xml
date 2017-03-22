@@ -159,7 +159,7 @@
         android:orientation="horizontal"
         android:visibility="gone" >
 
-        <TextView
+        <com.github.pockethub.android.ui.view.OcticonTextView
             android:id="@+id/tv_commit_icon"
             style="@style/PrimaryIcon"
             android:paddingEnd="5dp"
