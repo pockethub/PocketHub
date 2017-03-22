@@ -67,7 +67,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
@@ -401,7 +401,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     }
 
     private void refreshGist() {
-        Observable.create(new RefreshGistTask(getActivity(), gistId, imageGetter))
+        Single.create(new RefreshGistTask(getActivity(), gistId, imageGetter))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<FullGist>bindToLifecycle())

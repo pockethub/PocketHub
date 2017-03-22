@@ -37,7 +37,7 @@ import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.HttpImageGetter;
 import com.google.inject.Inject;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -114,7 +114,7 @@ public class GistFilesViewActivity extends PagerActivity {
             ViewUtils.setGone(loadingBar, false);
             ViewUtils.setGone(pager, true);
             ViewUtils.setGone(tabs, true);
-            Observable.create(new RefreshGistTask(this, gistId, imageGetter))
+            Single.create(new RefreshGistTask(this, gistId, imageGetter))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(this.<FullGist>bindToLifecycle())

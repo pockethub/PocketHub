@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -202,7 +202,7 @@ public class AccountDataManager {
      */
     public void getIssueFilters(
             final Consumer<Collection<IssueFilter>> requestConsumer) {
-        Observable.<Collection<IssueFilter>>create(emitter -> emitter.onNext(getIssueFilters()))
+        Single.<Collection<IssueFilter>>create(emitter -> emitter.onSuccess(getIssueFilters()))
                 .subscribe(requestConsumer);
     }
 
@@ -233,9 +233,9 @@ public class AccountDataManager {
      */
     public void addIssueFilter(final IssueFilter filter,
             final Consumer<IssueFilter> requestConsumer) {
-        Observable.<IssueFilter>create(emitter -> {
+        Single.<IssueFilter>create(emitter -> {
             addIssueFilter(filter);
-            emitter.onNext(filter);
+            emitter.onSuccess(filter);
         }).subscribe(requestConsumer, e ->
                 Log.d(TAG, "Exception adding issue filter", e));
     }
@@ -264,9 +264,9 @@ public class AccountDataManager {
      */
     public void removeIssueFilter(final IssueFilter filter,
             final Consumer<IssueFilter> requestConsumer) {
-        Observable.<IssueFilter>create(emitter -> {
+        Single.<IssueFilter>create(emitter -> {
             removeIssueFilter(filter);
-            emitter.onNext(filter);
+            emitter.onSuccess(filter);
         }).subscribe(requestConsumer, e ->
                 Log.d(TAG, "Exception removing issue filter", e));
     }

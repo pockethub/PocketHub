@@ -30,14 +30,14 @@ import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.List;
 
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
 import roboguice.RoboGuice;
 
 /**
  * Task to load a commit by SHA-1 id
  */
-public class RefreshCommitTask implements ObservableOnSubscribe<FullCommit> {
+public class RefreshCommitTask implements SingleOnSubscribe<FullCommit> {
 
     private final Context context;
 
@@ -66,7 +66,7 @@ public class RefreshCommitTask implements ObservableOnSubscribe<FullCommit> {
     }
 
     @Override
-    public void subscribe(ObservableEmitter<FullCommit> emitter) throws Exception {
+    public void subscribe(SingleEmitter<FullCommit> emitter) throws Exception {
         try {
             Commit commit = store.refreshCommit(repository, id);
             GitCommit rawCommit = commit.commit();
@@ -79,9 +79,9 @@ public class RefreshCommitTask implements ObservableOnSubscribe<FullCommit> {
                 for (GitComment comment : comments) {
                     imageGetter.encode(comment, comment.bodyHtml());
                 }
-                emitter.onNext(new FullCommit(commit, comments));
+                emitter.onSuccess(new FullCommit(commit, comments));
             } else {
-                emitter.onNext(new FullCommit(commit));
+                emitter.onSuccess(new FullCommit(commit));
             }
         }catch (IOException e){
             emitter.onError(e);

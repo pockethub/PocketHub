@@ -35,14 +35,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
 import roboguice.RoboGuice;
 
 /**
  * Task to load and store an {@link Issue}
  */
-public class RefreshIssueTask implements ObservableOnSubscribe<FullIssue> {
+public class RefreshIssueTask implements SingleOnSubscribe<FullIssue> {
 
     private static final String TAG = "RefreshIssueTask";
 
@@ -77,7 +77,7 @@ public class RefreshIssueTask implements ObservableOnSubscribe<FullIssue> {
     }
 
     @Override
-    public void subscribe(ObservableEmitter<FullIssue> emitter) throws Exception {
+    public void subscribe(SingleEmitter<FullIssue> emitter) throws Exception {
         try {
             Issue issue = store.refreshIssue(repo, issueNumber);
 
@@ -102,7 +102,7 @@ public class RefreshIssueTask implements ObservableOnSubscribe<FullIssue> {
             }
 
             List<IssueEvent> events = getAllEvents(repo.owner().login(), repo.name(), issueNumber);
-            emitter.onNext(new FullIssue(issue, comments, events));
+            emitter.onSuccess(new FullIssue(issue, comments, events));
         } catch (IOException e){
             emitter.onError(e);
         }

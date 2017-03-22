@@ -38,7 +38,7 @@ import com.google.inject.Inject;
 
 import java.util.Collection;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -60,7 +60,7 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
     }
 
     private void randomGist() {
-        Observable<Gist> observable = Observable.create(emitter -> {
+        Single<Gist> single = Single.create(emitter -> {
             GistService service = ServiceGenerator.createService(getActivity(), GistService.class);
 
             Page<Gist> p = service.getPublicGists(1).blockingGet();
@@ -79,11 +79,11 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
                         R.string.no_gists_found));
             }
 
-            emitter.onNext(store.addGist(gists.iterator().next()));
+            emitter.onSuccess(store.addGist(gists.iterator().next()));
         });
 
         showProgressIndeterminate(R.string.random_gist);
-        observable.subscribeOn(Schedulers.io())
+        single.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(((BaseActivity)getActivity()).<Gist>bindToLifecycle())
                 .subscribe(gist -> {

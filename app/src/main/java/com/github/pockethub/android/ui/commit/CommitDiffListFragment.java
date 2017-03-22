@@ -63,7 +63,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -240,7 +240,7 @@ public class CommitDiffListFragment extends DialogFragment implements
     }
 
     private void refreshCommit() {
-        Observable.create(new RefreshCommitTask(getActivity(), repository, base, commentImageGetter))
+        Single.create(new RefreshCommitTask(getActivity(), repository, base, commentImageGetter))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<FullCommit>bindToLifecycle())
