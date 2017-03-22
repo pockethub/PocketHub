@@ -16,7 +16,6 @@
 package com.github.pockethub.android.util;
 
 import android.app.Activity;
-import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.github.kevinsawicki.wishlist.Toaster;
