@@ -28,7 +28,6 @@ import com.meisolsson.githubsdk.model.User;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ThrowableLoader;
-import com.github.pockethub.android.accounts.AccountUtils;
 import com.github.pockethub.android.ui.ItemListFragment;
 import com.github.pockethub.android.ui.user.UserViewActivity;
 import com.github.pockethub.android.util.AvatarLoader;

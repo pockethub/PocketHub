@@ -30,10 +30,6 @@ import com.github.pockethub.android.ui.FragmentStatePagerAdapter;
 import java.util.List;
 
 import static com.github.pockethub.android.Intents.*;
-import static com.github.pockethub.android.Intents.EXTRA_ISSUE_NUMBER;
-import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY_NAME;
-import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY_OWNER;
-import static com.github.pockethub.android.Intents.EXTRA_USER;
 
 
 /**

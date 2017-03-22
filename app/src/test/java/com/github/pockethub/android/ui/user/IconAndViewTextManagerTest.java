@@ -19,7 +19,6 @@ package com.github.pockethub.android.ui.user;
 import com.github.pockethub.android.BuildConfig;
 import com.github.pockethub.android.ui.StyledText;
 import com.github.pockethub.android.ui.view.OcticonTextView;
-import com.github.pockethub.android.util.TypefaceUtils;
 import com.meisolsson.githubsdk.model.GitHubEvent;
 import com.meisolsson.githubsdk.model.GitHubEventType;
 import com.meisolsson.githubsdk.model.payload.IssuesPayload;

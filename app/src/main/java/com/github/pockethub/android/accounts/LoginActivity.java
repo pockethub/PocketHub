@@ -36,7 +36,6 @@ import com.meisolsson.githubsdk.core.TokenStore;
 import com.meisolsson.githubsdk.model.GitHubToken;
 import com.meisolsson.githubsdk.model.User;
 import com.meisolsson.githubsdk.model.request.RequestToken;
-import com.meisolsson.githubsdk.service.OAuthService;
 import com.meisolsson.githubsdk.service.users.UserService;
 
 import java.util.concurrent.TimeUnit;

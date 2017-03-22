@@ -20,7 +20,6 @@ import android.widget.ListView;
 
 import com.meisolsson.githubsdk.model.User;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.pockethub.android.accounts.AccountUtils;
 import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.google.inject.Inject;

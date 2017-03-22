@@ -1,16 +1,11 @@
 package com.github.pockethub.android.util;
 
 import android.app.Activity;
-import android.support.annotation.IdRes;
 import android.support.annotation.StringRes;
-import android.support.v13.app.FragmentCompat;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.PermissionChecker;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.pockethub.android.R;
 
 /**
  * Created by savio on 2017-01-08.

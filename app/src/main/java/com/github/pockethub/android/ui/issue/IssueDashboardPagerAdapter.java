@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.core.issue.IssueFilter;
 import com.github.pockethub.android.ui.FragmentStatePagerAdapter;
 
 import java.io.Serializable;
