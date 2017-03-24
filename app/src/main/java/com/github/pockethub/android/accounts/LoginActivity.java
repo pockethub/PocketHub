@@ -130,7 +130,7 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
     }
 
     private void onUserLoggedIn(Uri uri) {
-        if (uri != null && uri.getScheme().equals(getString(R.string.github_oauth_scheme))) {
+        if (uri != null && uri.getScheme().equalsIgnoreCase(getString(R.string.github_oauth_scheme))) {
             openLoadingDialog();
             String code = uri.getQueryParameter("code");
             RequestToken request = RequestToken.builder()
