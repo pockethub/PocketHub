@@ -44,6 +44,7 @@ Any contributions, large or small, major features, bug fixes, additional languag
 ### Callback URL
 - The callback URL needs to be in the format `your_schema://whatever_you_want`
 - Use a custom schema like `myawesomeschema` (not `http` or `https`)
+- The schema must be lowercase ([Reference](https://developer.android.com/guide/topics/manifest/data-element.html))
 
 ## Legacy Notes
 
