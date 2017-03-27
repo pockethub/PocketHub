@@ -100,8 +100,11 @@ public class SearchIssueListFragment extends ItemListFragment<Issue>
 
                 int current = 1;
                 int last = 0;
-                while(current != last){
-                    SearchPage<Issue> page = service.searchIssues(query, null, null, current).blockingGet();
+                while (current != last) {
+                    SearchPage<Issue> page = service.searchIssues(query, null, null, current)
+                            .blockingGet()
+                            .body();
+
                     matches.addAll(page.items());
                     last = page.last() != null ? page.last() : -1;
                     current = page.next() != null ? page.next() : -1;

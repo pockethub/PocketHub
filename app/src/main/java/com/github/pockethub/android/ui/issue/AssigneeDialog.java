@@ -106,7 +106,8 @@ public class AssigneeDialog extends BaseProgressDialog {
                 .getAssignees(repository.owner().login(), repository.name(), i)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .flatMapObservable(page -> {
+                .flatMapObservable(response -> {
+                    Page<User> page = response.body();
                     if (page.next() == null) {
                         return Observable.just(page);
                     }

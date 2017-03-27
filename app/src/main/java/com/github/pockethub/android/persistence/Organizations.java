@@ -91,14 +91,15 @@ public class Organizations implements PersistableResource<User> {
     @Override
     public List<User> request() throws IOException {
         User user = ServiceGenerator.createService(context, UserService.class).getUser()
-                .blockingGet();
+                .blockingGet()
+                .body();
 
         List<User> all = getAllOrgs();
         all.add(user);
         return all;
     }
 
-    private List<User> getAllOrgs(){
+    private List<User> getAllOrgs() {
         List<User> repos = new ArrayList<>();
         int current = 1;
         int last = -1;
@@ -106,7 +107,9 @@ public class Organizations implements PersistableResource<User> {
         while(current != last) {
             Page<User> page = ServiceGenerator.createService(context, OrganizationService.class)
                     .getMyOrganizations(current)
-                    .blockingGet();
+                    .blockingGet()
+                    .body();
+
             repos.addAll(page.items());
             last = page.last() != null ? page.last() : -1;
             current = page.next() != null ? page.next() : -1;

@@ -36,6 +36,9 @@ public class ServicesModule extends AbstractModule {
 
     @Provides
     User currentUser(Context context) throws IOException {
-        return ServiceGenerator.createService(context, UserService.class).getUser().blockingGet();
+        return ServiceGenerator.createService(context, UserService.class)
+                .getUser()
+                .blockingGet()
+                .body();
     }
 }

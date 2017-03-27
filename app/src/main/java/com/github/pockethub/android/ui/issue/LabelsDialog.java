@@ -20,6 +20,7 @@ import android.util.Log;
 import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Label;
+import com.meisolsson.githubsdk.model.Milestone;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.R;
@@ -110,7 +111,8 @@ public class LabelsDialog extends BaseProgressDialog {
                 .getRepositoryLabels(repository.owner().login(), repository.name(), i)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .flatMapObservable(page -> {
+                .flatMapObservable(response -> {
+                    Page<Label> page = response.body();
                     if (page.next() == null) {
                         return Observable.just(page);
                     }

@@ -40,6 +40,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import retrofit2.Response;
+
 /**
  * Cache of repositories under a given organization
  */
@@ -195,13 +197,13 @@ public class OrganizationRepositories implements
         }
     }
 
-    private List<Repository> getAllItems(PageIterator.GitHubRequest<Page<Repository>> request){
+    private List<Repository> getAllItems(PageIterator.GitHubRequest<Response<Page<Repository>>> request) {
         List<Repository> repos = new ArrayList<>();
         int current = 1;
         int last = -1;
 
         while(current != last) {
-            Page<Repository> page = request.execute(current).blockingGet();
+            Page<Repository> page = request.execute(current).blockingGet().body();
             repos.addAll(page.items());
             last = page.last() != null ? page.last() : -1;
             current = page.next() != null ? page.next() : -1;

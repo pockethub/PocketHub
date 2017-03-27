@@ -274,9 +274,9 @@ public class BranchFileViewActivity extends BaseActivity implements
                 .getGitBlob(repo.owner().login(), repo.name(), sha)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<GitBlob>bindToLifecycle())
-                .subscribe(gitBlob -> {
-                    blob = gitBlob;
+                .compose(this.bindToLifecycle())
+                .subscribe(response -> {
+                    blob = response.body();
 
                     if (markdownItem != null) {
                         markdownItem.setEnabled(true);

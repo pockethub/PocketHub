@@ -127,8 +127,9 @@ public class CommitCompareListFragment extends DialogFragment implements
                 .compareCommits(repository.owner().login(), repository.name(), base, head)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<CommitCompare>bindToLifecycle())
-                .subscribe(compareCommit -> {
+                .compose(this.bindToLifecycle())
+                .subscribe(response -> {
+                    CommitCompare compareCommit = response.body();
                     List<GitHubFile> files = compareCommit.files();
                     diffStyler.setFiles(files);
                     if (files != null) {

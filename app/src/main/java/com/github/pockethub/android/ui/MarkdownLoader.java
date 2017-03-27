@@ -73,7 +73,8 @@ public class MarkdownLoader extends AuthenticatedUserLoader<CharSequence> {
 
         String html = ServiceGenerator.createService(activity, MarkdownService.class)
                 .renderMarkdown(markdown)
-                .blockingGet();
+                .blockingGet()
+                .body();
 
         if (encode) {
             return HtmlUtils.encode(html, imageGetter);

@@ -98,9 +98,9 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
                     .getUser(user.login())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<User>bindToLifecycle())
-                    .subscribe(fullUser -> {
-                        user = fullUser;
+                    .compose(this.bindToLifecycle())
+                    .subscribe(response -> {
+                        user = response.body();
                         configurePager();
                     }, e -> {
                         ToastUtils.show(this, R.string.error_person_load);

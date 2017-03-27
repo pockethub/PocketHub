@@ -74,6 +74,7 @@ public class RefreshCommitTask implements SingleOnSubscribe<FullCommit> {
                 List<GitComment> comments = ServiceGenerator.createService(context, RepositoryCommentService.class)
                         .getCommitComments(repository.owner().login(), repository.name(), commit.sha(), 1)
                         .blockingGet()
+                        .body()
                         .items();
 
                 for (GitComment comment : comments) {

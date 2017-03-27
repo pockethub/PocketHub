@@ -194,7 +194,7 @@ public class HttpImageGetter implements ImageGetter {
                         .renderMarkdown(requestMarkdown)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(data -> continueBind(view, data, id),
+                        .subscribe(data -> continueBind(view, data.body(), id),
                                 e -> continueBind(view, html, id));
             } else {
                 return continueBind(view, html, id);
@@ -203,7 +203,7 @@ public class HttpImageGetter implements ImageGetter {
         return continueBind(view, html, id);
     }
 
-    private HttpImageGetter continueBind(final TextView view, final String html, final Object id){
+    private HttpImageGetter continueBind(final TextView view, final String html, final Object id) {
         CharSequence encoded = HtmlUtils.encode(html, loading);
         if (containsImages(html)) {
             rawHtmlCache.put(id, encoded);
@@ -292,7 +292,8 @@ public class HttpImageGetter implements ImageGetter {
 
         Content contents = ServiceGenerator.createService(context, RepositoryContentService.class)
                 .getContents(owner, name, path.toString(), branch)
-                .blockingGet();
+                .blockingGet()
+                .body();
 
         if (contents.content() != null) {
             byte[] content = Base64.decode(contents.content(), DEFAULT);

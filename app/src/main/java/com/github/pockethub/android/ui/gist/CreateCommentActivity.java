@@ -82,8 +82,8 @@ public class CreateCommentActivity extends
                 .createGistComment(gist.id(), commentRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<GitHubComment>bindToLifecycle())
-                .subscribe(this::finish, error -> {
+                .compose(this.bindToLifecycle())
+                .subscribe(response -> finish(response.body()), error -> {
                     Log.e(TAG, "Exception creating comment on gist", error);
 
                     ToastUtils.show(this, error.getMessage());

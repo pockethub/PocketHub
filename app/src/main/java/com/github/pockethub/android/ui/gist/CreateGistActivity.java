@@ -15,6 +15,7 @@
  */
 package com.github.pockethub.android.ui.gist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.ActionBar;
@@ -46,6 +47,7 @@ import java.util.Map;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 /**
  * Activity to share a text selection as a public or private Gist
@@ -146,7 +148,7 @@ public class CreateGistActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.create_gist:
                 createGist();
                 return true;
@@ -192,13 +194,13 @@ public class CreateGistActivity extends BaseActivity {
                 .createGist(createGist)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Gist>bindToLifecycle())
-                .subscribe(new ProgressObserverAdapter<Gist>(this, R.string.creating_gist) {
+                .compose(this.bindToLifecycle())
+                .subscribe(new ProgressObserverAdapter<Response<Gist>>(this, R.string.creating_gist) {
 
                     @Override
-                    public void onSuccess(Gist gist) {
-                        super.onSuccess(gist);
-                        startActivity(GistsViewActivity.createIntent(gist));
+                    public void onSuccess(Response<Gist> response) {
+                        super.onSuccess(response);
+                        startActivity(GistsViewActivity.createIntent(response.body()));
                         setResult(RESULT_OK);
                         finish();
                     }

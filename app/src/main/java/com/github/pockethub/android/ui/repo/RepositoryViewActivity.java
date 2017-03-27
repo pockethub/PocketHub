@@ -113,9 +113,9 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                     .getRepository(repository.owner().login(), repository.name())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Repository>bindToLifecycle())
-                    .subscribe(repo -> {
-                        repository = repo;
+                    .compose(this.bindToLifecycle())
+                    .subscribe(response -> {
+                        repository = response.body();
                         checkReadme();
                     }, e -> {
                         ToastUtils.show(this, R.string.error_repo_load);
@@ -280,8 +280,9 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                 .createFork(repository.owner().login(), repository.name())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Repository>bindToLifecycle())
-                .subscribe(repo -> {
+                .compose(this.bindToLifecycle())
+                .subscribe(response -> {
+                    Repository repo = response.body();
                     if (repo != null) {
                         UriLauncherActivity.launchUri(this, Uri.parse(repo.htmlUrl()));
                     } else {

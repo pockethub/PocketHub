@@ -49,12 +49,12 @@ public class RepositoryReadmeFragment extends DialogFragment {
                 .getReadmeHtml(repo.owner().login(), repo.name(), null)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<String>bindToLifecycle())
-                .subscribe(s -> {
+                .compose(this.bindToLifecycle())
+                .subscribe(response -> {
                     String baseUrl = String.format("https://github.com/%s/%s/raw/%s/",
                             repo.owner().login(), repo.name(), "master");
 
-                    String data = PAGE_START + s + PAGE_END;
+                    String data = PAGE_START + response.body() + PAGE_END;
                     webview.loadDataWithBaseURL(baseUrl, data, "text/html", "UTF-8", null);
                 });
     }

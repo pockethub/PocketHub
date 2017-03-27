@@ -114,6 +114,7 @@ public class CommitListFragment extends PagedItemFragment<Commit>
                         defaultBranch = ServiceGenerator.createService(getActivity(), RepositoryService.class)
                                 .getRepository(repository.owner().login(), repository.name())
                                 .blockingGet()
+                                .body()
                                 .defaultBranch();
 
                         if (TextUtils.isEmpty(defaultBranch)) {

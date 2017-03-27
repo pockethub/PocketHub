@@ -275,8 +275,9 @@ public class CommitFileViewActivity extends BaseActivity implements
                 .getGitBlob(repo.owner().login(), repo.name(), sha)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<GitBlob>bindToLifecycle())
-                .subscribe(gitBlob -> {
+                .compose(this.bindToLifecycle())
+                .subscribe(response -> {
+                    GitBlob gitBlob = response.body();
                     ViewUtils.setGone(loadingBar, true);
                     ViewUtils.setGone(codeView, false);
 

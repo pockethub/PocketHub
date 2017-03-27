@@ -63,15 +63,18 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
         Single<Gist> single = Single.create(emitter -> {
             GistService service = ServiceGenerator.createService(getActivity(), GistService.class);
 
-            Page<Gist> p = service.getPublicGists(1).blockingGet();
+            Page<Gist> p = service.getPublicGists(1).blockingGet().body();
             int randomPage = 1 + (int) (Math.random() * ((p.last() - 1) + 1));
 
-            Collection<Gist> gists = service.getPublicGists(randomPage).blockingGet().items();
+            Collection<Gist> gists = service.getPublicGists(randomPage)
+                    .blockingGet()
+                    .body()
+                    .items();
 
             // Make at least two tries since page numbers are volatile
             if (gists.isEmpty()) {
                 randomPage = 1 + (int) (Math.random() * ((p.last() - 1) + 1));
-                gists = service.getPublicGists(randomPage).blockingGet().items();
+                gists = service.getPublicGists(randomPage).blockingGet().body().items();
             }
 
             if (gists.isEmpty()) {
@@ -85,7 +88,7 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
         showProgressIndeterminate(R.string.random_gist);
         single.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(((BaseActivity)getActivity()).<Gist>bindToLifecycle())
+                .compose(((BaseActivity)getActivity()).bindToLifecycle())
                 .subscribe(gist -> {
                     getActivity().startActivityForResult(
                             GistsViewActivity.createIntent(gist), GIST_VIEW);

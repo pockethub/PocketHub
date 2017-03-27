@@ -102,7 +102,10 @@ public class GistStore extends ItemStore {
      * @throws IOException
      */
     public Gist refreshGist(String id) throws IOException {
-        return ServiceGenerator.createService(context, GistService.class).getGist(id).blockingGet();
+        return ServiceGenerator.createService(context, GistService.class)
+                .getGist(id)
+                .blockingGet()
+                .body();
     }
 
     /**
@@ -119,6 +122,9 @@ public class GistStore extends ItemStore {
                 .isPublic(gist.isPublic())
                 .build();
 
-        return ServiceGenerator.createService(context, GistService.class).editGist(edit).blockingGet();
+        return ServiceGenerator.createService(context, GistService.class)
+                .editGist(edit)
+                .blockingGet()
+                .body();
     }
 }

@@ -36,7 +36,7 @@ import retrofit2.Response;
 import roboguice.RoboGuice;
 
 /**
- * Task to load and store a {@link Gist}
+ * Task to load and store a {@link Gist}.
  */
 public class RefreshGistTask implements SingleOnSubscribe<FullGist> {
 
@@ -50,7 +50,7 @@ public class RefreshGistTask implements SingleOnSubscribe<FullGist> {
     private final HttpImageGetter imageGetter;
 
     /**
-     * Create task to refresh the given {@link Gist}
+     * Create task to refresh the given {@link Gist}.
      *
      * @param gistId
      * @param imageGetter
@@ -69,7 +69,8 @@ public class RefreshGistTask implements SingleOnSubscribe<FullGist> {
             Gist gist = store.refreshGist(id);
             List<GitHubComment> comments;
             if (gist.comments() > 0) {
-                comments = ServiceGenerator.createService(context, GistCommentService.class).getGistComments(id, 0).blockingGet().items();
+                comments = ServiceGenerator.createService(context, GistCommentService.class)
+                        .getGistComments(id, 0).blockingGet().body().items();
             } else {
                 comments = Collections.emptyList();
             }
@@ -77,12 +78,15 @@ public class RefreshGistTask implements SingleOnSubscribe<FullGist> {
             for (GitHubComment comment : comments) {
                 imageGetter.encode(comment, comment.bodyHtml());
             }
-            Response<Boolean> response = ServiceGenerator.createService(context, GistService.class).checkIfGistIsStarred(id).blockingGet();
+            Response<Boolean> response = ServiceGenerator.createService(context, GistService.class)
+                    .checkIfGistIsStarred(id)
+                    .blockingGet();
+
             boolean starred = response.code() == 204;
 
 
             emitter.onSuccess(new FullGist(gist, starred, comments));
-        }catch (IOException e){
+        } catch (IOException e) {
             emitter.onError(e);
         }
     }

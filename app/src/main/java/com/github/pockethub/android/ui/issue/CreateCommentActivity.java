@@ -88,8 +88,8 @@ public class CreateCommentActivity extends
                 .createIssueComment(repositoryId.owner().login(), repositoryId.name(), issueNumber, commentRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<GitHubComment>bindToLifecycle())
-                .subscribe(this::finish);
+                .compose(this.bindToLifecycle())
+                .subscribe(response -> finish(response.body()));
     }
 
     @Override

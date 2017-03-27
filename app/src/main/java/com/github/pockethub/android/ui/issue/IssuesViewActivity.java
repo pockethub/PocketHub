@@ -199,8 +199,8 @@ public class IssuesViewActivity extends PagerActivity {
                     .getRepository(temp.owner().login(), temp.name())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Repository>bindToLifecycle())
-                    .subscribe(this::repositoryLoaded);
+                    .compose(this.bindToLifecycle())
+                    .subscribe(response -> repositoryLoaded(response.body()));
         } else {
             repositoryLoaded(repo);
         }

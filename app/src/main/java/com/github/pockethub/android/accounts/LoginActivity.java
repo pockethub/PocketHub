@@ -43,6 +43,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.HttpUrl;
+import retrofit2.Response;
 
 import static com.github.pockethub.android.accounts.AccountConstants.PROVIDER_AUTHORITY;
 
@@ -144,8 +145,9 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
                     .getToken(request)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<GitHubToken>bindToLifecycle())
-                    .subscribe(token -> {
+                    .compose(this.bindToLifecycle())
+                    .subscribe(response -> {
+                        GitHubToken token = response.body();
                         if (token.accessToken() != null) {
                             endAuth(token.accessToken(), token.scope());
                         } else if (token.error() != null) {
@@ -223,10 +225,12 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
                 .getUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<User>bindToLifecycle())
-                .subscribe(user -> {
+                .compose(this.bindToLifecycle())
+                .subscribe(response -> {
+                    User user = response.body();
                     Account account = new Account(user.login(), getString(R.string.account_type));
-                    Bundle userData = AccountsHelper.buildBundle(user.name(), user.email(), user.avatarUrl(), scope);
+                    Bundle userData = AccountsHelper.buildBundle(user.name(),
+                            user.email(), user.avatarUrl(), scope);
                     userData.putString(AccountManager.KEY_AUTHTOKEN, accessToken);
 
                     accountManager.addAccountExplicitly(account, null, userData);
