@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.ColorUtils;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.widget.Button;
@@ -119,11 +120,11 @@ public class WelcomeActivity extends DotPagerActivity {
         @ColorInt int color;
         @ColorInt int accentsColor;
         if(positionOffsetPixels >= 0) {
-            color = blendColors(getBackgroundColor(position), getBackgroundColor(position + 1), (1 - positionOffset));
-            accentsColor = blendColors(getAccentsColor(position), getAccentsColor(position +1), (1 - positionOffset));
+            color = ColorUtils.blendARGB(getBackgroundColor(position + 1), getBackgroundColor(position), (1 - positionOffset));
+            accentsColor = ColorUtils.blendARGB(getAccentsColor(position + 1), getAccentsColor(position), (1 - positionOffset));
         } else {
-            color = blendColors(getBackgroundColor(position + 1), getBackgroundColor(position), (1 - positionOffset));
-            accentsColor = blendColors(getAccentsColor(position + 1), getAccentsColor(position), (1 - positionOffset));
+            color = ColorUtils.blendARGB(getBackgroundColor(position), getBackgroundColor(position + 1), (1 - positionOffset));
+            accentsColor = ColorUtils.blendARGB(getAccentsColor(position), getAccentsColor(position + 1), (1 - positionOffset));
         }
 
         setBackgroundColor(color);
@@ -207,23 +208,5 @@ public class WelcomeActivity extends DotPagerActivity {
      */
     private void setBackgroundColor(int color){
         findViewById(R.id.container).setBackgroundColor(color);
-    }
-
-    /**
-     * Blends two colors with a specified ratio
-     *
-     * (Borrowed form http://developer.android.com/samples/SlidingTabsColors/src/com.example.android.common/view/SlidingTabStrip.html)
-     *
-     * @param color1
-     * @param color2
-     * @param ratio
-     * @return The blended colors
-     */
-    private static int blendColors(int color1, int color2, float ratio) {
-        final float inverseRation = 1f - ratio;
-        float r = (Color.red(color1) * ratio) + (Color.red(color2) * inverseRation);
-        float g = (Color.green(color1) * ratio) + (Color.green(color2) * inverseRation);
-        float b = (Color.blue(color1) * ratio) + (Color.blue(color2) * inverseRation);
-        return Color.rgb((int) r, (int) g, (int) b);
     }
 }
