@@ -13,26 +13,23 @@ public class ProgressObserverAdapter<T> implements Observer<T>, SingleObserver<T
 
     private MaterialDialog progressDialog;
     private Context context;
-
-    private int resid;
     private String message;
 
+    public ProgressObserverAdapter(Context context) {
+        this(context, null);
+    }
+
     public ProgressObserverAdapter(Context context, @StringRes int resid) {
-        this(context);
-        this.resid = resid;
+        this(context, context.getString(resid));
     }
 
     public ProgressObserverAdapter(Context context, String message) {
-        this(context);
+        this.context = context;
         this.message = message;
     }
 
-    public ProgressObserverAdapter(Context context) {
-        this.context = context;
-    }
-
     public void setContent(@StringRes int resid){
-        this.resid = resid;
+        message = context.getString(resid);
     }
 
     public void setContent(String message){
@@ -96,11 +93,7 @@ public class ProgressObserverAdapter<T> implements Observer<T>, SingleObserver<T
     }
 
     public ProgressObserverAdapter<T> start() {
-        if(message == null) {
-            showProgressIndeterminate(resid);
-        } else {
-            showProgressIndeterminate(message);
-        }
+        showProgressIndeterminate(message);
         return this;
     }
 }
