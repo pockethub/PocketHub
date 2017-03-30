@@ -508,6 +508,7 @@ public class IssueFragment extends DialogFragment {
 
                         @Override
                         public void onSuccess(Response<Boolean> response) {
+                            super.onSuccess(response);
                             if (items != null) {
                                 int commentPosition = findCommentPositionInItems(comment);
                                 if (commentPosition >= 0) {
@@ -518,14 +519,13 @@ public class IssueFragment extends DialogFragment {
                             } else {
                                 refreshIssue();
                             }
-                            dismissProgress();
                         }
 
                         @Override
                         public void onError(Throwable e) {
+                            super.onError(e);
                             Log.d(TAG, "Exception deleting comment on issue", e);
                             ToastUtils.show(getActivity(), e.getMessage());
-                            dismissProgress();
                         }
                     }.start());
             break;

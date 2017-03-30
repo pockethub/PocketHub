@@ -93,13 +93,12 @@ public class MilestoneDialog extends BaseProgressDialog {
                         CASE_INSENSITIVE_ORDER.compare(m1.title(), m2.title()));
                 repositoryMilestones = milestones;
 
-                dismissProgress();
                 show(selectedMilestone);
             }
 
             @Override
             public void onError(Throwable error) {
-                dismissProgress();
+                super.onError(error);
                 Log.e(TAG, "Exception loading milestones", error);
                 ToastUtils.show(activity, error, R.string.error_milestones_load);
             }
