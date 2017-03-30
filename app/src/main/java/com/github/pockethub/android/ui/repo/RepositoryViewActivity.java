@@ -283,11 +283,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                 .compose(this.bindToLifecycle())
                 .subscribe(response -> {
                     Repository repo = response.body();
-                    if (repo != null) {
-                        UriLauncherActivity.launchUri(this, Uri.parse(repo.htmlUrl()));
-                    } else {
-                        ToastUtils.show(this, R.string.error_forking_repository);
-                    }
+                    UriLauncherActivity.launchUri(this, Uri.parse(repo.htmlUrl()));
                 }, e -> ToastUtils.show(this, R.string.error_forking_repository));
     }
 
