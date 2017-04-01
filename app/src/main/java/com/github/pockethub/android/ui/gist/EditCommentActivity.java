@@ -29,7 +29,6 @@ import com.github.pockethub.android.R;
 import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.comment.CommentPreviewPagerAdapter;
 import com.github.pockethub.android.util.ToastUtils;
-import com.meisolsson.githubsdk.model.git.GitComment;
 import com.meisolsson.githubsdk.model.request.CommentRequest;
 import com.meisolsson.githubsdk.service.gists.GistCommentService;
 

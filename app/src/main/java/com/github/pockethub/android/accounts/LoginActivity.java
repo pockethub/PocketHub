@@ -43,7 +43,6 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.HttpUrl;
-import retrofit2.Response;
 
 import static com.github.pockethub.android.accounts.AccountConstants.PROVIDER_AUTHORITY;
 

@@ -15,7 +15,6 @@
  */
 package com.github.pockethub.android.ui.gist;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.ActionBar;
