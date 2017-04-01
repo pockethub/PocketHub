@@ -122,8 +122,8 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.bindToLifecycle())
-                .subscribe(
-                        response -> startActivity(UserViewActivity.createIntent(response.body())));
+                .subscribe(response ->
+                        startActivity(UserViewActivity.createIntent(response.body())));
     }
 
     @Override
