@@ -22,7 +22,6 @@ import android.util.Log;
 
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Gist;
-import com.meisolsson.githubsdk.model.GitHubComment;
 import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
@@ -82,8 +81,8 @@ public class CreateCommentActivity extends
                 .createGistComment(gist.id(), commentRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<GitHubComment>bindToLifecycle())
-                .subscribe(this::finish, error -> {
+                .compose(this.bindToLifecycle())
+                .subscribe(response -> finish(response.body()), error -> {
                     Log.e(TAG, "Exception creating comment on gist", error);
 
                     ToastUtils.show(this, error.getMessage());

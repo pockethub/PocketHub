@@ -24,14 +24,15 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import io.reactivex.Single;
+import retrofit2.Response;
 
 public class PageIterator<V> implements Iterator<List>, Iterable<List> {
 
-    protected GitHubRequest<Page<V>> request;
+    protected GitHubRequest<Response<Page<V>>> request;
     protected Integer nextPage;
     protected Integer lastPage;
 
-    public PageIterator(GitHubRequest<Page<V>> request, int nextPage) {
+    public PageIterator(GitHubRequest<Response<Page<V>>> request, int nextPage) {
         this.request = request;
         this.nextPage = nextPage;
     }
@@ -56,11 +57,11 @@ public class PageIterator<V> implements Iterator<List>, Iterable<List> {
 
     @Override
     public List<V> next() {
-        if(!this.hasNext()) {
+        if (!this.hasNext()) {
             throw new NoSuchElementException();
         } else {
-            Single<Page<V>> client = request.execute(nextPage);
-            Page<V> response = client.blockingGet();
+            Single<Response<Page<V>>> client = request.execute(nextPage);
+            Page<V> response = client.blockingGet().body();
 
             ++this.nextPage;
             this.lastPage = response.last();
@@ -69,7 +70,7 @@ public class PageIterator<V> implements Iterator<List>, Iterable<List> {
         }
     }
 
-    public GitHubRequest<Page<V>> getRequest() {
+    public GitHubRequest<Response<Page<V>>> getRequest() {
         return this.request;
     }
 
@@ -78,7 +79,7 @@ public class PageIterator<V> implements Iterator<List>, Iterable<List> {
         return this;
     }
 
-    public interface GitHubRequest<V>{
+    public interface GitHubRequest<V> {
         Single<V> execute(int page);
     }
 }

@@ -35,6 +35,7 @@ import com.meisolsson.githubsdk.service.repositories.RepositoryCommentService;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 import static com.github.pockethub.android.Intents.EXTRA_BASE;
 import static com.github.pockethub.android.Intents.EXTRA_PATH;
@@ -120,13 +121,13 @@ public class CreateCommentActivity extends
                 .createCommitComment(repository.owner().login(), repository.name(), commit, commitCommentBuilder.build())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<GitComment>bindToLifecycle())
-                .subscribe(new ProgressObserverAdapter<GitComment>(this, R.string.creating_comment) {
+                .compose(this.bindToLifecycle())
+                .subscribe(new ProgressObserverAdapter<Response<GitComment>>(this, R.string.creating_comment) {
 
                     @Override
-                    public void onSuccess(GitComment created) {
-                        super.onSuccess(created);
-                        finish(created);
+                    public void onSuccess(Response<GitComment> response) {
+                        super.onSuccess(response);
+                        finish(response.body());
                     }
 
                     @Override

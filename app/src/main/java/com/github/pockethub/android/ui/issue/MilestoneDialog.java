@@ -111,7 +111,8 @@ public class MilestoneDialog extends BaseProgressDialog {
                 .getRepositoryMilestones(repository.owner().login(), repository.name(), i)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .flatMapObservable(page -> {
+                .flatMapObservable(response -> {
+                    Page<Milestone> page = response.body();
                     if (page.next() == null) {
                         return Observable.just(page);
                     }

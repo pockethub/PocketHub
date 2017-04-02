@@ -33,6 +33,7 @@ import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.ui.repo.RepositoryViewActivity;
 import com.github.pockethub.android.util.InfoUtils;
+import com.meisolsson.githubsdk.model.SearchPage;
 import com.meisolsson.githubsdk.service.repositories.RepositoryService;
 import com.meisolsson.githubsdk.service.search.SearchService;
 
@@ -41,6 +42,7 @@ import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 import static android.app.SearchManager.QUERY;
 
@@ -64,13 +66,17 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repository> 
                 return new PageIterator<>(page1 ->
                         ServiceGenerator.createService(getContext(), SearchService.class)
                                 .searchRepositories(query, null, null, page1)
-                                .map(repositorySearchPage -> Page.<Repository>builder()
-                                        .first(repositorySearchPage.first())
-                                        .last(repositorySearchPage.last())
-                                        .next(repositorySearchPage.next())
-                                        .prev(repositorySearchPage.prev())
-                                        .items(repositorySearchPage.items())
-                                        .build()), page);
+                                .map(response -> {
+                                    SearchPage<Repository> repositorySearchPage = response.body();
+
+                                    return Response.success(Page.<Repository>builder()
+                                            .first(repositorySearchPage.first())
+                                            .last(repositorySearchPage.last())
+                                            .next(repositorySearchPage.next())
+                                            .prev(repositorySearchPage.prev())
+                                            .items(repositorySearchPage.items())
+                                            .build());
+                                }), page);
             }
         };
     }
@@ -111,13 +117,15 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repository> 
                 .getRepository(result.owner().login(), result.name())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Repository>bindToLifecycle())
-                .subscribe(new ProgressObserverAdapter<Repository>(getActivity(),
-                        MessageFormat.format(getString(R.string.opening_repository), InfoUtils.createRepoId(result))) {
+                .compose(this.bindToLifecycle())
+                .subscribe(new ProgressObserverAdapter<Response<Repository>>(getActivity(),
+                        MessageFormat.format(getString(R.string.opening_repository),
+                                InfoUtils.createRepoId(result))) {
+
                     @Override
-                    public void onSuccess(Repository repo) {
-                        super.onSuccess(repo);
-                        startActivity(RepositoryViewActivity.createIntent(repo));
+                    public void onSuccess(Response<Repository> response) {
+                        super.onSuccess(response);
+                        startActivity(RepositoryViewActivity.createIntent(response.body()));
                     }
                 });
     }
@@ -142,7 +150,8 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repository> 
         Repository repo;
         repo = ServiceGenerator.createService(getContext(), RepositoryService.class)
                 .getRepository(repoId.owner().login(), repoId.name())
-                .blockingGet();
+                .blockingGet()
+                .body();
 
         startActivity(RepositoryViewActivity.createIntent(repo));
         final Activity activity = getActivity();

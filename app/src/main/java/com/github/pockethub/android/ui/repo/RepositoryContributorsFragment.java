@@ -82,8 +82,12 @@ public class RepositoryContributorsFragment extends ItemListFragment<User> {
                 int last = 0;
                 List<User> users = new ArrayList<>();
 
-                while (current != last){
-                    Page<User> page = service.getContributors(repo.owner().login(), repo.name(), current).blockingGet();
+                while (current != last) {
+                    Page<User> page = service
+                            .getContributors(repo.owner().login(), repo.name(), current)
+                            .blockingGet()
+                            .body();
+
                     users.addAll(page.items());
                     last = page.last() != null ? page.last() : -1;
                     current = page.next() != null ? page.next() : -1;
@@ -106,8 +110,9 @@ public class RepositoryContributorsFragment extends ItemListFragment<User> {
                 .getUser(contributor.login())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<User>bindToLifecycle())
-                .subscribe(user -> startActivity(UserViewActivity.createIntent(user)));
+                .compose(this.bindToLifecycle())
+                .subscribe(response ->
+                        startActivity(UserViewActivity.createIntent(response.body())));
 
     }
 

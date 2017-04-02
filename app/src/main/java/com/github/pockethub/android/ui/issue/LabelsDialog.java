@@ -110,7 +110,8 @@ public class LabelsDialog extends BaseProgressDialog {
                 .getRepositoryLabels(repository.owner().login(), repository.name(), i)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .flatMapObservable(page -> {
+                .flatMapObservable(response -> {
+                    Page<Label> page = response.body();
                     if (page.next() == null) {
                         return Observable.just(page);
                     }

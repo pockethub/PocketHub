@@ -34,6 +34,7 @@ import com.meisolsson.githubsdk.service.gists.GistCommentService;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 import static com.github.pockethub.android.Intents.EXTRA_COMMENT;
 import static com.github.pockethub.android.Intents.EXTRA_GIST;
@@ -99,14 +100,14 @@ public class EditCommentActivity extends
                 .editGistComment(gist.id(), comment.id(), commentRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<GitHubComment>bindToLifecycle())
-                .subscribe(new ProgressObserverAdapter<GitHubComment>(this, R.string.editing_comment) {
+                .compose(this.bindToLifecycle())
+                .subscribe(new ProgressObserverAdapter<Response<GitHubComment>>(this, R.string.editing_comment) {
 
                     @Override
-                    public void onSuccess(GitHubComment edited) {
-                        super.onSuccess(edited);
+                    public void onSuccess(Response<GitHubComment> response) {
+                        super.onSuccess(response);
                         dismissProgress();
-                        finish(edited);
+                        finish(response.body());
                     }
 
                     @Override

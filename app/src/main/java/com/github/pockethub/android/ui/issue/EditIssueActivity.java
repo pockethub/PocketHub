@@ -475,7 +475,7 @@ public class EditIssueActivity extends BaseActivity {
                 }
 
                 IssueService service = ServiceGenerator.createService(this, IssueService.class);
-                Single<Issue> single;
+                Single<Response<Issue>> single;
                 int message;
 
                 if (issue.number() != null && issue.number() > 0) {
@@ -488,14 +488,14 @@ public class EditIssueActivity extends BaseActivity {
 
                 single.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .compose(this.<Issue>bindToLifecycle())
-                        .subscribe(new ProgressObserverAdapter<Issue>(this, message) {
+                        .compose(this.bindToLifecycle())
+                        .subscribe(new ProgressObserverAdapter<Response<Issue>>(this, message) {
 
                             @Override
-                            public void onSuccess(Issue issue) {
-                                super.onSuccess(issue);
+                            public void onSuccess(Response<Issue> response) {
+                                super.onSuccess(response);
                                 Intent intent = new Intent();
-                                intent.putExtra(EXTRA_ISSUE, issue);
+                                intent.putExtra(EXTRA_ISSUE, response.body());
                                 setResult(RESULT_OK, intent);
                                 finish();
                             }

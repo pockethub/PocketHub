@@ -22,6 +22,7 @@ import android.widget.ListView;
 
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Page;
+import com.meisolsson.githubsdk.model.SearchPage;
 import com.meisolsson.githubsdk.model.User;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
@@ -39,6 +40,7 @@ import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 import static android.app.SearchManager.QUERY;
 
@@ -65,13 +67,17 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
                 return new PageIterator<>(page1 ->
                         ServiceGenerator.createService(getContext(), SearchService.class)
                                 .searchUsers(query, null, null, page1)
-                                .map(userSearchPage -> Page.<User>builder()
-                                        .first(userSearchPage.first())
-                                        .last(userSearchPage.last())
-                                        .next(userSearchPage.next())
-                                        .prev(userSearchPage.prev())
-                                        .items(userSearchPage.items())
-                                        .build()), page);
+                                .map(response -> {
+                                    SearchPage<User> repositorySearchPage = response.body();
+
+                                    return Response.success(Page.<User>builder()
+                                            .first(repositorySearchPage.first())
+                                            .last(repositorySearchPage.last())
+                                            .next(repositorySearchPage.next())
+                                            .prev(repositorySearchPage.prev())
+                                            .items(repositorySearchPage.items())
+                                            .build());
+                                }), page);
             }
         };
     }
@@ -110,13 +116,14 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        final User result = (User) l.getItemAtPosition(position);
+        User result = (User) l.getItemAtPosition(position);
         ServiceGenerator.createService(getContext(), UserService.class)
                 .getUser(result.login())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<User>bindToLifecycle())
-                .subscribe(user -> startActivity(UserViewActivity.createIntent(user)));
+                .compose(this.bindToLifecycle())
+                .subscribe(response ->
+                        startActivity(UserViewActivity.createIntent(response.body())));
     }
 
     @Override

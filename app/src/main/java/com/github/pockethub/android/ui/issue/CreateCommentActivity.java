@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 
 import com.meisolsson.githubsdk.core.ServiceGenerator;
-import com.meisolsson.githubsdk.model.GitHubComment;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
@@ -88,8 +87,8 @@ public class CreateCommentActivity extends
                 .createIssueComment(repositoryId.owner().login(), repositoryId.name(), issueNumber, commentRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<GitHubComment>bindToLifecycle())
-                .subscribe(this::finish);
+                .compose(this.bindToLifecycle())
+                .subscribe(response -> finish(response.body()));
     }
 
     @Override
