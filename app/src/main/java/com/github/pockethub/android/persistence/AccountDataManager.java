@@ -196,17 +196,6 @@ public class AccountDataManager {
     }
 
     /**
-     * Get bookmarked issue filters
-     *
-     * @param requestConsumer
-     */
-    public void getIssueFilters(
-            final Consumer<Collection<IssueFilter>> requestConsumer) {
-        Single.<Collection<IssueFilter>>create(emitter -> emitter.onSuccess(getIssueFilters()))
-                .subscribe(requestConsumer);
-    }
-
-    /**
      * Add issue filter to store
      * <p/>
      * This method may perform file I/O and should never be called on the
