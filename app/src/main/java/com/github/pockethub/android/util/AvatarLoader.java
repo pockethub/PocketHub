@@ -28,6 +28,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.github.pockethub.android.R;
+import com.google.inject.Singleton;
 import com.meisolsson.githubsdk.model.User;
 import com.google.inject.Inject;
 import com.squareup.okhttp.Cache;
@@ -47,6 +48,7 @@ import roboguice.util.RoboAsyncTask;
 /**
  * Avatar utilities
  */
+@Singleton
 public class AvatarLoader {
     static final int DISK_CACHE_SIZE = 50 * 1024 * 1024; // 50MB
 
@@ -73,7 +75,7 @@ public class AvatarLoader {
      */
     @Inject
     public AvatarLoader(final Context context) {
-        this.context = context;
+        this.context = context.getApplicationContext();
 
         OkHttpClient client = new OkHttpClient();
 
