@@ -21,11 +21,11 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.SingleChoiceDialogFragment;
@@ -68,7 +68,7 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
 
             String description = item.description();
             if (!TextUtils.isEmpty(description)) {
-                ViewUtils.setGone(setText(2, description), false);
+                setText(2, description).setVisibility(View.VISIBLE);
             } else {
                 setGone(2, true);
             }

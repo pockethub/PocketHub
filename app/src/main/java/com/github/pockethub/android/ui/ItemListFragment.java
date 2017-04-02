@@ -31,7 +31,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ThrowableLoader;
 import com.github.pockethub.android.util.ToastUtils;
@@ -338,12 +337,12 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     }
 
     private ItemListFragment<E> show(final View view) {
-        ViewUtils.setGone(view, false);
+        view.setVisibility(View.VISIBLE);
         return this;
     }
 
     private ItemListFragment<E> hide(final View view) {
-        ViewUtils.setGone(view, true);
+        view.setVisibility(View.GONE);
         return this;
     }
 

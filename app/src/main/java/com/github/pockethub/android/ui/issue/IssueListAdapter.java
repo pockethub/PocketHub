@@ -22,7 +22,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.StyledText;
 import com.github.pockethub.android.util.AvatarLoader;
@@ -154,7 +153,7 @@ public abstract class IssueListAdapter<V> extends SingleTypeAdapter<V> {
                 if (!TextUtils.isEmpty(color)) {
                     View view = view(viewIndex + i);
                     view.setBackgroundColor(Color.parseColor('#' + color));
-                    ViewUtils.setGone(view, false);
+                    view.setVisibility(View.VISIBLE);
                 } else {
                     setGone(viewIndex + i, true);
                 }

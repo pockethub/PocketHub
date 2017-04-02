@@ -22,7 +22,6 @@ import android.view.View;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabContentFactory;
 
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 
 /**
@@ -59,7 +58,9 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
 
     @Override
     public View createTabContent(String tag) {
-        return ViewUtils.setGone(new View(getApplication()), true);
+        View view = new View(getApplication());
+        view.setVisibility(View.GONE);
+        return view;
     }
 
     /**
@@ -96,8 +97,13 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
      * @return this activity
      */
     protected TabPagerActivity<V> setGone(boolean gone) {
-        ViewUtils.setGone(slidingTabsLayout, gone);
-        ViewUtils.setGone(pager, gone);
+        if (gone) {
+            slidingTabsLayout.setVisibility(View.GONE);
+            pager.setVisibility(View.GONE);
+        } else {
+            slidingTabsLayout.setVisibility(View.VISIBLE);
+            pager.setVisibility(View.VISIBLE);
+        }
         return this;
     }
 

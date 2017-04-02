@@ -31,7 +31,6 @@ import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Commit;
 import com.meisolsson.githubsdk.model.Repository;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ThrowableLoader;
 import com.github.pockethub.android.core.PageIterator;
@@ -263,7 +262,7 @@ public class CommitListFragment extends PagedItemFragment<Commit>
     @Override
     public ItemListFragment<Commit> setListShown(boolean shown,
             boolean animate) {
-        ViewUtils.setGone(branchFooterView, !shown);
+        branchFooterView.setVisibility(shown ? View.VISIBLE : View.GONE);
         return super.setListShown(shown, animate);
     }
 

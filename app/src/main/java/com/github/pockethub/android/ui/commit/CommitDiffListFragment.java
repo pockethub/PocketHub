@@ -40,7 +40,6 @@ import com.meisolsson.githubsdk.model.Commit;
 import com.meisolsson.githubsdk.model.GitHubFile;
 import com.meisolsson.githubsdk.model.Repository;
 import com.github.kevinsawicki.wishlist.ViewFinder;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.commit.CommitStore;
 import com.github.pockethub.android.core.commit.CommitUtils;
@@ -254,7 +253,7 @@ public class CommitDiffListFragment extends DialogFragment implements
                     updateList(full.getCommit(), full, full.getFiles());
                 }, e -> {
                     ToastUtils.show(getActivity(), e, R.string.error_commit_load);
-                    ViewUtils.setGone(progress, true);
+                    progress.setVisibility(View.GONE);
                 });
     }
 
@@ -283,9 +282,9 @@ public class CommitDiffListFragment extends DialogFragment implements
             }
 
             authorDate.setText(styledAuthor);
-            ViewUtils.setGone(authorArea, false);
+            authorArea.setVisibility(View.VISIBLE);
         } else {
-            ViewUtils.setGone(authorArea, true);
+            authorArea.setVisibility(View.GONE);
         }
 
         if (isDifferentCommitter(commitAuthor, commitCommitter)) {
@@ -300,9 +299,9 @@ public class CommitDiffListFragment extends DialogFragment implements
             }
 
             committerDate.setText(styledCommitter);
-            ViewUtils.setGone(committerArea, false);
+            committerArea.setVisibility(View.VISIBLE);
         } else {
-            ViewUtils.setGone(committerArea, true);
+            committerArea.setVisibility(View.GONE);
         }
     }
 
@@ -336,8 +335,8 @@ public class CommitDiffListFragment extends DialogFragment implements
     }
 
     private void updateHeader(Commit commit) {
-        ViewUtils.setGone(progress, true);
-        ViewUtils.setGone(list, false);
+        progress.setVisibility(View.GONE);
+        list.setVisibility(View.VISIBLE);
 
         addCommitDetails(commit);
         addCommitParents(commit, getActivity().getLayoutInflater());

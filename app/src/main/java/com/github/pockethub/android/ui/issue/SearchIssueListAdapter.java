@@ -18,7 +18,6 @@ package com.github.pockethub.android.ui.issue;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.model.Issue;
@@ -56,9 +55,9 @@ public class SearchIssueListAdapter extends IssueListAdapter<Issue> {
 
         numberPaintFlags = textView(view, 0).getPaintFlags();
         for (int i = 0; i < MAX_LABELS; i++) {
-            ViewUtils.setGone(view.findViewById(R.id.v_label0 + i), true);
+            view.findViewById(R.id.v_label0 + i).setVisibility(View.GONE);
         }
-        ViewUtils.setGone(view.findViewById(R.id.tv_pull_request_icon), true);
+        view.findViewById(R.id.tv_pull_request_icon).setVisibility(View.GONE);
         return view;
     }
 

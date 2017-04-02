@@ -32,7 +32,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.code.FullTree;
 import com.github.pockethub.android.core.code.FullTree.Entry;
@@ -137,9 +136,15 @@ public class RepositoryCodeFragment extends DialogFragment implements
     }
 
     private void showLoading(final boolean loading) {
-        ViewUtils.setGone(progressView, !loading);
-        ViewUtils.setGone(listView, loading);
-        ViewUtils.setGone(branchFooterView, loading);
+        if (loading) {
+            progressView.setVisibility(View.VISIBLE);
+            listView.setVisibility(View.GONE);
+            branchFooterView.setVisibility(View.GONE);
+        } else {
+            progressView.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
+            branchFooterView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void refreshTree(final GitReference reference) {

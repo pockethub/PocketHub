@@ -21,11 +21,11 @@ import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ProgressBar;
 
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.User;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.accounts.AccountUtils;
@@ -92,7 +92,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
         if (!TextUtils.isEmpty(user.avatarUrl())) {
             configurePager();
         } else {
-            ViewUtils.setGone(loadingBar, false);
+            loadingBar.setVisibility(View.VISIBLE);
             setGone(true);
             ServiceGenerator.createService(this, UserService.class)
                     .getUser(user.login())
@@ -104,7 +104,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
                         configurePager();
                     }, e -> {
                         ToastUtils.show(this, R.string.error_person_load);
-                        ViewUtils.setGone(loadingBar, true);
+                        loadingBar.setVisibility(View.GONE);
                     });
         }
     }
@@ -147,7 +147,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     private void configurePager() {
         avatars.bind(getSupportActionBar(), user);
         configureTabPager();
-        ViewUtils.setGone(loadingBar, true);
+        loadingBar.setVisibility(View.GONE);
         setGone(false);
         checkFollowingUserStatus();
     }

@@ -20,11 +20,11 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ProgressBar;
 
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.User;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.gist.FullGist;
@@ -111,9 +111,9 @@ public class GistFilesViewActivity extends PagerActivity {
         if (gist != null) {
             configurePager();
         } else {
-            ViewUtils.setGone(loadingBar, false);
-            ViewUtils.setGone(pager, true);
-            ViewUtils.setGone(tabs, true);
+            loadingBar.setVisibility(View.VISIBLE);
+            pager.setVisibility(View.GONE);
+            tabs.setVisibility(View.GONE);
             Single.create(new RefreshGistTask(this, gistId, imageGetter))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -136,9 +136,9 @@ public class GistFilesViewActivity extends PagerActivity {
             actionBar.setSubtitle(R.string.anonymous);
         }
 
-        ViewUtils.setGone(loadingBar, true);
-        ViewUtils.setGone(pager, false);
-        ViewUtils.setGone(tabs, false);
+        loadingBar.setVisibility(View.GONE);
+        pager.setVisibility(View.VISIBLE);
+        tabs.setVisibility(View.VISIBLE);
 
         adapter = new GistFilesPagerAdapter(this, gist);
         pager.setAdapter(adapter);

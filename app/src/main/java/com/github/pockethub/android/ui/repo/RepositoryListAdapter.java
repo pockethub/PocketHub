@@ -17,9 +17,9 @@ package com.github.pockethub.android.ui.repo;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 
 import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_FORK;
 import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_MIRROR_PRIVATE;
@@ -80,13 +80,13 @@ public abstract class RepositoryListAdapter<V> extends SingleTypeAdapter<V> {
         }
 
         if (!TextUtils.isEmpty(description)) {
-            ViewUtils.setGone(setText(1, description), false);
+            setText(1, description).setVisibility(View.VISIBLE);
         } else {
             setGone(1, true);
         }
 
         if (!TextUtils.isEmpty(language)) {
-            ViewUtils.setGone(setText(2, language), false);
+            setText(2, language).setVisibility(View.VISIBLE);
         } else {
             setGone(2, true);
         }

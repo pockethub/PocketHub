@@ -31,7 +31,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.commit.CommitUtils;
 import com.github.pockethub.android.ui.DialogFragment;
@@ -146,8 +145,8 @@ public class CommitCompareListFragment extends DialogFragment implements
 
         this.compare = compare;
 
-        ViewUtils.setGone(progress, true);
-        ViewUtils.setGone(list, false);
+        progress.setVisibility(View.GONE);
+        list.setVisibility(View.VISIBLE);
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         adapter.clearHeaders();

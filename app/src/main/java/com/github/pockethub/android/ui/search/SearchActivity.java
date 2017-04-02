@@ -25,9 +25,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ProgressBar;
 
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.MainActivity;
 import com.github.pockethub.android.ui.TabPagerActivity;
@@ -152,7 +152,7 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
 
     private void configurePager() {
         configureTabPager();
-        ViewUtils.setGone(loadingBar, true);
+        loadingBar.setVisibility(View.GONE);
         setGone(false);
     }
 

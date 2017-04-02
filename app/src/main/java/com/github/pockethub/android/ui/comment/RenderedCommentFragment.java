@@ -25,7 +25,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.Keyboard;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.MarkdownLoader;
@@ -79,8 +78,13 @@ public class RenderedCommentFragment extends DialogFragment implements
     }
 
     private void showLoading(final boolean loading) {
-        ViewUtils.setGone(progress, !loading);
-        ViewUtils.setGone(bodyText, loading);
+        if (loading) {
+            progress.setVisibility(View.VISIBLE);
+            bodyText.setVisibility(View.GONE);
+        } else {
+            progress.setVisibility(View.GONE);
+            bodyText.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
