@@ -203,30 +203,19 @@ public class AccountDataManager {
      *
      * @param filter
      */
-    public void addIssueFilter(IssueFilter filter) {
-        final File cache = new File(root, "issue_filters.ser");
-        Collection<IssueFilter> filters = read(cache);
-        if (filters == null) {
-            filters = new HashSet<>();
-        }
-        if (filters.add(filter)) {
-            write(cache, filters);
-        }
-    }
+    public Single<IssueFilter> addIssueFilter(final IssueFilter filter) {
+        return Single.fromCallable(() -> {
+            final File cache = new File(root, "issue_filters.ser");
+            Collection<IssueFilter> filters = read(cache);
+            if (filters == null) {
+                filters = new HashSet<>();
+            }
+            if (filters.add(filter)) {
+                write(cache, filters);
+            }
 
-    /**
-     * Add issue filter to store
-     *
-     * @param filter
-     * @param requestConsumer
-     */
-    public void addIssueFilter(final IssueFilter filter,
-            final Consumer<IssueFilter> requestConsumer) {
-        Single.<IssueFilter>create(emitter -> {
-            addIssueFilter(filter);
-            emitter.onSuccess(filter);
-        }).subscribe(requestConsumer, e ->
-                Log.d(TAG, "Exception adding issue filter", e));
+            return filter;
+        }).doOnError(e -> Log.d(TAG, "Exception adding issue filter", e));
     }
 
     /**
@@ -237,26 +226,15 @@ public class AccountDataManager {
      *
      * @param filter
      */
-    public void removeIssueFilter(IssueFilter filter) {
-        final File cache = new File(root, "issue_filters.ser");
-        Collection<IssueFilter> filters = read(cache);
-        if (filters != null && filters.remove(filter)) {
-            write(cache, filters);
-        }
-    }
+    public Single<IssueFilter> removeIssueFilter(IssueFilter filter) {
+        return Single.fromCallable(() -> {
+            final File cache = new File(root, "issue_filters.ser");
+            Collection<IssueFilter> filters = read(cache);
+            if (filters != null && filters.remove(filter)) {
+                write(cache, filters);
+            }
 
-    /**
-     * Remove issue filter from store
-     *
-     * @param filter
-     * @param requestConsumer
-     */
-    public void removeIssueFilter(final IssueFilter filter,
-            final Consumer<IssueFilter> requestConsumer) {
-        Single.<IssueFilter>create(emitter -> {
-            removeIssueFilter(filter);
-            emitter.onSuccess(filter);
-        }).subscribe(requestConsumer, e ->
-                Log.d(TAG, "Exception removing issue filter", e));
+            return filter;
+        }).doOnError( e -> Log.d(TAG, "Exception removing issue filter", e));
     }
 }

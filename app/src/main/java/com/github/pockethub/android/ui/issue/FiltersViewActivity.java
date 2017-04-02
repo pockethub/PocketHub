@@ -81,11 +81,12 @@ public class FiltersViewActivity extends BaseActivity implements
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
         if (requestCode == REQUEST_DELETE && resultCode == RESULT_OK) {
             IssueFilter filter = arguments.getParcelable(ARG_FILTER);
-            cache.removeIssueFilter(filter, response -> {
-                if (fragment != null) {
-                    fragment.refresh();
-                }
-            });
+            cache.removeIssueFilter(filter)
+                .subscribe(response -> {
+                    if (fragment != null) {
+                        fragment.refresh();
+                    }
+                });
             return;
         }
 

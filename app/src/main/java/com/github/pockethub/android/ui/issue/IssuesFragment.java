@@ -219,8 +219,8 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
                     ISSUE_FILTER_EDIT);
             return true;
         case R.id.m_bookmark:
-            cache.addIssueFilter(filter, response ->
-                    ToastUtils.show(getActivity(), R.string.message_filter_saved));
+            cache.addIssueFilter(filter)
+                .subscribe(response -> ToastUtils.show(getActivity(), R.string.message_filter_saved));
             return true;
         default:
             return super.onOptionsItemSelected(item);
