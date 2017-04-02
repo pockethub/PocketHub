@@ -75,7 +75,7 @@ public class AssigneeDialog extends BaseProgressDialog {
 
             @Override
             public void onError(Throwable error) {
-                dismissProgress();
+                super.onError(error);
                 Log.d(TAG, "Exception loading collaborators", error);
                 ToastUtils.show(activity, error, R.string.error_collaborators_load);
             }
@@ -90,7 +90,6 @@ public class AssigneeDialog extends BaseProgressDialog {
                 }
                 collaborators = loadedCollaborators;
 
-                dismissProgress();
                 show(selectedAssignee);
             }
 

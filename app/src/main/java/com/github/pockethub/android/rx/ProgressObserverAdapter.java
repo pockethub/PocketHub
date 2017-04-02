@@ -1,6 +1,7 @@
 package com.github.pockethub.android.rx;
 
 import android.content.Context;
+import android.support.annotation.CallSuper;
 import android.support.annotation.StringRes;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -36,11 +37,13 @@ public class ProgressObserverAdapter<T> implements Observer<T>, SingleObserver<T
         this.message = message;
     }
 
+    @CallSuper
     @Override
     public void onSuccess(T t) {
         onComplete();
     }
 
+    @CallSuper
     @Override
     public void onComplete() {
         dismissProgress();
@@ -54,6 +57,7 @@ public class ProgressObserverAdapter<T> implements Observer<T>, SingleObserver<T
     public void onNext(final T t) {
     }
 
+    @CallSuper
     @Override
     public void onError(Throwable e) {
         dismissProgress();

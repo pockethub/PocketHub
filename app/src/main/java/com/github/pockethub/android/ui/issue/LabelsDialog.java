@@ -92,13 +92,12 @@ public class LabelsDialog extends BaseProgressDialog {
 
                 labels = loadedLabels;
 
-                dismissProgress();
                 show(selectedLabels);
             }
 
             @Override
             public void onError(Throwable error) {
-                dismissProgress();
+                super.onError(error);
                 Log.e(TAG, "Exception loading labels", error);
                 ToastUtils.show(activity, error, R.string.error_labels_load);
             }

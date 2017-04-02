@@ -106,7 +106,6 @@ public class EditCommentActivity extends
                     @Override
                     public void onSuccess(Response<GitHubComment> response) {
                         super.onSuccess(response);
-                        dismissProgress();
                         finish(response.body());
                     }
 
