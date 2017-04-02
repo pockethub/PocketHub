@@ -162,10 +162,6 @@ public class GistFileFragment extends DialogFragment implements
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(loadedFile -> {
-                    if (loadedFile == null) {
-                        return;
-                    }
-
                     file = loadedFile;
                     getArguments().putParcelable(EXTRA_GIST_FILE, file);
                     if (file.content() != null) {
