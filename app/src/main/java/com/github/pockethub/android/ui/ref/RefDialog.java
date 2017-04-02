@@ -29,7 +29,6 @@ import com.meisolsson.githubsdk.model.git.GitReference;
 import com.meisolsson.githubsdk.service.git.GitService;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -71,37 +70,26 @@ public class RefDialog {
 
 
     private void load(final GitReference selectedRef) {
-        getPageAndNext(1).subscribe(new ProgressObserverAdapter<Page<GitReference>>(activity, R.string.loading_refs) {
-            List<GitReference> allRefs = new ArrayList<>();
+        getPageAndNext(1)
+            .flatMap(page -> Observable.fromIterable(page.items()))
+            .filter(RefUtils::isValid)
+            .toMap(GitReference::ref, ref -> ref, () -> new TreeMap<>(CASE_INSENSITIVE_ORDER))
+            .subscribe(new ProgressObserverAdapter<Map<String, GitReference>>(activity, R.string.loading_refs) {
 
-            @Override
-            public void onNext(Page<GitReference> page) {
-                super.onNext(page);
-                allRefs.addAll(page.items());
-            }
-
-            @Override
-            public void onComplete() {
-                super.onComplete();
-                Map<String, GitReference> loadedRefs = new TreeMap<>(CASE_INSENSITIVE_ORDER);
-
-                for (GitReference ref : allRefs) {
-                    if (RefUtils.isValid(ref)) {
-                        loadedRefs.put(ref.ref(), ref);
-                    }
+                @Override
+                public void onSuccess(Map<String, GitReference> loadedRefs) {
+                    super.onSuccess(loadedRefs);
+                    refs = loadedRefs;
+                    show(selectedRef);
                 }
 
-                refs = loadedRefs;
-                show(selectedRef);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                super.onError(e);
-                Log.d(TAG, "Exception loading references", e);
-                ToastUtils.show(activity, e, R.string.error_refs_load);
-            }
-        }.start());
+                @Override
+                public void onError(Throwable e) {
+                    super.onError(e);
+                    Log.d(TAG, "Exception loading references", e);
+                    ToastUtils.show(activity, e, R.string.error_refs_load);
+                }
+            }.start());
     }
 
     private Observable<Page<GitReference>> getPageAndNext(int i) {

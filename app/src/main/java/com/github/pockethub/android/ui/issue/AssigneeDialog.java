@@ -29,7 +29,6 @@ import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.service.issues.IssueAssigneeService;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -70,34 +69,27 @@ public class AssigneeDialog extends BaseProgressDialog {
     }
 
     private void load(final User selectedAssignee) {
-        getPageAndNext(1).subscribe(new ProgressObserverAdapter<Page<User>>(activity, R.string.loading_collaborators) {
-            List<User> users = new ArrayList<>();
+        getPageAndNext(1)
+            .flatMap(page -> Observable.fromIterable(page.items()))
+            .toMap(User::login, user -> user, () -> new TreeMap<>(CASE_INSENSITIVE_ORDER))
+            .subscribe(new ProgressObserverAdapter<Map<String, User>>(activity, R.string.loading_collaborators) {
 
-            @Override
-            public void onError(Throwable error) {
-                super.onError(error);
-                Log.d(TAG, "Exception loading collaborators", error);
-                ToastUtils.show(activity, error, R.string.error_collaborators_load);
-            }
+                @Override
+                public void onSuccess(Map<String, User> loadedCollaborators) {
+                    super.onSuccess(loadedCollaborators);
 
-            @Override
-            public void onComplete() {
-                super.onComplete();
-                Map<String, User> loadedCollaborators = new TreeMap<>(
-                        CASE_INSENSITIVE_ORDER);
-                for (User user : users) {
-                    loadedCollaborators.put(user.login(), user);
+                    collaborators = loadedCollaborators;
+
+                    show(selectedAssignee);
                 }
-                collaborators = loadedCollaborators;
 
-                show(selectedAssignee);
-            }
-
-            @Override
-            public void onNext(Page<User> page) {
-                users.addAll(page.items());
-            }
-        }.start());
+                @Override
+                public void onError(Throwable error) {
+                    super.onError(error);
+                    Log.d(TAG, "Exception loading collaborators", error);
+                    ToastUtils.show(activity, error, R.string.error_collaborators_load);
+                }
+            }.start());
     }
 
     private Observable<Page<User>> getPageAndNext(int i) {

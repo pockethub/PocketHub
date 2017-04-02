@@ -29,7 +29,6 @@ import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.service.issues.IssueMilestoneService;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -78,31 +77,26 @@ public class MilestoneDialog extends BaseProgressDialog {
     }
 
     private void load(final Milestone selectedMilestone) {
-        getPageAndNext(1).subscribe(new ProgressObserverAdapter<Page<Milestone>>(activity, R.string.loading_milestones){
-            ArrayList<Milestone> milestones = new ArrayList<>();
+        getPageAndNext(1)
+            .flatMap(page -> Observable.fromIterable(page.items()))
+            .toSortedList((m1, m2) -> CASE_INSENSITIVE_ORDER.compare(m1.title(), m2.title()))
+            .subscribe(new ProgressObserverAdapter<List<Milestone>>(activity, R.string.loading_milestones) {
 
-            @Override
-            public void onNext(Page<Milestone> page) {
-                milestones.addAll(page.items());
-            }
+                @Override
+                public void onSuccess(List<Milestone> milestones) {
+                    super.onSuccess(milestones);
+                    repositoryMilestones = (ArrayList) milestones;
 
-            @Override
-            public void onComplete() {
-                super.onComplete();
-                Collections.sort(milestones, (m1, m2) ->
-                        CASE_INSENSITIVE_ORDER.compare(m1.title(), m2.title()));
-                repositoryMilestones = milestones;
+                    show(selectedMilestone);
+                }
 
-                show(selectedMilestone);
-            }
-
-            @Override
-            public void onError(Throwable error) {
-                super.onError(error);
-                Log.e(TAG, "Exception loading milestones", error);
-                ToastUtils.show(activity, error, R.string.error_milestones_load);
-            }
-        }.start());
+                @Override
+                public void onError(Throwable error) {
+                    super.onError(error);
+                    Log.e(TAG, "Exception loading milestones", error);
+                    ToastUtils.show(activity, error, R.string.error_milestones_load);
+                }
+            }.start());
     }
 
     private Observable<Page<Milestone>> getPageAndNext(int i) {
