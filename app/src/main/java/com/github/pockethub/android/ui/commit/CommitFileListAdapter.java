@@ -18,9 +18,9 @@ package com.github.pockethub.android.ui.commit;
 import android.content.res.Resources;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import com.github.kevinsawicki.wishlist.MultiTypeAdapter;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.commit.FullCommitFile;
 import com.github.pockethub.android.ui.StyledText;
@@ -180,8 +180,7 @@ public class CommitFileListAdapter extends MultiTypeAdapter {
             int lastSlash = path.lastIndexOf('/');
             if (lastSlash != -1) {
                 setText(0, path.substring(lastSlash + 1));
-                ViewUtils.setGone(setText(1, path.substring(0, lastSlash + 1)),
-                        false);
+                setText(1, path.substring(0, lastSlash + 1)).setVisibility(View.VISIBLE);
             } else {
                 setText(0, path);
                 setGone(1, true);

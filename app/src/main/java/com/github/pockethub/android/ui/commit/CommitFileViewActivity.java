@@ -25,13 +25,13 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.GitHubFile;
 import com.meisolsson.githubsdk.model.Repository;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.commit.CommitUtils;
@@ -236,8 +236,8 @@ public class CommitFileViewActivity extends BaseActivity implements
             ToastUtils.show(this, R.string.error_rendering_markdown);
         }
 
-        ViewUtils.setGone(loadingBar, true);
-        ViewUtils.setGone(codeView, false);
+        loadingBar.setVisibility(View.GONE);
+        codeView.setVisibility(View.VISIBLE);
 
         if (!TextUtils.isEmpty(rendered)) {
             renderedMarkdown = rendered.toString();
@@ -260,8 +260,8 @@ public class CommitFileViewActivity extends BaseActivity implements
     }
 
     private void loadMarkdown() {
-        ViewUtils.setGone(loadingBar, false);
-        ViewUtils.setGone(codeView, true);
+        loadingBar.setVisibility(View.VISIBLE);
+        codeView.setVisibility(View.GONE);
 
         String markdown = new String(Base64.decode(blob.content(), Base64.DEFAULT));
         Bundle args = new Bundle();
@@ -278,8 +278,8 @@ public class CommitFileViewActivity extends BaseActivity implements
                 .compose(this.bindToLifecycle())
                 .subscribe(response -> {
                     GitBlob gitBlob = response.body();
-                    ViewUtils.setGone(loadingBar, true);
-                    ViewUtils.setGone(codeView, false);
+                    loadingBar.setVisibility(View.GONE);
+                    codeView.setVisibility(View.VISIBLE);
 
                     editor.setSource(path, gitBlob);
                     blob = gitBlob;
@@ -293,15 +293,15 @@ public class CommitFileViewActivity extends BaseActivity implements
                             RENDER_MARKDOWN, true)) {
                         loadMarkdown();
                     } else {
-                        ViewUtils.setGone(loadingBar, true);
-                        ViewUtils.setGone(codeView, false);
+                        loadingBar.setVisibility(View.GONE);
+                        codeView.setVisibility(View.VISIBLE);
                         editor.setSource(path, gitBlob);
                     }
                 }, error -> {
                     Log.e(TAG, "Loading commit file contents failed", error);
 
-                    ViewUtils.setGone(loadingBar, true);
-                    ViewUtils.setGone(codeView, false);
+                    loadingBar.setVisibility(View.GONE);
+                    codeView.setVisibility(View.VISIBLE);
                     ToastUtils.show(this, error, R.string.error_file_load);
                 });
     }

@@ -22,13 +22,13 @@ import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ProgressBar;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.repo.RepositoryUtils;
@@ -107,7 +107,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
             checkReadme();
         } else {
             avatars.bind(getSupportActionBar(), owner);
-            ViewUtils.setGone(loadingBar, false);
+            loadingBar.setVisibility(View.VISIBLE);
             setGone(true);
             ServiceGenerator.createService(this, RepositoryService.class)
                     .getRepository(repository.owner().login(), repository.name())
@@ -119,7 +119,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                         checkReadme();
                     }, e -> {
                         ToastUtils.show(this, R.string.error_repo_load);
-                        ViewUtils.setGone(loadingBar, true);
+                        loadingBar.setVisibility(View.GONE);
                     });
         }
     }
@@ -165,7 +165,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     private void configurePager() {
         avatars.bind(getSupportActionBar(), repository.owner());
         configureTabPager();
-        ViewUtils.setGone(loadingBar, true);
+        loadingBar.setVisibility(View.GONE);
         setGone(false);
         checkStarredRepositoryStatus();
     }

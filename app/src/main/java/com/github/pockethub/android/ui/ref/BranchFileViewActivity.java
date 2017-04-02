@@ -25,12 +25,12 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Repository;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.commit.CommitUtils;
@@ -233,8 +233,8 @@ public class BranchFileViewActivity extends BaseActivity implements
             ToastUtils.show(this, R.string.error_rendering_markdown);
         }
 
-        ViewUtils.setGone(loadingBar, true);
-        ViewUtils.setGone(codeView, false);
+        loadingBar.setVisibility(View.GONE);
+        codeView.setVisibility(View.VISIBLE);
 
         if (!TextUtils.isEmpty(rendered)) {
             renderedMarkdown = rendered.toString();
@@ -256,8 +256,8 @@ public class BranchFileViewActivity extends BaseActivity implements
     }
 
     private void loadMarkdown() {
-        ViewUtils.setGone(loadingBar, false);
-        ViewUtils.setGone(codeView, true);
+        loadingBar.setVisibility(View.VISIBLE);
+        codeView.setVisibility(View.GONE);
 
         String markdown = new String(Base64.decode(blob.content(), Base64.DEFAULT));
         Bundle args = new Bundle();
@@ -267,8 +267,8 @@ public class BranchFileViewActivity extends BaseActivity implements
     }
 
     private void loadContent() {
-        ViewUtils.setGone(loadingBar, false);
-        ViewUtils.setGone(codeView, true);
+        loadingBar.setVisibility(View.VISIBLE);
+        codeView.setVisibility(View.GONE);
 
         ServiceGenerator.createService(this, GitService.class)
                 .getGitBlob(repo.owner().login(), repo.name(), sha)
@@ -287,16 +287,16 @@ public class BranchFileViewActivity extends BaseActivity implements
                             RENDER_MARKDOWN, true)) {
                         loadMarkdown();
                     } else {
-                        ViewUtils.setGone(loadingBar, true);
-                        ViewUtils.setGone(codeView, false);
+                        loadingBar.setVisibility(View.GONE);
+                        codeView.setVisibility(View.VISIBLE);
 
                         editor.setMarkdown(false).setSource(file, blob);
                     }
                 }, e -> {
                     Log.d(TAG, "Loading file contents failed", e);
 
-                    ViewUtils.setGone(loadingBar, true);
-                    ViewUtils.setGone(codeView, false);
+                    loadingBar.setVisibility(View.GONE);
+                    codeView.setVisibility(View.VISIBLE);
                     ToastUtils.show(this, e, R.string.error_file_load);
                 });
     }

@@ -45,7 +45,6 @@ import com.meisolsson.githubsdk.model.Milestone;
 import com.meisolsson.githubsdk.model.PullRequest;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.accounts.AccountUtils;
 import com.github.pockethub.android.core.issue.IssueStore;
@@ -335,7 +334,7 @@ public class IssueFragment extends DialogFragment {
 
         if (IssueUtils.isPullRequest(issue) && issue.pullRequest().commits() != null
                 && issue.pullRequest().commits() > 0) {
-            ViewUtils.setGone(commitsView, false);
+            commitsView.setVisibility(VISIBLE);
 
             TextView icon = (TextView) headerView.findViewById(R.id.tv_commit_icon);
             icon.setText(ICON_COMMIT);
@@ -344,7 +343,7 @@ public class IssueFragment extends DialogFragment {
                     issue.pullRequest().commits());
             ((TextView) headerView.findViewById(R.id.tv_pull_request_commits)).setText(commits);
         } else {
-            ViewUtils.setGone(commitsView, true);
+            commitsView.setVisibility(GONE);
         }
 
         boolean open = IssueState.open.equals(issue.state());
@@ -356,8 +355,10 @@ public class IssueFragment extends DialogFragment {
                 text.append(' ').append(closedAt);
             }
             stateText.setText(text);
+            stateText.setVisibility(VISIBLE);
+        } else {
+            stateText.setVisibility(GONE);
         }
-        ViewUtils.setGone(stateText, open);
 
         User assignee = issue.assignee();
         if (assignee != null) {
@@ -401,8 +402,8 @@ public class IssueFragment extends DialogFragment {
             milestoneArea.setVisibility(GONE);
         }
 
-        ViewUtils.setGone(progress, true);
-        ViewUtils.setGone(list, false);
+        progress.setVisibility(GONE);
+        list.setVisibility(VISIBLE);
         updateStateItem(issue);
     }
 
@@ -423,7 +424,7 @@ public class IssueFragment extends DialogFragment {
                     updateList(fullIssue.getIssue(), items);
                 }, e -> {
                     ToastUtils.show(getActivity(), e, R.string.error_issue_load);
-                    ViewUtils.setGone(progress, true);
+                    progress.setVisibility(GONE);
                 });
     }
 

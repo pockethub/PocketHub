@@ -38,7 +38,6 @@ import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.GistFile;
 import com.meisolsson.githubsdk.model.GitHubComment;
 import com.meisolsson.githubsdk.model.User;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.accounts.AccountUtils;
 import com.github.pockethub.android.core.OnLoadListener;
@@ -240,8 +239,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
             description.setText(R.string.no_description_given);
         }
 
-        ViewUtils.setGone(progress, true);
-        ViewUtils.setGone(list, false);
+        progress.setVisibility(GONE);
+        list.setVisibility(VISIBLE);
     }
 
     @Override

@@ -17,6 +17,7 @@
 package com.github.pockethub.android.ui.user;
 
 import android.text.TextUtils;
+import android.view.View;
 
 import com.meisolsson.githubsdk.model.GitHubComment;
 import com.meisolsson.githubsdk.model.GitHubEvent;
@@ -27,7 +28,6 @@ import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.ReviewComment;
 import com.meisolsson.githubsdk.model.Team;
 import com.meisolsson.githubsdk.model.User;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.core.issue.IssueUtils;
 import com.github.pockethub.android.ui.StyledText;
 import com.github.pockethub.android.util.TimeUtils;
@@ -446,7 +446,7 @@ public class IconAndViewTextManager {
         String icon = setIconAndFormatStyledText(event, main, details);
 
         if (icon != null) {
-            ViewUtils.setGone(newsListAdapter.setTextAgent(3, icon), false);
+            newsListAdapter.setTextAgent(3, icon).setVisibility(View.VISIBLE);
         } else {
             newsListAdapter.setGoneAgent(3, true);
         }
@@ -454,7 +454,7 @@ public class IconAndViewTextManager {
         newsListAdapter.setTextAgent(1, main);
 
         if (!TextUtils.isEmpty(details)) {
-            ViewUtils.setGone(newsListAdapter.setTextAgent(2, details), false);
+            newsListAdapter.setTextAgent(2, details).setVisibility(View.VISIBLE);
         } else {
             newsListAdapter.setGoneAgent(2, true);
         }
