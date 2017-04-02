@@ -80,4 +80,12 @@ public class IssueUriMatcher {
                 .number(issueNumber)
                 .build();
     }
+
+    public static Issue getApiIssue(String url) {
+        url = url.replace("https://api.github.com/repos", "https://github.com/");
+        url = url.replaceFirst("/pulls/(\\d+)$", "/pull/$1");
+
+        Uri uri = Uri.parse(url);
+        return getIssue(uri);
+    }
 }
