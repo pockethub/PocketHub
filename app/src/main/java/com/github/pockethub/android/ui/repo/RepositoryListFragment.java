@@ -20,13 +20,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ThrowableLoader;
 import com.github.pockethub.android.persistence.AccountDataManager;
@@ -180,20 +181,20 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
 
         View view = getActivity().getLayoutInflater().inflate(
             R.layout.repo_dialog, null);
-        ViewFinder finder = new ViewFinder(view);
 
         final User owner = repo.owner();
-        avatars.bind(finder.imageView(R.id.iv_owner_avatar), owner);
-        finder.setText(R.id.tv_owner_name, getString(R.string.navigate_to_user, owner.login()));
-        finder.onClick(R.id.ll_owner_area, v1 -> {
+        avatars.bind((ImageView) view.findViewById(R.id.iv_owner_avatar), owner);
+        ((TextView) view.findViewById(R.id.tv_owner_name)).setText(getString(R.string.navigate_to_user, owner.login()));
+        view.findViewById(R.id.ll_owner_area).setOnClickListener(v1 -> {
             dialogHolder[0].dismiss();
             viewUser(owner);
         });
 
         if ((recentRepos != null) && (recentRepos.contains(repo))) {
-            finder.find(R.id.divider).setVisibility(View.VISIBLE);
-            finder.find(R.id.ll_recent_repo_area).setVisibility(View.VISIBLE);
-            finder.onClick(R.id.ll_recent_repo_area, v1 -> {
+            view.findViewById(R.id.divider).setVisibility(View.VISIBLE);
+            View recentRepoArea = view.findViewById(R.id.ll_recent_repo_area);
+            recentRepoArea.setVisibility(View.VISIBLE);
+            recentRepoArea.setOnClickListener(v1 -> {
                 dialogHolder[0].dismiss();
                 recentRepos.remove(repo);
                 refresh();

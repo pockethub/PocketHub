@@ -65,8 +65,8 @@ public class RawCommentFragment extends DialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        commentText = finder.find(R.id.et_comment);
-        addImageFab = finder.find(R.id.fab_add_image);
+        commentText = (EditText) view.findViewById(R.id.et_comment);
+        addImageFab = (FloatingActionButton) view.findViewById(R.id.fab_add_image);
 
         // @TargetApi(…) required to ensure build passes
         // noinspection Convert2Lambda

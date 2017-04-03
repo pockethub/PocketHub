@@ -219,7 +219,7 @@ public class IssuesViewActivity extends PagerActivity {
 
     private void configurePager() {
         int initialPosition = getIntExtra(EXTRA_POSITION);
-        pager = finder.find(R.id.vp_pages);
+        pager = (ViewPager) findViewById(R.id.vp_pages);
 
         if (repo != null) {
             adapter = new IssuesPagerAdapter(this, repo, issueNumbers, canWrite);

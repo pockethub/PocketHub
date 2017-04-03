@@ -118,7 +118,7 @@ public class GistsViewActivity extends PagerActivity implements
         gists = getStringArrayExtra(EXTRA_GIST_IDS);
         gist = getParcelableExtra(EXTRA_GIST);
         initialPosition = getIntExtra(EXTRA_POSITION);
-        pager = finder.find(R.id.vp_pages);
+        pager = (ViewPager) findViewById(R.id.vp_pages);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

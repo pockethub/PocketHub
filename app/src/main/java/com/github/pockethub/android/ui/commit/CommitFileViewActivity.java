@@ -131,8 +131,8 @@ public class CommitFileViewActivity extends BaseActivity implements
         sha = getStringExtra(EXTRA_BASE);
         path = getStringExtra(EXTRA_PATH);
 
-        loadingBar = finder.find(R.id.pb_loading);
-        codeView = finder.find(R.id.wv_code);
+        loadingBar = (ProgressBar) findViewById(R.id.pb_loading);
+        codeView = (WebView) findViewById(R.id.wv_code);
 
         file = CommitUtils.getName(path);
         isMarkdownFile = MarkdownUtils.isMarkdown(file);

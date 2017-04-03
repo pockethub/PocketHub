@@ -94,7 +94,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
 
         repository = getParcelableExtra(EXTRA_REPOSITORY);
 
-        loadingBar = finder.find(R.id.pb_loading);
+        loadingBar = (ProgressBar) findViewById(R.id.pb_loading);
 
         User owner = repository.owner();
 

@@ -97,9 +97,9 @@ public class GistFilesViewActivity extends PagerActivity {
 
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
-        pager = finder.find(R.id.vp_pages);
-        loadingBar = finder.find(R.id.pb_loading);
-        tabs = finder.find(R.id.sliding_tabs_layout);
+        pager = (ViewPager) findViewById(R.id.vp_pages);
+        loadingBar = (ProgressBar) findViewById(R.id.pb_loading);
+        tabs = (TabLayout) findViewById(R.id.sliding_tabs_layout);
 
         if (initialPosition < 0) {
             initialPosition = 0;

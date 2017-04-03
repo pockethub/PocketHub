@@ -73,12 +73,12 @@ public class CreateGistActivity extends BaseActivity {
 
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
-        descriptionText = finder.find(R.id.et_gist_description);
-        nameText = finder.find(R.id.et_gist_name);
-        contentText = finder.find(R.id.et_gist_content);
-        publicCheckBox = finder.find(R.id.cb_public);
+        descriptionText = (EditText) findViewById(R.id.et_gist_description);
+        nameText = (EditText) findViewById(R.id.et_gist_name);
+        contentText = (EditText) findViewById(R.id.et_gist_content);
+        publicCheckBox = (CheckBox) findViewById(R.id.cb_public);
 
-        final AppBarLayout appBarLayout = finder.find(R.id.appbar);
+        final AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
 
         // Fully expand the AppBar if something in it gets focus
         View.OnFocusChangeListener expandAppBarOnFocusChangeListener = (v, hasFocus) -> {

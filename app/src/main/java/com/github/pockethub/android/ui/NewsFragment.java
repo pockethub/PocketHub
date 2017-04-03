@@ -20,7 +20,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.meisolsson.githubsdk.model.Gist;
@@ -30,7 +32,6 @@ import com.meisolsson.githubsdk.model.Release;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.gist.GistEventMatcher;
 import com.github.pockethub.android.core.issue.IssueEventMatcher;
@@ -159,16 +160,15 @@ public abstract class NewsFragment extends PagedItemFragment<GitHubEvent> {
 
             View view = getActivity().getLayoutInflater().inflate(
                     R.layout.nav_dialog, null);
-            ViewFinder finder = new ViewFinder(view);
-            avatars.bind(finder.imageView(R.id.iv_user_avatar), user);
-            avatars.bind(finder.imageView(R.id.iv_repo_avatar), repo.owner());
-            finder.setText(R.id.tv_login, user.login());
-            finder.setText(R.id.tv_repo_name, InfoUtils.createRepoId(repo));
-            finder.onClick(R.id.ll_user_area, v1 -> {
+            avatars.bind((ImageView) view.findViewById(R.id.iv_user_avatar), user);
+            avatars.bind((ImageView) view.findViewById(R.id.iv_repo_avatar), repo.owner());
+            ((TextView) view.findViewById(R.id.tv_login)).setText(user.login());
+            ((TextView) view.findViewById(R.id.tv_repo_name)).setText(InfoUtils.createRepoId(repo));
+            view.findViewById(R.id.ll_user_area).setOnClickListener(v1 -> {
                 dialogHolder[0].dismiss();
                 viewUser(user);
             });
-            finder.onClick(R.id.ll_repo_area, v1 -> {
+            view.findViewById(R.id.ll_repo_area).setOnClickListener(v1 -> {
                 dialogHolder[0].dismiss();
                 viewRepository(repo);
             });

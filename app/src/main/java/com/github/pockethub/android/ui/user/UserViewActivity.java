@@ -83,7 +83,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
         super.onCreate(savedInstanceState);
 
         user = getIntent().getParcelableExtra(EXTRA_USER);
-        loadingBar = finder.find(R.id.pb_loading);
+        loadingBar = (ProgressBar) findViewById(R.id.pb_loading);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
