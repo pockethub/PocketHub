@@ -182,6 +182,11 @@ public class OcticonTextView extends AppCompatTextView {
      */
     public static final String ICON_EDIT = "\uf058";
 
+    /**
+     * Read/check icon
+     */
+    public static final String ICON_READ = "\uf03a";
+
     private static Typeface OCTICONS;
 
     public OcticonTextView(Context context, AttributeSet attrs) {

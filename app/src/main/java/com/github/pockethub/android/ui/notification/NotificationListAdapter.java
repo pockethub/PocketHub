@@ -115,7 +115,7 @@ class NotificationListAdapter extends MultiTypeAdapter {
             setText(1, notificationThread.subject().title());
             setText(2, TimeUtils.getRelativeTime(notificationThread.updatedAt()));
 
-            setText(3, "\uf03a");
+            setText(3, OcticonTextView.ICON_READ);
             setGone(3, !notificationThread.unread());
 
             if (!textView(3).hasOnClickListeners()) {

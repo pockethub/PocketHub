@@ -24,10 +24,10 @@ class NotificationPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 break;
             case 1:
-                args.putString("filter", "participating");
+                args.putString(NotificationListFragment.EXTRA_FILTER, "participating");
                 break;
             case 2:
-                args.putString("filter", "all");
+                args.putString(NotificationListFragment.EXTRA_FILTER, "all");
                 break;
             default:
                 throw new IllegalStateException("Item doesn't exist");

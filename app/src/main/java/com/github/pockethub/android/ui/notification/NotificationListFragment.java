@@ -40,6 +40,8 @@ import java.util.Map;
 public class NotificationListFragment extends DialogFragment
         implements NotificationReadListener, AdapterView.OnItemClickListener {
 
+    public static final String EXTRA_FILTER = "filter";
+
     /**
      * Filters for the request to GitHub.
      */
@@ -56,8 +58,8 @@ public class NotificationListFragment extends DialogFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
-        if (args.containsKey("filter")) {
-            filters.put(args.getString("filter"), true);
+        if (args.containsKey(EXTRA_FILTER)) {
+            filters.put(args.getString(EXTRA_FILTER), true);
         }
     }
 
