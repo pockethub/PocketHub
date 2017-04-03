@@ -94,7 +94,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
 
         repository = getParcelableExtra(EXTRA_REPOSITORY);
 
-        loadingBar = finder.find(R.id.progress_bar);
+        loadingBar = finder.find(R.id.pb_loading);
 
         User owner = repository.owner();
 
@@ -148,6 +148,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     }
 
     private void checkReadme() {
+        loadingBar.setVisibility(View.VISIBLE);
         ServiceGenerator.createService(this, RepositoryContentService.class)
                 .hasReadme(repository.owner().login(), repository.name())
                 .subscribeOn(Schedulers.io())
