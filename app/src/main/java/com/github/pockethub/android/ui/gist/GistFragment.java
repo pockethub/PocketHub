@@ -403,12 +403,9 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         Single.create(new RefreshGistTask(getActivity(), gistId, imageGetter))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .filter(fullGist -> isUsable())
                 .compose(this.<FullGist>bindToLifecycle())
                 .subscribe(fullGist -> {
-                    if (!isUsable()) {
-                        return;
-                    }
-
                     FragmentActivity activity = getActivity();
                     if (activity instanceof OnLoadListener) {
                         ((OnLoadListener<Gist>) activity)

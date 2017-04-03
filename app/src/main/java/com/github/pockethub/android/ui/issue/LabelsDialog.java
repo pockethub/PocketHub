@@ -31,7 +31,6 @@ import com.meisolsson.githubsdk.service.issues.IssueLabelService;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -73,35 +72,26 @@ public class LabelsDialog extends BaseProgressDialog {
     }
 
     private void load(final Collection<Label> selectedLabels) {
-        getPageAndNext(1).subscribe(new ProgressObserverAdapter<Page<Label>>(activity, R.string.loading_labels){
-            List<Label> repositoryLabels = new ArrayList<>();
+        getPageAndNext(1)
+            .flatMap(page -> Observable.fromIterable(page.items()))
+            .toMap(Label::name, label -> label, () -> new TreeMap<>(CASE_INSENSITIVE_ORDER))
+            .subscribe(new ProgressObserverAdapter<Map<String, Label>>(activity, R.string.loading_labels) {
 
-            @Override
-            public void onNext(Page<Label> page) {
-                repositoryLabels.addAll(page.items());
-            }
+                @Override
+                public void onSuccess(Map<String, Label> loadedLabels) {
+                    super.onSuccess(loadedLabels);
+                    labels = loadedLabels;
 
-            @Override
-            public void onComplete() {
-                super.onComplete();
-                Map<String, Label> loadedLabels = new TreeMap<>(
-                        CASE_INSENSITIVE_ORDER);
-                for (Label label : repositoryLabels) {
-                    loadedLabels.put(label.name(), label);
+                    show(selectedLabels);
                 }
 
-                labels = loadedLabels;
-
-                show(selectedLabels);
-            }
-
-            @Override
-            public void onError(Throwable error) {
-                super.onError(error);
-                Log.e(TAG, "Exception loading labels", error);
-                ToastUtils.show(activity, error, R.string.error_labels_load);
-            }
-        }.start());
+                @Override
+                public void onError(Throwable error) {
+                    super.onError(error);
+                    Log.e(TAG, "Exception loading labels", error);
+                    ToastUtils.show(activity, error, R.string.error_labels_load);
+                }
+            }.start());
     }
 
     private Observable<Page<Label>> getPageAndNext(int i) {
