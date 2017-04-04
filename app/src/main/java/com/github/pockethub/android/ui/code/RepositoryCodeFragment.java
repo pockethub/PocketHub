@@ -221,17 +221,17 @@ public class RepositoryCodeFragment extends DialogFragment implements
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        progressView = finder.find(R.id.pb_loading);
-        listView = finder.find(android.R.id.list);
+        progressView = (ProgressBar) view.findViewById(R.id.pb_loading);
+        listView = (ListView) view.findViewById(android.R.id.list);
         listView.setOnItemClickListener(this);
 
         Activity activity = getActivity();
         adapter = new HeaderFooterListAdapter<>(listView,
                 new CodeTreeAdapter(activity));
 
-        branchFooterView = finder.find(R.id.rl_branch);
-        branchView = finder.find(R.id.tv_branch);
-        branchIconView = finder.find(R.id.tv_branch_icon);
+        branchFooterView = view.findViewById(R.id.rl_branch);
+        branchView = (TextView) view.findViewById(R.id.tv_branch);
+        branchIconView = (TextView) view.findViewById(R.id.tv_branch_icon);
         branchFooterView.setOnClickListener(v -> switchBranches());
 
         pathHeaderView = activity.getLayoutInflater().inflate(R.layout.path_item,

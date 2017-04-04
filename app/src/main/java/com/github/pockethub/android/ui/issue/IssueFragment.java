@@ -246,8 +246,8 @@ public class IssueFragment extends DialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        list = finder.find(android.R.id.list);
-        progress = finder.find(R.id.pb_loading);
+        list = (ListView) view.findViewById(android.R.id.list);
+        progress = (ProgressBar) view.findViewById(R.id.pb_loading);
 
         LayoutInflater inflater = getLayoutInflater(savedInstanceState);
 

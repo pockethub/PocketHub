@@ -130,8 +130,8 @@ public class BranchFileViewActivity extends BaseActivity implements
         path = getStringExtra(EXTRA_PATH);
         branch = getStringExtra(EXTRA_HEAD);
 
-        loadingBar = finder.find(R.id.pb_loading);
-        codeView = finder.find(R.id.wv_code);
+        loadingBar = (ProgressBar) findViewById(R.id.pb_loading);
+        codeView = (WebView) findViewById(R.id.wv_code);
 
         codeView.getSettings().setBuiltInZoomControls(true);
         codeView.getSettings().setUseWideViewPort(true);

@@ -184,7 +184,7 @@ public class GistFileFragment extends DialogFragment implements
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        webView = finder.find(R.id.wv_code);
+        webView = (WebView) view.findViewById(R.id.wv_code);
 
         editor = new SourceEditor(webView);
         editor.setWrap(PreferenceUtils.getCodePreferences(getActivity())

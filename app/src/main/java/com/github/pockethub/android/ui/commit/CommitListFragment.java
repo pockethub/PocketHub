@@ -270,9 +270,9 @@ public class CommitListFragment extends PagedItemFragment<Commit>
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        branchFooterView = finder.find(R.id.rl_branch);
-        branchView = finder.find(R.id.tv_branch);
-        branchIconView = finder.find(R.id.tv_branch_icon);
+        branchFooterView = view.findViewById(R.id.rl_branch);
+        branchView = (TextView) view.findViewById(R.id.tv_branch);
+        branchIconView = (TextView) view.findViewById(R.id.tv_branch_icon);
         branchFooterView.setOnClickListener(v -> switchRefs());
     }
 

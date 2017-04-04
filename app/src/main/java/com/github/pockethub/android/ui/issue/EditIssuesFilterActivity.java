@@ -88,10 +88,10 @@ public class EditIssuesFilterActivity extends BaseActivity {
 
         setContentView(R.layout.activity_issues_filter_edit);
 
-        labelsText = finder.find(R.id.tv_labels);
-        milestoneText = finder.find(R.id.tv_milestone);
-        assigneeText = finder.find(R.id.tv_assignee);
-        avatarView = finder.find(R.id.iv_avatar);
+        labelsText = (TextView) findViewById(R.id.tv_labels);
+        milestoneText = (TextView) findViewById(R.id.tv_milestone);
+        assigneeText = (TextView) findViewById(R.id.tv_assignee);
+        avatarView = (ImageView) findViewById(R.id.iv_avatar);
 
         if (savedInstanceState != null) {
             filter = savedInstanceState.getParcelable(EXTRA_ISSUE_FILTER);

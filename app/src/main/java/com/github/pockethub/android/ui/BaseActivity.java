@@ -19,7 +19,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.CallSuper;
 
-import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.pockethub.android.ui.roboactivities.RoboAppCompatActivity;
 import com.trello.rxlifecycle2.LifecycleProvider;
 import com.trello.rxlifecycle2.LifecycleTransformer;
@@ -36,10 +35,6 @@ import io.reactivex.subjects.BehaviorSubject;
 public abstract class BaseActivity extends
         RoboAppCompatActivity implements DialogResultListener, LifecycleProvider<ActivityEvent> {
 
-    /**
-     * Finder bound to this activity's view
-     */
-    protected ViewFinder finder;
     private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
 
     @CallSuper
@@ -47,7 +42,6 @@ public abstract class BaseActivity extends
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         lifecycleSubject.onNext(ActivityEvent.CREATE);
-        finder = new ViewFinder(this);
     }
 
 

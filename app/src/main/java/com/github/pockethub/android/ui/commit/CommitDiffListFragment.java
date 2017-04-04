@@ -39,7 +39,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.meisolsson.githubsdk.model.Commit;
 import com.meisolsson.githubsdk.model.GitHubFile;
 import com.meisolsson.githubsdk.model.Repository;
-import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.commit.CommitStore;
 import com.github.pockethub.android.core.commit.CommitUtils;
@@ -374,8 +373,8 @@ public class CommitDiffListFragment extends DialogFragment implements
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        list = finder.find(android.R.id.list);
-        progress = finder.find(R.id.pb_loading);
+        list = (ListView) view.findViewById(android.R.id.list);
+        progress = (ProgressBar) view.findViewById(R.id.pb_loading);
 
         diffStyler = new DiffStyler(getResources());
 
@@ -421,21 +420,20 @@ public class CommitDiffListFragment extends DialogFragment implements
 
         View view = getActivity().getLayoutInflater().inflate(
                 R.layout.diff_line_dialog, null);
-        ViewFinder finder = new ViewFinder(view);
 
-        TextView diff = finder.textView(R.id.tv_diff);
+        TextView diff = (TextView) view.findViewById(R.id.tv_diff);
         diff.setText(line);
         diffStyler.updateColors(line, diff);
 
-        finder.setText(R.id.tv_commit, getString(R.string.commit_prefix)
+        ((TextView) view.findViewById(R.id.tv_commit)).setText(getString(R.string.commit_prefix)
                 + CommitUtils.abbreviate(commit));
 
-        finder.find(R.id.ll_view_area).setOnClickListener(v -> {
+        view.findViewById(R.id.ll_view_area).setOnClickListener(v -> {
             dialogHolder[0].dismiss();
             openFile(file);
         });
 
-        finder.find(R.id.ll_comment_area).setOnClickListener(v -> {
+        view.findViewById(R.id.ll_comment_area).setOnClickListener(v -> {
             dialogHolder[0].dismiss();
             startActivityForResult(CreateCommentActivity
                             .createIntent(repository, commit.sha(),

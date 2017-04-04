@@ -114,7 +114,7 @@ public class CommitViewActivity extends PagerActivity {
 
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
-        pager = finder.find(R.id.vp_pages);
+        pager = (ViewPager) findViewById(R.id.vp_pages);
 
         repository = getIntent().getParcelableExtra(EXTRA_REPOSITORY);
         ids = getCharSequenceArrayExtra(EXTRA_BASES);

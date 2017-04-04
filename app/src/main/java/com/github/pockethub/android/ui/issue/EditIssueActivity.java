@@ -169,15 +169,15 @@ public class EditIssueActivity extends BaseActivity {
 
         setContentView(R.layout.activity_issue_edit);
 
-        titleText = finder.find(R.id.et_issue_title);
-        bodyText = finder.find(R.id.et_issue_body);
-        milestoneGraph = finder.find(R.id.ll_milestone_graph);
-        milestoneText = finder.find(R.id.tv_milestone);
-        milestoneClosed = finder.find(R.id.v_closed);
-        assigneeAvatar = finder.find(R.id.iv_assignee_avatar);
-        assigneeText = finder.find(R.id.tv_assignee_name);
-        labelsText = finder.find(R.id.tv_labels);
-        addImageFab = finder.find(R.id.fab_add_image);
+        titleText = (EditText) findViewById(R.id.et_issue_title);
+        bodyText = (EditText) findViewById(R.id.et_issue_body);
+        milestoneGraph = findViewById(R.id.ll_milestone_graph);
+        milestoneText = (TextView) findViewById(R.id.tv_milestone);
+        milestoneClosed = findViewById(R.id.v_closed);
+        assigneeAvatar = (ImageView) findViewById(R.id.iv_assignee_avatar);
+        assigneeText = (TextView) findViewById(R.id.tv_assignee_name);
+        labelsText = (TextView) findViewById(R.id.tv_labels);
+        addImageFab = (FloatingActionButton) findViewById(R.id.fab_add_image);
 
         Intent intent = getIntent();
 
@@ -341,33 +341,37 @@ public class EditIssueActivity extends BaseActivity {
     }
 
     private void showMainContent() {
-        finder.find(R.id.sv_issue_content).setVisibility(View.VISIBLE);
-        finder.find(R.id.pb_loading).setVisibility(View.GONE);
+        findViewById(R.id.sv_issue_content).setVisibility(View.VISIBLE);
+        findViewById(R.id.pb_loading).setVisibility(View.GONE);
     }
 
     private void showCollaboratorOptions() {
-        finder.find(R.id.tv_milestone_label).setVisibility(View.VISIBLE);
-        finder.find(R.id.ll_milestone).setVisibility(View.VISIBLE);
-        finder.find(R.id.tv_labels_label).setVisibility(View.VISIBLE);
-        finder.find(R.id.ll_labels).setVisibility(View.VISIBLE);
-        finder.find(R.id.tv_assignee_label).setVisibility(View.VISIBLE);
-        finder.find(R.id.ll_assignee).setVisibility(View.VISIBLE);
+        View milestone = findViewById(R.id.ll_milestone);
+        View labels = findViewById(R.id.ll_labels);
+        View assignee = findViewById(R.id.ll_assignee);
 
-        finder.onClick(R.id.ll_milestone, v -> {
+        findViewById(R.id.tv_milestone_label).setVisibility(View.VISIBLE);
+        milestone.setVisibility(View.VISIBLE);
+        findViewById(R.id.tv_labels_label).setVisibility(View.VISIBLE);
+        labels.setVisibility(View.VISIBLE);
+        findViewById(R.id.tv_assignee_label).setVisibility(View.VISIBLE);
+        assignee.setVisibility(View.VISIBLE);
+
+        milestone.setOnClickListener(v -> {
             if (milestoneDialog == null) {
                 milestoneDialog = new MilestoneDialog(this, ISSUE_MILESTONE_UPDATE, repository);
             }
             milestoneDialog.show(issue.milestone());
         });
 
-        finder.onClick(R.id.ll_assignee, v -> {
+        assignee.setOnClickListener(v -> {
             if (assigneeDialog == null) {
                 assigneeDialog = new AssigneeDialog(this, ISSUE_ASSIGNEE_UPDATE, repository);
             }
             assigneeDialog.show(issue.assignee());
         });
 
-        finder.onClick(R.id.ll_labels, v -> {
+        labels.setOnClickListener(v -> {
             if (labelsDialog == null) {
                 labelsDialog = new LabelsDialog(this, ISSUE_LABELS_UPDATE, repository);
             }

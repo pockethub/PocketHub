@@ -56,8 +56,8 @@ public class RenderedCommentFragment extends DialogFragment implements
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        progress = finder.find(R.id.pb_loading);
-        bodyText = finder.find(R.id.tv_comment_body);
+        progress = (ProgressBar) view.findViewById(R.id.pb_loading);
+        bodyText = (TextView) view.findViewById(R.id.tv_comment_body);
     }
 
     /**
