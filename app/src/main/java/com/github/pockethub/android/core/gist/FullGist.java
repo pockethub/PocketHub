@@ -18,20 +18,16 @@ package com.github.pockethub.android.core.gist;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.GitHubComment;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Gist model with comments and starred status
  */
-public class FullGist extends ArrayList<GitHubComment> implements Serializable {
-
-    private static final long serialVersionUID = -5966699489498437000L;
+public class FullGist {
 
     private final Gist gist;
-
     private final boolean starred;
+    private final List<GitHubComment> comments;
 
     /**
      * Create gist with comments
@@ -40,20 +36,17 @@ public class FullGist extends ArrayList<GitHubComment> implements Serializable {
      * @param starred
      * @param comments
      */
-    public FullGist(final Gist gist, final boolean starred,
-            final Collection<GitHubComment> comments) {
-        super(comments);
-
-        this.starred = starred;
+    public FullGist(final Gist gist, final boolean starred, final List<GitHubComment> comments) {
         this.gist = gist;
+        this.starred = starred;
+        this.comments = comments;
     }
 
     /**
-     * Create empty gist
+     * @return gist
      */
-    public FullGist() {
-        this.gist = null;
-        this.starred = false;
+    public Gist getGist() {
+        return gist;
     }
 
     /**
@@ -64,9 +57,9 @@ public class FullGist extends ArrayList<GitHubComment> implements Serializable {
     }
 
     /**
-     * @return gist
+     * @return comments
      */
-    public Gist getGist() {
-        return gist;
+    public List<GitHubComment> getComments() {
+        return comments;
     }
 }
