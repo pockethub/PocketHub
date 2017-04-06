@@ -89,7 +89,7 @@ public class AssigneeDialog extends BaseProgressDialog {
                     Log.d(TAG, "Exception loading collaborators", error);
                     ToastUtils.show(activity, error, R.string.error_collaborators_load);
                 }
-            }.start());
+            });
     }
 
     private Observable<Page<User>> getPageAndNext(int i) {

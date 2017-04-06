@@ -127,7 +127,7 @@ public class EditCommentActivity extends
                         Log.d(TAG, "Exception editing comment on issue", e);
                         ToastUtils.show(EditCommentActivity.this, e.getMessage());
                     }
-                }.start());
+                });
     }
 
     @Override

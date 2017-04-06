@@ -108,7 +108,6 @@ public class EditStateTask implements SingleOnSubscribe<Issue> {
         int message = close ? R.string.closing_issue : R.string.reopening_issue;
         this.close = close;
         observer.setContent(message);
-        observer.start();
 
         Single.create(this)
                 .subscribeOn(Schedulers.io())

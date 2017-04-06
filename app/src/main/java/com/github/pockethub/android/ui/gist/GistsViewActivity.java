@@ -188,7 +188,7 @@ public class GistsViewActivity extends PagerActivity implements
                             Log.d(TAG, "Exception deleting Gist", e);
                             ToastUtils.show(GistsViewActivity.this, e.getMessage());
                         }
-                    }.start());
+                    });
             return;
         }
 

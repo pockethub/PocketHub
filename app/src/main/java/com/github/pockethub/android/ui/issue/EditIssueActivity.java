@@ -510,7 +510,7 @@ public class EditIssueActivity extends BaseActivity {
                                 Log.e(TAG, "Exception creating issue", e);
                                 ToastUtils.show(EditIssueActivity.this, e.getMessage());
                             }
-                        }.start());
+                        });
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

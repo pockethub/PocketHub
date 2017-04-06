@@ -115,7 +115,7 @@ public class EditCommentActivity extends
                         Log.d(TAG, "Exception editing comment on gist", e);
                         ToastUtils.show(EditCommentActivity.this, e.getMessage());
                     }
-                }.start());
+                });
     }
 
     @Override
