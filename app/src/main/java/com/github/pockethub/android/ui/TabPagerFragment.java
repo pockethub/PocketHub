@@ -124,7 +124,7 @@ public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider
     }
 
     /**
-     * Get content view to be used when {@link #onCreate(android.os.Bundle)} is called
+     * Get content view to be used when {@link #onCreate(Bundle)} is called
      *
      * @return layout resource id
      */

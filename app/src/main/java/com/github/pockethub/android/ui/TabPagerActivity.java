@@ -18,6 +18,7 @@ package com.github.pockethub.android.ui;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabContentFactory;
@@ -163,7 +164,7 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
 
         setContentView(getContentView());
 
-        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         // On Lollipop, the action bar shadow is provided by default, so have to remove it explicitly
         getSupportActionBar().setElevation(0);
