@@ -91,11 +91,6 @@ public class WebView extends android.webkit.WebView {
         }
     }
 
-    @Override
-    public boolean canScrollHorizontally(final int direction) {
-        return super.canScrollHorizontally(direction);
-    }
-
     public void startIntercept() {
         intercept = true;
     }

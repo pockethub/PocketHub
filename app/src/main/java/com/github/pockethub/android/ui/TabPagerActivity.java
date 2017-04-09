@@ -48,11 +48,6 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
     protected V adapter;
 
     @Override
-    public void onPageSelected(final int position) {
-        super.onPageSelected(position);
-    }
-
-    @Override
     public void onTabChanged(String tabId) {
     }
 
