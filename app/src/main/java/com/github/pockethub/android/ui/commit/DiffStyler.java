@@ -134,6 +134,6 @@ public class DiffStyler {
             return Collections.emptyList();
         }
         List<CharSequence> lines = diffs.get(file);
-        return lines != null ? lines : Collections.<CharSequence>emptyList();
+        return lines != null ? lines : Collections.emptyList();
     }
 }

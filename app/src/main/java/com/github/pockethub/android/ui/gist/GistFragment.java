@@ -300,7 +300,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 .starGist(gistId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response<Boolean>>bindToLifecycle())
+                .compose(this.bindToLifecycle())
                 .subscribe(response -> starred = response.code() == 204,
                         e -> ToastUtils.show((Activity) getContext(), e.getMessage()));
     }
@@ -323,7 +323,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 .unstarGist(gistId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response<Boolean>>bindToLifecycle())
+                .compose(this.bindToLifecycle())
                 .subscribe(response -> starred = !(response.code() == 204),
                         e -> ToastUtils.show((Activity) getContext(), e.getMessage()));
     }
@@ -404,7 +404,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter(fullGist -> isUsable())
-                .compose(this.<FullGist>bindToLifecycle())
+                .compose(this.bindToLifecycle())
                 .subscribe(fullGist -> {
                     FragmentActivity activity = getActivity();
                     if (activity instanceof OnLoadListener) {
@@ -443,7 +443,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                     .deleteGistComment(gistId, comment.id())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Response<Boolean>>bindToLifecycle())
+                    .compose(this.bindToLifecycle())
                     .subscribe(new ProgressObserverAdapter<Response<Boolean>>(getActivity(), R.string.deleting_comment) {
 
                         @Override

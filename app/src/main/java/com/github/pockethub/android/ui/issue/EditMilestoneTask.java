@@ -110,7 +110,7 @@ public class EditMilestoneTask implements SingleOnSubscribe<Issue> {
             Single.create(this)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(activity.<Issue>bindToLifecycle())
+                    .compose(activity.bindToLifecycle())
                     .subscribe(observer);
         }
 

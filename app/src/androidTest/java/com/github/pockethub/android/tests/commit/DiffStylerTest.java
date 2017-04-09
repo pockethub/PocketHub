@@ -61,7 +61,7 @@ public class DiffStylerTest extends AndroidTestCase {
         DiffStyler styler = new DiffStyler(getContext().getResources());
         styler.setFiles(null);
         assertTrue(styler.get("navigation_drawer_header_background").isEmpty());
-        styler.setFiles(Collections.<GitHubFile>emptyList());
+        styler.setFiles(Collections.emptyList());
         assertTrue(styler.get("navigation_drawer_header_background").isEmpty());
     }
 

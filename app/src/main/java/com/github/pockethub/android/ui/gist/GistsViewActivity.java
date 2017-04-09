@@ -172,7 +172,7 @@ public class GistsViewActivity extends PagerActivity implements
                     .deleteGist(gistId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Response<Boolean>>bindToLifecycle())
+                    .compose(this.bindToLifecycle())
                     .subscribe(new ProgressObserverAdapter<Response<Boolean>>(this, R.string.deleting_gist) {
 
                         @Override

@@ -522,7 +522,7 @@ public class EditIssueActivity extends BaseActivity {
                 .isUserCollaborator(repository.owner().login(), repository.name(), AccountUtils.getLogin(this))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response<Boolean>>bindToLifecycle())
+                .compose(this.bindToLifecycle())
                 .subscribe(response -> {
                     showMainContent();
                     if (response.code() == 204) {
