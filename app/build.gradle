@@ -131,6 +131,8 @@ dependencies {
     }
     compile 'com.afollestad.material-dialogs:core:0.9.1.0'
 
+    compile 'com.google.code.gson:gson:2.8.0'
+
     //Self compiled .aar version of wishlist
     compile (name:'lib', ext:'aar')
 
