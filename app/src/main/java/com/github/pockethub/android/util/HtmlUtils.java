@@ -19,6 +19,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.text.Editable;
+import android.text.Html;
 import android.text.Html.ImageGetter;
 import android.text.Html.TagHandler;
 import android.text.Layout;
@@ -290,7 +291,7 @@ public class HtmlUtils {
             return "";
         }
 
-        return android.text.Html.fromHtml(html, imageGetter, TAG_HANDLER);
+        return Html.fromHtml(html, imageGetter, TAG_HANDLER);
     }
 
     /**
