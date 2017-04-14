@@ -34,11 +34,6 @@ public abstract class DotPagerActivity<V extends PagerAdapter>
      */
     protected V adapter;
 
-    @Override
-    public void onPageSelected(final int position) {
-        super.onPageSelected(position);
-    }
-
     /**
      * Create pager adapter
      *
