@@ -50,7 +50,7 @@ public class FullCommitFile {
      */
     public List<GitComment> get(final int line) {
         List<GitComment> lineComments = comments.get(line);
-        return lineComments != null ? lineComments : Collections.<GitComment> emptyList();
+        return lineComments != null ? lineComments : Collections.emptyList();
     }
 
     /**

@@ -118,7 +118,7 @@ public class GistFilesViewActivity extends PagerActivity {
             Single.create(new RefreshGistTask(this, gistId, imageGetter))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<FullGist>bindToLifecycle())
+                    .compose(this.bindToLifecycle())
                     .subscribe(gist -> {
                         this.gist = gist.getGist();
                         configurePager();

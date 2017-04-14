@@ -201,7 +201,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
 
         followSingle.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response<Boolean>>bindToLifecycle())
+                .compose(this.bindToLifecycle())
                 .subscribe(aBoolean -> isFollowing = !isFollowing,
                         e -> ToastUtils.show(this, isFollowing ? R.string.error_unfollowing_person : R.string.error_following_person));
     }
@@ -212,7 +212,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
                 .isFollowing(user.login())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response<Boolean>>bindToLifecycle())
+                .compose(this.bindToLifecycle())
                 .subscribe(response -> {
                     isFollowing = response.code() == 204;
                     followingStatusChecked = true;

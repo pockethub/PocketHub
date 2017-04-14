@@ -152,7 +152,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
         Single.create(new RefreshTreeTask(getActivity(), repository, reference))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<FullTree>bindToLifecycle())
+                .compose(this.bindToLifecycle())
                 .subscribe(fullTree -> {
                     if (folder == null || folder.parent == null) {
                         setFolder(fullTree, fullTree.root);
