@@ -90,9 +90,12 @@ public abstract class RepositoryListAdapter<V> extends SingleTypeAdapter<V> {
         }
 
         if (!TextUtils.isEmpty(language)) {
+            String languageColorCode = " ";
             GitHubColorUtils gitHubColorUtils = GitHubColorUtils.getInstance();
             StyledText t = new StyledText();
-            t.foreground(language, Color.parseColor(gitHubColorUtils.githubColorCode(language)));
+            languageColorCode = gitHubColorUtils.githubColorCode(language);
+            if(languageColorCode==null) languageColorCode = "#000";
+            t.foreground(language, Color.parseColor(languageColorCode));
             setText(2, t).setVisibility(View.VISIBLE);
         } else {
             setGone(2, true);
