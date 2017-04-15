@@ -18,6 +18,7 @@ package com.github.pockethub.android.ui.gist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -113,7 +114,7 @@ public class GistsViewActivity extends PagerActivity implements
 
         setContentView(R.layout.activity_pager);
 
-        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         gists = getStringArrayExtra(EXTRA_GIST_IDS);
         gist = getParcelableExtra(EXTRA_GIST);
@@ -172,7 +173,7 @@ public class GistsViewActivity extends PagerActivity implements
                     .deleteGist(gistId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Response<Boolean>>bindToLifecycle())
+                    .compose(this.bindToLifecycle())
                     .subscribe(new ProgressObserverAdapter<Response<Boolean>>(this, R.string.deleting_gist) {
 
                         @Override

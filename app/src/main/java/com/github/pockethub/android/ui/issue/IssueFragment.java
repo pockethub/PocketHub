@@ -412,7 +412,7 @@ public class IssueFragment extends DialogFragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter(fullIssue -> isUsable())
-                .compose(this.<FullIssue>bindToLifecycle())
+                .compose(this.bindToLifecycle())
                 .subscribe(fullIssue -> {
                     issue = fullIssue.getIssue();
                     items = new ArrayList<>();
@@ -501,7 +501,7 @@ public class IssueFragment extends DialogFragment {
                     .deleteIssueComment(repositoryId.owner().login(), repositoryId.name(), comment.id())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Response<Boolean>>bindToLifecycle())
+                    .compose(this.bindToLifecycle())
                     .subscribe(new ProgressObserverAdapter<Response<Boolean>>(getActivity(), R.string.deleting_comment) {
 
                         @Override

@@ -39,7 +39,7 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 
 /**
- * Activity to display a list of saved {@link com.github.pockethub.android.core.issue.IssueFilter} objects
+ * Activity to display a list of saved {@link IssueFilter} objects
  */
 public class FiltersViewFragment extends DialogFragment implements
     OnItemLongClickListener {

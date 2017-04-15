@@ -241,7 +241,7 @@ public class CommitDiffListFragment extends DialogFragment implements
         Single.create(new RefreshCommitTask(getActivity(), repository, base, commentImageGetter))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<FullCommit>bindToLifecycle())
+                .compose(this.bindToLifecycle())
                 .subscribe(full -> {
                     List<GitHubFile> files = full.getCommit().files();
                     diffStyler.setFiles(files);

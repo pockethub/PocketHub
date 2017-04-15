@@ -50,11 +50,6 @@ public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider
     protected V adapter;
 
     @Override
-    public void onPageSelected(final int position) {
-        super.onPageSelected(position);
-    }
-
-    @Override
     public void onTabChanged(String tabId) {
     }
 
@@ -124,7 +119,7 @@ public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider
     }
 
     /**
-     * Get content view to be used when {@link #onCreate(android.os.Bundle)} is called
+     * Get content view to be used when {@link #onCreate(Bundle)} is called
      *
      * @return layout resource id
      */

@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -95,7 +96,7 @@ public class GistFilesViewActivity extends PagerActivity {
 
         setContentView(R.layout.activity_pager_with_title);
 
-        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         pager = (ViewPager) findViewById(R.id.vp_pages);
         loadingBar = (ProgressBar) findViewById(R.id.pb_loading);
@@ -117,7 +118,7 @@ public class GistFilesViewActivity extends PagerActivity {
             Single.create(new RefreshGistTask(this, gistId, imageGetter))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<FullGist>bindToLifecycle())
+                    .compose(this.bindToLifecycle())
                     .subscribe(gist -> {
                         this.gist = gist.getGist();
                         configurePager();

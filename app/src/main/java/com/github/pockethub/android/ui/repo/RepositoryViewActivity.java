@@ -246,7 +246,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
 
         starSingle.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response<Boolean>>bindToLifecycle())
+                .compose(this.bindToLifecycle())
                 .subscribe(aBoolean -> {
                     isStarred = !isStarred;
                     setResult(RESOURCE_CHANGED);
@@ -259,7 +259,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                 .checkIfRepositoryIsStarred(repository.owner().login(), repository.name())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response<Boolean>>bindToLifecycle())
+                .compose(this.bindToLifecycle())
                 .subscribe(response -> {
                     isStarred = response.code() == 204;
                     starredStatusChecked = true;
@@ -310,7 +310,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                                 .deleteRepository(repository.owner().login(), repository.name())
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .compose(RepositoryViewActivity.this.<Response<Boolean>>bindToLifecycle())
+                                .compose(RepositoryViewActivity.this.bindToLifecycle())
                                 .subscribe(response -> {
                                     onBackPressed();
                                     ToastUtils.show(RepositoryViewActivity.this, R.string.delete_successful);

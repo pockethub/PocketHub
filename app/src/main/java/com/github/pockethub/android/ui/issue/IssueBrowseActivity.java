@@ -18,6 +18,7 @@ package com.github.pockethub.android.ui.issue;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.meisolsson.githubsdk.model.Repository;
@@ -62,7 +63,7 @@ public class IssueBrowseActivity extends BaseActivity {
 
         setContentView(R.layout.activity_repo_issue_list);
 
-        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(repo.name());
