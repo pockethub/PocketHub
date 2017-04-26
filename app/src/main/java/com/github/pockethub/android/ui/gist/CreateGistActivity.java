@@ -213,6 +213,6 @@ public class CreateGistActivity extends BaseActivity {
                         Log.d(TAG, "Exception creating Gist", e);
                         ToastUtils.show(CreateGistActivity.this, e.getMessage());
                     }
-                }.start());
+                });
     }
 }

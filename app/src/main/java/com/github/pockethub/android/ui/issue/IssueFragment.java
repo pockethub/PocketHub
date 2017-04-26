@@ -525,7 +525,7 @@ public class IssueFragment extends DialogFragment {
                             Log.d(TAG, "Exception deleting comment on issue", e);
                             ToastUtils.show(getActivity(), e.getMessage());
                         }
-                    }.start());
+                    });
             break;
         }
     }

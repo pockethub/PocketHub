@@ -135,7 +135,7 @@ public class CreateCommentActivity extends
                         super.onError(e);
                         ToastUtils.show(CreateCommentActivity.this, e.getMessage());
                     }
-                }.start());
+                });
     }
 
     @Override

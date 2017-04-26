@@ -467,7 +467,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                             Log.d(TAG, "Exception deleting comment on gist", e);
                             ToastUtils.show((Activity) getContext(), e.getMessage());
                         }
-                    }.start());
+                    });
             break;
         }
     }

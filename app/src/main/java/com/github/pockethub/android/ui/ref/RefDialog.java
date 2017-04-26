@@ -89,7 +89,7 @@ public class RefDialog {
                     Log.d(TAG, "Exception loading references", e);
                     ToastUtils.show(activity, e, R.string.error_refs_load);
                 }
-            }.start());
+            });
     }
 
     private Observable<Page<GitReference>> getPageAndNext(int i) {

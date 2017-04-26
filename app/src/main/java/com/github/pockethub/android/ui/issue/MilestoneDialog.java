@@ -96,7 +96,7 @@ public class MilestoneDialog extends BaseProgressDialog {
                     Log.e(TAG, "Exception loading milestones", error);
                     ToastUtils.show(activity, error, R.string.error_milestones_load);
                 }
-            }.start());
+            });
     }
 
     private Observable<Page<Milestone>> getPageAndNext(int i) {

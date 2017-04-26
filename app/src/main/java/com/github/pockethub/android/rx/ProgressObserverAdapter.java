@@ -49,8 +49,10 @@ public class ProgressObserverAdapter<T> implements Observer<T>, SingleObserver<T
         dismissProgress();
     }
 
+    @CallSuper
     @Override
     public void onSubscribe(final Disposable d) {
+        showProgressIndeterminate(message);
     }
 
     @Override
@@ -94,10 +96,5 @@ public class ProgressObserverAdapter<T> implements Observer<T>, SingleObserver<T
      */
     protected void showProgressIndeterminate(@StringRes final int resId) {
         showProgressIndeterminate(context.getString(resId));
-    }
-
-    public ProgressObserverAdapter<T> start() {
-        showProgressIndeterminate(message);
-        return this;
     }
 }

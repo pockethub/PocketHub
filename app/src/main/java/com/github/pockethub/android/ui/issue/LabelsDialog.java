@@ -91,7 +91,7 @@ public class LabelsDialog extends BaseProgressDialog {
                     Log.e(TAG, "Exception loading labels", error);
                     ToastUtils.show(activity, error, R.string.error_labels_load);
                 }
-            }.start());
+            });
     }
 
     private Observable<Page<Label>> getPageAndNext(int i) {
