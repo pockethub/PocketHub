@@ -284,6 +284,8 @@
     <string name="tab_starred">starred</string>
     <string name="tab_readme">readme</string>
     <string name="tab_all">all</string>
+    <string name="tab_unread">Unread</string>
+    <string name="tab_participating">Participating</string>
     <!--  -->
     <string name="share">Share</string>
     <string name="show_password">Show password</string>
@@ -318,6 +320,9 @@ Read the README.md: https://github.com/pockethub/PocketHub#setup-environment</st
     <string name="error_image_upload">Unable to upload image</string>
     <string name="read_permission_title">Let us explain</string>
     <string name="read_permission_content">For us to for example upload images we need to be able to read your storage.</string>
+    <string name="no_notifications">No notifications found</string>
+    <string name="error_notifications_load">Error loading notifications</string>
+    <string name="releases_not_yet_in_app">Sorry, we don\'t support releases in the app yet</string>
 
 
     <string-array name="welcome_texts">

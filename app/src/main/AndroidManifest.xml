@@ -61,6 +61,16 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.github.pockethub.android.ui.notification.NotificationActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:parentActivityName="com.github.pockethub.android.ui.MainActivity"
+            android:hardwareAccelerated="true">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.github.pockethub.android.ui.MainActivity" />
+        </activity>
+        <activity
             android:name="com.github.pockethub.android.ui.issue.IssueBrowseActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true">

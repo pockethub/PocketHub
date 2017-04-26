@@ -57,6 +57,7 @@ import com.github.pockethub.android.persistence.AccountDataManager;
 import com.github.pockethub.android.ui.gist.GistsPagerFragment;
 import com.github.pockethub.android.ui.issue.FilterListFragment;
 import com.github.pockethub.android.ui.issue.IssueDashboardPagerFragment;
+import com.github.pockethub.android.ui.notification.NotificationActivity;
 import com.github.pockethub.android.ui.repo.OrganizationLoader;
 import com.github.pockethub.android.ui.user.HomePagerFragment;
 import com.github.pockethub.android.util.AvatarLoader;
@@ -245,10 +246,15 @@ public class MainActivity extends BaseActivity implements
         ImageView userImage;
         TextView userRealName;
         TextView userName;
+
         View headerView = navigationView.getHeaderView(0);
         userImage = (ImageView) headerView.findViewById(R.id.user_picture);
+        ImageView notificationIcon = (ImageView) headerView.findViewById(R.id.iv_notification);
         userRealName = (TextView) headerView.findViewById(R.id.user_real_name);
         userName = (TextView) headerView.findViewById(R.id.user_name);
+
+        notificationIcon.setOnClickListener(v ->
+                startActivity(new Intent(MainActivity.this, NotificationActivity.class)));
 
         avatars.bind(userImage, org);
         userName.setText(org.login());
