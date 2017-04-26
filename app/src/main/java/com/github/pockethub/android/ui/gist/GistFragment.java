@@ -415,8 +415,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                     starred = fullGist.isStarred();
                     loadFinished = true;
                     gist = fullGist.getGist();
-                    comments = fullGist;
-                    updateList(fullGist.getGist(), fullGist);
+                    comments = fullGist.getComments();
+                    updateList(fullGist.getGist(), fullGist.getComments());
                 }, e -> ToastUtils.show(getActivity(), e, R.string.error_gist_load));
     }
 

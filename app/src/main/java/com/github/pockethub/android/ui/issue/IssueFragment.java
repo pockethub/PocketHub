@@ -417,7 +417,7 @@ public class IssueFragment extends DialogFragment {
                     issue = fullIssue.getIssue();
                     items = new ArrayList<>();
                     items.addAll(fullIssue.getEvents());
-                    items.addAll(fullIssue);
+                    items.addAll(fullIssue.getComments());
                     updateList(fullIssue.getIssue(), items);
                 }, e -> {
                     ToastUtils.show(getActivity(), e, R.string.error_issue_load);
