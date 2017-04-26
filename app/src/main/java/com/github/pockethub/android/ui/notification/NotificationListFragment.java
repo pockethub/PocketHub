@@ -98,34 +98,17 @@ public class NotificationListFragment extends DialogFragment
 
     private void refreshNotifications() {
         list.setVisibility(View.GONE);
-        getPageAndNext(1).subscribe(new Observer<Page<NotificationThread>>() {
-
-            List<NotificationThread> threads = new ArrayList<>();
-
-            @Override
-            public void onSubscribe(Disposable d) {
-                progressBar.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onNext(Page<NotificationThread> notificationThreadPage) {
-                threads.addAll(notificationThreadPage.items());
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                ToastUtils.show(getActivity(), R.string.error_notifications_load);
-            }
-
-            @Override
-            public void onComplete() {
-                adapter.setItems(threads);
-                progressBar.setVisibility(View.GONE);
-                list.setVisibility(View.VISIBLE);
-                emptyText.setVisibility(threads.size() == 0 ? View.VISIBLE : View.GONE);
-                refreshLayout.setRefreshing(false);
-            }
-        });
+        progressBar.setVisibility(View.VISIBLE);
+        getPageAndNext(1)
+                .flatMap(page -> Observable.fromIterable(page.items()))
+                .toList()
+                .subscribe(threads -> {
+                    adapter.setItems(threads);
+                    progressBar.setVisibility(View.GONE);
+                    list.setVisibility(View.VISIBLE);
+                    emptyText.setVisibility(threads.size() == 0 ? View.VISIBLE : View.GONE);
+                    refreshLayout.setRefreshing(false);
+                }, e -> ToastUtils.show(getActivity(), R.string.error_notifications_load));
     }
 
     private Observable<Page<NotificationThread>> getPageAndNext(int i) {
