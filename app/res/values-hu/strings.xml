@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 GitHub Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<resources>
+
+    <!-- Error messages -->
+    <string name="error_orgs_load">A felhasználói adatok &amp; vállalatok betöltése nem sikerült</string>
+    <string name="error_issues_load">A hibajegyek betöltése nem sikerült</string>
+    <string name="error_repos_load">A tárolók betöltése nem sikerült</string>
+    <string name="error_repo_load">A tároló betöltése nem sikerült</string>
+    <string name="error_gist_load">A Gist betöltése nem sikerült</string>
+    <string name="error_news_load">Az újdonságok betöltése nem sikerült</string>
+    <string name="error_followers_load">A követők betöltése nem sikerült</string>
+    <string name="error_people_load">A személyek betöltése nem sikerült</string>
+    <string name="error_person_load">A személy betöltése nem sikerült</string>
+    <string name="error_gist_file_load">A Gist tartalmának betöltése nem sikerült</string>
+    <string name="error_gists_load">A Gist-ek betöltése nem sikeürlt</string>
+    <string name="error_issue_load">A hibajegy betöltése nem sikerült</string>
+    <string name="error_collaborators_load">A közreműködők betöltése nem sikerült</string>
+    <string name="error_milestones_load">A mérföldkövek betöltése nem sikerült</string>
+    <string name="error_labels_load">A címkék betöltése nem sikerült</string>
+    <string name="error_bookmarks_load">A könyvjelzők betöltése nem sikerült</string>
+    <string name="error_members_load">A tagok betöltése nem sikerült</string>
+    <string name="error_commits_load">A commitok betöltése nem sikerült</string>
+    <string name="error_commit_load">A commit betöltése nem sikerült</string>
+    <string name="error_file_load">A fájl betöltése nem sikerült</string>
+    <!--  -->
+
+
+    <!-- Loading messages -->
+    <string name="loading_gist">Gist betöltése…</string>
+    <string name="random_gist">Véletlenszerű Gist betöltése…</string>
+    <string name="loading_more_issues">További hibajegyek betöltése…</string>
+    <string name="loading_issues">Hibajegyek betöltése…</string>
+    <string name="loading_comments">Hozzászólások betöltése…</string>
+    <string name="loading_repositories">Tárolók betöltése…</string>
+    <string name="loading_issue">Hibajegy betöltése…</string>
+    <string name="loading_news">Újdonságok betöltése…</string>
+    <string name="loading_followers">Követők betöltése…</string>
+    <string name="loading_people">Személyek betöltése…</string>
+    <string name="loading_gists">Gist-ek betöltése…</string>
+    <string name="loading_collaborators">Közreműködők betöltése…</string>
+    <string name="loading_milestones">Mérföldkövek betöltése…</string>
+    <string name="loading_labels">Címkék betöltése…</string>
+    <string name="loading_commits">Commitok betöltése…</string>
+    <string name="loading_files_and_comments">Fájlok &amp; Hozzászólások betöltése…</string>
+    <!--  -->
+
+
+    <!-- Empty messages -->
+    <string name="no_bookmarks">Nincsenek Könyvjelzők</string>
+    <string name="no_repositories">Nincsenek Tárolók</string>
+    <string name="no_issues">Nincsenek Hibajegyek</string>
+    <string name="no_gists">Nincsenek Gistek</string>
+    <string name="no_people">Nincsenek Személyek</string>
+    <string name="no_followers">Nincsenek Követők</string>
+    <string name="no_members">Nincsenek Tagok</string>
+    <string name="no_news">Nincsenek Újdonságok</string>
+    <string name="no_commits">Nincsenek Commitok</string>
+    <!--  -->
+
+
+    <!-- Updating messages -->
+    <string name="updating_assignee">Felelős frissítése…</string>
+    <string name="updating_issue">Hibajegy frissítése…</string>
+    <string name="updating_labels">Címkék frissítése…</string>
+    <string name="updating_milestone">Mérföldkő frissítése…</string>
+    <!--  -->
+
+    <string name="app_name">GitHub</string>
+    <string name="news">Újdonságok</string>
+    <string name="issues">Hibajegyek</string>
+    <string name="gists">Gist-ek</string>
+    <string name="commits">Commitok</string>
+    <string name="dashboard_issues">Hibajegyek listája</string>
+    <string name="find_repositories">Tárolók keresése</string>
+    <string name="find_issues">Hibajegyek keresése</string>
+    <string name="search_title">Keresés…</string>
+    <string name="clear_search_history">Előzmények törlése</string>
+    <string name="search_history_cleared">Előzmények törölve</string>
+    <string name="login_activity_authenticating">Bejelentkezés…</string>
+    <string name="creating_gist">Gist létrehozása…</string>
+    <string name="create">Új</string>
+    <string name="create_gist">Új Gist</string>
+    <string name="gist_content_hint">puts \'Helló Világ!\'</string>
+    <string name="make_public">Gist publikussá tétele</string>
+    <string name="gist_file_name_hint">fájl.rb</string>
+    <string name="gist">Gist</string>
+    <string name="comments">Hozzászólások</string>
+    <string name="files">Fájlok</string>
+    <string name="open">Megnyitás</string>
+    <string name="random">Véletlenszerű</string>
+    <string name="file_name">Fájl neve</string>
+    <string name="file_content">Fájl tartalma</string>
+    <string name="new_gist">Új Gist</string>
+    <string name="filter">Szűrés</string>
+    <string name="bookmark">Könyvjelző</string>
+    <string name="comment">Hozzászólás</string>
+    <string name="delete">Törlés</string>
+    <string name="refresh">Frissítés</string>
+    <string name="dashboard_watched">Megfigyeltek</string>
+    <string name="dashboard_assigned">Kiosztottak</string>
+    <string name="dashboard_created">Általam létrehozottak</string>
+    <string name="dashboard_mentioned">Engem megemlítők</string>
+    <string name="dashboard_issues_title">Hibajegyek listája</string>
+    <string name="bookmarks">Könyvjelzők</string>
+    <string name="gists_title">Gist-ek</string>
+    <string name="issue_title">Hibajegyk #</string>
+    <string name="pull_request_title">Pull kérelem #</string>
+    <string name="gist_title">Gist\u0020</string>
+    <string name="filter_issues_title">Hibajegyek szűrése</string>
+    <string name="create_comment_title">Új hozzászólás</string>
+    <string name="comment_hint">Hozzászólás tartalma</string>
+    <string name="show_more">Több…</string>
+    <string name="repositories">Tárolók</string>
+    <string name="issues_title">Hibajegyek</string>
+    <string name="edit_labels">Címkék szerkesztése</string>
+    <string name="milestone_prefix">Mérföldkő:</string>
+    <string name="edit_milestone">Mérföldkő szerkesztése</string>
+    <string name="edit_assignee">Felelős szerkesztése</string>
+    <string name="my_gists_tab">Sajátjaim</string>
+    <string name="starred_gists_tab">Csillagozottak</string>
+    <string name="all_gists_tab">Mind</string>
+    <string name="description">Leírás</string>
+    <string name="gist_description_hint">Androidon készített Gist</string>
+    <string name="title">Cím</string>
+    <string name="edit">Szerkesztés</string>
+    <string name="star">Csillagozás</string>
+    <string name="starring_gist">Gist csillagozása…</string>
+    <string name="unstar">Csillag megszüntetése</string>
+    <string name="unstarring_gist">Gist csillagozás megszüntetése…</string>
+    <string name="accounts_label">Felhasználói adatok</string>
+    <string name="select_assignee">Felelős kijelölése</string>
+    <string name="select_milestone">Mérföldkő kijelölése</string>
+    <string name="select_labels">Címkék kijelölése</string>
+    <string name="no_milestone">Nincs mérföldkő</string>
+    <string name="unassigned">Senki nincs hozzárendelve</string>
+    <string name="assigned">van hozzárendelve</string>
+    <string name="no_gists_found">Nem találtam Gist-eket</string>
+    <string name="confirm_gist_delete_title">Törlés jóváhagyása</string>
+    <string name="confirm_gist_delete_message">Biztosan törölni szeretnéd ezt a Gist-et?</string>
+    <string name="deleting_gist">Gist törlése…</string>
+    <string name="creating_comment">Hozzászólás létrehozása…</string>
+    <string name="confirm_bookmark_delete_message">Biztosan törölni szeretnéd ezt a könyvjelzőt?</string>
+    <string name="issue_dashboard">Hibajegyek listája</string>
+    <string name="new_issue">Új hibajegy</string>
+    <string name="anonymous">Névtelen</string>
+    <string name="message_filter_saved">Hibajegy-szűrő elmentve a könyvjelzők közé</string>
+    <string name="recent">Friss</string>
+    <string name="section_issue_status">Állapot:</string>
+    <string name="status_open">Nyitott</string>
+    <string name="status_closed">Lezárt</string>
+    <string name="section_issue_assigned">Felelős:</string>
+    <string name="assignee_anyone">Bárki</string>
+    <string name="section_issue_milestone">Mérföldkő:</string>
+    <string name="none">Semelyik</string>
+    <string name="section_issue_labels">Címkék:</string>
+    <string name="log_in">Bejelentkezés</string>
+    <string name="signup_link">Új vagy a GitHubon? &lt;a href=\"https://github.com/plans\">Kattints ide&lt;/a> a regisztrációhoz</string>
+    <string name="connection_failed">Nem sikerült csatlakozni a GitHubhoz</string>
+    <string name="invalid_login_or_password">Adj meg érvényes felhasználónevet &amp; jelszót</string>
+    <string name="invalid_password">Adj meg érvényes jelszót.</string>
+    <string name="password">Jelszó</string>
+    <string name="login_or_email">Felhasználónév vagy E-mail cím</string>
+    <string name="followers">Követők</string>
+    <string name="following">Követettek</string>
+    <string name="followers_self">Követőim</string>
+    <string name="following_self">Követetteim</string>
+    <string name="members">Tagok</string>
+    <string name="closing_issue">Hibajegy lezárása…</string>
+    <string name="reopening_issue">Hibajegy újranyitása…</string>
+    <string name="avatar">Avatár</string>
+    <string name="creating_issue">Hibajegy létrehozása…</string>
+    <string name="prefix_created">készült\u0020</string>
+    <string name="prefix_updated">frissült\u0020</string>
+    <string name="prefix_opened">megnyitva\u0020</string>
+    <string name="clear">Törlés</string>
+    <string name="open_issues">Nyitott hibajegyek</string>
+    <string name="closed_issues">Lezárt hibajegyek</string>
+    <string name="confirm_bookmark_delete_title">Könyvjelző eltávolítása</string>
+    <string name="save">Mentés</string>
+    <string name="apply">Alkalmaz</string>
+    <string name="labels_prefix">Címkék:</string>
+    <string name="assignee">Felelős</string>
+    <string name="milestone">Mérföldkő</string>
+    <string name="labels">Címkék</string>
+    <string name="issue_confirm_close_message">Biztosan le szeretnéd zárni ezt a hibajegyet?</string>
+    <string name="issue_confirm_reopen_message">Biztosan újra szeretnéd nyitni ezt a hibajegyet?</string>
+    <string name="issue_confirm_close_title">Hibajegy lezárása</string>
+    <string name="issue_confirm_reopen_title">Hibajegy újranyitása</string>
+    <string name="closed">Lezárva</string>
+    <string name="no_description_given">Nincs leírás.</string>
+    <string name="close">Lezárás</string>
+    <string name="reopen">Újranyitás</string>
+    <string name="title_invalid_github_url">Hibás GitHub URL</string>
+    <string name="message_invalid_github_url">Az alkalmazás nem tudja megnyitni az alábbi URL-t:\n{0}</string>
+    <string name="recently_viewed">MOSTANÁBAN MEGTEKINTETT</string>
+    <string name="cancel">Mégsem</string>
+    <string name="authenticator_conflict_title">Alkalmazás Ütközés</string>
+    <string name="authenticator_conflict_message">Egy másik telepített alkalmazás már be van állítva a GitHub hitelesítéshez.\n\nEzt az alkalmazást el kell távolítani az Android Accounts &amp; sync beállításánál, ha a GitHub alkalmazást használni szeretnéd.</string>
+    <string name="opening_repository">{0} megnyitása…</string>
+    <string name="commit_compare_title">Commit-ok összehasonlítása</string>
+    <string name="commit_prefix">Commit\u0020</string>
+    <string name="parent_prefix">Szülő\u0020</string>
+    <string name="authored">készítette</string>
+    <string name="committed">commit-olta</string>
+    <string name="diff_line_message">Mit szeretnél tenni?</string>
+    <string name="comment_on_line">Hozzászólás a sorhoz</string>
+    <string name="view_entire_file">Teljes fájl megtekintése</string>
+    <string name="comparing_commits">{0} commit összehasonlítása</string>
+    <string name="enable_wrapping">Sortörés engedélyezése</string>
+    <string name="disable_wrapping">Sortörés tiltása</string>
+
+</resources>
