@@ -29,8 +29,7 @@ import com.meisolsson.githubsdk.model.git.GitReference;
 import com.meisolsson.githubsdk.service.git.GitService;
 
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -45,7 +44,7 @@ public class RefDialog {
 
     private static final String TAG = "RefDialog";
 
-    private Map<String, GitReference> refs;
+    private List<GitReference> refs;
 
     private final int requestCode;
 
@@ -73,11 +72,11 @@ public class RefDialog {
         getPageAndNext(1)
             .flatMap(page -> Observable.fromIterable(page.items()))
             .filter(RefUtils::isValid)
-            .toMap(GitReference::ref, ref -> ref, () -> new TreeMap<>(CASE_INSENSITIVE_ORDER))
-            .subscribe(new ProgressObserverAdapter<Map<String, GitReference>>(activity, R.string.loading_refs) {
+            .toSortedList((o1, o2) -> CASE_INSENSITIVE_ORDER.compare(o1.ref(), o2.ref()))
+            .subscribe(new ProgressObserverAdapter<List<GitReference>>(activity, R.string.loading_refs) {
 
                 @Override
-                public void onSuccess(Map<String, GitReference> loadedRefs) {
+                public void onSuccess(List<GitReference> loadedRefs) {
                     super.onSuccess(loadedRefs);
                     refs = loadedRefs;
                     show(selectedRef);
@@ -119,13 +118,11 @@ public class RefDialog {
             return;
         }
 
-        final ArrayList<GitReference> refList = new ArrayList<>(
-                refs.values());
         int checked = -1;
         if (selectedRef != null) {
             String ref = selectedRef.ref();
-            for (int i = 0; i < refList.size(); i++) {
-                String candidate = refList.get(i).ref();
+            for (int i = 0; i < refs.size(); i++) {
+                String candidate = refs.get(i).ref();
                 if (ref.equals(candidate)) {
                     checked = i;
                     break;
@@ -137,6 +134,6 @@ public class RefDialog {
         }
 
         RefDialogFragment.show(activity, requestCode,
-                activity.getString(R.string.select_ref), null, refList, checked);
+                activity.getString(R.string.select_ref), null, new ArrayList<>(refs), checked);
     }
 }

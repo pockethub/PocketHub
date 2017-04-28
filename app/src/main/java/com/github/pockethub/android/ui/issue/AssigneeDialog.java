@@ -29,8 +29,7 @@ import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.service.issues.IssueAssigneeService;
 
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -45,7 +44,7 @@ public class AssigneeDialog extends BaseProgressDialog {
 
     private static final String TAG = "AssigneeDialog";
 
-    private Map<String, User> collaborators;
+    private List<User> collaborators;
 
     private final int requestCode;
 
@@ -71,11 +70,11 @@ public class AssigneeDialog extends BaseProgressDialog {
     private void load(final User selectedAssignee) {
         getPageAndNext(1)
             .flatMap(page -> Observable.fromIterable(page.items()))
-            .toMap(User::login, user -> user, () -> new TreeMap<>(CASE_INSENSITIVE_ORDER))
-            .subscribe(new ProgressObserverAdapter<Map<String, User>>(activity, R.string.loading_collaborators) {
+            .toSortedList((o1, o2) -> CASE_INSENSITIVE_ORDER.compare(o1.login(), o2.login()))
+            .subscribe(new ProgressObserverAdapter<List<User>>(activity, R.string.loading_collaborators) {
 
                 @Override
-                public void onSuccess(Map<String, User> loadedCollaborators) {
+                public void onSuccess(List<User> loadedCollaborators) {
                     super.onSuccess(loadedCollaborators);
 
                     collaborators = loadedCollaborators;
@@ -120,18 +119,16 @@ public class AssigneeDialog extends BaseProgressDialog {
             return;
         }
 
-        final ArrayList<User> users = new ArrayList<>(
-                collaborators.values());
         int checked = -1;
         if (selectedAssignee != null) {
-            for (int i = 0; i < users.size(); i++) {
-                if (selectedAssignee.login().equals(users.get(i).login())) {
+            for (int i = 0; i < collaborators.size(); i++) {
+                if (selectedAssignee.login().equals(collaborators.get(i).login())) {
                     checked = i;
                 }
             }
         }
         AssigneeDialogFragment.show(activity, requestCode,
-                activity.getString(R.string.select_assignee), null, users,
+                activity.getString(R.string.select_assignee), null, new ArrayList<>(collaborators),
                 checked);
     }
 }
