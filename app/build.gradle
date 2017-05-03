@@ -22,7 +22,7 @@ def clientSecretIsNotSet = true;
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
         applicationId 'com.github.pockethub.android'
@@ -109,7 +109,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    def supportVersion = '25.0.0'
+    def supportVersion = '25.3.1'
     compile "com.android.support:appcompat-v7:$supportVersion"
     compile "com.android.support:support-v4:$supportVersion"
     compile "com.android.support:design:$supportVersion"
@@ -124,12 +124,12 @@ dependencies {
     compile 'com.bugsnag:bugsnag-android:3.2.7'
     compile 'org.roboguice:roboguice:2.0'
 
-    compile 'com.github.meisolsson:githubsdk:0.4.1'
+    compile 'com.github.meisolsson:githubsdk:0.4.4'
 
     compile ('com.google.inject.extensions:guice-assistedinject:3.0'){
         exclude group: 'com.google.inject'
     }
-    compile 'com.afollestad.material-dialogs:core:0.9.1.0'
+    compile 'com.afollestad.material-dialogs:core:0.9.4.4'
 
     //Self compiled .aar version of wishlist
     compile (name:'lib', ext:'aar')
