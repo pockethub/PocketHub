@@ -31,9 +31,8 @@ import com.meisolsson.githubsdk.service.issues.IssueLabelService;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
-import java.util.TreeMap;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -54,7 +53,7 @@ public class LabelsDialog extends BaseProgressDialog {
 
     private final Repository repository;
 
-    private Map<String, Label> labels;
+    private List<Label> labels;
 
     /**
      * Create dialog helper to display labels
@@ -74,11 +73,11 @@ public class LabelsDialog extends BaseProgressDialog {
     private void load(final Collection<Label> selectedLabels) {
         getPageAndNext(1)
             .flatMap(page -> Observable.fromIterable(page.items()))
-            .toMap(Label::name, label -> label, () -> new TreeMap<>(CASE_INSENSITIVE_ORDER))
-            .subscribe(new ProgressObserverAdapter<Map<String, Label>>(activity, R.string.loading_labels) {
+            .toSortedList((o1, o2) -> CASE_INSENSITIVE_ORDER.compare(o1.name(), o2.name()))
+            .subscribe(new ProgressObserverAdapter<List<Label>>(activity, R.string.loading_labels) {
 
                 @Override
-                public void onSuccess(Map<String, Label> loadedLabels) {
+                public void onSuccess(List<Label> loadedLabels) {
                     super.onSuccess(loadedLabels);
                     labels = loadedLabels;
 
@@ -122,20 +121,19 @@ public class LabelsDialog extends BaseProgressDialog {
             return;
         }
 
-        final ArrayList<Label> names = new ArrayList<>(labels.values());
-        final boolean[] checked = new boolean[names.size()];
+        final boolean[] checked = new boolean[labels.size()];
         if (selectedLabels != null && !selectedLabels.isEmpty()) {
             Set<String> selectedNames = new HashSet<>();
             for (Label label : selectedLabels) {
                 selectedNames.add(label.name());
             }
             for (int i = 0; i < checked.length; i++) {
-                if (selectedNames.contains(names.get(i).name())) {
+                if (selectedNames.contains(labels.get(i).name())) {
                     checked[i] = true;
                 }
             }
         }
         LabelsDialogFragment.show(activity, requestCode,
-                activity.getString(R.string.select_labels), null, names, checked);
+                activity.getString(R.string.select_labels), null, new ArrayList<>(labels), checked);
     }
 }
