@@ -16,4 +16,4 @@ notifications:
 sudo: required #The build runs out of memory and is killed if we use the container system
 
 script:
-  - ./gradlew clean build
+  - ./gradlew build check
