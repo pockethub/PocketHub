@@ -53,7 +53,7 @@ public class LoginWebViewActivity extends AppCompatActivity {
             @Override
             public boolean shouldOverrideUrlLoading(android.webkit.WebView view, String url) {
                 Uri uri = Uri.parse(url);
-                if (uri.getScheme().equals(getString(R.string.github_oauth_scheme))) {
+                if (uri.getScheme().equalsIgnoreCase(getString(R.string.github_oauth_scheme))) {
                     Intent data = new Intent();
                     data.setData(uri);
                     setResult(RESULT_OK, data);
