@@ -46,6 +46,9 @@ Any contributions, large or small, major features, bug fixes, additional languag
 - Use a custom schema like `myawesomeschema` (not `http` or `https`)
 - The schema must be lowercase ([Reference](https://developer.android.com/guide/topics/manifest/data-element.html))
 
+## Building with Docker
+`build_in_docker.sh` sets up a Docker VM and build PocketHub in it. Supports Docker and Docker Machine (with VMWARE Fusion)
+
 ## Legacy Notes
 
 If you had a current installation of the Github App installed and then enabled 2FA (2 Factor Authentication), then you must delete the Personal Access Token (PAT) from your configuration (via the web interface). A thanks to @landstander668 for posting this workaround.
