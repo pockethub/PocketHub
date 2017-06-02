@@ -21,6 +21,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.webkit.WebViewClient;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -34,6 +35,10 @@ public class LoginWebViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         WebView webView = new WebView(this);
         webView.loadUrl(getIntent().getStringExtra(LoginActivity.INTENT_EXTRA_URL));
+
+        // Needs the be activated to allow GitHub to perform their requests.
+        webView.getSettings().setJavaScriptEnabled(true);
+
         webView.setWebViewClient(new WebViewClient() {
             MaterialDialog dialog = new MaterialDialog.Builder(LoginWebViewActivity.this)
                     .content(R.string.loading)
