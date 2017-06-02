@@ -30,17 +30,21 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
 import retrofit2.Response;
+import retrofit2.http.Body;
 import roboguice.RoboGuice;
 
 /**
  * Task to load and store a {@link Gist}.
  */
-public class RefreshGistTask implements SingleOnSubscribe<FullGist> {
+public class RefreshGistTask {
 
     private final Context context;
+    private final GistService service;
 
     @Inject
     private GistStore store;
@@ -60,34 +64,28 @@ public class RefreshGistTask implements SingleOnSubscribe<FullGist> {
         id = gistId;
         this.imageGetter = imageGetter;
         this.context = activity;
+        this.service = ServiceGenerator.createService(context, GistService.class);
         RoboGuice.injectMembers(activity, this);
     }
 
-    @Override
-    public void subscribe(SingleEmitter<FullGist> emitter) throws Exception {
-        try {
-            Gist gist = store.refreshGist(id);
-            List<GitHubComment> comments;
-            if (gist.comments() > 0) {
-                comments = ServiceGenerator.createService(context, GistCommentService.class)
-                        .getGistComments(id, 0).blockingGet().body().items();
-            } else {
-                comments = Collections.emptyList();
-            }
+    public Single<FullGist> refresh() {
+        Single<Gist> gistSingle = store.refreshGist(id);
+        Single<List<GitHubComment>> commentSingle = getGistComments();
+        Single<Boolean> starredSingle = service.checkIfGistIsStarred(id)
+                .map(response -> response.code() == 204);
 
-            for (GitHubComment comment : comments) {
-                imageGetter.encode(comment, comment.bodyHtml());
-            }
-            Response<Boolean> response = ServiceGenerator.createService(context, GistService.class)
-                    .checkIfGistIsStarred(id)
-                    .blockingGet();
+        return Single.zip(gistSingle, starredSingle, commentSingle, FullGist::new);
+    }
 
-            boolean starred = response.code() == 204;
+    Single<List<GitHubComment>> getGistComments() {
+        return ServiceGenerator.createService(context, GistCommentService.class)
+                .getGistComments(id, 0)
+                .flatMapObservable(response -> Observable.fromIterable(response.body().items()))
+                .map(comment -> {
+                    imageGetter.encode(comment, comment.bodyHtml());
+                    return comment;
+                })
+                .toList();
 
-
-            emitter.onSuccess(new FullGist(gist, starred, comments));
-        } catch (IOException e) {
-            emitter.onError(e);
-        }
     }
 }

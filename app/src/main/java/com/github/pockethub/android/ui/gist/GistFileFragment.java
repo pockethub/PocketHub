@@ -144,22 +144,21 @@ public class GistFileFragment extends DialogFragment implements
     }
 
     private void loadSource() {
-        Single.<GistFile>create(emitter -> {
-            try {
-                gist = store.refreshGist(gistId);
-                Map<String, GistFile> files = gist.files();
-                if (files == null) {
-                    emitter.onError(new IOException());
-                }
-                GistFile loadedFile = files.get(file.filename());
-                if (loadedFile == null) {
-                    emitter.onError(new IOException());
-                }
-                emitter.onSuccess(loadedFile);
-            } catch (IOException e) {
-                emitter.onError(e);
-            }
-        }).subscribeOn(Schedulers.io())
+        store.refreshGist(gistId)
+                .map(gist -> {
+                    Map<String, GistFile> files = gist.files();
+                    if (files == null) {
+                        throw new IOException();
+                    }
+
+                    GistFile loadedFile = files.get(file.filename());
+                    if (loadedFile == null) {
+                        throw new IOException();
+                    }
+
+                    return loadedFile;
+                })
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(loadedFile -> {
                     file = loadedFile;

@@ -149,7 +149,8 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
     private void refreshTree(final GitReference reference) {
         showLoading(true);
-        Single.create(new RefreshTreeTask(getActivity(), repository, reference))
+        new RefreshTreeTask(getActivity(), repository, reference)
+                .refresh()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.bindToLifecycle())

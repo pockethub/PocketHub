@@ -39,7 +39,7 @@ import static com.github.pockethub.android.RequestCodes.ISSUE_MILESTONE_UPDATE;
 /**
  * Task to edit a milestone
  */
-public class EditMilestoneTask implements SingleOnSubscribe<Issue> {
+public class EditMilestoneTask {
 
     @Inject
     private IssueStore store;
@@ -76,16 +76,6 @@ public class EditMilestoneTask implements SingleOnSubscribe<Issue> {
         RoboGuice.injectMembers(activity, this);
     }
 
-    @Override
-    public void subscribe(SingleEmitter<Issue> emitter) throws Exception {
-        try {
-            IssueRequest editedIssue = IssueRequest.builder().milestone(milestoneNumber).build();
-            emitter.onSuccess(store.editIssue(repositoryId, issueNumber, editedIssue));
-        } catch (IOException e) {
-            emitter.onError(e);
-        }
-    }
-
     /**
      * Prompt for milestone selection
      *
@@ -104,10 +94,10 @@ public class EditMilestoneTask implements SingleOnSubscribe<Issue> {
      * @return this task
      */
     public EditMilestoneTask edit(Milestone milestone) {
-        if (milestone != null)
+        if (milestone != null) {
+            IssueRequest editedIssue = IssueRequest.builder().milestone(milestoneNumber).build();
 
-        {
-            Single.create(this)
+            store.editIssue(repositoryId, issueNumber, editedIssue)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(activity.bindToLifecycle())

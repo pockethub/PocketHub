@@ -40,44 +40,32 @@ import static com.github.pockethub.android.RequestCodes.ISSUE_REOPEN;
 /**
  * Task to close or reopen an issue
  */
-public class EditStateTask implements SingleOnSubscribe<Issue> {
+public class EditStateTask {
 
     @Inject
     private IssueStore store;
 
     private final BaseActivity activity;
-    private final Repository repositoryId;
+    private final Repository repository;
 
     private final int issueNumber;
     private final ProgressObserverAdapter<Issue> observer;
-
-    private boolean close;
 
     /**
      * Create task to edit issue state
      *
      * @param activity
-     * @param repositoryId
+     * @param repository
      * @param issueNumber
      */
     public EditStateTask(final BaseActivity activity,
-                         final Repository repositoryId, final int issueNumber,
+                         final Repository repository, final int issueNumber,
                          final ProgressObserverAdapter<Issue> observer) {
         this.activity = activity;
-        this.repositoryId = repositoryId;
+        this.repository = repository;
         this.issueNumber = issueNumber;
         this.observer = observer;
         RoboGuice.injectMembers(activity, this);
-    }
-
-    @Override
-    public void subscribe(SingleEmitter<Issue> emitter) throws Exception {
-        try {
-            IssueState state = close ? IssueState.closed : IssueState.open;
-            emitter.onSuccess(store.changeState(repositoryId, issueNumber, state));
-        } catch (IOException e) {
-            emitter.onError(e);
-        }
     }
 
     /**
@@ -99,17 +87,17 @@ public class EditStateTask implements SingleOnSubscribe<Issue> {
     }
 
     /**
-     * Edit state of issue
+     * Edit state of issue.
      *
      * @param close
      * @return this task
      */
     public EditStateTask edit(boolean close) {
         int message = close ? R.string.closing_issue : R.string.reopening_issue;
-        this.close = close;
+        IssueState state = close ? IssueState.closed : IssueState.open;
         observer.setContent(message);
 
-        Single.create(this)
+        store.changeState(repository, issueNumber, state)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(activity.bindToLifecycle())

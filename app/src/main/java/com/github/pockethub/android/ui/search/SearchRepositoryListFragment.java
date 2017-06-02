@@ -22,6 +22,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
@@ -147,17 +148,18 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repository> 
             return false;
         }
 
-        Repository repo;
-        repo = ServiceGenerator.createService(getContext(), RepositoryService.class)
+        ServiceGenerator.createService(getContext(), RepositoryService.class)
                 .getRepository(repoId.owner().login(), repoId.name())
-                .blockingGet()
-                .body();
+                .subscribe(response -> {
+                    if (response.isSuccessful()) {
+                        startActivity(RepositoryViewActivity.createIntent(response.body()));
+                        final Activity activity = getActivity();
+                        if (activity != null) {
+                            activity.finish();
+                        }
+                    }
+                });
 
-        startActivity(RepositoryViewActivity.createIntent(repo));
-        final Activity activity = getActivity();
-        if (activity != null) {
-            activity.finish();
-        }
         return true;
     }
 

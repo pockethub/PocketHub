@@ -408,7 +408,9 @@ public class IssueFragment extends DialogFragment {
     }
 
     private void refreshIssue() {
-        Single.create(new RefreshIssueTask(getActivity(), repositoryId, issueNumber, bodyImageGetter, commentImageGetter))
+        new RefreshIssueTask(getActivity(), repositoryId, issueNumber,
+                bodyImageGetter, commentImageGetter)
+                .refresh()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter(fullIssue -> isUsable())

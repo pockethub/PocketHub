@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 
+import io.reactivex.Single;
+
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
 /**
@@ -95,36 +97,30 @@ public class GistStore extends ItemStore {
     }
 
     /**
-     * Refresh gist
+     * Refresh gist.
      *
-     * @param id
+     * @param id The id of the Gist to update
      * @return refreshed gist
-     * @throws IOException
      */
-    public Gist refreshGist(String id) throws IOException {
-        return ServiceGenerator.createService(context, GistService.class)
-                .getGist(id)
-                .blockingGet()
-                .body();
+    public Single<Gist> refreshGist(String id) {
+        return ServiceGenerator.createService(context, GistService.class).getGist(id)
+                .map(response -> addGist(response.body()));
     }
 
     /**
-     * Edit gist
+     * Edit gist.
      *
-     * @param gist
+     * @param gist The Gist to edit
      * @return edited gist
-     * @throws IOException
      */
-    public Gist editGist(Gist gist) throws IOException {
+    public Single<Gist> editGist(Gist gist) {
         CreateGist edit = CreateGist.builder()
                 .files(gist.files())
                 .description(gist.description())
                 .isPublic(gist.isPublic())
                 .build();
 
-        return ServiceGenerator.createService(context, GistService.class)
-                .editGist(edit)
-                .blockingGet()
-                .body();
+        return ServiceGenerator.createService(context, GistService.class).editGist(edit)
+                .map(response -> addGist(response.body()));
     }
 }

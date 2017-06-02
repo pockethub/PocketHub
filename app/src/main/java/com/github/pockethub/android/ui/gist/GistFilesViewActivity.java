@@ -115,7 +115,8 @@ public class GistFilesViewActivity extends PagerActivity {
             loadingBar.setVisibility(View.VISIBLE);
             pager.setVisibility(View.GONE);
             tabs.setVisibility(View.GONE);
-            Single.create(new RefreshGistTask(this, gistId, imageGetter))
+            new RefreshGistTask(this, gistId, imageGetter)
+                    .refresh()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(this.bindToLifecycle())
