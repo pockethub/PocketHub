@@ -209,6 +209,9 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
             return false;
         }
         switch (item.getItemId()) {
+            case R.id.m_refresh:
+                forceRefresh();
+            return true;
         case R.id.create_issue:
             startActivityForResult(EditIssueActivity.createIntent(repository),
                     ISSUE_CREATE);
