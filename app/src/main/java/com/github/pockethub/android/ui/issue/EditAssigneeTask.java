@@ -41,7 +41,7 @@ import static com.github.pockethub.android.RequestCodes.ISSUE_ASSIGNEE_UPDATE;
  * Task to edit the assignee
  */
 //TODO Let this take multiple assignees
-public class EditAssigneeTask implements SingleOnSubscribe<Issue> {
+public class EditAssigneeTask {
 
     @Inject
     private IssueStore store;
@@ -55,8 +55,6 @@ public class EditAssigneeTask implements SingleOnSubscribe<Issue> {
     private final int issueNumber;
 
     private final ProgressObserverAdapter<Issue> observer;
-
-    private User assignee;
 
     /**
      * Create task to edit a milestone
@@ -78,25 +76,6 @@ public class EditAssigneeTask implements SingleOnSubscribe<Issue> {
         RoboGuice.injectMembers(activity, this);
     }
 
-    @Override
-    public void subscribe(SingleEmitter<Issue> emitter) throws Exception {
-        try{
-            String assigneLogin;
-            if (assignee != null) {
-                assigneLogin = assignee.login();
-            } else {
-                assigneLogin = "";
-            }
-
-            IssueRequest edit = IssueRequest.builder()
-                    .assignees(Collections.singletonList(assigneLogin))
-                    .build();
-            emitter.onSuccess(store.editIssue(repositoryId, issueNumber, edit));
-        } catch (IOException e) {
-            emitter.onError(e);
-        }
-    }
-
     /**
      * Prompt for assignee selection
      *
@@ -110,15 +89,19 @@ public class EditAssigneeTask implements SingleOnSubscribe<Issue> {
     }
 
     /**
-     * Edit issue to have given assignee
+     * Edit issue to have given assignee.
      *
-     * @param user
+     * @param assignee The user the assign
      * @return this task
      */
-    public EditAssigneeTask edit(User user) {
-        this.assignee = user;
+    public EditAssigneeTask edit(User assignee) {
+        String assigneeLogin = assignee != null ? assignee.login() : "";
 
-        Single.create(this)
+        IssueRequest edit = IssueRequest.builder()
+                .assignees(Collections.singletonList(assigneeLogin))
+                .build();
+
+        store.editIssue(repositoryId, issueNumber, edit)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(activity.bindToLifecycle())

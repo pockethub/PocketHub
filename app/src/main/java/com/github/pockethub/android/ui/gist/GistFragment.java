@@ -400,7 +400,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     }
 
     private void refreshGist() {
-        Single.create(new RefreshGistTask(getActivity(), gistId, imageGetter))
+        new RefreshGistTask(getActivity(), gistId, imageGetter)
+                .refresh()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter(fullGist -> isUsable())

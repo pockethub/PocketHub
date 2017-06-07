@@ -238,7 +238,8 @@ public class CommitDiffListFragment extends DialogFragment implements
     }
 
     private void refreshCommit() {
-        Single.create(new RefreshCommitTask(getActivity(), repository, base, commentImageGetter))
+        new RefreshCommitTask(getActivity(), repository, base, commentImageGetter)
+                .refresh()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.bindToLifecycle())

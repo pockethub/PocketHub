@@ -41,7 +41,7 @@ import static com.github.pockethub.android.RequestCodes.ISSUE_LABELS_UPDATE;
 /**
  * Task to edit labels
  */
-public class EditLabelsTask implements SingleOnSubscribe<Issue> {
+public class EditLabelsTask {
 
     @Inject
     private IssueStore store;
@@ -55,8 +55,6 @@ public class EditLabelsTask implements SingleOnSubscribe<Issue> {
     private final int issueNumber;
 
     private final ProgressObserverAdapter<Issue> observer;
-
-    private Label[] labels;
 
     /**
      * Create task to edit labels
@@ -79,21 +77,6 @@ public class EditLabelsTask implements SingleOnSubscribe<Issue> {
         RoboGuice.injectMembers(activity, this);
     }
 
-    @Override
-    public void subscribe(SingleEmitter<Issue> emitter) throws Exception {
-        try {
-            List<String> labelNames = new ArrayList<>(labels.length);
-            for (Label label : labels) {
-                labelNames.add(label.name());
-            }
-
-            IssueRequest editIssue = IssueRequest.builder().labels(labelNames).build();
-            emitter.onSuccess(store.editIssue(repositoryId, issueNumber, editIssue));
-        } catch (IOException e) {
-            emitter.onError(e);
-        }
-    }
-
     /**
      * Prompt for labels selection
      *
@@ -107,15 +90,20 @@ public class EditLabelsTask implements SingleOnSubscribe<Issue> {
     }
 
     /**
-     * Edit issue to have given labels
+     * Edit issue to have given labels.
      *
      * @param labels
      * @return this task
      */
     public EditLabelsTask edit(Label[] labels) {
-        this.labels = labels;
+        List<String> labelNames = new ArrayList<>(labels.length);
+        for (Label label : labels) {
+            labelNames.add(label.name());
+        }
 
-        Single.create(this)
+        IssueRequest editIssue = IssueRequest.builder().labels(labelNames).build();
+
+        store.editIssue(repositoryId, issueNumber, editIssue)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(activity.bindToLifecycle())
