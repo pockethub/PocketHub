@@ -137,7 +137,7 @@ dependencies {
     //Libs for testing
     testCompile 'junit:junit:4.12'
     testCompile "org.mockito:mockito-core:1.9.5"
-    testCompile('org.robolectric:robolectric:3.0') {
+    testCompile('org.robolectric:robolectric:3.3.2') {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }

@@ -16,10 +16,19 @@
 
 package com.github.pockethub.android.ui;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.accounts.AccountManagerCallback;
-import android.os.Handler;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 
@@ -31,29 +40,19 @@ import com.github.pockethub.android.ui.issue.IssueDashboardPagerFragment;
 import com.github.pockethub.android.ui.user.HomePagerFragment;
 import com.meisolsson.githubsdk.model.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.robolectric.Robolectric;
-import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-@RunWith(RobolectricGradleTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class MainActivityTest {
 
@@ -117,7 +116,14 @@ public class MainActivityTest {
     public void testNavigationDrawerClickListenerPos5_ShouldLogoutUser() {
         mockMainActivity.onNavigationItemSelected(getMockMenuItem(R.id.navigation_log_out, "Logout"));
 
-        verify(mockManager, times(2)).removeAccount(argumentCaptor.capture(), (AccountManagerCallback<Boolean>) anyObject(), (Handler) anyObject());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            verify(mockManager, times(2)).removeAccount(argumentCaptor.capture(), mockMainActivity,
+                    anyObject(), anyObject());
+        } else {
+            verify(mockManager, times(2)).removeAccount(argumentCaptor.capture(),
+                    anyObject(), anyObject());
+        }
+
         List<Account> values = argumentCaptor.getAllValues();
         assertThat(values.get(0), is(equalTo(accounts[0])));
         assertThat(values.get(1), is(equalTo(accounts[1])));
