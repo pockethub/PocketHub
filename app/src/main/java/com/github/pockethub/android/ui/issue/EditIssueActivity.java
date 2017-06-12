@@ -462,22 +462,23 @@ public class EditIssueActivity extends BaseActivity {
                         .title(titleText.getText().toString())
                         .state(issue.state());
 
-                if(issue.assignee() != null) {
+                if (issue.assignee() != null) {
                     request.assignees(Collections.singletonList(issue.assignee().login()));
+                } else {
+                    request.assignees(Collections.emptyList());
                 }
 
-                if(issue.milestone() != null) {
+                if (issue.milestone() != null) {
                     request.milestone(issue.milestone().number());
                 }
 
-                if(issue.labels() != null) {
-                    List<String> labels = new ArrayList<>();
+                List<String> labels = new ArrayList<>();
+                if (issue.labels() != null) {
                     for (Label label : issue.labels()) {
                         labels.add(label.name());
                     }
-
-                    request.labels(labels);
                 }
+                request.labels(labels);
 
                 IssueService service = ServiceGenerator.createService(this, IssueService.class);
                 Single<Response<Issue>> single;
