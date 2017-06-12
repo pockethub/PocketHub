@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.VisibleForTesting;
@@ -45,6 +46,7 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.Window;
+import android.webkit.CookieManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -54,6 +56,7 @@ import com.github.pockethub.android.accounts.AccountsHelper;
 import com.github.pockethub.android.accounts.LoginActivity;
 import com.github.pockethub.android.core.user.UserComparator;
 import com.github.pockethub.android.persistence.AccountDataManager;
+import com.github.pockethub.android.persistence.CacheHelper;
 import com.github.pockethub.android.ui.gist.GistsPagerFragment;
 import com.github.pockethub.android.ui.issue.FilterListFragment;
 import com.github.pockethub.android.ui.issue.IssueDashboardPagerFragment;
@@ -320,20 +323,8 @@ public class MainActivity extends BaseActivity implements
             getSupportActionBar().setTitle(menuItem.getTitle());
             return true;
         } else if (itemId == R.id.navigation_log_out) {
-            AccountManager accountManager = getAccountManager();
-            Account[] allGitHubAccounts = accountManager.getAccountsByType(getString(R.string.account_type));
-
-            for (Account account : allGitHubAccounts) {
-                accountManager.removeAccount(account, null, null);
-            }
-
-            Intent in = new Intent(this, LoginActivity.class);
-            in.addFlags(IntentCompat.FLAG_ACTIVITY_CLEAR_TASK
-                                | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(in);
-            finish();
+            logout();
             return false;
-
         } else if (menuItemOrganizationMap.containsKey(menuItem)) {
             switchFragment(new HomePagerFragment(), menuItemOrganizationMap.get(menuItem));
             navigationView.getMenu().findItem(R.id.navigation_home).setChecked(true);
@@ -341,6 +332,36 @@ public class MainActivity extends BaseActivity implements
         } else {
             throw new IllegalStateException("MenuItem " + menuItem + " not known");
         }
+    }
+
+    private void logout() {
+        AccountManager accountManager = getAccountManager();
+        String accountType = getString(R.string.account_type);
+        Account[] allGitHubAccounts = accountManager.getAccountsByType(accountType);
+
+        for (Account account : allGitHubAccounts) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                accountManager.removeAccount(account, this, null, null);
+            } else {
+                accountManager.removeAccount(account, null, null);
+            }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            CookieManager.getInstance().removeAllCookies(null);
+        } else {
+            CookieManager.getInstance().removeAllCookie();
+        }
+
+        CacheHelper helper = new CacheHelper(this);
+        helper.getWritableDatabase().delete("orgs", null, null);
+        helper.getWritableDatabase().delete("users", null, null);
+        helper.getWritableDatabase().delete("repos", null, null);
+
+        Intent in = new Intent(this, LoginActivity.class);
+        in.addFlags(IntentCompat.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(in);
+        finish();
     }
 
     @VisibleForTesting
