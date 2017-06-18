@@ -131,9 +131,7 @@ public class CommitCompareListFragment extends DialogFragment implements
                     CommitCompare compareCommit = response.body();
                     List<GitHubFile> files = compareCommit.files();
                     diffStyler.setFiles(files);
-                    if (files != null) {
-                        Collections.sort(files, new CommitFileComparator());
-                    }
+                    Collections.sort(files, new CommitFileComparator());
                     updateList(compareCommit);
                 }, error -> ToastUtils.show(getActivity(), error, R.string.error_commits_load));
     }
@@ -174,7 +172,7 @@ public class CommitCompareListFragment extends DialogFragment implements
         CommitFileListAdapter rootAdapter = adapter.getWrappedAdapter();
         rootAdapter.clear();
         List<GitHubFile> files = compare.files();
-        if (files != null && !files.isEmpty()) {
+        if (!files.isEmpty()) {
             addFileStatHeader(files, inflater);
             for (GitHubFile file : files) {
                 rootAdapter.addItem(file);

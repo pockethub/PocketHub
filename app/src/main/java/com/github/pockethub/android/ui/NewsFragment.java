@@ -233,7 +233,7 @@ public abstract class NewsFragment extends PagedItemFragment<GitHubEvent> {
 
         PushPayload payload = ((PushPayload) event.payload());
         List<GitCommit> commits = payload.commits();
-        if (commits == null || commits.isEmpty()) {
+        if (commits.isEmpty()) {
             return;
         }
 

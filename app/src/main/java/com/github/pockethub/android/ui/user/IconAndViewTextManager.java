@@ -370,7 +370,7 @@ public class IconAndViewTextManager {
         boldRepo(main, event);
 
         final List<GitCommit> commits = payload.commits();
-        int size = commits != null ? commits.size() : -1;
+        int size = commits.size();
         if (size > 0) {
             if (size != 1) {
                 details.append(FORMAT_INT.format(size)).append(" new commits");
