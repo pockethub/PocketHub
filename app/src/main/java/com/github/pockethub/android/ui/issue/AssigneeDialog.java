@@ -17,7 +17,7 @@ package com.github.pockethub.android.ui.issue;
 
 import android.util.Log;
 
-import com.github.pockethub.android.rx.ProgressObserverAdapter;
+import com.github.pockethub.android.rx.RxProgress;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
@@ -69,26 +69,17 @@ public class AssigneeDialog extends BaseProgressDialog {
 
     private void load(final User selectedAssignee) {
         getPageAndNext(1)
-            .flatMap(page -> Observable.fromIterable(page.items()))
-            .toSortedList((o1, o2) -> CASE_INSENSITIVE_ORDER.compare(o1.login(), o2.login()))
-            .subscribe(new ProgressObserverAdapter<List<User>>(activity, R.string.loading_collaborators) {
-
-                @Override
-                public void onSuccess(List<User> loadedCollaborators) {
-                    super.onSuccess(loadedCollaborators);
-
+                .flatMap(page -> Observable.fromIterable(page.items()))
+                .toSortedList((o1, o2) -> CASE_INSENSITIVE_ORDER.compare(o1.login(), o2.login()))
+                .compose(RxProgress.bindToLifecycle(activity, R.string.loading_collaborators))
+                .subscribe(loadedCollaborators -> {
                     collaborators = loadedCollaborators;
 
                     show(selectedAssignee);
-                }
-
-                @Override
-                public void onError(Throwable error) {
-                    super.onError(error);
+                }, error -> {
                     Log.d(TAG, "Exception loading collaborators", error);
                     ToastUtils.show(activity, error, R.string.error_collaborators_load);
-                }
-            });
+                });
     }
 
     private Observable<Page<User>> getPageAndNext(int i) {

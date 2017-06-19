@@ -26,7 +26,7 @@ import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.OnLoadListener;
 import com.github.pockethub.android.core.gist.GistStore;
-import com.github.pockethub.android.rx.ProgressObserverAdapter;
+import com.github.pockethub.android.rx.RxProgress;
 import com.github.pockethub.android.ui.ConfirmDialogFragment;
 import com.github.pockethub.android.ui.FragmentProvider;
 import com.github.pockethub.android.ui.MainActivity;
@@ -45,7 +45,6 @@ import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Response;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -174,21 +173,13 @@ public class GistsViewActivity extends PagerActivity implements
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(this.bindToLifecycle())
-                    .subscribe(new ProgressObserverAdapter<Response<Boolean>>(this, R.string.deleting_gist) {
-
-                        @Override
-                        public void onSuccess(Response<Boolean> response) {
-                            super.onSuccess(response);
-                            setResult(RESULT_OK);
-                            finish();
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
-                            Log.d(TAG, "Exception deleting Gist", e);
-                            ToastUtils.show(GistsViewActivity.this, e.getMessage());
-                        }
+                    .compose(RxProgress.bindToLifecycle(this, R.string.deleting_gist))
+                    .subscribe(response -> {
+                        setResult(RESULT_OK);
+                        finish();
+                    }, e -> {
+                        Log.d(TAG, "Exception deleting Gist", e);
+                        ToastUtils.show(this, e.getMessage());
                     });
             return;
         }

@@ -22,7 +22,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 
-import com.github.pockethub.android.util.ToastUtils;
+import com.github.pockethub.android.rx.RxProgress;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
@@ -30,7 +30,6 @@ import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.PageIterator;
 import com.github.pockethub.android.core.ResourcePager;
-import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.ui.repo.RepositoryViewActivity;
 import com.github.pockethub.android.util.InfoUtils;
@@ -119,16 +118,11 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repository> 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.bindToLifecycle())
-                .subscribe(new ProgressObserverAdapter<Response<Repository>>(getActivity(),
+                .compose(RxProgress.bindToLifecycle(getActivity(),
                         MessageFormat.format(getString(R.string.opening_repository),
-                                InfoUtils.createRepoId(result))) {
-
-                    @Override
-                    public void onSuccess(Response<Repository> response) {
-                        super.onSuccess(response);
-                        startActivity(RepositoryViewActivity.createIntent(response.body()));
-                    }
-                });
+                                InfoUtils.createRepoId(result))))
+                .subscribe(response ->
+                        startActivity(RepositoryViewActivity.createIntent(response.body())));
     }
 
     /**

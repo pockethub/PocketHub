@@ -17,7 +17,7 @@ package com.github.pockethub.android.ui.issue;
 
 import android.util.Log;
 
-import com.github.pockethub.android.rx.ProgressObserverAdapter;
+import com.github.pockethub.android.rx.RxProgress;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Label;
 import com.meisolsson.githubsdk.model.Page;
@@ -72,25 +72,17 @@ public class LabelsDialog extends BaseProgressDialog {
 
     private void load(final Collection<Label> selectedLabels) {
         getPageAndNext(1)
-            .flatMap(page -> Observable.fromIterable(page.items()))
-            .toSortedList((o1, o2) -> CASE_INSENSITIVE_ORDER.compare(o1.name(), o2.name()))
-            .subscribe(new ProgressObserverAdapter<List<Label>>(activity, R.string.loading_labels) {
-
-                @Override
-                public void onSuccess(List<Label> loadedLabels) {
-                    super.onSuccess(loadedLabels);
+                .flatMap(page -> Observable.fromIterable(page.items()))
+                .toSortedList((o1, o2) -> CASE_INSENSITIVE_ORDER.compare(o1.name(), o2.name()))
+                .compose(RxProgress.bindToLifecycle(activity, R.string.loading_labels))
+                .subscribe(loadedLabels -> {
                     labels = loadedLabels;
 
                     show(selectedLabels);
-                }
-
-                @Override
-                public void onError(Throwable error) {
-                    super.onError(error);
+                }, error -> {
                     Log.e(TAG, "Exception loading labels", error);
                     ToastUtils.show(activity, error, R.string.error_labels_load);
-                }
-            });
+                });
     }
 
     private Observable<Page<Label>> getPageAndNext(int i) {

@@ -30,13 +30,12 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.rx.ProgressObserverAdapter;
+import com.github.pockethub.android.rx.RxProgress;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.TextWatcherAdapter;
 import com.github.pockethub.android.util.ShareUtils;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
-import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.GistFile;
 import com.meisolsson.githubsdk.model.request.gist.CreateGist;
 import com.meisolsson.githubsdk.service.gists.GistService;
@@ -46,7 +45,6 @@ import java.util.Map;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Response;
 
 /**
  * Activity to share a text selection as a public or private Gist
@@ -197,22 +195,14 @@ public class CreateGistActivity extends BaseActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.bindToLifecycle())
-                .subscribe(new ProgressObserverAdapter<Response<Gist>>(this, R.string.creating_gist) {
-
-                    @Override
-                    public void onSuccess(Response<Gist> response) {
-                        super.onSuccess(response);
-                        startActivity(GistsViewActivity.createIntent(response.body()));
-                        setResult(RESULT_OK);
-                        finish();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        Log.d(TAG, "Exception creating Gist", e);
-                        ToastUtils.show(CreateGistActivity.this, e.getMessage());
-                    }
+                .compose(RxProgress.bindToLifecycle(this, R.string.creating_gist))
+                .subscribe(response -> {
+                    startActivity(GistsViewActivity.createIntent(response.body()));
+                    setResult(RESULT_OK);
+                    finish();
+                }, e -> {
+                    Log.d(TAG, "Exception creating Gist", e);
+                    ToastUtils.show(this, e.getMessage());
                 });
     }
 }

@@ -15,22 +15,18 @@
  */
 package com.github.pockethub.android.ui.issue;
 
+import com.github.pockethub.android.rx.RxProgress;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.Milestone;
 import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueStore;
-import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.meisolsson.githubsdk.model.request.issue.IssueRequest;
 import com.google.inject.Inject;
 
-import java.io.IOException;
-
-import io.reactivex.Single;
-import io.reactivex.SingleEmitter;
-import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import roboguice.RoboGuice;
 
@@ -54,7 +50,7 @@ public class EditMilestoneTask {
 
     private int milestoneNumber;
 
-    private final ProgressObserverAdapter<Issue> observer;
+    private final Consumer<Issue> observer;
 
     /**
      * Create task to edit a milestone
@@ -65,12 +61,11 @@ public class EditMilestoneTask {
      */
     public EditMilestoneTask(final BaseActivity activity,
                              final Repository repositoryId, final int issueNumber,
-                             final ProgressObserverAdapter<Issue> observer) {
+                             final Consumer<Issue> observer) {
         this.activity = activity;
         this.repositoryId = repositoryId;
         this.issueNumber = issueNumber;
         this.observer = observer;
-        observer.setContent(R.string.updating_milestone);
         milestoneDialog = new MilestoneDialog(activity, ISSUE_MILESTONE_UPDATE,
                 repositoryId);
         RoboGuice.injectMembers(activity, this);
@@ -101,6 +96,7 @@ public class EditMilestoneTask {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(activity.bindToLifecycle())
+                    .compose(RxProgress.bindToLifecycle(activity, R.string.updating_milestone))
                     .subscribe(observer);
         }
 

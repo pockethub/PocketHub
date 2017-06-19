@@ -33,6 +33,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.github.pockethub.android.rx.RxProgress;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.GistFile;
@@ -41,10 +42,8 @@ import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.accounts.AccountUtils;
 import com.github.pockethub.android.core.OnLoadListener;
-import com.github.pockethub.android.core.gist.FullGist;
 import com.github.pockethub.android.core.gist.GistStore;
 import com.github.pockethub.android.core.gist.RefreshGistTask;
-import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.ConfirmDialogFragment;
 import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.HeaderFooterListAdapter;
@@ -66,10 +65,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
@@ -445,29 +442,21 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(this.bindToLifecycle())
-                    .subscribe(new ProgressObserverAdapter<Response<Boolean>>(getActivity(), R.string.deleting_comment) {
-
-                        @Override
-                        public void onSuccess(Response<Boolean> response) {
-                            super.onSuccess(response);
-                            // Update comment list
-                            if (comments != null) {
-                                int position = Collections.binarySearch(comments,
-                                        comment, (lhs, rhs) -> Integer.valueOf(lhs.id())
-                                                .compareTo(rhs.id()));
-                                comments.remove(position);
-                                updateList(gist, comments);
-                            } else {
-                                refreshGist();
-                            }
+                    .compose(RxProgress.bindToLifecycle(getActivity(), R.string.deleting_comment))
+                    .subscribe(response -> {
+                        // Update comment list
+                        if (comments != null) {
+                            int position = Collections.binarySearch(comments,
+                                    comment, (lhs, rhs) -> Integer.valueOf(lhs.id())
+                                            .compareTo(rhs.id()));
+                            comments.remove(position);
+                            updateList(gist, comments);
+                        } else {
+                            refreshGist();
                         }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
-                            Log.d(TAG, "Exception deleting comment on gist", e);
-                            ToastUtils.show((Activity) getContext(), e.getMessage());
-                        }
+                    }, e -> {
+                        Log.d(TAG, "Exception deleting comment on gist", e);
+                        ToastUtils.show((Activity) getContext(), e.getMessage());
                     });
             break;
         }
