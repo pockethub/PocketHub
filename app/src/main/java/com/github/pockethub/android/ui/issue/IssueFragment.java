@@ -33,7 +33,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.github.pockethub.android.core.issue.FullIssue;
+import com.github.pockethub.android.rx.RxProgress;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.GitHubComment;
 import com.meisolsson.githubsdk.model.GitHubEvent;
@@ -50,7 +50,6 @@ import com.github.pockethub.android.accounts.AccountUtils;
 import com.github.pockethub.android.core.issue.IssueStore;
 import com.github.pockethub.android.core.issue.IssueUtils;
 import com.github.pockethub.android.core.issue.RefreshIssueTask;
-import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.ConfirmDialogFragment;
 import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.BaseActivity;
@@ -75,10 +74,9 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
@@ -194,19 +192,17 @@ public class IssueFragment extends DialogFragment {
 
         BaseActivity dialogActivity = (BaseActivity) getActivity();
 
-        ProgressObserverAdapter<Issue> observer = new ProgressObserverAdapter<Issue>(getActivity()) {
-            @Override
-            public void onNext(Issue issue) {
-                super.onNext(issue);
-                updateHeader(issue);
-                refreshIssue();
-            }
-        };
+        milestoneTask = new EditMilestoneTask(dialogActivity, repositoryId, issueNumber, createObserver());
+        assigneeTask = new EditAssigneeTask(dialogActivity, repositoryId, issueNumber, createObserver());
+        labelsTask = new EditLabelsTask(dialogActivity, repositoryId, issueNumber, createObserver());
+        stateTask = new EditStateTask(dialogActivity, repositoryId, issueNumber, createObserver());
+    }
 
-        milestoneTask = new EditMilestoneTask(dialogActivity, repositoryId, issueNumber, observer);
-        assigneeTask = new EditAssigneeTask(dialogActivity, repositoryId, issueNumber, observer);
-        labelsTask = new EditLabelsTask(dialogActivity, repositoryId, issueNumber, observer);
-        stateTask = new EditStateTask(dialogActivity, repositoryId, issueNumber, observer);
+    private Consumer<Issue> createObserver() {
+        return issue -> {
+            updateHeader(issue);
+            refreshIssue();
+        };
     }
 
     @Override
@@ -504,29 +500,21 @@ public class IssueFragment extends DialogFragment {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(this.bindToLifecycle())
-                    .subscribe(new ProgressObserverAdapter<Response<Boolean>>(getActivity(), R.string.deleting_comment) {
-
-                        @Override
-                        public void onSuccess(Response<Boolean> response) {
-                            super.onSuccess(response);
-                            if (items != null) {
-                                int commentPosition = findCommentPositionInItems(comment);
-                                if (commentPosition >= 0) {
-                                    issue = issue.toBuilder().comments(issue.comments() - 1).build();
-                                    items.remove(commentPosition);
-                                    updateList(issue, items);
-                                }
-                            } else {
-                                refreshIssue();
+                    .compose(RxProgress.bindToLifecycle(getActivity(), R.string.deleting_comment))
+                    .subscribe(response -> {
+                        if (items != null) {
+                            int commentPosition = findCommentPositionInItems(comment);
+                            if (commentPosition >= 0) {
+                                issue = issue.toBuilder().comments(issue.comments() - 1).build();
+                                items.remove(commentPosition);
+                                updateList(issue, items);
                             }
+                        } else {
+                            refreshIssue();
                         }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
-                            Log.d(TAG, "Exception deleting comment on issue", e);
-                            ToastUtils.show(getActivity(), e.getMessage());
-                        }
+                    }, e -> {
+                        Log.d(TAG, "Exception deleting comment on issue", e);
+                        ToastUtils.show(getActivity(), e.getMessage());
                     });
             break;
         }

@@ -20,7 +20,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 
-import com.github.pockethub.android.rx.ProgressObserverAdapter;
+import com.github.pockethub.android.rx.RxProgress;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.Intents.Builder;
@@ -29,13 +29,11 @@ import com.github.pockethub.android.core.commit.CommitUtils;
 import com.github.pockethub.android.ui.comment.CommentPreviewPagerAdapter;
 import com.github.pockethub.android.util.InfoUtils;
 import com.github.pockethub.android.util.ToastUtils;
-import com.meisolsson.githubsdk.model.git.GitComment;
 import com.meisolsson.githubsdk.model.request.repository.CreateCommitComment;
 import com.meisolsson.githubsdk.service.repositories.RepositoryCommentService;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Response;
 
 import static com.github.pockethub.android.Intents.EXTRA_BASE;
 import static com.github.pockethub.android.Intents.EXTRA_PATH;
@@ -122,20 +120,9 @@ public class CreateCommentActivity extends
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.bindToLifecycle())
-                .subscribe(new ProgressObserverAdapter<Response<GitComment>>(this, R.string.creating_comment) {
-
-                    @Override
-                    public void onSuccess(Response<GitComment> response) {
-                        super.onSuccess(response);
-                        finish(response.body());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        ToastUtils.show(CreateCommentActivity.this, e.getMessage());
-                    }
-                });
+                .compose(RxProgress.bindToLifecycle(this, R.string.creating_comment))
+                .subscribe(response -> finish(response.body()),
+                        e -> ToastUtils.show(this, e.getMessage()));
     }
 
     @Override

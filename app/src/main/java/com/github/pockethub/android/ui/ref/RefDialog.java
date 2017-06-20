@@ -19,7 +19,7 @@ import android.util.Log;
 
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.ref.RefUtils;
-import com.github.pockethub.android.rx.ProgressObserverAdapter;
+import com.github.pockethub.android.rx.RxProgress;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
@@ -70,25 +70,17 @@ public class RefDialog {
 
     private void load(final GitReference selectedRef) {
         getPageAndNext(1)
-            .flatMap(page -> Observable.fromIterable(page.items()))
-            .filter(RefUtils::isValid)
-            .toSortedList((o1, o2) -> CASE_INSENSITIVE_ORDER.compare(o1.ref(), o2.ref()))
-            .subscribe(new ProgressObserverAdapter<List<GitReference>>(activity, R.string.loading_refs) {
-
-                @Override
-                public void onSuccess(List<GitReference> loadedRefs) {
-                    super.onSuccess(loadedRefs);
+                .flatMap(page -> Observable.fromIterable(page.items()))
+                .filter(RefUtils::isValid)
+                .toSortedList((o1, o2) -> CASE_INSENSITIVE_ORDER.compare(o1.ref(), o2.ref()))
+                .compose(RxProgress.bindToLifecycle(activity, R.string.loading_refs))
+                .subscribe(loadedRefs -> {
                     refs = loadedRefs;
                     show(selectedRef);
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    super.onError(e);
+                }, e -> {
                     Log.d(TAG, "Exception loading references", e);
                     ToastUtils.show(activity, e, R.string.error_refs_load);
-                }
-            });
+                });
     }
 
     private Observable<Page<GitReference>> getPageAndNext(int i) {

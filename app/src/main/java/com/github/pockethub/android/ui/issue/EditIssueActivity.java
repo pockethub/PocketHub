@@ -38,6 +38,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.pockethub.android.rx.RxProgress;
 import com.github.pockethub.android.util.ImageBinPoster;
 import com.github.pockethub.android.util.PermissionsUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
@@ -50,7 +51,6 @@ import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.accounts.AccountUtils;
 import com.github.pockethub.android.core.issue.IssueUtils;
-import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.StyledText;
 import com.github.pockethub.android.ui.TextWatcherAdapter;
@@ -495,23 +495,15 @@ public class EditIssueActivity extends BaseActivity {
                 single.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .compose(this.bindToLifecycle())
-                        .subscribe(new ProgressObserverAdapter<Response<Issue>>(this, message) {
-
-                            @Override
-                            public void onSuccess(Response<Issue> response) {
-                                super.onSuccess(response);
-                                Intent intent = new Intent();
-                                intent.putExtra(EXTRA_ISSUE, response.body());
-                                setResult(RESULT_OK, intent);
-                                finish();
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                super.onError(e);
-                                Log.e(TAG, "Exception creating issue", e);
-                                ToastUtils.show(EditIssueActivity.this, e.getMessage());
-                            }
+                        .compose(RxProgress.bindToLifecycle(this, message))
+                        .subscribe(response -> {
+                            Intent intent = new Intent();
+                            intent.putExtra(EXTRA_ISSUE, response.body());
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        }, e -> {
+                            Log.e(TAG, "Exception creating issue", e);
+                            ToastUtils.show(this, e.getMessage());
                         });
                 return true;
             default:

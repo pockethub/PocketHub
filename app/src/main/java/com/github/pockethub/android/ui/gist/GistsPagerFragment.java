@@ -27,7 +27,7 @@ import android.view.View;
 
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.gist.GistStore;
-import com.github.pockethub.android.rx.ProgressObserverAdapter;
+import com.github.pockethub.android.rx.RxProgress;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.TabPagerFragment;
 import com.github.pockethub.android.util.ToastUtils;
@@ -37,9 +37,6 @@ import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.service.gists.GistService;
 import com.google.inject.Inject;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 import io.reactivex.Single;
@@ -106,20 +103,11 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(((BaseActivity)getActivity()).bindToLifecycle())
-                .subscribe(new ProgressObserverAdapter<Gist>(getActivity(), R.string.random_gist) {
-                    @Override
-                    public void onSuccess(Gist gist) {
-                        super.onSuccess(gist);
-                        getActivity().startActivityForResult(
-                                GistsViewActivity.createIntent(gist), GIST_VIEW);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        Log.d(TAG, "Exception opening random Gist", e);
-                        ToastUtils.show((Activity) getContext(), e.getMessage());
-                    }
+                .compose(RxProgress.bindToLifecycle(getActivity(), R.string.random_gist))
+                .subscribe(gist -> getActivity().startActivityForResult(
+                        GistsViewActivity.createIntent(gist), GIST_VIEW), e -> {
+                    Log.d(TAG, "Exception opening random Gist", e);
+                    ToastUtils.show((Activity) getContext(), e.getMessage());
                 });
     }
 

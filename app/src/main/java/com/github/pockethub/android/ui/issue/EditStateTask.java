@@ -15,22 +15,18 @@
  */
 package com.github.pockethub.android.ui.issue;
 
+import com.github.pockethub.android.rx.RxProgress;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.IssueState;
 import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueStore;
-import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.ConfirmDialogFragment;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.google.inject.Inject;
 
-import java.io.IOException;
-
-import io.reactivex.Single;
-import io.reactivex.SingleEmitter;
-import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import roboguice.RoboGuice;
 
@@ -49,7 +45,7 @@ public class EditStateTask {
     private final Repository repository;
 
     private final int issueNumber;
-    private final ProgressObserverAdapter<Issue> observer;
+    private final Consumer<Issue> observer;
 
     /**
      * Create task to edit issue state
@@ -60,7 +56,7 @@ public class EditStateTask {
      */
     public EditStateTask(final BaseActivity activity,
                          final Repository repository, final int issueNumber,
-                         final ProgressObserverAdapter<Issue> observer) {
+                         final Consumer<Issue> observer) {
         this.activity = activity;
         this.repository = repository;
         this.issueNumber = issueNumber;
@@ -95,13 +91,17 @@ public class EditStateTask {
     public EditStateTask edit(boolean close) {
         int message = close ? R.string.closing_issue : R.string.reopening_issue;
         IssueState state = close ? IssueState.closed : IssueState.open;
-        observer.setContent(message);
 
-        store.changeState(repository, issueNumber, state)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(activity.bindToLifecycle())
-                .subscribe(observer);
+        try {
+            store.changeState(repository, issueNumber, state)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .compose(activity.bindToLifecycle())
+                    .compose(RxProgress.bindToLifecycle(activity, message))
+                    .subscribe(observer);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return this;
     }

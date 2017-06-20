@@ -17,7 +17,7 @@ package com.github.pockethub.android.ui.issue;
 
 import android.util.Log;
 
-import com.github.pockethub.android.rx.ProgressObserverAdapter;
+import com.github.pockethub.android.rx.RxProgress;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Milestone;
 import com.meisolsson.githubsdk.model.Page;
@@ -78,25 +78,17 @@ public class MilestoneDialog extends BaseProgressDialog {
 
     private void load(final Milestone selectedMilestone) {
         getPageAndNext(1)
-            .flatMap(page -> Observable.fromIterable(page.items()))
-            .toSortedList((m1, m2) -> CASE_INSENSITIVE_ORDER.compare(m1.title(), m2.title()))
-            .subscribe(new ProgressObserverAdapter<List<Milestone>>(activity, R.string.loading_milestones) {
-
-                @Override
-                public void onSuccess(List<Milestone> milestones) {
-                    super.onSuccess(milestones);
+                .flatMap(page -> Observable.fromIterable(page.items()))
+                .toSortedList((m1, m2) -> CASE_INSENSITIVE_ORDER.compare(m1.title(), m2.title()))
+                .compose(RxProgress.bindToLifecycle(activity, R.string.loading_milestones))
+                .subscribe(milestones -> {
                     repositoryMilestones = (ArrayList) milestones;
 
                     show(selectedMilestone);
-                }
-
-                @Override
-                public void onError(Throwable error) {
-                    super.onError(error);
+                }, error -> {
                     Log.e(TAG, "Exception loading milestones", error);
                     ToastUtils.show(activity, error, R.string.error_milestones_load);
-                }
-            });
+                });
     }
 
     private Observable<Page<Milestone>> getPageAndNext(int i) {
