@@ -97,8 +97,6 @@
     <string name="home">主页</string>
     <string name="log_out">注销</string>
     <string name="news">新鲜事</string>
-    <string name="skip">跳过</string>
-    <string name="done">完成</string>
     <string name="issues">Issues</string>
     <string name="gists">Gists</string>
     <string name="commits">提交</string>
@@ -299,18 +297,5 @@
     <string name="organizations">组织</string>
     <string name="error_oauth_not_configured">你无法登陆，因为还没有设置认证客户端和秘钥
 阅读README.md: https://github.com/pockethub/PocketHub#setup-environment</string>
-
-
-    <string-array name="welcome_texts">
-        <item>不久之前GitHub app停止更新了，但是我们中的一些人想要继续更新项目…</item>
-        <item>我们给app改了一个新的名字，现在叫做PocketHub</item>
-        <item>点击done完成登录！</item>
-    </string-array>
-
-    <string-array name="welcome_titles">
-        <item>欢迎</item>
-        <item>长话短说</item>
-        <item>让我们开始吧</item>
-    </string-array>
 
 </resources>

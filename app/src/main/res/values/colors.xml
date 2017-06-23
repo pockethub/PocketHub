@@ -82,10 +82,4 @@
     <color name="appcompat_secondary_text_default_material_light">#8a000000</color>
     <color name="appcompat_secondary_text_disabled_material_light">#24000000</color>
 
-    <array name="welcome_screen_colors">
-        <item>@color/background</item>
-        <item>@color/primary</item>
-        <item>@color/accent</item>
-    </array>
-
 </resources>
