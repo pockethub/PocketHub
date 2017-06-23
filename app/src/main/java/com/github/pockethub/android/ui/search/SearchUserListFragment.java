@@ -28,7 +28,6 @@ import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.PageIterator;
 import com.github.pockethub.android.core.ResourcePager;
-import com.github.pockethub.android.core.search.SearchUser;
 import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.ui.user.UserViewActivity;
 import com.github.pockethub.android.util.AvatarLoader;
@@ -45,7 +44,7 @@ import retrofit2.Response;
 import static android.app.SearchManager.QUERY;
 
 /**
- * Fragment to display a list of {@link SearchUser} instances
+ * Fragment to display a list of {@link User} instances
  */
 public class SearchUserListFragment extends PagedItemFragment<User> {
 
