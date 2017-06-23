@@ -156,6 +156,10 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
 
     private boolean open;
 
+    private String direction;
+
+    private String sortType;
+
     /**
      * Create filter
      *
@@ -164,6 +168,8 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
     public IssueFilter(final Repository repository) {
         this.repository = repository;
         open = true;
+        direction = DIRECTION_DESCENDING;
+        sortType = SORT_CREATED;
     }
 
     protected IssueFilter(Parcel in) {
@@ -173,6 +179,8 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
         milestone = in.readParcelable(Milestone.class.getClassLoader());
         assignee = in.readParcelable(User.class.getClassLoader());
         open = in.readByte() != 0;
+        direction = in.readString();
+        sortType = in.readString();
     }
 
     public static final Creator<IssueFilter> CREATOR = new Creator<IssueFilter>() {
@@ -274,6 +282,33 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
     }
 
     /**
+     * @param direction Can be either {@value DIRECTION_ASCENDING} or {@value DIRECTION_ASCENDING}.
+     * @return this filter
+     */
+    public IssueFilter setDirection(String direction) {
+        this.direction = direction;
+        return this;
+    }
+
+    /**
+     * @param sortType Can be either {@value SORT_COMMENTS}, {@value SORT_CREATED}
+     *                 or {@value SORT_UPDATED}.
+     * @return this filter
+     */
+    public IssueFilter setSortType(String sortType) {
+        this.sortType = sortType;
+        return this;
+    }
+
+    public String getSortType() {
+        return sortType;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    /**
      * Are only open issues returned?
      *
      * @return true if open only, false if closed only
@@ -297,8 +332,8 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
     public Map<String, Object> toFilterMap() {
         final Map<String, Object> filter = new HashMap<>();
 
-        filter.put(FIELD_SORT, SORT_CREATED);
-        filter.put(FIELD_DIRECTION, DIRECTION_DESCENDING);
+        filter.put(FIELD_SORT, sortType);
+        filter.put(FIELD_DIRECTION, direction);
 
         if (assignee != null) {
             filter.put(FILTER_ASSIGNEE, assignee.login());
@@ -375,7 +410,8 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
                 assignee != null ? assignee.id() : null,
                 milestone != null ? milestone.number() : null,
                 assignee != null ? assignee.id() : null,
-                repository != null ? repository.id() : null, labels });
+                repository != null ? repository.id() : null,
+                labels, direction, sortType });
     }
 
     private boolean isEqual(Object a, Object b) {
@@ -416,7 +452,9 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
         return open == other.open && isEqual(milestone, other.milestone)
                 && isEqual(assignee, other.assignee)
                 && isEqual(repository, repository)
-                && isEqual(labels, other.labels);
+                && isEqual(labels, other.labels)
+                && isEqual(sortType, other.sortType)
+                && isEqual(direction, other.direction);
     }
 
     @Override
@@ -446,5 +484,7 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
         dest.writeParcelable(milestone, flags);
         dest.writeParcelable(assignee, flags);
         dest.writeByte((byte) (open ? 1 : 0));
+        dest.writeString(direction);
+        dest.writeString(sortType);
     }
 }

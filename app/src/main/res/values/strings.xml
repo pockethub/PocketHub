@@ -325,6 +325,13 @@ Read the README.md: https://github.com/pockethub/PocketHub#setup-environment</st
     <string name="releases_not_yet_in_app">Sorry, we don\'t support releases in the app yet</string>
     <string name="error_edit_issue">Could not edit issue</string>
     <string name="error_issue_state">Could not change state</string>
+    <string name="section_issue_sort_order">Sort order</string>
+    <string name="section_issue_sort_type">Sort by</string>
+    <string name="sort_order_ascending">Ascending</string>
+    <string name="sort_order_descending">Descending</string>
+    <string name="sort_created">Created</string>
+    <string name="sort_updated">Updated</string>
+    <string name="sort_comments">Comments</string>
 
 
     <string-array name="welcome_texts">
