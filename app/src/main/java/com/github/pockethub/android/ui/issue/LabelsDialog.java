@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Set;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -53,7 +54,7 @@ public class LabelsDialog extends BaseProgressDialog {
 
     private final Repository repository;
 
-    private List<Label> labels;
+    private final Single<List<Label>> labelsSingle;
 
     /**
      * Create dialog helper to display labels
@@ -68,21 +69,12 @@ public class LabelsDialog extends BaseProgressDialog {
         this.activity = activity;
         this.requestCode = requestCode;
         this.repository = repository;
-    }
 
-    private void load(final Collection<Label> selectedLabels) {
-        getPageAndNext(1)
+        labelsSingle = getPageAndNext(1)
                 .flatMap(page -> Observable.fromIterable(page.items()))
                 .toSortedList((o1, o2) -> CASE_INSENSITIVE_ORDER.compare(o1.name(), o2.name()))
                 .compose(RxProgress.bindToLifecycle(activity, R.string.loading_labels))
-                .subscribe(loadedLabels -> {
-                    labels = loadedLabels;
-
-                    show(selectedLabels);
-                }, error -> {
-                    Log.e(TAG, "Exception loading labels", error);
-                    ToastUtils.show(activity, error, R.string.error_labels_load);
-                });
+                .cache();
     }
 
     private Observable<Page<Label>> getPageAndNext(int i) {
@@ -108,24 +100,24 @@ public class LabelsDialog extends BaseProgressDialog {
      * @param selectedLabels
      */
     public void show(Collection<Label> selectedLabels) {
-        if (labels == null) {
-            load(selectedLabels);
-            return;
-        }
-
-        final boolean[] checked = new boolean[labels.size()];
-        if (selectedLabels != null && !selectedLabels.isEmpty()) {
-            Set<String> selectedNames = new HashSet<>();
-            for (Label label : selectedLabels) {
-                selectedNames.add(label.name());
-            }
-            for (int i = 0; i < checked.length; i++) {
-                if (selectedNames.contains(labels.get(i).name())) {
-                    checked[i] = true;
+        labelsSingle.subscribe(labels -> {
+            final boolean[] checked = new boolean[labels.size()];
+            if (selectedLabels != null && !selectedLabels.isEmpty()) {
+                Set<String> selectedNames = new HashSet<>();
+                for (Label label : selectedLabels) {
+                    selectedNames.add(label.name());
+                }
+                for (int i = 0; i < checked.length; i++) {
+                    if (selectedNames.contains(labels.get(i).name())) {
+                        checked[i] = true;
+                    }
                 }
             }
-        }
-        LabelsDialogFragment.show(activity, requestCode,
-                activity.getString(R.string.select_labels), null, new ArrayList<>(labels), checked);
+            LabelsDialogFragment.show(activity, requestCode,
+                    activity.getString(R.string.select_labels), null, new ArrayList<>(labels), checked);
+        }, error -> {
+            Log.e(TAG, "Exception loading labels", error);
+            ToastUtils.show(activity, error, R.string.error_labels_load);
+        });
     }
 }
