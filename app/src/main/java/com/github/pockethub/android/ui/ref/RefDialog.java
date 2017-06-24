@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -44,13 +45,13 @@ public class RefDialog {
 
     private static final String TAG = "RefDialog";
 
-    private List<GitReference> refs;
-
     private final int requestCode;
 
     private final BaseActivity activity;
 
     private final Repository repository;
+
+    private final Single<List<GitReference>> refSingle;
 
     /**
      * Create dialog helper to display refs
@@ -64,23 +65,13 @@ public class RefDialog {
         this.activity = activity;
         this.requestCode = requestCode;
         this.repository = repository;
-    }
 
-
-
-    private void load(final GitReference selectedRef) {
-        getPageAndNext(1)
+        refSingle = getPageAndNext(1)
                 .flatMap(page -> Observable.fromIterable(page.items()))
                 .filter(RefUtils::isValid)
                 .toSortedList((o1, o2) -> CASE_INSENSITIVE_ORDER.compare(o1.ref(), o2.ref()))
                 .compose(RxProgress.bindToLifecycle(activity, R.string.loading_refs))
-                .subscribe(loadedRefs -> {
-                    refs = loadedRefs;
-                    show(selectedRef);
-                }, e -> {
-                    Log.d(TAG, "Exception loading references", e);
-                    ToastUtils.show(activity, e, R.string.error_refs_load);
-                });
+                .cache();
     }
 
     private Observable<Page<GitReference>> getPageAndNext(int i) {
@@ -105,27 +96,27 @@ public class RefDialog {
      * @param selectedRef
      */
     public void show(GitReference selectedRef) {
-        if (refs == null || refs.isEmpty()) {
-            load(selectedRef);
-            return;
-        }
-
-        int checked = -1;
-        if (selectedRef != null) {
-            String ref = selectedRef.ref();
-            for (int i = 0; i < refs.size(); i++) {
-                String candidate = refs.get(i).ref();
-                if (ref.equals(candidate)) {
-                    checked = i;
-                    break;
-                } else if (ref.equals(RefUtils.getName(candidate))) {
-                    checked = i;
-                    break;
+        refSingle.subscribe(refs -> {
+            int checked = -1;
+            if (selectedRef != null) {
+                String ref = selectedRef.ref();
+                for (int i = 0; i < refs.size(); i++) {
+                    String candidate = refs.get(i).ref();
+                    if (ref.equals(candidate)) {
+                        checked = i;
+                        break;
+                    } else if (ref.equals(RefUtils.getName(candidate))) {
+                        checked = i;
+                        break;
+                    }
                 }
             }
-        }
 
-        RefDialogFragment.show(activity, requestCode,
-                activity.getString(R.string.select_ref), null, new ArrayList<>(refs), checked);
+            RefDialogFragment.show(activity, requestCode,
+                    activity.getString(R.string.select_ref), null, new ArrayList<>(refs), checked);
+        }, e -> {
+            Log.d(TAG, "Exception loading references", e);
+            ToastUtils.show(activity, e, R.string.error_refs_load);
+        });
     }
 }
