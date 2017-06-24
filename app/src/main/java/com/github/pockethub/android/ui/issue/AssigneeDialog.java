@@ -23,7 +23,6 @@ import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.ui.BaseProgressDialog;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.service.issues.IssueAssigneeService;
@@ -41,7 +40,7 @@ import static java.lang.String.CASE_INSENSITIVE_ORDER;
 /**
  * Dialog helper to display a list of assignees to select one from
  */
-public class AssigneeDialog extends BaseProgressDialog {
+public class AssigneeDialog {
 
     private static final String TAG = "AssigneeDialog";
 
@@ -62,7 +61,6 @@ public class AssigneeDialog extends BaseProgressDialog {
      */
     public AssigneeDialog(final BaseActivity activity,
             final int requestCode, final Repository repository) {
-        super(activity);
         this.activity = activity;
         this.requestCode = requestCode;
         this.repository = repository;
