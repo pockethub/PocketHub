@@ -29,11 +29,9 @@ import android.widget.ImageView;
 
 import com.github.pockethub.android.R;
 import com.google.inject.Singleton;
+import com.jakewharton.picasso.OkHttp3Downloader;
 import com.meisolsson.githubsdk.model.User;
 import com.google.inject.Inject;
-import com.squareup.okhttp.Cache;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
@@ -43,6 +41,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
 
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
 import roboguice.util.RoboAsyncTask;
 
 /**
@@ -77,14 +77,15 @@ public class AvatarLoader {
     public AvatarLoader(final Context context) {
         this.context = context.getApplicationContext();
 
-        OkHttpClient client = new OkHttpClient();
-
         // Install an HTTP cache in the application cache directory.
         File cacheDir = new File(context.getCacheDir(), "http");
         Cache cache = new Cache(cacheDir, DISK_CACHE_SIZE);
-        client.setCache(cache);
 
-        p = new Picasso.Builder(context).downloader(new OkHttpDownloader(client)).build();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .cache(cache)
+                .build();
+
+        p = new Picasso.Builder(context).downloader(new OkHttp3Downloader(client)).build();
 
         float density = context.getResources().getDisplayMetrics().density;
         cornerRadius = CORNER_RADIUS_IN_DIP * density;
