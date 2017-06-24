@@ -67,15 +67,6 @@ public class MilestoneDialog extends BaseProgressDialog {
         this.repository = repository;
     }
 
-    /**
-     * Get milestones
-     *
-     * @return list of milestones
-     */
-    public List<Milestone> getMilestones() {
-        return repositoryMilestones;
-    }
-
     private void load(final Milestone selectedMilestone) {
         getPageAndNext(1)
                 .flatMap(page -> Observable.fromIterable(page.items()))
@@ -130,23 +121,5 @@ public class MilestoneDialog extends BaseProgressDialog {
         MilestoneDialogFragment.show(activity, requestCode,
                 activity.getString(R.string.select_milestone), null,
                 repositoryMilestones, checked);
-    }
-
-    /**
-     * Get milestone number for title
-     *
-     * @param title
-     * @return number of -1 if not found
-     */
-    public int getMilestoneNumber(String title) {
-        if (repositoryMilestones == null) {
-            return -1;
-        }
-        for (Milestone milestone : repositoryMilestones) {
-            if (title.equals(milestone.title())) {
-                return milestone.number();
-            }
-        }
-        return -1;
     }
 }
