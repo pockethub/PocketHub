@@ -17,7 +17,9 @@ package com.github.pockethub.android.ui.issue;
 
 import android.util.Log;
 
+import com.github.pockethub.android.core.PageIterator;
 import com.github.pockethub.android.rx.RxProgress;
+import com.github.pockethub.android.util.RxPageUtil;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Milestone;
 import com.meisolsson.githubsdk.model.Page;
@@ -32,8 +34,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
@@ -48,8 +49,6 @@ public class MilestoneDialog {
 
     private final BaseActivity activity;
 
-    private final Repository repository;
-
     private final Single<List<Milestone>> milestoneSingle;
 
     /**
@@ -63,29 +62,16 @@ public class MilestoneDialog {
             final int requestCode, final Repository repository) {
         this.activity = activity;
         this.requestCode = requestCode;
-        this.repository = repository;
 
-        milestoneSingle = getPageAndNext(1)
+        PageIterator.GitHubRequest<Response<Page<Milestone>>> gitHubRequest = page -> ServiceGenerator
+                .createService(activity, IssueMilestoneService.class)
+                .getRepositoryMilestones(repository.owner().login(), repository.name(), page);
+
+        milestoneSingle = RxPageUtil.getAllPages(gitHubRequest, 1)
                 .flatMap(page -> Observable.fromIterable(page.items()))
                 .toSortedList((m1, m2) -> CASE_INSENSITIVE_ORDER.compare(m1.title(), m2.title()))
                 .compose(RxProgress.bindToLifecycle(activity, R.string.loading_milestones))
                 .cache();
-    }
-
-    private Observable<Page<Milestone>> getPageAndNext(int i) {
-        return ServiceGenerator.createService(activity, IssueMilestoneService.class)
-                .getRepositoryMilestones(repository.owner().login(), repository.name(), i)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .flatMapObservable(response -> {
-                    Page<Milestone> page = response.body();
-                    if (page.next() == null) {
-                        return Observable.just(page);
-                    }
-
-                    return Observable.just(page)
-                            .concatWith(getPageAndNext(page.next()));
-                });
     }
 
     /**

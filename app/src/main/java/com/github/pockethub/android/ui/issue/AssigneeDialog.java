@@ -17,7 +17,9 @@ package com.github.pockethub.android.ui.issue;
 
 import android.util.Log;
 
+import com.github.pockethub.android.core.PageIterator;
 import com.github.pockethub.android.rx.RxProgress;
+import com.github.pockethub.android.util.RxPageUtil;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
@@ -32,8 +34,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
@@ -48,8 +49,6 @@ public class AssigneeDialog {
 
     private final BaseActivity activity;
 
-    private final Repository repository;
-
     private final Single<List<User>> assigneeSingle;
 
     /**
@@ -63,31 +62,17 @@ public class AssigneeDialog {
             final int requestCode, final Repository repository) {
         this.activity = activity;
         this.requestCode = requestCode;
-        this.repository = repository;
 
-        assigneeSingle = getPageAndNext(1)
+        PageIterator.GitHubRequest<Response<Page<User>>> gitHubRequest = page -> ServiceGenerator
+                .createService(activity, IssueAssigneeService.class)
+                .getAssignees(repository.owner().login(), repository.name(), page);
+
+        assigneeSingle = RxPageUtil.getAllPages(gitHubRequest, 1)
                 .flatMap(page -> Observable.fromIterable(page.items()))
                 .toSortedList((o1, o2) -> CASE_INSENSITIVE_ORDER.compare(o1.login(), o2.login()))
                 .compose(RxProgress.bindToLifecycle(activity, R.string.loading_collaborators))
                 .cache();
     }
-
-    private Observable<Page<User>> getPageAndNext(int i) {
-        return ServiceGenerator.createService(activity, IssueAssigneeService.class)
-                .getAssignees(repository.owner().login(), repository.name(), i)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .flatMapObservable(response -> {
-                    Page<User> page = response.body();
-                    if (page.next() == null) {
-                        return Observable.just(page);
-                    }
-
-                    return Observable.just(page)
-                            .concatWith(getPageAndNext(page.next()));
-                });
-    }
-
 
     /**
      * Show dialog with given assignee selected

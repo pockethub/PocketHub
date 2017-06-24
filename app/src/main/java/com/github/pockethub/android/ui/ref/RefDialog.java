@@ -18,9 +18,11 @@ package com.github.pockethub.android.ui.ref;
 import android.util.Log;
 
 import com.github.pockethub.android.R;
+import com.github.pockethub.android.core.PageIterator;
 import com.github.pockethub.android.core.ref.RefUtils;
 import com.github.pockethub.android.rx.RxProgress;
 import com.github.pockethub.android.ui.BaseActivity;
+import com.github.pockethub.android.util.RxPageUtil;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Page;
@@ -35,6 +37,7 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
@@ -49,8 +52,6 @@ public class RefDialog {
 
     private final BaseActivity activity;
 
-    private final Repository repository;
-
     private final Single<List<GitReference>> refSingle;
 
     /**
@@ -64,30 +65,17 @@ public class RefDialog {
             final int requestCode, final Repository repository) {
         this.activity = activity;
         this.requestCode = requestCode;
-        this.repository = repository;
 
-        refSingle = getPageAndNext(1)
+        PageIterator.GitHubRequest<Response<Page<GitReference>>> gitHubRequest = page -> ServiceGenerator
+                .createService(activity, GitService.class)
+                .getGitReferences(repository.owner().login(), repository.name(), page);
+
+        refSingle = RxPageUtil.getAllPages(gitHubRequest, 1)
                 .flatMap(page -> Observable.fromIterable(page.items()))
                 .filter(RefUtils::isValid)
                 .toSortedList((o1, o2) -> CASE_INSENSITIVE_ORDER.compare(o1.ref(), o2.ref()))
                 .compose(RxProgress.bindToLifecycle(activity, R.string.loading_refs))
                 .cache();
-    }
-
-    private Observable<Page<GitReference>> getPageAndNext(int i) {
-        return ServiceGenerator.createService(activity, GitService.class)
-                .getGitReferences(repository.owner().login(), repository.name(), i)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .flatMapObservable(response -> {
-                    Page<GitReference> page = response.body();
-                    if (page.next() == null) {
-                        return Observable.just(page);
-                    }
-
-                    return Observable.just(page)
-                            .concatWith(getPageAndNext(page.next()));
-                });
     }
 
     /**
