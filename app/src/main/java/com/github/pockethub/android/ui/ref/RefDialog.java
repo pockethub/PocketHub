@@ -102,10 +102,7 @@ public class RefDialog {
                 String ref = selectedRef.ref();
                 for (int i = 0; i < refs.size(); i++) {
                     String candidate = refs.get(i).ref();
-                    if (ref.equals(candidate)) {
-                        checked = i;
-                        break;
-                    } else if (ref.equals(RefUtils.getName(candidate))) {
+                    if (ref.equals(candidate) || ref.equals(RefUtils.getName(candidate))) {
                         checked = i;
                         break;
                     }
