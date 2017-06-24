@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -44,13 +45,13 @@ public class AssigneeDialog extends BaseProgressDialog {
 
     private static final String TAG = "AssigneeDialog";
 
-    private List<User> collaborators;
-
     private final int requestCode;
 
     private final BaseActivity activity;
 
     private final Repository repository;
+
+    private final Single<List<User>> assigneeSingle;
 
     /**
      * Create dialog helper to display assignees
@@ -65,21 +66,12 @@ public class AssigneeDialog extends BaseProgressDialog {
         this.activity = activity;
         this.requestCode = requestCode;
         this.repository = repository;
-    }
 
-    private void load(final User selectedAssignee) {
-        getPageAndNext(1)
+        assigneeSingle = getPageAndNext(1)
                 .flatMap(page -> Observable.fromIterable(page.items()))
                 .toSortedList((o1, o2) -> CASE_INSENSITIVE_ORDER.compare(o1.login(), o2.login()))
                 .compose(RxProgress.bindToLifecycle(activity, R.string.loading_collaborators))
-                .subscribe(loadedCollaborators -> {
-                    collaborators = loadedCollaborators;
-
-                    show(selectedAssignee);
-                }, error -> {
-                    Log.d(TAG, "Exception loading collaborators", error);
-                    ToastUtils.show(activity, error, R.string.error_collaborators_load);
-                });
+                .cache();
     }
 
     private Observable<Page<User>> getPageAndNext(int i) {
@@ -105,21 +97,21 @@ public class AssigneeDialog extends BaseProgressDialog {
      * @param selectedAssignee
      */
     public void show(User selectedAssignee) {
-        if (collaborators == null) {
-            load(selectedAssignee);
-            return;
-        }
-
-        int checked = -1;
-        if (selectedAssignee != null) {
-            for (int i = 0; i < collaborators.size(); i++) {
-                if (selectedAssignee.login().equals(collaborators.get(i).login())) {
-                    checked = i;
+        assigneeSingle.subscribe(collaborators -> {
+            int checked = -1;
+            if (selectedAssignee != null) {
+                for (int i = 0; i < collaborators.size(); i++) {
+                    if (selectedAssignee.login().equals(collaborators.get(i).login())) {
+                        checked = i;
+                    }
                 }
             }
-        }
-        AssigneeDialogFragment.show(activity, requestCode,
-                activity.getString(R.string.select_assignee), null, new ArrayList<>(collaborators),
-                checked);
+            AssigneeDialogFragment.show(activity, requestCode,
+                    activity.getString(R.string.select_assignee), null, new ArrayList<>(collaborators),
+                    checked);
+        }, error -> {
+            Log.d(TAG, "Exception loading collaborators", error);
+            ToastUtils.show(activity, error, R.string.error_collaborators_load);
+        });
     }
 }
