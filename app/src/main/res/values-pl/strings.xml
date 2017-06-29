@@ -150,8 +150,6 @@
     <string name="select_milestone">Zaznacz kamień milowy</string>
     <string name="select_labels">Zaznacz etykietę</string>
     <string name="select_ref">Zaznacz Branch lub Tag</string>
-    <string name="enter_otp_code_title">Kod autentyzacyjny</string>
-    <string name="enter_otp_code_message">Na Twoim koncie jest włączona autentyzacja 2-etapowa. Wpisz Twój kod autentyzacyjny, aby Cię zweryfikować.</string>
     <string name="no_milestone">Brak kamieni milowych</string>
     <string name="unassigned">Brak assignów</string>
     <string name="assigned">jest assigned</string>

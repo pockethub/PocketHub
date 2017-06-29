@@ -131,8 +131,6 @@
   <string name="select_milestone">בחר אבן דרך</string>
   <string name="select_labels">בחר תוויות</string>
   <string name="select_ref">בחר ענף או תג</string>
-  <string name="enter_otp_code_title">קוד אימות</string>
-  <string name="enter_otp_code_message">אימות דו שלבי מופעל עבור חשבונך. הכנס קוד כדי לאמת זהותך.</string>
   <string name="no_milestone">אין אבן דרך</string>
   <string name="unassigned">אף אחד לא מוצב</string>
   <string name="assigned">משוייך</string>

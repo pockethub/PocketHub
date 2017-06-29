@@ -151,8 +151,6 @@
     <string name="select_milestone">Zvoliť míľnik</string>
     <string name="select_labels">Zvoliť štítky</string>
     <string name="select_ref">Zvoliť vetvu alebo značku</string>
-    <string name="enter_otp_code_title">Overovací kód</string>
-    <string name="enter_otp_code_message">Dvojfaktorové overovanie je pre váš účet zapnuté. Na overenie vašej identity zadajte váš overovací kód.</string>
     <string name="no_milestone">Žiadny míľnik</string>
     <string name="unassigned">Nikto nie je priradený</string>
     <string name="assigned">je priradený</string>

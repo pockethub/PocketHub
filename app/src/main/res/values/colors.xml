@@ -52,10 +52,6 @@
     <color name="milestone_opened_end">#DCDCDC</color>
     <color name="milestone_closed_start">#6AA811</color>
     <color name="milestone_closed_end">#6EB807</color>
-    <color name="sign_up_background">#E6E6E5</color>
-    <color name="sign_up_background_bottom">#D4D4D4</color>
-    <color name="sign_up_text">#666666</color>
-    <color name="sign_up_text_link">#3797C7</color>
     <color name="state_background_closed">#BD2C00</color>
     <color name="state_text">#FFFFFF</color>
     <color name="diff_marker_bg">#EAF2F5</color>

@@ -150,8 +150,6 @@
     <string name="select_milestone">マイルストーンを選択</string>
     <string name="select_labels">ラベルを選択</string>
     <string name="select_ref">ブランチまたはタグを選択</string>
-    <string name="enter_otp_code_title">認証コード</string>
-    <string name="enter_otp_code_message">2要素認証があなたのアカウントでは有効です。認証コードを入力して本人確認を行って下さい。</string>
     <string name="no_milestone">マイルストーンはありません</string>
     <string name="unassigned">担当者はいません</string>
     <string name="assigned">に割り当てられています</string>

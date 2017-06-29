@@ -155,8 +155,6 @@
     <string name="select_milestone">选择里程碑</string>
     <string name="select_labels">选择 Issue 标签</string>
     <string name="select_ref">选择分支或标签</string>
-    <string name="enter_otp_code_title">验证码</string>
-    <string name="enter_otp_code_message">启用双重身份验证您的帐户。请输入您的验证码来验证您的身份。</string>
     <string name="no_milestone">暂无里程碑</string>
     <string name="unassigned">无人被指派</string>
     <string name="assigned">被指派</string>

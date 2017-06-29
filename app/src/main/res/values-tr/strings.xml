@@ -153,8 +153,6 @@
     <string name="select_milestone">Dönüm Noktası Seç</string>
     <string name="select_labels">Etiketleri Seç</string>
     <string name="select_ref">Etiket ya da Ayrım Seç</string>
-    <string name="enter_otp_code_title">Onay kodu</string>
-    <string name="enter_otp_code_message">Hesabınız için iki aşamalı onay etkinleştirildi. Kimliğinizi doğrulamak için onay kodunuzu giriniz.</string>
     <string name="no_milestone">Dönüm noktası yok</string>
     <string name="unassigned">Kimse atanmadı</string>
     <string name="assigned"> atandı</string>

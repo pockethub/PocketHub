@@ -150,8 +150,6 @@
     <string name="select_milestone">Zvolit milník</string>
     <string name="select_labels">Zvolit štítky</string>
     <string name="select_ref">Zvolit větev nebo tag</string>
-    <string name="enter_otp_code_title">Ověřovací kód</string>
-    <string name="enter_otp_code_message">Je povoleno dvoufázové ověření vašeho účtu. Zadejte ověřovací kód k ověření vaší identity.</string>
     <string name="no_milestone">Žádný milník</string>
     <string name="unassigned">Nikdo není přiřazen</string>
     <string name="assigned">je přiřazen</string>

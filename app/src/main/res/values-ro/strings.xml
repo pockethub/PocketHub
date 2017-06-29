@@ -153,8 +153,6 @@
     <string name="select_milestone">Selectează bornă</string>
     <string name="select_labels">Selectează etichete</string>
     <string name="select_ref">Selectează ramura sau eticheta</string>
-    <string name="enter_otp_code_title">Cod de autentificare</string>
-    <string name="enter_otp_code_message">Autentificarea în doi pași este activă pe contul tău. Introdu codul de autentificare pentru a-ți verifica identitatea.</string>
     <string name="no_milestone">Nu există bornă</string>
     <string name="unassigned">Niciun reprezentant</string>
     <string name="assigned">este desemnat</string>
