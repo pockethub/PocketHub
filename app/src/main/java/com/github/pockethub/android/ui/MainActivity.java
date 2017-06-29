@@ -80,7 +80,6 @@ public class MainActivity extends BaseActivity implements
 
     private static final String TAG = "MainActivity";
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
-    public static final String PREF_FIRST_USE = "first_use";
 
     @Inject
     private AccountDataManager accountDataManager;
@@ -108,10 +107,6 @@ public class MainActivity extends BaseActivity implements
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         userLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
-
-        if(sp.getBoolean(PREF_FIRST_USE, true)) {
-            openWelcomeScreen();
-        }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -152,11 +147,6 @@ public class MainActivity extends BaseActivity implements
                 tokenStore.saveToken(AccountsHelper.getUserToken(this, account));
             }
         }
-    }
-
-    private void openWelcomeScreen() {
-        startActivity(new Intent(this, WelcomeActivity.class));
-        finish();
     }
 
     @Override

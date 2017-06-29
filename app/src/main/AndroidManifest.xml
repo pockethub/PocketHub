@@ -263,11 +263,6 @@
         </activity>
 
         <activity
-            android:name=".ui.WelcomeActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTop"/>
-
-        <activity
             android:name="com.github.pockethub.android.ui.user.UriLauncherActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:excludeFromRecents="true">
