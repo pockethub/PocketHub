@@ -17,13 +17,14 @@ package com.github.pockethub.android.ui.issue;
 
 import android.util.Log;
 
+import com.github.pockethub.android.core.PageIterator;
 import com.github.pockethub.android.rx.RxProgress;
+import com.github.pockethub.android.util.RxPageUtil;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Label;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.ui.BaseProgressDialog;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.service.issues.IssueLabelService;
@@ -35,15 +36,15 @@ import java.util.List;
 import java.util.Set;
 
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.Single;
+import retrofit2.Response;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
 /**
  * Dialog helper to display a list of possibly selected issue labels
  */
-public class LabelsDialog extends BaseProgressDialog {
+public class LabelsDialog {
 
     private static final String TAG = "LabelsDialog";
 
@@ -51,9 +52,7 @@ public class LabelsDialog extends BaseProgressDialog {
 
     private final BaseActivity activity;
 
-    private final Repository repository;
-
-    private List<Label> labels;
+    private final Single<List<Label>> labelsSingle;
 
     /**
      * Create dialog helper to display labels
@@ -64,43 +63,19 @@ public class LabelsDialog extends BaseProgressDialog {
      */
     public LabelsDialog(final BaseActivity activity,
             final int requestCode, final Repository repository) {
-        super(activity);
         this.activity = activity;
         this.requestCode = requestCode;
-        this.repository = repository;
-    }
 
-    private void load(final Collection<Label> selectedLabels) {
-        getPageAndNext(1)
+        PageIterator.GitHubRequest<Response<Page<Label>>> gitHubRequest = page -> ServiceGenerator
+                .createService(activity, IssueLabelService.class)
+                .getRepositoryLabels(repository.owner().login(), repository.name(), page);
+
+        labelsSingle = RxPageUtil.getAllPages(gitHubRequest, 1)
                 .flatMap(page -> Observable.fromIterable(page.items()))
                 .toSortedList((o1, o2) -> CASE_INSENSITIVE_ORDER.compare(o1.name(), o2.name()))
                 .compose(RxProgress.bindToLifecycle(activity, R.string.loading_labels))
-                .subscribe(loadedLabels -> {
-                    labels = loadedLabels;
-
-                    show(selectedLabels);
-                }, error -> {
-                    Log.e(TAG, "Exception loading labels", error);
-                    ToastUtils.show(activity, error, R.string.error_labels_load);
-                });
+                .cache();
     }
-
-    private Observable<Page<Label>> getPageAndNext(int i) {
-        return ServiceGenerator.createService(activity, IssueLabelService.class)
-                .getRepositoryLabels(repository.owner().login(), repository.name(), i)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .flatMapObservable(response -> {
-                    Page<Label> page = response.body();
-                    if (page.next() == null) {
-                        return Observable.just(page);
-                    }
-
-                    return Observable.just(page)
-                            .concatWith(getPageAndNext(page.next()));
-                });
-    }
-
 
     /**
      * Show dialog with given labels selected
@@ -108,24 +83,24 @@ public class LabelsDialog extends BaseProgressDialog {
      * @param selectedLabels
      */
     public void show(Collection<Label> selectedLabels) {
-        if (labels == null) {
-            load(selectedLabels);
-            return;
-        }
-
-        final boolean[] checked = new boolean[labels.size()];
-        if (selectedLabels != null && !selectedLabels.isEmpty()) {
-            Set<String> selectedNames = new HashSet<>();
-            for (Label label : selectedLabels) {
-                selectedNames.add(label.name());
-            }
-            for (int i = 0; i < checked.length; i++) {
-                if (selectedNames.contains(labels.get(i).name())) {
-                    checked[i] = true;
+        labelsSingle.subscribe(labels -> {
+            final boolean[] checked = new boolean[labels.size()];
+            if (selectedLabels != null && !selectedLabels.isEmpty()) {
+                Set<String> selectedNames = new HashSet<>();
+                for (Label label : selectedLabels) {
+                    selectedNames.add(label.name());
+                }
+                for (int i = 0; i < checked.length; i++) {
+                    if (selectedNames.contains(labels.get(i).name())) {
+                        checked[i] = true;
+                    }
                 }
             }
-        }
-        LabelsDialogFragment.show(activity, requestCode,
-                activity.getString(R.string.select_labels), null, new ArrayList<>(labels), checked);
+            LabelsDialogFragment.show(activity, requestCode,
+                    activity.getString(R.string.select_labels), null, new ArrayList<>(labels), checked);
+        }, error -> {
+            Log.e(TAG, "Exception loading labels", error);
+            ToastUtils.show(activity, error, R.string.error_labels_load);
+        });
     }
 }
