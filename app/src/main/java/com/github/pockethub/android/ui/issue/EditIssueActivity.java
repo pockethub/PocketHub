@@ -61,8 +61,6 @@ import com.meisolsson.githubsdk.model.request.issue.IssueRequest;
 import com.meisolsson.githubsdk.service.issues.IssueService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryCollaboratorService;
 import com.google.inject.Inject;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.Request;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -72,6 +70,8 @@ import java.util.List;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.Call;
+import okhttp3.Callback;
 import retrofit2.Response;
 
 import static android.view.View.GONE;
@@ -315,13 +315,13 @@ public class EditIssueActivity extends BaseActivity {
             progressDialog.show();
             ImageBinPoster.post(this, data.getData(), new Callback() {
                 @Override
-                public void onFailure(Request request, IOException e) {
+                public void onFailure(Call call, IOException e) {
                     progressDialog.dismiss();
                     showImageError();
                 }
 
                 @Override
-                public void onResponse(com.squareup.okhttp.Response response) throws IOException {
+                public void onResponse(Call call, okhttp3.Response response) throws IOException {
                     progressDialog.dismiss();
                     if (response.isSuccessful()) {
                         insertImage(ImageBinPoster.getUrl(response.body().string()));

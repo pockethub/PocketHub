@@ -3,17 +3,16 @@ package com.github.pockethub.android.util;
 import android.content.Context;
 import android.net.Uri;
 
-import com.squareup.okhttp.Call;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.MultipartBuilder;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-
 import java.io.IOException;
 import java.io.InputStream;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import okio.Okio;
 import okio.Source;
 
@@ -52,8 +51,8 @@ public class ImageBinPoster {
      * @param callback Request callback
      */
     public static void post(byte[] bytes, Callback callback) {
-        RequestBody requestBody = new MultipartBuilder()
-                .type(MultipartBuilder.FORM)
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
                 .addFormDataPart("file", "test", RequestBody.create(MediaType.parse("image/*"), bytes))
                 .build();
 
