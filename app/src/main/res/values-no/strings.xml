@@ -150,8 +150,6 @@
     <string name="select_milestone">Velg milepæl</string>
     <string name="select_labels">Velg etiketter</string>
     <string name="select_ref">Velg gren eller tagg</string>
-    <string name="enter_otp_code_title">Autentiseringskode</string>
-    <string name="enter_otp_code_message">Tofaktor-autentisering er slått på for din konto. Skriv inn autentiseringskoden for å bekrefte din identitet.</string>
     <string name="no_milestone">Ingen milepæl</string>
     <string name="unassigned">Ingen oppdragstaker satt</string>
     <string name="assigned">er på saken</string>

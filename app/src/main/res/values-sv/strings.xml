@@ -158,8 +158,6 @@
     <string name="select_milestone">Välj milstolpe</string>
     <string name="select_labels">Välj etiketter</string>
     <string name="select_ref">Välj branch eller tag</string>
-    <string name="enter_otp_code_title">Autentiseringskod</string>
-    <string name="enter_otp_code_message">Tvåfaktor-autentisering är aktiverad för ditt konto. Ange autentiseringskod för att verifiera din identitet.</string>
     <string name="no_milestone">Inga milstolpar</string>
     <string name="unassigned">Ingen har tilldelats detta</string>
     <string name="assigned">är tilldelad</string>
