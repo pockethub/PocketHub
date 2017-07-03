@@ -219,7 +219,7 @@
     <string name="close">Zamknij</string>
     <string name="reopen">Re-open</string>
     <string name="title_invalid_github_url">Błędny adres URL GitHub</string>
-    <string name="message_invalid_github_url">The following URL could not be opened by this application:\n{0}</string>
+    <string name="message_invalid_github_url">Podany adres URL nie może być otwarty przez tą aplikację:\n{0}</string>
     <string name="cancel">Cancel</string>
     <string name="authenticator_conflict_title">App Conflict</string>
     <string name="authenticator_conflict_message">Another installed app is already configured for PocketHub authentication.\n\nYou must remove the other app from the Accounts &amp; sync settings and uninstall it before the PocketHub app can be used.</string>
@@ -229,13 +229,13 @@
     <string name="parent_prefix">Parent\u0020</string>
     <string name="authored">authored</string>
     <string name="committed">committed</string>
-    <string name="diff_line_message">What would you like to do?</string>
+    <string name="diff_line_message">Co chciałbyś zrobić?</string>
     <string name="comment_on_line">Skomentuj na linii</string>
     <string name="view_entire_file">View entire file</string>
     <string name="comparing_commits">Comparing {0} commits</string>
     <string name="enable_wrapping">Włącz zawijanie</string>
     <string name="disable_wrapping">Wyłącz zawijanie</string>
-    <string name="code">Code</string>
+    <string name="code">Kod</string>
     <string name="following_user">Following…</string>
     <string name="unfollowing_user">Unfollowing…</string>
     <string name="starring_repository">Starring…</string>
@@ -245,22 +245,22 @@
     <string name="contributions">%d popełnień</string>
 
     <!-- Tab titles, should be as short as possible -->
-    <string name="tab_repositories">repositories</string>
-    <string name="tab_users">users</string>
-    <string name="tab_news">news</string>
-    <string name="tab_following_self">following</string>
-    <string name="tab_followers_self">followers</string>
-    <string name="tab_following">following</string>
-    <string name="tab_followers">followers</string>
-    <string name="tab_members">members</string>
-    <string name="tab_code">code</string>
+    <string name="tab_repositories">repozytoria</string>
+    <string name="tab_users">użytkownicy</string>
+    <string name="tab_news">wiadomości</string>
+    <string name="tab_following_self">obserwowanie</string>
+    <string name="tab_followers_self">obserwujący</string>
+    <string name="tab_following">obserwowanie</string>
+    <string name="tab_followers">obserwujący</string>
+    <string name="tab_members">użytkownicy</string>
+    <string name="tab_code">kos</string>
     <string name="tab_commits">commits</string>
-    <string name="tab_issues">issues</string>
-    <string name="tab_watched">watched</string>
+    <string name="tab_issues">błędy</string>
+    <string name="tab_watched">obserwowane</string>
     <string name="tab_assigned">assigned</string>
-    <string name="tab_created">created</string>
+    <string name="tab_created">utworzone</string>
     <string name="tab_mentioned">mentioned</string>
-    <string name="tab_mine">mine</string>
+    <string name="tab_mine">moje</string>
     <string name="tab_starred">gwiazdkowane</string>
     <string name="tab_all">wszystko</string>
     <!--  -->
