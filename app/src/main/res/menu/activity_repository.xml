@@ -34,6 +34,10 @@
         app:showAsAction="never"
         android:title="@string/share"/>
     <item
+        android:id="@+id/m_parent_repo"
+        app:showAsAction="never"
+        android:title="@string/parent_repo"/>
+    <item
         android:id="@+id/m_delete"
         app:showAsAction="never"
         android:title="@string/delete"
