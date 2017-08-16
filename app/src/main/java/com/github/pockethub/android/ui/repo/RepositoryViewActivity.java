@@ -137,6 +137,9 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
         followItem.setVisible(starredStatusChecked);
         followItem.setTitle(isStarred ? R.string.unstar : R.string.star);
 
+        MenuItem parentRepo = menu.findItem(R.id.m_parent_repo);
+        parentRepo.setVisible(repository.isFork());
+
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -185,6 +188,20 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                 return true;
             case R.id.m_share:
                 shareRepository();
+                return true;
+            case R.id.m_parent_repo:
+                if (repository.parent() == null) {
+                    ServiceGenerator.createService(this, RepositoryService.class)
+                            .getRepository(repository.owner().login(), repository.name())
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(response -> {
+                                Repository parent = response.body().parent();
+                                startActivity(RepositoryViewActivity.createIntent(parent));
+                            });
+                } else {
+                    startActivity(RepositoryViewActivity.createIntent(repository.parent()));
+                }
                 return true;
             case R.id.m_delete:
                 deleteRepository();
