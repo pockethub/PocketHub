@@ -20,6 +20,7 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.pockethub.android.util.InfoUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.Repository;
@@ -95,13 +96,16 @@ public class SearchIssueListFragment extends ItemListFragment<Issue>
                     return Collections.emptyList();
                 }
                 List<Issue> matches = new ArrayList<>();
+                // We need to add the repo parameter to allow us to search only the repo issues
+                String searchQuery = query + "+repo:" + InfoUtils.createRepoId(repository);
 
-                SearchService service = ServiceGenerator.createService(getActivity(), SearchService.class);
+                SearchService service = ServiceGenerator.createService(getActivity(),
+                        SearchService.class);
 
                 int current = 1;
                 int last = 0;
                 while (current != last) {
-                    SearchPage<Issue> page = service.searchIssues(query, null, null, current)
+                    SearchPage<Issue> page = service.searchIssues(searchQuery, null, null, current)
                             .blockingGet()
                             .body();
 
@@ -129,6 +133,6 @@ public class SearchIssueListFragment extends ItemListFragment<Issue>
 
     @Override
     public int compare(Issue lhs, Issue rhs) {
-        return (int) (rhs.number() - lhs.number());
+        return rhs.number() - lhs.number();
     }
 }
