@@ -22,4 +22,14 @@ allprojects {
         maven { url "https://repo.eclipse.org/content/groups/releases" }
         maven { url "https://jitpack.io" }
     }
+
+}
+
+task lintSuite {
+    dependsOn ':app:lint'
+}
+
+
+task testSuiteWithCoverage {
+    dependsOn ':app:testCoverage'
 }

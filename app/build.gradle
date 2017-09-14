@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.github.ben-manes.versions'   // ./gradlew dependencyUpdates -Drevision=release
 apply from: 'quality.gradle'
-
+apply from: '../lib/gradle/jacoco-android.gradle'
 repositories {
     flatDir {
         dirs 'libs'
@@ -88,7 +88,7 @@ android {
 
     lintOptions {
         warning 'MissingTranslation'
-        abortOnError true
+        abortOnError false
         check 'NewApi', 'InlinedApi'
         fatal 'NewApi', 'InlinedApi'
         checkReleaseBuilds true
@@ -141,4 +141,6 @@ dependencies {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
+
+
 }
