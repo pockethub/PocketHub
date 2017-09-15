@@ -87,7 +87,7 @@ def execute() {
 
     milestone(label: 'Finished packaging!')
 
-    node {
+    node('android-test') {
         unstash 'pipeline'
         echo "Job result : ${currentBuild.result}"
         common.reportFinalBuildStatus()

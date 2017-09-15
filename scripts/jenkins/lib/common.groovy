@@ -53,6 +53,7 @@ def slackFeed() {
 }
 
 def reportFinalBuildStatus() {
+    unstash 'pipeline'
     def gitStatus = load 'scripts/jenkins/lib/git-status.groovy'
     def body = """
         Build Succeeded!...
