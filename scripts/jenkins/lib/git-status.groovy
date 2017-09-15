@@ -16,10 +16,12 @@ def gitStatusEnabled(String context, Closure buildStep, Closure postBuildStep) {
 }
 
 void reportGitStatus(String context, String description, String status) {
-    try {
-        sh "java -jar ./scripts/git-status/kotStatus.jar ${status} --context=\"${context}\" --description=\"${description}\""
-    } catch (err) {
-        echo "### Github reporting failed ... : ${err.message}"
+    withCredentials([string(credentialsId: 'JENKINS_PERSONAL_ACCESS_TOKEN', variable: 'JENKINS_PERSONAL_ACCESS_TOKEN')]) {
+        try {
+            sh "java -jar ./scripts/git-status/kotStatus.jar ${status} --context=\"${context}\" --description=\"${description}\""
+        } catch (err) {
+            echo "### Github reporting failed ... : ${err.message}"
+        }
     }
 }
 

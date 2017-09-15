@@ -5,7 +5,7 @@ node ('android-test') {
     stage('Checkout') {
         // Check out code
 
-
+        sh 'env | sort'
         checkout scm
 
         configuration = load 'scripts/jenkins/main/branch.groovy'
