@@ -21,7 +21,7 @@ def exportGitEnvVars() {
     }
 
     env.JIRA_ISSUE = issue
-    env.JAVA_HOME = '/usr/lib/jvm/java-8-oracle'
+    env.JAVA_HOME = env.JAVA_HOME="${tool 'Java8'}"
     env.JAVA7_HOME = env.JAVA_HOME
     env.ANDROID_HOME='/usr/lib/android-sdk'
 }
