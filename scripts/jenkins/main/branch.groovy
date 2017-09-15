@@ -55,44 +55,55 @@ def execute() {
                             step([$class: 'WsCleanup', notFailBuild: true])
                             unstash 'workspace'
                             gitStatus.gitStatusEnabled(('Build-uk-qa'), {
-                                sh "./gradlew assembleRelease ${common.gradleParameters()}"
-                                common.archiveCommonArtifacts()
-                                //common.hockeyUpload('**/*uk-qa.apk', '64a4e9ebce0143e4b69bba8dfb5aa45b')
+                                try {
+                                    sh "./gradlew assembleDebug ${common.gradleParameters()}"
+
+                                } catch (error) {
+                                    error("${error}")
+                                } finally {
+                                    common.archiveCommonArtifacts()
+                                    step([$class: 'WsCleanup', notFailBuild: true])
+                                }
                             }, {
+                            //
+                            }
+                        },
+                        'Build-uk-release': {
+                            node('android-test') {
                                 step([$class: 'WsCleanup', notFailBuild: true])
-                            })
 
-                        }
-                    },
-                    'Build-uk-release': {
-                        node('android-test') {
-                            step([$class: 'WsCleanup', notFailBuild: true])
+                                unstash 'workspace'
+                                gitStatus.gitStatusEnabled(('Build-uk-release'), {
+                                    try {
+                                        sh "./gradlew assembleDebug ${common.gradleParameters()}"
 
-                            unstash 'workspace'
-                            gitStatus.gitStatusEnabled(('Build-uk-release'), {
-                                sh "./gradlew assembleDebug ${common.gradleParameters()}"
-                                common.archiveCommonArtifacts()
-                                //common.hockeyUpload('**/*uk-release.apk', 'ce8afc86748c44439436747e9bc36092')
-                            }, {
-                                step([$class: 'WsCleanup', notFailBuild: true])
-                            })
-                        }
-                    },
+                                    } catch (error) {
+                                        error("${error}")
+                                    } finally {
+                                        common.archiveCommonArtifacts()
+                                        step([$class: 'WsCleanup', notFailBuild: true])
+                                    }
+                                    //common.hockeyUpload('**/*uk-release.apk', 'ce8afc86748c44439436747e9bc36092')
+                                }, {
 
-            )
+                                })
+                            }
+                        },
+
+                        )
+                    }
+        }
+
+        echo "Job result : ${currentBuild.result}"
+
+        milestone(label: 'Finished packaging!')
+
+        node('android-test') {
+            unstash 'pipeline'
+            echo "Job result : ${currentBuild.result}"
+            common.reportFinalBuildStatus()
+            //common.slackFeed()
         }
     }
 
-    echo "Job result : ${currentBuild.result}"
-
-    milestone(label: 'Finished packaging!')
-
-    node('android-test') {
-        unstash 'pipeline'
-        echo "Job result : ${currentBuild.result}"
-        common.reportFinalBuildStatus()
-        //common.slackFeed()
-    }
-}
-
-return this
+    return this
