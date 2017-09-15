@@ -65,8 +65,8 @@ def execute() {
                                     step([$class: 'WsCleanup', notFailBuild: true])
                                 }
                             }, {
-                            //
-                            }
+                                //
+                            })
                         },
                         'Build-uk-release': {
                             node('android-test') {
