@@ -7,7 +7,21 @@ def exportGitEnvVars() {
     env.GIT_COMMIT = gitCommit.trim()
     String gitBranch = readFile 'branch'
     env.GIT_BRANCH = gitBranch.trim()
-    env.JAVA_HOME = '/usr/lib/jvm/java-8-openjdk-amd64/' // Set the proper JDK on Jenkins
+
+    // get the JIRA issue KEY from the branch name
+    script = '''
+    echo ${GIT_BRANCH} | egrep -o '([a-zA-Z][a-zA-Z0-9_]+-[1-9][0-9]*)([^.]|\\.[^0-9]|\\.\\$|\\$)'
+    '''
+    try {
+        issue = sh(script: script, returnStdout: true).trim()
+    } catch (error) {
+        echo error.message
+    } finally {
+        echo "Jira Issue Key: ${issue}"
+    }
+
+    env.JIRA_ISSUE = issue
+    env.JAVA_HOME = '/usr/lib/jvm/java-8-oracle'
     env.JAVA7_HOME = env.JAVA_HOME
     env.ANDROID_HOME='/usr/lib/android-sdk'
 }

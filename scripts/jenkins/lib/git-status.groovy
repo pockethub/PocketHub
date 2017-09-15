@@ -22,3 +22,5 @@ void reportGitStatus(String context, String description, String status) {
         echo "### Github reporting failed ... : ${err.message}"
     }
 }
+
+return this
