@@ -1,21 +1,17 @@
 def exportGitEnvVars() {
+    def issue
     sh 'git rev-parse HEAD > commit'
-    //sh 'git branch --list --contains > branch'
-    sh 'git branch -a --contains $(git rev-parse HEAD)'
-    sh 'git branch -a --contains $(git rev-parse HEAD) | grep "remotes" > branch'
     String gitCommit = readFile 'commit'
     env.GIT_COMMIT = gitCommit.trim()
-    String gitBranch = readFile 'branch'
-    env.GIT_BRANCH = gitBranch.trim()
-
-    // get the JIRA issue KEY from the branch name
+    // BRANCH_NAME env var available in multi-branch pipeline
     script = '''
-    echo ${GIT_BRANCH} | egrep -o '([a-zA-Z][a-zA-Z0-9_]+-[1-9][0-9]*)([^.]|\\.[^0-9]|\\.\\$|\\$)'
+    echo ${env.BRANCH_NAME} | egrep -o '([a-zA-Z][a-zA-Z0-9_]+-[1-9][0-9]*)([^.]|\\.[^0-9]|\\.\\$|\\$)'
     '''
     try {
         issue = sh(script: script, returnStdout: true).trim()
     } catch (error) {
         echo error.message
+        error ('Can't work out JIRA issue from branch name'')
     } finally {
         echo "Jira Issue Key: ${issue}"
     }
