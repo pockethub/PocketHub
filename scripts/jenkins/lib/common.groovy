@@ -85,7 +85,7 @@ def notifyJira(String message, String key) {
 }
 
 def gradleParameters() {
-    "-PcustomVersionCode=${env.BUILD_NUMBER} -PjenkinsFastDexguardBuildsEnabled=${config.fastDexguardBuilds} -Dorg.gradle.java.home=${env.JAVA_HOME} -Pandroid.enableBuildCache=true -PtestCoverageFlag=true --profile"
+    "-PcustomVersionCode=${env.BUILD_NUMBER} -PjenkinsFastDexguardBuildsEnabled=${config.fastDexguardBuilds} -Dorg.gradle.java.home=${env.JAVA_HOME} -Pandroid.enableBuildCache=true --project-cache-dir=${env.WORKSPACE}/.gradle/cache -PtestCoverageFlag=true --profile"
 }
 
 def archiveCommonArtifacts() {
