@@ -23,12 +23,14 @@ node ('android-test') {
         stash(name: 'sources', useDefaultExcludes: false)
         stash(name: 'pipeline', includes: 'scripts/jenkins/**')
         gitStatus.reportGitStatus('Jenkins Job', 'Running job...', 'pending')
-        step([$class: 'WsCleanup', notFailBuild: true])
+
         try {
             sh './gradlew cleanBuildCache'
         } catch (error) {
             echo "${error}"
         }
+
+        step([$class: 'WsCleanup', notFailBuild: true])
     }
 }
 
