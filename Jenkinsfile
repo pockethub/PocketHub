@@ -25,7 +25,7 @@ node ('android-test') {
         gitStatus.reportGitStatus('Jenkins Job', 'Running job...', 'pending')
 
         try {
-            sh './gradlew cleanBuildCache'
+            sh 'rm -fr /home/ubuntu/.gradle/caches'
         } catch (error) {
             echo "${error}"
         }
