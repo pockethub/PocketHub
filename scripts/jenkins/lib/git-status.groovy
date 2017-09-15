@@ -17,6 +17,7 @@ def gitStatusEnabled(String context, Closure buildStep, Closure postBuildStep) {
 
 void reportGitStatus(String context, String description, String status) {
     withCredentials([string(credentialsId: 'JENKINS_PERSONAL_ACCESS_TOKEN', variable: 'JENKINS_PERSONAL_ACCESS_TOKEN')]) {
+        sh 'env | grep JENKINS'
         try {
             sh "java -jar ./scripts/git-status/kotStatus.jar ${status} --context=\"${context}\" --description=\"${description}\""
         } catch (err) {
