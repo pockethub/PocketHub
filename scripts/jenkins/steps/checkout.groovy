@@ -11,7 +11,7 @@ def exportGitEnvVars() {
         issue = sh(script: script, returnStdout: true).trim()
     } catch (error) {
         echo error.message
-        error ('Can't work out JIRA issue from branch name'')
+        //error ('Can't work out JIRA issue from branch name'')
     } finally {
         echo "Jira Issue Key: ${issue}"
     }
