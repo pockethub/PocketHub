@@ -4,9 +4,9 @@ def exportGitEnvVars() {
     String gitCommit = readFile 'commit'
     env.GIT_COMMIT = gitCommit.trim()
     // BRANCH_NAME env var available in multi-branch pipeline
-    script = '''
-    echo ${env.BRANCH_NAME} | egrep -o '([a-zA-Z][a-zA-Z0-9_]+-[1-9][0-9]*)([^.]|\\.[^0-9]|\\.\\$|\\$)'
-    '''
+    script = """
+    echo $BRANCH_NAME | egrep -o '([a-zA-Z][a-zA-Z0-9_]+-[1-9][0-9]*)([^.]|\\.[^0-9]|\\.\\$|\\$)'
+    """
     try {
         issue = sh(script: script, returnStdout: true).trim()
     } catch (error) {
@@ -17,6 +17,7 @@ def exportGitEnvVars() {
     }
 
     env.JIRA_ISSUE = issue
+    // Java8 is configured in Manage Jenkins -> Global Tool Configuration
     env.JAVA_HOME="${tool 'Java8'}"
     env.JAVA7_HOME = env.JAVA_HOME
     env.ANDROID_HOME='/usr/lib/android-sdk'
