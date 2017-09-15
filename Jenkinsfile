@@ -5,7 +5,7 @@ node ('android-test') {
     stage('Checkout') {
         // Check out code
 
-        sh 'env | sort'
+
         checkout scm
 
         configuration = load 'scripts/jenkins/main/branch.groovy'
@@ -17,7 +17,7 @@ node ('android-test') {
         // Post-checkout prep
         checkout.exportGitEnvVars()
         //checkout.checkoutBackbone()
-
+        sh 'env | sort'
 
         // stash the entire checkout including .git dir
         stash(name: 'sources', useDefaultExcludes: false)
