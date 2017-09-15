@@ -24,11 +24,7 @@ node ('android-test') {
         stash(name: 'pipeline', includes: 'scripts/jenkins/**,scripts/git-status/*.jar')
         gitStatus.reportGitStatus('Jenkins Job', 'Running job...', 'pending')
 
-        try {
-            sh 'rm -fr /home/ubuntu/.gradle/caches'
-        } catch (error) {
-            echo "${error}"
-        }
+
 
         step([$class: 'WsCleanup', notFailBuild: true])
     }
