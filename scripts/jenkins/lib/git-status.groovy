@@ -1,13 +1,13 @@
 def gitStatusEnabled(String context, Closure buildStep, Closure postBuildStep) {
-    reportGitStatus(context, "Running $context...", "pending")
+    reportGitStatus(context, "Running $context...", "PENDING")
     try {
         buildStep.call()
         println (">>> Build Step $context passed! <<<")
-        reportGitStatus(context, "$context passed!", "success")
+        reportGitStatus(context, "$context passed!", "SUCCESS")
 
         currentBuild.result = 'SUCCESS'
     } catch (error) {
-        reportGitStatus(context, "$context failed!", "failure")
+        reportGitStatus(context, "$context failed!", "FAILURE")
         common.notifyJira("Build Failed! ${error.message} ..." , "${env.JIRA_ISSUE}")
         currentBuild.result = 'FAILURE'
         // this will stop the build and mark it as failed
