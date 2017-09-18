@@ -5,7 +5,7 @@ def exportGitEnvVars() {
     env.GIT_COMMIT = gitCommit.trim()
     // BRANCH_NAME env var available in multi-branch pipeline
     script = '''
-    echo $BRANCH_NAME | egrep -o '([a-zA-Z][a-zA-Z0-9_]+-[1-9][0-9]*)([^.]|\\.[^0-9]|\\.\\$|\\$)'
+    echo $CHANGE_BRANCH | egrep -o '([a-zA-Z][a-zA-Z0-9_]+-[1-9][0-9]*)([^.]|\\.[^0-9]|\\.\\$|\\$)'
     '''
     try {
         issue = sh(script: script, returnStdout: true).trim()

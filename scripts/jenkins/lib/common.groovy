@@ -68,14 +68,13 @@ def reportFinalBuildStatus() {
         common.notifyJira(body, "${env.JIRA_ISSUE}")
     } else {
         gitStatus.reportGitStatus('Jenkins Job', 'Job failed!', 'failure')
-
         common.notifyJira("Build Failed!" , "${env.JIRA_ISSUE}")
     }
 }
 
 
 def notifyJira(String message, String key) {
-    if ( key != 'None') {
+    if ( key != 'None' || key !=null) {
         try {
             jiraComment body: message, issueKey: key
         } catch (error) {
