@@ -1,5 +1,5 @@
 def exportGitEnvVars() {
-    def issue=None
+    def issue
     sh 'git rev-parse HEAD > commit'
     String gitCommit = readFile 'commit'
     env.GIT_COMMIT = gitCommit.trim()
